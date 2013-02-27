@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import org.eclipse.jpt.jpa.core.context.NamedColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiableNamedColumn;
 import org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation;
 
 /**
@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation;
  * @since 2.0
  */
 public interface JavaNamedColumn
-	extends NamedColumn
+	extends ModifiableNamedColumn
 {
 	NamedColumnAnnotation getColumnAnnotation();
 }

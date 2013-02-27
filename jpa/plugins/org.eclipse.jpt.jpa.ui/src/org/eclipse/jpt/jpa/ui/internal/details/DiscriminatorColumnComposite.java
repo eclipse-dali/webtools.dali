@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.NamedColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiableNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
@@ -313,7 +313,7 @@ public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 
 	private ModifiablePropertyValueModel<String> buildColumnDefinitionHolder(PropertyValueModel<DiscriminatorColumn> discriminatorColumnHolder) {
 
-		return new PropertyAspectAdapter<DiscriminatorColumn, String>(discriminatorColumnHolder, NamedColumn.COLUMN_DEFINITION_PROPERTY) {
+		return new PropertyAspectAdapter<DiscriminatorColumn, String>(discriminatorColumnHolder, ModifiableNamedColumn.COLUMN_DEFINITION_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getColumnDefinition();

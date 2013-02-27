@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
-import org.eclipse.jpt.jpa.core.context.NamedColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiableNamedColumn;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrderColumn2_0;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
@@ -81,14 +81,14 @@ public class OrderColumnComposite extends Pane<OrderColumn2_0> {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(NamedColumn.DEFAULT_NAME_PROPERTY);
-				propertyNames.add(NamedColumn.SPECIFIED_NAME_PROPERTY);
-				propertyNames.add(NamedColumn.DB_TABLE_PROPERTY);
+				propertyNames.add(ModifiableNamedColumn.DEFAULT_NAME_PROPERTY);
+				propertyNames.add(ModifiableNamedColumn.SPECIFIED_NAME_PROPERTY);
+				propertyNames.add(ModifiableNamedColumn.DB_TABLE_PROPERTY);
 			}
 
 			@Override
 			protected void propertyChanged(String propertyName) {
-				if (propertyName.equals(NamedColumn.DB_TABLE_PROPERTY)) {
+				if (propertyName.equals(ModifiableNamedColumn.DB_TABLE_PROPERTY)) {
 					this.doPopulate();
 				} else {
 					super.propertyChanged(propertyName);
@@ -128,7 +128,7 @@ public class OrderColumnComposite extends Pane<OrderColumn2_0> {
 	}
 
 	private ModifiablePropertyValueModel<String> buildColumnDefinitionHolder() {
-		return new PropertyAspectAdapter<OrderColumn2_0, String>(getSubjectHolder(), NamedColumn.COLUMN_DEFINITION_PROPERTY) {
+		return new PropertyAspectAdapter<OrderColumn2_0, String>(getSubjectHolder(), ModifiableNamedColumn.COLUMN_DEFINITION_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getColumnDefinition();

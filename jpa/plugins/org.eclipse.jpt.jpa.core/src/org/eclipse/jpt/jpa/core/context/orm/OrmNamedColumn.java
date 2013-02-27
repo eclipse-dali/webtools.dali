@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.NamedColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiableNamedColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedColumn;
 
 /**
@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedColumn;
  * @since 2.0
  */
 public interface OrmNamedColumn
-	extends NamedColumn
+	extends ModifiableNamedColumn
 {
 	XmlNamedColumn getXmlColumn();
 }

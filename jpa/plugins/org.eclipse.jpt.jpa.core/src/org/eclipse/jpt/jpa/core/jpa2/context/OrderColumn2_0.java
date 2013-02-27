@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context;
 
-import org.eclipse.jpt.jpa.core.context.NamedColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiableNamedColumn;
 
 /**
  * order column
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.NamedColumn;
  * @since 2.3
  */
 public interface OrderColumn2_0
-	extends NamedColumn
+	extends ModifiableNamedColumn
 {
 	// ********** nullable **********
 
