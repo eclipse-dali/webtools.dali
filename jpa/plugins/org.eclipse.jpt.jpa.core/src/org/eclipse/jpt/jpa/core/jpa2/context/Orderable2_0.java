@@ -32,7 +32,7 @@ public interface Orderable2_0
 	void setOrderColumnOrdering(boolean value);
 		String ORDER_COLUMN_ORDERING_PROPERTY = "orderColumnOrdering"; //$NON-NLS-1$
 
-	OrderColumn2_0 getOrderColumn();
+	ModifiableOrderColumn2_0 getOrderColumn();
 
 	String getDefaultTableName();
 

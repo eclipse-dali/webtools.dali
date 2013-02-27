@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModel;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.OrderColumnValidator;
-import org.eclipse.jpt.jpa.core.jpa2.context.OrderColumn2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.ModifiableOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOrderable2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
@@ -450,7 +450,7 @@ public class GenericOrmOrderable
 		}
 
 		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
-			return new OrderColumnValidator(this.getPersistentAttribute(), (OrderColumn2_0) column);
+			return new OrderColumnValidator(this.getPersistentAttribute(), (ModifiableOrderColumn2_0) column);
 		}
 
 		public XmlOrderColumn getXmlColumn() {

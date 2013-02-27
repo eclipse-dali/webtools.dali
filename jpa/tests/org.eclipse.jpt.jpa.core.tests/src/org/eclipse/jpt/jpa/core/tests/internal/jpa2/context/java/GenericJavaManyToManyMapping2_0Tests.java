@@ -50,7 +50,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ManyToManyMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.OrderColumn2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.ModifiableOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
@@ -954,13 +954,13 @@ public class GenericJavaManyToManyMapping2_0Tests
 		ManyToManyMapping queuesMapping = (ManyToManyMapping) printJobPersistentType.getAttributeNamed("queues").getMapping();
 
 		Orderable2_0 jobsOrderable = ((Orderable2_0) jobsMapping.getOrderable());
-		OrderColumn2_0 jobsOrderColumn = jobsOrderable.getOrderColumn();
+		ModifiableOrderColumn2_0 jobsOrderColumn = jobsOrderable.getOrderColumn();
 		assertEquals(true, jobsOrderable.isOrderColumnOrdering());
 		assertEquals(null, jobsOrderColumn.getSpecifiedName());
 		assertEquals("jobs_ORDER", jobsOrderColumn.getDefaultName());
 		assertEquals("PrintJob_PrintQueue", jobsOrderColumn.getTableName()); //the join table name
 		Orderable2_0 queuesOrderable = ((Orderable2_0) queuesMapping.getOrderable());
-		OrderColumn2_0 queuesOrderColumn = queuesOrderable.getOrderColumn();
+		ModifiableOrderColumn2_0 queuesOrderColumn = queuesOrderable.getOrderColumn();
 		assertEquals(true, queuesOrderable.isOrderColumnOrdering());
 		assertEquals(null, queuesOrderColumn.getSpecifiedName());
 		assertEquals("queues_ORDER", queuesOrderColumn.getDefaultName());

@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.OrderColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaOrderColumn2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.OrderColumn2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.ModifiableOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumn2_0Annotation;
@@ -484,7 +484,7 @@ public class GenericJavaOrderable
 		}
 
 		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
-			return new OrderColumnValidator(this.getPersistentAttribute(), (OrderColumn2_0) column);
+			return new OrderColumnValidator(this.getPersistentAttribute(), (ModifiableOrderColumn2_0) column);
 		}
 
 		protected JavaModifiablePersistentAttribute getPersistentAttribute() {
