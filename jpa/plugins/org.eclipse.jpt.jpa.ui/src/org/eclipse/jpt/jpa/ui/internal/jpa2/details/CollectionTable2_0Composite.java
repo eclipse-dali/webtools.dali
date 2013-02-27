@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyReferenceTable;
+import org.eclipse.jpt.jpa.core.context.ReferenceTable;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.JoinColumnsComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.ReferenceTableComposite;
@@ -21,11 +21,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
 public class CollectionTable2_0Composite
-	extends ReferenceTableComposite<ReadOnlyReferenceTable>
+	extends ReferenceTableComposite<ReferenceTable>
 {
 	public CollectionTable2_0Composite(
 			Pane<?> parentPane,
-			PropertyValueModel<? extends ReadOnlyReferenceTable> tableModel,
+			PropertyValueModel<? extends ReferenceTable> tableModel,
 			Composite parentComposite) {
 		super(parentPane, tableModel, parentComposite);
 	}
@@ -71,7 +71,7 @@ public class CollectionTable2_0Composite
 			null
 		);
 
-		this.joinColumnsComposite = new JoinColumnsComposite<ReadOnlyReferenceTable>(
+		this.joinColumnsComposite = new JoinColumnsComposite<ReferenceTable>(
 			this,
 			joinColumnGroupPane,
 			buildJoinColumnsEditor(),
@@ -80,7 +80,7 @@ public class CollectionTable2_0Composite
 	}
 	
 	@Override
-	protected boolean tableIsVirtual(ReadOnlyReferenceTable collectionTable) {
+	protected boolean tableIsVirtual(ReferenceTable collectionTable) {
 		return collectionTable.getPersistentAttribute().isVirtual();
 	}
 }

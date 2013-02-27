@@ -13,7 +13,7 @@ import java.util.ListIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.SingleElementListIterator;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyReferenceTable;
+import org.eclipse.jpt.jpa.core.context.ReferenceTable;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.db.Table;
 
@@ -32,15 +32,15 @@ public class JoinColumnInReferenceTableStateObject
 	extends JoinColumnStateObject
 {
 	public JoinColumnInReferenceTableStateObject(
-			ReadOnlyReferenceTable referenceTable,
+			ReferenceTable referenceTable,
 	        JoinColumn joinColumn) {
 		super(referenceTable, joinColumn);
 	}
 	
 	
 	@Override
-	public ReadOnlyReferenceTable getOwner() {
-		return (ReadOnlyReferenceTable) super.getOwner();
+	public ReferenceTable getOwner() {
+		return (ReferenceTable) super.getOwner();
 	}
 	
 	private TypeMapping getTypeMapping() {

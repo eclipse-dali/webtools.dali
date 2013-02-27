@@ -27,7 +27,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyReferenceTable;
+import org.eclipse.jpt.jpa.core.context.ReferenceTable;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.SpecifiedReferenceTable;
 import org.eclipse.jpt.jpa.db.Schema;
@@ -39,7 +39,7 @@ import org.eclipse.jpt.jpa.ui.internal.details.db.TableCombo;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
-public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
+public abstract class ReferenceTableComposite<T extends ReferenceTable>
 	extends Pane<T>
 {
 	protected Button overrideDefaultJoinColumnsCheckBox;
@@ -90,7 +90,7 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 	}
 		
 	ListValueModel<JoinColumn> buildSpecifiedJoinColumnsListHolder() {
-		return new ListAspectAdapter<T, JoinColumn>(getSubjectHolder(), ReadOnlyReferenceTable.SPECIFIED_JOIN_COLUMNS_LIST) {
+		return new ListAspectAdapter<T, JoinColumn>(getSubjectHolder(), ReferenceTable.SPECIFIED_JOIN_COLUMNS_LIST) {
 			@Override
 			protected ListIterable<JoinColumn> getListIterable() {
 				return new SuperListIterableWrapper<JoinColumn>(this.subject.getSpecifiedJoinColumns());
@@ -179,7 +179,7 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 			}
 
 			protected SpecifiedReferenceTable getTable() {
-				ReadOnlyReferenceTable table = this.getSubject();
+				ReferenceTable table = this.getSubject();
 				return (table instanceof SpecifiedReferenceTable) ? (SpecifiedReferenceTable) table : null;
 			}
 
@@ -238,7 +238,7 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 			}
 
 			protected SpecifiedReferenceTable getTable() {
-				ReadOnlyReferenceTable table = this.getSubject();
+				ReferenceTable table = this.getSubject();
 				return (table instanceof SpecifiedReferenceTable) ? (SpecifiedReferenceTable) table : null;
 			}
 
@@ -309,7 +309,7 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 		}
 
 		public String getDefaultPropertyName() {
-			return ReadOnlyReferenceTable.DEFAULT_JOIN_COLUMN_PROPERTY;
+			return ReferenceTable.DEFAULT_JOIN_COLUMN_PROPERTY;
 		}
 
 		public void editJoinColumn(T subject, JoinColumn joinColumn) {
@@ -333,7 +333,7 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 		}
 
 		public String getSpecifiedJoinColumnsListPropertyName() {
-			return ReadOnlyReferenceTable.SPECIFIED_JOIN_COLUMNS_LIST;
+			return ReferenceTable.SPECIFIED_JOIN_COLUMNS_LIST;
 		}
 	}
 	
@@ -366,7 +366,7 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 			super(
 				new ValueListAdapter<T>(
 					new ReadOnlyModifiablePropertyValueModelWrapper<T>(getSubjectHolder()), 
-					ReadOnlyReferenceTable.SPECIFIED_JOIN_COLUMNS_LIST
+					ReferenceTable.SPECIFIED_JOIN_COLUMNS_LIST
 				)
 			);
 			this.stateChangeListener = buildStateChangeListener();

@@ -27,7 +27,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
  * @since 2.3
  */
 public interface SpecifiedReferenceTable
-	extends SpecifiedTable, ReadOnlyReferenceTable
+	extends SpecifiedTable, ReferenceTable
 {
 	// ********** join columns **********
 

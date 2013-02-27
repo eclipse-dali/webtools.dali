@@ -17,13 +17,13 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyReferenceTable;
+import org.eclipse.jpt.jpa.core.context.ReferenceTable;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualReferenceTable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public abstract class AbstractJavaVirtualReferenceTable<P extends JpaContextModel, T extends ReadOnlyReferenceTable>
+public abstract class AbstractJavaVirtualReferenceTable<P extends JpaContextModel, T extends ReferenceTable>
 	extends AbstractJavaVirtualTable<P, T>
 	implements VirtualReferenceTable
 {

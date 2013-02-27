@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface ReadOnlyJoinTable
-	extends ReadOnlyReferenceTable
+	extends ReferenceTable
 {
 	JoinTableRelationshipStrategy getParent();
 

@@ -21,12 +21,12 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface VirtualReferenceTable
-	extends VirtualTable, ReadOnlyReferenceTable
+	extends VirtualTable, ReferenceTable
 {
 	ListIterable<? extends VirtualJoinColumn> getJoinColumns();
 	ListIterable<? extends VirtualJoinColumn> getSpecifiedJoinColumns();
 	VirtualJoinColumn getSpecifiedJoinColumn(int index);
 	VirtualJoinColumn getDefaultJoinColumn();
 
-	ReadOnlyReferenceTable getOverriddenTable();
+	ReferenceTable getOverriddenTable();
 }

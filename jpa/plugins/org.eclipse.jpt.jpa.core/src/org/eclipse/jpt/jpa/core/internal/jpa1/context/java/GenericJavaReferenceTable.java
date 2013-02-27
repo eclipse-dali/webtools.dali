@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyReferenceTable;
+import org.eclipse.jpt.jpa.core.context.ReferenceTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaReferenceTable;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -211,14 +211,14 @@ public abstract class GenericJavaReferenceTable<P extends JpaContextModel, A ext
 
 	// ********** misc **********
 
-	protected void initializeFrom(ReadOnlyReferenceTable oldTable) {
+	protected void initializeFrom(ReferenceTable oldTable) {
 		super.initializeFrom(oldTable);
 		for (JoinColumn joinColumn : oldTable.getSpecifiedJoinColumns()) {
 			this.addSpecifiedJoinColumn().initializeFrom(joinColumn);
 		}
 	}
 
-	protected void initializeFromVirtual(ReadOnlyReferenceTable virtualTable) {
+	protected void initializeFromVirtual(ReferenceTable virtualTable) {
 		super.initializeFromVirtual(virtualTable);
 		for (JoinColumn joinColumn : virtualTable.getJoinColumns()) {
 			this.addSpecifiedJoinColumn().initializeFromVirtual(joinColumn);
