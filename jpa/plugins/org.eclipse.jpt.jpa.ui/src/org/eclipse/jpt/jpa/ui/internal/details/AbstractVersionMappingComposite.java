@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.ModifiableAccessReference;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
-import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.ConvertibleMapping;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
@@ -117,10 +117,10 @@ public abstract class AbstractVersionMappingComposite<T extends VersionMapping>
 		return container;
 	}
 
-	protected PropertyValueModel<Column> buildColumnModel() {
-		return new TransformationPropertyValueModel<T, Column>(getSubjectHolder()) {
+	protected PropertyValueModel<SpecifiedColumn> buildColumnModel() {
+		return new TransformationPropertyValueModel<T, SpecifiedColumn>(getSubjectHolder()) {
 			@Override
-			protected Column transform_(T value) {
+			protected SpecifiedColumn transform_(T value) {
 				return value.getColumn();
 			}
 		};

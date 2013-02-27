@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
@@ -77,7 +77,7 @@ public class ColumnComposite
 			
 			@Override
 			protected void setValue(String value) {
-				((Column) this.getSubject()).setSpecifiedName(value);
+				((SpecifiedColumn) this.getSubject()).setSpecifiedName(value);
 			}
 			
 			@Override
@@ -127,7 +127,7 @@ public class ColumnComposite
 				if (value.length() == 0) {
 					value = null;
 				}
-				((Column) this.subject).setColumnDefinition(value);
+				((SpecifiedColumn) this.subject).setColumnDefinition(value);
 			}
 		};
 	}
@@ -141,7 +141,7 @@ public class ColumnComposite
 
 			@Override
 			protected void setValue_(Boolean value) {
-				((Column) this.subject).setSpecifiedInsertable(value);
+				((SpecifiedColumn) this.subject).setSpecifiedInsertable(value);
 			}
 		};
 	}
@@ -187,7 +187,7 @@ public class ColumnComposite
 			
 			@Override
 			protected void setValue_(Boolean value) {
-				((Column) this.subject).setSpecifiedNullable(value);
+				((SpecifiedColumn) this.subject).setSpecifiedNullable(value);
 			}
 		};
 	}
@@ -239,7 +239,7 @@ public class ColumnComposite
 			
 			@Override
 			protected void setValue(String value) {
-				((Column) this.getSubject()).setSpecifiedTableName(value);
+				((SpecifiedColumn) this.getSubject()).setSpecifiedTableName(value);
 			}
 			
 			@Override
@@ -285,7 +285,7 @@ public class ColumnComposite
 			
 			@Override
 			protected void setValue_(Boolean value) {
-				((Column) this.subject).setSpecifiedUnique(value);
+				((SpecifiedColumn) this.subject).setSpecifiedUnique(value);
 			}
 		};
 	}
@@ -334,7 +334,7 @@ public class ColumnComposite
 			
 			@Override
 			protected void setValue_(Boolean value) {
-				((Column) this.subject).setSpecifiedUpdatable(value);
+				((SpecifiedColumn) this.subject).setSpecifiedUpdatable(value);
 			}
 		};
 	}
@@ -500,7 +500,7 @@ public class ColumnComposite
 					
 					@Override
 					protected void setValue_(Integer value) {
-						((Column) this.subject).setSpecifiedLength(value);
+						((SpecifiedColumn) this.subject).setSpecifiedLength(value);
 					}
 				};
 			}
@@ -534,7 +534,7 @@ public class ColumnComposite
 					
 					@Override
 					protected void setValue_(Integer value) {
-						((Column) this.subject).setSpecifiedPrecision(value);
+						((SpecifiedColumn) this.subject).setSpecifiedPrecision(value);
 					}
 				};
 			}
@@ -568,7 +568,7 @@ public class ColumnComposite
 					
 					@Override
 					protected void setValue_(Integer value) {
-						((Column) this.subject).setSpecifiedScale(value);
+						((SpecifiedColumn) this.subject).setSpecifiedScale(value);
 					}
 				};
 			}

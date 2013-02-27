@@ -35,7 +35,7 @@ import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.ColumnMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
@@ -424,14 +424,14 @@ public final class MappingTools {
 	}
 
 	// TODO move to TypeMapping? may need different name (or may need to rename existing #resolve...)
-	public static Column resolveOverriddenColumn(TypeMapping overridableTypeMapping, String attributeName) {
+	public static SpecifiedColumn resolveOverriddenColumn(TypeMapping overridableTypeMapping, String attributeName) {
 		// convenience null check to simplify client code
 		if (overridableTypeMapping == null) {
 			return null;
 		}
 
 		for (TypeMapping typeMapping : overridableTypeMapping.getInheritanceHierarchy()) {
-			Column column = typeMapping.resolveOverriddenColumn(attributeName);
+			SpecifiedColumn column = typeMapping.resolveOverriddenColumn(attributeName);
 			if (column != null) {
 				return column;
 			}

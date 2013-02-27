@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.resource.java.CompleteColumnAnnotation;
 
@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.resource.java.CompleteColumnAnnotation;
  * @since 2.0
  */
 public interface JavaColumn
-	extends Column, JavaBaseColumn
+	extends SpecifiedColumn, JavaBaseColumn
 {
 	CompleteColumnAnnotation getColumnAnnotation();
 

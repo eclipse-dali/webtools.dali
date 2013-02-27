@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
-import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
@@ -127,7 +127,7 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 
 		AttributeOverrideContainer overrideContainer = getJavaEntity().getAttributeOverrideContainer();
 		SpecifiedAttributeOverride specifiedAttributeOverride = overrideContainer.getSpecifiedOverrides().iterator().next();
-		Column column = specifiedAttributeOverride.getColumn();
+		SpecifiedColumn column = specifiedAttributeOverride.getColumn();
 		assertEquals(ATTRIBUTE_OVERRIDE_COLUMN_NAME, column.getName());
 		
 		
@@ -148,7 +148,7 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 
 		AttributeOverrideContainer overrideContainer = getJavaEntity().getAttributeOverrideContainer();
 		SpecifiedAttributeOverride specifiedAttributeOverride = overrideContainer.getSpecifiedOverrides().iterator().next();
-		Column column = specifiedAttributeOverride.getColumn();
+		SpecifiedColumn column = specifiedAttributeOverride.getColumn();
 		assertEquals(ATTRIBUTE_OVERRIDE_COLUMN_NAME, column.getName());
 		
 		column.setSpecifiedName("FOO");

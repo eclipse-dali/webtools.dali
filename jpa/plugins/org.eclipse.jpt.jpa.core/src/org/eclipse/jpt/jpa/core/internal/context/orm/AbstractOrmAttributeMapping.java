@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.ColumnMapping;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -359,7 +359,7 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 				EmptyIterable.<String>instance();
 	}
 
-	public Column resolveOverriddenColumn(String attributeName) {
+	public SpecifiedColumn resolveOverriddenColumn(String attributeName) {
 		ColumnMapping mapping = this.resolveColumnMapping(attributeName);
 		return (mapping == null) ? null : mapping.getColumn();
 	}

@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.ModifiableAccessReference;
 import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.CollectionMapping;
-import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.ConvertibleMapping;
 import org.eclipse.jpt.jpa.core.context.LobConverter;
@@ -286,10 +286,10 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 		};
 	}
 	
-	protected PropertyValueModel<Column> buildValueColumnModel() {
-		return new PropertyAspectAdapter<ElementCollectionMapping2_0, Column>(getSubjectHolder()) {
+	protected PropertyValueModel<SpecifiedColumn> buildValueColumnModel() {
+		return new PropertyAspectAdapter<ElementCollectionMapping2_0, SpecifiedColumn>(getSubjectHolder()) {
 			@Override
-			protected Column buildValue_() {
+			protected SpecifiedColumn buildValue_() {
 				return this.subject.getValueColumn();
 			}
 		};

@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
-import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.EnumType;
 import org.eclipse.jpt.jpa.core.context.FetchType;
@@ -786,7 +786,7 @@ public class EclipseLink2_0OrmManyToManyMappingTests
 		//virtual attribute in orm.xml, java attribute has no value Column annotation
 		OrmPersistentAttribute addressesPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
 		ManyToManyMapping2_0 addressesVirtualMapping = (ManyToManyMapping2_0) addressesPersistentAttribute.getMapping();		
-		Column virtualColumn = addressesVirtualMapping.getMapKeyColumn();
+		SpecifiedColumn virtualColumn = addressesVirtualMapping.getMapKeyColumn();
 		assertEquals("addresses_KEY", virtualColumn.getName());
 		assertEquals(TYPE_NAME + "_Address", virtualColumn.getTableName());
 		assertEquals(null, virtualColumn.getColumnDefinition());
@@ -852,7 +852,7 @@ public class EclipseLink2_0OrmManyToManyMappingTests
 		OrmModifiablePersistentAttribute addressesPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("addresses"), MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 
 		OrmCollectionMapping2_0 addressesVirtualMapping = (OrmCollectionMapping2_0) addressesPersistentAttribute.getMapping();		
-		Column ormColumn = addressesVirtualMapping.getMapKeyColumn();
+		SpecifiedColumn ormColumn = addressesVirtualMapping.getMapKeyColumn();
 
 		//set Column annotation in Java
 		JavaCollectionMapping2_0 javaManyToManyMapping = (JavaCollectionMapping2_0) ormPersistentType.getJavaPersistentType().getAttributeNamed("addresses").getMapping();
@@ -899,7 +899,7 @@ public class EclipseLink2_0OrmManyToManyMappingTests
 		//virtual attribute in orm.xml, java attribute has no Column annotation
 		OrmPersistentAttribute addressesPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
 		ManyToManyMapping2_0 addressesVirtualMapping = (ManyToManyMapping2_0) addressesPersistentAttribute.getMapping();	
-		Column ormColumn = addressesVirtualMapping.getMapKeyColumn();
+		SpecifiedColumn ormColumn = addressesVirtualMapping.getMapKeyColumn();
 
 		assertEquals(TYPE_NAME + "_Address", ormColumn.getTableName());
 

@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.Entity;
@@ -1082,7 +1082,7 @@ public abstract class AbstractJavaEntity
 	// ********** attribute mappings **********
 
 	@Override
-	public Column resolveOverriddenColumn(String attributeName) {
+	public SpecifiedColumn resolveOverriddenColumn(String attributeName) {
 		// check for an override before looking at attribute mappings
 		SpecifiedAttributeOverride override = this.attributeOverrideContainer.getSpecifiedOverrideNamed(attributeName);
 		return (override != null) ? override.getColumn() : super.resolveOverriddenColumn(attributeName);
@@ -1527,7 +1527,7 @@ public abstract class AbstractJavaEntity
 			}
 		}
 
-		public Column resolveOverriddenColumn(String attributeName) {
+		public SpecifiedColumn resolveOverriddenColumn(String attributeName) {
 			return MappingTools.resolveOverriddenColumn(this.getOverridableTypeMapping(), attributeName);
 		}
 

@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
-import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.EnumType;
@@ -1001,7 +1001,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		//virtual attrubte in orm.xml, java attribute has no value Column annotation
 		OrmPersistentAttribute addressesPersistentAttribute = ormPersistentType.getAttributeNamed("addresses");
 		ElementCollectionMapping2_0 addressesVirtualMapping = (ElementCollectionMapping2_0) addressesPersistentAttribute.getMapping();		
-		Column virtualColumn = addressesVirtualMapping.getValueColumn();
+		SpecifiedColumn virtualColumn = addressesVirtualMapping.getValueColumn();
 		assertEquals("addresses", virtualColumn.getName());
 		assertEquals(TYPE_NAME + "_addresses", virtualColumn.getTableName());
 		assertEquals(null, virtualColumn.getColumnDefinition());
@@ -1097,7 +1097,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		//virtual attribute in orm.xml, java attribute has no Column annotation
 		OrmPersistentAttribute addressesPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
 		ElementCollectionMapping2_0 addressesVirtualMapping = (ElementCollectionMapping2_0) addressesPersistentAttribute.getMapping();	
-		Column virtualColumn = addressesVirtualMapping.getValueColumn();
+		SpecifiedColumn virtualColumn = addressesVirtualMapping.getValueColumn();
 		
 		assertEquals(TYPE_NAME + "_addresses", virtualColumn.getTableName());
 	
@@ -1262,7 +1262,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		assertEquals("zip", attributeOverride.getName());
 		
 		JavaElementCollectionMapping2_0 javaElementCollectionMapping = (JavaElementCollectionMapping2_0) ormPersistentAttribute.getJavaPersistentAttribute().getMapping();
-		Column javaAttributeOverrideColumn = javaElementCollectionMapping.getValueAttributeOverrideContainer().getSpecifiedOverrides().iterator().next().getColumn();
+		SpecifiedColumn javaAttributeOverrideColumn = javaElementCollectionMapping.getValueAttributeOverrideContainer().getSpecifiedOverrides().iterator().next().getColumn();
 		
 		javaAttributeOverrideColumn.setSpecifiedName("FOO_COLUMN");
 		javaAttributeOverrideColumn.setSpecifiedTableName("FOO_TABLE");
@@ -1357,7 +1357,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		//virtual attribute in orm.xml, java attribute has no value Column annotation
 		OrmPersistentAttribute addressesPersistentAttribute = ormPersistentType.getAttributeNamed("addresses");
 		ElementCollectionMapping2_0 addressesVirtualMapping = (ElementCollectionMapping2_0) addressesPersistentAttribute.getMapping();		
-		Column virtualColumn = addressesVirtualMapping.getMapKeyColumn();
+		SpecifiedColumn virtualColumn = addressesVirtualMapping.getMapKeyColumn();
 		assertEquals("addresses_KEY", virtualColumn.getName());
 		assertEquals(TYPE_NAME + "_addresses", virtualColumn.getTableName());
 		assertEquals(null, virtualColumn.getColumnDefinition());
@@ -1408,7 +1408,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		OrmModifiablePersistentAttribute addressesPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("addresses"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 
 		OrmElementCollectionMapping2_0 addressesVirtualMapping = (OrmElementCollectionMapping2_0) addressesPersistentAttribute.getMapping();		
-		Column ormColumn = addressesVirtualMapping.getMapKeyColumn();
+		SpecifiedColumn ormColumn = addressesVirtualMapping.getMapKeyColumn();
 
 		//set Column annotation in Java
 		JavaElementCollectionMapping2_0 javaElementCollectionMapping = (JavaElementCollectionMapping2_0) ormPersistentType.getJavaPersistentType().getAttributeNamed("addresses").getMapping();
@@ -1453,7 +1453,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		//virtual attribute in orm.xml, java attribute has no Column annotation
 		OrmPersistentAttribute addressesPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
 		ElementCollectionMapping2_0 addressesVirtualMapping = (ElementCollectionMapping2_0) addressesPersistentAttribute.getMapping();	
-		Column virtualColumn = addressesVirtualMapping.getMapKeyColumn();
+		SpecifiedColumn virtualColumn = addressesVirtualMapping.getMapKeyColumn();
 		
 		assertEquals(TYPE_NAME + "_addresses", virtualColumn.getTableName());
 

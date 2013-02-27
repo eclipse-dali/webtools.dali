@@ -233,7 +233,7 @@ public interface TypeMapping
 	 * In JPA 2.0 this name can use dot-notation to designate nested attributes
 	 * in embedded attribute mapping's embeddable type mapping.
 	 */
-	Column resolveOverriddenColumn(String attributeName);
+	SpecifiedColumn resolveOverriddenColumn(String attributeName);
 
 
 	// ********** association overrides **********

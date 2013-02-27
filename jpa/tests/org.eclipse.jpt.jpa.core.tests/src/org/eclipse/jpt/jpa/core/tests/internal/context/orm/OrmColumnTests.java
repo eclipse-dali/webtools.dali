@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
-import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
@@ -646,7 +646,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		//virtual attribute in orm.xml, java attribute has no Column annotation
 		OrmPersistentAttribute namePersistentAttribute = attributes.next();
 		BasicMapping nameVirtualMapping = (BasicMapping) namePersistentAttribute.getMapping();		
-		Column virtualColumn = nameVirtualMapping.getColumn();
+		SpecifiedColumn virtualColumn = nameVirtualMapping.getColumn();
 		assertEquals("name", virtualColumn.getName());
 		assertEquals(TYPE_NAME, virtualColumn.getTableName());
 		assertNull(virtualColumn.getColumnDefinition());
@@ -801,7 +801,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		//virtual attribute in orm.xml, java attribute has no Column annotation
 		OrmPersistentAttribute nameOrmAttribute = ormPersistentType.getAttributeNamed("name");
 		BasicMapping nameVirtualMapping = (BasicMapping) nameOrmAttribute.getMapping();	
-		Column virtualColumn = nameVirtualMapping.getColumn();
+		SpecifiedColumn virtualColumn = nameVirtualMapping.getColumn();
 		
 		assertEquals(TYPE_NAME, virtualColumn.getTableName());
 	
@@ -818,7 +818,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		//make name persistent attribute not default
 		nameOrmAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("name"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		BasicMapping nameSpecifiedMapping = (OrmBasicMapping) nameOrmAttribute.getMapping();	
-		Column specifiedColumn = nameSpecifiedMapping.getColumn();
+		SpecifiedColumn specifiedColumn = nameSpecifiedMapping.getColumn();
 		assertNull(specifiedColumn.getSpecifiedTableName());
 		assertEquals("ORM_TABLE", specifiedColumn.getDefaultTableName());
 		assertEquals("ORM_TABLE", specifiedColumn.getTableName());

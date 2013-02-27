@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
@@ -159,11 +159,11 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 	// ********** misc **********
 
 	@Override
-	public Column resolveOverriddenColumn(String attributeName) {
+	public SpecifiedColumn resolveOverriddenColumn(String attributeName) {
 		return this.isJpa2_0Compatible() ? this.resolveOverriddenColumn_(attributeName) : null;
 	}
 
-	protected Column resolveOverriddenColumn_(String attributeName) {
+	protected SpecifiedColumn resolveOverriddenColumn_(String attributeName) {
 		attributeName = this.unqualify(attributeName);
 		if (attributeName == null) {
 			return null;
@@ -173,7 +173,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 		return (override != null) ? override.getColumn() : this.resolveOverriddenColumnInTargetEmbeddable(attributeName);
 	}
 
-	protected Column resolveOverriddenColumnInTargetEmbeddable(String attributeName) {
+	protected SpecifiedColumn resolveOverriddenColumnInTargetEmbeddable(String attributeName) {
 		return (this.targetEmbeddable == null) ? null : this.targetEmbeddable.resolveOverriddenColumn(attributeName);
 	}
 
@@ -269,7 +269,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 			return overriddenTypeMapping.getAllOverridableAttributeNames();
 		}
 
-		public Column resolveOverriddenColumn(String attributeName) {
+		public SpecifiedColumn resolveOverriddenColumn(String attributeName) {
 			return MappingTools.resolveOverriddenColumn(this.getOverridableTypeMapping(), attributeName);
 		}
 

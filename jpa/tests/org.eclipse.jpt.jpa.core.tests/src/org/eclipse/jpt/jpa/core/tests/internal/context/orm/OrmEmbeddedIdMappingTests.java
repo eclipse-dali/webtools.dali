@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
-import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
@@ -692,7 +692,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		assertEquals("zip", virtualAttributeOverride.getName());
 		
 		JavaEmbeddedIdMapping javaEmbeddedIdMapping = (JavaEmbeddedIdMapping) ormPersistentAttribute.resolveJavaPersistentAttribute().getMapping();
-		Column javaAttributeOverrideColumn = javaEmbeddedIdMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next().getColumn();
+		SpecifiedColumn javaAttributeOverrideColumn = javaEmbeddedIdMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next().getColumn();
 		
 		javaAttributeOverrideColumn.setSpecifiedName("FOO_COLUMN");
 		javaAttributeOverrideColumn.setSpecifiedTableName("FOO_TABLE");
@@ -800,7 +800,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		ListIterator<JavaSpecifiedAttributeOverride> specifiedAttributeOverrides = attributeOverrideContainer.getSpecifiedOverrides().iterator();
 		SpecifiedAttributeOverride specifiedAttributeOverride = specifiedAttributeOverrides.next();
 		assertEquals(ATTRIBUTE_OVERRIDE_NAME, specifiedAttributeOverride.getName());
-		Column column = specifiedAttributeOverride.getColumn();
+		SpecifiedColumn column = specifiedAttributeOverride.getColumn();
 		assertEquals(ATTRIBUTE_OVERRIDE_COLUMN_NAME, column.getSpecifiedName());
 
 		this.ormXmlResource.saveIfNecessary();

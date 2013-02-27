@@ -24,5 +24,5 @@ package org.eclipse.jpt.jpa.core.context;
 public interface ColumnMapping
 	extends AttributeMapping, ReadOnlyBaseColumn.Owner
 {
-	Column getColumn();
+	SpecifiedColumn getColumn();
 } 

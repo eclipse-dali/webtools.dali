@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.CollectionMapping;
-import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 
@@ -64,7 +64,7 @@ public interface CollectionMapping2_0
 	/**
 	 * Return the map key column for this collection mapping.
 	 */
-	Column getMapKeyColumn();
+	SpecifiedColumn getMapKeyColumn();
 
 	AttributeOverrideContainer getMapKeyAttributeOverrideContainer();
 

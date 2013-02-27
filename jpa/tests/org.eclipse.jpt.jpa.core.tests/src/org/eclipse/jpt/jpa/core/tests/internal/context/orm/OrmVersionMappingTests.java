@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
-import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
@@ -236,7 +236,7 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		assertEquals(BaseTemporalConverter.class, versionMapping.getConverter().getType());
 		assertEquals(TemporalType.TIMESTAMP, ((BaseTemporalConverter) versionMapping.getConverter()).getTemporalType());
 		
-		Column column = versionMapping.getColumn();
+		SpecifiedColumn column = versionMapping.getColumn();
 		assertEquals("MY_COLUMN", column.getSpecifiedName());
 		assertEquals(Boolean.TRUE, column.getSpecifiedUnique());
 		assertEquals(Boolean.FALSE, column.getSpecifiedNullable());

@@ -34,7 +34,7 @@ import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.Entity;
@@ -1300,7 +1300,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		if ( ! this.isMetadataComplete()) {
 			JavaPersistentType javaType = this.getJavaPersistentType();
 			if (javaType != null) {
-				Column column = javaType.getMapping().resolveOverriddenColumn(attributeName);
+				SpecifiedColumn column = javaType.getMapping().resolveOverriddenColumn(attributeName);
 				if (column != null) {
 					return column;
 				}
@@ -1532,7 +1532,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	// ********** attribute mappings **********
 
 	@Override
-	public Column resolveOverriddenColumn(String attributeName) {
+	public SpecifiedColumn resolveOverriddenColumn(String attributeName) {
 		if (this.isJpa2_0Compatible()) {
 			// strip off the first segment
 			int dotIndex = attributeName.indexOf('.');

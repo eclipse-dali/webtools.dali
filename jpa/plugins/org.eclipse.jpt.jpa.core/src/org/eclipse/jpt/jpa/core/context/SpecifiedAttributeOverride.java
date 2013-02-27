@@ -31,5 +31,5 @@ public interface SpecifiedAttributeOverride
 	// covariant overrides
 	VirtualAttributeOverride convertToVirtual();
 
-	Column getColumn();
+	SpecifiedColumn getColumn();
 }

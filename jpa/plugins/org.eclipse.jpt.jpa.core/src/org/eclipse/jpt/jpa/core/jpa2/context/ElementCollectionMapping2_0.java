@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.jpa2.context;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.ConvertibleMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
 
@@ -79,7 +79,7 @@ public interface ElementCollectionMapping2_0
 	/**
 	 * Return the mapping's value column.
 	 */
-	Column getValueColumn();
+	SpecifiedColumn getValueColumn();
 
 
 	// ********** override containers **********

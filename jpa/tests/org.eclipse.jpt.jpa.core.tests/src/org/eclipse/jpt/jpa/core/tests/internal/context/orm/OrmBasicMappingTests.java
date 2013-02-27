@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
-import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.EnumType;
@@ -445,7 +445,7 @@ public class OrmBasicMappingTests extends ContextModelTestCase
 		assertEquals(FetchType.LAZY, basicMapping.getSpecifiedFetch());
 		assertEquals(Boolean.FALSE, basicMapping.getSpecifiedOptional());
 		
-		Column column = basicMapping.getColumn();
+		SpecifiedColumn column = basicMapping.getColumn();
 		assertEquals("MY_COLUMN", column.getSpecifiedName());
 		assertEquals(Boolean.TRUE, column.getSpecifiedUnique());
 		assertEquals(Boolean.FALSE, column.getSpecifiedNullable());
@@ -471,7 +471,7 @@ public class OrmBasicMappingTests extends ContextModelTestCase
 		assertEquals(FetchType.EAGER, basicMapping.getFetch());
 		assertTrue(basicMapping.isOptional());
 		
-		Column column = basicMapping.getColumn();
+		SpecifiedColumn column = basicMapping.getColumn();
 		assertEquals("id", column.getName());
 		assertFalse(column.isUnique());
 		assertTrue(column.isNullable());

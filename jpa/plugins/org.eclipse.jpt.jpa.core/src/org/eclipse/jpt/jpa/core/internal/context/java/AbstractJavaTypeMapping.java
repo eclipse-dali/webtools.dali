@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
@@ -188,9 +188,9 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 		return IterableTools.children(this.getInheritanceHierarchy(), TypeMappingTools.OVERRIDABLE_ATTRIBUTE_NAMES_TRANSFORMER);
 	}
 
-	public Column resolveOverriddenColumn(String attributeName) {
+	public SpecifiedColumn resolveOverriddenColumn(String attributeName) {
 		for (AttributeMapping attributeMapping : this.getAttributeMappings()) {
-			Column column = attributeMapping.resolveOverriddenColumn(attributeName);
+			SpecifiedColumn column = attributeMapping.resolveOverriddenColumn(attributeName);
 			if (column != null) {
 				return column;
 			}

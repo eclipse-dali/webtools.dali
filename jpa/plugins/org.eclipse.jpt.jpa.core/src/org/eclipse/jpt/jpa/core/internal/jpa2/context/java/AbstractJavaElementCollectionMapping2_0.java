@@ -36,7 +36,7 @@ import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.BaseEmbeddedMapping;
-import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
@@ -1287,7 +1287,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	@Override
-	public Column resolveOverriddenColumn(String attributeName) {
+	public SpecifiedColumn resolveOverriddenColumn(String attributeName) {
 		attributeName = this.unqualify(attributeName);
 		if (attributeName == null) {
 			return null;
@@ -1297,7 +1297,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		return (override != null) ? override.getColumn() : this.resolveOverriddenColumnInTargetEmbeddable(attributeName);
 	}
 
-	protected Column resolveOverriddenColumnInTargetEmbeddable(String attributeName) {
+	protected SpecifiedColumn resolveOverriddenColumnInTargetEmbeddable(String attributeName) {
 		Embeddable targetEmbeddable = this.getResolvedTargetEmbeddable();
 		return (targetEmbeddable == null) ? null : targetEmbeddable.resolveOverriddenColumn(attributeName);
 	}
@@ -1896,7 +1896,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 			return (overriddenTypeMapping != null) ? overriddenTypeMapping.getAllOverridableAttributeNames() : EmptyIterable.<String>instance();
 		}
 
-		public Column resolveOverriddenColumn(String attributeName) {
+		public SpecifiedColumn resolveOverriddenColumn(String attributeName) {
 			return MappingTools.resolveOverriddenColumn(this.getOverridableTypeMapping(), attributeName);
 		}
 
@@ -2048,7 +2048,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 			return overrideName.startsWith(RELEVANT_PREFIX_);
 		}
 
-		public Column resolveOverriddenColumn(String attributeName) {
+		public SpecifiedColumn resolveOverriddenColumn(String attributeName) {
 			return MappingTools.resolveOverriddenColumn(this.getOverridableTypeMapping(), attributeName);
 		}
 

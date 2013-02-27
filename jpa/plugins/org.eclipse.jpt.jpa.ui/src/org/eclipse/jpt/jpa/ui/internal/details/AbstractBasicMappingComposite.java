@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.context.ModifiableAccessReference;
 import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
-import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.ConvertibleMapping;
 import org.eclipse.jpt.jpa.core.context.LobConverter;
@@ -172,10 +172,10 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 		return container;
 	}
 
-	protected PropertyValueModel<Column> buildColumnModel() {
-		return new TransformationPropertyValueModel<T, Column>(getSubjectHolder()) {
+	protected PropertyValueModel<SpecifiedColumn> buildColumnModel() {
+		return new TransformationPropertyValueModel<T, SpecifiedColumn>(getSubjectHolder()) {
 			@Override
-			protected Column transform_(T mapping) {
+			protected SpecifiedColumn transform_(T mapping) {
 				return mapping.getColumn();
 			}
 		};
