@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPrimaryKeyJoinColumnRelationship;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPrimaryKeyJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPrimaryKeyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.OneToOnePrimaryKeyJoinColumnValidator;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedMappingRelationshipStrategy2_0;
@@ -39,7 +39,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 	extends AbstractOrmXmlContextModel<OrmPrimaryKeyJoinColumnRelationship>
-	implements SpecifiedMappingRelationshipStrategy2_0, OrmPrimaryKeyJoinColumnRelationshipStrategy
+	implements SpecifiedMappingRelationshipStrategy2_0, OrmSpecifiedPrimaryKeyJoinColumnRelationshipStrategy
 {
 	protected final ContextListContainer<OrmSpecifiedPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> primaryKeyJoinColumnContainer;
 	protected final JoinColumn.Owner primaryKeyJoinColumnOwner;

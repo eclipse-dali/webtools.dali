@@ -38,7 +38,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmOneToOneRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPrimaryKeyJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPrimaryKeyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
@@ -1080,7 +1080,7 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmSpecifiedPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		OrmOneToOneMapping ormOneToOneMapping = (OrmOneToOneMapping) ormPersistentAttribute.getMapping();
-		OrmPrimaryKeyJoinColumnRelationshipStrategy strategy = ormOneToOneMapping.getRelationship().getPrimaryKeyJoinColumnStrategy();
+		OrmSpecifiedPrimaryKeyJoinColumnRelationshipStrategy strategy = ormOneToOneMapping.getRelationship().getPrimaryKeyJoinColumnStrategy();
 		XmlOneToOne oneToOneResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
 		
 		OrmSpecifiedPrimaryKeyJoinColumn joinColumn = strategy.addPrimaryKeyJoinColumn(0);
@@ -1117,7 +1117,7 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmSpecifiedPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		OrmOneToOneMapping ormOneToOneMapping = (OrmOneToOneMapping) ormPersistentAttribute.getMapping();
-		OrmPrimaryKeyJoinColumnRelationshipStrategy strategy = ormOneToOneMapping.getRelationship().getPrimaryKeyJoinColumnStrategy();
+		OrmSpecifiedPrimaryKeyJoinColumnRelationshipStrategy strategy = ormOneToOneMapping.getRelationship().getPrimaryKeyJoinColumnStrategy();
 		XmlOneToOne oneToOneResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
 
 		strategy.addPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
@@ -1144,7 +1144,7 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmSpecifiedPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		OrmOneToOneMapping ormOneToOneMapping = (OrmOneToOneMapping) ormPersistentAttribute.getMapping();
-		OrmPrimaryKeyJoinColumnRelationshipStrategy strategy = ormOneToOneMapping.getRelationship().getPrimaryKeyJoinColumnStrategy();
+		OrmSpecifiedPrimaryKeyJoinColumnRelationshipStrategy strategy = ormOneToOneMapping.getRelationship().getPrimaryKeyJoinColumnStrategy();
 		XmlOneToOne oneToOneResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
 
 		strategy.addPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
