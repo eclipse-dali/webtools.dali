@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.jpa2.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
-import org.eclipse.jpt.jpa.core.context.orm.OrmNamedColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiableNamedColumn;
 import org.eclipse.jpt.jpa.core.jpa2.context.ModifiableOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlOrderColumn;
 
@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlOrderColumn;
  * @since 2.3
  */
 public interface OrmOrderColumn2_0
-	extends ModifiableOrderColumn2_0, OrmNamedColumn
+	extends ModifiableOrderColumn2_0, OrmModifiableNamedColumn
 {
 	XmlOrderColumn getXmlColumn();
 
