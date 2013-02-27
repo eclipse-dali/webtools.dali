@@ -77,7 +77,7 @@ public interface Entity
 	/**
 	 * Return the secondary tables whether specified or default.
 	 */
-	ListIterable<? extends ReadOnlySecondaryTable> getSecondaryTables();
+	ListIterable<? extends SecondaryTable> getSecondaryTables();
 
 	/**
 	 * Return the number of secondary tables, both specified and default.

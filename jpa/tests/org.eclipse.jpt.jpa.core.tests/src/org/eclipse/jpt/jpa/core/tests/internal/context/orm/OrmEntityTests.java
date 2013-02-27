@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.IdClassReference;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
+import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinColumnRelationshipStrategy;
@@ -938,7 +938,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		
 		javaEntity.addSpecifiedSecondaryTable(0).setSpecifiedName("BAR");
 		ListIterator<OrmVirtualSecondaryTable> virtualSecondaryTables = childOrmEntity.getVirtualSecondaryTables().iterator();
-		ListIterator<ReadOnlySecondaryTable> secondaryTables = childOrmEntity.getSecondaryTables().iterator();
+		ListIterator<SecondaryTable> secondaryTables = childOrmEntity.getSecondaryTables().iterator();
 		assertEquals("BAR", virtualSecondaryTables.next().getName());
 		assertEquals("FOO", virtualSecondaryTables.next().getName());
 		assertEquals("BAR", secondaryTables.next().getName());

@@ -13,7 +13,7 @@ import java.util.ListIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.SingleElementListIterator;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
+import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.db.Table;
 
@@ -29,7 +29,7 @@ public class PrimaryKeyJoinColumnInSecondaryTableStateObject
 	extends BaseJoinColumnStateObject
 {
 	public PrimaryKeyJoinColumnInSecondaryTableStateObject(
-			ReadOnlySecondaryTable secondaryTable,
+			SecondaryTable secondaryTable,
 			PrimaryKeyJoinColumn joinColumn) {
 		super(secondaryTable, joinColumn);
 	}
@@ -50,8 +50,8 @@ public class PrimaryKeyJoinColumnInSecondaryTableStateObject
 	}
 
 	@Override
-	public ReadOnlySecondaryTable getOwner() {
-		return (ReadOnlySecondaryTable) super.getOwner();
+	public SecondaryTable getOwner() {
+		return (SecondaryTable) super.getOwner();
 	}
 
 	@Override

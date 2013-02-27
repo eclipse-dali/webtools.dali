@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
  * @since 2.0
  */
 public interface SpecifiedSecondaryTable
-	extends SpecifiedTable, ReadOnlySecondaryTable
+	extends SpecifiedTable, SecondaryTable
 {
 	ListIterable<? extends SpecifiedPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
 	ListIterable<? extends SpecifiedPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns();

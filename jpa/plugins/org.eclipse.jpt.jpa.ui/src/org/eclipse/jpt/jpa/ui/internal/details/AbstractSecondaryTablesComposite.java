@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
+import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
@@ -100,7 +100,7 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 			@Override
 			public String getText(Object element) {
 				// TODO display a qualified name instead
-				ReadOnlySecondaryTable secondaryTable = (ReadOnlySecondaryTable) element;
+				SecondaryTable secondaryTable = (SecondaryTable) element;
 				if (secondaryTable.getName() != null) {
 					return secondaryTable.getName();
 				}

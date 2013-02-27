@@ -12,13 +12,13 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
+import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
 public class PrimaryKeyJoinColumnInSecondaryTableDialog
-	extends BaseJoinColumnDialog<ReadOnlySecondaryTable, PrimaryKeyJoinColumn, PrimaryKeyJoinColumnInSecondaryTableStateObject>
+	extends BaseJoinColumnDialog<SecondaryTable, PrimaryKeyJoinColumn, PrimaryKeyJoinColumnInSecondaryTableStateObject>
 {
 	/**
 	 * Use this constructor to create a <em>new</em> join column.
@@ -26,7 +26,7 @@ public class PrimaryKeyJoinColumnInSecondaryTableDialog
 	protected PrimaryKeyJoinColumnInSecondaryTableDialog(
 			Shell parentShell,
 			ResourceManager resourceManager,
-			ReadOnlySecondaryTable secondaryTable) {
+			SecondaryTable secondaryTable) {
 		this(parentShell, resourceManager, secondaryTable, null);
 	}
 
@@ -36,7 +36,7 @@ public class PrimaryKeyJoinColumnInSecondaryTableDialog
 	protected PrimaryKeyJoinColumnInSecondaryTableDialog(
 			Shell parentShell,
 			ResourceManager resourceManager,
-			ReadOnlySecondaryTable secondaryTable,
+			SecondaryTable secondaryTable,
 			PrimaryKeyJoinColumn joinColumn) {
 		super(parentShell, resourceManager, secondaryTable, joinColumn, buildTitle(joinColumn));
 	}

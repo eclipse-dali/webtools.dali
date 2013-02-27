@@ -52,7 +52,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.Override_;
-import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
+import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
@@ -1688,7 +1688,7 @@ public abstract class AbstractJavaEntity
 		implements Table.Owner
 	{
 		public JptValidator buildTableValidator(Table t) {
-			return new SecondaryTableValidator((ReadOnlySecondaryTable) t);
+			return new SecondaryTableValidator((SecondaryTable) t);
 		}
 	}
 }

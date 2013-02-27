@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface VirtualSecondaryTable
-	extends VirtualTable, ReadOnlySecondaryTable
+	extends VirtualTable, SecondaryTable
 {
 	ListIterable<? extends VirtualPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
 	ListIterable<? extends VirtualPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns();

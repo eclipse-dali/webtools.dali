@@ -12,17 +12,17 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
+import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class SecondaryTablePrimaryKeyJoinColumnValidator
 	extends PrimaryKeyJoinColumnValidator
 {
-	private final ReadOnlySecondaryTable secondaryTable;
+	private final SecondaryTable secondaryTable;
 
 	public SecondaryTablePrimaryKeyJoinColumnValidator(
-				ReadOnlySecondaryTable secondaryTable,
+				SecondaryTable secondaryTable,
 				BaseJoinColumn column,
 				BaseJoinColumn.Owner owner) {
 		super(column, owner);

@@ -36,7 +36,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
+import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
@@ -46,14 +46,14 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 public class PrimaryKeyJoinColumnsInSecondaryTableComposite
-	extends Pane<ReadOnlySecondaryTable>
+	extends Pane<SecondaryTable>
 {
 	private ModifiableCollectionValueModel<SpecifiedPrimaryKeyJoinColumn> selectedPkJoinColumnsModel;
 
 
 	public PrimaryKeyJoinColumnsInSecondaryTableComposite(
 			Pane<?> parent,
-			PropertyValueModel<? extends ReadOnlySecondaryTable> tableModel,
+			PropertyValueModel<? extends SecondaryTable> tableModel,
 			Composite parentComposite) {
 		super(parent, tableModel, parentComposite);
 	}
@@ -77,9 +77,9 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 	}
 
 	private PropertyValueModel<Boolean> buildControlBooleanHolder() {
-		return new TransformationPropertyValueModel<ReadOnlySecondaryTable, Boolean>(getSubjectHolder()) {
+		return new TransformationPropertyValueModel<SecondaryTable, Boolean>(getSubjectHolder()) {
 			@Override
-			protected Boolean transform(ReadOnlySecondaryTable value) {
+			protected Boolean transform(SecondaryTable value) {
 				if (value == null) {
 					return Boolean.FALSE;
 				}
@@ -89,7 +89,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 	}
 
 	private PropertyValueModel<PrimaryKeyJoinColumn> buildDefaultJoinColumnHolder() {
-		return new PropertyAspectAdapter<ReadOnlySecondaryTable, PrimaryKeyJoinColumn>(getSubjectHolder(), ReadOnlySecondaryTable.DEFAULT_PRIMARY_KEY_JOIN_COLUMN) {
+		return new PropertyAspectAdapter<SecondaryTable, PrimaryKeyJoinColumn>(getSubjectHolder(), SecondaryTable.DEFAULT_PRIMARY_KEY_JOIN_COLUMN) {
 			@Override
 			protected PrimaryKeyJoinColumn buildValue_() {
 				return this.subject.getDefaultPrimaryKeyJoinColumn();
@@ -215,7 +215,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 	}
 
 	ListValueModel<PrimaryKeyJoinColumn> buildSpecifiedJoinColumnsListHolder() {
-		return new ListAspectAdapter<ReadOnlySecondaryTable, PrimaryKeyJoinColumn>(getSubjectHolder(), ReadOnlySecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST) {
+		return new ListAspectAdapter<SecondaryTable, PrimaryKeyJoinColumn>(getSubjectHolder(), SecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST) {
 			@Override
 			protected ListIterable<PrimaryKeyJoinColumn> getListIterable() {
 				return new SuperListIterableWrapper<PrimaryKeyJoinColumn>(subject.getSpecifiedPrimaryKeyJoinColumns());
@@ -270,7 +270,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 		overrideDefaultCheckBox.setLayoutData(gridData);
 
 		// Primary Key Join Columns list pane
-		new AddRemoveListPane<ReadOnlySecondaryTable, SpecifiedPrimaryKeyJoinColumn>(
+		new AddRemoveListPane<SecondaryTable, SpecifiedPrimaryKeyJoinColumn>(
 			this,
 			container,
 			buildPrimaryKeyJoinColumnAdapter(),
@@ -317,7 +317,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 		}
 
 		protected boolean buildValue_() {
-			ReadOnlySecondaryTable table = getSubject();
+			SecondaryTable table = getSubject();
 			return (table != null) && ! table.isVirtual() && listModel.size() > 0;
 		}
 

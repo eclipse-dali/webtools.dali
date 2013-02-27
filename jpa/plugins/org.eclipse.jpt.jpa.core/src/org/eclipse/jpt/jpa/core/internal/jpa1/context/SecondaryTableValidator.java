@@ -10,13 +10,13 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
-import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
+import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 
 public class SecondaryTableValidator
 	extends AbstractTableValidator
 {
-	public SecondaryTableValidator(ReadOnlySecondaryTable table) {
+	public SecondaryTableValidator(SecondaryTable table) {
 		super(table);
 	}
 

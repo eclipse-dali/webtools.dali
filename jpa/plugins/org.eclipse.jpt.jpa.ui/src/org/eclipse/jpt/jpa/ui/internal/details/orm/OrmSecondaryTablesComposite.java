@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
+import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
@@ -77,15 +77,15 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 		return new DefineInXmlModel();
 	}
 
-	private ListValueModel<ReadOnlySecondaryTable> buildSecondaryTablesListHolder() {
-		List<ListValueModel<? extends ReadOnlySecondaryTable>> list = new ArrayList<ListValueModel<? extends ReadOnlySecondaryTable>>();
+	private ListValueModel<SecondaryTable> buildSecondaryTablesListHolder() {
+		List<ListValueModel<? extends SecondaryTable>> list = new ArrayList<ListValueModel<? extends SecondaryTable>>();
 		list.add(buildSpecifiedSecondaryTablesListHolder());
 		list.add(buildVirtualSecondaryTablesListHolder());
 		return CompositeListValueModel.forModels(list);
 	}
 
-	private ListValueModel<ReadOnlySecondaryTable> buildSecondaryTablesListModel() {
-		return new ItemPropertyListValueModelAdapter<ReadOnlySecondaryTable>(buildSecondaryTablesListHolder(),
+	private ListValueModel<SecondaryTable> buildSecondaryTablesListModel() {
+		return new ItemPropertyListValueModelAdapter<SecondaryTable>(buildSecondaryTablesListHolder(),
 			Table.SPECIFIED_NAME_PROPERTY);
 	}
 

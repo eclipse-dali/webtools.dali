@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
+import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
@@ -142,7 +142,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		
 		ormEntity.getJavaTypeMapping().addSpecifiedSecondaryTable(0).setSpecifiedName("FOO");
 
-		ReadOnlySecondaryTable ormSecondaryTable = ormEntity.getVirtualSecondaryTables().iterator().next();
+		SecondaryTable ormSecondaryTable = ormEntity.getVirtualSecondaryTables().iterator().next();
 		assertEquals("FOO", ormSecondaryTable.getSpecifiedName());
 		
 		ormEntity.getJavaTypeMapping().getSpecifiedSecondaryTables().iterator().next().setSpecifiedName("BAZ");
@@ -741,7 +741,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		JavaSecondaryTable javaSecondaryTable = javaEntity.addSpecifiedSecondaryTable();
 		javaSecondaryTable.setSpecifiedName("SECONDARY");
 		
-		ReadOnlySecondaryTable ormSecondaryTable = ormEntity.getSecondaryTables().iterator().next();
+		SecondaryTable ormSecondaryTable = ormEntity.getSecondaryTables().iterator().next();
 		assertTrue(ormSecondaryTable.isVirtual());
 		assertFalse(ormSecondaryTable.getUniqueConstraints().iterator().hasNext());
 

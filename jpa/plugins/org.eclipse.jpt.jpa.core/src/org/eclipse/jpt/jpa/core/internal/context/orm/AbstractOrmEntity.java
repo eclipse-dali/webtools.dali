@@ -57,7 +57,7 @@ import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.Relationship;
-import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
+import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
@@ -478,7 +478,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	// ********** secondary tables **********
 
-	public ListIterable<ReadOnlySecondaryTable> getSecondaryTables() {
+	public ListIterable<SecondaryTable> getSecondaryTables() {
 		return this.getSpecifiedSecondaryTablesSize() == 0 ?
 			this.getReadOnlyVirtualSecondaryTables() :
 			this.getReadOnlySpecifiedSecondaryTables();
@@ -497,8 +497,8 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		return this.specifiedSecondaryTableContainer.getContextElements();
 	}
 
-	protected ListIterable<ReadOnlySecondaryTable> getReadOnlySpecifiedSecondaryTables() {
-		return new SuperListIterableWrapper<ReadOnlySecondaryTable>(this.getSpecifiedSecondaryTables());
+	protected ListIterable<SecondaryTable> getReadOnlySpecifiedSecondaryTables() {
+		return new SuperListIterableWrapper<SecondaryTable>(this.getSpecifiedSecondaryTables());
 	}
 
 	public int getSpecifiedSecondaryTablesSize() {
@@ -609,8 +609,8 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		return this.virtualSecondaryTableContainer.getContextElements();
 	}
 
-	protected ListIterable<ReadOnlySecondaryTable> getReadOnlyVirtualSecondaryTables() {
-		return new SuperListIterableWrapper<ReadOnlySecondaryTable>(this.getVirtualSecondaryTables());
+	protected ListIterable<SecondaryTable> getReadOnlyVirtualSecondaryTables() {
+		return new SuperListIterableWrapper<SecondaryTable>(this.getVirtualSecondaryTables());
 	}
 
 	public int getVirtualSecondaryTablesSize() {
@@ -737,7 +737,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		implements Table.Owner
 	{
 		public JptValidator buildTableValidator(Table table) {
-			return new SecondaryTableValidator((ReadOnlySecondaryTable) table);
+			return new SecondaryTableValidator((SecondaryTable) table);
 		}
 	}
 

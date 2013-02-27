@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.context.orm;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
+import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntity;
 
@@ -44,7 +44,7 @@ public interface OrmEntity
 
 	// ********** secondary tables **********
 
-	ListIterable<ReadOnlySecondaryTable> getSecondaryTables();	
+	ListIterable<SecondaryTable> getSecondaryTables();	
 	ListIterable<OrmSecondaryTable> getSpecifiedSecondaryTables();
 	OrmSecondaryTable addSpecifiedSecondaryTable();
 	OrmSecondaryTable addSpecifiedSecondaryTable(int index);
