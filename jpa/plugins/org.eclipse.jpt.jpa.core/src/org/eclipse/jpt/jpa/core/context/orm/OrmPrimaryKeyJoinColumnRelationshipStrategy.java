@@ -27,8 +27,8 @@ import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumnRelationshipStrategy
 public interface OrmPrimaryKeyJoinColumnRelationshipStrategy
 	extends PrimaryKeyJoinColumnRelationshipStrategy
 {
-	ListIterable<OrmPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
-	OrmPrimaryKeyJoinColumn getPrimaryKeyJoinColumn(int index);
-	OrmPrimaryKeyJoinColumn addPrimaryKeyJoinColumn();
-	OrmPrimaryKeyJoinColumn addPrimaryKeyJoinColumn(int index);
+	ListIterable<OrmSpecifiedPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
+	OrmSpecifiedPrimaryKeyJoinColumn getPrimaryKeyJoinColumn(int index);
+	OrmSpecifiedPrimaryKeyJoinColumn addPrimaryKeyJoinColumn();
+	OrmSpecifiedPrimaryKeyJoinColumn addPrimaryKeyJoinColumn(int index);
 }

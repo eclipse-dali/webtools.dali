@@ -77,7 +77,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdClassReference;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTable;
@@ -143,7 +143,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	protected final ContextListContainer<OrmVirtualSecondaryTable, JavaSecondaryTable> virtualSecondaryTableContainer;
 
 	protected final PrimaryKeyJoinColumnOwner primaryKeyJoinColumnOwner;
-	protected final ContextListContainer<OrmPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumnContainer;
+	protected final ContextListContainer<OrmSpecifiedPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumnContainer;
 
 	// this is the default if there are Java columns
 	protected final Vector<OrmVirtualPrimaryKeyJoinColumn> virtualPrimaryKeyJoinColumns = new Vector<OrmVirtualPrimaryKeyJoinColumn>();
@@ -756,14 +756,14 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 				this.getSpecifiedPrimaryKeyJoinColumnsSize();
 	}
 
-	protected OrmPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn xmlPkJoinColumn) {
+	protected OrmSpecifiedPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn xmlPkJoinColumn) {
 		return this.getContextModelFactory().buildOrmPrimaryKeyJoinColumn(this, this.primaryKeyJoinColumnOwner, xmlPkJoinColumn);
 	}
 
 
 	// ********** specified primary key join columns **********
 
-	public ListIterable<OrmPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns() {
+	public ListIterable<OrmSpecifiedPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns() {
 		return this.specifiedPrimaryKeyJoinColumnContainer.getContextElements();
 	}
 
@@ -779,15 +779,15 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		return this.specifiedPrimaryKeyJoinColumnContainer.getContextElementsSize();
 	}
 
-	public OrmPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn() {
+	public OrmSpecifiedPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn() {
 		return this.addSpecifiedPrimaryKeyJoinColumn(this.getSpecifiedPrimaryKeyJoinColumnsSize());
 	}
 
-	public OrmPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index) {
+	public OrmSpecifiedPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index) {
 		this.clearDefaultPrimaryKeyJoinColumns(); // could leave for update?
 
 		XmlPrimaryKeyJoinColumn xmlPkJoinColumn = this.buildXmlPrimaryKeyJoinColumn();
-		OrmPrimaryKeyJoinColumn pkJoinColumn = this.specifiedPrimaryKeyJoinColumnContainer.addContextElement(index, xmlPkJoinColumn);
+		OrmSpecifiedPrimaryKeyJoinColumn pkJoinColumn = this.specifiedPrimaryKeyJoinColumnContainer.addContextElement(index, xmlPkJoinColumn);
 		this.xmlTypeMapping.getPrimaryKeyJoinColumns().add(index, xmlPkJoinColumn);
 		return pkJoinColumn;
 	}
@@ -797,7 +797,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	public void removeSpecifiedPrimaryKeyJoinColumn(SpecifiedPrimaryKeyJoinColumn primaryKeyJoinColumn) {
-		this.removeSpecifiedPrimaryKeyJoinColumn(this.specifiedPrimaryKeyJoinColumnContainer.indexOfContextElement((OrmPrimaryKeyJoinColumn) primaryKeyJoinColumn));
+		this.removeSpecifiedPrimaryKeyJoinColumn(this.specifiedPrimaryKeyJoinColumnContainer.indexOfContextElement((OrmSpecifiedPrimaryKeyJoinColumn) primaryKeyJoinColumn));
 	}
 
 	public void removeSpecifiedPrimaryKeyJoinColumn(int index) {
@@ -839,7 +839,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		return IterableTools.cloneLive(this.xmlTypeMapping.getPrimaryKeyJoinColumns());
 	}
 
-	protected ContextListContainer<OrmPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> buildSpecifiedPrimaryKeyJoinColumnContainer() {
+	protected ContextListContainer<OrmSpecifiedPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> buildSpecifiedPrimaryKeyJoinColumnContainer() {
 		SpecifiedPrimaryKeyJoinColumnContainer container = new SpecifiedPrimaryKeyJoinColumnContainer();
 		container.initialize();
 		return container;
@@ -849,14 +849,14 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	 * specified primary key join column container
 	 */
 	protected class SpecifiedPrimaryKeyJoinColumnContainer
-		extends ContextListContainer<OrmPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn>
+		extends ContextListContainer<OrmSpecifiedPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST;
 		}
 		@Override
-		protected OrmPrimaryKeyJoinColumn buildContextElement(XmlPrimaryKeyJoinColumn resourceElement) {
+		protected OrmSpecifiedPrimaryKeyJoinColumn buildContextElement(XmlPrimaryKeyJoinColumn resourceElement) {
 			return AbstractOrmEntity.this.buildPrimaryKeyJoinColumn(resourceElement);
 		}
 		@Override
@@ -864,7 +864,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			return AbstractOrmEntity.this.getXmlPrimaryKeyJoinColumns();
 		}
 		@Override
-		protected XmlPrimaryKeyJoinColumn getResourceElement(OrmPrimaryKeyJoinColumn contextElement) {
+		protected XmlPrimaryKeyJoinColumn getResourceElement(OrmSpecifiedPrimaryKeyJoinColumn contextElement) {
 			return contextElement.getXmlColumn();
 		}
 	}
@@ -1726,7 +1726,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			secondaryTable.validate(messages, reporter);
 		}
 		this.validateInheritance(messages, reporter);
-		for (OrmPrimaryKeyJoinColumn pkJoinColumn : this.getSpecifiedPrimaryKeyJoinColumns()) {
+		for (OrmSpecifiedPrimaryKeyJoinColumn pkJoinColumn : this.getSpecifiedPrimaryKeyJoinColumns()) {
 			pkJoinColumn.validate(messages, reporter);
 		}
 		this.attributeOverrideContainer.validate(messages, reporter);
@@ -1916,7 +1916,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 				return result;
 			}
 		}
-		for (OrmPrimaryKeyJoinColumn pkJoinColumn : this.getSpecifiedPrimaryKeyJoinColumns()) {
+		for (OrmSpecifiedPrimaryKeyJoinColumn pkJoinColumn : this.getSpecifiedPrimaryKeyJoinColumns()) {
 			result = pkJoinColumn.getCompletionProposals(pos);
 			if (result != null) {
 				return result;

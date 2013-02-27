@@ -38,9 +38,9 @@ public interface OrmSecondaryTable
 
 	// ********** primary key join columns **********
 
-	ListIterable<OrmPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
-	ListIterable<OrmPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns();
-	OrmPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn();
-	OrmPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
-	OrmPrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn();
+	ListIterable<OrmSpecifiedPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
+	ListIterable<OrmSpecifiedPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns();
+	OrmSpecifiedPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn();
+	OrmSpecifiedPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
+	OrmSpecifiedPrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn();
 }

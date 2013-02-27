@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPrimaryKeyJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPrimaryKeyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -41,7 +41,7 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 	extends AbstractOrmXmlContextModel<OrmPrimaryKeyJoinColumnRelationship>
 	implements MappingRelationshipStrategy2_0, OrmPrimaryKeyJoinColumnRelationshipStrategy
 {
-	protected final ContextListContainer<OrmPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> primaryKeyJoinColumnContainer;
+	protected final ContextListContainer<OrmSpecifiedPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> primaryKeyJoinColumnContainer;
 	protected final ReadOnlyJoinColumn.Owner primaryKeyJoinColumnOwner;
 
 
@@ -69,7 +69,7 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 
 	// ********** primary key join columns **********
 
-	public ListIterable<OrmPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns() {
+	public ListIterable<OrmSpecifiedPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns() {
 		return this.primaryKeyJoinColumnContainer.getContextElements();
 	}
 
@@ -81,17 +81,17 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 		return this.getPrimaryKeyJoinColumnsSize() != 0;
 	}
 
-	public OrmPrimaryKeyJoinColumn getPrimaryKeyJoinColumn(int index) {
+	public OrmSpecifiedPrimaryKeyJoinColumn getPrimaryKeyJoinColumn(int index) {
 		return this.primaryKeyJoinColumnContainer.getContextElement(index);
 	}
 
-	public OrmPrimaryKeyJoinColumn addPrimaryKeyJoinColumn() {
+	public OrmSpecifiedPrimaryKeyJoinColumn addPrimaryKeyJoinColumn() {
 		return this.addPrimaryKeyJoinColumn(this.getPrimaryKeyJoinColumnsSize());
 	}
 
-	public OrmPrimaryKeyJoinColumn addPrimaryKeyJoinColumn(int index) {
+	public OrmSpecifiedPrimaryKeyJoinColumn addPrimaryKeyJoinColumn(int index) {
 		XmlPrimaryKeyJoinColumn xmlJoinColumn = this.buildXmlPrimaryKeyJoinColumn();
-		OrmPrimaryKeyJoinColumn joinColumn = this.primaryKeyJoinColumnContainer.addContextElement(index, xmlJoinColumn);
+		OrmSpecifiedPrimaryKeyJoinColumn joinColumn = this.primaryKeyJoinColumnContainer.addContextElement(index, xmlJoinColumn);
 		this.getXmlPrimaryKeyJoinColumnContainer().getPrimaryKeyJoinColumns().add(index, xmlJoinColumn);
 		return joinColumn;
 	}
@@ -101,7 +101,7 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 	}
 
 	public void removePrimaryKeyJoinColumn(SpecifiedPrimaryKeyJoinColumn joinColumn) {
-		this.removePrimaryKeyJoinColumn(this.primaryKeyJoinColumnContainer.indexOfContextElement((OrmPrimaryKeyJoinColumn) joinColumn));
+		this.removePrimaryKeyJoinColumn(this.primaryKeyJoinColumnContainer.indexOfContextElement((OrmSpecifiedPrimaryKeyJoinColumn) joinColumn));
 	}
 
 	public void removePrimaryKeyJoinColumn(int index) {
@@ -128,14 +128,14 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 	 *  primary key join column container
 	 */
 	protected class PrimaryKeyJoinColumnContainer
-		extends ContextListContainer<OrmPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn>
+		extends ContextListContainer<OrmSpecifiedPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return PRIMARY_KEY_JOIN_COLUMNS_LIST;
 		}
 		@Override
-		protected OrmPrimaryKeyJoinColumn buildContextElement(XmlPrimaryKeyJoinColumn resourceElement) {
+		protected OrmSpecifiedPrimaryKeyJoinColumn buildContextElement(XmlPrimaryKeyJoinColumn resourceElement) {
 			return GenericOrmPrimaryKeyJoinColumnRelationshipStrategy.this.buildPrimaryKeyJoinColumn(resourceElement);
 		}
 		@Override
@@ -143,7 +143,7 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 			return GenericOrmPrimaryKeyJoinColumnRelationshipStrategy.this.getXmlPrimaryKeyJoinColumns();
 		}
 		@Override
-		protected XmlPrimaryKeyJoinColumn getResourceElement(OrmPrimaryKeyJoinColumn contextElement) {
+		protected XmlPrimaryKeyJoinColumn getResourceElement(OrmSpecifiedPrimaryKeyJoinColumn contextElement) {
 			return contextElement.getXmlColumn();
 		}
 	}
@@ -152,11 +152,11 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 		return new PrimaryKeyJoinColumnOwner();
 	}
 
-	protected OrmPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn xmlJoinColumn) {
+	protected OrmSpecifiedPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn xmlJoinColumn) {
 		return this.getContextModelFactory().buildOrmPrimaryKeyJoinColumn(this, this.primaryKeyJoinColumnOwner, xmlJoinColumn);
 	}
 
-	protected ContextListContainer<OrmPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnContainer() {
+	protected ContextListContainer<OrmSpecifiedPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnContainer() {
 		PrimaryKeyJoinColumnContainer container = new PrimaryKeyJoinColumnContainer();
 		container.initialize();
 		return container;
@@ -227,7 +227,7 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		for (OrmPrimaryKeyJoinColumn pkJoinColumn : this.getPrimaryKeyJoinColumns()) {
+		for (OrmSpecifiedPrimaryKeyJoinColumn pkJoinColumn : this.getPrimaryKeyJoinColumns()) {
 			pkJoinColumn.validate(messages, reporter);
 		}
 	}
@@ -240,7 +240,7 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 		if (result != null) {
 			return result;
 		}
-		for (OrmPrimaryKeyJoinColumn column : this.getPrimaryKeyJoinColumns()) {
+		for (OrmSpecifiedPrimaryKeyJoinColumn column : this.getPrimaryKeyJoinColumns()) {
 			result = column.getCompletionProposals(pos);
 			if (result != null) {
 				return result;

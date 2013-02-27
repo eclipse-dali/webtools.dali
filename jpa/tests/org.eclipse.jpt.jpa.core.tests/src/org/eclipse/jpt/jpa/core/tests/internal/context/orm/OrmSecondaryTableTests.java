@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualSecondaryTable;
@@ -369,25 +369,25 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlSecondaryTable secondaryTableResource = entityResource.getSecondaryTables().get(0);
 		
-		OrmPrimaryKeyJoinColumn primaryKeyJoinColumn = ormSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(0);
+		OrmSpecifiedPrimaryKeyJoinColumn primaryKeyJoinColumn = ormSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(0);
 		primaryKeyJoinColumn.setSpecifiedName("FOO");
 				
 		assertEquals("FOO", secondaryTableResource.getPrimaryKeyJoinColumns().get(0).getName());
 		
-		OrmPrimaryKeyJoinColumn primaryKeyJoinColumn2 = ormSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(0);
+		OrmSpecifiedPrimaryKeyJoinColumn primaryKeyJoinColumn2 = ormSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(0);
 		primaryKeyJoinColumn2.setSpecifiedName("BAR");
 		
 		assertEquals("BAR", secondaryTableResource.getPrimaryKeyJoinColumns().get(0).getName());
 		assertEquals("FOO", secondaryTableResource.getPrimaryKeyJoinColumns().get(1).getName());
 		
-		OrmPrimaryKeyJoinColumn primaryKeyJoinColumn3 = ormSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(1);
+		OrmSpecifiedPrimaryKeyJoinColumn primaryKeyJoinColumn3 = ormSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(1);
 		primaryKeyJoinColumn3.setSpecifiedName("BAZ");
 		
 		assertEquals("BAR", secondaryTableResource.getPrimaryKeyJoinColumns().get(0).getName());
 		assertEquals("BAZ", secondaryTableResource.getPrimaryKeyJoinColumns().get(1).getName());
 		assertEquals("FOO", secondaryTableResource.getPrimaryKeyJoinColumns().get(2).getName());
 		
-		ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns = ormSecondaryTable.getSpecifiedPrimaryKeyJoinColumns().iterator();
+		ListIterator<OrmSpecifiedPrimaryKeyJoinColumn> primaryKeyJoinColumns = ormSecondaryTable.getSpecifiedPrimaryKeyJoinColumns().iterator();
 		assertEquals(primaryKeyJoinColumn2, primaryKeyJoinColumns.next());
 		assertEquals(primaryKeyJoinColumn3, primaryKeyJoinColumns.next());
 		assertEquals(primaryKeyJoinColumn, primaryKeyJoinColumns.next());
@@ -439,7 +439,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		
 		
 		ormSecondaryTable.moveSpecifiedPrimaryKeyJoinColumn(2, 0);
-		ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns = ormSecondaryTable.getSpecifiedPrimaryKeyJoinColumns().iterator();
+		ListIterator<OrmSpecifiedPrimaryKeyJoinColumn> primaryKeyJoinColumns = ormSecondaryTable.getSpecifiedPrimaryKeyJoinColumns().iterator();
 		assertEquals("BAR", primaryKeyJoinColumns.next().getName());
 		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());
 		assertEquals("FOO", primaryKeyJoinColumns.next().getName());
@@ -475,7 +475,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		secondaryTableResource.getPrimaryKeyJoinColumns().get(1).setName("BAR");
 		secondaryTableResource.getPrimaryKeyJoinColumns().get(2).setName("BAZ");
 
-		ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns = ormSecondaryTable.getSpecifiedPrimaryKeyJoinColumns().iterator();
+		ListIterator<OrmSpecifiedPrimaryKeyJoinColumn> primaryKeyJoinColumns = ormSecondaryTable.getSpecifiedPrimaryKeyJoinColumns().iterator();
 		assertEquals("FOO", primaryKeyJoinColumns.next().getName());
 		assertEquals("BAR", primaryKeyJoinColumns.next().getName());
 		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());

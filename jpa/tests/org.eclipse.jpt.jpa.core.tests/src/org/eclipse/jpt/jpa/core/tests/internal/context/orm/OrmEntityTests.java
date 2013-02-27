@@ -49,7 +49,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAssociationOverride;
@@ -1338,25 +1338,25 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 
-		OrmPrimaryKeyJoinColumn primaryKeyJoinColumn = ormEntity.addSpecifiedPrimaryKeyJoinColumn(0);
+		OrmSpecifiedPrimaryKeyJoinColumn primaryKeyJoinColumn = ormEntity.addSpecifiedPrimaryKeyJoinColumn(0);
 		primaryKeyJoinColumn.setSpecifiedName("FOO");
 				
 		assertEquals("FOO", entityResource.getPrimaryKeyJoinColumns().get(0).getName());
 		
-		OrmPrimaryKeyJoinColumn primaryKeyJoinColumn2 = ormEntity.addSpecifiedPrimaryKeyJoinColumn(0);
+		OrmSpecifiedPrimaryKeyJoinColumn primaryKeyJoinColumn2 = ormEntity.addSpecifiedPrimaryKeyJoinColumn(0);
 		primaryKeyJoinColumn2.setSpecifiedName("BAR");
 		
 		assertEquals("BAR", entityResource.getPrimaryKeyJoinColumns().get(0).getName());
 		assertEquals("FOO", entityResource.getPrimaryKeyJoinColumns().get(1).getName());
 		
-		OrmPrimaryKeyJoinColumn primaryKeyJoinColumn3 = ormEntity.addSpecifiedPrimaryKeyJoinColumn(1);
+		OrmSpecifiedPrimaryKeyJoinColumn primaryKeyJoinColumn3 = ormEntity.addSpecifiedPrimaryKeyJoinColumn(1);
 		primaryKeyJoinColumn3.setSpecifiedName("BAZ");
 		
 		assertEquals("BAR", entityResource.getPrimaryKeyJoinColumns().get(0).getName());
 		assertEquals("BAZ", entityResource.getPrimaryKeyJoinColumns().get(1).getName());
 		assertEquals("FOO", entityResource.getPrimaryKeyJoinColumns().get(2).getName());
 		
-		ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns = ormEntity.getSpecifiedPrimaryKeyJoinColumns().iterator();
+		ListIterator<OrmSpecifiedPrimaryKeyJoinColumn> primaryKeyJoinColumns = ormEntity.getSpecifiedPrimaryKeyJoinColumns().iterator();
 		assertEquals(primaryKeyJoinColumn2, primaryKeyJoinColumns.next());
 		assertEquals(primaryKeyJoinColumn3, primaryKeyJoinColumns.next());
 		assertEquals(primaryKeyJoinColumn, primaryKeyJoinColumns.next());
@@ -1404,7 +1404,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		
 		
 		ormEntity.moveSpecifiedPrimaryKeyJoinColumn(2, 0);
-		ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns = ormEntity.getSpecifiedPrimaryKeyJoinColumns().iterator();
+		ListIterator<OrmSpecifiedPrimaryKeyJoinColumn> primaryKeyJoinColumns = ormEntity.getSpecifiedPrimaryKeyJoinColumns().iterator();
 		assertEquals("BAR", primaryKeyJoinColumns.next().getName());
 		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());
 		assertEquals("FOO", primaryKeyJoinColumns.next().getName());
@@ -1438,7 +1438,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		entityResource.getPrimaryKeyJoinColumns().get(1).setName("BAR");
 		entityResource.getPrimaryKeyJoinColumns().get(2).setName("BAZ");
 
-		ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns = ormEntity.getSpecifiedPrimaryKeyJoinColumns().iterator();
+		ListIterator<OrmSpecifiedPrimaryKeyJoinColumn> primaryKeyJoinColumns = ormEntity.getSpecifiedPrimaryKeyJoinColumns().iterator();
 		assertEquals("FOO", primaryKeyJoinColumns.next().getName());
 		assertEquals("BAR", primaryKeyJoinColumns.next().getName());
 		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());
@@ -1498,7 +1498,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertEquals("id", childEntity.getDefaultPrimaryKeyJoinColumns().iterator().next().getDefaultName());
 		assertEquals("id", childEntity.getDefaultPrimaryKeyJoinColumns().iterator().next().getDefaultReferencedColumnName());
 		
-		OrmPrimaryKeyJoinColumn specifiedPkJoinColumn = childEntity.addSpecifiedPrimaryKeyJoinColumn(0);
+		OrmSpecifiedPrimaryKeyJoinColumn specifiedPkJoinColumn = childEntity.addSpecifiedPrimaryKeyJoinColumn(0);
 		specifiedPkJoinColumn.setSpecifiedName("FOO");
 		specifiedPkJoinColumn.setSpecifiedReferencedColumnName("BAR");
 		

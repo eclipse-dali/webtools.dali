@@ -79,9 +79,9 @@ public interface OrmEntity
 	// ********** primary key join columns **********
 
 	ListIterable<ReadOnlyPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
-	ListIterable<OrmPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns();
-	OrmPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn();
-	OrmPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
+	ListIterable<OrmSpecifiedPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns();
+	OrmSpecifiedPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn();
+	OrmSpecifiedPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
 
 	ListIterable<ReadOnlyPrimaryKeyJoinColumn> getDefaultPrimaryKeyJoinColumns();
 	int getDefaultPrimaryKeyJoinColumnsSize();

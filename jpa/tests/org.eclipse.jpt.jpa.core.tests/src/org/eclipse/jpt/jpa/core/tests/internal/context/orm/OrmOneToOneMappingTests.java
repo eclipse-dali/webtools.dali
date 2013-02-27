@@ -37,7 +37,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOneToOneRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPrimaryKeyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
@@ -1083,25 +1083,25 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		OrmPrimaryKeyJoinColumnRelationshipStrategy strategy = ormOneToOneMapping.getRelationship().getPrimaryKeyJoinColumnStrategy();
 		XmlOneToOne oneToOneResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
 		
-		OrmPrimaryKeyJoinColumn joinColumn = strategy.addPrimaryKeyJoinColumn(0);
+		OrmSpecifiedPrimaryKeyJoinColumn joinColumn = strategy.addPrimaryKeyJoinColumn(0);
 		joinColumn.setSpecifiedName("FOO");
 				
 		assertEquals("FOO", oneToOneResource.getPrimaryKeyJoinColumns().get(0).getName());
 		
-		OrmPrimaryKeyJoinColumn joinColumn2 = strategy.addPrimaryKeyJoinColumn(0);
+		OrmSpecifiedPrimaryKeyJoinColumn joinColumn2 = strategy.addPrimaryKeyJoinColumn(0);
 		joinColumn2.setSpecifiedName("BAR");
 		
 		assertEquals("BAR", oneToOneResource.getPrimaryKeyJoinColumns().get(0).getName());
 		assertEquals("FOO", oneToOneResource.getPrimaryKeyJoinColumns().get(1).getName());
 		
-		OrmPrimaryKeyJoinColumn joinColumn3 = strategy.addPrimaryKeyJoinColumn(1);
+		OrmSpecifiedPrimaryKeyJoinColumn joinColumn3 = strategy.addPrimaryKeyJoinColumn(1);
 		joinColumn3.setSpecifiedName("BAZ");
 		
 		assertEquals("BAR", oneToOneResource.getPrimaryKeyJoinColumns().get(0).getName());
 		assertEquals("BAZ", oneToOneResource.getPrimaryKeyJoinColumns().get(1).getName());
 		assertEquals("FOO", oneToOneResource.getPrimaryKeyJoinColumns().get(2).getName());
 		
-		ListIterator<OrmPrimaryKeyJoinColumn> joinColumns = strategy.getPrimaryKeyJoinColumns().iterator();
+		ListIterator<OrmSpecifiedPrimaryKeyJoinColumn> joinColumns = strategy.getPrimaryKeyJoinColumns().iterator();
 		assertEquals(joinColumn2, joinColumns.next());
 		assertEquals(joinColumn3, joinColumns.next());
 		assertEquals(joinColumn, joinColumns.next());
@@ -1155,7 +1155,7 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		
 		
 		strategy.movePrimaryKeyJoinColumn(2, 0);
-		ListIterator<OrmPrimaryKeyJoinColumn> joinColumns = strategy.getPrimaryKeyJoinColumns().iterator();
+		ListIterator<OrmSpecifiedPrimaryKeyJoinColumn> joinColumns = strategy.getPrimaryKeyJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
