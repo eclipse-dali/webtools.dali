@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.java.PrimaryKeyJoinColumnAnnotation;
  * @since 2.0
  */
 public interface JavaPrimaryKeyJoinColumn
-	extends PrimaryKeyJoinColumn, JavaBaseJoinColumn
+	extends PrimaryKeyJoinColumn, JavaModifiableBaseJoinColumn
 {
 	PrimaryKeyJoinColumnAnnotation getColumnAnnotation();
 }
