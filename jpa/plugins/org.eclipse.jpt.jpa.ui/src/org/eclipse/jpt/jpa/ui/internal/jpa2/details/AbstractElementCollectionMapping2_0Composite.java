@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
-import org.eclipse.jpt.jpa.core.context.ModifiableAccessReference;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAccessReference;
 import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.CollectionMapping;
@@ -389,10 +389,10 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 		};
 	}
 
-	protected PropertyValueModel<ModifiableAccessReference> buildAccessReferenceModel() {
-		return new PropertyAspectAdapter<T, ModifiableAccessReference>(getSubjectHolder()) {
+	protected PropertyValueModel<SpecifiedAccessReference> buildAccessReferenceModel() {
+		return new PropertyAspectAdapter<T, SpecifiedAccessReference>(getSubjectHolder()) {
 			@Override
-			protected ModifiableAccessReference buildValue_() {
+			protected SpecifiedAccessReference buildValue_() {
 				return this.subject.getPersistentAttribute();
 			}
 		};

@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.ModifiableAccessReference;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAccessReference;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
 import org.eclipse.swt.widgets.Composite;
@@ -94,20 +94,20 @@ public class OrmAttributeTypeClassChooser
 		return getSubject().getJpaProject().getJavaProject();
 	}
 
-	private static PropertyValueModel<ModifiableAccessReference> buildAccessReferenceModel(PropertyValueModel<? extends AttributeMapping> mappingHolder) {
-		return new PropertyAspectAdapter<AttributeMapping, ModifiableAccessReference>(mappingHolder) {
+	private static PropertyValueModel<SpecifiedAccessReference> buildAccessReferenceModel(PropertyValueModel<? extends AttributeMapping> mappingHolder) {
+		return new PropertyAspectAdapter<AttributeMapping, SpecifiedAccessReference>(mappingHolder) {
 			@Override
-			protected ModifiableAccessReference buildValue_() {
+			protected SpecifiedAccessReference buildValue_() {
 				return this.subject.getPersistentAttribute();
 			}
 		};
 	}
 
 	private static PropertyValueModel<Boolean> buildVirtualAttributeModel(PropertyValueModel<? extends AttributeMapping> mappingHolder) {
-		return new PropertyAspectAdapter<ModifiableAccessReference, Boolean>(
+		return new PropertyAspectAdapter<SpecifiedAccessReference, Boolean>(
 			buildAccessReferenceModel(mappingHolder),
-			ModifiableAccessReference.SPECIFIED_ACCESS_PROPERTY,
-			ModifiableAccessReference.DEFAULT_ACCESS_PROPERTY) {
+			SpecifiedAccessReference.SPECIFIED_ACCESS_PROPERTY,
+			SpecifiedAccessReference.DEFAULT_ACCESS_PROPERTY) {
 			@Override
 				protected Boolean buildValue() {
 					if (this.subject == null) {

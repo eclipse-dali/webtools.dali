@@ -22,7 +22,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @version 2.2
  * @since 2.2
  */
-public interface ModifiableAccessReference
+public interface SpecifiedAccessReference
 	extends AccessReference
 {
 	/**

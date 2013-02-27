@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.ModifiableAccessReference;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAccessReference;
 import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
@@ -54,10 +54,10 @@ public abstract class AbstractEmbeddedIdMappingComposite<T extends EmbeddedIdMap
 
 	protected abstract Control initializeEmbeddedIdSection(Composite container);
 
-	protected PropertyValueModel<ModifiableAccessReference> buildAccessReferenceModel() {
-		return new PropertyAspectAdapter<T, ModifiableAccessReference>(getSubjectHolder()) {
+	protected PropertyValueModel<SpecifiedAccessReference> buildAccessReferenceModel() {
+		return new PropertyAspectAdapter<T, SpecifiedAccessReference>(getSubjectHolder()) {
 			@Override
-			protected ModifiableAccessReference buildValue_() {
+			protected SpecifiedAccessReference buildValue_() {
 				return this.subject.getPersistentAttribute();
 			}
 		};
