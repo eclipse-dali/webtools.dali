@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.context.orm;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmPersistenceUnitDefaults2_0;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkModifiableAccessMethodsContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkSpecifiedAccessMethodsContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmSpecifiedTenantDiscriminatorColumn2_3;
 
 /**
@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmSpecifiedTenantDiscri
  * <code>persistence-unit-defaults</code> element
  */
 public interface EclipseLinkPersistenceUnitDefaults
-	extends OrmPersistenceUnitDefaults2_0, EclipseLinkModifiableAccessMethodsContainer
+	extends OrmPersistenceUnitDefaults2_0, EclipseLinkSpecifiedAccessMethodsContainer
 {
 
 	// ********** tenant discriminator columns **********

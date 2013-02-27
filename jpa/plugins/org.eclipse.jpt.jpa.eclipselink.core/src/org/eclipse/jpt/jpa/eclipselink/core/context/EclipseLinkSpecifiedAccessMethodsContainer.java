@@ -22,7 +22,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.context;
  * @version 3.2
  * @since 3.2 
  */
-public interface EclipseLinkModifiableAccessMethodsContainer
+public interface EclipseLinkSpecifiedAccessMethodsContainer
 	extends EclipseLinkAccessMethodsContainer
 {
 	/**
