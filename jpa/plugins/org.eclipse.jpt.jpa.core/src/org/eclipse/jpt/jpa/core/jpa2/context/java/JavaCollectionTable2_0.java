@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context.java;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaReferenceTable;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedReferenceTable;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.CollectionTable2_0Annotation;
 
@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.CollectionTable2_0Annotation;
  * @since 2.3
  */
 public interface JavaCollectionTable2_0
-	extends CollectionTable2_0, JavaReferenceTable
+	extends CollectionTable2_0, JavaSpecifiedReferenceTable
 {
 	CollectionTable2_0Annotation getTableAnnotation();
 }

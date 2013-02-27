@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReferenceTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaReferenceTable;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedReferenceTable;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaTable;
 import org.eclipse.jpt.jpa.core.internal.resource.java.NullJoinColumnAnnotation;
@@ -32,7 +32,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class GenericJavaReferenceTable<P extends JpaContextModel, A extends ReferenceTableAnnotation>
 	extends AbstractJavaTable<P, A>
-	implements JavaReferenceTable
+	implements JavaSpecifiedReferenceTable
 {
 	protected final ContextListContainer<JavaSpecifiedJoinColumn, JoinColumnAnnotation> specifiedJoinColumnContainer;
 	protected final JoinColumn.Owner joinColumnOwner;
