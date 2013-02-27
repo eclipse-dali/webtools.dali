@@ -56,7 +56,7 @@ import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
+import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
@@ -1340,7 +1340,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		return super.resolveOverriddenRelationship(attributeName);
 	}
 
-	protected ReadOnlyRelationship resolveOverriddenRelationshipForAssociationOverride(String attributeName) {
+	protected Relationship resolveOverriddenRelationshipForAssociationOverride(String attributeName) {
 		if ( ! this.isMetadataComplete()) {
 			JavaPersistentType javaType = this.getJavaPersistentType();
 			if (javaType != null) {
@@ -2070,7 +2070,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			return AbstractOrmEntity.this.xmlTypeMapping.getAssociationOverrides();
 		}
 
-		public ReadOnlyRelationship resolveOverriddenRelationship(String attributeName) {
+		public Relationship resolveOverriddenRelationship(String attributeName) {
 			JavaEntity javaEntity = this.getJavaOverrideContainerEntity();
 			return (javaEntity != null) ? 
 					javaEntity.getAssociationOverrideContainer().getOverrideRelationship(attributeName) :

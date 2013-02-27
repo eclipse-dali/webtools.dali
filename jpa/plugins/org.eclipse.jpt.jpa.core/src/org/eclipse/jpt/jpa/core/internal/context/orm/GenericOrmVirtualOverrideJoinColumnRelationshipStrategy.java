@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
+import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
@@ -189,11 +189,11 @@ public class GenericOrmVirtualOverrideJoinColumnRelationshipStrategy
 	}
 
 	protected ReadOnlyJoinColumnRelationship getOverriddenJoinColumnRelationship() {
-		ReadOnlyRelationship relationship = this.resolveOverriddenRelationship();
+		Relationship relationship = this.resolveOverriddenRelationship();
 		return (relationship instanceof ReadOnlyJoinColumnRelationship) ? (ReadOnlyJoinColumnRelationship) relationship : null;
 	}
 
-	protected ReadOnlyRelationship resolveOverriddenRelationship() {
+	protected Relationship resolveOverriddenRelationship() {
 		return this.getRelationship().resolveOverriddenRelationship();
 	}
 

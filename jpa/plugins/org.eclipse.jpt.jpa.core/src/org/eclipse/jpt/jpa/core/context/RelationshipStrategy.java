@@ -25,7 +25,7 @@ package org.eclipse.jpt.jpa.core.context;
  * 
  * @see RelationshipMapping
  * @see AssociationOverride
- * @see ReadOnlyRelationship
+ * @see Relationship
  */
 public interface RelationshipStrategy
 	extends JpaContextModel
@@ -33,7 +33,7 @@ public interface RelationshipStrategy
 	/**
 	 * Return the strategy's relationship.
 	 */
-	ReadOnlyRelationship getRelationship();
+	Relationship getRelationship();
 	
 	/**
 	 * Return the table name associated with the strategy's columns.

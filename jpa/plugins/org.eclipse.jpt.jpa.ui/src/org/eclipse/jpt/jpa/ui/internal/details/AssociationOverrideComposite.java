@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationship;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
+import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.swt.widgets.Composite;
 
@@ -85,7 +85,7 @@ public class AssociationOverrideComposite
 			@Override
 			protected ReadOnlyJoinColumnRelationship transform_(AssociationOverride value) {
 				// with virtual overrides: m:m mappings do not support join columns, so we need to check
-				ReadOnlyRelationship relationship = value.getRelationship();
+				Relationship relationship = value.getRelationship();
 				return (relationship instanceof ReadOnlyJoinColumnRelationship) ?
 					(ReadOnlyJoinColumnRelationship) relationship : null;
 			}

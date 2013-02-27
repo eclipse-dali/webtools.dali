@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
+import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -78,7 +78,7 @@ public class MappedByJoiningStrategyPane
 
 	public static ModifiablePropertyValueModel<Boolean> buildUsesMappedByJoiningStrategyHolder(PropertyValueModel<? extends MappedByRelationship> subjectHolder) {
 		return new PropertyAspectAdapter<MappedByRelationship, Boolean>(
-				subjectHolder, ReadOnlyRelationship.STRATEGY_PROPERTY) {
+				subjectHolder, Relationship.STRATEGY_PROPERTY) {
 			@Override
 			protected Boolean buildValue() {
 				return (this.subject == null) ? Boolean.FALSE :

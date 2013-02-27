@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
+import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAssociationOverride;
@@ -47,7 +47,7 @@ public class GenericOrmAssociationOverrideContainer
 		return MappingTools.getRelationshipMapping(attributeName, this.owner.getOverridableTypeMapping());
 	}
 
-	public ReadOnlyRelationship resolveOverriddenRelationship(String associationOverrideName) {
+	public Relationship resolveOverriddenRelationship(String associationOverrideName) {
 		return this.owner.resolveOverriddenRelationship(associationOverrideName);
 	}
 

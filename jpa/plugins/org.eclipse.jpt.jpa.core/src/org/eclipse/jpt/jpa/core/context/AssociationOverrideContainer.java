@@ -38,7 +38,7 @@ public interface AssociationOverrideContainer
 	/**
 	 * Return the relationship with the specified attribute name.
 	 */
-	ReadOnlyRelationship resolveOverriddenRelationship(String attributeName);
+	Relationship resolveOverriddenRelationship(String attributeName);
 
 	// covariant overrides
 	ListIterable<? extends AssociationOverride> getOverrides();
@@ -59,6 +59,6 @@ public interface AssociationOverrideContainer
 		/**
 		 * @see AssociationOverrideContainer#resolveOverriddenRelationship(String)
 		 */
-		ReadOnlyRelationship resolveOverriddenRelationship(String attributeName);
+		Relationship resolveOverriddenRelationship(String attributeName);
 	}
 }

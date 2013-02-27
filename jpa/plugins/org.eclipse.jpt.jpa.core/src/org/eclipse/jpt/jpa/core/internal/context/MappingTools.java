@@ -45,7 +45,7 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
+import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.ReferenceTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
@@ -201,7 +201,7 @@ public final class MappingTools {
 	 * database connection. We need the database to convert the resulting name
 	 * to an identifier appropriate to the current database.
 	 */
-	public static String buildJoinTableDefaultName(ReadOnlyRelationship relationship) {
+	public static String buildJoinTableDefaultName(Relationship relationship) {
 		if (relationship.getJpaProject().getDataSource().connectionProfileIsActive()) {
 			return buildDbJoinTableDefaultName(relationship);
 		}
@@ -228,7 +228,7 @@ public final class MappingTools {
 	/**
 	 * Use the database to build a more accurate default name.
 	 */
-	private static String buildDbJoinTableDefaultName(ReadOnlyRelationship relationship) {
+	private static String buildDbJoinTableDefaultName(Relationship relationship) {
 		Table owningTable = relationship.getTypeMapping().getPrimaryDbTable();
 		if (owningTable == null) {
 			return null;
@@ -276,7 +276,7 @@ public final class MappingTools {
 	 * one-to-many or many-to-many) is<pre>
 	 *     [target entity name]_[referenced column name]
 	 * </pre>
-	 * @see #buildJoinTableDefaultName(ReadOnlyRelationship)
+	 * @see #buildJoinTableDefaultName(Relationship)
 	 */
 	public static String buildJoinColumnDefaultName(JoinColumn joinColumn, JoinColumn.Owner owner) {
 		if (owner.getJoinColumnsSize() != 1) {

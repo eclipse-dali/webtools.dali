@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.ManyToManyRelationship;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
+import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -100,7 +100,7 @@ public class ManyToManyJoiningStrategyPane
 
 	protected ModifiablePropertyValueModel<Boolean> buildUsesMappedByStrategyHolder() {
 		return new PropertyAspectAdapter<MappedByRelationship, Boolean>(
-				this.getSubjectHolder(), ReadOnlyRelationship.STRATEGY_PROPERTY) {
+				this.getSubjectHolder(), Relationship.STRATEGY_PROPERTY) {
 			@Override
 			protected Boolean buildValue() {
 				return (this.subject == null) ? Boolean.FALSE :
@@ -119,7 +119,7 @@ public class ManyToManyJoiningStrategyPane
 
 	protected ModifiablePropertyValueModel<Boolean> buildUsesJoinTableStrategyHolder() {
 		return new PropertyAspectAdapter<JoinTableRelationship, Boolean>(
-				this.getSubjectHolder(), ReadOnlyRelationship.STRATEGY_PROPERTY) {
+				this.getSubjectHolder(), Relationship.STRATEGY_PROPERTY) {
 			@Override
 			protected Boolean buildValue() {
 				return (this.subject == null) ? Boolean.FALSE :

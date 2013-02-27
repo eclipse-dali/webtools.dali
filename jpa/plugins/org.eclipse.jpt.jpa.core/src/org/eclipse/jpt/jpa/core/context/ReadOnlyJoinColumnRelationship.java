@@ -28,7 +28,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @see SpecifiedJoinColumn
  */
 public interface ReadOnlyJoinColumnRelationship
-	extends ReadOnlyRelationship
+	extends Relationship
 {
 	/**
 	 * Return the (never <code>null</code>) strategy used to configure

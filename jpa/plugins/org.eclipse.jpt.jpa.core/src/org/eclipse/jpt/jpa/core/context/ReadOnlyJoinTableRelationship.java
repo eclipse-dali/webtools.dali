@@ -25,7 +25,7 @@ package org.eclipse.jpt.jpa.core.context;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface ReadOnlyJoinTableRelationship
-	extends ReadOnlyRelationship
+	extends Relationship
 {
 	/**
 	 * Return the (never <code>null</code>) strategy used to configure

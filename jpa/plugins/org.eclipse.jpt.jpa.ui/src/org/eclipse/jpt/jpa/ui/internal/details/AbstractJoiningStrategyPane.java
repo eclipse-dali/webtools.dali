@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
+import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -45,7 +45,7 @@ import org.eclipse.ui.part.PageBook;
  * @since 2.1
  */
 public abstract class AbstractJoiningStrategyPane
-		<R extends ReadOnlyRelationship, S extends RelationshipStrategy> 
+		<R extends Relationship, S extends RelationshipStrategy> 
 	extends Pane<R>
 {
 	protected Control strategyDetailsComposite;

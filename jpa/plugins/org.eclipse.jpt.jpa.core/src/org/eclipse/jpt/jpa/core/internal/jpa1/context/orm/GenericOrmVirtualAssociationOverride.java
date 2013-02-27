@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 import java.util.List;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
+import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.VirtualOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAssociationOverride;
@@ -73,7 +73,7 @@ public class GenericOrmVirtualAssociationOverride
 		return this.getContextModelFactory().buildOrmVirtualOverrideRelationship(this);
 	}
 
-	public ReadOnlyRelationship resolveOverriddenRelationship() {
+	public Relationship resolveOverriddenRelationship() {
 		return this.getContainer().resolveOverriddenRelationship(this.name);
 	}
 

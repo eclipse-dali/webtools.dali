@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.TableColumn.Owner;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
+import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -216,7 +216,7 @@ public class GenericJavaVirtualOverrideRelationship
 		return this.getAssociationOverride().getMapping();
 	}
 
-	public ReadOnlyRelationship resolveOverriddenRelationship() {
+	public Relationship resolveOverriddenRelationship() {
 		return this.getAssociationOverride().resolveOverriddenRelationship();
 	}
 

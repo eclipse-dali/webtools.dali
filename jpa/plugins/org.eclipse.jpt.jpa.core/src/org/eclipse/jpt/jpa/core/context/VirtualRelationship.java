@@ -19,9 +19,9 @@ package org.eclipse.jpt.jpa.core.context;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface VirtualRelationship
-	extends ReadOnlyRelationship
+	extends Relationship
 {
 	VirtualRelationshipStrategy getStrategy();
 
-	ReadOnlyRelationship resolveOverriddenRelationship();
+	Relationship resolveOverriddenRelationship();
 }

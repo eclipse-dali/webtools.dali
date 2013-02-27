@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverrideRelationship;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
+import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.TableColumn.Owner;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
@@ -180,7 +180,7 @@ public class GenericOrmOverrideRelationship
 
 	// ********** conversions **********
 
-	public void initializeFrom(ReadOnlyRelationship oldRelationship) {
+	public void initializeFrom(Relationship oldRelationship) {
 		oldRelationship.initializeOn(this);
 	}
 

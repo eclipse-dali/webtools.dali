@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
+import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -131,7 +131,7 @@ public class JoinColumnJoiningStrategyPane
 
 	public static ModifiablePropertyValueModel<Boolean> buildUsesJoinColumnJoiningStrategyHolder(PropertyValueModel<? extends ReadOnlyJoinColumnRelationship> subjectHolder) {
 		return new PropertyAspectAdapter<ReadOnlyJoinColumnRelationship, Boolean>(
-				subjectHolder, ReadOnlyRelationship.STRATEGY_PROPERTY) {
+				subjectHolder, Relationship.STRATEGY_PROPERTY) {
 			@Override
 			protected Boolean buildValue() {
 				return Boolean.valueOf(this.buildBooleanValue());

@@ -91,7 +91,7 @@ import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.OptionalMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
+import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
@@ -682,7 +682,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			SpecifiedRelationship rr = ((RelationshipMapping) jam).getRelationship();
 			if (rr == null)
 				return;		
-			rr.addPropertyChangeListener(ReadOnlyRelationship.STRATEGY_PROPERTY, lsnr);
+			rr.addPropertyChangeListener(Relationship.STRATEGY_PROPERTY, lsnr);
 			rr.addPropertyChangeListener(OptionalMapping.SPECIFIED_OPTIONAL_PROPERTY, new AttributeMappingOptionalityChangeListener());
 			lsnrRef = new WeakReference<AttributeRelationshipReferencePropertyChangeListener>(lsnr);
 			attributeRelationshipReferenceToPropListener.put(jpa, lsnrRef);
@@ -824,7 +824,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 				SpecifiedRelationship rr = ((RelationshipMapping) jam).getRelationship();
 				if (rr == null)
 					return;			
-				rr.removePropertyChangeListener(ReadOnlyRelationship.STRATEGY_PROPERTY, lsnr);
+				rr.removePropertyChangeListener(Relationship.STRATEGY_PROPERTY, lsnr);
 			} catch (IllegalArgumentException e) {
 				//$NON-NLS-1$
 			}		

@@ -23,14 +23,14 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 2.2
  */
 public interface SpecifiedRelationship
-	extends ReadOnlyRelationship
+	extends Relationship
 {
 	SpecifiedRelationshipStrategy getStrategy();
 
 
 	// ********** conversions **********
 
-	void initializeFrom(ReadOnlyRelationship oldRelationship);
+	void initializeFrom(Relationship oldRelationship);
 
 	void initializeFromMappedByRelationship(MappedByRelationship oldRelationship);
 

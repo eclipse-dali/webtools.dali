@@ -21,7 +21,7 @@ package org.eclipse.jpt.jpa.core.context;
 public interface VirtualAssociationOverride
 	extends VirtualOverride, AssociationOverride
 {
-	ReadOnlyRelationship resolveOverriddenRelationship();
+	Relationship resolveOverriddenRelationship();
 
 	// covariant overrides
 	SpecifiedAssociationOverride convertToSpecified();
