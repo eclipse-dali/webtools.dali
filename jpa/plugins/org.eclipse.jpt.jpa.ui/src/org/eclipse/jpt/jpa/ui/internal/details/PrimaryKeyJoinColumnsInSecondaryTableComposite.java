@@ -37,7 +37,7 @@ import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
-import org.eclipse.jpt.jpa.core.context.SecondaryTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.osgi.util.NLS;
@@ -60,7 +60,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 
 	SpecifiedPrimaryKeyJoinColumn addJoinColumn(PrimaryKeyJoinColumnInSecondaryTableStateObject stateObject) {
 
-		SecondaryTable secondaryTable = (SecondaryTable) stateObject.getOwner();
+		SpecifiedSecondaryTable secondaryTable = (SpecifiedSecondaryTable) stateObject.getOwner();
 		int index = secondaryTable.getSpecifiedPrimaryKeyJoinColumnsSize();
 
 		SpecifiedPrimaryKeyJoinColumn joinColumn = secondaryTable.addSpecifiedPrimaryKeyJoinColumn(index);
@@ -173,7 +173,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 
 			public void removeSelectedItems(CollectionValueModel<SpecifiedPrimaryKeyJoinColumn> selectedItemsModel) {
 				SpecifiedPrimaryKeyJoinColumn pkJoinColumn = selectedItemsModel.iterator().next();
-				((SecondaryTable) getSubject()).removeSpecifiedPrimaryKeyJoinColumn(pkJoinColumn);
+				((SpecifiedSecondaryTable) getSubject()).removeSpecifiedPrimaryKeyJoinColumn(pkJoinColumn);
 			}
 
 			@Override
@@ -287,7 +287,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 			return;
 		}
 
-		SecondaryTable secondaryTable =  (SecondaryTable) this.getSubject();
+		SpecifiedSecondaryTable secondaryTable =  (SpecifiedSecondaryTable) this.getSubject();
 
 		this.setPopulating(true);
 

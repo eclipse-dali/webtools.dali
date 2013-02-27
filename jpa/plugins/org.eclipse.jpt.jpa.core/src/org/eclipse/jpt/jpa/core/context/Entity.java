@@ -88,7 +88,7 @@ public interface Entity
 	 * Return a list iterator of the specified secondary tables.
 	 * This will not be null.
 	 */
-	ListIterable<? extends SecondaryTable> getSpecifiedSecondaryTables();
+	ListIterable<? extends SpecifiedSecondaryTable> getSpecifiedSecondaryTables();
 		String SPECIFIED_SECONDARY_TABLES_LIST = "specifiedSecondaryTables"; //$NON-NLS-1$
 
 	/**
@@ -100,13 +100,13 @@ public interface Entity
 	 * Add a specified secondary table to the entity return the object
 	 * representing it.
 	 */
-	SecondaryTable addSpecifiedSecondaryTable();
+	SpecifiedSecondaryTable addSpecifiedSecondaryTable();
 
 	/**
 	 * Add a specified secondary table to the entity return the object
 	 * representing it.
 	 */
-	SecondaryTable addSpecifiedSecondaryTable(int index);
+	SpecifiedSecondaryTable addSpecifiedSecondaryTable(int index);
 
 	/**
 	 * Remove the specified secondary table from the entity.
@@ -116,7 +116,7 @@ public interface Entity
 	/**
 	 * Remove the specified secondary table at the index from the entity.
 	 */
-	void removeSpecifiedSecondaryTable(SecondaryTable secondaryTable);
+	void removeSpecifiedSecondaryTable(SpecifiedSecondaryTable secondaryTable);
 
 	/**
 	 * Move the specified secondary table from the source index to the target index.

@@ -55,7 +55,7 @@ import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
-import org.eclipse.jpt.jpa.core.context.SecondaryTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
@@ -429,7 +429,7 @@ public abstract class AbstractJavaEntity
 		return (SecondaryTableAnnotation) this.getJavaResourceType().addAnnotation(index, SecondaryTableAnnotation.ANNOTATION_NAME);
 	}
 
-	public void removeSpecifiedSecondaryTable(SecondaryTable secondaryTable) {
+	public void removeSpecifiedSecondaryTable(SpecifiedSecondaryTable secondaryTable) {
 		this.removeSpecifiedSecondaryTable(this.specifiedSecondaryTableContainer.indexOfContextElement((JavaSecondaryTable) secondaryTable));
 	}
 

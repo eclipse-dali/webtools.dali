@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.java;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.SecondaryTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.resource.java.SecondaryTableAnnotation;
 
 /**
@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.resource.java.SecondaryTableAnnotation;
  * @since 2.0
  */
 public interface JavaSecondaryTable
-	extends SecondaryTable, JavaTable
+	extends SpecifiedSecondaryTable, JavaTable
 {
 	JavaEntity getParent();
 

@@ -27,5 +27,5 @@ public interface VirtualSecondaryTable
 	ListIterable<? extends VirtualPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns();
 	VirtualPrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn();
 
-	SecondaryTable getOverriddenTable();
+	SpecifiedSecondaryTable getOverriddenTable();
 }

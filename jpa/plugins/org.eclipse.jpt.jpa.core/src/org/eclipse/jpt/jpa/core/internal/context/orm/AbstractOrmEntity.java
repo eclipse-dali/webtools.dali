@@ -60,7 +60,7 @@ import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
-import org.eclipse.jpt.jpa.core.context.SecondaryTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
@@ -540,7 +540,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		return OrmFactory.eINSTANCE.createXmlSecondaryTable();
 	}
 
-	public void removeSpecifiedSecondaryTable(SecondaryTable secondaryTable) {
+	public void removeSpecifiedSecondaryTable(SpecifiedSecondaryTable secondaryTable) {
 		this.removeSpecifiedSecondaryTable(this.specifiedSecondaryTableContainer.indexOfContextElement((OrmSecondaryTable) secondaryTable));
 	}
 

@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.Table;
-import org.eclipse.jpt.jpa.core.context.SecondaryTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
@@ -83,11 +83,11 @@ public class JavaSecondaryTablesComposite extends AbstractSecondaryTablesComposi
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		ModifiableCollectionValueModel<SecondaryTable> selectedSecondaryTablesModel =
+		ModifiableCollectionValueModel<SpecifiedSecondaryTable> selectedSecondaryTablesModel =
 			buildSelectedSecondaryTablesModel();
 
 		// Secondary Tables add/remove list pane
-		new AddRemoveListPane<Entity, SecondaryTable>(
+		new AddRemoveListPane<Entity, SpecifiedSecondaryTable>(
 			this,
 			container,
 			buildSecondaryTablesAdapter(),

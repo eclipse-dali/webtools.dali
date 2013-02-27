@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
-import org.eclipse.jpt.jpa.core.context.SecondaryTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlSecondaryTable;
 
 /**
@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlSecondaryTable;
  * @since 2.0
  */
 public interface OrmSecondaryTable
-	extends SecondaryTable, OrmTable
+	extends SpecifiedSecondaryTable, OrmTable
 {
 	OrmEntity getParent();
 

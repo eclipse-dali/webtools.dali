@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
-import org.eclipse.jpt.jpa.core.context.SecondaryTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
@@ -205,7 +205,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		assertEquals(TYPE_NAME, ormEntity.getTable().getDefaultName());
 		
-		SecondaryTable javaSecondaryTable = ormEntity.getJavaTypeMapping().addSpecifiedSecondaryTable(0);
+		SpecifiedSecondaryTable javaSecondaryTable = ormEntity.getJavaTypeMapping().addSpecifiedSecondaryTable(0);
 		javaSecondaryTable.setSpecifiedName("FOO");
 		javaSecondaryTable.setSpecifiedSchema("BAR");
 		
@@ -257,7 +257,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		getEntityMappings().setSpecifiedSchema("BAR");
 		assertEquals("BAR", ormSecondaryTable.getDefaultSchema());
 		
-		SecondaryTable javaSecondaryTable = ormEntity.getJavaTypeMapping().addSpecifiedSecondaryTable(0);
+		SpecifiedSecondaryTable javaSecondaryTable = ormEntity.getJavaTypeMapping().addSpecifiedSecondaryTable(0);
 		javaSecondaryTable.setSpecifiedName("FOO");
 		javaSecondaryTable.setSpecifiedSchema("JAVA_SCHEMA");
 		assertEquals("BAR", ormSecondaryTable.getDefaultSchema()); //schema is not defaulted from underlying java
@@ -320,7 +320,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		assertEquals(TYPE_NAME, ormEntity.getTable().getDefaultName());
 		
-		SecondaryTable javaSecondaryTable = ormEntity.getJavaTypeMapping().addSpecifiedSecondaryTable(0);
+		SpecifiedSecondaryTable javaSecondaryTable = ormEntity.getJavaTypeMapping().addSpecifiedSecondaryTable(0);
 		javaSecondaryTable.setSpecifiedName("FOO");
 		javaSecondaryTable.setSpecifiedCatalog("BAR");
 		
@@ -350,7 +350,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		getEntityMappings().setSpecifiedCatalog("BAR");
 		assertEquals("BAR", ormSecondaryTable.getDefaultCatalog());
 		
-		SecondaryTable javaSecondaryTable = ormEntity.getJavaTypeMapping().addSpecifiedSecondaryTable(0);
+		SpecifiedSecondaryTable javaSecondaryTable = ormEntity.getJavaTypeMapping().addSpecifiedSecondaryTable(0);
 		javaSecondaryTable.setSpecifiedName("FOO");
 		javaSecondaryTable.setSpecifiedCatalog("JAVA_CATALOG");
 		assertEquals("BAR", ormSecondaryTable.getDefaultCatalog()); //schema is not defaulted from underlying java

@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.SingleElementListIterato
 import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
-import org.eclipse.jpt.jpa.core.context.SecondaryTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.db.Table;
 
 /**
@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * secondary table.
  *
  * @see SpecifiedPrimaryKeyJoinColumn
- * @see SecondaryTable
+ * @see SpecifiedSecondaryTable
  * @see PrimaryKeyJoinColumnInSecondaryTableDialog
  */
 public class PrimaryKeyJoinColumnInSecondaryTableStateObject

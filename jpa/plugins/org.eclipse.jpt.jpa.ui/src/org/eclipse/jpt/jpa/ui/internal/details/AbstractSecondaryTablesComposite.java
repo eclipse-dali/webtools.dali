@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
-import org.eclipse.jpt.jpa.core.context.SecondaryTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmEntityComposite;
@@ -66,12 +66,12 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 		super(parentPane, parent);
 	}
 
-	protected SecondaryTable addSecondaryTableFromDialog(SecondaryTableDialog dialog) {
+	protected SpecifiedSecondaryTable addSecondaryTableFromDialog(SecondaryTableDialog dialog) {
 		if (dialog.open() != Window.OK) {
 			return null;
 		}
 
-		SecondaryTable secondaryTable = this.getSubject().addSpecifiedSecondaryTable();
+		SpecifiedSecondaryTable secondaryTable = this.getSubject().addSpecifiedSecondaryTable();
 		secondaryTable.setSpecifiedName(dialog.getSelectedTable());
 		secondaryTable.setSpecifiedCatalog(dialog.getSelectedCatalog());
 		secondaryTable.setSpecifiedSchema(dialog.getSelectedSchema());
@@ -79,14 +79,14 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 		return secondaryTable;
 	}
 
-	protected ModifiableCollectionValueModel<SecondaryTable> buildSelectedSecondaryTablesModel() {
-		return new SimpleCollectionValueModel<SecondaryTable>();
+	protected ModifiableCollectionValueModel<SpecifiedSecondaryTable> buildSelectedSecondaryTablesModel() {
+		return new SimpleCollectionValueModel<SpecifiedSecondaryTable>();
 	}
 
-	protected PropertyValueModel<SecondaryTable> buildSelectedSecondaryTableModel(CollectionValueModel<SecondaryTable> selectedSecondaryTablesModel) {
-		return new CollectionPropertyValueModelAdapter<SecondaryTable, SecondaryTable>(selectedSecondaryTablesModel) {
+	protected PropertyValueModel<SpecifiedSecondaryTable> buildSelectedSecondaryTableModel(CollectionValueModel<SpecifiedSecondaryTable> selectedSecondaryTablesModel) {
+		return new CollectionPropertyValueModelAdapter<SpecifiedSecondaryTable, SpecifiedSecondaryTable>(selectedSecondaryTablesModel) {
 			@Override
-			protected SecondaryTable buildValue() {
+			protected SpecifiedSecondaryTable buildValue() {
 				if (this.collectionModel.size() == 1) {
 					return this.collectionModel.iterator().next();
 				}
@@ -113,10 +113,10 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 		return new SecondaryTableDialog(getShell(), getSubject().getJpaProject(), getSubject().getTable().getDefaultCatalog(), getSubject().getTable().getDefaultSchema());
 	}
 	
-	protected AddRemoveListPane.Adapter<SecondaryTable> buildSecondaryTablesAdapter() {
-		return new AbstractAdapter<SecondaryTable>() {
+	protected AddRemoveListPane.Adapter<SpecifiedSecondaryTable> buildSecondaryTablesAdapter() {
+		return new AbstractAdapter<SpecifiedSecondaryTable>() {
 
-			public SecondaryTable addNewItem() {
+			public SpecifiedSecondaryTable addNewItem() {
 				SecondaryTableDialog dialog = buildSecondaryTableDialogForAdd();
 				return addSecondaryTableFromDialog(dialog);
 			}
@@ -132,16 +132,16 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 			}
 
 			@Override
-			public void optionOnSelection(CollectionValueModel<SecondaryTable> selectedItemsModel) {
+			public void optionOnSelection(CollectionValueModel<SpecifiedSecondaryTable> selectedItemsModel) {
 				//assume only 1 item in the list based on the optionalButtonEnabledModel
-				SecondaryTable secondaryTable = selectedItemsModel.iterator().next();
+				SpecifiedSecondaryTable secondaryTable = selectedItemsModel.iterator().next();
 				SecondaryTableDialog dialog = new SecondaryTableDialog(getShell(), getSubject().getJpaProject(), secondaryTable);
 				editSecondaryTableFromDialog(dialog, secondaryTable);
 			}
 
-			public void removeSelectedItems(CollectionValueModel<SecondaryTable> selectedItemsModel) {
+			public void removeSelectedItems(CollectionValueModel<SpecifiedSecondaryTable> selectedItemsModel) {
 				//assume only 1 item since remove button is disabled otherwise
-				SecondaryTable secondaryTable = selectedItemsModel.iterator().next();
+				SpecifiedSecondaryTable secondaryTable = selectedItemsModel.iterator().next();
 				getSubject().removeSpecifiedSecondaryTable(secondaryTable);
 			}
 
@@ -149,17 +149,17 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 			 * If any of the selected secondary tables are virtual, the Remove button is disabled
 			 */
 			@Override
-			public PropertyValueModel<Boolean> buildRemoveButtonEnabledModel(CollectionValueModel<SecondaryTable> selectedItemsModel) {
+			public PropertyValueModel<Boolean> buildRemoveButtonEnabledModel(CollectionValueModel<SpecifiedSecondaryTable> selectedItemsModel) {
 				return buildOptionalButtonEnabledModel(selectedItemsModel);
 			}
 
 			@Override
-			public PropertyValueModel<Boolean> buildOptionalButtonEnabledModel(CollectionValueModel<SecondaryTable> selectedItemsModel) {
-				return new CollectionPropertyValueModelAdapter<Boolean, SecondaryTable>(selectedItemsModel) {
+			public PropertyValueModel<Boolean> buildOptionalButtonEnabledModel(CollectionValueModel<SpecifiedSecondaryTable> selectedItemsModel) {
+				return new CollectionPropertyValueModelAdapter<Boolean, SpecifiedSecondaryTable>(selectedItemsModel) {
 					@Override
 					protected Boolean buildValue() {
 						if (this.collectionModel.size() == 1) {
-							SecondaryTable secondaryTable = this.collectionModel.iterator().next();
+							SpecifiedSecondaryTable secondaryTable = this.collectionModel.iterator().next();
 							return Boolean.valueOf(!secondaryTable.isVirtual());				
 						}
 						return Boolean.FALSE;
@@ -169,7 +169,7 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 		};
 	}
 
-	protected void editSecondaryTableFromDialog(SecondaryTableDialog dialog, SecondaryTable secondaryTable) {
+	protected void editSecondaryTableFromDialog(SecondaryTableDialog dialog, SpecifiedSecondaryTable secondaryTable) {
 		if (dialog.open() != Window.OK) {
 			return;
 		}

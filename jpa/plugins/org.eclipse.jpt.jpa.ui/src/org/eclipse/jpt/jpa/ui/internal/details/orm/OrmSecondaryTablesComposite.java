@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
 import org.eclipse.jpt.jpa.core.context.Table;
-import org.eclipse.jpt.jpa.core.context.SecondaryTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualSecondaryTable;
@@ -119,7 +119,7 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		ModifiableCollectionValueModel<SecondaryTable> selectedSecondaryTablesModel =
+		ModifiableCollectionValueModel<SpecifiedSecondaryTable> selectedSecondaryTablesModel =
 			buildSelectedSecondaryTablesModel();
 
 		ModifiablePropertyValueModel<Boolean> defineInXmlModel =
@@ -134,7 +134,7 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 		);
 
 		// Secondary Tables add/remove list pane
-		new AddRemoveListPane<Entity, SecondaryTable>(
+		new AddRemoveListPane<Entity, SpecifiedSecondaryTable>(
 			this,
 			container,
 			buildSecondaryTablesAdapter(),

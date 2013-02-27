@@ -41,7 +41,7 @@ import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.Table;
-import org.eclipse.jpt.jpa.core.context.SecondaryTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.VirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.VirtualAttributeOverride;
@@ -928,19 +928,19 @@ public class JavaEntityTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		SecondaryTable specifiedSecondaryTable = getJavaEntity().addSpecifiedSecondaryTable(0);
+		SpecifiedSecondaryTable specifiedSecondaryTable = getJavaEntity().addSpecifiedSecondaryTable(0);
 		specifiedSecondaryTable.setSpecifiedName("FOO");
 		specifiedSecondaryTable.setSpecifiedCatalog("CATALOG");
 		specifiedSecondaryTable.setSpecifiedSchema("SCHEMA");
 		specifiedSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("PK_NAME");
 		
 		//add another specified secondary table, pkJoinColumns from first should be saved.
-		SecondaryTable specifiedSecondaryTable2 = getJavaEntity().addSpecifiedSecondaryTable(1);
+		SpecifiedSecondaryTable specifiedSecondaryTable2 = getJavaEntity().addSpecifiedSecondaryTable(1);
 		specifiedSecondaryTable2.setSpecifiedName("BAR");
 		
 		
 		Iterator<JavaSecondaryTable> secondaryTables = getJavaEntity().getSecondaryTables().iterator();
-		SecondaryTable secondaryTable = secondaryTables.next();
+		SpecifiedSecondaryTable secondaryTable = secondaryTables.next();
 		assertEquals(secondaryTable, specifiedSecondaryTable);
 		assertEquals("FOO", secondaryTable.getName());
 		assertEquals("CATALOG", secondaryTable.getCatalog());
@@ -1099,8 +1099,8 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals(3, IterableTools.size(getJavaEntity().getAssociatedTables()));
 		Iterator<Table> associatedTables = getJavaEntity().getAssociatedTables().iterator();
 		Table table1 = associatedTables.next();
-		SecondaryTable table2 = (SecondaryTable) associatedTables.next();
-		SecondaryTable table3 = (SecondaryTable) associatedTables.next();
+		SpecifiedSecondaryTable table2 = (SpecifiedSecondaryTable) associatedTables.next();
+		SpecifiedSecondaryTable table3 = (SpecifiedSecondaryTable) associatedTables.next();
 		assertEquals(TYPE_NAME, table1.getName());
 		assertEquals("foo", table2.getName());
 		assertEquals("bar", table3.getName());
@@ -1119,8 +1119,8 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals(3, IterableTools.size(rootEntity.getAllAssociatedTables()));
 		Iterator<Table> associatedTables = rootEntity.getAllAssociatedTables().iterator();
 		Table table1 = associatedTables.next();
-		SecondaryTable table2 = (SecondaryTable) associatedTables.next();
-		SecondaryTable table3 = (SecondaryTable) associatedTables.next();
+		SpecifiedSecondaryTable table2 = (SpecifiedSecondaryTable) associatedTables.next();
+		SpecifiedSecondaryTable table3 = (SpecifiedSecondaryTable) associatedTables.next();
 		assertEquals(TYPE_NAME, table1.getName());
 		assertEquals("foo", table2.getName());
 		assertEquals("bar", table3.getName());

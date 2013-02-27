@@ -13,7 +13,7 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.SecondaryTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.db.Database;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
@@ -47,7 +47,7 @@ public class SecondaryTableDialog extends Dialog {
 	/**
 	 * when creating a new SecondaryTable, 'secondaryTable' will be null
 	 */
-	private final SecondaryTable secondaryTable;
+	private final SpecifiedSecondaryTable secondaryTable;
 	private final String defaultCatalog;
 	private final String defaultSchema;
 	
@@ -73,14 +73,14 @@ public class SecondaryTableDialog extends Dialog {
 	/**
 	 * Use this constructor to edit an existing secondary table
 	 */
-	public SecondaryTableDialog(Shell parent, JpaProject jpaProject, SecondaryTable secondaryTable) {
+	public SecondaryTableDialog(Shell parent, JpaProject jpaProject, SpecifiedSecondaryTable secondaryTable) {
 		this(parent, jpaProject, secondaryTable, secondaryTable.getDefaultCatalog(), secondaryTable.getDefaultSchema());
 	}
 
 	/**
 	 * internal constructor
 	 */
-	protected SecondaryTableDialog(Shell parent, JpaProject jpaProject, SecondaryTable secondaryTable, String defaultCatalog, String defaultSchema) {
+	protected SecondaryTableDialog(Shell parent, JpaProject jpaProject, SpecifiedSecondaryTable secondaryTable, String defaultCatalog, String defaultSchema) {
 		super(parent);
 		this.jpaProject = jpaProject;
 		this.secondaryTable = secondaryTable;
