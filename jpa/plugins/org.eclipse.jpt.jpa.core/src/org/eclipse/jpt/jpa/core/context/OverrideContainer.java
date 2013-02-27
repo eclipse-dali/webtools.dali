@@ -84,7 +84,7 @@ public interface OverrideContainer
 
 	JptValidator buildOverrideValidator(Override_ override);
 
-	JptValidator buildColumnValidator(Override_ override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner);
+	JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner owner);
 
 
 	// ********** overrides **********
@@ -228,6 +228,6 @@ public interface OverrideContainer
 
 		JptValidator buildOverrideValidator(Override_ override, OverrideContainer container);
 
-		JptValidator buildColumnValidator(Override_ override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner columnOwner);
+		JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner columnOwner);
 	}
 }

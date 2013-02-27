@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
+import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlColumn;
 
 /**
@@ -38,7 +38,7 @@ public interface OrmSpecifiedColumn
 	 * (e.g. basic mappings and attribute overrides)
 	 */
 	interface Owner
-		extends ReadOnlyBaseColumn.Owner
+		extends BaseColumn.Owner
 	{
 		XmlColumn getXmlColumn();
 		XmlColumn buildXmlColumn();

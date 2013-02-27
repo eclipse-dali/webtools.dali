@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
+import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.TableColumn.Owner;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedOverride;
@@ -66,7 +66,7 @@ public abstract class AbstractOrmVirtualOverride<P extends OrmOverrideContainer>
 		return this.getContainer().getDefaultTableName();
 	}
 
-	public JptValidator buildColumnValidator(ReadOnlyBaseColumn column, Owner owner) {
+	public JptValidator buildColumnValidator(BaseColumn column, Owner owner) {
 		return this.getContainer().buildColumnValidator(this, column, owner);
 	}
 

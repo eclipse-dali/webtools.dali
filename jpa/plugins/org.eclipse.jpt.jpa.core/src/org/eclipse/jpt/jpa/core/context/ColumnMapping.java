@@ -22,7 +22,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 2.0
  */
 public interface ColumnMapping
-	extends AttributeMapping, ReadOnlyBaseColumn.Owner
+	extends AttributeMapping, BaseColumn.Owner
 {
 	SpecifiedColumn getColumn();
 } 

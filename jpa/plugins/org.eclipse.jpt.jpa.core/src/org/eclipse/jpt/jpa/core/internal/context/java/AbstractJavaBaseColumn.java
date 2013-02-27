@@ -13,14 +13,14 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
+import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedBaseColumn;
 import org.eclipse.jpt.jpa.core.resource.java.BaseColumnAnnotation;
 
 /**
  * Java column or join column
  */
-public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O extends ReadOnlyBaseColumn.Owner>
+public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O extends BaseColumn.Owner>
 	extends AbstractJavaNamedColumn<JpaContextModel, A, O>
 	implements JavaSpecifiedBaseColumn
 {
@@ -309,7 +309,7 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 
 	// ********** misc **********
 
-	protected void initializeFrom(ReadOnlyBaseColumn oldColumn) {
+	protected void initializeFrom(BaseColumn oldColumn) {
 		super.initializeFrom(oldColumn);
 		this.setSpecifiedTableName(oldColumn.getSpecifiedTableName());
 		this.setSpecifiedUnique(oldColumn.getSpecifiedUnique());
@@ -318,7 +318,7 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 		this.setSpecifiedUpdatable(oldColumn.getSpecifiedUpdatable());
 	}
 
-	protected void initializeFromVirtual(ReadOnlyBaseColumn virtualColumn) {
+	protected void initializeFromVirtual(BaseColumn virtualColumn) {
 		super.initializeFromVirtual(virtualColumn);
 		this.setSpecifiedTableName(virtualColumn.getTableName());
 		// ignore other settings?

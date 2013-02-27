@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import java.util.List;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
+import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualColumn;
@@ -93,7 +93,7 @@ public class GenericJavaVirtualAttributeOverride
 	}
 
 	public JptValidator buildColumnValidator(NamedColumn col) {
-		return this.getContainer().buildColumnValidator(this, (ReadOnlyBaseColumn) col, this);
+		return this.getContainer().buildColumnValidator(this, (BaseColumn) col, this);
 	}
 
 

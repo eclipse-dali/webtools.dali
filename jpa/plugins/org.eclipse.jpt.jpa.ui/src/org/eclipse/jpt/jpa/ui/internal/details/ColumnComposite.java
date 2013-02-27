@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
+import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.TableColumn;
@@ -133,7 +133,7 @@ public class ColumnComposite
 	}
 	
 	ModifiablePropertyValueModel<Boolean> buildInsertableHolder() {
-		return new PropertyAspectAdapter<ReadOnlyColumn, Boolean>(getSubjectHolder(), ReadOnlyBaseColumn.SPECIFIED_INSERTABLE_PROPERTY) {
+		return new PropertyAspectAdapter<ReadOnlyColumn, Boolean>(getSubjectHolder(), BaseColumn.SPECIFIED_INSERTABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSpecifiedInsertable();
@@ -162,8 +162,8 @@ public class ColumnComposite
 	PropertyValueModel<Boolean> buildDefaultInsertableHolder() {
 		return new PropertyAspectAdapter<ReadOnlyColumn, Boolean>(
 				getSubjectHolder(),
-				ReadOnlyBaseColumn.SPECIFIED_INSERTABLE_PROPERTY,
-				ReadOnlyBaseColumn.DEFAULT_INSERTABLE_PROPERTY) {
+				BaseColumn.SPECIFIED_INSERTABLE_PROPERTY,
+				BaseColumn.DEFAULT_INSERTABLE_PROPERTY) {
 			
 			@Override
 			protected Boolean buildValue_() {
@@ -178,7 +178,7 @@ public class ColumnComposite
 	ModifiablePropertyValueModel<Boolean> buildNullableHolder() {
 		return new PropertyAspectAdapter<ReadOnlyColumn, Boolean>(
 				getSubjectHolder(),
-				ReadOnlyBaseColumn.SPECIFIED_NULLABLE_PROPERTY) {
+				BaseColumn.SPECIFIED_NULLABLE_PROPERTY) {
 			
 			@Override
 			protected Boolean buildValue_() {
@@ -208,8 +208,8 @@ public class ColumnComposite
 	PropertyValueModel<Boolean> buildDefaultNullableHolder() {
 		return new PropertyAspectAdapter<ReadOnlyColumn, Boolean>(
 				getSubjectHolder(),
-				ReadOnlyBaseColumn.SPECIFIED_NULLABLE_PROPERTY,
-				ReadOnlyBaseColumn.DEFAULT_NULLABLE_PROPERTY) {
+				BaseColumn.SPECIFIED_NULLABLE_PROPERTY,
+				BaseColumn.DEFAULT_NULLABLE_PROPERTY) {
 			
 			@Override
 			protected Boolean buildValue_() {
@@ -228,8 +228,8 @@ public class ColumnComposite
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(ReadOnlyBaseColumn.DEFAULT_TABLE_NAME_PROPERTY);
-				propertyNames.add(ReadOnlyBaseColumn.SPECIFIED_TABLE_NAME_PROPERTY);
+				propertyNames.add(BaseColumn.DEFAULT_TABLE_NAME_PROPERTY);
+				propertyNames.add(BaseColumn.SPECIFIED_TABLE_NAME_PROPERTY);
 			}
 			
 			@Override
@@ -276,7 +276,7 @@ public class ColumnComposite
 	ModifiablePropertyValueModel<Boolean> buildUniqueHolder() {
 		return new PropertyAspectAdapter<ReadOnlyColumn, Boolean>(
 				getSubjectHolder(),
-				ReadOnlyBaseColumn.SPECIFIED_UNIQUE_PROPERTY) {
+				BaseColumn.SPECIFIED_UNIQUE_PROPERTY) {
 			
 			@Override
 			protected Boolean buildValue_() {
@@ -308,8 +308,8 @@ public class ColumnComposite
 	PropertyValueModel<Boolean> buildDefaultUniqueHolder() {
 		return new PropertyAspectAdapter<ReadOnlyColumn, Boolean>(
 				getSubjectHolder(),
-				ReadOnlyBaseColumn.SPECIFIED_UNIQUE_PROPERTY,
-				ReadOnlyBaseColumn.DEFAULT_UNIQUE_PROPERTY) {
+				BaseColumn.SPECIFIED_UNIQUE_PROPERTY,
+				BaseColumn.DEFAULT_UNIQUE_PROPERTY) {
 			
 			@Override
 			protected Boolean buildValue_() {
@@ -324,8 +324,8 @@ public class ColumnComposite
 	ModifiablePropertyValueModel<Boolean> buildUpdatableHolder() {
 		return new PropertyAspectAdapter<ReadOnlyColumn, Boolean>(
 				getSubjectHolder(),
-				ReadOnlyBaseColumn.DEFAULT_UPDATABLE_PROPERTY,
-				ReadOnlyBaseColumn.SPECIFIED_UPDATABLE_PROPERTY) {
+				BaseColumn.DEFAULT_UPDATABLE_PROPERTY,
+				BaseColumn.SPECIFIED_UPDATABLE_PROPERTY) {
 			
 			@Override
 			protected Boolean buildValue_() {
@@ -357,8 +357,8 @@ public class ColumnComposite
 	PropertyValueModel<Boolean> buildDefaultUpdatableHolder() {
 		return new PropertyAspectAdapter<ReadOnlyColumn, Boolean>(
 				getSubjectHolder(),
-				ReadOnlyBaseColumn.SPECIFIED_UPDATABLE_PROPERTY,
-				ReadOnlyBaseColumn.DEFAULT_UPDATABLE_PROPERTY) {
+				BaseColumn.SPECIFIED_UPDATABLE_PROPERTY,
+				BaseColumn.DEFAULT_UPDATABLE_PROPERTY) {
 			
 			@Override
 			protected Boolean buildValue_() {

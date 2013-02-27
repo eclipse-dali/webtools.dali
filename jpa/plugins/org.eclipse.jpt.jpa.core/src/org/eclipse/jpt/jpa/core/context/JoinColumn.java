@@ -19,14 +19,14 @@ package org.eclipse.jpt.jpa.core.context;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface JoinColumn
-	extends BaseJoinColumn, ReadOnlyBaseColumn
+	extends BaseJoinColumn, BaseColumn
 {
 	/**
 	 * Interface allowing columns to be used in multiple places
 	 * (e.g. basic mappings and attribute overrides).
 	 */
 	interface Owner
-		extends BaseJoinColumn.Owner, ReadOnlyBaseColumn.Owner
+		extends BaseJoinColumn.Owner, BaseColumn.Owner
 	{
 		/**
 		 * The target of the relationship will usually be the target entity.

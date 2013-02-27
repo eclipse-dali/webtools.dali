@@ -52,7 +52,7 @@ public interface ReadOnlyOverrideRelationship
 
 	String getDefaultTableName();
 
-	JptValidator buildColumnValidator(ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner);
+	JptValidator buildColumnValidator(BaseColumn column, BaseColumn.Owner owner);
 
 	void initializeOnSpecified(OverrideRelationship specifiedRelationship);
 }

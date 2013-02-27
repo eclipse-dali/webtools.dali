@@ -30,7 +30,7 @@ public interface VirtualColumn
 	 * Interface allowing the virtual column to be get the column it overrides.
 	 */
 	interface Owner
-		extends ReadOnlyBaseColumn.Owner
+		extends BaseColumn.Owner
 	{
 		/**
 		 * Return the column overridden by the virtual column.

@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
+import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
@@ -25,7 +25,7 @@ public class AttributeOverrideColumnValidator
 
 	public AttributeOverrideColumnValidator(
 				AttributeOverride override,
-				ReadOnlyBaseColumn column,
+				BaseColumn column,
 				TableDescriptionProvider message) {
 		super(column, message);
 		this.override = override;
@@ -34,7 +34,7 @@ public class AttributeOverrideColumnValidator
 	public AttributeOverrideColumnValidator(
 				PersistentAttribute persistentAttribute,
 				AttributeOverride override,
-				ReadOnlyBaseColumn column,
+				BaseColumn column,
 				TableDescriptionProvider message) {
 		super(persistentAttribute, column, message);
 		this.override = override;

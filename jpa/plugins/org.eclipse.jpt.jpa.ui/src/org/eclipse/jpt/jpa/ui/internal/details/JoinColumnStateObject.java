@@ -14,7 +14,7 @@ import java.util.ListIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyListIterator;
 import org.eclipse.jpt.jpa.core.context.SpecifiedBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
+import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 
@@ -58,7 +58,7 @@ public abstract class JoinColumnStateObject
 			return joinColumn.isDefaultInsertable();
 		}
 
-		return ReadOnlyBaseColumn.DEFAULT_INSERTABLE;
+		return BaseColumn.DEFAULT_INSERTABLE;
 	}
 
 	public boolean isDefaultNullable() {
@@ -69,7 +69,7 @@ public abstract class JoinColumnStateObject
 			return joinColumn.isDefaultNullable();
 		}
 
-		return ReadOnlyBaseColumn.DEFAULT_NULLABLE;
+		return BaseColumn.DEFAULT_NULLABLE;
 	}
 
 	public boolean isDefaultUnique() {
@@ -80,7 +80,7 @@ public abstract class JoinColumnStateObject
 			return joinColumn.isDefaultUnique();
 		}
 
-		return ReadOnlyBaseColumn.DEFAULT_UNIQUE;
+		return BaseColumn.DEFAULT_UNIQUE;
 	}
 
 	public boolean isDefaultUpdatable() {
@@ -91,7 +91,7 @@ public abstract class JoinColumnStateObject
 			return joinColumn.isDefaultUpdatable();
 		}
 
-		return ReadOnlyBaseColumn.DEFAULT_UPDATABLE;
+		return BaseColumn.DEFAULT_UPDATABLE;
 	}
 
 	public Boolean getInsertable() {

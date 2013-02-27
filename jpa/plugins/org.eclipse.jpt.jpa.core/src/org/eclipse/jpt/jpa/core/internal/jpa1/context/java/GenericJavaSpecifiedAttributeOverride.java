@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
+import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
@@ -95,7 +95,7 @@ public class GenericJavaSpecifiedAttributeOverride
 	}
 
 	public JptValidator buildColumnValidator(NamedColumn col) {
-		return this.getContainer().buildColumnValidator(this, (ReadOnlyBaseColumn) col, this);
+		return this.getContainer().buildColumnValidator(this, (BaseColumn) col, this);
 	}
 
 	public CompleteColumnAnnotation getColumnAnnotation() {

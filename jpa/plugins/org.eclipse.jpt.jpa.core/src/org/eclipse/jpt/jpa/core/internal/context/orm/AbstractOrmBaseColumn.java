@@ -11,14 +11,14 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
+import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedBaseColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlBaseColumn;
 
 /**
  * <code>orm.xml</code> column or join column
  */
-public abstract class AbstractOrmBaseColumn<X extends XmlBaseColumn, O extends ReadOnlyBaseColumn.Owner>
+public abstract class AbstractOrmBaseColumn<X extends XmlBaseColumn, O extends BaseColumn.Owner>
 	extends AbstractOrmNamedColumn<JpaContextModel, X, O>
 	implements OrmSpecifiedBaseColumn
 {
@@ -258,7 +258,7 @@ public abstract class AbstractOrmBaseColumn<X extends XmlBaseColumn, O extends R
 
 	// ********** misc **********
 
-	protected void initializeFrom(ReadOnlyBaseColumn oldColumn) {
+	protected void initializeFrom(BaseColumn oldColumn) {
 		super.initializeFrom(oldColumn);
 		this.setSpecifiedTableName(oldColumn.getSpecifiedTableName());
 		this.setSpecifiedUnique(oldColumn.getSpecifiedUnique());
@@ -267,7 +267,7 @@ public abstract class AbstractOrmBaseColumn<X extends XmlBaseColumn, O extends R
 		this.setSpecifiedUpdatable(oldColumn.getSpecifiedUpdatable());
 	}
 
-	protected void initializeFromVirtual(ReadOnlyBaseColumn virtualColumn) {
+	protected void initializeFromVirtual(BaseColumn virtualColumn) {
 		super.initializeFromVirtual(virtualColumn);
 		this.setSpecifiedTableName(virtualColumn.getTableName());
 		// ignore other settings?

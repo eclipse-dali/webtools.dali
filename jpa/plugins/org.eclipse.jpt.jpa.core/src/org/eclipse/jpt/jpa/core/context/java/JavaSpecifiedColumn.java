@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.java;
 
 import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
+import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.resource.java.CompleteColumnAnnotation;
 
 /**
@@ -38,7 +38,7 @@ public interface JavaSpecifiedColumn
 	 * (e.g. basic mappings and attribute overrides)
 	 */
 	interface Owner
-		extends ReadOnlyBaseColumn.Owner
+		extends BaseColumn.Owner
 	{
 		CompleteColumnAnnotation getColumnAnnotation();
 		void removeColumnAnnotation();

@@ -11,10 +11,10 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
+import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualBaseColumn;
 
-public abstract class AbstractOrmVirtualBaseColumn<O extends ReadOnlyBaseColumn.Owner, C extends ReadOnlyBaseColumn>
+public abstract class AbstractOrmVirtualBaseColumn<O extends BaseColumn.Owner, C extends BaseColumn>
 	extends AbstractOrmVirtualNamedColumn<O, C>
 	implements VirtualBaseColumn
 {
