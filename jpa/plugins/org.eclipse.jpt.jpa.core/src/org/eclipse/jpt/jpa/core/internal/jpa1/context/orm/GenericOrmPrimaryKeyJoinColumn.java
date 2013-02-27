@@ -27,7 +27,7 @@ public class GenericOrmPrimaryKeyJoinColumn
 	extends AbstractOrmNamedColumn<JpaContextModel, XmlPrimaryKeyJoinColumn, BaseJoinColumn.Owner>
 	implements OrmSpecifiedPrimaryKeyJoinColumn
 {
-	/** @see org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmNamedColumn#AbstractOrmNamedColumn(JpaContextModel, org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.orm.XmlNamedColumn) */
+	/** @see org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmNamedColumn#AbstractOrmNamedColumn(JpaContextModel, org.eclipse.jpt.jpa.core.context.NamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.orm.XmlNamedColumn) */
 	protected /* final */ XmlPrimaryKeyJoinColumn xmlColumn;  // null for default pk join columns
 
 	protected String specifiedReferencedColumnName;

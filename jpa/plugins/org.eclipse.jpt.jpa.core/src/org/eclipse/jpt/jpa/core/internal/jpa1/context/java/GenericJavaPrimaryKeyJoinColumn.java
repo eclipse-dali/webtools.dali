@@ -28,7 +28,7 @@ public class GenericJavaPrimaryKeyJoinColumn
 	extends AbstractJavaNamedColumn<JpaContextModel, PrimaryKeyJoinColumnAnnotation, BaseJoinColumn.Owner>
 	implements JavaSpecifiedPrimaryKeyJoinColumn
 {
-	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(org.eclipse.jpt.jpa.core.context.JpaContextModel, org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
+	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(JpaContextModel, org.eclipse.jpt.jpa.core.context.NamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
 	protected /* final */ PrimaryKeyJoinColumnAnnotation columnAnnotation;  // never null
 
 	protected String specifiedReferencedColumnName;

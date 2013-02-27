@@ -539,7 +539,7 @@
 				<and>
 					<reference definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaStructureView"/>
 					<iterate ifEmpty="false">
-						<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute"/>
+						<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute"/>
 						<test property="org.eclipse.jpt.jpa.core.isNotVirtual"/>
 					</iterate>
 				</and>
@@ -553,7 +553,7 @@
 				<and>
 					<reference definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaStructureView"/>
 					<iterate ifEmpty="false">
-						<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute"/>
+						<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute"/>
 						<test property="org.eclipse.jpt.jpa.core.isVirtual"/>
 						<test property="org.eclipse.jpt.jpa.core.isMapped"/>
 					</iterate>
@@ -568,7 +568,7 @@
 				<and>
 					<reference definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaStructureView"/>
 					<iterate ifEmpty="false">
-						<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute"/>
+						<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute"/>
 						<test property="org.eclipse.jpt.jpa.core.isVirtual"/>
 					</iterate>
 				</and>
@@ -595,7 +595,7 @@
 				<and>
 					<reference definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaStructureView"/>
 					<iterate ifEmpty="false">
-						<instanceof value="org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute"/>
+						<instanceof value="org.eclipse.jpt.jpa.core.context.PersistentAttribute"/>
 						<test property="org.eclipse.jpt.jpa.core.isNotVirtual"/>
 					</iterate>
 				</and>
@@ -834,7 +834,7 @@
 				commandId="org.eclipse.jpt.jpa.ui.persistentAttributeAddToXml">
 				<visibleWhen>
 					<iterate ifEmpty="false">
-						<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute"/>
+						<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute"/>
 						<test property="org.eclipse.jpt.jpa.core.isVirtual"/>
 					</iterate>
 				</visibleWhen>
@@ -843,7 +843,7 @@
 				commandId="org.eclipse.jpt.jpa.ui.persistentAttributeAddToXmlAndMap">
 				<visibleWhen>
 					<iterate ifEmpty="false">
-						<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute"/>
+						<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute"/>
 						<test property="org.eclipse.jpt.jpa.core.isVirtual"/>
 					</iterate>
 				</visibleWhen>
@@ -853,7 +853,7 @@
 				label="%removePersistentAttributeFromXml">
 				<visibleWhen>
 					<iterate ifEmpty="false">
-						<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute"/>
+						<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute"/>
 						<test property="org.eclipse.jpt.jpa.core.isNotVirtual"/>
 					</iterate>
 				</visibleWhen>
@@ -882,7 +882,7 @@
 				icon="$nl$/images/views/jpa-perspective.gif">
 				<visibleWhen>
 					<iterate ifEmpty="false">
-						<instanceof value="org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute"/>
+						<instanceof value="org.eclipse.jpt.jpa.core.context.PersistentAttribute"/>
 						<test property="org.eclipse.jpt.jpa.core.isNotVirtual"/>
 					</iterate>
 				</visibleWhen>

@@ -27,7 +27,7 @@ public class GenericOrmJoinColumn
 	extends AbstractOrmBaseColumn<XmlJoinColumn, JoinColumn.Owner>
 	implements OrmSpecifiedJoinColumn
 {
-	/** @see org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmNamedColumn#AbstractOrmNamedColumn(XmlContextNode, org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyNamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlNamedColumn) */
+	/** @see org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmNamedColumn#AbstractOrmNamedColumn(JpaContextModel, org.eclipse.jpt.jpa.core.context.NamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.orm.XmlNamedColumn) */
 	protected /* final */ XmlJoinColumn xmlColumn;  // null for default join columns
 
 	protected String specifiedReferencedColumnName;

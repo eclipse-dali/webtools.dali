@@ -30,7 +30,7 @@ public class GenericJavaJoinColumn
 	extends AbstractJavaBaseColumn<CompleteJoinColumnAnnotation, JoinColumn.Owner>
 	implements JavaSpecifiedJoinColumn
 {
-	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(JpaContextModel, org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
+	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(JpaContextModel, org.eclipse.jpt.jpa.core.context.NamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
 	protected /* final */ CompleteJoinColumnAnnotation columnAnnotation;  // never null
 
 	protected String specifiedReferencedColumnName;

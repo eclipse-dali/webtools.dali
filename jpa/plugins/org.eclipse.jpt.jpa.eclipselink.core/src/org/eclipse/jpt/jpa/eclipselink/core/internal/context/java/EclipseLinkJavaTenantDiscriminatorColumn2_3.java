@@ -26,7 +26,7 @@ public class EclipseLinkJavaTenantDiscriminatorColumn2_3
 	extends AbstractJavaNamedDiscriminatorColumn<JavaEclipseLinkMultitenancyImpl2_3, EclipseLinkTenantDiscriminatorColumnAnnotation2_3, TenantDiscriminatorColumn2_3.Owner>
 	implements JavaSpecifiedTenantDiscriminatorColumn2_3
 {
-	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(org.eclipse.jpt.jpa.core.context.JpaContextModel, org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
+	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(org.eclipse.jpt.jpa.core.context.JpaContextModel, org.eclipse.jpt.jpa.core.context.NamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
 	protected /* final */ EclipseLinkTenantDiscriminatorColumnAnnotation2_3 columnAnnotation;  // never null
 
 	protected String specifiedTableName;
