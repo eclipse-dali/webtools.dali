@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappingJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.InverseJoinColumnValidator;
@@ -64,7 +64,7 @@ public class GenericOrmMappingJoinTableRelationshipStrategy
 		return new InverseJoinColumnValidator(this.getPersistentAttribute(), column, owner, new JoinTableTableDescriptionProvider());
 	}
 
-	public JptValidator buildTableValidator(ReadOnlyTable table) {
+	public JptValidator buildTableValidator(Table table) {
 		return new JoinTableValidator(this.getPersistentAttribute(), (ReadOnlyJoinTable) table);
 	}
 }

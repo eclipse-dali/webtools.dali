@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTable;
@@ -38,7 +38,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <p>
  * <strong>NB:</strong> any subclass that directly holds its XML table must:<ul>
  * <li>call the "super" constructor that takes an XML table
- *     {@link #AbstractOrmTable(JpaContextModel, org.eclipse.jpt.jpa.core.context.ReadOnlyTable.Owner, AbstractXmlTable)}
+ *     {@link #AbstractOrmTable(JpaContextModel, org.eclipse.jpt.jpa.core.context.Table.Owner, AbstractXmlTable)}
  * <li>override {@link #setXmlTable(AbstractXmlTable)} to set the XML table
  *     so it is in place before the table's state (e.g. {@link #specifiedName})
  *     is initialized
@@ -544,7 +544,7 @@ public abstract class AbstractOrmTable<P extends JpaContextModel, X extends Abst
 
 	// ********** misc **********
 
-	protected void initializeFrom(ReadOnlyTable oldTable) {
+	protected void initializeFrom(Table oldTable) {
 		this.setSpecifiedName(oldTable.getSpecifiedName());
 		this.setSpecifiedCatalog(oldTable.getSpecifiedCatalog());
 		this.setSpecifiedSchema(oldTable.getSpecifiedSchema());
@@ -553,7 +553,7 @@ public abstract class AbstractOrmTable<P extends JpaContextModel, X extends Abst
 		}
 	}
 
-	protected void initializeFromVirtual(ReadOnlyTable virtualTable) {
+	protected void initializeFromVirtual(Table virtualTable) {
 		this.setSpecifiedName(virtualTable.getName());
 		// ignore other settings?
 	}

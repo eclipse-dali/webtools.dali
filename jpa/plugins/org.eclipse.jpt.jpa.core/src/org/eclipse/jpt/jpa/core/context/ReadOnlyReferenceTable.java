@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface ReadOnlyReferenceTable
-	extends ReadOnlyTable
+	extends Table
 {
 	// TODO is this method necessary?
 	SpecifiedPersistentAttribute getPersistentAttribute();

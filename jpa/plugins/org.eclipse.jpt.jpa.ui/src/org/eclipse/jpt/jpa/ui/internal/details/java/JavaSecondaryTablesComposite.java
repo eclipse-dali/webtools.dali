@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
@@ -65,7 +65,7 @@ public class JavaSecondaryTablesComposite extends AbstractSecondaryTablesComposi
 
 	private ListValueModel<JavaSecondaryTable> buildSecondaryTablesListModel() {
 		return new ItemPropertyListValueModelAdapter<JavaSecondaryTable>(buildSecondaryTablesListHolder(), 
-			ReadOnlyTable.SPECIFIED_NAME_PROPERTY);
+			Table.SPECIFIED_NAME_PROPERTY);
 	}	
 
 	private ListValueModel<JavaSecondaryTable> buildSecondaryTablesListHolder() {

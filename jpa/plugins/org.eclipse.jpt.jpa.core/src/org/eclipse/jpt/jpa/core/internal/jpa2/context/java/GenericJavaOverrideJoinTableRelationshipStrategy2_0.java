@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSpecifiedOverrideRelationship2_0;
@@ -66,7 +66,7 @@ public class GenericJavaOverrideJoinTableRelationshipStrategy2_0
 		return this.getRelationship().getTypeMapping().validatesAgainstDatabase();
 	}
 
-	public JptValidator buildTableValidator(ReadOnlyTable table) {
+	public JptValidator buildTableValidator(Table table) {
 		return this.getRelationship().buildJoinTableValidator((ReadOnlyJoinTable) table);
 	}
 

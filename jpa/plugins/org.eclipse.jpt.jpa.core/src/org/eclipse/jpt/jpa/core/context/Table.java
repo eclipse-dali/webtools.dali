@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.db.SchemaContainer;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface ReadOnlyTable
+public interface Table
 	extends JpaContextModel
 {
 	// ********** name **********
@@ -37,12 +37,12 @@ public interface ReadOnlyTable
 	 * name.
 	 */
 	String getName();
-	Transformer<ReadOnlyTable, String> NAME_TRANSFORMER = new NameTransformer();
+	Transformer<Table, String> NAME_TRANSFORMER = new NameTransformer();
 	class NameTransformer
-		extends TransformerAdapter<ReadOnlyTable, String>
+		extends TransformerAdapter<Table, String>
 	{
 		@Override
-		public String transform(ReadOnlyTable table) {
+		public String transform(Table table) {
 			return table.getName();
 		}
 	}
@@ -60,12 +60,12 @@ public interface ReadOnlyTable
 	 * Return the corresponding database table.
 	 */
 	org.eclipse.jpt.jpa.db.Table getDbTable();
-	Transformer<ReadOnlyTable, org.eclipse.jpt.jpa.db.Table> DB_TABLE_TRANSFORMER = new DbTableTransformer();
+	Transformer<Table, org.eclipse.jpt.jpa.db.Table> DB_TABLE_TRANSFORMER = new DbTableTransformer();
 	class DbTableTransformer
-		extends TransformerAdapter<ReadOnlyTable, org.eclipse.jpt.jpa.db.Table>
+		extends TransformerAdapter<Table, org.eclipse.jpt.jpa.db.Table>
 	{
 		@Override
-		public org.eclipse.jpt.jpa.db.Table transform(ReadOnlyTable table) {
+		public org.eclipse.jpt.jpa.db.Table transform(Table table) {
 			return table.getDbTable();
 		}
 	}
@@ -153,6 +153,6 @@ public interface ReadOnlyTable
 	 * (e.g. basic mappings and attribute overrides)
 	 */
 	interface Owner {
-		JptValidator buildTableValidator(ReadOnlyTable table);
+		JptValidator buildTableValidator(Table table);
 	}
 }

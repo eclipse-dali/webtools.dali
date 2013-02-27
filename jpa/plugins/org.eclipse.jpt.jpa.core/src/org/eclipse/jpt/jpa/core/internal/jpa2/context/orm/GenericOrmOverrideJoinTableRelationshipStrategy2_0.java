@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmSpecifiedOverrideRelationship2_0;
@@ -45,7 +45,7 @@ public class GenericOrmOverrideJoinTableRelationshipStrategy2_0
 		return this.getRelationship().getValidationTextRange();
 	}
 
-	public JptValidator buildTableValidator(ReadOnlyTable table) {
+	public JptValidator buildTableValidator(Table table) {
 		return this.getRelationship().buildJoinTableValidator((ReadOnlyJoinTable) table);
 	}
 

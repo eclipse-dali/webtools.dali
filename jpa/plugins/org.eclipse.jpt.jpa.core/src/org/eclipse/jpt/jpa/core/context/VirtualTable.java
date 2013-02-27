@@ -21,9 +21,9 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface VirtualTable
-	extends ReadOnlyTable
+	extends Table
 {
-	ReadOnlyTable getOverriddenTable();
+	Table getOverriddenTable();
 
 	ListIterable<? extends VirtualUniqueConstraint> getUniqueConstraints();
 	VirtualUniqueConstraint getUniqueConstraint(int index);

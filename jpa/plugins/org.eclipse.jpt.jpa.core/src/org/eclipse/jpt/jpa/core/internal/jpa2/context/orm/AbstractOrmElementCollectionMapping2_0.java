@@ -49,7 +49,7 @@ import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.Override_;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
@@ -425,9 +425,9 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected class CollectionTableOwner
-		implements ReadOnlyTable.Owner
+		implements Table.Owner
 	{
-		public JptValidator buildTableValidator(ReadOnlyTable table) {
+		public JptValidator buildTableValidator(Table table) {
 			return new CollectionTableValidator(AbstractOrmElementCollectionMapping2_0.this.getPersistentAttribute(), (CollectionTable2_0) table);
 		}
 	}
@@ -1951,7 +1951,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			return JptValidator.Null.instance();
 		}
 
-		public JptValidator buildJoinTableValidator(AssociationOverride override, ReadOnlyTable table) {
+		public JptValidator buildJoinTableValidator(AssociationOverride override, Table table) {
 			return JptValidator.Null.instance();
 		}
 	}

@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.Relationship;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinTable;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -28,7 +28,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericOrmVirtualOverrideJoinTableRelationshipStrategy2_0
 	extends AbstractOrmXmlContextModel<VirtualOverrideRelationship2_0>
-	implements VirtualJoinTableRelationshipStrategy, ReadOnlyTable.Owner
+	implements VirtualJoinTableRelationshipStrategy, Table.Owner
 {
 	protected VirtualJoinTable joinTable;
 
@@ -131,7 +131,7 @@ public class GenericOrmVirtualOverrideJoinTableRelationshipStrategy2_0
 		return this.getRelationship().getValidationTextRange();
 	}
 
-	public JptValidator buildTableValidator(ReadOnlyTable table) {
+	public JptValidator buildTableValidator(Table table) {
 		return this.getRelationship().buildJoinTableValidator((ReadOnlyJoinTable) table);
 	}
 

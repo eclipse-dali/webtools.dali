@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
@@ -125,8 +125,8 @@ public class TableComposite extends Pane<Entity>
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(ReadOnlyTable.DEFAULT_CATALOG_PROPERTY);
-				propertyNames.add(ReadOnlyTable.SPECIFIED_CATALOG_PROPERTY);
+				propertyNames.add(Table.DEFAULT_CATALOG_PROPERTY);
+				propertyNames.add(Table.SPECIFIED_CATALOG_PROPERTY);
 			}
 
 			@Override
@@ -162,8 +162,8 @@ public class TableComposite extends Pane<Entity>
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(ReadOnlyTable.DEFAULT_SCHEMA_PROPERTY);
-				propertyNames.add(ReadOnlyTable.SPECIFIED_SCHEMA_PROPERTY);
+				propertyNames.add(Table.DEFAULT_SCHEMA_PROPERTY);
+				propertyNames.add(Table.SPECIFIED_SCHEMA_PROPERTY);
 				propertyNames.addAll(SCHEMA_PICK_LIST_PROPERTIES);
 			}
 
@@ -209,8 +209,8 @@ public class TableComposite extends Pane<Entity>
 	}
 
 	/* CU private */ static final Collection<String> SCHEMA_PICK_LIST_PROPERTIES = Arrays.asList(new String[] {
-		ReadOnlyTable.DEFAULT_CATALOG_PROPERTY,
-		ReadOnlyTable.SPECIFIED_CATALOG_PROPERTY
+		Table.DEFAULT_CATALOG_PROPERTY,
+		Table.SPECIFIED_CATALOG_PROPERTY
 	});
 
 	private TableCombo<SpecifiedTable> addTableCombo(PropertyValueModel<SpecifiedTable> subjectHolder, PropertyValueModel<Boolean> enabledModel, Composite container) {
@@ -219,8 +219,8 @@ public class TableComposite extends Pane<Entity>
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(ReadOnlyTable.DEFAULT_NAME_PROPERTY);
-				propertyNames.add(ReadOnlyTable.SPECIFIED_NAME_PROPERTY);
+				propertyNames.add(Table.DEFAULT_NAME_PROPERTY);
+				propertyNames.add(Table.SPECIFIED_NAME_PROPERTY);
 				propertyNames.addAll(TABLE_PICK_LIST_PROPERTIES);
 			}
 
@@ -266,7 +266,7 @@ public class TableComposite extends Pane<Entity>
 	}
 
 	/* CU private */ static final Collection<String> TABLE_PICK_LIST_PROPERTIES = Arrays.asList(ArrayTools.addAll(SCHEMA_PICK_LIST_PROPERTIES.toArray(new String[0]),
-		ReadOnlyTable.DEFAULT_SCHEMA_PROPERTY,
-		ReadOnlyTable.SPECIFIED_SCHEMA_PROPERTY
+		Table.DEFAULT_SCHEMA_PROPERTY,
+		Table.SPECIFIED_SCHEMA_PROPERTY
 	));
 }

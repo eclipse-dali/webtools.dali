@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.Relationship;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
@@ -63,7 +63,7 @@ public class GenericOrmAssociationOverrideContainer
 		return this.getOwner2_0().buildJoinTableInverseJoinColumnValidator(override, column, columnOwner);
 	}
 
-	public JptValidator buildJoinTableValidator(AssociationOverride override, ReadOnlyTable table) {
+	public JptValidator buildJoinTableValidator(AssociationOverride override, Table table) {
 		return this.getOwner2_0().buildJoinTableValidator(override, table);
 	}
 

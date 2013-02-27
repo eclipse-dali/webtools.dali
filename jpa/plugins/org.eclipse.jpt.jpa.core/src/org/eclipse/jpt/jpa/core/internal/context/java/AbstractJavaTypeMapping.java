@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
@@ -96,11 +96,11 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 		return null;
 	}
 
-	public Iterable<ReadOnlyTable> getAssociatedTables() {
+	public Iterable<Table> getAssociatedTables() {
 		return EmptyIterable.instance();
 	}
 
-	public Iterable<ReadOnlyTable> getAllAssociatedTables() {
+	public Iterable<Table> getAllAssociatedTables() {
 		return EmptyIterable.instance();
 	}
 

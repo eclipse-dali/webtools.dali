@@ -28,7 +28,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
  * @since 2.0
  */
 public interface SpecifiedTable
-	extends ReadOnlyTable
+	extends Table
 {
 	void setSpecifiedName(String value);
 

@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.jpa2.context;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 
 /**
@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 public interface AssociationOverrideContainer2_0
 	extends AssociationOverrideContainer
 {
-	JptValidator buildJoinTableValidator(AssociationOverride override, ReadOnlyTable table);
+	JptValidator buildJoinTableValidator(AssociationOverride override, Table table);
 
 	JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owne);
 
@@ -41,7 +41,7 @@ public interface AssociationOverrideContainer2_0
 	interface Owner
 		extends AssociationOverrideContainer.Owner
 	{
-		JptValidator buildJoinTableValidator(AssociationOverride override, ReadOnlyTable table);
+		JptValidator buildJoinTableValidator(AssociationOverride override, Table table);
 
 		JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner);
 

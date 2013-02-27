@@ -58,7 +58,7 @@ import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
@@ -138,7 +138,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	protected boolean specifiedTableIsAllowed;
 	protected boolean tableIsUndefined;
 
-	protected final ReadOnlyTable.Owner secondaryTableOwner;
+	protected final Table.Owner secondaryTableOwner;
 	protected final ContextListContainer<OrmSecondaryTable, XmlSecondaryTable> specifiedSecondaryTableContainer;
 	protected final ContextListContainer<OrmVirtualSecondaryTable, JavaSecondaryTable> virtualSecondaryTableContainer;
 
@@ -468,9 +468,9 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected static class TableOwner
-		implements ReadOnlyTable.Owner
+		implements Table.Owner
 	{
-		public JptValidator buildTableValidator(ReadOnlyTable table) {
+		public JptValidator buildTableValidator(Table table) {
 			return new TableValidator(table);
 		}
 	}
@@ -734,9 +734,9 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected static class SecondaryTableOwner
-		implements ReadOnlyTable.Owner
+		implements Table.Owner
 	{
-		public JptValidator buildTableValidator(ReadOnlyTable table) {
+		public JptValidator buildTableValidator(Table table) {
 			return new SecondaryTableValidator((ReadOnlySecondaryTable) table);
 		}
 	}
@@ -1391,12 +1391,12 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	// ********** associated tables **********
 
-	public Iterable<ReadOnlyTable> getAssociatedTables() {
-		return IterableTools.<ReadOnlyTable>insert(this.table, this.getSecondaryTables());
+	public Iterable<Table> getAssociatedTables() {
+		return IterableTools.<Table>insert(this.table, this.getSecondaryTables());
 	}
 
 	// TODO eliminate duplicate tables?
-	public Iterable<ReadOnlyTable> getAllAssociatedTables() {
+	public Iterable<Table> getAllAssociatedTables() {
 		return IterableTools.children(this.getInheritanceHierarchy(), TypeMappingTools.ASSOCIATED_TABLES_TRANSFORMER);
 	}
 
@@ -1407,12 +1407,12 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	/**
 	 * strip out <code>null</code> names
 	 */
-	protected Iterable<String> convertToNames(Iterable<ReadOnlyTable> tables) {
+	protected Iterable<String> convertToNames(Iterable<Table> tables) {
 		return IterableTools.removeNulls(this.convertToNames_(tables));
 	}
 
-	protected Iterable<String> convertToNames_(Iterable<ReadOnlyTable> tables) {
-		return new TransformationIterable<ReadOnlyTable, String>(tables, ReadOnlyTable.NAME_TRANSFORMER);
+	protected Iterable<String> convertToNames_(Iterable<Table> tables) {
+		return new TransformationIterable<Table, String>(tables, Table.NAME_TRANSFORMER);
 	}
 
 	public boolean tableNameIsInvalid(String tableName) {
@@ -1482,7 +1482,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected Iterable<org.eclipse.jpt.jpa.db.Table> getAllAssociatedDbTables_() {
-		return new TransformationIterable<ReadOnlyTable, org.eclipse.jpt.jpa.db.Table>(this.getAllAssociatedTables(), ReadOnlyTable.DB_TABLE_TRANSFORMER);
+		return new TransformationIterable<Table, org.eclipse.jpt.jpa.db.Table>(this.getAllAssociatedTables(), Table.DB_TABLE_TRANSFORMER);
 	}
 
 	@Override
@@ -2093,7 +2093,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			return new AssociationOverrideInverseJoinColumnValidator(override, column, owner, new JoinTableTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableValidator(AssociationOverride override, ReadOnlyTable t) {
+		public JptValidator buildJoinTableValidator(AssociationOverride override, Table t) {
 			return new AssociationOverrideJoinTableValidator(override, (ReadOnlyJoinTable) t);
 		}
 	}

@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.DerivedIdentity2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MapsIdDerivedIdentityStrategy2_0;
@@ -106,11 +106,11 @@ public class TypeMappingTools {
 
 	// ********** associated tables transformer **********
 
-	public static final Transformer<TypeMapping, Iterable<ReadOnlyTable>> ASSOCIATED_TABLES_TRANSFORMER = new AssociatedTablesTransformer();
+	public static final Transformer<TypeMapping, Iterable<Table>> ASSOCIATED_TABLES_TRANSFORMER = new AssociatedTablesTransformer();
 	static class AssociatedTablesTransformer
-		implements Transformer<TypeMapping, Iterable<ReadOnlyTable>>
+		implements Transformer<TypeMapping, Iterable<Table>>
 	{
-		public Iterable<ReadOnlyTable> transform(TypeMapping mapping) {
+		public Iterable<Table> transform(TypeMapping mapping) {
 			return mapping.getAssociatedTables();
 		}
 	}

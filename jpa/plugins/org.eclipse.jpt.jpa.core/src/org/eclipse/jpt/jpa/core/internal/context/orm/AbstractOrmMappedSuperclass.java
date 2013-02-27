@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.Query;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -124,11 +124,11 @@ public abstract class AbstractOrmMappedSuperclass<X extends XmlMappedSuperclass>
 
 	// ********** tables **********
 
-	public Iterable<ReadOnlyTable> getAssociatedTables() {
+	public Iterable<Table> getAssociatedTables() {
 		return EmptyIterable.instance();
 	}
 
-	public Iterable<ReadOnlyTable> getAllAssociatedTables() {
+	public Iterable<Table> getAllAssociatedTables() {
 		return EmptyIterable.instance();
 	}
 

@@ -53,7 +53,7 @@ import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
@@ -965,14 +965,14 @@ public abstract class AbstractJavaEntity
 	// ********** associated tables **********
 
 	@Override
-	public Iterable<ReadOnlyTable> getAssociatedTables() {
-		return IterableTools.<ReadOnlyTable>insert(this.table, this.getSecondaryTables());
+	public Iterable<Table> getAssociatedTables() {
+		return IterableTools.<Table>insert(this.table, this.getSecondaryTables());
 	}
 
 
 	// TODO eliminate duplicate tables?
 	@Override
-	public Iterable<ReadOnlyTable> getAllAssociatedTables() {
+	public Iterable<Table> getAllAssociatedTables() {
 		return IterableTools.children(this.getInheritanceHierarchy(), TypeMappingTools.ASSOCIATED_TABLES_TRANSFORMER);
 	}
 
@@ -984,8 +984,8 @@ public abstract class AbstractJavaEntity
 	/**
 	 * strip out <code>null</code> names
 	 */
-	protected Iterable<String> convertToNames(Iterable<ReadOnlyTable> tables) {
-		return IterableTools.removeNulls(IterableTools.transform(tables, ReadOnlyTable.NAME_TRANSFORMER));
+	protected Iterable<String> convertToNames(Iterable<Table> tables) {
+		return IterableTools.removeNulls(IterableTools.transform(tables, Table.NAME_TRANSFORMER));
 	}
 
 	public boolean tableNameIsInvalid(String tableName) {
@@ -1038,7 +1038,7 @@ public abstract class AbstractJavaEntity
 	 * strip out null db tables
 	 */
 	protected Iterable<org.eclipse.jpt.jpa.db.Table> getAllAssociatedDbTables() {
-		return IterableTools.removeNulls(IterableTools.transform(this.getAllAssociatedTables(), ReadOnlyTable.DB_TABLE_TRANSFORMER));
+		return IterableTools.removeNulls(IterableTools.transform(this.getAllAssociatedTables(), Table.DB_TABLE_TRANSFORMER));
 	}
 
 	@Override
@@ -1572,7 +1572,7 @@ public abstract class AbstractJavaEntity
 			return new AssociationOverrideInverseJoinColumnValidator(override, column, owner, new JoinTableTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableValidator(AssociationOverride override, ReadOnlyTable t) {
+		public JptValidator buildJoinTableValidator(AssociationOverride override, Table t) {
 			return new AssociationOverrideJoinTableValidator(override, (ReadOnlyJoinTable) t);
 		}
 	}
@@ -1674,9 +1674,9 @@ public abstract class AbstractJavaEntity
 	// ********** table owner **********
 
 	protected class TableOwner
-		implements ReadOnlyTable.Owner
+		implements Table.Owner
 	{
-		public JptValidator buildTableValidator(ReadOnlyTable t) {
+		public JptValidator buildTableValidator(Table t) {
 			return new TableValidator(t);
 		}
 	}
@@ -1685,9 +1685,9 @@ public abstract class AbstractJavaEntity
 	// ********** secondary table owner **********
 
 	protected class SecondaryTableOwner
-		implements ReadOnlyTable.Owner
+		implements Table.Owner
 	{
-		public JptValidator buildTableValidator(ReadOnlyTable t) {
+		public JptValidator buildTableValidator(Table t) {
 			return new SecondaryTableValidator((ReadOnlySecondaryTable) t);
 		}
 	}

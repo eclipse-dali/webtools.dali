@@ -133,14 +133,14 @@ public interface TypeMapping
 	 * Return the type mapping's "associated" tables, which includes the primary
 	 * table and the collection of secondary tables.
 	 */
-	Iterable<ReadOnlyTable> getAssociatedTables();
+	Iterable<Table> getAssociatedTables();
 
 	/**
 	 * Return the type mapping's "associated" tables, which includes the primary
 	 * table and the collection of secondary tables, as well as all inherited
 	 * "associated" tables.
 	 */
-	Iterable<ReadOnlyTable> getAllAssociatedTables();
+	Iterable<Table> getAllAssociatedTables();
 
 	/**
 	 * Return the names of the type mapping's "associated" tables, which

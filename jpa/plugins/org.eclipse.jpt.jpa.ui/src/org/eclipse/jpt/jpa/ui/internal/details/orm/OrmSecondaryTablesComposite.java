@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSecondaryTable;
@@ -86,7 +86,7 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 
 	private ListValueModel<ReadOnlySecondaryTable> buildSecondaryTablesListModel() {
 		return new ItemPropertyListValueModelAdapter<ReadOnlySecondaryTable>(buildSecondaryTablesListHolder(),
-			ReadOnlyTable.SPECIFIED_NAME_PROPERTY);
+			Table.SPECIFIED_NAME_PROPERTY);
 	}
 
 	private ListValueModel<OrmSecondaryTable> buildSpecifiedSecondaryTablesListHolder() {

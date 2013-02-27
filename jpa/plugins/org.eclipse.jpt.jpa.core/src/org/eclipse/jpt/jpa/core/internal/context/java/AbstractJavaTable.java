@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaTable;
@@ -501,7 +501,7 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, A extends Bas
 
 	// ********** misc **********
 
-	protected void initializeFrom(ReadOnlyTable oldTable) {
+	protected void initializeFrom(Table oldTable) {
 		this.setSpecifiedName(oldTable.getSpecifiedName());
 		this.setSpecifiedCatalog(oldTable.getSpecifiedCatalog());
 		this.setSpecifiedSchema(oldTable.getSpecifiedSchema());
@@ -510,7 +510,7 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, A extends Bas
 		}
 	}
 
-	protected void initializeFromVirtual(ReadOnlyTable virtualTable) {
+	protected void initializeFromVirtual(Table virtualTable) {
 		this.setSpecifiedName(virtualTable.getName());
 		// ignore other settings?
 	}
