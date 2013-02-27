@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumnRelationship;
-import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.swt.widgets.Composite;
 
@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see {@link PrimaryKeyJoinColumnRelationship}
- * @see {@link PrimaryKeyJoinColumnRelationshipStrategy}
+ * @see {@link SpecifiedPrimaryKeyJoinColumnRelationshipStrategy}
  * @see {@link OneToOneJoiningStrategyPane}
  *
  * @version 2.3
@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class PrimaryKeyJoinColumnJoiningStrategyPane 
 	extends AbstractJoiningStrategyPane
-		<PrimaryKeyJoinColumnRelationship, PrimaryKeyJoinColumnRelationshipStrategy>
+		<PrimaryKeyJoinColumnRelationship, SpecifiedPrimaryKeyJoinColumnRelationshipStrategy>
 {
 	public PrimaryKeyJoinColumnJoiningStrategyPane(
 			Pane<? extends PrimaryKeyJoinColumnRelationship> parentPane, 
@@ -49,12 +49,12 @@ public class PrimaryKeyJoinColumnJoiningStrategyPane
 		return buildUsesPrimaryKeyJoinColumnJoiningStrategyHolder(getSubjectHolder());
 	}
 
-	protected PropertyValueModel<PrimaryKeyJoinColumnRelationshipStrategy> buildPrimaryKeyJoinColumnJoiningStrategyHolder() {
+	protected PropertyValueModel<SpecifiedPrimaryKeyJoinColumnRelationshipStrategy> buildPrimaryKeyJoinColumnJoiningStrategyHolder() {
 		return new PropertyAspectAdapter
-				<PrimaryKeyJoinColumnRelationship, PrimaryKeyJoinColumnRelationshipStrategy>(
+				<PrimaryKeyJoinColumnRelationship, SpecifiedPrimaryKeyJoinColumnRelationshipStrategy>(
 					getSubjectHolder()) {
 			@Override
-			protected PrimaryKeyJoinColumnRelationshipStrategy buildValue_() {
+			protected SpecifiedPrimaryKeyJoinColumnRelationshipStrategy buildValue_() {
 				return this.subject.getPrimaryKeyJoinColumnStrategy();
 			}
 		};

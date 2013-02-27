@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.java;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumnRelationshipStrategy;
 
 /**
  * Java primary key join column relationship strategy
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumnRelationshipStrategy
  * @since 2.2
  */
 public interface JavaPrimaryKeyJoinColumnRelationshipStrategy
-	extends PrimaryKeyJoinColumnRelationshipStrategy
+	extends SpecifiedPrimaryKeyJoinColumnRelationshipStrategy
 {
 	ListIterable<JavaSpecifiedPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
 	JavaSpecifiedPrimaryKeyJoinColumn getPrimaryKeyJoinColumn(int index);

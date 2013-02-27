@@ -30,7 +30,7 @@ public interface PrimaryKeyJoinColumnRelationship
 	 * Return the (never <code>null</code>) strategy used to configure
 	 * the relationship's primary key join column strategy.
 	 */
-	PrimaryKeyJoinColumnRelationshipStrategy getPrimaryKeyJoinColumnStrategy();
+	SpecifiedPrimaryKeyJoinColumnRelationshipStrategy getPrimaryKeyJoinColumnStrategy();
 
 	/**
 	 * Return whether the primary key join column strategy is the

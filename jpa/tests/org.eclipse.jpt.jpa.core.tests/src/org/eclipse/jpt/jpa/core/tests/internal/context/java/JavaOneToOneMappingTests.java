@@ -36,7 +36,7 @@ import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.OneToOneRelationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TransientMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
@@ -1118,7 +1118,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
-		PrimaryKeyJoinColumnRelationshipStrategy strategy = 
+		SpecifiedPrimaryKeyJoinColumnRelationshipStrategy strategy = 
 			oneToOneMapping.getRelationship().getPrimaryKeyJoinColumnStrategy();
 		Iterator<? extends SpecifiedPrimaryKeyJoinColumn> primaryKeyJoinColumns = strategy.getPrimaryKeyJoinColumns().iterator();
 		
@@ -1188,7 +1188,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
-		PrimaryKeyJoinColumnRelationshipStrategy strategy = 
+		SpecifiedPrimaryKeyJoinColumnRelationshipStrategy strategy = 
 			oneToOneMapping.getRelationship().getPrimaryKeyJoinColumnStrategy();
 		
 		assertEquals(0, strategy.getPrimaryKeyJoinColumnsSize());
@@ -1206,7 +1206,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
-		PrimaryKeyJoinColumnRelationshipStrategy strategy = 
+		SpecifiedPrimaryKeyJoinColumnRelationshipStrategy strategy = 
 			oneToOneMapping.getRelationship().getPrimaryKeyJoinColumnStrategy();
 		
 		strategy.addPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
@@ -1229,7 +1229,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
-		PrimaryKeyJoinColumnRelationshipStrategy strategy = 
+		SpecifiedPrimaryKeyJoinColumnRelationshipStrategy strategy = 
 			oneToOneMapping.getRelationship().getPrimaryKeyJoinColumnStrategy();
 		
 		strategy.addPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
@@ -1252,7 +1252,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
-		PrimaryKeyJoinColumnRelationshipStrategy strategy = 
+		SpecifiedPrimaryKeyJoinColumnRelationshipStrategy strategy = 
 			oneToOneMapping.getRelationship().getPrimaryKeyJoinColumnStrategy();
 		
 		strategy.addPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
@@ -1301,7 +1301,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
-		PrimaryKeyJoinColumnRelationshipStrategy strategy = 
+		SpecifiedPrimaryKeyJoinColumnRelationshipStrategy strategy = 
 			oneToOneMapping.getRelationship().getPrimaryKeyJoinColumnStrategy();
 		
 		strategy.addPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
@@ -1347,7 +1347,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
-		PrimaryKeyJoinColumnRelationshipStrategy strategy = 
+		SpecifiedPrimaryKeyJoinColumnRelationshipStrategy strategy = 
 			oneToOneMapping.getRelationship().getPrimaryKeyJoinColumnStrategy();
 		
 		((PrimaryKeyJoinColumnAnnotation) resourceField.addAnnotation(0, JPA.PRIMARY_KEY_JOIN_COLUMN)).setName("FOO");
