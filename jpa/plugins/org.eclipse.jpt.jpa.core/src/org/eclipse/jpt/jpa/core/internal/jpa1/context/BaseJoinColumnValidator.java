@@ -12,18 +12,18 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 import java.util.List;
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public abstract class BaseJoinColumnValidator<C extends ReadOnlyBaseJoinColumn>
+public abstract class BaseJoinColumnValidator<C extends BaseJoinColumn>
 	extends AbstractNamedColumnValidator<C>
 {
-	private final ReadOnlyBaseJoinColumn.Owner joinColumnOwner;
+	private final BaseJoinColumn.Owner joinColumnOwner;
 
 	protected BaseJoinColumnValidator(
 				C column,
-				ReadOnlyBaseJoinColumn.Owner joinColumnOwner,
+				BaseJoinColumn.Owner joinColumnOwner,
 				TableDescriptionProvider provider) {
 		super(column, provider);
 		this.joinColumnOwner = joinColumnOwner;
@@ -32,7 +32,7 @@ public abstract class BaseJoinColumnValidator<C extends ReadOnlyBaseJoinColumn>
 	protected BaseJoinColumnValidator(
 				PersistentAttribute persistentAttribute,
 				C column,
-				ReadOnlyBaseJoinColumn.Owner joinColumnOwner,
+				BaseJoinColumn.Owner joinColumnOwner,
 				TableDescriptionProvider provider) {
 		super(persistentAttribute, column, provider);
 		this.joinColumnOwner = joinColumnOwner;

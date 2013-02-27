@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterabl
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
@@ -45,7 +45,7 @@ public class GenericOrmSecondaryTable
 	protected /* final */ XmlSecondaryTable xmlSecondaryTable;
 
 	protected final ContextListContainer<OrmSpecifiedPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumnContainer;
-	protected final ReadOnlyBaseJoinColumn.Owner primaryKeyJoinColumnOwner;
+	protected final BaseJoinColumn.Owner primaryKeyJoinColumnOwner;
 
 	protected OrmSpecifiedPrimaryKeyJoinColumn defaultPrimaryKeyJoinColumn;
 
@@ -227,7 +227,7 @@ public class GenericOrmSecondaryTable
 		}
 	}
 
-	protected ReadOnlyBaseJoinColumn.Owner buildPrimaryKeyJoinColumnOwner() {
+	protected BaseJoinColumn.Owner buildPrimaryKeyJoinColumnOwner() {
 		return new PrimaryKeyJoinColumnOwner();
 	}
 
@@ -352,7 +352,7 @@ public class GenericOrmSecondaryTable
 	// ********** primary key join column owner adapter **********
 
 	protected class PrimaryKeyJoinColumnOwner
-		implements ReadOnlyBaseJoinColumn.Owner
+		implements BaseJoinColumn.Owner
 	{
 		protected OrmEntity getEntity() {
 			return GenericOrmSecondaryTable.this.getEntity();
@@ -389,7 +389,7 @@ public class GenericOrmSecondaryTable
 		}
 
 		public JptValidator buildColumnValidator(NamedColumn column) {
-			return new SecondaryTablePrimaryKeyJoinColumnValidator(GenericOrmSecondaryTable.this, (ReadOnlyBaseJoinColumn) column, this);
+			return new SecondaryTablePrimaryKeyJoinColumnValidator(GenericOrmSecondaryTable.this, (BaseJoinColumn) column, this);
 		}
 	}
 }

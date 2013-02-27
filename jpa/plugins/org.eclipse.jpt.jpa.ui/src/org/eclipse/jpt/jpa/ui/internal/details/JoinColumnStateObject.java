@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.EmptyListIterator;
 import org.eclipse.jpt.jpa.core.context.SpecifiedBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 
 /**
@@ -116,7 +116,7 @@ public abstract class JoinColumnStateObject
 	}
 
 	@Override
-	protected void initialize(Object owner, ReadOnlyBaseJoinColumn baseJoinColumn) {
+	protected void initialize(Object owner, BaseJoinColumn baseJoinColumn) {
 
 		super.initialize(owner, baseJoinColumn);
 

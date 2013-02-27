@@ -10,14 +10,14 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 
 public class EntityPrimaryKeyJoinColumnValidator
 	extends PrimaryKeyJoinColumnValidator
 {
 	public EntityPrimaryKeyJoinColumnValidator(
-				ReadOnlyBaseJoinColumn column,
-				ReadOnlyBaseJoinColumn.Owner owner) {
+				BaseJoinColumn column,
+				BaseJoinColumn.Owner owner) {
 		super(column, owner);
 	}
 

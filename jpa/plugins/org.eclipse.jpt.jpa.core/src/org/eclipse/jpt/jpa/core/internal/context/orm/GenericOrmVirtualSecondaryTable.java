@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
@@ -37,7 +37,7 @@ public class GenericOrmVirtualSecondaryTable
 {
 
 	protected final ContextListContainer<OrmVirtualPrimaryKeyJoinColumn, JavaSpecifiedPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumnContainer;
-	protected final ReadOnlyBaseJoinColumn.Owner primaryKeyJoinColumnOwner;
+	protected final BaseJoinColumn.Owner primaryKeyJoinColumnOwner;
 
 	protected OrmVirtualPrimaryKeyJoinColumn defaultPrimaryKeyJoinColumn;
 
@@ -183,7 +183,7 @@ public class GenericOrmVirtualSecondaryTable
 		return true;
 	}
 
-	protected ReadOnlyBaseJoinColumn.Owner buildPrimaryKeyJoinColumnOwner() {
+	protected BaseJoinColumn.Owner buildPrimaryKeyJoinColumnOwner() {
 		return new PrimaryKeyJoinColumnOwner();
 	}
 
@@ -235,7 +235,7 @@ public class GenericOrmVirtualSecondaryTable
 	// ********** primary key join column owner **********
 
 	protected class PrimaryKeyJoinColumnOwner
-		implements ReadOnlyBaseJoinColumn.Owner
+		implements BaseJoinColumn.Owner
 	{
 		protected OrmEntity getEntity() {
 			return GenericOrmVirtualSecondaryTable.this.getEntity();
@@ -272,7 +272,7 @@ public class GenericOrmVirtualSecondaryTable
 		}
 
 		public JptValidator buildColumnValidator(NamedColumn column) {
-			return new SecondaryTablePrimaryKeyJoinColumnValidator(GenericOrmVirtualSecondaryTable.this, (ReadOnlyBaseJoinColumn) column, this);
+			return new SecondaryTablePrimaryKeyJoinColumnValidator(GenericOrmVirtualSecondaryTable.this, (BaseJoinColumn) column, this);
 		}
 	}
 }

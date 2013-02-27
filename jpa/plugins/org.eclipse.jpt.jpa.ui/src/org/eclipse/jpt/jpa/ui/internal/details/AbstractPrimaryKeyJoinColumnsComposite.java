@@ -31,7 +31,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
@@ -168,8 +168,8 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity>
 			buildPrimaryKeyJoinColumnsListHolder(),
 			NamedColumn.SPECIFIED_NAME_PROPERTY,
 			NamedColumn.DEFAULT_NAME_PROPERTY,
-			ReadOnlyBaseJoinColumn.SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY,
-			ReadOnlyBaseJoinColumn.DEFAULT_REFERENCED_COLUMN_NAME_PROPERTY
+			BaseJoinColumn.SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY,
+			BaseJoinColumn.DEFAULT_REFERENCED_COLUMN_NAME_PROPERTY
 		);
 	}
 

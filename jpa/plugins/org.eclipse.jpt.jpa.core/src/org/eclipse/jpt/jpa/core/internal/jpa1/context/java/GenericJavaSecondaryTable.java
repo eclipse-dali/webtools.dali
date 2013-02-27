@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
@@ -41,7 +41,7 @@ public class GenericJavaSecondaryTable
 	protected /* final */ SecondaryTableAnnotation tableAnnotation;
 
 	protected final ContextListContainer<JavaSpecifiedPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation> specifiedPrimaryKeyJoinColumnContainer;
-	protected final ReadOnlyBaseJoinColumn.Owner primaryKeyJoinColumnOwner;
+	protected final BaseJoinColumn.Owner primaryKeyJoinColumnOwner;
 
 	protected JavaSpecifiedPrimaryKeyJoinColumn defaultPrimaryKeyJoinColumn;
 
@@ -204,7 +204,7 @@ public class GenericJavaSecondaryTable
 		}
 	}
 
-	protected ReadOnlyBaseJoinColumn.Owner buildPrimaryKeyJoinColumnOwner() {
+	protected BaseJoinColumn.Owner buildPrimaryKeyJoinColumnOwner() {
 		return new PrimaryKeyJoinColumnOwner();
 	}
 
@@ -331,7 +331,7 @@ public class GenericJavaSecondaryTable
 	// ********** primary key join column owner adapter **********
 
 	protected class PrimaryKeyJoinColumnOwner
-		implements ReadOnlyBaseJoinColumn.Owner
+		implements BaseJoinColumn.Owner
 	{
 		protected JavaEntity getEntity() {
 			return GenericJavaSecondaryTable.this.getEntity();
@@ -365,7 +365,7 @@ public class GenericJavaSecondaryTable
 		}
 
 		public JptValidator buildColumnValidator(NamedColumn column) {
-			return new SecondaryTablePrimaryKeyJoinColumnValidator(GenericJavaSecondaryTable.this, (ReadOnlyBaseJoinColumn) column, this);
+			return new SecondaryTablePrimaryKeyJoinColumnValidator(GenericJavaSecondaryTable.this, (BaseJoinColumn) column, this);
 		}
 	}
 }

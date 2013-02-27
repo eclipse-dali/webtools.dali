@@ -25,7 +25,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 2.0
  */
 public interface SpecifiedBaseJoinColumn
-	extends SpecifiedNamedColumn, ReadOnlyBaseJoinColumn
+	extends SpecifiedNamedColumn, BaseJoinColumn
 {
 	void setSpecifiedReferencedColumnName(String value);
 }

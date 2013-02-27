@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.EmptyListIterator;
 import org.eclipse.jpt.common.utility.internal.node.AbstractNode;
 import org.eclipse.jpt.common.utility.node.Node;
 import org.eclipse.jpt.jpa.core.context.SpecifiedBaseJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.db.Table;
 
 /**
@@ -41,7 +41,7 @@ public abstract class BaseJoinColumnStateObject
 	 * Either the join column is being edited or <code>null</code> the state
 	 * object is being created.
 	 */
-	private ReadOnlyBaseJoinColumn joinColumn;
+	private BaseJoinColumn joinColumn;
 
 	/**
 	 * The join column's name or <code>null</code> if not defined.
@@ -105,7 +105,7 @@ public abstract class BaseJoinColumnStateObject
 	 * @param joinColumn Either the join column to edit or <code>null</code> if
 	 * this state object is used to create a new one
 	 */
-	public BaseJoinColumnStateObject(Object owner, ReadOnlyBaseJoinColumn joinColumn) {
+	public BaseJoinColumnStateObject(Object owner, BaseJoinColumn joinColumn) {
 		super(null);
 		initialize(owner, joinColumn);
 	}
@@ -181,7 +181,7 @@ public abstract class BaseJoinColumnStateObject
 	 *
 	 * @return The edited join column or <code>null</code>
 	 */
-	public ReadOnlyBaseJoinColumn getJoinColumn() {
+	public BaseJoinColumn getJoinColumn() {
 		return this.joinColumn;
 	}
 
@@ -256,7 +256,7 @@ public abstract class BaseJoinColumnStateObject
 	 * @param joinColumn Either the join column to edit or <code>null</code> if
 	 * this state object is used to create a new one
 	 */
-	protected void initialize(Object o, ReadOnlyBaseJoinColumn jc) {
+	protected void initialize(Object o, BaseJoinColumn jc) {
 
 		this.owner      = o;
 		this.joinColumn = jc;

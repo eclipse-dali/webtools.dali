@@ -10,24 +10,24 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public abstract class PrimaryKeyJoinColumnValidator
-	extends BaseJoinColumnValidator<ReadOnlyBaseJoinColumn>
+	extends BaseJoinColumnValidator<BaseJoinColumn>
 {
 	protected PrimaryKeyJoinColumnValidator(
-				ReadOnlyBaseJoinColumn column,
-				ReadOnlyBaseJoinColumn.Owner owner) {
+				BaseJoinColumn column,
+				BaseJoinColumn.Owner owner) {
 		super(column, owner, TableDescriptionProvider.Null.instance());
 	}
 
 	protected PrimaryKeyJoinColumnValidator(
 				PersistentAttribute persistentAttribute,
-				ReadOnlyBaseJoinColumn column,
-				ReadOnlyBaseJoinColumn.Owner owner) {
+				BaseJoinColumn column,
+				BaseJoinColumn.Owner owner) {
 		super(persistentAttribute, column, owner, TableDescriptionProvider.Null.instance());
 	}
 

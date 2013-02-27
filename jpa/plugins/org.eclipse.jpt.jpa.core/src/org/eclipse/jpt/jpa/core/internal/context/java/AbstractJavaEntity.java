@@ -46,7 +46,7 @@ import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
@@ -1604,7 +1604,7 @@ public abstract class AbstractJavaEntity
 
 	protected class PrimaryKeyJoinColumnOwner
 		extends NamedColumnOwner
-		implements ReadOnlyBaseJoinColumn.Owner
+		implements BaseJoinColumn.Owner
 	{
 		public org.eclipse.jpt.jpa.db.Table getReferencedColumnDbTable() {
 			Entity parentEntity = AbstractJavaEntity.this.getParentEntity();
@@ -1624,7 +1624,7 @@ public abstract class AbstractJavaEntity
 		}
 
 		public JptValidator buildColumnValidator(NamedColumn column) {
-			return new EntityPrimaryKeyJoinColumnValidator((ReadOnlyBaseJoinColumn) column, this);
+			return new EntityPrimaryKeyJoinColumnValidator((BaseJoinColumn) column, this);
 		}
 	}
 
