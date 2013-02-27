@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
@@ -34,10 +34,10 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy<P extends OrmJoi
 	extends AbstractOrmXmlContextModel<P>
 	implements OrmJoinColumnRelationshipStrategy
 {
-	protected final ContextListContainer<OrmJoinColumn, XmlJoinColumn> specifiedJoinColumnContainer;
+	protected final ContextListContainer<OrmModifiableJoinColumn, XmlJoinColumn> specifiedJoinColumnContainer;
 	protected final ReadOnlyJoinColumn.Owner joinColumnOwner;
 
-	protected OrmJoinColumn defaultJoinColumn;
+	protected OrmModifiableJoinColumn defaultJoinColumn;
 
 
 	protected AbstractOrmJoinColumnRelationshipStrategy(P parent) {
@@ -72,7 +72,7 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy<P extends OrmJoi
 
 	// ********** join columns **********
 
-	public ListIterable<OrmJoinColumn> getJoinColumns() {
+	public ListIterable<OrmModifiableJoinColumn> getJoinColumns() {
 		return this.hasSpecifiedJoinColumns() ? this.getSpecifiedJoinColumns() : this.getDefaultJoinColumns();
 	}
 
@@ -83,7 +83,7 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy<P extends OrmJoi
 
 	// ********** specified join columns **********
 
-	public ListIterable<OrmJoinColumn> getSpecifiedJoinColumns() {
+	public ListIterable<OrmModifiableJoinColumn> getSpecifiedJoinColumns() {
 		return this.specifiedJoinColumnContainer.getContextElements();
 	}
 
@@ -95,17 +95,17 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy<P extends OrmJoi
 		return this.getSpecifiedJoinColumnsSize() != 0;
 	}
 
-	public OrmJoinColumn getSpecifiedJoinColumn(int index) {
+	public OrmModifiableJoinColumn getSpecifiedJoinColumn(int index) {
 		return this.specifiedJoinColumnContainer.getContextElement(index);
 	}
 
-	public OrmJoinColumn addSpecifiedJoinColumn() {
+	public OrmModifiableJoinColumn addSpecifiedJoinColumn() {
 		return this.addSpecifiedJoinColumn(this.getSpecifiedJoinColumnsSize());
 	}
 
-	public OrmJoinColumn addSpecifiedJoinColumn(int index) {
+	public OrmModifiableJoinColumn addSpecifiedJoinColumn(int index) {
 		XmlJoinColumn xmlJoinColumn = this.buildXmlJoinColumn();
-		OrmJoinColumn joinColumn = this.specifiedJoinColumnContainer.addContextElement(index, xmlJoinColumn);
+		OrmModifiableJoinColumn joinColumn = this.specifiedJoinColumnContainer.addContextElement(index, xmlJoinColumn);
 		this.getXmlJoinColumnContainer().getJoinColumns().add(index, xmlJoinColumn);
 		return joinColumn;
 	}
@@ -115,7 +115,7 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy<P extends OrmJoi
 	}
 
 	public void removeSpecifiedJoinColumn(ModifiableJoinColumn joinColumn) {
-		this.removeSpecifiedJoinColumn(this.specifiedJoinColumnContainer.indexOfContextElement((OrmJoinColumn) joinColumn));
+		this.removeSpecifiedJoinColumn(this.specifiedJoinColumnContainer.indexOfContextElement((OrmModifiableJoinColumn) joinColumn));
 	}
 
 	public void removeSpecifiedJoinColumn(int index) {
@@ -154,7 +154,7 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy<P extends OrmJoi
 		return IterableTools.cloneLive(this.getXmlJoinColumnContainer().getJoinColumns());
 	}
 
-	protected ContextListContainer<OrmJoinColumn, XmlJoinColumn> buildSpecifiedJoinColumnContainer() {
+	protected ContextListContainer<OrmModifiableJoinColumn, XmlJoinColumn> buildSpecifiedJoinColumnContainer() {
 		SpecifiedJoinColumnContainer container = new SpecifiedJoinColumnContainer();
 		container.initialize();
 		return container;
@@ -164,14 +164,14 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy<P extends OrmJoi
 	 * specified join column container
 	 */
 	protected class SpecifiedJoinColumnContainer
-		extends ContextListContainer<OrmJoinColumn, XmlJoinColumn>
+		extends ContextListContainer<OrmModifiableJoinColumn, XmlJoinColumn>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return SPECIFIED_JOIN_COLUMNS_LIST;
 		}
 		@Override
-		protected OrmJoinColumn buildContextElement(XmlJoinColumn resourceElement) {
+		protected OrmModifiableJoinColumn buildContextElement(XmlJoinColumn resourceElement) {
 			return AbstractOrmJoinColumnRelationshipStrategy.this.buildJoinColumn(resourceElement);
 		}
 		@Override
@@ -179,7 +179,7 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy<P extends OrmJoi
 			return AbstractOrmJoinColumnRelationshipStrategy.this.getXmlJoinColumns();
 		}
 		@Override
-		protected XmlJoinColumn getResourceElement(OrmJoinColumn contextElement) {
+		protected XmlJoinColumn getResourceElement(OrmModifiableJoinColumn contextElement) {
 			return contextElement.getXmlColumn();
 		}
 	}
@@ -189,20 +189,20 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy<P extends OrmJoi
 
 	// ********** default join column **********
 
-	public OrmJoinColumn getDefaultJoinColumn() {
+	public OrmModifiableJoinColumn getDefaultJoinColumn() {
 		return this.defaultJoinColumn;
 	}
 
-	protected void setDefaultJoinColumn(OrmJoinColumn joinColumn) {
-		OrmJoinColumn old = this.defaultJoinColumn;
+	protected void setDefaultJoinColumn(OrmModifiableJoinColumn joinColumn) {
+		OrmModifiableJoinColumn old = this.defaultJoinColumn;
 		this.defaultJoinColumn = joinColumn;
 		this.firePropertyChanged(DEFAULT_JOIN_COLUMN_PROPERTY, old, joinColumn);
 	}
 
-	protected ListIterable<OrmJoinColumn> getDefaultJoinColumns() {
+	protected ListIterable<OrmModifiableJoinColumn> getDefaultJoinColumns() {
 		return (this.defaultJoinColumn != null) ?
-				new SingleElementListIterable<OrmJoinColumn>(this.defaultJoinColumn) :
-				EmptyListIterable.<OrmJoinColumn>instance();
+				new SingleElementListIterable<OrmModifiableJoinColumn>(this.defaultJoinColumn) :
+				EmptyListIterable.<OrmModifiableJoinColumn>instance();
 	}
 
 	protected int getDefaultJoinColumnsSize() {
@@ -233,7 +233,7 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy<P extends OrmJoi
 		return this.parent;
 	}
 
-	protected OrmJoinColumn buildJoinColumn(XmlJoinColumn xmlJoinColumn) {
+	protected OrmModifiableJoinColumn buildJoinColumn(XmlJoinColumn xmlJoinColumn) {
 		return this.getContextModelFactory().buildOrmJoinColumn(this, this.joinColumnOwner, xmlJoinColumn);
 	}
 
@@ -297,7 +297,7 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy<P extends OrmJoi
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		for (OrmJoinColumn joinColumn : this.getJoinColumns()) {
+		for (OrmModifiableJoinColumn joinColumn : this.getJoinColumns()) {
 			joinColumn.validate(messages, reporter);
 		}
 	}
@@ -310,7 +310,7 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy<P extends OrmJoi
 		if (result != null) {
 			return result;
 		}
-		for (OrmJoinColumn joinColumn : this.getJoinColumns()) {
+		for (OrmModifiableJoinColumn joinColumn : this.getJoinColumns()) {
 			result = joinColumn.getCompletionProposals(pos);
 			if (result != null) {
 				return result;

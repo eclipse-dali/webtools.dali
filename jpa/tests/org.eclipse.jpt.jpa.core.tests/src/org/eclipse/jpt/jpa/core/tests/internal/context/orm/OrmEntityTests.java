@@ -43,7 +43,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedNativeQuery;
@@ -2172,7 +2172,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		
 		persistentType2.getAttributeNamed("manyToOne").addToXml();
 		OrmManyToOneMapping manyToOneMapping = (OrmManyToOneMapping) persistentType2.getAttributeNamed("manyToOne").getMapping();
-		OrmJoinColumn joinColumn = manyToOneMapping.getRelationship().getJoinColumnStrategy().addSpecifiedJoinColumn(0);
+		OrmModifiableJoinColumn joinColumn = manyToOneMapping.getRelationship().getJoinColumnStrategy().addSpecifiedJoinColumn(0);
 		joinColumn.setSpecifiedName("MY_NAME");
 		joinColumn.setSpecifiedReferencedColumnName("MY_REFERNCE_NAME");
 		joinColumn.setSpecifiedTableName("BAR2");

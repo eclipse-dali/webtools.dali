@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
-import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
@@ -360,26 +360,26 @@ public class EclipseLink2_0OrmCollectionTableTests
 
 		OrmCollectionTable2_0 ormCollectionTable = ormElementCollectionMapping.getCollectionTable();
 		
-		OrmJoinColumn joinColumn = ormCollectionTable.addSpecifiedJoinColumn(0);
+		OrmModifiableJoinColumn joinColumn = ormCollectionTable.addSpecifiedJoinColumn(0);
 		joinColumn.setSpecifiedName("FOO");
 				
 		XmlCollectionTable resourceCollectionTable = resourceElementCollection.getCollectionTable();
 		assertEquals("FOO", resourceCollectionTable.getJoinColumns().get(0).getName());
 		
-		OrmJoinColumn joinColumn2 = ormCollectionTable.addSpecifiedJoinColumn(0);
+		OrmModifiableJoinColumn joinColumn2 = ormCollectionTable.addSpecifiedJoinColumn(0);
 		joinColumn2.setSpecifiedName("BAR");
 		
 		assertEquals("BAR", resourceCollectionTable.getJoinColumns().get(0).getName());
 		assertEquals("FOO", resourceCollectionTable.getJoinColumns().get(1).getName());
 		
-		OrmJoinColumn joinColumn3 = ormCollectionTable.addSpecifiedJoinColumn(1);
+		OrmModifiableJoinColumn joinColumn3 = ormCollectionTable.addSpecifiedJoinColumn(1);
 		joinColumn3.setSpecifiedName("BAZ");
 		
 		assertEquals("BAR", resourceCollectionTable.getJoinColumns().get(0).getName());
 		assertEquals("BAZ", resourceCollectionTable.getJoinColumns().get(1).getName());
 		assertEquals("FOO", resourceCollectionTable.getJoinColumns().get(2).getName());
 		
-		ListIterator<OrmJoinColumn> joinColumns = ormCollectionTable.getSpecifiedJoinColumns().iterator();
+		ListIterator<OrmModifiableJoinColumn> joinColumns = ormCollectionTable.getSpecifiedJoinColumns().iterator();
 		assertEquals(joinColumn2, joinColumns.next());
 		assertEquals(joinColumn3, joinColumns.next());
 		assertEquals(joinColumn, joinColumns.next());
@@ -441,7 +441,7 @@ public class EclipseLink2_0OrmCollectionTableTests
 		
 		
 		ormCollectionTable.moveSpecifiedJoinColumn(2, 0);
-		ListIterator<OrmJoinColumn> joinColumns = ormCollectionTable.getSpecifiedJoinColumns().iterator();
+		ListIterator<OrmModifiableJoinColumn> joinColumns = ormCollectionTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -484,7 +484,7 @@ public class EclipseLink2_0OrmCollectionTableTests
 		resourceCollectionTable.getJoinColumns().get(1).setName("BAR");
 		resourceCollectionTable.getJoinColumns().get(2).setName("BAZ");
 
-		ListIterator<OrmJoinColumn> joinColumns = ormCollectionTable.getSpecifiedJoinColumns().iterator();
+		ListIterator<OrmModifiableJoinColumn> joinColumns = ormCollectionTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("FOO", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());

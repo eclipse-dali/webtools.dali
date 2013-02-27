@@ -31,12 +31,12 @@ public interface OrmJoinTable
 
 	// ********** inverse join columns **********
 
-	ListIterable<OrmJoinColumn> getInverseJoinColumns();
+	ListIterable<OrmModifiableJoinColumn> getInverseJoinColumns();
 
-	ListIterable<OrmJoinColumn> getSpecifiedInverseJoinColumns();
-	OrmJoinColumn getSpecifiedInverseJoinColumn(int index);
-	OrmJoinColumn addSpecifiedInverseJoinColumn();
-	OrmJoinColumn addSpecifiedInverseJoinColumn(int index);
+	ListIterable<OrmModifiableJoinColumn> getSpecifiedInverseJoinColumns();
+	OrmModifiableJoinColumn getSpecifiedInverseJoinColumn(int index);
+	OrmModifiableJoinColumn addSpecifiedInverseJoinColumn();
+	OrmModifiableJoinColumn addSpecifiedInverseJoinColumn(int index);
 
-	OrmJoinColumn getDefaultInverseJoinColumn();
+	OrmModifiableJoinColumn getDefaultInverseJoinColumn();
 }
