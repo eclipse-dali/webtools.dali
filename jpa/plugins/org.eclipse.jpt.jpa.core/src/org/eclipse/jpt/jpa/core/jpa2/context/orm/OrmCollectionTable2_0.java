@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.orm.OrmReferenceTable;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedReferenceTable;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
 
 /**
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
  * @since 2.3
  */
 public interface OrmCollectionTable2_0
-	extends CollectionTable2_0, OrmReferenceTable
+	extends CollectionTable2_0, OrmSpecifiedReferenceTable
 {
 	void initializeFrom(CollectionTable2_0 oldCollectionTable);
 }

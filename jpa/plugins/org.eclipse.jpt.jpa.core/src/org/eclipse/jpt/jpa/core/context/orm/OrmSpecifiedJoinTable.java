@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTable;
  * @since 2.0
  */
 public interface OrmSpecifiedJoinTable
-	extends SpecifiedJoinTable, OrmReferenceTable
+	extends SpecifiedJoinTable, OrmSpecifiedReferenceTable
 {
 	OrmSpecifiedJoinTableRelationshipStrategy getParent();
 

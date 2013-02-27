@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReferenceTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReferenceTable;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedReferenceTable;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmTable;
 import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlReferenceTable;
@@ -33,7 +33,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class GenericOrmReferenceTable<P extends JpaContextModel, X extends AbstractXmlReferenceTable>
 	extends AbstractOrmTable<P, X>
-	implements OrmReferenceTable
+	implements OrmSpecifiedReferenceTable
 {
 	protected final ContextListContainer<OrmSpecifiedJoinColumn, XmlJoinColumn> specifiedJoinColumnContainer;
 	protected final JoinColumn.Owner joinColumnOwner;
