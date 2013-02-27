@@ -41,7 +41,7 @@ import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.Override_;
-import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
@@ -207,7 +207,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		public Table resolveDbTable(String tableName) {
 			return this.getRelationshipStrategy().resolveDbTable(tableName);
 		}
-		protected RelationshipStrategy getRelationshipStrategy() {
+		protected SpecifiedRelationshipStrategy getRelationshipStrategy() {
 			return AbstractOrmMultiRelationshipMapping.this.getRelationship().getStrategy();
 		}
 	}
@@ -1140,7 +1140,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 			return AbstractOrmMultiRelationshipMapping.this.getValidationTextRange();
 		}
 
-		protected RelationshipStrategy getRelationshipStrategy() {
+		protected SpecifiedRelationshipStrategy getRelationshipStrategy() {
 			return AbstractOrmMultiRelationshipMapping.this.getRelationship().getStrategy();
 		}
 

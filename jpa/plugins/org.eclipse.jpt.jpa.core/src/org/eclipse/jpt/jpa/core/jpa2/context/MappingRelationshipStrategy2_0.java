@@ -13,7 +13,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.MappingRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
-import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
 
 /**
  * Strategy describing how two entities are joined via a
@@ -34,7 +34,7 @@ import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
  * @see MappingRelationship
  */
 public interface MappingRelationshipStrategy2_0
-	extends RelationshipStrategy
+	extends SpecifiedRelationshipStrategy
 {
 	/**
 	 * Select from the specified override relationship which of its strategies

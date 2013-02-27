@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.jpa.core.context.TableColumn.Owner;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
-import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationshipStrategy;
@@ -46,7 +46,7 @@ public class GenericOrmOverrideRelationship
 	extends AbstractOrmXmlContextModel<OrmSpecifiedAssociationOverride>
 	implements OrmOverrideRelationship2_0
 {
-	protected RelationshipStrategy strategy;
+	protected SpecifiedRelationshipStrategy strategy;
 
 	protected final OrmJoinColumnRelationshipStrategy joinColumnStrategy;
 
@@ -81,17 +81,17 @@ public class GenericOrmOverrideRelationship
 
 	// ********** strategy **********
 
-	public RelationshipStrategy getStrategy() {
+	public SpecifiedRelationshipStrategy getStrategy() {
 		return this.strategy;
 	}
 
-	protected void setStrategy(RelationshipStrategy strategy) {
-		RelationshipStrategy old = this.strategy;
+	protected void setStrategy(SpecifiedRelationshipStrategy strategy) {
+		SpecifiedRelationshipStrategy old = this.strategy;
 		this.strategy = strategy;
 		this.firePropertyChanged(STRATEGY_PROPERTY, old, strategy);
 	}
 
-	protected RelationshipStrategy buildStrategy() {
+	protected SpecifiedRelationshipStrategy buildStrategy() {
 		return this.isJpa2_0Compatible() ?
 				this.buildStrategy2_0() :
 				this.joinColumnStrategy;
@@ -100,10 +100,10 @@ public class GenericOrmOverrideRelationship
 	/**
 	 * The overridden mapping determines the override's strategy.
 	 */
-	protected RelationshipStrategy buildStrategy2_0() {
+	protected SpecifiedRelationshipStrategy buildStrategy2_0() {
 		MappingRelationshipStrategy2_0 mappingStrategy = this.getMappingStrategy();
 		return (mappingStrategy != null) ?
-				(RelationshipStrategy) mappingStrategy.selectOverrideStrategy(this) :
+				(SpecifiedRelationshipStrategy) mappingStrategy.selectOverrideStrategy(this) :
 				this.buildMissingMappingStrategy();
 	}
 
@@ -119,7 +119,7 @@ public class GenericOrmOverrideRelationship
 	 * Return the strategy to use when the override's name does not match the
 	 * name of an appropriate relationship mapping.
 	 */
-	protected RelationshipStrategy buildMissingMappingStrategy() {
+	protected SpecifiedRelationshipStrategy buildMissingMappingStrategy() {
 		return this.joinColumnStrategy.hasSpecifiedJoinColumns() ?
 				this.joinColumnStrategy :
 				this.joinTableStrategy;

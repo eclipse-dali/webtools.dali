@@ -25,7 +25,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 2.2
  */
 public interface MappedByRelationshipStrategy
-	extends RelationshipStrategy
+	extends SpecifiedRelationshipStrategy
 {
 	void initializeFrom(MappedByRelationshipStrategy oldStrategy);
 	

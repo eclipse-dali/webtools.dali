@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
-import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappingRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmRelationshipMapping;
@@ -30,7 +30,7 @@ public abstract class AbstractOrmMappingRelationship<P extends OrmRelationshipMa
 	extends AbstractOrmXmlContextModel<P>
 	implements OrmMappingRelationship
 {
-	protected RelationshipStrategy strategy;
+	protected SpecifiedRelationshipStrategy strategy;
 
 
 	protected AbstractOrmMappingRelationship(P parent) {
@@ -49,17 +49,17 @@ public abstract class AbstractOrmMappingRelationship<P extends OrmRelationshipMa
 
 	// ********** strategy **********
 
-	public RelationshipStrategy getStrategy() {
+	public SpecifiedRelationshipStrategy getStrategy() {
 		return this.strategy;
 	}
 
-	protected void setStrategy(RelationshipStrategy strategy) {
-		RelationshipStrategy old = this.strategy;
+	protected void setStrategy(SpecifiedRelationshipStrategy strategy) {
+		SpecifiedRelationshipStrategy old = this.strategy;
 		this.strategy = strategy;
 		this.firePropertyChanged(STRATEGY_PROPERTY, old, strategy);
 	}
 
-	protected abstract RelationshipStrategy buildStrategy();
+	protected abstract SpecifiedRelationshipStrategy buildStrategy();
 
 	/**
 	 * This is called by subclasses when the various supported strategies are

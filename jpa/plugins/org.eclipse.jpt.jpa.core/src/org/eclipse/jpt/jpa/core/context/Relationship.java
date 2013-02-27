@@ -25,7 +25,7 @@ package org.eclipse.jpt.jpa.core.context;
 public interface Relationship
 	extends ReadOnlyRelationship
 {
-	RelationshipStrategy getStrategy();
+	SpecifiedRelationshipStrategy getStrategy();
 
 
 	// ********** conversions **********

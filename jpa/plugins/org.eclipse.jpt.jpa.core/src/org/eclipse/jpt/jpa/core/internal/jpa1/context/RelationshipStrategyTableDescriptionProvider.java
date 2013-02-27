@@ -9,14 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
-import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
 
 public class RelationshipStrategyTableDescriptionProvider
 	implements AbstractNamedColumnValidator.TableDescriptionProvider
 {
-	private final RelationshipStrategy relationshipStrategy;
+	private final SpecifiedRelationshipStrategy relationshipStrategy;
 	
-	public RelationshipStrategyTableDescriptionProvider(RelationshipStrategy relationshipStrategy) {
+	public RelationshipStrategyTableDescriptionProvider(SpecifiedRelationshipStrategy relationshipStrategy) {
 		super();
 		this.relationshipStrategy = relationshipStrategy;
 	}

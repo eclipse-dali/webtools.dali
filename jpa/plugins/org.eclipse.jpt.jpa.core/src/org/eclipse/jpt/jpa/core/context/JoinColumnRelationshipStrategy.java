@@ -28,7 +28,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
  * @since 2.2
  */
 public interface JoinColumnRelationshipStrategy
-	extends ReadOnlyJoinColumnRelationshipStrategy, RelationshipStrategy
+	extends ReadOnlyJoinColumnRelationshipStrategy, SpecifiedRelationshipStrategy
 {
 	void initializeFrom(ReadOnlyJoinColumnRelationshipStrategy oldStrategy);
 

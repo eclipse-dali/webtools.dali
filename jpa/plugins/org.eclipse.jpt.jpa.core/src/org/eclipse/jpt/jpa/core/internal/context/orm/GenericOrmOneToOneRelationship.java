@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
-import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOneToOneMapping;
@@ -77,7 +77,7 @@ public class GenericOrmOneToOneRelationship
 	// ********** strategy **********
 
 	@Override
-	protected RelationshipStrategy buildStrategy() {
+	protected SpecifiedRelationshipStrategy buildStrategy() {
 		if (this.mappedByStrategy.getMappedByAttribute() != null) {
 			return this.mappedByStrategy;
 		}

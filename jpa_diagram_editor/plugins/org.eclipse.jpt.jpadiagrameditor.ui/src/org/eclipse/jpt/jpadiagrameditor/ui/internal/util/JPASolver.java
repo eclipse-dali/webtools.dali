@@ -94,7 +94,7 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
-import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToOneMapping;
@@ -509,7 +509,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		Relationship rr = ((RelationshipMapping) jam).getRelationship();
 		if (rr == null)
 			return;			
-		RelationshipStrategy js = rr.getStrategy();
+		SpecifiedRelationshipStrategy js = rr.getStrategy();
 		if ((js == null) || !MappedByRelationshipStrategy.class.isInstance(js))
 			return;
 		try {
@@ -657,7 +657,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			Relationship rr = ((RelationshipMapping) jam).getRelationship();
 			if (rr == null)
 				return;			
-			RelationshipStrategy js = rr.getStrategy();
+			SpecifiedRelationshipStrategy js = rr.getStrategy();
 			if ((js == null) || !MappedByRelationshipStrategy.class.isInstance(js))
 				return;
 			lsnrRef = new WeakReference<AttributeJoiningStrategyPropertyChangeListener>(lsnr);
@@ -778,7 +778,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 				Relationship rr = ((RelationshipMapping) jam).getRelationship();
 				if (rr == null)
 					return;			
-				RelationshipStrategy js = rr.getStrategy();
+				SpecifiedRelationshipStrategy js = rr.getStrategy();
 				if ((js == null) || !MappedByRelationshipStrategy.class.isInstance(js))
 					return;
 				js.removePropertyChangeListener(MappedByRelationshipStrategy.MAPPED_BY_ATTRIBUTE_PROPERTY, lsnr);							

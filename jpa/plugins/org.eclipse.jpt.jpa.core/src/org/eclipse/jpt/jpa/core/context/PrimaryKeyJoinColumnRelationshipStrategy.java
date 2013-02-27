@@ -27,7 +27,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
  * @since 2.2
  */
 public interface PrimaryKeyJoinColumnRelationshipStrategy
-	extends RelationshipStrategy
+	extends SpecifiedRelationshipStrategy
 {
 	/**
 	 * Change notification identifier for "primaryKeyJoinColumns" list
