@@ -26,5 +26,5 @@ import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 public interface OrmOrderable2_0
 	extends Orderable2_0
 {
-	OrmOrderColumn2_0 getOrderColumn();
+	OrmSpecifiedOrderColumn2_0 getOrderColumn();
 }

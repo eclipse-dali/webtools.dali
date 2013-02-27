@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmNamedColumn;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOrderColumn2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmSpecifiedOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOrderable2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlOrderColumn;
 
@@ -20,8 +20,8 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlOrderColumn;
  * <code>orm.xml</code> order column
  */
 public class GenericOrmOrderColumn2_0
-	extends AbstractOrmNamedColumn<OrmOrderable2_0, XmlOrderColumn, OrmOrderColumn2_0.Owner>
-	implements OrmOrderColumn2_0
+	extends AbstractOrmNamedColumn<OrmOrderable2_0, XmlOrderColumn, OrmSpecifiedOrderColumn2_0.Owner>
+	implements OrmSpecifiedOrderColumn2_0
 {
 	// TODO defaults from java for all of these settings
 	protected Boolean specifiedNullable;
@@ -31,7 +31,7 @@ public class GenericOrmOrderColumn2_0
 	protected Boolean specifiedUpdatable;
 
 
-	public GenericOrmOrderColumn2_0(OrmOrderable2_0 parent, OrmOrderColumn2_0.Owner owner) {
+	public GenericOrmOrderColumn2_0(OrmOrderable2_0 parent, OrmSpecifiedOrderColumn2_0.Owner owner) {
 		super(parent, owner);
 		this.specifiedNullable = this.buildSpecifiedNullable();
 		this.specifiedInsertable = this.buildSpecifiedInsertable();
