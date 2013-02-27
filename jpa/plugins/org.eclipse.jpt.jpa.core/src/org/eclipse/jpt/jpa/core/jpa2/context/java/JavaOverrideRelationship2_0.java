@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.jpa2.context.java;
 
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationship;
-import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaOverrideRelationship;
 import org.eclipse.jpt.jpa.core.jpa2.context.OverrideRelationship2_0;
 
@@ -31,5 +31,5 @@ public interface JavaOverrideRelationship2_0
 			JavaOverrideRelationship,
 			JavaJoinTableRelationship
 {
-	JavaJoinTableRelationshipStrategy getJoinTableStrategy();
+	JavaSpecifiedJoinTableRelationshipStrategy getJoinTableStrategy();
 }

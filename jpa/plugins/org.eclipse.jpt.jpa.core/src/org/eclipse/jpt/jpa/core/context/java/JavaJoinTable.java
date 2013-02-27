@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
 public interface JavaJoinTable
 	extends JoinTable, JavaReferenceTable
 {
-	JavaJoinTableRelationshipStrategy getParent();
+	JavaSpecifiedJoinTableRelationshipStrategy getParent();
 
 	JoinTableAnnotation getTableAnnotation();
 

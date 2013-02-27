@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTable;
-import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.resource.java.NullJoinColumnAnnotation;
@@ -44,7 +44,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * annotation); the other is {@link GenericJavaColumn Column}.
  */
 public class GenericJavaJoinTable
-	extends GenericJavaReferenceTable<JavaJoinTableRelationshipStrategy, JoinTableAnnotation>
+	extends GenericJavaReferenceTable<JavaSpecifiedJoinTableRelationshipStrategy, JoinTableAnnotation>
 	implements JavaJoinTable
 {
 	protected final ContextListContainer<JavaSpecifiedJoinColumn, JoinColumnAnnotation> specifiedInverseJoinColumnContainer;
@@ -53,7 +53,7 @@ public class GenericJavaJoinTable
 	protected JavaSpecifiedJoinColumn defaultInverseJoinColumn;
 
 
-	public GenericJavaJoinTable(JavaJoinTableRelationshipStrategy parent, Owner owner) {
+	public GenericJavaJoinTable(JavaSpecifiedJoinTableRelationshipStrategy parent, Owner owner) {
 		super(parent, owner);
 		this.inverseJoinColumnOwner = this.buildInverseJoinColumnOwner();
 		this.specifiedInverseJoinColumnContainer = this.buildSpecifiedInverseJoinColumnContainer();
@@ -243,7 +243,7 @@ public class GenericJavaJoinTable
 
 	// ********** misc **********
 
-	protected JavaJoinTableRelationshipStrategy getRelationshipStrategy() {
+	protected JavaSpecifiedJoinTableRelationshipStrategy getRelationshipStrategy() {
 		return this.parent;
 	}
 
@@ -363,7 +363,7 @@ public class GenericJavaJoinTable
 			return this.getRelationshipStrategy().getRelationship();
 		}
 
-		protected JavaJoinTableRelationshipStrategy getRelationshipStrategy() {
+		protected JavaSpecifiedJoinTableRelationshipStrategy getRelationshipStrategy() {
 			return GenericJavaJoinTable.this.getRelationshipStrategy();
 		}
 	}

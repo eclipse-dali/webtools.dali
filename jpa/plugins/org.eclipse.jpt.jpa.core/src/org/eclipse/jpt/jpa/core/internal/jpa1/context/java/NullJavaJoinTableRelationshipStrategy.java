@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationship;
-import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedMappingRelationshipStrategy2_0;
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.db.Table;
 
 public class NullJavaJoinTableRelationshipStrategy
 	extends AbstractJavaContextModel<JavaJoinTableRelationship>
-	implements SpecifiedMappingRelationshipStrategy2_0, JavaJoinTableRelationshipStrategy
+	implements SpecifiedMappingRelationshipStrategy2_0, JavaSpecifiedJoinTableRelationshipStrategy
 {
 	public NullJavaJoinTableRelationshipStrategy(JavaJoinTableRelationship parent) {
 		super(parent);

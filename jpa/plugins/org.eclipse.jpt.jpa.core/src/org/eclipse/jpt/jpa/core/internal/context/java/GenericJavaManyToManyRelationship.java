@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToManyRelationship;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaMappingJoinTableRelationshipStrategy;
@@ -32,7 +32,7 @@ public class GenericJavaManyToManyRelationship
 {
 	protected final SpecifiedMappedByRelationshipStrategy mappedByStrategy;
 
-	protected final JavaJoinTableRelationshipStrategy joinTableStrategy;
+	protected final JavaSpecifiedJoinTableRelationshipStrategy joinTableStrategy;
 
 
 	public GenericJavaManyToManyRelationship(JavaManyToManyMapping parent) {
@@ -99,7 +99,7 @@ public class GenericJavaManyToManyRelationship
 
 	// ********** join table strategy **********
 
-	public JavaJoinTableRelationshipStrategy getJoinTableStrategy() {
+	public JavaSpecifiedJoinTableRelationshipStrategy getJoinTableStrategy() {
 		return this.joinTableStrategy;
 	}
 
@@ -117,7 +117,7 @@ public class GenericJavaManyToManyRelationship
 		return this.getMappedByStrategy().getMappedByAttribute() == null;
 	}
 
-	protected JavaJoinTableRelationshipStrategy buildJoinTableStrategy() {
+	protected JavaSpecifiedJoinTableRelationshipStrategy buildJoinTableStrategy() {
 		return new GenericJavaMappingJoinTableRelationshipStrategy(this);
 	}
 

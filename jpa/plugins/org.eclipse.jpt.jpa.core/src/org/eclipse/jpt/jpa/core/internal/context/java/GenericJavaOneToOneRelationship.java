@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumnRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaMappingJoinTableRelationshipStrategy;
@@ -39,7 +39,7 @@ public class GenericJavaOneToOneRelationship
 	protected final JavaPrimaryKeyJoinColumnRelationshipStrategy primaryKeyJoinColumnStrategy;
 
 	// JPA 2.0
-	protected final JavaJoinTableRelationshipStrategy joinTableStrategy;
+	protected final JavaSpecifiedJoinTableRelationshipStrategy joinTableStrategy;
 
 	protected final JavaSpecifiedJoinColumnRelationshipStrategy joinColumnStrategy;
 
@@ -147,7 +147,7 @@ public class GenericJavaOneToOneRelationship
 
 	// ********** join table strategy **********
 
-	public JavaJoinTableRelationshipStrategy getJoinTableStrategy() {
+	public JavaSpecifiedJoinTableRelationshipStrategy getJoinTableStrategy() {
 		return this.joinTableStrategy;
 	}
 
@@ -167,7 +167,7 @@ public class GenericJavaOneToOneRelationship
 		return false;
 	}
 
-	protected JavaJoinTableRelationshipStrategy buildJoinTableStrategy() {
+	protected JavaSpecifiedJoinTableRelationshipStrategy buildJoinTableStrategy() {
 		return this.isJpa2_0Compatible() ?
 				new GenericJavaMappingJoinTableRelationshipStrategy(this) :
 				new NullJavaJoinTableRelationshipStrategy(this);

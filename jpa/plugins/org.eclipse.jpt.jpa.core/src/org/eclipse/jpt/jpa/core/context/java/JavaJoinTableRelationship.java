@@ -26,5 +26,5 @@ import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
 public interface JavaJoinTableRelationship
 	extends JoinTableRelationship
 {
-	JavaJoinTableRelationshipStrategy getJoinTableStrategy();
+	JavaSpecifiedJoinTableRelationshipStrategy getJoinTableStrategy();
 }
