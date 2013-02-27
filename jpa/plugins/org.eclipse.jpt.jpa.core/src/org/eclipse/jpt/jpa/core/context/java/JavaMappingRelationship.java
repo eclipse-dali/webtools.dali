@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import org.eclipse.jpt.jpa.core.context.SpecifiedMappingRelationship;
+import org.eclipse.jpt.jpa.core.context.MappingRelationship;
 
 /**
  * Java mapping relationship (1:1, 1:m, m:1, m:m)
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedMappingRelationship;
  * @since 2.2
  */
 public interface JavaMappingRelationship
-	extends SpecifiedMappingRelationship
+	extends MappingRelationship
 {
 	JavaRelationshipMapping getMapping();
 }

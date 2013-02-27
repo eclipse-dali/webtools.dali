@@ -28,7 +28,7 @@ public interface RelationshipMapping
 	 * Return the meta-information used to populate the entities of the 
 	 * relationship
 	 */
-	SpecifiedMappingRelationship getRelationship();
+	MappingRelationship getRelationship();
 
 	/**
 	 * Return the relationship owner or null if this is the owning side

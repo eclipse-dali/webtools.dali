@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.SpecifiedMappingRelationship;
+import org.eclipse.jpt.jpa.core.context.MappingRelationship;
 
 /**
  * <code>orm.xml</code> mapping relationship (1:1, 1:m, m:1, m:m)
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedMappingRelationship;
  * @since 2.2
  */
 public interface OrmMappingRelationship
-	extends SpecifiedMappingRelationship
+	extends MappingRelationship
 {
 	OrmRelationshipMapping getMapping();
 }

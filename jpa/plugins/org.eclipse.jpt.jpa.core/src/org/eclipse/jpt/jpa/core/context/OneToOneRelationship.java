@@ -25,7 +25,7 @@ public interface OneToOneRelationship
 	extends MappedByRelationship,
 			SpecifiedJoinColumnRelationship,
 			SpecifiedPrimaryKeyJoinColumnRelationship,
-			SpecifiedMappingRelationship
+			MappingRelationship
 {
 	// combine various interfaces
 }

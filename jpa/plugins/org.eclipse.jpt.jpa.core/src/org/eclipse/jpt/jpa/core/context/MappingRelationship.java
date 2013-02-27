@@ -23,7 +23,7 @@ package org.eclipse.jpt.jpa.core.context;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface SpecifiedMappingRelationship
+public interface MappingRelationship
 	extends SpecifiedRelationship
 {
 	/**

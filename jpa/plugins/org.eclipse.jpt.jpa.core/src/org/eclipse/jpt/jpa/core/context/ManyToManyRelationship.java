@@ -24,7 +24,7 @@ package org.eclipse.jpt.jpa.core.context;
 public interface ManyToManyRelationship
 	extends MappedByRelationship,
 			SpecifiedJoinTableRelationship,
-			SpecifiedMappingRelationship
+			MappingRelationship
 {
 	// combine various interfaces
 }
