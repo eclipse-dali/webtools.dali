@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationship;
+import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
@@ -129,7 +129,7 @@ public class GenericOrmManyToManyRelationship
 	}
 
 	@Override
-	public void initializeFromMappedByRelationship(SpecifiedMappedByRelationship oldRelationship) {
+	public void initializeFromMappedByRelationship(MappedByRelationship oldRelationship) {
 		super.initializeFromMappedByRelationship(oldRelationship);
 		this.mappedByStrategy.initializeFrom(oldRelationship.getMappedByStrategy());
 	}

@@ -19,7 +19,7 @@ package org.eclipse.jpt.jpa.core.context;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
  * @see RelationshipMapping
- * @see SpecifiedMappedByRelationship
+ * @see MappedByRelationship
  * 
  * @version 2.2
  * @since 2.2

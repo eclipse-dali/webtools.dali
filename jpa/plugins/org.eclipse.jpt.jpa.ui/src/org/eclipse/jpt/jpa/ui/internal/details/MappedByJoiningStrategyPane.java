@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationship;
+import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.swt.widgets.Composite;
@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Control;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see {@link SpecifiedMappedByRelationship}
+ * @see {@link MappedByRelationship}
  * @see {@link SpecifiedMappedByRelationshipStrategy}
  * @see {@link OneToOneJoiningStrategyPane}
  * @see {@link OneToManyJoiningStrategyPane}
@@ -41,7 +41,7 @@ import org.eclipse.swt.widgets.Control;
  * @since 2.1
  */
 public class MappedByJoiningStrategyPane 
-	extends AbstractJoiningStrategyPane<SpecifiedMappedByRelationship, SpecifiedMappedByRelationshipStrategy>
+	extends AbstractJoiningStrategyPane<MappedByRelationship, SpecifiedMappedByRelationshipStrategy>
 {
 	/**
 	 * Creates a new <code>MappedByJoiningStrategyPane</code>.
@@ -50,7 +50,7 @@ public class MappedByJoiningStrategyPane
 	 * @param parent The parent container
 	 */
 	public MappedByJoiningStrategyPane(
-			Pane<? extends SpecifiedMappedByRelationship> parentPane, 
+			Pane<? extends MappedByRelationship> parentPane, 
 			Composite parent) {
 		super(parentPane, parent);
 	}
@@ -67,7 +67,7 @@ public class MappedByJoiningStrategyPane
 	}
 
 	protected PropertyValueModel<SpecifiedMappedByRelationshipStrategy> buildMappedByJoiningStrategyHolder() {
-		return new PropertyAspectAdapter<SpecifiedMappedByRelationship, SpecifiedMappedByRelationshipStrategy>(
+		return new PropertyAspectAdapter<MappedByRelationship, SpecifiedMappedByRelationshipStrategy>(
 				getSubjectHolder()) {
 			@Override
 			protected SpecifiedMappedByRelationshipStrategy buildValue_() {
@@ -76,8 +76,8 @@ public class MappedByJoiningStrategyPane
 		};
 	}
 
-	public static ModifiablePropertyValueModel<Boolean> buildUsesMappedByJoiningStrategyHolder(PropertyValueModel<? extends SpecifiedMappedByRelationship> subjectHolder) {
-		return new PropertyAspectAdapter<SpecifiedMappedByRelationship, Boolean>(
+	public static ModifiablePropertyValueModel<Boolean> buildUsesMappedByJoiningStrategyHolder(PropertyValueModel<? extends MappedByRelationship> subjectHolder) {
+		return new PropertyAspectAdapter<MappedByRelationship, Boolean>(
 				subjectHolder, Relationship.STRATEGY_PROPERTY) {
 			@Override
 			protected Boolean buildValue() {
@@ -96,10 +96,10 @@ public class MappedByJoiningStrategyPane
 	}
 
 
-	private TransformationPropertyValueModel<SpecifiedMappedByRelationship, Boolean> buildMappedByRelationshipPaneEnablerHolder() {
-		return new TransformationPropertyValueModel<SpecifiedMappedByRelationship, Boolean>(getSubjectHolder()) {
+	private TransformationPropertyValueModel<MappedByRelationship, Boolean> buildMappedByRelationshipPaneEnablerHolder() {
+		return new TransformationPropertyValueModel<MappedByRelationship, Boolean>(getSubjectHolder()) {
 			@Override
-			protected Boolean transform_(SpecifiedMappedByRelationship v) {
+			protected Boolean transform_(MappedByRelationship v) {
 				return Boolean.valueOf(!v.isVirtual());
 			}
 		};
