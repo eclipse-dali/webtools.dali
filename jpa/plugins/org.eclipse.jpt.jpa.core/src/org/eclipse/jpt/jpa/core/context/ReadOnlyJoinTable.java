@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 public interface ReadOnlyJoinTable
 	extends ReadOnlyReferenceTable
 {
-	ReadOnlyJoinTableRelationshipStrategy getParent();
+	JoinTableRelationshipStrategy getParent();
 
 	RelationshipMapping getRelationshipMapping();
 

@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.JoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -46,7 +46,7 @@ import org.eclipse.swt.widgets.Control;
  */
 public class JoinTableJoiningStrategyPane
 	extends AbstractJoiningStrategyPane
-		<ReadOnlyJoinTableRelationship, ReadOnlyJoinTableRelationshipStrategy>
+		<ReadOnlyJoinTableRelationship, JoinTableRelationshipStrategy>
 {
 	public JoinTableJoiningStrategyPane(
 			Pane<? extends ReadOnlyJoinTableRelationship> parentPane, 
@@ -72,20 +72,20 @@ public class JoinTableJoiningStrategyPane
 		return buildUsesJoinTableJoiningStrategyHolder(getSubjectHolder());
 	}
 
-	protected PropertyValueModel<ReadOnlyJoinTableRelationshipStrategy> buildJoinTableJoiningStrategyHolder() {
+	protected PropertyValueModel<JoinTableRelationshipStrategy> buildJoinTableJoiningStrategyHolder() {
 		return new PropertyAspectAdapter
-				<ReadOnlyJoinTableRelationship, ReadOnlyJoinTableRelationshipStrategy>(
+				<ReadOnlyJoinTableRelationship, JoinTableRelationshipStrategy>(
 					getSubjectHolder()) {
 			@Override
-			protected ReadOnlyJoinTableRelationshipStrategy buildValue_() {
+			protected JoinTableRelationshipStrategy buildValue_() {
 				return this.subject.getJoinTableStrategy();
 			}
 		};
 	}
 
 	protected PropertyValueModel<ReadOnlyJoinTable> buildJoinTableHolder() {
-		return new PropertyAspectAdapter<ReadOnlyJoinTableRelationshipStrategy, ReadOnlyJoinTable>(
-				this.buildJoinTableJoiningStrategyHolder(), ReadOnlyJoinTableRelationshipStrategy.JOIN_TABLE_PROPERTY) {
+		return new PropertyAspectAdapter<JoinTableRelationshipStrategy, ReadOnlyJoinTable>(
+				this.buildJoinTableJoiningStrategyHolder(), JoinTableRelationshipStrategy.JOIN_TABLE_PROPERTY) {
 			@Override
 			protected ReadOnlyJoinTable buildValue_() {
 				return this.subject.getJoinTable();

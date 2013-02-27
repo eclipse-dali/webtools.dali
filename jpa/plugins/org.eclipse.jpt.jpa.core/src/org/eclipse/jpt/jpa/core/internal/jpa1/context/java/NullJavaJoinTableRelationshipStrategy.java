@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.JoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationship;
@@ -56,11 +56,11 @@ public class NullJavaJoinTableRelationshipStrategy
 		return this.parent;
 	}
 
-	public void initializeFrom(ReadOnlyJoinTableRelationshipStrategy oldStrategy) {
+	public void initializeFrom(JoinTableRelationshipStrategy oldStrategy) {
 		// NOP
 	}
 
-	public void initializeFromVirtual(ReadOnlyJoinTableRelationshipStrategy virtualStrategy) {
+	public void initializeFromVirtual(JoinTableRelationshipStrategy virtualStrategy) {
 		// NOP
 	}
 

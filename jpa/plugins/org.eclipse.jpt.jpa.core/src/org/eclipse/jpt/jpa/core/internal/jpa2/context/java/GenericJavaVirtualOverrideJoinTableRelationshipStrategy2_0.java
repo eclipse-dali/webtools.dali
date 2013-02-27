@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.JoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinTable;
@@ -75,7 +75,7 @@ public class GenericJavaVirtualOverrideJoinTableRelationshipStrategy2_0
 	}
 
 	protected ReadOnlyJoinTable getOverriddenJoinTable() {
-		ReadOnlyJoinTableRelationshipStrategy overriddenStrategy = this.getOverriddenStrategy();
+		JoinTableRelationshipStrategy overriddenStrategy = this.getOverriddenStrategy();
 		return (overriddenStrategy == null) ? null : overriddenStrategy.getJoinTable();
 	}
 
@@ -90,7 +90,7 @@ public class GenericJavaVirtualOverrideJoinTableRelationshipStrategy2_0
 		return this.parent;
 	}
 
-	protected ReadOnlyJoinTableRelationshipStrategy getOverriddenStrategy() {
+	protected JoinTableRelationshipStrategy getOverriddenStrategy() {
 		ReadOnlyJoinTableRelationship relationship = this.getOverriddenJoinTableRelationship();
 		return (relationship == null) ? null : relationship.getJoinTableStrategy();
 	}

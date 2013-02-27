@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.JoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTable;
@@ -151,7 +151,7 @@ public abstract class AbstractOrmJoinTableRelationshipStrategy<P extends OrmJoin
 		return this.getRelationship().getMapping();
 	}
 
-	public void initializeFrom(ReadOnlyJoinTableRelationshipStrategy oldStrategy) {
+	public void initializeFrom(JoinTableRelationshipStrategy oldStrategy) {
 		ReadOnlyJoinTable oldJoinTable = oldStrategy.getJoinTable();
 		if (oldJoinTable != null) {
 			this.addStrategy();
@@ -159,7 +159,7 @@ public abstract class AbstractOrmJoinTableRelationshipStrategy<P extends OrmJoin
 		}
 	}
 
-	public void initializeFromVirtual(ReadOnlyJoinTableRelationshipStrategy virtualStrategy) {
+	public void initializeFromVirtual(JoinTableRelationshipStrategy virtualStrategy) {
 		ReadOnlyJoinTable oldJoinTable = virtualStrategy.getJoinTable();
 		if (oldJoinTable != null) {
 			this.addStrategy();

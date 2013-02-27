@@ -36,7 +36,7 @@ import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.JoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TransientMapping;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
 import org.eclipse.jpt.jpa.core.context.VirtualAssociationOverride;
@@ -1576,7 +1576,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		overrideContainer = virtualEmbeddedMapping.getAssociationOverrideContainer();
 		SpecifiedAssociationOverride associationOverride = overrideContainer.getSpecifiedOverrides().iterator().next();
 		assertEquals("addresses", associationOverride.getName());
-		ReadOnlyJoinTableRelationshipStrategy strategy = ((ReadOnlyOverrideRelationship2_0) associationOverride.getRelationship()).getJoinTableStrategy();
+		JoinTableRelationshipStrategy strategy = ((ReadOnlyOverrideRelationship2_0) associationOverride.getRelationship()).getJoinTableStrategy();
 		joinTable = strategy.getJoinTable();
 		assertEquals("JAVA_FOO", joinTable.getName());
 		assertEquals(2, joinTable.getJoinColumnsSize());

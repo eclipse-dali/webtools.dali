@@ -31,7 +31,7 @@ public interface ReadOnlyJoinTableRelationship
 	 * Return the (never <code>null</code>) strategy used to configure
 	 * the relationship's join table strategy.
 	 */
-	ReadOnlyJoinTableRelationshipStrategy getJoinTableStrategy();
+	JoinTableRelationshipStrategy getJoinTableStrategy();
 
 	/**
 	 * Return whether the join table strategy is the
