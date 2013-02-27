@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaMappingJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.NullJavaJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOneToOneRelationship2_0;
@@ -36,7 +36,7 @@ public class GenericJavaOneToOneRelationship
 {
 	protected final SpecifiedMappedByRelationshipStrategy mappedByStrategy;
 
-	protected final JavaPrimaryKeyJoinColumnRelationshipStrategy primaryKeyJoinColumnStrategy;
+	protected final JavaSpecifiedPrimaryKeyJoinColumnRelationshipStrategy primaryKeyJoinColumnStrategy;
 
 	// JPA 2.0
 	protected final JavaSpecifiedJoinTableRelationshipStrategy joinTableStrategy;
@@ -124,7 +124,7 @@ public class GenericJavaOneToOneRelationship
 
 	// ********** primary key join column strategy **********
 
-	public JavaPrimaryKeyJoinColumnRelationshipStrategy getPrimaryKeyJoinColumnStrategy() {
+	public JavaSpecifiedPrimaryKeyJoinColumnRelationshipStrategy getPrimaryKeyJoinColumnStrategy() {
 		return this.primaryKeyJoinColumnStrategy;
 	}
 
@@ -140,7 +140,7 @@ public class GenericJavaOneToOneRelationship
 		this.updateStrategy();
 	}
 
-	protected JavaPrimaryKeyJoinColumnRelationshipStrategy buildPrimaryKeyJoinColumnStrategy() {
+	protected JavaSpecifiedPrimaryKeyJoinColumnRelationshipStrategy buildPrimaryKeyJoinColumnStrategy() {
 		return new GenericJavaPrimaryKeyJoinColumnRelationshipStrategy(this);
 	}
 
