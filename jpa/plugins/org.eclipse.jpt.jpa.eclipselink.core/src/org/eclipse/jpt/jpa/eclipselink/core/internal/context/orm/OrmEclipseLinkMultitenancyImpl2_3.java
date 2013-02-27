@@ -34,7 +34,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.SpecifiedTenantDiscriminator
 import org.eclipse.jpt.jpa.eclipselink.core.context.VirtualTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkNonEmbeddableTypeMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaTenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkNonEmbeddableTypeMapping;
@@ -451,7 +451,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 		this.defaultTenantDiscriminatorColumnContainer.moveContextElement(index, tenantDiscriminatorColumn);
 	}
 
-	protected VirtualTenantDiscriminatorColumn2_3 addDefaultTenantDiscriminatorColumn(int index, JavaTenantDiscriminatorColumn2_3 javaTenantDiscriminatorColumn) {
+	protected VirtualTenantDiscriminatorColumn2_3 addDefaultTenantDiscriminatorColumn(int index, JavaSpecifiedTenantDiscriminatorColumn2_3 javaTenantDiscriminatorColumn) {
 		return this.defaultTenantDiscriminatorColumnContainer.addContextElement(index, javaTenantDiscriminatorColumn);
 	}
 

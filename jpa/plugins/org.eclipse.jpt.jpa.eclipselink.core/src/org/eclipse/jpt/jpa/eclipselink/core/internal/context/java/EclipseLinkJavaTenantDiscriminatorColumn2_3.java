@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.AbstractJavaNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaTenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTenantDiscriminatorColumnAnnotation2_3;
 
 /**
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTenantDiscr
  */
 public class EclipseLinkJavaTenantDiscriminatorColumn2_3
 	extends AbstractJavaNamedDiscriminatorColumn<JavaEclipseLinkMultitenancyImpl2_3, EclipseLinkTenantDiscriminatorColumnAnnotation2_3, ReadOnlyTenantDiscriminatorColumn2_3.Owner>
-	implements JavaTenantDiscriminatorColumn2_3
+	implements JavaSpecifiedTenantDiscriminatorColumn2_3
 {
 	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(org.eclipse.jpt.jpa.core.context.JpaContextModel, org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
 	protected /* final */ EclipseLinkTenantDiscriminatorColumnAnnotation2_3 columnAnnotation;  // never null

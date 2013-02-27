@@ -38,7 +38,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.SpecifiedTenantDiscriminator
 import org.eclipse.jpt.jpa.eclipselink.core.context.VirtualTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkNonEmbeddableTypeMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaTenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.TargetDatabase;
@@ -66,7 +66,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 	protected boolean defaultIncludeCriteria = DEFAULT_INCLUDE_CRITERIA;
 
 	protected final ReadOnlyTenantDiscriminatorColumn2_3.Owner tenantDiscriminatorColumnOwner;
-	protected final ContextListContainer<JavaTenantDiscriminatorColumn2_3, EclipseLinkTenantDiscriminatorColumnAnnotation2_3> specifiedTenantDiscriminatorColumnContainer;
+	protected final ContextListContainer<JavaSpecifiedTenantDiscriminatorColumn2_3, EclipseLinkTenantDiscriminatorColumnAnnotation2_3> specifiedTenantDiscriminatorColumnContainer;
 	protected final ContextListContainer<VirtualTenantDiscriminatorColumn2_3, ReadOnlyTenantDiscriminatorColumn2_3> defaultTenantDiscriminatorColumnContainer;
 
 	protected final ReadOnlyTenantDiscriminatorColumn2_3 defaultTenantDiscriminatorColumn;
@@ -265,7 +265,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 
 	// ********** specified tenant discriminator columns **********
 
-	public ListIterable<JavaTenantDiscriminatorColumn2_3> getSpecifiedTenantDiscriminatorColumns() {
+	public ListIterable<JavaSpecifiedTenantDiscriminatorColumn2_3> getSpecifiedTenantDiscriminatorColumns() {
 		return this.specifiedTenantDiscriminatorColumnContainer.getContextElements();
 	}
 
@@ -281,17 +281,17 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 		return this.getSpecifiedTenantDiscriminatorColumnsSize() != 0;
 	}
 
-	public JavaTenantDiscriminatorColumn2_3 addSpecifiedTenantDiscriminatorColumn() {
+	public JavaSpecifiedTenantDiscriminatorColumn2_3 addSpecifiedTenantDiscriminatorColumn() {
 		return this.addSpecifiedTenantDiscriminatorColumn(this.getSpecifiedTenantDiscriminatorColumnsSize());
 	}
 
-	public JavaTenantDiscriminatorColumn2_3 addSpecifiedTenantDiscriminatorColumn(int index) {
+	public JavaSpecifiedTenantDiscriminatorColumn2_3 addSpecifiedTenantDiscriminatorColumn(int index) {
 		EclipseLinkTenantDiscriminatorColumnAnnotation2_3 annotation = this.addTenantDiscriminatorColumnAnnotation(index);
 		return this.specifiedTenantDiscriminatorColumnContainer.addContextElement(index, annotation);
 	}
 
 	public void removeSpecifiedTenantDiscriminatorColumn(SpecifiedTenantDiscriminatorColumn2_3 tenantDiscriminatorColumn) {
-		this.removeSpecifiedTenantDiscriminatorColumn(this.specifiedTenantDiscriminatorColumnContainer.indexOfContextElement((JavaTenantDiscriminatorColumn2_3) tenantDiscriminatorColumn));
+		this.removeSpecifiedTenantDiscriminatorColumn(this.specifiedTenantDiscriminatorColumnContainer.indexOfContextElement((JavaSpecifiedTenantDiscriminatorColumn2_3) tenantDiscriminatorColumn));
 	}
 
 	public void removeSpecifiedTenantDiscriminatorColumn(int index) {
@@ -304,7 +304,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 		this.specifiedTenantDiscriminatorColumnContainer.moveContextElement(targetIndex, sourceIndex);
 	}
 
-	protected JavaTenantDiscriminatorColumn2_3 buildTenantDiscriminatorColumn(EclipseLinkTenantDiscriminatorColumnAnnotation2_3 discriminatorColumnAnnotation) {
+	protected JavaSpecifiedTenantDiscriminatorColumn2_3 buildTenantDiscriminatorColumn(EclipseLinkTenantDiscriminatorColumnAnnotation2_3 discriminatorColumnAnnotation) {
 		return new EclipseLinkJavaTenantDiscriminatorColumn2_3(this, this.tenantDiscriminatorColumnOwner, discriminatorColumnAnnotation);
 	}
 
@@ -316,7 +316,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 		this.specifiedTenantDiscriminatorColumnContainer.synchronizeWithResourceModel();
 	}
 
-	protected ContextListContainer<JavaTenantDiscriminatorColumn2_3, EclipseLinkTenantDiscriminatorColumnAnnotation2_3> buildSpecifiedTenantDiscriminatorColumnContainer() {
+	protected ContextListContainer<JavaSpecifiedTenantDiscriminatorColumn2_3, EclipseLinkTenantDiscriminatorColumnAnnotation2_3> buildSpecifiedTenantDiscriminatorColumnContainer() {
 		SpecifiedTenantDiscriminatorColumnContainer container = new SpecifiedTenantDiscriminatorColumnContainer();
 		container.initialize();
 		return container;
@@ -330,14 +330,14 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 	 * specified tenant discriminator column container
 	 */
 	protected class SpecifiedTenantDiscriminatorColumnContainer
-		extends ContextListContainer<JavaTenantDiscriminatorColumn2_3, EclipseLinkTenantDiscriminatorColumnAnnotation2_3>
+		extends ContextListContainer<JavaSpecifiedTenantDiscriminatorColumn2_3, EclipseLinkTenantDiscriminatorColumnAnnotation2_3>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return SPECIFIED_TENANT_DISCRIMINATOR_COLUMNS_LIST;
 		}
 		@Override
-		protected JavaTenantDiscriminatorColumn2_3 buildContextElement(EclipseLinkTenantDiscriminatorColumnAnnotation2_3 resourceElement) {
+		protected JavaSpecifiedTenantDiscriminatorColumn2_3 buildContextElement(EclipseLinkTenantDiscriminatorColumnAnnotation2_3 resourceElement) {
 			return JavaEclipseLinkMultitenancyImpl2_3.this.buildTenantDiscriminatorColumn(resourceElement);
 		}
 		@Override
@@ -345,7 +345,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 			return JavaEclipseLinkMultitenancyImpl2_3.this.getTenantDiscriminatorColumnAnnotations();
 		}
 		@Override
-		protected EclipseLinkTenantDiscriminatorColumnAnnotation2_3 getResourceElement(JavaTenantDiscriminatorColumn2_3 contextElement) {
+		protected EclipseLinkTenantDiscriminatorColumnAnnotation2_3 getResourceElement(JavaSpecifiedTenantDiscriminatorColumn2_3 contextElement) {
 			return contextElement.getColumnAnnotation();
 		}
 	}
@@ -649,7 +649,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 		if (result != null) {
 			return result;
 		}
-		for (JavaTenantDiscriminatorColumn2_3 tenantDiscriminatorColumn : this.getSpecifiedTenantDiscriminatorColumns()) {
+		for (JavaSpecifiedTenantDiscriminatorColumn2_3 tenantDiscriminatorColumn : this.getSpecifiedTenantDiscriminatorColumns()) {
 			result = tenantDiscriminatorColumn.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
@@ -703,7 +703,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 				);
 			}
 			else if (this.isMultitenantAnnotationSpecified()) {
-				for (JavaTenantDiscriminatorColumn2_3 column : this.getSpecifiedTenantDiscriminatorColumns()) {
+				for (JavaSpecifiedTenantDiscriminatorColumn2_3 column : this.getSpecifiedTenantDiscriminatorColumns()) {
 					column.validate(messages, reporter);
 				}
 			}

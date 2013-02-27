@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.SpecifiedTenantDiscriminator
 import org.eclipse.jpt.jpa.eclipselink.core.context.VirtualTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkNonEmbeddableTypeMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaTenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaSpecifiedTenantDiscriminatorColumn2_3;
 
 public class NullJavaEclipseLinkMultitenancy2_3
 	extends AbstractJavaContextModel<JavaEclipseLinkNonEmbeddableTypeMapping>
@@ -91,7 +91,7 @@ public class NullJavaEclipseLinkMultitenancy2_3
 		return 0;
 	}
 
-	public ListIterable<JavaTenantDiscriminatorColumn2_3> getSpecifiedTenantDiscriminatorColumns() {
+	public ListIterable<JavaSpecifiedTenantDiscriminatorColumn2_3> getSpecifiedTenantDiscriminatorColumns() {
 		return EmptyListIterable.instance();
 	}
 
@@ -103,11 +103,11 @@ public class NullJavaEclipseLinkMultitenancy2_3
 		return false;
 	}
 
-	public JavaTenantDiscriminatorColumn2_3 addSpecifiedTenantDiscriminatorColumn() {
+	public JavaSpecifiedTenantDiscriminatorColumn2_3 addSpecifiedTenantDiscriminatorColumn() {
 		throw new UnsupportedOperationException("Multitenancy is only supported in EclipseLink version 2.3 and higher"); //$NON-NLS-1$
 	}
 
-	public JavaTenantDiscriminatorColumn2_3 addSpecifiedTenantDiscriminatorColumn(int index) {
+	public JavaSpecifiedTenantDiscriminatorColumn2_3 addSpecifiedTenantDiscriminatorColumn(int index) {
 		throw new UnsupportedOperationException("Multitenancy is only supported in EclipseLink version 2.3 and higher"); //$NON-NLS-1$
 	}
 
