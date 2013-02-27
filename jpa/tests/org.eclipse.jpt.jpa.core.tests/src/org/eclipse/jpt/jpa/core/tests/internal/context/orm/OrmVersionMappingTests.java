@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.context.TransientMapping;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
@@ -194,7 +194,7 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		assertNull(ormVersionMapping.getConverter().getType());
 
 		
-		OrmColumn ormColumn = ormVersionMapping.getColumn();
+		OrmSpecifiedColumn ormColumn = ormVersionMapping.getColumn();
 		assertNull(ormColumn.getSpecifiedName());
 		assertNull(ormColumn.getSpecifiedUnique());
 		assertNull(ormColumn.getSpecifiedNullable());
@@ -267,7 +267,7 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		assertFalse(ormPersistentAttribute.isVirtual());
 		assertNull(ormVersionMapping.getConverter().getType());
 		
-		OrmColumn ormColumn = ormVersionMapping.getColumn();
+		OrmSpecifiedColumn ormColumn = ormVersionMapping.getColumn();
 		assertEquals("id", ormColumn.getName());
 		assertEquals(false, ormColumn.isDefaultUnique());
 		assertEquals(true, ormColumn.isDefaultNullable());
@@ -293,7 +293,7 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		assertEquals("id", ormVersionMapping.getName());
 		assertNull(ormVersionMapping.getConverter().getType());
 		
-		OrmColumn ormColumn = ormVersionMapping.getColumn();
+		OrmSpecifiedColumn ormColumn = ormVersionMapping.getColumn();
 		assertNull(ormColumn.getSpecifiedName());
 		assertNull(ormColumn.getSpecifiedUnique());
 		assertNull(ormColumn.getSpecifiedNullable());

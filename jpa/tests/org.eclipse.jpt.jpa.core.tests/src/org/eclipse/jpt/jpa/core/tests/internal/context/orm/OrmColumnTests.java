@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBasicMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
@@ -71,7 +71,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
-		OrmColumn ormColumn = ormBasicMapping.getColumn();
+		OrmSpecifiedColumn ormColumn = ormBasicMapping.getColumn();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
@@ -104,7 +104,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
-		OrmColumn ormColumn = ormBasicMapping.getColumn();
+		OrmSpecifiedColumn ormColumn = ormBasicMapping.getColumn();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
@@ -128,7 +128,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
-		OrmColumn ormColumn = ormBasicMapping.getColumn();
+		OrmSpecifiedColumn ormColumn = ormBasicMapping.getColumn();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
@@ -161,7 +161,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
-		OrmColumn ormColumn = ormBasicMapping.getColumn();
+		OrmSpecifiedColumn ormColumn = ormBasicMapping.getColumn();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
@@ -185,7 +185,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
-		OrmColumn ormColumn = ormBasicMapping.getColumn();
+		OrmSpecifiedColumn ormColumn = ormBasicMapping.getColumn();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
@@ -218,7 +218,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
-		OrmColumn ormColumn = ormBasicMapping.getColumn();
+		OrmSpecifiedColumn ormColumn = ormBasicMapping.getColumn();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
@@ -242,7 +242,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
-		OrmColumn ormColumn = ormBasicMapping.getColumn();
+		OrmSpecifiedColumn ormColumn = ormBasicMapping.getColumn();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
@@ -275,7 +275,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
-		OrmColumn ormColumn = ormBasicMapping.getColumn();
+		OrmSpecifiedColumn ormColumn = ormBasicMapping.getColumn();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
@@ -299,7 +299,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
-		OrmColumn ormColumn = ormBasicMapping.getColumn();
+		OrmSpecifiedColumn ormColumn = ormBasicMapping.getColumn();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
@@ -332,7 +332,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
-		OrmColumn ormColumn = ormBasicMapping.getColumn();
+		OrmSpecifiedColumn ormColumn = ormBasicMapping.getColumn();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
@@ -356,7 +356,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
-		OrmColumn ormColumn = ormBasicMapping.getColumn();
+		OrmSpecifiedColumn ormColumn = ormBasicMapping.getColumn();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
@@ -389,7 +389,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
-		OrmColumn ormColumn = ormBasicMapping.getColumn();
+		OrmSpecifiedColumn ormColumn = ormBasicMapping.getColumn();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
@@ -413,7 +413,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
-		OrmColumn ormColumn = ormBasicMapping.getColumn();
+		OrmSpecifiedColumn ormColumn = ormBasicMapping.getColumn();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
@@ -446,7 +446,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
-		OrmColumn ormColumn = ormBasicMapping.getColumn();
+		OrmSpecifiedColumn ormColumn = ormBasicMapping.getColumn();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
@@ -470,7 +470,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
-		OrmColumn ormColumn = ormBasicMapping.getColumn();
+		OrmSpecifiedColumn ormColumn = ormBasicMapping.getColumn();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
@@ -503,7 +503,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
-		OrmColumn ormColumn = ormBasicMapping.getColumn();
+		OrmSpecifiedColumn ormColumn = ormBasicMapping.getColumn();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
@@ -527,7 +527,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
-		OrmColumn ormColumn = ormBasicMapping.getColumn();
+		OrmSpecifiedColumn ormColumn = ormBasicMapping.getColumn();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
@@ -560,7 +560,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
-		OrmColumn ormColumn = ormBasicMapping.getColumn();
+		OrmSpecifiedColumn ormColumn = ormBasicMapping.getColumn();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
@@ -584,7 +584,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
-		OrmColumn ormColumn = ormBasicMapping.getColumn();
+		OrmSpecifiedColumn ormColumn = ormBasicMapping.getColumn();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
@@ -617,7 +617,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
-		OrmColumn ormColumn = ormBasicMapping.getColumn();
+		OrmSpecifiedColumn ormColumn = ormBasicMapping.getColumn();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
@@ -755,7 +755,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmModifiablePersistentAttribute namePersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("name"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 
 		OrmBasicMapping nameVirtualMapping = (OrmBasicMapping) namePersistentAttribute.getMapping();		
-		OrmColumn ormColumn = nameVirtualMapping.getColumn();
+		OrmSpecifiedColumn ormColumn = nameVirtualMapping.getColumn();
 	
 		//set Column annotation in Java
 		JavaBasicMapping javaBasicMapping = (JavaBasicMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("name").getMapping();

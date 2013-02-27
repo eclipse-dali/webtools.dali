@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBaseTemporalConverter;
-import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmColumnMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmLobConverter;
@@ -55,7 +55,7 @@ public class OrmEclipseLinkArrayMapping2_3
 		OrmEclipseLinkConverterContainer.Owner,
 		OrmColumnMapping
 {
-	protected final OrmColumn column;
+	protected final OrmSpecifiedColumn column;
 
 	protected OrmConverter converter;  // never null
 
@@ -114,11 +114,11 @@ public class OrmEclipseLinkArrayMapping2_3
 
 	// ********** column **********
 
-	public OrmColumn getColumn() {
+	public OrmSpecifiedColumn getColumn() {
 		return this.column;
 	}
 
-	protected OrmColumn buildColumn() {
+	protected OrmSpecifiedColumn buildColumn() {
 		return this.getContextModelFactory().buildOrmColumn(this, this);
 	}
 

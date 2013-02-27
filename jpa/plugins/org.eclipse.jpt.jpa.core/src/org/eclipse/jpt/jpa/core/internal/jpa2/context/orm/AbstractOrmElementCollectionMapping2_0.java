@@ -60,7 +60,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBaseTemporalConverter;
-import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmLobConverter;
@@ -129,7 +129,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	protected final OrmCollectionTable2_0 collectionTable;
 
 	protected Type valueType;
-	protected final OrmColumn valueColumn;
+	protected final OrmSpecifiedColumn valueColumn;
 	protected OrmConverter converter;  // value converter - never null
 	protected final OrmAttributeOverrideContainer valueAttributeOverrideContainer;
 	protected final OrmAssociationOverrideContainer valueAssociationOverrideContainer;
@@ -145,7 +145,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	protected String defaultMapKeyClass;
 	protected String fullyQualifiedMapKeyClass;
 
-	protected final OrmColumn mapKeyColumn;
+	protected final OrmSpecifiedColumn mapKeyColumn;
 	protected OrmConverter mapKeyConverter;  // map key converter - never null
 
 	protected final OrmAttributeOverrideContainer mapKeyAttributeOverrideContainer;
@@ -458,15 +458,15 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 	// ********** value column **********
 
-	public OrmColumn getValueColumn() {
+	public OrmSpecifiedColumn getValueColumn() {
 		return this.valueColumn;
 	}
 
-	protected OrmColumn buildValueColumn() {
+	protected OrmSpecifiedColumn buildValueColumn() {
 		return this.getContextModelFactory().buildOrmColumn(this, this.buildValueColumnOwner());
 	}
 
-	protected OrmColumn.Owner buildValueColumnOwner() {
+	protected OrmSpecifiedColumn.Owner buildValueColumnOwner() {
 		return new ValueColumnOwner();
 	}
 
@@ -899,15 +899,15 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 	// ********** map key column **********
 
-	public OrmColumn getMapKeyColumn() {
+	public OrmSpecifiedColumn getMapKeyColumn() {
 		return this.mapKeyColumn;
 	}
 
-	protected OrmColumn buildMapKeyColumn() {
+	protected OrmSpecifiedColumn buildMapKeyColumn() {
 		return this.getContextModelFactory().buildOrmColumn(this, this.buildMapKeyColumnOwner());
 	}
 
-	protected OrmColumn.Owner buildMapKeyColumnOwner() {
+	protected OrmSpecifiedColumn.Owner buildMapKeyColumnOwner() {
 		return new MapKeyColumnOwner();
 	}
 
@@ -1856,7 +1856,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 	protected class ValueColumnOwner
 		extends AbstractOwner
-		implements OrmColumn.Owner
+		implements OrmSpecifiedColumn.Owner
 	{
 		public XmlColumn getXmlColumn() {
 			return this.getXmlMapping().getColumn();
@@ -1886,7 +1886,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 	protected class MapKeyColumnOwner
 		extends AbstractOwner
-		implements OrmColumn.Owner
+		implements OrmSpecifiedColumn.Owner
 	{
 		public XmlColumn getXmlColumn() {
 			return this.getXmlMapping().getMapKeyColumn();

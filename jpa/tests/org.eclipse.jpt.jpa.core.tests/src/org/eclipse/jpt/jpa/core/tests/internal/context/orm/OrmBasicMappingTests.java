@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.context.TransientMapping;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBasicMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
@@ -401,7 +401,7 @@ public class OrmBasicMappingTests extends ContextModelTestCase
 		assertEquals(true, ormBasicMapping.isOptional());
 
 		
-		OrmColumn ormColumn = ormBasicMapping.getColumn();
+		OrmSpecifiedColumn ormColumn = ormBasicMapping.getColumn();
 		assertNull(ormColumn.getSpecifiedName());
 		assertNull(ormColumn.getSpecifiedUnique());
 		assertNull(ormColumn.getSpecifiedNullable());
@@ -501,7 +501,7 @@ public class OrmBasicMappingTests extends ContextModelTestCase
 		assertEquals(FetchType.EAGER, ormBasicMapping.getDefaultFetch());
 		assertEquals(true, ormBasicMapping.isDefaultOptional());
 		
-		OrmColumn ormColumn = ormBasicMapping.getColumn();
+		OrmSpecifiedColumn ormColumn = ormBasicMapping.getColumn();
 		assertNull(ormColumn.getSpecifiedName());
 		assertNull(ormColumn.getSpecifiedUnique());
 		assertNull(ormColumn.getSpecifiedNullable());

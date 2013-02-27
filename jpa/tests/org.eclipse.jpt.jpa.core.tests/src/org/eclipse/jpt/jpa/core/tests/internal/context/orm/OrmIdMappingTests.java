@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.context.TransientMapping;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
@@ -438,7 +438,7 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		assertNull(ormIdMapping.getGeneratorContainer().getTableGenerator());
 
 		
-		OrmColumn ormColumn = ormIdMapping.getColumn();
+		OrmSpecifiedColumn ormColumn = ormIdMapping.getColumn();
 		assertNull(ormColumn.getSpecifiedName());
 		assertNull(ormColumn.getSpecifiedUnique());
 		assertNull(ormColumn.getSpecifiedNullable());
@@ -538,7 +538,7 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		assertNull(ormIdMapping.getGeneratorContainer().getSequenceGenerator());
 		assertNull(ormIdMapping.getGeneratorContainer().getTableGenerator());
 		
-		OrmColumn ormColumn = ormIdMapping.getColumn();
+		OrmSpecifiedColumn ormColumn = ormIdMapping.getColumn();
 		assertEquals("id", ormColumn.getName());
 		assertEquals(false, ormColumn.isDefaultUnique());
 		assertEquals(true, ormColumn.isDefaultNullable());
@@ -567,7 +567,7 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		assertNull(ormIdMapping.getGeneratorContainer().getSequenceGenerator());
 		assertNull(ormIdMapping.getGeneratorContainer().getTableGenerator());
 		
-		OrmColumn ormColumn = ormIdMapping.getColumn();
+		OrmSpecifiedColumn ormColumn = ormIdMapping.getColumn();
 		assertNull(ormColumn.getSpecifiedName());
 		assertNull(ormColumn.getSpecifiedUnique());
 		assertNull(ormColumn.getSpecifiedNullable());

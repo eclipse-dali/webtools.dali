@@ -48,7 +48,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBaseTemporalConverter;
-import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMultiRelationshipMapping;
@@ -103,7 +103,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	protected Type valueType;
 	protected Type keyType;
 
-	protected final OrmColumn mapKeyColumn;
+	protected final OrmSpecifiedColumn mapKeyColumn;
 	protected OrmConverter mapKeyConverter;  // map key converter - never null
 
 	protected final OrmAttributeOverrideContainer mapKeyAttributeOverrideContainer;
@@ -540,15 +540,15 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 
 	// ********** map key column **********
 
-	public OrmColumn getMapKeyColumn() {
+	public OrmSpecifiedColumn getMapKeyColumn() {
 		return this.mapKeyColumn;
 	}
 
-	protected OrmColumn buildMapKeyColumn() {
+	protected OrmSpecifiedColumn buildMapKeyColumn() {
 		return this.getContextModelFactory().buildOrmColumn(this, this.buildMapKeyColumnOwner());
 	}
 
-	protected OrmColumn.Owner buildMapKeyColumnOwner() {
+	protected OrmSpecifiedColumn.Owner buildMapKeyColumnOwner() {
 		return new MapKeyColumnOwner();
 	}
 
@@ -1154,7 +1154,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 
 	protected class MapKeyColumnOwner
 		extends AbstractOwner
-		implements OrmColumn.Owner
+		implements OrmSpecifiedColumn.Owner
 	{
 		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
 			return AbstractOrmMultiRelationshipMapping.this.getName() + "_KEY"; //$NON-NLS-1$

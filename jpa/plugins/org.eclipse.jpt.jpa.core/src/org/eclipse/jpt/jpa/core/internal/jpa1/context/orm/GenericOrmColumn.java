@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
-import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmBaseColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlColumn;
 
@@ -19,8 +19,8 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlColumn;
  * <code>orm.xml</code> column
  */
 public class GenericOrmColumn
-	extends AbstractOrmBaseColumn<XmlColumn, OrmColumn.Owner>
-	implements OrmColumn
+	extends AbstractOrmBaseColumn<XmlColumn, OrmSpecifiedColumn.Owner>
+	implements OrmSpecifiedColumn
 {
 	// TODO defaults from java for all of these settings
 	protected Integer specifiedLength;
@@ -30,7 +30,7 @@ public class GenericOrmColumn
 	protected Integer specifiedScale;
 
 
-	public GenericOrmColumn(JpaContextModel parent, OrmColumn.Owner owner) {
+	public GenericOrmColumn(JpaContextModel parent, OrmSpecifiedColumn.Owner owner) {
 		super(parent, owner);
 		this.specifiedLength = this.buildSpecifiedLength();
 		this.specifiedPrecision = this.buildSpecifiedPrecision();

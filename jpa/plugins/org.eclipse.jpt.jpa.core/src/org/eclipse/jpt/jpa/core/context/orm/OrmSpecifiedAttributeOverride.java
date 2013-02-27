@@ -31,5 +31,5 @@ public interface OrmSpecifiedAttributeOverride
 
 	XmlAttributeOverride getXmlOverride();
 
-	OrmColumn getColumn();
+	OrmSpecifiedColumn getColumn();
 }

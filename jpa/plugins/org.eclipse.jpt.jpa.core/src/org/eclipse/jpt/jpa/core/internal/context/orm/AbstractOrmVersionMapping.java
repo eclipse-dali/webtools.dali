@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBaseTemporalConverter;
-import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmColumnMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
@@ -44,7 +44,7 @@ public abstract class AbstractOrmVersionMapping<X extends XmlVersion>
 	extends AbstractOrmAttributeMapping<X>
 	implements OrmVersionMapping
 {
-	protected final OrmColumn column;
+	protected final OrmSpecifiedColumn column;
 
 	protected OrmConverter converter;  // never null
 
@@ -84,11 +84,11 @@ public abstract class AbstractOrmVersionMapping<X extends XmlVersion>
 
 	// ********** column **********
 
-	public OrmColumn getColumn() {
+	public OrmSpecifiedColumn getColumn() {
 		return this.column;
 	}
 
-	protected OrmColumn buildColumn() {
+	protected OrmSpecifiedColumn buildColumn() {
 		return this.getContextModelFactory().buildOrmColumn(this, this);
 	}
 

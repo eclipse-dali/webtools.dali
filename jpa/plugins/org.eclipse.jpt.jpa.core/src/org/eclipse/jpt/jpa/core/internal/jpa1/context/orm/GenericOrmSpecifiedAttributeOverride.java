@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
@@ -30,9 +30,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class GenericOrmSpecifiedAttributeOverride
 	extends AbstractOrmSpecifiedOverride<OrmAttributeOverrideContainer, XmlAttributeOverride>
-	implements OrmSpecifiedAttributeOverride, OrmColumn.Owner
+	implements OrmSpecifiedAttributeOverride, OrmSpecifiedColumn.Owner
 {
-	protected final OrmColumn column;
+	protected final OrmSpecifiedColumn column;
 
 
 	public GenericOrmSpecifiedAttributeOverride(OrmAttributeOverrideContainer parent, XmlAttributeOverride xmlOverride) {
@@ -66,11 +66,11 @@ public class GenericOrmSpecifiedAttributeOverride
 
 	// ********** column **********
 
-	public OrmColumn getColumn() {
+	public OrmSpecifiedColumn getColumn() {
 		return this.column;
 	}
 
-	protected OrmColumn buildColumn() {
+	protected OrmSpecifiedColumn buildColumn() {
 		return this.getContextModelFactory().buildOrmColumn(this, this);
 	}
 

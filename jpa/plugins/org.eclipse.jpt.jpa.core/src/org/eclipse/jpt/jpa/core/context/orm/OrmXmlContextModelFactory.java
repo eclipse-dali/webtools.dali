@@ -153,7 +153,7 @@ public interface OrmXmlContextModelFactory
 
 	OrmSpecifiedDiscriminatorColumn buildOrmDiscriminatorColumn(OrmEntity parent, OrmSpecifiedDiscriminatorColumn.Owner owner);
 
-	OrmColumn buildOrmColumn(JpaContextModel parent, OrmColumn.Owner owner);
+	OrmSpecifiedColumn buildOrmColumn(JpaContextModel parent, OrmSpecifiedColumn.Owner owner);
 
 	VirtualColumn buildOrmVirtualColumn(JpaContextModel parent, VirtualColumn.Owner owner);
 

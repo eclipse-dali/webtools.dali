@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.jpa2.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConvertibleMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlElementCollection;
@@ -35,7 +35,7 @@ public interface OrmElementCollectionMapping2_0
 
 	OrmCollectionTable2_0 getCollectionTable();
 
-	OrmColumn getValueColumn();
+	OrmSpecifiedColumn getValueColumn();
 
 	OrmAttributeOverrideContainer getValueAttributeOverrideContainer();
 

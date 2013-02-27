@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.ColumnMapping;
  * @since 2.0
  */
 public interface OrmColumnMapping
-	extends ColumnMapping, OrmAttributeMapping, OrmColumn.Owner
+	extends ColumnMapping, OrmAttributeMapping, OrmSpecifiedColumn.Owner
 {
-	OrmColumn getColumn();
+	OrmSpecifiedColumn getColumn();
 }
