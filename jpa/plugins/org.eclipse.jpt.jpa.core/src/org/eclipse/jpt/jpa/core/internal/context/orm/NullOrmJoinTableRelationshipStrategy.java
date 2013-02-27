@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTable;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -33,7 +33,7 @@ public class NullOrmJoinTableRelationshipStrategy
 
 	// ********** join table **********
 
-	public OrmJoinTable getJoinTable() {
+	public OrmSpecifiedJoinTable getJoinTable() {
 		return null;
 	}
 

@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlJoinTable;
 public interface OrmSpecifiedJoinTableRelationshipStrategy
 	extends SpecifiedJoinTableRelationshipStrategy
 {
-	OrmJoinTable getJoinTable();
+	OrmSpecifiedJoinTable getJoinTable();
 	
 	XmlJoinTable getXmlJoinTable();
 	

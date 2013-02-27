@@ -127,7 +127,7 @@ public interface OrmXmlContextModelFactory
 
 	OrmVirtualPrimaryKeyJoinColumn buildOrmVirtualPrimaryKeyJoinColumn(JpaContextModel parent, BaseJoinColumn.Owner owner, JavaSpecifiedPrimaryKeyJoinColumn javaPrimaryKeyJoinColumn);
 
-	OrmJoinTable buildOrmJoinTable(OrmSpecifiedJoinTableRelationshipStrategy parent, SpecifiedTable.Owner owner);
+	OrmSpecifiedJoinTable buildOrmJoinTable(OrmSpecifiedJoinTableRelationshipStrategy parent, SpecifiedTable.Owner owner);
 
 	VirtualJoinTable buildOrmVirtualJoinTable(VirtualJoinTableRelationshipStrategy parent, Table.Owner owner, JoinTable overriddenTable);
 

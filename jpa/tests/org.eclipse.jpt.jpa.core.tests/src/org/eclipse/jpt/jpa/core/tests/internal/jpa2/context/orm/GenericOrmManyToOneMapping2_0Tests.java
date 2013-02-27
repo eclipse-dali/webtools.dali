@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
-import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTable;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
@@ -483,7 +483,7 @@ public class GenericOrmManyToOneMapping2_0Tests
 		OrmSpecifiedPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("address"), MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		ManyToOneMapping2_0 ormManyToOneMapping = (ManyToOneMapping2_0) ormPersistentAttribute.getMapping();
 		((ManyToOneRelationship2_0) ormManyToOneMapping.getRelationship()).setStrategyToJoinTable();
-		OrmJoinTable ormJoinTable = ((OrmManyToOneRelationship2_0) ormManyToOneMapping.getRelationship()).getJoinTableStrategy().getJoinTable();
+		OrmSpecifiedJoinTable ormJoinTable = ((OrmManyToOneRelationship2_0) ormManyToOneMapping.getRelationship()).getJoinTableStrategy().getJoinTable();
 		assertEquals(null, ormJoinTable.getDefaultName());
 
 		createTestTargetEntityAddress();

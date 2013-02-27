@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.tests.internal.context.orm;
 
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
-import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTable;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
@@ -46,7 +46,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
+		OrmSpecifiedJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
 		OrmSpecifiedJoinColumn joinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
@@ -80,7 +80,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
+		OrmSpecifiedJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
 		OrmSpecifiedJoinColumn joinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
@@ -106,7 +106,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
+		OrmSpecifiedJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
 		OrmSpecifiedJoinColumn joinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
@@ -140,7 +140,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
+		OrmSpecifiedJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
 		OrmSpecifiedJoinColumn joinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
@@ -166,7 +166,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
+		OrmSpecifiedJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
 		OrmSpecifiedJoinColumn joinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
@@ -200,7 +200,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
+		OrmSpecifiedJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
 		OrmSpecifiedJoinColumn joinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
@@ -226,7 +226,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
+		OrmSpecifiedJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
 		OrmSpecifiedJoinColumn ormJoinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
@@ -260,7 +260,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
+		OrmSpecifiedJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
 		OrmSpecifiedJoinColumn ormJoinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
@@ -286,7 +286,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
+		OrmSpecifiedJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
 		OrmSpecifiedJoinColumn ormJoinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
@@ -320,7 +320,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
+		OrmSpecifiedJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
 		OrmSpecifiedJoinColumn ormJoinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
@@ -346,7 +346,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
+		OrmSpecifiedJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
 		OrmSpecifiedJoinColumn ormJoinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
@@ -380,7 +380,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
+		OrmSpecifiedJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
 		OrmSpecifiedJoinColumn ormJoinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
@@ -406,7 +406,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
+		OrmSpecifiedJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
 		OrmSpecifiedJoinColumn ormJoinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
@@ -440,7 +440,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
+		OrmSpecifiedJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
 		OrmSpecifiedJoinColumn ormJoinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
@@ -466,7 +466,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
+		OrmSpecifiedJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
 		OrmSpecifiedJoinColumn ormJoinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
@@ -500,7 +500,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
+		OrmSpecifiedJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();		
 		OrmSpecifiedJoinColumn ormJoinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);

@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
-import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTable;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -41,7 +41,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class GenericOrmJoinTable
 	extends GenericOrmReferenceTable<OrmSpecifiedJoinTableRelationshipStrategy, XmlJoinTable>
-	implements OrmJoinTable
+	implements OrmSpecifiedJoinTable
 {
 	protected final ContextListContainer<OrmSpecifiedJoinColumn, XmlJoinColumn> specifiedInverseJoinColumnContainer;
 	protected final JoinColumn.Owner inverseJoinColumnOwner;
