@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumnRelationship;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationship;
+import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.swt.widgets.Composite;
@@ -43,40 +43,40 @@ import org.eclipse.swt.widgets.Control;
  */
 public class JoinColumnJoiningStrategyPane
 	extends AbstractJoiningStrategyPane
-		<ReadOnlyJoinColumnRelationship, JoinColumnRelationshipStrategy>
+		<JoinColumnRelationship, JoinColumnRelationshipStrategy>
 {
 	private final boolean includeOverrideCheckBox;
 	
 	
 	public static JoinColumnJoiningStrategyPane buildJoinColumnJoiningStrategyPaneWithIncludeOverrideCheckBox(
-		Pane<? extends ReadOnlyJoinColumnRelationship> parentPane, 
+		Pane<? extends JoinColumnRelationship> parentPane, 
 		Composite parent) {
 		return new JoinColumnJoiningStrategyPane(parentPane, parent, true);
 	}
 	
 	public static JoinColumnJoiningStrategyPane buildJoinColumnJoiningStrategyPaneWithoutIncludeOverrideCheckBox(
-		Pane<? extends ReadOnlyJoinColumnRelationship> parentPane, 
+		Pane<? extends JoinColumnRelationship> parentPane, 
 		Composite parent) {
 		return new JoinColumnJoiningStrategyPane(parentPane, parent, false);
 	}
 	
 	public static JoinColumnJoiningStrategyPane buildJoinColumnJoiningStrategyPaneWithIncludeOverrideCheckBox(
 		Pane<?> parentPane,
-		PropertyValueModel<? extends ReadOnlyJoinColumnRelationship> subjectHolder,
+		PropertyValueModel<? extends JoinColumnRelationship> subjectHolder,
         Composite parent) {
 		return new JoinColumnJoiningStrategyPane(parentPane, subjectHolder, parent, true);
 	}
 	
 	public static JoinColumnJoiningStrategyPane buildJoinColumnJoiningStrategyPaneWithoutIncludeOverrideCheckBox(
 		Pane<?> parentPane,
-		PropertyValueModel<? extends ReadOnlyJoinColumnRelationship> subjectHolder,
+		PropertyValueModel<? extends JoinColumnRelationship> subjectHolder,
         Composite parent) {
 		return new JoinColumnJoiningStrategyPane(parentPane, subjectHolder, parent, false);
 	}
 	
 	
 	private JoinColumnJoiningStrategyPane(
-			Pane<? extends ReadOnlyJoinColumnRelationship> parentPane, 
+			Pane<? extends JoinColumnRelationship> parentPane, 
 			Composite parent,
 	        boolean includeOverrideCheckBox) {
 		super(parentPane, parent);
@@ -85,7 +85,7 @@ public class JoinColumnJoiningStrategyPane
 	}
 	
 	private JoinColumnJoiningStrategyPane(Pane<?> parentPane,
-			PropertyValueModel<? extends ReadOnlyJoinColumnRelationship> subjectHolder,
+			PropertyValueModel<? extends JoinColumnRelationship> subjectHolder,
 			Composite parent,
 			boolean includeOverrideCheckBox) {
 		
@@ -120,7 +120,7 @@ public class JoinColumnJoiningStrategyPane
 
 	protected PropertyValueModel<JoinColumnRelationshipStrategy> buildJoinColumnJoiningStrategyHolder() {
 		return new PropertyAspectAdapter
-				<ReadOnlyJoinColumnRelationship, JoinColumnRelationshipStrategy>(
+				<JoinColumnRelationship, JoinColumnRelationshipStrategy>(
 					getSubjectHolder()) {
 			@Override
 			protected JoinColumnRelationshipStrategy buildValue_() {
@@ -129,8 +129,8 @@ public class JoinColumnJoiningStrategyPane
 		};
 	}
 
-	public static ModifiablePropertyValueModel<Boolean> buildUsesJoinColumnJoiningStrategyHolder(PropertyValueModel<? extends ReadOnlyJoinColumnRelationship> subjectHolder) {
-		return new PropertyAspectAdapter<ReadOnlyJoinColumnRelationship, Boolean>(
+	public static ModifiablePropertyValueModel<Boolean> buildUsesJoinColumnJoiningStrategyHolder(PropertyValueModel<? extends JoinColumnRelationship> subjectHolder) {
+		return new PropertyAspectAdapter<JoinColumnRelationship, Boolean>(
 				subjectHolder, Relationship.STRATEGY_PROPERTY) {
 			@Override
 			protected Boolean buildValue() {

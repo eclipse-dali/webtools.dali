@@ -34,7 +34,7 @@ public interface SpecifiedRelationship
 
 	void initializeFromMappedByRelationship(SpecifiedMappedByRelationship oldRelationship);
 
-	void initializeFromJoinColumnRelationship(ReadOnlyJoinColumnRelationship oldRelationship);
+	void initializeFromJoinColumnRelationship(JoinColumnRelationship oldRelationship);
 
 	void initializeFromJoinTableRelationship(ReadOnlyJoinTableRelationship oldRelationship);
 

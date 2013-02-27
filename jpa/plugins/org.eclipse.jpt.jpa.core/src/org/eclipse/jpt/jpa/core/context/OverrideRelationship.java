@@ -29,7 +29,7 @@ public interface OverrideRelationship
 {
 	void initializeFromVirtual(ReadOnlyOverrideRelationship virtualRelationship);
 
-	void initializeFromVirtualJoinColumnRelationship(ReadOnlyJoinColumnRelationship virtualRelationship);
+	void initializeFromVirtualJoinColumnRelationship(JoinColumnRelationship virtualRelationship);
 
 	void initializeFromVirtualJoinTableRelationship(ReadOnlyJoinTableRelationship virtualRelationship);
 }

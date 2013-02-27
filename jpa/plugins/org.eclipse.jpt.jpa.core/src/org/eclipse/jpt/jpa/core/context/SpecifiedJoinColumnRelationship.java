@@ -31,7 +31,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 2.2
  */
 public interface SpecifiedJoinColumnRelationship
-	extends ReadOnlyJoinColumnRelationship, SpecifiedRelationship
+	extends JoinColumnRelationship, SpecifiedRelationship
 {
 	SpecifiedJoinColumnRelationshipStrategy getJoinColumnStrategy();
 	

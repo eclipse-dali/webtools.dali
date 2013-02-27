@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationship;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationship;
+import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
@@ -84,7 +84,7 @@ public abstract class AbstractOrmMappingRelationship<P extends OrmRelationshipMa
 		// NOP
 	}
 
-	public void initializeFromJoinColumnRelationship(ReadOnlyJoinColumnRelationship oldRelationship) {
+	public void initializeFromJoinColumnRelationship(JoinColumnRelationship oldRelationship) {
 		// NOP
 	}
 

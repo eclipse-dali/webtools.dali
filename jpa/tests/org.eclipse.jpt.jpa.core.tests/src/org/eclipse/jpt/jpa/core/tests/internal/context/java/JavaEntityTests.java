@@ -38,7 +38,7 @@ import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationship;
+import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
@@ -2477,7 +2477,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		assertEquals(2, overrideContainer.getVirtualOverridesSize());
 		VirtualAssociationOverride virtualAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();
-		JoinColumnRelationshipStrategy joiningStrategy = ((ReadOnlyJoinColumnRelationship) virtualAssociationOverride.getRelationship()).getJoinColumnStrategy();
+		JoinColumnRelationshipStrategy joiningStrategy = ((JoinColumnRelationship) virtualAssociationOverride.getRelationship()).getJoinColumnStrategy();
 		assertEquals("oneToOne", virtualAssociationOverride.getName());
 		assertEquals(1, joiningStrategy.getJoinColumnsSize());
 		JoinColumn virtualJoinColumn = joiningStrategy.getJoinColumns().iterator().next();
@@ -2507,7 +2507,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		assertEquals(2, overrideContainer.getVirtualOverridesSize());
 		virtualAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();
-		joiningStrategy = ((ReadOnlyJoinColumnRelationship) virtualAssociationOverride.getRelationship()).getJoinColumnStrategy();
+		joiningStrategy = ((JoinColumnRelationship) virtualAssociationOverride.getRelationship()).getJoinColumnStrategy();
 		assertEquals("oneToOne", virtualAssociationOverride.getName());
 		assertEquals(1, joiningStrategy.getJoinColumnsSize());
 		virtualAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();

@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * @see SpecifiedAssociationOverride
  */
 public interface ReadOnlyOverrideRelationship
-	extends ReadOnlyJoinColumnRelationship
+	extends JoinColumnRelationship
 {
 	String getAttributeName();
 

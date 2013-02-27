@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationship;
 import org.eclipse.jpt.jpa.core.context.OverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationship;
+import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverrideRelationship;
@@ -197,7 +197,7 @@ public class GenericOrmOverrideRelationship
 		this.joinTableStrategy.initializeFrom(oldRelationship.getJoinTableStrategy());
 	}
 
-	public void initializeFromJoinColumnRelationship(ReadOnlyJoinColumnRelationship oldRelationship) {
+	public void initializeFromJoinColumnRelationship(JoinColumnRelationship oldRelationship) {
 		this.joinColumnStrategy.initializeFrom(oldRelationship.getJoinColumnStrategy());
 	}
 
@@ -213,7 +213,7 @@ public class GenericOrmOverrideRelationship
 		this.joinTableStrategy.initializeFromVirtual(virtualRelationship.getJoinTableStrategy());
 	}
 
-	public void initializeFromVirtualJoinColumnRelationship(ReadOnlyJoinColumnRelationship virtualRelationship) {
+	public void initializeFromVirtualJoinColumnRelationship(JoinColumnRelationship virtualRelationship) {
 		this.joinColumnStrategy.initializeFromVirtual(virtualRelationship.getJoinColumnStrategy());
 	}
 

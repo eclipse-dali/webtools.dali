@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationship;
+import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.Relationship;
@@ -185,13 +185,13 @@ public class GenericJavaVirtualOverrideJoinColumnRelationshipStrategy
 	}
 
 	protected JoinColumnRelationshipStrategy getOverriddenStrategy() {
-		ReadOnlyJoinColumnRelationship relationship = this.getOverriddenJoinColumnRelationship();
+		JoinColumnRelationship relationship = this.getOverriddenJoinColumnRelationship();
 		return (relationship == null) ? null : relationship.getJoinColumnStrategy();
 	}
 
-	protected ReadOnlyJoinColumnRelationship getOverriddenJoinColumnRelationship() {
+	protected JoinColumnRelationship getOverriddenJoinColumnRelationship() {
 		Relationship relationship = this.resolveOverriddenRelationship();
-		return (relationship instanceof ReadOnlyJoinColumnRelationship) ? (ReadOnlyJoinColumnRelationship) relationship : null;
+		return (relationship instanceof JoinColumnRelationship) ? (JoinColumnRelationship) relationship : null;
 	}
 
 	protected Relationship resolveOverriddenRelationship() {
