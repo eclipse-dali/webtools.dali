@@ -23,7 +23,7 @@ package org.eclipse.jpt.jpa.core.context;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface ReadOnlyBaseColumn
-	extends ReadOnlyTableColumn
+	extends TableColumn
 {
 
 	// ********** unique **********

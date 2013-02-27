@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyTableColumn.Owner;
+import org.eclipse.jpt.jpa.core.context.TableColumn.Owner;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaOverrideContainer;

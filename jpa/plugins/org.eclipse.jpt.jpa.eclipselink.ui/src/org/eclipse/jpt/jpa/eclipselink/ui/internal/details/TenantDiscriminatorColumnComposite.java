@@ -26,7 +26,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyTableColumn;
+import org.eclipse.jpt.jpa.core.context.TableColumn;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.SpecifiedTenantDiscriminatorColumn2_3;
@@ -154,8 +154,8 @@ public class TenantDiscriminatorColumnComposite extends Pane<ReadOnlyTenantDiscr
 	}
 
 	/* CU private */ static final Collection<String> COLUMN_PICK_LIST_PROPERTIES = Arrays.asList(new String[] {
-		ReadOnlyTableColumn.DEFAULT_TABLE_NAME_PROPERTY,
-		ReadOnlyTableColumn.SPECIFIED_TABLE_NAME_PROPERTY
+		TableColumn.DEFAULT_TABLE_NAME_PROPERTY,
+		TableColumn.SPECIFIED_TABLE_NAME_PROPERTY
 	});
 
 	private Pane<ReadOnlyTenantDiscriminatorColumn2_3> addTableCombo(Composite container) {
@@ -165,8 +165,8 @@ public class TenantDiscriminatorColumnComposite extends Pane<ReadOnlyTenantDiscr
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(ReadOnlyTableColumn.DEFAULT_TABLE_NAME_PROPERTY);
-				propertyNames.add(ReadOnlyTableColumn.SPECIFIED_TABLE_NAME_PROPERTY);
+				propertyNames.add(TableColumn.DEFAULT_TABLE_NAME_PROPERTY);
+				propertyNames.add(TableColumn.SPECIFIED_TABLE_NAME_PROPERTY);
 			}
 
 			@Override

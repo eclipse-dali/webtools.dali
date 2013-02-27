@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyTableColumn;
+import org.eclipse.jpt.jpa.core.context.TableColumn;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
@@ -179,8 +179,8 @@ public abstract class AbstractNamedColumnValidator<C extends NamedColumn>
 			return true;
 		}
 	
-		protected ReadOnlyTableColumn getColumn() {
-			return (ReadOnlyTableColumn) AbstractNamedColumnValidator.this.column;
+		protected TableColumn getColumn() {
+			return (TableColumn) AbstractNamedColumnValidator.this.column;
 		}
 
 		protected IMessage buildTableNotValidMessage() {

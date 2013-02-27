@@ -13,7 +13,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 
 
 /**
- * Read-only
  * <ul>
  * <li>column
  * <li>join column
@@ -24,7 +23,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface ReadOnlyTableColumn
+public interface TableColumn
 	extends NamedColumn
 {
 	// ********** table **********

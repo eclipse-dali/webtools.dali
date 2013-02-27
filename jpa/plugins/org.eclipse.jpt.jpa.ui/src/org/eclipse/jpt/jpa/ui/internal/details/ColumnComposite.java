@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyTableColumn;
+import org.eclipse.jpt.jpa.core.context.TableColumn;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
@@ -111,8 +111,8 @@ public class ColumnComposite
 	}
 	
 	/* CU private */ static final Collection<String> COLUMN_PICK_LIST_PROPERTIES = Arrays.asList(new String[] {
-		ReadOnlyTableColumn.DEFAULT_TABLE_NAME_PROPERTY,
-		ReadOnlyTableColumn.SPECIFIED_TABLE_NAME_PROPERTY
+		TableColumn.DEFAULT_TABLE_NAME_PROPERTY,
+		TableColumn.SPECIFIED_TABLE_NAME_PROPERTY
 	});
 
 	ModifiablePropertyValueModel<String> buildColumnDefinitionHolder() {

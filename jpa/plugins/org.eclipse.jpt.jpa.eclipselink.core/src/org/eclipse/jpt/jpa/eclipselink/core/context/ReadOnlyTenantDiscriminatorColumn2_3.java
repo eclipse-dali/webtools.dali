@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.context;
 
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyTableColumn;
+import org.eclipse.jpt.jpa.core.context.TableColumn;
 
 /**
  * tenant discriminator column
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyTableColumn;
  * @since 3.1
  */
 public interface ReadOnlyTenantDiscriminatorColumn2_3
-	extends NamedDiscriminatorColumn, ReadOnlyTableColumn
+	extends NamedDiscriminatorColumn, TableColumn
 {
 	String DEFAULT_NAME = "TENANT_ID"; //$NON-NLS-1$
 
@@ -64,7 +64,7 @@ public interface ReadOnlyTenantDiscriminatorColumn2_3
 	 * interface allowing tenant discriminator columns to be used in multiple places
 	 */
 	interface Owner
-		extends NamedDiscriminatorColumn.Owner, ReadOnlyTableColumn.Owner
+		extends NamedDiscriminatorColumn.Owner, TableColumn.Owner
 	{
 		/**
 		 * Return the default context property name
