@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context.java;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaNamedColumn;
+import org.eclipse.jpt.jpa.core.context.java.ModifiableJavaNamedColumn;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumn2_0Annotation;
 
@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumn2_0Annotation;
  * @since 2.3
  */
 public interface JavaOrderColumn2_0
-	extends OrderColumn2_0, JavaNamedColumn
+	extends OrderColumn2_0, ModifiableJavaNamedColumn
 {
 	OrderColumn2_0Annotation getColumnAnnotation();
 }

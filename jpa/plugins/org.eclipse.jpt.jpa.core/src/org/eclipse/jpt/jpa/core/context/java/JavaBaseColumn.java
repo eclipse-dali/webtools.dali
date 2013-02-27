@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.java.BaseColumnAnnotation;
  * @since 2.0
  */
 public interface JavaBaseColumn
-	extends BaseColumn, JavaNamedColumn
+	extends BaseColumn, ModifiableJavaNamedColumn
 {
 	BaseColumnAnnotation getColumnAnnotation();
 }
