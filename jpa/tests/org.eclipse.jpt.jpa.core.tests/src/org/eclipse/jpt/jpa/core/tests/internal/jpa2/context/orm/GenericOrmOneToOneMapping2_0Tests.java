@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.FetchType;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
@@ -642,11 +642,11 @@ public class GenericOrmOneToOneMapping2_0Tests
 		assertNull(virtualJoinTable.getSpecifiedSchema());
 		assertEquals(0, virtualJoinTable.getSpecifiedJoinColumnsSize());
 		assertEquals(0, virtualJoinTable.getSpecifiedInverseJoinColumnsSize());
-		JoinColumn ormJoinColumn = virtualJoinTable.getDefaultJoinColumn();
+		ModifiableJoinColumn ormJoinColumn = virtualJoinTable.getDefaultJoinColumn();
 		assertEquals(TYPE_NAME + "_Address", ormJoinColumn.getDefaultTableName());
 		assertEquals(TYPE_NAME + "_id", ormJoinColumn.getDefaultName());
 		assertEquals("id", ormJoinColumn.getDefaultReferencedColumnName());
-		JoinColumn inverseOrmJoinColumn = virtualJoinTable.getDefaultInverseJoinColumn();
+		ModifiableJoinColumn inverseOrmJoinColumn = virtualJoinTable.getDefaultInverseJoinColumn();
 		assertEquals(TYPE_NAME + "_Address", inverseOrmJoinColumn.getDefaultTableName());
 		assertEquals("address_id", inverseOrmJoinColumn.getDefaultName());
 		assertEquals("id", inverseOrmJoinColumn.getDefaultReferencedColumnName());
@@ -919,7 +919,7 @@ public class GenericOrmOneToOneMapping2_0Tests
 		assertNull(virtualOneToOneMapping.getRelationship().
 			getMappedByStrategy().getMappedByAttribute());
 
-		JoinColumn virtualJoinColumn = 
+		ModifiableJoinColumn virtualJoinColumn = 
 			virtualOneToOneMapping.getRelationship().getJoinColumnStrategy().getSpecifiedJoinColumns().iterator().next();
 		assertEquals("MY_COLUMN", virtualJoinColumn.getSpecifiedName());
 		assertEquals("MY_REFERENCED_COLUMN", virtualJoinColumn.getSpecifiedReferencedColumnName());

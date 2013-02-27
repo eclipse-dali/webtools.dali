@@ -33,7 +33,7 @@ import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.FetchType;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
@@ -719,7 +719,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		return this.specifiedMapKeyJoinColumnContainer.addContextElement(index, annotation);
 	}
 
-	public void removeSpecifiedMapKeyJoinColumn(JoinColumn joinColumn) {
+	public void removeSpecifiedMapKeyJoinColumn(ModifiableJoinColumn joinColumn) {
 		this.removeSpecifiedMapKeyJoinColumn(this.specifiedMapKeyJoinColumnContainer.indexOfContextElement((JavaJoinColumn) joinColumn));
 	}
 

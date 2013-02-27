@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
@@ -114,7 +114,7 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy<P extends OrmJoi
 		return OrmFactory.eINSTANCE.createXmlJoinColumn();
 	}
 
-	public void removeSpecifiedJoinColumn(JoinColumn joinColumn) {
+	public void removeSpecifiedJoinColumn(ModifiableJoinColumn joinColumn) {
 		this.removeSpecifiedJoinColumn(this.specifiedJoinColumnContainer.indexOfContextElement((OrmJoinColumn) joinColumn));
 	}
 
@@ -130,7 +130,7 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy<P extends OrmJoi
 		String columnName = this.defaultJoinColumn.getDefaultName();
 		String referencedColumnName = this.defaultJoinColumn.getDefaultReferencedColumnName();
 
-		JoinColumn joinColumn = this.addSpecifiedJoinColumn(0);
+		ModifiableJoinColumn joinColumn = this.addSpecifiedJoinColumn(0);
 		joinColumn.setSpecifiedName(columnName);
 		joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
 	}

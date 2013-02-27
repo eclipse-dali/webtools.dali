@@ -37,23 +37,23 @@ public interface JoinColumnRelationshipStrategy
 
 	// ********** join columns **********
 
-	ListIterable<? extends JoinColumn> getJoinColumns();
+	ListIterable<? extends ModifiableJoinColumn> getJoinColumns();
 
 
 	// ********** specified join columns **********
 
-	ListIterable<? extends JoinColumn> getSpecifiedJoinColumns();
-	JoinColumn getSpecifiedJoinColumn(int index);
+	ListIterable<? extends ModifiableJoinColumn> getSpecifiedJoinColumns();
+	ModifiableJoinColumn getSpecifiedJoinColumn(int index);
 
 	/**
 	 * Add a specified join column to the relationship.
 	 */
-	JoinColumn addSpecifiedJoinColumn();
+	ModifiableJoinColumn addSpecifiedJoinColumn();
 
 	/**
 	 * Add a specified join column to the relationship.
 	 */
-	JoinColumn addSpecifiedJoinColumn(int index);
+	ModifiableJoinColumn addSpecifiedJoinColumn(int index);
 
 	/**
 	 * Remove the specified join column.
@@ -63,7 +63,7 @@ public interface JoinColumnRelationshipStrategy
 	/**
 	 * Remove the specified join column.
 	 */
-	void removeSpecifiedJoinColumn(JoinColumn joinColumn);
+	void removeSpecifiedJoinColumn(ModifiableJoinColumn joinColumn);
 
 	/**
 	 * Move the specified join column from the source index to the target index.
@@ -73,7 +73,7 @@ public interface JoinColumnRelationshipStrategy
 
 	// ********** default join column **********
 
-	JoinColumn getDefaultJoinColumn();
+	ModifiableJoinColumn getDefaultJoinColumn();
 
 
 	/**

@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.Sourc
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
@@ -213,11 +213,11 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		assertNull(virtualJoinTable.getSpecifiedSchema());
 		assertEquals(0, virtualJoinTable.getSpecifiedJoinColumnsSize());
 		assertEquals(0, virtualJoinTable.getSpecifiedInverseJoinColumnsSize());
-		JoinColumn ormJoinColumn = virtualJoinTable.getDefaultJoinColumn();
+		ModifiableJoinColumn ormJoinColumn = virtualJoinTable.getDefaultJoinColumn();
 //TODO need to test joinColumn defaults here as well as in java and all the relationship mapping types
 //		assertEquals("id_project_id", ormJoinColumn.getDefaultName());
 //		assertEquals("id_project_id", ormJoinColumn.getDefaultReferencedColumnName());
-		JoinColumn inverseOrmJoinColumn = virtualJoinTable.getDefaultInverseJoinColumn();
+		ModifiableJoinColumn inverseOrmJoinColumn = virtualJoinTable.getDefaultInverseJoinColumn();
 //		assertEquals("id_project_id", inverseOrmJoinColumn.getDefaultName());
 //		assertEquals("id_project_id", inverseOrmJoinColumn.getDefaultReferencedColumnName());
 	
@@ -1262,8 +1262,8 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		ormPersistentType.getAttributeNamed("projects").addToXml();
 		OrmManyToManyMapping manyToManyMapping = (OrmManyToManyMapping) ormPersistentType.getAttributeNamed("projects").getMapping();
 		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
-		JoinColumn joinColumn = joinTable.getJoinColumns().iterator().next();
-		JoinColumn inverseJoinColumn = joinTable.getInverseJoinColumns().iterator().next();
+		ModifiableJoinColumn joinColumn = joinTable.getJoinColumns().iterator().next();
+		ModifiableJoinColumn inverseJoinColumn = joinTable.getInverseJoinColumns().iterator().next();
 		
 		//joinTable default name is null because targetEntity is not in the persistence unit
 		assertNull(joinColumn.getDefaultName());
@@ -1326,8 +1326,8 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		ormPersistentType.getAttributeNamed("projects").addToXml();
 		OrmManyToManyMapping manyToManyMapping = (OrmManyToManyMapping) ormPersistentType.getAttributeNamed("projects").getMapping();
 		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
-		JoinColumn joinColumn = joinTable.getJoinColumns().iterator().next();
-		JoinColumn inverseJoinColumn = joinTable.getInverseJoinColumns().iterator().next();
+		ModifiableJoinColumn joinColumn = joinTable.getJoinColumns().iterator().next();
+		ModifiableJoinColumn inverseJoinColumn = joinTable.getInverseJoinColumns().iterator().next();
 		
 		//joinTable default name is null because targetEntity is not in the persistence unit
 		assertNull(joinColumn.getDefaultName());

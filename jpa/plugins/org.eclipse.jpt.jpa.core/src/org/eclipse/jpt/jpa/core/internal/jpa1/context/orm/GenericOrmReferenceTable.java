@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyReferenceTable;
@@ -113,7 +113,7 @@ public abstract class GenericOrmReferenceTable<P extends JpaContextModel, X exte
 		return OrmFactory.eINSTANCE.createXmlJoinColumn();
 	}
 
-	public void removeSpecifiedJoinColumn(JoinColumn joinColumn) {
+	public void removeSpecifiedJoinColumn(ModifiableJoinColumn joinColumn) {
 		this.removeSpecifiedJoinColumn(this.specifiedJoinColumnContainer.indexOfContextElement((OrmJoinColumn) joinColumn));
 	}
 

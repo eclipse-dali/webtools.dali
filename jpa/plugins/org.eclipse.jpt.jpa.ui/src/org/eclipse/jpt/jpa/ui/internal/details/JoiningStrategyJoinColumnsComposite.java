@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
@@ -75,7 +75,7 @@ public class JoiningStrategyJoinColumnsComposite
 	private JoinColumnsEditor<ReadOnlyJoinColumnRelationshipStrategy> buildJoinColumnsProvider() {
 		return new JoinColumnsEditor<ReadOnlyJoinColumnRelationshipStrategy>() {
 
-			public JoinColumn addJoinColumn(ReadOnlyJoinColumnRelationshipStrategy subject) {
+			public ModifiableJoinColumn addJoinColumn(ReadOnlyJoinColumnRelationshipStrategy subject) {
 				return JoiningStrategyJoinColumnsComposite.this.addJoinColumn(subject);
 			}
 
@@ -99,7 +99,7 @@ public class JoiningStrategyJoinColumnsComposite
 				return ReadOnlyJoinColumnRelationshipStrategy.SPECIFIED_JOIN_COLUMNS_LIST;
 			}
 
-			public void removeJoinColumn(ReadOnlyJoinColumnRelationshipStrategy subject, JoinColumn joinColumn) {
+			public void removeJoinColumn(ReadOnlyJoinColumnRelationshipStrategy subject, ModifiableJoinColumn joinColumn) {
 				((JoinColumnRelationshipStrategy) subject).removeSpecifiedJoinColumn(joinColumn);
 			}
 
@@ -113,7 +113,7 @@ public class JoiningStrategyJoinColumnsComposite
 		};
 	}
 	
-	JoinColumn addJoinColumn(ReadOnlyJoinColumnRelationshipStrategy joiningStrategy) {
+	ModifiableJoinColumn addJoinColumn(ReadOnlyJoinColumnRelationshipStrategy joiningStrategy) {
 		JoinColumnInJoiningStrategyDialog dialog = new JoinColumnInJoiningStrategyDialog(this.getShell(), this.getResourceManager(), joiningStrategy);
 
 		dialog.setBlockOnOpen(true);
@@ -124,14 +124,14 @@ public class JoiningStrategyJoinColumnsComposite
 		return null;
 	}
 	
-	JoinColumn addJoinColumn(JoinColumnInJoiningStrategyStateObject stateObject) {
+	ModifiableJoinColumn addJoinColumn(JoinColumnInJoiningStrategyStateObject stateObject) {
 		JoinColumnRelationshipStrategy subject = (JoinColumnRelationshipStrategy) getSubject();
-		JoinColumn joinColumn = subject.addSpecifiedJoinColumn();
+		ModifiableJoinColumn joinColumn = subject.addSpecifiedJoinColumn();
 		stateObject.updateJoinColumn(joinColumn);
 		return joinColumn;
 	}
 
-	public void setSelectedJoinColumn(JoinColumn joinColumn) {
+	public void setSelectedJoinColumn(ModifiableJoinColumn joinColumn) {
 		this.joinColumnsComposite.setSelectedJoinColumn(joinColumn);
 	}
 	

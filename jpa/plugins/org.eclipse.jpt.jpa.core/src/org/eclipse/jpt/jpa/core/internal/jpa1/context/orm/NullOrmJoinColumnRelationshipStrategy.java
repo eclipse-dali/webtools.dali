@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
@@ -76,7 +76,7 @@ public class NullOrmJoinColumnRelationshipStrategy
 		throw new UnsupportedOperationException();
 	}
 
-	public void removeSpecifiedJoinColumn(JoinColumn joinColumn) {
+	public void removeSpecifiedJoinColumn(ModifiableJoinColumn joinColumn) {
 		throw new UnsupportedOperationException();
 	}
 

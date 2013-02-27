@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.EnumType;
 import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.FetchType;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
@@ -1037,7 +1037,7 @@ public class GenericOrmOneToManyMapping2_0Tests
 		OneToManyRelationship2_0 rr = (OneToManyRelationship2_0) javaOneToManyMapping.getRelationship();
 		rr.setStrategyToJoinColumn();
 
-		JoinColumn joinColumn = rr.getJoinColumnStrategy().getJoinColumns().iterator().next();		
+		ModifiableJoinColumn joinColumn = rr.getJoinColumnStrategy().getJoinColumns().iterator().next();		
 		assertTrue(persistentAttribute.isVirtual());
 		assertEquals("addresses_id", joinColumn.getDefaultName());
 		assertEquals("Address", joinColumn.getDefaultTableName());//target table name
@@ -1355,25 +1355,25 @@ public class GenericOrmOneToManyMapping2_0Tests
 		OneToManyMapping2_0 ormOneToManyMapping = (OneToManyMapping2_0) ormPersistentAttribute.getMapping();
 		XmlOneToMany_2_0 oneToManyResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getOneToManys().get(0);
 		
-		JoinColumn joinColumn = ormOneToManyMapping.addSpecifiedMapKeyJoinColumn(0);
+		ModifiableJoinColumn joinColumn = ormOneToManyMapping.addSpecifiedMapKeyJoinColumn(0);
 		joinColumn.setSpecifiedName("FOO");
 				
 		assertEquals("FOO", oneToManyResource.getMapKeyJoinColumns().get(0).getName());
 		
-		JoinColumn joinColumn2 = ormOneToManyMapping.addSpecifiedMapKeyJoinColumn(0);
+		ModifiableJoinColumn joinColumn2 = ormOneToManyMapping.addSpecifiedMapKeyJoinColumn(0);
 		joinColumn2.setSpecifiedName("BAR");
 		
 		assertEquals("BAR", oneToManyResource.getMapKeyJoinColumns().get(0).getName());
 		assertEquals("FOO", oneToManyResource.getMapKeyJoinColumns().get(1).getName());
 		
-		JoinColumn joinColumn3 = ormOneToManyMapping.addSpecifiedMapKeyJoinColumn(1);
+		ModifiableJoinColumn joinColumn3 = ormOneToManyMapping.addSpecifiedMapKeyJoinColumn(1);
 		joinColumn3.setSpecifiedName("BAZ");
 		
 		assertEquals("BAR", oneToManyResource.getMapKeyJoinColumns().get(0).getName());
 		assertEquals("BAZ", oneToManyResource.getMapKeyJoinColumns().get(1).getName());
 		assertEquals("FOO", oneToManyResource.getMapKeyJoinColumns().get(2).getName());
 		
-		ListIterator<? extends JoinColumn> joinColumns = ormOneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		ListIterator<? extends ModifiableJoinColumn> joinColumns = ormOneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
 		assertEquals(joinColumn2, joinColumns.next());
 		assertEquals(joinColumn3, joinColumns.next());
 		assertEquals(joinColumn, joinColumns.next());
@@ -1425,7 +1425,7 @@ public class GenericOrmOneToManyMapping2_0Tests
 		
 		
 		ormOneToManyMapping.moveSpecifiedMapKeyJoinColumn(2, 0);
-		ListIterator<? extends JoinColumn> joinColumns = ormOneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		ListIterator<? extends ModifiableJoinColumn> joinColumns = ormOneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -1461,7 +1461,7 @@ public class GenericOrmOneToManyMapping2_0Tests
 		oneToManyResource.getMapKeyJoinColumns().get(1).setName("BAR");
 		oneToManyResource.getMapKeyJoinColumns().get(2).setName("BAZ");
 
-		ListIterator<? extends JoinColumn> joinColumns = ormOneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		ListIterator<? extends ModifiableJoinColumn> joinColumns = ormOneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
 		assertEquals("FOO", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());

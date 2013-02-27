@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
@@ -136,7 +136,7 @@ public class GenericJavaJoinTable
 		return this.specifiedInverseJoinColumnContainer.addContextElement(index, annotation);
 	}
 
-	public void removeSpecifiedInverseJoinColumn(JoinColumn joinColumn) {
+	public void removeSpecifiedInverseJoinColumn(ModifiableJoinColumn joinColumn) {
 		this.removeSpecifiedInverseJoinColumn(this.specifiedInverseJoinColumnContainer.indexOfContextElement((JavaJoinColumn) joinColumn));
 	}
 

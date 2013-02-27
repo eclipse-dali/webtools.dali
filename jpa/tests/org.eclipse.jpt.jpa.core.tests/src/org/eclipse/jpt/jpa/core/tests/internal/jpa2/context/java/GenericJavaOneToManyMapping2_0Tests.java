@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.EnumType;
 import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
@@ -1235,7 +1235,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 		((JoinColumnRelationship) oneToManyMapping.getRelationship()).setStrategyToJoinColumn();
 
-		JoinColumn joinColumn = ((JoinColumnRelationship) oneToManyMapping.getRelationship()).getJoinColumnStrategy().getSpecifiedJoinColumns().iterator().next();
+		ModifiableJoinColumn joinColumn = ((JoinColumnRelationship) oneToManyMapping.getRelationship()).getJoinColumnStrategy().getSpecifiedJoinColumns().iterator().next();
 
 		assertEquals("addresses_id", joinColumn.getDefaultName());
 		assertEquals("Address", joinColumn.getDefaultTableName());//target table name
@@ -1903,7 +1903,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 
-		ListIterator<? extends JoinColumn> specifiedMapKeyJoinColumns = oneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		ListIterator<? extends ModifiableJoinColumn> specifiedMapKeyJoinColumns = oneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
 
 		assertFalse(specifiedMapKeyJoinColumns.hasNext());
 
@@ -2070,7 +2070,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		assertEquals("BAZ", ((MapKeyJoinColumn2_0Annotation) joinColumnResources.next()).getName());
 		assertFalse(joinColumnResources.hasNext());
 
-		Iterator<? extends JoinColumn> joinColumnsIterator = oneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		Iterator<? extends ModifiableJoinColumn> joinColumnsIterator = oneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
 		assertEquals("FOO", joinColumnsIterator.next().getName());		
 		assertEquals("BAZ", joinColumnsIterator.next().getName());
 		assertFalse(joinColumnsIterator.hasNext());
@@ -2113,7 +2113,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 
 
 		oneToManyMapping.moveSpecifiedMapKeyJoinColumn(2, 0);
-		ListIterator<? extends JoinColumn> joinColumns = oneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		ListIterator<? extends ModifiableJoinColumn> joinColumns = oneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getSpecifiedName());
 		assertEquals("BAZ", joinColumns.next().getSpecifiedName());
 		assertEquals("FOO", joinColumns.next().getSpecifiedName());
@@ -2150,7 +2150,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		((MapKeyJoinColumn2_0Annotation) resourceField.addAnnotation(2, JPA2_0.MAP_KEY_JOIN_COLUMN)).setName("BAZ");
 		getJpaProject().synchronizeContextModel();
 
-		ListIterator<? extends JoinColumn> joinColumnsIterator = oneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		ListIterator<? extends ModifiableJoinColumn> joinColumnsIterator = oneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
 		assertEquals("FOO", joinColumnsIterator.next().getName());
 		assertEquals("BAR", joinColumnsIterator.next().getName());
 		assertEquals("BAZ", joinColumnsIterator.next().getName());
@@ -2203,7 +2203,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		assertTrue(oneToManyMapping.getDefaultMapKeyJoinColumn().isVirtual());
 
 		oneToManyMapping.addSpecifiedMapKeyJoinColumn(0);
-		JoinColumn specifiedJoinColumn = oneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator().next();
+		ModifiableJoinColumn specifiedJoinColumn = oneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator().next();
 		assertFalse(specifiedJoinColumn.isVirtual());
 
 		assertNull(oneToManyMapping.getDefaultMapKeyJoinColumn());

@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationshipStrategy;
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * The state object used to create or edit a primary key join column on a
  * relationship mapping.
  *
- * @see JoinColumn
+ * @see ModifiableJoinColumn
  * @see JoinColumnRelationshipStrategy
  * @see JoinColumnInJoiningStrategyDialog
  *
@@ -74,7 +74,7 @@ public class JoinColumnInJoiningStrategyStateObject
 	
 	@Override
 	public String getDefaultTable() {
-		JoinColumn joinColumn = getJoinColumn();
+		ModifiableJoinColumn joinColumn = getJoinColumn();
 
 		if (joinColumn != null) {
 			return joinColumn.getDefaultTableName();

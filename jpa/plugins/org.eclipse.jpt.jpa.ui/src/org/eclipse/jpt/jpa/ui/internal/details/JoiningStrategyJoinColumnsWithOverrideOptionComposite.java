@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
@@ -52,7 +52,7 @@ public class JoiningStrategyJoinColumnsWithOverrideOptionComposite
 		this.joiningStrategyComposite = new JoiningStrategyJoinColumnsComposite(this, container);
 	}
 
-	void setSelectedJoinColumn(JoinColumn joinColumn) {
+	void setSelectedJoinColumn(ModifiableJoinColumn joinColumn) {
 		this.joiningStrategyComposite.setSelectedJoinColumn(joinColumn);
 	}
 

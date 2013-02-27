@@ -38,7 +38,7 @@ import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.ColumnMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -384,22 +384,22 @@ public final class MappingTools {
 	}
 
 	public static void convertReferenceTableDefaultToSpecifiedJoinColumn(ReferenceTable referenceTable) {
-		JoinColumn defaultJoinColumn = referenceTable.getDefaultJoinColumn();
+		ModifiableJoinColumn defaultJoinColumn = referenceTable.getDefaultJoinColumn();
 		if (defaultJoinColumn != null) {
 			String columnName = defaultJoinColumn.getDefaultName();
 			String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
-			JoinColumn joinColumn = referenceTable.addSpecifiedJoinColumn();
+			ModifiableJoinColumn joinColumn = referenceTable.addSpecifiedJoinColumn();
 			joinColumn.setSpecifiedName(columnName);
 			joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
 		}
 	}
 
 	public static void convertJoinTableDefaultToSpecifiedInverseJoinColumn(JoinTable joinTable) {
-		JoinColumn defaultInverseJoinColumn = joinTable.getDefaultInverseJoinColumn();
+		ModifiableJoinColumn defaultInverseJoinColumn = joinTable.getDefaultInverseJoinColumn();
 		if (defaultInverseJoinColumn != null) {
 			String columnName = defaultInverseJoinColumn.getDefaultName();
 			String referencedColumnName = defaultInverseJoinColumn.getDefaultReferencedColumnName();
-			JoinColumn joinColumn = joinTable.addSpecifiedInverseJoinColumn(0);
+			ModifiableJoinColumn joinColumn = joinTable.addSpecifiedInverseJoinColumn(0);
 			joinColumn.setSpecifiedName(columnName);
 			joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
 		}

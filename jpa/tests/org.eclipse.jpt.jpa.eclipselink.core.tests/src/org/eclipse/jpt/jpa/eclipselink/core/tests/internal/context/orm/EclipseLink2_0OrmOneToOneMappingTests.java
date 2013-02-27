@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.FetchType;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
@@ -571,11 +571,11 @@ public class EclipseLink2_0OrmOneToOneMappingTests
 		assertNull(virtualJoinTable.getSpecifiedSchema());
 		assertEquals(0, virtualJoinTable.getSpecifiedJoinColumnsSize());
 		assertEquals(0, virtualJoinTable.getSpecifiedInverseJoinColumnsSize());
-		JoinColumn virtualJoinColumn = virtualJoinTable.getDefaultJoinColumn();
+		ModifiableJoinColumn virtualJoinColumn = virtualJoinTable.getDefaultJoinColumn();
 		assertEquals(TYPE_NAME + "_Address", virtualJoinColumn.getDefaultTableName());
 		assertEquals(TYPE_NAME + "_id", virtualJoinColumn.getDefaultName());
 		assertEquals("id", virtualJoinColumn.getDefaultReferencedColumnName());
-		JoinColumn virtualInverseOrmJoinColumn = virtualJoinTable.getDefaultInverseJoinColumn();
+		ModifiableJoinColumn virtualInverseOrmJoinColumn = virtualJoinTable.getDefaultInverseJoinColumn();
 		assertEquals(TYPE_NAME + "_Address", virtualInverseOrmJoinColumn.getDefaultTableName());
 		assertEquals("address_id", virtualInverseOrmJoinColumn.getDefaultName());
 		assertEquals("id", virtualInverseOrmJoinColumn.getDefaultReferencedColumnName());
@@ -847,7 +847,7 @@ public class EclipseLink2_0OrmOneToOneMappingTests
 		assertNull(virtualOneToOneMapping.getRelationship().
 			getMappedByStrategy().getMappedByAttribute());
 
-		JoinColumn ormJoinColumn = 
+		ModifiableJoinColumn ormJoinColumn = 
 			virtualOneToOneMapping.getRelationship().getJoinColumnStrategy().getSpecifiedJoinColumns().iterator().next();
 		assertEquals("MY_COLUMN", ormJoinColumn.getSpecifiedName());
 		assertEquals("MY_REFERENCED_COLUMN", ormJoinColumn.getSpecifiedReferencedColumnName());

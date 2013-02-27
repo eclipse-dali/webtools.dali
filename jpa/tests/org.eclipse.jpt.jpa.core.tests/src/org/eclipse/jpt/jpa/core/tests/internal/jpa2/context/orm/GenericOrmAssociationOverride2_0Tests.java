@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.Sourc
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationshipStrategy;
@@ -211,18 +211,18 @@ public class GenericOrmAssociationOverride2_0Tests extends Generic2_0ContextMode
 		XmlAssociationOverride xmlAssociationOverride = entityResource.getAssociationOverrides().get(0);
 
 		
-		JoinColumn joinColumn = joiningStrategy.addSpecifiedJoinColumn(0);
+		ModifiableJoinColumn joinColumn = joiningStrategy.addSpecifiedJoinColumn(0);
 		joinColumn.setSpecifiedName("FOO");
 				
 		assertEquals("FOO", xmlAssociationOverride.getJoinColumns().get(0).getName());
 		
-		JoinColumn joinColumn2 = joiningStrategy.addSpecifiedJoinColumn(0);
+		ModifiableJoinColumn joinColumn2 = joiningStrategy.addSpecifiedJoinColumn(0);
 		joinColumn2.setSpecifiedName("BAR");
 		
 		assertEquals("BAR", xmlAssociationOverride.getJoinColumns().get(0).getName());
 		assertEquals("FOO", xmlAssociationOverride.getJoinColumns().get(1).getName());
 		
-		JoinColumn joinColumn3 = joiningStrategy.addSpecifiedJoinColumn(1);
+		ModifiableJoinColumn joinColumn3 = joiningStrategy.addSpecifiedJoinColumn(1);
 		joinColumn3.setSpecifiedName("BAZ");
 		
 		assertEquals("BAR", xmlAssociationOverride.getJoinColumns().get(0).getName());
@@ -349,7 +349,7 @@ public class GenericOrmAssociationOverride2_0Tests extends Generic2_0ContextMode
 		XmlAssociationOverride xmlAssociationOverride = entityResource.getAssociationOverrides().get(0);
 		
 		ListIterator<OrmJoinColumn> joinColumns = joiningStrategy.getSpecifiedJoinColumns().iterator();
-		JoinColumn joinColumn = joinColumns.next();
+		ModifiableJoinColumn joinColumn = joinColumns.next();
 		assertEquals("address_id", joinColumn.getSpecifiedName());
 		assertEquals("id", joinColumn.getSpecifiedReferencedColumnName());
 	

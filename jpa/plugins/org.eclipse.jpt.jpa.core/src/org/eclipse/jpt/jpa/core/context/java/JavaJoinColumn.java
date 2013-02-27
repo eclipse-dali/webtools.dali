@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.resource.java.CompleteJoinColumnAnnotation;
 
 /**
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.java.CompleteJoinColumnAnnotation;
  * @since 2.0
  */
 public interface JavaJoinColumn
-	extends JoinColumn, JavaModifiableBaseJoinColumn, JavaBaseColumn
+	extends ModifiableJoinColumn, JavaModifiableBaseJoinColumn, JavaBaseColumn
 {
 	CompleteJoinColumnAnnotation getColumnAnnotation();
 }

@@ -14,7 +14,7 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
@@ -166,7 +166,7 @@ public class EclipseLink2_0OrmCollectionTableTests
 		assertNull(virtualCollectionTable.getSpecifiedCatalog());
 		assertNull(virtualCollectionTable.getSpecifiedSchema());
 		assertEquals(0, virtualCollectionTable.getSpecifiedJoinColumnsSize());
-		JoinColumn virtualJoinColumn = virtualCollectionTable.getDefaultJoinColumn();
+		ModifiableJoinColumn virtualJoinColumn = virtualCollectionTable.getDefaultJoinColumn();
 		assertEquals(TYPE_NAME + "_id", virtualJoinColumn.getDefaultName());
 		assertEquals("id", virtualJoinColumn.getDefaultReferencedColumnName());
 	
