@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context;
 
-import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiableNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.TableColumn;
 
 /**
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.TableColumn;
  * @since 3.1
  */
 public interface TenantDiscriminatorColumn2_3
-	extends NamedDiscriminatorColumn, ReadOnlyTenantDiscriminatorColumn2_3, TableColumn
+	extends ModifiableNamedDiscriminatorColumn, ReadOnlyTenantDiscriminatorColumn2_3, TableColumn
 {
 
 	void setSpecifiedContextProperty(String contextProperty);
