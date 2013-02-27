@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationship;
-import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedMappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.db.Table;
 
 public class NullOrmJoinTableRelationshipStrategy
 	extends AbstractOrmXmlContextModel<OrmJoinTableRelationship>
-	implements SpecifiedMappingRelationshipStrategy2_0, OrmJoinTableRelationshipStrategy
+	implements SpecifiedMappingRelationshipStrategy2_0, OrmSpecifiedJoinTableRelationshipStrategy
 {
 	public NullOrmJoinTableRelationshipStrategy(OrmJoinTableRelationship parent) {
 		super(parent);

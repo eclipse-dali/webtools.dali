@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumnRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmManyToOneRelationship2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlManyToOne;
@@ -30,7 +30,7 @@ public class GenericOrmManyToOneRelationship
 	protected final OrmSpecifiedJoinColumnRelationshipStrategy joinColumnStrategy;
 
 	// JPA 2.0
-	protected final OrmJoinTableRelationshipStrategy joinTableStrategy;
+	protected final OrmSpecifiedJoinTableRelationshipStrategy joinTableStrategy;
 
 	
 	public GenericOrmManyToOneRelationship(OrmManyToOneMapping parent) {
@@ -74,7 +74,7 @@ public class GenericOrmManyToOneRelationship
 
 	// ********** join table strategy **********
 
-	public OrmJoinTableRelationshipStrategy getJoinTableStrategy() {
+	public OrmSpecifiedJoinTableRelationshipStrategy getJoinTableStrategy() {
 		return this.joinTableStrategy;
 	}
 
@@ -92,7 +92,7 @@ public class GenericOrmManyToOneRelationship
 		return false;
 	}
 
-	protected OrmJoinTableRelationshipStrategy buildJoinTableStrategy() {
+	protected OrmSpecifiedJoinTableRelationshipStrategy buildJoinTableStrategy() {
 		return this.isJpa2_0Compatible() ?
 				new GenericOrmMappingJoinTableRelationshipStrategy(this) :
 				new NullOrmJoinTableRelationshipStrategy(this);

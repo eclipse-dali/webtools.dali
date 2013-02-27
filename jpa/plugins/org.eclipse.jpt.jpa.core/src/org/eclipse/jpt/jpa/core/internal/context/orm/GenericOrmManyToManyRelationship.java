@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToManyRelationship;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlManyToMany;
@@ -31,7 +31,7 @@ public class GenericOrmManyToManyRelationship
 {
 	protected final SpecifiedMappedByRelationshipStrategy mappedByStrategy;
 
-	protected final OrmJoinTableRelationshipStrategy joinTableStrategy;
+	protected final OrmSpecifiedJoinTableRelationshipStrategy joinTableStrategy;
 
 
 	public GenericOrmManyToManyRelationship(OrmManyToManyMapping parent) {
@@ -98,7 +98,7 @@ public class GenericOrmManyToManyRelationship
 
 	// ********** join table strategy **********
 
-	public OrmJoinTableRelationshipStrategy getJoinTableStrategy() {
+	public OrmSpecifiedJoinTableRelationshipStrategy getJoinTableStrategy() {
 		return this.joinTableStrategy;
 	}
 
@@ -116,7 +116,7 @@ public class GenericOrmManyToManyRelationship
 		return this.mappedByStrategy.getMappedByAttribute() == null;
 	}
 
-	protected OrmJoinTableRelationshipStrategy buildJoinTableStrategy() {
+	protected OrmSpecifiedJoinTableRelationshipStrategy buildJoinTableStrategy() {
 		return new GenericOrmMappingJoinTableRelationshipStrategy(this);
 	}
 

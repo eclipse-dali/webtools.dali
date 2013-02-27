@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTable;
-import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlJoinColumn;
@@ -40,7 +40,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>orm.xml</code> join table
  */
 public class GenericOrmJoinTable
-	extends GenericOrmReferenceTable<OrmJoinTableRelationshipStrategy, XmlJoinTable>
+	extends GenericOrmReferenceTable<OrmSpecifiedJoinTableRelationshipStrategy, XmlJoinTable>
 	implements OrmJoinTable
 {
 	protected final ContextListContainer<OrmSpecifiedJoinColumn, XmlJoinColumn> specifiedInverseJoinColumnContainer;
@@ -49,7 +49,7 @@ public class GenericOrmJoinTable
 	protected OrmSpecifiedJoinColumn defaultInverseJoinColumn;
 
 
-	public GenericOrmJoinTable(OrmJoinTableRelationshipStrategy parent, Owner owner) {
+	public GenericOrmJoinTable(OrmSpecifiedJoinTableRelationshipStrategy parent, Owner owner) {
 		super(parent, owner);
 		this.inverseJoinColumnOwner = this.buildInverseJoinColumnOwner();
 		this.specifiedInverseJoinColumnContainer = this.buildSpecifiedInverseJoinColumnContainer();
@@ -251,7 +251,7 @@ public class GenericOrmJoinTable
 
 	// ********** misc **********
 
-	protected OrmJoinTableRelationshipStrategy getRelationshipStrategy() {
+	protected OrmSpecifiedJoinTableRelationshipStrategy getRelationshipStrategy() {
 		return this.parent;
 	}
 
@@ -369,7 +369,7 @@ public class GenericOrmJoinTable
 			return this.getRelationshipStrategy().getRelationship();
 		}
 
-		protected OrmJoinTableRelationshipStrategy getRelationshipStrategy() {
+		protected OrmSpecifiedJoinTableRelationshipStrategy getRelationshipStrategy() {
 			return GenericOrmJoinTable.this.getRelationshipStrategy();
 		}
 	}

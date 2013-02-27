@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationship;
-import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlJoinTable;
@@ -28,7 +28,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractOrmJoinTableRelationshipStrategy<P extends OrmJoinTableRelationship>
 	extends AbstractOrmXmlContextModel<P>
-	implements OrmJoinTableRelationshipStrategy, ReadOnlyTable.Owner
+	implements OrmSpecifiedJoinTableRelationshipStrategy, ReadOnlyTable.Owner
 {
 	protected OrmJoinTable joinTable;
 

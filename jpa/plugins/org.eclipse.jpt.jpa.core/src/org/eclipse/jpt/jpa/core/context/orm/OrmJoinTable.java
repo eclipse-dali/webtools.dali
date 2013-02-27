@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.context.JoinTable;
 public interface OrmJoinTable
 	extends JoinTable, OrmReferenceTable
 {
-	OrmJoinTableRelationshipStrategy getParent();
+	OrmSpecifiedJoinTableRelationshipStrategy getParent();
 
 	// ********** inverse join columns **********
 

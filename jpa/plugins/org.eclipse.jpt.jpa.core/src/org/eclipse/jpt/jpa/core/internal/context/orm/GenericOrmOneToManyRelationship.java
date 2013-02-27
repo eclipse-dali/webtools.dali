@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumnRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.NullOrmJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOneToManyRelationship2_0;
@@ -34,7 +34,7 @@ public class GenericOrmOneToManyRelationship
 {
 	protected final SpecifiedMappedByRelationshipStrategy mappedByStrategy;
 
-	protected final OrmJoinTableRelationshipStrategy joinTableStrategy;
+	protected final OrmSpecifiedJoinTableRelationshipStrategy joinTableStrategy;
 
 	// JPA 2.0 or EclipseLink
 	protected final boolean supportsJoinColumnStrategy;
@@ -124,7 +124,7 @@ public class GenericOrmOneToManyRelationship
 
 	// ********** join table strategy **********
 
-	public OrmJoinTableRelationshipStrategy getJoinTableStrategy() {
+	public OrmSpecifiedJoinTableRelationshipStrategy getJoinTableStrategy() {
 		return this.joinTableStrategy;
 	}
 
@@ -144,7 +144,7 @@ public class GenericOrmOneToManyRelationship
 				! this.joinColumnStrategy.hasSpecifiedJoinColumns();
 	}
 
-	protected OrmJoinTableRelationshipStrategy buildJoinTableStrategy() {
+	protected OrmSpecifiedJoinTableRelationshipStrategy buildJoinTableStrategy() {
 		return new GenericOrmMappingJoinTableRelationshipStrategy(this);
 	}
 

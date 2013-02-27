@@ -49,7 +49,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTable;
-import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappedSuperclass;
@@ -227,7 +227,7 @@ public abstract class AbstractOrmXmlContextModelFactory
 		return new GenericOrmVirtualPrimaryKeyJoinColumn(parent, owner, javaPrimaryKeyJoinColumn);
 	}
 	
-	public OrmJoinTable buildOrmJoinTable(OrmJoinTableRelationshipStrategy parent, Table.Owner owner) {
+	public OrmJoinTable buildOrmJoinTable(OrmSpecifiedJoinTableRelationshipStrategy parent, Table.Owner owner) {
 		return new GenericOrmJoinTable(parent, owner);
 	}
 	
