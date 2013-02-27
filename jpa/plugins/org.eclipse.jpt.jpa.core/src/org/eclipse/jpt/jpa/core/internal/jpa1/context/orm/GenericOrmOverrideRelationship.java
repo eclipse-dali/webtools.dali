@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAssociationOverride;
-import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModel;
@@ -48,7 +48,7 @@ public class GenericOrmOverrideRelationship
 {
 	protected SpecifiedRelationshipStrategy strategy;
 
-	protected final OrmJoinColumnRelationshipStrategy joinColumnStrategy;
+	protected final OrmSpecifiedJoinColumnRelationshipStrategy joinColumnStrategy;
 
 	// JPA 2.0
 	protected final OrmJoinTableRelationshipStrategy joinTableStrategy;
@@ -128,7 +128,7 @@ public class GenericOrmOverrideRelationship
 
 	// ********** join column strategy **********
 
-	public OrmJoinColumnRelationshipStrategy getJoinColumnStrategy() {
+	public OrmSpecifiedJoinColumnRelationshipStrategy getJoinColumnStrategy() {
 		return this.joinColumnStrategy;
 	}
 
@@ -146,7 +146,7 @@ public class GenericOrmOverrideRelationship
 		return false;
 	}
 
-	protected OrmJoinColumnRelationshipStrategy buildJoinColumnStrategy() {
+	protected OrmSpecifiedJoinColumnRelationshipStrategy buildJoinColumnStrategy() {
 		return new GenericOrmOverrideJoinColumnRelationshipStrategy(this);
 	}
 

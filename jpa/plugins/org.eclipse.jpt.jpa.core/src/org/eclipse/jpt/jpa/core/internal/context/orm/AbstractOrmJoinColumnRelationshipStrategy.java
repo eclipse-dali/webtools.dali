@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationship;
-import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlJoinColumnContainer;
@@ -32,7 +32,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractOrmJoinColumnRelationshipStrategy<P extends OrmJoinColumnRelationship>
 	extends AbstractOrmXmlContextModel<P>
-	implements OrmJoinColumnRelationshipStrategy
+	implements OrmSpecifiedJoinColumnRelationshipStrategy
 {
 	protected final ContextListContainer<OrmSpecifiedJoinColumn, XmlJoinColumn> specifiedJoinColumnContainer;
 	protected final JoinColumn.Owner joinColumnOwner;

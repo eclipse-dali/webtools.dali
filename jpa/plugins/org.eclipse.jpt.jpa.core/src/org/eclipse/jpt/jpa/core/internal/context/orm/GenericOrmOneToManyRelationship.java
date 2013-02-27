@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.NullOrmJoinColumnRelationshipStrategy;
@@ -38,7 +38,7 @@ public class GenericOrmOneToManyRelationship
 
 	// JPA 2.0 or EclipseLink
 	protected final boolean supportsJoinColumnStrategy;
-	protected final OrmJoinColumnRelationshipStrategy joinColumnStrategy;
+	protected final OrmSpecifiedJoinColumnRelationshipStrategy joinColumnStrategy;
 
 
 	public GenericOrmOneToManyRelationship(OrmOneToManyMapping parent, boolean supportsJoinColumnStrategy) {
@@ -151,7 +151,7 @@ public class GenericOrmOneToManyRelationship
 
 	// ********** join column strategy **********
 
-	public OrmJoinColumnRelationshipStrategy getJoinColumnStrategy() {
+	public OrmSpecifiedJoinColumnRelationshipStrategy getJoinColumnStrategy() {
 		return this.joinColumnStrategy;
 	}
 
@@ -170,7 +170,7 @@ public class GenericOrmOneToManyRelationship
 		return false;
 	}
 
-	protected OrmJoinColumnRelationshipStrategy buildJoinColumnStrategy() {
+	protected OrmSpecifiedJoinColumnRelationshipStrategy buildJoinColumnStrategy() {
 		return this.supportsJoinColumnStrategy ?
 				new GenericOrmMappingJoinColumnRelationshipStrategy(this, true) :  // true = target foreign key
 				new NullOrmJoinColumnRelationshipStrategy(this);
