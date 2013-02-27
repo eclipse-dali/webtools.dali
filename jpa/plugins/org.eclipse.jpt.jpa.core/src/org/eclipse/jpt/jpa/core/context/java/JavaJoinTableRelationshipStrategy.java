@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import org.eclipse.jpt.jpa.core.context.JoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
 
 /**
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
  * @since 2.2
  */
 public interface JavaJoinTableRelationshipStrategy
-	extends JoinTableRelationshipStrategy
+	extends SpecifiedJoinTableRelationshipStrategy
 {
 	JavaJoinTable getJoinTable();
 	

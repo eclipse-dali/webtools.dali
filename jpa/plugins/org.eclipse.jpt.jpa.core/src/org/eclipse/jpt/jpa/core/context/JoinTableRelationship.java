@@ -30,7 +30,7 @@ package org.eclipse.jpt.jpa.core.context;
 public interface JoinTableRelationship
 	extends ReadOnlyJoinTableRelationship, Relationship
 {
-	JoinTableRelationshipStrategy getJoinTableStrategy();
+	SpecifiedJoinTableRelationshipStrategy getJoinTableStrategy();
 
 	/**
 	 * Set the relationship's strategy to the join table strategy.
