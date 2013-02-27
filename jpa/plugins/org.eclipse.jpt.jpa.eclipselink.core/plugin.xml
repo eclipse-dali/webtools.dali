@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <!--
-  Copyright (c) 2008, 2013 Oracle. All rights reserved.
+  Copyright (c) 2008, 2012 Oracle. All rights reserved.
   This program and the accompanying materials are made available under the
   terms of the Eclipse Public License v1.0, which accompanies this distribution
   and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -183,17 +183,10 @@
 	        group="eclipselink"
 			jpaFacetVersion="2.0"/>
 		
-  		<jpaPlatform
-        	id="eclipselink2_5_jpa2_0"
-        	label="%ECLIPSELINK2_5_x_FOR_JPA_2_0_PLATFORM"
-        	factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_5ForJpa2_0PlatformFactory"
-        	group="eclipselink"
-        	jpaFacetVersion="2.0"/>
-		
 		<jpaPlatform
-	        id="eclipselink2_5_jpa2_1"
-	        label="%ECLIPSELINK2_5_x_FOR_JPA_2_1_PLATFORM"
-	        factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_5ForJpa2_1PlatformFactory"
+	        id="eclipselink2_5"
+	        label="%ECLIPSELINK2_5_x_PLATFORM"
+	        factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_5JpaPlatformFactory"
 	        group="eclipselink"
 			jpaFacetVersion="2.1"/>
 	</extension>

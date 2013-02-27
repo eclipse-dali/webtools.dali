@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationAction;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationTarget;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen.JpaSchemaGeneration2_1;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_5ForJpa2_1PlatformFactory;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_5JpaPlatformFactory;
 
 /**
  *  EclipseLink2_5SchemaGenerationTests
@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_5ForJpa2_1Plat
 public class EclipseLink2_5SchemaGenerationTests
 			extends EclipseLink2_5PersistenceUnitTestCase
 {
-	public static final String JPA_PLATFORM_ID =  EclipseLink2_5ForJpa2_1PlatformFactory.ID;
+	public static final String JPA_PLATFORM_ID =  EclipseLink2_5JpaPlatformFactory.ID;
 	
 	JpaSchemaGeneration2_1 schemaGeneration;
 

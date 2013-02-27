@@ -55,14 +55,9 @@
 			factoryClass="org.eclipse.jpt.jpa.eclipselink.ui.internal.platform.EclipseLink2_4JpaPlatformUiFactory"/>
 		
 		<jpaPlatformUi
-			id="eclipselink2_5_jpa2_0.ui"
-			jpaPlatform="eclipselink2_5_jpa2_0"
-			factoryClass="org.eclipse.jpt.jpa.eclipselink.ui.internal.platform.EclipseLink2_5ForJpa2_0PlatformUiFactory"/>
-		
-		<jpaPlatformUi
-			id="eclipselink2_5_jpa2_1.ui"
-			jpaPlatform="eclipselink2_5_jpa2_1"
-			factoryClass="org.eclipse.jpt.jpa.eclipselink.ui.internal.platform.EclipseLink2_5ForJpa2_1PlatformUiFactory"/>
+			id="eclipselink2_5.ui"
+			jpaPlatform="eclipselink2_5"
+			factoryClass="org.eclipse.jpt.jpa.eclipselink.ui.internal.platform.EclipseLink2_5JpaPlatformUiFactory"/>
 	</extension>
 	
 	
