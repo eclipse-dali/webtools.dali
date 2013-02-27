@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
-import org.eclipse.jpt.jpa.core.context.MappedByRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Control;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see {@link MappedByRelationship}
- * @see {@link MappedByRelationshipStrategy}
+ * @see {@link SpecifiedMappedByRelationshipStrategy}
  * @see {@link OneToOneJoiningStrategyPane}
  * @see {@link OneToManyJoiningStrategyPane}
  * @see {@link ManyToManyJoiningStrategyPane}
@@ -41,7 +41,7 @@ import org.eclipse.swt.widgets.Control;
  * @since 2.1
  */
 public class MappedByJoiningStrategyPane 
-	extends AbstractJoiningStrategyPane<MappedByRelationship, MappedByRelationshipStrategy>
+	extends AbstractJoiningStrategyPane<MappedByRelationship, SpecifiedMappedByRelationshipStrategy>
 {
 	/**
 	 * Creates a new <code>MappedByJoiningStrategyPane</code>.
@@ -66,11 +66,11 @@ public class MappedByJoiningStrategyPane
 		return buildUsesMappedByJoiningStrategyHolder(getSubjectHolder());
 	}
 
-	protected PropertyValueModel<MappedByRelationshipStrategy> buildMappedByJoiningStrategyHolder() {
-		return new PropertyAspectAdapter<MappedByRelationship, MappedByRelationshipStrategy>(
+	protected PropertyValueModel<SpecifiedMappedByRelationshipStrategy> buildMappedByJoiningStrategyHolder() {
+		return new PropertyAspectAdapter<MappedByRelationship, SpecifiedMappedByRelationshipStrategy>(
 				getSubjectHolder()) {
 			@Override
-			protected MappedByRelationshipStrategy buildValue_() {
+			protected SpecifiedMappedByRelationshipStrategy buildValue_() {
 				return this.subject.getMappedByStrategy();
 			}
 		};

@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.internal.transformer.StringObjectTransform
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.MappedByRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.swt.widgets.Composite;
@@ -40,18 +40,18 @@ import org.eclipse.swt.widgets.Composite;
  * @since 1.0
  */
 public class MappedByPane 
-	extends Pane<MappedByRelationshipStrategy>
+	extends Pane<SpecifiedMappedByRelationshipStrategy>
 {
 	/**
 	 * Creates a new <code>MappedByPane</code>.
 	 *
 	 * @param parentPane The parent form pane
-	 * @param subjectHolder The PVM for the {@link MappedByRelationshipStrategy}
+	 * @param subjectHolder The PVM for the {@link SpecifiedMappedByRelationshipStrategy}
 	 * @param parent The parent container
 	 */
 	public MappedByPane(
 			Pane<?> parentPane,
-			PropertyValueModel<MappedByRelationshipStrategy> subjectHolder,
+			PropertyValueModel<SpecifiedMappedByRelationshipStrategy> subjectHolder,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parent) {
 		super(parentPane, subjectHolder, enabledModel, parent);
@@ -75,7 +75,7 @@ public class MappedByPane
 	
 	protected ListValueModel<String> buildCandidateAttributesListValueModel() {
 		return new SortedListValueModelAdapter<String>(
-			new CollectionAspectAdapter<MappedByRelationshipStrategy, String>(
+			new CollectionAspectAdapter<SpecifiedMappedByRelationshipStrategy, String>(
 					getSubjectHolder()) {
 				@Override
 				protected Iterable<String> getIterable() {
@@ -87,8 +87,8 @@ public class MappedByPane
 	}
 	
 	protected ModifiablePropertyValueModel<String> buildAttributePropertyValueModel() {
-		return new PropertyAspectAdapter<MappedByRelationshipStrategy, String>(
-				getSubjectHolder(), MappedByRelationshipStrategy.MAPPED_BY_ATTRIBUTE_PROPERTY) {
+		return new PropertyAspectAdapter<SpecifiedMappedByRelationshipStrategy, String>(
+				getSubjectHolder(), SpecifiedMappedByRelationshipStrategy.MAPPED_BY_ATTRIBUTE_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getMappedByAttribute();

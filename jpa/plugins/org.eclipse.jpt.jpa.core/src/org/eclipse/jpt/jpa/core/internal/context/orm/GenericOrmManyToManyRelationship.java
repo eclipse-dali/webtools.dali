@@ -13,7 +13,7 @@ import java.util.List;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
-import org.eclipse.jpt.jpa.core.context.MappedByRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
@@ -29,7 +29,7 @@ public class GenericOrmManyToManyRelationship
 	extends AbstractOrmMappingRelationship<OrmManyToManyMapping>
 	implements OrmManyToManyRelationship
 {
-	protected final MappedByRelationshipStrategy mappedByStrategy;
+	protected final SpecifiedMappedByRelationshipStrategy mappedByStrategy;
 
 	protected final OrmJoinTableRelationshipStrategy joinTableStrategy;
 
@@ -73,7 +73,7 @@ public class GenericOrmManyToManyRelationship
 
 	// ********** mapped by strategy **********
 
-	public MappedByRelationshipStrategy getMappedByStrategy() {
+	public SpecifiedMappedByRelationshipStrategy getMappedByStrategy() {
 		return this.mappedByStrategy;
 	}
 
@@ -91,7 +91,7 @@ public class GenericOrmManyToManyRelationship
 		return mapping.getKey() == MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	protected MappedByRelationshipStrategy buildMappedByStrategy() {
+	protected SpecifiedMappedByRelationshipStrategy buildMappedByStrategy() {
 		return new GenericOrmMappedByRelationshipStrategy(this);
 	}
 

@@ -13,7 +13,7 @@ import java.util.List;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
-import org.eclipse.jpt.jpa.core.context.MappedByRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
@@ -30,7 +30,7 @@ public class GenericJavaManyToManyRelationship
 	extends AbstractJavaMappingRelationship<JavaManyToManyMapping>
 	implements JavaManyToManyRelationship
 {
-	protected final MappedByRelationshipStrategy mappedByStrategy;
+	protected final SpecifiedMappedByRelationshipStrategy mappedByStrategy;
 
 	protected final JavaJoinTableRelationshipStrategy joinTableStrategy;
 
@@ -74,7 +74,7 @@ public class GenericJavaManyToManyRelationship
 
 	// ********** mapped by strategy **********
 
-	public MappedByRelationshipStrategy getMappedByStrategy() {
+	public SpecifiedMappedByRelationshipStrategy getMappedByStrategy() {
 		return this.mappedByStrategy;
 	}
 
@@ -92,7 +92,7 @@ public class GenericJavaManyToManyRelationship
 		return mapping.getKey() == MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	protected MappedByRelationshipStrategy buildMappedByStrategy() {
+	protected SpecifiedMappedByRelationshipStrategy buildMappedByStrategy() {
 		return new GenericJavaMappedByRelationshipStrategy(this);
 	}
 

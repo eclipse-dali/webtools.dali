@@ -86,7 +86,7 @@ import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
-import org.eclipse.jpt.jpa.core.context.MappedByRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.OptionalMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
@@ -510,16 +510,16 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		if (rr == null)
 			return;			
 		SpecifiedRelationshipStrategy js = rr.getStrategy();
-		if ((js == null) || !MappedByRelationshipStrategy.class.isInstance(js))
+		if ((js == null) || !SpecifiedMappedByRelationshipStrategy.class.isInstance(js))
 			return;
 		try {
 			if (lsn != null) 
-				js.removePropertyChangeListener(MappedByRelationshipStrategy.MAPPED_BY_ATTRIBUTE_PROPERTY, lsn);
+				js.removePropertyChangeListener(SpecifiedMappedByRelationshipStrategy.MAPPED_BY_ATTRIBUTE_PROPERTY, lsn);
 		} catch (Exception e) {
 			//$NON-NLS-1$
 		}
 		lsn = new AttributeJoiningStrategyPropertyChangeListener();
-		js.addPropertyChangeListener(MappedByRelationshipStrategy.MAPPED_BY_ATTRIBUTE_PROPERTY, lsn);
+		js.addPropertyChangeListener(SpecifiedMappedByRelationshipStrategy.MAPPED_BY_ATTRIBUTE_PROPERTY, lsn);
 		ref = new WeakReference<AttributeJoiningStrategyPropertyChangeListener>(lsn);
 		attributeJoiningStrategyToPropListener.put(jpa, ref);
 		
@@ -658,7 +658,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			if (rr == null)
 				return;			
 			SpecifiedRelationshipStrategy js = rr.getStrategy();
-			if ((js == null) || !MappedByRelationshipStrategy.class.isInstance(js))
+			if ((js == null) || !SpecifiedMappedByRelationshipStrategy.class.isInstance(js))
 				return;
 			lsnrRef = new WeakReference<AttributeJoiningStrategyPropertyChangeListener>(lsnr);
 			attributeJoiningStrategyToPropListener.put(jpa, lsnrRef);
@@ -779,9 +779,9 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 				if (rr == null)
 					return;			
 				SpecifiedRelationshipStrategy js = rr.getStrategy();
-				if ((js == null) || !MappedByRelationshipStrategy.class.isInstance(js))
+				if ((js == null) || !SpecifiedMappedByRelationshipStrategy.class.isInstance(js))
 					return;
-				js.removePropertyChangeListener(MappedByRelationshipStrategy.MAPPED_BY_ATTRIBUTE_PROPERTY, lsnr);							
+				js.removePropertyChangeListener(SpecifiedMappedByRelationshipStrategy.MAPPED_BY_ATTRIBUTE_PROPERTY, lsnr);							
 			} catch (IllegalArgumentException e) {
 				//$NON-NLS-1$
 			}		
@@ -911,7 +911,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			PropertyChangeListener lsn = ref.get();
 			if (lsn != null) 
 				try {
-					jpa.getMapping().removePropertyChangeListener(MappedByRelationshipStrategy.MAPPED_BY_ATTRIBUTE_PROPERTY, lsn);
+					jpa.getMapping().removePropertyChangeListener(SpecifiedMappedByRelationshipStrategy.MAPPED_BY_ATTRIBUTE_PROPERTY, lsn);
 				} catch (IllegalArgumentException e) {
 					//$NON-NLS-1$
 				}
@@ -1213,9 +1213,9 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		synchronized public void propertyChanged(PropertyChangeEvent event) {
 			
 			Model m = event.getSource();
-			if (!MappedByRelationshipStrategy.class.isInstance(m))
+			if (!SpecifiedMappedByRelationshipStrategy.class.isInstance(m))
 				return;
-			MappedByRelationshipStrategy js = (MappedByRelationshipStrategy)m;
+			SpecifiedMappedByRelationshipStrategy js = (SpecifiedMappedByRelationshipStrategy)m;
 			JpaModel nd = js.getParent();
 			if (nd == null)
 				return;

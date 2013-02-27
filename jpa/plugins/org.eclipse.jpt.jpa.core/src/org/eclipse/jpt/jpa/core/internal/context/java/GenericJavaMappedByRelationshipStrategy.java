@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.MappedByRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
@@ -35,7 +35,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaMappedByRelationshipStrategy
 	extends AbstractJavaContextModel<JavaMappedByRelationship>
-	implements MappingRelationshipStrategy2_0, MappedByRelationshipStrategy
+	implements MappingRelationshipStrategy2_0, SpecifiedMappedByRelationshipStrategy
 {
 	protected String mappedByAttribute;
 
@@ -94,7 +94,7 @@ public class GenericJavaMappedByRelationshipStrategy
 		return this.parent;
 	}
 
-	public void initializeFrom(MappedByRelationshipStrategy oldStrategy) {
+	public void initializeFrom(SpecifiedMappedByRelationshipStrategy oldStrategy) {
 		this.setMappedByAttribute(oldStrategy.getMappedByAttribute());
 	}
 

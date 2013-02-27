@@ -32,7 +32,7 @@ public interface MappedByRelationship
 	 * Return the (never <code>null</code>) strategy used to configure
 	 * the relationship's "mapped by" strategy.
 	 */
-	MappedByRelationshipStrategy getMappedByStrategy();
+	SpecifiedMappedByRelationshipStrategy getMappedByStrategy();
 
 	/**
 	 * Return whether the "mapped by" strategy is the

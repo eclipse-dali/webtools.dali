@@ -25,7 +25,7 @@ import org.eclipse.graphiti.features.context.impl.RemoveContext;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
-import org.eclipse.jpt.jpa.core.context.MappedByRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
@@ -160,7 +160,7 @@ public class EntityChangeListener extends Thread {
 									if (!ownableRef.strategyIsMappedBy()) {
 									    ownableRef.setStrategyToMappedBy();
 									}
-									MappedByRelationshipStrategy mappedByStrategy = ownableRef.getMappedByStrategy();
+									SpecifiedMappedByRelationshipStrategy mappedByStrategy = ownableRef.getMappedByStrategy();
 									String mappedByAttr = mappedByStrategy.getMappedByAttribute();
 																		
 									String[] mappedByAttrs = mappedByAttr.split("\\."); //$NON-NLS-1$

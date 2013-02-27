@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
-import org.eclipse.jpt.jpa.core.context.MappedByRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.swt.SWT;
@@ -38,7 +38,7 @@ import org.eclipse.ui.part.PageBook;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see MappedByRelationship
- * @see MappedByRelationshipStrategy
+ * @see SpecifiedMappedByRelationshipStrategy
  * @see OneToOneJoiningStrategyPane
  *
  * @version 2.3

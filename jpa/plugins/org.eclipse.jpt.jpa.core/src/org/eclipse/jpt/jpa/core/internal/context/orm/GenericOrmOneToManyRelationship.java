@@ -13,7 +13,7 @@ import java.util.List;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
-import org.eclipse.jpt.jpa.core.context.MappedByRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.Relationship;
@@ -32,7 +32,7 @@ public class GenericOrmOneToManyRelationship
 	extends AbstractOrmMappingRelationship<OrmOneToManyMapping>
 	implements OrmOneToManyRelationship2_0
 {
-	protected final MappedByRelationshipStrategy mappedByStrategy;
+	protected final SpecifiedMappedByRelationshipStrategy mappedByStrategy;
 
 	protected final OrmJoinTableRelationshipStrategy joinTableStrategy;
 
@@ -91,7 +91,7 @@ public class GenericOrmOneToManyRelationship
 
 	// ********** mapped by strategy **********
 
-	public MappedByRelationshipStrategy getMappedByStrategy() {
+	public SpecifiedMappedByRelationshipStrategy getMappedByStrategy() {
 		return this.mappedByStrategy;
 	}
 
@@ -117,7 +117,7 @@ public class GenericOrmOneToManyRelationship
 		return false;
 	}
 
-	protected MappedByRelationshipStrategy buildMappedByStrategy() {
+	protected SpecifiedMappedByRelationshipStrategy buildMappedByStrategy() {
 		return new GenericOrmMappedByRelationshipStrategy(this);
 	}
 
