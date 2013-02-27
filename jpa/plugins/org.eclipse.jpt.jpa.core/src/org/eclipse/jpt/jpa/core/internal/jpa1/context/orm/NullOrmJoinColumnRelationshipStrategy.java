@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModel;
-import org.eclipse.jpt.jpa.core.jpa2.context.MappingRelationshipStrategy2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedMappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.db.Table;
 
@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.db.Table;
  */
 public class NullOrmJoinColumnRelationshipStrategy
 	extends AbstractOrmXmlContextModel<OrmJoinColumnRelationship>
-	implements MappingRelationshipStrategy2_0, OrmJoinColumnRelationshipStrategy
+	implements SpecifiedMappingRelationshipStrategy2_0, OrmJoinColumnRelationshipStrategy
 {
 	public NullOrmJoinColumnRelationshipStrategy(OrmJoinColumnRelationship parent) {
 		super(parent);

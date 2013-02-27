@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.JoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.resource.java.NullJoinColumnAnnotation;
-import org.eclipse.jpt.jpa.core.jpa2.context.MappingRelationshipStrategy2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedMappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationArgumentMessages;
@@ -35,7 +35,7 @@ import org.eclipse.jpt.jpa.db.Table;
 
 public class GenericJavaMappingJoinColumnRelationshipStrategy
 	extends AbstractJavaJoinColumnRelationshipStrategy<JavaMappingJoinColumnRelationship>
-	implements MappingRelationshipStrategy2_0
+	implements SpecifiedMappingRelationshipStrategy2_0
 {
 	protected final boolean targetForeignKey;
 

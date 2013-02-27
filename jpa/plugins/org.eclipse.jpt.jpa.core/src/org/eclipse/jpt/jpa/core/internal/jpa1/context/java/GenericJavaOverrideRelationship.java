@@ -33,7 +33,7 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.internal.context.java.GenericJavaOverrideJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaOverrideJoinTableRelationshipStrategy2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.MappingRelationshipStrategy2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedMappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSpecifiedAssociationOverride2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
@@ -100,7 +100,7 @@ public class GenericJavaOverrideRelationship
 	 * The overridden mapping determines the override's strategy.
 	 */
 	protected SpecifiedRelationshipStrategy buildStrategy2_0() {
-		MappingRelationshipStrategy2_0 mappingStrategy = this.getMappingStrategy();
+		SpecifiedMappingRelationshipStrategy2_0 mappingStrategy = this.getMappingStrategy();
 		return (mappingStrategy != null) ?
 				(SpecifiedRelationshipStrategy) mappingStrategy.selectOverrideStrategy(this) :
 				this.buildMissingMappingStrategy();
@@ -109,9 +109,9 @@ public class GenericJavaOverrideRelationship
 	/**
 	 * Get the strategy from the overridden mapping.
 	 */
-	protected MappingRelationshipStrategy2_0 getMappingStrategy() {
+	protected SpecifiedMappingRelationshipStrategy2_0 getMappingStrategy() {
 		RelationshipMapping mapping = this.getMapping();
-		return (mapping == null) ? null : (MappingRelationshipStrategy2_0) mapping.getRelationship().getStrategy();
+		return (mapping == null) ? null : (SpecifiedMappingRelationshipStrategy2_0) mapping.getRelationship().getStrategy();
 	}
 
 	/**
