@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedTableColumn;
  * @since 3.1
  */
 public interface SpecifiedTenantDiscriminatorColumn2_3
-	extends SpecifiedNamedDiscriminatorColumn, ReadOnlyTenantDiscriminatorColumn2_3, SpecifiedTableColumn
+	extends SpecifiedNamedDiscriminatorColumn, TenantDiscriminatorColumn2_3, SpecifiedTableColumn
 {
 	void setSpecifiedContextProperty(String contextProperty);
 	void setSpecifiedPrimaryKey(Boolean primaryKey);

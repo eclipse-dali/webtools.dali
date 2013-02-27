@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.AbstractOrmNamedDiscriminatorColumn;
-import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.TenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminatorColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminatorColumn_2_3;
@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscrimin
  * <code>orm.xml</code> tenant discriminator column
  */
 public class EclipseLinkOrmTenantDiscriminatorColumn2_3
-	extends AbstractOrmNamedDiscriminatorColumn<XmlTenantDiscriminatorColumn, ReadOnlyTenantDiscriminatorColumn2_3.Owner>
+	extends AbstractOrmNamedDiscriminatorColumn<XmlTenantDiscriminatorColumn, TenantDiscriminatorColumn2_3.Owner>
 	implements OrmSpecifiedTenantDiscriminatorColumn2_3
 {
 	protected XmlTenantDiscriminatorColumn xmlTenantDiscriminatorColumn;
@@ -35,7 +35,7 @@ public class EclipseLinkOrmTenantDiscriminatorColumn2_3
 	protected Boolean specifiedPrimaryKey;
 	protected boolean defaultPrimaryKey = DEFAULT_PRIMARY_KEY;
 
-	public EclipseLinkOrmTenantDiscriminatorColumn2_3(JpaContextModel parent, ReadOnlyTenantDiscriminatorColumn2_3.Owner owner, XmlTenantDiscriminatorColumn column) {
+	public EclipseLinkOrmTenantDiscriminatorColumn2_3(JpaContextModel parent, TenantDiscriminatorColumn2_3.Owner owner, XmlTenantDiscriminatorColumn column) {
 		super(parent, owner, column);
 		this.specifiedTableName = this.buildSpecifiedTableName();
 		this.specifiedContextProperty = this.buildSpecifiedContextProperty();

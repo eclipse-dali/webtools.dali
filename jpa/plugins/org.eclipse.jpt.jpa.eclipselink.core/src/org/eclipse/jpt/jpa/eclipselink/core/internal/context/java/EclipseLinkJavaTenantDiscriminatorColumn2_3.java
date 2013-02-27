@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.AbstractJavaNamedDiscriminatorColumn;
-import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.TenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTenantDiscriminatorColumnAnnotation2_3;
 
@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTenantDiscr
  * Java tenant discriminator column
  */
 public class EclipseLinkJavaTenantDiscriminatorColumn2_3
-	extends AbstractJavaNamedDiscriminatorColumn<JavaEclipseLinkMultitenancyImpl2_3, EclipseLinkTenantDiscriminatorColumnAnnotation2_3, ReadOnlyTenantDiscriminatorColumn2_3.Owner>
+	extends AbstractJavaNamedDiscriminatorColumn<JavaEclipseLinkMultitenancyImpl2_3, EclipseLinkTenantDiscriminatorColumnAnnotation2_3, TenantDiscriminatorColumn2_3.Owner>
 	implements JavaSpecifiedTenantDiscriminatorColumn2_3
 {
 	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(org.eclipse.jpt.jpa.core.context.JpaContextModel, org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
@@ -38,7 +38,7 @@ public class EclipseLinkJavaTenantDiscriminatorColumn2_3
 	protected Boolean specifiedPrimaryKey;
 	protected boolean defaultPrimaryKey = DEFAULT_PRIMARY_KEY;
 
-	public EclipseLinkJavaTenantDiscriminatorColumn2_3(JavaEclipseLinkMultitenancyImpl2_3 parent, ReadOnlyTenantDiscriminatorColumn2_3.Owner owner, EclipseLinkTenantDiscriminatorColumnAnnotation2_3 columnAnnotation) {
+	public EclipseLinkJavaTenantDiscriminatorColumn2_3(JavaEclipseLinkMultitenancyImpl2_3 parent, TenantDiscriminatorColumn2_3.Owner owner, EclipseLinkTenantDiscriminatorColumnAnnotation2_3 columnAnnotation) {
 		super(parent, owner, columnAnnotation);
 		this.specifiedTableName = this.buildSpecifiedTableName();
 		this.specifiedContextProperty = this.buildSpecifiedContextProperty();

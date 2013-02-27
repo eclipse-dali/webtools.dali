@@ -12,17 +12,17 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmVirtualNamedDiscriminatorColumn;
-import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.TenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.VirtualTenantDiscriminatorColumn2_3;
 
 /**
  * <code>orm.xml</code> virtual tenant discriminator column
  */
 public class GenericOrmVirtualTenantDiscriminatorColumn2_3
-	extends AbstractOrmVirtualNamedDiscriminatorColumn<ReadOnlyTenantDiscriminatorColumn2_3.Owner, ReadOnlyTenantDiscriminatorColumn2_3>
+	extends AbstractOrmVirtualNamedDiscriminatorColumn<TenantDiscriminatorColumn2_3.Owner, TenantDiscriminatorColumn2_3>
 	implements VirtualTenantDiscriminatorColumn2_3
 {
-	protected final ReadOnlyTenantDiscriminatorColumn2_3 overriddenColumn;
+	protected final TenantDiscriminatorColumn2_3 overriddenColumn;
 
 	protected String specifiedTableName;
 	protected String defaultTableName;
@@ -34,7 +34,7 @@ public class GenericOrmVirtualTenantDiscriminatorColumn2_3
 	protected boolean defaultPrimaryKey;
 
 
-	public GenericOrmVirtualTenantDiscriminatorColumn2_3(JpaContextModel parent, ReadOnlyTenantDiscriminatorColumn2_3.Owner owner, ReadOnlyTenantDiscriminatorColumn2_3 overridenColumn) {
+	public GenericOrmVirtualTenantDiscriminatorColumn2_3(JpaContextModel parent, TenantDiscriminatorColumn2_3.Owner owner, TenantDiscriminatorColumn2_3 overridenColumn) {
 		super(parent, owner);
 		this.overriddenColumn = overridenColumn;
 	}
@@ -60,7 +60,7 @@ public class GenericOrmVirtualTenantDiscriminatorColumn2_3
 	// ********** column **********
 
 	@Override
-	public ReadOnlyTenantDiscriminatorColumn2_3 getOverriddenColumn() {
+	public TenantDiscriminatorColumn2_3 getOverriddenColumn() {
 		return this.overriddenColumn;
 	}
 

@@ -32,7 +32,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
-import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.TenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.SpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
@@ -51,9 +51,9 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaModel>
 	 */
 	TenantDiscriminatorColumnsEditor<T> tenantDiscriminatorColumnsEditor;
 
-	private Pane<ReadOnlyTenantDiscriminatorColumn2_3> tenantDiscriminatorColumnPane;
-	private ModifiableCollectionValueModel<ReadOnlyTenantDiscriminatorColumn2_3> selectedTenantDiscriminatorColumnsModel;
-	private PropertyValueModel<ReadOnlyTenantDiscriminatorColumn2_3> selectedTenantDiscriminatorColumnModel;
+	private Pane<TenantDiscriminatorColumn2_3> tenantDiscriminatorColumnPane;
+	private ModifiableCollectionValueModel<TenantDiscriminatorColumn2_3> selectedTenantDiscriminatorColumnsModel;
+	private PropertyValueModel<TenantDiscriminatorColumn2_3> selectedTenantDiscriminatorColumnModel;
 
 
 	public TenantDiscriminatorColumnsComposite(
@@ -74,14 +74,14 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaModel>
 		this.selectedTenantDiscriminatorColumnModel = this.buildSelectedTenantDiscriminatorColumnModel(this.selectedTenantDiscriminatorColumnsModel);
 	}
 
-	private ModifiableCollectionValueModel<ReadOnlyTenantDiscriminatorColumn2_3> buildSelectedTenantDiscriminatorColumnsModel() {
-		return new SimpleCollectionValueModel<ReadOnlyTenantDiscriminatorColumn2_3>();
+	private ModifiableCollectionValueModel<TenantDiscriminatorColumn2_3> buildSelectedTenantDiscriminatorColumnsModel() {
+		return new SimpleCollectionValueModel<TenantDiscriminatorColumn2_3>();
 	}
 
-	private PropertyValueModel<ReadOnlyTenantDiscriminatorColumn2_3> buildSelectedTenantDiscriminatorColumnModel(CollectionValueModel<ReadOnlyTenantDiscriminatorColumn2_3> selectedTenantDiscriminatorColumnsModel) {
-		return new CollectionPropertyValueModelAdapter<ReadOnlyTenantDiscriminatorColumn2_3, ReadOnlyTenantDiscriminatorColumn2_3>(selectedTenantDiscriminatorColumnsModel) {
+	private PropertyValueModel<TenantDiscriminatorColumn2_3> buildSelectedTenantDiscriminatorColumnModel(CollectionValueModel<TenantDiscriminatorColumn2_3> selectedTenantDiscriminatorColumnsModel) {
+		return new CollectionPropertyValueModelAdapter<TenantDiscriminatorColumn2_3, TenantDiscriminatorColumn2_3>(selectedTenantDiscriminatorColumnsModel) {
 			@Override
-			protected ReadOnlyTenantDiscriminatorColumn2_3 buildValue() {
+			protected TenantDiscriminatorColumn2_3 buildValue() {
 				if (this.collectionModel.size() == 1) {
 					return this.collectionModel.iterator().next();
 				}
@@ -101,7 +101,7 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaModel>
 	}
 
 	private void initializeLayout2() {
-		new AddRemoveListPane<T, ReadOnlyTenantDiscriminatorColumn2_3>(
+		new AddRemoveListPane<T, TenantDiscriminatorColumn2_3>(
 			this,
 			getControl(),
 			buildTenantDiscriminatorColumnsAdapter(),
@@ -118,14 +118,14 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaModel>
 		installPaneSwitcher(pageBook);
 	}
 
-	protected Pane<ReadOnlyTenantDiscriminatorColumn2_3> getTenantDiscriminatorColumnComposite(PageBook pageBook) {
+	protected Pane<TenantDiscriminatorColumn2_3> getTenantDiscriminatorColumnComposite(PageBook pageBook) {
 		if (this.tenantDiscriminatorColumnPane == null) {
 			this.tenantDiscriminatorColumnPane = this.buildTenantDiscriminatorColumnComposite(pageBook);
 		}
 		return this.tenantDiscriminatorColumnPane;
 	}
 
-	protected Pane<ReadOnlyTenantDiscriminatorColumn2_3> buildTenantDiscriminatorColumnComposite(PageBook pageBook) {
+	protected Pane<TenantDiscriminatorColumn2_3> buildTenantDiscriminatorColumnComposite(PageBook pageBook) {
 		return new TenantDiscriminatorColumnComposite(
 			this,
 			this.selectedTenantDiscriminatorColumnModel,
@@ -137,9 +137,9 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaModel>
 		new ControlSwitcher(this.selectedTenantDiscriminatorColumnModel, buildPaneTransformer(pageBook), pageBook);
 	}
 
-	private Transformer<ReadOnlyTenantDiscriminatorColumn2_3, Control> buildPaneTransformer(final PageBook pageBook) {
-		return new Transformer<ReadOnlyTenantDiscriminatorColumn2_3, Control>() {
-			public Control transform(ReadOnlyTenantDiscriminatorColumn2_3 column) {
+	private Transformer<TenantDiscriminatorColumn2_3, Control> buildPaneTransformer(final PageBook pageBook) {
+		return new Transformer<TenantDiscriminatorColumn2_3, Control>() {
+			public Control transform(TenantDiscriminatorColumn2_3 column) {
 				if (column == null) {
 					return null;
 				}
@@ -148,7 +148,7 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaModel>
 		};
 	}
 
-	String buildTenantDiscriminatorColumnLabel(ReadOnlyTenantDiscriminatorColumn2_3 tenantDiscriminatorColumn) {
+	String buildTenantDiscriminatorColumnLabel(TenantDiscriminatorColumn2_3 tenantDiscriminatorColumn) {
 		if (tenantDiscriminatorColumn.isVirtual() || tenantDiscriminatorColumn.getSpecifiedName() == null) {
 			return NLS.bind(
 				JptJpaEclipseLinkUiDetailsMessages.TENANT_DISCRIMINATOR_COLUMN_COMPOSITE_DEFAULT_TENANT_DISCRIMINATOR_COLUMN_NAME_LABEL,
@@ -158,10 +158,10 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaModel>
 		return tenantDiscriminatorColumn.getName();
 	}
 
-	private Adapter<ReadOnlyTenantDiscriminatorColumn2_3> buildTenantDiscriminatorColumnsAdapter() {
-		return new AbstractAdapter<ReadOnlyTenantDiscriminatorColumn2_3>() {
+	private Adapter<TenantDiscriminatorColumn2_3> buildTenantDiscriminatorColumnsAdapter() {
+		return new AbstractAdapter<TenantDiscriminatorColumn2_3>() {
 
-			public ReadOnlyTenantDiscriminatorColumn2_3 addNewItem() {
+			public TenantDiscriminatorColumn2_3 addNewItem() {
 				return TenantDiscriminatorColumnsComposite.this.tenantDiscriminatorColumnsEditor.addTenantDiscriminatorColumn(getSubject());
 			}
 
@@ -171,34 +171,34 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaModel>
 			}
 
 			@Override
-			public PropertyValueModel<Boolean> buildRemoveButtonEnabledModel(CollectionValueModel<ReadOnlyTenantDiscriminatorColumn2_3> selectedItemsModel) {
+			public PropertyValueModel<Boolean> buildRemoveButtonEnabledModel(CollectionValueModel<TenantDiscriminatorColumn2_3> selectedItemsModel) {
 				return buildSingleSelectedItemEnabledModel(selectedItemsModel);
 			}
 
-			public void removeSelectedItems(CollectionValueModel<ReadOnlyTenantDiscriminatorColumn2_3> selectedItemsModel) {
+			public void removeSelectedItems(CollectionValueModel<TenantDiscriminatorColumn2_3> selectedItemsModel) {
 				SpecifiedTenantDiscriminatorColumn2_3 column = (SpecifiedTenantDiscriminatorColumn2_3) selectedItemsModel.iterator().next();
 				TenantDiscriminatorColumnsComposite.this.tenantDiscriminatorColumnsEditor.removeTenantDiscriminatorColumn(getSubject(), column);
 			}
 		};
 	}
 
-	private ListValueModel<ReadOnlyTenantDiscriminatorColumn2_3> buildTenantDiscriminatorColumnsListModel() {
-		return new ItemPropertyListValueModelAdapter<ReadOnlyTenantDiscriminatorColumn2_3>(buildTenantDiscriminatorColumnsListHolder(),
+	private ListValueModel<TenantDiscriminatorColumn2_3> buildTenantDiscriminatorColumnsListModel() {
+		return new ItemPropertyListValueModelAdapter<TenantDiscriminatorColumn2_3>(buildTenantDiscriminatorColumnsListHolder(),
 			NamedColumn.SPECIFIED_NAME_PROPERTY,
 			NamedColumn.DEFAULT_NAME_PROPERTY);
 	}
 
-	private ListValueModel<ReadOnlyTenantDiscriminatorColumn2_3> buildTenantDiscriminatorColumnsListHolder() {
-		List<ListValueModel<ReadOnlyTenantDiscriminatorColumn2_3>> list = new ArrayList<ListValueModel<ReadOnlyTenantDiscriminatorColumn2_3>>();
+	private ListValueModel<TenantDiscriminatorColumn2_3> buildTenantDiscriminatorColumnsListHolder() {
+		List<ListValueModel<TenantDiscriminatorColumn2_3>> list = new ArrayList<ListValueModel<TenantDiscriminatorColumn2_3>>();
 		list.add(buildDefaultTenantDiscriminatorColumnListHolder());
 		list.add(buildSpecifiedTenantDiscriminatorColumnsListHolder());
 		return CompositeListValueModel.forModels(list);
 	}
 
-	private ListValueModel<ReadOnlyTenantDiscriminatorColumn2_3> buildSpecifiedTenantDiscriminatorColumnsListHolder() {
-		return new ListAspectAdapter<T, ReadOnlyTenantDiscriminatorColumn2_3>(getSubjectHolder(), this.tenantDiscriminatorColumnsEditor.getSpecifiedTenantDiscriminatorsListPropertyName()) {
+	private ListValueModel<TenantDiscriminatorColumn2_3> buildSpecifiedTenantDiscriminatorColumnsListHolder() {
+		return new ListAspectAdapter<T, TenantDiscriminatorColumn2_3>(getSubjectHolder(), this.tenantDiscriminatorColumnsEditor.getSpecifiedTenantDiscriminatorsListPropertyName()) {
 			@Override
-			protected ListIterable<ReadOnlyTenantDiscriminatorColumn2_3> getListIterable() {
+			protected ListIterable<TenantDiscriminatorColumn2_3> getListIterable() {
 				return TenantDiscriminatorColumnsComposite.this.tenantDiscriminatorColumnsEditor.getSpecifiedTenantDiscriminatorColumns(this.subject);
 			}
 
@@ -209,10 +209,10 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaModel>
 		};
 	}
 
-	private ListValueModel<ReadOnlyTenantDiscriminatorColumn2_3> buildDefaultTenantDiscriminatorColumnListHolder() {
-		return new ListAspectAdapter<T, ReadOnlyTenantDiscriminatorColumn2_3>(getSubjectHolder(), this.tenantDiscriminatorColumnsEditor.getDefaultTenantDiscriminatorsListPropertyName()) {
+	private ListValueModel<TenantDiscriminatorColumn2_3> buildDefaultTenantDiscriminatorColumnListHolder() {
+		return new ListAspectAdapter<T, TenantDiscriminatorColumn2_3>(getSubjectHolder(), this.tenantDiscriminatorColumnsEditor.getDefaultTenantDiscriminatorsListPropertyName()) {
 			@Override
-			protected ListIterable<ReadOnlyTenantDiscriminatorColumn2_3> getListIterable() {
+			protected ListIterable<TenantDiscriminatorColumn2_3> getListIterable() {
 				return TenantDiscriminatorColumnsComposite.this.tenantDiscriminatorColumnsEditor.getDefaultTenantDiscriminatorColumns(this.subject);
 			}
 
@@ -227,7 +227,7 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaModel>
 		return new LabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return buildTenantDiscriminatorColumnLabel((ReadOnlyTenantDiscriminatorColumn2_3) element);
+				return buildTenantDiscriminatorColumnLabel((TenantDiscriminatorColumn2_3) element);
 			}
 		};
 	}
@@ -240,7 +240,7 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaModel>
 		/**
 		 * Add a tenant discriminator column to the given subject
 		 */
-		ReadOnlyTenantDiscriminatorColumn2_3 addTenantDiscriminatorColumn(T subject);
+		TenantDiscriminatorColumn2_3 addTenantDiscriminatorColumn(T subject);
 
 		/**
 		 * Return whether the subject has specified tenant discriminator columns
@@ -250,7 +250,7 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaModel>
 		/**
 		 * Return the specified tenant discriminator from the given subject
 		 */
-		ListIterable<ReadOnlyTenantDiscriminatorColumn2_3> getSpecifiedTenantDiscriminatorColumns(T subject);
+		ListIterable<TenantDiscriminatorColumn2_3> getSpecifiedTenantDiscriminatorColumns(T subject);
 
 		/**
 		 * Return the number of specified join columns on the given subject
@@ -260,7 +260,7 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaModel>
 		/**
 		 * Return the default tenant discriminator columns from the given subject or null.
 		 */
-		ListIterable<ReadOnlyTenantDiscriminatorColumn2_3> getDefaultTenantDiscriminatorColumns(T subject);
+		ListIterable<TenantDiscriminatorColumn2_3> getDefaultTenantDiscriminatorColumns(T subject);
 
 		/**
 		 * Return the number of default tenant discriminator on the given subject
@@ -280,6 +280,6 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaModel>
 		/**
 		 * Remove the tenant discriminator column from the subject
 		 */
-		void removeTenantDiscriminatorColumn(T subject, ReadOnlyTenantDiscriminatorColumn2_3 column);
+		void removeTenantDiscriminatorColumn(T subject, TenantDiscriminatorColumn2_3 column);
 	}
 }

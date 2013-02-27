@@ -22,9 +22,9 @@ import org.eclipse.jpt.jpa.core.context.VirtualTableColumn;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface VirtualTenantDiscriminatorColumn2_3
-	extends VirtualNamedDiscriminatorColumn, VirtualTableColumn, ReadOnlyTenantDiscriminatorColumn2_3
+	extends VirtualNamedDiscriminatorColumn, VirtualTableColumn, TenantDiscriminatorColumn2_3
 {
-	ReadOnlyTenantDiscriminatorColumn2_3 getOverriddenColumn();
+	TenantDiscriminatorColumn2_3 getOverriddenColumn();
 
 	// ********** owner **********
 
@@ -32,11 +32,11 @@ public interface VirtualTenantDiscriminatorColumn2_3
 	 * Interface allowing the virtual column to be get the column it overrides.
 	 */
 	interface Owner
-		extends ReadOnlyTenantDiscriminatorColumn2_3.Owner
+		extends TenantDiscriminatorColumn2_3.Owner
 	{
 		/**
 		 * Return the column overridden by the virtual column.
 		 */
-		ReadOnlyTenantDiscriminatorColumn2_3 resolveOverriddenColumn();
+		TenantDiscriminatorColumn2_3 resolveOverriddenColumn();
 	}
 }

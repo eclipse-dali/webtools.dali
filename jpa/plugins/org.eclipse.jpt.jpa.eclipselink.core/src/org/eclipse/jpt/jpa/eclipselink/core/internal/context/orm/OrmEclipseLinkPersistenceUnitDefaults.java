@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.AbstractOrmPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.db.Table;
-import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.TenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
@@ -40,7 +40,7 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 {
 
 	protected final ContextListContainer<OrmSpecifiedTenantDiscriminatorColumn2_3, XmlTenantDiscriminatorColumn> tenantDiscriminatorColumnContainer;
-	protected final ReadOnlyTenantDiscriminatorColumn2_3.Owner tenantDiscriminatorColumnOwner;
+	protected final TenantDiscriminatorColumn2_3.Owner tenantDiscriminatorColumnOwner;
 
 	protected String specifiedGetMethod;
 	protected String specifiedSetMethod;
@@ -170,7 +170,7 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 		}
 	}
 
-	protected ReadOnlyTenantDiscriminatorColumn2_3.Owner buildTenantDiscriminatorColumnOwner() {
+	protected TenantDiscriminatorColumn2_3.Owner buildTenantDiscriminatorColumnOwner() {
 		return new TenantDiscriminatorColumnOwner();
 	}
 
@@ -188,15 +188,15 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 	// ********** OrmReadOnlyTenantDiscriminatorColumn.Owner implementation **********
 
 	protected class TenantDiscriminatorColumnOwner 
-		implements ReadOnlyTenantDiscriminatorColumn2_3.Owner
+		implements TenantDiscriminatorColumn2_3.Owner
 	{
 
 		public String getDefaultContextPropertyName() {
-			return ReadOnlyTenantDiscriminatorColumn2_3.DEFAULT_CONTEXT_PROPERTY;
+			return TenantDiscriminatorColumn2_3.DEFAULT_CONTEXT_PROPERTY;
 		}
 
 		public boolean getDefaultPrimaryKey() {
-			return ReadOnlyTenantDiscriminatorColumn2_3.DEFAULT_PRIMARY_KEY;
+			return TenantDiscriminatorColumn2_3.DEFAULT_PRIMARY_KEY;
 		}
 
 		public int getDefaultLength() {
@@ -215,7 +215,7 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 		}
 
 		public String getDefaultColumnName(NamedColumn column) {
-			return ReadOnlyTenantDiscriminatorColumn2_3.DEFAULT_NAME;
+			return TenantDiscriminatorColumn2_3.DEFAULT_NAME;
 		}
 
 		/**

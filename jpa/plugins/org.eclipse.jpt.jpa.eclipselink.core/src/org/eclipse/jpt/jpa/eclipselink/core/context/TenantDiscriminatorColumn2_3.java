@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.TableColumn;
  * @version 3.1
  * @since 3.1
  */
-public interface ReadOnlyTenantDiscriminatorColumn2_3
+public interface TenantDiscriminatorColumn2_3
 	extends NamedDiscriminatorColumn, TableColumn
 {
 	String DEFAULT_NAME = "TENANT_ID"; //$NON-NLS-1$
