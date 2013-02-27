@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAssociationOverride;
@@ -2139,7 +2139,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		
 
 		JavaSpecifiedAssociationOverride javaAssociationOverride = ormEntity.getJavaTypeMapping().getAssociationOverrideContainer().getSpecifiedOverrides().iterator().next();
-		JavaJoinColumnRelationshipStrategy javaJoiningStrategy = javaAssociationOverride.getRelationship().getJoinColumnStrategy();
+		JavaSpecifiedJoinColumnRelationshipStrategy javaJoiningStrategy = javaAssociationOverride.getRelationship().getJoinColumnStrategy();
 		JavaSpecifiedJoinColumn javaJoinColumn = javaJoiningStrategy.getJoinColumns().iterator().next();
 		javaJoinColumn.setSpecifiedName("FOO");
 		javaJoinColumn.setSpecifiedReferencedColumnName("REFERENCE");

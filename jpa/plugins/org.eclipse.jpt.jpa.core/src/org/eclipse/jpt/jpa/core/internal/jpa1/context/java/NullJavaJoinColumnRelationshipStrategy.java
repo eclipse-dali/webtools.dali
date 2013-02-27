@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationship;
-import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedMappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.db.Table;
  */
 public class NullJavaJoinColumnRelationshipStrategy
 	extends AbstractJavaContextModel<JavaJoinColumnRelationship>
-	implements SpecifiedMappingRelationshipStrategy2_0, JavaJoinColumnRelationshipStrategy
+	implements SpecifiedMappingRelationshipStrategy2_0, JavaSpecifiedJoinColumnRelationshipStrategy
 {
 	public NullJavaJoinColumnRelationshipStrategy(JavaJoinColumnRelationship parent) {
 		super(parent);
