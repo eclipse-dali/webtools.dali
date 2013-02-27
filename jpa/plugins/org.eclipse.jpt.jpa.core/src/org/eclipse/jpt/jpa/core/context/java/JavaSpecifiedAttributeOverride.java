@@ -31,5 +31,5 @@ public interface JavaSpecifiedAttributeOverride
 
 	AttributeOverrideAnnotation getOverrideAnnotation();
 
-	JavaColumn getColumn();
+	JavaSpecifiedColumn getColumn();
 }

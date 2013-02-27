@@ -47,7 +47,7 @@ import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseTemporalConverter;
-import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
@@ -98,7 +98,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	protected Type valueType;
 	protected Type keyType;
 
-	protected final JavaColumn mapKeyColumn;
+	protected final JavaSpecifiedColumn mapKeyColumn;
 	protected JavaConverter mapKeyConverter;  // map key converter - never null
 
 	protected final ContextListContainer<JavaSpecifiedJoinColumn, MapKeyJoinColumn2_0Annotation> specifiedMapKeyJoinColumnContainer;
@@ -533,17 +533,17 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 
 	// ********** map key column **********
 
-	public JavaColumn getMapKeyColumn() {
+	public JavaSpecifiedColumn getMapKeyColumn() {
 		return this.mapKeyColumn;
 	}
 
-	protected JavaColumn buildMapKeyColumn() {
+	protected JavaSpecifiedColumn buildMapKeyColumn() {
 		return this.isJpa2_0Compatible() ?
 				this.getJpaFactory2_0().buildJavaMapKeyColumn(this, this.buildMapKeyColumnOwner()) :
 				new NullJavaMapKeyColumn2_0(this);
 	}
 
-	protected JavaColumn.Owner buildMapKeyColumnOwner() {
+	protected JavaSpecifiedColumn.Owner buildMapKeyColumnOwner() {
 		return new MapKeyColumnOwner();
 	}
 
@@ -1114,7 +1114,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 
 	protected class MapKeyColumnOwner
 		extends AbstractOwner
-		implements JavaColumn.Owner
+		implements JavaSpecifiedColumn.Owner
 	{
 		public MapKeyColumn2_0Annotation getColumnAnnotation() {
 			return AbstractJavaMultiRelationshipMapping.this.getMapKeyColumnAnnotation();

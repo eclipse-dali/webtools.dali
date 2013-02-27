@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaBaseColumn;
 import org.eclipse.jpt.jpa.core.resource.java.CompleteColumnAnnotation;
 
@@ -23,8 +23,8 @@ import org.eclipse.jpt.jpa.core.resource.java.CompleteColumnAnnotation;
  * annotation); the other is {@link GenericJavaJoinTable JoinTable}.
  */
 public class GenericJavaColumn
-	extends AbstractJavaBaseColumn<CompleteColumnAnnotation, JavaColumn.Owner>
-	implements JavaColumn
+	extends AbstractJavaBaseColumn<CompleteColumnAnnotation, JavaSpecifiedColumn.Owner>
+	implements JavaSpecifiedColumn
 {
 	protected Integer specifiedLength;
 	protected int defaultLength;
@@ -36,7 +36,7 @@ public class GenericJavaColumn
 	protected int defaultScale;
 
 
-	public GenericJavaColumn(JpaContextModel parent, JavaColumn.Owner owner) {
+	public GenericJavaColumn(JpaContextModel parent, JavaSpecifiedColumn.Owner owner) {
 		super(parent, owner);
 		//build defaults during construction for performance
 		this.defaultLength = this.buildDefaultLength();

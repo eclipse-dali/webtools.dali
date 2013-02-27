@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaLobConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
@@ -44,7 +44,7 @@ public abstract class AbstractJavaBasicMapping
 	extends AbstractJavaAttributeMapping<BasicAnnotation>
 	implements JavaBasicMapping
 {
-	protected final JavaColumn column;
+	protected final JavaSpecifiedColumn column;
 
 	protected FetchType specifiedFetch;
 	protected FetchType defaultFetch = DEFAULT_FETCH_TYPE;
@@ -95,11 +95,11 @@ public abstract class AbstractJavaBasicMapping
 
 	// ********** column **********
 
-	public JavaColumn getColumn() {
+	public JavaSpecifiedColumn getColumn() {
 		return this.column;
 	}
 
-	protected JavaColumn buildColumn() {
+	protected JavaSpecifiedColumn buildColumn() {
 		return this.getJpaFactory().buildJavaColumn(this, this);
 	}
 

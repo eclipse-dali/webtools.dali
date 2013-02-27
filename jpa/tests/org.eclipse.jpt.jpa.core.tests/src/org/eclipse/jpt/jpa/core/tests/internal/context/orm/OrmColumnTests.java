@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
@@ -660,7 +660,7 @@ public class OrmColumnTests extends ContextModelTestCase
 	
 		//set Column annotation in Java
 		JavaBasicMapping javaBasicMapping = (JavaBasicMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("name").getMapping();
-		JavaColumn javaColumn = javaBasicMapping.getColumn();
+		JavaSpecifiedColumn javaColumn = javaBasicMapping.getColumn();
 		javaColumn.setSpecifiedName("FOO");		
 		javaColumn.setSpecifiedTableName("FOO_TABLE");
 		javaColumn.setColumnDefinition("COLUMN_DEFINITION");
@@ -759,7 +759,7 @@ public class OrmColumnTests extends ContextModelTestCase
 	
 		//set Column annotation in Java
 		JavaBasicMapping javaBasicMapping = (JavaBasicMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("name").getMapping();
-		JavaColumn javaColumn = javaBasicMapping.getColumn();
+		JavaSpecifiedColumn javaColumn = javaBasicMapping.getColumn();
 		javaColumn.setSpecifiedName("FOO");		
 		javaColumn.setSpecifiedTableName("FOO_TABLE");
 		javaColumn.setColumnDefinition("COLUMN_DEFINITION");

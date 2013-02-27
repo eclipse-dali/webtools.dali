@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseTemporalConverter;
-import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumnMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaLobConverter;
@@ -52,7 +52,7 @@ public class JavaEclipseLinkArrayMapping2_3
 		JavaColumnMapping
 {
 
-	protected final JavaColumn column;
+	protected final JavaSpecifiedColumn column;
 
 	protected JavaConverter converter;  // never null
 
@@ -95,11 +95,11 @@ public class JavaEclipseLinkArrayMapping2_3
 
 	// ********** column **********
 
-	public JavaColumn getColumn() {
+	public JavaSpecifiedColumn getColumn() {
 		return this.column;
 	}
 
-	protected JavaColumn buildColumn() {
+	protected JavaSpecifiedColumn buildColumn() {
 		return this.getJpaFactory().buildJavaColumn(this, this);
 	}
 

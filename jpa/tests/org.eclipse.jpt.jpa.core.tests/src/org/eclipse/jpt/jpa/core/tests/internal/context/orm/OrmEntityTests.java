@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAssociationOverride;
-import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationshipStrategy;
@@ -1722,7 +1722,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		overrideContainer.getSpecifiedOverrides().iterator().next().convertToVirtual();
 		entity.setSpecifiedMetadataComplete(Boolean.FALSE);
 		entity.getJavaTypeMapping().getAttributeOverrideContainer().getVirtualOverrides().iterator().next().convertToSpecified();
-		JavaColumn javaColumn = entity.getJavaTypeMapping().getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next().getColumn();
+		JavaSpecifiedColumn javaColumn = entity.getJavaTypeMapping().getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next().getColumn();
 		javaColumn.setSpecifiedName("FOO");
 		javaColumn.setSpecifiedTableName("BAR");
 		javaColumn.setColumnDefinition("COLUMN_DEF");

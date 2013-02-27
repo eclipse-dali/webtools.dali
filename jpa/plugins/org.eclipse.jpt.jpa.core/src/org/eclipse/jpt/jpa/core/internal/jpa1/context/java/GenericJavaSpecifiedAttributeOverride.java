@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaSpecifiedOverride;
@@ -30,9 +30,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class GenericJavaSpecifiedAttributeOverride
 	extends AbstractJavaSpecifiedOverride<JavaAttributeOverrideContainer, AttributeOverrideAnnotation>
-	implements JavaSpecifiedAttributeOverride, JavaColumn.Owner
+	implements JavaSpecifiedAttributeOverride, JavaSpecifiedColumn.Owner
 {
-	protected final JavaColumn column;
+	protected final JavaSpecifiedColumn column;
 
 
 	public GenericJavaSpecifiedAttributeOverride(JavaAttributeOverrideContainer parent, AttributeOverrideAnnotation annotation) {
@@ -66,11 +66,11 @@ public class GenericJavaSpecifiedAttributeOverride
 
 	// ********** column **********
 
-	public JavaColumn getColumn() {
+	public JavaSpecifiedColumn getColumn() {
 		return this.column;
 	}
 
-	protected JavaColumn buildColumn() {
+	protected JavaSpecifiedColumn buildColumn() {
 		return this.getJpaFactory().buildJavaColumn(this, this);
 	}
 

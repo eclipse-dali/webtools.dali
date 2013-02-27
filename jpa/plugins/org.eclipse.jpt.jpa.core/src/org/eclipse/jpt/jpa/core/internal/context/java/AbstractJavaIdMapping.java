@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseTemporalConverter;
-import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratedValue;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
@@ -52,7 +52,7 @@ public abstract class AbstractJavaIdMapping
 	extends AbstractJavaAttributeMapping<IdAnnotation>
 	implements JavaIdMapping, IdMapping2_0
 {
-	protected final JavaColumn column;
+	protected final JavaSpecifiedColumn column;
 
 	protected final JavaGeneratorContainer generatorContainer;
 
@@ -105,11 +105,11 @@ public abstract class AbstractJavaIdMapping
 
 	// ********** column **********
 
-	public JavaColumn getColumn() {
+	public JavaSpecifiedColumn getColumn() {
 		return this.column;
 	}
 
-	protected JavaColumn buildColumn() {
+	protected JavaSpecifiedColumn buildColumn() {
 		return this.getJpaFactory().buildJavaColumn(this, this);
 	}
 

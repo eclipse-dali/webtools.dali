@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.db.Table;
  */
 public class NullJavaMapKeyColumn2_0
 	extends AbstractJavaContextModel<JavaRelationshipMapping>
-	implements JavaColumn
+	implements JavaSpecifiedColumn
 {
 	public NullJavaMapKeyColumn2_0(JavaRelationshipMapping parent) {
 		super(parent);

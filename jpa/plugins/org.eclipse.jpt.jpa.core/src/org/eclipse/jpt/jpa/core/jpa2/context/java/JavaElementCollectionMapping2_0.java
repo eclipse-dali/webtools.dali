@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.jpa2.context.java;
 
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaConvertibleMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollection2_0Annotation;
@@ -35,7 +35,7 @@ public interface JavaElementCollectionMapping2_0
 
 	JavaCollectionTable2_0 getCollectionTable();
 	
-	JavaColumn getValueColumn();
+	JavaSpecifiedColumn getValueColumn();
 
 	JavaAttributeOverrideContainer getValueAttributeOverrideContainer();
 	
