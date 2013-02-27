@@ -49,7 +49,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaBaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
-import org.eclipse.jpt.jpa.core.context.java.JavaDiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddedMapping;
@@ -253,7 +253,7 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaVirtualColumn(parent, owner);
 	}
 	
-	public JavaDiscriminatorColumn buildJavaDiscriminatorColumn(JavaEntity parent, ReadOnlyNamedDiscriminatorColumn.Owner owner) {
+	public JavaSpecifiedDiscriminatorColumn buildJavaDiscriminatorColumn(JavaEntity parent, ReadOnlyNamedDiscriminatorColumn.Owner owner) {
 		return new GenericJavaDiscriminatorColumn(parent, owner);
 	}
 	

@@ -60,7 +60,7 @@ import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.java.JavaDiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -134,7 +134,7 @@ public abstract class AbstractJavaEntity
 	protected boolean specifiedDiscriminatorValueIsAllowed;
 	protected boolean discriminatorValueIsUndefined;
 
-	protected final JavaDiscriminatorColumn discriminatorColumn;
+	protected final JavaSpecifiedDiscriminatorColumn discriminatorColumn;
 	protected boolean specifiedDiscriminatorColumnIsAllowed;
 	protected boolean discriminatorColumnIsUndefined;
 
@@ -836,11 +836,11 @@ public abstract class AbstractJavaEntity
 
 	// ********** discriminator column **********
 
-	public JavaDiscriminatorColumn getDiscriminatorColumn() {
+	public JavaSpecifiedDiscriminatorColumn getDiscriminatorColumn() {
 		return this.discriminatorColumn;
 	}
 
-	protected JavaDiscriminatorColumn buildDiscriminatorColumn() {
+	protected JavaSpecifiedDiscriminatorColumn buildDiscriminatorColumn() {
 		return this.getJpaFactory().buildJavaDiscriminatorColumn(this, this.buildDiscriminatorColumnOwner());
 	}
 

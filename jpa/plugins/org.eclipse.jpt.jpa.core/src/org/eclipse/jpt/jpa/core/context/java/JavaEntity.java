@@ -32,7 +32,7 @@ public interface JavaEntity
 
 	JavaTable getTable();
 	
-	JavaDiscriminatorColumn getDiscriminatorColumn();
+	JavaSpecifiedDiscriminatorColumn getDiscriminatorColumn();
 	
 
 	// ********** secondary tables **********
