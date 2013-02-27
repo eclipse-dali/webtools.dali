@@ -47,7 +47,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
@@ -85,7 +85,7 @@ public abstract class SpecifiedOrmPersistentType
 	protected AccessType specifiedAccess;
 	protected AccessType defaultAccess;  // never null
 
-	protected final Vector<OrmModifiablePersistentAttribute> specifiedAttributes = new Vector<OrmModifiablePersistentAttribute>();
+	protected final Vector<OrmSpecifiedPersistentAttribute> specifiedAttributes = new Vector<OrmSpecifiedPersistentAttribute>();
 	protected final SpecifiedAttributeContainerAdapter specifiedAttributeContainerAdapter = new SpecifiedAttributeContainerAdapter();
 
 	protected final Vector<OrmPersistentAttribute> defaultAttributes = new Vector<OrmPersistentAttribute>();
@@ -312,11 +312,11 @@ public abstract class SpecifiedOrmPersistentType
 	
 	// ********** attribute conversions **********
 
-	public OrmModifiablePersistentAttribute addAttributeToXml(OrmPersistentAttribute defaultAttribute) {
+	public OrmSpecifiedPersistentAttribute addAttributeToXml(OrmPersistentAttribute defaultAttribute) {
 		return this.addAttributeToXml(defaultAttribute, defaultAttribute.getMappingKey());
 	}
 
-	public OrmModifiablePersistentAttribute addAttributeToXml(OrmPersistentAttribute defaultAttribute, String mappingKey) {
+	public OrmSpecifiedPersistentAttribute addAttributeToXml(OrmPersistentAttribute defaultAttribute, String mappingKey) {
 		if ( ! defaultAttribute.isVirtual()) {
 			throw new IllegalArgumentException("Attribute is already specified: " + defaultAttribute); //$NON-NLS-1$
 		}
@@ -332,7 +332,7 @@ public abstract class SpecifiedOrmPersistentType
 	 * attribute before triggering an <em>update</em> or the dangling
 	 * default attribute will be removed preemptively.
 	 */
-	protected OrmModifiablePersistentAttribute convertAttributeToSpecified_(OrmPersistentAttribute defaultAttribute, String mappingKey) {
+	protected OrmSpecifiedPersistentAttribute convertAttributeToSpecified_(OrmPersistentAttribute defaultAttribute, String mappingKey) {
 		// silently remove the default attribute
 		int defaultIndex = this.defaultAttributes.indexOf(defaultAttribute);
 		this.defaultAttributes.remove(defaultIndex);
@@ -342,7 +342,7 @@ public abstract class SpecifiedOrmPersistentType
 		OrmAttributeMappingDefinition md = this.getMappingFileDefinition().getAttributeMappingDefinition(mappingKey);
 		XmlAttributeMapping xmlMapping = md.buildResourceMapping(this.getResourceModelFactory());
 
-		OrmModifiablePersistentAttribute specifiedAttribute = this.buildSpecifiedAttribute(xmlMapping);
+		OrmSpecifiedPersistentAttribute specifiedAttribute = this.buildSpecifiedAttribute(xmlMapping);
 		// we need to add the attribute to the right spot in the list - stupid spec...
 		int specifiedIndex = this.getSpecifiedAttributeInsertionIndex(specifiedAttribute);
 		this.specifiedAttributes.add(specifiedIndex, specifiedAttribute);
@@ -369,17 +369,17 @@ public abstract class SpecifiedOrmPersistentType
 		return specifiedAttribute;
 	}
 
-	protected int getSpecifiedAttributeInsertionIndex(OrmModifiablePersistentAttribute attribute) {
+	protected int getSpecifiedAttributeInsertionIndex(OrmSpecifiedPersistentAttribute attribute) {
 		return ListTools.insertionIndexOf(this.specifiedAttributes, attribute, this.getAttributeComparator());
 	}
 
-	protected Comparator<OrmModifiablePersistentAttribute> getAttributeComparator() {
+	protected Comparator<OrmSpecifiedPersistentAttribute> getAttributeComparator() {
 		return ATTRIBUTE_COMPARATOR;
 	}
 
-	protected static final Comparator<OrmModifiablePersistentAttribute> ATTRIBUTE_COMPARATOR =
-		new Comparator<OrmModifiablePersistentAttribute>() {
-			public int compare(OrmModifiablePersistentAttribute attribute1, OrmModifiablePersistentAttribute attribute2) {
+	protected static final Comparator<OrmSpecifiedPersistentAttribute> ATTRIBUTE_COMPARATOR =
+		new Comparator<OrmSpecifiedPersistentAttribute>() {
+			public int compare(OrmSpecifiedPersistentAttribute attribute1, OrmSpecifiedPersistentAttribute attribute2) {
 				int seq1 = attribute1.getMapping().getXmlSequence();
 				int seq2 = attribute2.getMapping().getXmlSequence();
 				return (seq1 == seq2) ? 0 : (seq1 < seq2) ? -1 : 1;
@@ -391,7 +391,7 @@ public abstract class SpecifiedOrmPersistentType
 	 * specified attribute, or the <em>update</em> will discover the missing
 	 * default attribute and add it preemptively.
 	 */
-	public OrmPersistentAttribute removeAttributeFromXml(OrmModifiablePersistentAttribute specifiedAttribute) {
+	public OrmPersistentAttribute removeAttributeFromXml(OrmSpecifiedPersistentAttribute specifiedAttribute) {
 		if (specifiedAttribute.isVirtual()) {
 			throw new IllegalArgumentException("Attribute is not specified: " + specifiedAttribute); //$NON-NLS-1$
 		}
@@ -438,7 +438,7 @@ public abstract class SpecifiedOrmPersistentType
 	 * valid Java resource attributes and it must not correspond to any of the
 	 * remaining specified attributes.
 	 */
-	protected boolean javaResourceFieldWillBeDefault(JavaResourceField javaResourceField, OrmModifiablePersistentAttribute specifiedAttributeToBeRemoved) {
+	protected boolean javaResourceFieldWillBeDefault(JavaResourceField javaResourceField, OrmSpecifiedPersistentAttribute specifiedAttributeToBeRemoved) {
 		return IterableTools.contains(this.getJavaResourceFields(), javaResourceField) &&
 				(this.getSpecifiedAttributeFor(javaResourceField, specifiedAttributeToBeRemoved) == null);
 	}
@@ -450,7 +450,7 @@ public abstract class SpecifiedOrmPersistentType
 	 * valid Java resource attributes and it must not correspond to any of the
 	 * remaining specified attributes.
 	 */
-	protected boolean javaResourcePropertyWillBeDefault(JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter, OrmModifiablePersistentAttribute specifiedAttributeToBeRemoved) {
+	protected boolean javaResourcePropertyWillBeDefault(JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter, OrmSpecifiedPersistentAttribute specifiedAttributeToBeRemoved) {
 		return IterableTools.contains(this.getJavaResourceMethods(), javaResourceGetter) &&
 				IterableTools.contains(this.getJavaResourceMethods(), javaResourceSetter) &&
 				(this.getSpecifiedAttributeFor(javaResourceGetter, javaResourceSetter, specifiedAttributeToBeRemoved) == null);
@@ -489,7 +489,7 @@ public abstract class SpecifiedOrmPersistentType
 
 	// ********** specified attributes **********
 
-	public ListIterable<OrmModifiablePersistentAttribute> getSpecifiedAttributes() {
+	public ListIterable<OrmSpecifiedPersistentAttribute> getSpecifiedAttributes() {
 		return IterableTools.cloneLive(this.specifiedAttributes);
 	}
 
@@ -501,13 +501,13 @@ public abstract class SpecifiedOrmPersistentType
 		return this.specifiedAttributes.size();
 	}
 
-	protected void removeSpecifiedAttribute(OrmModifiablePersistentAttribute attribute) {
+	protected void removeSpecifiedAttribute(OrmSpecifiedPersistentAttribute attribute) {
 		this.removeSpecifiedAttribute_(attribute);
 		attribute.getMapping().removeXmlAttributeMappingFrom(this.getXmlAttributes());
 		this.removeXmlAttributesIfUnset();
 	}
 
-	public void changeMapping(OrmModifiablePersistentAttribute attribute, OrmAttributeMapping oldMapping, OrmAttributeMapping newMapping) {
+	public void changeMapping(OrmSpecifiedPersistentAttribute attribute, OrmAttributeMapping oldMapping, OrmAttributeMapping newMapping) {
 		// keep the context model in sync with each change to the resource model
 		int sourceIndex = this.specifiedAttributes.indexOf(attribute);
 		this.specifiedAttributes.remove(sourceIndex);
@@ -533,7 +533,7 @@ public abstract class SpecifiedOrmPersistentType
 		return (xmlAttributes != null) ? xmlAttributes.getAttributeMappings() : EmptyIterable.<XmlAttributeMapping>instance();
 	}
 
-	protected OrmModifiablePersistentAttribute buildSpecifiedAttribute(XmlAttributeMapping xmlMapping) {
+	protected OrmSpecifiedPersistentAttribute buildSpecifiedAttribute(XmlAttributeMapping xmlMapping) {
 		return this.getContextModelFactory().buildOrmPersistentAttribute(this, xmlMapping);
 	}
 
@@ -541,16 +541,16 @@ public abstract class SpecifiedOrmPersistentType
 		ContextContainerTools.synchronizeWithResourceModel(this.specifiedAttributeContainerAdapter);
 	}
 
-	protected void moveSpecifiedAttribute_(int index, OrmModifiablePersistentAttribute attribute) {
+	protected void moveSpecifiedAttribute_(int index, OrmSpecifiedPersistentAttribute attribute) {
 		this.moveItemInList(index, attribute, this.specifiedAttributes, SPECIFIED_ATTRIBUTES_LIST);
 	}
 
 	protected void addSpecifiedAttribute_(int index, XmlAttributeMapping xmlMapping) {
-		OrmModifiablePersistentAttribute attribute = this.buildSpecifiedAttribute(xmlMapping);
+		OrmSpecifiedPersistentAttribute attribute = this.buildSpecifiedAttribute(xmlMapping);
 		this.addItemToList(index, attribute, this.specifiedAttributes, SPECIFIED_ATTRIBUTES_LIST);
 	}
 
-	protected void removeSpecifiedAttribute_(OrmModifiablePersistentAttribute attribute) {
+	protected void removeSpecifiedAttribute_(OrmSpecifiedPersistentAttribute attribute) {
 		this.removeItemFromList(attribute, this.specifiedAttributes, SPECIFIED_ATTRIBUTES_LIST);
 	}
 
@@ -558,24 +558,24 @@ public abstract class SpecifiedOrmPersistentType
 	 * specified attribute container adapter
 	 */
 	protected class SpecifiedAttributeContainerAdapter
-		implements ContextContainerTools.Adapter<OrmModifiablePersistentAttribute, XmlAttributeMapping>
+		implements ContextContainerTools.Adapter<OrmSpecifiedPersistentAttribute, XmlAttributeMapping>
 	{
-		public Iterable<OrmModifiablePersistentAttribute> getContextElements() {
+		public Iterable<OrmSpecifiedPersistentAttribute> getContextElements() {
 			return SpecifiedOrmPersistentType.this.getSpecifiedAttributes();
 		}
 		public Iterable<XmlAttributeMapping> getResourceElements() {
 			return SpecifiedOrmPersistentType.this.getXmlAttributeMappings();
 		}
-		public XmlAttributeMapping getResourceElement(OrmModifiablePersistentAttribute contextElement) {
+		public XmlAttributeMapping getResourceElement(OrmSpecifiedPersistentAttribute contextElement) {
 			return contextElement.getMapping().getXmlAttributeMapping();
 		}
-		public void moveContextElement(int index, OrmModifiablePersistentAttribute element) {
+		public void moveContextElement(int index, OrmSpecifiedPersistentAttribute element) {
 			SpecifiedOrmPersistentType.this.moveSpecifiedAttribute_(index, element);
 		}
 		public void addContextElement(int index, XmlAttributeMapping resourceElement) {
 			SpecifiedOrmPersistentType.this.addSpecifiedAttribute_(index, resourceElement);
 		}
-		public void removeContextElement(OrmModifiablePersistentAttribute element) {
+		public void removeContextElement(OrmSpecifiedPersistentAttribute element) {
 			SpecifiedOrmPersistentType.this.removeSpecifiedAttribute_(element);
 		}
 	}
@@ -814,7 +814,7 @@ public abstract class SpecifiedOrmPersistentType
 		return this.getSpecifiedAttributeFor(javaResourceField) == null;
 	}
 
-	protected OrmModifiablePersistentAttribute getSpecifiedAttributeFor(JavaResourceField javaResourceField) {
+	protected OrmSpecifiedPersistentAttribute getSpecifiedAttributeFor(JavaResourceField javaResourceField) {
 		return this.getSpecifiedAttributeFor(javaResourceField, null);
 	}
 
@@ -824,8 +824,8 @@ public abstract class SpecifiedOrmPersistentType
 	 * there can be more than one specified attribute per Java resource
 	 * attribute; albeit erroneously).
 	 */
-	protected OrmModifiablePersistentAttribute getSpecifiedAttributeFor(JavaResourceField javaResourceField, OrmModifiablePersistentAttribute exclude) {
-		for (OrmModifiablePersistentAttribute ormAttribute : this.getSpecifiedAttributes()) {
+	protected OrmSpecifiedPersistentAttribute getSpecifiedAttributeFor(JavaResourceField javaResourceField, OrmSpecifiedPersistentAttribute exclude) {
+		for (OrmSpecifiedPersistentAttribute ormAttribute : this.getSpecifiedAttributes()) {
 			if (ormAttribute == exclude) {
 				continue;  // skip
 			}
@@ -840,7 +840,7 @@ public abstract class SpecifiedOrmPersistentType
 		return this.getSpecifiedAttributeFor(javaResourceGetter, javaResourceSetter) == null;
 	}
 
-	protected OrmModifiablePersistentAttribute getSpecifiedAttributeFor(JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter) {
+	protected OrmSpecifiedPersistentAttribute getSpecifiedAttributeFor(JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter) {
 		return this.getSpecifiedAttributeFor(javaResourceGetter, javaResourceSetter, null);
 	}
 
@@ -850,8 +850,8 @@ public abstract class SpecifiedOrmPersistentType
 	 * there can be more than one specified attribute per Java resource
 	 * attribute; albeit erroneously).
 	 */
-	protected OrmModifiablePersistentAttribute getSpecifiedAttributeFor(JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter, OrmModifiablePersistentAttribute exclude) {
-		for (OrmModifiablePersistentAttribute ormAttribute : this.getSpecifiedAttributes()) {
+	protected OrmSpecifiedPersistentAttribute getSpecifiedAttributeFor(JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter, OrmSpecifiedPersistentAttribute exclude) {
+		for (OrmSpecifiedPersistentAttribute ormAttribute : this.getSpecifiedAttributes()) {
 			if (ormAttribute == exclude) {
 				continue;  // skip
 			}
@@ -1189,7 +1189,7 @@ public abstract class SpecifiedOrmPersistentType
 		if (result != null) {
 			return result;
 		}
-		for (OrmModifiablePersistentAttribute attribute : this.getSpecifiedAttributes()) {
+		for (OrmSpecifiedPersistentAttribute attribute : this.getSpecifiedAttributes()) {
 			result = attribute.getCompletionProposals(pos);
 			if (result != null) {
 				return result;

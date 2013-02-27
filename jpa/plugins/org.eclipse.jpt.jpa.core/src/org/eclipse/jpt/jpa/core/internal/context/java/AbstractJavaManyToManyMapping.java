@@ -13,7 +13,7 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToManyRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappingRelationship;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.context.ManyToManyMapping2_0;
 import org.eclipse.jpt.jpa.core.resource.java.ManyToManyAnnotation;
 
@@ -21,7 +21,7 @@ public abstract class AbstractJavaManyToManyMapping
 	extends AbstractJavaMultiRelationshipMapping<ManyToManyAnnotation>
 	implements ManyToManyMapping2_0, JavaManyToManyMapping
 {
-	protected AbstractJavaManyToManyMapping(JavaModifiablePersistentAttribute parent) {
+	protected AbstractJavaManyToManyMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 	}
 

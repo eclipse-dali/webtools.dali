@@ -36,7 +36,7 @@ import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
-import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
@@ -50,7 +50,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaBaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EmbeddableOverrideDescriptionProvider;
@@ -64,7 +64,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.NullJavaMapKeyColumn2
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.NullMapKeyJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.context.MultiRelationshipMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.ModifiablePersistentAttribute2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAttributeOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
@@ -115,7 +115,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	protected static final Iterable<JavaConverter.Adapter> MAP_KEY_CONVERTER_ADAPTERS = IterableTools.iterable(MAP_KEY_CONVERTER_ADAPTER_ARRAY);
 
 
-	protected AbstractJavaMultiRelationshipMapping(JavaModifiablePersistentAttribute parent) {
+	protected AbstractJavaMultiRelationshipMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 		this.orderable = this.buildOrderable();
 
@@ -933,7 +933,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 
 	@Override
 	protected String getMetamodelFieldTypeName() {
-		return ((ModifiablePersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldTypeName();
+		return ((SpecifiedPersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldTypeName();
 	}
 
 	@Override
@@ -943,7 +943,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	}
 
 	protected void addMetamodelFieldMapKeyTypeArgumentNameTo(ArrayList<String> typeArgumentNames) {
-		String keyTypeName = ((ModifiablePersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldMapKeyTypeName();
+		String keyTypeName = ((SpecifiedPersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldMapKeyTypeName();
 		if (keyTypeName != null) {
 			typeArgumentNames.add(keyTypeName);
 		}
@@ -966,7 +966,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	}
 
 	protected void validateAttributeType(List<IMessage> messages, IReporter reporter) {
-		JavaModifiablePersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
+		JavaSpecifiedPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
 		if ((javaAttribute != null) && !javaAttribute.getJpaContainerDefinition().isContainer()) {
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
@@ -1104,7 +1104,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			return AbstractJavaMultiRelationshipMapping.this.getRelationship().getStrategy();
 		}
 
-		protected JavaModifiablePersistentAttribute getPersistentAttribute() {
+		protected JavaSpecifiedPersistentAttribute getPersistentAttribute() {
 			return AbstractJavaMultiRelationshipMapping.this.getPersistentAttribute();
 		}
 	}
@@ -1215,7 +1215,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			return AbstractJavaMultiRelationshipMapping.this.getName();
 		}
 
-		protected ModifiablePersistentAttribute getPersistentAttribute() {
+		protected SpecifiedPersistentAttribute getPersistentAttribute() {
 			return AbstractJavaMultiRelationshipMapping.this.getPersistentAttribute();
 		}
 

@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 
@@ -47,9 +47,9 @@ public interface Accessor
 	 * attributes and behaves as though it has no annotations. This will cause
 	 * all the settings in the Java <em>context</em> attribute to default.
 	 */
-	JavaModifiablePersistentAttribute buildUnannotatedJavaAttribute(PersistentType type);
+	JavaSpecifiedPersistentAttribute buildUnannotatedJavaAttribute(PersistentType type);
 
 	AccessType getDefaultAccess();
 
-	JptValidator buildAttributeValidator(ModifiablePersistentAttribute persistentAttribute);
+	JptValidator buildAttributeValidator(SpecifiedPersistentAttribute persistentAttribute);
 }

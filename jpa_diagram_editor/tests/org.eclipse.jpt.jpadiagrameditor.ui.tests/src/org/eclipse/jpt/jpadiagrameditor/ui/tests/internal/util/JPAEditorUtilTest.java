@@ -37,7 +37,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IPeServiceUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
@@ -276,7 +276,7 @@ public class JPAEditorUtilTest {
 			return;
 		assertNotNull(JPAEditorUtil.getText(t1));
 		assertNotNull(JPAEditorUtil.getTooltipText(t1));
-		JavaModifiablePersistentAttribute jpa = t1.getAttributeNamed("id");
+		JavaSpecifiedPersistentAttribute jpa = t1.getAttributeNamed("id");
 		assertNotNull(jpa);
 		assertNotNull(JPAEditorUtil.getText(jpa));
 		assertNotNull(JPAEditorUtil.getTooltipText(jpa));

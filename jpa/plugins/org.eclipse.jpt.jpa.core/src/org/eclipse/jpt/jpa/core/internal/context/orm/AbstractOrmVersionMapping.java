@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmBaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmColumnMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -58,7 +58,7 @@ public abstract class AbstractOrmVersionMapping<X extends XmlVersion>
 	protected static final Iterable<OrmConverter.Adapter> CONVERTER_ADAPTERS = IterableTools.iterable(CONVERTER_ADAPTER_ARRAY);
 
 
-	protected AbstractOrmVersionMapping(OrmModifiablePersistentAttribute parent, X xmlMapping) {
+	protected AbstractOrmVersionMapping(OrmSpecifiedPersistentAttribute parent, X xmlMapping) {
 		super(parent, xmlMapping);
 		this.column = this.buildColumn();
 		this.converter = this.buildConverter();

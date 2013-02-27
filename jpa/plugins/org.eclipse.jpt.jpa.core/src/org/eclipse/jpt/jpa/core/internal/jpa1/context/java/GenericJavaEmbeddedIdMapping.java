@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaEmbeddedIdMapping;
 
 /**
@@ -19,7 +19,7 @@ public class GenericJavaEmbeddedIdMapping
 	extends AbstractJavaEmbeddedIdMapping
 {
 
-	public GenericJavaEmbeddedIdMapping(JavaModifiablePersistentAttribute parent) {
+	public GenericJavaEmbeddedIdMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 	}
 }

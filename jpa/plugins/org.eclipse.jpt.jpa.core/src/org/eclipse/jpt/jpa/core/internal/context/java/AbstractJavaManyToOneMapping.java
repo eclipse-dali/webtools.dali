@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToOneRelationship;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.context.ManyToOneMapping2_0;
 import org.eclipse.jpt.jpa.core.resource.java.ManyToOneAnnotation;
 
@@ -20,7 +20,7 @@ public abstract class AbstractJavaManyToOneMapping
 	extends AbstractJavaSingleRelationshipMapping<ManyToOneAnnotation>
 	implements ManyToOneMapping2_0, JavaManyToOneMapping
 {
-	protected AbstractJavaManyToOneMapping(JavaModifiablePersistentAttribute parent) {
+	protected AbstractJavaManyToOneMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 	}
 

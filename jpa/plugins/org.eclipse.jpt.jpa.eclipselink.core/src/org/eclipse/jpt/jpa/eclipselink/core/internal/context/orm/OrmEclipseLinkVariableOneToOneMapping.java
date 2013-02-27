@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmAttributeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
@@ -22,7 +22,7 @@ public class OrmEclipseLinkVariableOneToOneMapping
 	extends AbstractOrmAttributeMapping<XmlVariableOneToOne> 
 	implements EclipseLinkVariableOneToOneMapping
 {
-	public OrmEclipseLinkVariableOneToOneMapping(OrmModifiablePersistentAttribute parent, XmlVariableOneToOne xmlMapping) {
+	public OrmEclipseLinkVariableOneToOneMapping(OrmSpecifiedPersistentAttribute parent, XmlVariableOneToOne xmlMapping) {
 		super(parent, xmlMapping);
 	}
 

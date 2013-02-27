@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToManyRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappingRelationship;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.context.ManyToManyMapping2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.Attributes;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlManyToMany;
@@ -23,7 +23,7 @@ public abstract class AbstractOrmManyToManyMapping<X extends XmlManyToMany>
 	extends AbstractOrmMultiRelationshipMapping<X>
 	implements ManyToManyMapping2_0, OrmManyToManyMapping
 {
-	protected AbstractOrmManyToManyMapping(OrmModifiablePersistentAttribute parent, X xmlMapping) {
+	protected AbstractOrmManyToManyMapping(OrmSpecifiedPersistentAttribute parent, X xmlMapping) {
 		super(parent, xmlMapping);
 	}
 

@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 
 /**
- * Context <code>orm.xml</code> persistent <em>attribute</em>
+ * <code>orm.xml</code> specified persistent <em>attribute</em>
  * (field or property).
  * <p>
  * Provisional API: This interface is part of an interim API that is still
@@ -25,8 +25,8 @@ import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
  * @version 3.0
  * @since 2.0
  */
-public interface OrmModifiablePersistentAttribute
-	extends ModifiablePersistentAttribute, OrmPersistentAttribute, TypeRefactoringParticipant
+public interface OrmSpecifiedPersistentAttribute
+	extends SpecifiedPersistentAttribute, OrmPersistentAttribute, TypeRefactoringParticipant
 {
 	/**
 	 * Return an <code>orm.xml</code> mapping since the attribute is

@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProvider;
@@ -116,7 +116,7 @@ public class JpaPlatformTests
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaModifiablePersistentAttribute javaAttribute = this.getJavaPersistentType().getAttributeNamed("name");
+		JavaSpecifiedPersistentAttribute javaAttribute = this.getJavaPersistentType().getAttributeNamed("name");
 		javaAttribute.setMappingKey(JavaTestAttributeMapping.TEST_ATTRIBUTE_MAPPING_KEY);
 		JavaAttributeMapping mapping = javaAttribute.getMapping();
 		assertTrue(mapping instanceof JavaTestAttributeMapping);

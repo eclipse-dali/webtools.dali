@@ -22,7 +22,7 @@ import org.eclipse.graphiti.features.context.ICreateContext;
 import org.eclipse.graphiti.features.impl.AbstractCreateFeature;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollection2_0Annotation;
@@ -57,7 +57,7 @@ public class ClickAddElementCollectionButtonFeature extends AbstractCreateFeatur
 		JavaPersistentType jpt = (JavaPersistentType)getFeatureProvider().getBusinessObjectForPictogramElement(entityShape);
 		String newAttrName = JpaArtifactFactory.instance().createNewAttribute(jpt, true, getFeatureProvider());
 
-		JavaModifiablePersistentAttribute newAttr = (JavaModifiablePersistentAttribute) jpt.resolveAttribute(newAttrName);
+		JavaSpecifiedPersistentAttribute newAttr = (JavaSpecifiedPersistentAttribute) jpt.resolveAttribute(newAttrName);
 		newAttr.setMappingKey(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		newAttr.getResourceAttribute().addAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME);
 

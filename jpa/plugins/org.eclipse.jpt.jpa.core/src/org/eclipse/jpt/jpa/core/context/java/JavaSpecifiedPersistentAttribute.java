@@ -13,11 +13,11 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jpa.core.context.CollectionMapping;
-import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 
 /**
- * Context Java persistent <em>attribute</em> (field or property).
+ * Java specified persistent <em>attribute</em> (field or property).
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -28,8 +28,8 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
  * @version 3.3
  * @since 2.0
  */
-public interface JavaModifiablePersistentAttribute
-	extends ModifiablePersistentAttribute, JavaElementReference
+public interface JavaSpecifiedPersistentAttribute
+	extends SpecifiedPersistentAttribute, JavaElementReference
 {
 	// ********** covariant overrides **********
 

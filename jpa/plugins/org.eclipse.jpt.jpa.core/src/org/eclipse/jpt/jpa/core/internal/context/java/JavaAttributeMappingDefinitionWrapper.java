@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 
 /**
  * Simplify delegation to another definition.
@@ -36,7 +36,7 @@ public abstract class JavaAttributeMappingDefinitionWrapper
 		return this.getDelegate().getAnnotationName();
 	}
 
-	public boolean isSpecified(JavaModifiablePersistentAttribute persistentAttribute) {
+	public boolean isSpecified(JavaSpecifiedPersistentAttribute persistentAttribute) {
 		return this.getDelegate().isSpecified(persistentAttribute);
 	}
 
@@ -44,7 +44,7 @@ public abstract class JavaAttributeMappingDefinitionWrapper
 		return this.getDelegate().getSupportingAnnotationNames();
 	}
 
-	public JavaAttributeMapping buildMapping(JavaModifiablePersistentAttribute persistentAttribute, JpaFactory factory) {
+	public JavaAttributeMapping buildMapping(JavaSpecifiedPersistentAttribute persistentAttribute, JpaFactory factory) {
 		return this.getDelegate().buildMapping(persistentAttribute, factory);
 	}
 

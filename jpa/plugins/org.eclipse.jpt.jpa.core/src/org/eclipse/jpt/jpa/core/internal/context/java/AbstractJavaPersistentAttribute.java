@@ -36,23 +36,23 @@ import org.eclipse.jpt.jpa.core.context.java.Accessor;
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
-import org.eclipse.jpt.jpa.core.jpa2.context.ModifiablePersistentAttribute2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
- * Java persistent attributes
+ * Java persistent attribute
  */
-public abstract class AbstractJavaModifiablePersistentAttribute
-		extends AbstractJavaContextModel<PersistentType>
-		implements JavaModifiablePersistentAttribute, ModifiablePersistentAttribute2_0 {
-	
+public abstract class AbstractJavaPersistentAttribute
+	extends AbstractJavaContextModel<PersistentType>
+	implements JavaSpecifiedPersistentAttribute, SpecifiedPersistentAttribute2_0
+{
 	protected final Accessor accessor;
 
 	protected AccessType defaultAccess;
@@ -63,19 +63,19 @@ public abstract class AbstractJavaModifiablePersistentAttribute
 
 	protected JpaContainerDefinition jpaContainerDefinition = JpaContainerDefinition.Null.instance();
 
-	protected AbstractJavaModifiablePersistentAttribute(PersistentType parent, JavaResourceField resourceField) {
+	protected AbstractJavaPersistentAttribute(PersistentType parent, JavaResourceField resourceField) {
 		super(parent);
 		this.accessor = new FieldAccessor(this, resourceField);
 		this.initialize();
 	}
 
-	protected AbstractJavaModifiablePersistentAttribute(PersistentType parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
+	protected AbstractJavaPersistentAttribute(PersistentType parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
 		super(parent);
 		this.accessor = new PropertyAccessor(this, resourceGetter, resourceSetter);
 		this.initialize();
 	}
 
-	protected AbstractJavaModifiablePersistentAttribute(PersistentType parent, Accessor accessor) {
+	protected AbstractJavaPersistentAttribute(PersistentType parent, Accessor accessor) {
 		super(parent);
 		this.accessor = accessor;
 		this.initialize();
@@ -449,8 +449,8 @@ public abstract class AbstractJavaModifiablePersistentAttribute
 		return new ContextType(this);
 	}
 
-	public Class<JavaModifiablePersistentAttribute> getType() {
-		return JavaModifiablePersistentAttribute.class;
+	public Class<JavaSpecifiedPersistentAttribute> getType() {
+		return JavaSpecifiedPersistentAttribute.class;
 	}
 
 	public Iterable<JpaStructureNode> getChildren() {
@@ -587,7 +587,7 @@ public abstract class AbstractJavaModifiablePersistentAttribute
 		return this.getOwningPersistentType().getMapping();
 	}
 
-	public JavaModifiablePersistentAttribute getJavaPersistentAttribute() {
+	public JavaSpecifiedPersistentAttribute getJavaPersistentAttribute() {
 		return this;
 	}
 

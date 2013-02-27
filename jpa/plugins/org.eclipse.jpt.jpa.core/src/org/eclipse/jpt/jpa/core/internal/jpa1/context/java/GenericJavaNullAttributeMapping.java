@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 
@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 public class GenericJavaNullAttributeMapping
 	extends AbstractJavaAttributeMapping<Annotation>
 {
-	public GenericJavaNullAttributeMapping(JavaModifiablePersistentAttribute parent) {
+	public GenericJavaNullAttributeMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 	}
 	

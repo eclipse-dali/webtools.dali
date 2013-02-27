@@ -30,7 +30,7 @@ import org.eclipse.graphiti.features.IDeleteFeature;
 import org.eclipse.graphiti.features.context.IDeleteContext;
 import org.eclipse.graphiti.mm.Property;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.ClickRemoveAttributeButtonFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.DeleteJPAEntityFeature;
@@ -73,7 +73,7 @@ public class JPAEditorFeatureProviderTest {
 	@Test
 	public void testAttributeDeleteFeature(){
 		PictogramElement pe = replayPictogramElement();
-		JavaModifiablePersistentAttribute jpa = replayAttribute();
+		JavaSpecifiedPersistentAttribute jpa = replayAttribute();
 		expect(solver.getBusinessObjectForKey(businessObjectKey)).andStubReturn(jpa);
 		IJPAEditorFeatureProvider provider = createFeatureProvider();
 		
@@ -123,8 +123,8 @@ public class JPAEditorFeatureProviderTest {
 		return jpt;
 	}
 	
-	private JavaModifiablePersistentAttribute replayAttribute(){
-		JavaModifiablePersistentAttribute attribute = EasyMock.createMock(JavaModifiablePersistentAttribute.class);
+	private JavaSpecifiedPersistentAttribute replayAttribute(){
+		JavaSpecifiedPersistentAttribute attribute = EasyMock.createMock(JavaSpecifiedPersistentAttribute.class);
 		expect(attribute.getName()).andReturn("attribute");
 		replay(attribute);
 		return attribute;

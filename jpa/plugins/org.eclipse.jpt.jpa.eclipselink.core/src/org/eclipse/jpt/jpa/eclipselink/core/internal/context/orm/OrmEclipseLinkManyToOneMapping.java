@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmManyToOneMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkManyToOneMapping2_0;
@@ -27,7 +27,7 @@ public class OrmEclipseLinkManyToOneMapping
 	protected final OrmEclipseLinkJoinFetch joinFetch;
 
 
-	protected OrmEclipseLinkManyToOneMapping(OrmModifiablePersistentAttribute parent, XmlManyToOne xmlMapping) {
+	protected OrmEclipseLinkManyToOneMapping(OrmSpecifiedPersistentAttribute parent, XmlManyToOne xmlMapping) {
 		super(parent, xmlMapping);
 		this.joinFetch = new OrmEclipseLinkJoinFetch(this);
 	}

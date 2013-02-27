@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmDerivedIdentity2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMapsIdDerivedIdentityStrategy2_0;
@@ -100,7 +100,7 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 		return this.getDerivedIdentity().getMapping();
 	}
 
-	protected OrmModifiablePersistentAttribute getPersistentAttribute() {
+	protected OrmSpecifiedPersistentAttribute getPersistentAttribute() {
 		return this.getMapping().getPersistentAttribute();
 	}
 

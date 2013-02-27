@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlElementCollection;
 
 public class GenericOrmElementCollectionMapping2_0
 	extends AbstractOrmElementCollectionMapping2_0<XmlElementCollection>
 {
-	public GenericOrmElementCollectionMapping2_0(OrmModifiablePersistentAttribute parent, XmlElementCollection resourceMapping) {
+	public GenericOrmElementCollectionMapping2_0(OrmSpecifiedPersistentAttribute parent, XmlElementCollection resourceMapping) {
 		super(parent, resourceMapping);
 	}
 }

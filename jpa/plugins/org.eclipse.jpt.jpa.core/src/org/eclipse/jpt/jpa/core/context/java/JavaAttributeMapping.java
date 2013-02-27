@@ -28,9 +28,9 @@ import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 public interface JavaAttributeMapping
 	extends AttributeMapping
 {
-	JavaModifiablePersistentAttribute getParent();
+	JavaSpecifiedPersistentAttribute getParent();
 
-	JavaModifiablePersistentAttribute getPersistentAttribute();
+	JavaSpecifiedPersistentAttribute getPersistentAttribute();
 
 	JavaResourceAttribute getResourceAttribute();
 

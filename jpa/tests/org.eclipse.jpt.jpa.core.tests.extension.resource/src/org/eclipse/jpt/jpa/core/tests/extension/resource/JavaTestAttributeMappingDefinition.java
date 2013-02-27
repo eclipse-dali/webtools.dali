@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 
 public class JavaTestAttributeMappingDefinition
 	implements JavaAttributeMappingDefinition
@@ -44,7 +44,7 @@ public class JavaTestAttributeMappingDefinition
 		return JavaTestAttributeMapping.TEST_ATTRIBUTE_ANNOTATION_NAME;
 	}
 
-	public boolean isSpecified(JavaModifiablePersistentAttribute persistentAttribute) {
+	public boolean isSpecified(JavaSpecifiedPersistentAttribute persistentAttribute) {
 		return persistentAttribute.getResourceAttribute().getAnnotation(this.getAnnotationName()) != null;
 	}
 
@@ -52,7 +52,7 @@ public class JavaTestAttributeMappingDefinition
 		return EmptyIterable.instance();
 	}
 
-	public JavaAttributeMapping buildMapping(JavaModifiablePersistentAttribute persistentAttribute, JpaFactory factory) {
+	public JavaAttributeMapping buildMapping(JavaSpecifiedPersistentAttribute persistentAttribute, JpaFactory factory) {
 		return ((TestJpaFactory) factory).buildJavaTestAttributeMapping(persistentAttribute);
 	}
 

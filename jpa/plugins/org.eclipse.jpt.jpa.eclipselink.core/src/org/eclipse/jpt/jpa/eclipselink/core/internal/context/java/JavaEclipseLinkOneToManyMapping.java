@@ -13,7 +13,7 @@ import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappingRelationship;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaOneToManyMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkOneToManyMapping2_0;
@@ -35,7 +35,7 @@ public class JavaEclipseLinkOneToManyMapping
 	protected final JavaEclipseLinkConverterContainer converterContainer;
 
 
-	public JavaEclipseLinkOneToManyMapping(JavaModifiablePersistentAttribute parent) {
+	public JavaEclipseLinkOneToManyMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 		this.joinFetch = new JavaEclipseLinkJoinFetch(this);
 		this.privateOwned = new JavaEclipseLinkPrivateOwned(this);

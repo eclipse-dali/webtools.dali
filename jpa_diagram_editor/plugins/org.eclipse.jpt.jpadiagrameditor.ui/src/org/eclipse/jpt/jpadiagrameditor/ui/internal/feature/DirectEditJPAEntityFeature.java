@@ -32,7 +32,7 @@ import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.jdt.core.Signature;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
@@ -135,10 +135,10 @@ public class DirectEditJPAEntityFeature extends AbstractDirectEditingFeature {
 			}
 		});	    
 	    
-	    Set<JavaModifiablePersistentAttribute> ats = JpaArtifactFactory.instance().getRelatedAttributes(jpt);
-	    Iterator<JavaModifiablePersistentAttribute> it = ats.iterator();
+	    Set<JavaSpecifiedPersistentAttribute> ats = JpaArtifactFactory.instance().getRelatedAttributes(jpt);
+	    Iterator<JavaSpecifiedPersistentAttribute> it = ats.iterator();
 	    while (it.hasNext()) {
-	    	JavaModifiablePersistentAttribute at = it.next();
+	    	JavaSpecifiedPersistentAttribute at = it.next();
 	    	PictogramElement pel = getFeatureProvider().getPictogramElementForBusinessObject(at);
 	    	String newAtName = JPAEditorUtil.decapitalizeFirstLetter(value);
 	    	if (JpaArtifactFactory.instance().isMethodAnnotated(at)) 

@@ -28,7 +28,7 @@ import org.eclipse.graphiti.features.impl.DefaultRemoveFeature;
 import org.eclipse.graphiti.mm.pictograms.Connection;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
@@ -89,8 +89,8 @@ public class RemoveAttributeFeature extends DefaultRemoveFeature {
 		if(bo == null)
 			return;
 		
-		if (bo instanceof JavaModifiablePersistentAttribute) {
-			JavaModifiablePersistentAttribute jpa = (JavaModifiablePersistentAttribute) bo;
+		if (bo instanceof JavaSpecifiedPersistentAttribute) {
+			JavaSpecifiedPersistentAttribute jpa = (JavaSpecifiedPersistentAttribute) bo;
 			
 			HashSet<String> ignores = ((JPAEditorFeatureProvider) getFeatureProvider()).getAddIgnore();
 			if (!ignores.isEmpty()) {

@@ -14,7 +14,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.dialogs.AddVirtualAttributeDialog;
 import org.eclipse.jpt.jpa.ui.selection.JpaSelectionManager;
@@ -43,7 +43,7 @@ public class AddVirtualAttributeHandler
 		AddVirtualAttributeDialog dialog = new AddVirtualAttributeDialog(window.getShell(), persistentType);
 		dialog.create();
 		dialog.setBlockOnOpen(true);
-		OrmModifiablePersistentAttribute attribute = dialog.openAndReturnAttribute();
+		OrmSpecifiedPersistentAttribute attribute = dialog.openAndReturnAttribute();
 
 		if (attribute != null) {
 			JpaSelectionManager selectionManager = PlatformTools.getAdapter(window, JpaSelectionManager.class);

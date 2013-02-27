@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.AbstractJavaElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
@@ -32,7 +32,7 @@ public class JavaEclipseLinkElementCollectionMapping2_0
 
 	protected final JavaEclipseLinkConverterContainer converterContainer;
 
-	public JavaEclipseLinkElementCollectionMapping2_0(JavaModifiablePersistentAttribute parent) {
+	public JavaEclipseLinkElementCollectionMapping2_0(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 		this.joinFetch = new JavaEclipseLinkJoinFetch(this);
 		this.converterContainer = this.buildConverterContainer();

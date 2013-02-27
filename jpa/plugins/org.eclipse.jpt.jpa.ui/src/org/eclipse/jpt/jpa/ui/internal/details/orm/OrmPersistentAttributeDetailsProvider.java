@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsPageManager;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
 import org.eclipse.swt.widgets.Composite;
@@ -43,8 +43,8 @@ public class OrmPersistentAttributeDetailsProvider
 		super();
 	}
 
-	public Class<OrmModifiablePersistentAttribute> getType() {
-		return OrmModifiablePersistentAttribute.class;
+	public Class<OrmSpecifiedPersistentAttribute> getType() {
+		return OrmSpecifiedPersistentAttribute.class;
 	}
 
 	public JpaDetailsPageManager buildDetailsPageManager(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {

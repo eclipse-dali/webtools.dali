@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaManyToOneMapping;
 
 public class GenericJavaManyToOneMapping
 	extends AbstractJavaManyToOneMapping
 {
-	public GenericJavaManyToOneMapping(JavaModifiablePersistentAttribute parent) {
+	public GenericJavaManyToOneMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 	}
 }

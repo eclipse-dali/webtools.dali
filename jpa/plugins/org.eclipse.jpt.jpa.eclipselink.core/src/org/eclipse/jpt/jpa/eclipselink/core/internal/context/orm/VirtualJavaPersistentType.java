@@ -34,7 +34,7 @@ import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.ManagedType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
@@ -203,11 +203,11 @@ public class VirtualJavaPersistentType
 	// ********** attributes **********
 	//The VirtualJavaPersistentAttributes are built by the OrmEclipseLinkPersistentAttribute, no attributes here
 
-	public ListIterable<JavaModifiablePersistentAttribute> getAttributes() {
+	public ListIterable<JavaSpecifiedPersistentAttribute> getAttributes() {
 		return EmptyListIterable.instance();
 	}
 
-	public JavaModifiablePersistentAttribute getAttributeNamed(String attributeName) {
+	public JavaSpecifiedPersistentAttribute getAttributeNamed(String attributeName) {
 		return null;
 	}
 
@@ -215,7 +215,7 @@ public class VirtualJavaPersistentType
 		return false;
 	}
 
-	public JavaModifiablePersistentAttribute getAttributeFor(JavaResourceAttribute javaResourceAttribute) {
+	public JavaSpecifiedPersistentAttribute getAttributeFor(JavaResourceAttribute javaResourceAttribute) {
 		return null;
 	}
 

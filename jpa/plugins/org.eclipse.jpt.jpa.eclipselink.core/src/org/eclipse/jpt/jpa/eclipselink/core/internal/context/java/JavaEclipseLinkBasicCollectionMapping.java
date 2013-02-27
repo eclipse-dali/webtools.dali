@@ -11,10 +11,10 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
-import org.eclipse.jpt.jpa.core.jpa2.context.ModifiablePersistentAttribute2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkBasicCollectionMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
@@ -28,7 +28,7 @@ public class JavaEclipseLinkBasicCollectionMapping
 
 	protected final JavaEclipseLinkConverterContainer converterContainer;
 
-	public JavaEclipseLinkBasicCollectionMapping(JavaModifiablePersistentAttribute parent) {
+	public JavaEclipseLinkBasicCollectionMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 		this.converterContainer = this.buildConverterContainer();
 	}
@@ -75,7 +75,7 @@ public class JavaEclipseLinkBasicCollectionMapping
 	// ********** metamodel **********  
 	@Override
 	protected String getMetamodelFieldTypeName() {
-		return ((ModifiablePersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldTypeName();
+		return ((SpecifiedPersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldTypeName();
 	}
 
 	@Override

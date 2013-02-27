@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaVersionMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVersionMapping;
@@ -83,7 +83,7 @@ public class EclipseLinkOrmVersionMappingTests
 		createTestEntityWithVersionMapping();
 		OrmPersistentType ormPersistentType = 
 			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmModifiablePersistentAttribute ormPersistentAttribute = 
+		OrmSpecifiedPersistentAttribute ormPersistentAttribute = 
 			ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
 		OrmEclipseLinkVersionMapping contextVersion = 
 			(OrmEclipseLinkVersionMapping) ormPersistentAttribute.getMapping();
@@ -165,7 +165,7 @@ public class EclipseLinkOrmVersionMappingTests
 		createTestEntityWithMutableVersionDate();
 		OrmPersistentType ormPersistentType = 
 			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmModifiablePersistentAttribute ormPersistentAttribute = 
+		OrmSpecifiedPersistentAttribute ormPersistentAttribute = 
 			ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("myDate"), MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
 		OrmEclipseLinkVersionMapping contextVersion = 
 			(OrmEclipseLinkVersionMapping) ormPersistentAttribute.getMapping();
@@ -263,7 +263,7 @@ public class EclipseLinkOrmVersionMappingTests
 		createTestEntityWithMutableVersionDate();
 		OrmPersistentType ormPersistentType = 
 			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmModifiablePersistentAttribute ormPersistentAttribute = 
+		OrmSpecifiedPersistentAttribute ormPersistentAttribute = 
 			ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("myDate"), MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
 		OrmEclipseLinkVersionMapping contextVersion = 
 			(OrmEclipseLinkVersionMapping) ormPersistentAttribute.getMapping();
@@ -311,7 +311,7 @@ public class EclipseLinkOrmVersionMappingTests
 		createTestEntityWithVersionMapping();
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
+		OrmSpecifiedPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
 		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();
 		XmlVersion versionResource = (XmlVersion) getXmlEntityMappings().getEntities().get(0).getAttributes().getVersions().get(0);
 		XmlConvert xmlConvert = (XmlConvert) versionResource.getConvert();
@@ -366,7 +366,7 @@ public class EclipseLinkOrmVersionMappingTests
 		createTestEntityWithVersionMapping();
 		OrmPersistentType ormPersistentType = 
 			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmModifiablePersistentAttribute ormPersistentAttribute = 
+		OrmSpecifiedPersistentAttribute ormPersistentAttribute = 
 			ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
 		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();
 		XmlVersion versionResource = (XmlVersion) getXmlEntityMappings().getEntities().get(0).getAttributes().getVersions().get(0);

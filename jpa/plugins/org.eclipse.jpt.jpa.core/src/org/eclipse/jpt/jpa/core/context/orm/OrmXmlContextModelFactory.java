@@ -101,7 +101,7 @@ public interface OrmXmlContextModelFactory
 	 * must build objects that implement the appropriate behavior.
 	 * @see org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0
 	 */
-	OrmModifiablePersistentAttribute buildOrmPersistentAttribute(OrmPersistentType parent, XmlAttributeMapping xmlMapping);
+	OrmSpecifiedPersistentAttribute buildOrmPersistentAttribute(OrmPersistentType parent, XmlAttributeMapping xmlMapping);
 
 	/**
 	 * NB: A factory for a version 1.0 <code>orm.xml</code> in a JPA 2.0 project
@@ -178,84 +178,84 @@ public interface OrmXmlContextModelFactory
 	 * must build objects that implement the appropriate behavior.
 	 * @see org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0
 	 */
-	OrmBasicMapping buildOrmBasicMapping(OrmModifiablePersistentAttribute parent, XmlBasic resourceMapping);
+	OrmBasicMapping buildOrmBasicMapping(OrmSpecifiedPersistentAttribute parent, XmlBasic resourceMapping);
 
 	/**
 	 * NB: A factory for a version 1.0 <code>orm.xml</code> in a JPA 2.0 project
 	 * must build objects that implement the appropriate behavior.
 	 * @see org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0
 	 */
-	OrmManyToManyMapping buildOrmManyToManyMapping(OrmModifiablePersistentAttribute parent, XmlManyToMany resourceMapping);
+	OrmManyToManyMapping buildOrmManyToManyMapping(OrmSpecifiedPersistentAttribute parent, XmlManyToMany resourceMapping);
 
 	/**
 	 * NB: A factory for a version 1.0 <code>orm.xml</code> in a JPA 2.0 project
 	 * must build objects that implement the appropriate behavior.
 	 * @see org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0
 	 */
-	OrmOneToManyMapping buildOrmOneToManyMapping(OrmModifiablePersistentAttribute parent, XmlOneToMany resourceMapping);
+	OrmOneToManyMapping buildOrmOneToManyMapping(OrmSpecifiedPersistentAttribute parent, XmlOneToMany resourceMapping);
 
 	/**
 	 * NB: A factory for a version 1.0 <code>orm.xml</code> in a JPA 2.0 project
 	 * must build objects that implement the appropriate behavior.
 	 * @see org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0
 	 */
-	OrmManyToOneMapping buildOrmManyToOneMapping(OrmModifiablePersistentAttribute parent, XmlManyToOne resourceMapping);
+	OrmManyToOneMapping buildOrmManyToOneMapping(OrmSpecifiedPersistentAttribute parent, XmlManyToOne resourceMapping);
 
 	/**
 	 * NB: A factory for a version 1.0 <code>orm.xml</code> in a JPA 2.0 project
 	 * must build objects that implement the appropriate behavior.
 	 * @see org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0
 	 */
-	OrmOneToOneMapping buildOrmOneToOneMapping(OrmModifiablePersistentAttribute parent, XmlOneToOne resourceMapping);
+	OrmOneToOneMapping buildOrmOneToOneMapping(OrmSpecifiedPersistentAttribute parent, XmlOneToOne resourceMapping);
 
 	/**
 	 * NB: A factory for a version 1.0 <code>orm.xml</code> in a JPA 2.0 project
 	 * must build objects that implement the appropriate behavior.
 	 * @see org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0
 	 */
-	OrmEmbeddedIdMapping buildOrmEmbeddedIdMapping(OrmModifiablePersistentAttribute parent, XmlEmbeddedId resourceMapping);
+	OrmEmbeddedIdMapping buildOrmEmbeddedIdMapping(OrmSpecifiedPersistentAttribute parent, XmlEmbeddedId resourceMapping);
 
 	/**
 	 * NB: A factory for a version 1.0 <code>orm.xml</code> in a JPA 2.0 project
 	 * must build objects that implement the appropriate behavior.
 	 * @see org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0
 	 */
-	OrmEmbeddedMapping buildOrmEmbeddedMapping(OrmModifiablePersistentAttribute parent, XmlEmbedded resourceMapping);
+	OrmEmbeddedMapping buildOrmEmbeddedMapping(OrmSpecifiedPersistentAttribute parent, XmlEmbedded resourceMapping);
 
 	/**
 	 * NB: A factory for a version 1.0 <code>orm.xml</code> in a JPA 2.0 project
 	 * must build objects that implement the appropriate behavior.
 	 * @see org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0
 	 */
-	OrmIdMapping buildOrmIdMapping(OrmModifiablePersistentAttribute parent, XmlId resourceMapping);
+	OrmIdMapping buildOrmIdMapping(OrmSpecifiedPersistentAttribute parent, XmlId resourceMapping);
 
 	/**
 	 * NB: A factory for a version 1.0 <code>orm.xml</code> in a JPA 2.0 project
 	 * must build objects that implement the appropriate behavior.
 	 * @see org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0
 	 */
-	OrmTransientMapping buildOrmTransientMapping(OrmModifiablePersistentAttribute parent, XmlTransient resourceMapping);
+	OrmTransientMapping buildOrmTransientMapping(OrmSpecifiedPersistentAttribute parent, XmlTransient resourceMapping);
 
 	/**
 	 * NB: A factory for a version 1.0 <code>orm.xml</code> in a JPA 2.0 project
 	 * must build objects that implement the appropriate behavior.
 	 * @see org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0
 	 */
-	OrmVersionMapping buildOrmVersionMapping(OrmModifiablePersistentAttribute parent, XmlVersion resourceMapping);
+	OrmVersionMapping buildOrmVersionMapping(OrmSpecifiedPersistentAttribute parent, XmlVersion resourceMapping);
 
 	/**
 	 * NB: A factory for a version 1.0 <code>orm.xml</code> in a JPA 2.0 project
 	 * must build objects that implement the appropriate behavior.
 	 * @see org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0
 	 */
-	OrmAttributeMapping buildOrmNullAttributeMapping(OrmModifiablePersistentAttribute parent, XmlNullAttributeMapping resourceMapping);
+	OrmAttributeMapping buildOrmNullAttributeMapping(OrmSpecifiedPersistentAttribute parent, XmlNullAttributeMapping resourceMapping);
 
 	/**
 	 * NB: A factory for a version 1.0 <code>orm.xml</code> in a JPA 2.0 project
 	 * must build objects that implement the appropriate behavior.
 	 * @see org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0
 	 */
-	OrmAttributeMapping buildUnsupportedOrmAttributeMapping(OrmModifiablePersistentAttribute parent, XmlNullAttributeMapping resourceMapping);
+	OrmAttributeMapping buildUnsupportedOrmAttributeMapping(OrmSpecifiedPersistentAttribute parent, XmlNullAttributeMapping resourceMapping);
 
 	OrmUniqueConstraint buildOrmUniqueConstraint(JpaContextModel parent, UniqueConstraint.Owner owner, XmlUniqueConstraint resourceUniqueConstraint);
 

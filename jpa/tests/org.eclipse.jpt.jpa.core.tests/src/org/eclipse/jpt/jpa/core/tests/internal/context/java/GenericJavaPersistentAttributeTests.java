@@ -24,11 +24,11 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
-import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.resource.java.BasicAnnotation;
@@ -86,7 +86,7 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 		createTestType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		
 		assertEquals("id", persistentAttribute.getName());
 	}
@@ -95,7 +95,7 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 		createTestEntityAnnotatedMethod();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		assertTrue(persistentAttribute.getMapping() instanceof JavaIdMapping);
 
 		persistentAttribute.setMappingKey(null);
@@ -106,7 +106,7 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 		createTestEntityAnnotatedMethod();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		assertTrue(persistentAttribute.getMapping() instanceof JavaIdMapping);
 
 		persistentAttribute.setMappingKey(null);
@@ -117,7 +117,7 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 		createTestType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 
 		assertTrue(persistentAttribute.getMapping().isDefault());
 		assertNotNull(persistentAttribute.getMapping());
@@ -127,7 +127,7 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 		createTestEntityAnnotatedMethod();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 
 		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getMappingKey());
 		
@@ -139,7 +139,7 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 		createTestEntityAnnotatedMethod();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 
 		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getMappingKey());
 		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getDefaultMappingKey());
@@ -149,7 +149,7 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 		createTestType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		assertTrue(persistentAttribute.getMapping().isDefault());
 
 		persistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
@@ -166,7 +166,7 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 		createTestEntityAnnotatedField();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getMappingKey());
 
 		persistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
@@ -183,7 +183,7 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 		createTestEntityAnnotatedMethod();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getMappingKey());
 
 		persistentAttribute.setMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
@@ -199,7 +199,7 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 		createTestEntityAnnotatedField();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getMappingKey());
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
@@ -213,7 +213,7 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 		createTestType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		assertTrue(persistentAttribute.getMapping().isDefault());
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
@@ -227,7 +227,7 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 		createTestEntityAnnotatedField();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		assertEquals(AccessType.FIELD, persistentAttribute.getAccess());
 		assertEquals(AccessType.FIELD, persistentAttribute.getDefaultAccess());
 		assertEquals(null, persistentAttribute.getSpecifiedAccess());
@@ -237,7 +237,7 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 		createTestEntityAnnotatedMethod();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		assertEquals(AccessType.PROPERTY, persistentAttribute.getAccess());
 		assertEquals(AccessType.PROPERTY, persistentAttribute.getDefaultAccess());
 		assertEquals(null, persistentAttribute.getSpecifiedAccess());
@@ -249,7 +249,7 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 
 		JavaResourceField resourceField = getJavaPersistentType().getJavaResourceType().getFields().iterator().next();
 		
-		JavaModifiablePersistentAttribute attribute = getJavaPersistentType().getAttributeNamed("foo");
+		JavaSpecifiedPersistentAttribute attribute = getJavaPersistentType().getAttributeNamed("foo");
 		assertTrue(attribute.isFor(resourceField));
 	}
 	
@@ -260,7 +260,7 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 		
 		JavaResourceMethod resourceGetter = methods.next();
 		JavaResourceMethod resourceSetter = methods.next();
-		JavaModifiablePersistentAttribute attribute = getJavaPersistentType().getAttributeNamed("foo");
+		JavaSpecifiedPersistentAttribute attribute = getJavaPersistentType().getAttributeNamed("foo");
 	
 		assertTrue(attribute.isFor(resourceGetter, resourceSetter));
 	}
@@ -325,13 +325,13 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 				IterableTools.get(getPersistenceUnit().getClassRefs(), 1).getJavaPersistentType();
 		
 		// generic field
-		JavaModifiablePersistentAttribute genericAttribute = superclassPT.getAttributeNamed("genericField");
+		JavaSpecifiedPersistentAttribute genericAttribute = superclassPT.getAttributeNamed("genericField");
 		assertEquals("java.lang.Number", genericAttribute.getTypeName());
 		assertEquals("java.lang.Number", genericAttribute.getTypeName(superclassPT));
 		assertEquals("java.lang.Long", genericAttribute.getTypeName(subclassPT));
 		
 		// nongeneric field
-		JavaModifiablePersistentAttribute nongenericAttribute = superclassPT.getAttributeNamed("nongenericField");
+		JavaSpecifiedPersistentAttribute nongenericAttribute = superclassPT.getAttributeNamed("nongenericField");
 		assertEquals("java.lang.Number", nongenericAttribute.getTypeName());
 		assertEquals("java.lang.Number", nongenericAttribute.getTypeName(superclassPT));
 		assertEquals("java.lang.Number", nongenericAttribute.getTypeName(subclassPT));

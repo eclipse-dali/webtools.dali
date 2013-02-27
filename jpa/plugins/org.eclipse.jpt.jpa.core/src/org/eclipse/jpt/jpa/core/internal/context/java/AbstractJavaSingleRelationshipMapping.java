@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.jpa.core.context.FetchType;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.NullJavaDerivedIdentity2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaDerivedIdentity2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
@@ -32,7 +32,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<A extends SingleRela
 	protected final JavaDerivedIdentity2_0 derivedIdentity;
 
 
-	protected AbstractJavaSingleRelationshipMapping(JavaModifiablePersistentAttribute parent) {
+	protected AbstractJavaSingleRelationshipMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 		this.specifiedOptional = this.buildSpecifiedOptional();
 		this.derivedIdentity = this.buildDerivedIdentity();

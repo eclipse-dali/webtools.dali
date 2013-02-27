@@ -37,7 +37,7 @@ import org.eclipse.graphiti.mm.pictograms.Anchor;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.RemoveAttributeFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.JPACreateFactory;
@@ -96,7 +96,7 @@ public class RemoveAttributeFeatureTest {
 		expect(featureProvider.decreaseAttribsNum(pictogramElement)).andReturn(0);
 		expect(featureProvider.getKeyForBusinessObject(isA(Object.class))).andReturn("");
 		expect(featureProvider.remove("")).andReturn(null);
-		expect(featureProvider.getRelationRelatedToAttribute(isA(JavaModifiablePersistentAttribute.class))).andReturn(null);
+		expect(featureProvider.getRelationRelatedToAttribute(isA(JavaSpecifiedPersistentAttribute.class))).andReturn(null);
 		replay(featureProvider);
 		
 		context = EasyMock.createMock(IRemoveContext.class);

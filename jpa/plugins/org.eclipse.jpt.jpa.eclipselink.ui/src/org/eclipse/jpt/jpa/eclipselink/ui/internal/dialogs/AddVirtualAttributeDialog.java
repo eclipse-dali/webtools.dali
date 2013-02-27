@@ -38,7 +38,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
@@ -68,7 +68,7 @@ import com.ibm.icu.text.Collator;
 public class AddVirtualAttributeDialog extends StatusDialog {
 
 	private EclipseLinkOrmPersistentType persistentType;
-	private OrmModifiablePersistentAttribute addedAttribute;
+	private OrmSpecifiedPersistentAttribute addedAttribute;
 	
 	private Button attributeTypeBrowseButton;
 	private Button targetTypeBrowserButton;
@@ -380,7 +380,7 @@ public class AddVirtualAttributeDialog extends StatusDialog {
 		super.okPressed();
 	}
 
-	public OrmModifiablePersistentAttribute openAndReturnAttribute() {
+	public OrmSpecifiedPersistentAttribute openAndReturnAttribute() {
 		super.open();
 		return this.addedAttribute;
 	}

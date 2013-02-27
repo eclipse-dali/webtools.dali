@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
@@ -78,7 +78,7 @@ public class EmbedSingleObjectFeature extends AbstractCreateConnectionFeature {
 		JavaPersistentType embeddingEntity = (JavaPersistentType)getPersistentType(context.getSourceAnchor());
 		JavaPersistentType embeddable = (JavaPersistentType)getPersistentType(context.getTargetAnchor());
 		
-		JavaModifiablePersistentAttribute embeddedAttribute = JPAEditorUtil.addAnnotatedAttribute(getFeatureProvider(), embeddingEntity, embeddable, false, null);
+		JavaSpecifiedPersistentAttribute embeddedAttribute = JPAEditorUtil.addAnnotatedAttribute(getFeatureProvider(), embeddingEntity, embeddable, false, null);
 		embeddedAttribute.setMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		embeddedAttribute.getResourceAttribute().addAnnotation(EmbeddedAnnotation.ANNOTATION_NAME);
 		

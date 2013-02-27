@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaAttributeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkStructureMapping2_3;
@@ -20,7 +20,7 @@ public class JavaEclipseLinkStructureMapping2_3
 	implements EclipseLinkStructureMapping2_3
 {
 
-	public JavaEclipseLinkStructureMapping2_3(JavaModifiablePersistentAttribute parent) {
+	public JavaEclipseLinkStructureMapping2_3(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 	}
 

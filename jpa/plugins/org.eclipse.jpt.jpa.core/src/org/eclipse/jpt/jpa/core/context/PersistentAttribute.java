@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 
 /**
  * Context persistent <em>attribute</em> (field or property).
@@ -67,7 +67,7 @@ public interface PersistentAttribute
 	/**
 	 * Return the attribute's mapping. This is never <code>null</code>
 	 * (although, it may be a <em>null</em> mapping).
-	 * Set the mapping via {@link ModifiablePersistentAttribute#setMappingKey(String)}.
+	 * Set the mapping via {@link SpecifiedPersistentAttribute#setMappingKey(String)}.
 	 */
 	AttributeMapping getMapping();
 		String MAPPING_PROPERTY = "mapping"; //$NON-NLS-1$
@@ -142,5 +142,5 @@ public interface PersistentAttribute
 	 */
 	boolean isVirtual();
 
-	JavaModifiablePersistentAttribute getJavaPersistentAttribute();
+	JavaSpecifiedPersistentAttribute getJavaPersistentAttribute();
 }

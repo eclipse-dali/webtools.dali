@@ -14,13 +14,13 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.Accessor;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentAttribute;
 
 /**
  * Generic Java persistent attribute
  */
 public class GenericJavaPersistentAttribute
-	extends AbstractJavaModifiablePersistentAttribute
+	extends AbstractJavaPersistentAttribute
 {
 
 	public GenericJavaPersistentAttribute(PersistentType parent, JavaResourceField resourceField) {

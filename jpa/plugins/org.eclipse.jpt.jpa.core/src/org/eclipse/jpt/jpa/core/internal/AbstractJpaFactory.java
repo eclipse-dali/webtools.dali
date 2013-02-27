@@ -69,7 +69,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaOverrideRelationship;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
@@ -213,15 +213,15 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaPersistentType(owner, jrt);
 	}
 
-	public JavaModifiablePersistentAttribute buildJavaPersistentAttribute(PersistentType parent, Accessor accessor) {
+	public JavaSpecifiedPersistentAttribute buildJavaPersistentAttribute(PersistentType parent, Accessor accessor) {
 		return new GenericJavaPersistentAttribute(parent, accessor);
 	}
 
-	public JavaModifiablePersistentAttribute buildJavaPersistentField(PersistentType parent, JavaResourceField resourceField) {
+	public JavaSpecifiedPersistentAttribute buildJavaPersistentField(PersistentType parent, JavaResourceField resourceField) {
 		return new GenericJavaPersistentAttribute(parent, resourceField);
 	}
 
-	public JavaModifiablePersistentAttribute buildJavaPersistentProperty(PersistentType parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
+	public JavaSpecifiedPersistentAttribute buildJavaPersistentProperty(PersistentType parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
 		return new GenericJavaPersistentAttribute(parent, resourceGetter, resourceSetter);
 	}
 
@@ -277,47 +277,47 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaSecondaryTable(parent, owner, tableAnnotation);
 	}
 	
-	public JavaBasicMapping buildJavaBasicMapping(JavaModifiablePersistentAttribute parent) {
+	public JavaBasicMapping buildJavaBasicMapping(JavaSpecifiedPersistentAttribute parent) {
 		return new GenericJavaBasicMapping(parent);
 	}
 	
-	public JavaEmbeddedIdMapping buildJavaEmbeddedIdMapping(JavaModifiablePersistentAttribute parent) {
+	public JavaEmbeddedIdMapping buildJavaEmbeddedIdMapping(JavaSpecifiedPersistentAttribute parent) {
 		return new GenericJavaEmbeddedIdMapping(parent);
 	}
 	
-	public JavaEmbeddedMapping buildJavaEmbeddedMapping(JavaModifiablePersistentAttribute parent) {
+	public JavaEmbeddedMapping buildJavaEmbeddedMapping(JavaSpecifiedPersistentAttribute parent) {
 		return new GenericJavaEmbeddedMapping(parent);
 	}
 	
-	public JavaIdMapping buildJavaIdMapping(JavaModifiablePersistentAttribute parent) {
+	public JavaIdMapping buildJavaIdMapping(JavaSpecifiedPersistentAttribute parent) {
 		return new GenericJavaIdMapping(parent);
 	}
 	
-	public JavaManyToManyMapping buildJavaManyToManyMapping(JavaModifiablePersistentAttribute parent) {
+	public JavaManyToManyMapping buildJavaManyToManyMapping(JavaSpecifiedPersistentAttribute parent) {
 		return new GenericJavaManyToManyMapping(parent);
 	}
 	
-	public JavaManyToOneMapping buildJavaManyToOneMapping(JavaModifiablePersistentAttribute parent) {
+	public JavaManyToOneMapping buildJavaManyToOneMapping(JavaSpecifiedPersistentAttribute parent) {
 		return new GenericJavaManyToOneMapping(parent);
 	}
 	
-	public JavaOneToManyMapping buildJavaOneToManyMapping(JavaModifiablePersistentAttribute parent) {
+	public JavaOneToManyMapping buildJavaOneToManyMapping(JavaSpecifiedPersistentAttribute parent) {
 		return new GenericJavaOneToManyMapping(parent);
 	}
 	
-	public JavaOneToOneMapping buildJavaOneToOneMapping(JavaModifiablePersistentAttribute parent) {
+	public JavaOneToOneMapping buildJavaOneToOneMapping(JavaSpecifiedPersistentAttribute parent) {
 		return new GenericJavaOneToOneMapping(parent);
 	}
 	
-	public JavaTransientMapping buildJavaTransientMapping(JavaModifiablePersistentAttribute parent) {
+	public JavaTransientMapping buildJavaTransientMapping(JavaSpecifiedPersistentAttribute parent) {
 		return new GenericJavaTransientMapping(parent);
 	}
 	
-	public JavaVersionMapping buildJavaVersionMapping(JavaModifiablePersistentAttribute parent) {
+	public JavaVersionMapping buildJavaVersionMapping(JavaSpecifiedPersistentAttribute parent) {
 		return new GenericJavaVersionMapping(parent);
 	}
 	
-	public JavaAttributeMapping buildJavaNullAttributeMapping(JavaModifiablePersistentAttribute parent) {
+	public JavaAttributeMapping buildJavaNullAttributeMapping(JavaSpecifiedPersistentAttribute parent) {
 		return new GenericJavaNullAttributeMapping(parent);
 	}
 	

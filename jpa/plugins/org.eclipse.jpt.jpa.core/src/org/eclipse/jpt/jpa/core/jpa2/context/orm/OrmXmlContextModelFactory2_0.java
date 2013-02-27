@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.jpa2.context.orm;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
@@ -39,7 +39,7 @@ public interface OrmXmlContextModelFactory2_0
 	
 	OrmDerivedIdentity2_0 buildOrmDerivedIdentity(OrmSingleRelationshipMapping2_0 parent);
 	
-	OrmElementCollectionMapping2_0 buildOrmElementCollectionMapping2_0(OrmModifiablePersistentAttribute parent, XmlElementCollection resourceMapping);
+	OrmElementCollectionMapping2_0 buildOrmElementCollectionMapping2_0(OrmSpecifiedPersistentAttribute parent, XmlElementCollection resourceMapping);
 	
 	Cacheable2_0 buildOrmCacheable(OrmCacheableReference2_0 parent);
 	

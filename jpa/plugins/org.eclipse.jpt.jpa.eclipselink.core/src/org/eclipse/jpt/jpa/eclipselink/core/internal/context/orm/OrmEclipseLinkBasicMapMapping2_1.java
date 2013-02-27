@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import java.util.List;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasicMap;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -19,7 +19,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public class OrmEclipseLinkBasicMapMapping2_1
 	extends AbstractOrmEclipseLinkBasicMapMapping
 {
-	public OrmEclipseLinkBasicMapMapping2_1(OrmModifiablePersistentAttribute parent, XmlBasicMap xmlMapping) {
+	public OrmEclipseLinkBasicMapMapping2_1(OrmSpecifiedPersistentAttribute parent, XmlBasicMap xmlMapping) {
 		super(parent, xmlMapping);
 	}
 

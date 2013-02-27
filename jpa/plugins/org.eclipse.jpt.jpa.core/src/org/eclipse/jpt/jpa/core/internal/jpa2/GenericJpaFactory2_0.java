@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.jpa.core.internal.AbstractJpaFactory;
@@ -119,7 +119,7 @@ public class GenericJpaFactory2_0
 		return new GenericJavaDerivedIdentity2_0(parent);
 	}
 
-	public JavaElementCollectionMapping2_0 buildJavaElementCollectionMapping2_0(JavaModifiablePersistentAttribute parent) {
+	public JavaElementCollectionMapping2_0 buildJavaElementCollectionMapping2_0(JavaSpecifiedPersistentAttribute parent) {
 		return new GenericJavaElementCollectionMapping2_0(parent);
 	}
 

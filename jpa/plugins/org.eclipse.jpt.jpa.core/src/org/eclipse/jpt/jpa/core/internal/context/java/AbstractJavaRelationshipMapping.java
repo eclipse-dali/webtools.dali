@@ -18,12 +18,12 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.FetchType;
-import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappingRelationship;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaCascade;
@@ -54,7 +54,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 	protected FetchType defaultFetch;
 
 
-	protected AbstractJavaRelationshipMapping(JavaModifiablePersistentAttribute parent) {
+	protected AbstractJavaRelationshipMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 		this.specifiedTargetEntity = this.buildSpecifiedTargetEntity();
 		this.relationship = this.buildRelationship();
@@ -269,11 +269,11 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 	}
 	
 	protected String getTargetEntityIdAttributeName() {
-		ModifiablePersistentAttribute attribute = this.getTargetEntityIdAttribute();
+		SpecifiedPersistentAttribute attribute = this.getTargetEntityIdAttribute();
 		return (attribute == null) ? null : attribute.getName();
 	}
 
-	protected ModifiablePersistentAttribute getTargetEntityIdAttribute() {
+	protected SpecifiedPersistentAttribute getTargetEntityIdAttribute() {
 		Entity entity = this.getResolvedTargetEntity();
 		return (entity == null) ? null : entity.getIdAttribute();
 	}

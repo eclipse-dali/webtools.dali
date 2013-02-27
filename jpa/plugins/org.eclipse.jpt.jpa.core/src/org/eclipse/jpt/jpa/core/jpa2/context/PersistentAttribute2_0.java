@@ -13,7 +13,7 @@ import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 
 /**
  * JPA 2.0
- * Context persistent <em>attribute</em> (field or property).
+ * context persistent <em>attribute</em> (field or property).
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching

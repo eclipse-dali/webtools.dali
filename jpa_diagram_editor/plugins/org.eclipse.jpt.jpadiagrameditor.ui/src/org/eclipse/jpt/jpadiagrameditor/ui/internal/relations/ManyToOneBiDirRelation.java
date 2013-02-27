@@ -15,7 +15,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.relations;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.propertypage.JPADiagramPropertyPage;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
@@ -40,22 +40,22 @@ public class ManyToOneBiDirRelation  extends ManyToOneRelation implements IBidir
 	}	
 
 	@Override
-	public JavaModifiablePersistentAttribute getOwnerAnnotatedAttribute() {
+	public JavaSpecifiedPersistentAttribute getOwnerAnnotatedAttribute() {
 		return ownerAnnotatedAttribute;
 	}
 
 	@Override
-	public void setOwnerAnnotatedAttribute(	JavaModifiablePersistentAttribute ownerAnnotatedAttribute) {
+	public void setOwnerAnnotatedAttribute(	JavaSpecifiedPersistentAttribute ownerAnnotatedAttribute) {
 		this.ownerAnnotatedAttribute = ownerAnnotatedAttribute;
 	}
 
 	@Override
-	public JavaModifiablePersistentAttribute getInverseAnnotatedAttribute() {
+	public JavaSpecifiedPersistentAttribute getInverseAnnotatedAttribute() {
 		return inverseAnnotatedAttribute;
 	}
 
 	@Override
-	public void setInverseAnnotatedAttribute(JavaModifiablePersistentAttribute inverseAnnotatedAttribute) {
+	public void setInverseAnnotatedAttribute(JavaSpecifiedPersistentAttribute inverseAnnotatedAttribute) {
 		this.inverseAnnotatedAttribute = inverseAnnotatedAttribute;
 	}
 

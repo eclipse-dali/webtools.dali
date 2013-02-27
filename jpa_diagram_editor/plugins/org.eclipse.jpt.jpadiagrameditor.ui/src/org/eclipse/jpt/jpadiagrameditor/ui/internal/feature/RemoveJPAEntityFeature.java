@@ -33,7 +33,7 @@ import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
@@ -66,7 +66,7 @@ public class RemoveJPAEntityFeature extends DefaultRemoveFeature {
     		for (int i = lst.size() - 1; i >= 0; i--) {
     			Shape textShape = lst.get(i);
     			Object o = fp.getBusinessObjectForPictogramElement(textShape);
-    			if ((o != null) && (o instanceof JavaModifiablePersistentAttribute)) {
+    			if ((o != null) && (o instanceof JavaSpecifiedPersistentAttribute)) {
     				shapesForDeletion.add(textShape);
     			}
     		}

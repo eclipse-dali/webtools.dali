@@ -50,7 +50,7 @@ import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.resource.java.OwnableRelationshipMappingAnnotation;
@@ -68,7 +68,7 @@ import org.eclipse.ui.IWorkbenchSite;
 
 public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 
-	protected Set<JavaModifiablePersistentAttribute> ats = null;
+	protected Set<JavaSpecifiedPersistentAttribute> ats = null;
 	protected boolean hasNameAnnotation = false;
 	
 	public RefactorEntityFeature(IFeatureProvider fp) {
@@ -193,10 +193,10 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 				GraphicsUpdater.updateHeader((ContainerShape)pict, newJPT.getSimpleName());
 				linkNewElement(oldJPT, pict, fp, newJPT);
 				
-				for(JavaModifiablePersistentAttribute oldAttr : oldJPT.getAttributes()){
+				for(JavaSpecifiedPersistentAttribute oldAttr : oldJPT.getAttributes()){
 					PictogramElement attrPict = fp.getPictogramElementForBusinessObject(oldAttr);
 					if(attrPict != null){
-						for(JavaModifiablePersistentAttribute newAttr : newJPT.getAttributes()){
+						for(JavaSpecifiedPersistentAttribute newAttr : newJPT.getAttributes()){
 							if(newAttr.getName().equals(oldAttr.getName())){
 								linkNewElement(oldAttr, attrPict, fp, newAttr);
 							}
@@ -284,18 +284,18 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 			s.release();
 			if ((ats == null) || hasNameAnnotation)
 				return;
-			final Iterator<JavaModifiablePersistentAttribute> iter = ats.iterator();
+			final Iterator<JavaSpecifiedPersistentAttribute> iter = ats.iterator();
 			Runnable r = new Runnable() {
 				public void run() {
 					Hashtable<String, String> atOldToNewName = new Hashtable<String, String>();
-					Set<JavaModifiablePersistentAttribute> newSelfAts = new HashSet<JavaModifiablePersistentAttribute>();
+					Set<JavaSpecifiedPersistentAttribute> newSelfAts = new HashSet<JavaSpecifiedPersistentAttribute>();
 					while (iter.hasNext()) {
-						JavaModifiablePersistentAttribute at = iter.next();
+						JavaSpecifiedPersistentAttribute at = iter.next();
 						JavaPersistentType atParent = (JavaPersistentType) at.getParent();
 						ICompilationUnit cu = getFeatureProvider().getCompilationUnit(atParent);
 						if (!cu.exists()) {
-							at = (JavaModifiablePersistentAttribute)at.getPersistenceUnit().getPersistentType(newJptName).getAttributeNamed(at.getName());
-							JavaModifiablePersistentAttribute newAt = null;
+							at = (JavaSpecifiedPersistentAttribute)at.getPersistenceUnit().getPersistentType(newJptName).getAttributeNamed(at.getName());
+							JavaSpecifiedPersistentAttribute newAt = null;
 							try {
 								newAt = JpaArtifactFactory.instance().renameAttribute(atParent, at.getName(), JPAEditorUtil.returnSimpleName(newJptName), newJptName, getFeatureProvider());
 							} catch (InterruptedException e) {
@@ -311,9 +311,9 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 							}
 						}
 					}
-					Iterator<JavaModifiablePersistentAttribute> itr =  newSelfAts.iterator();
+					Iterator<JavaSpecifiedPersistentAttribute> itr =  newSelfAts.iterator();
 					while (itr.hasNext()) {
-						JavaModifiablePersistentAttribute at = itr.next();
+						JavaSpecifiedPersistentAttribute at = itr.next();
 						JavaAttributeMapping m = at.getMapping();
 						Annotation mappingAnnotation = m.getMappingAnnotation();
 						if (mappingAnnotation == null)

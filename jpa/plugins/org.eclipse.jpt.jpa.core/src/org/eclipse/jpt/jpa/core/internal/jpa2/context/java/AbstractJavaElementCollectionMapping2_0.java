@@ -43,7 +43,7 @@ import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
-import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
@@ -64,7 +64,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaLobConverter;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -90,7 +90,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.ManyToOneRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.ModifiablePersistentAttribute2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAssociationOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAttributeOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionTable2_0;
@@ -169,7 +169,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	protected static final Iterable<JavaConverter.Adapter> MAP_KEY_CONVERTER_ADAPTERS = IterableTools.iterable(MAP_KEY_CONVERTER_ADAPTER_ARRAY);
 
 
-	protected AbstractJavaElementCollectionMapping2_0(JavaModifiablePersistentAttribute parent) {
+	protected AbstractJavaElementCollectionMapping2_0(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 		this.specifiedTargetClass = this.buildSpecifiedTargetClass();
 		this.specifiedFetch = this.buildSpecifiedFetch();
@@ -1407,7 +1407,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 
 	@Override
 	protected String getMetamodelFieldTypeName() {
-		return ((ModifiablePersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldTypeName();
+		return ((SpecifiedPersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldTypeName();
 	}
 
 	@Override
@@ -1422,7 +1422,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	protected void addMetamodelFieldMapKeyTypeArgumentNameTo(ArrayList<String> typeArgumentNames) {
-		String keyTypeName = ((ModifiablePersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldMapKeyTypeName();
+		String keyTypeName = ((SpecifiedPersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldMapKeyTypeName();
 		if (keyTypeName != null) {
 			typeArgumentNames.add(keyTypeName);
 		}
@@ -1570,7 +1570,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	protected void validateAttributeType(List<IMessage> messages, IReporter reporter) {
-		JavaModifiablePersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
+		JavaSpecifiedPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
 		if ((javaAttribute != null) && !javaAttribute.getJpaContainerDefinition().isContainer()) {
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
@@ -1800,7 +1800,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 			return AbstractJavaElementCollectionMapping2_0.this.getCollectionTable();
 		}
 
-		protected JavaModifiablePersistentAttribute getPersistentAttribute() {
+		protected JavaSpecifiedPersistentAttribute getPersistentAttribute() {
 			return AbstractJavaElementCollectionMapping2_0.this.getPersistentAttribute();
 		}
 	}
@@ -1967,7 +1967,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 			return AbstractJavaElementCollectionMapping2_0.this.getName();
 		}
 
-		protected ModifiablePersistentAttribute getPersistentAttribute() {
+		protected SpecifiedPersistentAttribute getPersistentAttribute() {
 			return AbstractJavaElementCollectionMapping2_0.this.getPersistentAttribute();
 		}
 

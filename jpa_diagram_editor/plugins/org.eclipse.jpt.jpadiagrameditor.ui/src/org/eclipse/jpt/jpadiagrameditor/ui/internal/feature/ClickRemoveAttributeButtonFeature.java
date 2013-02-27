@@ -34,7 +34,7 @@ import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandExecutor;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsId2_0Annotation;
@@ -185,7 +185,7 @@ public class ClickRemoveAttributeButtonFeature extends DefaultDeleteFeature {
 	 */
 	private boolean hasSameEmbeddedId(JavaPersistentType jpt, String fqn){
 		JpaArtifactFactory jpaFactory = JpaArtifactFactory.instance();
-		for(JavaModifiablePersistentAttribute jpa : ((JavaPersistentType)jpt).getAttributes()){
+		for(JavaSpecifiedPersistentAttribute jpa : ((JavaPersistentType)jpt).getAttributes()){
 			if(jpaFactory.isEmbeddedId(jpa) && JPAEditorUtil.getAttributeTypeNameWithGenerics(jpa).equals(fqn)){
 				return true;
 			}
@@ -203,7 +203,7 @@ public class ClickRemoveAttributeButtonFeature extends DefaultDeleteFeature {
 	 */
 	private void deleteFieldFromCompositePKClass(String attrName,
 			JavaPersistentType jpt) {
-		JavaModifiablePersistentAttribute jpa = jpt.getAttributeNamed(attrName);
+		JavaSpecifiedPersistentAttribute jpa = jpt.getAttributeNamed(attrName);
 		HashSet<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(jpa);
 		if(annotations.contains(JPAEditorConstants.ANNOTATION_ONE_TO_ONE) || annotations.contains(JPAEditorConstants.ANNOTATION_MANY_TO_ONE)){
 			if(annotations.contains(JPAEditorConstants.ANNOTATION_ID)){
@@ -221,14 +221,14 @@ public class ClickRemoveAttributeButtonFeature extends DefaultDeleteFeature {
 	 * @param jpa - the attribute to be deleted
 	 */
 	private void deleteFieldFromEmbeddedIDCompositePK(JavaPersistentType jpt,
-			JavaModifiablePersistentAttribute jpa) {
+			JavaSpecifiedPersistentAttribute jpa) {
 		Annotation ann = jpa.getResourceAttribute().getAnnotation(MapsId2_0Annotation.ANNOTATION_NAME);
 		if(ann != null) {
 			String attribName = ((MapsId2_0Annotation)ann).getValue();
 			if(attribName == null)
 				return;
 			JpaArtifactFactory jpaFactory = JpaArtifactFactory.instance();
-			for(JavaModifiablePersistentAttribute jpa1 : jpt.getAttributes()){
+			for(JavaSpecifiedPersistentAttribute jpa1 : jpt.getAttributes()){
 				if(jpaFactory.isEmbeddedId(jpa1)){
 					String fqn = JPAEditorUtil.getAttributeTypeNameWithGenerics(jpa1);
 					if(isDeleteAttributeAllowed(jpt, fqn)){
@@ -276,7 +276,7 @@ public class ClickRemoveAttributeButtonFeature extends DefaultDeleteFeature {
 	private boolean isDeleteAttributeAllowed(JavaPersistentType jpt, String fqn){
 		Set<JavaPersistentType> jpts = getAllJPTWithSameIDClassOrEmbeddedId(jpt, fqn);
 		for(JavaPersistentType perType : jpts){
-			for(JavaModifiablePersistentAttribute jpa : perType.getAttributes()){
+			for(JavaSpecifiedPersistentAttribute jpa : perType.getAttributes()){
 				HashSet<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(jpa);
 				if((annotations.contains(JPAEditorConstants.ANNOTATION_ONE_TO_ONE) || annotations.contains(JPAEditorConstants.ANNOTATION_MANY_TO_ONE)) &&
 						(annotations.contains(JPAEditorConstants.ANNOTATION_ID) || annotations.contains(JPAEditorConstants.ANNOTATION_MAPS_ID))){

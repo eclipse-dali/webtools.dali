@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBaseEmbeddedMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -57,7 +57,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<X extends AbstractXmlEmbedd
 	protected Embeddable targetEmbeddable;
 
 
-	protected AbstractOrmBaseEmbeddedMapping(OrmModifiablePersistentAttribute parent, X xmlMapping) {
+	protected AbstractOrmBaseEmbeddedMapping(OrmSpecifiedPersistentAttribute parent, X xmlMapping) {
 		super(parent, xmlMapping);
 		this.attributeOverrideContainer = this.buildAttributeOverrideContainer();
 	}
@@ -303,7 +303,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<X extends AbstractXmlEmbedd
 			return AbstractOrmBaseEmbeddedMapping.this.getValidationTextRange();
 		}
 
-		protected OrmModifiablePersistentAttribute getPersistentAttribute() {
+		protected OrmSpecifiedPersistentAttribute getPersistentAttribute() {
 			return AbstractOrmBaseEmbeddedMapping.this.getPersistentAttribute();
 		}
 	}

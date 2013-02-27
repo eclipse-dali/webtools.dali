@@ -29,7 +29,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.graphiti.features.context.ICustomContext;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.RefactorAttributeTypeFeature;
@@ -84,7 +84,7 @@ public class RefactorAttributeTypeFeatureTest {
 	public void testAttributeUtils(){
 		PersistenceUnit pu = JpaArtifactFactory.instance().getPersistenceUnit(jpaProject);
 		JavaPersistentType jpt = (JavaPersistentType)pu.getPersistentType("org.eclipse.Ent");
-		JavaModifiablePersistentAttribute at = jpt.getAttributeNamed("id");
+		JavaSpecifiedPersistentAttribute at = jpt.getAttributeNamed("id");
 		List<String> lst = JpaArtifactFactory.instance().getAnnotationStrings(at);
 		assertEquals(1, lst.size());
 		assertTrue(lst.contains("@Id"));

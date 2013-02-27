@@ -15,7 +15,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
-import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.ui.selection.JpaSelectionManager;
 import org.eclipse.ui.ISources;
 import org.eclipse.ui.IViewPart;
@@ -27,14 +27,14 @@ import org.eclipse.ui.services.IEvaluationService;
 
 /**
  * This handler changes the mapping type of the selected
- * {@link ModifiablePersistentAttribute}(s).
+ * {@link SpecifiedPersistentAttribute}(s).
  * It will be invoked by the mapping action dynamically created by the
  * {@link org.eclipse.jpt.jpa.ui.internal.menus.PersistentAttributeMapAsContribution}.
  * <p>
  * See <code>org.eclipse.jpt.jpa.ui/plugin.xml</code>.
  * 
  * @see org.eclipse.jpt.jpa.ui.internal.menus.PersistentAttributeMapAsContribution
- * @see ModifiablePersistentAttribute
+ * @see SpecifiedPersistentAttribute
  * @version 2.0
  * @since 2.0
  */
@@ -44,7 +44,7 @@ public class PersistentAttributeMapAsHandler
 {
 	/**
 	 * The unique identifier of the "Map As" command used for
-	 * {@link ModifiablePersistentAttribute}(s).
+	 * {@link SpecifiedPersistentAttribute}(s).
 	 * <p>
 	 * See <code>org.eclipse.jpt.jpa.ui/plugin.xml</code>.
 	 */
@@ -52,7 +52,7 @@ public class PersistentAttributeMapAsHandler
 
 	/**
 	 * The unique identifier of the "Map As" command parameter used for
-	 * {@link ModifiablePersistentAttribute}(s).
+	 * {@link SpecifiedPersistentAttribute}(s).
 	 * <p>
 	 * See <code>org.eclipse.jpt.jpa.ui/plugin.xml</code>.
 	 */
@@ -73,7 +73,7 @@ public class PersistentAttributeMapAsHandler
 		String mappingKey = event.getParameter(SPECIFIED_MAPPING_COMMAND_PARAMETER_ID);
 		Object[] items = selection.toArray();
 		for (Object item : items) {
-			ModifiablePersistentAttribute attribute = (ModifiablePersistentAttribute) item;
+			SpecifiedPersistentAttribute attribute = (SpecifiedPersistentAttribute) item;
 			attribute.setMappingKey(mappingKey);
 		}
 		this.setJpaSelection(items);
@@ -82,7 +82,7 @@ public class PersistentAttributeMapAsHandler
 
 	/**
 	 * When we are changing an attribute mapping in the <code>orm.xml</code>
-	 * file (by calling {@link ModifiablePersistentAttribute#setMappingKey(String)},
+	 * file (by calling {@link SpecifiedPersistentAttribute#setMappingKey(String)},
 	 * the following happens synchronously during the call:<ul>
 	 * <li>The mapping (persistent attribute) is removed from the XML file.
 	 * <li>The cursor moves to the empty position where the mapping used to be,
@@ -111,7 +111,7 @@ public class PersistentAttributeMapAsHandler
 		if (items.length == 1) {
 			JpaSelectionManager mgr = this.getJpaSelectionManager();
 			mgr.setSelection(null);
-			mgr.setSelection((ModifiablePersistentAttribute) items[0]);
+			mgr.setSelection((SpecifiedPersistentAttribute) items[0]);
 		}
 	}
 
@@ -143,12 +143,12 @@ public class PersistentAttributeMapAsHandler
 		String commonDefaultKey = null;
 		String commonSpecifiedKey = null;
 		for (Object obj : selection.toArray()) {
-			if (! (obj instanceof ModifiablePersistentAttribute)) {
+			if (! (obj instanceof SpecifiedPersistentAttribute)) {
 				//oddly enough, you have to check instanceof here, seems like a bug in the framework
 				return false;
 			}
 
-			ModifiablePersistentAttribute persistentAttribute = (ModifiablePersistentAttribute) obj;
+			SpecifiedPersistentAttribute persistentAttribute = (SpecifiedPersistentAttribute) obj;
 			if (persistentAttribute.getMapping().isDefault()) {
 				if (commonSpecifiedKey != null) {
 					return false;

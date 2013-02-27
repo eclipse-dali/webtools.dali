@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddedIdMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.context.EmbeddedIdMapping2_0;
 import org.eclipse.jpt.jpa.core.resource.java.EmbeddedIdAnnotation;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
@@ -37,7 +37,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 	protected boolean derived;
 
 
-	protected AbstractJavaEmbeddedIdMapping(JavaModifiablePersistentAttribute parent) {
+	protected AbstractJavaEmbeddedIdMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 	}
 

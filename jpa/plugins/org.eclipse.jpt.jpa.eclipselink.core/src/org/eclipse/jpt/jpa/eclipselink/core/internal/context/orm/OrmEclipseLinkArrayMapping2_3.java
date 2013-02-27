@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmColumnMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmLobConverter;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -72,7 +72,7 @@ public class OrmEclipseLinkArrayMapping2_3
 	protected final OrmEclipseLinkConverterContainer converterContainer;
 
 
-	public OrmEclipseLinkArrayMapping2_3(OrmModifiablePersistentAttribute parent, XmlArray xmlMapping) {
+	public OrmEclipseLinkArrayMapping2_3(OrmSpecifiedPersistentAttribute parent, XmlArray xmlMapping) {
 		super(parent, xmlMapping);
 		this.column = this.buildColumn();
 		this.converterContainer = this.buildConverterContainer();

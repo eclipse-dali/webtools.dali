@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.menus;
 
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
@@ -21,7 +21,7 @@ import org.eclipse.ui.menus.CommandContributionItemParameter;
 /**
  * This menu contribution is responsible for populating the "Map As" menu with
  * the registered mapping types defined in the {@link JpaPlatformUi} for
- * {@link ModifiablePersistentAttribute}s.
+ * {@link SpecifiedPersistentAttribute}s.
  */
 public class PersistentAttributeMapAsContribution
 	extends MapAsContribution<PersistentAttribute>
@@ -58,7 +58,7 @@ public class PersistentAttributeMapAsContribution
 	
 	@Override
 	protected DefaultMappingUiDefinition getDefaultMappingUiDefinition(JpaPlatformUi jpaPlatformUI, PersistentAttribute node) {
-		return getDefaultMappingUiDefinition(jpaPlatformUI, ((ModifiablePersistentAttribute) node).getDefaultMappingKey(), node.getResourceType());
+		return getDefaultMappingUiDefinition(jpaPlatformUI, ((SpecifiedPersistentAttribute) node).getDefaultMappingKey(), node.getResourceType());
 	}
 	
 	protected DefaultMappingUiDefinition getDefaultMappingUiDefinition(JpaPlatformUi jpaPlatformUI, String defaultMappingKey, JptResourceType resourceType) {

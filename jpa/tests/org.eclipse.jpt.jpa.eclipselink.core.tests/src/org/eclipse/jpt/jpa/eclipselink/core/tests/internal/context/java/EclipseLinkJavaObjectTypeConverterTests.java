@@ -16,8 +16,8 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
-import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConverter;
@@ -116,7 +116,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		createTestEntityWithConvertAndObjectTypeConverter();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		JavaSpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaEclipseLinkBasicMapping basicMapping = (JavaEclipseLinkBasicMapping) persistentAttribute.getMapping();
 		EclipseLinkObjectTypeConverter converter = basicMapping.getConverterContainer().getObjectTypeConverters().iterator().next();
 		
@@ -127,7 +127,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		createTestEntityWithConvertAndObjectTypeConverter();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaEclipseLinkBasicMapping basicMapping = (JavaEclipseLinkBasicMapping) persistentAttribute.getMapping();
 		EclipseLinkObjectTypeConverter converter = basicMapping.getConverterContainer().getObjectTypeConverters().iterator().next();
 		assertEquals("foo", converter.getName());
@@ -157,7 +157,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		createTestEntityWithConvertAndObjectTypeConverter();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 				
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaEclipseLinkBasicMapping basicMapping = (JavaEclipseLinkBasicMapping) persistentAttribute.getMapping();
 		EclipseLinkObjectTypeConverter converter = basicMapping.getConverterContainer().getObjectTypeConverters().iterator().next();
 
@@ -188,7 +188,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		createTestEntityWithConvertAndDataType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaEclipseLinkBasicMapping basicMapping = (JavaEclipseLinkBasicMapping) persistentAttribute.getMapping();
 		EclipseLinkObjectTypeConverter converter = basicMapping.getConverterContainer().getObjectTypeConverters().iterator().next();
 		
@@ -199,7 +199,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		createTestEntityWithConvertAndDataType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaEclipseLinkBasicMapping basicMapping = (JavaEclipseLinkBasicMapping) persistentAttribute.getMapping();
 		EclipseLinkObjectTypeConverter converter = basicMapping.getConverterContainer().getObjectTypeConverters().iterator().next();
 		assertEquals("Foo", converter.getDataType());
@@ -229,7 +229,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		createTestEntityWithConvertAndDataType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 				
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaEclipseLinkBasicMapping basicMapping = (JavaEclipseLinkBasicMapping) persistentAttribute.getMapping();
 		EclipseLinkObjectTypeConverter converter = basicMapping.getConverterContainer().getObjectTypeConverters().iterator().next();
 
@@ -260,7 +260,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		createTestEntityWithConvertAndObjectType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaEclipseLinkBasicMapping basicMapping = (JavaEclipseLinkBasicMapping) persistentAttribute.getMapping();
 		EclipseLinkObjectTypeConverter converter = basicMapping.getConverterContainer().getObjectTypeConverters().iterator().next();
 		
@@ -271,7 +271,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		createTestEntityWithConvertAndObjectType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaEclipseLinkBasicMapping basicMapping = (JavaEclipseLinkBasicMapping) persistentAttribute.getMapping();
 		EclipseLinkObjectTypeConverter converter = basicMapping.getConverterContainer().getObjectTypeConverters().iterator().next();
 		assertEquals("Foo", converter.getObjectType());
@@ -301,7 +301,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		createTestEntityWithConvertAndObjectType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 				
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaEclipseLinkBasicMapping basicMapping = (JavaEclipseLinkBasicMapping) persistentAttribute.getMapping();
 		EclipseLinkObjectTypeConverter converter = basicMapping.getConverterContainer().getObjectTypeConverters().iterator().next();
 
@@ -333,7 +333,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		createTestEntityWithConvertAndObjectTypeConverter();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaEclipseLinkBasicMapping basicMapping = (JavaEclipseLinkBasicMapping) persistentAttribute.getMapping();
 		EclipseLinkObjectTypeConverter converter = basicMapping.getConverterContainer().getObjectTypeConverters().iterator().next();
 		
@@ -392,7 +392,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		createTestEntityWithConvertAndObjectTypeConverter();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaEclipseLinkBasicMapping basicMapping = (JavaEclipseLinkBasicMapping) persistentAttribute.getMapping();
 		EclipseLinkObjectTypeConverter converter = basicMapping.getConverterContainer().getObjectTypeConverters().iterator().next();
 		
@@ -429,7 +429,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		createTestEntityWithConvertAndObjectTypeConverter();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaEclipseLinkBasicMapping basicMapping = (JavaEclipseLinkBasicMapping) persistentAttribute.getMapping();
 		EclipseLinkObjectTypeConverter converter = basicMapping.getConverterContainer().getObjectTypeConverters().iterator().next();
 		
@@ -465,7 +465,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		createTestEntityWithConvertAndObjectTypeConverter();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaEclipseLinkBasicMapping basicMapping = (JavaEclipseLinkBasicMapping) persistentAttribute.getMapping();
 		EclipseLinkObjectTypeConverter converter = basicMapping.getConverterContainer().getObjectTypeConverters().iterator().next();
 		
@@ -524,7 +524,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaEclipseLinkBasicMapping basicMapping = (JavaEclipseLinkBasicMapping) persistentAttribute.getMapping();
 		EclipseLinkObjectTypeConverter converter = basicMapping.getConverterContainer().getObjectTypeConverters().iterator().next();
 		
@@ -547,7 +547,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		createTestEntityWithConvertAndObjectTypeConverter();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaEclipseLinkBasicMapping basicMapping = (JavaEclipseLinkBasicMapping) persistentAttribute.getMapping();
 		EclipseLinkObjectTypeConverter converter = basicMapping.getConverterContainer().getObjectTypeConverters().iterator().next();
 		
@@ -558,7 +558,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		createTestEntityWithConvertAndObjectTypeConverter();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaEclipseLinkBasicMapping basicMapping = (JavaEclipseLinkBasicMapping) persistentAttribute.getMapping();
 		EclipseLinkObjectTypeConverter converter = basicMapping.getConverterContainer().getObjectTypeConverters().iterator().next();
 		assertEquals("bar", converter.getDefaultObjectValue());
@@ -588,7 +588,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		createTestEntityWithConvertAndObjectTypeConverter();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 				
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaEclipseLinkBasicMapping basicMapping = (JavaEclipseLinkBasicMapping) persistentAttribute.getMapping();
 		EclipseLinkObjectTypeConverter converter = basicMapping.getConverterContainer().getObjectTypeConverters().iterator().next();
 
@@ -619,7 +619,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		createTestEntityWithConvertAndObjectTypeConverterConversionValue();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 				
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaEclipseLinkBasicMapping basicMapping = (JavaEclipseLinkBasicMapping) persistentAttribute.getMapping();
 		EclipseLinkObjectTypeConverter converter = basicMapping.getConverterContainer().getObjectTypeConverters().iterator().next();
 

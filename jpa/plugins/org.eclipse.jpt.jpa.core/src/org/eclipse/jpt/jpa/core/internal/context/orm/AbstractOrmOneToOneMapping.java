@@ -13,7 +13,7 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappingRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOneToOneMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.NullOrmOrphanRemoval2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
@@ -31,7 +31,7 @@ public abstract class AbstractOrmOneToOneMapping<X extends XmlOneToOne>
 	protected final OrphanRemovable2_0 orphanRemoval;
 
 
-	protected AbstractOrmOneToOneMapping(OrmModifiablePersistentAttribute parent, X xmlMapping) {
+	protected AbstractOrmOneToOneMapping(OrmSpecifiedPersistentAttribute parent, X xmlMapping) {
 		super(parent, xmlMapping);
 		this.orphanRemoval = this.buildOrphanRemoval();
 	}

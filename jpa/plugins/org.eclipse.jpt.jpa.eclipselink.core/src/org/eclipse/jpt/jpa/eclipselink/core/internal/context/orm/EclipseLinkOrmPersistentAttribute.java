@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkModifiableAccessMethodsContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkPersistentAttributeValidator;
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAttributeMapping;
  * <code>orm.xml</code> persistent attribute
  */
 public class EclipseLinkOrmPersistentAttribute
-	extends AbstractOrmModifiablePersistentAttribute
+	extends AbstractOrmPersistentAttribute
 	implements EclipseLinkModifiableAccessMethodsContainer
 {
 	//TODO defaults from the persistentType if the access is VIRTUAL
@@ -117,7 +117,7 @@ public class EclipseLinkOrmPersistentAttribute
 
 
 	@Override
-	protected JavaModifiablePersistentAttribute getCachedJavaAttribute() {
+	protected JavaSpecifiedPersistentAttribute getCachedJavaAttribute() {
 		if (this.getAccess() == EclipseLinkAccessType.VIRTUAL) {
 			//if VIRTUAL we will always have to build and cache the 'javaAttribute'
 			//we clear out the cached 'javaAttribute in setSpecifiedAccess_() and setDefaultAccess_()

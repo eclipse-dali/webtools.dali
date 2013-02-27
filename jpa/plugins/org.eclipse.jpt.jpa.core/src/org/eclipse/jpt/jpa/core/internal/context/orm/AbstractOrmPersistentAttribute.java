@@ -30,18 +30,18 @@ import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.CollectionMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentType;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
-import org.eclipse.jpt.jpa.core.jpa2.context.ModifiablePersistentAttribute2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAccessHolder;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
@@ -52,9 +52,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 /**
  * <em>specified</em> <code>orm.xml</code> persistent attribute
  */
-public abstract class AbstractOrmModifiablePersistentAttribute
+public abstract class AbstractOrmPersistentAttribute
 	extends AbstractOrmXmlContextModel<OrmPersistentType>
-	implements OrmModifiablePersistentAttribute, ModifiablePersistentAttribute2_0
+	implements OrmSpecifiedPersistentAttribute, SpecifiedPersistentAttribute2_0
 {
 	protected OrmAttributeMapping mapping;  // never null
 
@@ -68,19 +68,19 @@ public abstract class AbstractOrmModifiablePersistentAttribute
 	 * </ul>
 	 * @see #buildJavaPersistentAttribute()
 	 */
-	protected JavaModifiablePersistentAttribute javaPersistentAttribute;
+	protected JavaSpecifiedPersistentAttribute javaPersistentAttribute;
 
 	/**
 	 * If present, this Java attribute's parent is the <code>orm.xml</code>
 	 * type.
 	 */
-	protected JavaModifiablePersistentAttribute cachedJavaPersistentAttribute;
+	protected JavaSpecifiedPersistentAttribute cachedJavaPersistentAttribute;
 
 	protected AccessType specifiedAccess;
 	protected AccessType defaultAccess;
 
 
-	protected AbstractOrmModifiablePersistentAttribute(OrmPersistentType parent, XmlAttributeMapping xmlMapping) {
+	protected AbstractOrmPersistentAttribute(OrmPersistentType parent, XmlAttributeMapping xmlMapping) {
 		super(parent);
 		this.mapping = this.buildMapping(xmlMapping);
 		this.specifiedAccess = this.buildSpecifiedAccess();
@@ -176,11 +176,11 @@ public abstract class AbstractOrmModifiablePersistentAttribute
 
 	// ********** Java persistent attribute **********
 
-	public JavaModifiablePersistentAttribute getJavaPersistentAttribute() {
+	public JavaSpecifiedPersistentAttribute getJavaPersistentAttribute() {
 		return this.javaPersistentAttribute;
 	}
 
-	public JavaModifiablePersistentAttribute resolveJavaPersistentAttribute() {
+	public JavaSpecifiedPersistentAttribute resolveJavaPersistentAttribute() {
 		return this.javaPersistentAttribute;
 	}
 
@@ -196,13 +196,13 @@ public abstract class AbstractOrmModifiablePersistentAttribute
 		return (this.javaPersistentAttribute != null) && this.javaPersistentAttribute.isFor(javaResourceGetter, javaResourceSetter);
 	}
 
-	protected void setJavaPersistentAttribute(JavaModifiablePersistentAttribute javaPersistentAttribute) {
-		JavaModifiablePersistentAttribute old = this.javaPersistentAttribute;
+	protected void setJavaPersistentAttribute(JavaSpecifiedPersistentAttribute javaPersistentAttribute) {
+		JavaSpecifiedPersistentAttribute old = this.javaPersistentAttribute;
 		this.javaPersistentAttribute = javaPersistentAttribute;
 		this.firePropertyChanged(JAVA_PERSISTENT_ATTRIBUTE_PROPERTY, old, javaPersistentAttribute);
 	}
 
-	protected JavaModifiablePersistentAttribute buildJavaPersistentAttribute() {
+	protected JavaSpecifiedPersistentAttribute buildJavaPersistentAttribute() {
 		String name = this.getName();
 		if (name == null) {
 			return null;
@@ -213,7 +213,7 @@ public abstract class AbstractOrmModifiablePersistentAttribute
 		}
 
 		PersistentAttribute pAttribute = javaType.resolveAttribute(name);
-		JavaModifiablePersistentAttribute javaAttribute = (pAttribute == null) ? null : pAttribute.getJavaPersistentAttribute();
+		JavaSpecifiedPersistentAttribute javaAttribute = (pAttribute == null) ? null : pAttribute.getJavaPersistentAttribute();
 		if ((javaAttribute != null) && (javaAttribute.getAccess() == this.getAccess())) {
 			// we only want to cache the Java persistent attribute if we built it
 			this.cachedJavaPersistentAttribute = null;
@@ -228,7 +228,7 @@ public abstract class AbstractOrmModifiablePersistentAttribute
 		return this.getCachedJavaAttribute();
 	}
 
-	protected JavaModifiablePersistentAttribute getCachedJavaAttribute() {
+	protected JavaSpecifiedPersistentAttribute getCachedJavaAttribute() {
 		JavaResourceType javaResourceType = this.getOwningPersistentTypeJavaType().getJavaResourceType();
 		if (javaResourceType == null) {
 			return null; 
@@ -344,12 +344,12 @@ public abstract class AbstractOrmModifiablePersistentAttribute
 		return this.getResourceMethods(javaResourceType, this.buildPersistablePropertyGetterMethodsFilter(javaResourceType));
 	}
 
-	protected JavaModifiablePersistentAttribute buildJavaPersistentField(JavaResourceField javaResourceField) {
+	protected JavaSpecifiedPersistentAttribute buildJavaPersistentField(JavaResourceField javaResourceField) {
 		// pass in our parent orm persistent type as the parent to the cached Java attribute...
 		return this.getJpaFactory().buildJavaPersistentField(this.getOwningPersistentType(), javaResourceField);
 	}
 
-	protected JavaModifiablePersistentAttribute buildJavaPersistentProperty(JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter) {
+	protected JavaSpecifiedPersistentAttribute buildJavaPersistentProperty(JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter) {
 		// pass in our parent orm persistent type as the parent to the cached Java attribute...
 		return this.getJpaFactory().buildJavaPersistentProperty(this.getOwningPersistentType(), javaResourceGetter, javaResourceSetter);
 	}
@@ -426,11 +426,11 @@ public abstract class AbstractOrmModifiablePersistentAttribute
 		return this.getOwningPersistentType().removeAttributeFromXml(this);
 	}
 
-	public OrmModifiablePersistentAttribute addToXml() {
+	public OrmSpecifiedPersistentAttribute addToXml() {
 		throw new UnsupportedOperationException();
 	}
 
-	public OrmModifiablePersistentAttribute addToXml(String mappingKey) {
+	public OrmSpecifiedPersistentAttribute addToXml(String mappingKey) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -441,8 +441,8 @@ public abstract class AbstractOrmModifiablePersistentAttribute
 		return new ContextType(this);
 	}
 
-	public Class<OrmModifiablePersistentAttribute> getType() {
-		return OrmModifiablePersistentAttribute.class;
+	public Class<OrmSpecifiedPersistentAttribute> getType() {
+		return OrmSpecifiedPersistentAttribute.class;
 	}
 
 	public Iterable<JpaStructureNode> getChildren() {
@@ -548,16 +548,16 @@ public abstract class AbstractOrmModifiablePersistentAttribute
 	}
 
 	public String getMetamodelTypeName() {
-		ModifiablePersistentAttribute2_0 javaAttribute = (ModifiablePersistentAttribute2_0) this.javaPersistentAttribute;
+		SpecifiedPersistentAttribute2_0 javaAttribute = (SpecifiedPersistentAttribute2_0) this.javaPersistentAttribute;
 		return (javaAttribute != null) ?
 				javaAttribute.getMetamodelTypeName() :
 				MetamodelField.DEFAULT_TYPE_NAME;
 	}
 
-	protected JavaModifiablePersistentAttribute.JpaContainerDefinition getJpaContainerDefinition() {
+	protected JavaSpecifiedPersistentAttribute.JpaContainerDefinition getJpaContainerDefinition() {
 		return (this.javaPersistentAttribute != null) ?
 				this.javaPersistentAttribute.getJpaContainerDefinition() :
-				JavaModifiablePersistentAttribute.JpaContainerDefinition.Null.instance();
+				JavaSpecifiedPersistentAttribute.JpaContainerDefinition.Null.instance();
 	}
 
 	// ********** completion proposals **********

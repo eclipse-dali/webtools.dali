@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -62,7 +62,7 @@ public abstract class AbstractOrmEmbeddedMapping<X extends XmlEmbedded>
 	protected final OrmAssociationOverrideContainer associationOverrideContainer;
 
 
-	protected AbstractOrmEmbeddedMapping(OrmModifiablePersistentAttribute parent, X xmlMapping) {
+	protected AbstractOrmEmbeddedMapping(OrmSpecifiedPersistentAttribute parent, X xmlMapping) {
 		super(parent, xmlMapping);
 		this.associationOverrideContainer = this.buildAssociationOverrideContainer();
 	}
@@ -307,7 +307,7 @@ public abstract class AbstractOrmEmbeddedMapping<X extends XmlEmbedded>
 			return new AssociationOverrideJoinTableValidator(this.getPersistentAttribute(), override, (ReadOnlyJoinTable) table);
 		}
 
-		protected OrmModifiablePersistentAttribute getPersistentAttribute() {
+		protected OrmSpecifiedPersistentAttribute getPersistentAttribute() {
 			return AbstractOrmEmbeddedMapping.this.getPersistentAttribute();
 		}
 	}

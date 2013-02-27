@@ -13,7 +13,7 @@ import java.util.List;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -23,7 +23,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>orm.xml</code> persistent attribute
  */
 public class GenericOrmPersistentAttribute
-	extends AbstractOrmModifiablePersistentAttribute
+	extends AbstractOrmPersistentAttribute
 {
 	public GenericOrmPersistentAttribute(OrmPersistentType parent, XmlAttributeMapping xmlMapping) {
 		super(parent, xmlMapping);

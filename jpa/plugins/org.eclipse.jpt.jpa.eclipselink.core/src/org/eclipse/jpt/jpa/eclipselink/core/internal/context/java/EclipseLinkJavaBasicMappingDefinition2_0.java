@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaAttributeMappingDefinitionWrapper;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaBasicMappingDefinition2_0;
 
@@ -56,7 +56,7 @@ public class EclipseLinkJavaBasicMappingDefinition2_0
 		EclipseLinkJavaBasicMappingDefinition.ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES
 	);
 
-	public boolean isDefault(JavaModifiablePersistentAttribute persistentAttribute) {
+	public boolean isDefault(JavaSpecifiedPersistentAttribute persistentAttribute) {
 		return EclipseLinkJavaBasicMappingDefinition.instance().isDefault(persistentAttribute);
 	}
 }

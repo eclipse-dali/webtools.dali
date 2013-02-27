@@ -71,10 +71,10 @@ import org.eclipse.jdt.internal.core.CompilationUnit;
 import org.eclipse.jdt.internal.core.SourceType;
 import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
@@ -297,7 +297,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
         	 return new AddRelationFeature(this);
         } else if (newObj instanceof HasReferanceRelation) {
         	return new AddHasReferenceRelationFeature(this);
-        } else if (newObj instanceof ModifiablePersistentAttribute) { 
+        } else if (newObj instanceof SpecifiedPersistentAttribute) { 
         	if (Diagram.class.isInstance(context.getTargetContainer())) {     			
         		return null;
         	}
@@ -331,7 +331,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
     	} else if ((bo instanceof AbstractRelation) ||
     			(bo instanceof HasReferanceRelation || (bo instanceof IsARelation))) {
     		return new DeleteRelationFeature(this);
-    	} else if (bo instanceof JavaModifiablePersistentAttribute) {
+    	} else if (bo instanceof JavaSpecifiedPersistentAttribute) {
     		return new ClickRemoveAttributeButtonFeature(this);
     	}
 		return null;
@@ -470,7 +470,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
     		return super.getDirectEditingFeature(context);
         Object bo = getBusinessObjectForPictogramElement(pe);
         if (bo != null) {
-        	if (bo instanceof JavaModifiablePersistentAttribute) {
+        	if (bo instanceof JavaSpecifiedPersistentAttribute) {
         		return new DirectEditAttributeFeature(this);
         	}
         }
@@ -487,7 +487,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
         return super.getDirectEditingFeature(context);
     }
     
-	public void renewAttributeJoiningStrategyPropertyListener(JavaModifiablePersistentAttribute jpa) {
+	public void renewAttributeJoiningStrategyPropertyListener(JavaSpecifiedPersistentAttribute jpa) {
 		((JPASolver)getIndependenceSolver()).renewAttributeJoiningStrategyPropertyListener(jpa);
 	}
     
@@ -595,7 +595,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
     	return ((JPASolver)getIndependenceSolver()).containsKey(name);
     }
     
-    public void replaceAttribute(final JavaModifiablePersistentAttribute oldAt, final JavaModifiablePersistentAttribute newAt) {
+    public void replaceAttribute(final JavaSpecifiedPersistentAttribute oldAt, final JavaSpecifiedPersistentAttribute newAt) {
     	final PictogramElement pe = this.getPictogramElementForBusinessObject(oldAt);
     	if (pe == null) {
     		//System.err.println("PictogramElement is null\n");
@@ -639,15 +639,15 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
     	return (getBusinessObjectForKey(id) != null);
     }
     
-	public boolean isRelationRelatedToAttribute(JavaModifiablePersistentAttribute jpa) {
+	public boolean isRelationRelatedToAttribute(JavaSpecifiedPersistentAttribute jpa) {
 		return ((JPASolver)getIndependenceSolver()).isRelationRelatedToAttribute(jpa);
 	}
 
-	public IRelation getRelationRelatedToAttribute(JavaModifiablePersistentAttribute jpa) {
+	public IRelation getRelationRelatedToAttribute(JavaSpecifiedPersistentAttribute jpa) {
 		return ((JPASolver)getIndependenceSolver()).getRelationRelatedToAttribute(jpa, this);
 	}    
 		
-	public HasReferanceRelation getEmbeddedRelationRelatedToAttribute(JavaModifiablePersistentAttribute jpa) {
+	public HasReferanceRelation getEmbeddedRelationRelatedToAttribute(JavaSpecifiedPersistentAttribute jpa) {
 		return ((JPASolver)getIndependenceSolver()).getEmbeddedRelationToAttribute(jpa);
 	}
 	

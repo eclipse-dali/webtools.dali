@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.jpa.core.resource.orm.Attributes;
@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlNullAttributeMapping;
 public class GenericOrmNullAttributeMapping
 	extends AbstractOrmAttributeMapping<XmlNullAttributeMapping>
 {
-	public GenericOrmNullAttributeMapping(OrmModifiablePersistentAttribute parent, XmlNullAttributeMapping xmlMapping) {
+	public GenericOrmNullAttributeMapping(OrmSpecifiedPersistentAttribute parent, XmlNullAttributeMapping xmlMapping) {
 		super(parent, xmlMapping);
 	}
 

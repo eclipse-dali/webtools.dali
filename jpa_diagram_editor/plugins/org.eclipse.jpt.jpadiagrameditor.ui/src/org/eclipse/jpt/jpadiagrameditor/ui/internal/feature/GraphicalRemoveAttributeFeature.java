@@ -29,7 +29,7 @@ import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.services.Graphiti;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.GraphicsUpdater;
@@ -93,7 +93,7 @@ public class GraphicalRemoveAttributeFeature extends AbstractCustomFeature {
 		AddContext addContext = new AddContext();
 		addContext.setTargetContainer(entityShape);
 
-		for (JavaModifiablePersistentAttribute attribute : javaPersistentType.getAttributes()) {
+		for (JavaSpecifiedPersistentAttribute attribute : javaPersistentType.getAttributes()) {
 			addContext.setNewObject(attribute);
 			graphicalAdd.execute(addContext);
 			getFeatureProvider().renewAttributeJoiningStrategyPropertyListener(attribute);

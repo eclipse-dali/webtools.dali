@@ -16,11 +16,10 @@ import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 
 /**
- * Context <code>orm.xml</code> persistent <em>attribute</em>
- * (field or property).
+ * <code>orm.xml</code> persistent <em>attribute</em> (field or property).
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -61,7 +60,7 @@ public interface OrmPersistentAttribute
 	 * be modified (nor are any of its parts [e.g. column]). The modifiable Java
 	 * attribute can be retrieved via {@link #resolveJavaPersistentAttribute()}.
 	 */
-	JavaModifiablePersistentAttribute getJavaPersistentAttribute();
+	JavaSpecifiedPersistentAttribute getJavaPersistentAttribute();
 		String JAVA_PERSISTENT_ATTRIBUTE_PROPERTY = "javaPersistentAttribute"; //$NON-NLS-1$
 
 	/**
@@ -72,7 +71,7 @@ public interface OrmPersistentAttribute
 	 * This is probably useful only to tests; since nothing else will want to
 	 * modify the returned Java attribute.
 	 */
-	JavaModifiablePersistentAttribute resolveJavaPersistentAttribute();
+	JavaSpecifiedPersistentAttribute resolveJavaPersistentAttribute();
 
 	JavaResourceAttribute getJavaResourceAttribute();
 
@@ -91,7 +90,7 @@ public interface OrmPersistentAttribute
 	 * @see #isVirtual()
 	 * @throw IllegalStateException if the attribute is already specified
 	 */
-	OrmModifiablePersistentAttribute addToXml();
+	OrmSpecifiedPersistentAttribute addToXml();
 
 	/**
 	 * Convert the (currently virtual) persistent attribute to a specified
@@ -102,7 +101,7 @@ public interface OrmPersistentAttribute
 	 * @see #isVirtual()
 	 * @throw IllegalStateException if the attribute is already specified
 	 */
-	OrmModifiablePersistentAttribute addToXml(String mappingKey);
+	OrmSpecifiedPersistentAttribute addToXml(String mappingKey);
 
 	//TODO would like to remove this eventually
 	void dispose();

@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.SpecifiedOrmPersistentType;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.Attributes;
@@ -146,7 +146,7 @@ public class EclipseLinkOrmPersistentTypeImpl
 		return super.getOverriddenPersistentType();
 	}
 
-	public OrmModifiablePersistentAttribute addVirtualAttribute(String attributeName, String mappingKey, String attributeType, String targetType) {
+	public OrmSpecifiedPersistentAttribute addVirtualAttribute(String attributeName, String mappingKey, String attributeType, String targetType) {
 		// force the creation of an empty xml attribute container beforehand or it will trigger
 		// a sync and, if we do this after adding the attribute, clear out our context attributes
 		Attributes xmlAttributes = this.getXmlAttributesForUpdate();
@@ -160,7 +160,7 @@ public class EclipseLinkOrmPersistentTypeImpl
 			xmlMapping.setAccess(EclipseLinkAccessType.VIRTUAL.getOrmAccessType());
 		}
 
-		OrmModifiablePersistentAttribute specifiedAttribute = this.buildSpecifiedAttribute(xmlMapping);
+		OrmSpecifiedPersistentAttribute specifiedAttribute = this.buildSpecifiedAttribute(xmlMapping);
 		// we need to add the attribute to the right spot in the list - stupid spec...
 		int specifiedIndex = this.getSpecifiedAttributeInsertionIndex(specifiedAttribute);
 		this.addItemToList(specifiedIndex, specifiedAttribute, this.specifiedAttributes, SPECIFIED_ATTRIBUTES_LIST);

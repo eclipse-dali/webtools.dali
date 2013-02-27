@@ -81,7 +81,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
@@ -161,7 +161,7 @@ public class JPAEditorUtil {
     	return getAnchor((ContainerShape)pe);
     }
     
-    public static String getText(JavaModifiablePersistentAttribute at) {
+    public static String getText(JavaSpecifiedPersistentAttribute at) {
     	return at.getName();
     }
     
@@ -187,7 +187,7 @@ public class JPAEditorUtil {
 	}
 
     
-    public static String getAttributeTypeName(JavaModifiablePersistentAttribute at) {
+    public static String getAttributeTypeName(JavaSpecifiedPersistentAttribute at) {
     	return getAttributeTypeName(at.getResourceAttribute());
     }    
     
@@ -195,7 +195,7 @@ public class JPAEditorUtil {
     	return at.getTypeBinding().getQualifiedName();
     }
     
-    public static String getAttributeTypeNameWithGenerics(JavaModifiablePersistentAttribute at) {
+    public static String getAttributeTypeNameWithGenerics(JavaSpecifiedPersistentAttribute at) {
     	return getAttributeTypeNameWithGenerics(at.getResourceAttribute());
     }
 
@@ -1303,7 +1303,7 @@ public class JPAEditorUtil {
 	}
 	
 	
-    public static String getTooltipText(JavaModifiablePersistentAttribute at) {
+    public static String getTooltipText(JavaSpecifiedPersistentAttribute at) {
     	String res = getAttributeTypeName(at);
     	return MessageFormat.format(JPAEditorMessages.JPAEditorUtil_typeTooltipText, new Object[] { res }); 
     }
@@ -1404,7 +1404,7 @@ public class JPAEditorUtil {
 		return h1.equals(h2);
 	}
 	
-	public static JavaModifiablePersistentAttribute addAnnotatedAttribute(IJPAEditorFeatureProvider fp, JavaPersistentType referencingJPT, 
+	public static JavaSpecifiedPersistentAttribute addAnnotatedAttribute(IJPAEditorFeatureProvider fp, JavaPersistentType referencingJPT, 
 			JavaPersistentType referencedJPT, boolean isCollection, String mapKeyType){
 		
 		String name = returnSimpleName(referencedJPT.getName());

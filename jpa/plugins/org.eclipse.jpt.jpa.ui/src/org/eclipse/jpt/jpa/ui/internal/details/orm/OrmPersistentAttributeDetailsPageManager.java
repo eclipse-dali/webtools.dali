@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.ui.internal.details.PersistentAttributeDetailsPageManager;
 import org.eclipse.jpt.jpa.ui.internal.details.PersistentAttributeMapAsComposite;
@@ -40,7 +40,7 @@ import org.eclipse.swt.widgets.Composite;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see OrmModifiablePersistentAttribute
+ * @see OrmSpecifiedPersistentAttribute
  * @see PersistentAttributeMapAsComposite
  */
 public class OrmPersistentAttributeDetailsPageManager

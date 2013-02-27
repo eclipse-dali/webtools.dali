@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.AbstractOrmEmbeddedMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
@@ -30,7 +30,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 public class OrmEclipseLinkEmbeddedMapping
 	extends AbstractOrmEmbeddedMapping<XmlEmbedded>
 {
-	public OrmEclipseLinkEmbeddedMapping(OrmModifiablePersistentAttribute parent, XmlEmbedded xmlMapping) {
+	public OrmEclipseLinkEmbeddedMapping(OrmSpecifiedPersistentAttribute parent, XmlEmbedded xmlMapping) {
 		super(parent, xmlMapping);
 	}
 

@@ -10,12 +10,12 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import java.util.ArrayList;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
-import org.eclipse.jpt.jpa.core.jpa2.context.ModifiablePersistentAttribute2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkBasicMapMapping;
@@ -26,7 +26,7 @@ public abstract class AbstractOrmEclipseLinkBasicMapMapping
 	extends AbstractOrmAttributeMapping<XmlBasicMap> 
 	implements EclipseLinkBasicMapMapping
 {
-	protected AbstractOrmEclipseLinkBasicMapMapping(OrmModifiablePersistentAttribute parent, XmlBasicMap xmlMapping) {
+	protected AbstractOrmEclipseLinkBasicMapMapping(OrmSpecifiedPersistentAttribute parent, XmlBasicMap xmlMapping) {
 		super(parent, xmlMapping);
 	}
 	
@@ -55,13 +55,13 @@ public abstract class AbstractOrmEclipseLinkBasicMapMapping
 	// ********** metamodel **********  
 	@Override
 	protected String getMetamodelFieldTypeName() {
-		return ((ModifiablePersistentAttribute2_0) getPersistentAttribute()).getMetamodelContainerFieldTypeName();
+		return ((SpecifiedPersistentAttribute2_0) getPersistentAttribute()).getMetamodelContainerFieldTypeName();
 	}
 
 	@Override
 	public String getMetamodelTypeName() {
 		String targetTypeName = null;
-		JavaModifiablePersistentAttribute javaPersistentAttribute = this.getJavaPersistentAttribute();
+		JavaSpecifiedPersistentAttribute javaPersistentAttribute = this.getJavaPersistentAttribute();
 		if (javaPersistentAttribute != null) {
 			if(((PersistentType2_0)javaPersistentAttribute).getMetamodelType() == null) { // dynamic type
 				return null;
@@ -79,7 +79,7 @@ public abstract class AbstractOrmEclipseLinkBasicMapMapping
 
 	protected void addMetamodelFieldMapKeyTypeArgumentNameTo(ArrayList<String> typeArgumentNames) {
 		String mapKeyTypeName = null;
-		JavaModifiablePersistentAttribute javaPersistentAttribute = getJavaPersistentAttribute();
+		JavaSpecifiedPersistentAttribute javaPersistentAttribute = getJavaPersistentAttribute();
 		if (javaPersistentAttribute != null) {
 			mapKeyTypeName = javaPersistentAttribute.getMultiReferenceMapKeyTypeName();
 		}

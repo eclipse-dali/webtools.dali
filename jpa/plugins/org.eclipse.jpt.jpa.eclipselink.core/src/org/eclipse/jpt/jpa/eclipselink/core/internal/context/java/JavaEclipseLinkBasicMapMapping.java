@@ -13,10 +13,10 @@ import java.util.ArrayList;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
-import org.eclipse.jpt.jpa.core.jpa2.context.ModifiablePersistentAttribute2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkBasicMapMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
@@ -30,7 +30,7 @@ public class JavaEclipseLinkBasicMapMapping
 
 	protected final JavaEclipseLinkConverterContainer converterContainer;
 	
-	public JavaEclipseLinkBasicMapMapping(JavaModifiablePersistentAttribute parent) {
+	public JavaEclipseLinkBasicMapMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 		this.converterContainer = this.buildConverterContainer();
 	}
@@ -90,7 +90,7 @@ public class JavaEclipseLinkBasicMapMapping
 	// ********** metamodel **********  
 	@Override
 	protected String getMetamodelFieldTypeName() {
-		return ((ModifiablePersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldTypeName();
+		return ((SpecifiedPersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldTypeName();
 	}
 
 	@Override

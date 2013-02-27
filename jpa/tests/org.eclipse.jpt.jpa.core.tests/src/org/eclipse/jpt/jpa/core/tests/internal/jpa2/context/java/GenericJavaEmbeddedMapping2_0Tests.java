@@ -33,7 +33,7 @@ import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
-import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
@@ -269,7 +269,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		createEmbeddableType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
 		JavaEmbeddedMapping embeddedMapping = (JavaEmbeddedMapping) persistentAttribute.getMapping();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -295,7 +295,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
 		JavaEmbeddedMapping embeddedMapping = (JavaEmbeddedMapping) persistentAttribute.getMapping();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -318,7 +318,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		createTestEntityWithEmbeddedMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
 		JavaEmbeddedMapping embeddedMapping = (JavaEmbeddedMapping) persistentAttribute.getMapping();
 		assertFalse(embeddedMapping.isDefault());
 		
@@ -338,7 +338,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		addXmlClassRef(PACKAGE_NAME + ".Entity1");
 		addXmlClassRef(PACKAGE_NAME + ".Embeddable1");
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbeddable");
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbeddable");
 		assertNotNull(persistentAttribute.getMapping());
 		assertEquals(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getDefaultMappingKey());
 		assertTrue(persistentAttribute.getMapping().isDefault());
@@ -408,7 +408,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		createEmbeddableType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
 		JavaEmbeddedMapping embeddedMapping = (JavaEmbeddedMapping) persistentAttribute.getMapping();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -432,7 +432,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		createEmbeddableType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
 		JavaEmbeddedMapping embeddedMapping = (JavaEmbeddedMapping) persistentAttribute.getMapping();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -455,7 +455,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		createEmbeddableType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
 		JavaEmbeddedMapping embeddedMapping = (JavaEmbeddedMapping) persistentAttribute.getMapping();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -479,7 +479,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		createEmbeddableType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
 		JavaEmbeddedMapping embeddedMapping = (JavaEmbeddedMapping) persistentAttribute.getMapping();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -503,7 +503,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		createEmbeddableType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
 		JavaEmbeddedMapping embeddedMapping = (JavaEmbeddedMapping) persistentAttribute.getMapping();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -527,7 +527,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		createEmbeddableType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
 		JavaEmbeddedMapping embeddedMapping = (JavaEmbeddedMapping) persistentAttribute.getMapping();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -550,7 +550,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		createEmbeddableType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
 		JavaEmbeddedMapping embeddedMapping = (JavaEmbeddedMapping) persistentAttribute.getMapping();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -574,7 +574,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		createEmbeddableType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
 		JavaEmbeddedMapping embeddedMapping = (JavaEmbeddedMapping) persistentAttribute.getMapping();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -598,7 +598,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		createEmbeddableType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
 		JavaEmbeddedMapping embeddedMapping = (JavaEmbeddedMapping) persistentAttribute.getMapping();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();

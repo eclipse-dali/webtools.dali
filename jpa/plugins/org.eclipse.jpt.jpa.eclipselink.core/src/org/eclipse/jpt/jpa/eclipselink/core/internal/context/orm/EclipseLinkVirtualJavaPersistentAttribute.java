@@ -28,13 +28,13 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.Accessor;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaNullAttributeMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
-import org.eclipse.jpt.jpa.core.jpa2.context.ModifiablePersistentAttribute2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.plugin.JptJpaEclipseLinkCorePlugin;
@@ -42,7 +42,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAttributeMapping;
 
 public class EclipseLinkVirtualJavaPersistentAttribute
 	extends AbstractJavaContextModel<OrmPersistentType>
-	implements JavaModifiablePersistentAttribute, ModifiablePersistentAttribute2_0, JavaEclipseLinkPersistentAttribute
+	implements JavaSpecifiedPersistentAttribute, SpecifiedPersistentAttribute2_0, JavaEclipseLinkPersistentAttribute
 {
 	private final XmlAttributeMapping xmlAttributeMapping;
 	
@@ -136,7 +136,7 @@ public class EclipseLinkVirtualJavaPersistentAttribute
 		throw new UnsupportedOperationException();
 	}
 
-	public JavaModifiablePersistentAttribute getJavaPersistentAttribute() {
+	public JavaSpecifiedPersistentAttribute getJavaPersistentAttribute() {
 		return this;
 	}
 

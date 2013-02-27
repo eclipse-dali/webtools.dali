@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.jpa.core.internal.AbstractJpaFactory;
@@ -66,22 +66,22 @@ public class EclipseLinkJpaFactory
 	// ********** Java Context Model overrides **********
 
 	@Override
-	public JavaModifiablePersistentAttribute buildJavaPersistentAttribute(PersistentType parent, Accessor accessor) {
+	public JavaSpecifiedPersistentAttribute buildJavaPersistentAttribute(PersistentType parent, Accessor accessor) {
 		return new EclipseLinkSpecifiedJavaPersistentAttribute(parent, accessor);
 	}
 
 	@Override
-	public JavaModifiablePersistentAttribute buildJavaPersistentField(PersistentType parent, JavaResourceField resourceField) {
+	public JavaSpecifiedPersistentAttribute buildJavaPersistentField(PersistentType parent, JavaResourceField resourceField) {
 		return new EclipseLinkSpecifiedJavaPersistentAttribute(parent, resourceField);
 	}
 
 	@Override
-	public JavaModifiablePersistentAttribute buildJavaPersistentProperty(PersistentType parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
+	public JavaSpecifiedPersistentAttribute buildJavaPersistentProperty(PersistentType parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
 		return new EclipseLinkSpecifiedJavaPersistentAttribute(parent, resourceGetter, resourceSetter);
 	}
 
 	@Override
-	public JavaBasicMapping buildJavaBasicMapping(JavaModifiablePersistentAttribute parent) {
+	public JavaBasicMapping buildJavaBasicMapping(JavaSpecifiedPersistentAttribute parent) {
 		return new JavaEclipseLinkBasicMapping(parent);
 	}
 	
@@ -96,7 +96,7 @@ public class EclipseLinkJpaFactory
 	}
 	
 	@Override
-	public JavaIdMapping buildJavaIdMapping(JavaModifiablePersistentAttribute parent) {
+	public JavaIdMapping buildJavaIdMapping(JavaSpecifiedPersistentAttribute parent) {
 		return new JavaEclipseLinkIdMapping(parent);
 	}
 	
@@ -106,46 +106,46 @@ public class EclipseLinkJpaFactory
 	}
 	
 	@Override
-	public JavaVersionMapping buildJavaVersionMapping(JavaModifiablePersistentAttribute parent) {
+	public JavaVersionMapping buildJavaVersionMapping(JavaSpecifiedPersistentAttribute parent) {
 		return new JavaEclipseLinkVersionMapping(parent);
 	}
 	
 	@Override
-	public JavaOneToManyMapping buildJavaOneToManyMapping(JavaModifiablePersistentAttribute parent) {
+	public JavaOneToManyMapping buildJavaOneToManyMapping(JavaSpecifiedPersistentAttribute parent) {
 		return new JavaEclipseLinkOneToManyMapping(parent);
 	}
 	
 	@Override
-	public JavaOneToOneMapping buildJavaOneToOneMapping(JavaModifiablePersistentAttribute parent) {
+	public JavaOneToOneMapping buildJavaOneToOneMapping(JavaSpecifiedPersistentAttribute parent) {
 		return new JavaEclipseLinkOneToOneMapping(parent);
 	}
 	
 	@Override
-	public JavaManyToManyMapping buildJavaManyToManyMapping(JavaModifiablePersistentAttribute parent) {
+	public JavaManyToManyMapping buildJavaManyToManyMapping(JavaSpecifiedPersistentAttribute parent) {
 		return new JavaEclipseLinkManyToManyMapping(parent);
 	}
 	
 	@Override
-	public JavaManyToOneMapping buildJavaManyToOneMapping(JavaModifiablePersistentAttribute parent) {
+	public JavaManyToOneMapping buildJavaManyToOneMapping(JavaSpecifiedPersistentAttribute parent) {
 		return new JavaEclipseLinkManyToOneMapping(parent);
 	}
 
 
 	// ********** EclipseLink-specific Java Context Model **********
 
-	public JavaEclipseLinkBasicCollectionMapping buildJavaEclipseLinkBasicCollectionMapping(JavaModifiablePersistentAttribute parent) {
+	public JavaEclipseLinkBasicCollectionMapping buildJavaEclipseLinkBasicCollectionMapping(JavaSpecifiedPersistentAttribute parent) {
 		return new JavaEclipseLinkBasicCollectionMapping(parent);
 	}
 	
-	public JavaEclipseLinkBasicMapMapping buildJavaEclipseLinkBasicMapMapping(JavaModifiablePersistentAttribute parent) {
+	public JavaEclipseLinkBasicMapMapping buildJavaEclipseLinkBasicMapMapping(JavaSpecifiedPersistentAttribute parent) {
 		return new JavaEclipseLinkBasicMapMapping(parent);
 	}
 	
-	public JavaEclipseLinkTransformationMapping buildJavaEclipseLinkTransformationMapping(JavaModifiablePersistentAttribute parent) {
+	public JavaEclipseLinkTransformationMapping buildJavaEclipseLinkTransformationMapping(JavaSpecifiedPersistentAttribute parent) {
 		return new JavaEclipseLinkTransformationMapping(parent);
 	}
 
-	public JavaEclipseLinkVariableOneToOneMapping buildJavaEclipseLinkVariableOneToOneMapping(JavaModifiablePersistentAttribute parent) {
+	public JavaEclipseLinkVariableOneToOneMapping buildJavaEclipseLinkVariableOneToOneMapping(JavaSpecifiedPersistentAttribute parent) {
 		return new JavaEclipseLinkVariableOneToOneMapping(parent);
 	}
 }

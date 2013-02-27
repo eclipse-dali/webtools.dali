@@ -15,7 +15,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.relations;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
@@ -37,24 +37,24 @@ public class OneToOneBiDirRelation extends OneToOneRelation implements IBidirect
 	}
 
 	@Override
-	public JavaModifiablePersistentAttribute getOwnerAnnotatedAttribute() {
+	public JavaSpecifiedPersistentAttribute getOwnerAnnotatedAttribute() {
 		return ownerAnnotatedAttribute;
 	}
 
 	@Override
 	public void setOwnerAnnotatedAttribute(
-			JavaModifiablePersistentAttribute ownerAnnotatedAttribute) {
+			JavaSpecifiedPersistentAttribute ownerAnnotatedAttribute) {
 		this.ownerAnnotatedAttribute = ownerAnnotatedAttribute;
 	}
 
 	@Override
-	public JavaModifiablePersistentAttribute getInverseAnnotatedAttribute() {
+	public JavaSpecifiedPersistentAttribute getInverseAnnotatedAttribute() {
 		return inverseAnnotatedAttribute;
 	}
 
 	@Override
 	public void setInverseAnnotatedAttribute(
-			JavaModifiablePersistentAttribute inverseAnnotatedAttribute) {
+			JavaSpecifiedPersistentAttribute inverseAnnotatedAttribute) {
 		this.inverseAnnotatedAttribute = inverseAnnotatedAttribute;
 	}
 

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
@@ -23,7 +23,7 @@ public class GenericJavaTransientMapping
 	extends AbstractJavaAttributeMapping<TransientAnnotation>
 	implements JavaTransientMapping
 {
-	public GenericJavaTransientMapping(JavaModifiablePersistentAttribute parent) {
+	public GenericJavaTransientMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 	}
 

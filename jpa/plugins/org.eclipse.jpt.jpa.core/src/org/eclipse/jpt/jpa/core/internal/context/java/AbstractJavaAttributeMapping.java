@@ -25,12 +25,12 @@ import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.SimpleMetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
-import org.eclipse.jpt.jpa.core.jpa2.context.ModifiablePersistentAttribute2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Table;
@@ -44,16 +44,16 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * It will be faulted into existence whenever {@link #getAnnotationForUpdate()}
  * is called. It will <em>not</em> return to <code>null</code> automatically
  * when all its state is defaulted; it must be explicitly cleared via
- * {@link JavaModifiablePersistentAttribute#setMappingKey(String)}.
+ * {@link JavaSpecifiedPersistentAttribute#setMappingKey(String)}.
  */
 public abstract class AbstractJavaAttributeMapping<A extends Annotation>
-	extends AbstractJavaContextModel<JavaModifiablePersistentAttribute>
+	extends AbstractJavaContextModel<JavaSpecifiedPersistentAttribute>
 	implements JavaAttributeMapping, AttributeMapping2_0
 {
 	protected boolean default_;
 
 
-	protected AbstractJavaAttributeMapping(JavaModifiablePersistentAttribute parent) {
+	protected AbstractJavaAttributeMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 		this.default_ = this.buildDefault();
 	}
@@ -134,7 +134,7 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 
 	// ********** misc **********
 
-	public JavaModifiablePersistentAttribute getPersistentAttribute() {
+	public JavaSpecifiedPersistentAttribute getPersistentAttribute() {
 		return this.parent;
 	}
 
@@ -174,7 +174,7 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 		return this.getTypeMapping().resolveDbTable(tableName);
 	}
 
-	protected JavaModifiablePersistentAttribute getJavaPersistentAttribute() {
+	protected JavaSpecifiedPersistentAttribute getJavaPersistentAttribute() {
 		return this.getPersistentAttribute().getJavaPersistentAttribute();
 	}
 
@@ -278,7 +278,7 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 	}
 
 	public String getMetamodelTypeName() {
-		return ((ModifiablePersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelTypeName();
+		return ((SpecifiedPersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelTypeName();
 	}
 
 	protected String getMetamodelFieldName() {

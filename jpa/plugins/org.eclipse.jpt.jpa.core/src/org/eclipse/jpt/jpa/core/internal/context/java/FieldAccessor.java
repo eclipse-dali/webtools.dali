@@ -16,11 +16,11 @@ import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jpa.core.context.AccessType;
-import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaElementReference;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.PersistentFieldValidator;
 
@@ -59,11 +59,11 @@ public class FieldAccessor
 		return this.resourceField.isFinal();
 	}
 
-	public JptValidator buildAttributeValidator(ModifiablePersistentAttribute persistentAttribute) {
+	public JptValidator buildAttributeValidator(SpecifiedPersistentAttribute persistentAttribute) {
 		return new PersistentFieldValidator(persistentAttribute, this);
 	}
 
-	public JavaModifiablePersistentAttribute buildUnannotatedJavaAttribute(PersistentType type) {
+	public JavaSpecifiedPersistentAttribute buildUnannotatedJavaAttribute(PersistentType type) {
 		return this.buildJavaAttribute(type, this.buildUnannotatedJavaResourceField());
 	}
 
@@ -76,7 +76,7 @@ public class FieldAccessor
 		return new UnannotatedJavaResourceField(this.resourceField);
 	}
 
-	protected JavaModifiablePersistentAttribute buildJavaAttribute(PersistentType type, JavaResourceField javaResourceField) {
+	protected JavaSpecifiedPersistentAttribute buildJavaAttribute(PersistentType type, JavaResourceField javaResourceField) {
 		return this.getJpaFactory().buildJavaPersistentField(type, javaResourceField);
 	}
 

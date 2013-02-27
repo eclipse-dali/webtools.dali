@@ -323,6 +323,6 @@ public interface Entity
 	 * If an entity has a single id attribute, return that attribute.
 	 * Else return null.
 	 */
-	ModifiablePersistentAttribute getIdAttribute();
+	SpecifiedPersistentAttribute getIdAttribute();
 
 }

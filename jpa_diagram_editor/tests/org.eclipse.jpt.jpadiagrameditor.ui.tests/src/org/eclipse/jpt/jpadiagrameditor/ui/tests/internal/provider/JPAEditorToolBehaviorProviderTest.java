@@ -34,7 +34,7 @@ import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.tb.IDecorator;
 import org.eclipse.graphiti.tb.IToolBehaviorProvider;
 import org.eclipse.graphiti.tb.ImageDecorator;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.ui.JPAEditorMatchingStrategy;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorToolBehaviorProvider;
@@ -155,7 +155,7 @@ public class JPAEditorToolBehaviorProviderTest {
 	public void testGetDoubleClickOnJpaFeature() throws Exception {
 		PictogramElement pe = replayPictogramElement(100, 100);
 		IFile file = replayResource();
-		JavaModifiablePersistentAttribute jpa = replayJpa(pe, file);
+		JavaSpecifiedPersistentAttribute jpa = replayJpa(pe, file);
 		IDiagramTypeProvider dtp = replayDiagramProviderForJpa(pe, jpa);
 		
 		IEclipseFacade eclipseFacade = EasyMock.createMock(IEclipseFacade.class);
@@ -222,16 +222,16 @@ public class JPAEditorToolBehaviorProviderTest {
 		return jpt;
 	}
 	
-	private JavaModifiablePersistentAttribute replayJpa(PictogramElement pe, IFile file){
+	private JavaSpecifiedPersistentAttribute replayJpa(PictogramElement pe, IFile file){
 		IFeatureProvider featureProvider = EasyMock.createMock(IFeatureProvider.class);
-		JavaModifiablePersistentAttribute jpa = EasyMock.createMock(JavaModifiablePersistentAttribute.class);
+		JavaSpecifiedPersistentAttribute jpa = EasyMock.createMock(JavaSpecifiedPersistentAttribute.class);
 		expect(featureProvider.getBusinessObjectForPictogramElement(pe)).andStubReturn(jpa);
 		expect(jpa.getResource()).andReturn(file);
 		replay(jpa, featureProvider);
 		return jpa;
 	}
 	
-	private IDiagramTypeProvider replayDiagramProviderForJpa(PictogramElement pe, JavaModifiablePersistentAttribute jpa) {
+	private IDiagramTypeProvider replayDiagramProviderForJpa(PictogramElement pe, JavaSpecifiedPersistentAttribute jpa) {
 		IFeatureProvider featureProvider = EasyMock.createMock(IFeatureProvider.class);
 		expect(featureProvider.getBusinessObjectForPictogramElement(pe)).andStubReturn(jpa);
 		IDiagramTypeProvider dtp = EasyMock.createMock(IDiagramTypeProvider.class);

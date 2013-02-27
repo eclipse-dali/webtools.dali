@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaVersionMapping;
 
 public class GenericJavaVersionMapping
 	extends AbstractJavaVersionMapping
 {
-	public GenericJavaVersionMapping(JavaModifiablePersistentAttribute parent) {
+	public GenericJavaVersionMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 	}
 }

@@ -13,7 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
@@ -54,7 +54,7 @@ public class EclipseLinkOrmTransientMappingTests
 		assertTrue(persistentAttribute.isVirtual());
 		assertEquals(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getMappingKey());
 		
-		OrmModifiablePersistentAttribute persistentAttribute2 = persistentAttribute.addToXml(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
+		OrmSpecifiedPersistentAttribute persistentAttribute2 = persistentAttribute.addToXml(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
 		assertFalse(persistentAttribute2.isVirtual());
 		assertEquals(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, persistentAttribute2.getMappingKey());
 		assertEquals(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, persistentAttribute2.getMapping().getKey());

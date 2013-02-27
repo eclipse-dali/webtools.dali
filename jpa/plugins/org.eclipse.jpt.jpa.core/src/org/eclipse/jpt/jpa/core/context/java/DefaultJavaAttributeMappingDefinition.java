@@ -16,5 +16,5 @@ public interface DefaultJavaAttributeMappingDefinition
 	 * Return whether the definition's mapping is the "default" mapping for the
 	 * specified persistent attribute.
 	 */
-	boolean isDefault(JavaModifiablePersistentAttribute persistentAttribute);
+	boolean isDefault(JavaSpecifiedPersistentAttribute persistentAttribute);
 }

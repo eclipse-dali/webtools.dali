@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,13 +7,10 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.jpa2.context;
-
-import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
+package org.eclipse.jpt.jpa.core.context;
 
 /**
- * JPA 2.0
- * Context persistent <em>attribute</em> (field or property).
+ * Specified persistent <em>attribute</em> (field or property).
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -22,10 +19,16 @@ import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
  * @version 2.3
- * @since 2.3
+ * @since 2.0
  */
-public interface ModifiablePersistentAttribute2_0
-	extends ModifiablePersistentAttribute, PersistentAttribute2_0
+public interface SpecifiedPersistentAttribute
+	extends PersistentAttribute, ModifiableAccessReference
 {
-	// combine various interfaces
+	/**
+	 * Set the attribute's mapping.
+	 * If the specified key is <code>null</code>, clear the specified mapping,
+	 * allowing the attribute's mapping to default (if appropriate).
+	 * Return the new mapping (which may be a <em>null</em> mapping).
+	 */
+	AttributeMapping setMappingKey(String key);
 }

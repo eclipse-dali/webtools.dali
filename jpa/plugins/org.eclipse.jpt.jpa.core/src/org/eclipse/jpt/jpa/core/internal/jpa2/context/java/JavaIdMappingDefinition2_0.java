@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaAttributeMappingDefinitionWrapper;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaIdMappingDefinition;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
@@ -52,7 +52,7 @@ public class JavaIdMappingDefinition2_0
 	 * accompanied by a M-1 or 1-1 annotation).
 	 */
 	@Override
-	public boolean isSpecified(JavaModifiablePersistentAttribute persistentAttribute) {
+	public boolean isSpecified(JavaSpecifiedPersistentAttribute persistentAttribute) {
 		boolean idSpecified = super.isSpecified(persistentAttribute);
 		return idSpecified && ! this.isDerivedId(persistentAttribute);
 	}
@@ -67,16 +67,16 @@ public class JavaIdMappingDefinition2_0
 	 *     @Id @Basic @ManyToOne private int foo;
 	 * </pre>
 	 */
-	private boolean isDerivedId(JavaModifiablePersistentAttribute persistentAttribute) {
+	private boolean isDerivedId(JavaSpecifiedPersistentAttribute persistentAttribute) {
 		return this.attributeHasManyToOneMapping(persistentAttribute) ||
 			this.attributeHasOneToOneMapping(persistentAttribute);
 	}
 
-	private boolean attributeHasManyToOneMapping(JavaModifiablePersistentAttribute persistentAttribute) {
+	private boolean attributeHasManyToOneMapping(JavaSpecifiedPersistentAttribute persistentAttribute) {
 		return JavaManyToOneMappingDefinition2_0.instance().isSpecified(persistentAttribute);
 	}
 
-	private boolean attributeHasOneToOneMapping(JavaModifiablePersistentAttribute persistentAttribute) {
+	private boolean attributeHasOneToOneMapping(JavaSpecifiedPersistentAttribute persistentAttribute) {
 		return JavaOneToOneMappingDefinition2_0.instance().isSpecified(persistentAttribute);
 	}
 

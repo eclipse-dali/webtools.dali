@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmAttributeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
@@ -24,7 +24,7 @@ public class OrmEclipseLinkStructureMapping2_3
 	extends AbstractOrmAttributeMapping<XmlStructure> 
 	implements EclipseLinkStructureMapping2_3
 {
-	public OrmEclipseLinkStructureMapping2_3(OrmModifiablePersistentAttribute parent, XmlStructure xmlMapping) {
+	public OrmEclipseLinkStructureMapping2_3(OrmSpecifiedPersistentAttribute parent, XmlStructure xmlMapping) {
 		super(parent, xmlMapping);
 	}
 

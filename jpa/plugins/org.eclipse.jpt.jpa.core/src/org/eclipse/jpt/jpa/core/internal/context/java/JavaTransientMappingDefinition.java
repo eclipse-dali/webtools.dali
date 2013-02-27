@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.TransientAnnotation;
 
 public class JavaTransientMappingDefinition
@@ -46,7 +46,7 @@ public class JavaTransientMappingDefinition
 		return TransientAnnotation.ANNOTATION_NAME;
 	}
 
-	public boolean isSpecified(JavaModifiablePersistentAttribute persistentAttribute) {
+	public boolean isSpecified(JavaSpecifiedPersistentAttribute persistentAttribute) {
 		return persistentAttribute.getResourceAttribute().getAnnotation(this.getAnnotationName()) != null;
 	}
 
@@ -54,7 +54,7 @@ public class JavaTransientMappingDefinition
 		return EmptyIterable.instance();
 	}
 
-	public JavaAttributeMapping buildMapping(JavaModifiablePersistentAttribute persistentAttribute, JpaFactory factory) {
+	public JavaAttributeMapping buildMapping(JavaSpecifiedPersistentAttribute persistentAttribute, JpaFactory factory) {
 		return factory.buildJavaTransientMapping(persistentAttribute);
 	}
 

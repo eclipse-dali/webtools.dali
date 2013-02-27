@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmOneToOneMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlOneToOne;
 
@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlOneToOne;
 public class GenericOrmOneToOneMapping 
 	extends AbstractOrmOneToOneMapping<XmlOneToOne>
 {
-	public GenericOrmOneToOneMapping(OrmModifiablePersistentAttribute parent, XmlOneToOne xmlMapping) {
+	public GenericOrmOneToOneMapping(OrmSpecifiedPersistentAttribute parent, XmlOneToOne xmlMapping) {
 		super(parent, xmlMapping);
 	}
 }

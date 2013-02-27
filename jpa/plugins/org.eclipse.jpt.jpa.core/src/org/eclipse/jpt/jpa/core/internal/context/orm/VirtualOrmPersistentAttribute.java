@@ -25,15 +25,15 @@ import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.Accessor;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.FieldAccessor;
 import org.eclipse.jpt.jpa.core.internal.context.java.PropertyAccessor;
-import org.eclipse.jpt.jpa.core.jpa2.context.ModifiablePersistentAttribute2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -57,7 +57,7 @@ public class VirtualOrmPersistentAttribute
 	 * The {@link #originalJavaAttributeListener} keeps this attribute in sync
 	 * with any changes made via the Java context model.
 	 */
-	protected final JavaModifiablePersistentAttribute annotatedJavaAttribute;
+	protected final JavaSpecifiedPersistentAttribute annotatedJavaAttribute;
 
 	/**
 	 * This is the "original" Java persistent attribute corresponding to
@@ -70,7 +70,7 @@ public class VirtualOrmPersistentAttribute
 	 * is no Java context attribute, the Java resource model can only be
 	 * modified via source code editing and we will <em>sync</em> appropriately).
 	 */
-	protected JavaModifiablePersistentAttribute originalJavaAttribute;
+	protected JavaSpecifiedPersistentAttribute originalJavaAttribute;
 	protected StateChangeListener originalJavaAttributeListener;
 
 	/**
@@ -82,7 +82,7 @@ public class VirtualOrmPersistentAttribute
 	 * The {@link #originalJavaAttributeListener} keeps this attribute in sync
 	 * with any changes made via the Java context model.
 	 */
-	protected JavaModifiablePersistentAttribute unannotatedJavaAttribute;
+	protected JavaSpecifiedPersistentAttribute unannotatedJavaAttribute;
 
 	protected JavaAttributeMapping mapping;  // never null
 
@@ -154,38 +154,38 @@ public class VirtualOrmPersistentAttribute
 
 	// ********** Java persistent attribute **********
 
-	public JavaModifiablePersistentAttribute getJavaPersistentAttribute() {
+	public JavaSpecifiedPersistentAttribute getJavaPersistentAttribute() {
 		return this.getOwningTypeMapping().isMetadataComplete() ?
 				this.getUnannotatedJavaAttribute() :
 				this.annotatedJavaAttribute;
 	}
 
-	public JavaModifiablePersistentAttribute resolveJavaPersistentAttribute() {
+	public JavaSpecifiedPersistentAttribute resolveJavaPersistentAttribute() {
 		JavaPersistentType javaType = this.getOwningPersistentType().getJavaPersistentType();
 		return (javaType == null) ? null : javaType.getAttributeFor(this.getJavaResourceAttribute());
 	}
 
-	protected ModifiablePersistentAttribute2_0 getJavaPersistentAttribute2_0() {
-		return (ModifiablePersistentAttribute2_0) this.getJavaPersistentAttribute();
+	protected SpecifiedPersistentAttribute2_0 getJavaPersistentAttribute2_0() {
+		return (SpecifiedPersistentAttribute2_0) this.getJavaPersistentAttribute();
 	}
 
-	protected JavaModifiablePersistentAttribute buildAnnotatedJavaAttribute() {
+	protected JavaSpecifiedPersistentAttribute buildAnnotatedJavaAttribute() {
 		return buildJavaAttribute(this.javaAccessor);
 	}
 
-	protected JavaModifiablePersistentAttribute getUnannotatedJavaAttribute() {
+	protected JavaSpecifiedPersistentAttribute getUnannotatedJavaAttribute() {
 		if (this.unannotatedJavaAttribute == null) {
 			this.unannotatedJavaAttribute = this.buildUnannotatedJavaAttribute();
 		}
 		return this.unannotatedJavaAttribute;
 	}
 
-	protected JavaModifiablePersistentAttribute buildUnannotatedJavaAttribute() {
+	protected JavaSpecifiedPersistentAttribute buildUnannotatedJavaAttribute() {
 		// pass in the orm persistent type as the parent...
 		return this.javaAccessor.buildUnannotatedJavaAttribute(this.getOwningPersistentType());
 	}
 
-	protected JavaModifiablePersistentAttribute buildJavaAttribute(Accessor accessor) {
+	protected JavaSpecifiedPersistentAttribute buildJavaAttribute(Accessor accessor) {
 		// pass in the orm persistent type as the parent...
 		return this.getJpaFactory().buildJavaPersistentAttribute(this.getOwningPersistentType(), accessor);
 	}
@@ -223,7 +223,7 @@ public class VirtualOrmPersistentAttribute
 	// ********** original Java persistent attribute **********
 
 	protected void updateOriginalJavaAttribute() {
-		JavaModifiablePersistentAttribute newJavaAttribute = this.resolveJavaPersistentAttribute(); //yes, this is the "original" java attribute
+		JavaSpecifiedPersistentAttribute newJavaAttribute = this.resolveJavaPersistentAttribute(); //yes, this is the "original" java attribute
 		if (newJavaAttribute != this.originalJavaAttribute) {
 			if (newJavaAttribute == null) {
 				this.originalJavaAttribute.removeStateChangeListener(this.getOriginalJavaAttributeListener());
@@ -278,14 +278,14 @@ public class VirtualOrmPersistentAttribute
 		return true;
 	}
 
-	public OrmModifiablePersistentAttribute addToXml() {
+	public OrmSpecifiedPersistentAttribute addToXml() {
 		if (this.mapping.getKey() == null) {
 			throw new IllegalStateException("Use addToXml(String) instead and specify a mapping type"); //$NON-NLS-1$
 		}
 		return this.getOwningPersistentType().addAttributeToXml(this);
 	}
 
-	public OrmModifiablePersistentAttribute addToXml(String mappingKey) {
+	public OrmSpecifiedPersistentAttribute addToXml(String mappingKey) {
 		return this.getOwningPersistentType().addAttributeToXml(this, mappingKey);
 	}
 
@@ -296,8 +296,8 @@ public class VirtualOrmPersistentAttribute
 		return new ContextType(this);
 	}
 
-	public Class<OrmModifiablePersistentAttribute> getType() {
-		return OrmModifiablePersistentAttribute.class;
+	public Class<OrmSpecifiedPersistentAttribute> getType() {
+		return OrmSpecifiedPersistentAttribute.class;
 	}
 
 	public Iterable<JpaStructureNode> getChildren() {

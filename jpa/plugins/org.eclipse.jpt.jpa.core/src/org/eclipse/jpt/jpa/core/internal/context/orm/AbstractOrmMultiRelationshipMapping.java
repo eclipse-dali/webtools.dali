@@ -34,7 +34,7 @@ import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
-import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
@@ -44,7 +44,7 @@ import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAttributeOverride;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBaseTemporalConverter;
@@ -52,7 +52,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMultiRelationshipMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -66,7 +66,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.NullOrmConverter;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.MapKeyJoinColumnValidator;
 import org.eclipse.jpt.jpa.core.jpa2.context.MultiRelationshipMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.ModifiablePersistentAttribute2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlMultiRelationshipMapping;
@@ -121,7 +121,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	};
 	protected static final Iterable<OrmConverter.Adapter> MAP_KEY_CONVERTER_ADAPTERS = IterableTools.iterable(MAP_KEY_CONVERTER_ADAPTER_ARRAY);
 
-	protected AbstractOrmMultiRelationshipMapping(OrmModifiablePersistentAttribute parent, X xmlMapping) {
+	protected AbstractOrmMultiRelationshipMapping(OrmSpecifiedPersistentAttribute parent, X xmlMapping) {
 		super(parent, xmlMapping);
 		this.orderable = this.buildOrderable();
 
@@ -447,7 +447,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	}
 
 	protected String buildDefaultMapKeyClass() {
-		JavaModifiablePersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
+		JavaSpecifiedPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
 		return (javaAttribute == null) ? null : javaAttribute.getMultiReferenceMapKeyTypeName();
 	}
 
@@ -695,7 +695,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	}
 
 	protected AttributeMapping getJavaAttributeMapping() {
-		JavaModifiablePersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
+		JavaSpecifiedPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
 		return (javaAttribute == null) ? null : javaAttribute.getMapping();
 	}
 	// ********** map key join columns **********
@@ -876,7 +876,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 
 	@Override
 	protected String getMetamodelFieldTypeName() {
-		return ((ModifiablePersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldTypeName();
+		return ((SpecifiedPersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldTypeName();
 	}
 
 	@Override
@@ -886,7 +886,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	}
 
 	protected void addMetamodelFieldMapKeyTypeArgumentNameTo(ArrayList<String> typeArgumentNames) {
-		String keyTypeName = ((ModifiablePersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldMapKeyTypeName();
+		String keyTypeName = ((SpecifiedPersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldMapKeyTypeName();
 		if (keyTypeName != null) {
 			typeArgumentNames.add(keyTypeName);
 		}
@@ -977,7 +977,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	}
 
 	protected void validateAttributeType(List<IMessage> messages, IReporter reporter) {
-		JavaModifiablePersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
+		JavaSpecifiedPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
 		if ((javaAttribute != null) && !javaAttribute.getJpaContainerDefinition().isContainer()) {
 			messages.add(
 				this.buildValidationMessage(
@@ -1015,7 +1015,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 
 	protected void validateMapKeyClass(List<IMessage> messages) {
 		if (this.isJpa2_0Compatible()) {
-			JavaModifiablePersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
+			JavaSpecifiedPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
 			if ((javaAttribute != null) && javaAttribute.getJpaContainerDefinition().isMap()) {
 				this.validateMapKeyClass_(messages);
 			}
@@ -1144,7 +1144,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 			return AbstractOrmMultiRelationshipMapping.this.getRelationship().getStrategy();
 		}
 
-		protected OrmModifiablePersistentAttribute getPersistentAttribute() {
+		protected OrmSpecifiedPersistentAttribute getPersistentAttribute() {
 			return AbstractOrmMultiRelationshipMapping.this.getPersistentAttribute();
 		}
 	}
@@ -1252,7 +1252,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 			return AbstractOrmMultiRelationshipMapping.this.getName();
 		}
 
-		protected ModifiablePersistentAttribute getPersistentAttribute() {
+		protected SpecifiedPersistentAttribute getPersistentAttribute() {
 			return AbstractOrmMultiRelationshipMapping.this.getPersistentAttribute();
 		}
 

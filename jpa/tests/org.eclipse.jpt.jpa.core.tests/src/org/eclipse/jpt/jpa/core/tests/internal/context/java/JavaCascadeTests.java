@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.context.Cascade;
-import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.OneToOneAnnotation;
@@ -58,7 +58,7 @@ public class JavaCascadeTests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToOneAnnotation annotation = (OneToOneAnnotation) resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaOneToOneMapping mapping = (JavaOneToOneMapping) persistentAttribute.getMapping();
 		Cascade cascade = mapping.getCascade();
 		
@@ -86,7 +86,7 @@ public class JavaCascadeTests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToOneAnnotation annotation = (OneToOneAnnotation) resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaOneToOneMapping mapping = (JavaOneToOneMapping) persistentAttribute.getMapping();
 		Cascade cascade = mapping.getCascade();
 		
@@ -112,7 +112,7 @@ public class JavaCascadeTests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToOneAnnotation annotation = (OneToOneAnnotation) resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaOneToOneMapping mapping = (JavaOneToOneMapping) persistentAttribute.getMapping();
 		Cascade cascade = mapping.getCascade();
 		
@@ -140,7 +140,7 @@ public class JavaCascadeTests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToOneAnnotation annotation = (OneToOneAnnotation) resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaOneToOneMapping mapping = (JavaOneToOneMapping) persistentAttribute.getMapping();
 		Cascade cascade = mapping.getCascade();
 		
@@ -166,7 +166,7 @@ public class JavaCascadeTests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToOneAnnotation annotation = (OneToOneAnnotation) resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaOneToOneMapping mapping = (JavaOneToOneMapping) persistentAttribute.getMapping();
 		Cascade cascade = mapping.getCascade();
 		
@@ -194,7 +194,7 @@ public class JavaCascadeTests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToOneAnnotation annotation = (OneToOneAnnotation) resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaOneToOneMapping mapping = (JavaOneToOneMapping) persistentAttribute.getMapping();
 		Cascade cascade = mapping.getCascade();
 		
@@ -220,7 +220,7 @@ public class JavaCascadeTests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToOneAnnotation annotation = (OneToOneAnnotation) resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaOneToOneMapping mapping = (JavaOneToOneMapping) persistentAttribute.getMapping();
 		Cascade cascade = mapping.getCascade();
 		
@@ -248,7 +248,7 @@ public class JavaCascadeTests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToOneAnnotation annotation = (OneToOneAnnotation) resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaOneToOneMapping mapping = (JavaOneToOneMapping) persistentAttribute.getMapping();
 		Cascade cascade = mapping.getCascade();
 		
@@ -274,7 +274,7 @@ public class JavaCascadeTests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToOneAnnotation annotation = (OneToOneAnnotation) resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaOneToOneMapping mapping = (JavaOneToOneMapping) persistentAttribute.getMapping();
 		Cascade cascade = mapping.getCascade();
 		
@@ -302,7 +302,7 @@ public class JavaCascadeTests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToOneAnnotation annotation = (OneToOneAnnotation) resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaOneToOneMapping mapping = (JavaOneToOneMapping) persistentAttribute.getMapping();
 		Cascade cascade = mapping.getCascade();
 		

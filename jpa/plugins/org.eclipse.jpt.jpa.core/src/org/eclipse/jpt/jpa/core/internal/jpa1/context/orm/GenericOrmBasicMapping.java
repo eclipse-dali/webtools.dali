@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmBasicMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlBasic;
 
@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlBasic;
 public class GenericOrmBasicMapping
 	extends AbstractOrmBasicMapping<XmlBasic>
 {
-	public GenericOrmBasicMapping(OrmModifiablePersistentAttribute parent, XmlBasic xmlMapping) {
+	public GenericOrmBasicMapping(OrmSpecifiedPersistentAttribute parent, XmlBasic xmlMapping) {
 		super(parent, xmlMapping);
 	}
 }

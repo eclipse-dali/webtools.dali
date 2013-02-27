@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
-import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TransientMapping;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
 import org.eclipse.jpt.jpa.core.resource.java.BasicAnnotation;
@@ -70,7 +70,7 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		createTestEntityWithTransientMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
@@ -88,7 +88,7 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		createTestEntityWithTransientMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
@@ -105,7 +105,7 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		createTestEntityWithTransientMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
@@ -122,7 +122,7 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		createTestEntityWithTransientMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
@@ -139,7 +139,7 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		createTestEntityWithTransientMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
@@ -156,7 +156,7 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		createTestEntityWithTransientMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
@@ -173,7 +173,7 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		createTestEntityWithTransientMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
@@ -190,7 +190,7 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		createTestEntityWithTransientMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
@@ -207,7 +207,7 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		createTestEntityWithTransientMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
@@ -224,7 +224,7 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		createTestEntityWithTransientMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
@@ -241,7 +241,7 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		createTestEntityWithTransientMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 
 		assertNotNull(transientMapping);

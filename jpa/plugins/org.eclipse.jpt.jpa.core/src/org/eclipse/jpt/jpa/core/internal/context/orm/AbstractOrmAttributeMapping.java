@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
@@ -41,7 +41,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMultiRelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOneToOneMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSingleRelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTransientMapping;
@@ -51,7 +51,7 @@ import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.SimpleMetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
-import org.eclipse.jpt.jpa.core.jpa2.context.ModifiablePersistentAttribute2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
@@ -60,7 +60,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
-	extends AbstractOrmXmlContextModel<OrmModifiablePersistentAttribute>
+	extends AbstractOrmXmlContextModel<OrmSpecifiedPersistentAttribute>
 	implements OrmAttributeMapping, AttributeMapping2_0
 {
 	// never null
@@ -73,7 +73,7 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 	protected String fullyQualifiedAttributeType;
 
 
-	protected AbstractOrmAttributeMapping(OrmModifiablePersistentAttribute parent, X xmlAttributeMapping) {
+	protected AbstractOrmAttributeMapping(OrmSpecifiedPersistentAttribute parent, X xmlAttributeMapping) {
 		super(parent);
 		this.xmlAttributeMapping = xmlAttributeMapping;
 		this.name = xmlAttributeMapping.getName();
@@ -267,7 +267,7 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 		return this.xmlAttributeMapping;
 	}
 
-	public OrmModifiablePersistentAttribute getPersistentAttribute() {
+	public OrmSpecifiedPersistentAttribute getPersistentAttribute() {
 		return this.parent;
 	}
 
@@ -275,7 +275,7 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 		return this.getPersistentAttribute().getOwningTypeMapping();
 	}
 
-	protected JavaModifiablePersistentAttribute getJavaPersistentAttribute() {
+	protected JavaSpecifiedPersistentAttribute getJavaPersistentAttribute() {
 		return this.getPersistentAttribute().getJavaPersistentAttribute();
 	}
 
@@ -449,7 +449,7 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 	}
 
 	public String getMetamodelTypeName() {
-		return ((ModifiablePersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelTypeName();
+		return ((SpecifiedPersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelTypeName();
 	}
 
 	protected String getMetamodelFieldName() {

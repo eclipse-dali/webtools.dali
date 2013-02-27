@@ -21,13 +21,13 @@ import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.FetchType;
-import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappingRelationship;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -60,7 +60,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 	protected FetchType defaultFetch;
 
 
-	protected AbstractOrmRelationshipMapping(OrmModifiablePersistentAttribute parent, X xmlMapping) {
+	protected AbstractOrmRelationshipMapping(OrmSpecifiedPersistentAttribute parent, X xmlMapping) {
 		super(parent, xmlMapping);
 		this.specifiedTargetEntity = xmlMapping.getTargetEntity();
 		this.relationship = this.buildRelationship();
@@ -294,11 +294,11 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 	}
 
 	protected String getTargetEntityIdAttributeName() {
-		ModifiablePersistentAttribute attribute = this.getTargetEntityIdAttribute();
+		SpecifiedPersistentAttribute attribute = this.getTargetEntityIdAttribute();
 		return (attribute == null) ? null : attribute.getName();
 	}
 
-	protected ModifiablePersistentAttribute getTargetEntityIdAttribute() {
+	protected SpecifiedPersistentAttribute getTargetEntityIdAttribute() {
 		Entity entity = this.getResolvedTargetEntity();
 		return (entity == null) ? null : entity.getIdAttribute();
 	}

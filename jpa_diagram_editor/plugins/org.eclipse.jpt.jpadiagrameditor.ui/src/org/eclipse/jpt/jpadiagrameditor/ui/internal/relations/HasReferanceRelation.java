@@ -21,7 +21,7 @@ import java.util.Hashtable;
 import org.eclipse.graphiti.mm.pictograms.Anchor;
 import org.eclipse.graphiti.mm.pictograms.Connection;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
@@ -34,7 +34,7 @@ public abstract class HasReferanceRelation {
 	
 	public final static Hashtable<HasReferenceType, String> relTypeToIdPart = new Hashtable<HasReferenceType, String>(); 
 	
-	private JavaModifiablePersistentAttribute embeddedAnnotatedAttribute;
+	private JavaSpecifiedPersistentAttribute embeddedAnnotatedAttribute;
 	
 	public static enum HasReferenceType {
 		SINGLE, COLLECTION
@@ -96,11 +96,11 @@ public abstract class HasReferanceRelation {
 
 	public abstract HasReferenceType getReferenceType();
 
-	public JavaModifiablePersistentAttribute getEmbeddedAnnotatedAttribute() {
+	public JavaSpecifiedPersistentAttribute getEmbeddedAnnotatedAttribute() {
 		return embeddedAnnotatedAttribute;
 	}
 
-	public void setEmbeddedAnnotatedAttribute(JavaModifiablePersistentAttribute embeddedAnnotatedAttribute) {
+	public void setEmbeddedAnnotatedAttribute(JavaSpecifiedPersistentAttribute embeddedAnnotatedAttribute) {
 		this.embeddedAnnotatedAttribute = embeddedAnnotatedAttribute;
 	}
 }

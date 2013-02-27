@@ -30,9 +30,9 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 public interface OrmAttributeMapping
 	extends AttributeMapping, TypeRefactoringParticipant
 {
-	OrmModifiablePersistentAttribute getParent();
+	OrmSpecifiedPersistentAttribute getParent();
 
-	OrmModifiablePersistentAttribute getPersistentAttribute();
+	OrmSpecifiedPersistentAttribute getPersistentAttribute();
 
 	XmlAttributeMapping getXmlAttributeMapping();
 

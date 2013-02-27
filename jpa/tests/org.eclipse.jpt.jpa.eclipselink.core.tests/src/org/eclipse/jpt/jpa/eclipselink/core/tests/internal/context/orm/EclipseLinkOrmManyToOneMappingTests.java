@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.context.Cascade;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
@@ -163,7 +163,7 @@ public class EclipseLinkOrmManyToOneMappingTests
 		createTestTypeWithManyToOneAttribute();
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("manyToOne"), MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		OrmSpecifiedPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("manyToOne"), MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		EclipseLinkRelationshipMapping contextManyToOne = 
 			(EclipseLinkRelationshipMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
@@ -202,7 +202,7 @@ public class EclipseLinkOrmManyToOneMappingTests
 		createTestTypeWithManyToOneAttribute();
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("manyToOne"), MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		OrmSpecifiedPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("manyToOne"), MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		EclipseLinkRelationshipMapping contextManyToOne = 
 			(EclipseLinkRelationshipMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 

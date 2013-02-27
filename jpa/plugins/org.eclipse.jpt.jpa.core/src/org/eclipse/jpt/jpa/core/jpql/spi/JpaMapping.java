@@ -34,9 +34,9 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.persistence.jpa.jpql.tools.spi.IEntity;
@@ -101,7 +101,7 @@ public abstract class JpaMapping implements IMapping {
 	}
 
 	protected ITypeDeclaration[] buildGenericTypeDeclarations() {
-		JavaModifiablePersistentAttribute javaPersistentAttribute = mapping.getPersistentAttribute().getJavaPersistentAttribute();
+		JavaSpecifiedPersistentAttribute javaPersistentAttribute = mapping.getPersistentAttribute().getJavaPersistentAttribute();
 		JavaResourceAttribute resource = javaPersistentAttribute == null ? null : javaPersistentAttribute.getResourceAttribute();
 		List<ITypeDeclaration> declarations = ListTools.list(buildGenericTypeDeclarations(resource));
 		return declarations.toArray(new ITypeDeclaration[declarations.size()]);
@@ -124,7 +124,7 @@ public abstract class JpaMapping implements IMapping {
 
 	protected IType buildType(boolean resolveRelationshipType) {
 
-		ModifiablePersistentAttribute property = mapping.getPersistentAttribute();
+		SpecifiedPersistentAttribute property = mapping.getPersistentAttribute();
 		String typeName = property.getTypeName();
 
 		// The attribute could be virtual, incorrectly specified in the orm.xml
@@ -158,7 +158,7 @@ public abstract class JpaMapping implements IMapping {
 
 	protected ITypeDeclaration buildTypeDeclaration() {
 
-		ModifiablePersistentAttribute property = mapping.getPersistentAttribute();
+		SpecifiedPersistentAttribute property = mapping.getPersistentAttribute();
 		String typeName = property.getTypeName();
 
 		// The attribute could be virtual, incorrectly specified in the orm.xml

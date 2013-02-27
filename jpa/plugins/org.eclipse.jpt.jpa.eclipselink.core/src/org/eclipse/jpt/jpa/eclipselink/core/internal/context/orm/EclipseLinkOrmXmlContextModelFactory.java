@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
@@ -60,7 +60,7 @@ public class EclipseLinkOrmXmlContextModelFactory
 	}
 	
 	@Override
-	public OrmModifiablePersistentAttribute buildOrmPersistentAttribute(OrmPersistentType parent, org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping resourceMapping) {
+	public OrmSpecifiedPersistentAttribute buildOrmPersistentAttribute(OrmPersistentType parent, org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping resourceMapping) {
 		return new EclipseLinkOrmPersistentAttribute(parent, (XmlAttributeMapping) resourceMapping);
 	}
 
@@ -85,63 +85,63 @@ public class EclipseLinkOrmXmlContextModelFactory
 	}
 	
 	@Override
-	public OrmBasicMapping buildOrmBasicMapping(OrmModifiablePersistentAttribute parent, org.eclipse.jpt.jpa.core.resource.orm.XmlBasic resourceMapping) {
+	public OrmBasicMapping buildOrmBasicMapping(OrmSpecifiedPersistentAttribute parent, org.eclipse.jpt.jpa.core.resource.orm.XmlBasic resourceMapping) {
 		return new OrmEclipseLinkBasicMapping(parent, (XmlBasic) resourceMapping);
 	}
 	
 	@Override
-	public OrmIdMapping buildOrmIdMapping(OrmModifiablePersistentAttribute parent, org.eclipse.jpt.jpa.core.resource.orm.XmlId resourceMapping) {
+	public OrmIdMapping buildOrmIdMapping(OrmSpecifiedPersistentAttribute parent, org.eclipse.jpt.jpa.core.resource.orm.XmlId resourceMapping) {
 		return new OrmEclipseLinkIdMapping(parent, (XmlId) resourceMapping);
 	}
 
 	@Override
-	public OrmEmbeddedMapping buildOrmEmbeddedMapping(OrmModifiablePersistentAttribute parent,  org.eclipse.jpt.jpa.core.resource.orm.XmlEmbedded resourceMapping) {
+	public OrmEmbeddedMapping buildOrmEmbeddedMapping(OrmSpecifiedPersistentAttribute parent,  org.eclipse.jpt.jpa.core.resource.orm.XmlEmbedded resourceMapping) {
 		return new OrmEclipseLinkEmbeddedMapping(parent, (XmlEmbedded) resourceMapping);
 	}
 
 	@Override
-	public OrmEmbeddedIdMapping buildOrmEmbeddedIdMapping(OrmModifiablePersistentAttribute parent,  org.eclipse.jpt.jpa.core.resource.orm.XmlEmbeddedId resourceMapping) {
+	public OrmEmbeddedIdMapping buildOrmEmbeddedIdMapping(OrmSpecifiedPersistentAttribute parent,  org.eclipse.jpt.jpa.core.resource.orm.XmlEmbeddedId resourceMapping) {
 		return new OrmEclipseLinkEmbeddedIdMapping(parent, (XmlEmbeddedId) resourceMapping);
 	}
 	
 	@Override
-	public OrmManyToManyMapping buildOrmManyToManyMapping(OrmModifiablePersistentAttribute parent, org.eclipse.jpt.jpa.core.resource.orm.XmlManyToMany resourceMapping) {
+	public OrmManyToManyMapping buildOrmManyToManyMapping(OrmSpecifiedPersistentAttribute parent, org.eclipse.jpt.jpa.core.resource.orm.XmlManyToMany resourceMapping) {
 		return new OrmEclipseLinkManyToManyMapping(parent, (XmlManyToMany) resourceMapping);
 	}
 	
 	@Override
-	public OrmManyToOneMapping buildOrmManyToOneMapping(OrmModifiablePersistentAttribute parent, org.eclipse.jpt.jpa.core.resource.orm.XmlManyToOne resourceMapping) {
+	public OrmManyToOneMapping buildOrmManyToOneMapping(OrmSpecifiedPersistentAttribute parent, org.eclipse.jpt.jpa.core.resource.orm.XmlManyToOne resourceMapping) {
 		return new OrmEclipseLinkManyToOneMapping(parent, (XmlManyToOne) resourceMapping);
 	}
 	
 	@Override
-	public OrmOneToManyMapping buildOrmOneToManyMapping(OrmModifiablePersistentAttribute parent, org.eclipse.jpt.jpa.core.resource.orm.XmlOneToMany resourceMapping) {
+	public OrmOneToManyMapping buildOrmOneToManyMapping(OrmSpecifiedPersistentAttribute parent, org.eclipse.jpt.jpa.core.resource.orm.XmlOneToMany resourceMapping) {
 		return new OrmEclipseLinkOneToManyMapping(parent, (XmlOneToMany) resourceMapping);
 	}
 	
 	@Override
-	public OrmOneToOneMapping buildOrmOneToOneMapping(OrmModifiablePersistentAttribute parent, org.eclipse.jpt.jpa.core.resource.orm.XmlOneToOne resourceMapping) {
+	public OrmOneToOneMapping buildOrmOneToOneMapping(OrmSpecifiedPersistentAttribute parent, org.eclipse.jpt.jpa.core.resource.orm.XmlOneToOne resourceMapping) {
 		return new OrmEclipseLinkOneToOneMapping(parent, (XmlOneToOne) resourceMapping);
 	}
 	
 	@Override
-	public OrmVersionMapping buildOrmVersionMapping(OrmModifiablePersistentAttribute parent, org.eclipse.jpt.jpa.core.resource.orm.XmlVersion resourceMapping) {
+	public OrmVersionMapping buildOrmVersionMapping(OrmSpecifiedPersistentAttribute parent, org.eclipse.jpt.jpa.core.resource.orm.XmlVersion resourceMapping) {
 		return new OrmEclipseLinkVersionMapping(parent, (XmlVersion) resourceMapping);
 	}
 	
-	public AbstractOrmEclipseLinkBasicCollectionMapping buildOrmEclipseLinkBasicCollectionMapping(OrmModifiablePersistentAttribute parent, XmlBasicCollection resourceMapping) {
+	public AbstractOrmEclipseLinkBasicCollectionMapping buildOrmEclipseLinkBasicCollectionMapping(OrmSpecifiedPersistentAttribute parent, XmlBasicCollection resourceMapping) {
 		return new OrmEclipseLinkBasicCollectionMapping(parent, resourceMapping);
 	}
 	
-	public AbstractOrmEclipseLinkBasicMapMapping buildOrmEclipseLinkBasicMapMapping(OrmModifiablePersistentAttribute parent, XmlBasicMap resourceMapping) {
+	public AbstractOrmEclipseLinkBasicMapMapping buildOrmEclipseLinkBasicMapMapping(OrmSpecifiedPersistentAttribute parent, XmlBasicMap resourceMapping) {
 		return new OrmEclipseLinkBasicMapMapping(parent, resourceMapping);
 	}
 	
-	public OrmEclipseLinkTransformationMapping buildOrmEclipseLinkTransformationMapping(OrmModifiablePersistentAttribute parent, XmlTransformation resourceMapping) {
+	public OrmEclipseLinkTransformationMapping buildOrmEclipseLinkTransformationMapping(OrmSpecifiedPersistentAttribute parent, XmlTransformation resourceMapping) {
 		return new OrmEclipseLinkTransformationMapping(parent, resourceMapping);
 	}
 	
-	public OrmEclipseLinkVariableOneToOneMapping buildOrmEclipseLinkVariableOneToOneMapping(OrmModifiablePersistentAttribute parent, XmlVariableOneToOne resourceMapping) {
+	public OrmEclipseLinkVariableOneToOneMapping buildOrmEclipseLinkVariableOneToOneMapping(OrmSpecifiedPersistentAttribute parent, XmlVariableOneToOne resourceMapping) {
 		return new OrmEclipseLinkVariableOneToOneMapping(parent, resourceMapping);
 	}
 

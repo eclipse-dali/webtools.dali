@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddedIdMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmBaseEmbeddedMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.EmbeddedIdMapping2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.Attributes;
@@ -41,7 +41,7 @@ public abstract class AbstractOrmEmbeddedIdMapping<X extends XmlEmbeddedId>
 	protected boolean derived;
 
 
-	protected AbstractOrmEmbeddedIdMapping(OrmModifiablePersistentAttribute parent, X xmlMapping) {
+	protected AbstractOrmEmbeddedIdMapping(OrmSpecifiedPersistentAttribute parent, X xmlMapping) {
 		super(parent, xmlMapping);
 	}
 

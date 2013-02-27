@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
@@ -138,7 +138,7 @@ public class GenericOrmOverrideJoinColumnRelationshipStrategy
 			return GenericOrmOverrideJoinColumnRelationshipStrategy.this.getAttributeName();
 		}
 
-		public ModifiablePersistentAttribute getPersistentAttribute() {
+		public SpecifiedPersistentAttribute getPersistentAttribute() {
 			RelationshipMapping relationshipMapping = GenericOrmOverrideJoinColumnRelationshipStrategy.this.getRelationshipMapping();
 			return relationshipMapping == null ? null : relationshipMapping.getPersistentAttribute();
 		}

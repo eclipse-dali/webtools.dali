@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaAttributeMappingDefinitionWrapper;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaIdMappingDefinition2_0;
 
@@ -50,7 +50,7 @@ public class EclipseLinkJavaIdMappingDefinition2_0
 	 * <code>Id</code> mapping.
 	 */
 	@Override
-	public boolean isSpecified(JavaModifiablePersistentAttribute persistentAttribute) {
+	public boolean isSpecified(JavaSpecifiedPersistentAttribute persistentAttribute) {
 		boolean specSpecified = super.isSpecified(persistentAttribute);
 		return specSpecified && ! this.isDefaultDerivedId(persistentAttribute);
 	}
@@ -58,7 +58,7 @@ public class EclipseLinkJavaIdMappingDefinition2_0
 	/**
 	 * EclipseLink supports default M:1 and 1:1 mappings.
 	 */
-	private boolean isDefaultDerivedId(JavaModifiablePersistentAttribute persistentAttribute) {
+	private boolean isDefaultDerivedId(JavaSpecifiedPersistentAttribute persistentAttribute) {
 		String defaultKey = persistentAttribute.getDefaultMappingKey();
 		return ObjectTools.equals(defaultKey, this.getManyToOneKey()) ||
 				ObjectTools.equals(defaultKey, this.getOneToOneKey());

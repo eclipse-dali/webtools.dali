@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
@@ -173,7 +173,7 @@ public class GenericJavaOverrideJoinColumnRelationshipStrategy
 			return GenericJavaOverrideJoinColumnRelationshipStrategy.this.getAttributeName();
 		}
 
-		public ModifiablePersistentAttribute getPersistentAttribute() {
+		public SpecifiedPersistentAttribute getPersistentAttribute() {
 			RelationshipMapping relationshipMapping = GenericJavaOverrideJoinColumnRelationshipStrategy.this.getRelationshipMapping();
 			return relationshipMapping == null ? null : relationshipMapping.getPersistentAttribute();
 		}

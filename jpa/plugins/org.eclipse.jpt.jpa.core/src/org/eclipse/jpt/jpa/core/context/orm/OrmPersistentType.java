@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
@@ -58,7 +58,7 @@ public interface OrmPersistentType
 	/**
 	 * Return the persistent type's specified attributes.
 	 */
-	ListIterable<OrmModifiablePersistentAttribute> getSpecifiedAttributes();
+	ListIterable<OrmSpecifiedPersistentAttribute> getSpecifiedAttributes();
 
 	/**
 	 * Return the number of the persistent type's specified attributes.
@@ -92,10 +92,10 @@ public interface OrmPersistentType
 	 * <p>
 	 * Throw an {@link IllegalArgumentException} if the attribute is virtual
 	 *
-	 * @see OrmModifiablePersistentAttribute#removeFromXml()
-	 * @see ModifiablePersistentAttribute#isVirtual()
+	 * @see OrmSpecifiedPersistentAttribute#removeFromXml()
+	 * @see SpecifiedPersistentAttribute#isVirtual()
 	 */
-	OrmPersistentAttribute removeAttributeFromXml(OrmModifiablePersistentAttribute specifiedAttribute);
+	OrmPersistentAttribute removeAttributeFromXml(OrmSpecifiedPersistentAttribute specifiedAttribute);
 
 	/**
 	 * Add the specified persistent attribute to the <code>orm.xml</code>.
@@ -107,9 +107,9 @@ public interface OrmPersistentType
 	 * Throw an {@link IllegalArgumentException} if the attribute is already
 	 * specified.
 	 *
-	 * @see OrmModifiablePersistentAttribute#addToXml()
+	 * @see OrmSpecifiedPersistentAttribute#addToXml()
 	 */
-	OrmModifiablePersistentAttribute addAttributeToXml(OrmPersistentAttribute virtualAttribute);
+	OrmSpecifiedPersistentAttribute addAttributeToXml(OrmPersistentAttribute virtualAttribute);
 
 	/**
 	 * Add the specified persistent attribute to the <code>orm.xml</code> with
@@ -120,9 +120,9 @@ public interface OrmPersistentType
 	 * Throw an {@link IllegalArgumentException} if the attribute is already
 	 * specified.
 	 *
-	 * @see OrmModifiablePersistentAttribute#addToXml(String)
+	 * @see OrmSpecifiedPersistentAttribute#addToXml(String)
 	 */
-	OrmModifiablePersistentAttribute addAttributeToXml(OrmPersistentAttribute virtualAttribute, String mappingKey);
+	OrmSpecifiedPersistentAttribute addAttributeToXml(OrmPersistentAttribute virtualAttribute, String mappingKey);
 
 
 	// ********** mapping morphing **********
@@ -131,7 +131,7 @@ public interface OrmPersistentType
 	 * This is called whenever the specified persistent attribute's mapping is
 	 * changed as specified.
 	 */
-	void changeMapping(OrmModifiablePersistentAttribute ormPersistentAttribute, OrmAttributeMapping oldMapping, OrmAttributeMapping newMapping);
+	void changeMapping(OrmSpecifiedPersistentAttribute ormPersistentAttribute, OrmAttributeMapping oldMapping, OrmAttributeMapping newMapping);
 
 
 	// ********** misc **********

@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmVersionMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
@@ -46,7 +46,7 @@ public class OrmEclipseLinkVersionMapping
 	protected final OrmEclipseLinkConverterContainer converterContainer;
 	
 	
-	public OrmEclipseLinkVersionMapping(OrmModifiablePersistentAttribute parent, XmlVersion xmlMapping) {
+	public OrmEclipseLinkVersionMapping(OrmSpecifiedPersistentAttribute parent, XmlVersion xmlMapping) {
 		super(parent, xmlMapping);
 		this.mutable = new OrmEclipseLinkMutable(this);
 		this.converterContainer = this.buildConverterContainer();

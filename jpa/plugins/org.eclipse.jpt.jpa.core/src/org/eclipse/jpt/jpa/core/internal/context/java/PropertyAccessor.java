@@ -18,11 +18,11 @@ import org.eclipse.jpt.common.utility.MethodSignature;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.AccessType;
-import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaElementReference;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.PersistentPropertyValidator;
 
@@ -64,7 +64,7 @@ public class PropertyAccessor
 		return this.resourceSetter;
 	}
 
-	public JavaModifiablePersistentAttribute buildUnannotatedJavaAttribute(PersistentType type) {
+	public JavaSpecifiedPersistentAttribute buildUnannotatedJavaAttribute(PersistentType type) {
 		return this.buildJavaAttribute(type, this.buildUnannotatedJavaResourceGetter(), this.buildUnannotatedJavaResourceSetter());
 	}
 
@@ -86,11 +86,11 @@ public class PropertyAccessor
 		return new UnannotatedJavaResourceMethod(this.resourceSetter);
 	}
 
-	protected JavaModifiablePersistentAttribute buildJavaAttribute(PersistentType type, JavaResourceMethod getterMethod, JavaResourceMethod setterMethod) {
+	protected JavaSpecifiedPersistentAttribute buildJavaAttribute(PersistentType type, JavaResourceMethod getterMethod, JavaResourceMethod setterMethod) {
 		return this.getJpaFactory().buildJavaPersistentProperty(type, getterMethod, setterMethod);
 	}
 
-	public JptValidator buildAttributeValidator(ModifiablePersistentAttribute persistentAttribute) {
+	public JptValidator buildAttributeValidator(SpecifiedPersistentAttribute persistentAttribute) {
 		return new PersistentPropertyValidator(persistentAttribute, this);
 	}
 

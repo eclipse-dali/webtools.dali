@@ -56,7 +56,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.JpaFileModel;
@@ -385,8 +385,8 @@ public class JPADiagramEditor extends DiagramEditor implements JpaEditorManager{
 		if (node != null) {
 			if (node.getType().isAssignableFrom(JavaPersistentType.class)) {
 				resource = ((JavaPersistentType) node).getResource();
-			} else if (node.getType().isAssignableFrom(JavaModifiablePersistentAttribute.class)) {
-				resource = ((JavaModifiablePersistentAttribute) node).getResource();
+			} else if (node.getType().isAssignableFrom(JavaSpecifiedPersistentAttribute.class)) {
+				resource = ((JavaSpecifiedPersistentAttribute) node).getResource();
 			}
 
 			if (resource != null && resource.exists() && (resource instanceof IFile)) {

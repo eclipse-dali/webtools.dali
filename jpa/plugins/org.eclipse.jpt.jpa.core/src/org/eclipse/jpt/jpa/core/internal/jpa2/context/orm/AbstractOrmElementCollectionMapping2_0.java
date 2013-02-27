@@ -41,7 +41,7 @@ import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
-import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
@@ -54,7 +54,7 @@ import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
@@ -64,7 +64,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmLobConverter;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
@@ -89,7 +89,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ManyToOneRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.ModifiablePersistentAttribute2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmAssociationOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCollectionTable2_0;
@@ -171,7 +171,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	protected static final Iterable<OrmConverter.Adapter> MAP_KEY_CONVERTER_ADAPTERS = IterableTools.iterable(MAP_KEY_CONVERTER_ADAPTER_ARRAY);
 
 
-	protected AbstractOrmElementCollectionMapping2_0(OrmModifiablePersistentAttribute parent, X xmlMapping) {
+	protected AbstractOrmElementCollectionMapping2_0(OrmSpecifiedPersistentAttribute parent, X xmlMapping) {
 		super(parent, xmlMapping);
 		this.specifiedTargetClass = xmlMapping.getTargetClass();
 		this.specifiedFetch = this.buildSpecifiedFetch();
@@ -301,7 +301,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected String buildDefaultTargetClass() {
-		JavaModifiablePersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
+		JavaSpecifiedPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
 		return (javaAttribute == null) ? null : javaAttribute.getMultiReferenceTargetTypeName();
 	}
 
@@ -863,7 +863,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected String buildDefaultMapKeyClass() {
-		JavaModifiablePersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
+		JavaSpecifiedPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
 		return (javaAttribute == null) ? null : javaAttribute.getMultiReferenceMapKeyTypeName();
 	}
 
@@ -1204,7 +1204,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 	@Override
 	protected String getMetamodelFieldTypeName() {
-		return ((ModifiablePersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldTypeName();
+		return ((SpecifiedPersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldTypeName();
 	}
 
 	@Override
@@ -1223,7 +1223,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected void addMetamodelFieldMapKeyTypeArgumentNameTo(ArrayList<String> typeArgumentNames) {
-		String keyTypeName = ((ModifiablePersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldMapKeyTypeName();
+		String keyTypeName = ((SpecifiedPersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldMapKeyTypeName();
 		if (keyTypeName != null) {
 			typeArgumentNames.add(keyTypeName);
 		}
@@ -1460,7 +1460,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected void validateAttributeType(List<IMessage> messages, IReporter reporter) {
-		JavaModifiablePersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
+		JavaSpecifiedPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
 		if ((javaAttribute != null) && !javaAttribute.getJpaContainerDefinition().isContainer()) {
 			messages.add(
 				this.buildValidationMessage(
@@ -1616,7 +1616,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected void validateMapKeyClass(List<IMessage> messages) {
-		JavaModifiablePersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
+		JavaSpecifiedPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
 		if ((javaAttribute != null) && javaAttribute.getJpaContainerDefinition().isMap()) {
 			this.validateMapKeyClass_(messages);
 		}
@@ -1842,7 +1842,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			return AbstractOrmElementCollectionMapping2_0.this.getCollectionTable();
 		}
 
-		protected ModifiablePersistentAttribute getPersistentAttribute() {
+		protected SpecifiedPersistentAttribute getPersistentAttribute() {
 			return AbstractOrmElementCollectionMapping2_0.this.getPersistentAttribute();
 		}
 
@@ -2043,7 +2043,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			return AbstractOrmElementCollectionMapping2_0.this.getName();
 		}
 
-		protected ModifiablePersistentAttribute getPersistentAttribute() {
+		protected SpecifiedPersistentAttribute getPersistentAttribute() {
 			return AbstractOrmElementCollectionMapping2_0.this.getPersistentAttribute();
 		}
 

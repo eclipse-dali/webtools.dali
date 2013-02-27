@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.AbstractOrmElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
@@ -46,7 +46,7 @@ public class EclipseLinkOrmElementCollectionMapping2_0
 	protected final OrmEclipseLinkConverterContainer converterContainer;
 
 
-	public EclipseLinkOrmElementCollectionMapping2_0(OrmModifiablePersistentAttribute parent, XmlElementCollection resourceMapping) {
+	public EclipseLinkOrmElementCollectionMapping2_0(OrmSpecifiedPersistentAttribute parent, XmlElementCollection resourceMapping) {
 		super(parent, resourceMapping);
 		this.joinFetch = new OrmEclipseLinkJoinFetch(this);
 		this.converterContainer = this.buildConverterContainer();

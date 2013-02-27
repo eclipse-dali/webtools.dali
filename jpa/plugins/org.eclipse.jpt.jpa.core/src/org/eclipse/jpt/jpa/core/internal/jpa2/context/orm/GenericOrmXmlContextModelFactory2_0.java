@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddable;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModelFactory;
@@ -67,7 +67,7 @@ public class GenericOrmXmlContextModelFactory2_0
 	}
 	
 	public OrmElementCollectionMapping2_0 buildOrmElementCollectionMapping2_0(
-			OrmModifiablePersistentAttribute parent, XmlElementCollection resourceMapping) {
+			OrmSpecifiedPersistentAttribute parent, XmlElementCollection resourceMapping) {
 		
 		return new GenericOrmElementCollectionMapping2_0(parent, resourceMapping);
 	}

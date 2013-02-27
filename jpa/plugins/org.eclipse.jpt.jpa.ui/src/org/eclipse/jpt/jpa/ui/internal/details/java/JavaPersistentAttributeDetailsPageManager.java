@@ -13,7 +13,7 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.ui.internal.details.PersistentAttributeDetailsPageManager;
 import org.eclipse.jpt.jpa.ui.internal.details.PersistentAttributeMapAsComposite;
 import org.eclipse.swt.widgets.Composite;
@@ -37,11 +37,11 @@ import org.eclipse.swt.widgets.Composite;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  * 
- * @see JavaModifiablePersistentAttribute
+ * @see JavaSpecifiedPersistentAttribute
  * @see PersistentAttributeMapAsComposite
  */
 public class JavaPersistentAttributeDetailsPageManager
-	extends PersistentAttributeDetailsPageManager<JavaModifiablePersistentAttribute>
+	extends PersistentAttributeDetailsPageManager<JavaSpecifiedPersistentAttribute>
 {
 	public JavaPersistentAttributeDetailsPageManager(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
 		super(parent, widgetFactory, resourceManager);

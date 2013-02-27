@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmVersionMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlVersion;
 
@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlVersion;
 public class GenericOrmVersionMapping
 	extends AbstractOrmVersionMapping<XmlVersion>
 {
-	public GenericOrmVersionMapping(OrmModifiablePersistentAttribute parent, XmlVersion xmlMapping) {
+	public GenericOrmVersionMapping(OrmSpecifiedPersistentAttribute parent, XmlVersion xmlMapping) {
 		super(parent, xmlMapping);
 	}
 }

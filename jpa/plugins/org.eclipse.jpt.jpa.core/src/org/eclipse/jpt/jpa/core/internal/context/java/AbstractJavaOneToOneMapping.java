@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneRelationship;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.NullJavaOrphanRemoval2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
@@ -26,7 +26,7 @@ public abstract class AbstractJavaOneToOneMapping
 	protected final OrphanRemovable2_0 orphanRemoval;
 
 
-	protected AbstractJavaOneToOneMapping(JavaModifiablePersistentAttribute parent) {
+	protected AbstractJavaOneToOneMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 		this.orphanRemoval = this.buildOrphanRemoval();
 	}

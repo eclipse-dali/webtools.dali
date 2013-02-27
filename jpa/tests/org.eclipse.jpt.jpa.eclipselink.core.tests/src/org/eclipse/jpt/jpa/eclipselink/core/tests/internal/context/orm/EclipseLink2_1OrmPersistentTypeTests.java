@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToOneMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlManyToMany;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
@@ -248,7 +248,7 @@ public class EclipseLink2_1OrmPersistentTypeTests
 		XmlEntity xmlEntity = (XmlEntity) xmlEntityMappings.getEntities().get(0);
 		
 		// test virtual attribute mapping that only needs to set attribute type
-		OrmModifiablePersistentAttribute persistentAttribute = persistentType.addVirtualAttribute("id", MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "int", null);
+		OrmSpecifiedPersistentAttribute persistentAttribute = persistentType.addVirtualAttribute("id", MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "int", null);
 
 		assertEquals("id", persistentAttribute.getName());
 		assertEquals(EclipseLinkAccessType.VIRTUAL, persistentAttribute.getSpecifiedAccess());

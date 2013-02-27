@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.EmbeddedAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
@@ -48,7 +48,7 @@ public class JavaEmbeddedMappingDefinition
 		return EmbeddedAnnotation.ANNOTATION_NAME;
 	}
 
-	public boolean isSpecified(JavaModifiablePersistentAttribute persistentAttribute) {
+	public boolean isSpecified(JavaSpecifiedPersistentAttribute persistentAttribute) {
 		return persistentAttribute.getResourceAttribute().getAnnotation(this.getAnnotationName()) != null;
 	}
 
@@ -62,11 +62,11 @@ public class JavaEmbeddedMappingDefinition
 	};
 	private static final Iterable<String> SUPPORTING_ANNOTATION_NAMES = IterableTools.iterable(SUPPORTING_ANNOTATION_NAMES_ARRAY);
 
-	public JavaAttributeMapping buildMapping(JavaModifiablePersistentAttribute persistentAttribute, JpaFactory factory) {
+	public JavaAttributeMapping buildMapping(JavaSpecifiedPersistentAttribute persistentAttribute, JpaFactory factory) {
 		return factory.buildJavaEmbeddedMapping(persistentAttribute);
 	}
 
-	public boolean isDefault(JavaModifiablePersistentAttribute persistentAttribute) {
+	public boolean isDefault(JavaSpecifiedPersistentAttribute persistentAttribute) {
 		String targetEmbeddable = persistentAttribute.getSingleReferenceTargetTypeName();
 		return (targetEmbeddable != null)
 				&& (persistentAttribute.getPersistenceUnit().getEmbeddable(targetEmbeddable) != null);

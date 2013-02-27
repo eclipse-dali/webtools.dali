@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaIdMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkIdMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
@@ -34,7 +34,7 @@ public class JavaEclipseLinkIdMapping
 	protected final JavaEclipseLinkConverterContainer converterContainer;
 
 
-	public JavaEclipseLinkIdMapping(JavaModifiablePersistentAttribute parent) {
+	public JavaEclipseLinkIdMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 		this.mutable = new JavaEclipseLinkMutable(this);
 		this.converterContainer = this.buildConverterContainer();
