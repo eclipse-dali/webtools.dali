@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.context.TableColumn.Owner;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
-import org.eclipse.jpt.jpa.core.context.Relationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinColumnRelationshipStrategy;
@@ -154,7 +154,7 @@ public class GenericJavaVirtualOverrideRelationship
 
 	// ********** conversions **********
 
-	public void initializeOn(Relationship newRelationship) {
+	public void initializeOn(SpecifiedRelationship newRelationship) {
 		newRelationship.initializeFromJoinTableRelationship(this);
 		newRelationship.initializeFromJoinColumnRelationship(this);
 	}

@@ -70,5 +70,5 @@ public interface ReadOnlyRelationship
 	 */
 	boolean isVirtual();
 
-	void initializeOn(Relationship newRelationship);
+	void initializeOn(SpecifiedRelationship newRelationship);
 }

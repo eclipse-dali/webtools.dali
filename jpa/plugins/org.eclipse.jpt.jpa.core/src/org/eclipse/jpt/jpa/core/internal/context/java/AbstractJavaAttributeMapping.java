@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.ColumnMapping;
 import org.eclipse.jpt.jpa.core.context.Generator;
-import org.eclipse.jpt.jpa.core.context.Relationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
@@ -216,7 +216,7 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 		return ((mapping != null) && mapping.isOverridableAttributeMapping()) ? (ColumnMapping) mapping : null;
 	}
 
-	public Relationship resolveOverriddenRelationship(String attributeName) {
+	public SpecifiedRelationship resolveOverriddenRelationship(String attributeName) {
 		RelationshipMapping mapping = this.resolveRelationshipMapping(attributeName);
 		return (mapping == null) ? null : mapping.getRelationship();
 	}

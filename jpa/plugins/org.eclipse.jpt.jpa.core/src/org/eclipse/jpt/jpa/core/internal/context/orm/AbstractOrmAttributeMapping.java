@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.ColumnMapping;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.Relationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -369,7 +369,7 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 		return ((mapping != null) && mapping.isOverridableAttributeMapping()) ? (ColumnMapping) mapping : null;
 	}
 
-	public Relationship resolveOverriddenRelationship(String attributeName) {
+	public SpecifiedRelationship resolveOverriddenRelationship(String attributeName) {
 		RelationshipMapping mapping = this.resolveRelationshipMapping(attributeName);
 		return (mapping == null) ? null : mapping.getRelationship();
 	}

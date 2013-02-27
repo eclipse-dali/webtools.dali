@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * 
  * @see RelationshipMapping
  * @see SpecifiedAssociationOverride
- * @see Relationship
+ * @see SpecifiedRelationship
  * 
  * @version 2.3
  * @since 2.2
@@ -35,7 +35,7 @@ import org.eclipse.jpt.jpa.db.Table;
 public interface SpecifiedRelationshipStrategy
 	extends RelationshipStrategy
 {
-	Relationship getRelationship();
+	SpecifiedRelationship getRelationship();
 
 	/**
 	 * Add this strategy to the relationship.

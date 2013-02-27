@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
-import org.eclipse.jpt.jpa.core.context.Relationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumnRelationshipStrategy;
@@ -128,7 +128,7 @@ public class GenericOrmManyToOneRelationship
 
 	// ********** conversions **********
 
-	public void initializeOn(Relationship newRelationship) {
+	public void initializeOn(SpecifiedRelationship newRelationship) {
 		newRelationship.initializeFromJoinColumnRelationship(this);
 		newRelationship.initializeFromJoinTableRelationship(this);
 	}

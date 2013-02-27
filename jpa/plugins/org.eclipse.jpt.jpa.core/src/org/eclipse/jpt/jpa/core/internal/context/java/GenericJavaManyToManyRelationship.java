@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
-import org.eclipse.jpt.jpa.core.context.Relationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTableRelationshipStrategy;
@@ -124,7 +124,7 @@ public class GenericJavaManyToManyRelationship
 
 	// ********** conversions **********
 
-	public void initializeOn(Relationship newRelationship) {
+	public void initializeOn(SpecifiedRelationship newRelationship) {
 		newRelationship.initializeFromMappedByRelationship(this);
 		newRelationship.initializeFromJoinTableRelationship(this);
 	}

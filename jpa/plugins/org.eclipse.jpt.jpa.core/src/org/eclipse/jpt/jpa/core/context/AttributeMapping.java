@@ -147,7 +147,7 @@ public interface AttributeMapping
 	/**
 	 * Return the relationship for the specified attribute.
 	 */
-	Relationship resolveOverriddenRelationship(String attributeName);
+	SpecifiedRelationship resolveOverriddenRelationship(String attributeName);
 
 	/**
 	 * Typically only ID mappings have generators.

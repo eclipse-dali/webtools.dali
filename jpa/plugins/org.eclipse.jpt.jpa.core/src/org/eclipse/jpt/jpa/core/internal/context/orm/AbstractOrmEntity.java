@@ -59,7 +59,7 @@ import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
-import org.eclipse.jpt.jpa.core.context.Relationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -1326,7 +1326,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	@Override
-	public Relationship resolveOverriddenRelationship(String attributeName) {
+	public SpecifiedRelationship resolveOverriddenRelationship(String attributeName) {
 		if (this.isJpa2_0Compatible()) {
 			// strip off the first segment
 			int dotIndex = attributeName.indexOf('.');
@@ -1344,7 +1344,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		if ( ! this.isMetadataComplete()) {
 			JavaPersistentType javaType = this.getJavaPersistentType();
 			if (javaType != null) {
-				Relationship relationship = javaType.getMapping().resolveOverriddenRelationship(attributeName);
+				SpecifiedRelationship relationship = javaType.getMapping().resolveOverriddenRelationship(attributeName);
 				if (relationship != null) {
 					return relationship;
 				}

@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
-import org.eclipse.jpt.jpa.core.context.Relationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -209,9 +209,9 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 		return IterableTools.children(this.getInheritanceHierarchy(), TypeMappingTools.OVERRIDABLE_ASSOCIATION_NAMES_TRANSFORMER);
 	}
 
-	public Relationship resolveOverriddenRelationship(String attributeName) {
+	public SpecifiedRelationship resolveOverriddenRelationship(String attributeName) {
 		for (AttributeMapping attributeMapping : this.getAttributeMappings()) {
-			Relationship relationship = attributeMapping.resolveOverriddenRelationship(attributeName);
+			SpecifiedRelationship relationship = attributeMapping.resolveOverriddenRelationship(attributeName);
 			if (relationship != null) {
 				return relationship;
 			}

@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
-import org.eclipse.jpt.jpa.core.context.Relationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
@@ -177,11 +177,11 @@ public abstract class AbstractOrmEmbeddedMapping<X extends XmlEmbedded>
 	}
 
 	@Override
-	public Relationship resolveOverriddenRelationship(String attributeName) {
+	public SpecifiedRelationship resolveOverriddenRelationship(String attributeName) {
 		return this.isJpa2_0Compatible() ? this.resolveOverriddenRelationship_(attributeName) : null;
 	}
 
-	protected Relationship resolveOverriddenRelationship_(String attributeName) {
+	protected SpecifiedRelationship resolveOverriddenRelationship_(String attributeName) {
 		attributeName = this.unqualify(attributeName);
 		if (attributeName == null) {
 			return null;
@@ -191,7 +191,7 @@ public abstract class AbstractOrmEmbeddedMapping<X extends XmlEmbedded>
 		return (override != null) ? override.getRelationship() : this.resolveOverriddenRelationshipInTargetEmbeddable(attributeName);
 	}
 
-	protected Relationship resolveOverriddenRelationshipInTargetEmbeddable(String attributeName) {
+	protected SpecifiedRelationship resolveOverriddenRelationshipInTargetEmbeddable(String attributeName) {
 		return (this.targetEmbeddable == null) ? null : this.targetEmbeddable.resolveOverriddenRelationship(attributeName);
 	}
 
@@ -263,7 +263,7 @@ public abstract class AbstractOrmEmbeddedMapping<X extends XmlEmbedded>
 			return AbstractOrmEmbeddedMapping.this.getXmlAttributeMapping().getAssociationOverrides();
 		}
 
-		public Relationship resolveOverriddenRelationship(String attributeName) {
+		public SpecifiedRelationship resolveOverriddenRelationship(String attributeName) {
 			return MappingTools.resolveOverriddenRelationship(this.getOverridableTypeMapping(), attributeName);
 		}
 

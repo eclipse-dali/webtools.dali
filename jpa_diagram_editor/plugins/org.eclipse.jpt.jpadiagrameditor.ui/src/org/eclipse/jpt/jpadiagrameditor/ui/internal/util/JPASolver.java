@@ -92,7 +92,7 @@ import org.eclipse.jpt.jpa.core.context.OptionalMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
-import org.eclipse.jpt.jpa.core.context.Relationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
@@ -506,7 +506,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		JavaAttributeMapping jam = jpa.getMapping();
 		if ((jam == null) || !RelationshipMapping.class.isInstance(jam))
 			return;
-		Relationship rr = ((RelationshipMapping) jam).getRelationship();
+		SpecifiedRelationship rr = ((RelationshipMapping) jam).getRelationship();
 		if (rr == null)
 			return;			
 		SpecifiedRelationshipStrategy js = rr.getStrategy();
@@ -654,7 +654,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			JavaAttributeMapping jam = jpa.getMapping();
 			if ((jam == null) || !RelationshipMapping.class.isInstance(jam))
 				return;
-			Relationship rr = ((RelationshipMapping) jam).getRelationship();
+			SpecifiedRelationship rr = ((RelationshipMapping) jam).getRelationship();
 			if (rr == null)
 				return;			
 			SpecifiedRelationshipStrategy js = rr.getStrategy();
@@ -679,7 +679,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			JavaAttributeMapping jam = jpa.getMapping();
 			if ((jam == null) || !RelationshipMapping.class.isInstance(jam))
 				return;
-			Relationship rr = ((RelationshipMapping) jam).getRelationship();
+			SpecifiedRelationship rr = ((RelationshipMapping) jam).getRelationship();
 			if (rr == null)
 				return;		
 			rr.addPropertyChangeListener(ReadOnlyRelationship.STRATEGY_PROPERTY, lsnr);
@@ -775,7 +775,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 				JavaAttributeMapping jam = jpa.getMapping();
 				if ((jam == null) || !RelationshipMapping.class.isInstance(jam))
 					return;
-				Relationship rr = ((RelationshipMapping) jam).getRelationship();
+				SpecifiedRelationship rr = ((RelationshipMapping) jam).getRelationship();
 				if (rr == null)
 					return;			
 				SpecifiedRelationshipStrategy js = rr.getStrategy();
@@ -821,7 +821,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 				JavaAttributeMapping jam = jpa.getMapping();
 				if ((jam == null) || !RelationshipMapping.class.isInstance(jam))
 					return;
-				Relationship rr = ((RelationshipMapping) jam).getRelationship();
+				SpecifiedRelationship rr = ((RelationshipMapping) jam).getRelationship();
 				if (rr == null)
 					return;			
 				rr.removePropertyChangeListener(ReadOnlyRelationship.STRATEGY_PROPERTY, lsnr);
@@ -1249,7 +1249,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 	public class AttributeRelationshipReferencePropertyChangeListener implements PropertyChangeListener {
 		
 		synchronized public void propertyChanged(PropertyChangeEvent event) {		
-			Relationship rr = (Relationship)event.getSource();
+			SpecifiedRelationship rr = (SpecifiedRelationship)event.getSource();
 			JpaModel p = rr.getParent();
 			if (p == null)
 				return;

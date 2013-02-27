@@ -24,7 +24,7 @@ package org.eclipse.jpt.jpa.core.context;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
  * @see RelationshipMapping
- * @see Relationship
+ * @see SpecifiedRelationship
  * @see SpecifiedJoinColumn
  */
 public interface ReadOnlyJoinColumnRelationship

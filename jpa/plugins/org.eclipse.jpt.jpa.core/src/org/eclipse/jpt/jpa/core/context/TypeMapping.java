@@ -250,7 +250,7 @@ public interface TypeMapping
 	 */
 	Iterable<String> getAllOverridableAssociationNames();
 
-	Relationship resolveOverriddenRelationship(String attributeName);
+	SpecifiedRelationship resolveOverriddenRelationship(String attributeName);
 
 
 	// ********** validation **********

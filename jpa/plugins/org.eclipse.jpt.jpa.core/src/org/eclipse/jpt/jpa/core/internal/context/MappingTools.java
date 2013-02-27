@@ -47,7 +47,7 @@ import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.jpa.core.context.ReferenceTable;
-import org.eclipse.jpt.jpa.core.context.Relationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
@@ -440,14 +440,14 @@ public final class MappingTools {
 	}
 
 	// TODO move to TypeMapping? may need different name (or may need to rename existing #resolve...)
-	public static Relationship resolveOverriddenRelationship(TypeMapping overridableTypeMapping, String attributeName) {
+	public static SpecifiedRelationship resolveOverriddenRelationship(TypeMapping overridableTypeMapping, String attributeName) {
 		// convenience null check to simplify client code
 		if (overridableTypeMapping == null) {
 			return null;
 		}
 
 		for (TypeMapping typeMapping : overridableTypeMapping.getInheritanceHierarchy()) {
-			Relationship relationship = typeMapping.resolveOverriddenRelationship(attributeName);
+			SpecifiedRelationship relationship = typeMapping.resolveOverriddenRelationship(attributeName);
 			if (relationship != null) {
 				return relationship;
 			}

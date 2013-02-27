@@ -54,7 +54,7 @@ import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
-import org.eclipse.jpt.jpa.core.context.Relationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -905,7 +905,7 @@ public abstract class AbstractJavaEntity
 	}
 
 	@Override
-	public Relationship resolveOverriddenRelationship(String attributeName) {
+	public SpecifiedRelationship resolveOverriddenRelationship(String attributeName) {
 		// check for an override before looking at attribute mappings
 		SpecifiedAssociationOverride override = this.associationOverrideContainer.getSpecifiedOverrideNamed(attributeName);
 		return (override != null) ? override.getRelationship() : super.resolveOverriddenRelationship(attributeName);
@@ -1552,7 +1552,7 @@ public abstract class AbstractJavaEntity
 			return overriddenTypeMapping.getAllOverridableAssociationNames();
 		}
 
-		public Relationship resolveOverriddenRelationship(String attributeName) {
+		public SpecifiedRelationship resolveOverriddenRelationship(String attributeName) {
 			return MappingTools.resolveOverriddenRelationship(this.getOverridableTypeMapping(), attributeName);
 		}
 

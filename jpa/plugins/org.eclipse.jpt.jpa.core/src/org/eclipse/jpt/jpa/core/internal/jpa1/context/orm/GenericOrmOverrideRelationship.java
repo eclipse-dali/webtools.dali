@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.jpa.core.context.TableColumn.Owner;
-import org.eclipse.jpt.jpa.core.context.Relationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -184,7 +184,7 @@ public class GenericOrmOverrideRelationship
 		oldRelationship.initializeOn(this);
 	}
 
-	public void initializeOn(Relationship newRelationship) {
+	public void initializeOn(SpecifiedRelationship newRelationship) {
 		newRelationship.initializeFromJoinTableRelationship(this);
 		newRelationship.initializeFromJoinColumnRelationship(this);
 	}

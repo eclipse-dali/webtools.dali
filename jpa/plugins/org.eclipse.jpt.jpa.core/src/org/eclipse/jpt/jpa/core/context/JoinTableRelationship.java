@@ -28,7 +28,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 2.2
  */
 public interface JoinTableRelationship
-	extends ReadOnlyJoinTableRelationship, Relationship
+	extends ReadOnlyJoinTableRelationship, SpecifiedRelationship
 {
 	SpecifiedJoinTableRelationshipStrategy getJoinTableStrategy();
 

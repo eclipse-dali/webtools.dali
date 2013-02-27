@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
-import org.eclipse.jpt.jpa.core.context.Relationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumnRelationshipStrategy;
@@ -179,7 +179,7 @@ public class GenericOrmOneToManyRelationship
 
 	// ********** conversions **********
 
-	public void initializeOn(Relationship newRelationship) {
+	public void initializeOn(SpecifiedRelationship newRelationship) {
 		newRelationship.initializeFromMappedByRelationship(this);
 		newRelationship.initializeFromJoinTableRelationship(this);
 		newRelationship.initializeFromJoinColumnRelationship(this);

@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
-import org.eclipse.jpt.jpa.core.context.Relationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
@@ -365,7 +365,7 @@ public class GenericOrmJoinTable
 			return GenericOrmJoinTable.this.getValidationTextRange();
 		}
 
-		protected Relationship getRelationship() {
+		protected SpecifiedRelationship getRelationship() {
 			return this.getRelationshipStrategy().getRelationship();
 		}
 

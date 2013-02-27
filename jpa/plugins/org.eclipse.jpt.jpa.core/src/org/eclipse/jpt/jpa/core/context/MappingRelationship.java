@@ -24,7 +24,7 @@ package org.eclipse.jpt.jpa.core.context;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface MappingRelationship
-	extends Relationship
+	extends SpecifiedRelationship
 {
 	/**
 	 * Return whether the relationship's mapping is the relationship owner.

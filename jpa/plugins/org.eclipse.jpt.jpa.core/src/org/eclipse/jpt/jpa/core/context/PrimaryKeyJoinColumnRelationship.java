@@ -24,7 +24,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 2.2
  */
 public interface PrimaryKeyJoinColumnRelationship
-	extends Relationship
+	extends SpecifiedRelationship
 {
 	/**
 	 * Return the (never <code>null</code>) strategy used to configure
