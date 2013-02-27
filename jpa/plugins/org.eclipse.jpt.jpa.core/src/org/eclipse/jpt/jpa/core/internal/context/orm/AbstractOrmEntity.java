@@ -72,7 +72,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.orm.OrmDiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdClassReference;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOverrideContainer;
@@ -160,7 +160,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	protected boolean specifiedDiscriminatorValueIsAllowed;
 	protected boolean discriminatorValueIsUndefined;
 
-	protected final OrmDiscriminatorColumn discriminatorColumn;
+	protected final OrmSpecifiedDiscriminatorColumn discriminatorColumn;
 	protected boolean specifiedDiscriminatorColumnIsAllowed;
 	protected boolean discriminatorColumnIsUndefined;
 
@@ -1224,15 +1224,15 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	// ********** discriminator column **********
 
-	public OrmDiscriminatorColumn getDiscriminatorColumn() {
+	public OrmSpecifiedDiscriminatorColumn getDiscriminatorColumn() {
 		return this.discriminatorColumn;
 	}
 
-	protected OrmDiscriminatorColumn buildDiscriminatorColumn() {
+	protected OrmSpecifiedDiscriminatorColumn buildDiscriminatorColumn() {
 		return this.getContextModelFactory().buildOrmDiscriminatorColumn(this, this.buildDiscriminatorColumnOwner());
 	}
 
-	protected OrmDiscriminatorColumn.Owner buildDiscriminatorColumnOwner() {
+	protected OrmSpecifiedDiscriminatorColumn.Owner buildDiscriminatorColumnOwner() {
 		return new DiscriminatorColumnOwner();
 	}
 
@@ -2154,7 +2154,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	protected class DiscriminatorColumnOwner
 		extends NamedColumnOwner
-		implements OrmDiscriminatorColumn.Owner
+		implements OrmSpecifiedDiscriminatorColumn.Owner
 	{
 		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
 			if (this.getXmlColumn() == null) {

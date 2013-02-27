@@ -39,7 +39,7 @@ public interface OrmEntity
 
 	OrmTable getTable();
 	
-	OrmDiscriminatorColumn getDiscriminatorColumn();
+	OrmSpecifiedDiscriminatorColumn getDiscriminatorColumn();
 
 
 	// ********** secondary tables **********

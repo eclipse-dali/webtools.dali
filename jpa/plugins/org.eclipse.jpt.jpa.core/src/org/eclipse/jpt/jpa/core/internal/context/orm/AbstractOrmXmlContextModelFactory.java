@@ -39,7 +39,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmBaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
-import org.eclipse.jpt.jpa.core.context.orm.OrmDiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddedMapping;
@@ -275,7 +275,7 @@ public abstract class AbstractOrmXmlContextModelFactory
 		return new GenericOrmVirtualOverrideRelationship(parent);
 	}
 	
-	public OrmDiscriminatorColumn buildOrmDiscriminatorColumn(OrmEntity parent, OrmDiscriminatorColumn.Owner owner) {
+	public OrmSpecifiedDiscriminatorColumn buildOrmDiscriminatorColumn(OrmEntity parent, OrmSpecifiedDiscriminatorColumn.Owner owner) {
 		return new GenericOrmDiscriminatorColumn(parent, owner);
 	}
 	

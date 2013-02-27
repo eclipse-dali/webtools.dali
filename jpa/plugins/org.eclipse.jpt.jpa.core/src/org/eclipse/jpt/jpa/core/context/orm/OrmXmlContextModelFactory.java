@@ -151,7 +151,7 @@ public interface OrmXmlContextModelFactory
 
 	VirtualOverrideRelationship buildOrmVirtualOverrideRelationship(OrmVirtualAssociationOverride parent);
 
-	OrmDiscriminatorColumn buildOrmDiscriminatorColumn(OrmEntity parent, OrmDiscriminatorColumn.Owner owner);
+	OrmSpecifiedDiscriminatorColumn buildOrmDiscriminatorColumn(OrmEntity parent, OrmSpecifiedDiscriminatorColumn.Owner owner);
 
 	OrmColumn buildOrmColumn(JpaContextModel parent, OrmColumn.Owner owner);
 
