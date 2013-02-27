@@ -88,7 +88,7 @@ public interface EclipseLinkMultitenancy2_3
 	 * Return a list iterable of the specified tenant discriminator columns.
 	 * This will not be null.
 	 */
-	ListIterable<? extends TenantDiscriminatorColumn2_3> getSpecifiedTenantDiscriminatorColumns();
+	ListIterable<? extends SpecifiedTenantDiscriminatorColumn2_3> getSpecifiedTenantDiscriminatorColumns();
 		String SPECIFIED_TENANT_DISCRIMINATOR_COLUMNS_LIST = "specifiedTenantDiscriminatorColumns"; //$NON-NLS-1$
 
 	/**
@@ -105,18 +105,18 @@ public interface EclipseLinkMultitenancy2_3
 	 * Add a specified tenant discriminator column and return the object
 	 * representing it.
 	 */
-	TenantDiscriminatorColumn2_3 addSpecifiedTenantDiscriminatorColumn();
+	SpecifiedTenantDiscriminatorColumn2_3 addSpecifiedTenantDiscriminatorColumn();
 
 	/**
 	 * Add a specified tenant discriminator column and return the object
 	 * representing it.
 	 */
-	TenantDiscriminatorColumn2_3 addSpecifiedTenantDiscriminatorColumn(int index);
+	SpecifiedTenantDiscriminatorColumn2_3 addSpecifiedTenantDiscriminatorColumn(int index);
 
 	/**
 	 * Remove the specified tenant discriminator column.
 	 */
-	void removeSpecifiedTenantDiscriminatorColumn(TenantDiscriminatorColumn2_3 tenantDiscriminatorColumn);
+	void removeSpecifiedTenantDiscriminatorColumn(SpecifiedTenantDiscriminatorColumn2_3 tenantDiscriminatorColumn);
 
 	/**
 	 * Remove the specified tenant discriminator column at the index.

@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context.orm;
 
-import org.eclipse.jpt.jpa.eclipselink.core.context.TenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.SpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminatorColumn;
 
 /**
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminatorC
  * @since 3.1
  */
 public interface OrmTenantDiscriminatorColumn2_3
-	extends TenantDiscriminatorColumn2_3
+	extends SpecifiedTenantDiscriminatorColumn2_3
 {
 	XmlTenantDiscriminatorColumn getXmlColumn();
 }

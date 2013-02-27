@@ -31,7 +31,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMultitenantType2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.context.TenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.SpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.TenantDiscriminatorColumnsComposite.TenantDiscriminatorColumnsEditor;
@@ -247,7 +247,7 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 	class TenantDiscriminatorColumnsProvider implements TenantDiscriminatorColumnsEditor<EclipseLinkMultitenancy2_3> {
 
 		public ReadOnlyTenantDiscriminatorColumn2_3 addTenantDiscriminatorColumn(EclipseLinkMultitenancy2_3 subject) {
-			TenantDiscriminatorColumn2_3 column = subject.addSpecifiedTenantDiscriminatorColumn();
+			SpecifiedTenantDiscriminatorColumn2_3 column = subject.addSpecifiedTenantDiscriminatorColumn();
 			column.setSpecifiedName(ReadOnlyTenantDiscriminatorColumn2_3.DEFAULT_NAME);
 			return column;
 		}
@@ -281,7 +281,7 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 		}
 
 		public void removeTenantDiscriminatorColumn(EclipseLinkMultitenancy2_3 subject, ReadOnlyTenantDiscriminatorColumn2_3 column) {
-			subject.removeSpecifiedTenantDiscriminatorColumn((TenantDiscriminatorColumn2_3) column);
+			subject.removeSpecifiedTenantDiscriminatorColumn((SpecifiedTenantDiscriminatorColumn2_3) column);
 		}
 	}
 
@@ -331,7 +331,7 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 				EclipseLinkMultitenancy2_3 subject = getSubject();
 
 				if (selected) {
-					TenantDiscriminatorColumn2_3 newTenantDiscriminatorColumn = subject.addSpecifiedTenantDiscriminatorColumn();
+					SpecifiedTenantDiscriminatorColumn2_3 newTenantDiscriminatorColumn = subject.addSpecifiedTenantDiscriminatorColumn();
 					newTenantDiscriminatorColumn.setSpecifiedName(ReadOnlyTenantDiscriminatorColumn2_3.DEFAULT_NAME);
 				}
 				// Remove all the specified tenant discriminator columns
