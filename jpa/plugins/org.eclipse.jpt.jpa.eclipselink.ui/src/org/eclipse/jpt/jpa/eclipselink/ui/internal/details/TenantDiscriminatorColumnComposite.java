@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTableColumn;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
@@ -270,8 +270,8 @@ public class TenantDiscriminatorColumnComposite extends Pane<ReadOnlyTenantDiscr
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(ReadOnlyNamedDiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE_PROPERTY);
-				propertyNames.add(ReadOnlyNamedDiscriminatorColumn.SPECIFIED_DISCRIMINATOR_TYPE_PROPERTY);
+				propertyNames.add(NamedDiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE_PROPERTY);
+				propertyNames.add(NamedDiscriminatorColumn.SPECIFIED_DISCRIMINATOR_TYPE_PROPERTY);
 			}
 
 			@Override
@@ -330,7 +330,7 @@ public class TenantDiscriminatorColumnComposite extends Pane<ReadOnlyTenantDiscr
 
 			@Override
 			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<ReadOnlyTenantDiscriminatorColumn2_3, Integer>(getSubjectHolder(), ReadOnlyNamedDiscriminatorColumn.DEFAULT_LENGTH_PROPERTY) {
+				return new PropertyAspectAdapter<ReadOnlyTenantDiscriminatorColumn2_3, Integer>(getSubjectHolder(), NamedDiscriminatorColumn.DEFAULT_LENGTH_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						return Integer.valueOf(this.subject.getDefaultLength());
@@ -340,7 +340,7 @@ public class TenantDiscriminatorColumnComposite extends Pane<ReadOnlyTenantDiscr
 
 			@Override
 			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<ReadOnlyTenantDiscriminatorColumn2_3, Integer>(getSubjectHolder(), ReadOnlyNamedDiscriminatorColumn.SPECIFIED_LENGTH_PROPERTY) {
+				return new PropertyAspectAdapter<ReadOnlyTenantDiscriminatorColumn2_3, Integer>(getSubjectHolder(), NamedDiscriminatorColumn.SPECIFIED_LENGTH_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						return this.subject.getSpecifiedLength();

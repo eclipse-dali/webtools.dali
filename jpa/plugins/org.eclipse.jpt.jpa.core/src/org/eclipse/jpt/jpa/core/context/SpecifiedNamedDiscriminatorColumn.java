@@ -22,7 +22,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 3.1
  */
 public interface SpecifiedNamedDiscriminatorColumn
-	extends SpecifiedNamedColumn, ReadOnlyNamedDiscriminatorColumn
+	extends SpecifiedNamedColumn, NamedDiscriminatorColumn
 {
 	void setSpecifiedDiscriminatorType(DiscriminatorType newSpecifiedDiscriminatorType);
 	void setSpecifiedLength(Integer value);

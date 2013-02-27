@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.Table;
@@ -229,7 +229,7 @@ public interface JpaFactory
 	
 	VirtualColumn buildJavaVirtualColumn(JpaContextModel parent, VirtualColumn.Owner owner);
 
-	JavaSpecifiedDiscriminatorColumn buildJavaDiscriminatorColumn(JavaEntity parent, ReadOnlyNamedDiscriminatorColumn.Owner owner);
+	JavaSpecifiedDiscriminatorColumn buildJavaDiscriminatorColumn(JavaEntity parent, NamedDiscriminatorColumn.Owner owner);
 	
 	JavaSpecifiedJoinColumn buildJavaJoinColumn(JpaContextModel parent, ReadOnlyJoinColumn.Owner owner, CompleteJoinColumnAnnotation joinColumnAnnotation);
 	

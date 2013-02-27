@@ -11,10 +11,10 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualNamedDiscriminatorColumn;
 
-public abstract class AbstractJavaVirtualNamedDiscriminatorColumn<O extends ReadOnlyNamedDiscriminatorColumn.Owner, C extends ReadOnlyNamedDiscriminatorColumn>
+public abstract class AbstractJavaVirtualNamedDiscriminatorColumn<O extends NamedDiscriminatorColumn.Owner, C extends NamedDiscriminatorColumn>
 	extends AbstractJavaVirtualNamedColumn<O, C>
 	implements VirtualNamedDiscriminatorColumn
 {

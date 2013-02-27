@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -20,11 +20,11 @@ import org.eclipse.jpt.jpa.core.resource.java.DiscriminatorColumnAnnotation;
  * Java discriminator column
  */
 public class GenericJavaDiscriminatorColumn
-	extends AbstractJavaNamedDiscriminatorColumn<JavaEntity, DiscriminatorColumnAnnotation, ReadOnlyNamedDiscriminatorColumn.Owner>
+	extends AbstractJavaNamedDiscriminatorColumn<JavaEntity, DiscriminatorColumnAnnotation, NamedDiscriminatorColumn.Owner>
 	implements JavaSpecifiedDiscriminatorColumn
 {
 
-	public GenericJavaDiscriminatorColumn(JavaEntity parent, ReadOnlyNamedDiscriminatorColumn.Owner owner) {
+	public GenericJavaDiscriminatorColumn(JavaEntity parent, NamedDiscriminatorColumn.Owner owner) {
 		super(parent, owner);
 	}
 

@@ -53,7 +53,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
@@ -2183,7 +2183,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			}
 			return AbstractOrmEntity.this.isDescendant() ?
 					this.getRootDiscriminatorColumn().getLength() :
-					this.isTablePerClass() ? 0 : ReadOnlyNamedDiscriminatorColumn.DEFAULT_LENGTH;
+					this.isTablePerClass() ? 0 : NamedDiscriminatorColumn.DEFAULT_LENGTH;
 		}
 
 		public DiscriminatorType getDefaultDiscriminatorType() {
@@ -2198,7 +2198,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			}
 			return AbstractOrmEntity.this.isDescendant() ?
 					this.getRootDiscriminatorColumn().getDiscriminatorType() :
-					this.isTablePerClass() ? null : ReadOnlyNamedDiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE;
+					this.isTablePerClass() ? null : NamedDiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE;
 		}
 
 		public JptValidator buildColumnValidator(NamedColumn column) {

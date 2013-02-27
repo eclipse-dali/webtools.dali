@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractEntityMappings;
@@ -392,11 +392,11 @@ public class EclipseLinkEntityMappingsImpl
 		}
 
 		public int getDefaultLength() {
-			return ReadOnlyNamedDiscriminatorColumn.DEFAULT_LENGTH;
+			return NamedDiscriminatorColumn.DEFAULT_LENGTH;
 		}
 
 		public DiscriminatorType getDefaultDiscriminatorType() {
-			return ReadOnlyNamedDiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE;
+			return NamedDiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE;
 		}
 
 		/**

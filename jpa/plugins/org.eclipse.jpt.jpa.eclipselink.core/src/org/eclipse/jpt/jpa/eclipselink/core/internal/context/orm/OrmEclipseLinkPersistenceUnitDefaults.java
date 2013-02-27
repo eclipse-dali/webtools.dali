@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.AbstractOrmPersistenceUnitDefaults;
@@ -200,11 +200,11 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 		}
 
 		public int getDefaultLength() {
-			return ReadOnlyNamedDiscriminatorColumn.DEFAULT_LENGTH;
+			return NamedDiscriminatorColumn.DEFAULT_LENGTH;
 		}
 
 		public DiscriminatorType getDefaultDiscriminatorType() {
-			return ReadOnlyNamedDiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE;
+			return NamedDiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE;
 		}
 
 		/**

@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -470,11 +470,11 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 		}
 
 		public int getDefaultLength() {
-			return ReadOnlyNamedDiscriminatorColumn.DEFAULT_LENGTH;
+			return NamedDiscriminatorColumn.DEFAULT_LENGTH;
 		}
 
 		public DiscriminatorType getDefaultDiscriminatorType() {
-			return ReadOnlyNamedDiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE;
+			return NamedDiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE;
 		}
 
 		public String getDefaultTableName() {

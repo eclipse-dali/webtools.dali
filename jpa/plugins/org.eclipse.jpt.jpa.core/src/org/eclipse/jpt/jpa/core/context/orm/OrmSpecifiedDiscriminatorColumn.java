@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.SpecifiedDiscriminatorColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlDiscriminatorColumn;
 
 /**
@@ -37,7 +37,7 @@ public interface OrmSpecifiedDiscriminatorColumn
 	 * interface allowing discriminator columns to be used in multiple places
 	 */
 	interface Owner
-		extends ReadOnlyNamedDiscriminatorColumn.Owner
+		extends NamedDiscriminatorColumn.Owner
 	{
 		XmlDiscriminatorColumn getXmlColumn();
 		XmlDiscriminatorColumn buildXmlColumn();

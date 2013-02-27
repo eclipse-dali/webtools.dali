@@ -50,7 +50,7 @@ import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
@@ -844,7 +844,7 @@ public abstract class AbstractJavaEntity
 		return this.getJpaFactory().buildJavaDiscriminatorColumn(this, this.buildDiscriminatorColumnOwner());
 	}
 
-	protected ReadOnlyNamedDiscriminatorColumn.Owner buildDiscriminatorColumnOwner() {
+	protected NamedDiscriminatorColumn.Owner buildDiscriminatorColumnOwner() {
 		return new DiscriminatorColumnOwner();
 	}
 
@@ -1633,7 +1633,7 @@ public abstract class AbstractJavaEntity
 
 	protected class DiscriminatorColumnOwner
 		extends NamedColumnOwner
-		implements ReadOnlyNamedDiscriminatorColumn.Owner
+		implements NamedDiscriminatorColumn.Owner
 	{
 		public String getDefaultColumnName(NamedColumn column) {
 			return this.isDescendant() ?
@@ -1644,13 +1644,13 @@ public abstract class AbstractJavaEntity
 		public int getDefaultLength() {
 			return this.isDescendant() ?
 					this.getRootDiscriminatorColumn().getLength() :
-					this.discriminatorColumnIsUndefined() ? 0 : ReadOnlyNamedDiscriminatorColumn.DEFAULT_LENGTH;
+					this.discriminatorColumnIsUndefined() ? 0 : NamedDiscriminatorColumn.DEFAULT_LENGTH;
 		}
 
 		public DiscriminatorType getDefaultDiscriminatorType() {
 			return this.isDescendant() ?
 					this.getRootDiscriminatorColumn().getDiscriminatorType() :
-					this.discriminatorColumnIsUndefined() ? null : ReadOnlyNamedDiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE;
+					this.discriminatorColumnIsUndefined() ? null : NamedDiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE;
 		}
 
 		protected boolean isDescendant() {

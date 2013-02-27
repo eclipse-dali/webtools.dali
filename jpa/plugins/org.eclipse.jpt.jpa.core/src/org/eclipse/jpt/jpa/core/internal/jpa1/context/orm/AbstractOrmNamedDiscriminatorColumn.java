@@ -12,14 +12,14 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedNamedDiscriminatorColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmNamedColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlBaseDiscriminatorColumn;
 
 /**
  * <code>orm.xml</code> named discriminator column
  */
-public abstract class AbstractOrmNamedDiscriminatorColumn<X extends XmlBaseDiscriminatorColumn, O extends ReadOnlyNamedDiscriminatorColumn.Owner>
+public abstract class AbstractOrmNamedDiscriminatorColumn<X extends XmlBaseDiscriminatorColumn, O extends NamedDiscriminatorColumn.Owner>
 	extends AbstractOrmNamedColumn<JpaContextModel, X, O>
 	implements SpecifiedNamedDiscriminatorColumn
 {
