@@ -57,7 +57,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOneToOneMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmOverrideRelationship;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
@@ -267,7 +267,7 @@ public abstract class AbstractOrmXmlContextModelFactory
 		return new GenericOrmVirtualAssociationOverride(parent, name);
 	}
 	
-	public OrmOverrideRelationship buildOrmOverrideRelationship(OrmSpecifiedAssociationOverride parent) {
+	public OrmSpecifiedOverrideRelationship buildOrmOverrideRelationship(OrmSpecifiedAssociationOverride parent) {
 		return new GenericOrmOverrideRelationship(parent);
 	}
 	

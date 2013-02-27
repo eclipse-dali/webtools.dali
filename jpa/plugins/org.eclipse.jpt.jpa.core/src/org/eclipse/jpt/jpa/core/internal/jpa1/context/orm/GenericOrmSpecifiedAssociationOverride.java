@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.orm.OrmOverrideRelationship;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmSpecifiedAssociationOverride2_0;
@@ -31,7 +31,7 @@ public class GenericOrmSpecifiedAssociationOverride
 	extends AbstractOrmSpecifiedOverride<OrmAssociationOverrideContainer, XmlAssociationOverride>
 	implements OrmSpecifiedAssociationOverride2_0
 {
-	protected final OrmOverrideRelationship relationship;
+	protected final OrmSpecifiedOverrideRelationship relationship;
 
 
 	public GenericOrmSpecifiedAssociationOverride(OrmAssociationOverrideContainer parent, XmlAssociationOverride xmlOverride) {
@@ -65,11 +65,11 @@ public class GenericOrmSpecifiedAssociationOverride
 
 	// ********** relationship **********
 
-	public OrmOverrideRelationship getRelationship() {
+	public OrmSpecifiedOverrideRelationship getRelationship() {
 		return this.relationship;
 	}
 
-	protected OrmOverrideRelationship buildRelationship() {
+	protected OrmSpecifiedOverrideRelationship buildRelationship() {
 		return this.getContextModelFactory().buildOrmOverrideRelationship(this);
 	}
 

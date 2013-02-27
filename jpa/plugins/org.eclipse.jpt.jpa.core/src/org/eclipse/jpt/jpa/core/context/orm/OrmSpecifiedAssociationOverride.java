@@ -31,5 +31,5 @@ public interface OrmSpecifiedAssociationOverride
 
 	XmlAssociationOverride getXmlOverride();
 
-	OrmOverrideRelationship getRelationship();
+	OrmSpecifiedOverrideRelationship getRelationship();
 }

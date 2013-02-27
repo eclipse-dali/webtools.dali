@@ -17,15 +17,15 @@ import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmOverrideRelationship;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedOverrideRelationship;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.db.Table;
 
 public class GenericOrmOverrideJoinColumnRelationshipStrategy
-	extends AbstractOrmJoinColumnRelationshipStrategy<OrmOverrideRelationship>
+	extends AbstractOrmJoinColumnRelationshipStrategy<OrmSpecifiedOverrideRelationship>
 {
-	public GenericOrmOverrideJoinColumnRelationshipStrategy(OrmOverrideRelationship parent) {
+	public GenericOrmOverrideJoinColumnRelationshipStrategy(OrmSpecifiedOverrideRelationship parent) {
 		super(parent);
 	}
 
@@ -108,8 +108,8 @@ public class GenericOrmOverrideJoinColumnRelationshipStrategy
 	}
 
 	@Override
-	public OrmOverrideRelationship getRelationship() {
-		return (OrmOverrideRelationship) super.getRelationship();
+	public OrmSpecifiedOverrideRelationship getRelationship() {
+		return (OrmSpecifiedOverrideRelationship) super.getRelationship();
 	}
 
 	public TextRange getValidationTextRange() {
