@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
 public interface JavaSpecifiedJoinTableRelationshipStrategy
 	extends SpecifiedJoinTableRelationshipStrategy
 {
-	JavaJoinTable getJoinTable();
+	JavaSpecifiedJoinTable getJoinTable();
 	
 	/**
 	 * Return the join table annotation, use a null object instead of returning null

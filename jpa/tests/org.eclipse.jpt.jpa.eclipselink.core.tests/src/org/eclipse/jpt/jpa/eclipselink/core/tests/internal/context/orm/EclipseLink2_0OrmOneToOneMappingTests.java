@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaJoinTable;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
@@ -580,7 +580,7 @@ public class EclipseLink2_0OrmOneToOneMappingTests
 		assertEquals("address_id", virtualInverseOrmJoinColumn.getDefaultName());
 		assertEquals("id", virtualInverseOrmJoinColumn.getDefaultReferencedColumnName());
 
-		JavaJoinTable javaJoinTable = ((JavaOneToOneRelationship2_0) javaOneToOneMapping.getRelationship()).getJoinTableStrategy().getJoinTable();
+		JavaSpecifiedJoinTable javaJoinTable = ((JavaOneToOneRelationship2_0) javaOneToOneMapping.getRelationship()).getJoinTableStrategy().getJoinTable();
 		javaJoinTable.setSpecifiedName("FOO");
 		javaJoinTable.setSpecifiedCatalog("CATALOG");
 		javaJoinTable.setSpecifiedSchema("SCHEMA");

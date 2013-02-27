@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaJoinTable;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
@@ -223,7 +223,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 	
 		JavaSpecifiedPersistentAttribute javaPersistentAttribute = ormPersistentAttribute.getJavaPersistentAttribute();
 		JavaManyToManyMapping javaManyToManyMapping = (JavaManyToManyMapping) javaPersistentAttribute.getMapping();
-		JavaJoinTable javaJoinTable = javaManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
+		JavaSpecifiedJoinTable javaJoinTable = javaManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		javaJoinTable.setSpecifiedName("FOO");
 		javaJoinTable.setSpecifiedCatalog("CATALOG");
 		javaJoinTable.setSpecifiedSchema("SCHEMA");
@@ -1197,7 +1197,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		assertFalse(uniqueConstraints.hasNext());
 
 		JavaManyToManyMapping javaManyToManyMapping = (JavaManyToManyMapping) ormPersistentType.getJavaPersistentType().getAttributes().iterator().next().getMapping();
-		JavaJoinTable javaJoinTable = javaManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
+		JavaSpecifiedJoinTable javaJoinTable = javaManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
 		javaJoinTable.addUniqueConstraint(0).addColumnName(0, "FOO");
 		javaJoinTable.addUniqueConstraint(1).addColumnName(0, "BAR");
