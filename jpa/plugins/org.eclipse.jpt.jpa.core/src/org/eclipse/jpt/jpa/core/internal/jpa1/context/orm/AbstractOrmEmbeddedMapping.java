@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
+import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
@@ -304,7 +304,7 @@ public abstract class AbstractOrmEmbeddedMapping<X extends XmlEmbedded>
 		}
 
 		public JptValidator buildJoinTableValidator(AssociationOverride override, Table table) {
-			return new AssociationOverrideJoinTableValidator(this.getPersistentAttribute(), override, (ReadOnlyJoinTable) table);
+			return new AssociationOverrideJoinTableValidator(this.getPersistentAttribute(), override, (JoinTable) table);
 		}
 
 		protected OrmSpecifiedPersistentAttribute getPersistentAttribute() {

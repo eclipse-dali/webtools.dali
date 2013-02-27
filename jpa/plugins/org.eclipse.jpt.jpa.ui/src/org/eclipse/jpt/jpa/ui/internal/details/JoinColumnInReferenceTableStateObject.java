@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import java.util.ListIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.SingleElementListIterator;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
+import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.ReferenceTable;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.db.Table;
@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * joint table.
  *
  * @see JoinColumn
- * @see ReadOnlyJoinTable
+ * @see JoinTable
  * @see JoinColumnInReferenceTableDialog
  *
  * @version 2.0

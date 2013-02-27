@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
+import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJoinTableRelationshipStrategy;
@@ -67,7 +67,7 @@ public class GenericJavaOverrideJoinTableRelationshipStrategy2_0
 	}
 
 	public JptValidator buildTableValidator(Table table) {
-		return this.getRelationship().buildJoinTableValidator((ReadOnlyJoinTable) table);
+		return this.getRelationship().buildJoinTableValidator((JoinTable) table);
 	}
 
 	public JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner) {

@@ -13,28 +13,28 @@ import java.util.ListIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.SingleElementListIterator;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
+import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.db.Table;
 
 /**
  * @see JoinColumn
- * @see ReadOnlyJoinTable
+ * @see JoinTable
  * @see InverseJoinColumnInJoinTableDialog
  */
 public class InverseJoinColumnInJoinTableStateObject 
 	extends JoinColumnStateObject
 {
 	public InverseJoinColumnInJoinTableStateObject(
-			ReadOnlyJoinTable joinTable,
+			JoinTable joinTable,
 	        JoinColumn joinColumn) {
 		super(joinTable, joinColumn);
 	}
 	
 	
 	@Override
-	public ReadOnlyJoinTable getOwner() {
-		return (ReadOnlyJoinTable) super.getOwner();
+	public JoinTable getOwner() {
+		return (JoinTable) super.getOwner();
 	}
 	
 	private RelationshipMapping getRelationshipMapping() {

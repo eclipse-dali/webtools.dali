@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface VirtualJoinTable
-	extends VirtualReferenceTable, ReadOnlyJoinTable
+	extends VirtualReferenceTable, JoinTable
 {
 	VirtualJoinTableRelationshipStrategy getParent();
 
@@ -30,5 +30,5 @@ public interface VirtualJoinTable
 	VirtualJoinColumn getSpecifiedInverseJoinColumn(int index);
 	VirtualJoinColumn getDefaultInverseJoinColumn();
 
-	ReadOnlyJoinTable getOverriddenTable();
+	JoinTable getOverriddenTable();
 }

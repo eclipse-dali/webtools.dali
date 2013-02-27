@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
+import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -37,7 +37,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>orm.xml</code> virtual join table
  */
 public class GenericOrmVirtualJoinTable
-	extends AbstractOrmVirtualReferenceTable<VirtualJoinTableRelationshipStrategy, ReadOnlyJoinTable>
+	extends AbstractOrmVirtualReferenceTable<VirtualJoinTableRelationshipStrategy, JoinTable>
 	implements VirtualJoinTable
 {
 
@@ -47,7 +47,7 @@ public class GenericOrmVirtualJoinTable
 	protected VirtualJoinColumn defaultInverseJoinColumn;
 
 
-	public GenericOrmVirtualJoinTable(VirtualJoinTableRelationshipStrategy parent, Owner owner, ReadOnlyJoinTable overriddenTable) {
+	public GenericOrmVirtualJoinTable(VirtualJoinTableRelationshipStrategy parent, Owner owner, JoinTable overriddenTable) {
 		super(parent, owner, overriddenTable);
 		this.inverseJoinColumnOwner = this.buildInverseJoinColumnOwner();
 		this.specifiedInverseJoinColumnContainer = this.buildSpecifiedInverseJoinColumnContainer();

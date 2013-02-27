@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
+import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
@@ -260,14 +260,14 @@ public class GenericOrmJoinTable
 		return this.getRelationshipStrategy().getJoinTableDefaultName();
 	}
 
-	public void initializeFrom(ReadOnlyJoinTable oldTable) {
+	public void initializeFrom(JoinTable oldTable) {
 		super.initializeFrom(oldTable);
 		for (JoinColumn joinColumn : oldTable.getSpecifiedInverseJoinColumns()) {
 			this.addSpecifiedInverseJoinColumn().initializeFrom(joinColumn);
 		}
 	}
 
-	public void initializeFromVirtual(ReadOnlyJoinTable virtualTable) {
+	public void initializeFromVirtual(JoinTable virtualTable) {
 		super.initializeFromVirtual(virtualTable);
 		for (JoinColumn joinColumn : virtualTable.getInverseJoinColumns()) {
 			this.addSpecifiedInverseJoinColumn().initializeFromVirtual(joinColumn);

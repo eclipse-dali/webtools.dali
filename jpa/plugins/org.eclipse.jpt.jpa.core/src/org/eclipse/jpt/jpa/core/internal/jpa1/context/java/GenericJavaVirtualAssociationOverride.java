@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
+import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.VirtualOverrideRelationship;
@@ -87,7 +87,7 @@ public class GenericJavaVirtualAssociationOverride
 		this.relationship.validate(messages, reporter);
 	}
 
-	public JptValidator buildJoinTableValidator(ReadOnlyJoinTable table) {
+	public JptValidator buildJoinTableValidator(JoinTable table) {
 		return this.getContainer2_0().buildJoinTableValidator(this, table);
 	}
 

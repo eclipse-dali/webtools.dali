@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
+import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
@@ -269,7 +269,7 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaJoinTable(parent, owner);
 	}
 	
-	public VirtualJoinTable buildJavaVirtualJoinTable(VirtualJoinTableRelationshipStrategy parent, Table.Owner owner, ReadOnlyJoinTable overriddenTable) {
+	public VirtualJoinTable buildJavaVirtualJoinTable(VirtualJoinTableRelationshipStrategy parent, Table.Owner owner, JoinTable overriddenTable) {
 		return new GenericJavaVirtualJoinTable(parent, owner, overriddenTable);
 	}
 	

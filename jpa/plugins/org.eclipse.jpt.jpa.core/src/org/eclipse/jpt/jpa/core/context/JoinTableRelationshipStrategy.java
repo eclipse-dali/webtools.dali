@@ -36,7 +36,7 @@ public interface JoinTableRelationshipStrategy
 	 * specified or default join table if one is specified or a default 
 	 * join table applies, otherwise <code>null</code>.
 	 */
-	ReadOnlyJoinTable getJoinTable();
+	JoinTable getJoinTable();
 
 	/**
 	 * Return the default name of the strategy's join table

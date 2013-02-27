@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
+import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.OverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.Relationship;
@@ -290,7 +290,7 @@ public class GenericOrmOverrideRelationship
 		}
 	}
 
-	public JptValidator buildJoinTableValidator(ReadOnlyJoinTable table) {
+	public JptValidator buildJoinTableValidator(JoinTable table) {
 		return this.getAssociationOverride2_0().buildJoinTableValidator(table);
 	}
 

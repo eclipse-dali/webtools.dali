@@ -48,7 +48,7 @@ import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
+import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.Override_;
@@ -1573,7 +1573,7 @@ public abstract class AbstractJavaEntity
 		}
 
 		public JptValidator buildJoinTableValidator(AssociationOverride override, Table t) {
-			return new AssociationOverrideJoinTableValidator(override, (ReadOnlyJoinTable) t);
+			return new AssociationOverrideJoinTableValidator(override, (JoinTable) t);
 		}
 	}
 

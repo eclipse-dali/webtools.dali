@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
+import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappingJoinTableRelationship;
@@ -65,6 +65,6 @@ public class GenericOrmMappingJoinTableRelationshipStrategy
 	}
 
 	public JptValidator buildTableValidator(Table table) {
-		return new JoinTableValidator(this.getPersistentAttribute(), (ReadOnlyJoinTable) table);
+		return new JoinTableValidator(this.getPersistentAttribute(), (JoinTable) table);
 	}
 }

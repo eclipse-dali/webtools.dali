@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
+import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.Relationship;
@@ -60,7 +60,7 @@ public class GenericJavaVirtualOverrideJoinTableRelationshipStrategy2_0
 	}
 
 	protected void updateJoinTable() {
-		ReadOnlyJoinTable overriddenJoinTable = this.getOverriddenJoinTable();
+		JoinTable overriddenJoinTable = this.getOverriddenJoinTable();
 		if (overriddenJoinTable == null) {
 			if (this.joinTable != null) {
 				this.setJoinTable(null);
@@ -74,12 +74,12 @@ public class GenericJavaVirtualOverrideJoinTableRelationshipStrategy2_0
 		}
 	}
 
-	protected ReadOnlyJoinTable getOverriddenJoinTable() {
+	protected JoinTable getOverriddenJoinTable() {
 		JoinTableRelationshipStrategy overriddenStrategy = this.getOverriddenStrategy();
 		return (overriddenStrategy == null) ? null : overriddenStrategy.getJoinTable();
 	}
 
-	protected VirtualJoinTable buildJoinTable(ReadOnlyJoinTable overriddenJoinTable) {
+	protected VirtualJoinTable buildJoinTable(JoinTable overriddenJoinTable) {
 		return this.getJpaFactory().buildJavaVirtualJoinTable(this, this, overriddenJoinTable);
 	}
 
@@ -132,7 +132,7 @@ public class GenericJavaVirtualOverrideJoinTableRelationshipStrategy2_0
 	}
 
 	public JptValidator buildTableValidator(Table table) {
-		return this.getRelationship().buildJoinTableValidator((ReadOnlyJoinTable) table);
+		return this.getRelationship().buildJoinTableValidator((JoinTable) table);
 	}
 
 	public JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner) {

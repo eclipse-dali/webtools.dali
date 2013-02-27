@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTableRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
+import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.Relationship;
@@ -83,11 +83,11 @@ public class JoinTableJoiningStrategyPane
 		};
 	}
 
-	protected PropertyValueModel<ReadOnlyJoinTable> buildJoinTableHolder() {
-		return new PropertyAspectAdapter<JoinTableRelationshipStrategy, ReadOnlyJoinTable>(
+	protected PropertyValueModel<JoinTable> buildJoinTableHolder() {
+		return new PropertyAspectAdapter<JoinTableRelationshipStrategy, JoinTable>(
 				this.buildJoinTableJoiningStrategyHolder(), JoinTableRelationshipStrategy.JOIN_TABLE_PROPERTY) {
 			@Override
-			protected ReadOnlyJoinTable buildValue_() {
+			protected JoinTable buildValue_() {
 				return this.subject.getJoinTable();
 			}
 		};

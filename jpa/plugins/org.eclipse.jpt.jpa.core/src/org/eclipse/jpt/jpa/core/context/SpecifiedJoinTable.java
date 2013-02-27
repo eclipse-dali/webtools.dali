@@ -24,13 +24,13 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
  * @since 2.0
  */
 public interface SpecifiedJoinTable
-	extends SpecifiedReferenceTable, ReadOnlyJoinTable
+	extends SpecifiedReferenceTable, JoinTable
 {
 	SpecifiedJoinTableRelationshipStrategy getParent();
 
-	void initializeFrom(ReadOnlyJoinTable oldJoinTable);
+	void initializeFrom(JoinTable oldJoinTable);
 
-	void initializeFromVirtual(ReadOnlyJoinTable virtualJoinTable);
+	void initializeFromVirtual(JoinTable virtualJoinTable);
 
 
 	// ********** inverse join columns **********

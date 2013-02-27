@@ -13,7 +13,7 @@ import java.util.List;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
+import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
@@ -113,7 +113,7 @@ public abstract class AbstractJavaJoinTableRelationshipStrategy<P extends JavaJo
 	}
 
 	public void initializeFrom(JoinTableRelationshipStrategy oldStrategy) {
-		ReadOnlyJoinTable oldJoinTable = oldStrategy.getJoinTable();
+		JoinTable oldJoinTable = oldStrategy.getJoinTable();
 		if (oldJoinTable != null) {
 			this.addStrategy();
 			this.joinTable.initializeFrom(oldJoinTable);
@@ -121,7 +121,7 @@ public abstract class AbstractJavaJoinTableRelationshipStrategy<P extends JavaJo
 	}
 
 	public void initializeFromVirtual(JoinTableRelationshipStrategy virtualStrategy) {
-		ReadOnlyJoinTable oldJoinTable = virtualStrategy.getJoinTable();
+		JoinTable oldJoinTable = virtualStrategy.getJoinTable();
 		if (oldJoinTable != null) {
 			this.addStrategy();
 			this.joinTable.initializeFromVirtual(oldJoinTable);
