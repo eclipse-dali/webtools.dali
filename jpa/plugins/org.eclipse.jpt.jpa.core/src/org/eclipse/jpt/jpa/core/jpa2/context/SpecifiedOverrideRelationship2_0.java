@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.jpa2.context;
 
 import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTableRelationship;
-import org.eclipse.jpt.jpa.core.context.OverrideRelationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedOverrideRelationship;
 
 /**
  * JPA 2.0 association override relationship
@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.context.OverrideRelationship;
  * @since 2.3
  */
 public interface SpecifiedOverrideRelationship2_0
-	extends OverrideRelationship,
+	extends SpecifiedOverrideRelationship,
 			SpecifiedJoinTableRelationship,
 			OverrideRelationship2_0
 {

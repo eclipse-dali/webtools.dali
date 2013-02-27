@@ -13,7 +13,7 @@ import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
-import org.eclipse.jpt.jpa.core.context.OverrideRelationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
@@ -205,7 +205,7 @@ public class GenericOrmOverrideRelationship
 		virtualRelationship.initializeOnSpecified(this);
 	}
 
-	public void initializeOnSpecified(OverrideRelationship specifiedRelationship) {
+	public void initializeOnSpecified(SpecifiedOverrideRelationship specifiedRelationship) {
 		throw new UnsupportedOperationException();
 	}
 

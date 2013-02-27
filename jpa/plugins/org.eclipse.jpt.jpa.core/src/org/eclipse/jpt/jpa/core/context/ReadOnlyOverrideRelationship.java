@@ -54,5 +54,5 @@ public interface ReadOnlyOverrideRelationship
 
 	JptValidator buildColumnValidator(BaseColumn column, BaseColumn.Owner owner);
 
-	void initializeOnSpecified(OverrideRelationship specifiedRelationship);
+	void initializeOnSpecified(SpecifiedOverrideRelationship specifiedRelationship);
 }

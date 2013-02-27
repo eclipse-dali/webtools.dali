@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.OverrideRelationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedOverrideRelationship;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride;
 
 /**
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride;
  * @since 2.3
  */
 public interface OrmOverrideRelationship 
-	extends OverrideRelationship,
+	extends SpecifiedOverrideRelationship,
 		OrmJoinColumnRelationship
 {
 	XmlAssociationOverride getXmlContainer();

@@ -31,5 +31,5 @@ public interface SpecifiedAssociationOverride
 	// covariant overrides
 	VirtualAssociationOverride convertToVirtual();
 
-	OverrideRelationship getRelationship();
+	SpecifiedOverrideRelationship getRelationship();
 }

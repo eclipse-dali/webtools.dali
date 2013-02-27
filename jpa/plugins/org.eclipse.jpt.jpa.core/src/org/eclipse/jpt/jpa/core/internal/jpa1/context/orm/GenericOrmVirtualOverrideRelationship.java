@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.OverrideRelationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.TableColumn.Owner;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
@@ -160,7 +160,7 @@ public class GenericOrmVirtualOverrideRelationship
 		newRelationship.initializeFromJoinColumnRelationship(this);
 	}
 
-	public void initializeOnSpecified(OverrideRelationship specifiedRelationship) {
+	public void initializeOnSpecified(SpecifiedOverrideRelationship specifiedRelationship) {
 		specifiedRelationship.initializeFromVirtualJoinColumnRelationship(this);
 		specifiedRelationship.initializeFromVirtualJoinTableRelationship(this);
 	}
