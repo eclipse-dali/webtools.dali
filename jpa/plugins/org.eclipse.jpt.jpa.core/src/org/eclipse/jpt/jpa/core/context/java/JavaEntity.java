@@ -45,11 +45,11 @@ public interface JavaEntity
 
 	// ********** primary key join columns **********
 
-	ListIterable<JavaPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
-	ListIterable<JavaPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns();
-	JavaPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
+	ListIterable<JavaSpecifiedPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
+	ListIterable<JavaSpecifiedPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns();
+	JavaSpecifiedPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
 	
-	JavaPrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn();
+	JavaSpecifiedPrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn();
 		String DEFAULT_PRIMARY_KEY_JOIN_COLUMN_PROPERTY = "defaultPrimaryKeyJoinColumn"; //$NON-NLS-1$
 
 

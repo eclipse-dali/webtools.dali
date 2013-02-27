@@ -67,7 +67,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
 import org.eclipse.jpt.jpa.core.context.java.JavaOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
@@ -973,7 +973,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected void initializeVirtualPrimaryKeyJoinColumns() {
-		for (JavaPrimaryKeyJoinColumn javaPkJoinColumn : this.getJavaPrimaryKeyJoinColumnsForVirtuals()) {
+		for (JavaSpecifiedPrimaryKeyJoinColumn javaPkJoinColumn : this.getJavaPrimaryKeyJoinColumnsForVirtuals()) {
 			this.addVirtualPrimaryKeyJoinColumn(this.buildVirtualPrimaryKeyJoinColumn(javaPkJoinColumn));
 		}
 	}
@@ -994,7 +994,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	 * This will only be called when there are Java pk join columns to return.
 	 * @see #javaPrimaryKeyJoinColumnsWillBeDefaults()
 	 */
-	protected Iterable<JavaPrimaryKeyJoinColumn> getJavaPrimaryKeyJoinColumnsForVirtuals() {
+	protected Iterable<JavaSpecifiedPrimaryKeyJoinColumn> getJavaPrimaryKeyJoinColumnsForVirtuals() {
 		return this.getJavaTypeMappingForDefaults().getPrimaryKeyJoinColumns();
 	}
 
@@ -1002,13 +1002,13 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		this.moveItemInList(index, pkJoinColumn, this.virtualPrimaryKeyJoinColumns, DEFAULT_PRIMARY_KEY_JOIN_COLUMNS_LIST);
 	}
 
-	protected OrmVirtualPrimaryKeyJoinColumn addVirtualPrimaryKeyJoinColumn(int index, JavaPrimaryKeyJoinColumn javaPrimaryKeyJoinColumn) {
+	protected OrmVirtualPrimaryKeyJoinColumn addVirtualPrimaryKeyJoinColumn(int index, JavaSpecifiedPrimaryKeyJoinColumn javaPrimaryKeyJoinColumn) {
 		OrmVirtualPrimaryKeyJoinColumn pkJoinColumn = this.buildVirtualPrimaryKeyJoinColumn(javaPrimaryKeyJoinColumn);
 		this.addVirtualPrimaryKeyJoinColumn(index, pkJoinColumn);
 		return pkJoinColumn;
 	}
 
-	protected OrmVirtualPrimaryKeyJoinColumn buildVirtualPrimaryKeyJoinColumn(JavaPrimaryKeyJoinColumn javaPrimaryKeyJoinColumn) {
+	protected OrmVirtualPrimaryKeyJoinColumn buildVirtualPrimaryKeyJoinColumn(JavaSpecifiedPrimaryKeyJoinColumn javaPrimaryKeyJoinColumn) {
 		return this.getContextModelFactory().buildOrmVirtualPrimaryKeyJoinColumn(this, this.primaryKeyJoinColumnOwner, javaPrimaryKeyJoinColumn);
 	}
 
@@ -1020,21 +1020,21 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	 * virtual primary key join column container adapter
 	 */
 	protected class VirtualPrimaryKeyJoinColumnContainerAdapter
-		implements ContextContainerTools.Adapter<OrmVirtualPrimaryKeyJoinColumn, JavaPrimaryKeyJoinColumn>
+		implements ContextContainerTools.Adapter<OrmVirtualPrimaryKeyJoinColumn, JavaSpecifiedPrimaryKeyJoinColumn>
 	{
 		public Iterable<OrmVirtualPrimaryKeyJoinColumn> getContextElements() {
 			return AbstractOrmEntity.this.getVirtualPrimaryKeyJoinColumns();
 		}
-		public Iterable<JavaPrimaryKeyJoinColumn> getResourceElements() {
+		public Iterable<JavaSpecifiedPrimaryKeyJoinColumn> getResourceElements() {
 			return AbstractOrmEntity.this.getJavaPrimaryKeyJoinColumnsForVirtuals();
 		}
-		public JavaPrimaryKeyJoinColumn getResourceElement(OrmVirtualPrimaryKeyJoinColumn contextElement) {
+		public JavaSpecifiedPrimaryKeyJoinColumn getResourceElement(OrmVirtualPrimaryKeyJoinColumn contextElement) {
 			return contextElement.getOverriddenColumn();
 		}
 		public void moveContextElement(int index, OrmVirtualPrimaryKeyJoinColumn element) {
 			AbstractOrmEntity.this.moveVirtualPrimaryKeyJoinColumn(index, element);
 		}
-		public void addContextElement(int index, JavaPrimaryKeyJoinColumn resourceElement) {
+		public void addContextElement(int index, JavaSpecifiedPrimaryKeyJoinColumn resourceElement) {
 			AbstractOrmEntity.this.addVirtualPrimaryKeyJoinColumn(index, resourceElement);
 		}
 		public void removeContextElement(OrmVirtualPrimaryKeyJoinColumn element) {

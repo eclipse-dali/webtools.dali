@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaNamedColumn;
 import org.eclipse.jpt.jpa.core.resource.java.PrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.db.Column;
@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.db.Table;
  */
 public class GenericJavaPrimaryKeyJoinColumn
 	extends AbstractJavaNamedColumn<JpaContextModel, PrimaryKeyJoinColumnAnnotation, ReadOnlyBaseJoinColumn.Owner>
-	implements JavaPrimaryKeyJoinColumn
+	implements JavaSpecifiedPrimaryKeyJoinColumn
 {
 	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(org.eclipse.jpt.jpa.core.context.JpaContextModel, org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
 	protected /* final */ PrimaryKeyJoinColumnAnnotation columnAnnotation;  // never null

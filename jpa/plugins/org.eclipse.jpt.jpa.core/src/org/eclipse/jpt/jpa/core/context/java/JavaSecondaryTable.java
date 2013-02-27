@@ -35,9 +35,9 @@ public interface JavaSecondaryTable
 
 	// ********** primary key join columns **********
 
-	ListIterable<JavaPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
-	ListIterable<JavaPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns();
-	JavaPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn();
-	JavaPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
-	JavaPrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn();
+	ListIterable<JavaSpecifiedPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
+	ListIterable<JavaSpecifiedPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns();
+	JavaSpecifiedPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn();
+	JavaSpecifiedPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
+	JavaSpecifiedPrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn();
 }

@@ -54,7 +54,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAttributeOverride;
@@ -1378,7 +1378,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ListIterator<JavaPrimaryKeyJoinColumn> specifiedPkJoinColumns = getJavaEntity().getSpecifiedPrimaryKeyJoinColumns().iterator();
+		ListIterator<JavaSpecifiedPrimaryKeyJoinColumn> specifiedPkJoinColumns = getJavaEntity().getSpecifiedPrimaryKeyJoinColumns().iterator();
 		
 		assertFalse(specifiedPkJoinColumns.hasNext());
 
@@ -1532,7 +1532,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals("BAZ", ((PrimaryKeyJoinColumnAnnotation) pkJoinColumnResources.next()).getName());
 		assertFalse(pkJoinColumnResources.hasNext());
 		
-		Iterator<JavaPrimaryKeyJoinColumn> pkJoinColumns = getJavaEntity().getSpecifiedPrimaryKeyJoinColumns().iterator();
+		Iterator<JavaSpecifiedPrimaryKeyJoinColumn> pkJoinColumns = getJavaEntity().getSpecifiedPrimaryKeyJoinColumns().iterator();
 		assertEquals("FOO", pkJoinColumns.next().getName());		
 		assertEquals("BAZ", pkJoinColumns.next().getName());
 		assertFalse(pkJoinColumns.hasNext());
@@ -1573,7 +1573,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		
 		entity.moveSpecifiedPrimaryKeyJoinColumn(2, 0);
-		ListIterator<JavaPrimaryKeyJoinColumn> primaryKeyJoinColumns = entity.getSpecifiedPrimaryKeyJoinColumns().iterator();
+		ListIterator<JavaSpecifiedPrimaryKeyJoinColumn> primaryKeyJoinColumns = entity.getSpecifiedPrimaryKeyJoinColumns().iterator();
 		assertEquals("BAR", primaryKeyJoinColumns.next().getSpecifiedName());
 		assertEquals("BAZ", primaryKeyJoinColumns.next().getSpecifiedName());
 		assertEquals("FOO", primaryKeyJoinColumns.next().getSpecifiedName());
@@ -1608,7 +1608,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		((PrimaryKeyJoinColumnAnnotation) resourceType.addAnnotation(2, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME)).setName("BAZ");
 		getJpaProject().synchronizeContextModel();
 			
-		ListIterator<JavaPrimaryKeyJoinColumn> primaryKeyJoinColumns = entity.getSpecifiedPrimaryKeyJoinColumns().iterator();
+		ListIterator<JavaSpecifiedPrimaryKeyJoinColumn> primaryKeyJoinColumns = entity.getSpecifiedPrimaryKeyJoinColumns().iterator();
 		assertEquals("FOO", primaryKeyJoinColumns.next().getName());
 		assertEquals("BAR", primaryKeyJoinColumns.next().getName());
 		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());

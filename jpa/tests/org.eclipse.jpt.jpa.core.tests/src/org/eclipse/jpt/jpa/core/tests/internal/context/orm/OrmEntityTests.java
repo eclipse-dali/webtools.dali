@@ -33,7 +33,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
@@ -1542,11 +1542,11 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertEquals("id", childEntity.getDefaultPrimaryKeyJoinColumns().iterator().next().getDefaultReferencedColumnName());
 		
 		JavaEntity javaEntity = (JavaEntity) childPersistentType.getJavaPersistentType().getMapping();
-		JavaPrimaryKeyJoinColumn javaPrimaryKeyJoinColumn = javaEntity.addSpecifiedPrimaryKeyJoinColumn(0);
+		JavaSpecifiedPrimaryKeyJoinColumn javaPrimaryKeyJoinColumn = javaEntity.addSpecifiedPrimaryKeyJoinColumn(0);
 		javaPrimaryKeyJoinColumn.setSpecifiedName("FOO");
 		javaPrimaryKeyJoinColumn.setSpecifiedReferencedColumnName("BAR");
 		
-		JavaPrimaryKeyJoinColumn javaPrimaryKeyJoinColumn2 = javaEntity.addSpecifiedPrimaryKeyJoinColumn(1);
+		JavaSpecifiedPrimaryKeyJoinColumn javaPrimaryKeyJoinColumn2 = javaEntity.addSpecifiedPrimaryKeyJoinColumn(1);
 		javaPrimaryKeyJoinColumn2.setSpecifiedName("FOO2");
 		javaPrimaryKeyJoinColumn2.setSpecifiedReferencedColumnName("BAR2");
 		

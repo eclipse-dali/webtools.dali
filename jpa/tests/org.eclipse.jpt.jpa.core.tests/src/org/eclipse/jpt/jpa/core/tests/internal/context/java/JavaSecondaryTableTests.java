@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
-import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
@@ -234,7 +234,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaSecondaryTable secondaryTable = getJavaEntity().getSpecifiedSecondaryTables().iterator().next();
-		ListIterator<JavaPrimaryKeyJoinColumn> specifiedPkJoinColumns = secondaryTable.getSpecifiedPrimaryKeyJoinColumns().iterator();
+		ListIterator<JavaSpecifiedPrimaryKeyJoinColumn> specifiedPkJoinColumns = secondaryTable.getSpecifiedPrimaryKeyJoinColumns().iterator();
 		
 		assertFalse(specifiedPkJoinColumns.hasNext());
 
@@ -352,7 +352,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("BAR");
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("BAZ");
 		
-		Iterator<JavaPrimaryKeyJoinColumn> specifiedPkJoinColumns = secondaryTable.getSpecifiedPrimaryKeyJoinColumns().iterator();
+		Iterator<JavaSpecifiedPrimaryKeyJoinColumn> specifiedPkJoinColumns = secondaryTable.getSpecifiedPrimaryKeyJoinColumns().iterator();
 		assertEquals("BAZ", specifiedPkJoinColumns.next().getName());
 		assertEquals("BAR", specifiedPkJoinColumns.next().getName());
 		assertEquals("FOO", specifiedPkJoinColumns.next().getName());
@@ -377,7 +377,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(1).setSpecifiedName("BAR");
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(2).setSpecifiedName("BAZ");
 		
-		Iterator<JavaPrimaryKeyJoinColumn> specifiedPkJoinColumns = secondaryTable.getSpecifiedPrimaryKeyJoinColumns().iterator();
+		Iterator<JavaSpecifiedPrimaryKeyJoinColumn> specifiedPkJoinColumns = secondaryTable.getSpecifiedPrimaryKeyJoinColumns().iterator();
 		assertEquals("FOO", specifiedPkJoinColumns.next().getName());
 		assertEquals("BAR", specifiedPkJoinColumns.next().getName());
 		assertEquals("BAZ", specifiedPkJoinColumns.next().getName());
@@ -413,7 +413,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		assertEquals("BAZ", pkJoinColumnResources.next().getName());
 		assertFalse(pkJoinColumnResources.hasNext());
 		
-		Iterator<JavaPrimaryKeyJoinColumn> pkJoinColumns = secondaryTable.getSpecifiedPrimaryKeyJoinColumns().iterator();
+		Iterator<JavaSpecifiedPrimaryKeyJoinColumn> pkJoinColumns = secondaryTable.getSpecifiedPrimaryKeyJoinColumns().iterator();
 		assertEquals("FOO", pkJoinColumns.next().getName());		
 		assertEquals("BAZ", pkJoinColumns.next().getName());
 		assertFalse(pkJoinColumns.hasNext());
@@ -447,7 +447,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(1).setSpecifiedName("BAR");
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(2).setSpecifiedName("BAZ");
 		
-		Iterator<JavaPrimaryKeyJoinColumn> specifiedPkJoinColumns = secondaryTable.getSpecifiedPrimaryKeyJoinColumns().iterator();
+		Iterator<JavaSpecifiedPrimaryKeyJoinColumn> specifiedPkJoinColumns = secondaryTable.getSpecifiedPrimaryKeyJoinColumns().iterator();
 		assertEquals("FOO", specifiedPkJoinColumns.next().getName());
 		assertEquals("BAR", specifiedPkJoinColumns.next().getName());
 		assertEquals("BAZ", specifiedPkJoinColumns.next().getName());

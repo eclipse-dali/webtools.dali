@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmVirtualNamedColumn;
 import org.eclipse.jpt.jpa.db.Column;
@@ -22,16 +22,16 @@ import org.eclipse.jpt.jpa.db.Table;
  * <code>orm.xml</code> virtual primary key join column
  */
 public class GenericOrmVirtualPrimaryKeyJoinColumn
-	extends AbstractOrmVirtualNamedColumn<ReadOnlyBaseJoinColumn.Owner, JavaPrimaryKeyJoinColumn>
+	extends AbstractOrmVirtualNamedColumn<ReadOnlyBaseJoinColumn.Owner, JavaSpecifiedPrimaryKeyJoinColumn>
 	implements OrmVirtualPrimaryKeyJoinColumn
 {
-	protected final JavaPrimaryKeyJoinColumn javaColumn;
+	protected final JavaSpecifiedPrimaryKeyJoinColumn javaColumn;
 
 	protected String specifiedReferencedColumnName;
 	protected String defaultReferencedColumnName;
 
 
-	public GenericOrmVirtualPrimaryKeyJoinColumn(JpaContextModel parent, ReadOnlyBaseJoinColumn.Owner owner, JavaPrimaryKeyJoinColumn javaColumn) {
+	public GenericOrmVirtualPrimaryKeyJoinColumn(JpaContextModel parent, ReadOnlyBaseJoinColumn.Owner owner, JavaSpecifiedPrimaryKeyJoinColumn javaColumn) {
 		super(parent, owner);
 		this.javaColumn = javaColumn;
 	}
@@ -51,7 +51,7 @@ public class GenericOrmVirtualPrimaryKeyJoinColumn
 	// ********** column **********
 
 	@Override
-	public JavaPrimaryKeyJoinColumn getOverriddenColumn() {
+	public JavaSpecifiedPrimaryKeyJoinColumn getOverriddenColumn() {
 		return this.javaColumn;
 	}
 

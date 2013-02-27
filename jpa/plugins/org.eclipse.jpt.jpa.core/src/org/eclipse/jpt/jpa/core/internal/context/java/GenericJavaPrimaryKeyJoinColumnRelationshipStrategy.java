@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipMapping;
@@ -41,7 +41,7 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 	extends AbstractJavaContextModel<JavaPrimaryKeyJoinColumnRelationship>
 	implements MappingRelationshipStrategy2_0, JavaPrimaryKeyJoinColumnRelationshipStrategy
 {
-	protected final ContextListContainer<JavaPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation> primaryKeyJoinColumnContainer;
+	protected final ContextListContainer<JavaSpecifiedPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation> primaryKeyJoinColumnContainer;
 	protected final ReadOnlyJoinColumn.Owner primaryKeyJoinColumnOwner;
 
 
@@ -69,7 +69,7 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 
 	// ********** primary key join columns **********
 
-	public ListIterable<JavaPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns() {
+	public ListIterable<JavaSpecifiedPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns() {
 		return this.primaryKeyJoinColumnContainer.getContextElements();
 	}
 
@@ -81,21 +81,21 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 		return this.getPrimaryKeyJoinColumnsSize() != 0;
 	}
 
-	public JavaPrimaryKeyJoinColumn getPrimaryKeyJoinColumn(int index) {
+	public JavaSpecifiedPrimaryKeyJoinColumn getPrimaryKeyJoinColumn(int index) {
 		return this.primaryKeyJoinColumnContainer.getContextElement(index);
 	}
 
-	public JavaPrimaryKeyJoinColumn addPrimaryKeyJoinColumn() {
+	public JavaSpecifiedPrimaryKeyJoinColumn addPrimaryKeyJoinColumn() {
 		return this.addPrimaryKeyJoinColumn(this.getPrimaryKeyJoinColumnsSize());
 	}
 
-	public JavaPrimaryKeyJoinColumn addPrimaryKeyJoinColumn(int index) {
+	public JavaSpecifiedPrimaryKeyJoinColumn addPrimaryKeyJoinColumn(int index) {
 		PrimaryKeyJoinColumnAnnotation annotation = this.addPrimaryKeyJoinColumnAnnotation(index);
 		return this.primaryKeyJoinColumnContainer.addContextElement(index, annotation);
 	}
 
 	public void removePrimaryKeyJoinColumn(SpecifiedPrimaryKeyJoinColumn joinColumn) {
-		this.removePrimaryKeyJoinColumn(this.primaryKeyJoinColumnContainer.indexOfContextElement((JavaPrimaryKeyJoinColumn) joinColumn));
+		this.removePrimaryKeyJoinColumn(this.primaryKeyJoinColumnContainer.indexOfContextElement((JavaSpecifiedPrimaryKeyJoinColumn) joinColumn));
 	}
 
 	public void removePrimaryKeyJoinColumn(int index) {
@@ -112,7 +112,7 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 		this.primaryKeyJoinColumnContainer.synchronizeWithResourceModel();
 	}
 
-	protected ContextListContainer<JavaPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation> buildPrimaryKeyJoinColumnContainer() {
+	protected ContextListContainer<JavaSpecifiedPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation> buildPrimaryKeyJoinColumnContainer() {
 		PrimaryKeyJoinColumnContainer container = new PrimaryKeyJoinColumnContainer();
 		container.initialize();
 		return container;
@@ -122,14 +122,14 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 	 *  primary key join column container
 	 */
 	protected class PrimaryKeyJoinColumnContainer
-		extends ContextListContainer<JavaPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation>
+		extends ContextListContainer<JavaSpecifiedPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return PRIMARY_KEY_JOIN_COLUMNS_LIST;
 		}
 		@Override
-		protected JavaPrimaryKeyJoinColumn buildContextElement(PrimaryKeyJoinColumnAnnotation resourceElement) {
+		protected JavaSpecifiedPrimaryKeyJoinColumn buildContextElement(PrimaryKeyJoinColumnAnnotation resourceElement) {
 			return GenericJavaPrimaryKeyJoinColumnRelationshipStrategy.this.buildPrimaryKeyJoinColumn(resourceElement);
 		}
 		@Override
@@ -137,7 +137,7 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 			return GenericJavaPrimaryKeyJoinColumnRelationshipStrategy.this.getPrimaryKeyJoinColumnAnnotations();
 		}
 		@Override
-		protected PrimaryKeyJoinColumnAnnotation getResourceElement(JavaPrimaryKeyJoinColumn contextElement) {
+		protected PrimaryKeyJoinColumnAnnotation getResourceElement(JavaSpecifiedPrimaryKeyJoinColumn contextElement) {
 			return contextElement.getColumnAnnotation();
 		}
 	}
@@ -146,7 +146,7 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 		return new PrimaryKeyJoinColumnOwner();
 	}
 
-	protected JavaPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(PrimaryKeyJoinColumnAnnotation annotation) {
+	protected JavaSpecifiedPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(PrimaryKeyJoinColumnAnnotation annotation) {
 		return this.getJpaFactory().buildJavaPrimaryKeyJoinColumn(this, this.primaryKeyJoinColumnOwner, annotation);
 	}
 	
@@ -237,7 +237,7 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 		if (result != null) {
 			return result;
 		}
-		for (JavaPrimaryKeyJoinColumn column : this.getPrimaryKeyJoinColumns()) {
+		for (JavaSpecifiedPrimaryKeyJoinColumn column : this.getPrimaryKeyJoinColumns()) {
 			result = column.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
@@ -252,7 +252,7 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		for (JavaPrimaryKeyJoinColumn pkJoinColumn : this.getPrimaryKeyJoinColumns()) {
+		for (JavaSpecifiedPrimaryKeyJoinColumn pkJoinColumn : this.getPrimaryKeyJoinColumns()) {
 			pkJoinColumn.validate(messages, reporter);
 		}
 	}

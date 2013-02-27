@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.VirtualPrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
 
 /**
  * <code>orm.xml</code> virtual primary key join column. This represents
@@ -30,5 +30,5 @@ public interface OrmVirtualPrimaryKeyJoinColumn
 	 * of the inherited method. A better method name would be something like
 	 * <code>getJavaColumn()</code>
 	 */
-	JavaPrimaryKeyJoinColumn getOverriddenColumn();
+	JavaSpecifiedPrimaryKeyJoinColumn getOverriddenColumn();
 }
