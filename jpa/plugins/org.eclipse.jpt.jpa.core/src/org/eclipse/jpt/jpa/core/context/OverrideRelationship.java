@@ -31,5 +31,5 @@ public interface OverrideRelationship
 
 	void initializeFromVirtualJoinColumnRelationship(JoinColumnRelationship virtualRelationship);
 
-	void initializeFromVirtualJoinTableRelationship(ReadOnlyJoinTableRelationship virtualRelationship);
+	void initializeFromVirtualJoinTableRelationship(JoinTableRelationship virtualRelationship);
 }

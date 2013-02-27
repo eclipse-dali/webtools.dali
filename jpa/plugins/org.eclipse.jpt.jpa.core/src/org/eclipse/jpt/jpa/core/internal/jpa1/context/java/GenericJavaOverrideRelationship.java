@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
+import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.TableColumn.Owner;
@@ -190,7 +190,7 @@ public class GenericJavaOverrideRelationship
 		// NOP
 	}
 
-	public void initializeFromJoinTableRelationship(ReadOnlyJoinTableRelationship oldRelationship) {
+	public void initializeFromJoinTableRelationship(JoinTableRelationship oldRelationship) {
 		this.joinTableStrategy.initializeFrom(oldRelationship.getJoinTableStrategy());
 	}
 
@@ -206,7 +206,7 @@ public class GenericJavaOverrideRelationship
 		throw new UnsupportedOperationException();
 	}
 
-	public void initializeFromVirtualJoinTableRelationship(ReadOnlyJoinTableRelationship virtualRelationship) {
+	public void initializeFromVirtualJoinTableRelationship(JoinTableRelationship virtualRelationship) {
 		this.joinTableStrategy.initializeFromVirtual(virtualRelationship.getJoinTableStrategy());
 	}
 

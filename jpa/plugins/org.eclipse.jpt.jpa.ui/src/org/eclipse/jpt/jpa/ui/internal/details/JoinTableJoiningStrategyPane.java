@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
+import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.swt.widgets.Composite;
@@ -46,16 +46,16 @@ import org.eclipse.swt.widgets.Control;
  */
 public class JoinTableJoiningStrategyPane
 	extends AbstractJoiningStrategyPane
-		<ReadOnlyJoinTableRelationship, JoinTableRelationshipStrategy>
+		<JoinTableRelationship, JoinTableRelationshipStrategy>
 {
 	public JoinTableJoiningStrategyPane(
-			Pane<? extends ReadOnlyJoinTableRelationship> parentPane, 
+			Pane<? extends JoinTableRelationship> parentPane, 
 			Composite parent) {
 		super(parentPane, parent);
 	}
 
 	public JoinTableJoiningStrategyPane(Pane<?> parentPane,
-		PropertyValueModel<? extends ReadOnlyJoinTableRelationship> subjectHolder,
+		PropertyValueModel<? extends JoinTableRelationship> subjectHolder,
         Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
@@ -74,7 +74,7 @@ public class JoinTableJoiningStrategyPane
 
 	protected PropertyValueModel<JoinTableRelationshipStrategy> buildJoinTableJoiningStrategyHolder() {
 		return new PropertyAspectAdapter
-				<ReadOnlyJoinTableRelationship, JoinTableRelationshipStrategy>(
+				<JoinTableRelationship, JoinTableRelationshipStrategy>(
 					getSubjectHolder()) {
 			@Override
 			protected JoinTableRelationshipStrategy buildValue_() {
@@ -93,8 +93,8 @@ public class JoinTableJoiningStrategyPane
 		};
 	}
 
-	public static ModifiablePropertyValueModel<Boolean> buildUsesJoinTableJoiningStrategyHolder(PropertyValueModel<? extends ReadOnlyJoinTableRelationship> subjectHolder) {
-		return new PropertyAspectAdapter<ReadOnlyJoinTableRelationship, Boolean>(
+	public static ModifiablePropertyValueModel<Boolean> buildUsesJoinTableJoiningStrategyHolder(PropertyValueModel<? extends JoinTableRelationship> subjectHolder) {
+		return new PropertyAspectAdapter<JoinTableRelationship, Boolean>(
 			subjectHolder, Relationship.STRATEGY_PROPERTY) {
 			@Override
 			protected Boolean buildValue() {
@@ -115,10 +115,10 @@ public class JoinTableJoiningStrategyPane
 		};
 	}
 
-	private TransformationPropertyValueModel<ReadOnlyJoinTableRelationship, Boolean> buildJoinTablePaneEnablerHolder() {
-		return new TransformationPropertyValueModel<ReadOnlyJoinTableRelationship, Boolean>(getSubjectHolder()) {
+	private TransformationPropertyValueModel<JoinTableRelationship, Boolean> buildJoinTablePaneEnablerHolder() {
+		return new TransformationPropertyValueModel<JoinTableRelationship, Boolean>(getSubjectHolder()) {
 			@Override
-			protected Boolean transform_(ReadOnlyJoinTableRelationship v) {
+			protected Boolean transform_(JoinTableRelationship v) {
 				return Boolean.valueOf(!v.isVirtual());
 			}
 		};

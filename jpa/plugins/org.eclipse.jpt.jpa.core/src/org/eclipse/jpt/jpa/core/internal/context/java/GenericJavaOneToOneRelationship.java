@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
+import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
@@ -220,7 +220,7 @@ public class GenericJavaOneToOneRelationship
 	}
 
 	@Override
-	public void initializeFromJoinTableRelationship(ReadOnlyJoinTableRelationship oldRelationship) {
+	public void initializeFromJoinTableRelationship(JoinTableRelationship oldRelationship) {
 		super.initializeFromJoinTableRelationship(oldRelationship);
 		this.joinTableStrategy.initializeFrom(oldRelationship.getJoinTableStrategy());
 	}

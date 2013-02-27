@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
+import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
 import org.eclipse.jpt.jpa.ui.internal.details.AssociationOverrideComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.EntityOverridesComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.JoinColumnsComposite;
@@ -66,12 +66,12 @@ public class AssociationOverride2_0Composite
 		new JoinTableJoiningStrategyPane(this, buildRelationshipModel(), container);		
 	}
 	
-	private PropertyValueModel<ReadOnlyJoinTableRelationship> buildRelationshipModel() {
-		return new TransformationPropertyValueModel<AssociationOverride, ReadOnlyJoinTableRelationship>(getSubjectHolder()) {
+	private PropertyValueModel<JoinTableRelationship> buildRelationshipModel() {
+		return new TransformationPropertyValueModel<AssociationOverride, JoinTableRelationship>(getSubjectHolder()) {
 			@Override
-			protected ReadOnlyJoinTableRelationship transform_(AssociationOverride value) {
+			protected JoinTableRelationship transform_(AssociationOverride value) {
 				// all specified and virtual (mappings) overrides support join tables
-				return (ReadOnlyJoinTableRelationship) value.getRelationship();
+				return (JoinTableRelationship) value.getRelationship();
 			}
 		};
 	}

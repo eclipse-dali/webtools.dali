@@ -36,7 +36,7 @@ public interface SpecifiedRelationship
 
 	void initializeFromJoinColumnRelationship(JoinColumnRelationship oldRelationship);
 
-	void initializeFromJoinTableRelationship(ReadOnlyJoinTableRelationship oldRelationship);
+	void initializeFromJoinTableRelationship(JoinTableRelationship oldRelationship);
 
 	// we only have a single "client" of the primary key relationship (1:1 mapping)
 }

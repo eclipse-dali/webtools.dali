@@ -13,7 +13,7 @@ import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
+import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
@@ -91,13 +91,13 @@ public class GenericOrmVirtualOverrideJoinTableRelationshipStrategy2_0
 	}
 
 	protected JoinTableRelationshipStrategy getOverriddenStrategy() {
-		ReadOnlyJoinTableRelationship relationship = this.getOverriddenJoinTableRelationship();
+		JoinTableRelationship relationship = this.getOverriddenJoinTableRelationship();
 		return (relationship == null) ? null : relationship.getJoinTableStrategy();
 	}
 
-	protected ReadOnlyJoinTableRelationship getOverriddenJoinTableRelationship() {
+	protected JoinTableRelationship getOverriddenJoinTableRelationship() {
 		Relationship relationship = this.resolveOverriddenRelationship();
-		return (relationship instanceof ReadOnlyJoinTableRelationship) ? (ReadOnlyJoinTableRelationship) relationship : null;
+		return (relationship instanceof JoinTableRelationship) ? (JoinTableRelationship) relationship : null;
 	}
 
 	protected Relationship resolveOverriddenRelationship() {

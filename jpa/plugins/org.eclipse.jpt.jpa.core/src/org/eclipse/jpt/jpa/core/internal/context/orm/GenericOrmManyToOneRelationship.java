@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
+import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
@@ -134,7 +134,7 @@ public class GenericOrmManyToOneRelationship
 	}
 
 	@Override
-	public void initializeFromJoinTableRelationship(ReadOnlyJoinTableRelationship oldRelationship) {
+	public void initializeFromJoinTableRelationship(JoinTableRelationship oldRelationship) {
 		super.initializeFromJoinTableRelationship(oldRelationship);
 		this.joinTableStrategy.initializeFrom(oldRelationship.getJoinTableStrategy());
 	}
