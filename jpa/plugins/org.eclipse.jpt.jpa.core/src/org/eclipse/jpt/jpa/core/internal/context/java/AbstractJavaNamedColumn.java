@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
-import org.eclipse.jpt.jpa.core.context.java.ModifiableJavaNamedColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiableNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation;
 import org.eclipse.jpt.jpa.db.Column;
@@ -43,7 +43,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractJavaNamedColumn<P extends JpaContextModel, A extends NamedColumnAnnotation, O extends ReadOnlyNamedColumn.Owner>
 	extends AbstractJavaContextModel<P>
-	implements ModifiableJavaNamedColumn
+	implements JavaModifiableNamedColumn
 {
 	protected final O owner;
 

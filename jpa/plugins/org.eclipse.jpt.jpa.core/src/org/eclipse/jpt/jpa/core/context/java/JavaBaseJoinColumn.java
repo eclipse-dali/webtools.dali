@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.ModifiableBaseJoinColumn;
  * @since 2.3
  */
 public interface JavaBaseJoinColumn
-	extends ModifiableBaseJoinColumn, ModifiableJavaNamedColumn
+	extends ModifiableBaseJoinColumn, JavaModifiableNamedColumn
 {
 	// combine interfaces
 }

@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation;
  * @version 3.3
  * @since 2.0
  */
-public interface ModifiableJavaNamedColumn
+public interface JavaModifiableNamedColumn
 	extends ModifiableNamedColumn
 {
 	NamedColumnAnnotation getColumnAnnotation();
