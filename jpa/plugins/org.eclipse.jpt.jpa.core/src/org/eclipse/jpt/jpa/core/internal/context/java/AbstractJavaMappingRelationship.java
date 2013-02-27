@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.Relationship;
@@ -75,7 +75,7 @@ public abstract class AbstractJavaMappingRelationship<P extends JavaRelationship
 		oldRelationship.initializeOn(this);
 	}
 
-	public void initializeFromMappedByRelationship(MappedByRelationship oldRelationship) {
+	public void initializeFromMappedByRelationship(SpecifiedMappedByRelationship oldRelationship) {
 		// NOP
 	}
 

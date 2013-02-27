@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationship;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlMappedByMapping;
 
 /**
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlMappedByMapping;
  * @since 2.2
  */
 public interface OrmMappedByRelationship
-	extends MappedByRelationship
+	extends SpecifiedMappedByRelationship
 {
 	XmlMappedByMapping getXmlContainer();
 }

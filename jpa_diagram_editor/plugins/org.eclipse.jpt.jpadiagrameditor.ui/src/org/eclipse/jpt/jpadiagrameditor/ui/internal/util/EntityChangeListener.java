@@ -24,7 +24,7 @@ import java.util.Set;
 import org.eclipse.graphiti.features.context.impl.RemoveContext;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
-import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
@@ -156,7 +156,7 @@ public class EntityChangeListener extends Thread {
 								JavaAttributeMapping mapping = jpa.getMapping();
 								if (OwnableRelationshipMappingAnnotation.class.isInstance(mapping.getMappingAnnotation())) {
 									JavaRelationshipMapping relationshipMapping = (JavaRelationshipMapping)mapping; 
-									MappedByRelationship ownableRef = (MappedByRelationship)relationshipMapping.getRelationship();
+									SpecifiedMappedByRelationship ownableRef = (SpecifiedMappedByRelationship)relationshipMapping.getRelationship();
 									if (!ownableRef.strategyIsMappedBy()) {
 									    ownableRef.setStrategyToMappedBy();
 									}

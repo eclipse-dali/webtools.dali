@@ -32,7 +32,7 @@ public interface SpecifiedRelationship
 
 	void initializeFrom(Relationship oldRelationship);
 
-	void initializeFromMappedByRelationship(MappedByRelationship oldRelationship);
+	void initializeFromMappedByRelationship(SpecifiedMappedByRelationship oldRelationship);
 
 	void initializeFromJoinColumnRelationship(ReadOnlyJoinColumnRelationship oldRelationship);
 

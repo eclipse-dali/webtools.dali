@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationship;
 import org.eclipse.jpt.jpa.core.resource.java.OwnableRelationshipMappingAnnotation;
 
 /**
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.java.OwnableRelationshipMappingAnnotati
  * @since 2.2
  */
 public interface JavaMappedByRelationship
-	extends MappedByRelationship
+	extends SpecifiedMappedByRelationship
 {
 
 	OwnableRelationshipMappingAnnotation getMappingAnnotation();
