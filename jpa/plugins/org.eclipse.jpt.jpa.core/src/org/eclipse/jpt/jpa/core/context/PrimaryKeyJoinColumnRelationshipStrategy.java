@@ -37,7 +37,7 @@ public interface PrimaryKeyJoinColumnRelationshipStrategy
 	/**
 	 * Return the strategy's primary key join columns.
 	 */
-	ListIterable<? extends PrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
+	ListIterable<? extends ModifiablePrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
 	
 	/**
 	 * Return the number of primary key join columns.
@@ -53,17 +53,17 @@ public interface PrimaryKeyJoinColumnRelationshipStrategy
 	/**
 	 * Return the primary key join column at the specified index.
 	 */
-	PrimaryKeyJoinColumn getPrimaryKeyJoinColumn(int index);
+	ModifiablePrimaryKeyJoinColumn getPrimaryKeyJoinColumn(int index);
 	
 	/**
 	 * Add a primary key join column.
 	 */
-	PrimaryKeyJoinColumn addPrimaryKeyJoinColumn();
+	ModifiablePrimaryKeyJoinColumn addPrimaryKeyJoinColumn();
 	
 	/**
 	 * Add a primary key join column.
 	 */
-	PrimaryKeyJoinColumn addPrimaryKeyJoinColumn(int index);
+	ModifiablePrimaryKeyJoinColumn addPrimaryKeyJoinColumn(int index);
 	
 	/**
 	 * Remove the specified primary key join column.
@@ -73,7 +73,7 @@ public interface PrimaryKeyJoinColumnRelationshipStrategy
 	/**
 	 * Remove the specified primary key join column.
 	 */
-	void removePrimaryKeyJoinColumn(PrimaryKeyJoinColumn primaryKeyJoinColumn);
+	void removePrimaryKeyJoinColumn(ModifiablePrimaryKeyJoinColumn primaryKeyJoinColumn);
 	
 	/**
 	 * Remove the specified primary key join column.

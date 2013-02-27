@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiablePrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.resource.java.PrimaryKeyJoinColumnAnnotation;
 
 /**
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.java.PrimaryKeyJoinColumnAnnotation;
  * @since 2.0
  */
 public interface JavaPrimaryKeyJoinColumn
-	extends PrimaryKeyJoinColumn, JavaModifiableBaseJoinColumn
+	extends ModifiablePrimaryKeyJoinColumn, JavaModifiableBaseJoinColumn
 {
 	PrimaryKeyJoinColumnAnnotation getColumnAnnotation();
 }

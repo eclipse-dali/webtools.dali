@@ -36,7 +36,7 @@ import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiablePrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationshipStrategy;
@@ -946,7 +946,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals("CATALOG", secondaryTable.getCatalog());
 		assertEquals("SCHEMA", secondaryTable.getSchema());
 		assertEquals(1, secondaryTable.getSpecifiedPrimaryKeyJoinColumnsSize());
-		PrimaryKeyJoinColumn pkJoinColumn = secondaryTable.getSpecifiedPrimaryKeyJoinColumns().iterator().next();
+		ModifiablePrimaryKeyJoinColumn pkJoinColumn = secondaryTable.getSpecifiedPrimaryKeyJoinColumns().iterator().next();
 		assertEquals("PK_NAME", pkJoinColumn.getName());
 		
 		secondaryTable = secondaryTables.next();
@@ -1656,7 +1656,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertTrue(getJavaEntity().getDefaultPrimaryKeyJoinColumn().isVirtual());
 
 		getJavaEntity().addSpecifiedPrimaryKeyJoinColumn(0);
-		PrimaryKeyJoinColumn specifiedPkJoinColumn = getJavaEntity().getSpecifiedPrimaryKeyJoinColumns().iterator().next();
+		ModifiablePrimaryKeyJoinColumn specifiedPkJoinColumn = getJavaEntity().getSpecifiedPrimaryKeyJoinColumns().iterator().next();
 		assertFalse(specifiedPkJoinColumn.isVirtual());
 		
 		assertNull(getJavaEntity().getDefaultPrimaryKeyJoinColumn());

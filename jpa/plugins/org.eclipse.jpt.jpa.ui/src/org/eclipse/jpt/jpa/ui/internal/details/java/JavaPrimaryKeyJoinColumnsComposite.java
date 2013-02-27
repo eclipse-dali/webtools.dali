@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiablePrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractPrimaryKeyJoinColumnsComposite;
 import org.eclipse.swt.widgets.Composite;
@@ -35,14 +35,14 @@ public class JavaPrimaryKeyJoinColumnsComposite extends AbstractPrimaryKeyJoinCo
 	}
 	
 	@Override
-	protected ListValueModel<PrimaryKeyJoinColumn> buildDefaultJoinColumnsListHolder() {
-		return new PropertyListValueModelAdapter<PrimaryKeyJoinColumn>(buildDefaultJoinColumnHolder());
+	protected ListValueModel<ModifiablePrimaryKeyJoinColumn> buildDefaultJoinColumnsListHolder() {
+		return new PropertyListValueModelAdapter<ModifiablePrimaryKeyJoinColumn>(buildDefaultJoinColumnHolder());
 	}
 	
-	private PropertyValueModel<PrimaryKeyJoinColumn> buildDefaultJoinColumnHolder() {
-		return new PropertyAspectAdapter<JavaEntity, PrimaryKeyJoinColumn>(getSubjectHolder(), JavaEntity.DEFAULT_PRIMARY_KEY_JOIN_COLUMN_PROPERTY) {
+	private PropertyValueModel<ModifiablePrimaryKeyJoinColumn> buildDefaultJoinColumnHolder() {
+		return new PropertyAspectAdapter<JavaEntity, ModifiablePrimaryKeyJoinColumn>(getSubjectHolder(), JavaEntity.DEFAULT_PRIMARY_KEY_JOIN_COLUMN_PROPERTY) {
 			@Override
-			protected PrimaryKeyJoinColumn buildValue_() {
+			protected ModifiablePrimaryKeyJoinColumn buildValue_() {
 				return subject.getDefaultPrimaryKeyJoinColumn();
 			}
 		};

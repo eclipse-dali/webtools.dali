@@ -26,22 +26,22 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 public interface SecondaryTable
 	extends Table, ReadOnlySecondaryTable
 {
-	ListIterable<? extends PrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
-	ListIterable<? extends PrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns();
-	PrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn();
-	PrimaryKeyJoinColumn getSpecifiedPrimaryKeyJoinColumn(int index);
+	ListIterable<? extends ModifiablePrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
+	ListIterable<? extends ModifiablePrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns();
+	ModifiablePrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn();
+	ModifiablePrimaryKeyJoinColumn getSpecifiedPrimaryKeyJoinColumn(int index);
 
 	/**
 	 * Add a specified primary key join column to the secondary table.
 	 * Return the newly-created primary key join column.
 	 */
-	PrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn();
+	ModifiablePrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn();
 
 	/**
 	 * Add a specified primary key join column to the secondary table.
 	 * Return the newly-created primary key join column.
 	 */
-	PrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
+	ModifiablePrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
 
 	/**
 	 * Remove the specified primary key join column at the specified index from
@@ -52,7 +52,7 @@ public interface SecondaryTable
 	/**
 	 * Remove the specified primary key join column from the secondary table.
 	 */
-	void removeSpecifiedPrimaryKeyJoinColumn(PrimaryKeyJoinColumn pkJoinColumn);
+	void removeSpecifiedPrimaryKeyJoinColumn(ModifiablePrimaryKeyJoinColumn pkJoinColumn);
 
 	/**
 	 * Move the specified primary key join column from the specified source

@@ -12,13 +12,13 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiablePrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
 public class PrimaryKeyJoinColumnDialog
-	extends BaseJoinColumnDialog<Entity, PrimaryKeyJoinColumn, PrimaryKeyJoinColumnStateObject>
+	extends BaseJoinColumnDialog<Entity, ModifiablePrimaryKeyJoinColumn, PrimaryKeyJoinColumnStateObject>
 {
 	/**
 	 * Use this constructor to create a <em>new</em> join column.
@@ -37,11 +37,11 @@ public class PrimaryKeyJoinColumnDialog
 			Shell parentShell,
 			ResourceManager resourceManager,
 			Entity entity,
-			PrimaryKeyJoinColumn joinColumn) {
+			ModifiablePrimaryKeyJoinColumn joinColumn) {
 		super(parentShell, resourceManager, entity, joinColumn, buildTitle(joinColumn));
 	}
 
-	private static String buildTitle(PrimaryKeyJoinColumn joinColumn) {
+	private static String buildTitle(ModifiablePrimaryKeyJoinColumn joinColumn) {
 		return (joinColumn == null) ?
 				JptJpaUiDetailsMessages.PrimaryKeyJoinColumnDialog_addTitle :
 				JptJpaUiDetailsMessages.PrimaryKeyJoinColumnDialog_editTitle;

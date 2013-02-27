@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiablePrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
@@ -327,7 +327,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		SecondaryTable secondaryTable = getJavaEntity().getSpecifiedSecondaryTables().iterator().next();
-		PrimaryKeyJoinColumn defaultPkJoinColumn = secondaryTable.getDefaultPrimaryKeyJoinColumn(); 
+		ModifiablePrimaryKeyJoinColumn defaultPkJoinColumn = secondaryTable.getDefaultPrimaryKeyJoinColumn(); 
 		assertNotNull(defaultPkJoinColumn);	
 		assertEquals("id", defaultPkJoinColumn.getDefaultName());
 		assertEquals("id", defaultPkJoinColumn.getDefaultReferencedColumnName());
@@ -474,7 +474,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		SecondaryTable secondaryTable = getJavaEntity().getSpecifiedSecondaryTables().iterator().next();
-		PrimaryKeyJoinColumn defaultPkJoinColumn = secondaryTable.getDefaultPrimaryKeyJoinColumn();
+		ModifiablePrimaryKeyJoinColumn defaultPkJoinColumn = secondaryTable.getDefaultPrimaryKeyJoinColumn();
 		assertEquals("id", defaultPkJoinColumn.getDefaultName());
 
 		
@@ -489,7 +489,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		SecondaryTable secondaryTable = getJavaEntity().getSpecifiedSecondaryTables().iterator().next();
-		PrimaryKeyJoinColumn defaultPkJoinColumn = secondaryTable.getDefaultPrimaryKeyJoinColumn();
+		ModifiablePrimaryKeyJoinColumn defaultPkJoinColumn = secondaryTable.getDefaultPrimaryKeyJoinColumn();
 		assertEquals("id", defaultPkJoinColumn.getDefaultReferencedColumnName());
 		
 		//remove @Id annotation
@@ -507,7 +507,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		assertTrue(secondaryTable.getDefaultPrimaryKeyJoinColumn().isVirtual());
 		
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(0);
-		PrimaryKeyJoinColumn specifiedPkJoinColumn = secondaryTable.getSpecifiedPrimaryKeyJoinColumns().iterator().next();
+		ModifiablePrimaryKeyJoinColumn specifiedPkJoinColumn = secondaryTable.getSpecifiedPrimaryKeyJoinColumns().iterator().next();
 		assertFalse(specifiedPkJoinColumn.isVirtual());
 		
 		assertNull(secondaryTable.getDefaultPrimaryKeyJoinColumn());

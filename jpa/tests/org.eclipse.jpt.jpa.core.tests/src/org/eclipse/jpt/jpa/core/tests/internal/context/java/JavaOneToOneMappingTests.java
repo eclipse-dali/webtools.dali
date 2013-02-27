@@ -35,7 +35,7 @@ import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.OneToOneRelationship;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiablePrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TransientMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -1120,7 +1120,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
 		PrimaryKeyJoinColumnRelationshipStrategy strategy = 
 			oneToOneMapping.getRelationship().getPrimaryKeyJoinColumnStrategy();
-		Iterator<? extends PrimaryKeyJoinColumn> primaryKeyJoinColumns = strategy.getPrimaryKeyJoinColumns().iterator();
+		Iterator<? extends ModifiablePrimaryKeyJoinColumn> primaryKeyJoinColumns = strategy.getPrimaryKeyJoinColumns().iterator();
 		
 		assertFalse(primaryKeyJoinColumns.hasNext());
 
@@ -1271,7 +1271,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		assertEquals("BAZ", ((PrimaryKeyJoinColumnAnnotation) joinColumnResources.next()).getName());
 		assertFalse(joinColumnResources.hasNext());
 		
-		Iterator<? extends PrimaryKeyJoinColumn> joinColumns = strategy.getPrimaryKeyJoinColumns().iterator();
+		Iterator<? extends ModifiablePrimaryKeyJoinColumn> joinColumns = strategy.getPrimaryKeyJoinColumns().iterator();
 		assertEquals("FOO", joinColumns.next().getName());		
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
@@ -1316,7 +1316,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		
 		
 		strategy.movePrimaryKeyJoinColumn(2, 0);
-		ListIterator<? extends PrimaryKeyJoinColumn> primaryKeyJoinColumns = strategy.getPrimaryKeyJoinColumns().iterator();
+		ListIterator<? extends ModifiablePrimaryKeyJoinColumn> primaryKeyJoinColumns = strategy.getPrimaryKeyJoinColumns().iterator();
 		assertEquals("BAR", primaryKeyJoinColumns.next().getSpecifiedName());
 		assertEquals("BAZ", primaryKeyJoinColumns.next().getSpecifiedName());
 		assertEquals("FOO", primaryKeyJoinColumns.next().getSpecifiedName());
@@ -1355,7 +1355,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		((PrimaryKeyJoinColumnAnnotation) resourceField.addAnnotation(2, JPA.PRIMARY_KEY_JOIN_COLUMN)).setName("BAZ");
 		getJpaProject().synchronizeContextModel();
 			
-		ListIterator<? extends PrimaryKeyJoinColumn> joinColumns = strategy.getPrimaryKeyJoinColumns().iterator();
+		ListIterator<? extends ModifiablePrimaryKeyJoinColumn> joinColumns = strategy.getPrimaryKeyJoinColumns().iterator();
 		assertEquals("FOO", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());

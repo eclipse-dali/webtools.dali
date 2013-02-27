@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiablePrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPrimaryKeyJoinColumn;
@@ -155,7 +155,7 @@ public class GenericOrmSecondaryTable
 		return OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumn();
 	}
 
-	public void removeSpecifiedPrimaryKeyJoinColumn(PrimaryKeyJoinColumn joinColumn) {
+	public void removeSpecifiedPrimaryKeyJoinColumn(ModifiablePrimaryKeyJoinColumn joinColumn) {
 		this.removeSpecifiedPrimaryKeyJoinColumn(this.specifiedPrimaryKeyJoinColumnContainer.indexOfContextElement((OrmPrimaryKeyJoinColumn) joinColumn));
 	}
 
@@ -173,7 +173,7 @@ public class GenericOrmSecondaryTable
 		String columnName = this.defaultPrimaryKeyJoinColumn.getDefaultName();
 		String referencedColumnName = this.defaultPrimaryKeyJoinColumn.getDefaultReferencedColumnName();
 
-		PrimaryKeyJoinColumn pkJoinColumn = this.addSpecifiedPrimaryKeyJoinColumn(0);
+		ModifiablePrimaryKeyJoinColumn pkJoinColumn = this.addSpecifiedPrimaryKeyJoinColumn(0);
 		pkJoinColumn.setSpecifiedName(columnName);
 		pkJoinColumn.setSpecifiedReferencedColumnName(referencedColumnName);		
 	}

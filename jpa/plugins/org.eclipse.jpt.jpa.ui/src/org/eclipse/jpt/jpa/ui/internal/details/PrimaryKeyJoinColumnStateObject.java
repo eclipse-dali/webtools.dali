@@ -13,14 +13,14 @@ import java.util.ListIterator;
 
 import org.eclipse.jpt.common.utility.internal.iterator.SingleElementListIterator;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiablePrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.db.Table;
 
 /**
  * The state object used to create or edit a primary key join column on an
  * entity.
  *
- * @see PrimaryKeyJoinColumn
+ * @see ModifiablePrimaryKeyJoinColumn
  * @see Entity
  * @see PrimaryKeyJoinColumnDialog
  * @see PrimaryKeyJoinColumnDialogPane
@@ -39,7 +39,7 @@ public class PrimaryKeyJoinColumnStateObject extends BaseJoinColumnStateObject
 	 * used to create a new one
 	 */
 	public PrimaryKeyJoinColumnStateObject(Entity entity,
-	                                       PrimaryKeyJoinColumn joinColumn) {
+	                                       ModifiablePrimaryKeyJoinColumn joinColumn) {
 		super(entity, joinColumn);
 	}
 
@@ -55,8 +55,8 @@ public class PrimaryKeyJoinColumnStateObject extends BaseJoinColumnStateObject
 	 * (non-Javadoc)
 	 */
 	@Override
-	public PrimaryKeyJoinColumn getJoinColumn() {
-		return (PrimaryKeyJoinColumn) super.getJoinColumn();
+	public ModifiablePrimaryKeyJoinColumn getJoinColumn() {
+		return (ModifiablePrimaryKeyJoinColumn) super.getJoinColumn();
 	}
 
 	/*

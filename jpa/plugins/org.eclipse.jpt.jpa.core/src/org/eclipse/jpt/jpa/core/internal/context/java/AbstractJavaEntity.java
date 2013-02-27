@@ -41,7 +41,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiablePrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
@@ -515,7 +515,7 @@ public abstract class AbstractJavaEntity
 		return this.specifiedPrimaryKeyJoinColumnContainer.getContextElements();
 	}
 
-	public PrimaryKeyJoinColumn getSpecifiedPrimaryKeyJoinColumn(int index) {
+	public ModifiablePrimaryKeyJoinColumn getSpecifiedPrimaryKeyJoinColumn(int index) {
 		return this.specifiedPrimaryKeyJoinColumnContainer.get(index);
 	}
 
@@ -540,7 +540,7 @@ public abstract class AbstractJavaEntity
 		return (PrimaryKeyJoinColumnAnnotation) this.getJavaResourceType().addAnnotation(index, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME);
 	}
 
-	public void removeSpecifiedPrimaryKeyJoinColumn(PrimaryKeyJoinColumn joinColumn) {
+	public void removeSpecifiedPrimaryKeyJoinColumn(ModifiablePrimaryKeyJoinColumn joinColumn) {
 		this.removeSpecifiedPrimaryKeyJoinColumn(this.specifiedPrimaryKeyJoinColumnContainer.indexOfContextElement((JavaPrimaryKeyJoinColumn) joinColumn));
 	}
 
@@ -552,7 +552,7 @@ public abstract class AbstractJavaEntity
 		String columnName = this.defaultPrimaryKeyJoinColumn.getDefaultName();
 		String referencedColumnName = this.defaultPrimaryKeyJoinColumn.getDefaultReferencedColumnName();
 
-		PrimaryKeyJoinColumn pkJoinColumn = this.addSpecifiedPrimaryKeyJoinColumn(0);
+		ModifiablePrimaryKeyJoinColumn pkJoinColumn = this.addSpecifiedPrimaryKeyJoinColumn(0);
 		pkJoinColumn.setSpecifiedName(columnName);
 		pkJoinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
 	}
