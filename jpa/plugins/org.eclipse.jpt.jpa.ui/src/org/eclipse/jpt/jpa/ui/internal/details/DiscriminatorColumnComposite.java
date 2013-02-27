@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.DiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.SpecifiedNamedColumn;
@@ -90,7 +90,7 @@ public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		PropertyValueModel<DiscriminatorColumn> discriminatorColumnHolder =
+		PropertyValueModel<SpecifiedDiscriminatorColumn> discriminatorColumnHolder =
 			buildDiscriminatorColumnHolder();
 		PropertyValueModel<Boolean> enabledModel = buildDiscriminatorColumnEnabledHolder();
 
@@ -111,7 +111,7 @@ public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 		detailsSection.setClient(this.initializeDetailsClient(detailsSection, discriminatorColumnHolder, enabledModel));
 	}
 
-	protected Control initializeDetailsClient(Section detailsSection, PropertyValueModel<DiscriminatorColumn> discriminatorColumnHolder, PropertyValueModel<Boolean> enabledModel) {
+	protected Control initializeDetailsClient(Section detailsSection, PropertyValueModel<SpecifiedDiscriminatorColumn> discriminatorColumnHolder, PropertyValueModel<Boolean> enabledModel) {
 		Composite detailsClient = this.addSubPane(detailsSection, 2, 0, 0, 0, 0);
 		detailsSection.setClient(detailsClient);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
@@ -129,12 +129,12 @@ public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 		return detailsClient;
 	}
 
-	private ColumnCombo<DiscriminatorColumn> addDiscriminatorColumnCombo(
+	private ColumnCombo<SpecifiedDiscriminatorColumn> addDiscriminatorColumnCombo(
 		Composite container,
-		PropertyValueModel<DiscriminatorColumn> discriminatorColumnHolder, 
+		PropertyValueModel<SpecifiedDiscriminatorColumn> discriminatorColumnHolder, 
 		PropertyValueModel<Boolean> enabledModel) {
 
-		return new ColumnCombo<DiscriminatorColumn>(
+		return new ColumnCombo<SpecifiedDiscriminatorColumn>(
 			this,
 			discriminatorColumnHolder,
 			enabledModel,
@@ -195,21 +195,21 @@ public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 		};
 	}
 
-	private PropertyValueModel<DiscriminatorColumn> buildDiscriminatorColumnHolder() {
-		return new PropertyAspectAdapter<Entity, DiscriminatorColumn>(getSubjectHolder()) {
+	private PropertyValueModel<SpecifiedDiscriminatorColumn> buildDiscriminatorColumnHolder() {
+		return new PropertyAspectAdapter<Entity, SpecifiedDiscriminatorColumn>(getSubjectHolder()) {
 			@Override
-			protected DiscriminatorColumn buildValue_() {
+			protected SpecifiedDiscriminatorColumn buildValue_() {
 				return this.subject.getDiscriminatorColumn();
 			}
 		};
 	}
 
-	private EnumFormComboViewer<DiscriminatorColumn, DiscriminatorType> addDiscriminatorTypeCombo(
+	private EnumFormComboViewer<SpecifiedDiscriminatorColumn, DiscriminatorType> addDiscriminatorTypeCombo(
 		Composite container,
-		PropertyValueModel<DiscriminatorColumn> discriminatorColumnHolder,
+		PropertyValueModel<SpecifiedDiscriminatorColumn> discriminatorColumnHolder,
 		PropertyValueModel<Boolean> enabledModel) {
 
-		return new EnumFormComboViewer<DiscriminatorColumn, DiscriminatorType>(
+		return new EnumFormComboViewer<SpecifiedDiscriminatorColumn, DiscriminatorType>(
 			this,
 			discriminatorColumnHolder,
 			enabledModel,
@@ -218,8 +218,8 @@ public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(DiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE_PROPERTY);
-				propertyNames.add(DiscriminatorColumn.SPECIFIED_DISCRIMINATOR_TYPE_PROPERTY);
+				propertyNames.add(SpecifiedDiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE_PROPERTY);
+				propertyNames.add(SpecifiedDiscriminatorColumn.SPECIFIED_DISCRIMINATOR_TYPE_PROPERTY);
 			}
 
 			@Override
@@ -277,8 +277,8 @@ public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 		};
 	}
 
-	private void addLengthCombo(Composite container, PropertyValueModel<DiscriminatorColumn> subjectHolder, PropertyValueModel<Boolean> enabledModel) {
-		new IntegerCombo<DiscriminatorColumn>(this, subjectHolder, enabledModel, container) {			
+	private void addLengthCombo(Composite container, PropertyValueModel<SpecifiedDiscriminatorColumn> subjectHolder, PropertyValueModel<Boolean> enabledModel) {
+		new IntegerCombo<SpecifiedDiscriminatorColumn>(this, subjectHolder, enabledModel, container) {			
 			@Override
 			protected String getHelpId() {
 				return JpaHelpContextIds.MAPPING_COLUMN_LENGTH;
@@ -286,7 +286,7 @@ public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 
 			@Override
 			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<DiscriminatorColumn, Integer>(getSubjectHolder(), DiscriminatorColumn.DEFAULT_LENGTH_PROPERTY) {
+				return new PropertyAspectAdapter<SpecifiedDiscriminatorColumn, Integer>(getSubjectHolder(), SpecifiedDiscriminatorColumn.DEFAULT_LENGTH_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						return Integer.valueOf(this.subject.getDefaultLength());
@@ -296,7 +296,7 @@ public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 			
 			@Override
 			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<DiscriminatorColumn, Integer>(getSubjectHolder(), DiscriminatorColumn.SPECIFIED_LENGTH_PROPERTY) {
+				return new PropertyAspectAdapter<SpecifiedDiscriminatorColumn, Integer>(getSubjectHolder(), SpecifiedDiscriminatorColumn.SPECIFIED_LENGTH_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						return this.subject.getSpecifiedLength();
@@ -311,9 +311,9 @@ public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 		};
 	}
 
-	private ModifiablePropertyValueModel<String> buildColumnDefinitionHolder(PropertyValueModel<DiscriminatorColumn> discriminatorColumnHolder) {
+	private ModifiablePropertyValueModel<String> buildColumnDefinitionHolder(PropertyValueModel<SpecifiedDiscriminatorColumn> discriminatorColumnHolder) {
 
-		return new PropertyAspectAdapter<DiscriminatorColumn, String>(discriminatorColumnHolder, SpecifiedNamedColumn.COLUMN_DEFINITION_PROPERTY) {
+		return new PropertyAspectAdapter<SpecifiedDiscriminatorColumn, String>(discriminatorColumnHolder, SpecifiedNamedColumn.COLUMN_DEFINITION_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getColumnDefinition();

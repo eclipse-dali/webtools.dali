@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
-import org.eclipse.jpt.jpa.core.context.DiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
@@ -264,7 +264,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 
 		createTestSubType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);		
-		assertEquals(DiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE, getJavaEntity().getDiscriminatorColumn().getDiscriminatorType());
+		assertEquals(SpecifiedDiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE, getJavaEntity().getDiscriminatorColumn().getDiscriminatorType());
 	}
 
 	public void testGetLength() throws Exception {
@@ -276,7 +276,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		createTestSubType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(DiscriminatorColumn.DEFAULT_LENGTH, getJavaEntity().getDiscriminatorColumn().getLength());
+		assertEquals(SpecifiedDiscriminatorColumn.DEFAULT_LENGTH, getJavaEntity().getDiscriminatorColumn().getLength());
 		getJavaEntity().getDiscriminatorColumn().setSpecifiedLength(Integer.valueOf(55));
 		assertEquals(55, getJavaEntity().getDiscriminatorColumn().getLength());
 	}
@@ -289,11 +289,11 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 
 		createTestSubType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		assertEquals(DiscriminatorColumn.DEFAULT_LENGTH, getJavaEntity().getDiscriminatorColumn().getDefaultLength());
+		assertEquals(SpecifiedDiscriminatorColumn.DEFAULT_LENGTH, getJavaEntity().getDiscriminatorColumn().getDefaultLength());
 
 		getJavaEntity().getDiscriminatorColumn().setSpecifiedLength(Integer.valueOf(55));
 		
-		assertEquals(DiscriminatorColumn.DEFAULT_LENGTH, getJavaEntity().getDiscriminatorColumn().getDefaultLength());
+		assertEquals(SpecifiedDiscriminatorColumn.DEFAULT_LENGTH, getJavaEntity().getDiscriminatorColumn().getDefaultLength());
 	}	
 	
 	public void testGetSpecifiedLength() throws Exception {
@@ -355,7 +355,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 
 		createTestSubType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		assertEquals(DiscriminatorColumn.DEFAULT_LENGTH, getJavaEntity().getDiscriminatorColumn().getLength());
+		assertEquals(SpecifiedDiscriminatorColumn.DEFAULT_LENGTH, getJavaEntity().getDiscriminatorColumn().getLength());
 	}
 
 	
@@ -408,14 +408,14 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 
 		//test defaults with single-table inheritance, no specified discriminator column set
 		assertEquals(InheritanceType.SINGLE_TABLE, abstractEntity.getDefaultInheritanceStrategy());
-		assertEquals(DiscriminatorColumn.DEFAULT_NAME, abstractEntity.getDiscriminatorColumn().getDefaultName());
-		assertEquals(DiscriminatorColumn.DEFAULT_LENGTH, abstractEntity.getDiscriminatorColumn().getDefaultLength());
-		assertEquals(DiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE, abstractEntity.getDiscriminatorColumn().getDefaultDiscriminatorType());
+		assertEquals(SpecifiedDiscriminatorColumn.DEFAULT_NAME, abstractEntity.getDiscriminatorColumn().getDefaultName());
+		assertEquals(SpecifiedDiscriminatorColumn.DEFAULT_LENGTH, abstractEntity.getDiscriminatorColumn().getDefaultLength());
+		assertEquals(SpecifiedDiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE, abstractEntity.getDiscriminatorColumn().getDefaultDiscriminatorType());
 		
 		assertEquals(InheritanceType.SINGLE_TABLE, childEntity.getDefaultInheritanceStrategy());
-		assertEquals(DiscriminatorColumn.DEFAULT_NAME, childEntity.getDiscriminatorColumn().getDefaultName());
-		assertEquals(DiscriminatorColumn.DEFAULT_LENGTH, childEntity.getDiscriminatorColumn().getDefaultLength());
-		assertEquals(DiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE, childEntity.getDiscriminatorColumn().getDefaultDiscriminatorType());
+		assertEquals(SpecifiedDiscriminatorColumn.DEFAULT_NAME, childEntity.getDiscriminatorColumn().getDefaultName());
+		assertEquals(SpecifiedDiscriminatorColumn.DEFAULT_LENGTH, childEntity.getDiscriminatorColumn().getDefaultLength());
+		assertEquals(SpecifiedDiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE, childEntity.getDiscriminatorColumn().getDefaultDiscriminatorType());
 
 		
 		//test defaults with single-table inheritance, specified discriminator column set on root
@@ -424,9 +424,9 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		abstractEntity.getDiscriminatorColumn().setSpecifiedDiscriminatorType(DiscriminatorType.CHAR);
 		
 		assertEquals(InheritanceType.SINGLE_TABLE, abstractEntity.getDefaultInheritanceStrategy());
-		assertEquals(DiscriminatorColumn.DEFAULT_NAME, abstractEntity.getDiscriminatorColumn().getDefaultName());
-		assertEquals(DiscriminatorColumn.DEFAULT_LENGTH, abstractEntity.getDiscriminatorColumn().getDefaultLength());
-		assertEquals(DiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE, abstractEntity.getDiscriminatorColumn().getDefaultDiscriminatorType());
+		assertEquals(SpecifiedDiscriminatorColumn.DEFAULT_NAME, abstractEntity.getDiscriminatorColumn().getDefaultName());
+		assertEquals(SpecifiedDiscriminatorColumn.DEFAULT_LENGTH, abstractEntity.getDiscriminatorColumn().getDefaultLength());
+		assertEquals(SpecifiedDiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE, abstractEntity.getDiscriminatorColumn().getDefaultDiscriminatorType());
 		assertEquals("DTYPE2", abstractEntity.getDiscriminatorColumn().getSpecifiedName());
 		assertEquals(Integer.valueOf(5), abstractEntity.getDiscriminatorColumn().getSpecifiedLength());
 		assertEquals(DiscriminatorType.CHAR, abstractEntity.getDiscriminatorColumn().getSpecifiedDiscriminatorType());

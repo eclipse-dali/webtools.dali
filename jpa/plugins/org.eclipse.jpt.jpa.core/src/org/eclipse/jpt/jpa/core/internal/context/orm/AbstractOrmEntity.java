@@ -35,7 +35,7 @@ import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.Column;
-import org.eclipse.jpt.jpa.core.context.DiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.Generator;
@@ -2168,7 +2168,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			}
 			return AbstractOrmEntity.this.isDescendant() ?
 					this.getRootDiscriminatorColumn().getName() :
-					this.isTablePerClass() ? null : DiscriminatorColumn.DEFAULT_NAME;
+					this.isTablePerClass() ? null : SpecifiedDiscriminatorColumn.DEFAULT_NAME;
 		}
 
 		public int getDefaultLength() {
@@ -2223,7 +2223,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			return AbstractOrmEntity.this.getXmlTypeMapping();
 		}
 
-		protected DiscriminatorColumn getRootDiscriminatorColumn() {
+		protected SpecifiedDiscriminatorColumn getRootDiscriminatorColumn() {
 			return AbstractOrmEntity.this.rootEntity.getDiscriminatorColumn();
 		}
 

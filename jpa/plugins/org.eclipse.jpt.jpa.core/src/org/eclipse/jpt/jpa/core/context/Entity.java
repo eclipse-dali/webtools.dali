@@ -145,7 +145,7 @@ public interface Entity
 	 */
 	Entity getParentEntity();
 
-	DiscriminatorColumn getDiscriminatorColumn();
+	SpecifiedDiscriminatorColumn getDiscriminatorColumn();
 
 	String getDiscriminatorValue();
 	String getSpecifiedDiscriminatorValue();

@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.DiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlDiscriminatorColumn;
 
@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlDiscriminatorColumn;
  * @since 2.0
  */
 public interface OrmDiscriminatorColumn
-	extends DiscriminatorColumn, OrmSpecifiedNamedColumn
+	extends SpecifiedDiscriminatorColumn, OrmSpecifiedNamedColumn
 {
 	XmlDiscriminatorColumn getXmlColumn();
 	

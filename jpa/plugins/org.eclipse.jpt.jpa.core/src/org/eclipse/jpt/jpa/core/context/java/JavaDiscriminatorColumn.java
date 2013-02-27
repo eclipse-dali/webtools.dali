@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import org.eclipse.jpt.jpa.core.context.DiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.resource.java.DiscriminatorColumnAnnotation;
 
 /**
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.java.DiscriminatorColumnAnnotation;
  * @since 2.0
  */
 public interface JavaDiscriminatorColumn
-	extends DiscriminatorColumn, JavaSpecifiedNamedColumn
+	extends SpecifiedDiscriminatorColumn, JavaSpecifiedNamedColumn
 {
 	DiscriminatorColumnAnnotation getColumnAnnotation();
 		
