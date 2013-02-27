@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
-import org.eclipse.jpt.jpa.core.context.JoinTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
@@ -83,7 +83,7 @@ public class GenericJavaMappingJoinTableRelationshipStrategy
 	}
 
 	public JptValidator buildTableValidator(Table table) {
-		return new JoinTableValidator(this.getPersistentAttribute(), (JoinTable) table);
+		return new JoinTableValidator(this.getPersistentAttribute(), (SpecifiedJoinTable) table);
 	}
 
 	public JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner) {

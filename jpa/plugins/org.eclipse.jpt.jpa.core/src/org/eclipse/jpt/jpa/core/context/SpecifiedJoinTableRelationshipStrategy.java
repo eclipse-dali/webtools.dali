@@ -32,5 +32,5 @@ public interface SpecifiedJoinTableRelationshipStrategy
 
 	void initializeFromVirtual(JoinTableRelationshipStrategy virtualStrategy);
 
-	JoinTable getJoinTable();
+	SpecifiedJoinTable getJoinTable();
 }

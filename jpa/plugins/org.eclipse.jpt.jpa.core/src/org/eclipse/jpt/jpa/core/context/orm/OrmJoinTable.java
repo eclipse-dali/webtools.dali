@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.JoinTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTable;
 
 /**
  * <code>orm.xml</code> join table
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.JoinTable;
  * @since 2.0
  */
 public interface OrmJoinTable
-	extends JoinTable, OrmReferenceTable
+	extends SpecifiedJoinTable, OrmReferenceTable
 {
 	OrmSpecifiedJoinTableRelationshipStrategy getParent();
 

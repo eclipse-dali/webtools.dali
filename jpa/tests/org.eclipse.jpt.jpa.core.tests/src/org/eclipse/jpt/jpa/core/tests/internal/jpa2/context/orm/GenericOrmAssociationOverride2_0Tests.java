@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumnRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.JoinTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -438,7 +438,7 @@ public class GenericOrmAssociationOverride2_0Tests extends Generic2_0ContextMode
 		XmlAssociationOverride xmlAssociationOverride = entityResource.getAssociationOverrides().get(0);
 
 		
-		JoinTable joinTable = joiningStrategy.getJoinTable();
+		SpecifiedJoinTable joinTable = joiningStrategy.getJoinTable();
 		joinTable.setSpecifiedName("FOO");
 				
 		assertEquals("FOO", xmlAssociationOverride.getJoinTable().getName());

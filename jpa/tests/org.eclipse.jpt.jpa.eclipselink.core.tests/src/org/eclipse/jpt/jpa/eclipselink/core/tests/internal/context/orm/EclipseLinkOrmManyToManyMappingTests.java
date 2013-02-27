@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.Cascade;
 import org.eclipse.jpt.jpa.core.context.FetchType;
-import org.eclipse.jpt.jpa.core.context.JoinTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
@@ -284,7 +284,7 @@ public class EclipseLinkOrmManyToManyMappingTests
 		ManyToManyMapping manyToMany = (ManyToManyMapping) attribute.getMapping();
 		
 		assertEquals(true, attribute.isVirtual());
-		JoinTable ormJoinTable = manyToMany.getRelationship().getJoinTableStrategy().getJoinTable();
+		SpecifiedJoinTable ormJoinTable = manyToMany.getRelationship().getJoinTableStrategy().getJoinTable();
 		assertEquals("DEP_EMP", ormJoinTable.getName());
 		assertEquals("DEPT_ID", ormJoinTable.getSpecifiedJoinColumns().iterator().next().getName());
 		assertEquals("id", ormJoinTable.getSpecifiedJoinColumns().iterator().next().getReferencedColumnName());

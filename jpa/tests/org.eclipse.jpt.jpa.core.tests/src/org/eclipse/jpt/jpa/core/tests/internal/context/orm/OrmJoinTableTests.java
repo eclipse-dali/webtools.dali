@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
-import org.eclipse.jpt.jpa.core.context.JoinTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
@@ -200,7 +200,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("projects");
 		ManyToManyMapping virtualManyToManyMapping = (ManyToManyMapping) ormPersistentAttribute.getMapping();
-		JoinTable virtualJoinTable = virtualManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
+		SpecifiedJoinTable virtualJoinTable = virtualManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
 		assertTrue(ormPersistentAttribute.isVirtual());
 		assertEquals(null, virtualJoinTable.getSpecifiedName());
@@ -288,7 +288,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		//ormPersistentType.getMapping().setSpecifiedMetadataComplete(null);
 		OrmPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("projects");
 		ManyToManyMapping virtualManyToManyMapping = (ManyToManyMapping) ormPersistentAttribute2.getMapping();
-		JoinTable virtualJoinTable = virtualManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
+		SpecifiedJoinTable virtualJoinTable = virtualManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		assertTrue(ormPersistentAttribute2.isVirtual());
 		assertEquals("JAVA_JOIN_TABLE", virtualJoinTable.getSpecifiedName());//specifiedName since this is a virtual mapping now
 		
@@ -1189,7 +1189,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		PersistentAttribute virtualAttribute = ormPersistentType.getAttributes().iterator().next();
 		ManyToManyMapping virtualManyToManyMapping = (ManyToManyMapping) virtualAttribute.getMapping();
-		JoinTable virtualJoinTable = virtualManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
+		SpecifiedJoinTable virtualJoinTable = virtualManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
 		assertTrue(virtualAttribute.isVirtual());
 		
@@ -1220,7 +1220,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		
 		ormPersistentType.getAttributeNamed("projects").addToXml();
 		OrmManyToManyMapping manyToManyMapping = (OrmManyToManyMapping) ormPersistentType.getAttributeNamed("projects").getMapping();
-		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
+		SpecifiedJoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
 		//joinTable default name is null because targetEntity is not in the persistence unit
 		assertNull(joinTable.getDefaultName());
@@ -1261,7 +1261,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		
 		ormPersistentType.getAttributeNamed("projects").addToXml();
 		OrmManyToManyMapping manyToManyMapping = (OrmManyToManyMapping) ormPersistentType.getAttributeNamed("projects").getMapping();
-		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
+		SpecifiedJoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		SpecifiedJoinColumn joinColumn = joinTable.getJoinColumns().iterator().next();
 		SpecifiedJoinColumn inverseJoinColumn = joinTable.getInverseJoinColumns().iterator().next();
 		
@@ -1325,7 +1325,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		
 		ormPersistentType.getAttributeNamed("projects").addToXml();
 		OrmManyToManyMapping manyToManyMapping = (OrmManyToManyMapping) ormPersistentType.getAttributeNamed("projects").getMapping();
-		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
+		SpecifiedJoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		SpecifiedJoinColumn joinColumn = joinTable.getJoinColumns().iterator().next();
 		SpecifiedJoinColumn inverseJoinColumn = joinTable.getInverseJoinColumns().iterator().next();
 		

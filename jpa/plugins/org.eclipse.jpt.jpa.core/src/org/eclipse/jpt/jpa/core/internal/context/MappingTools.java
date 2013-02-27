@@ -39,7 +39,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.ColumnMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
-import org.eclipse.jpt.jpa.core.context.JoinTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
@@ -394,7 +394,7 @@ public final class MappingTools {
 		}
 	}
 
-	public static void convertJoinTableDefaultToSpecifiedInverseJoinColumn(JoinTable joinTable) {
+	public static void convertJoinTableDefaultToSpecifiedInverseJoinColumn(SpecifiedJoinTable joinTable) {
 		SpecifiedJoinColumn defaultInverseJoinColumn = joinTable.getDefaultInverseJoinColumn();
 		if (defaultInverseJoinColumn != null) {
 			String columnName = defaultInverseJoinColumn.getDefaultName();

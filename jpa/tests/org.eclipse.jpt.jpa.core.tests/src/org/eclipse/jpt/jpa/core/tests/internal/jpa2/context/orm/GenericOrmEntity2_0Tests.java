@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
-import org.eclipse.jpt.jpa.core.context.JoinTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.VirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.VirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAssociationOverride;
@@ -1965,7 +1965,7 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 
 		associationOverride = entity.getAssociationOverrideContainer().getSpecifiedOverrides().iterator().next();
 		assertEquals("a", associationOverride.getName());
-		JoinTable joinTable = ((OrmSpecifiedOverrideRelationship2_0) associationOverride.getRelationship()).getJoinTableStrategy().getJoinTable();
+		SpecifiedJoinTable joinTable = ((OrmSpecifiedOverrideRelationship2_0) associationOverride.getRelationship()).getJoinTableStrategy().getJoinTable();
 		assertEquals("FOO", joinTable.getSpecifiedName());
 		assertEquals("BAR", joinTable.getInverseJoinColumns().iterator().next().getName());
 	}

@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumnRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.JoinTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -480,7 +480,7 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		AssociationOverride2_0Annotation associationOverrideResource = (AssociationOverride2_0Annotation) resourceType.getAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
 
 		
-		JoinTable joinTable = joiningStrategy.getJoinTable();
+		SpecifiedJoinTable joinTable = joiningStrategy.getJoinTable();
 		joinTable.setSpecifiedName("FOO");
 				
 		assertEquals("FOO", associationOverrideResource.getJoinTable().getName());

@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
-import org.eclipse.jpt.jpa.core.context.JoinTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
@@ -138,7 +138,7 @@ public class JoinTableComposite
 
 	SpecifiedJoinColumn addInverseJoinColumnFromDialog(InverseJoinColumnInJoinTableStateObject stateObject) {
 
-		JoinTable subject = (JoinTable) getSubject();
+		SpecifiedJoinTable subject = (SpecifiedJoinTable) getSubject();
 		int index = subject.getSpecifiedInverseJoinColumnsSize();
 
 		SpecifiedJoinColumn joinColumn = subject.addSpecifiedInverseJoinColumn(index);
@@ -194,7 +194,7 @@ public class JoinTableComposite
 			return;
 		}
 		
-		JoinTable joinTable = (JoinTable) this.getSubject();
+		SpecifiedJoinTable joinTable = (SpecifiedJoinTable) this.getSubject();
 		if (joinTable == null) {
 			return;
 		}
@@ -239,7 +239,7 @@ public class JoinTableComposite
 		}
 
 		public void removeJoinColumn(ReadOnlyJoinTable subject, SpecifiedJoinColumn joinColumn) {
-			((JoinTable) subject).removeSpecifiedInverseJoinColumn(joinColumn);
+			((SpecifiedJoinTable) subject).removeSpecifiedInverseJoinColumn(joinColumn);
 		}
 
 		public ListIterable<JoinColumn> getSpecifiedJoinColumns(ReadOnlyJoinTable subject) {

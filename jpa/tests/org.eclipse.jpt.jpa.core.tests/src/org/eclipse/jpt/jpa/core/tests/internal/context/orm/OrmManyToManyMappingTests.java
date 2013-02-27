@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
-import org.eclipse.jpt.jpa.core.context.JoinTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
@@ -858,7 +858,7 @@ public class OrmManyToManyMappingTests extends ContextModelTestCase
 		assertTrue(((OneToManyMapping) ormPersistentAttribute.getMapping()).getCascade().isPersist());
 		assertTrue(((OneToManyMapping) ormPersistentAttribute.getMapping()).getCascade().isRefresh());
 		assertTrue(((OneToManyMapping) ormPersistentAttribute.getMapping()).getCascade().isRemove());
-		JoinTable joinTable = ((OneToManyMapping) ormPersistentAttribute.getMapping()).getRelationship().getJoinTableStrategy().getJoinTable();
+		SpecifiedJoinTable joinTable = ((OneToManyMapping) ormPersistentAttribute.getMapping()).getRelationship().getJoinTableStrategy().getJoinTable();
 		assertEquals("MY_JOIN_TABLE", joinTable.getName());
 		assertEquals("name", joinTable.getJoinColumns().iterator().next().getSpecifiedName());
 		assertEquals("referenceName", joinTable.getJoinColumns().iterator().next().getSpecifiedReferencedColumnName());

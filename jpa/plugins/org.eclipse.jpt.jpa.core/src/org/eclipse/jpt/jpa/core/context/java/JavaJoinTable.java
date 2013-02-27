@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.java;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.JoinTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
 
 /**
@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
  * @since 2.0
  */
 public interface JavaJoinTable
-	extends JoinTable, JavaReferenceTable
+	extends SpecifiedJoinTable, JavaReferenceTable
 {
 	JavaSpecifiedJoinTableRelationshipStrategy getParent();
 

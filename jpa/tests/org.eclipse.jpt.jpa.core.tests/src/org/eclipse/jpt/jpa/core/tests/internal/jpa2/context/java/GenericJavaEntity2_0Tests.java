@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
-import org.eclipse.jpt.jpa.core.context.JoinTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.VirtualAssociationOverride;
@@ -2045,7 +2045,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 
 		associationOverride = getJavaEntity().getAssociationOverrideContainer().getSpecifiedOverrides().iterator().next();
 		assertEquals("a", associationOverride.getName());
-		JoinTable joinTable = ((JavaSpecifiedOverrideRelationship2_0) associationOverride.getRelationship()).getJoinTableStrategy().getJoinTable();
+		SpecifiedJoinTable joinTable = ((JavaSpecifiedOverrideRelationship2_0) associationOverride.getRelationship()).getJoinTableStrategy().getJoinTable();
 		assertEquals("FOO", joinTable.getSpecifiedName());
 		assertEquals("BAR", joinTable.getInverseJoinColumns().iterator().next().getName());
 	}
