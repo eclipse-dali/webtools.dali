@@ -206,7 +206,7 @@ public interface Entity
 
  	// ********** primary key join columns **********
 
-	ListIterable<? extends ReadOnlyPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
+	ListIterable<? extends PrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
 
 	int getPrimaryKeyJoinColumnsSize();
 

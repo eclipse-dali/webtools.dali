@@ -55,7 +55,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.Override_;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
@@ -150,7 +150,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	protected final VirtualPrimaryKeyJoinColumnContainerAdapter virtualPrimaryKeyJoinColumnContainerAdapter = new VirtualPrimaryKeyJoinColumnContainerAdapter();
 
 	// this is the default if there are *no* Java columns
-	protected ReadOnlyPrimaryKeyJoinColumn defaultPrimaryKeyJoinColumn;
+	protected PrimaryKeyJoinColumn defaultPrimaryKeyJoinColumn;
 
 	protected InheritanceType specifiedInheritanceStrategy;
 	protected InheritanceType defaultInheritanceStrategy;
@@ -744,7 +744,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	// ********** primary key join columns **********
 
-	public ListIterable<ReadOnlyPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns() {
+	public ListIterable<PrimaryKeyJoinColumn> getPrimaryKeyJoinColumns() {
 		return this.getSpecifiedPrimaryKeyJoinColumnsSize() == 0 ?
 				this.getDefaultPrimaryKeyJoinColumns() :
 				this.getReadOnlySpecifiedPrimaryKeyJoinColumns();
@@ -771,8 +771,8 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		return this.specifiedPrimaryKeyJoinColumnContainer.get(index);
 	}
 
-	protected ListIterable<ReadOnlyPrimaryKeyJoinColumn> getReadOnlySpecifiedPrimaryKeyJoinColumns() {
-		return new SuperListIterableWrapper<ReadOnlyPrimaryKeyJoinColumn>(this.getSpecifiedPrimaryKeyJoinColumns());
+	protected ListIterable<PrimaryKeyJoinColumn> getReadOnlySpecifiedPrimaryKeyJoinColumns() {
+		return new SuperListIterableWrapper<PrimaryKeyJoinColumn>(this.getSpecifiedPrimaryKeyJoinColumns());
 	}
 
 	public int getSpecifiedPrimaryKeyJoinColumnsSize() {
@@ -806,7 +806,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	public void convertDefaultPrimaryKeyJoinColumnsToSpecified() {
-		for (ReadOnlyPrimaryKeyJoinColumn defaultJoinColumn : this.getDefaultPrimaryKeyJoinColumns()) {
+		for (PrimaryKeyJoinColumn defaultJoinColumn : this.getDefaultPrimaryKeyJoinColumns()) {
 			String columnName = defaultJoinColumn.getName();
 			String referencedColumnName = defaultJoinColumn.getReferencedColumnName();
 
@@ -872,7 +872,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	// ********** default primary key join columns **********
 
-	public ListIterable<ReadOnlyPrimaryKeyJoinColumn> getDefaultPrimaryKeyJoinColumns() {
+	public ListIterable<PrimaryKeyJoinColumn> getDefaultPrimaryKeyJoinColumns() {
 		int virtualSize = this.virtualPrimaryKeyJoinColumns.size();
 		return (virtualSize != 0) ?
 				this.getReadOnlyVirtualPrimaryKeyJoinColumns() :
@@ -968,8 +968,8 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		return IterableTools.cloneLive(this.virtualPrimaryKeyJoinColumns);
 	}
 
-	protected ListIterable<ReadOnlyPrimaryKeyJoinColumn> getReadOnlyVirtualPrimaryKeyJoinColumns() {
-		return IterableTools.<ReadOnlyPrimaryKeyJoinColumn>cloneLive(this.virtualPrimaryKeyJoinColumns);
+	protected ListIterable<PrimaryKeyJoinColumn> getReadOnlyVirtualPrimaryKeyJoinColumns() {
+		return IterableTools.<PrimaryKeyJoinColumn>cloneLive(this.virtualPrimaryKeyJoinColumns);
 	}
 
 	protected void initializeVirtualPrimaryKeyJoinColumns() {
@@ -1045,10 +1045,10 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	// ********** default primary key join column **********
 
-	protected ListIterable<ReadOnlyPrimaryKeyJoinColumn> getReadOnlyDefaultPrimaryKeyJoinColumns() {
+	protected ListIterable<PrimaryKeyJoinColumn> getReadOnlyDefaultPrimaryKeyJoinColumns() {
 		return (this.defaultPrimaryKeyJoinColumn != null) ?
-				new SingleElementListIterable<ReadOnlyPrimaryKeyJoinColumn>(this.defaultPrimaryKeyJoinColumn) :
-				EmptyListIterable.<ReadOnlyPrimaryKeyJoinColumn>instance();
+				new SingleElementListIterable<PrimaryKeyJoinColumn>(this.defaultPrimaryKeyJoinColumn) :
+				EmptyListIterable.<PrimaryKeyJoinColumn>instance();
 	}
 
 	protected void addDefaultPrimaryKeyJoinColumn() {
@@ -1057,12 +1057,12 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected void removeDefaultPrimaryKeyJoinColumn() {
-		ReadOnlyPrimaryKeyJoinColumn old = this.defaultPrimaryKeyJoinColumn;
+		PrimaryKeyJoinColumn old = this.defaultPrimaryKeyJoinColumn;
 		this.defaultPrimaryKeyJoinColumn = null;
 		this.fireItemRemoved(DEFAULT_PRIMARY_KEY_JOIN_COLUMNS_LIST, 0, old);
 	}
 
-	protected ReadOnlyPrimaryKeyJoinColumn buildDefaultPrimaryKeyJoinColumn() {
+	protected PrimaryKeyJoinColumn buildDefaultPrimaryKeyJoinColumn() {
 		return this.buildPrimaryKeyJoinColumn(null);
 	}
 

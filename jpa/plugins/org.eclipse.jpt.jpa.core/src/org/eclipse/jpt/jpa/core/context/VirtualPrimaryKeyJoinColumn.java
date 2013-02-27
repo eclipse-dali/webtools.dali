@@ -22,7 +22,7 @@ package org.eclipse.jpt.jpa.core.context;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface VirtualPrimaryKeyJoinColumn
-	extends VirtualBaseJoinColumn, ReadOnlyPrimaryKeyJoinColumn
+	extends VirtualBaseJoinColumn, PrimaryKeyJoinColumn
 {
 	/**
 	 * This is not the best method name; we are simply overloading the meaning

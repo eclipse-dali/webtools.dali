@@ -22,7 +22,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 2.0
  */
 public interface SpecifiedPrimaryKeyJoinColumn
-	extends SpecifiedBaseJoinColumn, ReadOnlyPrimaryKeyJoinColumn
+	extends SpecifiedBaseJoinColumn, PrimaryKeyJoinColumn
 {
 	// combine interfaces
 }

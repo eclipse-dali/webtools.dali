@@ -39,7 +39,7 @@ public interface ReadOnlySecondaryTable
 	 * Return the secondary table's primary key join columns,
 	 * whether specified or default.
 	 */
-	ListIterable<? extends ReadOnlyPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
+	ListIterable<? extends PrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
 
 	/**
 	 * Return the number of primary key join columns,
@@ -53,7 +53,7 @@ public interface ReadOnlySecondaryTable
 	/**
 	 * Return the specified primary key join columns.
 	 */
-	ListIterable<? extends ReadOnlyPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns();
+	ListIterable<? extends PrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns();
 		String SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST = "specifiedPrimaryKeyJoinColumns"; //$NON-NLS-1$
 
 	/**
@@ -69,6 +69,6 @@ public interface ReadOnlySecondaryTable
 	 * key join column only exists if there are no specified primary key join
 	 * columns.
 	 */
-	ReadOnlyPrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn();
+	PrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn();
 		String DEFAULT_PRIMARY_KEY_JOIN_COLUMN = "defaultPrimaryKeyJoinColumn"; //$NON-NLS-1$
 }

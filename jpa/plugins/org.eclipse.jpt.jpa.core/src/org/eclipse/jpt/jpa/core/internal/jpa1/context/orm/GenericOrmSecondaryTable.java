@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPrimaryKeyJoinColumn;
@@ -283,7 +283,7 @@ public class GenericOrmSecondaryTable
 
 	public void initializeFrom(ReadOnlySecondaryTable oldSecondaryTable) {
 		super.initializeFrom(oldSecondaryTable);
-		for (ReadOnlyPrimaryKeyJoinColumn pkJoinColumn : oldSecondaryTable.getSpecifiedPrimaryKeyJoinColumns()) {
+		for (PrimaryKeyJoinColumn pkJoinColumn : oldSecondaryTable.getSpecifiedPrimaryKeyJoinColumns()) {
 			this.addSpecifiedPrimaryKeyJoinColumn().initializeFrom(pkJoinColumn);
 		}
 	}

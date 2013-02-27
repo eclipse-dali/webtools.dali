@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmNamedColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlPrimaryKeyJoinColumn;
@@ -147,7 +147,7 @@ public class GenericOrmPrimaryKeyJoinColumn
 
 	// ********** misc **********
 
-	public void initializeFrom(ReadOnlyPrimaryKeyJoinColumn oldColumn) {
+	public void initializeFrom(PrimaryKeyJoinColumn oldColumn) {
 		super.initializeFrom(oldColumn);
 		this.setSpecifiedReferencedColumnName(oldColumn.getSpecifiedReferencedColumnName());
 	}

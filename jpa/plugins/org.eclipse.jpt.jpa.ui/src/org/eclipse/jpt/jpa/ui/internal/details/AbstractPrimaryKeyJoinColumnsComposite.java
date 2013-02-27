@@ -33,7 +33,7 @@ import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.osgi.util.NLS;
@@ -63,13 +63,13 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity>
 		return dialog.wasConfirmed() ? this.addJoinColumn(dialog.getSubject()) : null;
 	}
 
-	protected abstract ListValueModel<? extends ReadOnlyPrimaryKeyJoinColumn> buildDefaultJoinColumnsListHolder();
+	protected abstract ListValueModel<? extends PrimaryKeyJoinColumn> buildDefaultJoinColumnsListHolder();
 
 	private ModifiableCollectionValueModel<SpecifiedPrimaryKeyJoinColumn> buildSelectedJoinColumnsModel() {
 		return new SimpleCollectionValueModel<SpecifiedPrimaryKeyJoinColumn>();
 	}
 
-	String buildJoinColumnLabel(ReadOnlyPrimaryKeyJoinColumn joinColumn) {
+	String buildJoinColumnLabel(PrimaryKeyJoinColumn joinColumn) {
 		if (joinColumn.isVirtual()) {
 			return NLS.bind(
 				JptJpaUiDetailsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsDefault,
@@ -147,7 +147,7 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity>
 		return new LabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return buildJoinColumnLabel((ReadOnlyPrimaryKeyJoinColumn) element);
+				return buildJoinColumnLabel((PrimaryKeyJoinColumn) element);
 			}
 		};
 	}
@@ -156,15 +156,15 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity>
 		return new OverrideDefaultPrimaryKeyJoinColumnHolder();
 	}
 
-	private ListValueModel<ReadOnlyPrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnsListHolder() {
-		List<ListValueModel<? extends ReadOnlyPrimaryKeyJoinColumn>> list = new ArrayList<ListValueModel<? extends ReadOnlyPrimaryKeyJoinColumn>>();
+	private ListValueModel<PrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnsListHolder() {
+		List<ListValueModel<? extends PrimaryKeyJoinColumn>> list = new ArrayList<ListValueModel<? extends PrimaryKeyJoinColumn>>();
 		list.add(buildSpecifiedJoinColumnsListHolder());
 		list.add(buildDefaultJoinColumnsListHolder());
 		return CompositeListValueModel.forModels(list);
 	}
 
-	private ListValueModel<ReadOnlyPrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnsListModel() {
-		return new ItemPropertyListValueModelAdapter<ReadOnlyPrimaryKeyJoinColumn>(
+	private ListValueModel<PrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnsListModel() {
+		return new ItemPropertyListValueModelAdapter<PrimaryKeyJoinColumn>(
 			buildPrimaryKeyJoinColumnsListHolder(),
 			NamedColumn.SPECIFIED_NAME_PROPERTY,
 			NamedColumn.DEFAULT_NAME_PROPERTY,

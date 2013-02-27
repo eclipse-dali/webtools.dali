@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import java.util.ListIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.SingleElementListIterator;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.db.Table;
@@ -30,7 +30,7 @@ public class PrimaryKeyJoinColumnInSecondaryTableStateObject
 {
 	public PrimaryKeyJoinColumnInSecondaryTableStateObject(
 			ReadOnlySecondaryTable secondaryTable,
-			ReadOnlyPrimaryKeyJoinColumn joinColumn) {
+			PrimaryKeyJoinColumn joinColumn) {
 		super(secondaryTable, joinColumn);
 	}
 
@@ -40,8 +40,8 @@ public class PrimaryKeyJoinColumnInSecondaryTableStateObject
 	}
 
 	@Override
-	public ReadOnlyPrimaryKeyJoinColumn getJoinColumn() {
-		return (ReadOnlyPrimaryKeyJoinColumn) super.getJoinColumn();
+	public PrimaryKeyJoinColumn getJoinColumn() {
+		return (PrimaryKeyJoinColumn) super.getJoinColumn();
 	}
 
 	@Override

@@ -11,14 +11,14 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
 public class PrimaryKeyJoinColumnInSecondaryTableDialog
-	extends BaseJoinColumnDialog<ReadOnlySecondaryTable, ReadOnlyPrimaryKeyJoinColumn, PrimaryKeyJoinColumnInSecondaryTableStateObject>
+	extends BaseJoinColumnDialog<ReadOnlySecondaryTable, PrimaryKeyJoinColumn, PrimaryKeyJoinColumnInSecondaryTableStateObject>
 {
 	/**
 	 * Use this constructor to create a <em>new</em> join column.
@@ -37,11 +37,11 @@ public class PrimaryKeyJoinColumnInSecondaryTableDialog
 			Shell parentShell,
 			ResourceManager resourceManager,
 			ReadOnlySecondaryTable secondaryTable,
-			ReadOnlyPrimaryKeyJoinColumn joinColumn) {
+			PrimaryKeyJoinColumn joinColumn) {
 		super(parentShell, resourceManager, secondaryTable, joinColumn, buildTitle(joinColumn));
 	}
 
-	private static String buildTitle(ReadOnlyPrimaryKeyJoinColumn joinColumn) {
+	private static String buildTitle(PrimaryKeyJoinColumn joinColumn) {
 		return (joinColumn == null) ?
 				JptJpaUiDetailsMessages.PrimaryKeyJoinColumnInSecondaryTableDialog_addTitle :
 				JptJpaUiDetailsMessages.PrimaryKeyJoinColumnInSecondaryTableDialog_editTitle;

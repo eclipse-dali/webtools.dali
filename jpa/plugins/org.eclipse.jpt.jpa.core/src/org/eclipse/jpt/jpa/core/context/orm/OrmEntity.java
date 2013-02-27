@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntity;
@@ -78,12 +78,12 @@ public interface OrmEntity
 
 	// ********** primary key join columns **********
 
-	ListIterable<ReadOnlyPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
+	ListIterable<PrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
 	ListIterable<OrmSpecifiedPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns();
 	OrmSpecifiedPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn();
 	OrmSpecifiedPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
 
-	ListIterable<ReadOnlyPrimaryKeyJoinColumn> getDefaultPrimaryKeyJoinColumns();
+	ListIterable<PrimaryKeyJoinColumn> getDefaultPrimaryKeyJoinColumns();
 	int getDefaultPrimaryKeyJoinColumnsSize();
 		String DEFAULT_PRIMARY_KEY_JOIN_COLUMNS_LIST = "defaultPrimaryKeyJoinColumns"; //$NON-NLS-1$
 

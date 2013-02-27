@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.IdClassReference;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinColumnRelationship;
@@ -1553,8 +1553,8 @@ public class OrmEntityTests extends ContextModelTestCase
 		childPersistentType.getJavaPersistentType().setMappingKey(MappingKeys.ENTITY_TYPE_MAPPING_KEY);
 		persistentType.getJavaPersistentType().setMappingKey(MappingKeys.ENTITY_TYPE_MAPPING_KEY);
 		
-		ListIterator<ReadOnlyPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns = childEntity.getDefaultPrimaryKeyJoinColumns().iterator();
-		ReadOnlyPrimaryKeyJoinColumn defaultPrimaryKeyJoinColumn = defaultPrimaryKeyJoinColumns.next();
+		ListIterator<PrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns = childEntity.getDefaultPrimaryKeyJoinColumns().iterator();
+		PrimaryKeyJoinColumn defaultPrimaryKeyJoinColumn = defaultPrimaryKeyJoinColumns.next();
 		assertEquals("FOO", defaultPrimaryKeyJoinColumn.getName());
 		assertEquals("BAR", defaultPrimaryKeyJoinColumn.getReferencedColumnName());
 		
