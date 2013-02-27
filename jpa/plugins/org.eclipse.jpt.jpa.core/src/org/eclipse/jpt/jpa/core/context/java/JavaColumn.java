@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.resource.java.CompleteColumnAnnotation;
  * @since 2.0
  */
 public interface JavaColumn
-	extends SpecifiedColumn, JavaBaseColumn
+	extends SpecifiedColumn, JavaSpecifiedBaseColumn
 {
 	CompleteColumnAnnotation getColumnAnnotation();
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,8 +13,11 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedBaseColumn;
 import org.eclipse.jpt.jpa.core.resource.java.BaseColumnAnnotation;
 
 /**
- * Java column or join column
- * <p>
+ * Java specified
+ * <ul>
+ * <li>column
+ * <li>join column
+ * </ul>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -24,7 +27,7 @@ import org.eclipse.jpt.jpa.core.resource.java.BaseColumnAnnotation;
  * @version 3.3
  * @since 2.0
  */
-public interface JavaBaseColumn
+public interface JavaSpecifiedBaseColumn
 	extends SpecifiedBaseColumn, JavaSpecifiedNamedColumn
 {
 	BaseColumnAnnotation getColumnAnnotation();

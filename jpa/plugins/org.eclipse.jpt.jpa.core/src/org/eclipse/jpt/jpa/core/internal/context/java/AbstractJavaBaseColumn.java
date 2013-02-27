@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaBaseColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedBaseColumn;
 import org.eclipse.jpt.jpa.core.resource.java.BaseColumnAnnotation;
 
 /**
@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.resource.java.BaseColumnAnnotation;
  */
 public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O extends ReadOnlyBaseColumn.Owner>
 	extends AbstractJavaNamedColumn<JpaContextModel, A, O>
-	implements JavaBaseColumn
+	implements JavaSpecifiedBaseColumn
 {
 	protected String specifiedTableName;
 	protected String defaultTableName;

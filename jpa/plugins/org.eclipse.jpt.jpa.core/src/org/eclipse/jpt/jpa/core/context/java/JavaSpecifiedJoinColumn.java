@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.java.CompleteJoinColumnAnnotation;
  * @since 2.0
  */
 public interface JavaSpecifiedJoinColumn
-	extends SpecifiedJoinColumn, JavaSpecifiedBaseJoinColumn, JavaBaseColumn
+	extends SpecifiedJoinColumn, JavaSpecifiedBaseJoinColumn, JavaSpecifiedBaseColumn
 {
 	CompleteJoinColumnAnnotation getColumnAnnotation();
 }
