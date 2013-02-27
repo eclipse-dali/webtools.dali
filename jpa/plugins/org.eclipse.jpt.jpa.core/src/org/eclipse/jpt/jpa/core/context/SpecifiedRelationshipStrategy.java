@@ -33,7 +33,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * @since 2.2
  */
 public interface SpecifiedRelationshipStrategy
-	extends ReadOnlyRelationshipStrategy
+	extends RelationshipStrategy
 {
 	Relationship getRelationship();
 

@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
  * @see JoinTableRelationship
  */
 public interface ReadOnlyJoinTableRelationshipStrategy
-	extends ReadOnlyRelationshipStrategy
+	extends RelationshipStrategy
 {
 	/**
 	 * Change notification identifier for "joinTable" property

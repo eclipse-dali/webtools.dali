@@ -63,7 +63,7 @@ public interface ReadOnlyRelationship
 	/**
 	 * Return the current strategy, this is never <code>null</code>.
 	 */
-	ReadOnlyRelationshipStrategy getStrategy();
+	RelationshipStrategy getStrategy();
 
 	/**
 	 * Return whether the the relationship is virtual.

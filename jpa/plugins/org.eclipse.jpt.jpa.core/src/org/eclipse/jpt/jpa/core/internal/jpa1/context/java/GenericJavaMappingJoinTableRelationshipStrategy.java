@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappingJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -67,7 +67,7 @@ public class GenericJavaMappingJoinTableRelationshipStrategy
 		return this.getJpaPlatformVariation().isJoinTableOverridable();
 	}
 
-	public ReadOnlyRelationshipStrategy selectOverrideStrategy(ReadOnlyOverrideRelationship2_0 overrideRelationship) {
+	public RelationshipStrategy selectOverrideStrategy(ReadOnlyOverrideRelationship2_0 overrideRelationship) {
 		return overrideRelationship.getJoinTableStrategy();
 	}
 

@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
  * @see JoinColumnRelationship
  */
 public interface ReadOnlyJoinColumnRelationshipStrategy
-	extends ReadOnlyRelationshipStrategy
+	extends RelationshipStrategy
 {
 	/**
 	 * The source of the relationship is usually the owning type mapping.
