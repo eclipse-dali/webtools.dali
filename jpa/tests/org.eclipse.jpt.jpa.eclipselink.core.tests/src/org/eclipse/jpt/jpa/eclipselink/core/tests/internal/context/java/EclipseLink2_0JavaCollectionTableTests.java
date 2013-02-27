@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionTable2_0;
@@ -330,7 +330,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		assertEquals("BAZ", joinTableResource.joinColumnAt(1).getName());
 		assertEquals("FOO", joinTableResource.joinColumnAt(2).getName());
 		
-		ListIterator<JavaJoinColumn> joinColumns = collectionTable.getSpecifiedJoinColumns().iterator();
+		ListIterator<JavaModifiableJoinColumn> joinColumns = collectionTable.getSpecifiedJoinColumns().iterator();
 		assertEquals(joinColumn2, joinColumns.next());
 		assertEquals(joinColumn3, joinColumns.next());
 		assertEquals(joinColumn, joinColumns.next());
@@ -390,7 +390,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		
 		
 		collectionTable.moveSpecifiedJoinColumn(2, 0);
-		ListIterator<JavaJoinColumn> joinColumns = collectionTable.getSpecifiedJoinColumns().iterator();
+		ListIterator<JavaModifiableJoinColumn> joinColumns = collectionTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -432,7 +432,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		joinTableResource.joinColumnAt(2).setName("BAZ");
 		getJpaProject().synchronizeContextModel();
 	
-		ListIterator<JavaJoinColumn> joinColumns = collectionTable.getSpecifiedJoinColumns().iterator();
+		ListIterator<JavaModifiableJoinColumn> joinColumns = collectionTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("FOO", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());

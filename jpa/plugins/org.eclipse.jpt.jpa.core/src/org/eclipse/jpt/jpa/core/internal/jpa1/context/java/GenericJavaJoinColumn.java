@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaBaseColumn;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaNamedColumn;
@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.db.Table;
  */
 public class GenericJavaJoinColumn
 	extends AbstractJavaBaseColumn<CompleteJoinColumnAnnotation, ReadOnlyJoinColumn.Owner>
-	implements JavaJoinColumn
+	implements JavaModifiableJoinColumn
 {
 	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(JpaContextModel, org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
 	protected /* final */ CompleteJoinColumnAnnotation columnAnnotation;  // never null

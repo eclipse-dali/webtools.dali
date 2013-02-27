@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
-import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
@@ -541,7 +541,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		assertEquals("BAZ", joinTableResource.joinColumnAt(1).getName());
 		assertEquals("FOO", joinTableResource.joinColumnAt(2).getName());
 		
-		ListIterator<JavaJoinColumn> joinColumns = joinTable.getSpecifiedJoinColumns().iterator();
+		ListIterator<JavaModifiableJoinColumn> joinColumns = joinTable.getSpecifiedJoinColumns().iterator();
 		assertEquals(joinColumn2, joinColumns.next());
 		assertEquals(joinColumn3, joinColumns.next());
 		assertEquals(joinColumn, joinColumns.next());
@@ -601,7 +601,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		
 		
 		joinTable.moveSpecifiedJoinColumn(2, 0);
-		ListIterator<JavaJoinColumn> joinColumns = joinTable.getSpecifiedJoinColumns().iterator();
+		ListIterator<JavaModifiableJoinColumn> joinColumns = joinTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -643,7 +643,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		joinTableResource.joinColumnAt(2).setName("BAZ");
 		getJpaProject().synchronizeContextModel();
 	
-		ListIterator<JavaJoinColumn> joinColumns = joinTable.getSpecifiedJoinColumns().iterator();
+		ListIterator<JavaModifiableJoinColumn> joinColumns = joinTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("FOO", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
@@ -763,7 +763,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		assertEquals("BAZ", joinTableResource.inverseJoinColumnAt(1).getName());
 		assertEquals("FOO", joinTableResource.inverseJoinColumnAt(2).getName());
 		
-		ListIterator<JavaJoinColumn> inverseJoinColumns = joinTable.getSpecifiedInverseJoinColumns().iterator();
+		ListIterator<JavaModifiableJoinColumn> inverseJoinColumns = joinTable.getSpecifiedInverseJoinColumns().iterator();
 		assertEquals(inverseJoinColumn2, inverseJoinColumns.next());
 		assertEquals(inverseJoinColumn3, inverseJoinColumns.next());
 		assertEquals(inverseJoinColumn, inverseJoinColumns.next());
@@ -823,7 +823,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		
 		
 		joinTable.moveSpecifiedInverseJoinColumn(2, 0);
-		ListIterator<JavaJoinColumn> inverseJoinColumns = joinTable.getSpecifiedInverseJoinColumns().iterator();
+		ListIterator<JavaModifiableJoinColumn> inverseJoinColumns = joinTable.getSpecifiedInverseJoinColumns().iterator();
 		assertEquals("BAR", inverseJoinColumns.next().getName());
 		assertEquals("BAZ", inverseJoinColumns.next().getName());
 		assertEquals("FOO", inverseJoinColumns.next().getName());
@@ -865,7 +865,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		joinTableResource.inverseJoinColumnAt(2).setName("BAZ");
 		getJpaProject().synchronizeContextModel();
 	
-		ListIterator<JavaJoinColumn> inverseJoinColumns = joinTable.getSpecifiedInverseJoinColumns().iterator();
+		ListIterator<JavaModifiableJoinColumn> inverseJoinColumns = joinTable.getSpecifiedInverseJoinColumns().iterator();
 		assertEquals("FOO", inverseJoinColumns.next().getName());
 		assertEquals("BAR", inverseJoinColumns.next().getName());
 		assertEquals("BAZ", inverseJoinColumns.next().getName());

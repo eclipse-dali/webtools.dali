@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -47,10 +47,10 @@ public class GenericJavaJoinTable
 	extends GenericJavaReferenceTable<JavaJoinTableRelationshipStrategy, JoinTableAnnotation>
 	implements JavaJoinTable
 {
-	protected final ContextListContainer<JavaJoinColumn, JoinColumnAnnotation> specifiedInverseJoinColumnContainer;
+	protected final ContextListContainer<JavaModifiableJoinColumn, JoinColumnAnnotation> specifiedInverseJoinColumnContainer;
 	protected final ReadOnlyJoinColumn.Owner inverseJoinColumnOwner;
 
-	protected JavaJoinColumn defaultInverseJoinColumn;
+	protected JavaModifiableJoinColumn defaultInverseJoinColumn;
 
 
 	public GenericJavaJoinTable(JavaJoinTableRelationshipStrategy parent, Owner owner) {
@@ -96,7 +96,7 @@ public class GenericJavaJoinTable
 
 	// ********** inverse join columns **********
 
-	public ListIterable<JavaJoinColumn> getInverseJoinColumns() {
+	public ListIterable<JavaModifiableJoinColumn> getInverseJoinColumns() {
 		return this.hasSpecifiedInverseJoinColumns() ? this.getSpecifiedInverseJoinColumns() : this.getDefaultInverseJoinColumns();
 	}
 
@@ -111,7 +111,7 @@ public class GenericJavaJoinTable
 
 	// ********** specified inverse join columns **********
 
-	public ListIterable<JavaJoinColumn> getSpecifiedInverseJoinColumns() {
+	public ListIterable<JavaModifiableJoinColumn> getSpecifiedInverseJoinColumns() {
 		return this.specifiedInverseJoinColumnContainer.getContextElements();
 	}
 
@@ -123,21 +123,21 @@ public class GenericJavaJoinTable
 		return this.getSpecifiedInverseJoinColumnsSize() != 0;
 	}
 
-	public JavaJoinColumn getSpecifiedInverseJoinColumn(int index) {
+	public JavaModifiableJoinColumn getSpecifiedInverseJoinColumn(int index) {
 		return this.specifiedInverseJoinColumnContainer.getContextElement(index);
 	}
 
-	public JavaJoinColumn addSpecifiedInverseJoinColumn() {
+	public JavaModifiableJoinColumn addSpecifiedInverseJoinColumn() {
 		return this.addSpecifiedInverseJoinColumn(this.getSpecifiedInverseJoinColumnsSize());
 	}
 
-	public JavaJoinColumn addSpecifiedInverseJoinColumn(int index) {
+	public JavaModifiableJoinColumn addSpecifiedInverseJoinColumn(int index) {
 		JoinColumnAnnotation annotation = this.getTableAnnotation().addInverseJoinColumn(index);
 		return this.specifiedInverseJoinColumnContainer.addContextElement(index, annotation);
 	}
 
 	public void removeSpecifiedInverseJoinColumn(ModifiableJoinColumn joinColumn) {
-		this.removeSpecifiedInverseJoinColumn(this.specifiedInverseJoinColumnContainer.indexOfContextElement((JavaJoinColumn) joinColumn));
+		this.removeSpecifiedInverseJoinColumn(this.specifiedInverseJoinColumnContainer.indexOfContextElement((JavaModifiableJoinColumn) joinColumn));
 	}
 
 	public void removeSpecifiedInverseJoinColumn(int index) {
@@ -172,14 +172,14 @@ public class GenericJavaJoinTable
 	 * inverse join column container
 	 */
 	protected class SpecifiedInverseJoinColumnContainer
-		extends ContextListContainer<JavaJoinColumn, JoinColumnAnnotation>
+		extends ContextListContainer<JavaModifiableJoinColumn, JoinColumnAnnotation>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return SPECIFIED_INVERSE_JOIN_COLUMNS_LIST;
 		}
 		@Override
-		protected JavaJoinColumn buildContextElement(JoinColumnAnnotation resourceElement) {
+		protected JavaModifiableJoinColumn buildContextElement(JoinColumnAnnotation resourceElement) {
 			return GenericJavaJoinTable.this.buildInverseJoinColumn(resourceElement);
 		}
 		@Override
@@ -187,7 +187,7 @@ public class GenericJavaJoinTable
 			return GenericJavaJoinTable.this.getInverseJoinColumnAnnotations();
 		}
 		@Override
-		protected JoinColumnAnnotation getResourceElement(JavaJoinColumn contextElement) {
+		protected JoinColumnAnnotation getResourceElement(JavaModifiableJoinColumn contextElement) {
 			return (JoinColumnAnnotation) contextElement.getColumnAnnotation();
 		}
 	}
@@ -196,7 +196,7 @@ public class GenericJavaJoinTable
 		return new InverseJoinColumnOwner();
 	}
 
-	protected ContextListContainer<JavaJoinColumn, JoinColumnAnnotation> buildSpecifiedInverseJoinColumnContainer() {
+	protected ContextListContainer<JavaModifiableJoinColumn, JoinColumnAnnotation> buildSpecifiedInverseJoinColumnContainer() {
 		SpecifiedInverseJoinColumnContainer container = new SpecifiedInverseJoinColumnContainer();
 		container.initialize();
 		return container;
@@ -204,20 +204,20 @@ public class GenericJavaJoinTable
 
 	// ********** default inverse join column **********
 
-	public JavaJoinColumn getDefaultInverseJoinColumn() {
+	public JavaModifiableJoinColumn getDefaultInverseJoinColumn() {
 		return this.defaultInverseJoinColumn;
 	}
 
-	protected void setDefaultInverseJoinColumn(JavaJoinColumn joinColumn) {
-		JavaJoinColumn old = this.defaultInverseJoinColumn;
+	protected void setDefaultInverseJoinColumn(JavaModifiableJoinColumn joinColumn) {
+		JavaModifiableJoinColumn old = this.defaultInverseJoinColumn;
 		this.defaultInverseJoinColumn = joinColumn;
 		this.firePropertyChanged(DEFAULT_INVERSE_JOIN_COLUMN, old, joinColumn);
 	}
 
-	protected ListIterable<JavaJoinColumn> getDefaultInverseJoinColumns() {
+	protected ListIterable<JavaModifiableJoinColumn> getDefaultInverseJoinColumns() {
 		return (this.defaultInverseJoinColumn != null) ?
-				new SingleElementListIterable<JavaJoinColumn>(this.defaultInverseJoinColumn) :
-				EmptyListIterable.<JavaJoinColumn>instance();
+				new SingleElementListIterable<JavaModifiableJoinColumn>(this.defaultInverseJoinColumn) :
+				EmptyListIterable.<JavaModifiableJoinColumn>instance();
 	}
 
 	protected int defaultInverseJoinColumnsSize() {
@@ -266,7 +266,7 @@ public class GenericJavaJoinTable
 		}
 	}
 
-	protected JavaJoinColumn buildInverseJoinColumn(JoinColumnAnnotation joinColumnAnnotation) {
+	protected JavaModifiableJoinColumn buildInverseJoinColumn(JoinColumnAnnotation joinColumnAnnotation) {
 		return this.buildJoinColumn(this.inverseJoinColumnOwner, joinColumnAnnotation);
 	}
 
@@ -287,7 +287,7 @@ public class GenericJavaJoinTable
 		if (result != null) {
 			return result;
 		}
-		for (JavaJoinColumn column : this.getInverseJoinColumns()) {
+		for (JavaModifiableJoinColumn column : this.getInverseJoinColumns()) {
 			result = column.getCompletionProposals(pos);
 			if (result != null) {
 				return result;

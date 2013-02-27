@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
-import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
@@ -110,7 +110,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		joinColumnAnnotation = (JoinColumnAnnotation) resourceField.addAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME);
 		joinColumnAnnotation.setName("FOO");	
 		getJpaProject().synchronizeContextModel();
-		JavaJoinColumn joinColumn = joinColumns.getSpecifiedJoinColumns().iterator().next();
+		JavaModifiableJoinColumn joinColumn = joinColumns.getSpecifiedJoinColumns().iterator().next();
 		assertEquals("FOO", joinColumn.getSpecifiedName());
 		assertEquals("FOO", joinColumnAnnotation.getName());
 	
@@ -132,7 +132,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		
-		JavaJoinColumn joinColumn = joinColumns.addSpecifiedJoinColumn(0);
+		JavaModifiableJoinColumn joinColumn = joinColumns.addSpecifiedJoinColumn(0);
 		//set name in the context model, verify resource model modified
 		joinColumn.setSpecifiedName("foo");
 		JoinColumnAnnotation joinColumnAnnotation = (JoinColumnAnnotation) resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME);
@@ -211,7 +211,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		javaJoinColumn.setName("FOO");	
 		javaJoinColumn.setReferencedColumnName("BAR");
 		getJpaProject().synchronizeContextModel();
-		JavaJoinColumn joinColumn = joinColumns.getSpecifiedJoinColumns().iterator().next();
+		JavaModifiableJoinColumn joinColumn = joinColumns.getSpecifiedJoinColumns().iterator().next();
 		assertEquals("BAR", joinColumn.getSpecifiedReferencedColumnName());
 		assertEquals("BAR", javaJoinColumn.getReferencedColumnName());
 	
@@ -232,7 +232,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
-		JavaJoinColumn joinColumn = joinColumns.addSpecifiedJoinColumn(0);
+		JavaModifiableJoinColumn joinColumn = joinColumns.addSpecifiedJoinColumn(0);
 		//set referenced column name in the context model, verify resource model modified
 		joinColumn.setSpecifiedName("foo");
 		joinColumn.setSpecifiedReferencedColumnName("BAR");
@@ -272,7 +272,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		javaJoinColumn.setName("FOO");	
 		javaJoinColumn.setTable("BAR");
 		getJpaProject().synchronizeContextModel();
-		JavaJoinColumn joinColumn = joinColumns.getSpecifiedJoinColumns().iterator().next();
+		JavaModifiableJoinColumn joinColumn = joinColumns.getSpecifiedJoinColumns().iterator().next();
 		assertEquals("BAR", joinColumn.getSpecifiedTableName());
 		assertEquals("BAR", javaJoinColumn.getTable());
 	
@@ -294,7 +294,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		
-		JavaJoinColumn joinColumn = joinColumns.addSpecifiedJoinColumn(0);
+		JavaModifiableJoinColumn joinColumn = joinColumns.addSpecifiedJoinColumn(0);
 		//set table in the context model, verify resource model modified
 		joinColumn.setSpecifiedName("foo");
 		joinColumn.setSpecifiedTableName("BAR");
@@ -334,7 +334,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		javaJoinColumn.setName("FOO");	
 		javaJoinColumn.setUnique(Boolean.TRUE);
 		getJpaProject().synchronizeContextModel();
-		JavaJoinColumn joinColumn = joinColumns.getSpecifiedJoinColumns().iterator().next();
+		JavaModifiableJoinColumn joinColumn = joinColumns.getSpecifiedJoinColumns().iterator().next();
 		assertEquals(Boolean.TRUE, joinColumn.getSpecifiedUnique());
 		assertEquals(Boolean.TRUE, javaJoinColumn.getUnique());
 	
@@ -356,7 +356,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		
-		JavaJoinColumn joinColumn = joinColumns.addSpecifiedJoinColumn(0);
+		JavaModifiableJoinColumn joinColumn = joinColumns.addSpecifiedJoinColumn(0);
 		//set unique in the context model, verify resource model modified
 		joinColumn.setSpecifiedName("foo");
 		joinColumn.setSpecifiedUnique(Boolean.TRUE);
@@ -392,7 +392,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		javaJoinColumn.setName("FOO");	
 		javaJoinColumn.setNullable(Boolean.FALSE);
 		getJpaProject().synchronizeContextModel();
-		JavaJoinColumn joinColumn = joinColumns.getSpecifiedJoinColumns().iterator().next();
+		JavaModifiableJoinColumn joinColumn = joinColumns.getSpecifiedJoinColumns().iterator().next();
 		assertEquals(Boolean.FALSE, joinColumn.getSpecifiedNullable());
 		assertEquals(Boolean.FALSE, javaJoinColumn.getNullable());
 	
@@ -414,7 +414,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		
-		JavaJoinColumn joinColumn = joinColumns.addSpecifiedJoinColumn(0);
+		JavaModifiableJoinColumn joinColumn = joinColumns.addSpecifiedJoinColumn(0);
 		//set nullable in the context model, verify resource model modified
 		joinColumn.setSpecifiedName("foo");
 		joinColumn.setSpecifiedNullable(Boolean.FALSE);
@@ -450,7 +450,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		javaJoinColumn.setName("FOO");	
 		javaJoinColumn.setInsertable(Boolean.FALSE);
 		getJpaProject().synchronizeContextModel();
-		JavaJoinColumn joinColumn = joinColumns.getSpecifiedJoinColumns().iterator().next();
+		JavaModifiableJoinColumn joinColumn = joinColumns.getSpecifiedJoinColumns().iterator().next();
 		assertEquals(Boolean.FALSE, joinColumn.getSpecifiedInsertable());
 		assertEquals(Boolean.FALSE, javaJoinColumn.getInsertable());
 	
@@ -472,7 +472,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		
-		JavaJoinColumn joinColumn = joinColumns.addSpecifiedJoinColumn(0);
+		JavaModifiableJoinColumn joinColumn = joinColumns.addSpecifiedJoinColumn(0);
 		//set insertable in the context model, verify resource model modified
 		joinColumn.setSpecifiedName("foo");
 		joinColumn.setSpecifiedInsertable(Boolean.FALSE);
@@ -506,7 +506,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		javaJoinColumn.setName("FOO");	
 		javaJoinColumn.setUpdatable(Boolean.FALSE);
 		getJpaProject().synchronizeContextModel();
-		JavaJoinColumn joinColumn = joinColumns.getSpecifiedJoinColumns().iterator().next();
+		JavaModifiableJoinColumn joinColumn = joinColumns.getSpecifiedJoinColumns().iterator().next();
 		assertEquals(Boolean.FALSE, joinColumn.getSpecifiedUpdatable());
 		assertEquals(Boolean.FALSE, javaJoinColumn.getUpdatable());
 	
@@ -528,7 +528,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		
-		JavaJoinColumn joinColumn = joinColumns.addSpecifiedJoinColumn(0);
+		JavaModifiableJoinColumn joinColumn = joinColumns.addSpecifiedJoinColumn(0);
 		//set updatable in the context model, verify resource model modified
 		joinColumn.setSpecifiedName("foo");
 		joinColumn.setSpecifiedUpdatable(Boolean.FALSE);

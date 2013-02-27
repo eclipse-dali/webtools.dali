@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
@@ -33,10 +33,10 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy<P extends JavaJ
 	extends AbstractJavaContextModel<P>
 	implements JavaJoinColumnRelationshipStrategy
 {
-	protected final ContextListContainer<JavaJoinColumn, JoinColumnAnnotation> specifiedJoinColumnContainer;
+	protected final ContextListContainer<JavaModifiableJoinColumn, JoinColumnAnnotation> specifiedJoinColumnContainer;
 	protected final ReadOnlyJoinColumn.Owner joinColumnOwner;
 
-	protected JavaJoinColumn defaultJoinColumn;
+	protected JavaModifiableJoinColumn defaultJoinColumn;
 
 
 	protected AbstractJavaJoinColumnRelationshipStrategy(P parent) {
@@ -64,7 +64,7 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy<P extends JavaJ
 
 	// ********** join columns **********
 
-	public ListIterable<JavaJoinColumn> getJoinColumns() {
+	public ListIterable<JavaModifiableJoinColumn> getJoinColumns() {
 		return this.hasSpecifiedJoinColumns() ? this.getSpecifiedJoinColumns() : this.getDefaultJoinColumns();
 	}
 
@@ -75,7 +75,7 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy<P extends JavaJ
 
 	// ********** specified join columns **********
 
-	public ListIterable<JavaJoinColumn> getSpecifiedJoinColumns() {
+	public ListIterable<JavaModifiableJoinColumn> getSpecifiedJoinColumns() {
 		return this.specifiedJoinColumnContainer.getContextElements();
 	}
 
@@ -87,21 +87,21 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy<P extends JavaJ
 		return this.getSpecifiedJoinColumnsSize() != 0;
 	}
 
-	public JavaJoinColumn getSpecifiedJoinColumn(int index) {
+	public JavaModifiableJoinColumn getSpecifiedJoinColumn(int index) {
 		return this.specifiedJoinColumnContainer.getContextElement(index);
 	}
 
-	public JavaJoinColumn addSpecifiedJoinColumn() {
+	public JavaModifiableJoinColumn addSpecifiedJoinColumn() {
 		return this.addSpecifiedJoinColumn(this.getSpecifiedJoinColumnsSize());
 	}
 
-	public JavaJoinColumn addSpecifiedJoinColumn(int index) {
+	public JavaModifiableJoinColumn addSpecifiedJoinColumn(int index) {
 		JoinColumnAnnotation annotation = this.addJoinColumnAnnotation(index);
 		return this.specifiedJoinColumnContainer.addContextElement(index, annotation);
 	}
 
 	public void removeSpecifiedJoinColumn(ModifiableJoinColumn joinColumn) {
-		this.removeSpecifiedJoinColumn(this.specifiedJoinColumnContainer.indexOfContextElement((JavaJoinColumn) joinColumn));
+		this.removeSpecifiedJoinColumn(this.specifiedJoinColumnContainer.indexOfContextElement((JavaModifiableJoinColumn) joinColumn));
 	}
 
 	public void removeSpecifiedJoinColumn(int index) {
@@ -139,7 +139,7 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy<P extends JavaJ
 		this.specifiedJoinColumnContainer.synchronizeWithResourceModel();
 	}
 
-	protected ContextListContainer<JavaJoinColumn, JoinColumnAnnotation> buildSpecifiedJoinColumnContainer() {
+	protected ContextListContainer<JavaModifiableJoinColumn, JoinColumnAnnotation> buildSpecifiedJoinColumnContainer() {
 		SpecifiedJoinColumnContainer container = new SpecifiedJoinColumnContainer();
 		container.initialize();
 		return container;
@@ -149,14 +149,14 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy<P extends JavaJ
 	 * specified join column container
 	 */
 	protected class SpecifiedJoinColumnContainer
-		extends ContextListContainer<JavaJoinColumn, JoinColumnAnnotation>
+		extends ContextListContainer<JavaModifiableJoinColumn, JoinColumnAnnotation>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return SPECIFIED_JOIN_COLUMNS_LIST;
 		}
 		@Override
-		protected JavaJoinColumn buildContextElement(JoinColumnAnnotation resourceElement) {
+		protected JavaModifiableJoinColumn buildContextElement(JoinColumnAnnotation resourceElement) {
 			return AbstractJavaJoinColumnRelationshipStrategy.this.buildJoinColumn(resourceElement);
 		}
 		@Override
@@ -164,7 +164,7 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy<P extends JavaJ
 			return AbstractJavaJoinColumnRelationshipStrategy.this.getJoinColumnAnnotations();
 		}
 		@Override
-		protected JoinColumnAnnotation getResourceElement(JavaJoinColumn contextElement) {
+		protected JoinColumnAnnotation getResourceElement(JavaModifiableJoinColumn contextElement) {
 			return (JoinColumnAnnotation) contextElement.getColumnAnnotation();
 		}
 	}
@@ -174,20 +174,20 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy<P extends JavaJ
 
 	// ********** default join column **********
 
-	public JavaJoinColumn getDefaultJoinColumn() {
+	public JavaModifiableJoinColumn getDefaultJoinColumn() {
 		return this.defaultJoinColumn;
 	}
 
-	protected void setDefaultJoinColumn(JavaJoinColumn joinColumn) {
-		JavaJoinColumn old = this.defaultJoinColumn;
+	protected void setDefaultJoinColumn(JavaModifiableJoinColumn joinColumn) {
+		JavaModifiableJoinColumn old = this.defaultJoinColumn;
 		this.defaultJoinColumn = joinColumn;
 		this.firePropertyChanged(DEFAULT_JOIN_COLUMN_PROPERTY, old, joinColumn);
 	}
 
-	protected ListIterable<JavaJoinColumn> getDefaultJoinColumns() {
+	protected ListIterable<JavaModifiableJoinColumn> getDefaultJoinColumns() {
 		return (this.defaultJoinColumn != null) ?
-				new SingleElementListIterable<JavaJoinColumn>(this.defaultJoinColumn) :
-				EmptyListIterable.<JavaJoinColumn>instance();
+				new SingleElementListIterable<JavaModifiableJoinColumn>(this.defaultJoinColumn) :
+				EmptyListIterable.<JavaModifiableJoinColumn>instance();
 	}
 
 	protected int getDefaultJoinColumnsSize() {
@@ -231,7 +231,7 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy<P extends JavaJ
 		return this.parent;
 	}
 
-	protected JavaJoinColumn buildJoinColumn(JoinColumnAnnotation joinColumnAnnotation) {
+	protected JavaModifiableJoinColumn buildJoinColumn(JoinColumnAnnotation joinColumnAnnotation) {
 		return this.getJpaFactory().buildJavaJoinColumn(this, this.joinColumnOwner, joinColumnAnnotation);
 	}
 
@@ -298,7 +298,7 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy<P extends JavaJ
 		if (result != null) {
 			return result;
 		}
-		for (JavaJoinColumn joinColumn : this.getJoinColumns()) {
+		for (JavaModifiableJoinColumn joinColumn : this.getJoinColumns()) {
 			result = joinColumn.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
@@ -313,7 +313,7 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy<P extends JavaJ
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		for (JavaJoinColumn joinColumn : this.getJoinColumns()) {
+		for (JavaModifiableJoinColumn joinColumn : this.getJoinColumns()) {
 			joinColumn.validate(messages, reporter);
 		}
 	}

@@ -33,12 +33,12 @@ public interface JavaReferenceTable
 
 	// ********** join columns **********
 
-	ListIterable<JavaJoinColumn> getJoinColumns();
+	ListIterable<JavaModifiableJoinColumn> getJoinColumns();
 
-	ListIterable<JavaJoinColumn> getSpecifiedJoinColumns();
-	JavaJoinColumn getSpecifiedJoinColumn(int index);
-	JavaJoinColumn addSpecifiedJoinColumn();
-	JavaJoinColumn addSpecifiedJoinColumn(int index);
+	ListIterable<JavaModifiableJoinColumn> getSpecifiedJoinColumns();
+	JavaModifiableJoinColumn getSpecifiedJoinColumn(int index);
+	JavaModifiableJoinColumn addSpecifiedJoinColumn();
+	JavaModifiableJoinColumn addSpecifiedJoinColumn(int index);
 
-	JavaJoinColumn getDefaultJoinColumn();
+	JavaModifiableJoinColumn getDefaultJoinColumn();
 }

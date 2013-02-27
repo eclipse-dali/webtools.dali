@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.core.context.VirtualJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
-import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
@@ -2140,7 +2140,7 @@ public class OrmEntityTests extends ContextModelTestCase
 
 		JavaSpecifiedAssociationOverride javaAssociationOverride = ormEntity.getJavaTypeMapping().getAssociationOverrideContainer().getSpecifiedOverrides().iterator().next();
 		JavaJoinColumnRelationshipStrategy javaJoiningStrategy = javaAssociationOverride.getRelationship().getJoinColumnStrategy();
-		JavaJoinColumn javaJoinColumn = javaJoiningStrategy.getJoinColumns().iterator().next();
+		JavaModifiableJoinColumn javaJoinColumn = javaJoiningStrategy.getJoinColumns().iterator().next();
 		javaJoinColumn.setSpecifiedName("FOO");
 		javaJoinColumn.setSpecifiedReferencedColumnName("REFERENCE");
 		javaJoinColumn.setSpecifiedTableName("BAR");

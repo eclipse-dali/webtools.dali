@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
-import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
@@ -158,7 +158,7 @@ public class GenericOrmCollectionTable2_0Tests extends Generic2_0ContextModelTes
 		javaCollectionTable.setSpecifiedName("FOO");
 		javaCollectionTable.setSpecifiedCatalog("CATALOG");
 		javaCollectionTable.setSpecifiedSchema("SCHEMA");
-		JavaJoinColumn javaJoinColumn = javaCollectionTable.addSpecifiedJoinColumn(0);
+		JavaModifiableJoinColumn javaJoinColumn = javaCollectionTable.addSpecifiedJoinColumn(0);
 		javaJoinColumn.setSpecifiedName("NAME");
 		javaJoinColumn.setSpecifiedReferencedColumnName("REFERENCED_NAME");
 		

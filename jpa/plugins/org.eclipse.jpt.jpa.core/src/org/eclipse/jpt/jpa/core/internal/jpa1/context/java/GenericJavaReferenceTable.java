@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyReferenceTable;
-import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaReferenceTable;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaTable;
@@ -34,10 +34,10 @@ public abstract class GenericJavaReferenceTable<P extends JpaContextModel, A ext
 	extends AbstractJavaTable<P, A>
 	implements JavaReferenceTable
 {
-	protected final ContextListContainer<JavaJoinColumn, JoinColumnAnnotation> specifiedJoinColumnContainer;
+	protected final ContextListContainer<JavaModifiableJoinColumn, JoinColumnAnnotation> specifiedJoinColumnContainer;
 	protected final ReadOnlyJoinColumn.Owner joinColumnOwner;
 
-	protected JavaJoinColumn defaultJoinColumn;
+	protected JavaModifiableJoinColumn defaultJoinColumn;
 
 
 	protected GenericJavaReferenceTable(P parent, Owner owner) {
@@ -65,7 +65,7 @@ public abstract class GenericJavaReferenceTable<P extends JpaContextModel, A ext
 
 	// ********** join columns **********
 
-	public ListIterable<JavaJoinColumn> getJoinColumns() {
+	public ListIterable<JavaModifiableJoinColumn> getJoinColumns() {
 		return this.hasSpecifiedJoinColumns() ? this.getSpecifiedJoinColumns() : this.getDefaultJoinColumns();
 	}
 
@@ -80,7 +80,7 @@ public abstract class GenericJavaReferenceTable<P extends JpaContextModel, A ext
 
 	// ********** specified join columns **********
 
-	public ListIterable<JavaJoinColumn> getSpecifiedJoinColumns() {
+	public ListIterable<JavaModifiableJoinColumn> getSpecifiedJoinColumns() {
 		return this.specifiedJoinColumnContainer.getContextElements();
 	}
 
@@ -92,21 +92,21 @@ public abstract class GenericJavaReferenceTable<P extends JpaContextModel, A ext
 		return this.getSpecifiedJoinColumnsSize() != 0;
 	}
 
-	public JavaJoinColumn getSpecifiedJoinColumn(int index) {
+	public JavaModifiableJoinColumn getSpecifiedJoinColumn(int index) {
 		return this.specifiedJoinColumnContainer.getContextElement(index);
 	}
 
-	public JavaJoinColumn addSpecifiedJoinColumn() {
+	public JavaModifiableJoinColumn addSpecifiedJoinColumn() {
 		return this.addSpecifiedJoinColumn(this.getSpecifiedJoinColumnsSize());
 	}
 
-	public JavaJoinColumn addSpecifiedJoinColumn(int index) {
+	public JavaModifiableJoinColumn addSpecifiedJoinColumn(int index) {
 		JoinColumnAnnotation annotation = this.getTableAnnotation().addJoinColumn(index);
 		return this.specifiedJoinColumnContainer.addContextElement(index, annotation);
 	}
 
 	public void removeSpecifiedJoinColumn(ModifiableJoinColumn joinColumn) {
-		this.removeSpecifiedJoinColumn(this.specifiedJoinColumnContainer.indexOfContextElement((JavaJoinColumn) joinColumn));
+		this.removeSpecifiedJoinColumn(this.specifiedJoinColumnContainer.indexOfContextElement((JavaModifiableJoinColumn) joinColumn));
 	}
 
 	public void removeSpecifiedJoinColumn(int index) {
@@ -142,14 +142,14 @@ public abstract class GenericJavaReferenceTable<P extends JpaContextModel, A ext
 	 * join column container
 	 */
 	protected class SpecifiedJoinColumnContainer
-		extends ContextListContainer<JavaJoinColumn, JoinColumnAnnotation>
+		extends ContextListContainer<JavaModifiableJoinColumn, JoinColumnAnnotation>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return SPECIFIED_JOIN_COLUMNS_LIST;
 		}
 		@Override
-		protected JavaJoinColumn buildContextElement(JoinColumnAnnotation resourceElement) {
+		protected JavaModifiableJoinColumn buildContextElement(JoinColumnAnnotation resourceElement) {
 			return GenericJavaReferenceTable.this.buildJoinColumn(resourceElement);
 		}
 		@Override
@@ -157,14 +157,14 @@ public abstract class GenericJavaReferenceTable<P extends JpaContextModel, A ext
 			return GenericJavaReferenceTable.this.getJoinColumnAnnotations();
 		}
 		@Override
-		protected JoinColumnAnnotation getResourceElement(JavaJoinColumn contextElement) {
+		protected JoinColumnAnnotation getResourceElement(JavaModifiableJoinColumn contextElement) {
 			return (JoinColumnAnnotation) contextElement.getColumnAnnotation();
 		}
 	}
 
 	protected abstract ReadOnlyJoinColumn.Owner buildJoinColumnOwner();
 
-	protected ContextListContainer<JavaJoinColumn, JoinColumnAnnotation> buildSpecifiedJoinColumnContainer(){
+	protected ContextListContainer<JavaModifiableJoinColumn, JoinColumnAnnotation> buildSpecifiedJoinColumnContainer(){
 		SpecifiedJoinColumnContainer container = new SpecifiedJoinColumnContainer();
 		container.initialize();
 		return container;
@@ -172,20 +172,20 @@ public abstract class GenericJavaReferenceTable<P extends JpaContextModel, A ext
 
 	// ********** default join column **********
 
-	public JavaJoinColumn getDefaultJoinColumn() {
+	public JavaModifiableJoinColumn getDefaultJoinColumn() {
 		return this.defaultJoinColumn;
 	}
 
-	protected void setDefaultJoinColumn(JavaJoinColumn joinColumn) {
-		JavaJoinColumn old = this.defaultJoinColumn;
+	protected void setDefaultJoinColumn(JavaModifiableJoinColumn joinColumn) {
+		JavaModifiableJoinColumn old = this.defaultJoinColumn;
 		this.defaultJoinColumn = joinColumn;
 		this.firePropertyChanged(DEFAULT_JOIN_COLUMN_PROPERTY, old, joinColumn);
 	}
 
-	protected ListIterable<JavaJoinColumn> getDefaultJoinColumns() {
+	protected ListIterable<JavaModifiableJoinColumn> getDefaultJoinColumns() {
 		return (this.defaultJoinColumn != null) ?
-				new SingleElementListIterable<JavaJoinColumn>(this.defaultJoinColumn) :
-				EmptyListIterable.<JavaJoinColumn>instance();
+				new SingleElementListIterable<JavaModifiableJoinColumn>(this.defaultJoinColumn) :
+				EmptyListIterable.<JavaModifiableJoinColumn>instance();
 	}
 
 	protected int getDefaultJoinColumnsSize() {
@@ -225,11 +225,11 @@ public abstract class GenericJavaReferenceTable<P extends JpaContextModel, A ext
 		}
 	}
 
-	protected JavaJoinColumn buildJoinColumn(JoinColumnAnnotation joinColumnAnnotation) {
+	protected JavaModifiableJoinColumn buildJoinColumn(JoinColumnAnnotation joinColumnAnnotation) {
 		return this.buildJoinColumn(this.joinColumnOwner, joinColumnAnnotation);
 	}
 
-	protected JavaJoinColumn buildJoinColumn(ReadOnlyJoinColumn.Owner jcOwner, JoinColumnAnnotation joinColumnAnnotation) {
+	protected JavaModifiableJoinColumn buildJoinColumn(ReadOnlyJoinColumn.Owner jcOwner, JoinColumnAnnotation joinColumnAnnotation) {
 		return this.getJpaFactory().buildJavaJoinColumn(this, jcOwner, joinColumnAnnotation);
 	}
 
@@ -252,7 +252,7 @@ public abstract class GenericJavaReferenceTable<P extends JpaContextModel, A ext
 		if (result != null) {
 			return result;
 		}
-		for (JavaJoinColumn column : this.getJoinColumns()) {
+		for (JavaModifiableJoinColumn column : this.getJoinColumns()) {
 			result = column.getCompletionProposals(pos);
 			if (result != null) {
 				return result;

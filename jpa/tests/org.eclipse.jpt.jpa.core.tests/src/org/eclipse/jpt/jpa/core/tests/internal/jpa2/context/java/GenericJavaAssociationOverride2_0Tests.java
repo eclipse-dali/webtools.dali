@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.context.VirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.jpa2.context.OverrideRelationship2_0;
@@ -336,7 +336,7 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(PACKAGE_NAME + ".AnnotationTestTypeChild", AstNodeType.TYPE);
 		AssociationOverrideAnnotation associationOverrideResource = (AssociationOverrideAnnotation) resourceType.getAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
 		
-		ListIterator<JavaJoinColumn> joinColumns = joiningStrategy.getSpecifiedJoinColumns().iterator();
+		ListIterator<JavaModifiableJoinColumn> joinColumns = joiningStrategy.getSpecifiedJoinColumns().iterator();
 		ModifiableJoinColumn joinColumn = joinColumns.next();
 		assertEquals("address_id", joinColumn.getSpecifiedName());
 		assertEquals("id", joinColumn.getSpecifiedReferencedColumnName());

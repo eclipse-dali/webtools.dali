@@ -48,7 +48,7 @@ import org.eclipse.jpt.jpa.core.context.VirtualJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddedMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAssociationOverride;
@@ -1525,10 +1525,10 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		assertEquals("addresses", javaAssociationOverride.getName());
 		JavaJoinTable javaJoinTable = ((JavaOverrideRelationship2_0) javaAssociationOverride.getRelationship()).getJoinTableStrategy().getJoinTable();
 		javaJoinTable.setSpecifiedName("JAVA_FOO");
-		JavaJoinColumn javaJoinColumn = javaJoinTable.addSpecifiedJoinColumn(0);
+		JavaModifiableJoinColumn javaJoinColumn = javaJoinTable.addSpecifiedJoinColumn(0);
 		javaJoinColumn.setSpecifiedName("JAVA_JOIN_COLUMN_NAME");
 		javaJoinColumn.setSpecifiedReferencedColumnName("JAVA_JOIN_COLUMN_REFERENCED_NAME");
-		JavaJoinColumn javaInverseJoinColumn = javaJoinTable.addSpecifiedInverseJoinColumn(0);
+		JavaModifiableJoinColumn javaInverseJoinColumn = javaJoinTable.addSpecifiedInverseJoinColumn(0);
 		javaInverseJoinColumn.setSpecifiedName("JAVA_INVERSE_JOIN_COLUMN_NAME");
 		javaInverseJoinColumn.setSpecifiedReferencedColumnName("JAVA_INVERSE_JOIN_COLUMN_REFERENCED_NAME");
 		

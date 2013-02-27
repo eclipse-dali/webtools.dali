@@ -35,12 +35,12 @@ public interface JavaJoinTable
 
 	// ********** inverse join columns **********
 
-	ListIterable<JavaJoinColumn> getInverseJoinColumns();
+	ListIterable<JavaModifiableJoinColumn> getInverseJoinColumns();
 
-	ListIterable<JavaJoinColumn> getSpecifiedInverseJoinColumns();
-	JavaJoinColumn getSpecifiedInverseJoinColumn(int index);
-	JavaJoinColumn addSpecifiedInverseJoinColumn();
-	JavaJoinColumn addSpecifiedInverseJoinColumn(int index);
+	ListIterable<JavaModifiableJoinColumn> getSpecifiedInverseJoinColumns();
+	JavaModifiableJoinColumn getSpecifiedInverseJoinColumn(int index);
+	JavaModifiableJoinColumn addSpecifiedInverseJoinColumn();
+	JavaModifiableJoinColumn addSpecifiedInverseJoinColumn(int index);
 
-	JavaJoinColumn getDefaultInverseJoinColumn();
+	JavaModifiableJoinColumn getDefaultInverseJoinColumn();
 }

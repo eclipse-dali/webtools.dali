@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.context.VirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
-import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiableJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
@@ -185,18 +185,18 @@ public class JavaAssociationOverrideTests extends ContextModelTestCase
 		AssociationOverrideAnnotation associationOverrideAnnotation = (AssociationOverrideAnnotation) resourceType.getAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
 
 		
-		JavaJoinColumn joinColumn1 = joiningStrategy.addSpecifiedJoinColumn(0);
+		JavaModifiableJoinColumn joinColumn1 = joiningStrategy.addSpecifiedJoinColumn(0);
 		joinColumn1.setSpecifiedName("FOO");
 				
 		assertEquals("FOO", associationOverrideAnnotation.joinColumnAt(0).getName());
 		
-		JavaJoinColumn joinColumn2 = joiningStrategy.addSpecifiedJoinColumn(0);
+		JavaModifiableJoinColumn joinColumn2 = joiningStrategy.addSpecifiedJoinColumn(0);
 		joinColumn2.setSpecifiedName("BAR");
 		
 		assertEquals("BAR", associationOverrideAnnotation.joinColumnAt(0).getName());
 		assertEquals("FOO", associationOverrideAnnotation.joinColumnAt(1).getName());
 		
-		JavaJoinColumn joinColumn3 = joiningStrategy.addSpecifiedJoinColumn(1);
+		JavaModifiableJoinColumn joinColumn3 = joiningStrategy.addSpecifiedJoinColumn(1);
 		joinColumn3.setSpecifiedName("BAZ");
 		
 		assertEquals(4, associationOverrideAnnotation.getJoinColumnsSize());
@@ -206,7 +206,7 @@ public class JavaAssociationOverrideTests extends ContextModelTestCase
 		assertEquals("address_id", associationOverrideAnnotation.joinColumnAt(3).getName());  // the old default join column
 		
 		assertEquals(4, joiningStrategy.getSpecifiedJoinColumnsSize());
-		ListIterator<JavaJoinColumn> joinColumns = joiningStrategy.getSpecifiedJoinColumns().iterator();
+		ListIterator<JavaModifiableJoinColumn> joinColumns = joiningStrategy.getSpecifiedJoinColumns().iterator();
 		assertEquals(joinColumn2, joinColumns.next());
 		assertEquals(joinColumn3, joinColumns.next());
 		assertEquals(joinColumn1, joinColumns.next());
@@ -280,7 +280,7 @@ public class JavaAssociationOverrideTests extends ContextModelTestCase
 		
 		
 		joiningStrategy.moveSpecifiedJoinColumn(2, 0);
-		ListIterator<JavaJoinColumn> joinColumns = joiningStrategy.getSpecifiedJoinColumns().iterator();
+		ListIterator<JavaModifiableJoinColumn> joinColumns = joiningStrategy.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -316,7 +316,7 @@ public class JavaAssociationOverrideTests extends ContextModelTestCase
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(PACKAGE_NAME + ".AnnotationTestTypeChild", AstNodeType.TYPE);
 		AssociationOverrideAnnotation associationOverrideResource = (AssociationOverrideAnnotation) resourceType.getAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
 	
-		ListIterator<JavaJoinColumn> joinColumns = joiningStrategy.getSpecifiedJoinColumns().iterator();
+		ListIterator<JavaModifiableJoinColumn> joinColumns = joiningStrategy.getSpecifiedJoinColumns().iterator();
 		ModifiableJoinColumn joinColumn = joinColumns.next();
 		assertEquals("address_id", joinColumn.getSpecifiedName());
 		assertEquals("id", joinColumn.getSpecifiedReferencedColumnName());
