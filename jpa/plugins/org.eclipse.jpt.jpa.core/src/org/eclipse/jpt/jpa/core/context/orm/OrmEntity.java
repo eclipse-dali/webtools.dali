@@ -45,9 +45,9 @@ public interface OrmEntity
 	// ********** secondary tables **********
 
 	ListIterable<SecondaryTable> getSecondaryTables();	
-	ListIterable<OrmSecondaryTable> getSpecifiedSecondaryTables();
-	OrmSecondaryTable addSpecifiedSecondaryTable();
-	OrmSecondaryTable addSpecifiedSecondaryTable(int index);
+	ListIterable<OrmSpecifiedSecondaryTable> getSpecifiedSecondaryTables();
+	OrmSpecifiedSecondaryTable addSpecifiedSecondaryTable();
+	OrmSpecifiedSecondaryTable addSpecifiedSecondaryTable(int index);
 
 	/**
 	 * Return the virtual (not specified) secondary tables.

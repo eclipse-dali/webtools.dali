@@ -51,7 +51,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSecondaryTable;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualSecondaryTable;
@@ -778,25 +778,25 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 
-		OrmSecondaryTable secondaryTable = ormEntity.addSpecifiedSecondaryTable(0);
+		OrmSpecifiedSecondaryTable secondaryTable = ormEntity.addSpecifiedSecondaryTable(0);
 		secondaryTable.setSpecifiedName("FOO");
 				
 		assertEquals("FOO", entityResource.getSecondaryTables().get(0).getName());
 		
-		OrmSecondaryTable secondaryTable2 = ormEntity.addSpecifiedSecondaryTable(0);
+		OrmSpecifiedSecondaryTable secondaryTable2 = ormEntity.addSpecifiedSecondaryTable(0);
 		secondaryTable2.setSpecifiedName("BAR");
 		
 		assertEquals("BAR", entityResource.getSecondaryTables().get(0).getName());
 		assertEquals("FOO", entityResource.getSecondaryTables().get(1).getName());
 		
-		OrmSecondaryTable secondaryTable3 = ormEntity.addSpecifiedSecondaryTable(1);
+		OrmSpecifiedSecondaryTable secondaryTable3 = ormEntity.addSpecifiedSecondaryTable(1);
 		secondaryTable3.setSpecifiedName("BAZ");
 		
 		assertEquals("BAR", entityResource.getSecondaryTables().get(0).getName());
 		assertEquals("BAZ", entityResource.getSecondaryTables().get(1).getName());
 		assertEquals("FOO", entityResource.getSecondaryTables().get(2).getName());
 		
-		ListIterator<OrmSecondaryTable> secondaryTables = ormEntity.getSpecifiedSecondaryTables().iterator();
+		ListIterator<OrmSpecifiedSecondaryTable> secondaryTables = ormEntity.getSpecifiedSecondaryTables().iterator();
 		assertEquals(secondaryTable2, secondaryTables.next());
 		assertEquals(secondaryTable3, secondaryTables.next());
 		assertEquals(secondaryTable, secondaryTables.next());
@@ -844,7 +844,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		
 		
 		ormEntity.moveSpecifiedSecondaryTable(2, 0);
-		ListIterator<OrmSecondaryTable> secondaryTables = ormEntity.getSpecifiedSecondaryTables().iterator();
+		ListIterator<OrmSpecifiedSecondaryTable> secondaryTables = ormEntity.getSpecifiedSecondaryTables().iterator();
 		assertEquals("BAR", secondaryTables.next().getName());
 		assertEquals("BAZ", secondaryTables.next().getName());
 		assertEquals("FOO", secondaryTables.next().getName());
@@ -878,7 +878,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		entityResource.getSecondaryTables().get(1).setName("BAR");
 		entityResource.getSecondaryTables().get(2).setName("BAZ");
 
-		ListIterator<OrmSecondaryTable> secondaryTables = ormEntity.getSpecifiedSecondaryTables().iterator();
+		ListIterator<OrmSpecifiedSecondaryTable> secondaryTables = ormEntity.getSpecifiedSecondaryTables().iterator();
 		assertEquals("FOO", secondaryTables.next().getName());
 		assertEquals("BAR", secondaryTables.next().getName());
 		assertEquals("BAZ", secondaryTables.next().getName());
@@ -958,9 +958,9 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertEquals(0, childOrmEntity.getVirtualSecondaryTablesSize());
 		assertEquals(2, childOrmEntity.getSpecifiedSecondaryTablesSize());
 		assertEquals(2, childOrmEntity.getSecondaryTablesSize());
-		ListIterator<OrmSecondaryTable> specifiedSecondaryTables = childOrmEntity.getSpecifiedSecondaryTables().iterator();
+		ListIterator<OrmSpecifiedSecondaryTable> specifiedSecondaryTables = childOrmEntity.getSpecifiedSecondaryTables().iterator();
 		assertEquals("BAR", specifiedSecondaryTables.next().getName());
-		OrmSecondaryTable specifiedSecondaryTableFoo = specifiedSecondaryTables.next();
+		OrmSpecifiedSecondaryTable specifiedSecondaryTableFoo = specifiedSecondaryTables.next();
 		assertEquals("FOO", specifiedSecondaryTableFoo.getName());
 		assertEquals(0, specifiedSecondaryTableFoo.getSpecifiedPrimaryKeyJoinColumnsSize());
 		assertEquals("id", specifiedSecondaryTableFoo.getDefaultPrimaryKeyJoinColumn().getDefaultName());

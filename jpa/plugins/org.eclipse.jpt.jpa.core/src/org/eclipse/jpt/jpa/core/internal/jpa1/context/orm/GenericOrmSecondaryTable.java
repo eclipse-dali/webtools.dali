@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSecondaryTable;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmTable;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.SecondaryTablePrimaryKeyJoinColumnValidator;
@@ -39,7 +39,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class GenericOrmSecondaryTable
 	extends AbstractOrmTable<OrmEntity, XmlSecondaryTable>
-	implements OrmSecondaryTable
+	implements OrmSpecifiedSecondaryTable
 {
 	/** @see AbstractOrmTable#AbstractOrmTable(org.eclipse.jpt.jpa.core.context.JpaContextModel, org.eclipse.jpt.jpa.core.context.ReadOnlyTable.Owner, org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlTable) */
 	protected /* final */ XmlSecondaryTable xmlSecondaryTable;

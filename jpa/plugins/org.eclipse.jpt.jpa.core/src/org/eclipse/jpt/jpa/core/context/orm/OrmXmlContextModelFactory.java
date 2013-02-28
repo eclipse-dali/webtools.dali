@@ -119,7 +119,7 @@ public interface OrmXmlContextModelFactory
 
 	OrmTable buildOrmTable(OrmEntity parent, SpecifiedTable.Owner owner);
 
-	OrmSecondaryTable buildOrmSecondaryTable(OrmEntity parent, SpecifiedTable.Owner owner, XmlSecondaryTable xmlSecondaryTable);
+	OrmSpecifiedSecondaryTable buildOrmSecondaryTable(OrmEntity parent, SpecifiedTable.Owner owner, XmlSecondaryTable xmlSecondaryTable);
 
 	OrmVirtualSecondaryTable buildOrmVirtualSecondaryTable(OrmEntity parent, Table.Owner owner, JavaSpecifiedSecondaryTable javaSecondaryTable);
 

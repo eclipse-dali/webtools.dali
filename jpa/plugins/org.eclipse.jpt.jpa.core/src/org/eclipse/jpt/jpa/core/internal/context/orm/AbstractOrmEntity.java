@@ -79,7 +79,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSecondaryTable;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualSecondaryTable;
@@ -139,7 +139,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	protected boolean tableIsUndefined;
 
 	protected final Table.Owner secondaryTableOwner;
-	protected final ContextListContainer<OrmSecondaryTable, XmlSecondaryTable> specifiedSecondaryTableContainer;
+	protected final ContextListContainer<OrmSpecifiedSecondaryTable, XmlSecondaryTable> specifiedSecondaryTableContainer;
 	protected final ContextListContainer<OrmVirtualSecondaryTable, JavaSpecifiedSecondaryTable> virtualSecondaryTableContainer;
 
 	protected final PrimaryKeyJoinColumnOwner primaryKeyJoinColumnOwner;
@@ -493,7 +493,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	// ********** specified secondary tables **********
 
-	public ListIterable<OrmSecondaryTable> getSpecifiedSecondaryTables() {
+	public ListIterable<OrmSpecifiedSecondaryTable> getSpecifiedSecondaryTables() {
 		return this.specifiedSecondaryTableContainer.getContextElements();
 	}
 
@@ -505,21 +505,21 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		return this.specifiedSecondaryTableContainer.getContextElementsSize();
 	}
 
-	public OrmSecondaryTable addSpecifiedSecondaryTable() {
+	public OrmSpecifiedSecondaryTable addSpecifiedSecondaryTable() {
 		return this.addSpecifiedSecondaryTable(this.getSpecifiedSecondaryTablesSize());
 	}
 
 	/**
 	 * no state check
 	 */
-	protected OrmSecondaryTable addSpecifiedSecondaryTable_() {
+	protected OrmSpecifiedSecondaryTable addSpecifiedSecondaryTable_() {
 		return this.addSpecifiedSecondaryTable_(this.getSpecifiedSecondaryTablesSize());
 	}
 
 	/**
 	 * @see #setSecondaryTablesAreDefinedInXml(boolean)
 	 */
-	public OrmSecondaryTable addSpecifiedSecondaryTable(int index) {
+	public OrmSpecifiedSecondaryTable addSpecifiedSecondaryTable(int index) {
 		if ( ! this.secondaryTablesAreDefinedInXml()) {
 			throw new IllegalStateException("virtual secondary tables exist - call OrmEntity.setSecondaryTablesAreDefinedInXml(true) first"); //$NON-NLS-1$
 		}
@@ -529,9 +529,9 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	/**
 	 * no state check
 	 */
-	protected OrmSecondaryTable addSpecifiedSecondaryTable_(int index) {
+	protected OrmSpecifiedSecondaryTable addSpecifiedSecondaryTable_(int index) {
 		XmlSecondaryTable xmlSecondaryTable = this.buildXmlSecondaryTable();
-		OrmSecondaryTable secondaryTable = this.specifiedSecondaryTableContainer.addContextElement(index, xmlSecondaryTable);
+		OrmSpecifiedSecondaryTable secondaryTable = this.specifiedSecondaryTableContainer.addContextElement(index, xmlSecondaryTable);
 		this.xmlTypeMapping.getSecondaryTables().add(index, xmlSecondaryTable);
 		return secondaryTable;
 	}
@@ -541,7 +541,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	public void removeSpecifiedSecondaryTable(SpecifiedSecondaryTable secondaryTable) {
-		this.removeSpecifiedSecondaryTable(this.specifiedSecondaryTableContainer.indexOfContextElement((OrmSecondaryTable) secondaryTable));
+		this.removeSpecifiedSecondaryTable(this.specifiedSecondaryTableContainer.indexOfContextElement((OrmSpecifiedSecondaryTable) secondaryTable));
 	}
 
 	public void removeSpecifiedSecondaryTable(int index) {
@@ -554,7 +554,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		this.xmlTypeMapping.getSecondaryTables().move(targetIndex, sourceIndex);
 	}
 
-	protected OrmSecondaryTable buildSpecifiedSecondaryTable(XmlSecondaryTable xmlSecondaryTable) {
+	protected OrmSpecifiedSecondaryTable buildSpecifiedSecondaryTable(XmlSecondaryTable xmlSecondaryTable) {
 		return this.getContextModelFactory().buildOrmSecondaryTable(this, this.secondaryTableOwner, xmlSecondaryTable);
 	}
 
@@ -572,7 +572,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		return IterableTools.cloneLive(this.xmlTypeMapping.getSecondaryTables());
 	}
 
-	protected ContextListContainer<OrmSecondaryTable, XmlSecondaryTable> buildSpecifiedSecondaryTableContainer() {
+	protected ContextListContainer<OrmSpecifiedSecondaryTable, XmlSecondaryTable> buildSpecifiedSecondaryTableContainer() {
 		SpecifiedSecondaryTableContainer container = new SpecifiedSecondaryTableContainer();
 		container.initialize();
 		return container;
@@ -582,14 +582,14 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	 * specified secondary table container
 	 */
 	protected class SpecifiedSecondaryTableContainer
-		extends ContextListContainer<OrmSecondaryTable, XmlSecondaryTable>
+		extends ContextListContainer<OrmSpecifiedSecondaryTable, XmlSecondaryTable>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return SPECIFIED_SECONDARY_TABLES_LIST;
 		}
 		@Override
-		protected OrmSecondaryTable buildContextElement(XmlSecondaryTable resourceElement) {
+		protected OrmSpecifiedSecondaryTable buildContextElement(XmlSecondaryTable resourceElement) {
 			return AbstractOrmEntity.this.buildSpecifiedSecondaryTable(resourceElement);
 		}
 		@Override
@@ -597,7 +597,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			return AbstractOrmEntity.this.getXmlSecondaryTables();
 		}
 		@Override
-		protected XmlSecondaryTable getResourceElement(OrmSecondaryTable contextElement) {
+		protected XmlSecondaryTable getResourceElement(OrmSpecifiedSecondaryTable contextElement) {
 			return contextElement.getXmlTable();
 		}
 	}
@@ -1722,7 +1722,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 		this.validatePrimaryKey(messages, reporter);
 		this.validateTable(messages, reporter);
-		for (OrmSecondaryTable secondaryTable : this.getSpecifiedSecondaryTables()) {
+		for (OrmSpecifiedSecondaryTable secondaryTable : this.getSpecifiedSecondaryTables()) {
 			secondaryTable.validate(messages, reporter);
 		}
 		this.validateInheritance(messages, reporter);
@@ -1910,7 +1910,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		if (result != null) {
 			return result;
 		}
-		for (OrmSecondaryTable secondaryTable : this.getSpecifiedSecondaryTables()) {
+		for (OrmSpecifiedSecondaryTable secondaryTable : this.getSpecifiedSecondaryTables()) {
 			result = secondaryTable.getCompletionProposals(pos);
 			if (result != null) {
 				return result;

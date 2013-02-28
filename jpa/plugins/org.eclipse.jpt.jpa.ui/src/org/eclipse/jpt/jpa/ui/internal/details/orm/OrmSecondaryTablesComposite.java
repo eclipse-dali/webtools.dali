@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSecondaryTable;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualSecondaryTable;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
@@ -89,10 +89,10 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 			Table.SPECIFIED_NAME_PROPERTY);
 	}
 
-	private ListValueModel<OrmSecondaryTable> buildSpecifiedSecondaryTablesListHolder() {
-		return new ListAspectAdapter<OrmEntity, OrmSecondaryTable>(getSubjectHolder(), Entity.SPECIFIED_SECONDARY_TABLES_LIST) {
+	private ListValueModel<OrmSpecifiedSecondaryTable> buildSpecifiedSecondaryTablesListHolder() {
+		return new ListAspectAdapter<OrmEntity, OrmSpecifiedSecondaryTable>(getSubjectHolder(), Entity.SPECIFIED_SECONDARY_TABLES_LIST) {
 			@Override
-			protected ListIterable<OrmSecondaryTable> getListIterable() {
+			protected ListIterable<OrmSpecifiedSecondaryTable> getListIterable() {
 				return this.subject.getSpecifiedSecondaryTables();
 			}
 
