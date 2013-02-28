@@ -17,11 +17,11 @@ import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedUniqueConstraint;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaReadOnlyUniqueConstraint;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaUniqueConstraint;
 import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
 
 public class GenericJavaUniqueConstraint
-	extends AbstractJavaReadOnlyUniqueConstraint
+	extends AbstractJavaUniqueConstraint
 	implements JavaSpecifiedUniqueConstraint
 {
 	protected Owner owner;
