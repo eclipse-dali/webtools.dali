@@ -115,13 +115,13 @@ public interface TableGenerator
 
 	// ********** unique constraints **********
 
-	<T extends UniqueConstraint> Iterable<T> getUniqueConstraints();
+	<T extends SpecifiedUniqueConstraint> Iterable<T> getUniqueConstraints();
 	int getUniqueConstraintsSize();
-	UniqueConstraint getUniqueConstraint(int index);
-	UniqueConstraint addUniqueConstraint();
-	UniqueConstraint addUniqueConstraint(int index);
+	SpecifiedUniqueConstraint getUniqueConstraint(int index);
+	SpecifiedUniqueConstraint addUniqueConstraint();
+	SpecifiedUniqueConstraint addUniqueConstraint(int index);
 	void removeUniqueConstraint(int index);
-	void removeUniqueConstraint(UniqueConstraint uniqueConstraint);
+	void removeUniqueConstraint(SpecifiedUniqueConstraint uniqueConstraint);
 	void moveUniqueConstraint(int targetIndex, int sourceIndex);
 		String UNIQUE_CONSTRAINTS_LIST = "uniqueConstraints"; //$NON-NLS-1$
 

@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.DbGenerator;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.TableGenerator;
-import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaTableGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTableGenerator;
@@ -35,7 +35,7 @@ import org.eclipse.jpt.jpa.db.Table;
  */
 public class GenericOrmTableGenerator
 	extends AbstractOrmDbGenerator<XmlTableGenerator>
-	implements OrmTableGenerator, UniqueConstraint.Owner
+	implements OrmTableGenerator, SpecifiedUniqueConstraint.Owner
 {
 	protected String specifiedTableName;
 	protected String defaultTableName;
@@ -359,7 +359,7 @@ public class GenericOrmTableGenerator
 		return OrmFactory.eINSTANCE.createXmlUniqueConstraint();
 	}
 
-	public void removeUniqueConstraint(UniqueConstraint uniqueConstraint) {
+	public void removeUniqueConstraint(SpecifiedUniqueConstraint uniqueConstraint) {
 		this.removeUniqueConstraint(this.uniqueConstraintContainer.indexOfContextElement((OrmUniqueConstraint) uniqueConstraint));
 	}
 
@@ -451,7 +451,7 @@ public class GenericOrmTableGenerator
 	protected boolean uniqueConstrainsAreEquivalentTo(TableGenerator generator) {
 		// get fixed lists of the unique constraints
 		ArrayList<OrmUniqueConstraint> uniqueConstraints1 = ListTools.list(this.getUniqueConstraints());
-		ArrayList<UniqueConstraint> uniqueConstraints2 = ListTools.list(generator.getUniqueConstraints());
+		ArrayList<SpecifiedUniqueConstraint> uniqueConstraints2 = ListTools.list(generator.getUniqueConstraints());
 		if (uniqueConstraints1.size() != uniqueConstraints2.size()) {
 			return false;
 		}

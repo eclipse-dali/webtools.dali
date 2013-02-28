@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
-import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
@@ -116,11 +116,11 @@ public class GenericJavaUniqueConstraint
 		return (textRange != null) ? textRange : this.parent.getValidationTextRange();
 	}
 
-	public boolean isEquivalentTo(UniqueConstraint uniqueConstraint) {
+	public boolean isEquivalentTo(SpecifiedUniqueConstraint uniqueConstraint) {
 		return  columnNamesAreEquivalent(uniqueConstraint);
 	}
 
-	protected boolean columnNamesAreEquivalent(UniqueConstraint uniqueConstraint) {
+	protected boolean columnNamesAreEquivalent(SpecifiedUniqueConstraint uniqueConstraint) {
 		if (this.getColumnNamesSize() != uniqueConstraint.getColumnNamesSize()) {
 			return false;
 		} 

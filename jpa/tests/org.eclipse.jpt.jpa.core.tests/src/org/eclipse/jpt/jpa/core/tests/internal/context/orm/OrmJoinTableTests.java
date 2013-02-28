@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTable;
@@ -1193,7 +1193,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		
 		assertTrue(virtualAttribute.isVirtual());
 		
-		ListIterator<? extends UniqueConstraint> uniqueConstraints = virtualJoinTable.getUniqueConstraints().iterator();
+		ListIterator<? extends SpecifiedUniqueConstraint> uniqueConstraints = virtualJoinTable.getUniqueConstraints().iterator();
 		assertFalse(uniqueConstraints.hasNext());
 
 		JavaManyToManyMapping javaManyToManyMapping = (JavaManyToManyMapping) ormPersistentType.getJavaPersistentType().getAttributes().iterator().next().getMapping();

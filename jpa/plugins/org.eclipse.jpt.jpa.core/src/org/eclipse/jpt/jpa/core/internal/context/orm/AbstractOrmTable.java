@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
-import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -46,7 +46,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractOrmTable<P extends JpaContextModel, X extends AbstractXmlTable>
 	extends AbstractOrmXmlContextModel<P>
-	implements OrmTable, UniqueConstraint.Owner
+	implements OrmTable, SpecifiedUniqueConstraint.Owner
 {
 	protected final Owner owner;
 
@@ -298,7 +298,7 @@ public abstract class AbstractOrmTable<P extends JpaContextModel, X extends Abst
 		return OrmFactory.eINSTANCE.createXmlUniqueConstraint();
 	}
 
-	public void removeUniqueConstraint(UniqueConstraint uniqueConstraint) {
+	public void removeUniqueConstraint(SpecifiedUniqueConstraint uniqueConstraint) {
 		this.removeUniqueConstraint(this.uniqueConstraintContainer.indexOfContextElement((OrmUniqueConstraint) uniqueConstraint));
 	}
 

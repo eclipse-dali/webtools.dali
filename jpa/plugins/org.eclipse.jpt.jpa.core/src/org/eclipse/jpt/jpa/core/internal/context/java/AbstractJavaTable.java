@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
-import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -46,7 +46,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractJavaTable<P extends JpaContextModel, A extends BaseTableAnnotation>
 	extends AbstractJavaContextModel<P>
-	implements JavaTable, UniqueConstraint.Owner
+	implements JavaTable, SpecifiedUniqueConstraint.Owner
 {
 	protected final Owner owner;
 
@@ -279,7 +279,7 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, A extends Bas
 		this.uniqueConstraintContainer.removeContextElement(index);
 	}
 
-	public void removeUniqueConstraint(UniqueConstraint uniqueConstraint) {
+	public void removeUniqueConstraint(SpecifiedUniqueConstraint uniqueConstraint) {
 		this.removeUniqueConstraint(this.uniqueConstraintContainer.indexOfContextElement((JavaUniqueConstraint) uniqueConstraint));
 	}
 

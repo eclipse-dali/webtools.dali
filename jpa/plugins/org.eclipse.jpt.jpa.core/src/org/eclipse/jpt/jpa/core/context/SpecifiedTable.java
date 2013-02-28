@@ -36,12 +36,12 @@ public interface SpecifiedTable
 
 	void setSpecifiedCatalog(String value);
 
-	ListIterable<? extends UniqueConstraint> getUniqueConstraints();
-	UniqueConstraint getUniqueConstraint(int index);
-	UniqueConstraint addUniqueConstraint();
-	UniqueConstraint addUniqueConstraint(int index);
+	ListIterable<? extends SpecifiedUniqueConstraint> getUniqueConstraints();
+	SpecifiedUniqueConstraint getUniqueConstraint(int index);
+	SpecifiedUniqueConstraint addUniqueConstraint();
+	SpecifiedUniqueConstraint addUniqueConstraint(int index);
 	void removeUniqueConstraint(int index);
-	void removeUniqueConstraint(UniqueConstraint uniqueConstraint);
+	void removeUniqueConstraint(SpecifiedUniqueConstraint uniqueConstraint);
 	void moveUniqueConstraint(int targetIndex, int sourceIndex);
 
 	/**

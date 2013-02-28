@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.context.DbGenerator;
 import org.eclipse.jpt.jpa.core.context.TableGenerator;
-import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaTableGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
@@ -38,7 +38,7 @@ import org.eclipse.jpt.jpa.db.Table;
  */
 public class GenericJavaTableGenerator
 	extends AbstractJavaDbGenerator<TableGeneratorAnnotation>
-	implements JavaTableGenerator, UniqueConstraint.Owner
+	implements JavaTableGenerator, SpecifiedUniqueConstraint.Owner
 {
 	protected String specifiedTableName;
 	protected String defaultTableName;
@@ -360,7 +360,7 @@ public class GenericJavaTableGenerator
 		this.uniqueConstraintContainer.removeContextElement(index);
 	}
 
-	public void removeUniqueConstraint(UniqueConstraint uniqueConstraint) {
+	public void removeUniqueConstraint(SpecifiedUniqueConstraint uniqueConstraint) {
 		this.removeUniqueConstraint(this.uniqueConstraintContainer.indexOfContextElement((JavaUniqueConstraint) uniqueConstraint));
 	}
 
@@ -577,7 +577,7 @@ public class GenericJavaTableGenerator
 	protected boolean uniqueConstrainsAreEquivalentTo(TableGenerator generator) {
 		// get fixed lists of the unique constraints
 		ArrayList<JavaUniqueConstraint> uniqueConstraints1 = ListTools.list(this.getUniqueConstraints());
-		ArrayList<UniqueConstraint> uniqueConstraints2 = ListTools.list(generator.getUniqueConstraints());
+		ArrayList<SpecifiedUniqueConstraint> uniqueConstraints2 = ListTools.list(generator.getUniqueConstraints());
 		if (uniqueConstraints1.size() != uniqueConstraints2.size()) {
 			return false;
 		}

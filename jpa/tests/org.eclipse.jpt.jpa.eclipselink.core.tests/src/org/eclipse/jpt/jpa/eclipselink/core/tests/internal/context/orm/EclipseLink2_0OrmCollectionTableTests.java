@@ -15,7 +15,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
-import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
@@ -790,7 +790,7 @@ public class EclipseLink2_0OrmCollectionTableTests
 		
 		assertTrue(ormPersistentType.getAttributes().iterator().next().isVirtual());
 		
-		ListIterator<? extends UniqueConstraint> uniqueConstraints = virtualCollectionTable.getUniqueConstraints().iterator();
+		ListIterator<? extends SpecifiedUniqueConstraint> uniqueConstraints = virtualCollectionTable.getUniqueConstraints().iterator();
 		assertFalse(uniqueConstraints.hasNext());
 
 		JavaElementCollectionMapping2_0 javaElementCollectionMapping2_0 = (JavaElementCollectionMapping2_0) ormPersistentType.getJavaPersistentType().getAttributes().iterator().next().getMapping();

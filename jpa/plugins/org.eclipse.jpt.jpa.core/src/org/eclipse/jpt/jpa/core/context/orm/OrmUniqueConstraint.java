@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlUniqueConstraint;
 
@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlUniqueConstraint;
  * @since 2.0
  */
 public interface OrmUniqueConstraint
-	extends UniqueConstraint
+	extends SpecifiedUniqueConstraint
 {
 	XmlUniqueConstraint getXmlUniqueConstraint();
 

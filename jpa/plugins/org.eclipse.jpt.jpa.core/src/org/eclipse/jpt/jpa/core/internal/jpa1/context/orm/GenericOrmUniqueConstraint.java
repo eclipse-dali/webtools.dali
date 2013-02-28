@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
-import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmReadOnlyUniqueConstraint;
@@ -88,11 +88,11 @@ public class GenericOrmUniqueConstraint
 		return (textRange != null) ? textRange : this.parent.getValidationTextRange();
 	}
 
-	public boolean isEquivalentTo(UniqueConstraint uniqueConstraint) {
+	public boolean isEquivalentTo(SpecifiedUniqueConstraint uniqueConstraint) {
 		return  columnNamesAreEquivalent(uniqueConstraint);
 	}
 
-	protected boolean columnNamesAreEquivalent(UniqueConstraint uniqueConstraint) {
+	protected boolean columnNamesAreEquivalent(SpecifiedUniqueConstraint uniqueConstraint) {
 		if (this.getColumnNamesSize() != uniqueConstraint.getColumnNamesSize()) {
 			return false;
 		} 
