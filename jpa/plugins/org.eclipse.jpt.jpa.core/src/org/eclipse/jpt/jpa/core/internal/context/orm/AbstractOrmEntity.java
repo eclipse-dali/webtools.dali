@@ -68,7 +68,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
 import org.eclipse.jpt.jpa.core.context.java.JavaOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
@@ -140,7 +140,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	protected final Table.Owner secondaryTableOwner;
 	protected final ContextListContainer<OrmSecondaryTable, XmlSecondaryTable> specifiedSecondaryTableContainer;
-	protected final ContextListContainer<OrmVirtualSecondaryTable, JavaSecondaryTable> virtualSecondaryTableContainer;
+	protected final ContextListContainer<OrmVirtualSecondaryTable, JavaSpecifiedSecondaryTable> virtualSecondaryTableContainer;
 
 	protected final PrimaryKeyJoinColumnOwner primaryKeyJoinColumnOwner;
 	protected final ContextListContainer<OrmSpecifiedPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumnContainer;
@@ -632,13 +632,13 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		this.virtualSecondaryTableContainer.update();
 	}
 
-	protected ListIterable<JavaSecondaryTable> getJavaSecondaryTablesForVirtuals() {
+	protected ListIterable<JavaSpecifiedSecondaryTable> getJavaSecondaryTablesForVirtuals() {
 		if (this.getSpecifiedSecondaryTablesSize() > 0) {
 			return EmptyListIterable.instance();
 		}
 		JavaEntity javaEntity = this.getJavaTypeMappingForDefaults();
 		return (javaEntity == null) ?
-				EmptyListIterable.<JavaSecondaryTable>instance() :
+				EmptyListIterable.<JavaSpecifiedSecondaryTable>instance() :
 				javaEntity.getSecondaryTables();
 	}
 
@@ -646,11 +646,11 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		this.virtualSecondaryTableContainer.moveContextElement(index, secondaryTable);
 	}
 
-	protected OrmVirtualSecondaryTable addVirtualSecondaryTable(int index, JavaSecondaryTable javaSecondaryTable) {
+	protected OrmVirtualSecondaryTable addVirtualSecondaryTable(int index, JavaSpecifiedSecondaryTable javaSecondaryTable) {
 		return this.virtualSecondaryTableContainer.addContextElement(index, javaSecondaryTable);
 	}
 
-	protected OrmVirtualSecondaryTable buildVirtualSecondaryTable(JavaSecondaryTable javaSecondaryTable) {
+	protected OrmVirtualSecondaryTable buildVirtualSecondaryTable(JavaSpecifiedSecondaryTable javaSecondaryTable) {
 		return this.getContextModelFactory().buildOrmVirtualSecondaryTable(this, this.secondaryTableOwner, javaSecondaryTable);
 	}
 
@@ -658,7 +658,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		this.virtualSecondaryTableContainer.removeContextElement(secondaryTable);
 	}
 
-	protected ContextListContainer<OrmVirtualSecondaryTable, JavaSecondaryTable> buildVirtualSecondaryTableContainer() {
+	protected ContextListContainer<OrmVirtualSecondaryTable, JavaSpecifiedSecondaryTable> buildVirtualSecondaryTableContainer() {
 		return new VirtualSecondaryTableContainer();
 	}
 
@@ -666,22 +666,22 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	 * virtual secondary table container
 	 */
 	protected class VirtualSecondaryTableContainer
-		extends ContextListContainer<OrmVirtualSecondaryTable, JavaSecondaryTable>
+		extends ContextListContainer<OrmVirtualSecondaryTable, JavaSpecifiedSecondaryTable>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return VIRTUAL_SECONDARY_TABLES_LIST;
 		}
 		@Override
-		protected OrmVirtualSecondaryTable buildContextElement(JavaSecondaryTable resourceElement) {
+		protected OrmVirtualSecondaryTable buildContextElement(JavaSpecifiedSecondaryTable resourceElement) {
 			return AbstractOrmEntity.this.buildVirtualSecondaryTable(resourceElement);
 		}
 		@Override
-		protected ListIterable<JavaSecondaryTable> getResourceElements() {
+		protected ListIterable<JavaSpecifiedSecondaryTable> getResourceElements() {
 			return AbstractOrmEntity.this.getJavaSecondaryTablesForVirtuals();
 		}
 		@Override
-		protected JavaSecondaryTable getResourceElement(OrmVirtualSecondaryTable contextElement) {
+		protected JavaSpecifiedSecondaryTable getResourceElement(OrmVirtualSecondaryTable contextElement) {
 			return contextElement.getOverriddenTable();
 		}
 	}

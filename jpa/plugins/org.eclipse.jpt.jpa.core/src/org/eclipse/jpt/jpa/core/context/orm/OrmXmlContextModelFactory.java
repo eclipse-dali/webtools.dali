@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.context.VirtualJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.VirtualOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.VirtualUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeOverride;
@@ -121,7 +121,7 @@ public interface OrmXmlContextModelFactory
 
 	OrmSecondaryTable buildOrmSecondaryTable(OrmEntity parent, SpecifiedTable.Owner owner, XmlSecondaryTable xmlSecondaryTable);
 
-	OrmVirtualSecondaryTable buildOrmVirtualSecondaryTable(OrmEntity parent, Table.Owner owner, JavaSecondaryTable javaSecondaryTable);
+	OrmVirtualSecondaryTable buildOrmVirtualSecondaryTable(OrmEntity parent, Table.Owner owner, JavaSpecifiedSecondaryTable javaSecondaryTable);
 
 	OrmSpecifiedPrimaryKeyJoinColumn buildOrmPrimaryKeyJoinColumn(JpaContextModel parent, BaseJoinColumn.Owner owner, XmlPrimaryKeyJoinColumn resourcePrimaryKeyJoinColumn);
 

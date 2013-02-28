@@ -37,10 +37,10 @@ public interface JavaEntity
 
 	// ********** secondary tables **********
 
-	ListIterable<JavaSecondaryTable> getSecondaryTables();	
-	ListIterable<JavaSecondaryTable> getSpecifiedSecondaryTables();
-	JavaSecondaryTable addSpecifiedSecondaryTable();
-	JavaSecondaryTable addSpecifiedSecondaryTable(int index);
+	ListIterable<JavaSpecifiedSecondaryTable> getSecondaryTables();	
+	ListIterable<JavaSpecifiedSecondaryTable> getSpecifiedSecondaryTables();
+	JavaSpecifiedSecondaryTable addSpecifiedSecondaryTable();
+	JavaSpecifiedSecondaryTable addSpecifiedSecondaryTable(int index);
 	
 
 	// ********** primary key join columns **********

@@ -75,7 +75,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryHint;
-import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaTableGenerator;
@@ -273,7 +273,7 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaVirtualJoinTable(parent, owner, overriddenTable);
 	}
 	
-	public JavaSecondaryTable buildJavaSecondaryTable(JavaEntity parent, SpecifiedTable.Owner owner, SecondaryTableAnnotation tableAnnotation) {
+	public JavaSpecifiedSecondaryTable buildJavaSecondaryTable(JavaEntity parent, SpecifiedTable.Owner owner, SecondaryTableAnnotation tableAnnotation) {
 		return new GenericJavaSecondaryTable(parent, owner, tableAnnotation);
 	}
 	

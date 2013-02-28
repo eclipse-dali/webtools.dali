@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualSecondaryTable;
@@ -32,7 +32,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>orm.xml</code> virtual secondary table
  */
 public class GenericOrmVirtualSecondaryTable
-	extends AbstractOrmVirtualTable<OrmEntity, JavaSecondaryTable>
+	extends AbstractOrmVirtualTable<OrmEntity, JavaSpecifiedSecondaryTable>
 	implements OrmVirtualSecondaryTable
 {
 
@@ -42,7 +42,7 @@ public class GenericOrmVirtualSecondaryTable
 	protected OrmVirtualPrimaryKeyJoinColumn defaultPrimaryKeyJoinColumn;
 
 
-	public GenericOrmVirtualSecondaryTable(OrmEntity parent, Owner owner, JavaSecondaryTable overriddenTable) {
+	public GenericOrmVirtualSecondaryTable(OrmEntity parent, Owner owner, JavaSpecifiedSecondaryTable overriddenTable) {
 		super(parent, owner, overriddenTable);
 		this.primaryKeyJoinColumnOwner = this.buildPrimaryKeyJoinColumnOwner();
 		this.specifiedPrimaryKeyJoinColumnContainer = this.buildSpecifiedPrimaryKeyJoinColumnContainer();

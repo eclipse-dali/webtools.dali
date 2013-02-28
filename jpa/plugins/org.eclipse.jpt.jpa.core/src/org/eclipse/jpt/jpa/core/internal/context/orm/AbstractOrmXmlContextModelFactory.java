@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.context.VirtualJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.VirtualOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.VirtualUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
@@ -215,7 +215,7 @@ public abstract class AbstractOrmXmlContextModelFactory
 		return new GenericOrmSecondaryTable(parent, owner, xmlSecondaryTable);
 	}
 
-	public OrmVirtualSecondaryTable buildOrmVirtualSecondaryTable(OrmEntity parent, Table.Owner owner, JavaSecondaryTable javaSecondaryTable) {
+	public OrmVirtualSecondaryTable buildOrmVirtualSecondaryTable(OrmEntity parent, Table.Owner owner, JavaSpecifiedSecondaryTable javaSecondaryTable) {
 		return new GenericOrmVirtualSecondaryTable(parent, owner, javaSecondaryTable);
 	}
 	

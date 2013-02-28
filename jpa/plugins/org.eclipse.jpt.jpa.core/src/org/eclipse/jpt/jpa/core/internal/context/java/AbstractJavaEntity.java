@@ -66,7 +66,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
-import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaTable;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -119,7 +119,7 @@ public abstract class AbstractJavaEntity
 	protected boolean specifiedTableIsAllowed;
 	protected boolean tableIsUndefined;
 
-	protected final ContextListContainer<JavaSecondaryTable, SecondaryTableAnnotation> specifiedSecondaryTableContainer;
+	protected final ContextListContainer<JavaSpecifiedSecondaryTable, SecondaryTableAnnotation> specifiedSecondaryTableContainer;
 	protected final SpecifiedTable.Owner specifiedSecondaryTableOwner;
 
 	protected final PrimaryKeyJoinColumnOwner primaryKeyJoinColumnOwner;
@@ -397,7 +397,7 @@ public abstract class AbstractJavaEntity
 
 	// ********** secondary tables **********
 
-	public ListIterable<JavaSecondaryTable> getSecondaryTables() {
+	public ListIterable<JavaSpecifiedSecondaryTable> getSecondaryTables() {
 		return this.getSpecifiedSecondaryTables();
 	}
 
@@ -408,7 +408,7 @@ public abstract class AbstractJavaEntity
 
 	// ********** specified secondary tables **********
 
-	public ListIterable<JavaSecondaryTable> getSpecifiedSecondaryTables() {
+	public ListIterable<JavaSpecifiedSecondaryTable> getSpecifiedSecondaryTables() {
 		return this.specifiedSecondaryTableContainer.getContextElements();
 	}
 
@@ -416,11 +416,11 @@ public abstract class AbstractJavaEntity
 		return this.specifiedSecondaryTableContainer.getContextElementsSize();
 	}
 
-	public JavaSecondaryTable addSpecifiedSecondaryTable() {
+	public JavaSpecifiedSecondaryTable addSpecifiedSecondaryTable() {
 		return this.addSpecifiedSecondaryTable(this.getSpecifiedSecondaryTablesSize());
 	}
 
-	public JavaSecondaryTable addSpecifiedSecondaryTable(int index) {
+	public JavaSpecifiedSecondaryTable addSpecifiedSecondaryTable(int index) {
 		SecondaryTableAnnotation annotation = this.addSecondaryTableAnnotation(index);
 		return this.specifiedSecondaryTableContainer.addContextElement(index, annotation);
 	}
@@ -430,7 +430,7 @@ public abstract class AbstractJavaEntity
 	}
 
 	public void removeSpecifiedSecondaryTable(SpecifiedSecondaryTable secondaryTable) {
-		this.removeSpecifiedSecondaryTable(this.specifiedSecondaryTableContainer.indexOfContextElement((JavaSecondaryTable) secondaryTable));
+		this.removeSpecifiedSecondaryTable(this.specifiedSecondaryTableContainer.indexOfContextElement((JavaSpecifiedSecondaryTable) secondaryTable));
 	}
 
 	public void removeSpecifiedSecondaryTable(int index) {
@@ -443,7 +443,7 @@ public abstract class AbstractJavaEntity
 		this.specifiedSecondaryTableContainer.moveContextElement(targetIndex, sourceIndex);
 	}
 
-	protected JavaSecondaryTable buildSecondaryTable(SecondaryTableAnnotation secondaryTableAnnotation) {
+	protected JavaSpecifiedSecondaryTable buildSecondaryTable(SecondaryTableAnnotation secondaryTableAnnotation) {
 		return this.getJpaFactory().buildJavaSecondaryTable(this, this.specifiedSecondaryTableOwner, secondaryTableAnnotation);
 	}
 
@@ -463,7 +463,7 @@ public abstract class AbstractJavaEntity
 		return this.getResourceAnnotatedElement().getAnnotations(SecondaryTableAnnotation.ANNOTATION_NAME);
 	}
 
-	protected ContextListContainer<JavaSecondaryTable, SecondaryTableAnnotation> buildSpecifiedSecondaryTableContainer() {
+	protected ContextListContainer<JavaSpecifiedSecondaryTable, SecondaryTableAnnotation> buildSpecifiedSecondaryTableContainer() {
 		SpecifiedSecondaryTableContainer container = new SpecifiedSecondaryTableContainer();
 		container.initialize();
 		return container;
@@ -473,14 +473,14 @@ public abstract class AbstractJavaEntity
 	 * specified secondary table container
 	 */
 	protected class SpecifiedSecondaryTableContainer
-		extends ContextListContainer<JavaSecondaryTable, SecondaryTableAnnotation>
+		extends ContextListContainer<JavaSpecifiedSecondaryTable, SecondaryTableAnnotation>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return SPECIFIED_SECONDARY_TABLES_LIST;
 		}
 		@Override
-		protected JavaSecondaryTable buildContextElement(SecondaryTableAnnotation resourceElement) {
+		protected JavaSpecifiedSecondaryTable buildContextElement(SecondaryTableAnnotation resourceElement) {
 			return AbstractJavaEntity.this.buildSecondaryTable(resourceElement);
 		}
 		@Override
@@ -488,7 +488,7 @@ public abstract class AbstractJavaEntity
 			return AbstractJavaEntity.this.getSecondaryTableAnnotations();
 		}
 		@Override
-		protected SecondaryTableAnnotation getResourceElement(JavaSecondaryTable contextElement) {
+		protected SecondaryTableAnnotation getResourceElement(JavaSpecifiedSecondaryTable contextElement) {
 			return contextElement.getTableAnnotation();
 		}
 	}
@@ -1221,7 +1221,7 @@ public abstract class AbstractJavaEntity
 		if (result != null) {
 			return result;
 		}
-		for (JavaSecondaryTable secondaryTable : this.getSecondaryTables()) {
+		for (JavaSpecifiedSecondaryTable secondaryTable : this.getSecondaryTables()) {
 			result = secondaryTable.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
@@ -1261,7 +1261,7 @@ public abstract class AbstractJavaEntity
 
 		this.validatePrimaryKey(messages, reporter);
 		this.validateTable(messages, reporter);
-		for (JavaSecondaryTable secondaryTable : this.getSecondaryTables()) {
+		for (JavaSpecifiedSecondaryTable secondaryTable : this.getSecondaryTables()) {
 			secondaryTable.validate(messages, reporter);
 		}
 		this.validateInheritance(messages, reporter);

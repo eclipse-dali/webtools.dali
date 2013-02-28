@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.VirtualSecondaryTable;
-import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedSecondaryTable;
 
 /**
  * <code>orm.xml</code> virtual secondary table
@@ -29,5 +29,5 @@ public interface OrmVirtualSecondaryTable
 	ListIterable<OrmVirtualPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns();
 	OrmVirtualPrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn();
 
-	JavaSecondaryTable getOverriddenTable();
+	JavaSpecifiedSecondaryTable getOverriddenTable();
 }

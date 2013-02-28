@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
-import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPrimaryKeyJoinColumn;
@@ -738,7 +738,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		
 		JavaEntity javaEntity = (JavaEntity) ormPersistentType.getJavaPersistentType().getMapping();
-		JavaSecondaryTable javaSecondaryTable = javaEntity.addSpecifiedSecondaryTable();
+		JavaSpecifiedSecondaryTable javaSecondaryTable = javaEntity.addSpecifiedSecondaryTable();
 		javaSecondaryTable.setSpecifiedName("SECONDARY");
 		
 		SecondaryTable ormSecondaryTable = ormEntity.getSecondaryTables().iterator().next();

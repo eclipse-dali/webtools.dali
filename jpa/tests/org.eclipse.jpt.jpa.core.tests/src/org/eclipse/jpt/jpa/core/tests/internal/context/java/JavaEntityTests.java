@@ -55,7 +55,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
@@ -837,7 +837,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ListIterator<JavaSecondaryTable> secondaryTables = getJavaEntity().getSecondaryTables().iterator();
+		ListIterator<JavaSpecifiedSecondaryTable> secondaryTables = getJavaEntity().getSecondaryTables().iterator();
 		
 		assertTrue(secondaryTables.hasNext());
 		assertEquals("foo", secondaryTables.next().getName());
@@ -865,7 +865,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTables();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ListIterator<JavaSecondaryTable> specifiedSecondaryTables = getJavaEntity().getSpecifiedSecondaryTables().iterator();
+		ListIterator<JavaSpecifiedSecondaryTable> specifiedSecondaryTables = getJavaEntity().getSpecifiedSecondaryTables().iterator();
 		
 		assertTrue(specifiedSecondaryTables.hasNext());
 		assertEquals("foo", specifiedSecondaryTables.next().getName());
@@ -939,7 +939,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		specifiedSecondaryTable2.setSpecifiedName("BAR");
 		
 		
-		Iterator<JavaSecondaryTable> secondaryTables = getJavaEntity().getSecondaryTables().iterator();
+		Iterator<JavaSpecifiedSecondaryTable> secondaryTables = getJavaEntity().getSecondaryTables().iterator();
 		SpecifiedSecondaryTable secondaryTable = secondaryTables.next();
 		assertEquals(secondaryTable, specifiedSecondaryTable);
 		assertEquals("FOO", secondaryTable.getName());
@@ -975,7 +975,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals("BAZ", ((SecondaryTableAnnotation) secondaryTableResources.next()).getName());
 		assertFalse(secondaryTableResources.hasNext());
 		
-		Iterator<JavaSecondaryTable> secondaryTables = getJavaEntity().getSecondaryTables().iterator();
+		Iterator<JavaSpecifiedSecondaryTable> secondaryTables = getJavaEntity().getSecondaryTables().iterator();
 		assertEquals("FOO", secondaryTables.next().getName());		
 		assertEquals("BAZ", secondaryTables.next().getName());
 		assertFalse(secondaryTables.hasNext());
@@ -1016,7 +1016,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		
 		entity.moveSpecifiedSecondaryTable(2, 0);
-		ListIterator<JavaSecondaryTable> secondaryTables = entity.getSpecifiedSecondaryTables().iterator();
+		ListIterator<JavaSpecifiedSecondaryTable> secondaryTables = entity.getSpecifiedSecondaryTables().iterator();
 		assertEquals("BAR", secondaryTables.next().getSpecifiedName());
 		assertEquals("BAZ", secondaryTables.next().getSpecifiedName());
 		assertEquals("FOO", secondaryTables.next().getSpecifiedName());
@@ -1051,7 +1051,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		((SecondaryTableAnnotation) resourceType.addAnnotation(2, SecondaryTableAnnotation.ANNOTATION_NAME)).setName("BAZ");
 		getJpaProject().synchronizeContextModel();
 			
-		ListIterator<JavaSecondaryTable> secondaryTables = entity.getSpecifiedSecondaryTables().iterator();
+		ListIterator<JavaSpecifiedSecondaryTable> secondaryTables = entity.getSpecifiedSecondaryTables().iterator();
 		assertEquals("FOO", secondaryTables.next().getName());
 		assertEquals("BAR", secondaryTables.next().getName());
 		assertEquals("BAZ", secondaryTables.next().getName());
@@ -1172,7 +1172,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(2, getJavaEntity().getSecondaryTablesSize());
-		ListIterator<JavaSecondaryTable> secondaryTables = getJavaEntity().getSecondaryTables().iterator();
+		ListIterator<JavaSpecifiedSecondaryTable> secondaryTables = getJavaEntity().getSecondaryTables().iterator();
 		assertEquals("FOO", secondaryTables.next().getSpecifiedName());
 		assertEquals("BAR", secondaryTables.next().getSpecifiedName());
 
@@ -1192,7 +1192,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		getJavaEntity().addSpecifiedSecondaryTable(2).setSpecifiedName("baz");
-		ListIterator<JavaSecondaryTable> secondaryTables = getJavaEntity().getSecondaryTables().iterator();
+		ListIterator<JavaSpecifiedSecondaryTable> secondaryTables = getJavaEntity().getSecondaryTables().iterator();
 		
 		assertEquals(3, getJavaEntity().getSecondaryTablesSize());
 		assertEquals("foo", secondaryTables.next().getSpecifiedName());

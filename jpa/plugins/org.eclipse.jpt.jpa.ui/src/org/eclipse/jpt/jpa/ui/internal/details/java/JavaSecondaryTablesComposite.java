@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
-import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractSecondaryTablesComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.PrimaryKeyJoinColumnsInSecondaryTableComposite;
@@ -63,15 +63,15 @@ public class JavaSecondaryTablesComposite extends AbstractSecondaryTablesComposi
 		super(parentPane, parent);
 	}
 
-	private ListValueModel<JavaSecondaryTable> buildSecondaryTablesListModel() {
-		return new ItemPropertyListValueModelAdapter<JavaSecondaryTable>(buildSecondaryTablesListHolder(), 
+	private ListValueModel<JavaSpecifiedSecondaryTable> buildSecondaryTablesListModel() {
+		return new ItemPropertyListValueModelAdapter<JavaSpecifiedSecondaryTable>(buildSecondaryTablesListHolder(), 
 			Table.SPECIFIED_NAME_PROPERTY);
 	}	
 
-	private ListValueModel<JavaSecondaryTable> buildSecondaryTablesListHolder() {
-		return new ListAspectAdapter<JavaEntity, JavaSecondaryTable>(getSubjectHolder(), Entity.SPECIFIED_SECONDARY_TABLES_LIST) {
+	private ListValueModel<JavaSpecifiedSecondaryTable> buildSecondaryTablesListHolder() {
+		return new ListAspectAdapter<JavaEntity, JavaSpecifiedSecondaryTable>(getSubjectHolder(), Entity.SPECIFIED_SECONDARY_TABLES_LIST) {
 			@Override
-			protected ListIterable<JavaSecondaryTable> getListIterable() {
+			protected ListIterable<JavaSpecifiedSecondaryTable> getListIterable() {
 				return this.subject.getSpecifiedSecondaryTables();
 			}
 			@Override

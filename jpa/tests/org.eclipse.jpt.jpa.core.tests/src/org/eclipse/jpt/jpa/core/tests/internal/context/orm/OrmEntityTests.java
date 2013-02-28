@@ -34,7 +34,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAttributeOverride;
@@ -923,7 +923,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmEntity childOrmEntity = (OrmEntity) subPersistentType.getMapping();
 		JavaEntity javaEntity = childOrmEntity.getJavaTypeMapping();
 		
-		JavaSecondaryTable javaSecondaryTableFoo = javaEntity.addSpecifiedSecondaryTable(0);
+		JavaSpecifiedSecondaryTable javaSecondaryTableFoo = javaEntity.addSpecifiedSecondaryTable(0);
 		javaSecondaryTableFoo.setSpecifiedName("FOO");
 		OrmVirtualSecondaryTable virtualSecondaryTableFoo = childOrmEntity.getVirtualSecondaryTables().iterator().next();
 		assertEquals("FOO", childOrmEntity.getSecondaryTables().iterator().next().getName());

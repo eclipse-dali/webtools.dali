@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaTable;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.SecondaryTablePrimaryKeyJoinColumnValidator;
@@ -35,7 +35,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class GenericJavaSecondaryTable
 	extends AbstractJavaTable<JavaEntity, SecondaryTableAnnotation>
-	implements JavaSecondaryTable
+	implements JavaSpecifiedSecondaryTable
 {
 	/** @see AbstractJavaTable#AbstractJavaTable(org.eclipse.jpt.jpa.core.context.JpaContextModel, org.eclipse.jpt.jpa.core.context.ReadOnlyTable.Owner, org.eclipse.jpt.jpa.core.resource.java.BaseTableAnnotation) */
 	protected /* final */ SecondaryTableAnnotation tableAnnotation;
