@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.VirtualTenantDiscriminatorCo
 /**
  * <code>orm.xml</code> virtual tenant discriminator column
  */
-public class GenericOrmVirtualTenantDiscriminatorColumn2_3
+public class EclipseLinkOrmVirtualTenantDiscriminatorColumn2_3
 	extends AbstractOrmVirtualNamedDiscriminatorColumn<TenantDiscriminatorColumn2_3.Owner, TenantDiscriminatorColumn2_3>
 	implements VirtualTenantDiscriminatorColumn2_3
 {
@@ -34,7 +34,7 @@ public class GenericOrmVirtualTenantDiscriminatorColumn2_3
 	protected boolean defaultPrimaryKey;
 
 
-	public GenericOrmVirtualTenantDiscriminatorColumn2_3(JpaContextModel parent, TenantDiscriminatorColumn2_3.Owner owner, TenantDiscriminatorColumn2_3 overridenColumn) {
+	public EclipseLinkOrmVirtualTenantDiscriminatorColumn2_3(JpaContextModel parent, TenantDiscriminatorColumn2_3.Owner owner, TenantDiscriminatorColumn2_3 overridenColumn) {
 		super(parent, owner);
 		this.overriddenColumn = overridenColumn;
 	}
