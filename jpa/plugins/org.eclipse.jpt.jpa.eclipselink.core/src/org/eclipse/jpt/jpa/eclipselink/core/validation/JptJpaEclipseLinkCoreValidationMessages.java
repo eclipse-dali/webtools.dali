@@ -14,7 +14,6 @@ import org.eclipse.jpt.common.core.internal.utility.ValidationMessageLoader;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
@@ -76,7 +75,7 @@ public class JptJpaEclipseLinkCoreValidationMessages {
 	
 	public static ValidationMessage SESSION_PROFILER_CLASS_NOT_EXIST;
 	public static ValidationMessage SESSION_PROFILER_CLASS_NOT_VALID;
-	public static ValidationMessage SESSION_PROFILER_CLASS_IMPLEMENTS_SESSIONP_ROFILER;
+	public static ValidationMessage SESSION_PROFILER_CLASS_IMPLEMENTS_SESSION_PROFILER;
 
 	public static ValidationMessage BASIC_COLLECTION_MAPPING_DEPRECATED;
 	public static ValidationMessage BASIC_MAP_MAPPING_DEPRECATED;
@@ -123,7 +122,7 @@ public class JptJpaEclipseLinkCoreValidationMessages {
 
 	private static final String MESSAGE_BUNDLE_NAME = "jpt_jpa_eclipselink_core_validation"; //$NON-NLS-1$
 	private static final String DESCRIPTION_BUNDLE_NAME = "jpt_jpa_eclipselink_core_validation_description"; //$NON-NLS-1$
-	private static final Class<?> BUNDLE_CLASS = JptJpaCoreValidationMessages.class;
+	private static final Class<?> BUNDLE_CLASS = JptJpaEclipseLinkCoreValidationMessages.class;
 	static {
 		ValidationMessageLoader.load(BUNDLE_CLASS, MESSAGE_BUNDLE_NAME, DESCRIPTION_BUNDLE_NAME, JpaProject.MARKER_TYPE, PREFERENCES_ADAPTER);
 

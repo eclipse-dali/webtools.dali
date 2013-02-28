@@ -789,7 +789,7 @@ public class EclipseLinkPersistenceUnit
 					this.buildValidationMessage(
 							this.getPersistenceUnit(),
 							profilerProperty.getValidationTextRange(),
-							JptJpaEclipseLinkCoreValidationMessages.SESSION_PROFILER_CLASS_IMPLEMENTS_SESSIONP_ROFILER,
+							JptJpaEclipseLinkCoreValidationMessages.SESSION_PROFILER_CLASS_IMPLEMENTS_SESSION_PROFILER,
 							profilerProperty.getValue()
 					)
 			);
