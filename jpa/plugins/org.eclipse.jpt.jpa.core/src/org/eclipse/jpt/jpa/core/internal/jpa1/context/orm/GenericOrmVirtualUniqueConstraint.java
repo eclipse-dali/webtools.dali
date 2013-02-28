@@ -13,10 +13,10 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.VirtualUniqueConstraint;
-import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmReadOnlyUniqueConstraint;
+import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmUniqueConstraint;
 
 public class GenericOrmVirtualUniqueConstraint
-	extends AbstractOrmReadOnlyUniqueConstraint
+	extends AbstractOrmUniqueConstraint
 	implements VirtualUniqueConstraint
 {
 	protected final UniqueConstraint overriddenUniqueConstraint;

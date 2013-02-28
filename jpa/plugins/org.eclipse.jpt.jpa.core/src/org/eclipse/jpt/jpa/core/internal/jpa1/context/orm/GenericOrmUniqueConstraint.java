@@ -16,11 +16,11 @@ import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedUniqueConstraint;
-import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmReadOnlyUniqueConstraint;
+import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmUniqueConstraint;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlUniqueConstraint;
 
 public class GenericOrmUniqueConstraint
-	extends AbstractOrmReadOnlyUniqueConstraint
+	extends AbstractOrmUniqueConstraint
 	implements OrmSpecifiedUniqueConstraint
 {
 	protected Owner owner;
