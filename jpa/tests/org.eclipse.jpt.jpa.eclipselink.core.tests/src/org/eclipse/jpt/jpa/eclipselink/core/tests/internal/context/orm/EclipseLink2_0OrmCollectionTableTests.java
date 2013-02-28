@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.orm.OrmUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
@@ -532,7 +532,7 @@ public class EclipseLink2_0OrmCollectionTableTests
 		resourceElementCollection.setCollectionTable(OrmFactory.eINSTANCE.createXmlCollectionTable());
 		XmlCollectionTable resourceCollectionTable = resourceElementCollection.getCollectionTable();
 		
-		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormCollectionTable.getUniqueConstraints().iterator();
+		ListIterator<OrmSpecifiedUniqueConstraint> uniqueConstraints = ormCollectionTable.getUniqueConstraints().iterator();
 		assertFalse(uniqueConstraints.hasNext());
 		
 		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraint();
@@ -652,7 +652,7 @@ public class EclipseLink2_0OrmCollectionTableTests
 		assertEquals("BAZ", uniqueConstraintResources.next().getColumnNames().get(0));
 		assertFalse(uniqueConstraintResources.hasNext());
 		
-		Iterator<OrmUniqueConstraint> uniqueConstraints = ormCollectionTable.getUniqueConstraints().iterator();
+		Iterator<OrmSpecifiedUniqueConstraint> uniqueConstraints = ormCollectionTable.getUniqueConstraints().iterator();
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());		
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
@@ -696,7 +696,7 @@ public class EclipseLink2_0OrmCollectionTableTests
 		
 		
 		ormCollectionTable.moveUniqueConstraint(2, 0);
-		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormCollectionTable.getUniqueConstraints().iterator();
+		ListIterator<OrmSpecifiedUniqueConstraint> uniqueConstraints = ormCollectionTable.getUniqueConstraints().iterator();
 		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
@@ -745,7 +745,7 @@ public class EclipseLink2_0OrmCollectionTableTests
 		uniqueConstraintResource.getColumnNames().add(0, "BAZ");
 
 		
-		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormCollectionTable.getUniqueConstraints().iterator();
+		ListIterator<OrmSpecifiedUniqueConstraint> uniqueConstraints = ormCollectionTable.getUniqueConstraints().iterator();
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());

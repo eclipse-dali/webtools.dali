@@ -34,11 +34,11 @@ public interface OrmTableGenerator
 	// ********** unique constraints **********
 
 	@SuppressWarnings("unchecked")
-	Iterable<OrmUniqueConstraint> getUniqueConstraints();
+	Iterable<OrmSpecifiedUniqueConstraint> getUniqueConstraints();
 
-	OrmUniqueConstraint addUniqueConstraint();
+	OrmSpecifiedUniqueConstraint addUniqueConstraint();
 
-	OrmUniqueConstraint addUniqueConstraint(int index);
+	OrmSpecifiedUniqueConstraint addUniqueConstraint(int index);
 
 
 	//********* metadata conversion *********

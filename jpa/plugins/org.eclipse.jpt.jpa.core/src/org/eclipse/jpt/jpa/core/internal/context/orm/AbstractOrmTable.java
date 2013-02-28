@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTable;
-import org.eclipse.jpt.jpa.core.context.orm.OrmUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlTable;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
@@ -59,7 +59,7 @@ public abstract class AbstractOrmTable<P extends JpaContextModel, X extends Abst
 	protected String specifiedCatalog;
 	protected String defaultCatalog;
 
-	protected final ContextListContainer<OrmUniqueConstraint, XmlUniqueConstraint> uniqueConstraintContainer;
+	protected final ContextListContainer<OrmSpecifiedUniqueConstraint, XmlUniqueConstraint> uniqueConstraintContainer;
 
 
 	// ********** constructor/initialization **********
@@ -270,7 +270,7 @@ public abstract class AbstractOrmTable<P extends JpaContextModel, X extends Abst
 
 	// ********** unique constraints **********
 
-	public ListIterable<OrmUniqueConstraint> getUniqueConstraints() {
+	public ListIterable<OrmSpecifiedUniqueConstraint> getUniqueConstraints() {
 		return this.uniqueConstraintContainer.getContextElements();
 	}
 
@@ -278,18 +278,18 @@ public abstract class AbstractOrmTable<P extends JpaContextModel, X extends Abst
 		return this.uniqueConstraintContainer.getContextElementsSize();
 	}
 
-	public OrmUniqueConstraint getUniqueConstraint(int index) {
+	public OrmSpecifiedUniqueConstraint getUniqueConstraint(int index) {
 		return this.uniqueConstraintContainer.getContextElement(index);
 	}
 
-	public OrmUniqueConstraint addUniqueConstraint() {
+	public OrmSpecifiedUniqueConstraint addUniqueConstraint() {
 		return this.addUniqueConstraint(this.getUniqueConstraintsSize());
 	}
 
-	public OrmUniqueConstraint addUniqueConstraint(int index) {
+	public OrmSpecifiedUniqueConstraint addUniqueConstraint(int index) {
 		X xmlTable = this.getXmlTableForUpdate();
 		XmlUniqueConstraint xmlConstraint = this.buildXmlUniqueConstraint();
-		OrmUniqueConstraint constraint = this.uniqueConstraintContainer.addContextElement(index, xmlConstraint);
+		OrmSpecifiedUniqueConstraint constraint = this.uniqueConstraintContainer.addContextElement(index, xmlConstraint);
 		xmlTable.getUniqueConstraints().add(index, xmlConstraint);
 		return constraint;
 	}
@@ -299,7 +299,7 @@ public abstract class AbstractOrmTable<P extends JpaContextModel, X extends Abst
 	}
 
 	public void removeUniqueConstraint(SpecifiedUniqueConstraint uniqueConstraint) {
-		this.removeUniqueConstraint(this.uniqueConstraintContainer.indexOfContextElement((OrmUniqueConstraint) uniqueConstraint));
+		this.removeUniqueConstraint(this.uniqueConstraintContainer.indexOfContextElement((OrmSpecifiedUniqueConstraint) uniqueConstraint));
 	}
 
 	public void removeUniqueConstraint(int index) {
@@ -313,7 +313,7 @@ public abstract class AbstractOrmTable<P extends JpaContextModel, X extends Abst
 		this.getXmlTable().getUniqueConstraints().move(targetIndex, sourceIndex);
 	}
 
-	protected OrmUniqueConstraint buildUniqueConstraint(XmlUniqueConstraint xmlConstraint) {
+	protected OrmSpecifiedUniqueConstraint buildUniqueConstraint(XmlUniqueConstraint xmlConstraint) {
 		return this.getContextModelFactory().buildOrmUniqueConstraint(this, this, xmlConstraint);
 	}
 
@@ -328,7 +328,7 @@ public abstract class AbstractOrmTable<P extends JpaContextModel, X extends Abst
 				IterableTools.cloneLive(xmlTable.getUniqueConstraints());
 	}
 
-	protected ContextListContainer<OrmUniqueConstraint, XmlUniqueConstraint> buildUniqueConstraintContainer() {
+	protected ContextListContainer<OrmSpecifiedUniqueConstraint, XmlUniqueConstraint> buildUniqueConstraintContainer() {
 		UniqueConstraintContainer container = new UniqueConstraintContainer();
 		container.initialize();
 		return container;
@@ -338,14 +338,14 @@ public abstract class AbstractOrmTable<P extends JpaContextModel, X extends Abst
 	 * unique constraint container
 	 */
 	protected class UniqueConstraintContainer
-		extends ContextListContainer<OrmUniqueConstraint, XmlUniqueConstraint>
+		extends ContextListContainer<OrmSpecifiedUniqueConstraint, XmlUniqueConstraint>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return UNIQUE_CONSTRAINTS_LIST;
 		}
 		@Override
-		protected OrmUniqueConstraint buildContextElement(XmlUniqueConstraint resourceElement) {
+		protected OrmSpecifiedUniqueConstraint buildContextElement(XmlUniqueConstraint resourceElement) {
 			return AbstractOrmTable.this.buildUniqueConstraint(resourceElement);
 		}
 		@Override
@@ -353,7 +353,7 @@ public abstract class AbstractOrmTable<P extends JpaContextModel, X extends Abst
 			return AbstractOrmTable.this.getXmlUniqueConstraints();
 		}
 		@Override
-		protected XmlUniqueConstraint getResourceElement(OrmUniqueConstraint contextElement) {
+		protected XmlUniqueConstraint getResourceElement(OrmSpecifiedUniqueConstraint contextElement) {
 			return contextElement.getXmlUniqueConstraint();
 		}
 	}
@@ -473,7 +473,7 @@ public abstract class AbstractOrmTable<P extends JpaContextModel, X extends Abst
 		if (result != null) {
 			return result;
 		}
-		for (OrmUniqueConstraint constraint : this.getUniqueConstraints()) {
+		for (OrmSpecifiedUniqueConstraint constraint : this.getUniqueConstraints()) {
 			result = constraint.getCompletionProposals(pos);
 			if (result != null) {
 				return result;

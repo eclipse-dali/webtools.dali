@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedSecondaryTable;
-import org.eclipse.jpt.jpa.core.context.orm.OrmUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualSecondaryTable;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
@@ -518,7 +518,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlSecondaryTable secondaryTableResource = entityResource.getSecondaryTables().get(0);
 		
-		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormSecondaryTable.getUniqueConstraints().iterator();
+		ListIterator<OrmSpecifiedUniqueConstraint> uniqueConstraints = ormSecondaryTable.getUniqueConstraints().iterator();
 		assertFalse(uniqueConstraints.hasNext());
 		
 		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraint();
@@ -614,7 +614,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		assertEquals("BAZ", uniqueConstraintResources.next().getColumnNames().get(0));
 		assertFalse(uniqueConstraintResources.hasNext());
 		
-		Iterator<OrmUniqueConstraint> uniqueConstraints = ormSecondaryTable.getUniqueConstraints().iterator();
+		Iterator<OrmSpecifiedUniqueConstraint> uniqueConstraints = ormSecondaryTable.getUniqueConstraints().iterator();
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());		
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
@@ -652,7 +652,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		
 		
 		ormSecondaryTable.moveUniqueConstraint(2, 0);
-		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormSecondaryTable.getUniqueConstraints().iterator();
+		ListIterator<OrmSpecifiedUniqueConstraint> uniqueConstraints = ormSecondaryTable.getUniqueConstraints().iterator();
 		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
@@ -695,7 +695,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		uniqueConstraintResource.getColumnNames().add(0, "BAZ");
 
 		
-		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormSecondaryTable.getUniqueConstraints().iterator();
+		ListIterator<OrmSpecifiedUniqueConstraint> uniqueConstraints = ormSecondaryTable.getUniqueConstraints().iterator();
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());

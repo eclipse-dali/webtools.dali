@@ -72,7 +72,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTransientMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAttributeOverride;
@@ -367,7 +367,7 @@ public abstract class AbstractOrmXmlContextModelFactory
 		return new UnsupportedOrmAttributeMapping(parent, resourceMapping);
 	}
 	
-	public OrmUniqueConstraint buildOrmUniqueConstraint(JpaContextModel parent, SpecifiedUniqueConstraint.Owner owner, XmlUniqueConstraint resourceUniqueConstraint) {
+	public OrmSpecifiedUniqueConstraint buildOrmUniqueConstraint(JpaContextModel parent, SpecifiedUniqueConstraint.Owner owner, XmlUniqueConstraint resourceUniqueConstraint) {
 		return new GenericOrmUniqueConstraint(parent, owner, resourceUniqueConstraint);
 	}
 

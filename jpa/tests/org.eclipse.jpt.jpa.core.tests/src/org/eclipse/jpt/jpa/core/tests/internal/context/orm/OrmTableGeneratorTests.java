@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTableGenerator;
-import org.eclipse.jpt.jpa.core.context.orm.OrmUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
@@ -371,7 +371,7 @@ public class OrmTableGeneratorTests extends ContextModelTestCase
 		OrmTableGenerator tableGenerator = getEntityMappings().addTableGenerator(0);		
 		XmlTableGenerator tableGeneratorResource = getXmlEntityMappings().getTableGenerators().get(0);
 		
-		Iterator<OrmUniqueConstraint> uniqueConstraints = tableGenerator.getUniqueConstraints().iterator();
+		Iterator<OrmSpecifiedUniqueConstraint> uniqueConstraints = tableGenerator.getUniqueConstraints().iterator();
 		assertFalse(uniqueConstraints.hasNext());
 		
 		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraint();

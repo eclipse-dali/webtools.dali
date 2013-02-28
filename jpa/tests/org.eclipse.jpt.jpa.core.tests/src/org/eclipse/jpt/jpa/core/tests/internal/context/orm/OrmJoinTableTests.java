@@ -33,7 +33,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.orm.OrmUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.orm.VirtualOrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
@@ -945,7 +945,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		manyToMany.setJoinTable(OrmFactory.eINSTANCE.createXmlJoinTable());
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		
-		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormJoinTable.getUniqueConstraints().iterator();
+		ListIterator<OrmSpecifiedUniqueConstraint> uniqueConstraints = ormJoinTable.getUniqueConstraints().iterator();
 		assertFalse(uniqueConstraints.hasNext());
 		
 		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraint();
@@ -1057,7 +1057,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		assertEquals("BAZ", uniqueConstraintResources.next().getColumnNames().get(0));
 		assertFalse(uniqueConstraintResources.hasNext());
 		
-		Iterator<OrmUniqueConstraint> uniqueConstraints = ormJoinTable.getUniqueConstraints().iterator();
+		Iterator<OrmSpecifiedUniqueConstraint> uniqueConstraints = ormJoinTable.getUniqueConstraints().iterator();
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());		
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
@@ -1099,7 +1099,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		
 		
 		ormJoinTable.moveUniqueConstraint(2, 0);
-		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormJoinTable.getUniqueConstraints().iterator();
+		ListIterator<OrmSpecifiedUniqueConstraint> uniqueConstraints = ormJoinTable.getUniqueConstraints().iterator();
 		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
@@ -1146,7 +1146,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		uniqueConstraintResource.getColumnNames().add(0, "BAZ");
 
 		
-		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormJoinTable.getUniqueConstraints().iterator();
+		ListIterator<OrmSpecifiedUniqueConstraint> uniqueConstraints = ormJoinTable.getUniqueConstraints().iterator();
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());

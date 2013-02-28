@@ -27,8 +27,8 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 public interface OrmTable
 	extends SpecifiedTable
 {
-	ListIterable<OrmUniqueConstraint> getUniqueConstraints();
-	OrmUniqueConstraint getUniqueConstraint(int index);
-	OrmUniqueConstraint addUniqueConstraint();
-	OrmUniqueConstraint addUniqueConstraint(int index);
+	ListIterable<OrmSpecifiedUniqueConstraint> getUniqueConstraints();
+	OrmSpecifiedUniqueConstraint getUniqueConstraint(int index);
+	OrmSpecifiedUniqueConstraint addUniqueConstraint();
+	OrmSpecifiedUniqueConstraint addUniqueConstraint(int index);
 }
