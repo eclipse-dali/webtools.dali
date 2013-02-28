@@ -41,7 +41,7 @@ public class GenericOrmSecondaryTable
 	extends AbstractOrmTable<OrmEntity, XmlSecondaryTable>
 	implements OrmSpecifiedSecondaryTable
 {
-	/** @see AbstractOrmTable#AbstractOrmTable(org.eclipse.jpt.jpa.core.context.JpaContextModel, org.eclipse.jpt.jpa.core.context.ReadOnlyTable.Owner, org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlTable) */
+	/** @see AbstractOrmTable#AbstractOrmTable(org.eclipse.jpt.jpa.core.context.JpaContextModel, org.eclipse.jpt.jpa.core.context.Table.Owner, org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlTable) */
 	protected /* final */ XmlSecondaryTable xmlSecondaryTable;
 
 	protected final ContextListContainer<OrmSpecifiedPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumnContainer;

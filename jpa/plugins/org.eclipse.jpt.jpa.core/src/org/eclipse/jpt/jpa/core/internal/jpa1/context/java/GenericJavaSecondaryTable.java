@@ -37,7 +37,7 @@ public class GenericJavaSecondaryTable
 	extends AbstractJavaTable<JavaEntity, SecondaryTableAnnotation>
 	implements JavaSpecifiedSecondaryTable
 {
-	/** @see AbstractJavaTable#AbstractJavaTable(org.eclipse.jpt.jpa.core.context.JpaContextModel, org.eclipse.jpt.jpa.core.context.ReadOnlyTable.Owner, org.eclipse.jpt.jpa.core.resource.java.BaseTableAnnotation) */
+	/** @see AbstractJavaTable#AbstractJavaTable(org.eclipse.jpt.jpa.core.context.JpaContextModel, org.eclipse.jpt.jpa.core.context.Table.Owner, org.eclipse.jpt.jpa.core.resource.java.BaseTableAnnotation) */
 	protected /* final */ SecondaryTableAnnotation tableAnnotation;
 
 	protected final ContextListContainer<JavaSpecifiedPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation> specifiedPrimaryKeyJoinColumnContainer;
