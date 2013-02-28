@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import java.util.List;
+import org.eclipse.jpt.common.core.resource.xml.EmfTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
@@ -20,10 +21,11 @@ import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.NamedStoredProcedureQuery2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.OrmNamedStoredProcedureQuery2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.OrmQueryContainer2_1;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.NamedStoredProcedureQuery2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedQuery;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedStoredProcedureQuery;
@@ -271,7 +273,10 @@ public class GenericOrmQueryContainer
 	}
 
 	protected XmlNamedStoredProcedureQuery buildXmlNamedStoredProcedureQuery() {
-		return OrmFactory.eINSTANCE.createXmlNamedStoredProcedureQuery();
+		return EmfTools.create(
+			this.getResourceNodeFactory(), 
+			OrmPackage.eINSTANCE.getXmlNamedStoredProcedureQuery(), 
+			XmlNamedStoredProcedureQuery.class);
 	}
 
 	public void removeNamedStoredProcedureQuery(NamedStoredProcedureQuery2_1 namedQuery) {

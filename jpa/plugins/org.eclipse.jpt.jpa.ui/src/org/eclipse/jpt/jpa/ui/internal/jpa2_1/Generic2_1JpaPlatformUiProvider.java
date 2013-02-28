@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,17 +7,17 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.ui.internal.jpa2;
+package org.eclipse.jpt.jpa.ui.internal.jpa2_1;
 
 import java.util.List;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUiProvider;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.AbstractJpaPlatformUiProvider;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmXmlUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.java.Generic2_0JavaResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmXml2_0UiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmXml2_1UiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceXml2_0UiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.jpa2_1.details.java.Generic2_1JavaResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jpa2_1.persistence.PersistenceXml2_1UiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceXmlUiDefinition;
 
@@ -50,7 +50,7 @@ public class Generic2_1JpaPlatformUiProvider extends AbstractJpaPlatformUiProvid
 	
 	@Override
 	protected void addResourceUiDefinitionsTo(List<ResourceUiDefinition> definitions) {
-		definitions.add(Generic2_0JavaResourceUiDefinition.instance());
+		definitions.add(Generic2_1JavaResourceUiDefinition.instance());
 		definitions.add(OrmXmlUiDefinition.instance());
 		definitions.add(OrmXml2_0UiDefinition.instance());
 		definitions.add(OrmXml2_1UiDefinition.instance());

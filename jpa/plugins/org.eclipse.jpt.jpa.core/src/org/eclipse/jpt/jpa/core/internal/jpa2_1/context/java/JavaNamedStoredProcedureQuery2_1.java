@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.NamedStoredProcedureQuery2_1;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.NamedStoredProcedureQuery2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.NamedStoredProcedureQuery2_1Annotation;
 
 /**

@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core.jpa2_1.context;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.QueryContainer;
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.NamedStoredProcedureQuery2_1;
 
 /**
  * Container for named stored procedure queries.

@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.internal.jpa2_1.context;
+package org.eclipse.jpt.jpa.core.jpa2_1.context;
 
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.jpa2_1.ParameterMode2_1;

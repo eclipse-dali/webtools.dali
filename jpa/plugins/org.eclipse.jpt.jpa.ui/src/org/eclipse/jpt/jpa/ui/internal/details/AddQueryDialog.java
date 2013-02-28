@@ -36,7 +36,7 @@ public class AddQueryDialog
 	/**
 	 * The associated persistence unit
 	 */
-	private PersistenceUnit pUnit;
+	private final PersistenceUnit pUnit;
 
 
 	public AddQueryDialog(Shell parentShell, ResourceManager resourceManager, PersistenceUnit pUnit) {
@@ -123,7 +123,7 @@ public class AddQueryDialog
 				(String) null);
 		}
 
-		protected ListValueModel<String> buildQueryTypeListHolder() {
+		public ListValueModel<String> buildQueryTypeListHolder() {
 			List<String> queryTypes = new ArrayList<String>();
 			queryTypes.add(NAMED_QUERY);
 			queryTypes.add(NAMED_NATIVE_QUERY);
@@ -131,7 +131,7 @@ public class AddQueryDialog
 			return new StaticListValueModel<String>(queryTypes);
 		}
 		
-		private Transformer<String, String> buildStringConverter() {
+		public Transformer<String, String> buildStringConverter() {
 			return new TransformerAdapter<String, String>() {
 				@Override
 				public String transform(String value) {

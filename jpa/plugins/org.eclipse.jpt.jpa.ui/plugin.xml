@@ -226,7 +226,7 @@
 		<jpaPlatformUi
 			id="generic2_1.ui"
 			jpaPlatform="generic2_1"
-			factoryClass="org.eclipse.jpt.jpa.ui.internal.jpa2.platform.generic.Generic2_1JpaPlatformUiFactory"/>
+			factoryClass="org.eclipse.jpt.jpa.ui.internal.jpa2_1.platform.generic.Generic2_1JpaPlatformUiFactory"/>
 	
 	</extension>
 	

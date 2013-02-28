@@ -9,9 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
+import org.eclipse.jpt.common.core.resource.xml.EmfTools;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmTable;
-import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTable;
 
@@ -35,7 +36,10 @@ public class GenericOrmTable
 
 	@Override
 	protected XmlTable buildXmlTable() {
-		XmlTable xmlTable = OrmFactory.eINSTANCE.createXmlTable();
+		XmlTable xmlTable = EmfTools.create(
+			this.getResourceNodeFactory(), 
+			OrmPackage.eINSTANCE.getXmlTable(), 
+			XmlTable.class);
 		this.getXmlEntity().setTable(xmlTable);
 		return xmlTable;
 	}

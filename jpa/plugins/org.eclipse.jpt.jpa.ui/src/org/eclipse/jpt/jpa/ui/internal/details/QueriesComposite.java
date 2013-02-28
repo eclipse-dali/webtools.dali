@@ -37,6 +37,7 @@ import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.QueryContainer;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.QueryContainer2_1;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.osgi.util.NLS;
@@ -72,7 +73,7 @@ import org.eclipse.ui.part.PageBook;
  * @see NamedNativeQueryPropertyComposite
  * @see NamedQueryPropertyComposite
  *
- * @version 2.0
+ * @version 3.3
  * @since 2.0
  */
 public class QueriesComposite extends Pane<QueryContainer>
@@ -150,7 +151,7 @@ public class QueriesComposite extends Pane<QueryContainer>
 		new ControlSwitcher(this.getSelectedQueryModel(), this.buildPaneTransformer(pageBook), pageBook);
 	}
 
-	Query addQuery() {
+	protected Query addQuery() {
 		return addQueryFromDialog(buildAddQueryDialog());
 	}
 
@@ -170,6 +171,9 @@ public class QueriesComposite extends Pane<QueryContainer>
 		else if (queryType == AddQueryDialog.NAMED_NATIVE_QUERY) {
 			query = this.getSubject().addNamedNativeQuery();
 		}
+		else if (queryType == AddQueryDialog.NAMED_NATIVE_QUERY) {
+			query = ((QueryContainer2_1) this.getSubject()).addNamedStoredProcedureQuery();
+		}
 		else {
 			throw new IllegalArgumentException();
 		}
@@ -184,7 +188,7 @@ public class QueriesComposite extends Pane<QueryContainer>
 		);
 	}
 
-	private ListValueModel<NamedNativeQuery> buildNamedNativeQueriesListHolder() {
+	protected ListValueModel<NamedNativeQuery> buildNamedNativeQueriesListHolder() {
 		return new ListAspectAdapter<QueryContainer, NamedNativeQuery>(
 			getSubjectHolder(),
 			QueryContainer.NAMED_NATIVE_QUERIES_LIST)
@@ -210,7 +214,7 @@ public class QueriesComposite extends Pane<QueryContainer>
 		};
 	}
 
-	private ListValueModel<NamedQuery> buildNamedQueriesListHolder() {
+	protected ListValueModel<NamedQuery> buildNamedQueriesListHolder() {
 		return new ListAspectAdapter<QueryContainer, NamedQuery>(
 			getSubjectHolder(),
 			QueryContainer.NAMED_QUERIES_LIST)
@@ -236,7 +240,7 @@ public class QueriesComposite extends Pane<QueryContainer>
 		};
 	}
 
-	private Transformer<Query, Control> buildPaneTransformer(final PageBook pageBook) {
+	protected Transformer<Query, Control> buildPaneTransformer(final PageBook pageBook) {
 		return new Transformer<Query, Control>() {
 			public Control transform(Query query) {
 
@@ -253,7 +257,7 @@ public class QueriesComposite extends Pane<QueryContainer>
 		};
 	}
 	
-	private Adapter<Query> buildQueriesAdapter() {
+	protected Adapter<Query> buildQueriesAdapter() {
 
 		return new AddRemoveListPane.AbstractAdapter<Query>() {
 
@@ -280,14 +284,14 @@ public class QueriesComposite extends Pane<QueryContainer>
 		};
 	}
 
-	private ListValueModel<Query> buildQueriesListHolder() {
+	protected ListValueModel<Query> buildQueriesListHolder() {
 		List<ListValueModel<? extends Query>> list = new ArrayList<ListValueModel<? extends Query>>();
 		list.add(buildNamedQueriesListHolder());
 		list.add(buildNamedNativeQueriesListHolder());
 		return CompositeListValueModel.forModels(list);
 	}
 
-	private ILabelProvider buildQueriesListLabelProvider() {
+	protected ILabelProvider buildQueriesListLabelProvider() {
 		return new LabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -327,14 +331,14 @@ public class QueriesComposite extends Pane<QueryContainer>
 		);
 	}
 	
-	protected Pane<? extends NamedNativeQuery> getNamedNativeQueryPropertyComposite(PageBook pageBook) {
+	public Pane<? extends NamedNativeQuery> getNamedNativeQueryPropertyComposite(PageBook pageBook) {
 		if (this.namedNativeQueryPane == null) {
 			this.namedNativeQueryPane = this.buildNamedNativeQueryPropertyComposite(pageBook);
 		}
 		return this.namedNativeQueryPane;
 	}
 
-	protected Pane<? extends NamedNativeQuery> buildNamedNativeQueryPropertyComposite(PageBook pageBook) {
+	public Pane<? extends NamedNativeQuery> buildNamedNativeQueryPropertyComposite(PageBook pageBook) {
 		return new NamedNativeQueryPropertyComposite(
 			this,
 			this.buildSelectedNamedNativeQueryModel(),

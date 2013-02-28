@@ -13,9 +13,9 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQuery;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.StoredProcedureParameter2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java.JavaStoredProcedureParameter2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.ParameterMode2_1;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.StoredProcedureParameter2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlStoredProcedureParameter;
 
 public class GenericOrmStoredProcedureParameter2_1

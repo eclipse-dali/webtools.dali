@@ -3,15 +3,13 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
+package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 
 import java.util.List;
-import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_5Definition;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkArrayMapping2_3UiDefinition;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkBasicCollectionMappingUiDefinition;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkBasicMapMappingUiDefinition;
@@ -19,33 +17,33 @@ import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkStructureM
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkTransformationMappingUiDefinition;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkVariableOneToOneMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
-import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
+import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.JpaUiFactory;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.BasicMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.EmbeddedIdMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.EmbeddedMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.IdMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.ManyToManyMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.ManyToOneMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.OneToManyMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.OneToOneMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.TransientMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.VersionMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmPersistentAttributeDetailsProvider;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmPersistentTypeDetailsProvider;
+import org.eclipse.jpt.jpa.ui.internal.details.java.AbstractJavaResourceUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.java.DefaultBasicMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.java.DefaultEmbeddedMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.java.NullJavaAttributeMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.ElementCollectionMapping2_0UiDefinition;
 
-
-public class EclipseLinkOrmXml2_5UiDefinition
-	extends EclipseLinkOrmXml2_1UiDefinition
+public class EclipseLink2_5JavaResourceUiDefinition
+	extends AbstractJavaResourceUiDefinition
 {
 	// singleton
-	private static final ResourceUiDefinition INSTANCE = new EclipseLinkOrmXml2_5UiDefinition();
+	private static final ResourceUiDefinition INSTANCE = new EclipseLink2_5JavaResourceUiDefinition();
 
 
 	/**
-	 * Return the singleton
+	 * Return the singleton.
 	 */
 	public static ResourceUiDefinition instance() {
 		return INSTANCE;
@@ -53,38 +51,21 @@ public class EclipseLinkOrmXml2_5UiDefinition
 
 
 	/**
-	 * Enforce singleton usage
+	 * zero-argument constructor
 	 */
-	private EclipseLinkOrmXml2_5UiDefinition() {
+	protected EclipseLink2_5JavaResourceUiDefinition() {
 		super();
 	}
 
+
 	@Override
 	protected JpaUiFactory buildUiFactory() {
-		return new EclipseLinkOrmXml2_5UiFactory();
+		return new EclipseLink2_5JavaUiFactory();
 	}
-
-	@Override
-	public boolean providesUi(JptResourceType resourceType) {
-		return resourceType.equals(EclipseLinkOrmXml2_5Definition.instance().getResourceType());
-	}
-
-
-	// ********** details providers **********
-
-	@Override
-	protected void addDetailsProvidersTo(List<JpaDetailsProvider> providers) {
-		providers.add(OrmPersistentTypeDetailsProvider.instance());
-		providers.add(OrmPersistentAttributeDetailsProvider.instance());
-		providers.add(EclipseLinkEntityMappings2_5DetailsProvider.instance());
-	}
-
-
-	// ********** attribute mapping ui definitions **********
 
 	@Override
 	protected void addSpecifiedAttributeMappingUiDefinitionsTo(List<MappingUiDefinition> definitions) {
-		definitions.add(IdMappingUiDefinition.instance());
+		definitions.add(JavaEclipseLinkIdMapping2_0UiDefinition.instance());
 		definitions.add(EmbeddedIdMappingUiDefinition.instance());
 		definitions.add(BasicMappingUiDefinition.instance());
 		definitions.add(VersionMappingUiDefinition.instance());
@@ -99,9 +80,19 @@ public class EclipseLinkOrmXml2_5UiDefinition
 		definitions.add(EclipseLinkBasicMapMappingUiDefinition.instance());
 		definitions.add(EclipseLinkVariableOneToOneMappingUiDefinition.instance());
 		definitions.add(EclipseLinkTransformationMappingUiDefinition.instance());
-
-		definitions.add(ElementCollectionMapping2_0UiDefinition.instance());
 		definitions.add(EclipseLinkArrayMapping2_3UiDefinition.instance());
 		definitions.add(EclipseLinkStructureMapping2_3UiDefinition.instance());
+
+		definitions.add(ElementCollectionMapping2_0UiDefinition.instance());
+	}
+
+	@Override
+	protected void addDefaultAttributeMappingUiDefinitionsTo(List<DefaultMappingUiDefinition> definitions) {
+		definitions.add(DefaultBasicMappingUiDefinition.instance());
+		definitions.add(DefaultEmbeddedMappingUiDefinition.instance());
+		definitions.add(NullJavaAttributeMappingUiDefinition.instance());
+		definitions.add(DefaultJavaEclipseLinkOneToOneMappingUiDefinition.instance());
+		definitions.add(DefaultJavaEclipseLinkOneToManyMappingUiDefinition.instance());
+		definitions.add(DefaultJavaEclipseLinkVariableOneToOneMappingUiDefinition.instance());
 	}
 }

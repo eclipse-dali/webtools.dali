@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm;
 
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.StoredProcedureParameter2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java.JavaStoredProcedureParameter2_1;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.StoredProcedureParameter2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlStoredProcedureParameter;
 
 public interface OrmStoredProcedureParameter2_1

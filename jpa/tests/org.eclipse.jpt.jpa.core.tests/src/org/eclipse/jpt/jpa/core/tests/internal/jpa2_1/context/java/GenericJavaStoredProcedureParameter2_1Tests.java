@@ -15,9 +15,9 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.As
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.StoredProcedureParameter2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.ParameterMode2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.QueryContainer2_1;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.StoredProcedureParameter2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.JPA2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.NamedStoredProcedureQuery2_1Annotation;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.ParameterMode_2_1;
