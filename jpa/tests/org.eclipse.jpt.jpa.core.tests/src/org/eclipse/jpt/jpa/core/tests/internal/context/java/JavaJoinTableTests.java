@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToManyMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
@@ -956,7 +956,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaSpecifiedJoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
-		ListIterator<JavaUniqueConstraint> uniqueConstraints = joinTable.getUniqueConstraints().iterator();
+		ListIterator<JavaSpecifiedUniqueConstraint> uniqueConstraints = joinTable.getUniqueConstraints().iterator();
 		assertFalse(uniqueConstraints.hasNext());
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
@@ -1057,7 +1057,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		assertEquals("BAZ", uniqueConstraintAnnotations.next().columnNameAt(0));
 		assertFalse(uniqueConstraintAnnotations.hasNext());
 		
-		Iterator<JavaUniqueConstraint> uniqueConstraints = joinTable.getUniqueConstraints().iterator();
+		Iterator<JavaSpecifiedUniqueConstraint> uniqueConstraints = joinTable.getUniqueConstraints().iterator();
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());		
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
@@ -1136,7 +1136,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		joinTableAnnotation.addUniqueConstraint(2).addColumnName("BAZ");
 		getJpaProject().synchronizeContextModel();
 		
-		ListIterator<JavaUniqueConstraint> uniqueConstraints = joinTable.getUniqueConstraints().iterator();
+		ListIterator<JavaSpecifiedUniqueConstraint> uniqueConstraints = joinTable.getUniqueConstraints().iterator();
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());

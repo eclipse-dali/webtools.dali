@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
-import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlUniqueConstraint;
@@ -139,7 +139,7 @@ public class GenericOrmUniqueConstraint
 		}
 	}
 
-	public void convertFrom(JavaUniqueConstraint javaUniqueConstraint) {
+	public void convertFrom(JavaSpecifiedUniqueConstraint javaUniqueConstraint) {
 		this.initializeFrom(javaUniqueConstraint);
 	}
 }

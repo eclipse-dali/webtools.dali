@@ -30,7 +30,7 @@ public interface JavaTableGenerator
 	TableGeneratorAnnotation getGeneratorAnnotation();
 
 	@SuppressWarnings("unchecked")
-	Iterable<JavaUniqueConstraint> getUniqueConstraints();
+	Iterable<JavaSpecifiedUniqueConstraint> getUniqueConstraints();
 	
-	JavaUniqueConstraint addUniqueConstraint(int index);
+	JavaSpecifiedUniqueConstraint addUniqueConstraint(int index);
 }

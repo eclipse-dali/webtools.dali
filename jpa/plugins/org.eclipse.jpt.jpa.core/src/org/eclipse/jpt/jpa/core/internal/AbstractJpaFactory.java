@@ -81,7 +81,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaTableGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAttributeOverride;
@@ -389,7 +389,7 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaQueryHint(parent, queryHintAnnotation);
 	}
 	
-	public JavaUniqueConstraint buildJavaUniqueConstraint(JpaContextModel parent, SpecifiedUniqueConstraint.Owner owner, UniqueConstraintAnnotation constraintAnnotation) {
+	public JavaSpecifiedUniqueConstraint buildJavaUniqueConstraint(JpaContextModel parent, SpecifiedUniqueConstraint.Owner owner, UniqueConstraintAnnotation constraintAnnotation) {
 		return new GenericJavaUniqueConstraint(parent, owner, constraintAnnotation);
 	}
 	

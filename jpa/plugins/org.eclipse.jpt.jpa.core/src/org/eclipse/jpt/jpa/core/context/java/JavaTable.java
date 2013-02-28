@@ -30,8 +30,8 @@ public interface JavaTable
 {
 	BaseTableAnnotation getTableAnnotation();
 
-	ListIterable<JavaUniqueConstraint> getUniqueConstraints();
-	JavaUniqueConstraint getUniqueConstraint(int index);
-	JavaUniqueConstraint addUniqueConstraint();
-	JavaUniqueConstraint addUniqueConstraint(int index);
+	ListIterable<JavaSpecifiedUniqueConstraint> getUniqueConstraints();
+	JavaSpecifiedUniqueConstraint getUniqueConstraint(int index);
+	JavaSpecifiedUniqueConstraint addUniqueConstraint();
+	JavaSpecifiedUniqueConstraint addUniqueConstraint(int index);
 }

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
-import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlUniqueConstraint;
 
 /**
@@ -35,5 +35,5 @@ public interface OrmUniqueConstraint
 	 * Build up a mapping file unique constraint
 	 * from the given Java unique constraint
 	 */
-	void convertFrom(JavaUniqueConstraint javaUniqueConstraint);
+	void convertFrom(JavaSpecifiedUniqueConstraint javaUniqueConstraint);
 }

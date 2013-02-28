@@ -78,7 +78,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaTableGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAttributeOverride;
@@ -269,7 +269,7 @@ public interface JpaFactory
 	
 	JavaQueryHint buildJavaQueryHint(JavaQuery parent, QueryHintAnnotation queryHintAnnotation);
 	
-	JavaUniqueConstraint buildJavaUniqueConstraint(JpaContextModel parent, SpecifiedUniqueConstraint.Owner owner, UniqueConstraintAnnotation constraintAnnotation);
+	JavaSpecifiedUniqueConstraint buildJavaUniqueConstraint(JpaContextModel parent, SpecifiedUniqueConstraint.Owner owner, UniqueConstraintAnnotation constraintAnnotation);
 	
 	VirtualUniqueConstraint buildJavaVirtualUniqueConstraint(JpaContextModel parent, UniqueConstraint overriddenUniqueConstraint);
 	

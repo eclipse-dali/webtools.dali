@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.TableGenerator;
 import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaTableGenerator;
-import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmDbGenerator;
@@ -474,7 +474,7 @@ public class GenericOrmTableGenerator
 		this.setSpecifiedPkColumnName(javaTableGenerator.getSpecifiedPkColumnName());
 		this.setSpecifiedValueColumnName(javaTableGenerator.getSpecifiedValueColumnName());
 		this.setSpecifiedPkColumnValue(javaTableGenerator.getSpecifiedPkColumnValue());
-		for (JavaUniqueConstraint javaUniqueConstraint : javaTableGenerator.getUniqueConstraints()) {
+		for (JavaSpecifiedUniqueConstraint javaUniqueConstraint : javaTableGenerator.getUniqueConstraints()) {
 			this.addUniqueConstraint().convertFrom(javaUniqueConstraint);
 		}
 	}

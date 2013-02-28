@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedSecondaryTable;
-import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.PrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.SecondaryTableAnnotation;
@@ -520,7 +520,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		
 		JavaSpecifiedSecondaryTable secondaryTable = getJavaEntity().getSpecifiedSecondaryTables().iterator().next();
 
-		ListIterator<JavaUniqueConstraint> uniqueConstraints = secondaryTable.getUniqueConstraints().iterator();
+		ListIterator<JavaSpecifiedUniqueConstraint> uniqueConstraints = secondaryTable.getUniqueConstraints().iterator();
 		assertFalse(uniqueConstraints.hasNext());
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
@@ -612,7 +612,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		assertEquals("BAZ", uniqueConstraintAnnotations.next().columnNameAt(0));
 		assertFalse(uniqueConstraintAnnotations.hasNext());
 		
-		Iterator<JavaUniqueConstraint> uniqueConstraints = secondaryTable.getUniqueConstraints().iterator();
+		Iterator<JavaSpecifiedUniqueConstraint> uniqueConstraints = secondaryTable.getUniqueConstraints().iterator();
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());		
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
@@ -651,7 +651,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		
 		
 		secondaryTable.moveUniqueConstraint(2, 0);
-		ListIterator<JavaUniqueConstraint> uniqueConstraints = secondaryTable.getUniqueConstraints().iterator();
+		ListIterator<JavaSpecifiedUniqueConstraint> uniqueConstraints = secondaryTable.getUniqueConstraints().iterator();
 		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
@@ -688,7 +688,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		getJpaProject().synchronizeContextModel();
 
 		
-		ListIterator<JavaUniqueConstraint> uniqueConstraints = secondaryTable.getUniqueConstraints().iterator();
+		ListIterator<JavaSpecifiedUniqueConstraint> uniqueConstraints = secondaryTable.getUniqueConstraints().iterator();
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());

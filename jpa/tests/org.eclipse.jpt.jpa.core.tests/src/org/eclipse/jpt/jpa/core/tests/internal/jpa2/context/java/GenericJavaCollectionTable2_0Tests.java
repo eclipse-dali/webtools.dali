@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.As
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaElementCollectionMapping2_0;
@@ -499,7 +499,7 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaCollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		
-		ListIterator<JavaUniqueConstraint> uniqueConstraints = collectionTable.getUniqueConstraints().iterator();
+		ListIterator<JavaSpecifiedUniqueConstraint> uniqueConstraints = collectionTable.getUniqueConstraints().iterator();
 		assertFalse(uniqueConstraints.hasNext());
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
@@ -600,7 +600,7 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		assertEquals("BAZ", uniqueConstraintAnnotations.next().columnNameAt(0));
 		assertFalse(uniqueConstraintAnnotations.hasNext());
 		
-		Iterator<JavaUniqueConstraint> uniqueConstraints = collectionTable.getUniqueConstraints().iterator();
+		Iterator<JavaSpecifiedUniqueConstraint> uniqueConstraints = collectionTable.getUniqueConstraints().iterator();
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());		
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
@@ -641,7 +641,7 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		
 		
 		collectionTable.moveUniqueConstraint(2, 0);
-		ListIterator<JavaUniqueConstraint> uniqueConstraints = collectionTable.getUniqueConstraints().iterator();
+		ListIterator<JavaSpecifiedUniqueConstraint> uniqueConstraints = collectionTable.getUniqueConstraints().iterator();
 		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
@@ -680,7 +680,7 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		getJpaProject().synchronizeContextModel();
 
 		
-		ListIterator<JavaUniqueConstraint> uniqueConstraints = collectionTable.getUniqueConstraints().iterator();
+		ListIterator<JavaSpecifiedUniqueConstraint> uniqueConstraints = collectionTable.getUniqueConstraints().iterator();
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());

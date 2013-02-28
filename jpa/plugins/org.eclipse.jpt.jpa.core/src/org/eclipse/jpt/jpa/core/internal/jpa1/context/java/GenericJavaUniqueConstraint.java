@@ -16,13 +16,13 @@ import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
-import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
 
 public class GenericJavaUniqueConstraint
 	extends AbstractJavaReadOnlyUniqueConstraint
-	implements JavaUniqueConstraint
+	implements JavaSpecifiedUniqueConstraint
 {
 	protected Owner owner;
 	protected final UniqueConstraintAnnotation uniqueConstraintAnnotation;

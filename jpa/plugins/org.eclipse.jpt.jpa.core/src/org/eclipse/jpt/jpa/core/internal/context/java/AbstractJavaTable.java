@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaTable;
-import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.resource.java.BaseTableAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
@@ -59,7 +59,7 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, A extends Bas
 	protected String specifiedCatalog;
 	protected String defaultCatalog;
 
-	protected final ContextListContainer<JavaUniqueConstraint, UniqueConstraintAnnotation> uniqueConstraintContainer;
+	protected final ContextListContainer<JavaSpecifiedUniqueConstraint, UniqueConstraintAnnotation> uniqueConstraintContainer;
 
 
 	protected AbstractJavaTable(P parent, Owner owner) {
@@ -253,7 +253,7 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, A extends Bas
 
 
 	// ********** unique constraints **********
-	public ListIterable<JavaUniqueConstraint> getUniqueConstraints() {
+	public ListIterable<JavaSpecifiedUniqueConstraint> getUniqueConstraints() {
 		return this.uniqueConstraintContainer.getContextElements();
 	}
 
@@ -261,15 +261,15 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, A extends Bas
 		return this.uniqueConstraintContainer.getContextElementsSize();
 	}
 
-	public JavaUniqueConstraint getUniqueConstraint(int index) {
+	public JavaSpecifiedUniqueConstraint getUniqueConstraint(int index) {
 		return this.uniqueConstraintContainer.getContextElement(index);
 	}
 
-	public JavaUniqueConstraint addUniqueConstraint() {
+	public JavaSpecifiedUniqueConstraint addUniqueConstraint() {
 		return this.addUniqueConstraint(this.getUniqueConstraintsSize());
 	}
 
-	public JavaUniqueConstraint addUniqueConstraint(int index) {
+	public JavaSpecifiedUniqueConstraint addUniqueConstraint(int index) {
 		UniqueConstraintAnnotation annotation = this.getTableAnnotation().addUniqueConstraint(index);
 		return this.uniqueConstraintContainer.addContextElement(index, annotation);
 	}
@@ -280,7 +280,7 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, A extends Bas
 	}
 
 	public void removeUniqueConstraint(SpecifiedUniqueConstraint uniqueConstraint) {
-		this.removeUniqueConstraint(this.uniqueConstraintContainer.indexOfContextElement((JavaUniqueConstraint) uniqueConstraint));
+		this.removeUniqueConstraint(this.uniqueConstraintContainer.indexOfContextElement((JavaSpecifiedUniqueConstraint) uniqueConstraint));
 	}
 
 	public void moveUniqueConstraint(int targetIndex, int sourceIndex) {
@@ -292,7 +292,7 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, A extends Bas
 		this.uniqueConstraintContainer.synchronizeWithResourceModel();
 	}
 
-	protected JavaUniqueConstraint buildUniqueConstraint(UniqueConstraintAnnotation constraintAnnotation) {
+	protected JavaSpecifiedUniqueConstraint buildUniqueConstraint(UniqueConstraintAnnotation constraintAnnotation) {
 		return this.getJpaFactory().buildJavaUniqueConstraint(this, this, constraintAnnotation);
 	}
 
@@ -300,7 +300,7 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, A extends Bas
 		return this.getTableAnnotation().getUniqueConstraints();
 	}
 
-	protected ContextListContainer<JavaUniqueConstraint, UniqueConstraintAnnotation> buildUniqueConstraintContainer() {
+	protected ContextListContainer<JavaSpecifiedUniqueConstraint, UniqueConstraintAnnotation> buildUniqueConstraintContainer() {
 		UniqueConstraintContainer container = new UniqueConstraintContainer();
 		container.initialize();
 		return container;
@@ -310,14 +310,14 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, A extends Bas
 	 * unique constraint container
 	 */
 	protected class UniqueConstraintContainer
-		extends ContextListContainer<JavaUniqueConstraint, UniqueConstraintAnnotation>
+		extends ContextListContainer<JavaSpecifiedUniqueConstraint, UniqueConstraintAnnotation>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return UNIQUE_CONSTRAINTS_LIST;
 		}
 		@Override
-		protected JavaUniqueConstraint buildContextElement(UniqueConstraintAnnotation resourceElement) {
+		protected JavaSpecifiedUniqueConstraint buildContextElement(UniqueConstraintAnnotation resourceElement) {
 			return AbstractJavaTable.this.buildUniqueConstraint(resourceElement);
 		}
 		@Override
@@ -325,7 +325,7 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, A extends Bas
 			return AbstractJavaTable.this.getUniqueConstraintAnnotations();
 		}
 		@Override
-		protected UniqueConstraintAnnotation getResourceElement(JavaUniqueConstraint contextElement) {
+		protected UniqueConstraintAnnotation getResourceElement(JavaSpecifiedUniqueConstraint contextElement) {
 			return contextElement.getUniqueConstraintAnnotation();
 		}
 	}
@@ -396,7 +396,7 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, A extends Bas
 		if (result != null) {
 			return result;
 		}
-		for (JavaUniqueConstraint constraint : this.getUniqueConstraints()) {
+		for (JavaSpecifiedUniqueConstraint constraint : this.getUniqueConstraints()) {
 			result = constraint.getCompletionProposals(pos);
 			if (result != null) {
 				return result;

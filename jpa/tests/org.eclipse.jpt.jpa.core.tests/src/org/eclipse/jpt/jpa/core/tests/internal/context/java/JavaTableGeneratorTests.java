@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.TableGenerator;
 import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaTableGenerator;
-import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
@@ -455,7 +455,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		
 		JavaTableGenerator tableGenerator =(JavaTableGenerator) ((IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping()).getGeneratorContainer().getTableGenerator();
 
-		Iterator<JavaUniqueConstraint> uniqueConstraints = tableGenerator.getUniqueConstraints().iterator();
+		Iterator<JavaSpecifiedUniqueConstraint> uniqueConstraints = tableGenerator.getUniqueConstraints().iterator();
 		assertFalse(uniqueConstraints.hasNext());
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
