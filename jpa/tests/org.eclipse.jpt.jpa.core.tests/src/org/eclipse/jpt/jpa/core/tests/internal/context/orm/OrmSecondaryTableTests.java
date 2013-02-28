@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedSecondaryTable;
@@ -750,7 +750,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		javaSecondaryTable.addUniqueConstraint().addColumnName("BAR");
 		javaSecondaryTable.addUniqueConstraint().addColumnName("BAZ");
 
-		List<ReadOnlyUniqueConstraint> uniqueConstraints = ListTools.list(ormSecondaryTable.getUniqueConstraints());
+		List<UniqueConstraint> uniqueConstraints = ListTools.list(ormSecondaryTable.getUniqueConstraints());
 		assertEquals(3, uniqueConstraints.size());
 		assertEquals("FOO", uniqueConstraints.get(0).getColumnNames().iterator().next());
 		assertEquals("BAR", uniqueConstraints.get(1).getColumnNames().iterator().next());

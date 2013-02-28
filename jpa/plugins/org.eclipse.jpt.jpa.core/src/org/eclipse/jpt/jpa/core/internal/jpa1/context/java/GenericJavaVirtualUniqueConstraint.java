@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.VirtualUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaReadOnlyUniqueConstraint;
 
@@ -19,10 +19,10 @@ public class GenericJavaVirtualUniqueConstraint
 	extends AbstractJavaReadOnlyUniqueConstraint
 	implements VirtualUniqueConstraint
 {
-	protected final ReadOnlyUniqueConstraint overriddenUniqueConstraint;
+	protected final UniqueConstraint overriddenUniqueConstraint;
 
 
-	public GenericJavaVirtualUniqueConstraint(JpaContextModel parent, ReadOnlyUniqueConstraint overriddenUniqueConstraint) {
+	public GenericJavaVirtualUniqueConstraint(JpaContextModel parent, UniqueConstraint overriddenUniqueConstraint) {
 		super(parent);
 		this.overriddenUniqueConstraint = overriddenUniqueConstraint;
 	}
@@ -46,7 +46,7 @@ public class GenericJavaVirtualUniqueConstraint
 
 	// ********** misc **********
 
-	public ReadOnlyUniqueConstraint getOverriddenUniqueConstraint() {
+	public UniqueConstraint getOverriddenUniqueConstraint() {
 		return this.overriddenUniqueConstraint;
 	}
 

@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.Table;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.VirtualColumn;
@@ -271,7 +271,7 @@ public interface JpaFactory
 	
 	JavaUniqueConstraint buildJavaUniqueConstraint(JpaContextModel parent, SpecifiedUniqueConstraint.Owner owner, UniqueConstraintAnnotation constraintAnnotation);
 	
-	VirtualUniqueConstraint buildJavaVirtualUniqueConstraint(JpaContextModel parent, ReadOnlyUniqueConstraint overriddenUniqueConstraint);
+	VirtualUniqueConstraint buildJavaVirtualUniqueConstraint(JpaContextModel parent, UniqueConstraint overriddenUniqueConstraint);
 	
 	JavaBaseEnumeratedConverter buildJavaBaseEnumeratedConverter(JavaAttributeMapping parent, BaseEnumeratedAnnotation annotation, JavaConverter.Owner owner);
 	

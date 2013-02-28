@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.Table;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.VirtualTable;
 import org.eclipse.jpt.jpa.core.context.VirtualUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -43,7 +43,7 @@ public abstract class AbstractJavaVirtualTable<P extends JpaContextModel, T exte
 	protected String specifiedCatalog;
 	protected String defaultCatalog;
 
-	protected final ContextListContainer<VirtualUniqueConstraint, ReadOnlyUniqueConstraint> uniqueConstraintContainer;
+	protected final ContextListContainer<VirtualUniqueConstraint, UniqueConstraint> uniqueConstraintContainer;
 
 
 	protected AbstractJavaVirtualTable(P parent, Owner owner, T overridenTable) {
@@ -200,19 +200,19 @@ public abstract class AbstractJavaVirtualTable<P extends JpaContextModel, T exte
 		this.uniqueConstraintContainer.update();
 	}
 
-	protected ListIterable<ReadOnlyUniqueConstraint> getOverriddenUniqueConstraints() {
-		return new SuperListIterableWrapper<ReadOnlyUniqueConstraint>(this.getOverriddenTable().getUniqueConstraints());
+	protected ListIterable<UniqueConstraint> getOverriddenUniqueConstraints() {
+		return new SuperListIterableWrapper<UniqueConstraint>(this.getOverriddenTable().getUniqueConstraints());
 	}
 
 	protected void moveUniqueConstraint(int index, VirtualUniqueConstraint constraint) {
 		this.uniqueConstraintContainer.moveContextElement(index, constraint);
 	}
 
-	protected VirtualUniqueConstraint addUniqueConstraint(int index, ReadOnlyUniqueConstraint uniqueConstraint) {
+	protected VirtualUniqueConstraint addUniqueConstraint(int index, UniqueConstraint uniqueConstraint) {
 		return this.uniqueConstraintContainer.addContextElement(index, uniqueConstraint);
 	}
 
-	protected VirtualUniqueConstraint buildUniqueConstraint(ReadOnlyUniqueConstraint uniqueConstraint) {
+	protected VirtualUniqueConstraint buildUniqueConstraint(UniqueConstraint uniqueConstraint) {
 		return this.getJpaFactory().buildJavaVirtualUniqueConstraint(this, uniqueConstraint);
 	}
 
@@ -220,7 +220,7 @@ public abstract class AbstractJavaVirtualTable<P extends JpaContextModel, T exte
 		this.uniqueConstraintContainer.removeContextElement(constraint);
 	}
 
-	protected ContextListContainer<VirtualUniqueConstraint, ReadOnlyUniqueConstraint> buildUniqueConstraintContainer() {
+	protected ContextListContainer<VirtualUniqueConstraint, UniqueConstraint> buildUniqueConstraintContainer() {
 		return new UniqueConstraintContainer();
 	}
 
@@ -228,22 +228,22 @@ public abstract class AbstractJavaVirtualTable<P extends JpaContextModel, T exte
 	 * unique constraint container
 	 */
 	protected class UniqueConstraintContainer
-		extends ContextListContainer<VirtualUniqueConstraint, ReadOnlyUniqueConstraint>
+		extends ContextListContainer<VirtualUniqueConstraint, UniqueConstraint>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return UNIQUE_CONSTRAINTS_LIST;
 		}
 		@Override
-		protected VirtualUniqueConstraint buildContextElement(ReadOnlyUniqueConstraint resourceElement) {
+		protected VirtualUniqueConstraint buildContextElement(UniqueConstraint resourceElement) {
 			return AbstractJavaVirtualTable.this.buildUniqueConstraint(resourceElement);
 		}
 		@Override
-		protected ListIterable<ReadOnlyUniqueConstraint> getResourceElements() {
+		protected ListIterable<UniqueConstraint> getResourceElements() {
 			return AbstractJavaVirtualTable.this.getOverriddenUniqueConstraints();
 		}
 		@Override
-		protected ReadOnlyUniqueConstraint getResourceElement(VirtualUniqueConstraint contextElement) {
+		protected UniqueConstraint getResourceElement(VirtualUniqueConstraint contextElement) {
 			return contextElement.getOverriddenUniqueConstraint();
 		}
 	}

@@ -22,10 +22,10 @@ package org.eclipse.jpt.jpa.core.context;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface VirtualUniqueConstraint
-	extends ReadOnlyUniqueConstraint
+	extends UniqueConstraint
 {
 	/**
 	 * Return the wrapped unique constraint.
 	 */
-	ReadOnlyUniqueConstraint getOverriddenUniqueConstraint();
+	UniqueConstraint getOverriddenUniqueConstraint();
 }

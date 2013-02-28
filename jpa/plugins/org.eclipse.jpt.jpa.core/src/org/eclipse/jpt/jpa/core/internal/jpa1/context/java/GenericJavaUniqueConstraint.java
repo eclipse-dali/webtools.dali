@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaReadOnlyUniqueConstraint;
@@ -139,7 +139,7 @@ public class GenericJavaUniqueConstraint
 		return this.uniqueConstraintAnnotation;
 	}
 
-	public void initializeFrom(ReadOnlyUniqueConstraint oldUniqueConstraint) {
+	public void initializeFrom(UniqueConstraint oldUniqueConstraint) {
 		for (String columnName : oldUniqueConstraint.getColumnNames()) {
 			this.addColumnName(columnName);
 		}

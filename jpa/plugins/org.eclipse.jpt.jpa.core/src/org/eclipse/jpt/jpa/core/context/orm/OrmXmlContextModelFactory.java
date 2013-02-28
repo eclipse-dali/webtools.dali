@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.Table;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.VirtualColumn;
@@ -259,7 +259,7 @@ public interface OrmXmlContextModelFactory
 
 	OrmUniqueConstraint buildOrmUniqueConstraint(JpaContextModel parent, SpecifiedUniqueConstraint.Owner owner, XmlUniqueConstraint resourceUniqueConstraint);
 
-	VirtualUniqueConstraint buildOrmVirtualUniqueConstraint(JpaContextModel parent, ReadOnlyUniqueConstraint overriddenUniqueConstraint);
+	VirtualUniqueConstraint buildOrmVirtualUniqueConstraint(JpaContextModel parent, UniqueConstraint overriddenUniqueConstraint);
 
 	OrmConverter buildOrmBaseEnumeratedConverter(OrmAttributeMapping parent, OrmBaseEnumeratedConverter.Owner owner);
 

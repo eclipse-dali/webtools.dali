@@ -125,10 +125,10 @@ public interface Table
 
 	// ********** unique constraints **********
 
-	ListIterable<? extends ReadOnlyUniqueConstraint> getUniqueConstraints();
+	ListIterable<? extends UniqueConstraint> getUniqueConstraints();
 		String UNIQUE_CONSTRAINTS_LIST = "uniqueConstraints"; //$NON-NLS-1$
 	int getUniqueConstraintsSize();
-	ReadOnlyUniqueConstraint getUniqueConstraint(int index);
+	UniqueConstraint getUniqueConstraint(int index);
 
 
 	// ********** misc **********

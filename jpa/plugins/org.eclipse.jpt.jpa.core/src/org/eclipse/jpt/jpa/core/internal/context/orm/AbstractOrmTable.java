@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.Table;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmUniqueConstraint;
@@ -548,7 +548,7 @@ public abstract class AbstractOrmTable<P extends JpaContextModel, X extends Abst
 		this.setSpecifiedName(oldTable.getSpecifiedName());
 		this.setSpecifiedCatalog(oldTable.getSpecifiedCatalog());
 		this.setSpecifiedSchema(oldTable.getSpecifiedSchema());
-		for (ReadOnlyUniqueConstraint constraint : oldTable.getUniqueConstraints()) {
+		for (UniqueConstraint constraint : oldTable.getUniqueConstraints()) {
 			this.addUniqueConstraint().initializeFrom(constraint);
 		}
 	}

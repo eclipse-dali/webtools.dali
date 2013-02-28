@@ -22,9 +22,9 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 2.0
  */
 public interface SpecifiedUniqueConstraint
-	extends ReadOnlyUniqueConstraint
+	extends UniqueConstraint
 {
-	void initializeFrom(ReadOnlyUniqueConstraint oldUniqueConstraint);
+	void initializeFrom(UniqueConstraint oldUniqueConstraint);
 
 
 	// ********** column names **********

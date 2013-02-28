@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmUniqueConstraint;
@@ -133,7 +133,7 @@ public class GenericOrmUniqueConstraint
 		return this.xmlUniqueConstraint;
 	}
 
-	public void initializeFrom(ReadOnlyUniqueConstraint oldUniqueConstraint) {
+	public void initializeFrom(UniqueConstraint oldUniqueConstraint) {
 		for (String columnName : oldUniqueConstraint.getColumnNames()) {
 			this.addColumnName(columnName);
 		}

@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.Table;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
@@ -505,7 +505,7 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, A extends Bas
 		this.setSpecifiedName(oldTable.getSpecifiedName());
 		this.setSpecifiedCatalog(oldTable.getSpecifiedCatalog());
 		this.setSpecifiedSchema(oldTable.getSpecifiedSchema());
-		for (ReadOnlyUniqueConstraint constraint : oldTable.getUniqueConstraints()) {
+		for (UniqueConstraint constraint : oldTable.getUniqueConstraints()) {
 			this.addUniqueConstraint().initializeFrom(constraint);
 		}
 	}
