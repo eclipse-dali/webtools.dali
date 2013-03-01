@@ -51,7 +51,7 @@ public class GenericJavaOrderable
 	protected boolean customOrdering = false;
 
 	// JPA 2.0
-	protected final ParentAdapter owner;  // this is null for JPA 1.0 mappings
+	protected final ParentAdapter parentAdapter;
 	protected boolean orderColumnOrdering = false;
 	protected final JavaSpecifiedOrderColumn2_0 orderColumn;
 
@@ -60,36 +60,22 @@ public class GenericJavaOrderable
 	 * JPA 1.0
 	 */
 	public GenericJavaOrderable(JavaAttributeMapping parent) {
-		this(parent, buildNullOwner());
+		this(new ParentAdapter.Null(parent));
 	}
 
 	/**
 	 * JPA 2.0
 	 */
-	public GenericJavaOrderable(JavaAttributeMapping parent, ParentAdapter owner) {
-		super(parent);
+	public GenericJavaOrderable(ParentAdapter parentAdapter) {
+		super((JavaAttributeMapping) parentAdapter.getOrderableParent());
 		this.specifiedOrderBy = this.buildSpecifiedOrderBy();
 		this.noOrdering = this.buildNoOrdering();
 		this.pkOrdering = this.buildPkOrdering();
 		this.customOrdering = this.buildCustomOrdering();
 
-		this.owner = owner;
+		this.parentAdapter = parentAdapter;
 		this.orderColumnOrdering = this.buildOrderColumnOrdering();
 		this.orderColumn = this.buildOrderColumn();
-	}
-
-	/**
-	 * null Owner implementation for JPA 1.0 where there is no OrderColumn
-	 */
-	static ParentAdapter buildNullOwner() {
-		return new ParentAdapter() {
-			public Table resolveDbTable(String tableName) {
-				return null;
-			}
-			public String getTableName() {
-				return null;
-			}
-		};
 	}
 
 
@@ -396,12 +382,12 @@ public class GenericJavaOrderable
 
 	// JPA 2.0 only
 	public String getDefaultTableName() {
-		return this.owner.getTableName();
+		return this.parentAdapter.getTableName();
 	}
 
 	// JPA 2.0 only
 	protected Table resolveDbTable(String tableName) {
-		return this.owner.resolveDbTable(tableName);
+		return this.parentAdapter.resolveDbTable(tableName);
 	}
 
 

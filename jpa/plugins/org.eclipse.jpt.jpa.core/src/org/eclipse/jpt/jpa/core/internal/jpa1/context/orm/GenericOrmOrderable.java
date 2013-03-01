@@ -18,8 +18,8 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModel;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.OrderColumnValidator;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedOrderColumn2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmSpecifiedOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOrderable2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmSpecifiedOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlOrderColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlOrderable;
@@ -49,7 +49,7 @@ public class GenericOrmOrderable
 	protected boolean customOrdering = false;
 
 	// JPA 2.0
-	protected final ParentAdapter owner;  // this is null for JPA 1.0 mappings
+	protected final ParentAdapter parentAdapter;
 	protected boolean orderColumnOrdering = false;
 	protected final OrmSpecifiedOrderColumn2_0 orderColumn;  // this is null for JPA 1.0 mappings
 
@@ -58,38 +58,23 @@ public class GenericOrmOrderable
 	 * JPA 1.0
 	 */
 	public GenericOrmOrderable(OrmAttributeMapping parent) {
-		this(parent, buildNullOwner());
+		this(new ParentAdapter.Null(parent));
 	}
 
 	/**
 	 * JPA 2.0
 	 */
-	public GenericOrmOrderable(OrmAttributeMapping parent, ParentAdapter owner) {
-		super(parent);
+	public GenericOrmOrderable(ParentAdapter parentAdapter) {
+		super((OrmAttributeMapping) parentAdapter.getOrderableParent());
 
 		this.specifiedOrderBy = this.buildSpecifiedOrderBy();
 		this.noOrdering = this.buildNoOrdering();
 		this.pkOrdering = this.buildPkOrdering();
 		this.customOrdering = this.buildCustomOrdering();
 
-		this.owner = owner;
+		this.parentAdapter = parentAdapter;
 		this.orderColumnOrdering = this.buildOrderColumnOrdering();
 		this.orderColumn = this.buildOrderColumn();
-	}
-
-
-	/**
-	 * null Owner implementation for JPA 1.0 where there is no OrderColumn
-	 */
-	static ParentAdapter buildNullOwner() {
-		return new ParentAdapter() {
-			public Table resolveDbTable(String tableName) {
-				return null;
-			}
-			public String getTableName() {
-				return null;
-			}
-		};
 	}
 
 
@@ -383,12 +368,12 @@ public class GenericOrmOrderable
 
 	// JPA 2.0
 	public String getDefaultTableName() {
-		return this.owner.getTableName();
+		return this.parentAdapter.getTableName();
 	}
 
 	// JPA 2.0
 	protected Table resolveDbTable(String tableName) {
-		return this.owner.resolveDbTable(tableName);
+		return this.parentAdapter.resolveDbTable(tableName);
 	}
 
 

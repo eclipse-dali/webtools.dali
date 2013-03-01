@@ -25,33 +25,34 @@ import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
+import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
+import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.FetchType;
-import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
-import org.eclipse.jpt.jpa.core.context.Orderable;
-import org.eclipse.jpt.jpa.core.context.OverrideContainer;
-import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.AttributeOverride;
-import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
+import org.eclipse.jpt.jpa.core.context.Orderable;
+import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.Override_;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBaseTemporalConverter;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMultiRelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
@@ -190,17 +191,20 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 
 	protected Orderable buildOrderable() {
 		return this.isOrmXml2_0Compatible() ?
-				this.getContextModelFactory2_0().buildOrmOrderable(this, this.buildOrderableOwner()) :
+				this.getContextModelFactory2_0().buildOrmOrderable(this.buildOrderableParentAdapter()) :
 				this.getContextModelFactory().buildOrmOrderable(this);
 	}
 
-	protected Orderable2_0.ParentAdapter buildOrderableOwner() {
-		return new OrderableOwner();
+	protected Orderable2_0.ParentAdapter<OrmAttributeMapping> buildOrderableParentAdapter() {
+		return new OrderableParentAdapter();
 	}
 
-	protected class OrderableOwner
-		implements Orderable2_0.ParentAdapter
+	public class OrderableParentAdapter
+		implements Orderable2_0.ParentAdapter<OrmAttributeMapping>
 	{
+		public OrmAttributeMapping getOrderableParent() {
+			return AbstractOrmMultiRelationshipMapping.this;
+		}
 		public String getTableName() {
 			return this.getRelationshipStrategy().getTableName();
 		}

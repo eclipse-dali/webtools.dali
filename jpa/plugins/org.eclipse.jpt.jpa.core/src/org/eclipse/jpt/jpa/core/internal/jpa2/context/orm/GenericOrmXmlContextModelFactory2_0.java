@@ -84,8 +84,8 @@ public class GenericOrmXmlContextModelFactory2_0
 		return new GenericOrmCollectionTable2_0(parent, owner);
 	}
 	
-	public OrmOrderable2_0 buildOrmOrderable(OrmAttributeMapping parent, Orderable2_0.ParentAdapter owner) {
-		return new GenericOrmOrderable(parent, owner);
+	public OrmOrderable2_0 buildOrmOrderable(Orderable2_0.ParentAdapter<OrmAttributeMapping> parentAdapter) {
+		return new GenericOrmOrderable(parentAdapter);
 	}
 	
 	public OrmSpecifiedOrderColumn2_0 buildOrmOrderColumn(OrmOrderable2_0 parent, OrmSpecifiedOrderColumn2_0.Owner owner) {

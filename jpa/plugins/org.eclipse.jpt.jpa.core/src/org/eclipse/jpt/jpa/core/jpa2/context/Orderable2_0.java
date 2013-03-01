@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context;
 
+import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.db.Table;
 
@@ -41,12 +42,37 @@ public interface Orderable2_0
 	 * interface allowing ordering in multiple places
 	 * (i.e. multi-value relationship and element collection mappings)
 	 */
-	interface ParentAdapter {
+	interface ParentAdapter<M extends AttributeMapping> {
+
+		M getOrderableParent();
+
 		/**
 		 * Return the name of the column's table.
 		 */
 		String getTableName();
-		
+
 		Table resolveDbTable(String tableName);
+
+		/**
+		 * This can be used for JPA 1.0 implementations.
+		 */
+		class Null<M extends AttributeMapping>
+			implements ParentAdapter<M>
+		{
+			protected final M parent;
+			public Null(M parent) {
+				super();
+				this.parent = parent;
+			}
+			public M getOrderableParent() {
+				return this.parent;
+			}
+			public String getTableName() {
+				return null;
+			}
+			public Table resolveDbTable(String tableName) {
+				return null;
+			}
+		}
 	}
 }
