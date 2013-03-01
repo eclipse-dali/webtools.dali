@@ -280,7 +280,7 @@ public class GenericOrmIdClassReference
 	}
 
 
-	// ********** PersistentType.Owner implementation **********
+	// ********** PersistentType.Parent implementation **********
 
 	public AccessType getOverridePersistentTypeAccess() {
 		return this.getPersistentType().getAccess();

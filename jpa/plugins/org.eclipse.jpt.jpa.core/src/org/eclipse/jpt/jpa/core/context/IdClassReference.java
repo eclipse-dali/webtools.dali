@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
  * @since 2.3
  */
 public interface IdClassReference
-	extends PersistentType.Owner
+	extends PersistentType.Parent
 {
 	// ********** id class name **********
 
@@ -34,7 +34,7 @@ public interface IdClassReference
 	String getIdClassName();
 	
 	/**
-	 * Property string associated with changes to the {@link IdClassHolder}'s specified id class name
+	 * Property string associated with changes to the specified ID class name
 	 */
 	String SPECIFIED_ID_CLASS_NAME_PROPERTY = "specifiedIdClassName"; //$NON-NLS-1$
 	
@@ -50,7 +50,7 @@ public interface IdClassReference
 	void setSpecifiedIdClassName(String value);
 	
 	/**
-	 * Property string associated with changes to the {@link IdClassHolder}'s default id class name
+	 * Property string associated with changes to the default ID class name
 	 */
 	String DEFAULT_ID_CLASS_NAME_PROPERTY = "defaultIdClassName"; //$NON-NLS-1$
 	
@@ -76,7 +76,7 @@ public interface IdClassReference
 	// ********** id class **********
 
 	/**
-	 * Property string associated with changes to the {@link IdClassHolder}'s id class.
+	 * Property string associated with changes to the ID class.
 	 * This will change (potentially) if the id class name changes, or if other changes result
 	 * in changes in the id class' resolution.
 	 */

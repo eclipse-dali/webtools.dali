@@ -42,7 +42,7 @@ import org.eclipse.jpt.jpa.db.SchemaContainer;
  * @since 2.0
 */
 public interface EntityMappings
-	extends MappingFile.Root, XmlFile.Root, PersistentType.Owner, SpecifiedAccessReference, DeleteTypeRefactoringParticipant, TypeRefactoringParticipant
+	extends MappingFile.Root, XmlFile.Root, PersistentType.Parent, SpecifiedAccessReference, DeleteTypeRefactoringParticipant, TypeRefactoringParticipant
 {
 	OrmXml getParent();
 

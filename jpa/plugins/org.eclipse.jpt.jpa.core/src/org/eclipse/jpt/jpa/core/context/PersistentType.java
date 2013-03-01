@@ -201,9 +201,9 @@ public interface PersistentType
 	AccessType getOwnerDefaultAccess();
 
 
-	// ********** owner interface **********
+	// ********** parent interface **********
 
-	interface Owner
+	interface Parent
 		extends JpaContextModel
 	{
 		/**

@@ -37,7 +37,7 @@ import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
  * @since 2.0
  */
 public interface ClassRef
-	extends JpaStructureNode, PersistentType.Owner, DeleteTypeRefactoringParticipant, TypeRefactoringParticipant
+	extends JpaStructureNode, PersistentType.Parent, DeleteTypeRefactoringParticipant, TypeRefactoringParticipant
 {
 	/**
 	 * Return whether the class ref is a reference to the specified type.
@@ -89,17 +89,18 @@ public interface ClassRef
 	final static String JAVA_MANAGED_TYPE_PROPERTY = "javaManagedType"; //$NON-NLS-1$
 
 	/**
-	 * Return the JavaManagedType that corresponds to this ClassRef.
-	 * This can be null.
-	 * This is not settable by users of this API.
+	 * Return the ref's Java managed type.
+	 * This can be <code>null</code>.
+	 * This is not settable by clients of this API.
 	 */
 	JavaManagedType getJavaManagedType();
 
 	/**
-	 * Convenience method for returning the JavaManagedType if it is a JavaPersistentType.
-	 * It will return null if the JavaManagedType is null or is not a JavaPersistentType.
-	 * @see ClassRef#getJavaManagedType()
-	 * @see ManagedType#getContextType()
+	 * Convenience method for returning the {@link #getJavaManagedType() Java managed type}
+	 * if it is a {@link JavaPersistentType Java persistent type}.
+	 * Return <code>null</code> if the Java managed type is <code>null</code>
+	 * or is not a {@link JavaPersistentType Java persistent type}.
+	 * @see org.eclipse.jpt.jpa.core.context.ManagedType#getType()
 	 */
 	JavaPersistentType getJavaPersistentType();
 

@@ -91,7 +91,7 @@ public class EclipseLink2_0JpaFactory
 	// ********** Java Context Model **********
 
 	@Override
-	public JavaPersistentType buildJavaPersistentType(PersistentType.Owner owner, JavaResourceType jrt) {
+	public JavaPersistentType buildJavaPersistentType(PersistentType.Parent owner, JavaResourceType jrt) {
 		return new GenericJavaPersistentType2_0(owner, jrt);
 	}
 	

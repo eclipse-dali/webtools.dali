@@ -59,7 +59,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * </ul>
  */
 public abstract class AbstractJavaPersistentType
-	extends AbstractJavaManagedType<PersistentType.Owner>
+	extends AbstractJavaManagedType<PersistentType.Parent>
 	implements JavaPersistentType
 {
 
@@ -75,7 +75,7 @@ public abstract class AbstractJavaPersistentType
 	protected final Vector<JavaSpecifiedPersistentAttribute> children = new Vector<JavaSpecifiedPersistentAttribute>();
 
 
-	protected AbstractJavaPersistentType(PersistentType.Owner parent, JavaResourceType resourceType) {
+	protected AbstractJavaPersistentType(PersistentType.Parent parent, JavaResourceType resourceType) {
 		super(parent, resourceType);
 		this.specifiedAccess = this.buildSpecifiedAccess();
 

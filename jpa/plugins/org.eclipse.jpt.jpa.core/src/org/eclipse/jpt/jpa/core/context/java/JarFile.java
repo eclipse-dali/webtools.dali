@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.context.java;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistentTypeContainer;
 
 /**
@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistentTypeContainer;
  * @since 2.2
  */
 public interface JarFile
-	extends JpaContextModel, PersistentTypeContainer
+	extends PersistentTypeContainer, PersistentType.Parent
 {
 	JavaResourcePackageFragmentRoot getJarResourcePackageFragmentRoot();
 

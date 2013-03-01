@@ -96,7 +96,7 @@ public class GenericJpaFactory2_0
 	// ********** Java Context Model **********
 
 	@Override
-	public JavaPersistentType buildJavaPersistentType(PersistentType.Owner owner, JavaResourceType jrt) {
+	public JavaPersistentType buildJavaPersistentType(PersistentType.Parent owner, JavaResourceType jrt) {
 		return new GenericJavaPersistentType2_0(owner, jrt);
 	}
 

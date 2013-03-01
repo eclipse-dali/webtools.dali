@@ -301,7 +301,7 @@ public class GenericClassRef
 	}
 
 
-	// ********** PersistentType.Owner implementation **********
+	// ********** PersistentType.Parent implementation **********
 
 	public AccessType getOverridePersistentTypeAccess() {
 		// no access type at this level overrides any local access type specification

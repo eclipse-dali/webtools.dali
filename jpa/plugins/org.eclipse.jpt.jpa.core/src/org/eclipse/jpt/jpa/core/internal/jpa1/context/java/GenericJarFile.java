@@ -23,7 +23,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.context.AccessType;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JarFile;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition;
@@ -39,7 +38,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class GenericJarFile
 	extends AbstractPersistenceXmlContextModel<JarFileRef>
-	implements JarFile, PersistentType.Owner
+	implements JarFile
 {
 	protected final JavaResourcePackageFragmentRoot jarResourcePackageFragmentRoot;
 
@@ -211,7 +210,7 @@ public class GenericJarFile
 		};
 
 
-	// ********** PersistentType.Owner implementation **********
+	// ********** PersistentType.Parent implementation **********
 
 	public AccessType getDefaultPersistentTypeAccess() {
 		return this.getPersistenceUnit().getDefaultAccess();

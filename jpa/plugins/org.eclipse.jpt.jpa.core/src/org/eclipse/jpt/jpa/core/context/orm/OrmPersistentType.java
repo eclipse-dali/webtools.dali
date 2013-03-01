@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
  * @since 2.0
  */
 public interface OrmPersistentType
-	extends OrmManagedType, PersistentType, PersistentType.Owner
+	extends OrmManagedType, PersistentType, PersistentType.Parent
 {
 	
 	// ********** covariant overrides **********

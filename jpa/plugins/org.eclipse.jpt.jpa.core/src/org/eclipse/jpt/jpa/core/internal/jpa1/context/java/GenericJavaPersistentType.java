@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentType
 public class GenericJavaPersistentType
 	extends AbstractJavaPersistentType
 {
-	public GenericJavaPersistentType(PersistentType.Owner parent, JavaResourceType jrt) {
+	public GenericJavaPersistentType(PersistentType.Parent parent, JavaResourceType jrt) {
 		super(parent, jrt);
 	}
 

@@ -32,7 +32,7 @@ public class GenericJavaPersistentType2_0
 	protected final MetamodelSourceType.Synchronizer metamodelSynchronizer;
 
 
-	public GenericJavaPersistentType2_0(PersistentType.Owner parent, JavaResourceType jrt) {
+	public GenericJavaPersistentType2_0(PersistentType.Parent parent, JavaResourceType jrt) {
 		super(parent, jrt);
 		this.declaringTypeName = this.buildDeclaringTypeName();
 		this.metamodelSynchronizer = this.buildMetamodelSynchronizer();

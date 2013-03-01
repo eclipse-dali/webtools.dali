@@ -1064,7 +1064,7 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 
-	// ********** PersistentType.Owner implementation **********
+	// ********** PersistentType.Parent implementation **********
 
 	public AccessType getOverridePersistentTypeAccess() {
 		if (this.specifiedAccess != null) {

@@ -273,7 +273,7 @@ public abstract class AbstractEntityMappings
 	}
 
 
-	// ********** PersistentType.Owner implementation **********
+	// ********** PersistentType.Parent implementation **********
 
 	public AccessType getOverridePersistentTypeAccess() {
 		return this.isXmlMappingMetadataComplete() ? this.specifiedAccess : null;
