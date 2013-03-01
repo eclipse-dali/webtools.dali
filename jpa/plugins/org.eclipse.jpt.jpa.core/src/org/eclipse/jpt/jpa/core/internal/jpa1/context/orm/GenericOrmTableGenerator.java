@@ -35,7 +35,7 @@ import org.eclipse.jpt.jpa.db.Table;
  */
 public class GenericOrmTableGenerator
 	extends AbstractOrmDbGenerator<XmlTableGenerator>
-	implements OrmTableGenerator, SpecifiedUniqueConstraint.Owner
+	implements OrmTableGenerator, SpecifiedUniqueConstraint.Parent
 {
 	protected String specifiedTableName;
 	protected String defaultTableName;
@@ -374,7 +374,7 @@ public class GenericOrmTableGenerator
 	}
 
 	protected OrmSpecifiedUniqueConstraint buildUniqueConstraint(XmlUniqueConstraint resourceUniqueConstraint) {
-		return this.getContextModelFactory().buildOrmUniqueConstraint(this, this, resourceUniqueConstraint);
+		return this.getContextModelFactory().buildOrmUniqueConstraint(this, resourceUniqueConstraint);
 	}
 
 	protected void syncUniqueConstraints() {
@@ -417,7 +417,7 @@ public class GenericOrmTableGenerator
 	}
 
 
-	// ********** UniqueConstraint.Owner implementation **********
+	// ********** SpecifiedUniqueConstraint.Parent implementation **********
 
 	public Iterable<String> getCandidateUniqueConstraintColumnNames() {
 		org.eclipse.jpt.jpa.db.Table dbTable = this.getDbTable();

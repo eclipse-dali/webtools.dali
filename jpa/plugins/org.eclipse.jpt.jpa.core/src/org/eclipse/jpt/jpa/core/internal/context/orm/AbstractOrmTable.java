@@ -46,7 +46,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractOrmTable<P extends JpaContextModel, X extends AbstractXmlTable>
 	extends AbstractOrmXmlContextModel<P>
-	implements OrmTable, SpecifiedUniqueConstraint.Owner
+	implements OrmTable, SpecifiedUniqueConstraint.Parent
 {
 	protected final Owner owner;
 
@@ -314,7 +314,7 @@ public abstract class AbstractOrmTable<P extends JpaContextModel, X extends Abst
 	}
 
 	protected OrmSpecifiedUniqueConstraint buildUniqueConstraint(XmlUniqueConstraint xmlConstraint) {
-		return this.getContextModelFactory().buildOrmUniqueConstraint(this, this, xmlConstraint);
+		return this.getContextModelFactory().buildOrmUniqueConstraint(this, xmlConstraint);
 	}
 
 	protected void syncUniqueConstraints() {
@@ -408,7 +408,7 @@ public abstract class AbstractOrmTable<P extends JpaContextModel, X extends Abst
 	}
 
 
-	// ********** UniqueConstraint.Owner implementation **********
+	// ********** SpecifiedUniqueConstraint.Parent implementation **********
 
 	public Iterable<String> getCandidateUniqueConstraintColumnNames() {
 		org.eclipse.jpt.jpa.db.Table dbTable = this.getDbTable();

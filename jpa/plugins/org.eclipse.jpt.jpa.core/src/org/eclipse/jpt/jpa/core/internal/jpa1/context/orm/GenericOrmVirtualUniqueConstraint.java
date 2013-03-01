@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.context.VirtualUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmUniqueConstraint;
 
 public class GenericOrmVirtualUniqueConstraint
-	extends AbstractOrmUniqueConstraint
+	extends AbstractOrmUniqueConstraint<JpaContextModel>
 	implements VirtualUniqueConstraint
 {
 	protected final UniqueConstraint overriddenUniqueConstraint;

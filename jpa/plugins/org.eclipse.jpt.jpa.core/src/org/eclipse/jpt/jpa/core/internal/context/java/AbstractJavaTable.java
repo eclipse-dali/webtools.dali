@@ -46,7 +46,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractJavaTable<P extends JpaContextModel, A extends BaseTableAnnotation>
 	extends AbstractJavaContextModel<P>
-	implements JavaTable, SpecifiedUniqueConstraint.Owner
+	implements JavaTable, SpecifiedUniqueConstraint.Parent
 {
 	protected final Owner owner;
 
@@ -293,7 +293,7 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, A extends Bas
 	}
 
 	protected JavaSpecifiedUniqueConstraint buildUniqueConstraint(UniqueConstraintAnnotation constraintAnnotation) {
-		return this.getJpaFactory().buildJavaUniqueConstraint(this, this, constraintAnnotation);
+		return this.getJpaFactory().buildJavaUniqueConstraint(this, constraintAnnotation);
 	}
 
 	protected ListIterable<UniqueConstraintAnnotation> getUniqueConstraintAnnotations() {
@@ -380,7 +380,7 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, A extends Bas
 	}
 
 
-	// ********** UniqueConstraint.Owner implementation **********
+	// ********** SpecifiedUniqueConstraint.Parent implementation **********
 
 	public Iterable<String> getCandidateUniqueConstraintColumnNames() {
 		org.eclipse.jpt.jpa.db.Table dbTable = this.getDbTable();

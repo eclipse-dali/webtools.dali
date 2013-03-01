@@ -51,7 +51,7 @@ public class GenericJavaOrderable
 	protected boolean customOrdering = false;
 
 	// JPA 2.0
-	protected final ParentAdapter parentAdapter;
+	protected final ParentAdapter<JavaAttributeMapping> parentAdapter;
 	protected boolean orderColumnOrdering = false;
 	protected final JavaSpecifiedOrderColumn2_0 orderColumn;
 
@@ -60,14 +60,14 @@ public class GenericJavaOrderable
 	 * JPA 1.0
 	 */
 	public GenericJavaOrderable(JavaAttributeMapping parent) {
-		this(new ParentAdapter.Null(parent));
+		this(new ParentAdapter.Null<JavaAttributeMapping>(parent));
 	}
 
 	/**
 	 * JPA 2.0
 	 */
-	public GenericJavaOrderable(ParentAdapter parentAdapter) {
-		super((JavaAttributeMapping) parentAdapter.getOrderableParent());
+	public GenericJavaOrderable(ParentAdapter<JavaAttributeMapping> parentAdapter) {
+		super(parentAdapter.getOrderableParent());
 		this.specifiedOrderBy = this.buildSpecifiedOrderBy();
 		this.noOrdering = this.buildNoOrdering();
 		this.pkOrdering = this.buildPkOrdering();

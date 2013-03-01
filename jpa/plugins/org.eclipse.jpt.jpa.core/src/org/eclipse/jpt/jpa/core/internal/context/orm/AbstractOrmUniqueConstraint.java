@@ -14,14 +14,14 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 
-public abstract class AbstractOrmUniqueConstraint
-	extends AbstractOrmXmlContextModel<JpaContextModel>
+public abstract class AbstractOrmUniqueConstraint<P extends JpaContextModel>
+	extends AbstractOrmXmlContextModel<P>
 	implements UniqueConstraint
 {
 	protected final Vector<String> columnNames = new Vector<String>();
 
 
-	public AbstractOrmUniqueConstraint(JpaContextModel parent) {
+	public AbstractOrmUniqueConstraint(P parent) {
 		super(parent);
 	}
 

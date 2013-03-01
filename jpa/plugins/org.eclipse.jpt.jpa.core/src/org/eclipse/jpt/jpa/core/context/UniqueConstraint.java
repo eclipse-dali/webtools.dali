@@ -36,14 +36,4 @@ public interface UniqueConstraint
 	 * Return the column name at the specified index.
 	 */
 	String getColumnName(int index);
-
-
-	// ********** owner **********
-
-	/**
-	 * All containers must implement this interface.
-	 */
-	interface Owner {
-		Iterable<String> getCandidateUniqueConstraintColumnNames();
-	}
 }

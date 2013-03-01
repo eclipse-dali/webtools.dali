@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,25 +11,22 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmUniqueConstraint;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlUniqueConstraint;
 
 public class GenericOrmUniqueConstraint
-	extends AbstractOrmUniqueConstraint
+	extends AbstractOrmUniqueConstraint<SpecifiedUniqueConstraint.Parent>
 	implements OrmSpecifiedUniqueConstraint
 {
-	protected Owner owner;
 	protected final XmlUniqueConstraint xmlUniqueConstraint;
 
 
-	public GenericOrmUniqueConstraint(JpaContextModel parent, Owner owner, XmlUniqueConstraint xmlUniqueConstraint) {
+	public GenericOrmUniqueConstraint(Parent parent, XmlUniqueConstraint xmlUniqueConstraint) {
 		super(parent);
-		this.owner = owner;
 		this.xmlUniqueConstraint = xmlUniqueConstraint;
 		this.initializeColumnNames();
 	}
@@ -124,7 +121,7 @@ public class GenericOrmUniqueConstraint
 	}
 
 	protected Iterable<String> getCandidateColumnNames() {
-		return this.owner.getCandidateUniqueConstraintColumnNames();
+		return this.parent.getCandidateUniqueConstraintColumnNames();
 	}
 
 	// ********** misc **********

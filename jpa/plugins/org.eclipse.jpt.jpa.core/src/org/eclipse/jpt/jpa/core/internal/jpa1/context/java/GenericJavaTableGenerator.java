@@ -19,6 +19,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.context.DbGenerator;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.TableGenerator;
 import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
@@ -38,7 +39,7 @@ import org.eclipse.jpt.jpa.db.Table;
  */
 public class GenericJavaTableGenerator
 	extends AbstractJavaDbGenerator<TableGeneratorAnnotation>
-	implements JavaTableGenerator, SpecifiedUniqueConstraint.Owner
+	implements JavaTableGenerator, SpecifiedUniqueConstraint.Parent
 {
 	protected String specifiedTableName;
 	protected String defaultTableName;
@@ -378,7 +379,7 @@ public class GenericJavaTableGenerator
 	}
 
 	protected JavaSpecifiedUniqueConstraint buildUniqueConstraint(UniqueConstraintAnnotation constraintAnnotation) {
-		return this.getJpaFactory().buildJavaUniqueConstraint(this, this, constraintAnnotation);
+		return this.getJpaFactory().buildJavaUniqueConstraint(this, constraintAnnotation);
 	}
 
 	protected ListIterable<UniqueConstraintAnnotation> getUniqueConstraintAnnotations() {
@@ -416,7 +417,7 @@ public class GenericJavaTableGenerator
 	}
 
 
-	// ********** UniqueConstraint.Owner implementation **********
+	// ********** SpecifiedUniqueConstraint.Parent implementation **********
 
 	public Iterable<String> getCandidateUniqueConstraintColumnNames() {
 		org.eclipse.jpt.jpa.db.Table dbTable = this.getDbTable();

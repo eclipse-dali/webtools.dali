@@ -367,8 +367,8 @@ public abstract class AbstractOrmXmlContextModelFactory
 		return new UnsupportedOrmAttributeMapping(parent, resourceMapping);
 	}
 	
-	public OrmSpecifiedUniqueConstraint buildOrmUniqueConstraint(JpaContextModel parent, SpecifiedUniqueConstraint.Owner owner, XmlUniqueConstraint resourceUniqueConstraint) {
-		return new GenericOrmUniqueConstraint(parent, owner, resourceUniqueConstraint);
+	public OrmSpecifiedUniqueConstraint buildOrmUniqueConstraint(SpecifiedUniqueConstraint.Parent parent, XmlUniqueConstraint resourceUniqueConstraint) {
+		return new GenericOrmUniqueConstraint(parent, resourceUniqueConstraint);
 	}
 
 	public VirtualUniqueConstraint buildOrmVirtualUniqueConstraint(JpaContextModel parent, UniqueConstraint overriddenUniqueConstraint) {

@@ -70,4 +70,15 @@ public interface SpecifiedUniqueConstraint
 	 */
 	boolean isEquivalentTo(SpecifiedUniqueConstraint uniqueConstraint);
 
+
+	// ********** parent adapter **********
+
+	/**
+	 * All parents must implement this interface.
+	 */
+	interface Parent
+		extends JpaContextModel
+	{
+		Iterable<String> getCandidateUniqueConstraintColumnNames();
+	}
 }

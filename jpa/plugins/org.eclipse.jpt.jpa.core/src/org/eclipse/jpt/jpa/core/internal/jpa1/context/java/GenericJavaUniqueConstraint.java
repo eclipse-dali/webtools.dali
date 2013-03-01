@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,24 +13,21 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaUniqueConstraint;
 import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
 
 public class GenericJavaUniqueConstraint
-	extends AbstractJavaUniqueConstraint
+	extends AbstractJavaUniqueConstraint<SpecifiedUniqueConstraint.Parent>
 	implements JavaSpecifiedUniqueConstraint
 {
-	protected Owner owner;
 	protected final UniqueConstraintAnnotation uniqueConstraintAnnotation;
 
 
-	public GenericJavaUniqueConstraint(JpaContextModel parent, Owner owner, UniqueConstraintAnnotation uniqueConstraintAnnotation) {
+	public GenericJavaUniqueConstraint(Parent parent, UniqueConstraintAnnotation uniqueConstraintAnnotation) {
 		super(parent);
-		this.owner = owner;
 		this.uniqueConstraintAnnotation = uniqueConstraintAnnotation;
 		this.initializeColumnNames();
 	}
@@ -105,7 +102,7 @@ public class GenericJavaUniqueConstraint
 	}
 
 	protected Iterable<String> getCandidateColumnNames() {
-		return this.owner.getCandidateUniqueConstraintColumnNames();
+		return this.parent.getCandidateUniqueConstraintColumnNames();
 	}
 
 

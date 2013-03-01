@@ -257,7 +257,7 @@ public interface OrmXmlContextModelFactory
 	 */
 	OrmAttributeMapping buildUnsupportedOrmAttributeMapping(OrmSpecifiedPersistentAttribute parent, XmlNullAttributeMapping resourceMapping);
 
-	OrmSpecifiedUniqueConstraint buildOrmUniqueConstraint(JpaContextModel parent, SpecifiedUniqueConstraint.Owner owner, XmlUniqueConstraint resourceUniqueConstraint);
+	OrmSpecifiedUniqueConstraint buildOrmUniqueConstraint(SpecifiedUniqueConstraint.Parent parent, XmlUniqueConstraint resourceUniqueConstraint);
 
 	VirtualUniqueConstraint buildOrmVirtualUniqueConstraint(JpaContextModel parent, UniqueConstraint overriddenUniqueConstraint);
 

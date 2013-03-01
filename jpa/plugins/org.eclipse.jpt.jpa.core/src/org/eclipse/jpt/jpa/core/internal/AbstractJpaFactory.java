@@ -389,8 +389,8 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaQueryHint(parent, queryHintAnnotation);
 	}
 	
-	public JavaSpecifiedUniqueConstraint buildJavaUniqueConstraint(JpaContextModel parent, SpecifiedUniqueConstraint.Owner owner, UniqueConstraintAnnotation constraintAnnotation) {
-		return new GenericJavaUniqueConstraint(parent, owner, constraintAnnotation);
+	public JavaSpecifiedUniqueConstraint buildJavaUniqueConstraint(SpecifiedUniqueConstraint.Parent parent, UniqueConstraintAnnotation constraintAnnotation) {
+		return new GenericJavaUniqueConstraint(parent, constraintAnnotation);
 	}
 	
 	public VirtualUniqueConstraint buildJavaVirtualUniqueConstraint(JpaContextModel parent, UniqueConstraint overriddenUniqueConstraint) {

@@ -269,7 +269,7 @@ public interface JpaFactory
 	
 	JavaQueryHint buildJavaQueryHint(JavaQuery parent, QueryHintAnnotation queryHintAnnotation);
 	
-	JavaSpecifiedUniqueConstraint buildJavaUniqueConstraint(JpaContextModel parent, SpecifiedUniqueConstraint.Owner owner, UniqueConstraintAnnotation constraintAnnotation);
+	JavaSpecifiedUniqueConstraint buildJavaUniqueConstraint(SpecifiedUniqueConstraint.Parent parent, UniqueConstraintAnnotation constraintAnnotation);
 	
 	VirtualUniqueConstraint buildJavaVirtualUniqueConstraint(JpaContextModel parent, UniqueConstraint overriddenUniqueConstraint);
 	
