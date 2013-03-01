@@ -51,7 +51,7 @@ public class GenericJavaOrderable
 	protected boolean customOrdering = false;
 
 	// JPA 2.0
-	protected final Owner owner;  // this is null for JPA 1.0 mappings
+	protected final ParentAdapter owner;  // this is null for JPA 1.0 mappings
 	protected boolean orderColumnOrdering = false;
 	protected final JavaSpecifiedOrderColumn2_0 orderColumn;
 
@@ -66,7 +66,7 @@ public class GenericJavaOrderable
 	/**
 	 * JPA 2.0
 	 */
-	public GenericJavaOrderable(JavaAttributeMapping parent, Owner owner) {
+	public GenericJavaOrderable(JavaAttributeMapping parent, ParentAdapter owner) {
 		super(parent);
 		this.specifiedOrderBy = this.buildSpecifiedOrderBy();
 		this.noOrdering = this.buildNoOrdering();
@@ -81,8 +81,8 @@ public class GenericJavaOrderable
 	/**
 	 * null Owner implementation for JPA 1.0 where there is no OrderColumn
 	 */
-	static Owner buildNullOwner() {
-		return new Owner() {
+	static ParentAdapter buildNullOwner() {
+		return new ParentAdapter() {
 			public Table resolveDbTable(String tableName) {
 				return null;
 			}

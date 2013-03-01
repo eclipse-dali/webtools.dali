@@ -382,12 +382,12 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		return this.getJpaFactory().buildJavaOrderable(this, this.buildOrderableOwner());
 	}
 
-	protected Orderable2_0.Owner buildOrderableOwner() {
+	protected Orderable2_0.ParentAdapter buildOrderableOwner() {
 		return new OrderableOwner();
 	}
 
 	protected class OrderableOwner
-		implements Orderable2_0.Owner
+		implements Orderable2_0.ParentAdapter
 	{
 		public String getTableName() {
 			return this.getCollectionTable().getName();

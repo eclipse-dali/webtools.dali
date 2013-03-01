@@ -49,7 +49,7 @@ public class GenericOrmOrderable
 	protected boolean customOrdering = false;
 
 	// JPA 2.0
-	protected final Owner owner;  // this is null for JPA 1.0 mappings
+	protected final ParentAdapter owner;  // this is null for JPA 1.0 mappings
 	protected boolean orderColumnOrdering = false;
 	protected final OrmSpecifiedOrderColumn2_0 orderColumn;  // this is null for JPA 1.0 mappings
 
@@ -64,7 +64,7 @@ public class GenericOrmOrderable
 	/**
 	 * JPA 2.0
 	 */
-	public GenericOrmOrderable(OrmAttributeMapping parent, Owner owner) {
+	public GenericOrmOrderable(OrmAttributeMapping parent, ParentAdapter owner) {
 		super(parent);
 
 		this.specifiedOrderBy = this.buildSpecifiedOrderBy();
@@ -81,8 +81,8 @@ public class GenericOrmOrderable
 	/**
 	 * null Owner implementation for JPA 1.0 where there is no OrderColumn
 	 */
-	static Owner buildNullOwner() {
-		return new Owner() {
+	static ParentAdapter buildNullOwner() {
+		return new ParentAdapter() {
 			public Table resolveDbTable(String tableName) {
 				return null;
 			}

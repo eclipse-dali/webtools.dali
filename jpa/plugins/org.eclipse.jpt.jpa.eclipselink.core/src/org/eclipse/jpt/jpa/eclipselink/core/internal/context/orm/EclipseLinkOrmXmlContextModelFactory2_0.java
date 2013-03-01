@@ -79,7 +79,7 @@ public class EclipseLinkOrmXmlContextModelFactory2_0
 		throw new UnsupportedOperationException("use #buildOrmOrderable(OrmAttributeMapping parent, Orderable2_0.Owner owner)"); //$NON-NLS-1$
 	}
 
-	public OrmOrderable2_0 buildOrmOrderable(OrmAttributeMapping parent, Orderable2_0.Owner owner) {
+	public OrmOrderable2_0 buildOrmOrderable(OrmAttributeMapping parent, Orderable2_0.ParentAdapter owner) {
 		return new GenericOrmOrderable(parent, owner);
 	}
 	

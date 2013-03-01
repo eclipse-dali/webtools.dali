@@ -40,7 +40,7 @@ import org.eclipse.jpt.jpa.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType;
-import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0.Owner;
+import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0.ParentAdapter;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableReference2_0;
@@ -133,7 +133,7 @@ public class EclipseLink2_0JpaFactory
 		return new GenericJavaColumn(parent, owner);
 	}
 
-	public JavaOrderable2_0 buildJavaOrderable(JavaAttributeMapping parent, Owner owner) {
+	public JavaOrderable2_0 buildJavaOrderable(JavaAttributeMapping parent, ParentAdapter owner) {
 		return new GenericJavaOrderable(parent, owner);
 	}
 

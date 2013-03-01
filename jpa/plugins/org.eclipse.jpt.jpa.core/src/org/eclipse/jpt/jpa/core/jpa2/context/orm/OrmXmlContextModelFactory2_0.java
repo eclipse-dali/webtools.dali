@@ -45,7 +45,7 @@ public interface OrmXmlContextModelFactory2_0
 	
 	OrphanRemovable2_0 buildOrmOrphanRemoval(OrphanRemovalMapping2_0 parent);
 	
-	OrmOrderable2_0 buildOrmOrderable(OrmAttributeMapping parent, Orderable2_0.Owner owner);
+	OrmOrderable2_0 buildOrmOrderable(OrmAttributeMapping parent, Orderable2_0.ParentAdapter owner);
 	
 	OrmSpecifiedOrderColumn2_0 buildOrmOrderColumn(OrmOrderable2_0 parent, OrmSpecifiedOrderColumn2_0.Owner owner);
 	

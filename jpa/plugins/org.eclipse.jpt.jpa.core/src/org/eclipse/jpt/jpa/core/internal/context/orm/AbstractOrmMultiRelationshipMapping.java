@@ -194,12 +194,12 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 				this.getContextModelFactory().buildOrmOrderable(this);
 	}
 
-	protected Orderable2_0.Owner buildOrderableOwner() {
+	protected Orderable2_0.ParentAdapter buildOrderableOwner() {
 		return new OrderableOwner();
 	}
 
 	protected class OrderableOwner
-		implements Orderable2_0.Owner
+		implements Orderable2_0.ParentAdapter
 	{
 		public String getTableName() {
 			return this.getRelationshipStrategy().getTableName();
