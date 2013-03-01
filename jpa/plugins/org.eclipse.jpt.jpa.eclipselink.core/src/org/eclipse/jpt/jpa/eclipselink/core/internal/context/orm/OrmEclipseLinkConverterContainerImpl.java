@@ -9,14 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterContainer;
 
 public final class OrmEclipseLinkConverterContainerImpl
 	extends AbstractOrmEclipseLinkConverterContainerImpl
 {
-
-	public OrmEclipseLinkConverterContainerImpl(JpaContextModel parent, Owner owner,  XmlConverterContainer xmlConverterContainer) {
-		super(parent, owner, xmlConverterContainer);
+	public OrmEclipseLinkConverterContainerImpl(OrmEclipseLinkConverterContainer.Parent parent, XmlConverterContainer xmlConverterContainer) {
+		super(parent, xmlConverterContainer);
 	}
 }

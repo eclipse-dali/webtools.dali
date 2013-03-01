@@ -71,12 +71,12 @@ final class EclipseLinkConverterStateObject extends AbstractNode
 	}
 
 	private boolean addNumberOfConvertersProblemsTo(List<Problem> currentProblems) {
-		if (this.converterContainer.getNumberSupportedConverters() <= this.converterContainer.getConvertersSize()) {
+		if (this.converterContainer.getMaximumAllowedConverters() <= this.converterContainer.getConvertersSize()) {
 			currentProblems.add(
 				buildProblem(
 					JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERTERS_COMPOSITE_MAX_CONVERTERS_ERROR_MESSAGE, 
 					IMessageProvider.ERROR,
-					Integer.valueOf(this.converterContainer.getNumberSupportedConverters())));
+					Integer.valueOf(this.converterContainer.getMaximumAllowedConverters())));
 			return false;
 		}
 		return true;

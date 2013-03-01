@@ -54,7 +54,7 @@ public class EclipseLinkEntityMappingsImpl
 	extends AbstractEntityMappings
 	implements 
 		EclipseLinkEntityMappings, 
-		OrmEclipseLinkConverterContainer.Owner
+		OrmEclipseLinkConverterContainer.Parent
 {
 	protected final OrmEclipseLinkConverterContainer converterContainer;
 
@@ -153,10 +153,10 @@ public class EclipseLinkEntityMappingsImpl
 	}
 
 	protected OrmEclipseLinkConverterContainer buildConverterContainer() {
-		return new OrmEclipseLinkEntityMappingsConverterContainer(this, this, (XmlEntityMappings) this.xmlEntityMappings);
+		return new OrmEclipseLinkEntityMappingsConverterContainer(this, (XmlEntityMappings) this.xmlEntityMappings);
 	}
 
-	public int getNumberSupportedConverters() {
+	public int getMaximumAllowedConverters() {
 		return Integer.MAX_VALUE;
 	}
 

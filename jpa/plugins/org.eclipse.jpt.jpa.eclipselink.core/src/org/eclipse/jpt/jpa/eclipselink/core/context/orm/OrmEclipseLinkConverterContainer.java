@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.context.orm;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkCustomConverter;
@@ -50,7 +51,15 @@ public interface OrmEclipseLinkConverterContainer
 	OrmEclipseLinkTypeConverter addTypeConverter(String name);
 
 
-	interface Owner {
-		int getNumberSupportedConverters();
+	// ********** parent interface **********
+
+	interface Parent
+		extends JpaContextModel
+	{
+		/**
+		 * Return the maximum number converters the parent allows the
+		 * converter container to hold.
+		 */
+		int getMaximumAllowedConverters();
 	}
 }

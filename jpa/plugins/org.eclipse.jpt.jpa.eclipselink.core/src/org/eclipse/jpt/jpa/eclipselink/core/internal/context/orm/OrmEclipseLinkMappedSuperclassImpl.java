@@ -55,7 +55,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 	implements
 		OrmEclipseLinkMappedSuperclass,
 		OrmCacheableReference2_0,
-		OrmEclipseLinkConverterContainer.Owner
+		OrmEclipseLinkConverterContainer.Parent
 {
 	protected final OrmEclipseLinkReadOnly readOnly;
 
@@ -144,10 +144,10 @@ public class OrmEclipseLinkMappedSuperclassImpl
 	}
 
 	protected OrmEclipseLinkConverterContainer buildConverterContainer() {
-		return new OrmEclipseLinkConverterContainerImpl(this, this, this.xmlTypeMapping);
+		return new OrmEclipseLinkConverterContainerImpl(this, this.xmlTypeMapping);
 	}
 
-	public int getNumberSupportedConverters() {
+	public int getMaximumAllowedConverters() {
 		return Integer.MAX_VALUE;
 	}
 

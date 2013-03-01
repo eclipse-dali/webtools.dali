@@ -15,7 +15,6 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
@@ -35,11 +34,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractOrmEclipseLinkConverterContainerImpl
-	extends AbstractOrmXmlContextModel<JpaContextModel>
+	extends AbstractOrmXmlContextModel<OrmEclipseLinkConverterContainer.Parent>
 	implements OrmEclipseLinkConverterContainer
 {
-
-	private final Owner owner;
 	protected final XmlConverterContainer xmlConverterContainer;
 
 	protected final ContextListContainer<OrmEclipseLinkCustomConverter, XmlConverter> customConverterContainer;
@@ -48,9 +45,8 @@ public abstract class AbstractOrmEclipseLinkConverterContainerImpl
 	protected final ContextListContainer<OrmEclipseLinkTypeConverter, XmlTypeConverter> typeConverterContainer;
 
 
-	protected AbstractOrmEclipseLinkConverterContainerImpl(JpaContextModel parent, Owner owner,  XmlConverterContainer xmlConverterContainer) {
+	protected AbstractOrmEclipseLinkConverterContainerImpl(OrmEclipseLinkConverterContainer.Parent parent, XmlConverterContainer xmlConverterContainer) {
 		super(parent);
-		this.owner = owner;
 		this.xmlConverterContainer = xmlConverterContainer;
 
 		this.customConverterContainer = this.buildCustomConverterContainer();
@@ -540,8 +536,8 @@ public abstract class AbstractOrmEclipseLinkConverterContainerImpl
 			+ this.getTypeConvertersSize();
 	}
 
-	public int getNumberSupportedConverters() {
-		return this.owner.getNumberSupportedConverters();
+	public int getMaximumAllowedConverters() {
+		return this.parent.getMaximumAllowedConverters();
 	}
 
 	// ********** completion proposals **********

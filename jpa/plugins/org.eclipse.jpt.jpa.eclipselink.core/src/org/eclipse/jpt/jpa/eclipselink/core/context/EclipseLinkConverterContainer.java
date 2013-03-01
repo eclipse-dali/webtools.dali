@@ -31,7 +31,7 @@ public interface EclipseLinkConverterContainer
 	
 	int getConvertersSize();
 
-	int getNumberSupportedConverters();
+	int getMaximumAllowedConverters();
 
 	
 	//************ customConverters *********************

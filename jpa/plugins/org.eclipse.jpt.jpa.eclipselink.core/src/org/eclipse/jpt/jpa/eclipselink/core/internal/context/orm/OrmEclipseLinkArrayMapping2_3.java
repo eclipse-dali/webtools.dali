@@ -52,7 +52,7 @@ public class OrmEclipseLinkArrayMapping2_3
 	implements
 		EclipseLinkArrayMapping2_3,
 		EclipseLinkOrmConvertibleMapping,
-		OrmEclipseLinkConverterContainer.Owner,
+		OrmEclipseLinkConverterContainer.Parent,
 		OrmColumnMapping
 {
 	protected final OrmSpecifiedColumn column;
@@ -230,10 +230,10 @@ public class OrmEclipseLinkArrayMapping2_3
 	}
 
 	protected OrmEclipseLinkConverterContainer buildConverterContainer() {
-		return new OrmEclipseLinkConverterContainerImpl(this, this, this.xmlAttributeMapping);
+		return new OrmEclipseLinkConverterContainerImpl(this, this.xmlAttributeMapping);
 	}
 
-	public int getNumberSupportedConverters() {
+	public int getMaximumAllowedConverters() {
 		return 2; //TODO EclipseLink supports 2, but really should be just 1, see bug 365114
 	}
 

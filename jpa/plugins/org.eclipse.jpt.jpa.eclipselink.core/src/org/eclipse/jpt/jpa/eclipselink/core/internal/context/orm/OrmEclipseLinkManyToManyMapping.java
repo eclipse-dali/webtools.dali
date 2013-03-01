@@ -36,7 +36,7 @@ public class OrmEclipseLinkManyToManyMapping
 	implements
 		EclipseLinkManyToManyMapping2_0, 
 		EclipseLinkOrmConvertibleMapping,
-		OrmEclipseLinkConverterContainer.Owner
+		OrmEclipseLinkConverterContainer.Parent
 {
 	protected final OrmEclipseLinkJoinFetch joinFetch;
 	
@@ -93,10 +93,10 @@ public class OrmEclipseLinkManyToManyMapping
 	}
 
 	protected OrmEclipseLinkConverterContainer buildConverterContainer() {
-		return new OrmEclipseLinkConverterContainerImpl(this, this, this.xmlAttributeMapping);
+		return new OrmEclipseLinkConverterContainerImpl(this, this.xmlAttributeMapping);
 	}
 
-	public int getNumberSupportedConverters() {
+	public int getMaximumAllowedConverters() {
 		return 1;
 	}
 

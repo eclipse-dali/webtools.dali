@@ -452,7 +452,7 @@ public class JavaEclipseLinkConverterContainerImpl
 			+ this.getTypeConvertersSize();
 	}
 
-	public int getNumberSupportedConverters() {
+	public int getMaximumAllowedConverters() {
 		return Integer.MAX_VALUE;
 	}
 

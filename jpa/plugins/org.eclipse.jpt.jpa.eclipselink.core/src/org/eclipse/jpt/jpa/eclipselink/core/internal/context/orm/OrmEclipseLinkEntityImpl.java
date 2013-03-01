@@ -55,7 +55,7 @@ public class OrmEclipseLinkEntityImpl
 	extends AbstractOrmEntity<XmlEntity>
 	implements
 		OrmEclipseLinkEntity,
-		OrmEclipseLinkConverterContainer.Owner
+		OrmEclipseLinkConverterContainer.Parent
 {
 	protected final OrmEclipseLinkReadOnly readOnly;
 
@@ -135,10 +135,10 @@ public class OrmEclipseLinkEntityImpl
 	}
 
 	protected OrmEclipseLinkConverterContainer buildConverterContainer() {
-		return new OrmEclipseLinkConverterContainerImpl(this, this, this.xmlTypeMapping);
+		return new OrmEclipseLinkConverterContainerImpl(this, this.xmlTypeMapping);
 	}
 
-	public int getNumberSupportedConverters() {
+	public int getMaximumAllowedConverters() {
 		return Integer.MAX_VALUE;
 	}
 

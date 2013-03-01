@@ -42,7 +42,7 @@ public class OrmEclipseLinkEmbeddableImpl
 	extends AbstractOrmEmbeddable<XmlEmbeddable>
 	implements 
 		OrmEclipseLinkEmbeddable,
-		OrmEclipseLinkConverterContainer.Owner
+		OrmEclipseLinkConverterContainer.Parent
 {
 	protected final OrmEclipseLinkConverterContainer converterContainer;
 
@@ -85,10 +85,10 @@ public class OrmEclipseLinkEmbeddableImpl
 	}
 
 	protected OrmEclipseLinkConverterContainer buildConverterContainer() {
-		return new OrmEclipseLinkConverterContainerImpl(this, this, this.getXmlTypeMapping());
+		return new OrmEclipseLinkConverterContainerImpl(this, this.getXmlTypeMapping());
 	}
 
-	public int getNumberSupportedConverters() {
+	public int getMaximumAllowedConverters() {
 		return Integer.MAX_VALUE;
 	}
 
