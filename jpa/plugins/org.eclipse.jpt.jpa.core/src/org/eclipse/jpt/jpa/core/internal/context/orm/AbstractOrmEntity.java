@@ -29,6 +29,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation.Supported;
 import org.eclipse.jpt.jpa.core.MappingKeys;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -1288,7 +1289,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected OrmAttributeOverrideContainer buildAttributeOverrideContainer() {
-		return this.getContextModelFactory().buildOrmAttributeOverrideContainer(this, new AttributeOverrideContainerOwner());
+		return this.getContextModelFactory().buildOrmAttributeOverrideContainer(new AttributeOverrideContainerParentAdapter());
 	}
 
 	protected TypeMapping getOverridableTypeMapping() {
@@ -1322,7 +1323,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected OrmAssociationOverrideContainer buildAssociationOverrideContainer() {
-		return this.getContextModelFactory().buildOrmAssociationOverrideContainer(this, new AssociationOverrideContainerOwner());
+		return this.getContextModelFactory().buildOrmAssociationOverrideContainer(new AssociationOverrideContainerParentAdapter());
 	}
 
 	@Override
@@ -1945,14 +1946,19 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		return null;
 	}
 
-	// ********** OrmOverrideContainer.Owner implementation **********
+
+	// ********** override container parent adapter **********
 
 	/**
 	 * some common behavior
 	 */
-	protected abstract class OverrideContainerOwner
-		implements OrmOverrideContainer.Owner
+	public abstract class OverrideContainerParentAdapter
+		implements OrmOverrideContainer.ParentAdapter
 	{
+		public JpaContextModel getOverrideContainerParent() {
+			return AbstractOrmEntity.this;
+		}
+
 		public AbstractOrmEntity<?> getTypeMapping() {
 			return AbstractOrmEntity.this;
 		}
@@ -2013,11 +2019,11 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 
-	// ********** OrmAttributeOverrideContainer.Owner implementation **********
+	// ********** attribute override container parent adapter **********
 
-	protected class AttributeOverrideContainerOwner
-		extends OverrideContainerOwner
-		implements OrmAttributeOverrideContainer.Owner
+	public class AttributeOverrideContainerParentAdapter
+		extends OverrideContainerParentAdapter
+		implements OrmAttributeOverrideContainer.ParentAdapter
 	{
 		@Override
 		protected JavaOverrideContainer getOverrideContainer(JavaEntity javaEntity) {
@@ -2050,11 +2056,11 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 
-	// ********** OrmAssociationOverrideContainer.Owner implementation **********
+	// ********** association override container parent adapter **********
 
-	protected class AssociationOverrideContainerOwner
-		extends OverrideContainerOwner
-		implements OrmAssociationOverrideContainer2_0.Owner
+	public class AssociationOverrideContainerParentAdapter
+		extends OverrideContainerParentAdapter
+		implements OrmAssociationOverrideContainer2_0.ParentAdapter
 	{
 		@Override
 		protected JavaOverrideContainer getOverrideContainer(JavaEntity javaEntity) {

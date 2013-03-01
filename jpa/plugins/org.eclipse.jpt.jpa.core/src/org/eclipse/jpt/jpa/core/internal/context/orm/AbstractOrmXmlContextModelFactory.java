@@ -243,12 +243,12 @@ public abstract class AbstractOrmXmlContextModelFactory
 		return new GenericOrmVirtualJoinColumn(parent, owner, overriddenColumn);
 	}
 	
-	public OrmAttributeOverrideContainer buildOrmAttributeOverrideContainer(JpaContextModel parent, OrmAttributeOverrideContainer.Owner owner) {
-		return new GenericOrmAttributeOverrideContainer(parent, owner);
+	public OrmAttributeOverrideContainer buildOrmAttributeOverrideContainer(OrmAttributeOverrideContainer.ParentAdapter parentAdapter) {
+		return new GenericOrmAttributeOverrideContainer(parentAdapter);
 	}
 	
-	public OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(JpaContextModel parent, OrmAssociationOverrideContainer.Owner owner) {
-		return new GenericOrmAssociationOverrideContainer(parent, owner);
+	public OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(OrmAssociationOverrideContainer.ParentAdapter parentAdapter) {
+		return new GenericOrmAssociationOverrideContainer(parentAdapter);
 	}
 	
 	public OrmSpecifiedAttributeOverride buildOrmAttributeOverride(OrmAttributeOverrideContainer parent, XmlAttributeOverride xmlOverride) {

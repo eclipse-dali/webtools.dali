@@ -10,14 +10,14 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.Relationship;
-import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride;
  */
 public class GenericOrmAssociationOverrideContainer
 	extends AbstractOrmOverrideContainer<
-			OrmAssociationOverrideContainer.Owner,
+			OrmAssociationOverrideContainer.ParentAdapter,
 			AssociationOverride,
 			OrmSpecifiedAssociationOverride,
 			OrmVirtualAssociationOverride,
@@ -38,21 +38,25 @@ public class GenericOrmAssociationOverrideContainer
 		>
 	implements OrmAssociationOverrideContainer2_0
 {
-	public GenericOrmAssociationOverrideContainer(JpaContextModel parent, OrmAssociationOverrideContainer.Owner owner) {
-		super(parent, owner);
+	public GenericOrmAssociationOverrideContainer(JpaContextModel parent) {
+		super(parent);
+	}
+
+	public GenericOrmAssociationOverrideContainer(OrmAssociationOverrideContainer.ParentAdapter parentAdapter) {
+		super(parentAdapter);
 	}
 
 
 	public RelationshipMapping getRelationshipMapping(String attributeName) {
-		return MappingTools.getRelationshipMapping(attributeName, this.owner.getOverridableTypeMapping());
+		return MappingTools.getRelationshipMapping(attributeName, this.parentAdapter.getOverridableTypeMapping());
 	}
 
 	public Relationship resolveOverriddenRelationship(String associationOverrideName) {
-		return this.owner.resolveOverriddenRelationship(associationOverrideName);
+		return this.parentAdapter.resolveOverriddenRelationship(associationOverrideName);
 	}
 
-	protected OrmAssociationOverrideContainer2_0.Owner getOwner2_0() {
-		return (OrmAssociationOverrideContainer2_0.Owner) this.owner;
+	protected OrmAssociationOverrideContainer2_0.ParentAdapter getOwner2_0() {
+		return (OrmAssociationOverrideContainer2_0.ParentAdapter) this.parentAdapter;
 	}
 
 	public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner columnOwner) {
@@ -70,7 +74,7 @@ public class GenericOrmAssociationOverrideContainer
 	@Override
 	protected Iterable<XmlAssociationOverride> getXmlOverrides_() {
 		// clone to reduce chance of concurrency problems
-		return IterableTools.cloneLive(this.owner.getXmlOverrides());
+		return IterableTools.cloneLive(this.parentAdapter.getXmlOverrides());
 	}
 
 	@Override

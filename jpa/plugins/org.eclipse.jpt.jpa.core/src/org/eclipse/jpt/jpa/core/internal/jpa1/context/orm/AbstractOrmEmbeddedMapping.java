@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -91,12 +92,12 @@ public abstract class AbstractOrmEmbeddedMapping<X extends XmlEmbedded>
 
 	protected OrmAssociationOverrideContainer buildAssociationOverrideContainer() {
 		return this.isOrmXml2_0Compatible() ?
-				this.getContextModelFactory2_0().buildOrmAssociationOverrideContainer(this, this.buildAssociationOverrideContainerOwner()) :
-				new GenericOrmAssociationOverrideContainer(this, null);
+				this.getContextModelFactory2_0().buildOrmAssociationOverrideContainer(this.buildAssociationOverrideContainerParentAdapter()) :
+				new GenericOrmAssociationOverrideContainer(this);
 	}
 
-	protected OrmAssociationOverrideContainer2_0.Owner buildAssociationOverrideContainerOwner() {
-		return new AssociationOverrideContainerOwner();
+	protected OrmAssociationOverrideContainer2_0.ParentAdapter buildAssociationOverrideContainerParentAdapter() {
+		return new AssociationOverrideContainerParentAdapter();
 	}
 
 
@@ -196,8 +197,8 @@ public abstract class AbstractOrmEmbeddedMapping<X extends XmlEmbedded>
 	}
 
 	@Override
-	protected OrmAttributeOverrideContainer.Owner buildAttributeOverrideContainerOwner() {
-		return new AttributeOverrideContainerOwner();
+	protected OrmAttributeOverrideContainer.ParentAdapter buildAttributeOverrideContainerParentAdapter() {
+		return new AttributeOverrideContainerParentAdapter();
 	}
 
 
@@ -224,20 +225,24 @@ public abstract class AbstractOrmEmbeddedMapping<X extends XmlEmbedded>
 		return null;
 	}
 
-	// ********** attribute override container owner *********
+	// ********** attribute override container parent adapter *********
 
-	protected class AttributeOverrideContainerOwner
-		extends AbstractOrmBaseEmbeddedMapping<XmlEmbedded>.AttributeOverrideContainerOwner
+	public class AttributeOverrideContainerParentAdapter
+		extends AbstractOrmBaseEmbeddedMapping<XmlEmbedded>.AttributeOverrideContainerParentAdapter
 	{
 		// nothing yet
 	}
 
 
-	// ********** association override container owner **********
+	// ********** association override container parent adapter **********
 
-	protected class AssociationOverrideContainerOwner
-		implements OrmAssociationOverrideContainer2_0.Owner
+	public class AssociationOverrideContainerParentAdapter
+		implements OrmAssociationOverrideContainer2_0.ParentAdapter
 	{
+		public JpaContextModel getOverrideContainerParent() {
+			return AbstractOrmEmbeddedMapping.this;
+		}
+
 		protected String getMappingName() {
 			return AbstractOrmEmbeddedMapping.this.getName();
 		}

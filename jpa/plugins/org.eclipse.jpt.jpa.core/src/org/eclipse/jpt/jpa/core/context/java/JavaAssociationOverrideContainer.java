@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -47,10 +47,10 @@ public interface JavaAssociationOverrideContainer
 	JavaSpecifiedAssociationOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
 
 
-	// ********** owner **********
+	// ********** parent adapter **********
 
-	interface Owner
-		extends AssociationOverrideContainer.Owner, JavaOverrideContainer.Owner
+	interface ParentAdapter
+		extends AssociationOverrideContainer.ParentAdapter, JavaOverrideContainer.ParentAdapter
 	{		
 		// combine interfaces
 	}

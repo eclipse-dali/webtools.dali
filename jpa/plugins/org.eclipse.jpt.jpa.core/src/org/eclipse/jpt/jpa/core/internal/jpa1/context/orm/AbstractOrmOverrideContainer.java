@@ -16,14 +16,14 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.SpecifiedOverride;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.Override_;
+import org.eclipse.jpt.jpa.core.context.SpecifiedOverride;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.VirtualOverride;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOverrideContainer;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualOverride;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -36,7 +36,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>orm.xml</code> override container
  */
 public abstract class AbstractOrmOverrideContainer<
-			O extends OrmOverrideContainer.Owner,
+			PA extends OrmOverrideContainer.ParentAdapter,
 			R extends Override_,
 			S extends OrmSpecifiedOverride,
 			V extends OrmVirtualOverride,
@@ -46,7 +46,7 @@ public abstract class AbstractOrmOverrideContainer<
 	implements OrmOverrideContainer
 {
 	// this can be null if the container is "read-only" (i.e. a "null" container)
-	protected final O owner;
+	protected final PA parentAdapter;
 
 	protected final Vector<S> specifiedOverrides = new Vector<S>();
 	protected final SpecifiedOverrideContainerAdapter specifiedOverrideContainerAdapter = new SpecifiedOverrideContainerAdapter();
@@ -55,9 +55,14 @@ public abstract class AbstractOrmOverrideContainer<
 	protected final VirtualOverrideContainerAdapter virtualOverrideContainerAdapter = new VirtualOverrideContainerAdapter();
 
 
-	protected AbstractOrmOverrideContainer(JpaContextModel parent, O owner) {
+	protected AbstractOrmOverrideContainer(JpaContextModel parent) {
 		super(parent);
-		this.owner = owner;
+		this.parentAdapter = null;
+	}
+
+	protected AbstractOrmOverrideContainer(PA parentAdapter) {
+		super(parentAdapter.getOverrideContainerParent());
+		this.parentAdapter = parentAdapter;
 		this.initializeSpecifiedOverrides();
 	}
 
@@ -157,7 +162,7 @@ public abstract class AbstractOrmOverrideContainer<
 		X xmlOverride = this.buildXmlOverride();
 		S specifiedOverride = this.buildSpecifiedOverride(xmlOverride);
 		this.specifiedOverrides.add(specifiedIndex, specifiedOverride);
-		this.owner.getXmlOverrides().add(specifiedIndex, xmlOverride);
+		this.parentAdapter.getXmlOverrides().add(specifiedIndex, xmlOverride);
 
 		this.initializeSpecifiedOverride(specifiedOverride, virtualOverride);  // trigger update
 
@@ -206,7 +211,7 @@ public abstract class AbstractOrmOverrideContainer<
 	protected S addSpecifiedOverride(int index) {
 		X xmlOverride = this.buildXmlOverride();
 		S override = this.addSpecifiedOverride_(index, xmlOverride);
-		this.owner.getXmlOverrides().add(index, xmlOverride);
+		this.parentAdapter.getXmlOverrides().add(index, xmlOverride);
 		return override;
 	}
 
@@ -218,7 +223,7 @@ public abstract class AbstractOrmOverrideContainer<
 
 	protected void removeSpecifiedOverride(int index) {
 		this.removeSpecifiedOverride_(index);
-		this.owner.getXmlOverrides().remove(index);
+		this.parentAdapter.getXmlOverrides().remove(index);
 	}
 
 	protected void removeSpecifiedOverride_(int index) {
@@ -227,7 +232,7 @@ public abstract class AbstractOrmOverrideContainer<
 
 	public void moveSpecifiedOverride(int targetIndex, int sourceIndex) {
 		this.moveItemInList(targetIndex, sourceIndex, this.specifiedOverrides, SPECIFIED_OVERRIDES_LIST);
-		this.owner.getXmlOverrides().move(targetIndex, sourceIndex);
+		this.parentAdapter.getXmlOverrides().move(targetIndex, sourceIndex);
 	}
 
 	protected void initializeSpecifiedOverrides() {
@@ -243,11 +248,11 @@ public abstract class AbstractOrmOverrideContainer<
 	}
 
 	protected Iterable<X> getXmlOverrides() {
-		return (this.owner == null) ? EmptyIterable.<X>instance() : this.getXmlOverrides_();
+		return (this.parentAdapter == null) ? EmptyIterable.<X>instance() : this.getXmlOverrides_();
 	}
 
 	/**
-	 * pre-condition: {@link #owner} is not <code>null</code>
+	 * pre-condition: {@link #parentAdapter} is not <code>null</code>
 	 */
 	protected abstract Iterable<X> getXmlOverrides_();
 
@@ -382,11 +387,11 @@ public abstract class AbstractOrmOverrideContainer<
 	// ********** misc **********
 
 	public TypeMapping getOverridableTypeMapping() {
-		return this.owner.getOverridableTypeMapping();
+		return this.parentAdapter.getOverridableTypeMapping();
 	}
 
 	public TypeMapping getTypeMapping() {
-		return this.owner.getTypeMapping();
+		return this.parentAdapter.getTypeMapping();
 	}
 
 	/**
@@ -398,39 +403,39 @@ public abstract class AbstractOrmOverrideContainer<
 	 * type.
 	 */
 	protected Iterable<String> getPossibleVirtualOverrideNames() {
-		if (this.owner == null) {
+		if (this.parentAdapter == null) {
 			return EmptyIterable.instance();
 		}
-		Iterable<String> javaNames = this.owner.getJavaOverrideNames();
-		return (javaNames != null) ? javaNames : this.owner.getAllOverridableNames();
+		Iterable<String> javaNames = this.parentAdapter.getJavaOverrideNames();
+		return (javaNames != null) ? javaNames : this.parentAdapter.getAllOverridableNames();
 	}
 
 	public Iterable<String> getAllOverridableNames() {
-		return (this.owner != null) ? this.owner.getAllOverridableNames() : EmptyIterable.<String>instance();
+		return (this.parentAdapter != null) ? this.parentAdapter.getAllOverridableNames() : EmptyIterable.<String>instance();
 	}
 
 	public boolean tableNameIsInvalid(String tableName) {
-		return this.owner.tableNameIsInvalid(tableName);
+		return this.parentAdapter.tableNameIsInvalid(tableName);
 	}
 
 	public Iterable<String> getCandidateTableNames() {
-		return this.owner.getCandidateTableNames();
+		return this.parentAdapter.getCandidateTableNames();
 	}
 
 	public org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName) {
-		return this.owner.resolveDbTable(tableName);
+		return this.parentAdapter.resolveDbTable(tableName);
 	}
 
 	public String getDefaultTableName() {
-		return this.owner.getDefaultTableName();
+		return this.parentAdapter.getDefaultTableName();
 	}
 
 	public JptValidator buildOverrideValidator(Override_ override) {
-		return this.owner.buildOverrideValidator(override, this);
+		return this.parentAdapter.buildOverrideValidator(override, this);
 	}
 
 	public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner columnOwner) {
-		return this.owner.buildColumnValidator(override, column, columnOwner);
+		return this.parentAdapter.buildColumnValidator(override, column, columnOwner);
 	}
 
 	protected R selectOverrideNamed(Iterable<R> overrides, String name) {
@@ -463,7 +468,7 @@ public abstract class AbstractOrmOverrideContainer<
 	public TextRange getValidationTextRange() {
 		return (this.specifiedOverrides.size() > 0) ?
 				this.specifiedOverrides.get(0).getValidationTextRange() :
-				this.owner.getValidationTextRange();
+				this.parentAdapter.getValidationTextRange();
 	}
 
 	// ********** completion proposals **********

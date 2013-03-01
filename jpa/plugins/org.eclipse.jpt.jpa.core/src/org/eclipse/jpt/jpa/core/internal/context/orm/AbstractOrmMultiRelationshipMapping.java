@@ -33,6 +33,7 @@ import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
@@ -678,11 +679,11 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	}
 
 	protected OrmAttributeOverrideContainer buildMapKeyAttributeOverrideContainer() {
-		return this.getContextModelFactory().buildOrmAttributeOverrideContainer(this, this.buildMapKeyAttributeOverrideContainerOwner());
+		return this.getContextModelFactory().buildOrmAttributeOverrideContainer(this.buildMapKeyAttributeOverrideContainerParentAdapter());
 	}
 
-	protected OrmAttributeOverrideContainer.Owner buildMapKeyAttributeOverrideContainerOwner() {
-		return new MapKeyAttributeOverrideContainerOwner();
+	protected OrmAttributeOverrideContainer.ParentAdapter buildMapKeyAttributeOverrideContainerParentAdapter() {
+		return new MapKeyAttributeOverrideContainerParentAdapter();
 	}
 
 	protected JavaSpecifiedAttributeOverride getSpecifiedJavaMapKeyAttributeOverrideNamed(String attributeName) {
@@ -1117,13 +1118,12 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 					this.xmlAttributeMapping.getMapKeyClass().classNameTouches(pos);
 	}
 
-	// ********** abstract owner **********
+	// ********** abstract parent adapter **********
 
 	/**
 	 * some common behavior
 	 */
-	protected class AbstractOwner
-	{
+	protected class AbstractParentAdapter {
 		public OrmTypeMapping getTypeMapping() {
 			return AbstractOrmMultiRelationshipMapping.this.getTypeMapping();
 		}
@@ -1157,7 +1157,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	// ********** map key column owner **********
 
 	protected class MapKeyColumnOwner
-		extends AbstractOwner
+		extends AbstractParentAdapter
 		implements OrmSpecifiedColumn.Owner
 	{
 		public String getDefaultColumnName(NamedColumn column) {
@@ -1186,12 +1186,16 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	}
 
 
-	// ********** map key attribute override container owner **********
+	// ********** map key attribute override container parent adapter **********
 
-	protected class MapKeyAttributeOverrideContainerOwner
-		extends AbstractOwner
-		implements OrmAttributeOverrideContainer.Owner
+	public class MapKeyAttributeOverrideContainerParentAdapter
+		extends AbstractParentAdapter
+		implements OrmAttributeOverrideContainer.ParentAdapter
 	{
+		public JpaContextModel getOverrideContainerParent() {
+			return AbstractOrmMultiRelationshipMapping.this;
+		}
+
 		public TypeMapping getOverridableTypeMapping() {
 			return AbstractOrmMultiRelationshipMapping.this.getResolvedMapKeyEmbeddable();
 		}

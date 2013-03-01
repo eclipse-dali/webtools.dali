@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.jpa2.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
-import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
@@ -35,8 +34,6 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlElementCollection;
 public interface OrmXmlContextModelFactory2_0
 	extends OrmXmlContextModelFactory
 {
-	OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(OrmEmbeddedMapping2_0 parent, OrmAssociationOverrideContainer2_0.Owner owner);
-	
 	OrmDerivedIdentity2_0 buildOrmDerivedIdentity(OrmSingleRelationshipMapping2_0 parent);
 	
 	OrmElementCollectionMapping2_0 buildOrmElementCollectionMapping2_0(OrmSpecifiedPersistentAttribute parent, XmlElementCollection resourceMapping);

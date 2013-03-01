@@ -35,6 +35,7 @@ import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
@@ -857,11 +858,11 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	}
 
 	public JavaAttributeOverrideContainer buildMapKeyAttributeOverrideContainer() {
-		return this.getJpaFactory().buildJavaAttributeOverrideContainer(this, this.buildMapKeyAttributeOverrideContainerOwner());
+		return this.getJpaFactory().buildJavaAttributeOverrideContainer(this.buildMapKeyAttributeOverrideContainerParentAdapter());
 	}
 
-	protected JavaAttributeOverrideContainer.Owner buildMapKeyAttributeOverrideContainerOwner() {
-		return new MapKeyAttributeOverrideContainerOwner();
+	protected JavaAttributeOverrideContainer.ParentAdapter buildMapKeyAttributeOverrideContainerParentAdapter() {
+		return new MapKeyAttributeOverrideContainerParentAdapter();
 	}
 
 
@@ -1077,13 +1078,12 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 
 
 
-	// ********** abstract owner **********
+	// ********** abstract parent adapter **********
 
 	/**
 	 * some common behavior
 	 */
-	protected abstract class AbstractOwner
-	{
+	public abstract class AbstractParentAdapter {
 		public TypeMapping getTypeMapping() {
 			return AbstractJavaMultiRelationshipMapping.this.getTypeMapping();
 		}
@@ -1117,7 +1117,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	// ********** map key column owner **********
 
 	protected class MapKeyColumnOwner
-		extends AbstractOwner
+		extends AbstractParentAdapter
 		implements JavaSpecifiedColumn.Owner
 	{
 		public MapKeyColumn2_0Annotation getColumnAnnotation() {
@@ -1142,12 +1142,16 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	}
 
 
-	// ********** map key attribute override owner **********
+	// ********** map key attribute override parent adapter **********
 
-	protected class MapKeyAttributeOverrideContainerOwner
-		extends AbstractOwner
-		implements JavaAttributeOverrideContainer2_0.Owner
+	public class MapKeyAttributeOverrideContainerParentAdapter
+		extends AbstractParentAdapter
+		implements JavaAttributeOverrideContainer2_0.ParentAdapter
 	{
+		public JpaContextModel getOverrideContainerParent() {
+			return AbstractJavaMultiRelationshipMapping.this;
+		}
+
 		public JavaResourceAttribute getResourceMember() {
 			return AbstractJavaMultiRelationshipMapping.this.getResourceAttribute();
 		}

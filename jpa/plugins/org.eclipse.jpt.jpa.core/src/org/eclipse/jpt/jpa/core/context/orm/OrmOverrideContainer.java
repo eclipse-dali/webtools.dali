@@ -40,8 +40,10 @@ public interface OrmOverrideContainer
 	OrmSpecifiedOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
 
 
-	interface Owner
-		extends OverrideContainer.Owner
+	// ********** parent adapter **********
+
+	interface ParentAdapter
+		extends OverrideContainer.ParentAdapter
 	{		
 		<T extends XmlOverride> EList<T> getXmlOverrides();
 		

@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -82,16 +83,16 @@ public abstract class AbstractJavaEmbeddedMapping
 
 	protected JavaAssociationOverrideContainer buildAssociationOverrideContainer() {
 		return this.isJpa2_0Compatible() ?
-				this.getJpaFactory2_0().buildJavaAssociationOverrideContainer(this, this.buildAssociationOverrideContainerOwner()) :
-				new GenericJavaAssociationOverrideContainer(this, null);
+				this.getJpaFactory2_0().buildJavaAssociationOverrideContainer(this.buildAssociationOverrideContainerParentAdapter()) :
+				new GenericJavaAssociationOverrideContainer(this);
 	}
 
 	public JavaAssociationOverrideContainer getAssociationOverrideContainer() {
 		return this.associationOverrideContainer;
 	}
 
-	protected JavaAssociationOverrideContainer.Owner buildAssociationOverrideContainerOwner() {
-		return new AssociationOverrideContainerOwner();
+	protected JavaAssociationOverrideContainer.ParentAdapter buildAssociationOverrideContainerParentAdapter() {
+		return new AssociationOverrideContainerParentAdapter();
 	}
 
 
@@ -170,8 +171,8 @@ public abstract class AbstractJavaEmbeddedMapping
 	}
 
 	@Override
-	protected JavaAttributeOverrideContainer.Owner buildAttributeOverrideContainerOwner() {
-		return new AttributeOverrideContainerOwner();
+	protected JavaAttributeOverrideContainer.ParentAdapter buildAttributeOverrideContainerParentAdapter() {
+		return new AttributeOverrideContainerParentAdapter();
 	}
 
 
@@ -202,20 +203,24 @@ public abstract class AbstractJavaEmbeddedMapping
 	}
 
 
-	// ********** attribute override container owner *********
+	// ********** attribute override container parent adapter *********
 
-	protected class AttributeOverrideContainerOwner
-		extends AbstractJavaBaseEmbeddedMapping<EmbeddedAnnotation>.AttributeOverrideContainerOwner
+	public class AttributeOverrideContainerParentAdapter
+		extends AbstractJavaBaseEmbeddedMapping<EmbeddedAnnotation>.AttributeOverrideContainerParentAdapter
 	{
 		// nothing yet
 	}
 
 
-	// ********** association override container owner **********
+	// ********** association override container parent adapter **********
 
-	protected class AssociationOverrideContainerOwner
-		implements JavaAssociationOverrideContainer2_0.Owner
+	public class AssociationOverrideContainerParentAdapter
+		implements JavaAssociationOverrideContainer2_0.ParentAdapter
 	{
+		public JpaContextModel getOverrideContainerParent() {
+			return AbstractJavaEmbeddedMapping.this;
+		}
+
 		public JavaResourceAttribute getResourceMember() {
 			return AbstractJavaEmbeddedMapping.this.getResourceAttribute();
 		}

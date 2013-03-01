@@ -91,8 +91,8 @@ public abstract class AbstractJavaEmbeddedIdMapping
 	}
 
 	@Override
-	protected JavaAttributeOverrideContainer.Owner buildAttributeOverrideContainerOwner() {
-		return new AttributeOverrideContainerOwner();
+	protected JavaAttributeOverrideContainer.ParentAdapter buildAttributeOverrideContainerParentAdapter() {
+		return new AttributeOverrideContainerParentAdapter();
 	}
 
 
@@ -259,10 +259,10 @@ public abstract class AbstractJavaEmbeddedIdMapping
 	}
 
 
-	// ********** attribute override container owner *********
+	// ********** attribute override container parent adapter *********
 
-	protected class AttributeOverrideContainerOwner
-		extends AbstractJavaBaseEmbeddedMapping<EmbeddedIdAnnotation>.AttributeOverrideContainerOwner
+	public class AttributeOverrideContainerParentAdapter
+		extends AbstractJavaBaseEmbeddedMapping<EmbeddedIdAnnotation>.AttributeOverrideContainerParentAdapter
 	{
 		@Override
 		public Iterable<String> getAllOverridableNames() {

@@ -18,14 +18,15 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
-import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
-import org.eclipse.jpt.jpa.core.context.Embeddable;
-import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
+import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
+import org.eclipse.jpt.jpa.core.context.Embeddable;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
+import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.Override_;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseEmbeddedMapping;
@@ -37,7 +38,6 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.AttributeOverrideColumnVal
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AttributeOverrideValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EmbeddableOverrideDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaEmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAttributeOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Table;
@@ -85,10 +85,10 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 	}
 
 	protected JavaAttributeOverrideContainer buildAttributeOverrideContainer() {
-		return this.getJpaFactory().buildJavaAttributeOverrideContainer(this, this.buildAttributeOverrideContainerOwner());
+		return this.getJpaFactory().buildJavaAttributeOverrideContainer(this.buildAttributeOverrideContainerParentAdapter());
 	}
 
-	protected abstract JavaAttributeOverrideContainer.Owner buildAttributeOverrideContainerOwner();
+	protected abstract JavaAttributeOverrideContainer.ParentAdapter buildAttributeOverrideContainerParentAdapter();
 
 
 	// ********** target embeddable **********
@@ -238,11 +238,15 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 	}
 
 
-	// ********** attribute override container owner *********
+	// ********** attribute override container parent adapter *********
 
-	protected abstract class AttributeOverrideContainerOwner
-		implements JavaAttributeOverrideContainer2_0.Owner
+	public abstract class AttributeOverrideContainerParentAdapter
+		implements JavaAttributeOverrideContainer2_0.ParentAdapter
 	{
+		public JpaContextModel getOverrideContainerParent() {
+			return AbstractJavaBaseEmbeddedMapping.this;
+		}
+
 		public JavaResourceMember getResourceMember() {
 			return AbstractJavaBaseEmbeddedMapping.this.getResourceAttribute();
 		}
@@ -263,7 +267,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 		/**
 		 * pre-condition: type mapping is not <code>null</code>
 		 * <p>
-		 * NB: Overridden in {@link GenericJavaEmbeddedIdMapping.AttributeOverrideContainerOwner}
+		 * NB: Overridden in {@link AbstractJavaEmbeddedIdMapping.AttributeOverrideContainerParentAdapter}
 		 */
 		protected Iterable<String> getAllOverridableAttributeNames_(TypeMapping overriddenTypeMapping) {
 			return overriddenTypeMapping.getAllOverridableAttributeNames();

@@ -135,9 +135,9 @@ public interface OrmXmlContextModelFactory
 
 	VirtualJoinColumn buildOrmVirtualJoinColumn(JpaContextModel parent, JoinColumn.Owner owner, JoinColumn overriddenColumn);
 
-	OrmAttributeOverrideContainer buildOrmAttributeOverrideContainer(JpaContextModel parent, OrmAttributeOverrideContainer.Owner owner);
+	OrmAttributeOverrideContainer buildOrmAttributeOverrideContainer(OrmAttributeOverrideContainer.ParentAdapter parentAdapter);
 
-	OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(JpaContextModel parent, OrmAssociationOverrideContainer.Owner owner);
+	OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(OrmAssociationOverrideContainer.ParentAdapter parentAdapter);
 
 	OrmSpecifiedAttributeOverride buildOrmAttributeOverride(OrmAttributeOverrideContainer parent, XmlAttributeOverride xmlOverride);
 

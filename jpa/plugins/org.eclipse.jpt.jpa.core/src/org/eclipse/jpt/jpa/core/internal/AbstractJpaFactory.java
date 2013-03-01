@@ -341,12 +341,12 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaPrimaryKeyJoinColumn(parent, owner, pkJoinColumnAnnotation);
 	}
 	
-	public JavaAttributeOverrideContainer buildJavaAttributeOverrideContainer(JpaContextModel parent, JavaAttributeOverrideContainer.Owner owner) {
-		return new GenericJavaAttributeOverrideContainer(parent, owner);
+	public JavaAttributeOverrideContainer buildJavaAttributeOverrideContainer(JavaAttributeOverrideContainer.ParentAdapter parentAdapter) {
+		return new GenericJavaAttributeOverrideContainer(parentAdapter);
 	}
 	
-	public JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JpaContextModel parent, JavaAssociationOverrideContainer.Owner owner) {
-		return new GenericJavaAssociationOverrideContainer(parent, owner);
+	public JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JavaAssociationOverrideContainer.ParentAdapter parentAdapter) {
+		return new GenericJavaAssociationOverrideContainer(parentAdapter);
 	}
 	
 	public JavaSpecifiedAttributeOverride buildJavaAttributeOverride(JavaAttributeOverrideContainer parent, AttributeOverrideAnnotation annotation) {

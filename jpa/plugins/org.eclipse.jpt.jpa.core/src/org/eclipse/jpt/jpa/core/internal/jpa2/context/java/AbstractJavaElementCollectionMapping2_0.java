@@ -42,6 +42,7 @@ import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.Override_;
@@ -419,7 +420,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		return new CollectionTableOwner();
 	}
 
-	protected class CollectionTableOwner
+	public class CollectionTableOwner
 		implements Table.Owner
 	{
 		public JptValidator buildTableValidator(Table table) {
@@ -593,11 +594,11 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	protected JavaAttributeOverrideContainer buildValueAttributeOverrideContainer() {
-		return this.getJpaFactory().buildJavaAttributeOverrideContainer(this, this.buildValueAttributeOverrideContainerOwner());
+		return this.getJpaFactory().buildJavaAttributeOverrideContainer(this.buildValueAttributeOverrideContainerParentAdapter());
 	}
 
-	protected JavaAttributeOverrideContainer.Owner buildValueAttributeOverrideContainerOwner() {
-		return new ValueAttributeOverrideContainerOwner();
+	protected JavaAttributeOverrideContainer.ParentAdapter buildValueAttributeOverrideContainerParentAdapter() {
+		return new ValueAttributeOverrideContainerParentAdapter();
 	}
 
 
@@ -608,11 +609,11 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	protected JavaAssociationOverrideContainer buildValueAssociationOverrideContainer() {
-		return this.getJpaFactory().buildJavaAssociationOverrideContainer(this, this.buildValueAssociationOverrideContainerOwner());
+		return this.getJpaFactory().buildJavaAssociationOverrideContainer(this.buildValueAssociationOverrideContainerParentAdapter());
 	}
 
-	protected JavaAssociationOverrideContainer2_0.Owner buildValueAssociationOverrideContainerOwner() {
-		return new ValueAssociationOverrideContainerOwner();
+	protected JavaAssociationOverrideContainer2_0.ParentAdapter buildValueAssociationOverrideContainerParentAdapter() {
+		return new ValueAssociationOverrideContainerParentAdapter();
 	}
 
 
@@ -1042,11 +1043,11 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	protected JavaAttributeOverrideContainer buildMapKeyAttributeOverrideContainer() {
-		return this.getJpaFactory().buildJavaAttributeOverrideContainer(this, this.buildMapKeyAttributeOverrideContainerOwner());
+		return this.getJpaFactory().buildJavaAttributeOverrideContainer(this.buildMapKeyAttributeOverrideContainerParentAdapter());
 	}
 
-	protected JavaAttributeOverrideContainer.Owner buildMapKeyAttributeOverrideContainerOwner() {
-		return new MapKeyAttributeOverrideContainerOwner();
+	protected JavaAttributeOverrideContainer.ParentAdapter buildMapKeyAttributeOverrideContainerParentAdapter() {
+		return new MapKeyAttributeOverrideContainerParentAdapter();
 	}
 
 	// ********** map key join columns **********
@@ -1114,7 +1115,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	/**
 	 * specified map key join column container
 	 */
-	protected class SpecifiedMapKeyJoinColumnContainer
+	public class SpecifiedMapKeyJoinColumnContainer
 		extends ContextListContainer<JavaSpecifiedJoinColumn, MapKeyJoinColumn2_0Annotation>
 	{
 		@Override
@@ -1755,14 +1756,13 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 
-	// ********** abstract owner **********
+	// ********** abstract parent adapter **********
 
 	/**
-	 * the various (column and override) owners have lots of common
+	 * the various (column and override) parent adapters have lots of common
 	 * interactions with the mapping
 	 */
-	protected abstract class AbstractOwner
-	{
+	public abstract class AbstractParentAdapter {
 		public JavaResourceMember getResourceMember() {
 			return AbstractJavaElementCollectionMapping2_0.this.getResourceAttribute();
 		}
@@ -1812,8 +1812,8 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 
 	// ********** value column owner **********
 
-	protected class ValueColumnOwner
-		extends AbstractOwner
+	public class ValueColumnOwner
+		extends AbstractParentAdapter
 		implements JavaSpecifiedColumn.Owner
 	{
 		public CompleteColumnAnnotation getColumnAnnotation() {
@@ -1836,8 +1836,8 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 
 	// ********** map key column owner **********
 
-	protected class MapKeyColumnOwner
-		extends AbstractOwner
+	public class MapKeyColumnOwner
+		extends AbstractParentAdapter
 		implements JavaSpecifiedColumn.Owner
 	{
 		public MapKeyColumn2_0Annotation getColumnAnnotation() {
@@ -1858,12 +1858,16 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 
-	// ********** value override container owner **********
+	// ********** value override container parent adapter **********
 
-	protected abstract class ValueOverrideContainerOwner
-		extends AbstractOwner
+	public abstract class ValueOverrideContainerParentAdapter
+		extends AbstractParentAdapter
 	{
 		protected static final String POSSIBLE_PREFIX = "value"; //$NON-NLS-1$
+
+		public JpaContextModel getOverrideContainerParent() {
+			return AbstractJavaElementCollectionMapping2_0.this;
+		}
 
 		public TypeMapping getOverridableTypeMapping() {
 			return AbstractJavaElementCollectionMapping2_0.this.getResolvedTargetEmbeddable();
@@ -1884,16 +1888,16 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 			if (AbstractJavaElementCollectionMapping2_0.this.getKeyType() != Type.EMBEDDABLE_TYPE) {
 				return true;
 			}
-			return ! overrideName.startsWith(MapKeyAttributeOverrideContainerOwner.RELEVANT_PREFIX_);
+			return ! overrideName.startsWith(MapKeyAttributeOverrideContainerParentAdapter.RELEVANT_PREFIX_);
 		}
 	}
 
 
-	// ********** value attribute override container owner **********
+	// ********** value attribute override container parent adapter **********
 
-	protected class ValueAttributeOverrideContainerOwner
-		extends ValueOverrideContainerOwner
-		implements JavaAttributeOverrideContainer2_0.Owner
+	public class ValueAttributeOverrideContainerParentAdapter
+		extends ValueOverrideContainerParentAdapter
+		implements JavaAttributeOverrideContainer2_0.ParentAdapter
 	{
 		public Iterable<String> getAllOverridableNames() {
 			TypeMapping overriddenTypeMapping = this.getOverridableTypeMapping();
@@ -1914,11 +1918,11 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 
-	// ********** value association override container owner **********
+	// ********** value association override container parent adapter **********
 
-	protected class ValueAssociationOverrideContainerOwner
-		extends ValueOverrideContainerOwner
-		implements JavaAssociationOverrideContainer2_0.Owner
+	public class ValueAssociationOverrideContainerParentAdapter
+		extends ValueOverrideContainerParentAdapter
+		implements JavaAssociationOverrideContainer2_0.ParentAdapter
 	{
 		public Iterable<String> getAllOverridableNames() {
 			TypeMapping typeMapping = this.getOverridableTypeMapping();
@@ -1952,7 +1956,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 
 	// ********** map key join column owner **********
 
-	protected class MapKeyJoinColumnOwner
+	public class MapKeyJoinColumnOwner
 		implements JoinColumn.Owner
 	{
 		protected MapKeyJoinColumnOwner() {
@@ -2017,14 +2021,18 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 
-	// ********** map key attribute override container owner **********
+	// ********** map key attribute override container parent adapter **********
 
-	protected class MapKeyAttributeOverrideContainerOwner
-		extends AbstractOwner
-		implements JavaAttributeOverrideContainer2_0.Owner
+	public class MapKeyAttributeOverrideContainerParentAdapter
+		extends AbstractParentAdapter
+		implements JavaAttributeOverrideContainer2_0.ParentAdapter
 	{
 		protected static final String POSSIBLE_PREFIX = "key"; //$NON-NLS-1$
 		protected static final String RELEVANT_PREFIX_ = "key."; //$NON-NLS-1$
+
+		public JpaContextModel getOverrideContainerParent() {
+			return AbstractJavaElementCollectionMapping2_0.this;
+		}
 
 		public TypeMapping getOverridableTypeMapping() {
 			return AbstractJavaElementCollectionMapping2_0.this.getResolvedMapKeyEmbeddable();

@@ -171,10 +171,12 @@ public interface OverrideContainer
 	SpecifiedOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
 
 
-	// ********** container owner **********
+	// ********** container parent adapter **********
 
-	interface Owner
-	{
+	interface ParentAdapter {
+
+		JpaContextModel getOverrideContainerParent();
+
 		/**
 		 * @see OverrideContainer#getTypeMapping()
 		 */
@@ -183,14 +185,14 @@ public interface OverrideContainer
 		class AttributeIsOverridable
 			extends Predicate.Adapter<String>
 		{
-			private final Owner owner;
-			public AttributeIsOverridable(Owner owner) {
+			private final ParentAdapter parentAdapter;
+			public AttributeIsOverridable(ParentAdapter parentAdapter) {
 				super();
-				this.owner = owner;
+				this.parentAdapter = parentAdapter;
 			}
 			@Override
 			public boolean evaluate(String attributeName) {
-				return ! this.owner.getTypeMapping().attributeIsDerivedId(attributeName);
+				return ! this.parentAdapter.getTypeMapping().attributeIsDerivedId(attributeName);
 			}
 		}
 

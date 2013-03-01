@@ -55,7 +55,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * (Just a bit of hack, courtesy of the JPA spec committee.)
  */
 public abstract class AbstractJavaOverrideContainer<
-			O extends JavaOverrideContainer.Owner,
+			PA extends JavaOverrideContainer.ParentAdapter,
 			R extends Override_,
 			S extends JavaSpecifiedOverride,
 			V extends JavaVirtualOverride,
@@ -67,9 +67,9 @@ public abstract class AbstractJavaOverrideContainer<
 	/**
 	 * this can be <code>null</code> if the container is "read-only"
 	 * (i.e. a <em>null</em> container)
-	 * @see #getOwner2_0()
+	 * @see #getParentAdapter2_0()
 	 */
-	protected final O owner;
+	protected final PA parentAdapter;
 
 	protected final Vector<S> specifiedOverrides = new Vector<S>();
 	protected final SpecifiedOverrideContainerAdapter specifiedOverrideContainerAdapter = new SpecifiedOverrideContainerAdapter();
@@ -78,9 +78,14 @@ public abstract class AbstractJavaOverrideContainer<
 	protected final VirtualOverrideContainerAdapter virtualOverrideContainerAdapter = new VirtualOverrideContainerAdapter();
 
 
-	protected AbstractJavaOverrideContainer(JpaContextModel parent, O owner) {
+	protected AbstractJavaOverrideContainer(JpaContextModel parent) {
 		super(parent);
-		this.owner = owner;
+		this.parentAdapter = null;
+	}
+
+	protected AbstractJavaOverrideContainer(PA parentAdapter) {
+		super(parentAdapter.getOverrideContainerParent());
+		this.parentAdapter = parentAdapter;
 	}
 
 
@@ -313,8 +318,8 @@ public abstract class AbstractJavaOverrideContainer<
 			String overrideName = annotation.getName();
 			return (overrideName != null) && this.getOwner().isRelevant(overrideName);
 		}
-		protected JavaOverrideContainer2_0.Owner getOwner() {
-			return AbstractJavaOverrideContainer.this.getOwner2_0();
+		protected JavaOverrideContainer2_0.ParentAdapter getOwner() {
+			return AbstractJavaOverrideContainer.this.getParentAdapter2_0();
 		}
 	}
 
@@ -323,11 +328,11 @@ public abstract class AbstractJavaOverrideContainer<
 	}
 
 	protected Iterable<NestableAnnotation> overrideAnnotations() {
-		return (this.owner == null) ? EmptyIterable.<NestableAnnotation>instance() : this.overrideAnnotations_();
+		return (this.parentAdapter == null) ? EmptyIterable.<NestableAnnotation>instance() : this.overrideAnnotations_();
 	}
 
 	/**
-	 * pre-condition: {@link #owner} is not <code>null</code>
+	 * pre-condition: {@link #parentAdapter} is not <code>null</code>
 	 */
 	protected Iterable<NestableAnnotation> overrideAnnotations_() {
 		return this.getResourceMember().getAnnotations(this.getOverrideAnnotationName());
@@ -463,56 +468,56 @@ public abstract class AbstractJavaOverrideContainer<
 
 	// ********** misc **********
 
-	protected JavaOverrideContainer2_0.Owner getOwner2_0() {
-		return (JavaOverrideContainer2_0.Owner) this.owner;
+	protected JavaOverrideContainer2_0.ParentAdapter getParentAdapter2_0() {
+		return (JavaOverrideContainer2_0.ParentAdapter) this.parentAdapter;
 	}
 
 	public TypeMapping getTypeMapping() {
-		return this.owner.getTypeMapping();
+		return this.parentAdapter.getTypeMapping();
 	}
 
 	protected JavaResourceMember getResourceMember() {
-		return this.owner.getResourceMember();
+		return this.parentAdapter.getResourceMember();
 	}
 
 	public TypeMapping getOverridableTypeMapping() {
-		return this.owner.getOverridableTypeMapping();
+		return this.parentAdapter.getOverridableTypeMapping();
 	}
 
 	public Iterable<String> getAllOverridableNames() {
-		return (this.owner != null) ? this.owner.getAllOverridableNames() : EmptyIterable.<String>instance();
+		return (this.parentAdapter != null) ? this.parentAdapter.getAllOverridableNames() : EmptyIterable.<String>instance();
 	}
 
 	public boolean tableNameIsInvalid(String tableName) {
-		return this.owner.tableNameIsInvalid(tableName);
+		return this.parentAdapter.tableNameIsInvalid(tableName);
 	}
 
 	public Iterable<String> getCandidateTableNames() {
-		return this.owner.getCandidateTableNames();
+		return this.parentAdapter.getCandidateTableNames();
 	}
 
 	public Table resolveDbTable(String tableName) {
-		return this.owner.resolveDbTable(tableName);
+		return this.parentAdapter.resolveDbTable(tableName);
 	}
 
 	public String getDefaultTableName() {
-		return this.owner.getDefaultTableName();
+		return this.parentAdapter.getDefaultTableName();
 	}
 
 	public JptValidator buildOverrideValidator(Override_ override) {
-		return this.owner.buildOverrideValidator(override, this);
+		return this.parentAdapter.buildOverrideValidator(override, this);
 	}
 
 	public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner columnOwner) {
-		return this.owner.buildColumnValidator(override, column, columnOwner);
+		return this.parentAdapter.buildColumnValidator(override, column, columnOwner);
 	}
 
 	public String getPossiblePrefix() {
-		return this.getOwner2_0().getPossiblePrefix();
+		return this.getParentAdapter2_0().getPossiblePrefix();
 	}
 
 	public String getWritePrefix() {
-		return this.getOwner2_0().getWritePrefix();
+		return this.getParentAdapter2_0().getWritePrefix();
 	}
 
 	protected R selectOverrideNamed(Iterable<R> overrides, String name) {
@@ -562,7 +567,7 @@ public abstract class AbstractJavaOverrideContainer<
 
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.getValidationAnnotationTextRange();
-		return (textRange != null) ? textRange : this.owner.getValidationTextRange();
+		return (textRange != null) ? textRange : this.parentAdapter.getValidationTextRange();
 	}
 
 	protected TextRange getValidationAnnotationTextRange() {

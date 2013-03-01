@@ -10,11 +10,11 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.Column;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeOverride;
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeOverride;
  */
 public class GenericOrmAttributeOverrideContainer
 	extends AbstractOrmOverrideContainer<
-			OrmAttributeOverrideContainer.Owner,
+			OrmAttributeOverrideContainer.ParentAdapter,
 			AttributeOverride,
 			OrmSpecifiedAttributeOverride,
 			OrmVirtualAttributeOverride,
@@ -32,19 +32,23 @@ public class GenericOrmAttributeOverrideContainer
 		>
 	implements OrmAttributeOverrideContainer
 {
-	public GenericOrmAttributeOverrideContainer(JpaContextModel parent, OrmAttributeOverrideContainer.Owner owner) {
-		super(parent, owner);
+	public GenericOrmAttributeOverrideContainer(JpaContextModel parent) {
+		super(parent);
+	}
+
+	public GenericOrmAttributeOverrideContainer(OrmAttributeOverrideContainer.ParentAdapter parentAdapter) {
+		super(parentAdapter);
 	}
 
 
 	public Column resolveOverriddenColumn(String attributeName) {
-		return (attributeName == null) ? null : this.owner.resolveOverriddenColumn(attributeName);
+		return (attributeName == null) ? null : this.parentAdapter.resolveOverriddenColumn(attributeName);
 	}
 
 	@Override
 	protected Iterable<XmlAttributeOverride> getXmlOverrides_() {
 		// clone to reduce chance of concurrency problems
-		return IterableTools.cloneLive(this.owner.getXmlOverrides());
+		return IterableTools.cloneLive(this.parentAdapter.getXmlOverrides());
 	}
 
 	@Override

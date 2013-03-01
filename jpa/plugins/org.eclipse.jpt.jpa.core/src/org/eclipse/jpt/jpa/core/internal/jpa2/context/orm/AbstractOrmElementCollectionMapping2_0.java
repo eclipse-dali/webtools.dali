@@ -39,6 +39,7 @@ import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
@@ -582,11 +583,11 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected OrmAttributeOverrideContainer buildValueAttributeOverrideContainer() {
-		return this.getContextModelFactory().buildOrmAttributeOverrideContainer(this, this.buildValueAttributeOverrideContainerOwner());
+		return this.getContextModelFactory().buildOrmAttributeOverrideContainer(this.buildValueAttributeOverrideContainerParentAdapter());
 	}
 
-	protected OrmAttributeOverrideContainer.Owner buildValueAttributeOverrideContainerOwner() {
-		return new ValueAttributeOverrideContainerOwner();
+	protected OrmAttributeOverrideContainer.ParentAdapter buildValueAttributeOverrideContainerParentAdapter() {
+		return new ValueAttributeOverrideContainerParentAdapter();
 	}
 
 
@@ -597,11 +598,11 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected OrmAssociationOverrideContainer buildValueAssociationOverrideContainer() {
-		return this.getContextModelFactory().buildOrmAssociationOverrideContainer(this, this.buildValueAssociationOverrideContainerOwner());
+		return this.getContextModelFactory().buildOrmAssociationOverrideContainer(this.buildValueAssociationOverrideContainerParentAdapter());
 	}
 
-	protected OrmAssociationOverrideContainer.Owner buildValueAssociationOverrideContainerOwner() {
-		return new ValueAssociationOverrideContainerOwner();
+	protected OrmAssociationOverrideContainer.ParentAdapter buildValueAssociationOverrideContainerParentAdapter() {
+		return new ValueAssociationOverrideContainerParentAdapter();
 	}
 
 
@@ -1021,11 +1022,11 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected OrmAttributeOverrideContainer buildMapKeyAttributeOverrideContainer() {
-		return this.getContextModelFactory().buildOrmAttributeOverrideContainer(this, this.buildMapKeyAttributeOverrideContainerOwner());
+		return this.getContextModelFactory().buildOrmAttributeOverrideContainer(this.buildMapKeyAttributeOverrideContainerParentAdapter());
 	}
 
-	protected OrmAttributeOverrideContainer.Owner buildMapKeyAttributeOverrideContainerOwner() {
-		return new MapKeyAttributeOverrideContainerOwner();
+	protected OrmAttributeOverrideContainer.ParentAdapter buildMapKeyAttributeOverrideContainerParentAdapter() {
+		return new MapKeyAttributeOverrideContainerParentAdapter();
 	}
 
 
@@ -1799,11 +1800,14 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	// ********** abstract owner **********
 
 	/**
-	 * the various (column and override) owners have lots of common
+	 * the various (column and override) parent adapters have lots of common
 	 * interactions with the mapping
 	 */
-	protected abstract class AbstractOwner
-	{
+	protected abstract class AbstractParentAdapter {
+		public JpaContextModel getOverrideContainerParent() {
+			return AbstractOrmElementCollectionMapping2_0.this;
+		}
+
 		public OrmTypeMapping getTypeMapping() {
 			return AbstractOrmElementCollectionMapping2_0.this.getTypeMapping();
 		}
@@ -1858,7 +1862,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	// ********** value column owner **********
 
 	protected class ValueColumnOwner
-		extends AbstractOwner
+		extends AbstractParentAdapter
 		implements OrmSpecifiedColumn.Owner
 	{
 		public XmlColumn getXmlColumn() {
@@ -1888,7 +1892,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	// ********** map key column owner **********
 
 	protected class MapKeyColumnOwner
-		extends AbstractOwner
+		extends AbstractParentAdapter
 		implements OrmSpecifiedColumn.Owner
 	{
 		public XmlColumn getXmlColumn() {
@@ -1915,11 +1919,11 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 
-	// ********** value association override container owner **********
+	// ********** value association override container parent adapter **********
 
-	protected class ValueAssociationOverrideContainerOwner
-		extends AbstractOwner
-		implements OrmAssociationOverrideContainer2_0.Owner
+	public class ValueAssociationOverrideContainerParentAdapter
+		extends AbstractParentAdapter
+		implements OrmAssociationOverrideContainer2_0.ParentAdapter
 	{
 		public TypeMapping getOverridableTypeMapping() {
 			return AbstractOrmElementCollectionMapping2_0.this.getResolvedTargetEmbeddable();
@@ -1960,11 +1964,11 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 
-	// ********** value attribute override container owner **********
+	// ********** value attribute override container parent adapter **********
 
-	protected class ValueAttributeOverrideContainerOwner
-		extends AbstractOwner
-		implements OrmAttributeOverrideContainer.Owner
+	public class ValueAttributeOverrideContainerParentAdapter
+		extends AbstractParentAdapter
+		implements OrmAttributeOverrideContainer.ParentAdapter
 	{
 		public TypeMapping getOverridableTypeMapping() {
 			return AbstractOrmElementCollectionMapping2_0.this.getResolvedTargetEmbeddable();
@@ -1993,11 +1997,11 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 
-	// ********** map key attribute override container owner **********
+	// ********** map key attribute override container parent adapter **********
 
-	protected class MapKeyAttributeOverrideContainerOwner
-		extends AbstractOwner
-		implements OrmAttributeOverrideContainer.Owner
+	public class MapKeyAttributeOverrideContainerParentAdapter
+		extends AbstractParentAdapter
+		implements OrmAttributeOverrideContainer.ParentAdapter
 	{
 		public TypeMapping getOverridableTypeMapping() {
 			return AbstractOrmElementCollectionMapping2_0.this.getResolvedMapKeyEmbeddable();

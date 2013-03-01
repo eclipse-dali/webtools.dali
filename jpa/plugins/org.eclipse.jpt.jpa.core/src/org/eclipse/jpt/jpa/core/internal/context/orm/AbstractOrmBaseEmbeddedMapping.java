@@ -17,15 +17,16 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
-import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
-import org.eclipse.jpt.jpa.core.context.Embeddable;
-import org.eclipse.jpt.jpa.core.context.OverrideContainer;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
+import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
+import org.eclipse.jpt.jpa.core.context.Embeddable;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
+import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.Override_;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBaseEmbeddedMapping;
@@ -38,7 +39,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.AttributeOverrideColumnVal
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AttributeOverrideValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EmbeddableOverrideDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmEmbeddedIdMapping;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.AbstractOrmEmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlEmbedded;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
@@ -86,10 +87,10 @@ public abstract class AbstractOrmBaseEmbeddedMapping<X extends AbstractXmlEmbedd
 	}
 
 	protected OrmAttributeOverrideContainer buildAttributeOverrideContainer() {
-		return this.getContextModelFactory().buildOrmAttributeOverrideContainer(this, this.buildAttributeOverrideContainerOwner());
+		return this.getContextModelFactory().buildOrmAttributeOverrideContainer(this.buildAttributeOverrideContainerParentAdapter());
 	}
 
-	protected abstract OrmAttributeOverrideContainer.Owner buildAttributeOverrideContainerOwner();
+	protected abstract OrmAttributeOverrideContainer.ParentAdapter buildAttributeOverrideContainerParentAdapter();
 
 
 	// ********** target embeddable **********
@@ -236,11 +237,15 @@ public abstract class AbstractOrmBaseEmbeddedMapping<X extends AbstractXmlEmbedd
 		return null;
 	}
 
-	// ********** attribute override container owner *********
+	// ********** attribute override container parent adapter *********
 
-	protected abstract class AttributeOverrideContainerOwner
-		implements OrmAttributeOverrideContainer.Owner
+	public abstract class AttributeOverrideContainerParentAdapter
+		implements OrmAttributeOverrideContainer.ParentAdapter
 	{
+		public JpaContextModel getOverrideContainerParent() {
+			return AbstractOrmBaseEmbeddedMapping.this;
+		}
+
 		public OrmTypeMapping getTypeMapping() {
 			return AbstractOrmBaseEmbeddedMapping.this.getTypeMapping();
 		}
@@ -257,7 +262,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<X extends AbstractXmlEmbedd
 		/**
 		 * pre-condition: type mapping is not <code>null</code>
 		 * <p>
-		 * NB: Overridden in {@link GenericOrmEmbeddedIdMapping.AttributeOverrideContainerOwner}
+		 * NB: Overridden in {@link org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.AbstractOrmEmbeddedIdMapping.AttributeOverrideContainerParentAdapter}
 		 */
 		protected Iterable<String> getAllOverridableAttributeNames_(TypeMapping overriddenTypeMapping) {
 			return overriddenTypeMapping.getAllOverridableAttributeNames();

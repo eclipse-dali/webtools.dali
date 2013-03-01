@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,15 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.OverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.Relationship;
-import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
  */
 public class GenericJavaAssociationOverrideContainer
 	extends AbstractJavaOverrideContainer<
-			JavaAssociationOverrideContainer.Owner,
+			JavaAssociationOverrideContainer.ParentAdapter,
 			AssociationOverride,
 			JavaSpecifiedAssociationOverride,
 			JavaVirtualAssociationOverride,
@@ -37,17 +37,21 @@ public class GenericJavaAssociationOverrideContainer
 		>
 	implements JavaAssociationOverrideContainer2_0
 {
-	public GenericJavaAssociationOverrideContainer(JpaContextModel parent, JavaAssociationOverrideContainer.Owner owner) {
-		super(parent, owner);
+	public GenericJavaAssociationOverrideContainer(JpaContextModel parent) {
+		super(parent);
+	}
+
+	public GenericJavaAssociationOverrideContainer(JavaAssociationOverrideContainer.ParentAdapter parentAdapter) {
+		super(parentAdapter);
 	}
 
 
 	public RelationshipMapping getRelationshipMapping(String attributeName) {
-		return MappingTools.getRelationshipMapping(attributeName, this.owner.getOverridableTypeMapping());
+		return MappingTools.getRelationshipMapping(attributeName, this.parentAdapter.getOverridableTypeMapping());
 	}
 
 	public Relationship resolveOverriddenRelationship(String associationOverrideName) {
-		return this.owner.resolveOverriddenRelationship(associationOverrideName);
+		return this.parentAdapter.resolveOverriddenRelationship(associationOverrideName);
 	}
 
 	public OverrideRelationship getOverrideRelationship(String overrideName) {
@@ -55,20 +59,20 @@ public class GenericJavaAssociationOverrideContainer
 	}
 
 	@Override
-	protected JavaAssociationOverrideContainer2_0.Owner getOwner2_0() {
-		return (JavaAssociationOverrideContainer2_0.Owner) super.getOwner2_0();
+	protected JavaAssociationOverrideContainer2_0.ParentAdapter getParentAdapter2_0() {
+		return (JavaAssociationOverrideContainer2_0.ParentAdapter) super.getParentAdapter2_0();
 	}
 
 	public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner o) {
-		return this.getOwner2_0().buildJoinTableJoinColumnValidator(override, column, o);
+		return this.getParentAdapter2_0().buildJoinTableJoinColumnValidator(override, column, o);
 	}
 
 	public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner o) {
-		return this.getOwner2_0().buildJoinTableInverseJoinColumnValidator(override, column, o);
+		return this.getParentAdapter2_0().buildJoinTableInverseJoinColumnValidator(override, column, o);
 	}
 
 	public JptValidator buildJoinTableValidator(AssociationOverride override, Table table) {
-		return this.getOwner2_0().buildJoinTableValidator(override, table);
+		return this.getParentAdapter2_0().buildJoinTableValidator(override, table);
 	}
 
 	@Override

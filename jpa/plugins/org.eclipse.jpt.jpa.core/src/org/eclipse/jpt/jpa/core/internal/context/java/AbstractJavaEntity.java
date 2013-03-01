@@ -39,6 +39,7 @@ import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
@@ -884,7 +885,7 @@ public abstract class AbstractJavaEntity
 	}
 
 	protected JavaAttributeOverrideContainer buildAttributeOverrideContainer() {
-		return this.getJpaFactory().buildJavaAttributeOverrideContainer(this, new AttributeOverrideContainerOwner());
+		return this.getJpaFactory().buildJavaAttributeOverrideContainer(new AttributeOverrideContainerParentAdapter());
 	}
 
 	public TypeMapping getOverridableTypeMapping() {
@@ -900,7 +901,7 @@ public abstract class AbstractJavaEntity
 	}
 
 	protected JavaAssociationOverrideContainer buildAssociationOverrideContainer() {
-		return this.getJpaFactory().buildJavaAssociationOverrideContainer(this, new AssociationOverrideContainerOwner());
+		return this.getJpaFactory().buildJavaAssociationOverrideContainer(new AssociationOverrideContainerParentAdapter());
 	}
 
 	@Override
@@ -1436,14 +1437,18 @@ public abstract class AbstractJavaEntity
 	}
 
 
-	// ********** OrmOverrideContainer.Owner implementation **********
+	// ********** override container parent adapter **********
 
 	/**
 	 * some common behavior
 	 */
-	protected abstract class OverrideContainerOwner
-		implements JavaOverrideContainer2_0.Owner
+	public abstract class OverrideContainerParentAdapter
+		implements JavaOverrideContainer2_0.ParentAdapter
 	{
+		public JpaContextModel getOverrideContainerParent() {
+			return AbstractJavaEntity.this;
+		}
+
 		public JavaResourceMember getResourceMember() {
 			return AbstractJavaEntity.this.getJavaResourceType();
 		}
@@ -1502,11 +1507,11 @@ public abstract class AbstractJavaEntity
 	}
 
 
-	// ********** JavaAttributeOverrideContainer.Owner implementation **********
+	// ********** attribute override container parent adapter **********
 
-	protected class AttributeOverrideContainerOwner
-		extends OverrideContainerOwner
-		implements JavaAttributeOverrideContainer2_0.Owner
+	public class AttributeOverrideContainerParentAdapter
+		extends OverrideContainerParentAdapter
+		implements JavaAttributeOverrideContainer2_0.ParentAdapter
 	{
 		@Override
 		protected Iterable<String> getAllOverridableNames_(TypeMapping overriddenTypeMapping) {
@@ -1518,7 +1523,7 @@ public abstract class AbstractJavaEntity
 		{
 			@Override
 			public boolean evaluate(String attributeName) {
-				return ! AttributeOverrideContainerOwner.this.getTypeMapping().attributeIsDerivedId(attributeName);
+				return ! AttributeOverrideContainerParentAdapter.this.getTypeMapping().attributeIsDerivedId(attributeName);
 			}
 		}
 
@@ -1536,11 +1541,11 @@ public abstract class AbstractJavaEntity
 	}
 
 
-	// ********** JavaAssociationOverrideContainer.Owner implementation **********
+	// ********** association override container parent adapter **********
 
-	protected class AssociationOverrideContainerOwner
-		extends OverrideContainerOwner
-		implements JavaAssociationOverrideContainer2_0.Owner
+	public class AssociationOverrideContainerParentAdapter
+		extends OverrideContainerParentAdapter
+		implements JavaAssociationOverrideContainer2_0.ParentAdapter
 	{
 		@Override
 		protected Iterable<String> getAllOverridableNames_(TypeMapping overriddenTypeMapping) {

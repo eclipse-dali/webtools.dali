@@ -106,8 +106,8 @@ public abstract class AbstractOrmEmbeddedIdMapping<X extends XmlEmbeddedId>
 	}
 
 	@Override
-	protected OrmAttributeOverrideContainer.Owner buildAttributeOverrideContainerOwner() {
-		return new AttributeOverrideContainerOwner();
+	protected OrmAttributeOverrideContainer.ParentAdapter buildAttributeOverrideContainerParentAdapter() {
+		return new AttributeOverrideContainerParentAdapter();
 	}
 
 
@@ -248,10 +248,10 @@ public abstract class AbstractOrmEmbeddedIdMapping<X extends XmlEmbeddedId>
 	}
 
 
-	// ********** attribute override container owner *********
+	// ********** attribute override container parent adapter *********
 
-	protected class AttributeOverrideContainerOwner
-		extends AbstractOrmBaseEmbeddedMapping<XmlEmbeddedId>.AttributeOverrideContainerOwner
+	public class AttributeOverrideContainerParentAdapter
+		extends AbstractOrmBaseEmbeddedMapping<XmlEmbeddedId>.AttributeOverrideContainerParentAdapter
 	{
 		@Override
 		public Iterable<String> getAllOverridableNames() {

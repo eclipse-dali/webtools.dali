@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -36,7 +36,7 @@ public interface JavaOverrideContainer
 	 * invalid Java overrides (i.e. overrides for a non-existent or
 	 * non-overridable attributes) are included among the <code>orm.xml</code>
 	 * virtual overrides.
-	 * @see org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmEntity.OverrideContainerOwner#getJavaOverrideNames()
+	 * @see org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmEntity.OverrideContainerParentAdapter#getJavaOverrideNames()
 	 */
 	Iterable<String> getOverrideNames();
 
@@ -49,10 +49,10 @@ public interface JavaOverrideContainer
 	JavaSpecifiedOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
 
 
-	// ********** owner **********
+	// ********** parent adapter **********
 
-	interface Owner
-		extends OverrideContainer.Owner
+	interface ParentAdapter
+		extends OverrideContainer.ParentAdapter
 	{
 		JavaResourceMember getResourceMember();
 	}

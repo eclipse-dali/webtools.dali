@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.Column;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAttributeOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
  */
 public class GenericJavaAttributeOverrideContainer
 	extends AbstractJavaOverrideContainer<
-			JavaAttributeOverrideContainer.Owner,
+			JavaAttributeOverrideContainer.ParentAdapter,
 			AttributeOverride,
 			JavaSpecifiedAttributeOverride,
 			JavaVirtualAttributeOverride,
@@ -31,13 +31,17 @@ public class GenericJavaAttributeOverrideContainer
 		>
 	implements JavaAttributeOverrideContainer2_0
 {
-	public GenericJavaAttributeOverrideContainer(JpaContextModel parent, JavaAttributeOverrideContainer.Owner owner) {
-		super(parent, owner);
+	public GenericJavaAttributeOverrideContainer(JpaContextModel parent) {
+		super(parent);
+	}
+
+	public GenericJavaAttributeOverrideContainer(JavaAttributeOverrideContainer.ParentAdapter parentAdapter) {
+		super(parentAdapter);
 	}
 
 
 	public Column resolveOverriddenColumn(String attributeName) {
-		return (attributeName == null) ? null : this.owner.resolveOverriddenColumn(attributeName);
+		return (attributeName == null) ? null : this.parentAdapter.resolveOverriddenColumn(attributeName);
 	}
 
 	public Column getOverrideColumn(String overrideName) {
