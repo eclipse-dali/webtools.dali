@@ -16,14 +16,14 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkGeneratorContaine
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaUuidGenerator;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkUuidGeneratorAnnotation2_4;
 
-public class JavaEclipseLinkGeneratorContainer
+public class EclipseLinkJavaGeneratorContainer
 	extends GenericJavaGeneratorContainer
 	implements EclipseLinkGeneratorContainer
 {
 	protected JavaUuidGenerator uuidGenerator;
 
 
-	public JavaEclipseLinkGeneratorContainer(ParentAdapter parentAdapter) {
+	public EclipseLinkJavaGeneratorContainer(Parent parentAdapter) {
 		super(parentAdapter);
 		this.uuidGenerator = this.buildUuidGenerator();
 	}
@@ -63,14 +63,14 @@ public class JavaEclipseLinkGeneratorContainer
 	}
 
 	protected EclipseLinkUuidGeneratorAnnotation2_4 buildUuidGeneratorAnnotation() {
-		return (EclipseLinkUuidGeneratorAnnotation2_4) this.parentAdapter.getResourceAnnotatedElement().addAnnotation(EclipseLinkUuidGeneratorAnnotation2_4.ANNOTATION_NAME);
+		return (EclipseLinkUuidGeneratorAnnotation2_4) this.parent.getResourceAnnotatedElement().addAnnotation(EclipseLinkUuidGeneratorAnnotation2_4.ANNOTATION_NAME);
 	}
 
 	public void removeUuidGenerator() {
 		if (this.uuidGenerator == null) {
 			throw new IllegalStateException("UUID generator does not exist"); //$NON-NLS-1$
 		}
-		this.parentAdapter.getResourceAnnotatedElement().removeAnnotation(EclipseLinkUuidGeneratorAnnotation2_4.ANNOTATION_NAME);
+		this.parent.getResourceAnnotatedElement().removeAnnotation(EclipseLinkUuidGeneratorAnnotation2_4.ANNOTATION_NAME);
 		this.setUuidGenerator(null);
 	}
 
@@ -80,11 +80,11 @@ public class JavaEclipseLinkGeneratorContainer
 	}
 
 	protected EclipseLinkUuidGeneratorAnnotation2_4 getUuidGeneratorAnnotation() {
-		return (EclipseLinkUuidGeneratorAnnotation2_4) this.parentAdapter.getResourceAnnotatedElement().getAnnotation(EclipseLinkUuidGeneratorAnnotation2_4.ANNOTATION_NAME);
+		return (EclipseLinkUuidGeneratorAnnotation2_4) this.parent.getResourceAnnotatedElement().getAnnotation(EclipseLinkUuidGeneratorAnnotation2_4.ANNOTATION_NAME);
 	}
 
 	protected JavaUuidGenerator buildUuidGenerator(EclipseLinkUuidGeneratorAnnotation2_4 uuidGeneratorAnnotation) {
-		return this.parentAdapter.parentSupportsGenerators() ?
+		return this.parent.supportsGenerators() ?
 				new JavaEclipseLinkUuidGenerator(this, uuidGeneratorAnnotation) :
 				null;
 	}

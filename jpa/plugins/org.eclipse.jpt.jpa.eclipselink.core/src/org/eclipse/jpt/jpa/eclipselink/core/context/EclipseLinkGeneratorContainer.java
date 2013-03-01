@@ -28,7 +28,6 @@ import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
 public interface EclipseLinkGeneratorContainer
 	extends GeneratorContainer
 {
-
 	// ********** uuid generator **********
 
 	String UUID_GENERATOR_PROPERTY = "uuidGenerator"; //$NON-NLS-1$

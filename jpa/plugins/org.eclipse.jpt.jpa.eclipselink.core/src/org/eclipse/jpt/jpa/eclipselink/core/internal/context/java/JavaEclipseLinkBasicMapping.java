@@ -34,7 +34,7 @@ public class JavaEclipseLinkBasicMapping
 	implements
 		EclipseLinkBasicMapping,
 		EclipseLinkJavaConvertibleMapping,
-		JavaGeneratorContainer.ParentAdapter,
+		JavaGeneratorContainer.Parent,
 		JavaGeneratedValueMapping
 {
 	protected final JavaEclipseLinkMutable mutable;
@@ -138,17 +138,13 @@ public class JavaEclipseLinkBasicMapping
 	}
 
 
-	// ********** generator container parent adapter **********
-
-	public JpaContextModel getGeneratorContainerParent() {
-		return this;  // no adapter
-	}
+	// ********** generator container parent **********
 
 	public JavaResourceMember getResourceAnnotatedElement() {
 		return this.getResourceAttribute();
 	}
 
-	public boolean parentSupportsGenerators() {
+	public boolean supportsGenerators() {
 		return ! this.getPersistentAttribute().isVirtual();
 	}
 

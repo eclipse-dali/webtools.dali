@@ -217,7 +217,7 @@ public interface JpaFactory
 	
 	JavaAttributeMapping buildJavaNullAttributeMapping(JavaSpecifiedPersistentAttribute parent);
 	
-	JavaGeneratorContainer buildJavaGeneratorContainer(JavaGeneratorContainer.ParentAdapter parentAdapter);
+	JavaGeneratorContainer buildJavaGeneratorContainer(JavaGeneratorContainer.Parent parentAdapter);
 
 	JavaTable buildJavaTable(JavaEntity parent, SpecifiedTable.Owner owner);
 	

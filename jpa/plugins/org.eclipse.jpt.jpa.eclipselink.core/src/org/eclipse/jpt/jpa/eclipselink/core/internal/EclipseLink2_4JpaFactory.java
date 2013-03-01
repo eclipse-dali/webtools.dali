@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal;
 
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
-import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer.ParentAdapter;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkGeneratorContainer;
+import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer.Parent;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaGeneratorContainer;
 
 /**
  *  EclipseLink 2.4 factory
@@ -24,7 +24,7 @@ public class EclipseLink2_4JpaFactory
 	}
 
 	@Override
-	public JavaGeneratorContainer buildJavaGeneratorContainer(ParentAdapter parentAdapter) {
-		return new JavaEclipseLinkGeneratorContainer(parentAdapter);
+	public JavaGeneratorContainer buildJavaGeneratorContainer(Parent parentAdapter) {
+		return new EclipseLinkJavaGeneratorContainer(parentAdapter);
 	}
 }

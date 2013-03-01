@@ -321,7 +321,7 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaNullAttributeMapping(parent);
 	}
 	
-	public JavaGeneratorContainer buildJavaGeneratorContainer(JavaGeneratorContainer.ParentAdapter parentAdapter) {
+	public JavaGeneratorContainer buildJavaGeneratorContainer(JavaGeneratorContainer.Parent parentAdapter) {
 		return new GenericJavaGeneratorContainer(parentAdapter);
 	}
 	

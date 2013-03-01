@@ -20,7 +20,7 @@ public class EclipseLinkOrmXmlContextModelFactory2_4
 
 	@Override
 	public OrmGeneratorContainer buildOrmGeneratorContainer(JpaContextModel parent, XmlGeneratorContainer resourceGeneratorContainer) {
-		return new OrmEclipseLinkGeneratorContainer(parent, (XmlGeneratorContainer2_4) resourceGeneratorContainer);
+		return new EclipseLinkOrmGeneratorContainer(parent, (XmlGeneratorContainer2_4) resourceGeneratorContainer);
 	}
 
 }

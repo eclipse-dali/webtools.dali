@@ -20,10 +20,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkUuidGenerat
  * Java UUID generator
  */
 public class JavaEclipseLinkUuidGenerator
-	extends AbstractJavaGenerator<JavaEclipseLinkGeneratorContainer, EclipseLinkUuidGeneratorAnnotation2_4>
+	extends AbstractJavaGenerator<EclipseLinkJavaGeneratorContainer, EclipseLinkUuidGeneratorAnnotation2_4>
 	implements JavaUuidGenerator
 {
-	public JavaEclipseLinkUuidGenerator(JavaEclipseLinkGeneratorContainer parent, EclipseLinkUuidGeneratorAnnotation2_4 generatorAnnotation) {
+	public JavaEclipseLinkUuidGenerator(EclipseLinkJavaGeneratorContainer parent, EclipseLinkUuidGeneratorAnnotation2_4 generatorAnnotation) {
 		super(parent, generatorAnnotation);
 	}
 

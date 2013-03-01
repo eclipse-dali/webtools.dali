@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -42,17 +42,14 @@ public interface JavaGeneratorContainer
 	JavaTableGenerator addTableGenerator();
 
 
-	// ********** parent adapter interface **********
+	// ********** parent **********
 
 	/**
 	 * Parent adapter
 	 */
-	interface ParentAdapter {
-		/**
-		 * Return the container's parent.
-		 */
-		JpaContextModel getGeneratorContainerParent();
-
+	interface Parent
+		extends JpaContextModel
+	{
 		/**
 		 * Return the element that is annotated with generators.
 		 */
@@ -62,6 +59,6 @@ public interface JavaGeneratorContainer
 		 * Return whether the container's parent supports generators.
 		 * (Virtual attributes do not support generators.)
 		 */
-		boolean parentSupportsGenerators();
+		boolean supportsGenerators();
 	}
 }

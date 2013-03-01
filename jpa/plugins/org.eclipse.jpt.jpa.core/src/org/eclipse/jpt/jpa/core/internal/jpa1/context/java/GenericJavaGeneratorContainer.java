@@ -13,7 +13,6 @@ import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.Generator;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaTableGenerator;
@@ -24,19 +23,16 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaGeneratorContainer
-	extends AbstractJavaContextModel<JpaContextModel>
+	extends AbstractJavaContextModel<JavaGeneratorContainer.Parent>
 	implements JavaGeneratorContainer
 {
-	protected final ParentAdapter parentAdapter;
-
 	protected JavaSequenceGenerator sequenceGenerator;
 
 	protected JavaTableGenerator tableGenerator;
 
 
-	public GenericJavaGeneratorContainer(ParentAdapter parentAdapter) {
-		super(parentAdapter.getGeneratorContainerParent());
-		this.parentAdapter = parentAdapter;
+	public GenericJavaGeneratorContainer(JavaGeneratorContainer.Parent parent) {
+		super(parent);
 		this.sequenceGenerator = this.buildSequenceGenerator();
 		this.tableGenerator = this.buildTableGenerator();
 	}
@@ -80,14 +76,14 @@ public class GenericJavaGeneratorContainer
 	}
 
 	protected SequenceGeneratorAnnotation buildSequenceGeneratorAnnotation() {
-		return (SequenceGeneratorAnnotation) this.parentAdapter.getResourceAnnotatedElement().addAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
+		return (SequenceGeneratorAnnotation) this.parent.getResourceAnnotatedElement().addAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
 	}
 
 	public void removeSequenceGenerator() {
 		if (this.sequenceGenerator == null) {
 			throw new IllegalStateException("sequence generator does not exist"); //$NON-NLS-1$
 		}
-		this.parentAdapter.getResourceAnnotatedElement().removeAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
+		this.parent.getResourceAnnotatedElement().removeAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
 		this.setSequenceGenerator(null);
 	}
 
@@ -97,11 +93,11 @@ public class GenericJavaGeneratorContainer
 	}
 
 	protected SequenceGeneratorAnnotation getSequenceGeneratorAnnotation() {
-		return (SequenceGeneratorAnnotation) this.parentAdapter.getResourceAnnotatedElement().getAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
+		return (SequenceGeneratorAnnotation) this.parent.getResourceAnnotatedElement().getAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
 	}
 
 	protected JavaSequenceGenerator buildSequenceGenerator(SequenceGeneratorAnnotation sequenceGeneratorAnnotation) {
-		return this.parentAdapter.parentSupportsGenerators() ?
+		return this.parent.supportsGenerators() ?
 				this.getJpaFactory().buildJavaSequenceGenerator(this, sequenceGeneratorAnnotation) :
 				null;
 	}
@@ -145,14 +141,14 @@ public class GenericJavaGeneratorContainer
 	}
 
 	protected TableGeneratorAnnotation buildTableGeneratorAnnotation() {
-		return (TableGeneratorAnnotation) this.parentAdapter.getResourceAnnotatedElement().addAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
+		return (TableGeneratorAnnotation) this.parent.getResourceAnnotatedElement().addAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
 	}
 
 	public void removeTableGenerator() {
 		if (this.tableGenerator == null) {
 			throw new IllegalStateException("table generator does not exist"); //$NON-NLS-1$
 		}
-		this.parentAdapter.getResourceAnnotatedElement().removeAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
+		this.parent.getResourceAnnotatedElement().removeAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
 		this.setTableGenerator(null);
 	}
 
@@ -162,11 +158,11 @@ public class GenericJavaGeneratorContainer
 	}
 
 	protected TableGeneratorAnnotation getTableGeneratorAnnotation() {
-		return (TableGeneratorAnnotation) this.parentAdapter.getResourceAnnotatedElement().getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
+		return (TableGeneratorAnnotation) this.parent.getResourceAnnotatedElement().getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
 	}
 
 	protected JavaTableGenerator buildTableGenerator(TableGeneratorAnnotation tableGeneratorAnnotation) {
-		return this.parentAdapter.parentSupportsGenerators() ?
+		return this.parent.supportsGenerators() ?
 				this.getJpaFactory().buildJavaTableGenerator(this, tableGeneratorAnnotation) :
 				null;
 	}
@@ -235,7 +231,7 @@ public class GenericJavaGeneratorContainer
 	}
 
 	protected TextRange getResourceTextRange() {
-		return this.parentAdapter.getResourceAnnotatedElement().getTextRange();
+		return this.parent.getResourceAnnotatedElement().getTextRange();
 	}
 
 

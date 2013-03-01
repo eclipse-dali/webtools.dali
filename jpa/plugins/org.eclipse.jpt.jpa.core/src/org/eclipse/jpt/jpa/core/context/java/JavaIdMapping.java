@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.java.IdAnnotation;
  * @since 2.0
  */
 public interface JavaIdMapping
-	extends IdMapping, JavaColumnMapping, JavaConvertibleMapping, JavaGeneratorContainer.ParentAdapter, JavaGeneratedValueMapping
+	extends IdMapping, JavaColumnMapping, JavaConvertibleMapping, JavaGeneratorContainer.Parent, JavaGeneratedValueMapping
 {
 	IdAnnotation getMappingAnnotation();
 

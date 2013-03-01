@@ -49,7 +49,7 @@ public class JavaEclipseLinkMappedSuperclassImpl
 		JavaEclipseLinkMappedSuperclass, 
 		JavaCacheableReference2_0, 
 		EclipseLinkJavaConverterContainer.ParentAdapter,
-		JavaGeneratorContainer.ParentAdapter
+		JavaGeneratorContainer.Parent
 {
 	protected final JavaEclipseLinkCaching caching;
 
@@ -221,13 +221,9 @@ public class JavaEclipseLinkMappedSuperclassImpl
 				);
 	}
 
-	// ********** generator container parent adapter **********
+	// ********** generator container parent **********
 
-	public JpaContextModel getGeneratorContainerParent() {
-		return this;  // no adapter
-	}
-
-	public boolean parentSupportsGenerators() {
+	public boolean supportsGenerators() {
 		return true;
 	}
 

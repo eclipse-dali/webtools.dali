@@ -20,15 +20,14 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlUuidGenerator;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlGeneratorContainer2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlUuidGenerator_2_4;
 
-public class OrmEclipseLinkGeneratorContainer
+public class EclipseLinkOrmGeneratorContainer
 	extends GenericOrmGeneratorContainer
 	implements EclipseLinkGeneratorContainer
 {
-
 	protected OrmUuidGenerator uuidGenerator;
 
 
-	public OrmEclipseLinkGeneratorContainer(JpaContextModel parent, XmlGeneratorContainer2_4 xmlGeneratorContainer) {
+	public EclipseLinkOrmGeneratorContainer(JpaContextModel parent, XmlGeneratorContainer2_4 xmlGeneratorContainer) {
 		super(parent, xmlGeneratorContainer);
 		this.uuidGenerator = this.buildUuidGenerator();
 	}
