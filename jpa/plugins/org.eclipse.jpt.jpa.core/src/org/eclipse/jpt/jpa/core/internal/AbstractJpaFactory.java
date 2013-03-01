@@ -373,8 +373,8 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaVirtualOverrideRelationship(parent);
 	}
 	
-	public JavaQueryContainer buildJavaQueryContainer(JpaContextModel parent, JavaQueryContainer.Owner owner) {
-		return new GenericJavaQueryContainer(parent, owner);
+	public JavaQueryContainer buildJavaQueryContainer(JavaQueryContainer.Parent parent) {
+		return new GenericJavaQueryContainer(parent);
 	}
 	
 	public JavaNamedQuery buildJavaNamedQuery(JavaQueryContainer parent, NamedQueryAnnotation namedQueryAnnotation) {

@@ -42,6 +42,8 @@ public interface JavaGeneratorContainer
 	JavaTableGenerator addTableGenerator();
 
 
+	// ********** parent adapter interface **********
+
 	/**
 	 * Parent adapter
 	 */

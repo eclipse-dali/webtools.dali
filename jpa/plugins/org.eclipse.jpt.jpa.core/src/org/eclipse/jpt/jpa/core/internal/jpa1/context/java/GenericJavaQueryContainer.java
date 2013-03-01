@@ -14,12 +14,12 @@ import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
+import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java.JavaNamedStoredProcedureQuery2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java.JavaQueryContainer2_1;
@@ -34,19 +34,16 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Java query container
  */
 public class GenericJavaQueryContainer
-	extends AbstractJavaContextModel<JpaContextModel>
+	extends AbstractJavaContextModel<JavaQueryContainer.Parent>
 	implements JavaQueryContainer2_1
 {
-	protected final Owner owner;
-
 	protected final ContextListContainer<JavaNamedQuery, NamedQueryAnnotation> namedQueryContainer;
 	protected final ContextListContainer<JavaNamedNativeQuery, NamedNativeQueryAnnotation> namedNativeQueryContainer;
 	protected final ContextListContainer<JavaNamedStoredProcedureQuery2_1, NamedStoredProcedureQuery2_1Annotation> namedStoredProcedureQueryContainer;
 
 
-	public GenericJavaQueryContainer(JpaContextModel parent, Owner owner) {
+	public GenericJavaQueryContainer(JavaQueryContainer.Parent parent) {
 		super(parent);
-		this.owner = owner;
 		this.namedQueryContainer = this.buildNamedQueryContainer();
 		this.namedNativeQueryContainer = this.buildNamedNativeQueryContainer();
 		this.namedStoredProcedureQueryContainer = this.buildNamedStoredProcedureQueryContainer();
@@ -104,7 +101,7 @@ public class GenericJavaQueryContainer
 	}
 
 	protected NamedQueryAnnotation addNamedQueryAnnotation(int index) {
-		return (NamedQueryAnnotation) this.owner.getResourceAnnotatedElement().addAnnotation(index, NamedQueryAnnotation.ANNOTATION_NAME);
+		return (NamedQueryAnnotation) this.parent.getResourceAnnotatedElement().addAnnotation(index, NamedQueryAnnotation.ANNOTATION_NAME);
 	}
 
 	public void removeNamedQuery(NamedQuery namedQuery) {
@@ -112,12 +109,12 @@ public class GenericJavaQueryContainer
 	}
 
 	public void removeNamedQuery(int index) {
-		this.owner.getResourceAnnotatedElement().removeAnnotation(index, NamedQueryAnnotation.ANNOTATION_NAME);
+		this.parent.getResourceAnnotatedElement().removeAnnotation(index, NamedQueryAnnotation.ANNOTATION_NAME);
 		this.namedQueryContainer.removeContextElement(index);
 	}
 
 	public void moveNamedQuery(int targetIndex, int sourceIndex) {
-		this.owner.getResourceAnnotatedElement().moveAnnotation(targetIndex, sourceIndex, NamedQueryAnnotation.ANNOTATION_NAME);
+		this.parent.getResourceAnnotatedElement().moveAnnotation(targetIndex, sourceIndex, NamedQueryAnnotation.ANNOTATION_NAME);
 		this.namedQueryContainer.moveContextElement(targetIndex, sourceIndex);
 	}
 
@@ -134,7 +131,7 @@ public class GenericJavaQueryContainer
 	}
 
 	protected ListIterable<NestableAnnotation> getNestableNamedQueryAnnotations_() {
-		return this.owner.getResourceAnnotatedElement().getAnnotations(NamedQueryAnnotation.ANNOTATION_NAME);
+		return this.parent.getResourceAnnotatedElement().getAnnotations(NamedQueryAnnotation.ANNOTATION_NAME);
 	}
 
 	protected ContextListContainer<JavaNamedQuery, NamedQueryAnnotation> buildNamedQueryContainer() {
@@ -188,7 +185,7 @@ public class GenericJavaQueryContainer
 	}
 
 	protected NamedNativeQueryAnnotation addNamedNativeQueryAnnotation(int index) {
-		return (NamedNativeQueryAnnotation) this.owner.getResourceAnnotatedElement().addAnnotation(index, NamedNativeQueryAnnotation.ANNOTATION_NAME);
+		return (NamedNativeQueryAnnotation) this.parent.getResourceAnnotatedElement().addAnnotation(index, NamedNativeQueryAnnotation.ANNOTATION_NAME);
 	}
 
 	public void removeNamedNativeQuery(NamedNativeQuery namedNativeQuery) {
@@ -196,12 +193,12 @@ public class GenericJavaQueryContainer
 	}
 
 	public void removeNamedNativeQuery(int index) {
-		this.owner.getResourceAnnotatedElement().removeAnnotation(index, NamedNativeQueryAnnotation.ANNOTATION_NAME);
+		this.parent.getResourceAnnotatedElement().removeAnnotation(index, NamedNativeQueryAnnotation.ANNOTATION_NAME);
 		this.namedNativeQueryContainer.removeContextElement(index);
 	}
 
 	public void moveNamedNativeQuery(int targetIndex, int sourceIndex) {
-		this.owner.getResourceAnnotatedElement().moveAnnotation(targetIndex, sourceIndex, NamedNativeQueryAnnotation.ANNOTATION_NAME);
+		this.parent.getResourceAnnotatedElement().moveAnnotation(targetIndex, sourceIndex, NamedNativeQueryAnnotation.ANNOTATION_NAME);
 		this.namedNativeQueryContainer.moveContextElement(targetIndex, sourceIndex);
 	}
 
@@ -218,7 +215,7 @@ public class GenericJavaQueryContainer
 	}
 
 	protected ListIterable<NestableAnnotation> getNestableNamedNativeQueryAnnotations_() {
-		return this.owner.getResourceAnnotatedElement().getAnnotations(NamedNativeQueryAnnotation.ANNOTATION_NAME);
+		return this.parent.getResourceAnnotatedElement().getAnnotations(NamedNativeQueryAnnotation.ANNOTATION_NAME);
 	}
 
 	protected ContextListContainer<JavaNamedNativeQuery, NamedNativeQueryAnnotation> buildNamedNativeQueryContainer() {
@@ -271,7 +268,7 @@ public class GenericJavaQueryContainer
 	}
 
 	protected NamedStoredProcedureQuery2_1Annotation addNamedStoredProcedureQueryAnnotation(int index) {
-		return (NamedStoredProcedureQuery2_1Annotation) this.owner.getResourceAnnotatedElement().addAnnotation(index, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME);
+		return (NamedStoredProcedureQuery2_1Annotation) this.parent.getResourceAnnotatedElement().addAnnotation(index, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME);
 	}
 
 	public void removeNamedStoredProcedureQuery(NamedStoredProcedureQuery2_1 namedStoredProcedureQuery) {
@@ -279,12 +276,12 @@ public class GenericJavaQueryContainer
 	}
 
 	public void removeNamedStoredProcedureQuery(int index) {
-		this.owner.getResourceAnnotatedElement().removeAnnotation(index, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME);
+		this.parent.getResourceAnnotatedElement().removeAnnotation(index, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME);
 		this.namedStoredProcedureQueryContainer.removeContextElement(index);
 	}
 
 	public void moveNamedStoredProcedureQuery(int targetIndex, int sourceIndex) {
-		this.owner.getResourceAnnotatedElement().moveAnnotation(targetIndex, sourceIndex, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME);
+		this.parent.getResourceAnnotatedElement().moveAnnotation(targetIndex, sourceIndex, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME);
 		this.namedStoredProcedureQueryContainer.moveContextElement(targetIndex, sourceIndex);
 	}
 
@@ -301,7 +298,7 @@ public class GenericJavaQueryContainer
 	}
 
 	protected ListIterable<NestableAnnotation> getNestableNamedStoredProcedureQueryAnnotations_() {
-		return this.owner.getResourceAnnotatedElement().getAnnotations(NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME);
+		return this.parent.getResourceAnnotatedElement().getAnnotations(NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME);
 	}
 
 	protected ContextListContainer<JavaNamedStoredProcedureQuery2_1, NamedStoredProcedureQuery2_1Annotation> buildNamedStoredProcedureQueryContainer() {
@@ -348,7 +345,7 @@ public class GenericJavaQueryContainer
 	}
 
 	public TextRange getValidationTextRange() {
-		TextRange textRange = this.owner.getResourceAnnotatedElement().getTextRange();
+		TextRange textRange = this.parent.getResourceAnnotatedElement().getTextRange();
 		return (textRange != null) ? textRange : this.parent.getValidationTextRange();
 	}
 }

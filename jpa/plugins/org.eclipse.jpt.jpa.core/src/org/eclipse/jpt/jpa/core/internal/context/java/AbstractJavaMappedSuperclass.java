@@ -28,7 +28,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractJavaMappedSuperclass
 	extends AbstractJavaTypeMapping<MappedSuperclassAnnotation>
-	implements JavaMappedSuperclass, JavaQueryContainer.Owner
+	implements JavaMappedSuperclass, JavaQueryContainer.Parent
 {
 	protected final JavaIdClassReference idClassReference;
 	protected final JavaQueryContainer queryContainer;
@@ -80,7 +80,7 @@ public abstract class AbstractJavaMappedSuperclass
 	}
 
 	protected JavaQueryContainer buildQueryContainer() {
-		return this.getJpaFactory().buildJavaQueryContainer(this, this);
+		return this.getJpaFactory().buildJavaQueryContainer(this);
 	}
 
 	public JavaResourceMember getResourceAnnotatedElement() {

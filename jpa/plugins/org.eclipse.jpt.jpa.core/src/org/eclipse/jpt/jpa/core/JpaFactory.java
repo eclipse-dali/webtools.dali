@@ -261,7 +261,7 @@ public interface JpaFactory
 	
 	VirtualOverrideRelationship buildJavaVirtualOverrideRelationship(JavaVirtualAssociationOverride parent);
 	
-	JavaQueryContainer buildJavaQueryContainer(JpaContextModel parent, JavaQueryContainer.Owner owner);
+	JavaQueryContainer buildJavaQueryContainer(JavaQueryContainer.Parent owner);
 
 	JavaNamedQuery buildJavaNamedQuery(JavaQueryContainer parent, NamedQueryAnnotation namedQueryAnnotation);
 	

@@ -105,7 +105,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractJavaEntity
 	extends AbstractJavaTypeMapping<EntityAnnotation>
-	implements JavaEntity2_0, JavaGeneratorContainer.ParentAdapter, JavaQueryContainer.Owner
+	implements JavaEntity2_0, JavaGeneratorContainer.ParentAdapter, JavaQueryContainer.Parent
 {
 	protected String specifiedName;
 	protected String defaultName;
@@ -954,7 +954,7 @@ public abstract class AbstractJavaEntity
 	}
 
 	protected JavaQueryContainer buildQueryContainer() {
-		return this.getJpaFactory().buildJavaQueryContainer(this, this);
+		return this.getJpaFactory().buildJavaQueryContainer(this);
 	}
 
 	public Iterable<Query> getQueries() {
