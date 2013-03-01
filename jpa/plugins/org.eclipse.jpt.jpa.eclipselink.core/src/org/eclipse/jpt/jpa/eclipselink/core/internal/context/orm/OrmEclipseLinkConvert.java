@@ -27,13 +27,13 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConvert;
 
 public class OrmEclipseLinkConvert
-	extends AbstractOrmConverter
+	extends AbstractOrmConverter<OrmConverter.ParentAdapter<OrmAttributeMapping>>
 	implements EclipseLinkConvert
 {
 	protected String specifiedConverterName;
 
-	public OrmEclipseLinkConvert(OrmAttributeMapping parent, OrmConverter.Owner owner) {
-		super(parent, owner);
+	public OrmEclipseLinkConvert(OrmConverter.ParentAdapter<OrmAttributeMapping> parentAdapter) {
+		super(parentAdapter);
 		this.specifiedConverterName = this.getXmlConvert() != null ? this.getXmlConvert().getConvert() : null;
 	}
 
@@ -148,7 +148,7 @@ public class OrmEclipseLinkConvert
 	// ********** adapter **********
 
 	public static class Adapter
-		implements OrmConverter.Adapter, OrmConverter.Owner
+		implements OrmConverter.Adapter//, OrmConverter.ParentAdapter<OrmAttributeMapping>
 	{
 		private static final Adapter INSTANCE = new Adapter();
 		public static Adapter instance() {
@@ -166,7 +166,7 @@ public class OrmEclipseLinkConvert
 		public OrmConverter buildConverter(OrmAttributeMapping parent, OrmXmlContextModelFactory factory) {
 			XmlConvertibleMapping_2_1 xmlMapping = (XmlConvertibleMapping_2_1) parent.getXmlAttributeMapping();
 			XmlConvert xmlConvert = (XmlConvert) xmlMapping.getConvert();
-			return (xmlConvert == null) ? null : new OrmEclipseLinkConvert(parent, this);
+			return (xmlConvert == null) ? null : new OrmEclipseLinkConvert(new ConverterParentAdapter(parent));
 		}
 
 		public boolean isActive(XmlAttributeMapping xmlMapping) {
@@ -174,15 +174,27 @@ public class OrmEclipseLinkConvert
 		}
 
 		public OrmConverter buildNewConverter(OrmAttributeMapping parent, OrmXmlContextModelFactory factory) {
-			return new OrmEclipseLinkConvert(parent, this);
+			return new OrmEclipseLinkConvert(new ConverterParentAdapter(parent));
 		}
 
 		public void clearXmlValue(XmlAttributeMapping xmlMapping) {
 			((XmlConvertibleMapping_2_1) xmlMapping).setConvert(null);
 		}
 
-		public JptValidator buildValidator(Converter converter) {
-			return new EclipseLinkConvertValidator((EclipseLinkConvert) converter);
+		public static class ConverterParentAdapter
+			implements Converter.ParentAdapter<OrmAttributeMapping>
+		{
+			private final OrmAttributeMapping parent;
+			public ConverterParentAdapter(OrmAttributeMapping parent) {
+				super();
+				this.parent = parent;
+			}
+			public OrmAttributeMapping getConverterParent() {
+				return this.parent;
+			}
+			public JptValidator buildValidator(Converter converter) {
+				return new EclipseLinkConvertValidator((EclipseLinkConvert) converter);
+			}
 		}
 	}
 }

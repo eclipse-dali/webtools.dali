@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,7 +30,7 @@ public interface OrmLobConverter
 	// ********** adapter **********
 
 	public static class Adapter
-		implements OrmConverter.Adapter, OrmConverter.Owner
+		implements OrmConverter.Adapter
 	{
 		private static final Adapter INSTANCE = new Adapter();
 		public static Adapter instance() {
@@ -47,7 +47,7 @@ public interface OrmLobConverter
 
 		public OrmConverter buildConverter(OrmAttributeMapping parent, OrmXmlContextModelFactory factory) {
 			XmlConvertibleMapping xmlMapping = (XmlConvertibleMapping) parent.getXmlAttributeMapping();
-			return xmlMapping.isLob() ? factory.buildOrmLobConverter(parent, this) : null;
+			return xmlMapping.isLob() ? factory.buildOrmLobConverter(new ConverterParentAdapter(parent)) : null;
 		}
 
 		public boolean isActive(XmlAttributeMapping xmlMapping) {
@@ -55,15 +55,27 @@ public interface OrmLobConverter
 		}
 
 		public OrmConverter buildNewConverter(OrmAttributeMapping parent, OrmXmlContextModelFactory factory) {
-			return factory.buildOrmLobConverter(parent, this);
+			return factory.buildOrmLobConverter(new ConverterParentAdapter(parent));
 		}
 
 		public void clearXmlValue(XmlAttributeMapping xmlMapping) {
 			((XmlConvertibleMapping) xmlMapping).setLob(false);
 		}
 
-		public JptValidator buildValidator(Converter converter) {
-			return JptValidator.Null.instance();
+		public static class ConverterParentAdapter
+			implements Converter.ParentAdapter<OrmAttributeMapping>
+		{
+			private final OrmAttributeMapping parent;
+			public ConverterParentAdapter(OrmAttributeMapping parent) {
+				super();
+				this.parent = parent;
+			}
+			public OrmAttributeMapping getConverterParent() {
+				return this.parent;
+			}
+			public JptValidator buildValidator(Converter converter) {
+				return JptValidator.Null.instance();
+			}
 		}
 	}
 }

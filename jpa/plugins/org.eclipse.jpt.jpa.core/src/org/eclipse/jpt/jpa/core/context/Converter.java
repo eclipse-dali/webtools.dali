@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -34,17 +34,15 @@ public interface Converter
 	Class<? extends Converter> getType();
 
 
-	// ********** owner **********
+	// ********** parent adapter **********
 
 	/**
 	 * Interface allowing converters to be used in multiple places
 	 * (e.g. basic mappings, collection mappings, etc).
 	 */
-	public interface Owner
-	{
-		/**
-		 * 
-		 */
+	public interface ParentAdapter<M extends AttributeMapping> {
+		M getConverterParent();
+
 		JptValidator buildValidator(Converter converter);
 	}
 

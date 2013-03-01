@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -84,7 +84,7 @@ public interface JavaConverter
 		 * This is used when the context model is synchronized with the
 		 * resource model (and the resource model has changed).
 		 * 
-		 * @see #getConverterAnnotation(JavaResourcePersistentAttribute)
+		 * @see #getConverterAnnotation(JavaResourceAttribute)
 		 */
 		JavaConverter buildConverter(Annotation converterAnnotation, JavaAttributeMapping parent, JpaFactory factory);
 
@@ -138,12 +138,24 @@ public interface JavaConverter
 			}
 		}
 
-		protected Owner buildOwner() {
-			return new Owner() {
-				public JptValidator buildValidator(Converter converter) {
-					return JptValidator.Null.instance();
-				}
-			};
+		protected Converter.ParentAdapter<JavaAttributeMapping> buildConverterParentAdapter(JavaAttributeMapping parent) {
+			return new ConverterParentAdapter(parent);
+		}
+
+		public static class ConverterParentAdapter
+			implements Converter.ParentAdapter<JavaAttributeMapping>
+		{
+			private final JavaAttributeMapping parent;
+			public ConverterParentAdapter(JavaAttributeMapping parent) {
+				super();
+				this.parent = parent;
+			}
+			public JavaAttributeMapping getConverterParent() {
+				return this.parent;
+			}
+			public JptValidator buildValidator(Converter converter) {
+				return JptValidator.Null.instance();
+			}
 		}
 
 		@Override

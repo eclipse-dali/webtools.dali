@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,13 +30,10 @@ import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlMapKeyConvertibleMapping_2_
 public interface OrmBaseEnumeratedConverter
 	extends BaseEnumeratedConverter, OrmConverter
 {
-	// ********** owner **********
+	// ********** parent adapter **********
 
-	/**
-	 * 
-	 */
-	public interface Owner
-		extends OrmConverter.Owner
+	public interface ParentAdapter
+		extends Converter.ParentAdapter<OrmAttributeMapping>
 	{
 		EnumType getXmlEnumType();
 
@@ -44,6 +41,7 @@ public interface OrmBaseEnumeratedConverter
 
 		TextRange getEnumTextRange();
 	}
+
 
 	// ********** enumerated adapter **********
 
@@ -65,24 +63,38 @@ public interface OrmBaseEnumeratedConverter
 
 		public OrmConverter buildConverter(OrmAttributeMapping parent, OrmXmlContextModelFactory factory) {
 			XmlConvertibleMapping xmlMapping = (XmlConvertibleMapping) parent.getXmlAttributeMapping();
-			return (xmlMapping.getEnumerated() == null) ? null : factory.buildOrmBaseEnumeratedConverter(parent, this.buildOwner(xmlMapping));
+			return (xmlMapping.getEnumerated() == null) ? null : factory.buildOrmBaseEnumeratedConverter(this.buildConverterParentAdapter(parent, xmlMapping));
 		}
 
-		protected OrmBaseEnumeratedConverter.Owner buildOwner(final XmlConvertibleMapping mapping) {
-			return new OrmBaseEnumeratedConverter.Owner() {
-				public void setXmlEnumType(EnumType enumType) {
-					mapping.setEnumerated(enumType);
-				}
-				public EnumType getXmlEnumType() {
-					return mapping.getEnumerated();
-				}
-				public TextRange getEnumTextRange() {
-					return mapping.getEnumeratedTextRange();
-				}
-				public JptValidator buildValidator(Converter converter) {
-					return JptValidator.Null.instance();
-				}
-			};
+		protected OrmBaseEnumeratedConverter.ParentAdapter buildConverterParentAdapter(OrmAttributeMapping parent, XmlConvertibleMapping mapping) {
+			return new ConverterParentAdapter(parent, mapping);
+		}
+
+		public static class ConverterParentAdapter
+			implements OrmBaseEnumeratedConverter.ParentAdapter
+		{
+			private final OrmAttributeMapping parent;
+			private final XmlConvertibleMapping mapping;
+			public ConverterParentAdapter(OrmAttributeMapping parent, XmlConvertibleMapping mapping) {
+				super();
+				this.parent = parent;
+				this.mapping = mapping;
+			}
+			public OrmAttributeMapping getConverterParent() {
+				return this.parent;
+			}
+			public void setXmlEnumType(EnumType enumType) {
+				this.mapping.setEnumerated(enumType);
+			}
+			public EnumType getXmlEnumType() {
+				return this.mapping.getEnumerated();
+			}
+			public TextRange getEnumTextRange() {
+				return this.mapping.getEnumeratedTextRange();
+			}
+			public JptValidator buildValidator(Converter converter) {
+				return JptValidator.Null.instance();
+			}
 		}
 
 		public boolean isActive(XmlAttributeMapping xmlMapping) {
@@ -90,7 +102,7 @@ public interface OrmBaseEnumeratedConverter
 		}
 
 		public OrmConverter buildNewConverter(OrmAttributeMapping parent, OrmXmlContextModelFactory factory) {
-			return factory.buildOrmBaseEnumeratedConverter(parent, this.buildOwner((XmlConvertibleMapping) parent.getXmlAttributeMapping()));
+			return factory.buildOrmBaseEnumeratedConverter(this.buildConverterParentAdapter(parent, (XmlConvertibleMapping) parent.getXmlAttributeMapping()));
 		}
 
 		public void clearXmlValue(XmlAttributeMapping xmlMapping) {
@@ -118,27 +130,38 @@ public interface OrmBaseEnumeratedConverter
 
 		public OrmConverter buildConverter(OrmAttributeMapping parent, OrmXmlContextModelFactory factory) {
 			XmlMapKeyConvertibleMapping_2_0 xmlMapping = (XmlMapKeyConvertibleMapping_2_0) parent.getXmlAttributeMapping();
-			return (xmlMapping.getMapKeyEnumerated() == null) ? null : factory.buildOrmBaseEnumeratedConverter(parent, this.buildOwner(xmlMapping));
+			return (xmlMapping.getMapKeyEnumerated() == null) ? null : factory.buildOrmBaseEnumeratedConverter(this.buildParentAdapter(parent, xmlMapping));
 		}
 
-		protected OrmBaseEnumeratedConverter.Owner buildOwner(final XmlMapKeyConvertibleMapping_2_0 mapping) {
-			return new OrmBaseEnumeratedConverter.Owner() {
-				public void setXmlEnumType(EnumType enumType) {
-					mapping.setMapKeyEnumerated(enumType);
-				}
-				
-				public EnumType getXmlEnumType() {
-					return mapping.getMapKeyEnumerated();
-				}
-				
-				public TextRange getEnumTextRange() {
-					return mapping.getMapKeyEnumeratedTextRange();
-				}
+		protected OrmBaseEnumeratedConverter.ParentAdapter buildParentAdapter(OrmAttributeMapping parent, XmlMapKeyConvertibleMapping_2_0 mapping) {
+			return new ConverterParentAdapter(parent, mapping);
+		}
 
-				public JptValidator buildValidator(Converter converter) {
-					return JptValidator.Null.instance();
-				}
-			};
+		public static class ConverterParentAdapter
+			implements OrmBaseEnumeratedConverter.ParentAdapter
+		{
+			private final OrmAttributeMapping parent;
+			private final XmlMapKeyConvertibleMapping_2_0 mapping;
+			public ConverterParentAdapter(OrmAttributeMapping parent, XmlMapKeyConvertibleMapping_2_0 mapping) {
+				super();
+				this.parent = parent;
+				this.mapping = mapping;
+			}
+			public OrmAttributeMapping getConverterParent() {
+				return this.parent;
+			}
+			public void setXmlEnumType(EnumType enumType) {
+				this.mapping.setMapKeyEnumerated(enumType);
+			}
+			public EnumType getXmlEnumType() {
+				return this.mapping.getMapKeyEnumerated();
+			}
+			public TextRange getEnumTextRange() {
+				return this.mapping.getMapKeyEnumeratedTextRange();
+			}
+			public JptValidator buildValidator(Converter converter) {
+				return JptValidator.Null.instance();
+			}
 		}
 
 		public boolean isActive(XmlAttributeMapping xmlMapping) {
@@ -146,7 +169,7 @@ public interface OrmBaseEnumeratedConverter
 		}
 
 		public OrmConverter buildNewConverter(OrmAttributeMapping parent, OrmXmlContextModelFactory factory) {
-			return factory.buildOrmBaseEnumeratedConverter(parent, this.buildOwner((XmlMapKeyConvertibleMapping_2_0) parent.getXmlAttributeMapping()));
+			return factory.buildOrmBaseEnumeratedConverter(this.buildParentAdapter(parent, (XmlMapKeyConvertibleMapping_2_0) parent.getXmlAttributeMapping()));
 		}
 
 		public void clearXmlValue(XmlAttributeMapping xmlMapping) {

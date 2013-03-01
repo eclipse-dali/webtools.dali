@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
@@ -22,12 +23,12 @@ public abstract class AbstractJavaConverter
 	extends AbstractJavaContextModel<JavaAttributeMapping>
 	implements JavaConverter
 {
+	protected final Converter.ParentAdapter<JavaAttributeMapping> parentAdapter;
 
-	protected final JavaConverter.Owner owner;
 
-	protected AbstractJavaConverter(JavaAttributeMapping parent, JavaConverter.Owner owner) {
-		super(parent);
-		this.owner = owner;
+	protected AbstractJavaConverter(Converter.ParentAdapter<JavaAttributeMapping> parentAdapter) {
+		super(parentAdapter.getConverterParent());
+		this.parentAdapter = parentAdapter;
 	}
 
 
@@ -36,7 +37,7 @@ public abstract class AbstractJavaConverter
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		this.owner.buildValidator(this).validate(messages, reporter);
+		this.parentAdapter.buildValidator(this).validate(messages, reporter);
 	}
 
 	public TextRange getValidationTextRange() {

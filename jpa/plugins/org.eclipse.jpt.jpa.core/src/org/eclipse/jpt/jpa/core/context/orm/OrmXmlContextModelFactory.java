@@ -11,15 +11,15 @@ package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
-import org.eclipse.jpt.jpa.core.context.Table;
-import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
+import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.Table;
+import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.VirtualColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinTable;
@@ -261,11 +261,11 @@ public interface OrmXmlContextModelFactory
 
 	VirtualUniqueConstraint buildOrmVirtualUniqueConstraint(JpaContextModel parent, UniqueConstraint overriddenUniqueConstraint);
 
-	OrmConverter buildOrmBaseEnumeratedConverter(OrmAttributeMapping parent, OrmBaseEnumeratedConverter.Owner owner);
+	OrmConverter buildOrmBaseEnumeratedConverter(OrmBaseEnumeratedConverter.ParentAdapter parentAdapter);
 
-	OrmConverter buildOrmBaseTemporalConverter(OrmAttributeMapping parent, OrmBaseTemporalConverter.Owner owner);
+	OrmConverter buildOrmBaseTemporalConverter(OrmBaseTemporalConverter.ParentAdapter parentAdapter);
 
-	OrmConverter buildOrmLobConverter(OrmAttributeMapping parent, OrmConverter.Owner owner);
+	OrmConverter buildOrmLobConverter(OrmConverter.ParentAdapter<OrmAttributeMapping> parentAdapter);
 
 	/**
 	 * JPA 1.0 only

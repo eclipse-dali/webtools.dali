@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,13 +33,10 @@ import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlMapKeyConvertibleMapping_2_
 public interface OrmBaseTemporalConverter
 	extends BaseTemporalConverter, OrmConverter
 {
-	// ********** owner **********
+	// ********** parent adapter **********
 
-	/**
-	 * 
-	 */
-	public interface Owner 
-		extends OrmConverter.Owner
+	public interface ParentAdapter 
+		extends Converter.ParentAdapter<OrmAttributeMapping>
 	{
 		TemporalType getXmlTemporalType();
 
@@ -47,6 +44,7 @@ public interface OrmBaseTemporalConverter
 
 		TextRange getTemporalTextRange();
 	}
+
 
 	// ********** adapter **********
 
@@ -63,10 +61,10 @@ public interface OrmBaseTemporalConverter
 
 		public OrmConverter buildConverter(OrmAttributeMapping parent, OrmXmlContextModelFactory factory) {
 			XmlConvertibleMapping xmlMapping = (XmlConvertibleMapping) parent.getXmlAttributeMapping();
-			return (xmlMapping.getTemporal() == null) ? null : factory.buildOrmBaseTemporalConverter(parent, this.buildOwner(xmlMapping));
+			return (xmlMapping.getTemporal() == null) ? null : factory.buildOrmBaseTemporalConverter(this.buildParentAdapter(parent, xmlMapping));
 		}
 
-		protected abstract OrmBaseTemporalConverter.Owner buildOwner(final XmlConvertibleMapping mapping); 
+		protected abstract OrmBaseTemporalConverter.ParentAdapter buildParentAdapter(OrmAttributeMapping parent, XmlConvertibleMapping mapping); 
 
 
 		public boolean isActive(XmlAttributeMapping xmlMapping) {
@@ -74,11 +72,35 @@ public interface OrmBaseTemporalConverter
 		}
 
 		public OrmConverter buildNewConverter(OrmAttributeMapping parent, OrmXmlContextModelFactory factory) {
-			return factory.buildOrmBaseTemporalConverter(parent, this.buildOwner((XmlConvertibleMapping) parent.getXmlAttributeMapping()));
+			return factory.buildOrmBaseTemporalConverter(this.buildParentAdapter(parent, (XmlConvertibleMapping) parent.getXmlAttributeMapping()));
 		}
 
 		public void clearXmlValue(XmlAttributeMapping xmlMapping) {
 			((XmlConvertibleMapping) xmlMapping).setTemporal(null);
+		}
+
+		public abstract static class ConverterParentAdapter
+			implements OrmBaseTemporalConverter.ParentAdapter
+		{
+			private final OrmAttributeMapping parent;
+			private final XmlConvertibleMapping mapping;
+			public ConverterParentAdapter(OrmAttributeMapping parent, XmlConvertibleMapping mapping) {
+				super();
+				this.parent = parent;
+				this.mapping = mapping;
+			}
+			public OrmAttributeMapping getConverterParent() {
+				return this.parent;
+			}
+			public void setXmlTemporalType(TemporalType temporalType) {
+				this.mapping.setTemporal(temporalType);
+			}
+			public TemporalType getXmlTemporalType() {
+				return this.mapping.getTemporal();
+			}
+			public TextRange getTemporalTextRange() {
+				return this.mapping.getTemporalTextRange();
+			}
 		}
 	}
 
@@ -95,21 +117,19 @@ public interface OrmBaseTemporalConverter
 		}
 
 		@Override
-		protected Owner buildOwner(final XmlConvertibleMapping mapping) {
-			return new OrmBaseTemporalConverter.Owner() {
-				public void setXmlTemporalType(TemporalType temporalType) {
-					mapping.setTemporal(temporalType);
-				}
-				public TemporalType getXmlTemporalType() {
-					return mapping.getTemporal();
-				}
-				public TextRange getTemporalTextRange() {
-					return mapping.getTemporalTextRange();
-				}
-				public JptValidator buildValidator(Converter converter) {
-					return new OrmTemporalConverterValidator((BaseTemporalConverter) converter);
-				}
-			};
+		protected ParentAdapter buildParentAdapter(OrmAttributeMapping parent, XmlConvertibleMapping mapping) {
+			return new ConverterParentAdapter(parent, mapping);
+		}
+
+		public static class ConverterParentAdapter
+			extends AbstractAdapter.ConverterParentAdapter
+		{
+			public ConverterParentAdapter(OrmAttributeMapping parent, XmlConvertibleMapping mapping) {
+				super(parent, mapping);
+			}
+			public JptValidator buildValidator(Converter converter) {
+				return new OrmTemporalConverterValidator((BaseTemporalConverter) converter);
+			}
 		}
 	}
 
@@ -126,23 +146,22 @@ public interface OrmBaseTemporalConverter
 		}
 
 		@Override
-		protected Owner buildOwner(final XmlConvertibleMapping mapping) {
-			return new OrmBaseTemporalConverter.Owner() {
-				public void setXmlTemporalType(TemporalType temporalType) {
-					mapping.setTemporal(temporalType);
-				}
-				public TemporalType getXmlTemporalType() {
-					return mapping.getTemporal();
-				}
-				public TextRange getTemporalTextRange() {
-					return mapping.getTemporalTextRange();
-				}
-				public JptValidator buildValidator(Converter converter) {
-					return new OrmElementCollectionTemporalConverterValidator((BaseTemporalConverter) converter);
-				}
-			};
+		protected ParentAdapter buildParentAdapter(OrmAttributeMapping parent, XmlConvertibleMapping mapping) {
+			return new ConverterParentAdapter(parent, mapping);
+		}
+
+		public static class ConverterParentAdapter
+			extends AbstractAdapter.ConverterParentAdapter
+		{
+			public ConverterParentAdapter(OrmAttributeMapping parent, XmlConvertibleMapping mapping) {
+				super(parent, mapping);
+			}
+			public JptValidator buildValidator(Converter converter) {
+				return new OrmElementCollectionTemporalConverterValidator((BaseTemporalConverter) converter);
+			}
 		}
 	}
+
 
 	// ********** map key temporal adapter **********
 
@@ -164,27 +183,38 @@ public interface OrmBaseTemporalConverter
 
 		public OrmConverter buildConverter(OrmAttributeMapping parent, OrmXmlContextModelFactory factory) {
 			XmlMapKeyConvertibleMapping_2_0 xmlMapping = (XmlMapKeyConvertibleMapping_2_0) parent.getXmlAttributeMapping();
-			return (xmlMapping.getMapKeyTemporal() == null) ? null : factory.buildOrmBaseTemporalConverter(parent, this.buildOwner(xmlMapping));
+			return (xmlMapping.getMapKeyTemporal() == null) ? null : factory.buildOrmBaseTemporalConverter(this.buildParentAdapter(parent, xmlMapping));
 		}
 
-		protected OrmBaseTemporalConverter.Owner buildOwner(final XmlMapKeyConvertibleMapping_2_0 mapping) {
-			return new OrmBaseTemporalConverter.Owner() {
-				public void setXmlTemporalType(TemporalType temporalType) {
-					mapping.setMapKeyTemporal(temporalType);
-				}
-				
-				public TemporalType getXmlTemporalType() {
-					return mapping.getMapKeyTemporal();
-				}
-				
-				public TextRange getTemporalTextRange() {
-					return mapping.getMapKeyTemporalTextRange();
-				}
+		protected OrmBaseTemporalConverter.ParentAdapter buildParentAdapter(OrmAttributeMapping parent, XmlMapKeyConvertibleMapping_2_0 mapping) {
+			return new ConverterParentAdapter(parent, mapping);
+		}
 
-				public JptValidator buildValidator(Converter converter) {
-					return new OrmMapKeyTemporalConverterValidator((BaseTemporalConverter) converter);
-				}
-			};
+		public static class ConverterParentAdapter
+			implements OrmBaseTemporalConverter.ParentAdapter
+		{
+			private final OrmAttributeMapping parent;
+			private final XmlMapKeyConvertibleMapping_2_0 mapping;
+			public ConverterParentAdapter(OrmAttributeMapping parent, XmlMapKeyConvertibleMapping_2_0 mapping) {
+				super();
+				this.parent = parent;
+				this.mapping = mapping;
+			}
+			public OrmAttributeMapping getConverterParent() {
+				return this.parent;
+			}
+			public void setXmlTemporalType(TemporalType temporalType) {
+				this.mapping.setMapKeyTemporal(temporalType);
+			}
+			public TemporalType getXmlTemporalType() {
+				return this.mapping.getMapKeyTemporal();
+			}
+			public TextRange getTemporalTextRange() {
+				return this.mapping.getMapKeyTemporalTextRange();
+			}
+			public JptValidator buildValidator(Converter converter) {
+				return new OrmMapKeyTemporalConverterValidator((BaseTemporalConverter) converter);
+			}
 		}
 
 		public boolean isActive(XmlAttributeMapping xmlMapping) {
@@ -192,7 +222,7 @@ public interface OrmBaseTemporalConverter
 		}
 
 		public OrmConverter buildNewConverter(OrmAttributeMapping parent, OrmXmlContextModelFactory factory) {
-			return factory.buildOrmBaseTemporalConverter(parent, this.buildOwner((XmlMapKeyConvertibleMapping_2_0) parent.getXmlAttributeMapping()));
+			return factory.buildOrmBaseTemporalConverter(this.buildParentAdapter(parent, (XmlMapKeyConvertibleMapping_2_0) parent.getXmlAttributeMapping()));
 		}
 
 		public void clearXmlValue(XmlAttributeMapping xmlMapping) {

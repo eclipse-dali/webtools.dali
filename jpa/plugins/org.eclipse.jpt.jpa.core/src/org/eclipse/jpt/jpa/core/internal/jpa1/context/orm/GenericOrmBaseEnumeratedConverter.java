@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,24 +13,18 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.EnumType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBaseEnumeratedConverter;
 
 public class GenericOrmBaseEnumeratedConverter
-	extends AbstractOrmConverter
+	extends AbstractOrmConverter<OrmBaseEnumeratedConverter.ParentAdapter>
 	implements OrmBaseEnumeratedConverter
 {
 	protected EnumType specifiedEnumType;
 
 
-	public GenericOrmBaseEnumeratedConverter(OrmAttributeMapping parent,  OrmBaseEnumeratedConverter.Owner owner) {
-		super(parent, owner);
+	public GenericOrmBaseEnumeratedConverter(OrmBaseEnumeratedConverter.ParentAdapter parentAdapter) {
+		super(parentAdapter);
 		this.specifiedEnumType = this.buildSpecifiedEnumType();
-	}
-
-	@Override
-	protected OrmBaseEnumeratedConverter.Owner getOwner() {
-		return (OrmBaseEnumeratedConverter.Owner) super.getOwner();
 	}
 
 
@@ -65,11 +59,11 @@ public class GenericOrmBaseEnumeratedConverter
 	}
 
 	protected void setXmlEnumerated(EnumType enumType) {
-		this.getOwner().setXmlEnumType(EnumType.toOrmResourceModel(enumType));
+		this.parentAdapter.setXmlEnumType(EnumType.toOrmResourceModel(enumType));
 	}
 
 	protected EnumType buildSpecifiedEnumType() {
-		return EnumType.fromOrmResourceModel(this.getOwner().getXmlEnumType());
+		return EnumType.fromOrmResourceModel(this.parentAdapter.getXmlEnumType());
 	}
 
 	/**
@@ -99,6 +93,6 @@ public class GenericOrmBaseEnumeratedConverter
 
 	@Override
 	protected TextRange getXmlValidationTextRange() {
-		return this.getOwner().getEnumTextRange();
+		return this.parentAdapter.getEnumTextRange();
 	}
 }

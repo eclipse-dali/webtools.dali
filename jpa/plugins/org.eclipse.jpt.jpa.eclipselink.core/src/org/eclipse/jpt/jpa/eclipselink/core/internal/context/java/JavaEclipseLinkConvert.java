@@ -35,8 +35,8 @@ public class JavaEclipseLinkConvert
 	private String defaultConverterName;
 
 
-	public JavaEclipseLinkConvert(JavaAttributeMapping parent, EclipseLinkConvertAnnotation convertAnnotation, JavaConverter.Owner owner) {
-		super(parent, owner);
+	public JavaEclipseLinkConvert(Converter.ParentAdapter<JavaAttributeMapping> parentAdapter, EclipseLinkConvertAnnotation convertAnnotation) {
+		super(parentAdapter);
 		this.convertAnnotation = convertAnnotation;
 		this.specifiedConverterName = convertAnnotation.getValue();
 	}
@@ -170,16 +170,28 @@ public class JavaEclipseLinkConvert
 		}
 
 		public JavaConverter buildConverter(Annotation converterAnnotation, JavaAttributeMapping parent, JpaFactory factory) {
-			return new JavaEclipseLinkConvert(parent, (EclipseLinkConvertAnnotation) converterAnnotation, this.buildOwner());
+			return new JavaEclipseLinkConvert(this.buildConverterParentAdapter(parent), (EclipseLinkConvertAnnotation) converterAnnotation);
 		}
 		
 		@Override
-		protected Owner buildOwner() {
-			return new Owner() {
-				public JptValidator buildValidator(Converter converter) {
-					return new EclipseLinkConvertValidator((EclipseLinkConvert) converter);
-				}
-			};
+		protected Converter.ParentAdapter<JavaAttributeMapping> buildConverterParentAdapter(JavaAttributeMapping parent) {
+			return new ConverterParentAdapter(parent);
+		}
+
+		public static class ConverterParentAdapter
+			implements Converter.ParentAdapter<JavaAttributeMapping>
+		{
+			private final JavaAttributeMapping parent;
+			public ConverterParentAdapter(JavaAttributeMapping parent) {
+				super();
+				this.parent = parent;
+			}
+			public JavaAttributeMapping getConverterParent() {
+				return this.parent;
+			}
+			public JptValidator buildValidator(Converter converter) {
+				return new EclipseLinkConvertValidator((EclipseLinkConvert) converter);
+			}
 		}
 	}
 }

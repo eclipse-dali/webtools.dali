@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,6 @@ import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseTemporalConverter;
-import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.resource.java.BaseTemporalAnnotation;
 
 public class GenericJavaBaseTemporalConverter
@@ -26,8 +25,8 @@ public class GenericJavaBaseTemporalConverter
 	protected TemporalType temporalType;
 
 
-	public GenericJavaBaseTemporalConverter(JavaAttributeMapping parent, BaseTemporalAnnotation temporalAnnotation, JavaConverter.Owner owner) {
-		super(parent, owner);
+	public GenericJavaBaseTemporalConverter(Converter.ParentAdapter<JavaAttributeMapping> parentAdapter, BaseTemporalAnnotation temporalAnnotation) {
+		super(parentAdapter);
 		this.temporalAnnotation = temporalAnnotation;
 		this.temporalType = this.buildTemporalType();
 	}

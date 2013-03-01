@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,6 @@ import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.EnumType;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseEnumeratedConverter;
-import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.resource.java.BaseEnumeratedAnnotation;
 
 public class GenericJavaBaseEnumeratedConverter
@@ -27,8 +26,8 @@ public class GenericJavaBaseEnumeratedConverter
 	protected EnumType defaultEnumType;
 
 
-	public GenericJavaBaseEnumeratedConverter(JavaAttributeMapping parent, BaseEnumeratedAnnotation enumeratedAnnotation, JavaConverter.Owner owner) {
-		super(parent, owner);
+	public GenericJavaBaseEnumeratedConverter(Converter.ParentAdapter<JavaAttributeMapping> parentAdapter, BaseEnumeratedAnnotation enumeratedAnnotation) {
+		super(parentAdapter);
 		this.enumeratedAnnotation = enumeratedAnnotation;
 		this.specifiedEnumType = this.buildSpecifiedEnumType();
 	}

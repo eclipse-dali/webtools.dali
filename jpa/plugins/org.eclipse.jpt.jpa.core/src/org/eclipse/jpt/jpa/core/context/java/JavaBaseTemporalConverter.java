@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,6 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.JavaElementCollectionTemporalConverterValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.JavaTemporalConverterValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaMapKeyTemporalConverterValidator;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporal2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.TemporalAnnotation;
 
@@ -56,7 +55,7 @@ public interface JavaBaseTemporalConverter
 		}
 
 		public JavaConverter buildConverter(Annotation converterAnnotation, JavaAttributeMapping parent, JpaFactory factory) {
-			return factory.buildJavaBaseTemporalConverter(parent, (TemporalAnnotation) converterAnnotation, this.buildOwner());
+			return factory.buildJavaBaseTemporalConverter(this.buildConverterParentAdapter(parent), (TemporalAnnotation) converterAnnotation);
 		}
 	}
 
@@ -71,14 +70,22 @@ public interface JavaBaseTemporalConverter
 		private BasicAdapter() {
 			super();
 		}
-	
+
 		@Override
-		protected Owner buildOwner() {
-			return new Owner() {
-				public JptValidator buildValidator(Converter converter) {
-					return new JavaTemporalConverterValidator((BaseTemporalConverter) converter);
-				}
-			};
+		protected ParentAdapter<JavaAttributeMapping> buildConverterParentAdapter(JavaAttributeMapping parent) {
+			return new ConverterParentAdapter(parent);
+		}
+
+		public static class ConverterParentAdapter
+			extends JavaConverter.AbstractAdapter.ConverterParentAdapter
+		{
+			public ConverterParentAdapter(JavaAttributeMapping parent) {
+				super(parent);
+			}
+			@Override
+			public JptValidator buildValidator(Converter converter) {
+				return new JavaTemporalConverterValidator((BaseTemporalConverter) converter);
+			}
 		}
 	}
 
@@ -95,12 +102,20 @@ public interface JavaBaseTemporalConverter
 		}
 	
 		@Override
-		protected Owner buildOwner() {
-			return new Owner() {
-				public JptValidator buildValidator(Converter converter) {
-					return new JavaElementCollectionTemporalConverterValidator((BaseTemporalConverter) converter);
-				}
-			};
+		protected ParentAdapter<JavaAttributeMapping> buildConverterParentAdapter(JavaAttributeMapping parent) {
+			return new ConverterParentAdapter(parent);
+		}
+
+		public static class ConverterParentAdapter
+			extends JavaConverter.AbstractAdapter.ConverterParentAdapter
+		{
+			public ConverterParentAdapter(JavaAttributeMapping parent) {
+				super(parent);
+			}
+			@Override
+			public JptValidator buildValidator(Converter converter) {
+				return new JavaElementCollectionTemporalConverterValidator((BaseTemporalConverter) converter);
+			}
 		}
 	}
 
@@ -128,16 +143,24 @@ public interface JavaBaseTemporalConverter
 		}
 
 		public JavaConverter buildConverter(Annotation converterAnnotation, JavaAttributeMapping parent, JpaFactory factory) {
-			return factory.buildJavaBaseTemporalConverter((JavaCollectionMapping2_0) parent, (MapKeyTemporal2_0Annotation) converterAnnotation, this.buildOwner());
+			return factory.buildJavaBaseTemporalConverter(this.buildConverterParentAdapter(parent), (MapKeyTemporal2_0Annotation) converterAnnotation);
 		}
 
 		@Override
-		protected Owner buildOwner() {
-			return new Owner() {				
-				public JptValidator buildValidator(Converter converter) {
-					return new JavaMapKeyTemporalConverterValidator((BaseTemporalConverter) converter);
-				}
-			};
+		protected ParentAdapter<JavaAttributeMapping> buildConverterParentAdapter(JavaAttributeMapping parent) {
+			return new ConverterParentAdapter(parent);
+		}
+
+		public static class ConverterParentAdapter
+			extends JavaConverter.AbstractAdapter.ConverterParentAdapter
+		{
+			public ConverterParentAdapter(JavaAttributeMapping parent) {
+				super(parent);
+			}
+			@Override
+			public JptValidator buildValidator(Converter converter) {
+				return new JavaMapKeyTemporalConverterValidator((BaseTemporalConverter) converter);
+			}
 		}
 	}
 }

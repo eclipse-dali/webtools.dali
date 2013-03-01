@@ -375,16 +375,16 @@ public abstract class AbstractOrmXmlContextModelFactory
 		return new GenericOrmVirtualUniqueConstraint(parent, overriddenUniqueConstraint);
 	}
 
-	public OrmConverter buildOrmBaseEnumeratedConverter(OrmAttributeMapping parent, OrmBaseEnumeratedConverter.Owner owner) {
-		return new GenericOrmBaseEnumeratedConverter(parent, owner);
+	public OrmConverter buildOrmBaseEnumeratedConverter(OrmBaseEnumeratedConverter.ParentAdapter parentAdapter) {
+		return new GenericOrmBaseEnumeratedConverter(parentAdapter);
 	}
 	
-	public OrmConverter buildOrmLobConverter(OrmAttributeMapping parent, OrmConverter.Owner owner) {
-		return new GenericOrmLobConverter(parent, owner);
+	public OrmConverter buildOrmLobConverter(OrmConverter.ParentAdapter<OrmAttributeMapping> parentAdapter) {
+		return new GenericOrmLobConverter(parentAdapter);
 	}
 	
-	public OrmConverter buildOrmBaseTemporalConverter(OrmAttributeMapping parent, OrmBaseTemporalConverter.Owner owner) {
-		return new GenericOrmBaseTemporalConverter(parent, owner);
+	public OrmConverter buildOrmBaseTemporalConverter(OrmBaseTemporalConverter.ParentAdapter parentAdapter) {
+		return new GenericOrmBaseTemporalConverter(parentAdapter);
 	}
 	
 	public Orderable buildOrmOrderable(OrmAttributeMapping parent) {

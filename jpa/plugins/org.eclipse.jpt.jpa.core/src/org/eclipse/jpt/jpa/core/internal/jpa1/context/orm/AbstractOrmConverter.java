@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModel;
@@ -18,19 +19,15 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public abstract class AbstractOrmConverter
+public abstract class AbstractOrmConverter<PA extends Converter.ParentAdapter<OrmAttributeMapping>>
 	extends AbstractOrmXmlContextModel<OrmAttributeMapping>
 	implements OrmConverter
 {
-	protected final OrmConverter.Owner owner;
+	protected final PA parentAdapter;
 
-	protected AbstractOrmConverter(OrmAttributeMapping parent, OrmConverter.Owner owner) {
-		super(parent);
-		this.owner = owner;
-	}
-
-	protected OrmConverter.Owner getOwner() {
-		return this.owner;
+	protected AbstractOrmConverter(PA parentAdapter) {
+		super(parentAdapter.getConverterParent());
+		this.parentAdapter = parentAdapter;
 	}
 
 	// ********** misc **********
@@ -49,7 +46,7 @@ public abstract class AbstractOrmConverter
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		this.owner.buildValidator(this).validate(messages, reporter);
+		this.parentAdapter.buildValidator(this).validate(messages, reporter);
 	}
 
 	public TextRange getValidationTextRange() {
