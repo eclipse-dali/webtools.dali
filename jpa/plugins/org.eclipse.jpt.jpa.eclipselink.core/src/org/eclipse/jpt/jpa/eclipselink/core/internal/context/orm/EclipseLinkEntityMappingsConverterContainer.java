@@ -12,15 +12,14 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedConverter;
 
-public final class OrmEclipseLinkEntityMappingsConverterContainer
-	extends AbstractOrmEclipseLinkConverterContainerImpl
+public final class EclipseLinkEntityMappingsConverterContainer
+	extends AbstractEclipseLinkOrmConverterContainer
 {
-
-	public OrmEclipseLinkEntityMappingsConverterContainer(OrmEclipseLinkConverterContainer.Parent parent, XmlConverterContainer xmlConverterContainer) {
+	public EclipseLinkEntityMappingsConverterContainer(EclipseLinkOrmConverterContainer.Parent parent, XmlConverterContainer xmlConverterContainer) {
 		super(parent, xmlConverterContainer);
 	}
 

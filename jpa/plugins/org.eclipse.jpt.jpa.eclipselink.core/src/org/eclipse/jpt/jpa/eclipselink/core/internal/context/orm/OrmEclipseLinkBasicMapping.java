@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkBasicMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConvertibleMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -42,12 +42,12 @@ public class OrmEclipseLinkBasicMapping
 	implements 
 		EclipseLinkBasicMapping, 
 		EclipseLinkOrmConvertibleMapping, 
-		OrmEclipseLinkConverterContainer.Parent,
+		EclipseLinkOrmConverterContainer.Parent,
 		OrmGeneratedValueMapping
 {
 	protected final OrmEclipseLinkMutable mutable;
 	
-	protected final OrmEclipseLinkConverterContainer converterContainer;
+	protected final EclipseLinkOrmConverterContainer converterContainer;
 
 	protected final OrmGeneratorContainer generatorContainer;//supported in EL 1.1 and higher
 
@@ -107,12 +107,12 @@ public class OrmEclipseLinkBasicMapping
 
 	// ********** converters **********
 
-	public OrmEclipseLinkConverterContainer getConverterContainer() {
+	public EclipseLinkOrmConverterContainer getConverterContainer() {
 		return this.converterContainer;
 	}
 
-	protected OrmEclipseLinkConverterContainer buildConverterContainer() {
-		return new OrmEclipseLinkConverterContainerImpl(this, this.xmlAttributeMapping);
+	protected EclipseLinkOrmConverterContainer buildConverterContainer() {
+		return new EclipseLinkOrmMappingConverterContainer(this, this.xmlAttributeMapping);
 	}
 
 	public int getMaximumAllowedConverters() {

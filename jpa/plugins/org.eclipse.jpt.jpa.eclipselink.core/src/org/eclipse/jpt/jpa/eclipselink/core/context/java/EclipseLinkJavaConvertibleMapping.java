@@ -24,8 +24,8 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvertibleMappin
  * @since 3.2
  */
 public interface EclipseLinkJavaConvertibleMapping
-	extends EclipseLinkConvertibleMapping, JavaEclipseLinkConverterContainer.ParentAdapter
+	extends EclipseLinkConvertibleMapping, EclipseLinkJavaConverterContainer.ParentAdapter
 {
-	JavaEclipseLinkConverterContainer getConverterContainer();
+	EclipseLinkJavaConverterContainer getConverterContainer();
 
 }

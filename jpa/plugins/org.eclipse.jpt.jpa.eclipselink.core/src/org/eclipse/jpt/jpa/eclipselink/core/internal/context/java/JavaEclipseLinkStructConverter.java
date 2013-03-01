@@ -12,8 +12,8 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkStructConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkStructConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 
@@ -24,7 +24,7 @@ public class JavaEclipseLinkStructConverter
 	extends JavaEclipseLinkConverterClassConverter<EclipseLinkStructConverterAnnotation>
 	implements EclipseLinkStructConverter
 {
-	public JavaEclipseLinkStructConverter(JavaEclipseLinkConverterContainer parent, EclipseLinkStructConverterAnnotation converterAnnotation) {
+	public JavaEclipseLinkStructConverter(EclipseLinkJavaConverterContainer parent, EclipseLinkStructConverterAnnotation converterAnnotation) {
 		super(parent, converterAnnotation, converterAnnotation.getConverter());
 	}
 
@@ -76,7 +76,7 @@ public class JavaEclipseLinkStructConverter
 	// ********** metadata conversion **********
 
 	@Override
-	public void convertTo(OrmEclipseLinkConverterContainer ormConverterContainer) {
+	public void convertTo(EclipseLinkOrmConverterContainer ormConverterContainer) {
 		ormConverterContainer.addStructConverter(this.getName()).convertFrom(this);
 	}
 	

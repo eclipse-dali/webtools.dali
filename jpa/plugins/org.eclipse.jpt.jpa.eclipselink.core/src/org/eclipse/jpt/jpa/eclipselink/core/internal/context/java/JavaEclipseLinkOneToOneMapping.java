@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkOneToOneMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkPrivateOwned;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -30,7 +30,7 @@ public class JavaEclipseLinkOneToOneMapping
 
 	protected final JavaEclipseLinkPrivateOwned privateOwned;
 	
-	protected final JavaEclipseLinkConverterContainer converterContainer;
+	protected final EclipseLinkJavaConverterContainer converterContainer;
 
 
 	public JavaEclipseLinkOneToOneMapping(JavaSpecifiedPersistentAttribute parent) {
@@ -75,11 +75,11 @@ public class JavaEclipseLinkOneToOneMapping
 
 	// ********** converters **********
 
-	public JavaEclipseLinkConverterContainer getConverterContainer() {
+	public EclipseLinkJavaConverterContainer getConverterContainer() {
 		return this.converterContainer;
 	}
 
-	protected JavaEclipseLinkConverterContainer buildConverterContainer() {
+	protected EclipseLinkJavaConverterContainer buildConverterContainer() {
 		return new JavaEclipseLinkConverterContainerImpl(this);
 	}
 

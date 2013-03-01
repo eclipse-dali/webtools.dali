@@ -19,8 +19,8 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConversionValueAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
@@ -45,7 +45,7 @@ public class JavaEclipseLinkObjectTypeConverter
 	private String defaultObjectValue;
 
 
-	public JavaEclipseLinkObjectTypeConverter(JavaEclipseLinkConverterContainer parent, EclipseLinkObjectTypeConverterAnnotation converterAnnotation) {
+	public JavaEclipseLinkObjectTypeConverter(EclipseLinkJavaConverterContainer parent, EclipseLinkObjectTypeConverterAnnotation converterAnnotation) {
 		super(parent, converterAnnotation);
 		this.dataType = converterAnnotation.getDataType();
 		this.objectType = converterAnnotation.getObjectType();
@@ -328,7 +328,7 @@ public class JavaEclipseLinkObjectTypeConverter
 	// ********** metadata conversion **********
 
 	@Override
-	public void convertTo(OrmEclipseLinkConverterContainer ormConverterContainer) {
+	public void convertTo(EclipseLinkOrmConverterContainer ormConverterContainer) {
 		ormConverterContainer.addObjectTypeConverter(this.getName()).convertFrom(this);
 	}
 

@@ -38,7 +38,7 @@ import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkArrayMapping2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConvertibleMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlArray;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlAttributes_2_3;
@@ -52,7 +52,7 @@ public class OrmEclipseLinkArrayMapping2_3
 	implements
 		EclipseLinkArrayMapping2_3,
 		EclipseLinkOrmConvertibleMapping,
-		OrmEclipseLinkConverterContainer.Parent,
+		EclipseLinkOrmConverterContainer.Parent,
 		OrmColumnMapping
 {
 	protected final OrmSpecifiedColumn column;
@@ -69,7 +69,7 @@ public class OrmEclipseLinkArrayMapping2_3
 	};
 	protected static final Iterable<OrmConverter.Adapter> CONVERTER_ADAPTERS = IterableTools.iterable(CONVERTER_ADAPTER_ARRAY);
 
-	protected final OrmEclipseLinkConverterContainer converterContainer;
+	protected final EclipseLinkOrmConverterContainer converterContainer;
 
 
 	public OrmEclipseLinkArrayMapping2_3(OrmSpecifiedPersistentAttribute parent, XmlArray xmlMapping) {
@@ -225,12 +225,12 @@ public class OrmEclipseLinkArrayMapping2_3
 
 	// ********** converters **********
 
-	public OrmEclipseLinkConverterContainer getConverterContainer() {
+	public EclipseLinkOrmConverterContainer getConverterContainer() {
 		return this.converterContainer;
 	}
 
-	protected OrmEclipseLinkConverterContainer buildConverterContainer() {
-		return new OrmEclipseLinkConverterContainerImpl(this, this.xmlAttributeMapping);
+	protected EclipseLinkOrmConverterContainer buildConverterContainer() {
+		return new EclipseLinkOrmMappingConverterContainer(this, this.xmlAttributeMapping);
 	}
 
 	public int getMaximumAllowedConverters() {

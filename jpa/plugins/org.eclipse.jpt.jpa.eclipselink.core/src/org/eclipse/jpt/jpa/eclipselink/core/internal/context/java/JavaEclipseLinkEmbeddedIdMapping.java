@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaEmbeddedIdMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
 
 /**
  * Java embedded ID mapping
@@ -24,7 +24,7 @@ public class JavaEclipseLinkEmbeddedIdMapping
 	implements EclipseLinkJavaConvertibleMapping
 {
 
-	protected final JavaEclipseLinkConverterContainer converterContainer;
+	protected final EclipseLinkJavaConverterContainer converterContainer;
 
 	public JavaEclipseLinkEmbeddedIdMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
@@ -49,11 +49,11 @@ public class JavaEclipseLinkEmbeddedIdMapping
 
 	// ********** converters **********
 
-	public JavaEclipseLinkConverterContainer getConverterContainer() {
+	public EclipseLinkJavaConverterContainer getConverterContainer() {
 		return this.converterContainer;
 	}
 
-	protected JavaEclipseLinkConverterContainer buildConverterContainer() {
+	protected EclipseLinkJavaConverterContainer buildConverterContainer() {
 		return new JavaEclipseLinkConverterContainerImpl(this);
 	}
 

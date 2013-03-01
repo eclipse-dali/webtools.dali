@@ -35,7 +35,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.TenantDiscriminatorColumn2_3
 import org.eclipse.jpt.jpa.eclipselink.core.context.VirtualTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmTypeMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmUuidGenerator;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
@@ -54,9 +54,9 @@ public class EclipseLinkEntityMappingsImpl
 	extends AbstractEntityMappings
 	implements 
 		EclipseLinkEntityMappings, 
-		OrmEclipseLinkConverterContainer.Parent
+		EclipseLinkOrmConverterContainer.Parent
 {
-	protected final OrmEclipseLinkConverterContainer converterContainer;
+	protected final EclipseLinkOrmConverterContainer converterContainer;
 
 	protected final ContextListContainer<OrmSpecifiedTenantDiscriminatorColumn2_3, XmlTenantDiscriminatorColumn> specifiedTenantDiscriminatorColumnContainer;
 	protected final TenantDiscriminatorColumn2_3.Owner tenantDiscriminatorColumnOwner;
@@ -148,12 +148,12 @@ public class EclipseLinkEntityMappingsImpl
 
 	// ********** converter container **********
 
-	public OrmEclipseLinkConverterContainer getConverterContainer() {
+	public EclipseLinkOrmConverterContainer getConverterContainer() {
 		return this.converterContainer;
 	}
 
-	protected OrmEclipseLinkConverterContainer buildConverterContainer() {
-		return new OrmEclipseLinkEntityMappingsConverterContainer(this, (XmlEntityMappings) this.xmlEntityMappings);
+	protected EclipseLinkOrmConverterContainer buildConverterContainer() {
+		return new EclipseLinkEntityMappingsConverterContainer(this, (XmlEntityMappings) this.xmlEntityMappings);
 	}
 
 	public int getMaximumAllowedConverters() {

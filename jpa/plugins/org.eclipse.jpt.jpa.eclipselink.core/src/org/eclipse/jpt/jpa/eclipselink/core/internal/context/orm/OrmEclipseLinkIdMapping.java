@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkIdMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConvertibleMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlId;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -36,11 +36,11 @@ public class OrmEclipseLinkIdMapping
 	implements
 		EclipseLinkIdMapping2_0,
 		EclipseLinkOrmConvertibleMapping,
-		OrmEclipseLinkConverterContainer.Parent
+		EclipseLinkOrmConverterContainer.Parent
 {
 	protected final OrmEclipseLinkMutable mutable;
 	
-	protected final OrmEclipseLinkConverterContainer converterContainer;
+	protected final EclipseLinkOrmConverterContainer converterContainer;
 	
 	
 	public OrmEclipseLinkIdMapping(OrmSpecifiedPersistentAttribute parent, XmlId xmlMapping) {
@@ -88,12 +88,12 @@ public class OrmEclipseLinkIdMapping
 
 	// ********** converters **********
 
-	public OrmEclipseLinkConverterContainer getConverterContainer() {
+	public EclipseLinkOrmConverterContainer getConverterContainer() {
 		return this.converterContainer;
 	}
 
-	protected OrmEclipseLinkConverterContainer buildConverterContainer() {
-		return new OrmEclipseLinkConverterContainerImpl(this, this.xmlAttributeMapping);
+	protected EclipseLinkOrmConverterContainer buildConverterContainer() {
+		return new EclipseLinkOrmMappingConverterContainer(this, this.xmlAttributeMapping);
 	}
 
 	public int getMaximumAllowedConverters() {

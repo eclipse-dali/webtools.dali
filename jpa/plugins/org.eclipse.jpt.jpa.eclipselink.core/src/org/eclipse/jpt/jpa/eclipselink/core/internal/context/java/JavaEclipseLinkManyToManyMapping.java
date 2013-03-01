@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaManyToManyMapp
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkManyToManyMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -28,7 +28,7 @@ public class JavaEclipseLinkManyToManyMapping
 {
 	protected final JavaEclipseLinkJoinFetch joinFetch;
 
-	protected final JavaEclipseLinkConverterContainer converterContainer;
+	protected final EclipseLinkJavaConverterContainer converterContainer;
 	
 	
 	public JavaEclipseLinkManyToManyMapping(JavaSpecifiedPersistentAttribute parent) {
@@ -64,11 +64,11 @@ public class JavaEclipseLinkManyToManyMapping
 
 	// ********** converters **********
 
-	public JavaEclipseLinkConverterContainer getConverterContainer() {
+	public EclipseLinkJavaConverterContainer getConverterContainer() {
 		return this.converterContainer;
 	}
 
-	protected JavaEclipseLinkConverterContainer buildConverterContainer() {
+	protected EclipseLinkJavaConverterContainer buildConverterContainer() {
 		return new JavaEclipseLinkConverterContainerImpl(this);
 	}
 

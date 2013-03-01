@@ -30,10 +30,9 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkT
  * @version 3.3
  * @since 2.1
  */
-public interface OrmEclipseLinkConverterContainer
+public interface EclipseLinkOrmConverterContainer
 	extends EclipseLinkConverterContainer, TypeRefactoringParticipant
 {
-
 	ListIterable<OrmEclipseLinkCustomConverter> getCustomConverters();
 	OrmEclipseLinkCustomConverter addCustomConverter(String name, int index);
 	OrmEclipseLinkCustomConverter addCustomConverter(String name);

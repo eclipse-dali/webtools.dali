@@ -26,6 +26,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvertibleMappin
 public interface EclipseLinkOrmConvertibleMapping
 	extends EclipseLinkConvertibleMapping
 {
-	OrmEclipseLinkConverterContainer getConverterContainer();
+	EclipseLinkOrmConverterContainer getConverterContainer();
 
 }

@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEmbeddable;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkTypeMappingValidator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -33,9 +33,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class JavaEclipseLinkEmbeddableImpl
 	extends AbstractJavaEmbeddable
-	implements JavaEclipseLinkEmbeddable, JavaEclipseLinkConverterContainer.ParentAdapter
+	implements JavaEclipseLinkEmbeddable, EclipseLinkJavaConverterContainer.ParentAdapter
 {
-	protected final JavaEclipseLinkConverterContainer converterContainer;
+	protected final EclipseLinkJavaConverterContainer converterContainer;
 
 	protected final JavaEclipseLinkChangeTracking changeTracking;
 
@@ -71,11 +71,11 @@ public class JavaEclipseLinkEmbeddableImpl
 
 	// ********** converter container **********
 
-	public JavaEclipseLinkConverterContainer getConverterContainer() {
+	public EclipseLinkJavaConverterContainer getConverterContainer() {
 		return this.converterContainer;
 	}
 
-	protected JavaEclipseLinkConverterContainer buildConverterContainer() {
+	protected EclipseLinkJavaConverterContainer buildConverterContainer() {
 		return new JavaEclipseLinkConverterContainerImpl(this);
 	}
 

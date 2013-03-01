@@ -35,7 +35,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEmbeddab
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
@@ -491,7 +491,7 @@ public class EclipseLink2_2JpaMetadataConversionTests extends EclipseLink2_2Cont
 		
 		addXmlMappingFileRef(org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 		EclipseLinkEntityMappings entityMappings = getEntityMappings();		
-		OrmEclipseLinkConverterContainer ormConvertercontainer = entityMappings.getConverterContainer();
+		EclipseLinkOrmConverterContainer ormConvertercontainer = entityMappings.getConverterContainer();
 		ormConvertercontainer.addCustomConverter("type", ormConvertercontainer.getCustomConvertersSize());
 	
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();

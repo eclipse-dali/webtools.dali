@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvertibleMappin
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEmbeddable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEmbeddable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkTypeMappingValidator;
@@ -42,9 +42,9 @@ public class OrmEclipseLinkEmbeddableImpl
 	extends AbstractOrmEmbeddable<XmlEmbeddable>
 	implements 
 		OrmEclipseLinkEmbeddable,
-		OrmEclipseLinkConverterContainer.Parent
+		EclipseLinkOrmConverterContainer.Parent
 {
-	protected final OrmEclipseLinkConverterContainer converterContainer;
+	protected final EclipseLinkOrmConverterContainer converterContainer;
 
 	protected final OrmEclipseLinkChangeTracking changeTracking;
 
@@ -80,12 +80,12 @@ public class OrmEclipseLinkEmbeddableImpl
 
 	// ********** converter container **********
 
-	public OrmEclipseLinkConverterContainer getConverterContainer() {
+	public EclipseLinkOrmConverterContainer getConverterContainer() {
 		return this.converterContainer;
 	}
 
-	protected OrmEclipseLinkConverterContainer buildConverterContainer() {
-		return new OrmEclipseLinkConverterContainerImpl(this, this.getXmlTypeMapping());
+	protected EclipseLinkOrmConverterContainer buildConverterContainer() {
+		return new EclipseLinkOrmMappingConverterContainer(this, this.getXmlTypeMapping());
 	}
 
 	public int getMaximumAllowedConverters() {

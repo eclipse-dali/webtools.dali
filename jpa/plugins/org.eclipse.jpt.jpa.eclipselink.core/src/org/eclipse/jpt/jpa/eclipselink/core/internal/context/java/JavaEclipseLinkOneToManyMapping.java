@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkOneToManyMapping2
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkPrivateOwned;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaOneToManyRelationship2_0;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -32,7 +32,7 @@ public class JavaEclipseLinkOneToManyMapping
 
 	protected final JavaEclipseLinkPrivateOwned privateOwned;
 	
-	protected final JavaEclipseLinkConverterContainer converterContainer;
+	protected final EclipseLinkJavaConverterContainer converterContainer;
 
 
 	public JavaEclipseLinkOneToManyMapping(JavaSpecifiedPersistentAttribute parent) {
@@ -78,11 +78,11 @@ public class JavaEclipseLinkOneToManyMapping
 
 	// ********** converters **********
 
-	public JavaEclipseLinkConverterContainer getConverterContainer() {
+	public EclipseLinkJavaConverterContainer getConverterContainer() {
 		return this.converterContainer;
 	}
 
-	protected JavaEclipseLinkConverterContainer buildConverterContainer() {
+	protected EclipseLinkJavaConverterContainer buildConverterContainer() {
 		return new JavaEclipseLinkConverterContainerImpl(this);
 	}
 

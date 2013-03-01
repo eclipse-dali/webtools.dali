@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaAttributeMappi
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVariableOneToOneMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkVariableOneToOneAnnotation;
 
 public class JavaEclipseLinkVariableOneToOneMapping 
@@ -24,7 +24,7 @@ public class JavaEclipseLinkVariableOneToOneMapping
 	implements EclipseLinkVariableOneToOneMapping, EclipseLinkJavaConvertibleMapping
 {
 	
-	protected final JavaEclipseLinkConverterContainer converterContainer;
+	protected final EclipseLinkJavaConverterContainer converterContainer;
 
 	public JavaEclipseLinkVariableOneToOneMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
@@ -49,11 +49,11 @@ public class JavaEclipseLinkVariableOneToOneMapping
 
 	// ********** converters **********
 
-	public JavaEclipseLinkConverterContainer getConverterContainer() {
+	public EclipseLinkJavaConverterContainer getConverterContainer() {
 		return this.converterContainer;
 	}
 
-	protected JavaEclipseLinkConverterContainer buildConverterContainer() {
+	protected EclipseLinkJavaConverterContainer buildConverterContainer() {
 		return new JavaEclipseLinkConverterContainerImpl(this);
 	}
 

@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTimeOfDay;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLink;
@@ -1742,7 +1742,7 @@ public class EclipseLinkOrmEntityTests
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEclipseLinkEntity ormContextEntity = (OrmEclipseLinkEntity) ormPersistentType.getMapping();
-		OrmEclipseLinkConverterContainer ormContextConverterHolder = ormContextEntity.getConverterContainer();
+		EclipseLinkOrmConverterContainer ormContextConverterHolder = ormContextEntity.getConverterContainer();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.getCustomConvertersSize());
@@ -1819,7 +1819,7 @@ public class EclipseLinkOrmEntityTests
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEclipseLinkEntity ormContextEntity = (OrmEclipseLinkEntity) ormPersistentType.getMapping();
-		OrmEclipseLinkConverterContainer ormContextConverterHolder = ormContextEntity.getConverterContainer();
+		EclipseLinkOrmConverterContainer ormContextConverterHolder = ormContextEntity.getConverterContainer();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.getCustomConvertersSize());
@@ -1904,7 +1904,7 @@ public class EclipseLinkOrmEntityTests
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEclipseLinkEntity ormContextEntity = (OrmEclipseLinkEntity) ormPersistentType.getMapping();
-		OrmEclipseLinkConverterContainer ormContextConverterHolder = ormContextEntity.getConverterContainer();
+		EclipseLinkOrmConverterContainer ormContextConverterHolder = ormContextEntity.getConverterContainer();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.getTypeConvertersSize());
@@ -1981,7 +1981,7 @@ public class EclipseLinkOrmEntityTests
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEclipseLinkEntity ormContextEntity = (OrmEclipseLinkEntity) ormPersistentType.getMapping();
-		OrmEclipseLinkConverterContainer ormContextConverterHolder = ormContextEntity.getConverterContainer();
+		EclipseLinkOrmConverterContainer ormContextConverterHolder = ormContextEntity.getConverterContainer();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.getTypeConvertersSize());
@@ -2066,7 +2066,7 @@ public class EclipseLinkOrmEntityTests
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEclipseLinkEntity ormContextEntity = (OrmEclipseLinkEntity) ormPersistentType.getMapping();
-		OrmEclipseLinkConverterContainer ormContextConverterHolder = ormContextEntity.getConverterContainer();
+		EclipseLinkOrmConverterContainer ormContextConverterHolder = ormContextEntity.getConverterContainer();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.getObjectTypeConvertersSize());
@@ -2143,7 +2143,7 @@ public class EclipseLinkOrmEntityTests
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEclipseLinkEntity ormContextEntity = (OrmEclipseLinkEntity) ormPersistentType.getMapping();
-		OrmEclipseLinkConverterContainer ormContextConverterHolder = ormContextEntity.getConverterContainer();
+		EclipseLinkOrmConverterContainer ormContextConverterHolder = ormContextEntity.getConverterContainer();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.getObjectTypeConvertersSize());
@@ -2228,7 +2228,7 @@ public class EclipseLinkOrmEntityTests
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEclipseLinkEntity ormContextEntity = (OrmEclipseLinkEntity) ormPersistentType.getMapping();
-		OrmEclipseLinkConverterContainer ormContextConverterHolder = ormContextEntity.getConverterContainer();
+		EclipseLinkOrmConverterContainer ormContextConverterHolder = ormContextEntity.getConverterContainer();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.getStructConvertersSize());
@@ -2305,7 +2305,7 @@ public class EclipseLinkOrmEntityTests
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEclipseLinkEntity ormContextEntity = (OrmEclipseLinkEntity) ormPersistentType.getMapping();
-		OrmEclipseLinkConverterContainer ormContextConverterHolder = ormContextEntity.getConverterContainer();
+		EclipseLinkOrmConverterContainer ormContextConverterHolder = ormContextEntity.getConverterContainer();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.getStructConvertersSize());

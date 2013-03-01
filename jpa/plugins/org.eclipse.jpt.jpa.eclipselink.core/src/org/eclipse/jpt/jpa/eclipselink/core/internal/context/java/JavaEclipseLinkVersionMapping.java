@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaVersionMapping
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVersionMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -31,7 +31,7 @@ public class JavaEclipseLinkVersionMapping
 {
 	protected final JavaEclipseLinkMutable mutable;
 
-	protected final JavaEclipseLinkConverterContainer converterContainer;
+	protected final EclipseLinkJavaConverterContainer converterContainer;
 
 
 	public JavaEclipseLinkVersionMapping(JavaSpecifiedPersistentAttribute parent) {
@@ -67,11 +67,11 @@ public class JavaEclipseLinkVersionMapping
 
 	// ********** converters **********
 
-	public JavaEclipseLinkConverterContainer getConverterContainer() {
+	public EclipseLinkJavaConverterContainer getConverterContainer() {
 		return this.converterContainer;
 	}
 
-	protected JavaEclipseLinkConverterContainer buildConverterContainer() {
+	protected EclipseLinkJavaConverterContainer buildConverterContainer() {
 		return new JavaEclipseLinkConverterContainerImpl(this);
 	}
 

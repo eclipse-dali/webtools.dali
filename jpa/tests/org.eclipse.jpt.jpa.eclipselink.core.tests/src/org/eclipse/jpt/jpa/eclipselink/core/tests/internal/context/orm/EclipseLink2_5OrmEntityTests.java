@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.EntityMappings2_1;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
@@ -54,7 +54,7 @@ public class EclipseLink2_5OrmEntityTests
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEclipseLinkEntity ormContextEntity = (OrmEclipseLinkEntity) ormPersistentType.getMapping();
-		OrmEclipseLinkConverterContainer ormContextConverterHolder = ormContextEntity.getConverterContainer();
+		EclipseLinkOrmConverterContainer ormContextConverterHolder = ormContextEntity.getConverterContainer();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
 
 		assertEquals(0, ormContextConverterHolder.getCustomConvertersSize());
@@ -131,7 +131,7 @@ public class EclipseLink2_5OrmEntityTests
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEclipseLinkEntity ormContextEntity = (OrmEclipseLinkEntity) ormPersistentType.getMapping();
-		OrmEclipseLinkConverterContainer ormContextConverterHolder = ormContextEntity.getConverterContainer();
+		EclipseLinkOrmConverterContainer ormContextConverterHolder = ormContextEntity.getConverterContainer();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
 
 		assertEquals(0, ormContextConverterHolder.getCustomConvertersSize());

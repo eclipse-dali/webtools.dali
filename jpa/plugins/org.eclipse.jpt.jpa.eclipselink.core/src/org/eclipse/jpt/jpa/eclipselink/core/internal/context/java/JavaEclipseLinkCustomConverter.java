@@ -13,8 +13,8 @@ import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -29,7 +29,7 @@ public class JavaEclipseLinkCustomConverter
 	private String fullyQualifiedConverterClass;
 
 
-	public JavaEclipseLinkCustomConverter(JavaEclipseLinkConverterContainer parent, EclipseLinkConverterAnnotation converterAnnotation) {
+	public JavaEclipseLinkCustomConverter(EclipseLinkJavaConverterContainer parent, EclipseLinkConverterAnnotation converterAnnotation) {
 		super(parent, converterAnnotation, converterAnnotation.getConverterClass());
 	}
 
@@ -101,7 +101,7 @@ public class JavaEclipseLinkCustomConverter
 	// ********** metadata conversion **********
 
 	@Override
-	public void convertTo(OrmEclipseLinkConverterContainer ormConverterContainer) {
+	public void convertTo(EclipseLinkOrmConverterContainer ormConverterContainer) {
 		ormConverterContainer.addCustomConverter(this.getName()).convertFrom(this);
 	}
 	

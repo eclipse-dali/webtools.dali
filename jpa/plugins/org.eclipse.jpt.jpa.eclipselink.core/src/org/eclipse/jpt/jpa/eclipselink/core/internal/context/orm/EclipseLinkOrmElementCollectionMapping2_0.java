@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConvertibleMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_0JpaPlatformFactory;
@@ -39,11 +39,11 @@ public class EclipseLinkOrmElementCollectionMapping2_0
 	implements
 		EclipseLinkElementCollectionMapping2_0,
 		EclipseLinkOrmConvertibleMapping,
-		OrmEclipseLinkConverterContainer.Parent
+		EclipseLinkOrmConverterContainer.Parent
 {
 	protected final OrmEclipseLinkJoinFetch joinFetch;
 	
-	protected final OrmEclipseLinkConverterContainer converterContainer;
+	protected final EclipseLinkOrmConverterContainer converterContainer;
 
 
 	public EclipseLinkOrmElementCollectionMapping2_0(OrmSpecifiedPersistentAttribute parent, XmlElementCollection resourceMapping) {
@@ -95,12 +95,12 @@ public class EclipseLinkOrmElementCollectionMapping2_0
 
 	// ********** converters **********
 
-	public OrmEclipseLinkConverterContainer getConverterContainer() {
+	public EclipseLinkOrmConverterContainer getConverterContainer() {
 		return this.converterContainer;
 	}
 
-	protected OrmEclipseLinkConverterContainer buildConverterContainer() {
-		return new OrmEclipseLinkConverterContainerImpl(this, this.xmlAttributeMapping);
+	protected EclipseLinkOrmConverterContainer buildConverterContainer() {
+		return new EclipseLinkOrmMappingConverterContainer(this, this.xmlAttributeMapping);
 	}
 
 	public int getMaximumAllowedConverters() {

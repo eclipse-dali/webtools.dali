@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkBasicMapMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkBasicMapAnnotation;
 
 public class JavaEclipseLinkBasicMapMapping
@@ -28,7 +28,7 @@ public class JavaEclipseLinkBasicMapMapping
 	implements EclipseLinkBasicMapMapping, EclipseLinkJavaConvertibleMapping
 {
 
-	protected final JavaEclipseLinkConverterContainer converterContainer;
+	protected final EclipseLinkJavaConverterContainer converterContainer;
 	
 	public JavaEclipseLinkBasicMapMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
@@ -53,11 +53,11 @@ public class JavaEclipseLinkBasicMapMapping
 
 	// ********** converters **********
 
-	public JavaEclipseLinkConverterContainer getConverterContainer() {
+	public EclipseLinkJavaConverterContainer getConverterContainer() {
 		return this.converterContainer;
 	}
 
-	protected JavaEclipseLinkConverterContainer buildConverterContainer() {
+	protected EclipseLinkJavaConverterContainer buildConverterContainer() {
 		return new JavaEclipseLinkConverterContainerImpl(this);
 	}
 	

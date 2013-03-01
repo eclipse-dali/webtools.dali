@@ -67,7 +67,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.TenantDiscriminatorColumn2_3
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkPersistenceUnitDefaults;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkPersistenceUnitMetadata;
@@ -1239,7 +1239,7 @@ public class EclipseLinkPersistenceUnit
 	 * "equivalent" converters.
 	 */
 	public void convertJavaConverters(EclipseLinkEntityMappings entityMappings, IProgressMonitor monitor) {
-		OrmEclipseLinkConverterContainer ormConverterContainer = entityMappings.getConverterContainer();
+		EclipseLinkOrmConverterContainer ormConverterContainer = entityMappings.getConverterContainer();
 		HashMap<String, ArrayList<JavaEclipseLinkConverter<?>>> convertibleJavaConverters = this.getEclipseLinkConvertibleJavaConverters();
 		int work = this.calculateCumulativeSize(convertibleJavaConverters.values());
 		SubMonitor sm = SubMonitor.convert(monitor, JptJpaCoreMessages.JAVA_METADATA_CONVERSION_IN_PROGRESS, work);
@@ -1249,7 +1249,7 @@ public class EclipseLinkPersistenceUnit
 		sm.setTaskName(JptJpaCoreMessages.JAVA_METADATA_CONVERSION_COMPLETE);
 	}
 
-	protected void convertJavaConvertersWithSameName(OrmEclipseLinkConverterContainer ormConverterContainer, Map.Entry<String, ArrayList<JavaEclipseLinkConverter<?>>> entry, SubMonitor monitor) {
+	protected void convertJavaConvertersWithSameName(EclipseLinkOrmConverterContainer ormConverterContainer, Map.Entry<String, ArrayList<JavaEclipseLinkConverter<?>>> entry, SubMonitor monitor) {
 		if (monitor.isCanceled()) {
 			throw new OperationCanceledException(JptJpaCoreMessages.JAVA_METADATA_CONVERSION_CANCELED);
 		}

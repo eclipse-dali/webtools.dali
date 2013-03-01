@@ -24,7 +24,7 @@ public interface EclipseLinkEntityMappings
 	 */
 	Iterable<EclipseLinkConverter> getMappingFileConverters();
 
-	OrmEclipseLinkConverterContainer getConverterContainer();
+	EclipseLinkOrmConverterContainer getConverterContainer();
 
 
 	// ********** tenant discriminator columns **********

@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLin
  * @version 3.3
  * @since 2.1
  */
-public interface JavaEclipseLinkConverterContainer
+public interface EclipseLinkJavaConverterContainer
 	extends EclipseLinkConverterContainer
 {
 	ListIterable<JavaEclipseLinkCustomConverter> getCustomConverters();

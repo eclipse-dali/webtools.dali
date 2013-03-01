@@ -12,8 +12,8 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTypeConverterAnnotation;
 
 /**
@@ -30,7 +30,7 @@ public class JavaEclipseLinkTypeConverter
 	private String fullyQualifiedObjectType;
 
 
-	public JavaEclipseLinkTypeConverter(JavaEclipseLinkConverterContainer parent, EclipseLinkTypeConverterAnnotation converterAnnotation) {
+	public JavaEclipseLinkTypeConverter(EclipseLinkJavaConverterContainer parent, EclipseLinkTypeConverterAnnotation converterAnnotation) {
 		super(parent, converterAnnotation);
 		this.dataType = this.converterAnnotation.getDataType();
 		this.objectType = this.converterAnnotation.getObjectType();
@@ -140,7 +140,7 @@ public class JavaEclipseLinkTypeConverter
 	// ********** metadata conversion **********
 
 	@Override
-	public void convertTo(OrmEclipseLinkConverterContainer ormConverterContainer) {
+	public void convertTo(EclipseLinkOrmConverterContainer ormConverterContainer) {
 		ormConverterContainer.addTypeConverter(this.getName()).convertFrom(this);
 	}
 	

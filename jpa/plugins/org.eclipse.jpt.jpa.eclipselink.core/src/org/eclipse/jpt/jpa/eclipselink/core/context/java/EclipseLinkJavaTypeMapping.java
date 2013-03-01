@@ -24,5 +24,5 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeMapping;
 public interface EclipseLinkJavaTypeMapping
 	extends JavaTypeMapping, EclipseLinkTypeMapping
 {
-	JavaEclipseLinkConverterContainer getConverterContainer();
+	EclipseLinkJavaConverterContainer getConverterContainer();
 }

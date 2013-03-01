@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkManyToManyMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConvertibleMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlManyToMany;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
@@ -36,11 +36,11 @@ public class OrmEclipseLinkManyToManyMapping
 	implements
 		EclipseLinkManyToManyMapping2_0, 
 		EclipseLinkOrmConvertibleMapping,
-		OrmEclipseLinkConverterContainer.Parent
+		EclipseLinkOrmConverterContainer.Parent
 {
 	protected final OrmEclipseLinkJoinFetch joinFetch;
 	
-	protected final OrmEclipseLinkConverterContainer converterContainer;
+	protected final EclipseLinkOrmConverterContainer converterContainer;
 
 
 	public OrmEclipseLinkManyToManyMapping(OrmSpecifiedPersistentAttribute parent, XmlManyToMany xmlMapping) {
@@ -88,12 +88,12 @@ public class OrmEclipseLinkManyToManyMapping
 
 	// ********** converters **********
 
-	public OrmEclipseLinkConverterContainer getConverterContainer() {
+	public EclipseLinkOrmConverterContainer getConverterContainer() {
 		return this.converterContainer;
 	}
 
-	protected OrmEclipseLinkConverterContainer buildConverterContainer() {
-		return new OrmEclipseLinkConverterContainerImpl(this, this.xmlAttributeMapping);
+	protected EclipseLinkOrmConverterContainer buildConverterContainer() {
+		return new EclipseLinkOrmMappingConverterContainer(this, this.xmlAttributeMapping);
 	}
 
 	public int getMaximumAllowedConverters() {

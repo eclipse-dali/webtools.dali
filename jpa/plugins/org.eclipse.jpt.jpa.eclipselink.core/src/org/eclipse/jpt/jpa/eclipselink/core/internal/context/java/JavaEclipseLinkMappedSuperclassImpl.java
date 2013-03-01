@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvertibleMappin
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkReadOnly;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkCaching;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_3JpaPlatformFactory;
@@ -48,14 +48,14 @@ public class JavaEclipseLinkMappedSuperclassImpl
 	implements 
 		JavaEclipseLinkMappedSuperclass, 
 		JavaCacheableReference2_0, 
-		JavaEclipseLinkConverterContainer.ParentAdapter,
+		EclipseLinkJavaConverterContainer.ParentAdapter,
 		JavaGeneratorContainer.ParentAdapter
 {
 	protected final JavaEclipseLinkCaching caching;
 
 	protected final JavaEclipseLinkReadOnly readOnly;
 
-	protected final JavaEclipseLinkConverterContainer converterContainer;
+	protected final EclipseLinkJavaConverterContainer converterContainer;
 
 	protected final JavaEclipseLinkChangeTracking changeTracking;
 
@@ -128,11 +128,11 @@ public class JavaEclipseLinkMappedSuperclassImpl
 
 	// ********** converter container **********
 
-	public JavaEclipseLinkConverterContainer getConverterContainer() {
+	public EclipseLinkJavaConverterContainer getConverterContainer() {
 		return this.converterContainer;
 	}
 
-	protected JavaEclipseLinkConverterContainer buildConverterContainer() {
+	protected EclipseLinkJavaConverterContainer buildConverterContainer() {
 		return new JavaEclipseLinkConverterContainerImpl(this);
 	}
 

@@ -13,7 +13,7 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEmbeddable;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkConvertersComposite;
@@ -63,10 +63,10 @@ public abstract class AbstractJavaEclipseLinkEmbeddableComposite<T extends JavaE
 		return new EclipseLinkConvertersComposite(this, this.buildConverterContainerValueModel(), container).getControl();
 	}
 
-	protected PropertyValueModel<JavaEclipseLinkConverterContainer> buildConverterContainerValueModel() {
-		return new PropertyAspectAdapter<T, JavaEclipseLinkConverterContainer>(getSubjectHolder()) {
+	protected PropertyValueModel<EclipseLinkJavaConverterContainer> buildConverterContainerValueModel() {
+		return new PropertyAspectAdapter<T, EclipseLinkJavaConverterContainer>(getSubjectHolder()) {
 			@Override
-			protected JavaEclipseLinkConverterContainer buildValue_() {
+			protected EclipseLinkJavaConverterContainer buildValue_() {
 				return this.subject.getConverterContainer();
 			}	
 		};

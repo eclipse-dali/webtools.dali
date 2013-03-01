@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvertibleMappin
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
@@ -55,7 +55,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 	implements
 		OrmEclipseLinkMappedSuperclass,
 		OrmCacheableReference2_0,
-		OrmEclipseLinkConverterContainer.Parent
+		EclipseLinkOrmConverterContainer.Parent
 {
 	protected final OrmEclipseLinkReadOnly readOnly;
 
@@ -65,7 +65,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 
 	protected final EclipseLinkCaching caching;
 
-	protected final OrmEclipseLinkConverterContainer converterContainer;
+	protected final EclipseLinkOrmConverterContainer converterContainer;
 
 	protected final OrmEclipseLinkMultitenancy2_3 multitenancy;
 
@@ -139,12 +139,12 @@ public class OrmEclipseLinkMappedSuperclassImpl
 
 	// ********** converter container **********
 
-	public OrmEclipseLinkConverterContainer getConverterContainer() {
+	public EclipseLinkOrmConverterContainer getConverterContainer() {
 		return this.converterContainer;
 	}
 
-	protected OrmEclipseLinkConverterContainer buildConverterContainer() {
-		return new OrmEclipseLinkConverterContainerImpl(this, this.xmlTypeMapping);
+	protected EclipseLinkOrmConverterContainer buildConverterContainer() {
+		return new EclipseLinkOrmMappingConverterContainer(this, this.xmlTypeMapping);
 	}
 
 	public int getMaximumAllowedConverters() {

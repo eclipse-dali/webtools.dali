@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaTypeMapp
 public interface EclipseLinkOrmTypeMapping
 	extends OrmTypeMapping, EclipseLinkTypeMapping
 {
-	OrmEclipseLinkConverterContainer getConverterContainer();
+	EclipseLinkOrmConverterContainer getConverterContainer();
 
 	EclipseLinkJavaTypeMapping getJavaTypeMapping();
 

@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCaching;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEntity;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkConvertersComposite;
@@ -100,10 +100,10 @@ public abstract class AbstractOrmEclipseLinkEntityComposite<T extends OrmEclipse
 		return new EclipseLinkConvertersComposite(this, this.buildConverterContainerModel(), container).getControl();
 	}
 	
-	private PropertyValueModel<OrmEclipseLinkConverterContainer> buildConverterContainerModel() {
-		return new PropertyAspectAdapter<T, OrmEclipseLinkConverterContainer>(getSubjectHolder()) {
+	private PropertyValueModel<EclipseLinkOrmConverterContainer> buildConverterContainerModel() {
+		return new PropertyAspectAdapter<T, EclipseLinkOrmConverterContainer>(getSubjectHolder()) {
 			@Override
-			protected OrmEclipseLinkConverterContainer buildValue_() {
+			protected EclipseLinkOrmConverterContainer buildValue_() {
 				return this.subject.getConverterContainer();
 			}
 		};

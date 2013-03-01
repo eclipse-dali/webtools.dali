@@ -19,8 +19,8 @@ import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkNamedConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
@@ -38,7 +38,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * </code>
  */
 public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConverterAnnotation>
-	extends AbstractJavaContextModel<JavaEclipseLinkConverterContainer>
+	extends AbstractJavaContextModel<EclipseLinkJavaConverterContainer>
 	implements EclipseLinkConverter
 {
 	protected final A converterAnnotation;
@@ -46,7 +46,7 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 	protected String name;
 
 
-	protected JavaEclipseLinkConverter(JavaEclipseLinkConverterContainer parent, A converterAnnotation) {
+	protected JavaEclipseLinkConverter(EclipseLinkJavaConverterContainer parent, A converterAnnotation) {
 		super(parent);
 		this.converterAnnotation = converterAnnotation;
 		this.name = converterAnnotation.getName();
@@ -156,7 +156,7 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 
 	// ********** metadata conversion **********
 
-	public abstract void convertTo(OrmEclipseLinkConverterContainer ormConverterContainer);
+	public abstract void convertTo(EclipseLinkOrmConverterContainer ormConverterContainer);
 	
 	public abstract void delete();
 }
