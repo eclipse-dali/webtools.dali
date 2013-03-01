@@ -11,8 +11,6 @@ package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.IdClassReference;
 import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
-import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
-import org.eclipse.jpt.jpa.core.resource.orm.XmlIdClassContainer;
 
 /**
  * <code>orm.xml</code> ID class reference
@@ -29,10 +27,5 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlIdClassContainer;
 public interface OrmIdClassReference
 	extends IdClassReference, TypeRefactoringParticipant
 {
-	// ********** owner **********
-
-	interface Owner {
-		XmlIdClassContainer getXmlIdClassContainer();
-		JavaIdClassReference getJavaIdClassReferenceForDefaults();
-	}
+	// combine interfaces
 }

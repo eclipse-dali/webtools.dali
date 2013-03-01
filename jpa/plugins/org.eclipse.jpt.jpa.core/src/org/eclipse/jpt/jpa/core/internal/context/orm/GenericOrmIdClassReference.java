@@ -23,6 +23,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdClassReference;
+import org.eclipse.jpt.jpa.core.context.orm.OrmIdTypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -38,20 +39,17 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>orm.xml</code> ID class reference
  */
 public class GenericOrmIdClassReference
-	extends AbstractOrmXmlContextModel<OrmTypeMapping>
+	extends AbstractOrmXmlContextModel<OrmIdTypeMapping>
 	implements OrmIdClassReference
 {
-	protected final Owner owner;
-
 	protected String specifiedIdClassName;
 	protected String defaultIdClassName;
 	protected String fullyQualifiedIdClassName;
 	protected JavaPersistentType idClass;
 
 
-	public GenericOrmIdClassReference(OrmTypeMapping parent, Owner owner) {
+	public GenericOrmIdClassReference(OrmIdTypeMapping parent) {
 		super(parent);
-		this.owner = owner;
 		this.specifiedIdClassName = this.buildSpecifiedIdClassName();
 	}
 
@@ -146,7 +144,7 @@ public class GenericOrmIdClassReference
 	}
 
 	protected String buildDefaultIdClassName() {
-		JavaIdClassReference javaRef = this.owner.getJavaIdClassReferenceForDefaults();
+		JavaIdClassReference javaRef = this.parent.getJavaIdClassReferenceForDefaults();
 		return (javaRef == null) ? null : javaRef.getFullyQualifiedIdClassName();
 	}
 
@@ -272,7 +270,7 @@ public class GenericOrmIdClassReference
 	}
 
 	protected XmlIdClassContainer getXmlIdClassContainer() {
-		return this.owner.getXmlIdClassContainer();
+		return this.parent.getXmlIdClassContainer();
 	}
 
 	protected EntityMappings getEntityMappings() {

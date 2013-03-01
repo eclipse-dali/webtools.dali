@@ -37,7 +37,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractOrmMappedSuperclass<X extends XmlMappedSuperclass>
 	extends AbstractOrmTypeMapping<X>
-	implements OrmMappedSuperclass, OrmIdClassReference.Owner
+	implements OrmMappedSuperclass
 {
 	protected final OrmIdClassReference idClassReference;
 
@@ -77,7 +77,7 @@ public abstract class AbstractOrmMappedSuperclass<X extends XmlMappedSuperclass>
 	}
 
 	protected OrmIdClassReference buildIdClassReference() {
-		return new GenericOrmIdClassReference(this, this);
+		return new GenericOrmIdClassReference(this);
 	}
 
 	public JavaPersistentType getIdClass() {

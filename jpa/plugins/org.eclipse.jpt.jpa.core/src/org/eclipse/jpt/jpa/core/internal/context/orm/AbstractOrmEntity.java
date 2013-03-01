@@ -124,7 +124,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractOrmEntity<X extends XmlEntity>
 	extends AbstractOrmTypeMapping<X>
-	implements OrmEntity2_0, OrmIdClassReference.Owner
+	implements OrmEntity2_0
 {
 	protected String specifiedName;
 	protected String defaultName;
@@ -363,7 +363,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected OrmIdClassReference buildIdClassReference() {
-		return new GenericOrmIdClassReference(this, this);
+		return new GenericOrmIdClassReference(this);
 	}
 
 	public XmlIdClassContainer getXmlIdClassContainer() {

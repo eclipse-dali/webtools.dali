@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,8 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.IdTypeMapping;
+import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlIdClassContainer;
 
 /**
  * <code>orm.xml</code> ID type mapping
@@ -24,4 +26,8 @@ public interface OrmIdTypeMapping
 	extends OrmTypeMapping, IdTypeMapping
 {
 	OrmIdClassReference getIdClassReference();
+
+	XmlIdClassContainer getXmlIdClassContainer();
+
+	JavaIdClassReference getJavaIdClassReferenceForDefaults();
 }
