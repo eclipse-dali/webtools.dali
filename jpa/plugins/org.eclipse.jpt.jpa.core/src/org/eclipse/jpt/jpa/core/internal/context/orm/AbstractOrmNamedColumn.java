@@ -32,7 +32,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * </ul>
  * <strong>NB:</strong> any subclass that directly holds its XML column must:<ul>
  * <li>call the "super" constructor that takes an XML column
- *     {@link #AbstractOrmNamedColumn(JpaContextModel, NamedColumn.Owner, XmlNamedColumn)}
+ *     {@link #AbstractOrmNamedColumn(NamedColumn.ParentAdapter, XmlNamedColumn)}
  * <li>override {@link #setXmlColumn(XmlNamedColumn)} to set the XML column
  *     so it is in place before the column's state (e.g. {@link #specifiedName})
  *     is initialized
@@ -40,11 +40,11 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Typically, a column belonging to a list of columns will directly hold its XML
  * column; since the context column only exists if the XML column exists.
  */
-public abstract class AbstractOrmNamedColumn<P extends JpaContextModel, X extends XmlNamedColumn, O extends NamedColumn.Owner>
-	extends AbstractOrmXmlContextModel<P>
+public abstract class AbstractOrmNamedColumn<PA extends NamedColumn.ParentAdapter, X extends XmlNamedColumn>
+	extends AbstractOrmXmlContextModel<JpaContextModel>
 	implements OrmSpecifiedNamedColumn
 {
-	protected final O owner;
+	protected final PA parentAdapter;
 
 	protected String specifiedName;
 	protected String defaultName;
@@ -55,13 +55,13 @@ public abstract class AbstractOrmNamedColumn<P extends JpaContextModel, X extend
 
 	// ********** constructor/initialization **********
 
-	protected AbstractOrmNamedColumn(P parent, O owner) {
-		this(parent, owner, null);
+	protected AbstractOrmNamedColumn(PA parentAdapter) {
+		this(parentAdapter, null);
 	}
 
-	protected AbstractOrmNamedColumn(P parent, O owner, X xmlColumn) {
-		super(parent);
-		this.owner = owner;
+	protected AbstractOrmNamedColumn(PA parentAdapter, X xmlColumn) {
+		super(parentAdapter.getColumnParent());
+		this.parentAdapter = parentAdapter;
 		this.setXmlColumn(xmlColumn);
 		this.specifiedName = this.buildSpecifiedName();
 		this.columnDefinition = this.buildColumnDefinition();
@@ -161,7 +161,7 @@ public abstract class AbstractOrmNamedColumn<P extends JpaContextModel, X extend
 	}
 
 	protected String buildDefaultName() {
-		return this.owner.getDefaultColumnName(this);
+		return this.parentAdapter.getDefaultColumnName(this);
 	}
 
 
@@ -209,7 +209,7 @@ public abstract class AbstractOrmNamedColumn<P extends JpaContextModel, X extend
 	}
 
 	protected Table buildDbTable() {
-		return this.owner.resolveDbTable(this.getTableName());
+		return this.parentAdapter.resolveDbTable(this.getTableName());
 	}
 
 	/**
@@ -218,7 +218,7 @@ public abstract class AbstractOrmNamedColumn<P extends JpaContextModel, X extend
 	 * defined.
 	 */
 	public String getTableName() {
-		return this.owner.getDefaultTableName();
+		return this.parentAdapter.getDefaultTableName();
 	}
 
 	public boolean isResolved() {
@@ -235,12 +235,12 @@ public abstract class AbstractOrmNamedColumn<P extends JpaContextModel, X extend
 	}
 
 	protected JptValidator buildColumnValidator() {
-		return this.owner.buildColumnValidator(this);
+		return this.parentAdapter.buildColumnValidator(this);
 	}
 
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.getXmlColumnTextRange();
-		return (textRange != null) ? textRange : this.owner.getValidationTextRange();
+		return (textRange != null) ? textRange : this.parentAdapter.getValidationTextRange();
 	}
 
 	protected TextRange getXmlColumnTextRange() {

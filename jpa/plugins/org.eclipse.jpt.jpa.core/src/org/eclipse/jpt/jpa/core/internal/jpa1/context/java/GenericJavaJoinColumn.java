@@ -13,7 +13,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -27,18 +26,18 @@ import org.eclipse.jpt.jpa.db.Table;
  * Java join column
  */
 public class GenericJavaJoinColumn
-	extends AbstractJavaBaseColumn<CompleteJoinColumnAnnotation, JoinColumn.Owner>
+	extends AbstractJavaBaseColumn<JoinColumn.ParentAdapter, CompleteJoinColumnAnnotation>
 	implements JavaSpecifiedJoinColumn
 {
-	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(JpaContextModel, org.eclipse.jpt.jpa.core.context.NamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
+	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(org.eclipse.jpt.jpa.core.context.NamedColumn.ParentAdapter, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
 	protected /* final */ CompleteJoinColumnAnnotation columnAnnotation;  // never null
 
 	protected String specifiedReferencedColumnName;
 	protected String defaultReferencedColumnName;
 
 
-	public GenericJavaJoinColumn(JpaContextModel parent, JoinColumn.Owner owner, CompleteJoinColumnAnnotation columnAnnotation) {
-		super(parent, owner, columnAnnotation);
+	public GenericJavaJoinColumn(JoinColumn.ParentAdapter parentAdapter, CompleteJoinColumnAnnotation columnAnnotation) {
+		super(parentAdapter, columnAnnotation);
 	}
 
 	@Override
@@ -119,14 +118,14 @@ public class GenericJavaJoinColumn
 	}
 
 	protected String buildDefaultReferencedColumnName() {
-		return MappingTools.buildJoinColumnDefaultReferencedColumnName(this.owner);
+		return MappingTools.buildJoinColumnDefaultReferencedColumnName(this.parentAdapter);
 	}
 	
 
 	// ********** database stuff **********
 
 	public Table getReferencedColumnDbTable() {
-		return this.owner.getReferencedColumnDbTable();
+		return this.parentAdapter.getReferencedColumnDbTable();
 	}
 
 	protected Column getReferencedDbColumn() {
@@ -175,7 +174,7 @@ public class GenericJavaJoinColumn
 	}
 
 	protected Iterable<String> getCandidateReferencedColumnNames() {
-		Table table = this.owner.getReferencedColumnDbTable();
+		Table table = this.parentAdapter.getReferencedColumnDbTable();
 		return (table != null) ? table.getSortedColumnIdentifiers() : EmptyIterable.<String> instance();
 	}
 

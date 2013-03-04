@@ -278,7 +278,7 @@ public final class MappingTools {
 	 * </pre>
 	 * @see #buildJoinTableDefaultName(Relationship)
 	 */
-	public static String buildJoinColumnDefaultName(JoinColumn joinColumn, JoinColumn.Owner owner) {
+	public static String buildJoinColumnDefaultName(JoinColumn joinColumn, JoinColumn.ParentAdapter owner) {
 		if (owner.getJoinColumnsSize() != 1) {
 			return null;
 		}
@@ -342,7 +342,7 @@ public final class MappingTools {
 	 *     "The same name as the primary key column of the referenced table."<br>
 	 * We are assuming that the primary key column is defined by the mappings instead of the database.
 	 */
-	public static String buildJoinColumnDefaultReferencedColumnName(JoinColumn.Owner joinColumnOwner) {
+	public static String buildJoinColumnDefaultReferencedColumnName(JoinColumn.ParentAdapter joinColumnOwner) {
 		if (joinColumnOwner.getJoinColumnsSize() != 1) {
 			return null;
 		}

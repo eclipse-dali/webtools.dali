@@ -26,7 +26,7 @@ public class AssociationOverrideInverseJoinColumnValidator
 	public AssociationOverrideInverseJoinColumnValidator(
 				AssociationOverride override,
 				JoinColumn column,
-				JoinColumn.Owner joinColumnOwner,
+				JoinColumn.ParentAdapter joinColumnOwner,
 				TableDescriptionProvider provider) {
 		super(column, joinColumnOwner, provider);
 		this.override = override;
@@ -36,7 +36,7 @@ public class AssociationOverrideInverseJoinColumnValidator
 				PersistentAttribute persistentAttribute,
 				AssociationOverride override,
 				JoinColumn column,
-				JoinColumn.Owner joinColumnOwner,
+				JoinColumn.ParentAdapter joinColumnOwner,
 				TableDescriptionProvider provider) {
 		super(persistentAttribute, column, joinColumnOwner, provider);
 		this.override = override;

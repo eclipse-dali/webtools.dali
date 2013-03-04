@@ -56,6 +56,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.Table;
+import org.eclipse.jpt.jpa.core.context.TableColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
@@ -152,7 +153,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	protected final JavaAttributeOverrideContainer mapKeyAttributeOverrideContainer;
 
 	protected final ContextListContainer<JavaSpecifiedJoinColumn, MapKeyJoinColumn2_0Annotation> specifiedMapKeyJoinColumnContainer;
-	protected final JoinColumn.Owner mapKeyJoinColumnOwner;
+	protected final JoinColumn.ParentAdapter mapKeyJoinColumnParentAdapter;
 
 	protected JavaSpecifiedJoinColumn defaultMapKeyJoinColumn;
 
@@ -192,7 +193,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		this.mapKeyColumn = this.buildMapKeyColumn();
 		this.mapKeyConverter = this.buildMapKeyConverter();
 		this.mapKeyAttributeOverrideContainer = this.buildMapKeyAttributeOverrideContainer();
-		this.mapKeyJoinColumnOwner = this.buildMapKeyJoinColumnOwner();
+		this.mapKeyJoinColumnParentAdapter = this.buildMapKeyJoinColumnParentAdapter();
 		this.specifiedMapKeyJoinColumnContainer = this.buildSpecifiedMapKeyJoinColumnContainer();
 	}
 
@@ -462,11 +463,11 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	protected JavaSpecifiedColumn buildValueColumn() {
-		return this.getJpaFactory().buildJavaColumn(this, this.buildValueColumnOwner());
+		return this.getJpaFactory().buildJavaColumn(this.buildValueColumnParentAdapter());
 	}
 
-	protected JavaSpecifiedColumn.Owner buildValueColumnOwner() {
-		return new ValueColumnOwner();
+	protected JavaSpecifiedColumn.ParentAdapter buildValueColumnParentAdapter() {
+		return new ValueColumnParentAdapter();
 	}
 
 	protected ColumnAnnotation getValueColumnAnnotation() {
@@ -917,11 +918,11 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	protected JavaSpecifiedColumn buildMapKeyColumn() {
-		return this.getJpaFactory().buildJavaMapKeyColumn(this, this.buildMapKeyColumnOwner());
+		return this.getJpaFactory().buildJavaMapKeyColumn(this.buildMapKeyColumnParentAdapter());
 	}
 
-	protected JavaSpecifiedColumn.Owner buildMapKeyColumnOwner() {
-		return new MapKeyColumnOwner();
+	protected JavaSpecifiedColumn.ParentAdapter buildMapKeyColumnParentAdapter() {
+		return new MapKeyColumnParentAdapter();
 	}
 
 	protected MapKeyColumn2_0Annotation getMapKeyColumnAnnotation() {
@@ -1137,11 +1138,11 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	protected JavaSpecifiedJoinColumn buildMapKeyJoinColumn(MapKeyJoinColumn2_0Annotation joinColumnAnnotation) {
-		return this.getJpaFactory().buildJavaJoinColumn(this, this.mapKeyJoinColumnOwner, joinColumnAnnotation);
+		return this.getJpaFactory().buildJavaJoinColumn(this.mapKeyJoinColumnParentAdapter, joinColumnAnnotation);
 	}
 
-	protected JoinColumn.Owner buildMapKeyJoinColumnOwner() {
-		return new MapKeyJoinColumnOwner();
+	protected JoinColumn.ParentAdapter buildMapKeyJoinColumnParentAdapter() {
+		return new MapKeyJoinColumnParentAdapter();
 	}
 
 
@@ -1810,12 +1811,16 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 
-	// ********** value column owner **********
+	// ********** value column parent adapter **********
 
-	public class ValueColumnOwner
+	public class ValueColumnParentAdapter
 		extends AbstractParentAdapter
-		implements JavaSpecifiedColumn.Owner
+		implements JavaSpecifiedColumn.ParentAdapter
 	{
+		public JpaContextModel getColumnParent() {
+			return AbstractJavaElementCollectionMapping2_0.this;
+		}
+
 		public CompleteColumnAnnotation getColumnAnnotation() {
 			return AbstractJavaElementCollectionMapping2_0.this.getValueColumnAnnotation();
 		}
@@ -1834,12 +1839,16 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 
-	// ********** map key column owner **********
+	// ********** map key column parent adapter **********
 
-	public class MapKeyColumnOwner
+	public class MapKeyColumnParentAdapter
 		extends AbstractParentAdapter
-		implements JavaSpecifiedColumn.Owner
+		implements JavaSpecifiedColumn.ParentAdapter
 	{
+		public JpaContextModel getColumnParent() {
+			return AbstractJavaElementCollectionMapping2_0.this;
+		}
+
 		public MapKeyColumn2_0Annotation getColumnAnnotation() {
 			return AbstractJavaElementCollectionMapping2_0.this.getMapKeyColumnAnnotation();
 		}
@@ -1912,7 +1921,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 			return new AttributeOverrideValidator(this.getPersistentAttribute(), (AttributeOverride) override, (AttributeOverrideContainer) container, new EmbeddableOverrideDescriptionProvider());
 		}
 
-		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner columnOwner) {
+		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter columnParentAdapter) {
 			return new AttributeOverrideColumnValidator(this.getPersistentAttribute(), (AttributeOverride) override, column, new CollectionTableTableDescriptionProvider());
 		}
 	}
@@ -1937,15 +1946,15 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 			return new AssociationOverrideValidator(this.getPersistentAttribute(), (AssociationOverride) override, (AssociationOverrideContainer) container, new EmbeddableOverrideDescriptionProvider());
 		}
 
-		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner columnOwner) {
-			return new AssociationOverrideJoinColumnValidator(this.getPersistentAttribute(), (AssociationOverride) override, (JoinColumn) column, (JoinColumn.Owner) columnOwner, new CollectionTableTableDescriptionProvider());
+		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter columnParentAdapter) {
+			return new AssociationOverrideJoinColumnValidator(this.getPersistentAttribute(), (AssociationOverride) override, (JoinColumn) column, (JoinColumn.ParentAdapter) columnParentAdapter, new CollectionTableTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner) {
+		public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter owner) {
 			return JptValidator.Null.instance();
 		}
 
-		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner) {
+		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter owner) {
 			return JptValidator.Null.instance();
 		}
 
@@ -1954,13 +1963,13 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		}
 	}
 
-	// ********** map key join column owner **********
+	// ********** map key join column parent adapter **********
 
-	public class MapKeyJoinColumnOwner
-		implements JoinColumn.Owner
+	public class MapKeyJoinColumnParentAdapter
+		implements JoinColumn.ParentAdapter
 	{
-		protected MapKeyJoinColumnOwner() {
-			super();
+		public JpaContextModel getColumnParent() {
+			return AbstractJavaElementCollectionMapping2_0.this;
 		}
 
 		public String getDefaultTableName() {
@@ -2068,7 +2077,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 			return new MapKeyAttributeOverrideValidator(this.getPersistentAttribute(), (AttributeOverride) override, (AttributeOverrideContainer) container, new EmbeddableOverrideDescriptionProvider());
 		}
 
-		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner columnOwner) {
+		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter columnParentAdapter) {
 			return new MapKeyAttributeOverrideColumnValidator(this.getPersistentAttribute(), (AttributeOverride) override, column, new CollectionTableTableDescriptionProvider());
 		}
 	}

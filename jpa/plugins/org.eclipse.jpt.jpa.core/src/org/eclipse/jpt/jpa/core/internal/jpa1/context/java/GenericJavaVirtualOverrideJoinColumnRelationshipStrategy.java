@@ -21,6 +21,7 @@ import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
@@ -40,14 +41,14 @@ public class GenericJavaVirtualOverrideJoinColumnRelationshipStrategy
 	implements VirtualJoinColumnRelationshipStrategy
 {
 	protected final ContextListContainer<VirtualJoinColumn, JoinColumn> specifiedJoinColumnContainer;
-	protected final JoinColumn.Owner joinColumnOwner;
+	protected final JoinColumn.ParentAdapter joinColumnParentAdapter;
 
 	protected VirtualJoinColumn defaultJoinColumn;
 
 
 	public GenericJavaVirtualOverrideJoinColumnRelationshipStrategy(VirtualOverrideRelationship parent) {
 		super(parent);
-		this.joinColumnOwner = this.buildJoinColumnOwner();
+		this.joinColumnParentAdapter = this.buildJoinColumnParentAdapter();
 		this.specifiedJoinColumnContainer = this.buildSpecifiedJoinColumnContainer();
 	}
 
@@ -126,8 +127,8 @@ public class GenericJavaVirtualOverrideJoinColumnRelationshipStrategy
 		}
 	}
 
-	protected JoinColumn.Owner buildJoinColumnOwner() {
-		return new JoinColumnOwner();
+	protected JoinColumn.ParentAdapter buildJoinColumnParentAdapter() {
+		return new JoinColumnParentAdapter();
 	}
 
 	protected ContextListContainer<VirtualJoinColumn, JoinColumn> buildSpecifiedJoinColumnContainer(){
@@ -290,7 +291,7 @@ public class GenericJavaVirtualOverrideJoinColumnRelationshipStrategy
 	}
 
 	protected VirtualJoinColumn buildJoinColumn(JoinColumn overriddenJoinColumn) {
-		return this.getJpaFactory().buildJavaVirtualJoinColumn(this, this.joinColumnOwner, overriddenJoinColumn);
+		return this.getJpaFactory().buildJavaVirtualJoinColumn(this.joinColumnParentAdapter, overriddenJoinColumn);
 	}
 
 
@@ -305,13 +306,13 @@ public class GenericJavaVirtualOverrideJoinColumnRelationshipStrategy
 	}
 
 
-	// ********** join column owner **********
+	// ********** join column parent adapter **********
 
-	protected class JoinColumnOwner
-		implements JoinColumn.Owner
+	public class JoinColumnParentAdapter
+		implements JoinColumn.ParentAdapter
 	{
-		protected JoinColumnOwner() {
-			super();
+		public JpaContextModel getColumnParent() {
+			return GenericJavaVirtualOverrideJoinColumnRelationshipStrategy.this;
 		}
 
 		public String getDefaultTableName() {

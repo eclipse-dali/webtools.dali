@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.AbstractOrmNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.context.TenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmSpecifiedTenantDiscriminatorColumn2_3;
@@ -21,10 +20,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscrimin
  * <code>orm.xml</code> tenant discriminator column
  */
 public class EclipseLinkOrmTenantDiscriminatorColumn2_3
-	extends AbstractOrmNamedDiscriminatorColumn<XmlTenantDiscriminatorColumn, TenantDiscriminatorColumn2_3.Owner>
+	extends AbstractOrmNamedDiscriminatorColumn<TenantDiscriminatorColumn2_3.ParentAdapter, XmlTenantDiscriminatorColumn>
 	implements OrmSpecifiedTenantDiscriminatorColumn2_3
 {
-	protected XmlTenantDiscriminatorColumn xmlTenantDiscriminatorColumn;
+	/** @see org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmNamedColumn#AbstractOrmNamedColumn(org.eclipse.jpt.jpa.core.context.NamedColumn.ParentAdapter, org.eclipse.jpt.jpa.core.resource.orm.XmlNamedColumn) */
+	protected /* final */ XmlTenantDiscriminatorColumn xmlTenantDiscriminatorColumn;  // never null
 
 	protected String specifiedTableName;
 	protected String defaultTableName;
@@ -35,8 +35,9 @@ public class EclipseLinkOrmTenantDiscriminatorColumn2_3
 	protected Boolean specifiedPrimaryKey;
 	protected boolean defaultPrimaryKey = DEFAULT_PRIMARY_KEY;
 
-	public EclipseLinkOrmTenantDiscriminatorColumn2_3(JpaContextModel parent, TenantDiscriminatorColumn2_3.Owner owner, XmlTenantDiscriminatorColumn column) {
-		super(parent, owner, column);
+
+	public EclipseLinkOrmTenantDiscriminatorColumn2_3(TenantDiscriminatorColumn2_3.ParentAdapter parentAdapter, XmlTenantDiscriminatorColumn xmlColumn) {
+		super(parentAdapter, xmlColumn);
 		this.specifiedTableName = this.buildSpecifiedTableName();
 		this.specifiedContextProperty = this.buildSpecifiedContextProperty();
 		this.specifiedPrimaryKey = this.buildSpecifiedPrimaryKey();
@@ -134,7 +135,7 @@ public class EclipseLinkOrmTenantDiscriminatorColumn2_3
 	}
 
 	protected String buildDefaultTableName() {
-		return this.owner.getDefaultTableName();
+		return this.parentAdapter.getDefaultTableName();
 	}
 
 	// ********** contextProperty **********
@@ -175,7 +176,7 @@ public class EclipseLinkOrmTenantDiscriminatorColumn2_3
 	}
 
 	protected String buildDefaultContextProperty() {
-		return this.owner.getDefaultContextPropertyName();
+		return this.parentAdapter.getDefaultContextPropertyName();
 	}
 
 
@@ -217,21 +218,21 @@ public class EclipseLinkOrmTenantDiscriminatorColumn2_3
 	}
 
 	protected boolean buildDefaultPrimaryKey() {
-		return this.owner.getDefaultPrimaryKey();
+		return this.parentAdapter.getDefaultPrimaryKey();
 	}
 
 
 	// ********** misc **********
 
 	public Iterable<String> getCandidateTableNames() {
-		return this.owner.getCandidateTableNames();
+		return this.parentAdapter.getCandidateTableNames();
 	}
 
 
 	// ********** validation **********
 
 	public boolean tableNameIsInvalid() {
-		return this.owner.tableNameIsInvalid(this.getTableName());
+		return this.parentAdapter.tableNameIsInvalid(this.getTableName());
 	}
 
 	public TextRange getTableNameValidationTextRange() {

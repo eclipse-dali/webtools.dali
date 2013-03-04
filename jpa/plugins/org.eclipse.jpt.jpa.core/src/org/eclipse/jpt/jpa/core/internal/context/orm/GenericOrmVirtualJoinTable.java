@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterabl
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
@@ -42,14 +43,14 @@ public class GenericOrmVirtualJoinTable
 {
 
 	protected final ContextListContainer<VirtualJoinColumn, JoinColumn> specifiedInverseJoinColumnContainer;
-	protected final JoinColumn.Owner inverseJoinColumnOwner;
+	protected final JoinColumn.ParentAdapter inverseJoinColumnParentAdapter;
 
 	protected VirtualJoinColumn defaultInverseJoinColumn;
 
 
 	public GenericOrmVirtualJoinTable(VirtualJoinTableRelationshipStrategy parent, Owner owner, JoinTable overriddenTable) {
 		super(parent, owner, overriddenTable);
-		this.inverseJoinColumnOwner = this.buildInverseJoinColumnOwner();
+		this.inverseJoinColumnParentAdapter = this.buildInverseJoinColumnParentAdapter();
 		this.specifiedInverseJoinColumnContainer = this.buildSpecifiedInverseJoinColumnContainer();
 	}
 
@@ -188,16 +189,16 @@ public class GenericOrmVirtualJoinTable
 	}
 
 	@Override
-	protected JoinColumn.Owner buildJoinColumnOwner() {
-		return new JoinColumnOwner();
+	protected JoinColumn.ParentAdapter buildJoinColumnParentAdapter() {
+		return new JoinColumnParentAdapter();
 	}
 
-	protected JoinColumn.Owner buildInverseJoinColumnOwner() {
-		return new InverseJoinColumnOwner();
+	protected JoinColumn.ParentAdapter buildInverseJoinColumnParentAdapter() {
+		return new InverseJoinColumnParentAdapter();
 	}
 
 	protected VirtualJoinColumn buildInverseJoinColumn(JoinColumn joinColumn) {
-		return this.buildJoinColumn(this.inverseJoinColumnOwner, joinColumn);
+		return this.buildJoinColumn(this.inverseJoinColumnParentAdapter, joinColumn);
 	}
 
 	@Override
@@ -227,16 +228,16 @@ public class GenericOrmVirtualJoinTable
 	}
 
 
-	// ********** join column owners **********
+	// ********** join column parent adapters **********
 
 	/**
 	 * just a little common behavior
 	 */
-	protected abstract class AbstractJoinColumnOwner
-		implements JoinColumn.Owner
+	public abstract class AbstractJoinColumnParentAdapter
+		implements JoinColumn.ParentAdapter
 	{
-		protected AbstractJoinColumnOwner() {
-			super();
+		public JpaContextModel getColumnParent() {
+			return GenericOrmVirtualJoinTable.this;
 		}
 
 		public String getDefaultColumnName(NamedColumn column) {
@@ -287,16 +288,12 @@ public class GenericOrmVirtualJoinTable
 
 
 	/**
-	 * owner for "back-pointer" join columns;
+	 * parent adapter for "back-pointer" join columns;
 	 * these point at the source/owning entity
 	 */
-	protected class JoinColumnOwner
-		extends AbstractJoinColumnOwner
+	public class JoinColumnParentAdapter
+		extends AbstractJoinColumnParentAdapter
 	{
-		protected JoinColumnOwner() {
-			super();
-		}
-
 		public Entity getRelationshipTarget() {
 			return this.getRelationship().getEntity();
 		}
@@ -330,16 +327,12 @@ public class GenericOrmVirtualJoinTable
 
 
 	/**
-	 * owner for "forward-pointer" join columns;
+	 * parent adapter for "forward-pointer" join columns;
 	 * these point at the target/inverse entity
 	 */
-	protected class InverseJoinColumnOwner
-		extends AbstractJoinColumnOwner
+	public class InverseJoinColumnParentAdapter
+		extends AbstractJoinColumnParentAdapter
 	{
-		protected InverseJoinColumnOwner() {
-			super();
-		}
-
 		public Entity getRelationshipTarget() {
 			RelationshipMapping relationshipMapping = GenericOrmVirtualJoinTable.this.getRelationshipMapping();
 			return (relationshipMapping == null) ? null : relationshipMapping.getResolvedTargetEntity();

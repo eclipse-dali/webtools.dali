@@ -23,7 +23,6 @@ import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
-import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
@@ -225,15 +224,15 @@ public interface JpaFactory
 	
 	VirtualJoinTable buildJavaVirtualJoinTable(VirtualJoinTableRelationshipStrategy parent, Table.Owner owner, JoinTable overriddenTable);
 	
-	JavaSpecifiedColumn buildJavaColumn(JpaContextModel parent, JavaSpecifiedColumn.Owner owner);
+	JavaSpecifiedColumn buildJavaColumn(JavaSpecifiedColumn.ParentAdapter parentAdapter);
 	
-	VirtualColumn buildJavaVirtualColumn(JpaContextModel parent, VirtualColumn.Owner owner);
+	VirtualColumn buildJavaVirtualColumn(VirtualColumn.ParentAdapter parentAdapter);
 
-	JavaSpecifiedDiscriminatorColumn buildJavaDiscriminatorColumn(JavaEntity parent, NamedDiscriminatorColumn.Owner owner);
+	JavaSpecifiedDiscriminatorColumn buildJavaDiscriminatorColumn(JavaSpecifiedDiscriminatorColumn.ParentAdapter parentAdapter);
 	
-	JavaSpecifiedJoinColumn buildJavaJoinColumn(JpaContextModel parent, JoinColumn.Owner owner, CompleteJoinColumnAnnotation joinColumnAnnotation);
+	JavaSpecifiedJoinColumn buildJavaJoinColumn(JoinColumn.ParentAdapter parentAdapter, CompleteJoinColumnAnnotation joinColumnAnnotation);
 	
-	VirtualJoinColumn buildJavaVirtualJoinColumn(JpaContextModel parent, JoinColumn.Owner owner, JoinColumn overriddenColumn);
+	VirtualJoinColumn buildJavaVirtualJoinColumn(JoinColumn.ParentAdapter parentAdapter, JoinColumn overriddenColumn);
 	
 	JavaSpecifiedSecondaryTable buildJavaSecondaryTable(JavaEntity parent, SpecifiedTable.Owner owner, SecondaryTableAnnotation tableAnnotation);
 	
@@ -243,7 +242,7 @@ public interface JpaFactory
 	
 	JavaGeneratedValue buildJavaGeneratedValue(JavaAttributeMapping parent, GeneratedValueAnnotation generatedValueAnnotation);
 	
-	JavaSpecifiedPrimaryKeyJoinColumn buildJavaPrimaryKeyJoinColumn(JpaContextModel parent, BaseJoinColumn.Owner owner, PrimaryKeyJoinColumnAnnotation pkJoinColumnAnnotation);
+	JavaSpecifiedPrimaryKeyJoinColumn buildJavaPrimaryKeyJoinColumn(BaseJoinColumn.ParentAdapter parentAdapter, PrimaryKeyJoinColumnAnnotation pkJoinColumnAnnotation);
 	
 	JavaAttributeOverrideContainer buildJavaAttributeOverrideContainer(JavaAttributeOverrideContainer.ParentAdapter parentAdapter);
 

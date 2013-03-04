@@ -314,7 +314,7 @@ public class GenericOrmOrderable
 	 */
 	protected OrmSpecifiedOrderColumn2_0 buildOrderColumn() {
 		return this.isOrmXml2_0Compatible() ?
-				this.getContextModelFactory2_0().buildOrmOrderColumn(this, new OrderColumnOwner()) :
+				this.getContextModelFactory2_0().buildOrmOrderColumn(new OrderColumnParentAdapter()) :
 				null;
 	}
 
@@ -413,11 +413,15 @@ public class GenericOrmOrderable
 		return null;
 	}
 	
-	// ********** order column owner (JPA 2.0) **********
+	// ********** order column parent adapter (JPA 2.0) **********
 
-	protected class OrderColumnOwner
-		implements OrmSpecifiedOrderColumn2_0.Owner
+	public class OrderColumnParentAdapter
+		implements OrmSpecifiedOrderColumn2_0.ParentAdapter
 	{
+		public OrmOrderable2_0 getColumnParent() {
+			return GenericOrmOrderable.this;
+		}
+
 		public String getDefaultTableName() {
 			return GenericOrmOrderable.this.getDefaultTableName();
 		}

@@ -29,11 +29,11 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * because <em>all</em> of it is derived from the context model (i.e. none of it
  * is derived from the resource model).
  */
-public abstract class AbstractJavaVirtualNamedColumn<O extends NamedColumn.Owner, C extends NamedColumn>
+public abstract class AbstractJavaVirtualNamedColumn<PA extends NamedColumn.ParentAdapter, C extends NamedColumn>
 	extends AbstractJavaContextModel<JpaContextModel>
 	implements VirtualNamedColumn
 {
-	protected final O owner;
+	protected final PA parentAdapter;
 
 	protected String specifiedName;
 	protected String defaultName;
@@ -42,9 +42,9 @@ public abstract class AbstractJavaVirtualNamedColumn<O extends NamedColumn.Owner
 
 	protected Table dbTable;
 
-	protected AbstractJavaVirtualNamedColumn(JpaContextModel parent, O owner) {
-		super(parent);
-		this.owner = owner;
+	protected AbstractJavaVirtualNamedColumn(PA parentAdapter) {
+		super(parentAdapter.getColumnParent());
+		this.parentAdapter = parentAdapter;
 	}
 
 
@@ -102,7 +102,7 @@ public abstract class AbstractJavaVirtualNamedColumn<O extends NamedColumn.Owner
 	}
 
 	protected String buildDefaultName() {
-		return this.owner.getDefaultColumnName(this);
+		return this.parentAdapter.getDefaultColumnName(this);
 	}
 
 
@@ -141,7 +141,7 @@ public abstract class AbstractJavaVirtualNamedColumn<O extends NamedColumn.Owner
 	}
 
 	protected Table buildDbTable() {
-		return this.owner.resolveDbTable(this.getTableName());
+		return this.parentAdapter.resolveDbTable(this.getTableName());
 	}
 
 	/**
@@ -149,7 +149,7 @@ public abstract class AbstractJavaVirtualNamedColumn<O extends NamedColumn.Owner
 	 * in {@link AbstractJavaVirtualBaseColumn} where a table can be defined.
 	 */
 	public String getTableName() {
-		return this.owner.getDefaultTableName();
+		return this.parentAdapter.getDefaultTableName();
 	}
 
 	public boolean isResolved() {
@@ -166,7 +166,7 @@ public abstract class AbstractJavaVirtualNamedColumn<O extends NamedColumn.Owner
 	}
 
 	protected JptValidator buildValidator() {
-		return this.owner.buildColumnValidator(this);
+		return this.parentAdapter.buildColumnValidator(this);
 	}
 
 	public TextRange getValidationTextRange() {

@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 import java.util.List;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
@@ -30,7 +31,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class GenericOrmSpecifiedAttributeOverride
 	extends AbstractOrmSpecifiedOverride<OrmAttributeOverrideContainer, XmlAttributeOverride>
-	implements OrmSpecifiedAttributeOverride, OrmSpecifiedColumn.Owner
+	implements OrmSpecifiedAttributeOverride, OrmSpecifiedColumn.ParentAdapter
 {
 	protected final OrmSpecifiedColumn column;
 
@@ -71,7 +72,7 @@ public class GenericOrmSpecifiedAttributeOverride
 	}
 
 	protected OrmSpecifiedColumn buildColumn() {
-		return this.getContextModelFactory().buildOrmColumn(this, this);
+		return this.getContextModelFactory().buildOrmColumn(this);
 	}
 
 
@@ -88,7 +89,11 @@ public class GenericOrmSpecifiedAttributeOverride
 	}
 
 
-	// ********** column owner implementation **********
+	// ********** column parent adapter **********
+
+	public JpaContextModel getColumnParent() {
+		return this;  // no adapter
+	}
 
 	public String getDefaultColumnName(NamedColumn col) {
 		return this.name;

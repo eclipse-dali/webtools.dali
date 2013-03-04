@@ -22,6 +22,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
@@ -65,7 +66,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 	protected Boolean specifiedIncludeCriteria;
 	protected boolean defaultIncludeCriteria = DEFAULT_INCLUDE_CRITERIA;
 
-	protected final TenantDiscriminatorColumn2_3.Owner tenantDiscriminatorColumnOwner;
+	protected final TenantDiscriminatorColumn2_3.ParentAdapter tenantDiscriminatorColumnParentAdapter;
 	protected final ContextListContainer<JavaSpecifiedTenantDiscriminatorColumn2_3, EclipseLinkTenantDiscriminatorColumnAnnotation2_3> specifiedTenantDiscriminatorColumnContainer;
 	protected final ContextListContainer<VirtualTenantDiscriminatorColumn2_3, TenantDiscriminatorColumn2_3> defaultTenantDiscriminatorColumnContainer;
 
@@ -80,7 +81,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 		this.specifiedMultitenant = multitenantAnnotation.isSpecified();
 		this.specifiedType = EclipseLinkMultitenantType2_3.fromJavaResourceModel(multitenantAnnotation.getValue());
 		this.specifiedIncludeCriteria = multitenantAnnotation.getIncludeCriteria();
-		this.tenantDiscriminatorColumnOwner = this.buildTenantDiscriminatorColumnOwner();
+		this.tenantDiscriminatorColumnParentAdapter = this.buildTenantDiscriminatorColumnParentAdapter();
 		this.specifiedTenantDiscriminatorColumnContainer = this.buildSpecifiedTenantDiscriminatorColumnContainer();
 		this.defaultTenantDiscriminatorColumn = this.buildTenantDiscriminatorColumn(this.buildNullTenantDiscriminatorColumnAnnotation());
 		this.defaultTenantDiscriminatorColumnContainer = this.buildDefaultTenantDiscriminatorColumnContainer();
@@ -305,7 +306,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 	}
 
 	protected JavaSpecifiedTenantDiscriminatorColumn2_3 buildTenantDiscriminatorColumn(EclipseLinkTenantDiscriminatorColumnAnnotation2_3 discriminatorColumnAnnotation) {
-		return new EclipseLinkJavaTenantDiscriminatorColumn2_3(this, this.tenantDiscriminatorColumnOwner, discriminatorColumnAnnotation);
+		return new EclipseLinkJavaTenantDiscriminatorColumn2_3(this.tenantDiscriminatorColumnParentAdapter, discriminatorColumnAnnotation);
 	}
 
 	protected EclipseLinkTenantDiscriminatorColumnAnnotation2_3 buildNullTenantDiscriminatorColumnAnnotation() {
@@ -322,8 +323,8 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 		return container;
 	}
 
-	protected TenantDiscriminatorColumn2_3.Owner buildTenantDiscriminatorColumnOwner() {
-		return new TenantDiscriminatorColumnOwner();
+	protected TenantDiscriminatorColumn2_3.ParentAdapter buildTenantDiscriminatorColumnParentAdapter() {
+		return new TenantDiscriminatorColumnParentAdapter();
 	}
 
 	/**
@@ -383,7 +384,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 	}
 
 	protected VirtualTenantDiscriminatorColumn2_3 buildVirtualTenantDiscriminatorColumn(TenantDiscriminatorColumn2_3 tenantDiscriminatorColumn) {
-		return new EclipseLinkJavaVirtualTenantDiscriminatorColumn2_3(this, this.tenantDiscriminatorColumnOwner, tenantDiscriminatorColumn);
+		return new EclipseLinkJavaVirtualTenantDiscriminatorColumn2_3(this.tenantDiscriminatorColumnParentAdapter, tenantDiscriminatorColumn);
 	}
 
 	protected ListIterable<TenantDiscriminatorColumn2_3> getTenantDiscriminatorColumnsForDefaults() {
@@ -454,12 +455,14 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 	}
 
 
+	// ********** tenant discriminator column parent adapter **********
 
-	// ********** JavaReadOnlyTenantDiscriminatorColumn.Owner implementation **********
-
-	protected class TenantDiscriminatorColumnOwner 
-		implements TenantDiscriminatorColumn2_3.Owner
+	public class TenantDiscriminatorColumnParentAdapter
+		implements TenantDiscriminatorColumn2_3.ParentAdapter
 	{
+		public JpaContextModel getColumnParent() {
+			return JavaEclipseLinkMultitenancyImpl2_3.this;
+		}
 
 		public String getDefaultContextPropertyName() {
 			return TenantDiscriminatorColumn2_3.DEFAULT_CONTEXT_PROPERTY;

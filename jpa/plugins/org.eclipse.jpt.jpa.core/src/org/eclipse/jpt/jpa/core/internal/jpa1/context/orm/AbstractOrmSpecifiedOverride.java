@@ -13,10 +13,10 @@ import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.Override_;
-import org.eclipse.jpt.jpa.core.context.TableColumn.Owner;
+import org.eclipse.jpt.jpa.core.context.TableColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOverrideContainer;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModel;
@@ -112,8 +112,8 @@ public abstract class AbstractOrmSpecifiedOverride<P extends OrmOverrideContaine
 		return this.getContainer().getDefaultTableName();
 	}
 
-	public JptValidator buildColumnValidator(BaseColumn column, Owner owner) {
-		return this.getContainer().buildColumnValidator(this, column, owner);
+	public JptValidator buildColumnValidator(BaseColumn column, TableColumn.ParentAdapter parentAdapter) {
+		return this.getContainer().buildColumnValidator(this, column, parentAdapter);
 	}
 
 	@Override

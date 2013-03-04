@@ -52,14 +52,13 @@ public interface NamedDiscriminatorColumn
 		int DEFAULT_LENGTH = 31;
 		
 
-	// ********** owner **********
+	// ********** parent adapter **********
 
 	/**
 	 * interface allowing discriminator columns to be used in multiple places
-	 * (but pretty much just entities)
 	 */
-	interface Owner
-		extends NamedColumn.Owner
+	interface ParentAdapter
+		extends NamedColumn.ParentAdapter
 	{
 		/**
 		 * Return the default discriminator column length

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context;
 
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.TableColumn;
 
@@ -58,13 +59,13 @@ public interface TenantDiscriminatorColumn2_3
 	boolean DEFAULT_PRIMARY_KEY = false;
 
 
-	// ********** owner **********
+	// ********** parent adapter **********
 
 	/**
 	 * interface allowing tenant discriminator columns to be used in multiple places
 	 */
-	interface Owner
-		extends NamedDiscriminatorColumn.Owner, TableColumn.Owner
+	interface ParentAdapter
+		extends NamedDiscriminatorColumn.ParentAdapter, TableColumn.ParentAdapter
 	{
 		/**
 		 * Return the default context property name

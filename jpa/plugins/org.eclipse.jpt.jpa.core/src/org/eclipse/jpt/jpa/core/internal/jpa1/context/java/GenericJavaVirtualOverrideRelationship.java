@@ -11,15 +11,15 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.SpecifiedOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
-import org.eclipse.jpt.jpa.core.context.TableColumn.Owner;
+import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.Relationship;
-import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.SpecifiedOverrideRelationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
+import org.eclipse.jpt.jpa.core.context.TableColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinTableRelationshipStrategy;
@@ -28,8 +28,8 @@ import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaVirtualOverrideJoinTableRelationshipStrategy2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedMappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.AssociationOverride2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedMappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.VirtualOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -199,8 +199,8 @@ public class GenericJavaVirtualOverrideRelationship
 		return this.getAssociationOverride().getDefaultTableName();
 	}
 
-	public JptValidator buildColumnValidator(BaseColumn column, Owner owner) {
-		return this.getAssociationOverride().buildColumnValidator(column, owner);
+	public JptValidator buildColumnValidator(BaseColumn column, TableColumn.ParentAdapter parentAdapter) {
+		return this.getAssociationOverride().buildColumnValidator(column, parentAdapter);
 	}
 
 	public Entity getEntity() {
@@ -237,11 +237,11 @@ public class GenericJavaVirtualOverrideRelationship
 		return this.getAssociationOverride2_0().buildJoinTableValidator(table);
 	}
 
-	public JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner) {
+	public JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter owner) {
 		return this.getAssociationOverride2_0().buildJoinTableJoinColumnValidator(column, owner);
 	}
 
-	public JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner) {
+	public JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter owner) {
 		return this.getAssociationOverride2_0().buildJoinTableInverseJoinColumnValidator(column, owner);
 	}
 }

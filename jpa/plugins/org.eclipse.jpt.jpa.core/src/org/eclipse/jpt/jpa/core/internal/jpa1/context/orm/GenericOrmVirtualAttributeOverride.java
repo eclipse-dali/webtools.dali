@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 import java.util.List;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAttributeOverride;
@@ -26,7 +27,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class GenericOrmVirtualAttributeOverride
 	extends AbstractOrmVirtualOverride<OrmAttributeOverrideContainer>
-	implements OrmVirtualAttributeOverride, VirtualColumn.Owner
+	implements OrmVirtualAttributeOverride, VirtualColumn.ParentAdapter
 {
 	protected final VirtualColumn column;
 
@@ -59,11 +60,15 @@ public class GenericOrmVirtualAttributeOverride
 	 * attribute is what precipitated the creation of the virtual override).
 	 */
 	protected VirtualColumn buildColumn() {
-		return this.getContextModelFactory().buildOrmVirtualColumn(this, this);
+		return this.getContextModelFactory().buildOrmVirtualColumn(this);
 	}
 
 
-	// ********** column owner implementation **********
+	// ********** column parent adapter **********
+
+	public JpaContextModel getColumnParent() {
+		return this;  // no adapter
+	}
 
 	@Override
 	public String getDefaultTableName() {

@@ -9,18 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmNamedColumn;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmSpecifiedOrderColumn2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOrderable2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlOrderColumn;
 
 /**
  * <code>orm.xml</code> order column
  */
 public class GenericOrmOrderColumn2_0
-	extends AbstractOrmNamedColumn<OrmOrderable2_0, XmlOrderColumn, OrmSpecifiedOrderColumn2_0.Owner>
+	extends AbstractOrmNamedColumn<OrmSpecifiedOrderColumn2_0.ParentAdapter, XmlOrderColumn>
 	implements OrmSpecifiedOrderColumn2_0
 {
 	// TODO defaults from java for all of these settings
@@ -31,8 +28,8 @@ public class GenericOrmOrderColumn2_0
 	protected Boolean specifiedUpdatable;
 
 
-	public GenericOrmOrderColumn2_0(OrmOrderable2_0 parent, OrmSpecifiedOrderColumn2_0.Owner owner) {
-		super(parent, owner);
+	public GenericOrmOrderColumn2_0(OrmSpecifiedOrderColumn2_0.ParentAdapter parentAdapter) {
+		super(parentAdapter);
 		this.specifiedNullable = this.buildSpecifiedNullable();
 		this.specifiedInsertable = this.buildSpecifiedInsertable();
 		this.specifiedUpdatable = this.buildSpecifiedUpdatable();
@@ -54,17 +51,17 @@ public class GenericOrmOrderColumn2_0
 
 	@Override
 	public XmlOrderColumn getXmlColumn() {
-		return this.owner.getXmlColumn();
+		return this.parentAdapter.getXmlColumn();
 	}
 
 	@Override
 	protected XmlOrderColumn buildXmlColumn() {
-		return this.owner.buildXmlColumn();
+		return this.parentAdapter.buildXmlColumn();
 	}
 
 	@Override
 	protected void removeXmlColumn() {
-		this.owner.removeXmlColumn();
+		this.parentAdapter.removeXmlColumn();
 	}
 
 
@@ -175,21 +172,8 @@ public class GenericOrmOrderColumn2_0
 
 	// ********** misc **********
 
-	protected OrmOrderable2_0 getOrderable() {
-		return this.parent;
-	}
-
-	protected AttributeMapping getAttributeMapping() {
-		return this.getOrderable().getParent();
-	}
-
-	protected SpecifiedPersistentAttribute getPersistentAttribute() {
-		return this.getAttributeMapping().getPersistentAttribute();
-	}
-
 	@Override
 	public String getTableName() {
-		return this.parent.getDefaultTableName();
+		return this.parentAdapter.getDefaultTableName();
 	}
-
 }

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmVirtualNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.context.TenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.VirtualTenantDiscriminatorColumn2_3;
@@ -19,7 +18,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.VirtualTenantDiscriminatorCo
  * <code>orm.xml</code> virtual tenant discriminator column
  */
 public class EclipseLinkOrmVirtualTenantDiscriminatorColumn2_3
-	extends AbstractOrmVirtualNamedDiscriminatorColumn<TenantDiscriminatorColumn2_3.Owner, TenantDiscriminatorColumn2_3>
+	extends AbstractOrmVirtualNamedDiscriminatorColumn<TenantDiscriminatorColumn2_3.ParentAdapter, TenantDiscriminatorColumn2_3>
 	implements VirtualTenantDiscriminatorColumn2_3
 {
 	protected final TenantDiscriminatorColumn2_3 overriddenColumn;
@@ -34,9 +33,9 @@ public class EclipseLinkOrmVirtualTenantDiscriminatorColumn2_3
 	protected boolean defaultPrimaryKey;
 
 
-	public EclipseLinkOrmVirtualTenantDiscriminatorColumn2_3(JpaContextModel parent, TenantDiscriminatorColumn2_3.Owner owner, TenantDiscriminatorColumn2_3 overridenColumn) {
-		super(parent, owner);
-		this.overriddenColumn = overridenColumn;
+	public EclipseLinkOrmVirtualTenantDiscriminatorColumn2_3(TenantDiscriminatorColumn2_3.ParentAdapter parentAdapter, TenantDiscriminatorColumn2_3 overriddenColumn) {
+		super(parentAdapter);
+		this.overriddenColumn = overriddenColumn;
 	}
 
 
@@ -96,7 +95,7 @@ public class EclipseLinkOrmVirtualTenantDiscriminatorColumn2_3
 	}
 
 	protected String buildDefaultTableName() {
-		return this.owner.getDefaultTableName();
+		return this.parentAdapter.getDefaultTableName();
 	}
 
 	// ********** context property **********
@@ -130,7 +129,7 @@ public class EclipseLinkOrmVirtualTenantDiscriminatorColumn2_3
 	}
 
 	protected String buildDefaultContextProperty() {
-		return this.owner.getDefaultContextPropertyName();
+		return this.parentAdapter.getDefaultContextPropertyName();
 	}
 
 
@@ -165,18 +164,18 @@ public class EclipseLinkOrmVirtualTenantDiscriminatorColumn2_3
 	}
 
 	protected boolean buildDefaultPrimaryKey() {
-		return this.owner.getDefaultPrimaryKey();
+		return this.parentAdapter.getDefaultPrimaryKey();
 	}
 
 
 	// ********** misc **********
 
 	public boolean tableNameIsInvalid() {
-		return this.owner.tableNameIsInvalid(this.getTableName());
+		return this.parentAdapter.tableNameIsInvalid(this.getTableName());
 	}
 
 	public Iterable<String> getCandidateTableNames() {
-		return this.owner.getCandidateTableNames();
+		return this.parentAdapter.getCandidateTableNames();
 	}
 
 

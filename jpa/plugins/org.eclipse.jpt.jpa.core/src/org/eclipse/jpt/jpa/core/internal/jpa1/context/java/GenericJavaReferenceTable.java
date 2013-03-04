@@ -35,14 +35,14 @@ public abstract class GenericJavaReferenceTable<P extends JpaContextModel, A ext
 	implements JavaSpecifiedReferenceTable
 {
 	protected final ContextListContainer<JavaSpecifiedJoinColumn, JoinColumnAnnotation> specifiedJoinColumnContainer;
-	protected final JoinColumn.Owner joinColumnOwner;
+	protected final JoinColumn.ParentAdapter joinColumnParentAdapter;
 
 	protected JavaSpecifiedJoinColumn defaultJoinColumn;
 
 
 	protected GenericJavaReferenceTable(P parent, Owner owner) {
 		super(parent, owner);
-		this.joinColumnOwner = this.buildJoinColumnOwner();
+		this.joinColumnParentAdapter = this.buildJoinColumnParentAdapter();
 		this.specifiedJoinColumnContainer = this.buildSpecifiedJoinColumnContainer();
 	}
 
@@ -162,7 +162,7 @@ public abstract class GenericJavaReferenceTable<P extends JpaContextModel, A ext
 		}
 	}
 
-	protected abstract JoinColumn.Owner buildJoinColumnOwner();
+	protected abstract JoinColumn.ParentAdapter buildJoinColumnParentAdapter();
 
 	protected ContextListContainer<JavaSpecifiedJoinColumn, JoinColumnAnnotation> buildSpecifiedJoinColumnContainer(){
 		SpecifiedJoinColumnContainer container = new SpecifiedJoinColumnContainer();
@@ -226,11 +226,11 @@ public abstract class GenericJavaReferenceTable<P extends JpaContextModel, A ext
 	}
 
 	protected JavaSpecifiedJoinColumn buildJoinColumn(JoinColumnAnnotation joinColumnAnnotation) {
-		return this.buildJoinColumn(this.joinColumnOwner, joinColumnAnnotation);
+		return this.buildJoinColumn(this.joinColumnParentAdapter, joinColumnAnnotation);
 	}
 
-	protected JavaSpecifiedJoinColumn buildJoinColumn(JoinColumn.Owner jcOwner, JoinColumnAnnotation joinColumnAnnotation) {
-		return this.getJpaFactory().buildJavaJoinColumn(this, jcOwner, joinColumnAnnotation);
+	protected JavaSpecifiedJoinColumn buildJoinColumn(JoinColumn.ParentAdapter jcParentAdapter, JoinColumnAnnotation joinColumnAnnotation) {
+		return this.getJpaFactory().buildJavaJoinColumn(jcParentAdapter, joinColumnAnnotation);
 	}
 
 	@Override

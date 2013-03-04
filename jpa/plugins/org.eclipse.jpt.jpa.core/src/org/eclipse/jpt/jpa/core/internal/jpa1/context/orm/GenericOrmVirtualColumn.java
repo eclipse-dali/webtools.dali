@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.VirtualColumn;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmVirtualBaseColumn;
@@ -18,7 +17,7 @@ import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmVirtualBaseColum
  * <code>orm.xml</code> virtual column
  */
 public class GenericOrmVirtualColumn
-	extends AbstractOrmVirtualBaseColumn<VirtualColumn.Owner, Column>
+	extends AbstractOrmVirtualBaseColumn<VirtualColumn.ParentAdapter, Column>
 	implements VirtualColumn
 {
 	protected Integer specifiedLength;
@@ -31,8 +30,8 @@ public class GenericOrmVirtualColumn
 	protected int defaultScale;
 
 
-	public GenericOrmVirtualColumn(JpaContextModel parent, VirtualColumn.Owner owner) {
-		super(parent, owner);
+	public GenericOrmVirtualColumn(VirtualColumn.ParentAdapter parentAdapter) {
+		super(parentAdapter);
 	}
 
 
@@ -57,7 +56,7 @@ public class GenericOrmVirtualColumn
 
 	@Override
 	public Column getOverriddenColumn() {
-		return this.owner.resolveOverriddenColumn();
+		return this.parentAdapter.resolveOverriddenColumn();
 	}
 
 

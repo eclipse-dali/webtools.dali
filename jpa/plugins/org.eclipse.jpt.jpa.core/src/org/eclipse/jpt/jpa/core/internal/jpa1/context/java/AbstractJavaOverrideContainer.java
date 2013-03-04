@@ -20,14 +20,15 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.SpecifiedOverride;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.Override_;
+import org.eclipse.jpt.jpa.core.context.SpecifiedOverride;
+import org.eclipse.jpt.jpa.core.context.TableColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.VirtualOverride;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaOverrideContainer;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualOverride;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -508,8 +509,8 @@ public abstract class AbstractJavaOverrideContainer<
 		return this.parentAdapter.buildOverrideValidator(override, this);
 	}
 
-	public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner columnOwner) {
-		return this.parentAdapter.buildColumnValidator(override, column, columnOwner);
+	public JptValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter parentAdapter) {
+		return this.parentAdapter.buildColumnValidator(override, column, parentAdapter);
 	}
 
 	public String getPossiblePrefix() {

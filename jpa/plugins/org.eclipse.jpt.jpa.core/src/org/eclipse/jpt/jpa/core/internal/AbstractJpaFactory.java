@@ -26,7 +26,6 @@ import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
-import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
@@ -245,24 +244,24 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaTable(parent, owner);
 	}
 	
-	public JavaSpecifiedColumn buildJavaColumn(JpaContextModel parent, JavaSpecifiedColumn.Owner owner) {
-		return new GenericJavaColumn(parent, owner);
+	public JavaSpecifiedColumn buildJavaColumn(JavaSpecifiedColumn.ParentAdapter parentAdapter) {
+		return new GenericJavaColumn(parentAdapter);
 	}
 	
-	public VirtualColumn buildJavaVirtualColumn(JpaContextModel parent, VirtualColumn.Owner owner) {
-		return new GenericJavaVirtualColumn(parent, owner);
+	public VirtualColumn buildJavaVirtualColumn(VirtualColumn.ParentAdapter parentAdapter) {
+		return new GenericJavaVirtualColumn(parentAdapter);
 	}
 	
-	public JavaSpecifiedDiscriminatorColumn buildJavaDiscriminatorColumn(JavaEntity parent, NamedDiscriminatorColumn.Owner owner) {
-		return new GenericJavaDiscriminatorColumn(parent, owner);
+	public JavaSpecifiedDiscriminatorColumn buildJavaDiscriminatorColumn(JavaSpecifiedDiscriminatorColumn.ParentAdapter parentAdapter) {
+		return new GenericJavaDiscriminatorColumn(parentAdapter);
 	}
 	
-	public JavaSpecifiedJoinColumn buildJavaJoinColumn(JpaContextModel parent, JoinColumn.Owner owner, CompleteJoinColumnAnnotation joinColumnAnnotation) {
-		return new GenericJavaJoinColumn(parent, owner, joinColumnAnnotation);
+	public JavaSpecifiedJoinColumn buildJavaJoinColumn(JoinColumn.ParentAdapter parentAdapter, CompleteJoinColumnAnnotation joinColumnAnnotation) {
+		return new GenericJavaJoinColumn(parentAdapter, joinColumnAnnotation);
 	}
 
-	public VirtualJoinColumn buildJavaVirtualJoinColumn(JpaContextModel parent, JoinColumn.Owner owner, JoinColumn overriddenColumn) {
-		return new GenericJavaVirtualJoinColumn(parent, owner, overriddenColumn);
+	public VirtualJoinColumn buildJavaVirtualJoinColumn(JoinColumn.ParentAdapter parentAdapter, JoinColumn overriddenColumn) {
+		return new GenericJavaVirtualJoinColumn(parentAdapter, overriddenColumn);
 	}
 	
 	public JavaSpecifiedJoinTable buildJavaJoinTable(JavaSpecifiedJoinTableRelationshipStrategy parent, SpecifiedTable.Owner owner) {
@@ -337,8 +336,8 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaGeneratedValue(parent, generatedValueAnnotation);
 	}
 	
-	public JavaSpecifiedPrimaryKeyJoinColumn buildJavaPrimaryKeyJoinColumn(JpaContextModel parent, BaseJoinColumn.Owner owner, PrimaryKeyJoinColumnAnnotation pkJoinColumnAnnotation) {
-		return new GenericJavaPrimaryKeyJoinColumn(parent, owner, pkJoinColumnAnnotation);
+	public JavaSpecifiedPrimaryKeyJoinColumn buildJavaPrimaryKeyJoinColumn(BaseJoinColumn.ParentAdapter parentAdapter, PrimaryKeyJoinColumnAnnotation pkJoinColumnAnnotation) {
+		return new GenericJavaPrimaryKeyJoinColumn(parentAdapter, pkJoinColumnAnnotation);
 	}
 	
 	public JavaAttributeOverrideContainer buildJavaAttributeOverrideContainer(JavaAttributeOverrideContainer.ParentAdapter parentAdapter) {

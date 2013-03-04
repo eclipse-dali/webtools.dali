@@ -13,7 +13,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaNamedColumn;
@@ -25,18 +24,18 @@ import org.eclipse.jpt.jpa.db.Table;
  * Java primary key join column
  */
 public class GenericJavaPrimaryKeyJoinColumn
-	extends AbstractJavaNamedColumn<JpaContextModel, PrimaryKeyJoinColumnAnnotation, BaseJoinColumn.Owner>
+	extends AbstractJavaNamedColumn<BaseJoinColumn.ParentAdapter, PrimaryKeyJoinColumnAnnotation>
 	implements JavaSpecifiedPrimaryKeyJoinColumn
 {
-	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(JpaContextModel, org.eclipse.jpt.jpa.core.context.NamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
+	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(org.eclipse.jpt.jpa.core.context.NamedColumn.ParentAdapter, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
 	protected /* final */ PrimaryKeyJoinColumnAnnotation columnAnnotation;  // never null
 
 	protected String specifiedReferencedColumnName;
 	protected String defaultReferencedColumnName;
 
 
-	public GenericJavaPrimaryKeyJoinColumn(JpaContextModel parent, BaseJoinColumn.Owner owner, PrimaryKeyJoinColumnAnnotation columnAnnotation) {
-		super(parent, owner, columnAnnotation);
+	public GenericJavaPrimaryKeyJoinColumn(BaseJoinColumn.ParentAdapter parentAdapter, PrimaryKeyJoinColumnAnnotation columnAnnotation) {
+		super(parentAdapter, columnAnnotation);
 	}
 
 	@Override
@@ -126,7 +125,7 @@ public class GenericJavaPrimaryKeyJoinColumn
 	// ********** database stuff **********
 
 	public Table getReferencedColumnDbTable() {
-		return this.owner.getReferencedColumnDbTable();
+		return this.parentAdapter.getReferencedColumnDbTable();
 	}
 
 	protected Column getReferencedDbColumn() {
@@ -143,7 +142,7 @@ public class GenericJavaPrimaryKeyJoinColumn
 
 	@Override
 	public String getTableName() {
-		return this.owner.getDefaultTableName();
+		return this.parentAdapter.getDefaultTableName();
 	}
 
 
@@ -171,7 +170,7 @@ public class GenericJavaPrimaryKeyJoinColumn
 	}
 
 	protected Iterable<String> getCandidateReferencedColumnNames() {
-		Table table = this.owner.getReferencedColumnDbTable();
+		Table table = this.parentAdapter.getReferencedColumnDbTable();
 		return (table != null) ? table.getSortedColumnIdentifiers() : EmptyIterable.<String> instance();
 	}
 

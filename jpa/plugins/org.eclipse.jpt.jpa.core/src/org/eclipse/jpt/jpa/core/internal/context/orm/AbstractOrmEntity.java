@@ -29,40 +29,41 @@ import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation.Supported;
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
-import org.eclipse.jpt.jpa.core.context.SpecifiedDiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.BaseColumn;
+import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
-import org.eclipse.jpt.jpa.core.context.OverrideContainer;
-import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.Query;
-import org.eclipse.jpt.jpa.core.context.AssociationOverride;
-import org.eclipse.jpt.jpa.core.context.AttributeOverride;
-import org.eclipse.jpt.jpa.core.context.BaseColumn;
-import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
-import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.Override_;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
-import org.eclipse.jpt.jpa.core.context.Table;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedDiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
+import org.eclipse.jpt.jpa.core.context.Table;
+import org.eclipse.jpt.jpa.core.context.TableColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
@@ -73,13 +74,13 @@ import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdClassReference;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedDiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualPrimaryKeyJoinColumn;
@@ -143,7 +144,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	protected final ContextListContainer<OrmSpecifiedSecondaryTable, XmlSecondaryTable> specifiedSecondaryTableContainer;
 	protected final ContextListContainer<OrmVirtualSecondaryTable, JavaSpecifiedSecondaryTable> virtualSecondaryTableContainer;
 
-	protected final PrimaryKeyJoinColumnOwner primaryKeyJoinColumnOwner;
+	protected final PrimaryKeyJoinColumnParentAdapter primaryKeyJoinColumnParentAdapter;
 	protected final ContextListContainer<OrmSpecifiedPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumnContainer;
 
 	// this is the default if there are Java columns
@@ -184,7 +185,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		this.secondaryTableOwner = this.buildSecondaryTableOwner();
 		this.specifiedSecondaryTableContainer = this.buildSpecifiedSecondaryTableContainer();
 		this.virtualSecondaryTableContainer = this.buildVirtualSecondaryTableContainer();
-		this.primaryKeyJoinColumnOwner = this.buildPrimaryKeyJoinColumnOwner();
+		this.primaryKeyJoinColumnParentAdapter = this.buildPrimaryKeyJoinColumnParentAdapter();
 		this.specifiedPrimaryKeyJoinColumnContainer = this.buildSpecifiedPrimaryKeyJoinColumnContainer();
 		this.specifiedInheritanceStrategy = this.buildSpecifiedInheritanceStrategy();
 		this.specifiedDiscriminatorValue = xmlEntity.getDiscriminatorValue();
@@ -468,7 +469,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 						this.getContextDefaultCatalog();
 	}
 
-	protected static class TableOwner
+	public static class TableOwner
 		implements Table.Owner
 	{
 		public JptValidator buildTableValidator(Table table) {
@@ -582,7 +583,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	/**
 	 * specified secondary table container
 	 */
-	protected class SpecifiedSecondaryTableContainer
+	public class SpecifiedSecondaryTableContainer
 		extends ContextListContainer<OrmSpecifiedSecondaryTable, XmlSecondaryTable>
 	{
 		@Override
@@ -666,7 +667,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	/**
 	 * virtual secondary table container
 	 */
-	protected class VirtualSecondaryTableContainer
+	public class VirtualSecondaryTableContainer
 		extends ContextListContainer<OrmVirtualSecondaryTable, JavaSpecifiedSecondaryTable>
 	{
 		@Override
@@ -734,7 +735,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		return new SecondaryTableOwner();
 	}
 
-	protected static class SecondaryTableOwner
+	public static class SecondaryTableOwner
 		implements Table.Owner
 	{
 		public JptValidator buildTableValidator(Table table) {
@@ -758,7 +759,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected OrmSpecifiedPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn xmlPkJoinColumn) {
-		return this.getContextModelFactory().buildOrmPrimaryKeyJoinColumn(this, this.primaryKeyJoinColumnOwner, xmlPkJoinColumn);
+		return this.getContextModelFactory().buildOrmPrimaryKeyJoinColumn(this.primaryKeyJoinColumnParentAdapter, xmlPkJoinColumn);
 	}
 
 
@@ -827,8 +828,8 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		this.xmlTypeMapping.getPrimaryKeyJoinColumns().move(targetIndex, sourceIndex);
 	}
 
-	protected PrimaryKeyJoinColumnOwner buildPrimaryKeyJoinColumnOwner() {
-		return new PrimaryKeyJoinColumnOwner();
+	protected PrimaryKeyJoinColumnParentAdapter buildPrimaryKeyJoinColumnParentAdapter() {
+		return new PrimaryKeyJoinColumnParentAdapter();
 	}
 
 	protected void syncSpecifiedPrimaryKeyJoinColumns() {
@@ -849,7 +850,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	/**
 	 * specified primary key join column container
 	 */
-	protected class SpecifiedPrimaryKeyJoinColumnContainer
+	public class SpecifiedPrimaryKeyJoinColumnContainer
 		extends ContextListContainer<OrmSpecifiedPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn>
 	{
 		@Override
@@ -1010,7 +1011,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected OrmVirtualPrimaryKeyJoinColumn buildVirtualPrimaryKeyJoinColumn(JavaSpecifiedPrimaryKeyJoinColumn javaPrimaryKeyJoinColumn) {
-		return this.getContextModelFactory().buildOrmVirtualPrimaryKeyJoinColumn(this, this.primaryKeyJoinColumnOwner, javaPrimaryKeyJoinColumn);
+		return this.getContextModelFactory().buildOrmVirtualPrimaryKeyJoinColumn(this.primaryKeyJoinColumnParentAdapter, javaPrimaryKeyJoinColumn);
 	}
 
 	protected void removeVirtualPrimaryKeyJoinColumn(OrmVirtualPrimaryKeyJoinColumn pkJoinColumn) {
@@ -1020,7 +1021,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	/**
 	 * virtual primary key join column container adapter
 	 */
-	protected class VirtualPrimaryKeyJoinColumnContainerAdapter
+	public class VirtualPrimaryKeyJoinColumnContainerAdapter
 		implements ContextContainerTools.Adapter<OrmVirtualPrimaryKeyJoinColumn, JavaSpecifiedPrimaryKeyJoinColumn>
 	{
 		public Iterable<OrmVirtualPrimaryKeyJoinColumn> getContextElements() {
@@ -1230,11 +1231,11 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected OrmSpecifiedDiscriminatorColumn buildDiscriminatorColumn() {
-		return this.getContextModelFactory().buildOrmDiscriminatorColumn(this, this.buildDiscriminatorColumnOwner());
+		return this.getContextModelFactory().buildOrmDiscriminatorColumn(this.buildDiscriminatorColumnParentAdapter());
 	}
 
-	protected OrmSpecifiedDiscriminatorColumn.Owner buildDiscriminatorColumnOwner() {
-		return new DiscriminatorColumnOwner();
+	protected OrmSpecifiedDiscriminatorColumn.ParentAdapter buildDiscriminatorColumnParentAdapter() {
+		return new DiscriminatorColumnParentAdapter();
 	}
 
 	public boolean specifiedDiscriminatorColumnIsAllowed() {
@@ -2043,7 +2044,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			return new AttributeOverrideValidator((AttributeOverride) override, (AttributeOverrideContainer) container, new MappedSuperclassOverrideDescriptionProvider());
 		}
 
-		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner owner) {
+		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter parentAdapter) {
 			return new AttributeOverrideColumnValidator((AttributeOverride) override, column, new EntityTableDescriptionProvider());
 		}
 
@@ -2087,15 +2088,15 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			return new AssociationOverrideValidator((AssociationOverride) override, (AssociationOverrideContainer) container, new MappedSuperclassOverrideDescriptionProvider());
 		}
 
-		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner owner) {
-			return new AssociationOverrideJoinColumnValidator((AssociationOverride) override, (JoinColumn) column, (JoinColumn.Owner) owner, new EntityTableDescriptionProvider());
+		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter parentAdapter) {
+			return new AssociationOverrideJoinColumnValidator((AssociationOverride) override, (JoinColumn) column, (JoinColumn.ParentAdapter) parentAdapter, new EntityTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner) {
+		public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter owner) {
 			return new AssociationOverrideJoinColumnValidator(override, column, owner, new JoinTableTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner) {
+		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter owner) {
 			return new AssociationOverrideInverseJoinColumnValidator(override, column, owner, new JoinTableTableDescriptionProvider());
 		}
 
@@ -2105,14 +2106,18 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 
-	// ********** OrmNamedColumn.Owner implementation **********
+	// ********** named column parent adapter **********
 
 	/**
 	 * some common behavior
 	 */
-	protected abstract class NamedColumnOwner
-		implements NamedColumn.Owner
+	public abstract class NamedColumnParentAdapter
+		implements NamedColumn.ParentAdapter
 	{
+		public JpaContextModel getColumnParent() {
+			return AbstractOrmEntity.this;
+		}
+
 		public String getDefaultTableName() {
 			return AbstractOrmEntity.this.getPrimaryTableName();
 		}
@@ -2127,11 +2132,11 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 
-	// ********** OrmBaseJoinColumn.Owner implementation **********
+	// ********** PK join column parent adapter **********
 
-	protected class PrimaryKeyJoinColumnOwner
-		extends NamedColumnOwner
-		implements BaseJoinColumn.Owner
+	public class PrimaryKeyJoinColumnParentAdapter
+		extends NamedColumnParentAdapter
+		implements BaseJoinColumn.ParentAdapter
 	{
 		public org.eclipse.jpt.jpa.db.Table getReferencedColumnDbTable() {
 			Entity parentEntity = AbstractOrmEntity.this.getParentEntity();
@@ -2156,11 +2161,11 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 
-	// ********** OrmDiscriminatorColumn.Owner implementation **********
+	// ********** discriminator column parent adapter **********
 
-	protected class DiscriminatorColumnOwner
-		extends NamedColumnOwner
-		implements OrmSpecifiedDiscriminatorColumn.Owner
+	public class DiscriminatorColumnParentAdapter
+		extends NamedColumnParentAdapter
+		implements OrmSpecifiedDiscriminatorColumn.ParentAdapter
 	{
 		public String getDefaultColumnName(NamedColumn column) {
 			if (this.getXmlColumn() == null) {

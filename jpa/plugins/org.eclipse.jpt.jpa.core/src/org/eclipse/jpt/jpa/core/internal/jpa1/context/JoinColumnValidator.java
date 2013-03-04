@@ -20,7 +20,7 @@ public class JoinColumnValidator
 {
 	protected JoinColumnValidator(
 				JoinColumn column,
-				JoinColumn.Owner joinColumnOwner,
+				JoinColumn.ParentAdapter joinColumnOwner,
 				TableDescriptionProvider provider) {
 		super(column, joinColumnOwner, provider);
 	}
@@ -28,7 +28,7 @@ public class JoinColumnValidator
 	public JoinColumnValidator(
 				PersistentAttribute persistentAttribute,
 				JoinColumn column,
-				JoinColumn.Owner joinColumnOwner,
+				JoinColumn.ParentAdapter joinColumnOwner,
 				TableDescriptionProvider provider) {
 		super(persistentAttribute, column, joinColumnOwner, provider);
 	}

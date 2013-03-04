@@ -23,7 +23,6 @@ package org.eclipse.jpt.jpa.core.context;
 public interface BaseColumn
 	extends TableColumn
 {
-
 	// ********** unique **********
 
 	/**

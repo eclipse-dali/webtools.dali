@@ -13,6 +13,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
@@ -41,8 +42,8 @@ public class GenericOrmCollectionTable2_0
 	}
 
 	@Override
-	protected JoinColumn.Owner buildJoinColumnOwner() {
-		return new JoinColumnOwner();
+	protected JoinColumn.ParentAdapter buildJoinColumnParentAdapter() {
+		return new JoinColumnParentAdapter();
 	}
 
 
@@ -97,17 +98,17 @@ public class GenericOrmCollectionTable2_0
 	}
 
 
-	// ********** join column owner **********
+	// ********** join column parent adapter **********
 
 	/**
-	 * owner for "back-pointer" join columns;
+	 * parent adapter for "back-pointer" join columns;
 	 * these point at the source/owning entity
 	 */
-	protected class JoinColumnOwner
-		implements JoinColumn.Owner
+	public class JoinColumnParentAdapter
+		implements JoinColumn.ParentAdapter
 	{
-		protected JoinColumnOwner() {
-			super();
+		public JpaContextModel getColumnParent() {
+			return GenericOrmCollectionTable2_0.this;
 		}
 
 		protected TypeMapping getTypeMapping() {

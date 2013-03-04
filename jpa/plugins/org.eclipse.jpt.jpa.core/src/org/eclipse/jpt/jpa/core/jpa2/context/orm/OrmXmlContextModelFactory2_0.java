@@ -44,7 +44,7 @@ public interface OrmXmlContextModelFactory2_0
 	
 	OrmOrderable2_0 buildOrmOrderable(Orderable2_0.ParentAdapter<OrmAttributeMapping> parentAdapter);
 	
-	OrmSpecifiedOrderColumn2_0 buildOrmOrderColumn(OrmOrderable2_0 parent, OrmSpecifiedOrderColumn2_0.Owner owner);
+	OrmSpecifiedOrderColumn2_0 buildOrmOrderColumn(OrmSpecifiedOrderColumn2_0.ParentAdapter parentAdapter);
 	
 	OrmCollectionTable2_0 buildOrmCollectionTable(OrmElementCollectionMapping2_0 parent, SpecifiedTable.Owner owner);
 }

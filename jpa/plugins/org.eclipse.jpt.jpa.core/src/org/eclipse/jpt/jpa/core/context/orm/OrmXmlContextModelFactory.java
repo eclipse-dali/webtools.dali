@@ -123,17 +123,17 @@ public interface OrmXmlContextModelFactory
 
 	OrmVirtualSecondaryTable buildOrmVirtualSecondaryTable(OrmEntity parent, Table.Owner owner, JavaSpecifiedSecondaryTable javaSecondaryTable);
 
-	OrmSpecifiedPrimaryKeyJoinColumn buildOrmPrimaryKeyJoinColumn(JpaContextModel parent, BaseJoinColumn.Owner owner, XmlPrimaryKeyJoinColumn resourcePrimaryKeyJoinColumn);
+	OrmSpecifiedPrimaryKeyJoinColumn buildOrmPrimaryKeyJoinColumn(BaseJoinColumn.ParentAdapter parentAdapter, XmlPrimaryKeyJoinColumn resourcePrimaryKeyJoinColumn);
 
-	OrmVirtualPrimaryKeyJoinColumn buildOrmVirtualPrimaryKeyJoinColumn(JpaContextModel parent, BaseJoinColumn.Owner owner, JavaSpecifiedPrimaryKeyJoinColumn javaPrimaryKeyJoinColumn);
+	OrmVirtualPrimaryKeyJoinColumn buildOrmVirtualPrimaryKeyJoinColumn(BaseJoinColumn.ParentAdapter parentAdapter, JavaSpecifiedPrimaryKeyJoinColumn javaPrimaryKeyJoinColumn);
 
 	OrmSpecifiedJoinTable buildOrmJoinTable(OrmSpecifiedJoinTableRelationshipStrategy parent, SpecifiedTable.Owner owner);
 
 	VirtualJoinTable buildOrmVirtualJoinTable(VirtualJoinTableRelationshipStrategy parent, Table.Owner owner, JoinTable overriddenTable);
 
-	OrmSpecifiedJoinColumn buildOrmJoinColumn(JpaContextModel parent, JoinColumn.Owner owner, XmlJoinColumn resourceJoinColumn);
+	OrmSpecifiedJoinColumn buildOrmJoinColumn(JoinColumn.ParentAdapter parentAdapter, XmlJoinColumn resourceJoinColumn);
 
-	VirtualJoinColumn buildOrmVirtualJoinColumn(JpaContextModel parent, JoinColumn.Owner owner, JoinColumn overriddenColumn);
+	VirtualJoinColumn buildOrmVirtualJoinColumn(JoinColumn.ParentAdapter parentAdapter, JoinColumn overriddenColumn);
 
 	OrmAttributeOverrideContainer buildOrmAttributeOverrideContainer(OrmAttributeOverrideContainer.ParentAdapter parentAdapter);
 
@@ -151,11 +151,11 @@ public interface OrmXmlContextModelFactory
 
 	VirtualOverrideRelationship buildOrmVirtualOverrideRelationship(OrmVirtualAssociationOverride parent);
 
-	OrmSpecifiedDiscriminatorColumn buildOrmDiscriminatorColumn(OrmEntity parent, OrmSpecifiedDiscriminatorColumn.Owner owner);
+	OrmSpecifiedDiscriminatorColumn buildOrmDiscriminatorColumn(OrmSpecifiedDiscriminatorColumn.ParentAdapter parentAdapter);
 
-	OrmSpecifiedColumn buildOrmColumn(JpaContextModel parent, OrmSpecifiedColumn.Owner owner);
+	OrmSpecifiedColumn buildOrmColumn(OrmSpecifiedColumn.ParentAdapter parentAdapter);
 
-	VirtualColumn buildOrmVirtualColumn(JpaContextModel parent, VirtualColumn.Owner owner);
+	VirtualColumn buildOrmVirtualColumn(VirtualColumn.ParentAdapter parentAdapter);
 
 	OrmGeneratedValue buildOrmGeneratedValue(JpaContextModel parent, XmlGeneratedValue resourceGeneratedValue);
 

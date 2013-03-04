@@ -20,14 +20,14 @@ public abstract class PrimaryKeyJoinColumnValidator
 {
 	protected PrimaryKeyJoinColumnValidator(
 				BaseJoinColumn column,
-				BaseJoinColumn.Owner owner) {
+				BaseJoinColumn.ParentAdapter owner) {
 		super(column, owner, TableDescriptionProvider.Null.instance());
 	}
 
 	protected PrimaryKeyJoinColumnValidator(
 				PersistentAttribute persistentAttribute,
 				BaseJoinColumn column,
-				BaseJoinColumn.Owner owner) {
+				BaseJoinColumn.ParentAdapter owner) {
 		super(persistentAttribute, column, owner, TableDescriptionProvider.Null.instance());
 	}
 

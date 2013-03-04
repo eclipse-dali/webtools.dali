@@ -35,17 +35,17 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <strong>NB:</strong> any subclass that directly holds its column annotation
  * must:<ul>
  * <li>call the "super" constructor that takes a column annotation
- *     {@link #AbstractJavaNamedColumn(JpaContextModel, NamedColumn.Owner, NamedColumnAnnotation)}
+ *     {@link #AbstractJavaNamedColumn(NamedColumn.ParentAdapter, NamedColumnAnnotation)}
  * <li>override {@link #setColumnAnnotation(NamedColumnAnnotation)} to set the column annotation
  *     so it is in place before the column's state (e.g. {@link #specifiedName})
  *     is initialized
  * </ul>
  */
-public abstract class AbstractJavaNamedColumn<P extends JpaContextModel, A extends NamedColumnAnnotation, O extends NamedColumn.Owner>
-	extends AbstractJavaContextModel<P>
+public abstract class AbstractJavaNamedColumn<PA extends NamedColumn.ParentAdapter, A extends NamedColumnAnnotation>
+	extends AbstractJavaContextModel<JpaContextModel>
 	implements JavaSpecifiedNamedColumn
 {
-	protected final O owner;
+	protected final PA parentAdapter;
 
 	protected String specifiedName;
 	protected String defaultName;
@@ -54,13 +54,13 @@ public abstract class AbstractJavaNamedColumn<P extends JpaContextModel, A exten
 
 	protected Table dbTable;
 
-	protected AbstractJavaNamedColumn(P parent, O owner) {
-		this(parent, owner, null);
+	protected AbstractJavaNamedColumn(PA parentAdapter) {
+		this(parentAdapter, null);
 	}
 
-	protected AbstractJavaNamedColumn(P parent, O owner, A columnAnnotation) {
-		super(parent);
-		this.owner = owner;
+	protected AbstractJavaNamedColumn(PA parentAdapter, A columnAnnotation) {
+		super(parentAdapter.getColumnParent());
+		this.parentAdapter = parentAdapter;
 		this.setColumnAnnotation(columnAnnotation);
 		this.initialize(this.getColumnAnnotation());
 	}
@@ -157,7 +157,7 @@ public abstract class AbstractJavaNamedColumn<P extends JpaContextModel, A exten
 	}
 
 	protected String buildDefaultName() {
-		return this.owner.getDefaultColumnName(this);
+		return this.parentAdapter.getDefaultColumnName(this);
 	}
 
 
@@ -203,7 +203,7 @@ public abstract class AbstractJavaNamedColumn<P extends JpaContextModel, A exten
 	}
 
 	protected Table buildDbTable() {
-		return this.owner.resolveDbTable(this.getTableName());
+		return this.parentAdapter.resolveDbTable(this.getTableName());
 	}
 
 	/**
@@ -211,7 +211,7 @@ public abstract class AbstractJavaNamedColumn<P extends JpaContextModel, A exten
 	 * in {@link AbstractJavaBaseColumn} where a table can be defined.
 	 */
 	public String getTableName() {
-		return this.owner.getDefaultTableName();
+		return this.parentAdapter.getDefaultTableName();
 	}
 
 	public boolean isResolved() {
@@ -256,12 +256,12 @@ public abstract class AbstractJavaNamedColumn<P extends JpaContextModel, A exten
 	}
 
 	protected JptValidator buildValidator() {
-		return this.owner.buildColumnValidator(this);
+		return this.parentAdapter.buildColumnValidator(this);
 	}
 
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.getColumnAnnotation().getTextRange();
-		return (textRange != null) ? textRange : this.owner.getValidationTextRange();
+		return (textRange != null) ? textRange : this.parentAdapter.getValidationTextRange();
 	}
 
 	public TextRange getNameValidationTextRange() {

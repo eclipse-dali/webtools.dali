@@ -43,6 +43,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.TableColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
@@ -111,7 +112,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	protected final OrmAttributeOverrideContainer mapKeyAttributeOverrideContainer;
 
 	protected final ContextListContainer<OrmSpecifiedJoinColumn, XmlJoinColumn> specifiedMapKeyJoinColumnContainer;
-	protected final JoinColumn.Owner mapKeyJoinColumnOwner;
+	protected final JoinColumn.ParentAdapter mapKeyJoinColumnParentAdapter;
 
 	protected OrmSpecifiedJoinColumn defaultMapKeyJoinColumn;
 
@@ -137,7 +138,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		this.mapKeyColumn = this.buildMapKeyColumn();
 		this.mapKeyConverter = this.buildMapKeyConverter();
 		this.mapKeyAttributeOverrideContainer = this.buildMapKeyAttributeOverrideContainer();
-		this.mapKeyJoinColumnOwner = this.buildMapKeyJoinColumnOwner();
+		this.mapKeyJoinColumnParentAdapter = this.buildMapKeyJoinColumnParentAdapter();
 		this.specifiedMapKeyJoinColumnContainer = this.buildSpecifiedMapKeyJoinColumnContainer();
 	}
 
@@ -550,11 +551,11 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	}
 
 	protected OrmSpecifiedColumn buildMapKeyColumn() {
-		return this.getContextModelFactory().buildOrmColumn(this, this.buildMapKeyColumnOwner());
+		return this.getContextModelFactory().buildOrmColumn(this.buildMapKeyColumnParentAdapter());
 	}
 
-	protected OrmSpecifiedColumn.Owner buildMapKeyColumnOwner() {
-		return new MapKeyColumnOwner();
+	protected OrmSpecifiedColumn.ParentAdapter buildMapKeyColumnParentAdapter() {
+		return new MapKeyColumnParentAdapter();
 	}
 
 	protected XmlColumn getXmlMapKeyColumn() {
@@ -779,7 +780,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	/**
 	 * specified join column container
 	 */
-	protected class SpecifiedMapKeyJoinColumnContainer
+	public class SpecifiedMapKeyJoinColumnContainer
 		extends ContextListContainer<OrmSpecifiedJoinColumn, XmlJoinColumn>
 	{
 		@Override
@@ -801,11 +802,11 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	}
 
 	protected OrmSpecifiedJoinColumn buildMapKeyJoinColumn(XmlJoinColumn xmlJoinColumn) {
-		return this.getContextModelFactory().buildOrmJoinColumn(this, this.mapKeyJoinColumnOwner, xmlJoinColumn);
+		return this.getContextModelFactory().buildOrmJoinColumn(this.mapKeyJoinColumnParentAdapter, xmlJoinColumn);
 	}
 
-	protected JoinColumn.Owner buildMapKeyJoinColumnOwner() {
-		return new MapKeyJoinColumnOwner();
+	protected JoinColumn.ParentAdapter buildMapKeyJoinColumnParentAdapter() {
+		return new MapKeyJoinColumnParentAdapter();
 	}
 
 
@@ -1123,7 +1124,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	/**
 	 * some common behavior
 	 */
-	protected class AbstractParentAdapter {
+	public class AbstractParentAdapter {
 		public OrmTypeMapping getTypeMapping() {
 			return AbstractOrmMultiRelationshipMapping.this.getTypeMapping();
 		}
@@ -1154,12 +1155,16 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	}
 
 
-	// ********** map key column owner **********
+	// ********** map key column parent adapter **********
 
-	protected class MapKeyColumnOwner
+	public class MapKeyColumnParentAdapter
 		extends AbstractParentAdapter
-		implements OrmSpecifiedColumn.Owner
+		implements OrmSpecifiedColumn.ParentAdapter
 	{
+		public JpaContextModel getColumnParent() {
+			return AbstractOrmMultiRelationshipMapping.this;
+		}
+
 		public String getDefaultColumnName(NamedColumn column) {
 			return AbstractOrmMultiRelationshipMapping.this.getName() + "_KEY"; //$NON-NLS-1$
 		}
@@ -1233,19 +1238,19 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 			return new MapKeyAttributeOverrideValidator(this.getPersistentAttribute(), (AttributeOverride) override, (AttributeOverrideContainer) container, new EmbeddableOverrideDescriptionProvider());
 		}
 
-		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner owner) {
+		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter parentAdapter) {
 			return new MapKeyAttributeOverrideColumnValidator(this.getPersistentAttribute(), (AttributeOverride) override, column, new RelationshipStrategyTableDescriptionProvider(this.getRelationshipStrategy()));
 		}
 	}
 
 
-	// ********** map key join column owner **********
+	// ********** map key join column parent adapter **********
 
-	protected class MapKeyJoinColumnOwner
-		implements JoinColumn.Owner
+	public class MapKeyJoinColumnParentAdapter
+		implements JoinColumn.ParentAdapter
 	{
-		protected MapKeyJoinColumnOwner() {
-			super();
+		public JpaContextModel getColumnParent() {
+			return AbstractOrmMultiRelationshipMapping.this;
 		}
 
 		public String getDefaultTableName() {

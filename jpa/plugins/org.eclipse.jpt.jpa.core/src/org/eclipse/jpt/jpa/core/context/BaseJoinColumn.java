@@ -45,7 +45,7 @@ public interface BaseJoinColumn
 	TextRange getReferencedColumnNameTextRange();
 	
 
-	// ********** misc **********
+	// ********** referenced column **********
 
 	/**
 	 * Return the wrapper for the referenced column datasource table
@@ -55,14 +55,14 @@ public interface BaseJoinColumn
 	boolean referencedColumnIsResolved();
 
 
-	// ********** owner **********
+	// ********** parent adapter **********
 
 	/**
 	 * Interface allowing columns to be used in multiple places
 	 * (e.g. basic mappings and attribute overrides).
 	 */
-	interface Owner
-		extends NamedColumn.Owner
+	interface ParentAdapter
+		extends NamedColumn.ParentAdapter
 	{
 		/**
 		 * Return the wrapper for the datasource table for the referenced column

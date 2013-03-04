@@ -17,7 +17,7 @@ public class EntityPrimaryKeyJoinColumnValidator
 {
 	public EntityPrimaryKeyJoinColumnValidator(
 				BaseJoinColumn column,
-				BaseJoinColumn.Owner owner) {
+				BaseJoinColumn.ParentAdapter owner) {
 		super(column, owner);
 	}
 

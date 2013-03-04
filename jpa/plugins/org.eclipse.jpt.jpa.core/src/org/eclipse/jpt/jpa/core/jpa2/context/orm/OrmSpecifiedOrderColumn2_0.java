@@ -32,13 +32,13 @@ public interface OrmSpecifiedOrderColumn2_0
 	XmlOrderColumn getXmlColumn();
 
 
-	// ********** owner **********
+	// ********** parent adapter **********
 
 	/**
 	 * interface allowing order columns to be used in multiple places
 	 */
-	interface Owner
-		extends NamedColumn.Owner
+	interface ParentAdapter
+		extends NamedColumn.ParentAdapter
 	{
 		XmlOrderColumn getXmlColumn();
 		XmlOrderColumn buildXmlColumn();

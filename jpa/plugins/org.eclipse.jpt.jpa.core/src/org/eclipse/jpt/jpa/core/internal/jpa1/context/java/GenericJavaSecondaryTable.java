@@ -14,6 +14,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
@@ -41,14 +42,14 @@ public class GenericJavaSecondaryTable
 	protected /* final */ SecondaryTableAnnotation tableAnnotation;
 
 	protected final ContextListContainer<JavaSpecifiedPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation> specifiedPrimaryKeyJoinColumnContainer;
-	protected final BaseJoinColumn.Owner primaryKeyJoinColumnOwner;
+	protected final BaseJoinColumn.ParentAdapter primaryKeyJoinColumnParentAdapter;
 
 	protected JavaSpecifiedPrimaryKeyJoinColumn defaultPrimaryKeyJoinColumn;
 
 
 	public GenericJavaSecondaryTable(JavaEntity parent, Owner owner, SecondaryTableAnnotation tableAnnotation) {
 		super(parent, owner, tableAnnotation);
-		this.primaryKeyJoinColumnOwner = this.buildPrimaryKeyJoinColumnOwner();
+		this.primaryKeyJoinColumnParentAdapter = this.buildPrimaryKeyJoinColumnParentAdapter();
 		this.specifiedPrimaryKeyJoinColumnContainer = this.buildSpecifiedPrimaryKeyJoinColumnContainer();
 	}
 
@@ -183,7 +184,7 @@ public class GenericJavaSecondaryTable
 	/**
 	 * specified primary key join column container
 	 */
-	protected class SpecifiedPrimaryKeyJoinColumnContainer
+	public class SpecifiedPrimaryKeyJoinColumnContainer
 		extends ContextListContainer<JavaSpecifiedPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation>
 	{
 		@Override
@@ -204,8 +205,8 @@ public class GenericJavaSecondaryTable
 		}
 	}
 
-	protected BaseJoinColumn.Owner buildPrimaryKeyJoinColumnOwner() {
-		return new PrimaryKeyJoinColumnOwner();
+	protected BaseJoinColumn.ParentAdapter buildPrimaryKeyJoinColumnParentAdapter() {
+		return new PrimaryKeyJoinColumnParentAdapter();
 	}
 
 	protected ContextListContainer<JavaSpecifiedPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation> buildSpecifiedPrimaryKeyJoinColumnContainer() {
@@ -264,7 +265,7 @@ public class GenericJavaSecondaryTable
 	}
 
 	protected JavaSpecifiedPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(PrimaryKeyJoinColumnAnnotation pkJoinColumnAnnotation) {
-		return this.getJpaFactory().buildJavaPrimaryKeyJoinColumn(this, this.primaryKeyJoinColumnOwner, pkJoinColumnAnnotation);
+		return this.getJpaFactory().buildJavaPrimaryKeyJoinColumn(this.primaryKeyJoinColumnParentAdapter, pkJoinColumnAnnotation);
 	}
 
 
@@ -328,13 +329,17 @@ public class GenericJavaSecondaryTable
 	}
 
 
-	// ********** primary key join column owner adapter **********
+	// ********** primary key join column parent adapter **********
 
-	protected class PrimaryKeyJoinColumnOwner
-		implements BaseJoinColumn.Owner
+	public class PrimaryKeyJoinColumnParentAdapter
+		implements BaseJoinColumn.ParentAdapter
 	{
 		protected JavaEntity getEntity() {
 			return GenericJavaSecondaryTable.this.getEntity();
+		}
+
+		public JpaContextModel getColumnParent() {
+			return GenericJavaSecondaryTable.this;
 		}
 
 		public String getDefaultTableName() {

@@ -100,7 +100,7 @@ public class JavaEclipseLinkArrayMapping2_3
 	}
 
 	protected JavaSpecifiedColumn buildColumn() {
-		return this.getJpaFactory().buildJavaColumn(this, this);
+		return this.getJpaFactory().buildJavaColumn(this);
 	}
 
 	// ********** converter **********
@@ -267,7 +267,11 @@ public class JavaEclipseLinkArrayMapping2_3
 	}
 
 
-	// ********** JavaColumn.Owner implementation **********
+	// ********** column parent adapter **********
+
+	public JpaContextModel getColumnParent() {
+		return this;  // no adapter
+	}
 
 	public ColumnAnnotation getColumnAnnotation() {
 		return (ColumnAnnotation) this.getResourceAttribute().getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);

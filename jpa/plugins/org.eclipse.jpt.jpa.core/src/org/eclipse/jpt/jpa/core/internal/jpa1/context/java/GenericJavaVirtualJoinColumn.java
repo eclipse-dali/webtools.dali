@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -22,7 +21,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * Java virtual join column
  */
 public class GenericJavaVirtualJoinColumn
-	extends AbstractJavaVirtualBaseColumn<JoinColumn.Owner, JoinColumn>
+	extends AbstractJavaVirtualBaseColumn<JoinColumn.ParentAdapter, JoinColumn>
 	implements VirtualJoinColumn
 {
 	protected final JoinColumn overriddenColumn;
@@ -31,8 +30,8 @@ public class GenericJavaVirtualJoinColumn
 	protected String defaultReferencedColumnName;
 
 
-	public GenericJavaVirtualJoinColumn(JpaContextModel parent, JoinColumn.Owner owner, JoinColumn overriddenColumn) {
-		super(parent, owner);
+	public GenericJavaVirtualJoinColumn(JoinColumn.ParentAdapter parentAdapter, JoinColumn overriddenColumn) {
+		super(parentAdapter);
 		this.overriddenColumn = overriddenColumn;
 	}
 
@@ -87,14 +86,14 @@ public class GenericJavaVirtualJoinColumn
 	}
 
 	protected String buildDefaultReferencedColumnName() {
-		return MappingTools.buildJoinColumnDefaultReferencedColumnName(this.owner);
+		return MappingTools.buildJoinColumnDefaultReferencedColumnName(this.parentAdapter);
 	}
 
 
 	// ********** database stuff **********
 
 	public Table getReferencedColumnDbTable() {
-		return this.owner.getReferencedColumnDbTable();
+		return this.parentAdapter.getReferencedColumnDbTable();
 	}
 
 	protected Column getReferencedDbColumn() {

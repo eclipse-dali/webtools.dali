@@ -25,5 +25,4 @@ public interface SpecifiedDiscriminatorColumn
 	extends SpecifiedNamedDiscriminatorColumn
 {
 	String DEFAULT_NAME = "DTYPE"; //$NON-NLS-1$
-
 }

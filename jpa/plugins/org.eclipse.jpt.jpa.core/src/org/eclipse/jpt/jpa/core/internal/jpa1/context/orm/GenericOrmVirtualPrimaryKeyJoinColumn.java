@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualPrimaryKeyJoinColumn;
@@ -22,7 +21,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * <code>orm.xml</code> virtual primary key join column
  */
 public class GenericOrmVirtualPrimaryKeyJoinColumn
-	extends AbstractOrmVirtualNamedColumn<BaseJoinColumn.Owner, JavaSpecifiedPrimaryKeyJoinColumn>
+	extends AbstractOrmVirtualNamedColumn<BaseJoinColumn.ParentAdapter, JavaSpecifiedPrimaryKeyJoinColumn>
 	implements OrmVirtualPrimaryKeyJoinColumn
 {
 	protected final JavaSpecifiedPrimaryKeyJoinColumn javaColumn;
@@ -31,8 +30,8 @@ public class GenericOrmVirtualPrimaryKeyJoinColumn
 	protected String defaultReferencedColumnName;
 
 
-	public GenericOrmVirtualPrimaryKeyJoinColumn(JpaContextModel parent, BaseJoinColumn.Owner owner, JavaSpecifiedPrimaryKeyJoinColumn javaColumn) {
-		super(parent, owner);
+	public GenericOrmVirtualPrimaryKeyJoinColumn(BaseJoinColumn.ParentAdapter parentAdapter, JavaSpecifiedPrimaryKeyJoinColumn javaColumn) {
+		super(parentAdapter);
 		this.javaColumn = javaColumn;
 	}
 
@@ -94,7 +93,7 @@ public class GenericOrmVirtualPrimaryKeyJoinColumn
 	// ********** database stuff **********
 
 	public Table getReferencedColumnDbTable() {
-		return this.owner.getReferencedColumnDbTable();
+		return this.parentAdapter.getReferencedColumnDbTable();
 	}
 
 	protected Column getReferencedDbColumn() {
@@ -110,7 +109,7 @@ public class GenericOrmVirtualPrimaryKeyJoinColumn
 	// ********** misc **********
 
 	public String getTableName() {
-		return this.owner.getDefaultTableName();
+		return this.parentAdapter.getDefaultTableName();
 	}
 
 

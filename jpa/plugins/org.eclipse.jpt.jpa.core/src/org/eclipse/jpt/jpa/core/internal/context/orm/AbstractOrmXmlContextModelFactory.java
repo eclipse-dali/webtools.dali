@@ -219,12 +219,12 @@ public abstract class AbstractOrmXmlContextModelFactory
 		return new GenericOrmVirtualSecondaryTable(parent, owner, javaSecondaryTable);
 	}
 	
-	public OrmSpecifiedPrimaryKeyJoinColumn buildOrmPrimaryKeyJoinColumn(JpaContextModel parent, BaseJoinColumn.Owner owner, XmlPrimaryKeyJoinColumn resourcePrimaryKeyJoinColumn) {
-		return new GenericOrmPrimaryKeyJoinColumn(parent, owner, resourcePrimaryKeyJoinColumn);
+	public OrmSpecifiedPrimaryKeyJoinColumn buildOrmPrimaryKeyJoinColumn(BaseJoinColumn.ParentAdapter parentAdapter, XmlPrimaryKeyJoinColumn resourcePrimaryKeyJoinColumn) {
+		return new GenericOrmPrimaryKeyJoinColumn(parentAdapter, resourcePrimaryKeyJoinColumn);
 	}
 
-	public OrmVirtualPrimaryKeyJoinColumn buildOrmVirtualPrimaryKeyJoinColumn(JpaContextModel parent, BaseJoinColumn.Owner owner, JavaSpecifiedPrimaryKeyJoinColumn javaPrimaryKeyJoinColumn) {
-		return new GenericOrmVirtualPrimaryKeyJoinColumn(parent, owner, javaPrimaryKeyJoinColumn);
+	public OrmVirtualPrimaryKeyJoinColumn buildOrmVirtualPrimaryKeyJoinColumn(BaseJoinColumn.ParentAdapter parentAdapter, JavaSpecifiedPrimaryKeyJoinColumn javaPrimaryKeyJoinColumn) {
+		return new GenericOrmVirtualPrimaryKeyJoinColumn(parentAdapter, javaPrimaryKeyJoinColumn);
 	}
 	
 	public OrmSpecifiedJoinTable buildOrmJoinTable(OrmSpecifiedJoinTableRelationshipStrategy parent, SpecifiedTable.Owner owner) {
@@ -235,12 +235,12 @@ public abstract class AbstractOrmXmlContextModelFactory
 		return new GenericOrmVirtualJoinTable(parent, owner, overriddenTable);
 	}
 	
-	public OrmSpecifiedJoinColumn buildOrmJoinColumn(JpaContextModel parent, JoinColumn.Owner owner, XmlJoinColumn xmlJoinColumn) {
-		return new GenericOrmJoinColumn(parent, owner, xmlJoinColumn);
+	public OrmSpecifiedJoinColumn buildOrmJoinColumn(JoinColumn.ParentAdapter parentAdapter, XmlJoinColumn xmlJoinColumn) {
+		return new GenericOrmJoinColumn(parentAdapter, xmlJoinColumn);
 	}
 
-	public VirtualJoinColumn buildOrmVirtualJoinColumn(JpaContextModel parent, JoinColumn.Owner owner, JoinColumn overriddenColumn) {
-		return new GenericOrmVirtualJoinColumn(parent, owner, overriddenColumn);
+	public VirtualJoinColumn buildOrmVirtualJoinColumn(JoinColumn.ParentAdapter parentAdapter, JoinColumn overriddenColumn) {
+		return new GenericOrmVirtualJoinColumn(parentAdapter, overriddenColumn);
 	}
 	
 	public OrmAttributeOverrideContainer buildOrmAttributeOverrideContainer(OrmAttributeOverrideContainer.ParentAdapter parentAdapter) {
@@ -275,16 +275,16 @@ public abstract class AbstractOrmXmlContextModelFactory
 		return new GenericOrmVirtualOverrideRelationship(parent);
 	}
 	
-	public OrmSpecifiedDiscriminatorColumn buildOrmDiscriminatorColumn(OrmEntity parent, OrmSpecifiedDiscriminatorColumn.Owner owner) {
-		return new GenericOrmDiscriminatorColumn(parent, owner);
+	public OrmSpecifiedDiscriminatorColumn buildOrmDiscriminatorColumn(OrmSpecifiedDiscriminatorColumn.ParentAdapter parentAdapter) {
+		return new GenericOrmDiscriminatorColumn(parentAdapter);
 	}
 	
-	public OrmSpecifiedColumn buildOrmColumn(JpaContextModel parent, OrmSpecifiedColumn.Owner owner) {
-		return new GenericOrmColumn(parent, owner);
+	public OrmSpecifiedColumn buildOrmColumn(OrmSpecifiedColumn.ParentAdapter parentAdapter) {
+		return new GenericOrmColumn(parentAdapter);
 	}
 	
-	public VirtualColumn buildOrmVirtualColumn(JpaContextModel parent, VirtualColumn.Owner owner) {
-		return new GenericOrmVirtualColumn(parent, owner);
+	public VirtualColumn buildOrmVirtualColumn(VirtualColumn.ParentAdapter parentAdapter) {
+		return new GenericOrmVirtualColumn(parentAdapter);
 	}
 	
 	public OrmGeneratedValue buildOrmGeneratedValue(JpaContextModel parent, XmlGeneratedValue resourceGeneratedValue) {

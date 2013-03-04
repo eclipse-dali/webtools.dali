@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
@@ -44,20 +45,20 @@ public class GenericOrmJoinTable
 	implements OrmSpecifiedJoinTable
 {
 	protected final ContextListContainer<OrmSpecifiedJoinColumn, XmlJoinColumn> specifiedInverseJoinColumnContainer;
-	protected final JoinColumn.Owner inverseJoinColumnOwner;
+	protected final JoinColumn.ParentAdapter inverseJoinColumnParentAdapter;
 
 	protected OrmSpecifiedJoinColumn defaultInverseJoinColumn;
 
 
 	public GenericOrmJoinTable(OrmSpecifiedJoinTableRelationshipStrategy parent, Owner owner) {
 		super(parent, owner);
-		this.inverseJoinColumnOwner = this.buildInverseJoinColumnOwner();
+		this.inverseJoinColumnParentAdapter = this.buildInverseJoinColumnParentAdapter();
 		this.specifiedInverseJoinColumnContainer = this.buildSpecifiedInverseJoinColumnContainer();
 	}
 
 	@Override
-	protected JoinColumn.Owner buildJoinColumnOwner() {
-		return new JoinColumnOwner();
+	protected JoinColumn.ParentAdapter buildJoinColumnParentAdapter() {
+		return new JoinColumnParentAdapter();
 	}
 
 
@@ -205,8 +206,8 @@ public class GenericOrmJoinTable
 		}
 	}
 
-	protected JoinColumn.Owner buildInverseJoinColumnOwner() {
-		return new InverseJoinColumnOwner();
+	protected JoinColumn.ParentAdapter buildInverseJoinColumnParentAdapter() {
+		return new InverseJoinColumnParentAdapter();
 	}
 
 
@@ -275,7 +276,7 @@ public class GenericOrmJoinTable
 	}
 
 	protected OrmSpecifiedJoinColumn buildInverseJoinColumn(XmlJoinColumn xmlJoinColumn) {
-		return this.getContextModelFactory().buildOrmJoinColumn(this, this.inverseJoinColumnOwner, xmlJoinColumn);
+		return this.getContextModelFactory().buildOrmJoinColumn(this.inverseJoinColumnParentAdapter, xmlJoinColumn);
 	}
 
 	public RelationshipMapping getRelationshipMapping() {
@@ -316,16 +317,16 @@ public class GenericOrmJoinTable
 		return null;
 	}
 
-	// ********** join column owners **********
+	// ********** join column parent adapters **********
 
 	/**
 	 * just a little common behavior
 	 */
-	protected abstract class AbstractJoinColumnOwner
-		implements JoinColumn.Owner
+	public abstract class AbstractJoinColumnParentAdapter
+		implements JoinColumn.ParentAdapter
 	{
-		protected AbstractJoinColumnOwner() {
-			super();
+		public JpaContextModel getColumnParent() {
+			return GenericOrmJoinTable.this;
 		}
 
 		public String getDefaultColumnName(NamedColumn column) {
@@ -376,16 +377,12 @@ public class GenericOrmJoinTable
 
 
 	/**
-	 * owner for "back-pointer" join columns;
+	 * parent adapter for "back-pointer" join columns;
 	 * these point at the source/owning entity
 	 */
-	protected class JoinColumnOwner
-		extends AbstractJoinColumnOwner
+	public class JoinColumnParentAdapter
+		extends AbstractJoinColumnParentAdapter
 	{
-		protected JoinColumnOwner() {
-			super();
-		}
-
 		public Entity getRelationshipTarget() {
 			return this.getRelationship().getEntity();
 		}
@@ -419,16 +416,12 @@ public class GenericOrmJoinTable
 
 
 	/**
-	 * owner for "forward-pointer" join columns;
+	 * parent adapter for "forward-pointer" join columns;
 	 * these point at the target/inverse entity
 	 */
-	protected class InverseJoinColumnOwner
-		extends AbstractJoinColumnOwner
+	public class InverseJoinColumnParentAdapter
+		extends AbstractJoinColumnParentAdapter
 	{
-		protected InverseJoinColumnOwner() {
-			super();
-		}
-
 		public Entity getRelationshipTarget() {
 			RelationshipMapping relationshipMapping = GenericOrmJoinTable.this.getRelationshipMapping();
 			return (relationshipMapping == null) ? null : relationshipMapping.getResolvedTargetEntity();

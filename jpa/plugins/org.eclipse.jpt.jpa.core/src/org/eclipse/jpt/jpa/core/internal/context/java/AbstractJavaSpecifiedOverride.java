@@ -15,10 +15,10 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.Override_;
-import org.eclipse.jpt.jpa.core.context.TableColumn.Owner;
+import org.eclipse.jpt.jpa.core.context.TableColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaOverrideContainer;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOverrideContainer2_0;
@@ -151,8 +151,8 @@ public abstract class AbstractJavaSpecifiedOverride<P extends JavaOverrideContai
 		return this.getContainer().getDefaultTableName();
 	}
 
-	public JptValidator buildColumnValidator(BaseColumn column, Owner owner) {
-		return this.getContainer().buildColumnValidator(this, column, owner);
+	public JptValidator buildColumnValidator(BaseColumn column, TableColumn.ParentAdapter parentAdapter) {
+		return this.getContainer().buildColumnValidator(this, column, parentAdapter);
 	}
 
 	protected String prefix(String oldName) {

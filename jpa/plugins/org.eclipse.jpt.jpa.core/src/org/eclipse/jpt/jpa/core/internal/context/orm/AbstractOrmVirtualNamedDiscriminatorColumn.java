@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,12 +10,11 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualNamedDiscriminatorColumn;
 
-public abstract class AbstractOrmVirtualNamedDiscriminatorColumn<O extends NamedDiscriminatorColumn.Owner, C extends NamedDiscriminatorColumn>
-	extends AbstractOrmVirtualNamedColumn<O, C>
+public abstract class AbstractOrmVirtualNamedDiscriminatorColumn<PA extends NamedDiscriminatorColumn.ParentAdapter, C extends NamedDiscriminatorColumn>
+	extends AbstractOrmVirtualNamedColumn<PA, C>
 	implements VirtualNamedDiscriminatorColumn
 {
 	protected Integer specifiedLength;
@@ -25,8 +24,8 @@ public abstract class AbstractOrmVirtualNamedDiscriminatorColumn<O extends Named
 	protected DiscriminatorType defaultDiscriminatorType;
 
 
-	protected AbstractOrmVirtualNamedDiscriminatorColumn(JpaContextModel parent, O owner) {
-		super(parent, owner);
+	protected AbstractOrmVirtualNamedDiscriminatorColumn(PA parentAdapter) {
+		super(parentAdapter);
 	}
 
 
@@ -76,7 +75,7 @@ public abstract class AbstractOrmVirtualNamedDiscriminatorColumn<O extends Named
 	}
 
 	protected DiscriminatorType buildDefaultDiscriminatorType() {
-		return this.owner.getDefaultDiscriminatorType();
+		return this.parentAdapter.getDefaultDiscriminatorType();
 	}
 
 
@@ -111,6 +110,6 @@ public abstract class AbstractOrmVirtualNamedDiscriminatorColumn<O extends Named
 	}
 
 	protected int buildDefaultLength() {
-		return this.owner.getDefaultLength();
+		return this.parentAdapter.getDefaultLength();
 	}
 }

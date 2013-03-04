@@ -74,7 +74,7 @@ public class EclipseLinkOrmXmlContextModelFactory2_0
 		return new GenericOrmOrderable(parentAdapter);
 	}
 	
-	public OrmSpecifiedOrderColumn2_0 buildOrmOrderColumn(OrmOrderable2_0 parent, OrmSpecifiedOrderColumn2_0.Owner owner) {
-		return new GenericOrmOrderColumn2_0(parent, owner);
+	public OrmSpecifiedOrderColumn2_0 buildOrmOrderColumn(OrmSpecifiedOrderColumn2_0.ParentAdapter parentAdapter) {
+		return new GenericOrmOrderColumn2_0(parentAdapter);
 	}
 }

@@ -11,8 +11,6 @@ package org.eclipse.jpt.jpa.core.jpa2;
 
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaFactory;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
@@ -72,11 +70,11 @@ public interface JpaFactory2_0
 	
 	OrphanRemovable2_0 buildJavaOrphanRemoval(OrphanRemovalMapping2_0 parent);
 	
-	JavaSpecifiedOrderColumn2_0 buildJavaOrderColumn(JavaOrderable2_0 parent, NamedColumn.Owner owner);
+	JavaSpecifiedOrderColumn2_0 buildJavaOrderColumn(JavaSpecifiedOrderColumn2_0.ParentAdapter parentAdapter);
 	
 	JavaCollectionTable2_0 buildJavaCollectionTable(JavaElementCollectionMapping2_0 parent, SpecifiedTable.Owner owner);
 
-	JavaSpecifiedColumn buildJavaMapKeyColumn(JpaContextModel parent, JavaSpecifiedColumn.Owner owner);
+	JavaSpecifiedColumn buildJavaMapKeyColumn(JavaSpecifiedColumn.ParentAdapter parentAdapter);
 	
 	JavaOrderable2_0 buildJavaOrderable(Orderable2_0.ParentAdapter<JavaAttributeMapping> parentAdapter);
 

@@ -28,14 +28,14 @@ public abstract class AbstractJavaVirtualReferenceTable<P extends JpaContextMode
 	implements VirtualReferenceTable
 {
 	protected final ContextListContainer<VirtualJoinColumn, JoinColumn> specifiedJoinColumnContainer;
-	protected final JoinColumn.Owner joinColumnOwner;
+	protected final JoinColumn.ParentAdapter joinColumnParentAdapter;
 
 	protected VirtualJoinColumn defaultJoinColumn;
 
 
 	protected AbstractJavaVirtualReferenceTable(P parent, Owner owner, T overridenTable) {
 		super(parent, owner, overridenTable);
-		this.joinColumnOwner = this.buildJoinColumnOwner();
+		this.joinColumnParentAdapter = this.buildJoinColumnParentAdapter();
 		this.specifiedJoinColumnContainer = this.buildSpecifiedJoinColumnContainer();
 	}
 
@@ -170,14 +170,14 @@ public abstract class AbstractJavaVirtualReferenceTable<P extends JpaContextMode
 	// ********** misc **********
 
 	protected VirtualJoinColumn buildJoinColumn(JoinColumn joinColumn) {
-		return this.buildJoinColumn(this.joinColumnOwner, joinColumn);
+		return this.buildJoinColumn(this.joinColumnParentAdapter, joinColumn);
 	}
 
-	protected VirtualJoinColumn buildJoinColumn(JoinColumn.Owner columnOwner, JoinColumn joinColumn) {
-		return this.getJpaFactory().buildJavaVirtualJoinColumn(this, columnOwner, joinColumn);
+	protected VirtualJoinColumn buildJoinColumn(JoinColumn.ParentAdapter columnParentAdapter, JoinColumn joinColumn) {
+		return this.getJpaFactory().buildJavaVirtualJoinColumn(columnParentAdapter, joinColumn);
 	}
 
-	protected abstract JoinColumn.Owner buildJoinColumnOwner();
+	protected abstract JoinColumn.ParentAdapter buildJoinColumnParentAdapter();
 
 	@Override
 	protected String buildDefaultSchema() {

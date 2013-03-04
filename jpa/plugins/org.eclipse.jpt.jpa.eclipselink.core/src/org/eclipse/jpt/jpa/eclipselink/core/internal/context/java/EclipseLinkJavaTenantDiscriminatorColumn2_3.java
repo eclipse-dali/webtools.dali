@@ -9,11 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
-import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.AbstractJavaNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.context.TenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaSpecifiedTenantDiscriminatorColumn2_3;
@@ -23,10 +21,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTenantDiscr
  * Java tenant discriminator column
  */
 public class EclipseLinkJavaTenantDiscriminatorColumn2_3
-	extends AbstractJavaNamedDiscriminatorColumn<JavaEclipseLinkMultitenancyImpl2_3, EclipseLinkTenantDiscriminatorColumnAnnotation2_3, TenantDiscriminatorColumn2_3.Owner>
+	extends AbstractJavaNamedDiscriminatorColumn<TenantDiscriminatorColumn2_3.ParentAdapter, EclipseLinkTenantDiscriminatorColumnAnnotation2_3>
 	implements JavaSpecifiedTenantDiscriminatorColumn2_3
 {
-	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(org.eclipse.jpt.jpa.core.context.JpaContextModel, org.eclipse.jpt.jpa.core.context.NamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
+	/** @see org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaNamedColumn#AbstractJavaNamedColumn(org.eclipse.jpt.jpa.core.context.NamedColumn.ParentAdapter, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
 	protected /* final */ EclipseLinkTenantDiscriminatorColumnAnnotation2_3 columnAnnotation;  // never null
 
 	protected String specifiedTableName;
@@ -38,8 +36,9 @@ public class EclipseLinkJavaTenantDiscriminatorColumn2_3
 	protected Boolean specifiedPrimaryKey;
 	protected boolean defaultPrimaryKey = DEFAULT_PRIMARY_KEY;
 
-	public EclipseLinkJavaTenantDiscriminatorColumn2_3(JavaEclipseLinkMultitenancyImpl2_3 parent, TenantDiscriminatorColumn2_3.Owner owner, EclipseLinkTenantDiscriminatorColumnAnnotation2_3 columnAnnotation) {
-		super(parent, owner, columnAnnotation);
+
+	public EclipseLinkJavaTenantDiscriminatorColumn2_3(TenantDiscriminatorColumn2_3.ParentAdapter parentAdapter, EclipseLinkTenantDiscriminatorColumnAnnotation2_3 columnAnnotation) {
+		super(parentAdapter, columnAnnotation);
 		this.specifiedTableName = this.buildSpecifiedTableName();
 		this.specifiedContextProperty = this.buildSpecifiedContextProperty();
 		this.specifiedPrimaryKey = this.buildSpecifiedPrimaryKey();
@@ -122,7 +121,7 @@ public class EclipseLinkJavaTenantDiscriminatorColumn2_3
 	}
 
 	protected String buildDefaultTableName() {
-		return this.owner.getDefaultTableName();
+		return this.parentAdapter.getDefaultTableName();
 	}
 
 	public TextRange getTableNameValidationTextRange() {
@@ -169,7 +168,7 @@ public class EclipseLinkJavaTenantDiscriminatorColumn2_3
 	}
 
 	protected String buildDefaultContextProperty() {
-		return this.owner.getDefaultContextPropertyName();
+		return this.parentAdapter.getDefaultContextPropertyName();
 	}
 
 	public TextRange getContextPropertyTextRange() {
@@ -220,13 +219,6 @@ public class EclipseLinkJavaTenantDiscriminatorColumn2_3
 	}
 
 
-	// ********** misc **********
-
-	protected JavaResourceType getJavaResourceType() {
-		return this.parent.getJavaResourceType();
-	}
-
-
 	// ********** Java completion proposals **********
 
 	@Override
@@ -251,13 +243,13 @@ public class EclipseLinkJavaTenantDiscriminatorColumn2_3
 	}
 
 	public Iterable<String> getCandidateTableNames() {
-		return this.owner.getCandidateTableNames();
+		return this.parentAdapter.getCandidateTableNames();
 	}
 
 
 	// ********** validation **********
 
 	public boolean tableNameIsInvalid() {
-		return this.owner.tableNameIsInvalid(this.getTableName());
+		return this.parentAdapter.tableNameIsInvalid(this.getTableName());
 	}
 }

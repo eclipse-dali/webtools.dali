@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.SpecifiedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlDiscriminatorColumn;
 
 /**
@@ -29,15 +29,15 @@ public interface OrmSpecifiedDiscriminatorColumn
 	extends SpecifiedDiscriminatorColumn, OrmSpecifiedNamedColumn
 {
 	XmlDiscriminatorColumn getXmlColumn();
-	
 
-	// ********** owner **********
+
+	// ********** parent adapter **********
 
 	/**
 	 * interface allowing discriminator columns to be used in multiple places
 	 */
-	interface Owner
-		extends NamedDiscriminatorColumn.Owner
+	interface ParentAdapter
+		extends NamedDiscriminatorColumn.ParentAdapter
 	{
 		XmlDiscriminatorColumn getXmlColumn();
 		XmlDiscriminatorColumn buildXmlColumn();

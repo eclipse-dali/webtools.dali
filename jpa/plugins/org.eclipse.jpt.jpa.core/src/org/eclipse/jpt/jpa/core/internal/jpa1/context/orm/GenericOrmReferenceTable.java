@@ -36,14 +36,14 @@ public abstract class GenericOrmReferenceTable<P extends JpaContextModel, X exte
 	implements OrmSpecifiedReferenceTable
 {
 	protected final ContextListContainer<OrmSpecifiedJoinColumn, XmlJoinColumn> specifiedJoinColumnContainer;
-	protected final JoinColumn.Owner joinColumnOwner;
+	protected final JoinColumn.ParentAdapter joinColumnParentAdapter;
 
 	protected OrmSpecifiedJoinColumn defaultJoinColumn;
 
 
 	protected GenericOrmReferenceTable(P parent, Owner owner) {
 		super(parent, owner);
-		this.joinColumnOwner = this.buildJoinColumnOwner();
+		this.joinColumnParentAdapter = this.buildJoinColumnParentAdapter();
 		this.specifiedJoinColumnContainer = this.buildSpecifiedJoinColumnContainer();
 	}
 
@@ -175,7 +175,7 @@ public abstract class GenericOrmReferenceTable<P extends JpaContextModel, X exte
 		}
 	}
 
-	protected abstract JoinColumn.Owner buildJoinColumnOwner();
+	protected abstract JoinColumn.ParentAdapter buildJoinColumnParentAdapter();
 
 
 	// ********** default join column **********
@@ -234,7 +234,7 @@ public abstract class GenericOrmReferenceTable<P extends JpaContextModel, X exte
 	}
 
 	protected OrmSpecifiedJoinColumn buildJoinColumn(XmlJoinColumn xmlJoinColumn) {
-		return this.getContextModelFactory().buildOrmJoinColumn(this, this.joinColumnOwner, xmlJoinColumn);
+		return this.getContextModelFactory().buildOrmJoinColumn(this.joinColumnParentAdapter, xmlJoinColumn);
 	}
 
 	@Override

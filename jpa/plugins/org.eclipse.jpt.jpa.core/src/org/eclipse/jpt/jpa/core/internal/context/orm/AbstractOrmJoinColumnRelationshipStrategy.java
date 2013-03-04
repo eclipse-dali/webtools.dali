@@ -35,14 +35,14 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy<P extends OrmJoi
 	implements OrmSpecifiedJoinColumnRelationshipStrategy
 {
 	protected final ContextListContainer<OrmSpecifiedJoinColumn, XmlJoinColumn> specifiedJoinColumnContainer;
-	protected final JoinColumn.Owner joinColumnOwner;
+	protected final JoinColumn.ParentAdapter joinColumnParentAdapter;
 
 	protected OrmSpecifiedJoinColumn defaultJoinColumn;
 
 
 	protected AbstractOrmJoinColumnRelationshipStrategy(P parent) {
 		super(parent);
-		this.joinColumnOwner = this.buildJoinColumnOwner();
+		this.joinColumnParentAdapter = this.buildJoinColumnParentAdapter();
 		this.specifiedJoinColumnContainer = this.buildSpecifiedJoinColumnContainer();
 	}
 
@@ -184,7 +184,7 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy<P extends OrmJoi
 		}
 	}
 
-	protected abstract JoinColumn.Owner buildJoinColumnOwner();
+	protected abstract JoinColumn.ParentAdapter buildJoinColumnParentAdapter();
 
 
 	// ********** default join column **********
@@ -234,7 +234,7 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy<P extends OrmJoi
 	}
 
 	protected OrmSpecifiedJoinColumn buildJoinColumn(XmlJoinColumn xmlJoinColumn) {
-		return this.getContextModelFactory().buildOrmJoinColumn(this, this.joinColumnOwner, xmlJoinColumn);
+		return this.getContextModelFactory().buildOrmJoinColumn(this.joinColumnParentAdapter, xmlJoinColumn);
 	}
 
 	public void initializeFrom(JoinColumnRelationshipStrategy oldStrategy) {

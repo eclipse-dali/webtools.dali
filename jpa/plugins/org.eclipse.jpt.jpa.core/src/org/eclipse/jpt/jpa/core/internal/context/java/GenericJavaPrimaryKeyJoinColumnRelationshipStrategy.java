@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.SubListIterableWrapper;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
@@ -42,12 +43,12 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 	implements SpecifiedMappingRelationshipStrategy2_0, JavaSpecifiedPrimaryKeyJoinColumnRelationshipStrategy
 {
 	protected final ContextListContainer<JavaSpecifiedPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation> primaryKeyJoinColumnContainer;
-	protected final JoinColumn.Owner primaryKeyJoinColumnOwner;
+	protected final JoinColumn.ParentAdapter primaryKeyJoinColumnParentAdapter;
 
 
 	public GenericJavaPrimaryKeyJoinColumnRelationshipStrategy(JavaPrimaryKeyJoinColumnRelationship parent) {
 		super(parent);
-		this.primaryKeyJoinColumnOwner = this.buildPrimaryKeyJoinColumnOwner();
+		this.primaryKeyJoinColumnParentAdapter = this.buildPrimaryKeyJoinColumnParentAdapter();
 		this.primaryKeyJoinColumnContainer = this.buildPrimaryKeyJoinColumnContainer();
 	}
 
@@ -142,12 +143,12 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 		}
 	}
 
-	protected JoinColumn.Owner buildPrimaryKeyJoinColumnOwner() {
-		return new PrimaryKeyJoinColumnOwner();
+	protected JoinColumn.ParentAdapter buildPrimaryKeyJoinColumnParentAdapter() {
+		return new PrimaryKeyJoinColumnParentAdapter();
 	}
 
 	protected JavaSpecifiedPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(PrimaryKeyJoinColumnAnnotation annotation) {
-		return this.getJpaFactory().buildJavaPrimaryKeyJoinColumn(this, this.primaryKeyJoinColumnOwner, annotation);
+		return this.getJpaFactory().buildJavaPrimaryKeyJoinColumn(this.primaryKeyJoinColumnParentAdapter, annotation);
 	}
 	
 
@@ -262,13 +263,13 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 	}
 
 
-	// ********** join column owner **********
+	// ********** join column parent adapter **********
 
-	protected class PrimaryKeyJoinColumnOwner
-		implements JoinColumn.Owner
+	public class PrimaryKeyJoinColumnParentAdapter
+		implements JoinColumn.ParentAdapter
 	{
-		protected PrimaryKeyJoinColumnOwner() {
-			super();
+		public JpaContextModel getColumnParent() {
+			return GenericJavaPrimaryKeyJoinColumnRelationshipStrategy.this;
 		}
 
 		/**

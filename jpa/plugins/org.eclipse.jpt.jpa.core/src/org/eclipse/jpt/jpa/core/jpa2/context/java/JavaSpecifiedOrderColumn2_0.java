@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context.java;
 
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedNamedColumn;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumn2_0Annotation;
@@ -29,4 +30,17 @@ public interface JavaSpecifiedOrderColumn2_0
 	extends SpecifiedOrderColumn2_0, JavaSpecifiedNamedColumn
 {
 	OrderColumn2_0Annotation getColumnAnnotation();
+
+
+	// ********** parent adapter **********
+
+	/**
+	 * interface allowing order columns to be used in multiple places
+	 */
+	interface ParentAdapter
+		extends NamedColumn.ParentAdapter
+	{
+		OrderColumn2_0Annotation getColumnAnnotation();
+		void removeColumnAnnotation();
+	}
 }

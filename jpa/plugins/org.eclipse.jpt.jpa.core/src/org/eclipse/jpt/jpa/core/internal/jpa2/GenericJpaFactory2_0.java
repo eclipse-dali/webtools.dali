@@ -13,8 +13,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProject.Config;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
@@ -127,12 +125,12 @@ public class GenericJpaFactory2_0
 		return new GenericJavaCollectionTable2_0(parent, owner);
 	}
 
-	public JavaSpecifiedOrderColumn2_0 buildJavaOrderColumn(JavaOrderable2_0 parent, NamedColumn.Owner owner) {
-		return new GenericJavaOrderColumn2_0(parent, owner);
+	public JavaSpecifiedOrderColumn2_0 buildJavaOrderColumn(JavaSpecifiedOrderColumn2_0.ParentAdapter parentAdapter) {
+		return new GenericJavaOrderColumn2_0(parentAdapter);
 	}
 
-	public JavaSpecifiedColumn buildJavaMapKeyColumn(JpaContextModel parent, JavaSpecifiedColumn.Owner owner) {
-		return new GenericJavaColumn(parent, owner);
+	public JavaSpecifiedColumn buildJavaMapKeyColumn(JavaSpecifiedColumn.ParentAdapter parentAdapter) {
+		return new GenericJavaColumn(parentAdapter);
 	}
 
 	public JavaOrderable2_0 buildJavaOrderable(Orderable2_0.ParentAdapter<JavaAttributeMapping> parentAdapter) {

@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterabl
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedSecondaryTable;
@@ -37,14 +38,14 @@ public class GenericOrmVirtualSecondaryTable
 {
 
 	protected final ContextListContainer<OrmVirtualPrimaryKeyJoinColumn, JavaSpecifiedPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumnContainer;
-	protected final BaseJoinColumn.Owner primaryKeyJoinColumnOwner;
+	protected final BaseJoinColumn.ParentAdapter primaryKeyJoinColumnParentAdapter;
 
 	protected OrmVirtualPrimaryKeyJoinColumn defaultPrimaryKeyJoinColumn;
 
 
 	public GenericOrmVirtualSecondaryTable(OrmEntity parent, Owner owner, JavaSpecifiedSecondaryTable overriddenTable) {
 		super(parent, owner, overriddenTable);
-		this.primaryKeyJoinColumnOwner = this.buildPrimaryKeyJoinColumnOwner();
+		this.primaryKeyJoinColumnParentAdapter = this.buildPrimaryKeyJoinColumnParentAdapter();
 		this.specifiedPrimaryKeyJoinColumnContainer = this.buildSpecifiedPrimaryKeyJoinColumnContainer();
 	}
 
@@ -183,12 +184,12 @@ public class GenericOrmVirtualSecondaryTable
 		return true;
 	}
 
-	protected BaseJoinColumn.Owner buildPrimaryKeyJoinColumnOwner() {
-		return new PrimaryKeyJoinColumnOwner();
+	protected BaseJoinColumn.ParentAdapter buildPrimaryKeyJoinColumnParentAdapter() {
+		return new PrimaryKeyJoinColumnParentAdapter();
 	}
 
 	protected OrmVirtualPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(JavaSpecifiedPrimaryKeyJoinColumn javaColumn) {
-		return this.getContextModelFactory().buildOrmVirtualPrimaryKeyJoinColumn(this, this.primaryKeyJoinColumnOwner, javaColumn);
+		return this.getContextModelFactory().buildOrmVirtualPrimaryKeyJoinColumn(this.primaryKeyJoinColumnParentAdapter, javaColumn);
 	}
 
 
@@ -232,11 +233,15 @@ public class GenericOrmVirtualSecondaryTable
 	}
 
 
-	// ********** primary key join column owner **********
+	// ********** primary key join column parent adapter **********
 
-	protected class PrimaryKeyJoinColumnOwner
-		implements BaseJoinColumn.Owner
+	public class PrimaryKeyJoinColumnParentAdapter
+		implements BaseJoinColumn.ParentAdapter
 	{
+		public JpaContextModel getColumnParent() {
+			return GenericOrmVirtualSecondaryTable.this;
+		}
+
 		protected OrmEntity getEntity() {
 			return GenericOrmVirtualSecondaryTable.this.getEntity();
 		}

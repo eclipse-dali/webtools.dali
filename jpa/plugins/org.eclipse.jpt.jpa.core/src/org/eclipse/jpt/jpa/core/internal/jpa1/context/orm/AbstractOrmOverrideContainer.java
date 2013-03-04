@@ -20,6 +20,7 @@ import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.SpecifiedOverride;
+import org.eclipse.jpt.jpa.core.context.TableColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.VirtualOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOverrideContainer;
@@ -434,8 +435,8 @@ public abstract class AbstractOrmOverrideContainer<
 		return this.parentAdapter.buildOverrideValidator(override, this);
 	}
 
-	public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner columnOwner) {
-		return this.parentAdapter.buildColumnValidator(override, column, columnOwner);
+	public JptValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter columnParentAdapter) {
+		return this.parentAdapter.buildColumnValidator(override, column, columnParentAdapter);
 	}
 
 	protected R selectOverrideNamed(Iterable<R> overrides, String name) {

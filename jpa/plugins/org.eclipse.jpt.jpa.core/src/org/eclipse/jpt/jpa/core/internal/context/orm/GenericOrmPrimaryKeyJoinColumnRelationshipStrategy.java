@@ -14,6 +14,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
@@ -42,12 +43,12 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 	implements SpecifiedMappingRelationshipStrategy2_0, OrmSpecifiedPrimaryKeyJoinColumnRelationshipStrategy
 {
 	protected final ContextListContainer<OrmSpecifiedPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> primaryKeyJoinColumnContainer;
-	protected final JoinColumn.Owner primaryKeyJoinColumnOwner;
+	protected final JoinColumn.ParentAdapter primaryKeyJoinColumnParentAdapter;
 
 
 	public GenericOrmPrimaryKeyJoinColumnRelationshipStrategy(OrmPrimaryKeyJoinColumnRelationship parent) {
 		super(parent);
-		this.primaryKeyJoinColumnOwner = this.buildPrimaryKeyJoinColumnOwner();
+		this.primaryKeyJoinColumnParentAdapter = this.buildPrimaryKeyJoinColumnParentAdapter();
 		this.primaryKeyJoinColumnContainer = this.buildPrimaryKeyJoinColumnContainer();
 	}
 
@@ -148,12 +149,12 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 		}
 	}
 
-	protected JoinColumn.Owner buildPrimaryKeyJoinColumnOwner() {
-		return new PrimaryKeyJoinColumnOwner();
+	protected JoinColumn.ParentAdapter buildPrimaryKeyJoinColumnParentAdapter() {
+		return new PrimaryKeyJoinColumnParentAdapter();
 	}
 
 	protected OrmSpecifiedPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn xmlJoinColumn) {
-		return this.getContextModelFactory().buildOrmPrimaryKeyJoinColumn(this, this.primaryKeyJoinColumnOwner, xmlJoinColumn);
+		return this.getContextModelFactory().buildOrmPrimaryKeyJoinColumn(this.primaryKeyJoinColumnParentAdapter, xmlJoinColumn);
 	}
 
 	protected ContextListContainer<OrmSpecifiedPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnContainer() {
@@ -249,13 +250,13 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 		return null;
 	}
 
-	// ********** join column owner **********
+	// ********** join column parent adapter **********
 
-	protected class PrimaryKeyJoinColumnOwner
-		implements JoinColumn.Owner
+	public class PrimaryKeyJoinColumnParentAdapter
+		implements JoinColumn.ParentAdapter
 	{
-		protected PrimaryKeyJoinColumnOwner() {
-			super();
+		public JpaContextModel getColumnParent() {
+			return GenericOrmPrimaryKeyJoinColumnRelationshipStrategy.this;
 		}
 
 		/**

@@ -9,23 +9,19 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedDiscriminatorColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.DiscriminatorColumnAnnotation;
 
 /**
  * Java discriminator column
  */
 public class GenericJavaDiscriminatorColumn
-	extends AbstractJavaNamedDiscriminatorColumn<JavaEntity, DiscriminatorColumnAnnotation, NamedDiscriminatorColumn.Owner>
+	extends AbstractJavaNamedDiscriminatorColumn<JavaSpecifiedDiscriminatorColumn.ParentAdapter, DiscriminatorColumnAnnotation>
 	implements JavaSpecifiedDiscriminatorColumn
 {
 
-	public GenericJavaDiscriminatorColumn(JavaEntity parent, NamedDiscriminatorColumn.Owner owner) {
-		super(parent, owner);
+	public GenericJavaDiscriminatorColumn(JavaSpecifiedDiscriminatorColumn.ParentAdapter parentAdapter) {
+		super(parentAdapter);
 	}
 
 
@@ -33,26 +29,11 @@ public class GenericJavaDiscriminatorColumn
 
 	@Override
 	public DiscriminatorColumnAnnotation getColumnAnnotation() {
-		return (DiscriminatorColumnAnnotation) this.getJavaResourceType().getNonNullAnnotation(DiscriminatorColumnAnnotation.ANNOTATION_NAME);
+		return this.parentAdapter.getColumnAnnotation();
 	}
 
 	@Override
 	protected void removeColumnAnnotation() {
-		this.getJavaResourceType().removeAnnotation(DiscriminatorColumnAnnotation.ANNOTATION_NAME);
-	}
-
-
-	// ********** misc **********
-
-	protected JavaEntity getEntity() {
-		return this.parent;
-	}
-
-	protected JavaPersistentType getPersistentType() {
-		return this.getEntity().getPersistentType();
-	}
-
-	protected JavaResourceType getJavaResourceType() {
-		return this.getPersistentType().getJavaResourceType();
+		this.parentAdapter.removeColumnAnnotation();
 	}
 }

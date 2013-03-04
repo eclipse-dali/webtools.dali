@@ -27,9 +27,9 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 public interface AssociationOverride2_0
 	extends AssociationOverride
 {
-	JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner);
+	JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter owner);
 
-	JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner);
+	JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter owner);
 
 	JptValidator buildJoinTableValidator(JoinTable table);
 }

@@ -59,11 +59,11 @@ public class GenericOrmAssociationOverrideContainer
 		return (OrmAssociationOverrideContainer2_0.ParentAdapter) this.parentAdapter;
 	}
 
-	public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner columnOwner) {
+	public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter columnOwner) {
 		return this.getOwner2_0().buildJoinTableJoinColumnValidator(override, column, columnOwner);
 	}
 
-	public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner columnOwner) {
+	public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter columnOwner) {
 		return this.getOwner2_0().buildJoinTableInverseJoinColumnValidator(override, column, columnOwner);
 	}
 

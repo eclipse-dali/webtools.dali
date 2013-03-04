@@ -15,6 +15,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBaseEnumeratedConverter;
@@ -119,7 +120,7 @@ public class OrmEclipseLinkArrayMapping2_3
 	}
 
 	protected OrmSpecifiedColumn buildColumn() {
-		return this.getContextModelFactory().buildOrmColumn(this, this);
+		return this.getContextModelFactory().buildOrmColumn(this);
 	}
 
 
@@ -272,7 +273,11 @@ public class OrmEclipseLinkArrayMapping2_3
 	}
 
 
-	// ********** OrmColumn.Owner implementation **********
+	// ********** column parent adapter **********
+
+	public JpaContextModel getColumnParent() {
+		return this;  // no adapter
+	}
 
 	public String getDefaultColumnName(NamedColumn col) {
 		return this.name;

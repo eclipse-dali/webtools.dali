@@ -12,16 +12,16 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
+import org.eclipse.jpt.jpa.core.context.TableColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedBaseColumn;
 import org.eclipse.jpt.jpa.core.resource.java.BaseColumnAnnotation;
 
 /**
  * Java column or join column
  */
-public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O extends BaseColumn.Owner>
-	extends AbstractJavaNamedColumn<JpaContextModel, A, O>
+public abstract class AbstractJavaBaseColumn<PA extends TableColumn.ParentAdapter, A extends BaseColumnAnnotation>
+	extends AbstractJavaNamedColumn<PA, A>
 	implements JavaSpecifiedBaseColumn
 {
 	protected String specifiedTableName;
@@ -40,12 +40,12 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 	protected boolean defaultUpdatable;
 
 
-	protected AbstractJavaBaseColumn(JpaContextModel parent, O owner) {
-		this(parent, owner, null);
+	protected AbstractJavaBaseColumn(PA parentAdapter) {
+		this(parentAdapter, null);
 	}
 
-	protected AbstractJavaBaseColumn(JpaContextModel parent, O owner, A columnAnnotation) {
-		super(parent, owner, columnAnnotation);
+	protected AbstractJavaBaseColumn(PA parentAdapter, A columnAnnotation) {
+		super(parentAdapter, columnAnnotation);
 		//build defaults during construction for performance
 		this.defaultTableName = this.buildDefaultTableName();
 		this.defaultUnique = this.buildDefaultUnique();
@@ -127,7 +127,7 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 	}
 
 	protected String buildDefaultTableName() {
-		return this.owner.getDefaultTableName();
+		return this.parentAdapter.getDefaultTableName();
 	}
 
 	public TextRange getTableNameValidationTextRange() {
@@ -349,13 +349,13 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 	}
 
 	public Iterable<String> getCandidateTableNames() {
-		return this.owner.getCandidateTableNames();
+		return this.parentAdapter.getCandidateTableNames();
 	}
 
 
 	// ********** validation **********
 
 	public boolean tableNameIsInvalid() {
-		return this.owner.tableNameIsInvalid(this.getTableName());
+		return this.parentAdapter.tableNameIsInvalid(this.getTableName());
 	}
 }

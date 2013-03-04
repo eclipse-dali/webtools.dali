@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
@@ -48,8 +49,8 @@ public class GenericOrmMappingJoinColumnRelationshipStrategy
 
 
 	@Override
-	protected JoinColumn.Owner buildJoinColumnOwner() {
-		return new JoinColumnOwner();
+	protected JoinColumn.ParentAdapter buildJoinColumnParentAdapter() {
+		return new JoinColumnParentAdapter();
 	}
 
 	public boolean isOverridable() {
@@ -95,13 +96,13 @@ public class GenericOrmMappingJoinColumnRelationshipStrategy
 	}
 
 
-	// ********** join column owner **********
+	// ********** join column parent adapter **********
 
-	protected class JoinColumnOwner
-		implements JoinColumn.Owner
+	public class JoinColumnParentAdapter
+		implements JoinColumn.ParentAdapter
 	{
-		protected JoinColumnOwner() {
-			super();
+		public JpaContextModel getColumnParent() {
+			return GenericOrmMappingJoinColumnRelationshipStrategy.this;
 		}
 
 		/**

@@ -27,6 +27,7 @@ import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
+import org.eclipse.jpt.jpa.core.context.TableColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBaseEmbeddedMapping;
@@ -39,7 +40,6 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.AttributeOverrideColumnVal
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AttributeOverrideValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EmbeddableOverrideDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.AbstractOrmEmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlEmbedded;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
@@ -300,7 +300,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<X extends AbstractXmlEmbedd
 			return new AttributeOverrideValidator(this.getPersistentAttribute(), (AttributeOverride) override, (AttributeOverrideContainer) container, new EmbeddableOverrideDescriptionProvider());
 		}
 
-		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner owner) {
+		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter parentAdapter) {
 			return new AttributeOverrideColumnValidator(this.getPersistentAttribute(), (AttributeOverride) override, column, new EntityTableDescriptionProvider());
 		}
 

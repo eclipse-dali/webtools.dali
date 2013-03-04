@@ -57,9 +57,11 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.Table;
+import org.eclipse.jpt.jpa.core.context.TableColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
+import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -90,6 +92,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAssociationOverrideContain
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAttributeOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaEntity2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOverrideContainer2_0;
+import org.eclipse.jpt.jpa.core.resource.java.DiscriminatorColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.DiscriminatorValueAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.EntityAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.InheritanceAnnotation;
@@ -122,7 +125,7 @@ public abstract class AbstractJavaEntity
 	protected final ContextListContainer<JavaSpecifiedSecondaryTable, SecondaryTableAnnotation> specifiedSecondaryTableContainer;
 	protected final SpecifiedTable.Owner specifiedSecondaryTableOwner;
 
-	protected final PrimaryKeyJoinColumnOwner primaryKeyJoinColumnOwner;
+	protected final PrimaryKeyJoinColumnParentAdapter primaryKeyJoinColumnParentAdapter;
 	protected final ContextListContainer<JavaSpecifiedPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation> specifiedPrimaryKeyJoinColumnContainer;
 	protected JavaSpecifiedPrimaryKeyJoinColumn defaultPrimaryKeyJoinColumn;
 
@@ -156,7 +159,7 @@ public abstract class AbstractJavaEntity
 		this.rootEntity = this;
 		this.specifiedSecondaryTableOwner = this.buildSpecifiedSecondaryTableOwner();
 		this.specifiedSecondaryTableContainer = this.buildSpecifiedSecondaryTableContainer();
-		this.primaryKeyJoinColumnOwner = this.buildPrimaryKeyJoinColumnOwner();
+		this.primaryKeyJoinColumnParentAdapter = this.buildPrimaryKeyJoinColumnParentAdapter();
 		this.specifiedPrimaryKeyJoinColumnContainer = this.buildSpecifiedPrimaryKeyJoinColumnContainer();
 		this.specifiedInheritanceStrategy = this.buildSpecifiedInheritanceStrategy();
 		this.specifiedDiscriminatorValue = this.getDiscriminatorValueAnnotation().getValue();
@@ -472,7 +475,7 @@ public abstract class AbstractJavaEntity
 	/**
 	 * specified secondary table container
 	 */
-	protected class SpecifiedSecondaryTableContainer
+	public class SpecifiedSecondaryTableContainer
 		extends ContextListContainer<JavaSpecifiedSecondaryTable, SecondaryTableAnnotation>
 	{
 		@Override
@@ -590,12 +593,12 @@ public abstract class AbstractJavaEntity
 		return this.getResourceAnnotatedElement().getAnnotations(PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME);
 	}
 
-	protected PrimaryKeyJoinColumnOwner buildPrimaryKeyJoinColumnOwner() {
-		return new PrimaryKeyJoinColumnOwner();
+	protected PrimaryKeyJoinColumnParentAdapter buildPrimaryKeyJoinColumnParentAdapter() {
+		return new PrimaryKeyJoinColumnParentAdapter();
 	}
 
 	protected JavaSpecifiedPrimaryKeyJoinColumn buildSpecifiedPrimaryKeyJoinColumn(PrimaryKeyJoinColumnAnnotation primaryKeyJoinColumnAnnotation) {
-		return this.getJpaFactory().buildJavaPrimaryKeyJoinColumn(this, this.primaryKeyJoinColumnOwner, primaryKeyJoinColumnAnnotation);
+		return this.getJpaFactory().buildJavaPrimaryKeyJoinColumn(this.primaryKeyJoinColumnParentAdapter, primaryKeyJoinColumnAnnotation);
 	}
 
 	protected ContextListContainer<JavaSpecifiedPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation> buildSpecifiedPrimaryKeyJoinColumnContainer() {
@@ -607,7 +610,7 @@ public abstract class AbstractJavaEntity
 	/**
 	 * specified primary key join column container
 	 */
-	protected class SpecifiedPrimaryKeyJoinColumnContainer
+	public class SpecifiedPrimaryKeyJoinColumnContainer
 		extends ContextListContainer<JavaSpecifiedPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation>
 	{
 		@Override
@@ -841,11 +844,11 @@ public abstract class AbstractJavaEntity
 	}
 
 	protected JavaSpecifiedDiscriminatorColumn buildDiscriminatorColumn() {
-		return this.getJpaFactory().buildJavaDiscriminatorColumn(this, this.buildDiscriminatorColumnOwner());
+		return this.getJpaFactory().buildJavaDiscriminatorColumn(this.buildDiscriminatorColumnParentAdapter());
 	}
 
-	protected NamedDiscriminatorColumn.Owner buildDiscriminatorColumnOwner() {
-		return new DiscriminatorColumnOwner();
+	protected JavaSpecifiedDiscriminatorColumn.ParentAdapter buildDiscriminatorColumnParentAdapter() {
+		return new DiscriminatorColumnParentAdapter();
 	}
 
 	public boolean specifiedDiscriminatorColumnIsAllowed() {
@@ -875,6 +878,17 @@ public abstract class AbstractJavaEntity
 	protected boolean buildDiscriminatorColumnIsUndefined() {
 		return this.isTablePerClass() ||
 				this.isRootNoDescendantsNoStrategyDefined();
+	}
+
+
+	// ********** discriminator value annotation **********
+
+	protected DiscriminatorColumnAnnotation getDiscriminatorColumnAnnotation() {
+		return (DiscriminatorColumnAnnotation) this.getJavaResourceType().getNonNullAnnotation(DiscriminatorColumnAnnotation.ANNOTATION_NAME);
+	}
+
+	protected void removeDiscriminatorColumnAnnotation() {
+		this.getJavaResourceType().removeAnnotation(DiscriminatorColumnAnnotation.ANNOTATION_NAME);
 	}
 
 
@@ -1067,11 +1081,6 @@ public abstract class AbstractJavaEntity
 
 	public boolean isMapped() {
 		return true;
-	}
-
-	@Override
-	public JavaResourceType getJavaResourceType() {
-		return super.getJavaResourceType();
 	}
 
 
@@ -1535,7 +1544,7 @@ public abstract class AbstractJavaEntity
 			return new AttributeOverrideValidator((AttributeOverride) override, (AttributeOverrideContainer) container, new MappedSuperclassOverrideDescriptionProvider());
 		}
 		
-		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner owner) {
+		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter parentAdapter) {
 			return new AttributeOverrideColumnValidator((AttributeOverride) override, column, new EntityTableDescriptionProvider());
 		}
 	}
@@ -1560,15 +1569,15 @@ public abstract class AbstractJavaEntity
 			return new AssociationOverrideValidator((AssociationOverride) override, (AssociationOverrideContainer) container, new MappedSuperclassOverrideDescriptionProvider());
 		}
 
-		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner owner) {
-			return new AssociationOverrideJoinColumnValidator((AssociationOverride) override, (JoinColumn) column, (JoinColumn.Owner) owner, new EntityTableDescriptionProvider());
+		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter parentAdapter) {
+			return new AssociationOverrideJoinColumnValidator((AssociationOverride) override, (JoinColumn) column, (JoinColumn.ParentAdapter) parentAdapter, new EntityTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner) {
+		public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter owner) {
 			return new AssociationOverrideJoinColumnValidator(override, column, owner, new JoinTableTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner) {
+		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter owner) {
 			return new AssociationOverrideInverseJoinColumnValidator(override, column, owner, new JoinTableTableDescriptionProvider());
 		}
 
@@ -1578,13 +1587,13 @@ public abstract class AbstractJavaEntity
 	}
 
 
-	// ********** JavaNamedColumn.Owner implementation **********
+	// ********** named column parent adapter **********
 
 	/**
 	 * some common behavior
 	 */
-	protected abstract class NamedColumnOwner
-		implements NamedColumn.Owner
+	public abstract class NamedColumnParentAdapter
+		implements NamedColumn.ParentAdapter
 	{
 		public String getDefaultTableName() {
 			return AbstractJavaEntity.this.getPrimaryTableName();
@@ -1600,12 +1609,16 @@ public abstract class AbstractJavaEntity
 	}
 
 
-	// ********** JavaBaseJoinColumn.Owner implementation **********
+	// ********** PK join column parent adapter **********
 
-	protected class PrimaryKeyJoinColumnOwner
-		extends NamedColumnOwner
-		implements BaseJoinColumn.Owner
+	public class PrimaryKeyJoinColumnParentAdapter
+		extends NamedColumnParentAdapter
+		implements BaseJoinColumn.ParentAdapter
 	{
+		public JpaContextModel getColumnParent() {
+			return AbstractJavaEntity.this;
+		}
+
 		public org.eclipse.jpt.jpa.db.Table getReferencedColumnDbTable() {
 			Entity parentEntity = AbstractJavaEntity.this.getParentEntity();
 			return (parentEntity == null) ? null : parentEntity.getPrimaryDbTable();
@@ -1629,12 +1642,16 @@ public abstract class AbstractJavaEntity
 	}
 
 
-	// ********** JavaDiscriminatorColumn.Owner implementation **********
+	// ********** discriminator column parent adapter **********
 
-	protected class DiscriminatorColumnOwner
-		extends NamedColumnOwner
-		implements NamedDiscriminatorColumn.Owner
+	public class DiscriminatorColumnParentAdapter
+		extends NamedColumnParentAdapter
+		implements JavaSpecifiedDiscriminatorColumn.ParentAdapter
 	{
+		public JavaEntity getColumnParent() {
+			return AbstractJavaEntity.this;
+		}
+
 		public String getDefaultColumnName(NamedColumn column) {
 			return this.isDescendant() ?
 					this.getRootDiscriminatorColumn().getName() :
@@ -1668,12 +1685,20 @@ public abstract class AbstractJavaEntity
 		public JptValidator buildColumnValidator(NamedColumn column) {
 			return new DiscriminatorColumnValidator(column);
 		}
+
+		public DiscriminatorColumnAnnotation getColumnAnnotation() {
+			return AbstractJavaEntity.this.getDiscriminatorColumnAnnotation();
+		}
+
+		public void removeColumnAnnotation() {
+			AbstractJavaEntity.this.removeDiscriminatorColumnAnnotation();
+		}
 	}
 
 
 	// ********** table owner **********
 
-	protected class TableOwner
+	public class TableOwner
 		implements Table.Owner
 	{
 		public JptValidator buildTableValidator(Table t) {
@@ -1684,7 +1709,7 @@ public abstract class AbstractJavaEntity
 
 	// ********** secondary table owner **********
 
-	protected class SecondaryTableOwner
+	public class SecondaryTableOwner
 		implements Table.Owner
 	{
 		public JptValidator buildTableValidator(Table t) {

@@ -34,14 +34,14 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy<P extends JavaJ
 	implements JavaSpecifiedJoinColumnRelationshipStrategy
 {
 	protected final ContextListContainer<JavaSpecifiedJoinColumn, JoinColumnAnnotation> specifiedJoinColumnContainer;
-	protected final JoinColumn.Owner joinColumnOwner;
+	protected final JoinColumn.ParentAdapter joinColumnParentAdapter;
 
 	protected JavaSpecifiedJoinColumn defaultJoinColumn;
 
 
 	protected AbstractJavaJoinColumnRelationshipStrategy(P parent) {
 		super(parent);
-		this.joinColumnOwner = this.buildJoinColumnOwner();
+		this.joinColumnParentAdapter = this.buildJoinColumnParentAdapter();
 		this.specifiedJoinColumnContainer = this.buildSpecifiedJoinColumnContainer();
 	}
 
@@ -169,7 +169,7 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy<P extends JavaJ
 		}
 	}
 
-	protected abstract JoinColumn.Owner buildJoinColumnOwner();
+	protected abstract JoinColumn.ParentAdapter buildJoinColumnParentAdapter();
 
 
 	// ********** default join column **********
@@ -232,7 +232,7 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy<P extends JavaJ
 	}
 
 	protected JavaSpecifiedJoinColumn buildJoinColumn(JoinColumnAnnotation joinColumnAnnotation) {
-		return this.getJpaFactory().buildJavaJoinColumn(this, this.joinColumnOwner, joinColumnAnnotation);
+		return this.getJpaFactory().buildJavaJoinColumn(this.joinColumnParentAdapter, joinColumnAnnotation);
 	}
 
 	public void initializeFrom(JoinColumnRelationshipStrategy oldStrategy) {

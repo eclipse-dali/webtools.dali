@@ -10,12 +10,12 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
+import org.eclipse.jpt.jpa.core.context.TableColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualBaseColumn;
 
-public abstract class AbstractOrmVirtualBaseColumn<O extends BaseColumn.Owner, C extends BaseColumn>
-	extends AbstractOrmVirtualNamedColumn<O, C>
+public abstract class AbstractOrmVirtualBaseColumn<PA extends TableColumn.ParentAdapter, C extends BaseColumn>
+	extends AbstractOrmVirtualNamedColumn<PA, C>
 	implements VirtualBaseColumn
 {
 	protected String specifiedTableName;
@@ -34,8 +34,8 @@ public abstract class AbstractOrmVirtualBaseColumn<O extends BaseColumn.Owner, C
 	protected boolean defaultUpdatable;
 
 
-	protected AbstractOrmVirtualBaseColumn(JpaContextModel parent, O owner) {
-		super(parent, owner);
+	protected AbstractOrmVirtualBaseColumn(PA parentAdapter) {
+		super(parentAdapter);
 	}
 
 
@@ -93,7 +93,7 @@ public abstract class AbstractOrmVirtualBaseColumn<O extends BaseColumn.Owner, C
 	}
 
 	protected String buildDefaultTableName() {
-		return this.owner.getDefaultTableName();
+		return this.parentAdapter.getDefaultTableName();
 	}
 
 
@@ -240,11 +240,11 @@ public abstract class AbstractOrmVirtualBaseColumn<O extends BaseColumn.Owner, C
 	// ********** misc **********
 
 	public boolean tableNameIsInvalid() {
-		return this.owner.tableNameIsInvalid(this.getTableName());
+		return this.parentAdapter.tableNameIsInvalid(this.getTableName());
 	}
 
 	public Iterable<String> getCandidateTableNames() {
-		return this.owner.getCandidateTableNames();
+		return this.parentAdapter.getCandidateTableNames();
 	}
 
 

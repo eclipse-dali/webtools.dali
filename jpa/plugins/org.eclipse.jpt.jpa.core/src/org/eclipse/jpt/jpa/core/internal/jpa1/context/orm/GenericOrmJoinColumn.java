@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -24,22 +23,22 @@ import org.eclipse.jpt.jpa.db.Table;
  * <code>orm.xml</code> join column
  */
 public class GenericOrmJoinColumn
-	extends AbstractOrmBaseColumn<XmlJoinColumn, JoinColumn.Owner>
+	extends AbstractOrmBaseColumn<JoinColumn.ParentAdapter, XmlJoinColumn>
 	implements OrmSpecifiedJoinColumn
 {
-	/** @see org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmNamedColumn#AbstractOrmNamedColumn(JpaContextModel, org.eclipse.jpt.jpa.core.context.NamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.orm.XmlNamedColumn) */
+	/** @see org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmNamedColumn#AbstractOrmNamedColumn(org.eclipse.jpt.jpa.core.context.NamedColumn.ParentAdapter, org.eclipse.jpt.jpa.core.resource.orm.XmlNamedColumn) */
 	protected /* final */ XmlJoinColumn xmlColumn;  // null for default join columns
 
 	protected String specifiedReferencedColumnName;
 	protected String defaultReferencedColumnName;
 
 
-	public GenericOrmJoinColumn(JpaContextModel parent, JoinColumn.Owner owner) {
-		this(parent, owner, null);
+	public GenericOrmJoinColumn(JoinColumn.ParentAdapter parentAdapter) {
+		this(parentAdapter, null);
 	}
 
-	public GenericOrmJoinColumn(JpaContextModel parent, JoinColumn.Owner owner, XmlJoinColumn xmlColumn) {
-		super(parent, owner, xmlColumn);
+	public GenericOrmJoinColumn(JoinColumn.ParentAdapter parentAdapter, XmlJoinColumn xmlColumn) {
+		super(parentAdapter, xmlColumn);
 		this.specifiedReferencedColumnName = this.buildSpecifiedReferencedColumnName();
 	}
 
@@ -128,14 +127,14 @@ public class GenericOrmJoinColumn
 	}
 
 	protected String buildDefaultReferencedColumnName() {
-		return MappingTools.buildJoinColumnDefaultReferencedColumnName(this.owner);
+		return MappingTools.buildJoinColumnDefaultReferencedColumnName(this.parentAdapter);
 	}
 
 
 	// ********** database stuff **********
 
 	public Table getReferencedColumnDbTable() {
-		return this.owner.getReferencedColumnDbTable();
+		return this.parentAdapter.getReferencedColumnDbTable();
 	}
 
 	protected Column getReferencedDbColumn() {
@@ -187,7 +186,7 @@ public class GenericOrmJoinColumn
 	}
 
 	protected Iterable<String> getCandidateReferencedColumnNames() {
-		Table table = this.owner.getReferencedColumnDbTable();
+		Table table = this.parentAdapter.getReferencedColumnDbTable();
 		return (table != null) ? table.getSortedColumnIdentifiers() : EmptyIterable.<String> instance();
 	}
 }

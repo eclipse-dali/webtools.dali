@@ -63,11 +63,11 @@ public class GenericJavaAssociationOverrideContainer
 		return (JavaAssociationOverrideContainer2_0.ParentAdapter) super.getParentAdapter2_0();
 	}
 
-	public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner o) {
+	public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter o) {
 		return this.getParentAdapter2_0().buildJoinTableJoinColumnValidator(override, column, o);
 	}
 
-	public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner o) {
+	public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter o) {
 		return this.getParentAdapter2_0().buildJoinTableInverseJoinColumnValidator(override, column, o);
 	}
 

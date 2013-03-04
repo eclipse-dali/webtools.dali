@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context;
 
-import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.ColumnMapping;
 import org.eclipse.jpt.jpa.core.context.ConvertibleMapping;
 
@@ -26,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.ConvertibleMapping;
  * @since 3.2
  */
 public interface EclipseLinkArrayMapping2_3
-	extends AttributeMapping, ConvertibleMapping, EclipseLinkConvertibleMapping, ColumnMapping
+	extends ConvertibleMapping, EclipseLinkConvertibleMapping, ColumnMapping
 {
-	// nothing yet
+	// combine interfaces
 }

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
-import org.eclipse.jpt.jpa.core.context.BaseColumn;
+import org.eclipse.jpt.jpa.core.context.TableColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlColumn;
 
 /**
@@ -31,14 +31,14 @@ public interface OrmSpecifiedColumn
 	XmlColumn getXmlColumn();
 
 
-	// ********** owner **********
+	// ********** parent adapter **********
 
 	/**
 	 * interface allowing columns to be used in multiple places
 	 * (e.g. basic mappings and attribute overrides)
 	 */
-	interface Owner
-		extends BaseColumn.Owner
+	interface ParentAdapter
+		extends TableColumn.ParentAdapter
 	{
 		XmlColumn getXmlColumn();
 		XmlColumn buildXmlColumn();

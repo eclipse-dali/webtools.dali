@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
@@ -40,7 +41,7 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 {
 
 	protected final ContextListContainer<OrmSpecifiedTenantDiscriminatorColumn2_3, XmlTenantDiscriminatorColumn> tenantDiscriminatorColumnContainer;
-	protected final TenantDiscriminatorColumn2_3.Owner tenantDiscriminatorColumnOwner;
+	protected final TenantDiscriminatorColumn2_3.ParentAdapter tenantDiscriminatorColumnParentAdapter;
 
 	protected String specifiedGetMethod;
 	protected String specifiedSetMethod;
@@ -49,7 +50,7 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 
 	public OrmEclipseLinkPersistenceUnitDefaults(OrmPersistenceUnitMetadata parent) {
 		super(parent);
-		this.tenantDiscriminatorColumnOwner = this.buildTenantDiscriminatorColumnOwner();
+		this.tenantDiscriminatorColumnParentAdapter = this.buildTenantDiscriminatorColumnParentAdapter();
 		this.tenantDiscriminatorColumnContainer = this.buildTenantDiscriminatorColumnContainer();
 		this.specifiedGetMethod = this.buildSpecifiedGetMethod();
 		this.specifiedSetMethod = this.buildSpecifiedSetMethod();
@@ -170,12 +171,12 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 		}
 	}
 
-	protected TenantDiscriminatorColumn2_3.Owner buildTenantDiscriminatorColumnOwner() {
-		return new TenantDiscriminatorColumnOwner();
+	protected TenantDiscriminatorColumn2_3.ParentAdapter buildTenantDiscriminatorColumnParentAdapter() {
+		return new TenantDiscriminatorColumnParentAdapter();
 	}
 
 	protected OrmSpecifiedTenantDiscriminatorColumn2_3 buildTenantDiscriminatorColumn(XmlTenantDiscriminatorColumn xmlTenantDiscriminatorColumn) {
-		return new EclipseLinkOrmTenantDiscriminatorColumn2_3(this, this.tenantDiscriminatorColumnOwner, xmlTenantDiscriminatorColumn);
+		return new EclipseLinkOrmTenantDiscriminatorColumn2_3(this.tenantDiscriminatorColumnParentAdapter, xmlTenantDiscriminatorColumn);
 	}
 
 	protected ContextListContainer<OrmSpecifiedTenantDiscriminatorColumn2_3, XmlTenantDiscriminatorColumn> buildTenantDiscriminatorColumnContainer() {
@@ -185,11 +186,14 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 	}
 
 
-	// ********** OrmReadOnlyTenantDiscriminatorColumn.Owner implementation **********
+	// ********** tenant discriminator column parent adapter **********
 
-	protected class TenantDiscriminatorColumnOwner 
-		implements TenantDiscriminatorColumn2_3.Owner
+	public class TenantDiscriminatorColumnParentAdapter
+		implements TenantDiscriminatorColumn2_3.ParentAdapter
 	{
+		public JpaContextModel getColumnParent() {
+			return OrmEclipseLinkPersistenceUnitDefaults.this;
+		}
 
 		public String getDefaultContextPropertyName() {
 			return TenantDiscriminatorColumn2_3.DEFAULT_CONTEXT_PROPERTY;

@@ -70,11 +70,11 @@ public class GenericJavaOverrideJoinTableRelationshipStrategy2_0
 		return this.getRelationship().buildJoinTableValidator((JoinTable) table);
 	}
 
-	public JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner) {
+	public JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter owner) {
 		return this.getRelationship().buildJoinTableJoinColumnValidator(column, owner);
 	}
 
-	public JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner) {
+	public JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter owner) {
 		return this.getRelationship().buildJoinTableInverseJoinColumnValidator(column, owner);
 	}
 }

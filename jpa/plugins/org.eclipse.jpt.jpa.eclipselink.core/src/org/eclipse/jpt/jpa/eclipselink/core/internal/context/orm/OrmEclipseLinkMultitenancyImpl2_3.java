@@ -19,6 +19,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -67,7 +68,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 	protected boolean defaultIncludeCriteria = DEFAULT_INCLUDE_CRITERIA;
 
 	protected final ContextListContainer<OrmSpecifiedTenantDiscriminatorColumn2_3, XmlTenantDiscriminatorColumn> specifiedTenantDiscriminatorColumnContainer;
-	protected final TenantDiscriminatorColumn2_3.Owner tenantDiscriminatorColumnOwner;
+	protected final TenantDiscriminatorColumn2_3.ParentAdapter tenantDiscriminatorColumnParentAdapter;
 
 	protected final ContextListContainer<VirtualTenantDiscriminatorColumn2_3, TenantDiscriminatorColumn2_3> defaultTenantDiscriminatorColumnContainer;
 
@@ -81,7 +82,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 		this.specifiedMultitenant = isMultitenantElementSpecified();
 		this.specifiedType = this.buildSpecifiedType();
 		this.specifiedIncludeCriteria = this.buildSpecifiedIncludeCriteria();
-		this.tenantDiscriminatorColumnOwner = this.buildTenantDiscriminatorColumnOwner();
+		this.tenantDiscriminatorColumnParentAdapter = this.buildTenantDiscriminatorColumnParentAdapter();
 		this.specifiedTenantDiscriminatorColumnContainer = this.buildSpecifiedTenantDiscriminatorColumnContainer();
 		this.defaultTenantDiscriminatorColumn = this.buildTenantDiscriminatorColumn(null);
 		this.defaultTenantDiscriminatorColumnContainer = this.buildDefaultTenantDiscriminatorColumnContainer();
@@ -368,8 +369,8 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 		}
 	}
 
-	protected TenantDiscriminatorColumn2_3.Owner buildTenantDiscriminatorColumnOwner() {
-		return new TenantDiscriminatorColumnOwner();
+	protected TenantDiscriminatorColumn2_3.ParentAdapter buildTenantDiscriminatorColumnParentAdapter() {
+		return new TenantDiscriminatorColumnParentAdapter();
 	}
 
 	protected ContextListContainer<OrmSpecifiedTenantDiscriminatorColumn2_3, XmlTenantDiscriminatorColumn> buildSpecifiedTenantDiscriminatorColumnContainer() {
@@ -379,7 +380,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 	}
 
 	protected OrmSpecifiedTenantDiscriminatorColumn2_3 buildTenantDiscriminatorColumn(XmlTenantDiscriminatorColumn xmlTenantDiscriminatorColumn) {
-		return new EclipseLinkOrmTenantDiscriminatorColumn2_3(this, this.tenantDiscriminatorColumnOwner, xmlTenantDiscriminatorColumn);
+		return new EclipseLinkOrmTenantDiscriminatorColumn2_3(this.tenantDiscriminatorColumnParentAdapter, xmlTenantDiscriminatorColumn);
 	}
 
 
@@ -456,7 +457,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 	}
 
 	protected VirtualTenantDiscriminatorColumn2_3 buildVirtualTenantDiscriminatorColumn(TenantDiscriminatorColumn2_3 tenantDiscriminatorColumn) {
-		return new EclipseLinkOrmVirtualTenantDiscriminatorColumn2_3(this, this.tenantDiscriminatorColumnOwner, tenantDiscriminatorColumn);
+		return new EclipseLinkOrmVirtualTenantDiscriminatorColumn2_3(this.tenantDiscriminatorColumnParentAdapter, tenantDiscriminatorColumn);
 	}
 
 	protected void removeDefaultTenantDiscriminatorColumn(VirtualTenantDiscriminatorColumn2_3 tenantDiscriminatorColumn) {
@@ -507,11 +508,14 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 	}
 
 
-	// ********** OrmReadOnlyTenantDiscriminatorColumn.Owner implementation **********
+	// ********** tenant discriminator column parent adapter **********
 
-	protected class TenantDiscriminatorColumnOwner 
-		implements TenantDiscriminatorColumn2_3.Owner
+	public class TenantDiscriminatorColumnParentAdapter
+		implements TenantDiscriminatorColumn2_3.ParentAdapter
 	{
+		public JpaContextModel getColumnParent() {
+			return OrmEclipseLinkMultitenancyImpl2_3.this;
+		}
 
 		public String getDefaultContextPropertyName() {
 			return TenantDiscriminatorColumn2_3.DEFAULT_CONTEXT_PROPERTY;

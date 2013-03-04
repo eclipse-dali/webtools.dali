@@ -10,17 +10,16 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.SpecifiedNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaNamedColumn;
 import org.eclipse.jpt.jpa.core.resource.java.DiscriminatorColumnAnnotation;
 
 /**
  * Java named discriminator column
  */
-public abstract class AbstractJavaNamedDiscriminatorColumn<P extends JpaContextModel, A extends DiscriminatorColumnAnnotation, O extends NamedDiscriminatorColumn.Owner>
-	extends AbstractJavaNamedColumn<P, A, O>
+public abstract class AbstractJavaNamedDiscriminatorColumn<PA extends NamedDiscriminatorColumn.ParentAdapter, A extends DiscriminatorColumnAnnotation>
+	extends AbstractJavaNamedColumn<PA, A>
 	implements SpecifiedNamedDiscriminatorColumn
 {
 	protected DiscriminatorType specifiedDiscriminatorType;
@@ -29,12 +28,13 @@ public abstract class AbstractJavaNamedDiscriminatorColumn<P extends JpaContextM
 	protected Integer specifiedLength;
 	protected int defaultLength = DEFAULT_LENGTH;
 
-	protected AbstractJavaNamedDiscriminatorColumn(P parent, O owner) {
-		this(parent, owner, null);
+
+	protected AbstractJavaNamedDiscriminatorColumn(PA parentAdapter) {
+		this(parentAdapter, null);
 	}
 
-	protected AbstractJavaNamedDiscriminatorColumn(P parent, O owner, A columnAnnotation) {
-		super(parent, owner, columnAnnotation);
+	protected AbstractJavaNamedDiscriminatorColumn(PA parentAdapter, A columnAnnotation) {
+		super(parentAdapter, columnAnnotation);
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public abstract class AbstractJavaNamedDiscriminatorColumn<P extends JpaContextM
 	}
 
 	protected DiscriminatorType buildDefaultDiscriminatorType() {
-		return this.owner.getDefaultDiscriminatorType();
+		return this.parentAdapter.getDefaultDiscriminatorType();
 	}
 
 
@@ -148,6 +148,6 @@ public abstract class AbstractJavaNamedDiscriminatorColumn<P extends JpaContextM
 	}
 
 	protected int buildDefaultLength() {
-		return this.owner.getDefaultLength();
+		return this.parentAdapter.getDefaultLength();
 	}
 }

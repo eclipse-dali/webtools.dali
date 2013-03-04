@@ -22,6 +22,7 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.Generator;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
@@ -109,7 +110,7 @@ public abstract class AbstractJavaIdMapping
 	}
 
 	protected JavaSpecifiedColumn buildColumn() {
-		return this.getJpaFactory().buildJavaColumn(this, this);
+		return this.getJpaFactory().buildJavaColumn(this);
 	}
 
 
@@ -360,7 +361,11 @@ public abstract class AbstractJavaIdMapping
 	}
 
 
-	// ********** JavaColumn.Owner implementation **********
+	// ********** column parent adapter **********
+
+	public JpaContextModel getColumnParent() {
+		return this;  // no adapter
+	}
 
 	public ColumnAnnotation getColumnAnnotation() {
 		return (ColumnAnnotation) this.getResourceAttribute().getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);

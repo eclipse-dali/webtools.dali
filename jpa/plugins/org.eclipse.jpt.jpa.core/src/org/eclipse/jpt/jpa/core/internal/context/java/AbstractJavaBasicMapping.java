@@ -20,6 +20,7 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseTemporalConverter;
@@ -100,7 +101,7 @@ public abstract class AbstractJavaBasicMapping
 	}
 
 	protected JavaSpecifiedColumn buildColumn() {
-		return this.getJpaFactory().buildJavaColumn(this, this);
+		return this.getJpaFactory().buildJavaColumn(this);
 	}
 
 
@@ -316,7 +317,11 @@ public abstract class AbstractJavaBasicMapping
 	}
 
 
-	// ********** JavaColumn.Owner implementation **********
+	// ********** column parent adapter **********
+
+	public JpaContextModel getColumnParent() {
+		return this;  // no adapter
+	}
 
 	public ColumnAnnotation getColumnAnnotation() {
 		return (ColumnAnnotation) this.getResourceAttribute().getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
@@ -326,7 +331,7 @@ public abstract class AbstractJavaBasicMapping
 		this.getResourceAttribute().removeAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 
-	public String getDefaultColumnName(NamedColumn column) {
+	public String getDefaultColumnName(NamedColumn col) {
 		return this.getName();
 	}
 

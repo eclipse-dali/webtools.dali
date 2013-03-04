@@ -63,6 +63,7 @@ public interface NamedColumn
 	String getColumnDefinition();
 		String COLUMN_DEFINITION_PROPERTY = "columnDefinition"; //$NON-NLS-1$
 
+
 	// ********** database stuff **********
 
 	/**
@@ -86,14 +87,15 @@ public interface NamedColumn
 	boolean isVirtual();
 
 
-	// ********** owner **********
+	// ********** parent adapter **********
 
 	/**
 	 * Interface allowing columns to be used in multiple places
 	 * (e.g. basic mappings and attribute overrides).
 	 */
-	interface Owner
-	{
+	interface ParentAdapter {
+		JpaContextModel getColumnParent();
+		
 		/**
 		 * Return the name of the table which the column belongs to by default.
 		 */

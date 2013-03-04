@@ -20,6 +20,7 @@ import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
@@ -87,7 +88,7 @@ public abstract class AbstractJavaVersionMapping
 	}
 
 	protected JavaSpecifiedColumn buildColumn() {
-		return this.getJpaFactory().buildJavaColumn(this, this);
+		return this.getJpaFactory().buildJavaColumn(this);
 	}
 
 
@@ -217,7 +218,11 @@ public abstract class AbstractJavaVersionMapping
 	}
 
 
-	// ********** JavaColumn.Owner implementation **********
+	// ********** column parent adapter **********
+
+	public JpaContextModel getColumnParent() {
+		return this;  // no adapter
+	}
 
 	public ColumnAnnotation getColumnAnnotation() {
 		return (ColumnAnnotation) this.getResourceAttribute().getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);

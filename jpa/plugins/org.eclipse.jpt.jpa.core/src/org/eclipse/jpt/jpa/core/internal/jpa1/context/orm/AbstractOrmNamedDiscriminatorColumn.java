@@ -10,17 +10,16 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.SpecifiedNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmNamedColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlBaseDiscriminatorColumn;
 
 /**
  * <code>orm.xml</code> named discriminator column
  */
-public abstract class AbstractOrmNamedDiscriminatorColumn<X extends XmlBaseDiscriminatorColumn, O extends NamedDiscriminatorColumn.Owner>
-	extends AbstractOrmNamedColumn<JpaContextModel, X, O>
+public abstract class AbstractOrmNamedDiscriminatorColumn<PA extends NamedDiscriminatorColumn.ParentAdapter, X extends XmlBaseDiscriminatorColumn>
+	extends AbstractOrmNamedColumn<PA, X>
 	implements SpecifiedNamedDiscriminatorColumn
 {
 	protected DiscriminatorType specifiedDiscriminatorType;
@@ -30,12 +29,12 @@ public abstract class AbstractOrmNamedDiscriminatorColumn<X extends XmlBaseDiscr
 	protected int defaultLength = DEFAULT_LENGTH;
 
 
-	protected AbstractOrmNamedDiscriminatorColumn(JpaContextModel parent, O owner) {
-		this(parent, owner, null);
+	protected AbstractOrmNamedDiscriminatorColumn(PA parentAdapter) {
+		this(parentAdapter, null);
 	}
 
-	protected AbstractOrmNamedDiscriminatorColumn(JpaContextModel parent, O owner, X xmlColumn) {
-		super(parent, owner, xmlColumn);
+	protected AbstractOrmNamedDiscriminatorColumn(PA parentAdapter, X xmlColumn) {
+		super(parentAdapter, xmlColumn);
 		this.specifiedDiscriminatorType = this.buildSpecifiedDiscriminatorType();
 		this.specifiedLength = this.buildSpecifiedLength();
 	}
@@ -99,7 +98,7 @@ public abstract class AbstractOrmNamedDiscriminatorColumn<X extends XmlBaseDiscr
 	}
 
 	protected DiscriminatorType buildDefaultDiscriminatorType() {
-		return this.owner.getDefaultDiscriminatorType();
+		return this.parentAdapter.getDefaultDiscriminatorType();
 	}
 
 
@@ -144,6 +143,6 @@ public abstract class AbstractOrmNamedDiscriminatorColumn<X extends XmlBaseDiscr
 	}
 
 	protected int buildDefaultLength() {
-		return this.owner.getDefaultLength();
+		return this.parentAdapter.getDefaultLength();
 	}
 }

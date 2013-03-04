@@ -39,7 +39,7 @@ public interface TableColumn
 	TextRange getTableNameValidationTextRange();
 
 
-	// ********** misc **********
+	// ********** validation **********
 
 	/**
 	 * Return whether the column's table name is invalid.
@@ -52,14 +52,14 @@ public interface TableColumn
 	Iterable<String> getCandidateTableNames();
 
 
-	// ********** owner **********
+	// ********** parent adapter **********
 
 	/**
 	 * Interface allowing columns to be used in multiple places
 	 * (e.g. basic mappings and attribute overrides).
 	 */
-	interface Owner
-		extends NamedColumn.Owner
+	interface ParentAdapter
+		extends NamedColumn.ParentAdapter
 	{
 		/**
 		 * return whether the given table cannot be explicitly specified

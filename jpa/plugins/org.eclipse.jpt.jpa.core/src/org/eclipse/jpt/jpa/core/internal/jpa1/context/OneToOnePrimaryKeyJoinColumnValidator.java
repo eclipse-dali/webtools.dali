@@ -20,7 +20,7 @@ public class OneToOnePrimaryKeyJoinColumnValidator
 	public OneToOnePrimaryKeyJoinColumnValidator(
 				PersistentAttribute persistentAttribute,
 				BaseJoinColumn column,
-				BaseJoinColumn.Owner owner) {
+				BaseJoinColumn.ParentAdapter owner) {
 		super(persistentAttribute, column, owner);
 	}
 

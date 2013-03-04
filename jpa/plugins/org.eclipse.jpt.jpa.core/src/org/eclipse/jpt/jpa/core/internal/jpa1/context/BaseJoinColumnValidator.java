@@ -19,11 +19,11 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 public abstract class BaseJoinColumnValidator<C extends BaseJoinColumn>
 	extends AbstractNamedColumnValidator<C>
 {
-	private final BaseJoinColumn.Owner joinColumnOwner;
+	private final BaseJoinColumn.ParentAdapter joinColumnOwner;
 
 	protected BaseJoinColumnValidator(
 				C column,
-				BaseJoinColumn.Owner joinColumnOwner,
+				BaseJoinColumn.ParentAdapter joinColumnOwner,
 				TableDescriptionProvider provider) {
 		super(column, provider);
 		this.joinColumnOwner = joinColumnOwner;
@@ -32,7 +32,7 @@ public abstract class BaseJoinColumnValidator<C extends BaseJoinColumn>
 	protected BaseJoinColumnValidator(
 				PersistentAttribute persistentAttribute,
 				C column,
-				BaseJoinColumn.Owner joinColumnOwner,
+				BaseJoinColumn.ParentAdapter joinColumnOwner,
 				TableDescriptionProvider provider) {
 		super(persistentAttribute, column, provider);
 		this.joinColumnOwner = joinColumnOwner;

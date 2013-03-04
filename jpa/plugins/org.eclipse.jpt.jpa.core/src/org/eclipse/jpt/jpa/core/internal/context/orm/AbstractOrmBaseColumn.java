@@ -10,16 +10,16 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
+import org.eclipse.jpt.jpa.core.context.TableColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedBaseColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlBaseColumn;
 
 /**
  * <code>orm.xml</code> column or join column
  */
-public abstract class AbstractOrmBaseColumn<X extends XmlBaseColumn, O extends BaseColumn.Owner>
-	extends AbstractOrmNamedColumn<JpaContextModel, X, O>
+public abstract class AbstractOrmBaseColumn<PA extends TableColumn.ParentAdapter, X extends XmlBaseColumn>
+	extends AbstractOrmNamedColumn<PA, X>
 	implements OrmSpecifiedBaseColumn
 {
 	protected String specifiedTableName;
@@ -37,12 +37,12 @@ public abstract class AbstractOrmBaseColumn<X extends XmlBaseColumn, O extends B
 
 	// ********** constructor/initialization **********
 
-	protected AbstractOrmBaseColumn(JpaContextModel parent, O owner) {
-		this(parent, owner, null);
+	protected AbstractOrmBaseColumn(PA parentAdapter) {
+		this(parentAdapter, null);
 	}
 
-	protected AbstractOrmBaseColumn(JpaContextModel parent, O owner, X xmlColumn) {
-		super(parent, owner, xmlColumn);
+	protected AbstractOrmBaseColumn(PA parentAdapter, X xmlColumn) {
+		super(parentAdapter, xmlColumn);
 		this.specifiedTableName = this.buildSpecifiedTableName();
 		this.specifiedUnique = this.buildSpecifiedUnique();
 		this.specifiedNullable = this.buildSpecifiedNullable();
@@ -112,7 +112,7 @@ public abstract class AbstractOrmBaseColumn<X extends XmlBaseColumn, O extends B
 	}
 
 	protected String buildDefaultTableName() {
-		return this.owner.getDefaultTableName();
+		return this.parentAdapter.getDefaultTableName();
 	}
 
 
@@ -274,11 +274,11 @@ public abstract class AbstractOrmBaseColumn<X extends XmlBaseColumn, O extends B
 	}
 
 	public boolean tableNameIsInvalid() {
-		return this.owner.tableNameIsInvalid(this.getTableName());
+		return this.parentAdapter.tableNameIsInvalid(this.getTableName());
 	}
 
 	public Iterable<String> getCandidateTableNames() {
-		return this.owner.getCandidateTableNames();
+		return this.parentAdapter.getCandidateTableNames();
 	}
 
 

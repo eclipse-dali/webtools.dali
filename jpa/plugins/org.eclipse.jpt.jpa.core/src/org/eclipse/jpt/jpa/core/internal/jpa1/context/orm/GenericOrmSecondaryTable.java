@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
@@ -45,14 +46,14 @@ public class GenericOrmSecondaryTable
 	protected /* final */ XmlSecondaryTable xmlSecondaryTable;
 
 	protected final ContextListContainer<OrmSpecifiedPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumnContainer;
-	protected final BaseJoinColumn.Owner primaryKeyJoinColumnOwner;
+	protected final BaseJoinColumn.ParentAdapter primaryKeyJoinColumnParentAdapter;
 
 	protected OrmSpecifiedPrimaryKeyJoinColumn defaultPrimaryKeyJoinColumn;
 
 
 	public GenericOrmSecondaryTable(OrmEntity parent, Owner owner, XmlSecondaryTable xmlSecondaryTable) {
 		super(parent, owner, xmlSecondaryTable);
-		this.primaryKeyJoinColumnOwner = this.buildPrimaryKeyJoinColumnOwner();
+		this.primaryKeyJoinColumnParentAdapter = this.buildPrimaryKeyJoinColumnParentAdapter();
 		this.specifiedPrimaryKeyJoinColumnContainer = this.buildSpecifiedPrimaryKeyJoinColumnContainer();
 	}
 
@@ -227,8 +228,8 @@ public class GenericOrmSecondaryTable
 		}
 	}
 
-	protected BaseJoinColumn.Owner buildPrimaryKeyJoinColumnOwner() {
-		return new PrimaryKeyJoinColumnOwner();
+	protected BaseJoinColumn.ParentAdapter buildPrimaryKeyJoinColumnParentAdapter() {
+		return new PrimaryKeyJoinColumnParentAdapter();
 	}
 
 
@@ -289,7 +290,7 @@ public class GenericOrmSecondaryTable
 	}
 
 	protected OrmSpecifiedPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn xmlJoinColumn) {
-		return this.getContextModelFactory().buildOrmPrimaryKeyJoinColumn(this, this.primaryKeyJoinColumnOwner, xmlJoinColumn);
+		return this.getContextModelFactory().buildOrmPrimaryKeyJoinColumn(this.primaryKeyJoinColumnParentAdapter, xmlJoinColumn);
 	}
 
 
@@ -349,11 +350,15 @@ public class GenericOrmSecondaryTable
 		return null;
 	}
 
-	// ********** primary key join column owner adapter **********
+	// ********** primary key join column parent adapter **********
 
-	protected class PrimaryKeyJoinColumnOwner
-		implements BaseJoinColumn.Owner
+	public class PrimaryKeyJoinColumnParentAdapter
+		implements BaseJoinColumn.ParentAdapter
 	{
+		public JpaContextModel getColumnParent() {
+			return GenericOrmSecondaryTable.this;
+		}
+
 		protected OrmEntity getEntity() {
 			return GenericOrmSecondaryTable.this.getEntity();
 		}

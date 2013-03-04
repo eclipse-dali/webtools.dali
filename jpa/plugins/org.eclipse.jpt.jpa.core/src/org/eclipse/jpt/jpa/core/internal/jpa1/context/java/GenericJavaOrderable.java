@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
@@ -19,6 +20,7 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.OrderColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaOrderColumn2_0;
+import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.OrderColumn2_0AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSpecifiedOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderable2_0;
@@ -49,6 +51,9 @@ public class GenericJavaOrderable
 	protected boolean noOrdering = false;
 	protected boolean pkOrdering = false;
 	protected boolean customOrdering = false;
+
+	// JPA 1.0
+	protected OrderColumn2_0Annotation nullOrderColumnAnnotation;
 
 	// JPA 2.0
 	protected final ParentAdapter<JavaAttributeMapping> parentAdapter;
@@ -311,10 +316,10 @@ public class GenericJavaOrderable
 	}
 
 	protected JavaSpecifiedOrderColumn2_0 buildOrderColumn() {
-		NamedColumn.Owner columnOwner = new OrderColumnOwner();
+		JavaSpecifiedOrderColumn2_0.ParentAdapter columnParentAdapter = new OrderColumnParentAdapter();
 		return this.isJpa2_0Compatible() ?
-				this.getJpaFactory2_0().buildJavaOrderColumn(this, columnOwner) :
-				new GenericJavaOrderColumn2_0(this, columnOwner);
+				this.getJpaFactory2_0().buildJavaOrderColumn(columnParentAdapter) :
+				new GenericJavaOrderColumn2_0(columnParentAdapter);
 	}
 
 
@@ -363,6 +368,28 @@ public class GenericJavaOrderable
 
 	protected void removeOrderColumnAnnotation_() {
 		this.getResourceAttribute().removeAnnotation(OrderColumn2_0Annotation.ANNOTATION_NAME);
+	}
+
+	/**
+	 * If we are in a JPA 1.0 project, return a <em>null</em> annotation.
+	 */
+	public OrderColumn2_0Annotation getNonNullOrderColumnAnnotation() {
+		// hmmmm...
+		return this.isJpa2_0Compatible() ?
+				(OrderColumn2_0Annotation) this.getResourceAttribute().getNonNullAnnotation(OrderColumn2_0Annotation.ANNOTATION_NAME) :
+				this.getNullOrderColumnAnnotation();
+	}
+
+	protected OrderColumn2_0Annotation getNullOrderColumnAnnotation() {
+		if (this.nullOrderColumnAnnotation == null) {
+			this.nullOrderColumnAnnotation = this.buildNullOrderColumnAnnotation();
+		}
+		return this.nullOrderColumnAnnotation;
+	}
+
+	protected OrderColumn2_0Annotation buildNullOrderColumnAnnotation() {
+		// hmmmm...
+		return (OrderColumn2_0Annotation) OrderColumn2_0AnnotationDefinition.instance().buildNullAnnotation(this.getResourceAttribute());
 	}
 
 
@@ -448,11 +475,15 @@ public class GenericJavaOrderable
 	}
 
 
-	// ********** order column owner (JPA 2.0) **********
+	// ********** order column parent adapter (JPA 2.0) **********
 
-	protected class OrderColumnOwner
-		implements NamedColumn.Owner
+	public class OrderColumnParentAdapter
+		implements JavaSpecifiedOrderColumn2_0.ParentAdapter
 	{
+		public JavaOrderable2_0 getColumnParent() {
+			return GenericJavaOrderable.this;
+		}
+
 		public String getDefaultTableName() {
 			return GenericJavaOrderable.this.getDefaultTableName();
 		}
@@ -471,6 +502,14 @@ public class GenericJavaOrderable
 
 		public JptValidator buildColumnValidator(NamedColumn column) {
 			return new OrderColumnValidator(this.getPersistentAttribute(), (SpecifiedOrderColumn2_0) column);
+		}
+
+		public OrderColumn2_0Annotation getColumnAnnotation() {
+			return GenericJavaOrderable.this.getNonNullOrderColumnAnnotation();
+		}
+
+		public void removeColumnAnnotation() {
+			GenericJavaOrderable.this.removeOrderColumnAnnotation_();
 		}
 
 		protected JavaSpecifiedPersistentAttribute getPersistentAttribute() {
