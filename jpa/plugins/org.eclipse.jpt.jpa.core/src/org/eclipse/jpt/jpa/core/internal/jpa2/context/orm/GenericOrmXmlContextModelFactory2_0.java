@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.Orderable;
-import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
@@ -72,8 +71,8 @@ public class GenericOrmXmlContextModelFactory2_0
 		return new GenericOrmOrphanRemoval2_0(parent);
 	}
 
-	public OrmCollectionTable2_0 buildOrmCollectionTable(OrmElementCollectionMapping2_0 parent, SpecifiedTable.Owner owner) {
-		return new GenericOrmCollectionTable2_0(parent, owner);
+	public OrmCollectionTable2_0 buildOrmCollectionTable(OrmCollectionTable2_0.ParentAdapter parentAdapter) {
+		return new GenericOrmCollectionTable2_0(parentAdapter);
 	}
 	
 	public OrmOrderable2_0 buildOrmOrderable(Orderable2_0.ParentAdapter<OrmAttributeMapping> parentAdapter) {

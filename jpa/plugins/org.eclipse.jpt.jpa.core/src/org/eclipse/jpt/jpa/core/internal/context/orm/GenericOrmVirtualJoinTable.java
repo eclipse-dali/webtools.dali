@@ -38,7 +38,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>orm.xml</code> virtual join table
  */
 public class GenericOrmVirtualJoinTable
-	extends AbstractOrmVirtualReferenceTable<VirtualJoinTableRelationshipStrategy, JoinTable>
+	extends AbstractOrmVirtualReferenceTable<VirtualJoinTableRelationshipStrategy, VirtualJoinTable.ParentAdapter, JoinTable>
 	implements VirtualJoinTable
 {
 
@@ -48,8 +48,8 @@ public class GenericOrmVirtualJoinTable
 	protected VirtualJoinColumn defaultInverseJoinColumn;
 
 
-	public GenericOrmVirtualJoinTable(VirtualJoinTableRelationshipStrategy parent, Owner owner, JoinTable overriddenTable) {
-		super(parent, owner, overriddenTable);
+	public GenericOrmVirtualJoinTable(VirtualJoinTable.ParentAdapter parentAdapter, JoinTable overriddenTable) {
+		super(parentAdapter, overriddenTable);
 		this.inverseJoinColumnParentAdapter = this.buildInverseJoinColumnParentAdapter();
 		this.specifiedInverseJoinColumnContainer = this.buildSpecifiedInverseJoinColumnContainer();
 	}

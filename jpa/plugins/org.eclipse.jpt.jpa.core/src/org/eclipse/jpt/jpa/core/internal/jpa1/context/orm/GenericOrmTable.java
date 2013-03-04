@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.core.resource.xml.EmfTools;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
+import org.eclipse.jpt.jpa.core.context.orm.OrmTable;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmTable;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntity;
@@ -20,10 +21,11 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlTable;
  * <code>orm.xml</code> table
  */
 public class GenericOrmTable
-	extends AbstractOrmTable<OrmEntity, XmlTable>
+	extends AbstractOrmTable<OrmEntity, OrmTable.ParentAdapter, XmlTable>
+	implements OrmTable
 {
-	public GenericOrmTable(OrmEntity parent, Owner owner) {
-		super(parent, owner);
+	public GenericOrmTable(OrmTable.ParentAdapter parentAdapter) {
+		super(parentAdapter);
 	}
 
 

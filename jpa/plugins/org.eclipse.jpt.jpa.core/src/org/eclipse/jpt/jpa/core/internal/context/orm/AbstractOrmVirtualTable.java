@@ -26,11 +26,11 @@ import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public abstract class AbstractOrmVirtualTable<P extends JpaContextModel, T extends Table>
+public abstract class AbstractOrmVirtualTable<P extends JpaContextModel, PA extends Table.ParentAdapter<P>, T extends Table>
 	extends AbstractOrmXmlContextModel<P>
 	implements VirtualTable
 {
-	protected final Owner owner;
+	protected final PA parentAdapter;
 
 	protected final T overriddenTable;
 
@@ -46,9 +46,9 @@ public abstract class AbstractOrmVirtualTable<P extends JpaContextModel, T exten
 	protected final ContextListContainer<VirtualUniqueConstraint, UniqueConstraint> uniqueConstraintContainer;
 
 
-	protected AbstractOrmVirtualTable(P parent, Owner owner, T overriddenTable) {
-		super(parent);
-		this.owner = owner;
+	protected AbstractOrmVirtualTable(PA parentAdapter, T overriddenTable) {
+		super(parentAdapter.getTableParent());
+		this.parentAdapter = parentAdapter;
 		this.overriddenTable = overriddenTable;
 		this.uniqueConstraintContainer = this.buildUniqueConstraintContainer();
 	}
@@ -320,7 +320,7 @@ public abstract class AbstractOrmVirtualTable<P extends JpaContextModel, T exten
 	}
 
 	protected JptValidator buildTableValidator() {
-		return this.owner.buildTableValidator(this);
+		return this.parentAdapter.buildTableValidator(this);
 	}
 
 	public TextRange getValidationTextRange() {

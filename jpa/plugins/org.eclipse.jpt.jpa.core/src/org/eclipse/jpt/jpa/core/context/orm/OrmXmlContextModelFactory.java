@@ -16,14 +16,11 @@ import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.Orderable;
-import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
-import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.VirtualColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinTable;
-import org.eclipse.jpt.jpa.core.context.VirtualJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.VirtualOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.VirtualUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
@@ -117,19 +114,19 @@ public interface OrmXmlContextModelFactory
 	 */
 	OrmPersistentAttribute buildVirtualOrmPersistentProperty(OrmPersistentType parent, JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter);
 
-	OrmTable buildOrmTable(OrmEntity parent, SpecifiedTable.Owner owner);
+	OrmSpecifiedTable buildOrmTable(OrmTable.ParentAdapter parentAdapter);
 
-	OrmSpecifiedSecondaryTable buildOrmSecondaryTable(OrmEntity parent, SpecifiedTable.Owner owner, XmlSecondaryTable xmlSecondaryTable);
+	OrmSpecifiedSecondaryTable buildOrmSecondaryTable(OrmSpecifiedSecondaryTable.ParentAdapter parentAdapter, XmlSecondaryTable xmlSecondaryTable);
 
-	OrmVirtualSecondaryTable buildOrmVirtualSecondaryTable(OrmEntity parent, Table.Owner owner, JavaSpecifiedSecondaryTable javaSecondaryTable);
+	OrmVirtualSecondaryTable buildOrmVirtualSecondaryTable(OrmVirtualSecondaryTable.ParentAdapter parentAdapter, JavaSpecifiedSecondaryTable javaSecondaryTable);
 
 	OrmSpecifiedPrimaryKeyJoinColumn buildOrmPrimaryKeyJoinColumn(BaseJoinColumn.ParentAdapter parentAdapter, XmlPrimaryKeyJoinColumn resourcePrimaryKeyJoinColumn);
 
 	OrmVirtualPrimaryKeyJoinColumn buildOrmVirtualPrimaryKeyJoinColumn(BaseJoinColumn.ParentAdapter parentAdapter, JavaSpecifiedPrimaryKeyJoinColumn javaPrimaryKeyJoinColumn);
 
-	OrmSpecifiedJoinTable buildOrmJoinTable(OrmSpecifiedJoinTableRelationshipStrategy parent, SpecifiedTable.Owner owner);
+	OrmSpecifiedJoinTable buildOrmJoinTable(OrmSpecifiedJoinTable.ParentAdapter parentAdapter);
 
-	VirtualJoinTable buildOrmVirtualJoinTable(VirtualJoinTableRelationshipStrategy parent, Table.Owner owner, JoinTable overriddenTable);
+	VirtualJoinTable buildOrmVirtualJoinTable(VirtualJoinTable.ParentAdapter parentAdapter, JoinTable overriddenTable);
 
 	OrmSpecifiedJoinColumn buildOrmJoinColumn(JoinColumn.ParentAdapter parentAdapter, XmlJoinColumn resourceJoinColumn);
 

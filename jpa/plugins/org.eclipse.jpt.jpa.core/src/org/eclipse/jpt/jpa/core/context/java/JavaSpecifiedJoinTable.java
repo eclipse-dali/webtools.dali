@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.context.java;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTable;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
 
 /**
@@ -43,4 +44,13 @@ public interface JavaSpecifiedJoinTable
 	JavaSpecifiedJoinColumn addSpecifiedInverseJoinColumn(int index);
 
 	JavaSpecifiedJoinColumn getDefaultInverseJoinColumn();
+
+
+	// ********** parent adapter **********
+
+	interface ParentAdapter
+		extends Table.ParentAdapter<JavaSpecifiedJoinTableRelationshipStrategy>
+	{
+		// specify generic argument
+	}
 }

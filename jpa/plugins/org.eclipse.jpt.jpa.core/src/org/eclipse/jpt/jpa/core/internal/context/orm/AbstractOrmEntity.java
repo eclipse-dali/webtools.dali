@@ -61,7 +61,6 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
-import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.TableColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -74,6 +73,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
+import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdClassReference;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOverrideContainer;
@@ -82,6 +82,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedSecondaryTable;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualSecondaryTable;
@@ -136,11 +137,11 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	protected final OrmIdClassReference idClassReference;
 
-	protected final OrmTable table;
+	protected final OrmSpecifiedTable table;
 	protected boolean specifiedTableIsAllowed;
 	protected boolean tableIsUndefined;
 
-	protected final Table.Owner secondaryTableOwner;
+	protected final SecondaryTableParentAdapter secondaryTableParentAdapter;
 	protected final ContextListContainer<OrmSpecifiedSecondaryTable, XmlSecondaryTable> specifiedSecondaryTableContainer;
 	protected final ContextListContainer<OrmVirtualSecondaryTable, JavaSpecifiedSecondaryTable> virtualSecondaryTableContainer;
 
@@ -182,7 +183,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		this.table = this.buildTable();
 		// start with the entity as the root - it will be recalculated in update()
 		this.rootEntity = this;
-		this.secondaryTableOwner = this.buildSecondaryTableOwner();
+		this.secondaryTableParentAdapter = this.buildSecondaryTableParentAdapter();
 		this.specifiedSecondaryTableContainer = this.buildSpecifiedSecondaryTableContainer();
 		this.virtualSecondaryTableContainer = this.buildVirtualSecondaryTableContainer();
 		this.primaryKeyJoinColumnParentAdapter = this.buildPrimaryKeyJoinColumnParentAdapter();
@@ -384,16 +385,16 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	// ********** table **********
 
-	public OrmTable getTable() {
+	public OrmSpecifiedTable getTable() {
 		return this.table;
 	}
 
-	protected OrmTable buildTable() {
-		return this.getContextModelFactory().buildOrmTable(this, this.buildTableOwner());
+	protected OrmSpecifiedTable buildTable() {
+		return this.getContextModelFactory().buildOrmTable(this.buildTableParentAdapter());
 	}
 
-	protected SpecifiedTable.Owner buildTableOwner() {
-		return new TableOwner();
+	protected OrmTable.ParentAdapter buildTableParentAdapter() {
+		return new TableParentAdapter();
 	}
 
 	public boolean specifiedTableIsAllowed() {
@@ -469,11 +470,14 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 						this.getContextDefaultCatalog();
 	}
 
-	public static class TableOwner
-		implements Table.Owner
+	public class TableParentAdapter
+		implements OrmTable.ParentAdapter
 	{
-		public JptValidator buildTableValidator(Table table) {
-			return new TableValidator(table);
+		public OrmEntity getTableParent() {
+			return AbstractOrmEntity.this;
+		}
+		public JptValidator buildTableValidator(Table t) {
+			return new TableValidator(t);
 		}
 	}
 
@@ -557,7 +561,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected OrmSpecifiedSecondaryTable buildSpecifiedSecondaryTable(XmlSecondaryTable xmlSecondaryTable) {
-		return this.getContextModelFactory().buildOrmSecondaryTable(this, this.secondaryTableOwner, xmlSecondaryTable);
+		return this.getContextModelFactory().buildOrmSecondaryTable(this.secondaryTableParentAdapter, xmlSecondaryTable);
 	}
 
 	protected void clearSpecifiedSecondaryTables() {
@@ -653,7 +657,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected OrmVirtualSecondaryTable buildVirtualSecondaryTable(JavaSpecifiedSecondaryTable javaSecondaryTable) {
-		return this.getContextModelFactory().buildOrmVirtualSecondaryTable(this, this.secondaryTableOwner, javaSecondaryTable);
+		return this.getContextModelFactory().buildOrmVirtualSecondaryTable(this.secondaryTableParentAdapter, javaSecondaryTable);
 	}
 
 	protected void removeVirtualSecondaryTable(OrmVirtualSecondaryTable secondaryTable) {
@@ -731,15 +735,18 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		// the virtual secondary tables will be built during the update
 	}
 
-	protected SpecifiedTable.Owner buildSecondaryTableOwner() {
-		return new SecondaryTableOwner();
+	protected SecondaryTableParentAdapter buildSecondaryTableParentAdapter() {
+		return new SecondaryTableParentAdapter();
 	}
 
-	public static class SecondaryTableOwner
-		implements Table.Owner
+	public class SecondaryTableParentAdapter
+		implements OrmSpecifiedSecondaryTable.ParentAdapter, OrmVirtualSecondaryTable.ParentAdapter
 	{
-		public JptValidator buildTableValidator(Table table) {
-			return new SecondaryTableValidator((SecondaryTable) table);
+		public OrmEntity getTableParent() {
+			return AbstractOrmEntity.this;
+		}
+		public JptValidator buildTableValidator(Table t) {
+			return new SecondaryTableValidator((SecondaryTable) t);
 		}
 	}
 

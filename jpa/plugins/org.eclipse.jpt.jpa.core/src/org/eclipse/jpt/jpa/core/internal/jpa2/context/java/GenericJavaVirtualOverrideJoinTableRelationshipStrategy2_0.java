@@ -28,7 +28,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaVirtualOverrideJoinTableRelationshipStrategy2_0
 	extends AbstractJavaContextModel<VirtualOverrideRelationship2_0>
-	implements VirtualJoinTableRelationshipStrategy, Table.Owner
+	implements VirtualJoinTableRelationshipStrategy, VirtualJoinTable.ParentAdapter
 {
 	protected VirtualJoinTable joinTable;
 
@@ -80,7 +80,7 @@ public class GenericJavaVirtualOverrideJoinTableRelationshipStrategy2_0
 	}
 
 	protected VirtualJoinTable buildJoinTable(JoinTable overriddenJoinTable) {
-		return this.getJpaFactory().buildJavaVirtualJoinTable(this, this, overriddenJoinTable);
+		return this.getJpaFactory().buildJavaVirtualJoinTable(this, overriddenJoinTable);
 	}
 
 
@@ -110,6 +110,10 @@ public class GenericJavaVirtualOverrideJoinTableRelationshipStrategy2_0
 
 	public String getJoinTableDefaultName() {
 		return MappingTools.buildJoinTableDefaultName(this.getRelationship());
+	}
+
+	public VirtualJoinTableRelationshipStrategy getTableParent() {
+		return this;
 	}
 
 

@@ -14,7 +14,6 @@ import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaProject.Config;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -111,8 +110,8 @@ public class EclipseLink2_0JpaFactory
 		return new GenericJavaOrphanRemoval2_0(parent);
 	}
 
-	public JavaCollectionTable2_0 buildJavaCollectionTable(JavaElementCollectionMapping2_0 parent, SpecifiedTable.Owner owner) {
-		return new GenericJavaCollectionTable2_0(parent, owner);
+	public JavaCollectionTable2_0 buildJavaCollectionTable(JavaCollectionTable2_0.ParentAdapter parentAdapter) {
+		return new GenericJavaCollectionTable2_0(parentAdapter);
 	}
 
 	public JavaSpecifiedOrderColumn2_0 buildJavaOrderColumn(JavaSpecifiedOrderColumn2_0.ParentAdapter parentAdapter) {

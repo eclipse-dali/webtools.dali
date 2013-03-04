@@ -28,14 +28,11 @@ import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
-import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.VirtualColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinTable;
-import org.eclipse.jpt.jpa.core.context.VirtualJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.VirtualOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.VirtualUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.Accessor;
@@ -71,11 +68,11 @@ import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTable;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedSecondaryTable;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaTableGenerator;
@@ -240,8 +237,8 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaEmbeddable(parent, embeddableAnnotation);
 	}
 	
-	public JavaTable buildJavaTable(JavaEntity parent, SpecifiedTable.Owner owner) {
-		return new GenericJavaTable(parent, owner);
+	public JavaSpecifiedTable buildJavaTable(JavaTable.ParentAdapter parentAdapter) {
+		return new GenericJavaTable(parentAdapter);
 	}
 	
 	public JavaSpecifiedColumn buildJavaColumn(JavaSpecifiedColumn.ParentAdapter parentAdapter) {
@@ -264,16 +261,16 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaVirtualJoinColumn(parentAdapter, overriddenColumn);
 	}
 	
-	public JavaSpecifiedJoinTable buildJavaJoinTable(JavaSpecifiedJoinTableRelationshipStrategy parent, SpecifiedTable.Owner owner) {
-		return new GenericJavaJoinTable(parent, owner);
+	public JavaSpecifiedJoinTable buildJavaJoinTable(JavaSpecifiedJoinTable.ParentAdapter parentAdapter) {
+		return new GenericJavaJoinTable(parentAdapter);
 	}
 	
-	public VirtualJoinTable buildJavaVirtualJoinTable(VirtualJoinTableRelationshipStrategy parent, Table.Owner owner, JoinTable overriddenTable) {
-		return new GenericJavaVirtualJoinTable(parent, owner, overriddenTable);
+	public VirtualJoinTable buildJavaVirtualJoinTable(VirtualJoinTable.ParentAdapter parentAdapter, JoinTable overriddenTable) {
+		return new GenericJavaVirtualJoinTable(parentAdapter, overriddenTable);
 	}
 	
-	public JavaSpecifiedSecondaryTable buildJavaSecondaryTable(JavaEntity parent, SpecifiedTable.Owner owner, SecondaryTableAnnotation tableAnnotation) {
-		return new GenericJavaSecondaryTable(parent, owner, tableAnnotation);
+	public JavaSpecifiedSecondaryTable buildJavaSecondaryTable(JavaSpecifiedSecondaryTable.ParentAdapter parentAdapter, SecondaryTableAnnotation tableAnnotation) {
+		return new GenericJavaSecondaryTable(parentAdapter, tableAnnotation);
 	}
 	
 	public JavaBasicMapping buildJavaBasicMapping(JavaSpecifiedPersistentAttribute parent) {

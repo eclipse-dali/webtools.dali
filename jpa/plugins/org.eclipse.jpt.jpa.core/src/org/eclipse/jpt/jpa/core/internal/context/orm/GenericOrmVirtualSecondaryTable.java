@@ -33,7 +33,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>orm.xml</code> virtual secondary table
  */
 public class GenericOrmVirtualSecondaryTable
-	extends AbstractOrmVirtualTable<OrmEntity, JavaSpecifiedSecondaryTable>
+	extends AbstractOrmVirtualTable<OrmEntity, OrmVirtualSecondaryTable.ParentAdapter, JavaSpecifiedSecondaryTable>
 	implements OrmVirtualSecondaryTable
 {
 
@@ -43,8 +43,8 @@ public class GenericOrmVirtualSecondaryTable
 	protected OrmVirtualPrimaryKeyJoinColumn defaultPrimaryKeyJoinColumn;
 
 
-	public GenericOrmVirtualSecondaryTable(OrmEntity parent, Owner owner, JavaSpecifiedSecondaryTable overriddenTable) {
-		super(parent, owner, overriddenTable);
+	public GenericOrmVirtualSecondaryTable(OrmVirtualSecondaryTable.ParentAdapter parentAdapter, JavaSpecifiedSecondaryTable overriddenTable) {
+		super(parentAdapter, overriddenTable);
 		this.primaryKeyJoinColumnParentAdapter = this.buildPrimaryKeyJoinColumnParentAdapter();
 		this.specifiedPrimaryKeyJoinColumnContainer = this.buildSpecifiedPrimaryKeyJoinColumnContainer();
 	}

@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedReferenceTable;
  * @since 2.3
  */
 public interface OrmSpecifiedReferenceTable
-	extends SpecifiedReferenceTable, OrmTable
+	extends SpecifiedReferenceTable, OrmSpecifiedTable
 {
 	// ********** join columns **********
 

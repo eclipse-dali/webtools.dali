@@ -41,7 +41,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>orm.xml</code> join table
  */
 public class GenericOrmJoinTable
-	extends GenericOrmReferenceTable<OrmSpecifiedJoinTableRelationshipStrategy, XmlJoinTable>
+	extends GenericOrmReferenceTable<OrmSpecifiedJoinTableRelationshipStrategy, OrmSpecifiedJoinTable.ParentAdapter, XmlJoinTable>
 	implements OrmSpecifiedJoinTable
 {
 	protected final ContextListContainer<OrmSpecifiedJoinColumn, XmlJoinColumn> specifiedInverseJoinColumnContainer;
@@ -50,8 +50,8 @@ public class GenericOrmJoinTable
 	protected OrmSpecifiedJoinColumn defaultInverseJoinColumn;
 
 
-	public GenericOrmJoinTable(OrmSpecifiedJoinTableRelationshipStrategy parent, Owner owner) {
-		super(parent, owner);
+	public GenericOrmJoinTable(OrmSpecifiedJoinTable.ParentAdapter parentAdapter) {
+		super(parentAdapter);
 		this.inverseJoinColumnParentAdapter = this.buildInverseJoinColumnParentAdapter();
 		this.specifiedInverseJoinColumnContainer = this.buildSpecifiedInverseJoinColumnContainer();
 	}

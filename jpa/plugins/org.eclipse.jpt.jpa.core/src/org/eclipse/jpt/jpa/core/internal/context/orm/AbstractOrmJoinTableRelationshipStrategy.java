@@ -13,7 +13,6 @@ import java.util.List;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationship;
@@ -28,7 +27,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractOrmJoinTableRelationshipStrategy<P extends OrmJoinTableRelationship>
 	extends AbstractOrmXmlContextModel<P>
-	implements OrmSpecifiedJoinTableRelationshipStrategy, Table.Owner
+	implements OrmSpecifiedJoinTableRelationshipStrategy, OrmSpecifiedJoinTable.ParentAdapter
 {
 	protected OrmSpecifiedJoinTable joinTable;
 
@@ -91,7 +90,7 @@ public abstract class AbstractOrmJoinTableRelationshipStrategy<P extends OrmJoin
 	}
 
 	protected OrmSpecifiedJoinTable buildJoinTable() {
-		return this.getContextModelFactory().buildOrmJoinTable(this, this);
+		return this.getContextModelFactory().buildOrmJoinTable(this);
 	}
 
 
@@ -199,5 +198,9 @@ public abstract class AbstractOrmJoinTableRelationshipStrategy<P extends OrmJoin
 			this.setJoinTable(null);
 			this.removeXmlJoinTable();
 		}
+	}
+
+	public OrmSpecifiedJoinTableRelationshipStrategy getTableParent() {
+		return this;
 	}
 }

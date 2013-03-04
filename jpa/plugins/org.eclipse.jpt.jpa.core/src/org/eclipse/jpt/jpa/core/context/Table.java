@@ -55,6 +55,8 @@ public interface Table
 	String getDefaultName();
 		String DEFAULT_NAME_PROPERTY = "defaultName"; //$NON-NLS-1$
 
+	TextRange getNameValidationTextRange();
+	
 	/**
 	 * Return whether the table can be resolved to a table on the database.
 	 */
@@ -98,6 +100,8 @@ public interface Table
 	 */
 	Schema getDbSchema();
 
+	TextRange getSchemaValidationTextRange();
+
 
 	// ********** catalog **********
 
@@ -122,6 +126,8 @@ public interface Table
 	 */
 	Catalog getDbCatalog();
 
+	TextRange getCatalogValidationTextRange();
+
 
 	// ********** unique constraints **********
 
@@ -131,7 +137,7 @@ public interface Table
 	UniqueConstraint getUniqueConstraint(int index);
 
 
-	// ********** misc **********
+	// ********** database **********
 
 	/**
 	 * Return the corresponding database schema container (catalog or database).
@@ -143,20 +149,15 @@ public interface Table
 	 */
 	boolean validatesAgainstDatabase();
 
-	TextRange getNameValidationTextRange();
-	
-	TextRange getSchemaValidationTextRange();
 
-	TextRange getCatalogValidationTextRange();
-
-
-	// ********** owner **********
+	// ********** parent adapter **********
 
 	/**
 	 * interface allowing columns to be used in multiple places
 	 * (e.g. basic mappings and attribute overrides)
 	 */
-	interface Owner {
+	interface ParentAdapter<P extends JpaContextModel> {
+		P getTableParent();
 		JptValidator buildTableValidator(Table table);
 	}
 }

@@ -18,13 +18,14 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReferenceTable;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualReferenceTable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public abstract class AbstractOrmVirtualReferenceTable<P extends JpaContextModel, T extends ReferenceTable>
-	extends AbstractOrmVirtualTable<P, T>
+public abstract class AbstractOrmVirtualReferenceTable<P extends JpaContextModel, PA extends Table.ParentAdapter<P>, T extends ReferenceTable>
+	extends AbstractOrmVirtualTable<P, PA, T>
 	implements VirtualReferenceTable
 {
 	protected final ContextListContainer<VirtualJoinColumn, JoinColumn> specifiedJoinColumnContainer;
@@ -33,8 +34,8 @@ public abstract class AbstractOrmVirtualReferenceTable<P extends JpaContextModel
 	protected VirtualJoinColumn defaultJoinColumn;
 
 
-	protected AbstractOrmVirtualReferenceTable(P parent, Owner owner, T overridenTable) {
-		super(parent, owner, overridenTable);
+	protected AbstractOrmVirtualReferenceTable(PA parentAdapter, T overriddenTable) {
+		super(parentAdapter, overriddenTable);
 		this.joinColumnParentAdapter = this.buildJoinColumnParentAdapter();
 		this.specifiedJoinColumnContainer = this.buildSpecifiedJoinColumnContainer();
 	}

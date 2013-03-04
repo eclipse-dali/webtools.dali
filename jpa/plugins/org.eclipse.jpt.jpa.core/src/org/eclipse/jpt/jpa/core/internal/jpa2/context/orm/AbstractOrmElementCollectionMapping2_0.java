@@ -52,7 +52,6 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
-import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.TableColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -418,20 +417,23 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 	protected OrmCollectionTable2_0 buildCollectionTable() {
 		// we wouldn't be here if we weren't orm.xml 2.0 compatible
-		return this.getContextModelFactory2_0().buildOrmCollectionTable(this, this.buildCollectionTableOwner());
+		return this.getContextModelFactory2_0().buildOrmCollectionTable(this.buildCollectionTableParentAdapter());
 	}
 
-	protected SpecifiedTable.Owner buildCollectionTableOwner() {
-		return new CollectionTableOwner();
+	protected OrmCollectionTable2_0.ParentAdapter buildCollectionTableParentAdapter() {
+		return new CollectionTableParentAdapter();
 	}
 
 	public XmlCollectionTable getResourceCollectionTable() {
 		return this.xmlAttributeMapping.getCollectionTable();
 	}
 
-	public class CollectionTableOwner
-		implements Table.Owner
+	public class CollectionTableParentAdapter
+		implements OrmCollectionTable2_0.ParentAdapter
 	{
+		public OrmElementCollectionMapping2_0 getTableParent() {
+			return AbstractOrmElementCollectionMapping2_0.this;
+		}
 		public JptValidator buildTableValidator(Table table) {
 			return new CollectionTableValidator(AbstractOrmElementCollectionMapping2_0.this.getPersistentAttribute(), (CollectionTable2_0) table);
 		}

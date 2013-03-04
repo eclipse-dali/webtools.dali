@@ -17,11 +17,11 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
+import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
-import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
-import org.eclipse.jpt.jpa.core.context.orm.OrmTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedTable;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlTable;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
@@ -38,17 +38,17 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <p>
  * <strong>NB:</strong> any subclass that directly holds its XML table must:<ul>
  * <li>call the "super" constructor that takes an XML table
- *     {@link #AbstractOrmTable(JpaContextModel, org.eclipse.jpt.jpa.core.context.Table.Owner, AbstractXmlTable)}
+ *     {@link #AbstractOrmTable(org.eclipse.jpt.jpa.core.context.Table.ParentAdapter, AbstractXmlTable)}
  * <li>override {@link #setXmlTable(AbstractXmlTable)} to set the XML table
  *     so it is in place before the table's state (e.g. {@link #specifiedName})
  *     is initialized
  * </ul>
  */
-public abstract class AbstractOrmTable<P extends JpaContextModel, X extends AbstractXmlTable>
+public abstract class AbstractOrmTable<P extends JpaContextModel, PA extends Table.ParentAdapter<P>, X extends AbstractXmlTable>
 	extends AbstractOrmXmlContextModel<P>
-	implements OrmTable, SpecifiedUniqueConstraint.Parent
+	implements OrmSpecifiedTable, SpecifiedUniqueConstraint.Parent
 {
-	protected final Owner owner;
+	protected final PA parentAdapter;
 
 	protected String specifiedName;
 	protected String defaultName;
@@ -64,13 +64,13 @@ public abstract class AbstractOrmTable<P extends JpaContextModel, X extends Abst
 
 	// ********** constructor/initialization **********
 
-	protected AbstractOrmTable(P parent, Owner owner) {
-		this(parent, owner, null);
+	protected AbstractOrmTable(PA parentAdapter) {
+		this(parentAdapter, null);
 	}
 
-	protected AbstractOrmTable(P parent, Owner owner, X xmlTable) {
-		super(parent);
-		this.owner = owner;
+	protected AbstractOrmTable(PA parentAdapter, X xmlTable) {
+		super(parentAdapter.getTableParent());
+		this.parentAdapter = parentAdapter;
 		this.setXmlTable(xmlTable);
 		this.specifiedName = this.buildSpecifiedName();
 		this.specifiedSchema = this.buildSpecifiedSchema();
@@ -425,7 +425,7 @@ public abstract class AbstractOrmTable<P extends JpaContextModel, X extends Abst
 	}
 
 	protected JptValidator buildTableValidator() {
-		return this.owner.buildTableValidator(this);
+		return this.parentAdapter.buildTableValidator(this);
 	}
 
 	public TextRange getValidationTextRange() {

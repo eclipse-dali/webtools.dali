@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmTable;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
@@ -99,7 +99,7 @@ public class OrmTableTests extends ContextModelTestCase
 	public void testUpdateSpecifiedName() throws Exception {
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
-		OrmTable ormTable = ormEntity.getTable();
+		OrmSpecifiedTable ormTable = ormEntity.getTable();
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		assertNull(ormTable.getSpecifiedName());
 		assertNull(entityResource.getTable());
@@ -126,7 +126,7 @@ public class OrmTableTests extends ContextModelTestCase
 	
 	public void testModifySpecifiedName() throws Exception {
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		OrmTable ormTable = ((OrmEntity) ormPersistentType.getMapping()).getTable();
+		OrmSpecifiedTable ormTable = ((OrmEntity) ormPersistentType.getMapping()).getTable();
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		assertNull(ormTable.getSpecifiedName());
 		assertNull(entityResource.getTable());
@@ -220,7 +220,7 @@ public class OrmTableTests extends ContextModelTestCase
 	public void testUpdateSpecifiedSchema() throws Exception {
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
-		OrmTable ormTable = ormEntity.getTable();
+		OrmSpecifiedTable ormTable = ormEntity.getTable();
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		assertNull(ormTable.getSpecifiedSchema());
 		assertNull(entityResource.getTable());
@@ -335,7 +335,7 @@ public class OrmTableTests extends ContextModelTestCase
 	public void testModifySpecifiedSchema() throws Exception {
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
-		OrmTable ormTable = ormEntity.getTable();
+		OrmSpecifiedTable ormTable = ormEntity.getTable();
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		assertNull(ormTable.getSpecifiedSchema());
 		assertNull(entityResource.getTable());
@@ -354,7 +354,7 @@ public class OrmTableTests extends ContextModelTestCase
 	public void testUpdateSpecifiedCatalog() throws Exception {
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
-		OrmTable ormTable = ormEntity.getTable();
+		OrmSpecifiedTable ormTable = ormEntity.getTable();
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		assertNull(ormTable.getSpecifiedCatalog());
 		assertNull(entityResource.getTable());
@@ -382,7 +382,7 @@ public class OrmTableTests extends ContextModelTestCase
 	public void testModifySpecifiedCatalog() throws Exception {
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
-		OrmTable ormTable = ormEntity.getTable();
+		OrmSpecifiedTable ormTable = ormEntity.getTable();
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		assertNull(ormTable.getSpecifiedCatalog());
 		assertNull(entityResource.getTable());
@@ -564,7 +564,7 @@ public class OrmTableTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		
-		OrmTable table = ormEntity.getTable();
+		OrmSpecifiedTable table = ormEntity.getTable();
 		table.addUniqueConstraint(0).addColumnName(0, "FOO");
 		table.addUniqueConstraint(0).addColumnName(0, "BAR");
 		table.addUniqueConstraint(0).addColumnName(0, "BAZ");
@@ -586,7 +586,7 @@ public class OrmTableTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		
-		OrmTable table = ormEntity.getTable();
+		OrmSpecifiedTable table = ormEntity.getTable();
 		table.addUniqueConstraint(0).addColumnName(0, "FOO");
 		table.addUniqueConstraint(1).addColumnName(0, "BAR");
 		table.addUniqueConstraint(0).addColumnName(0, "BAZ");
@@ -608,7 +608,7 @@ public class OrmTableTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		
-		OrmTable table = ormEntity.getTable();
+		OrmSpecifiedTable table = ormEntity.getTable();
 		table.addUniqueConstraint(0).addColumnName(0, "FOO");
 		table.addUniqueConstraint(1).addColumnName(0, "BAR");
 		table.addUniqueConstraint(2).addColumnName(0, "BAZ");
@@ -654,7 +654,7 @@ public class OrmTableTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		
-		OrmTable table = ormEntity.getTable();
+		OrmSpecifiedTable table = ormEntity.getTable();
 		table.addUniqueConstraint(0).addColumnName(0, "FOO");
 		table.addUniqueConstraint(1).addColumnName(0, "BAR");
 		table.addUniqueConstraint(2).addColumnName(0, "BAZ");
@@ -695,7 +695,7 @@ public class OrmTableTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		
-		OrmTable table = ormEntity.getTable();
+		OrmSpecifiedTable table = ormEntity.getTable();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlTable tableResource = OrmFactory.eINSTANCE.createXmlTable();

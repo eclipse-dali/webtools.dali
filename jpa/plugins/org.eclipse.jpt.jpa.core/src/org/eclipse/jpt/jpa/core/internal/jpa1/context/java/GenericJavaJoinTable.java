@@ -45,7 +45,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * annotation); the other is {@link GenericJavaColumn Column}.
  */
 public class GenericJavaJoinTable
-	extends GenericJavaReferenceTable<JavaSpecifiedJoinTableRelationshipStrategy, JoinTableAnnotation>
+	extends GenericJavaReferenceTable<JavaSpecifiedJoinTableRelationshipStrategy, JavaSpecifiedJoinTable.ParentAdapter, JoinTableAnnotation>
 	implements JavaSpecifiedJoinTable
 {
 	protected final ContextListContainer<JavaSpecifiedJoinColumn, JoinColumnAnnotation> specifiedInverseJoinColumnContainer;
@@ -54,8 +54,8 @@ public class GenericJavaJoinTable
 	protected JavaSpecifiedJoinColumn defaultInverseJoinColumn;
 
 
-	public GenericJavaJoinTable(JavaSpecifiedJoinTableRelationshipStrategy parent, Owner owner) {
-		super(parent, owner);
+	public GenericJavaJoinTable(JavaSpecifiedJoinTable.ParentAdapter parentAdapter) {
+		super(parentAdapter);
 		this.inverseJoinColumnParentAdapter = this.buildInverseJoinColumnParentAdapter();
 		this.specifiedInverseJoinColumnContainer = this.buildSpecifiedInverseJoinColumnContainer();
 	}

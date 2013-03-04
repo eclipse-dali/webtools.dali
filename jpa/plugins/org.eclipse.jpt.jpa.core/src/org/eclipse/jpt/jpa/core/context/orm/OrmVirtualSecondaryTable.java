@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.VirtualSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedSecondaryTable;
 
@@ -30,4 +31,13 @@ public interface OrmVirtualSecondaryTable
 	OrmVirtualPrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn();
 
 	JavaSpecifiedSecondaryTable getOverriddenTable();
+
+
+	// ********** parent adapter **********
+
+	interface ParentAdapter
+		extends Table.ParentAdapter<OrmEntity>
+	{
+		// specify generic argument
+	}
 }

@@ -30,7 +30,7 @@ public interface JavaEntity
 {
 	EntityAnnotation getMappingAnnotation();
 
-	JavaTable getTable();
+	JavaSpecifiedTable getTable();
 	
 	JavaSpecifiedDiscriminatorColumn getDiscriminatorColumn();
 	

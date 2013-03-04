@@ -18,6 +18,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReferenceTable;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedReferenceTable;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -31,8 +32,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 /**
  * <code>orm.xml</code> join table or collection table
  */
-public abstract class GenericOrmReferenceTable<P extends JpaContextModel, X extends AbstractXmlReferenceTable>
-	extends AbstractOrmTable<P, X>
+public abstract class GenericOrmReferenceTable<P extends JpaContextModel, PA extends Table.ParentAdapter<P>, X extends AbstractXmlReferenceTable>
+	extends AbstractOrmTable<P, PA, X>
 	implements OrmSpecifiedReferenceTable
 {
 	protected final ContextListContainer<OrmSpecifiedJoinColumn, XmlJoinColumn> specifiedJoinColumnContainer;
@@ -41,8 +42,8 @@ public abstract class GenericOrmReferenceTable<P extends JpaContextModel, X exte
 	protected OrmSpecifiedJoinColumn defaultJoinColumn;
 
 
-	protected GenericOrmReferenceTable(P parent, Owner owner) {
-		super(parent, owner);
+	protected GenericOrmReferenceTable(PA parentAdapter) {
+		super(parentAdapter);
 		this.joinColumnParentAdapter = this.buildJoinColumnParentAdapter();
 		this.specifiedJoinColumnContainer = this.buildSpecifiedJoinColumnContainer();
 	}

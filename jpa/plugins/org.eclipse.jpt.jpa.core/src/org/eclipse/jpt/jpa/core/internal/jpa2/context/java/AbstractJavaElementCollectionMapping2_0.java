@@ -54,7 +54,6 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
-import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.TableColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -414,16 +413,19 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	protected JavaCollectionTable2_0 buildCollectionTable() {
-		return this.getJpaFactory().buildJavaCollectionTable(this, this.buildCollectionTableOwner());
+		return this.getJpaFactory().buildJavaCollectionTable(this.buildCollectionTableParentAdapter());
 	}
 
-	protected SpecifiedTable.Owner buildCollectionTableOwner() {
-		return new CollectionTableOwner();
+	protected JavaCollectionTable2_0.ParentAdapter buildCollectionTableParentAdapter() {
+		return new CollectionTableParentAdapter();
 	}
 
-	public class CollectionTableOwner
-		implements Table.Owner
+	public class CollectionTableParentAdapter
+		implements JavaCollectionTable2_0.ParentAdapter
 	{
+		public JavaElementCollectionMapping2_0 getTableParent() {
+			return AbstractJavaElementCollectionMapping2_0.this;
+		}
 		public JptValidator buildTableValidator(Table table) {
 			return new CollectionTableValidator(AbstractJavaElementCollectionMapping2_0.this.getPersistentAttribute(), (CollectionTable2_0) table);
 		}

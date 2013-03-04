@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.context.java;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.resource.java.SecondaryTableAnnotation;
 
 /**
@@ -26,7 +27,7 @@ import org.eclipse.jpt.jpa.core.resource.java.SecondaryTableAnnotation;
  * @since 2.0
  */
 public interface JavaSpecifiedSecondaryTable
-	extends SpecifiedSecondaryTable, JavaTable
+	extends SpecifiedSecondaryTable, JavaSpecifiedTable
 {
 	JavaEntity getParent();
 
@@ -40,4 +41,13 @@ public interface JavaSpecifiedSecondaryTable
 	JavaSpecifiedPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn();
 	JavaSpecifiedPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
 	JavaSpecifiedPrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn();
+
+
+	// ********** parent adapter **********
+
+	interface ParentAdapter
+		extends Table.ParentAdapter<JavaEntity>
+	{
+		// specify generic argument
+	}
 }

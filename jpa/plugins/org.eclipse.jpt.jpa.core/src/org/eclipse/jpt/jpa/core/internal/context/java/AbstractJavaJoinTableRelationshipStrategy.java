@@ -10,15 +10,13 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
-
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationship;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
@@ -28,7 +26,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractJavaJoinTableRelationshipStrategy<P extends JavaJoinTableRelationship>
 	extends AbstractJavaContextModel<P>
-	implements JavaSpecifiedJoinTableRelationshipStrategy, Table.Owner
+	implements JavaSpecifiedJoinTableRelationshipStrategy, JavaSpecifiedJoinTable.ParentAdapter
 {
 	protected JavaSpecifiedJoinTable joinTable;
 
@@ -91,7 +89,7 @@ public abstract class AbstractJavaJoinTableRelationshipStrategy<P extends JavaJo
 	}
 
 	protected JavaSpecifiedJoinTable buildJoinTable() {
-		return this.getJpaFactory().buildJavaJoinTable(this, this);
+		return this.getJpaFactory().buildJavaJoinTable(this);
 	}
 
 
@@ -162,6 +160,10 @@ public abstract class AbstractJavaJoinTableRelationshipStrategy<P extends JavaJo
 			}
 			this.setJoinTable(null);
 		}
+	}
+
+	public JavaSpecifiedJoinTableRelationshipStrategy getTableParent() {
+		return this;
 	}
 
 

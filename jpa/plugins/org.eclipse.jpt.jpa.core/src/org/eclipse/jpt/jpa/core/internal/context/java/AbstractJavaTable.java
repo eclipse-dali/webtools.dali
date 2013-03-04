@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
-import org.eclipse.jpt.jpa.core.context.java.JavaTable;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.resource.java.BaseTableAnnotation;
@@ -38,17 +38,17 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <strong>NB:</strong> any subclass that directly holds its table
  * annotation must:<ul>
  * <li>call the "super" constructor that takes a table annotation
- *     {@link #AbstractJavaTable(JpaContextModel, org.eclipse.jpt.jpa.core.context.Table.Owner, BaseTableAnnotation)}
+ *     {@link #AbstractJavaTable(org.eclipse.jpt.jpa.core.context.Table.ParentAdapter, BaseTableAnnotation)}
  * <li>override {@link #setTableAnnotation(BaseTableAnnotation)} to set the table
  *     annotation so it is in place before the table's state
  *     (e.g. {@link #specifiedName}) is initialized
  * </ul>
  */
-public abstract class AbstractJavaTable<P extends JpaContextModel, A extends BaseTableAnnotation>
+public abstract class AbstractJavaTable<P extends JpaContextModel, PA extends Table.ParentAdapter<P>, A extends BaseTableAnnotation>
 	extends AbstractJavaContextModel<P>
-	implements JavaTable, SpecifiedUniqueConstraint.Parent
+	implements JavaSpecifiedTable, SpecifiedUniqueConstraint.Parent
 {
-	protected final Owner owner;
+	protected final PA parentAdapter;
 
 	protected String specifiedName;
 	protected String defaultName;
@@ -62,13 +62,13 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, A extends Bas
 	protected final ContextListContainer<JavaSpecifiedUniqueConstraint, UniqueConstraintAnnotation> uniqueConstraintContainer;
 
 
-	protected AbstractJavaTable(P parent, Owner owner) {
-		this(parent, owner, null);
+	protected AbstractJavaTable(PA parentAdapter) {
+		this(parentAdapter, null);
 	}
 
-	protected AbstractJavaTable(P parent, Owner owner, A tableAnnotation) {
-		super(parent);
-		this.owner = owner;
+	protected AbstractJavaTable(PA parentAdapter, A tableAnnotation) {
+		super(parentAdapter.getTableParent());
+		this.parentAdapter = parentAdapter;
 		this.setTableAnnotation(tableAnnotation);
 		this.specifiedName = this.buildSpecifiedName();
 		this.specifiedSchema = this.buildSpecifiedSchema();
@@ -478,7 +478,7 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, A extends Bas
 	}
 
 	protected JptValidator buildTableValidator() {
-		return this.owner.buildTableValidator(this);
+		return this.parentAdapter.buildTableValidator(this);
 	}
 
 	public TextRange getValidationTextRange() {

@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
+import org.eclipse.jpt.jpa.core.context.java.JavaTable;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaTable;
 import org.eclipse.jpt.jpa.core.resource.java.TableAnnotation;
 
@@ -18,10 +19,10 @@ import org.eclipse.jpt.jpa.core.resource.java.TableAnnotation;
  * Java table
  */
 public class GenericJavaTable
-	extends AbstractJavaTable<JavaEntity, TableAnnotation>
+	extends AbstractJavaTable<JavaEntity, JavaTable.ParentAdapter, TableAnnotation>
 {
-	public GenericJavaTable(JavaEntity parent, Owner owner) {
-		super(parent, owner);
+	public GenericJavaTable(JavaTable.ParentAdapter parentAdapter) {
+		super(parentAdapter);
 	}
 
 

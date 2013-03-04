@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context.java;
 
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedReferenceTable;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.CollectionTable2_0Annotation;
@@ -29,4 +30,13 @@ public interface JavaCollectionTable2_0
 	extends CollectionTable2_0, JavaSpecifiedReferenceTable
 {
 	CollectionTable2_0Annotation getTableAnnotation();
+
+
+	// ********** parent adapter **********
+
+	interface ParentAdapter
+		extends Table.ParentAdapter<JavaElementCollectionMapping2_0>
+	{
+		// specify generic argument
+	}
 }

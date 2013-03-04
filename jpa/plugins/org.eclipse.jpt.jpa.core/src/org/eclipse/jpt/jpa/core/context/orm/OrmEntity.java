@@ -37,7 +37,7 @@ public interface OrmEntity
 	
 	JavaEntity getJavaTypeMappingForDefaults();
 
-	OrmTable getTable();
+	OrmSpecifiedTable getTable();
 	
 	OrmSpecifiedDiscriminatorColumn getDiscriminatorColumn();
 

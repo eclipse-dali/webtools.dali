@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTable;
+import org.eclipse.jpt.jpa.core.context.Table;
 
 /**
  * <code>orm.xml</code> join table
@@ -39,4 +40,13 @@ public interface OrmSpecifiedJoinTable
 	OrmSpecifiedJoinColumn addSpecifiedInverseJoinColumn(int index);
 
 	OrmSpecifiedJoinColumn getDefaultInverseJoinColumn();
+
+
+	// ********** parent adapter **********
+
+	interface ParentAdapter
+		extends Table.ParentAdapter<OrmSpecifiedJoinTableRelationshipStrategy>
+	{
+		// specify generic argument
+	}
 }

@@ -18,12 +18,12 @@ import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterabl
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinTable;
@@ -38,7 +38,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Java virtual join table
  */
 public class GenericJavaVirtualJoinTable
-	extends AbstractJavaVirtualReferenceTable<VirtualJoinTableRelationshipStrategy, JoinTable>
+	extends AbstractJavaVirtualReferenceTable<VirtualJoinTableRelationshipStrategy, VirtualJoinTable.ParentAdapter, JoinTable>
 	implements VirtualJoinTable
 {
 
@@ -48,8 +48,8 @@ public class GenericJavaVirtualJoinTable
 	protected VirtualJoinColumn defaultInverseJoinColumn;
 
 
-	public GenericJavaVirtualJoinTable(VirtualJoinTableRelationshipStrategy parent, Owner owner, JoinTable overriddenTable) {
-		super(parent, owner, overriddenTable);
+	public GenericJavaVirtualJoinTable(VirtualJoinTable.ParentAdapter parentAdapter, JoinTable overriddenTable) {
+		super(parentAdapter, overriddenTable);
 		this.inverseJoinColumnParentAdapter = this.buildInverseJoinColumnParentAdapter();
 		this.specifiedInverseJoinColumnContainer = this.buildSpecifiedInverseJoinColumnContainer();
 	}

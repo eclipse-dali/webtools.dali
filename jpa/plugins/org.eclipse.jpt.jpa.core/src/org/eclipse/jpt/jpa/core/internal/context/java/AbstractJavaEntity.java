@@ -69,6 +69,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedSecondaryTable;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaTable;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -118,12 +119,12 @@ public abstract class AbstractJavaEntity
 
 	protected final JavaIdClassReference idClassReference;
 
-	protected final JavaTable table;
+	protected final JavaSpecifiedTable table;
 	protected boolean specifiedTableIsAllowed;
 	protected boolean tableIsUndefined;
 
 	protected final ContextListContainer<JavaSpecifiedSecondaryTable, SecondaryTableAnnotation> specifiedSecondaryTableContainer;
-	protected final SpecifiedTable.Owner specifiedSecondaryTableOwner;
+	protected final JavaSpecifiedSecondaryTable.ParentAdapter specifiedSecondaryTableParentAdapter;
 
 	protected final PrimaryKeyJoinColumnParentAdapter primaryKeyJoinColumnParentAdapter;
 	protected final ContextListContainer<JavaSpecifiedPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation> specifiedPrimaryKeyJoinColumnContainer;
@@ -157,7 +158,7 @@ public abstract class AbstractJavaEntity
 		this.table = this.buildTable();
 		// start with the entity as the root - it will be recalculated in update()
 		this.rootEntity = this;
-		this.specifiedSecondaryTableOwner = this.buildSpecifiedSecondaryTableOwner();
+		this.specifiedSecondaryTableParentAdapter = this.buildSpecifiedSecondaryTableParentAdapter();
 		this.specifiedSecondaryTableContainer = this.buildSpecifiedSecondaryTableContainer();
 		this.primaryKeyJoinColumnParentAdapter = this.buildPrimaryKeyJoinColumnParentAdapter();
 		this.specifiedPrimaryKeyJoinColumnContainer = this.buildSpecifiedPrimaryKeyJoinColumnContainer();
@@ -324,16 +325,16 @@ public abstract class AbstractJavaEntity
 
 	// ********** table **********
 
-	public JavaTable getTable() {
+	public JavaSpecifiedTable getTable() {
 		return this.table;
 	}
 
-	protected JavaTable buildTable() {
-		return this.getJpaFactory().buildJavaTable(this, this.buildTableOwner());  
+	protected JavaSpecifiedTable buildTable() {
+		return this.getJpaFactory().buildJavaTable(this.buildTableParentAdapter());  
 	}
 
-	protected JavaTable.Owner buildTableOwner() {
-		return new TableOwner();
+	protected JavaTable.ParentAdapter buildTableParentAdapter() {
+		return new TableParentAdapter();
 	}
 
 	public boolean specifiedTableIsAllowed() {
@@ -447,7 +448,7 @@ public abstract class AbstractJavaEntity
 	}
 
 	protected JavaSpecifiedSecondaryTable buildSecondaryTable(SecondaryTableAnnotation secondaryTableAnnotation) {
-		return this.getJpaFactory().buildJavaSecondaryTable(this, this.specifiedSecondaryTableOwner, secondaryTableAnnotation);
+		return this.getJpaFactory().buildJavaSecondaryTable(this.specifiedSecondaryTableParentAdapter, secondaryTableAnnotation);
 	}
 
 	protected void syncSpecifiedSecondaryTables() {
@@ -496,8 +497,8 @@ public abstract class AbstractJavaEntity
 		}
 	}
 
-	protected SpecifiedTable.Owner buildSpecifiedSecondaryTableOwner() {
-		return new SecondaryTableOwner();
+	protected JavaSpecifiedSecondaryTable.ParentAdapter buildSpecifiedSecondaryTableParentAdapter() {
+		return new SecondaryTableParentAdapter();
 	}
 
 
@@ -1696,22 +1697,28 @@ public abstract class AbstractJavaEntity
 	}
 
 
-	// ********** table owner **********
+	// ********** table parent adapter **********
 
-	public class TableOwner
-		implements Table.Owner
+	public class TableParentAdapter
+		implements JavaTable.ParentAdapter
 	{
+		public JavaEntity getTableParent() {
+			return AbstractJavaEntity.this;
+		}
 		public JptValidator buildTableValidator(Table t) {
 			return new TableValidator(t);
 		}
 	}
 
 
-	// ********** secondary table owner **********
+	// ********** secondary table parent adapter **********
 
-	public class SecondaryTableOwner
-		implements Table.Owner
+	public class SecondaryTableParentAdapter
+		implements JavaSpecifiedSecondaryTable.ParentAdapter
 	{
+		public JavaEntity getTableParent() {
+			return AbstractJavaEntity.this;
+		}
 		public JptValidator buildTableValidator(Table t) {
 			return new SecondaryTableValidator((SecondaryTable) t);
 		}

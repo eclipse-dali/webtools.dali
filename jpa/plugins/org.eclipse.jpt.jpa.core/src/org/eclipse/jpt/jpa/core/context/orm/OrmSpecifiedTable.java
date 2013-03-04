@@ -1,20 +1,19 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.context.java;
+package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.SpecifiedReferenceTable;
-import org.eclipse.jpt.jpa.core.resource.java.ReferenceTableAnnotation;
+import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 
 /**
- * Java reference table
+ * <code>orm.xml</code> specified table
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -22,23 +21,14 @@ import org.eclipse.jpt.jpa.core.resource.java.ReferenceTableAnnotation;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
- * @since 2.3
+ * @version 3.3
+ * @since 2.0
  */
-public interface JavaSpecifiedReferenceTable
-	extends SpecifiedReferenceTable, JavaSpecifiedTable
+public interface OrmSpecifiedTable
+	extends SpecifiedTable
 {
-	ReferenceTableAnnotation getTableAnnotation();
-
-
-	// ********** join columns **********
-
-	ListIterable<JavaSpecifiedJoinColumn> getJoinColumns();
-
-	ListIterable<JavaSpecifiedJoinColumn> getSpecifiedJoinColumns();
-	JavaSpecifiedJoinColumn getSpecifiedJoinColumn(int index);
-	JavaSpecifiedJoinColumn addSpecifiedJoinColumn();
-	JavaSpecifiedJoinColumn addSpecifiedJoinColumn(int index);
-
-	JavaSpecifiedJoinColumn getDefaultJoinColumn();
+	ListIterable<OrmSpecifiedUniqueConstraint> getUniqueConstraints();
+	OrmSpecifiedUniqueConstraint getUniqueConstraint(int index);
+	OrmSpecifiedUniqueConstraint addUniqueConstraint();
+	OrmSpecifiedUniqueConstraint addUniqueConstraint(int index);
 }

@@ -39,10 +39,10 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>orm.xml</code> secondary table
  */
 public class GenericOrmSecondaryTable
-	extends AbstractOrmTable<OrmEntity, XmlSecondaryTable>
+	extends AbstractOrmTable<OrmEntity, OrmSpecifiedSecondaryTable.ParentAdapter, XmlSecondaryTable>
 	implements OrmSpecifiedSecondaryTable
 {
-	/** @see AbstractOrmTable#AbstractOrmTable(org.eclipse.jpt.jpa.core.context.JpaContextModel, org.eclipse.jpt.jpa.core.context.Table.Owner, org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlTable) */
+	/** @see AbstractOrmTable#AbstractOrmTable(org.eclipse.jpt.jpa.core.context.Table.ParentAdapter, org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlTable) */
 	protected /* final */ XmlSecondaryTable xmlSecondaryTable;
 
 	protected final ContextListContainer<OrmSpecifiedPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumnContainer;
@@ -51,8 +51,8 @@ public class GenericOrmSecondaryTable
 	protected OrmSpecifiedPrimaryKeyJoinColumn defaultPrimaryKeyJoinColumn;
 
 
-	public GenericOrmSecondaryTable(OrmEntity parent, Owner owner, XmlSecondaryTable xmlSecondaryTable) {
-		super(parent, owner, xmlSecondaryTable);
+	public GenericOrmSecondaryTable(OrmSpecifiedSecondaryTable.ParentAdapter parentAdapter, XmlSecondaryTable xmlSecondaryTable) {
+		super(parentAdapter, xmlSecondaryTable);
 		this.primaryKeyJoinColumnParentAdapter = this.buildPrimaryKeyJoinColumnParentAdapter();
 		this.specifiedPrimaryKeyJoinColumnContainer = this.buildSpecifiedPrimaryKeyJoinColumnContainer();
 	}

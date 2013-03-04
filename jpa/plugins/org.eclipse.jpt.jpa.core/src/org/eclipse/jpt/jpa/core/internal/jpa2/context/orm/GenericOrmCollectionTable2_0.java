@@ -34,11 +34,11 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlElementCollection;
  * <code>orm.xml</code> collection table
  */
 public class GenericOrmCollectionTable2_0
-	extends GenericOrmReferenceTable<OrmElementCollectionMapping2_0, XmlCollectionTable>
+	extends GenericOrmReferenceTable<OrmElementCollectionMapping2_0, OrmCollectionTable2_0.ParentAdapter, XmlCollectionTable>
 	implements OrmCollectionTable2_0
 {
-	public GenericOrmCollectionTable2_0(OrmElementCollectionMapping2_0 parent, Owner owner) {
-		super(parent, owner);
+	public GenericOrmCollectionTable2_0(OrmCollectionTable2_0.ParentAdapter parentAdapter) {
+		super(parentAdapter);
 	}
 
 	@Override

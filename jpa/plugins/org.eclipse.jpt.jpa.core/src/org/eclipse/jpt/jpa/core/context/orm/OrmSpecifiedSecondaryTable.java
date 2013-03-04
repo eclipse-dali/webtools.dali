@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.context.orm;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlSecondaryTable;
 
 /**
@@ -27,7 +28,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlSecondaryTable;
  * @since 2.0
  */
 public interface OrmSpecifiedSecondaryTable
-	extends SpecifiedSecondaryTable, OrmTable
+	extends SpecifiedSecondaryTable, OrmSpecifiedTable
 {
 	OrmEntity getParent();
 
@@ -43,4 +44,13 @@ public interface OrmSpecifiedSecondaryTable
 	OrmSpecifiedPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn();
 	OrmSpecifiedPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
 	OrmSpecifiedPrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn();
+
+
+	// ********** parent adapter **********
+
+	interface ParentAdapter
+		extends Table.ParentAdapter<OrmEntity>
+	{
+		// declare generic argument
+	}
 }

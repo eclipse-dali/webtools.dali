@@ -11,35 +11,28 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
-import org.eclipse.jpt.jpa.core.context.Table;
-import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
-import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
+import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.VirtualColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinTable;
-import org.eclipse.jpt.jpa.core.context.VirtualJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.VirtualOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.VirtualUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBasicMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddedMapping;
@@ -47,9 +40,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratedValue;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinTable;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappedSuperclass;
@@ -57,22 +47,29 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOneToOneMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryHint;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSequenceGenerator;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedDiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinTable;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedOverrideRelationship;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedSecondaryTable;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedTable;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTransientMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAttributeOverride;
@@ -81,9 +78,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericEntityMappings;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmAssociationOverrideContainer;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmBaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmBaseTemporalConverter;
@@ -119,6 +114,8 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmQueryContain
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmQueryHint;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmSecondaryTable;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmSequenceGenerator;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmSpecifiedAssociationOverride;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmTable;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmTableGenerator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmTransientMapping;
@@ -207,16 +204,16 @@ public abstract class AbstractOrmXmlContextModelFactory
 		return new VirtualOrmPersistentAttribute(parent, javaResourceGetter, javaResourceSetter);
 	}
 
-	public OrmTable buildOrmTable(OrmEntity parent, SpecifiedTable.Owner owner) {
-		return new GenericOrmTable(parent, owner);
+	public OrmSpecifiedTable buildOrmTable(OrmTable.ParentAdapter parentAdapter) {
+		return new GenericOrmTable(parentAdapter);
 	}
 	
-	public OrmSpecifiedSecondaryTable buildOrmSecondaryTable(OrmEntity parent, SpecifiedTable.Owner owner, XmlSecondaryTable xmlSecondaryTable) {
-		return new GenericOrmSecondaryTable(parent, owner, xmlSecondaryTable);
+	public OrmSpecifiedSecondaryTable buildOrmSecondaryTable(OrmSpecifiedSecondaryTable.ParentAdapter parentAdapter, XmlSecondaryTable xmlSecondaryTable) {
+		return new GenericOrmSecondaryTable(parentAdapter, xmlSecondaryTable);
 	}
 
-	public OrmVirtualSecondaryTable buildOrmVirtualSecondaryTable(OrmEntity parent, Table.Owner owner, JavaSpecifiedSecondaryTable javaSecondaryTable) {
-		return new GenericOrmVirtualSecondaryTable(parent, owner, javaSecondaryTable);
+	public OrmVirtualSecondaryTable buildOrmVirtualSecondaryTable(OrmVirtualSecondaryTable.ParentAdapter parentAdapter, JavaSpecifiedSecondaryTable javaSecondaryTable) {
+		return new GenericOrmVirtualSecondaryTable(parentAdapter, javaSecondaryTable);
 	}
 	
 	public OrmSpecifiedPrimaryKeyJoinColumn buildOrmPrimaryKeyJoinColumn(BaseJoinColumn.ParentAdapter parentAdapter, XmlPrimaryKeyJoinColumn resourcePrimaryKeyJoinColumn) {
@@ -227,12 +224,12 @@ public abstract class AbstractOrmXmlContextModelFactory
 		return new GenericOrmVirtualPrimaryKeyJoinColumn(parentAdapter, javaPrimaryKeyJoinColumn);
 	}
 	
-	public OrmSpecifiedJoinTable buildOrmJoinTable(OrmSpecifiedJoinTableRelationshipStrategy parent, SpecifiedTable.Owner owner) {
-		return new GenericOrmJoinTable(parent, owner);
+	public OrmSpecifiedJoinTable buildOrmJoinTable(OrmSpecifiedJoinTable.ParentAdapter parentAdapter) {
+		return new GenericOrmJoinTable(parentAdapter);
 	}
 	
-	public VirtualJoinTable buildOrmVirtualJoinTable(VirtualJoinTableRelationshipStrategy parent, Table.Owner owner, JoinTable overriddenTable) {
-		return new GenericOrmVirtualJoinTable(parent, owner, overriddenTable);
+	public VirtualJoinTable buildOrmVirtualJoinTable(VirtualJoinTable.ParentAdapter parentAdapter, JoinTable overriddenTable) {
+		return new GenericOrmVirtualJoinTable(parentAdapter, overriddenTable);
 	}
 	
 	public OrmSpecifiedJoinColumn buildOrmJoinColumn(JoinColumn.ParentAdapter parentAdapter, XmlJoinColumn xmlJoinColumn) {

@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.Orderable;
-import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
@@ -61,8 +60,8 @@ public class EclipseLinkOrmXmlContextModelFactory2_0
 		return new GenericOrmOrphanRemoval2_0(parent);
 	}
 
-	public OrmCollectionTable2_0 buildOrmCollectionTable(OrmElementCollectionMapping2_0 parent, SpecifiedTable.Owner owner) {
-		return new GenericOrmCollectionTable2_0(parent, owner);
+	public OrmCollectionTable2_0 buildOrmCollectionTable(OrmCollectionTable2_0.ParentAdapter parentAdapter) {
+		return new GenericOrmCollectionTable2_0(parentAdapter);
 	}
 
 	@Override

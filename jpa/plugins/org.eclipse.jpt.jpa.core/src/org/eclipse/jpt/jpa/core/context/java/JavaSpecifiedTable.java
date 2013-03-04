@@ -10,11 +10,11 @@
 package org.eclipse.jpt.jpa.core.context.java;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.SpecifiedReferenceTable;
-import org.eclipse.jpt.jpa.core.resource.java.ReferenceTableAnnotation;
+import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
+import org.eclipse.jpt.jpa.core.resource.java.BaseTableAnnotation;
 
 /**
- * Java reference table
+ * Java specified table
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -22,23 +22,16 @@ import org.eclipse.jpt.jpa.core.resource.java.ReferenceTableAnnotation;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
- * @since 2.3
+ * @version 3.3
+ * @since 2.0
  */
-public interface JavaSpecifiedReferenceTable
-	extends SpecifiedReferenceTable, JavaSpecifiedTable
+public interface JavaSpecifiedTable
+	extends SpecifiedTable
 {
-	ReferenceTableAnnotation getTableAnnotation();
+	BaseTableAnnotation getTableAnnotation();
 
-
-	// ********** join columns **********
-
-	ListIterable<JavaSpecifiedJoinColumn> getJoinColumns();
-
-	ListIterable<JavaSpecifiedJoinColumn> getSpecifiedJoinColumns();
-	JavaSpecifiedJoinColumn getSpecifiedJoinColumn(int index);
-	JavaSpecifiedJoinColumn addSpecifiedJoinColumn();
-	JavaSpecifiedJoinColumn addSpecifiedJoinColumn(int index);
-
-	JavaSpecifiedJoinColumn getDefaultJoinColumn();
+	ListIterable<JavaSpecifiedUniqueConstraint> getUniqueConstraints();
+	JavaSpecifiedUniqueConstraint getUniqueConstraint(int index);
+	JavaSpecifiedUniqueConstraint addUniqueConstraint();
+	JavaSpecifiedUniqueConstraint addUniqueConstraint(int index);
 }

@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
-import org.eclipse.jpt.jpa.core.context.java.JavaTable;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
@@ -445,7 +445,7 @@ public class JavaTableTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaTable table = getJavaEntity().getTable();
+		JavaSpecifiedTable table = getJavaEntity().getTable();
 		table.addUniqueConstraint(0).addColumnName(0, "FOO");
 		table.addUniqueConstraint(1).addColumnName(0, "BAR");
 		table.addUniqueConstraint(2).addColumnName(0, "BAZ");
@@ -489,7 +489,7 @@ public class JavaTableTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaTable table = getJavaEntity().getTable();
+		JavaSpecifiedTable table = getJavaEntity().getTable();
 		table.addUniqueConstraint(0).addColumnName(0, "FOO");
 		table.addUniqueConstraint(1).addColumnName(0, "BAR");
 		table.addUniqueConstraint(2).addColumnName(0, "BAZ");
@@ -528,7 +528,7 @@ public class JavaTableTests extends ContextModelTestCase
 		createTestEntityWithTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		JavaTable table = getJavaEntity().getTable();
+		JavaSpecifiedTable table = getJavaEntity().getTable();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		TableAnnotation tableAnnotation = (TableAnnotation) resourceType.getAnnotation(JPA.TABLE);
 	

@@ -17,6 +17,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReferenceTable;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedReferenceTable;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -30,8 +31,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 /**
  * Java join table or collection table
  */
-public abstract class GenericJavaReferenceTable<P extends JpaContextModel, A extends ReferenceTableAnnotation>
-	extends AbstractJavaTable<P, A>
+public abstract class GenericJavaReferenceTable<P extends JpaContextModel, PA extends Table.ParentAdapter<P>, A extends ReferenceTableAnnotation>
+	extends AbstractJavaTable<P, PA, A>
 	implements JavaSpecifiedReferenceTable
 {
 	protected final ContextListContainer<JavaSpecifiedJoinColumn, JoinColumnAnnotation> specifiedJoinColumnContainer;
@@ -40,8 +41,8 @@ public abstract class GenericJavaReferenceTable<P extends JpaContextModel, A ext
 	protected JavaSpecifiedJoinColumn defaultJoinColumn;
 
 
-	protected GenericJavaReferenceTable(P parent, Owner owner) {
-		super(parent, owner);
+	protected GenericJavaReferenceTable(PA parentAdapter) {
+		super(parentAdapter);
 		this.joinColumnParentAdapter = this.buildJoinColumnParentAdapter();
 		this.specifiedJoinColumnContainer = this.buildSpecifiedJoinColumnContainer();
 	}
