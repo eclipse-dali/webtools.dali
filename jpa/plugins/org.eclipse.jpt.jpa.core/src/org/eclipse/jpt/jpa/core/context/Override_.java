@@ -88,5 +88,5 @@ public interface Override_
 	 */
 	TextRange getNameTextRange();
 
-	JptValidator buildColumnValidator(BaseColumn column, TableColumn.ParentAdapter owner);
+	JptValidator buildColumnValidator(BaseColumn column, TableColumn.ParentAdapter parentAdapter);
 }

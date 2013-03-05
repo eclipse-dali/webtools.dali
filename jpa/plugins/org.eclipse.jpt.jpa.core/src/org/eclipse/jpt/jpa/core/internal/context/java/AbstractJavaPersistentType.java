@@ -62,7 +62,6 @@ public abstract class AbstractJavaPersistentType
 	extends AbstractJavaManagedType<PersistentType.Parent>
 	implements JavaPersistentType
 {
-
 	protected PersistentType superPersistentType;
 
 	protected AccessType specifiedAccess;
@@ -241,7 +240,7 @@ public abstract class AbstractJavaPersistentType
 		if (accessType != null) {
 			return accessType;
 		}
-		accessType = this.getOwnerOverrideAccess();
+		accessType = this.parent.getOverridePersistentTypeAccess();
 		if (accessType != null) {
 			return accessType;
 		}
@@ -253,7 +252,7 @@ public abstract class AbstractJavaPersistentType
 			}
 		}
 
-		accessType = this.getOwnerDefaultAccess();
+		accessType = this.parent.getDefaultPersistentTypeAccess();
 		if (accessType != null) {
 			return accessType;
 		}
@@ -1029,14 +1028,6 @@ public abstract class AbstractJavaPersistentType
 
 
 	// ********** misc **********
-
-	public AccessType getOwnerOverrideAccess() {
-		return this.parent.getOverridePersistentTypeAccess();
-	}
-
-	public AccessType getOwnerDefaultAccess() {
-		return this.parent.getDefaultPersistentTypeAccess();
-	}
 
 	public PersistentType getOverriddenPersistentType() {
 		return null;  // Java persistent types do not override anything

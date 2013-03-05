@@ -19,7 +19,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmOrderable;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheableReference2_0;
@@ -40,7 +39,7 @@ public class GenericOrmXmlContextModelFactory2_0
 {	
 	@Override
 	public Orderable buildOrmOrderable(OrmAttributeMapping parent) {
-		throw new UnsupportedOperationException("use #buildOrmOrderable(OrmAttributeMapping parent, Orderable2_0.Owner owner)"); //$NON-NLS-1$
+		throw new UnsupportedOperationException("use #buildOrmOrderable(Orderable2_0.ParentAdapter)"); //$NON-NLS-1$
 	}
 
 	@Override
@@ -75,7 +74,7 @@ public class GenericOrmXmlContextModelFactory2_0
 		return new GenericOrmCollectionTable2_0(parentAdapter);
 	}
 	
-	public OrmOrderable2_0 buildOrmOrderable(Orderable2_0.ParentAdapter<OrmAttributeMapping> parentAdapter) {
+	public OrmOrderable2_0 buildOrmOrderable(OrmOrderable2_0.ParentAdapter parentAdapter) {
 		return new GenericOrmOrderable(parentAdapter);
 	}
 	

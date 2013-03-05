@@ -72,17 +72,13 @@ public class JavaEclipseLinkManyToManyMapping
 		return new JavaEclipseLinkConverterContainerImpl(this);
 	}
 
-	// ********** converter container parent adapter **********
-
-	public JpaContextModel getConverterContainerParent() {
-		return this;  // no adapter
-	}
+	// ********** converter container parent **********
 
 	public JavaResourceAnnotatedElement getJavaResourceAnnotatedElement() {
 		return this.getResourceAttribute();
 	}
 
-	public boolean parentSupportsConverters() {
+	public boolean supportsConverters() {
 		return ! this.getPersistentAttribute().isVirtual();
 	}
 	

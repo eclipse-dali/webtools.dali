@@ -40,9 +40,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class OrmEclipseLinkEmbeddableImpl
 	extends AbstractOrmEmbeddable<XmlEmbeddable>
-	implements 
-		OrmEclipseLinkEmbeddable,
-		EclipseLinkOrmConverterContainer.Parent
+	implements OrmEclipseLinkEmbeddable, EclipseLinkOrmConverterContainer.Parent
 {
 	protected final EclipseLinkOrmConverterContainer converterContainer;
 

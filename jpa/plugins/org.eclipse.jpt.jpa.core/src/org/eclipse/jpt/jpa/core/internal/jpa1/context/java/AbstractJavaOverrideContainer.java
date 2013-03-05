@@ -317,9 +317,9 @@ public abstract class AbstractJavaOverrideContainer<
 		@Override
 		public boolean evaluate(A annotation) {
 			String overrideName = annotation.getName();
-			return (overrideName != null) && this.getOwner().isRelevant(overrideName);
+			return (overrideName != null) && this.getParentAdapter().isRelevant(overrideName);
 		}
-		protected JavaOverrideContainer2_0.ParentAdapter getOwner() {
+		protected JavaOverrideContainer2_0.ParentAdapter getParentAdapter() {
 			return AbstractJavaOverrideContainer.this.getParentAdapter2_0();
 		}
 	}

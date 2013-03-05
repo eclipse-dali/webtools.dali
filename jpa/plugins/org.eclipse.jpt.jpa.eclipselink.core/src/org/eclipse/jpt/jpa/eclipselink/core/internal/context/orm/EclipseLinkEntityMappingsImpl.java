@@ -53,9 +53,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class EclipseLinkEntityMappingsImpl
 	extends AbstractEntityMappings
-	implements 
-		EclipseLinkEntityMappings, 
-		EclipseLinkOrmConverterContainer.Parent
+	implements EclipseLinkEntityMappings, EclipseLinkOrmConverterContainer.Parent
 {
 	protected final EclipseLinkOrmConverterContainer converterContainer;
 

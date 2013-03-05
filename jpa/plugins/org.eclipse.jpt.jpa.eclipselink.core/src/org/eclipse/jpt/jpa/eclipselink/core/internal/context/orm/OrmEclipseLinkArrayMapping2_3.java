@@ -50,11 +50,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 //TODO canonical metamodel generation, need to override getMetamodelTypeName() and use the target-class element
 public class OrmEclipseLinkArrayMapping2_3
 	extends AbstractOrmAttributeMapping<XmlArray>
-	implements
-		EclipseLinkArrayMapping2_3,
-		EclipseLinkOrmConvertibleMapping,
-		EclipseLinkOrmConverterContainer.Parent,
-		OrmColumnMapping
+	implements EclipseLinkArrayMapping2_3, EclipseLinkOrmConvertibleMapping, OrmColumnMapping
 {
 	protected final OrmSpecifiedColumn column;
 

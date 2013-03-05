@@ -36,7 +36,7 @@ public interface OrmBaseTemporalConverter
 	// ********** parent adapter **********
 
 	public interface ParentAdapter 
-		extends Converter.ParentAdapter<OrmAttributeMapping>
+		extends OrmConverter.ParentAdapter
 	{
 		TemporalType getXmlTemporalType();
 
@@ -117,7 +117,7 @@ public interface OrmBaseTemporalConverter
 		}
 
 		@Override
-		protected ParentAdapter buildParentAdapter(OrmAttributeMapping parent, XmlConvertibleMapping mapping) {
+		protected OrmBaseTemporalConverter.ParentAdapter buildParentAdapter(OrmAttributeMapping parent, XmlConvertibleMapping mapping) {
 			return new ConverterParentAdapter(parent, mapping);
 		}
 
@@ -146,7 +146,7 @@ public interface OrmBaseTemporalConverter
 		}
 
 		@Override
-		protected ParentAdapter buildParentAdapter(OrmAttributeMapping parent, XmlConvertibleMapping mapping) {
+		protected OrmBaseTemporalConverter.ParentAdapter buildParentAdapter(OrmAttributeMapping parent, XmlConvertibleMapping mapping) {
 			return new ConverterParentAdapter(parent, mapping);
 		}
 

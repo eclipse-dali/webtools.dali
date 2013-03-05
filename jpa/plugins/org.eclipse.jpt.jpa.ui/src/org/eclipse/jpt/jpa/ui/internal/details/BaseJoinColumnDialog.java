@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.swt.widgets.Shell;
 
-public abstract class BaseJoinColumnDialog<O, C extends BaseJoinColumn, S extends BaseJoinColumnStateObject>
+public abstract class BaseJoinColumnDialog<P, C extends BaseJoinColumn, S extends BaseJoinColumnStateObject>
 	extends ValidatingDialog<S>
 {
 	/**
@@ -24,9 +24,9 @@ public abstract class BaseJoinColumnDialog<O, C extends BaseJoinColumn, S extend
 	private final C joinColumn;
 
 	/**
-	 * The owner of the new or existing join column.
+	 * The parent of the new or existing join column.
 	 */
-	private final O owner;
+	private final P parent;
 
 
 	/**
@@ -35,8 +35,8 @@ public abstract class BaseJoinColumnDialog<O, C extends BaseJoinColumn, S extend
 	protected BaseJoinColumnDialog(
 			Shell parentShell,
 			ResourceManager resourceManager,
-			O owner) {
-		this(parentShell, resourceManager, owner, null);
+			P parent) {
+		this(parentShell, resourceManager, parent, null);
 	}
 
 	/**
@@ -45,9 +45,9 @@ public abstract class BaseJoinColumnDialog<O, C extends BaseJoinColumn, S extend
 	protected BaseJoinColumnDialog(
 			Shell parentShell,
 			ResourceManager resourceManager,
-			O owner,
+			P parent,
 			C joinColumn) {
-		this(parentShell, resourceManager, owner, joinColumn, buildTitle(joinColumn));
+		this(parentShell, resourceManager, parent, joinColumn, buildTitle(joinColumn));
 	}
 
 	private static String buildTitle(BaseJoinColumn joinColumn) {
@@ -59,11 +59,11 @@ public abstract class BaseJoinColumnDialog<O, C extends BaseJoinColumn, S extend
 	protected BaseJoinColumnDialog(
 			Shell parentShell,
 			ResourceManager resourceManager,
-			O owner,
+			P parent,
 			C joinColumn,
 			String title) {
 		super(parentShell, resourceManager, title);
-		this.owner = owner;
+		this.parent = parent;
 		this.joinColumn = joinColumn;
 	}
 
@@ -83,7 +83,7 @@ public abstract class BaseJoinColumnDialog<O, C extends BaseJoinColumn, S extend
 		return this.joinColumn;
 	}
 
-	protected O getOwner() {
-		return this.owner;
+	protected P getParent() {
+		return this.parent;
 	}
 }

@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
@@ -22,8 +21,8 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.context.OrderColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.OrderColumn2_0AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedOrderColumn2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSpecifiedOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderable2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSpecifiedOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.OrderByAnnotation;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
@@ -56,7 +55,7 @@ public class GenericJavaOrderable
 	protected OrderColumn2_0Annotation nullOrderColumnAnnotation;
 
 	// JPA 2.0
-	protected final ParentAdapter<JavaAttributeMapping> parentAdapter;
+	protected final JavaOrderable2_0.ParentAdapter parentAdapter;
 	protected boolean orderColumnOrdering = false;
 	protected final JavaSpecifiedOrderColumn2_0 orderColumn;
 
@@ -65,13 +64,13 @@ public class GenericJavaOrderable
 	 * JPA 1.0
 	 */
 	public GenericJavaOrderable(JavaAttributeMapping parent) {
-		this(new ParentAdapter.Null<JavaAttributeMapping>(parent));
+		this(new JavaOrderable2_0.ParentAdapter.Null(parent));
 	}
 
 	/**
 	 * JPA 2.0
 	 */
-	public GenericJavaOrderable(ParentAdapter<JavaAttributeMapping> parentAdapter) {
+	public GenericJavaOrderable(JavaOrderable2_0.ParentAdapter parentAdapter) {
 		super(parentAdapter.getOrderableParent());
 		this.specifiedOrderBy = this.buildSpecifiedOrderBy();
 		this.noOrdering = this.buildNoOrdering();

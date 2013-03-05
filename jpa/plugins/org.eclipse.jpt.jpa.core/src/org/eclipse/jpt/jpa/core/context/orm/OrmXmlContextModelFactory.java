@@ -262,7 +262,7 @@ public interface OrmXmlContextModelFactory
 
 	OrmConverter buildOrmBaseTemporalConverter(OrmBaseTemporalConverter.ParentAdapter parentAdapter);
 
-	OrmConverter buildOrmLobConverter(OrmConverter.ParentAdapter<OrmAttributeMapping> parentAdapter);
+	OrmConverter buildOrmLobConverter(OrmConverter.ParentAdapter parentAdapter);
 
 	/**
 	 * JPA 1.0 only

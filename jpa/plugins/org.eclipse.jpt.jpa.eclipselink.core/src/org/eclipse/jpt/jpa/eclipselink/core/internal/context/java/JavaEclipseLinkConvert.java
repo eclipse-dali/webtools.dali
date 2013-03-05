@@ -174,12 +174,12 @@ public class JavaEclipseLinkConvert
 		}
 		
 		@Override
-		protected Converter.ParentAdapter<JavaAttributeMapping> buildConverterParentAdapter(JavaAttributeMapping parent) {
+		protected JavaConverter.ParentAdapter buildConverterParentAdapter(JavaAttributeMapping parent) {
 			return new ConverterParentAdapter(parent);
 		}
 
 		public static class ConverterParentAdapter
-			implements Converter.ParentAdapter<JavaAttributeMapping>
+			implements JavaConverter.ParentAdapter
 		{
 			private final JavaAttributeMapping parent;
 			public ConverterParentAdapter(JavaAttributeMapping parent) {

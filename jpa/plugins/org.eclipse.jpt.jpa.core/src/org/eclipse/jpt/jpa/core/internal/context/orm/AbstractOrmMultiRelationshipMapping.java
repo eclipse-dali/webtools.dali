@@ -68,10 +68,10 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.RelationshipStrategyTableD
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.NullOrmConverter;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.MapKeyJoinColumnValidator;
 import org.eclipse.jpt.jpa.core.jpa2.context.MultiRelationshipMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCollectionMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOrderable2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlMultiRelationshipMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.MapKey;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
@@ -197,12 +197,12 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 				this.getContextModelFactory().buildOrmOrderable(this);
 	}
 
-	protected Orderable2_0.ParentAdapter<OrmAttributeMapping> buildOrderableParentAdapter() {
+	protected OrmOrderable2_0.ParentAdapter buildOrderableParentAdapter() {
 		return new OrderableParentAdapter();
 	}
 
 	public class OrderableParentAdapter
-		implements Orderable2_0.ParentAdapter<OrmAttributeMapping>
+		implements OrmOrderable2_0.ParentAdapter
 	{
 		public OrmAttributeMapping getOrderableParent() {
 			return AbstractOrmMultiRelationshipMapping.this;

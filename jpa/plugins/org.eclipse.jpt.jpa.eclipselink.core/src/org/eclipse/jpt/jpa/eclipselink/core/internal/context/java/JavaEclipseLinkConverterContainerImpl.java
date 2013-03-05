@@ -17,7 +17,6 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubListIterableWrapper;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
@@ -33,20 +32,17 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class JavaEclipseLinkConverterContainerImpl
-	extends AbstractJavaContextModel<JpaContextModel>
+	extends AbstractJavaContextModel<EclipseLinkJavaConverterContainer.Parent>
 	implements EclipseLinkJavaConverterContainer
 {
-	protected final ParentAdapter parentAdapter;
-
 	protected final ContextListContainer<JavaEclipseLinkCustomConverter, EclipseLinkConverterAnnotation> customConverterContainer;
 	protected final ContextListContainer<JavaEclipseLinkObjectTypeConverter, EclipseLinkObjectTypeConverterAnnotation> objectTypeConverterContainer;
 	protected final ContextListContainer<JavaEclipseLinkStructConverter, EclipseLinkStructConverterAnnotation> structConverterContainer;
 	protected final ContextListContainer<JavaEclipseLinkTypeConverter, EclipseLinkTypeConverterAnnotation> typeConverterContainer;
 
 
-	public JavaEclipseLinkConverterContainerImpl(ParentAdapter parentAdapter) {
-		super(parentAdapter.getConverterContainerParent());
-		this.parentAdapter = parentAdapter;
+	public JavaEclipseLinkConverterContainerImpl(Parent parent) {
+		super(parent);
 		this.customConverterContainer = this.buildCustomConverterContainer();
 		this.objectTypeConverterContainer = this.buildObjectTypeConverterContainer();
 		this.structConverterContainer = this.buildStructConverterContainer();
@@ -123,7 +119,7 @@ public class JavaEclipseLinkConverterContainerImpl
 	}
 
 	protected ListIterable<EclipseLinkConverterAnnotation> getCustomConverterAnnotations() {
-		return this.parentAdapter.parentSupportsConverters() ?
+		return this.parent.supportsConverters() ?
 				new SubListIterableWrapper<NestableAnnotation, EclipseLinkConverterAnnotation>(this.getNestableCustomConverterAnnotations_()) :
 				EmptyListIterable.<EclipseLinkConverterAnnotation>instance();
 	}
@@ -210,7 +206,7 @@ public class JavaEclipseLinkConverterContainerImpl
 	}
 
 	protected ListIterable<EclipseLinkObjectTypeConverterAnnotation> getObjectTypeConverterAnnotations() {
-		return this.parentAdapter.parentSupportsConverters() ? 
+		return this.parent.supportsConverters() ? 
 				new SubListIterableWrapper<NestableAnnotation, EclipseLinkObjectTypeConverterAnnotation>(this.getNestableObjectTypeConverterAnnotations_()) :
 				EmptyListIterable.<EclipseLinkObjectTypeConverterAnnotation>instance();
 	}
@@ -297,7 +293,7 @@ public class JavaEclipseLinkConverterContainerImpl
 	}
 
 	protected ListIterable<EclipseLinkStructConverterAnnotation> getStructConverterAnnotations() {
-		return this.parentAdapter.parentSupportsConverters() ?
+		return this.parent.supportsConverters() ?
 				new SubListIterableWrapper<NestableAnnotation, EclipseLinkStructConverterAnnotation>(this.getNestableStructConverterAnnotations_()) :
 				EmptyListIterable.<EclipseLinkStructConverterAnnotation>instance();
 	}
@@ -385,7 +381,7 @@ public class JavaEclipseLinkConverterContainerImpl
 	}
 
 	protected ListIterable<EclipseLinkTypeConverterAnnotation> getTypeConverterAnnotations() {
-		return this.parentAdapter.parentSupportsConverters() ? 
+		return this.parent.supportsConverters() ? 
 				new SubListIterableWrapper<NestableAnnotation, EclipseLinkTypeConverterAnnotation>(this.getNestableTypeConverterAnnotations_()) :
 				EmptyListIterable.<EclipseLinkTypeConverterAnnotation>instance();
 	}
@@ -427,12 +423,8 @@ public class JavaEclipseLinkConverterContainerImpl
 
 	// ********** misc **********
 
-	protected ParentAdapter getParentAdapter() {
-		return this.parentAdapter;
-	}
-
 	protected JavaResourceAnnotatedElement getJavaResourceAnnotatedElement() {
-		return this.getParentAdapter().getJavaResourceAnnotatedElement();
+		return this.parent.getJavaResourceAnnotatedElement();
 	}
 
 	@SuppressWarnings("unchecked")

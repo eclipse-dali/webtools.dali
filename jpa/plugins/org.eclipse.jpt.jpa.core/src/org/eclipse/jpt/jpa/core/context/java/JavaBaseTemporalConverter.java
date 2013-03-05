@@ -72,7 +72,8 @@ public interface JavaBaseTemporalConverter
 		}
 
 		@Override
-		protected ParentAdapter<JavaAttributeMapping> buildConverterParentAdapter(JavaAttributeMapping parent) {
+		protected JavaConverter.ParentAdapter buildConverterParentAdapter(JavaAttributeMapping parent) {
+			super.buildConverterParentAdapter(parent);
 			return new ConverterParentAdapter(parent);
 		}
 
@@ -102,7 +103,7 @@ public interface JavaBaseTemporalConverter
 		}
 	
 		@Override
-		protected ParentAdapter<JavaAttributeMapping> buildConverterParentAdapter(JavaAttributeMapping parent) {
+		protected JavaConverter.ParentAdapter buildConverterParentAdapter(JavaAttributeMapping parent) {
 			return new ConverterParentAdapter(parent);
 		}
 
@@ -147,7 +148,7 @@ public interface JavaBaseTemporalConverter
 		}
 
 		@Override
-		protected ParentAdapter<JavaAttributeMapping> buildConverterParentAdapter(JavaAttributeMapping parent) {
+		protected JavaConverter.ParentAdapter buildConverterParentAdapter(JavaAttributeMapping parent) {
 			return new ConverterParentAdapter(parent);
 		}
 

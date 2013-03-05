@@ -42,7 +42,7 @@ public class JoinColumnInJoiningStrategyDialog
 
 	@Override
 	protected JoinColumnInJoiningStrategyStateObject buildStateObject() {
-		return new JoinColumnInJoiningStrategyStateObject(this.getOwner(), this.getJoinColumn());
+		return new JoinColumnInJoiningStrategyStateObject(this.getParent(), this.getJoinColumn());
 	}
 
 	@Override

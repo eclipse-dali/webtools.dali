@@ -50,7 +50,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractJavaIdMapping
 	extends AbstractJavaAttributeMapping<IdAnnotation>
-	implements JavaIdMapping, IdMapping2_0
+	implements JavaIdMapping, IdMapping2_0, JavaGeneratorContainer.Parent
 {
 	protected final JavaSpecifiedColumn column;
 

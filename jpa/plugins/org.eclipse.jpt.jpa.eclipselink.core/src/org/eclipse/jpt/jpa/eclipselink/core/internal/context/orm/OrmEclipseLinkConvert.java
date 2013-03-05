@@ -27,12 +27,12 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConvert;
 
 public class OrmEclipseLinkConvert
-	extends AbstractOrmConverter<OrmConverter.ParentAdapter<OrmAttributeMapping>>
+	extends AbstractOrmConverter<OrmConverter.ParentAdapter>
 	implements EclipseLinkConvert
 {
 	protected String specifiedConverterName;
 
-	public OrmEclipseLinkConvert(OrmConverter.ParentAdapter<OrmAttributeMapping> parentAdapter) {
+	public OrmEclipseLinkConvert(OrmConverter.ParentAdapter parentAdapter) {
 		super(parentAdapter);
 		this.specifiedConverterName = this.getXmlConvert() != null ? this.getXmlConvert().getConvert() : null;
 	}
@@ -182,7 +182,7 @@ public class OrmEclipseLinkConvert
 		}
 
 		public static class ConverterParentAdapter
-			implements Converter.ParentAdapter<OrmAttributeMapping>
+			implements OrmConverter.ParentAdapter
 		{
 			private final OrmAttributeMapping parent;
 			public ConverterParentAdapter(OrmAttributeMapping parent) {

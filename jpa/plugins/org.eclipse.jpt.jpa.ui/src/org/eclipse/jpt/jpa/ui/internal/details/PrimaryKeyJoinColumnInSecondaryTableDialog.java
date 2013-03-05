@@ -58,7 +58,7 @@ public class PrimaryKeyJoinColumnInSecondaryTableDialog
 
 	@Override
 	protected PrimaryKeyJoinColumnInSecondaryTableStateObject buildStateObject() {
-		return new PrimaryKeyJoinColumnInSecondaryTableStateObject(this.getOwner(), this.getJoinColumn());
+		return new PrimaryKeyJoinColumnInSecondaryTableStateObject(this.getParent(), this.getJoinColumn());
 	}
 
 	@Override

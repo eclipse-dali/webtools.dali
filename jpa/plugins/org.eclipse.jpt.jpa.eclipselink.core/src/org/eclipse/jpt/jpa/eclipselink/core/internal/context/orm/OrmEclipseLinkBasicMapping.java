@@ -39,11 +39,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class OrmEclipseLinkBasicMapping
 	extends AbstractOrmBasicMapping<XmlBasic>
-	implements 
-		EclipseLinkBasicMapping, 
-		EclipseLinkOrmConvertibleMapping, 
-		EclipseLinkOrmConverterContainer.Parent,
-		OrmGeneratedValueMapping
+	implements EclipseLinkBasicMapping, EclipseLinkOrmConvertibleMapping, OrmGeneratedValueMapping
 {
 	protected final OrmEclipseLinkMutable mutable;
 	

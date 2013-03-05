@@ -31,9 +31,9 @@ public interface OverrideRelationship2_0
 	extends OverrideRelationship,
 			JoinTableRelationship
 {
-	JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter owner);
+	JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter parentAdapter);
 
-	JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter owner);
+	JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter parentAdapter);
 
 	JptValidator buildJoinTableValidator(JoinTable table);
 }

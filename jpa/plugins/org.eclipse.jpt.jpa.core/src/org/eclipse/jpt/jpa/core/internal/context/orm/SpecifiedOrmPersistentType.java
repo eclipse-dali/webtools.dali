@@ -78,7 +78,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class SpecifiedOrmPersistentType
 	extends AbstractOrmManagedType<EntityMappings>
-	implements OrmPersistentType, PersistentType2_0
+	implements OrmPersistentType, PersistentType2_0, PersistentType.Parent
 {
 	protected OrmTypeMapping mapping;  // never null
 
@@ -248,14 +248,6 @@ public abstract class SpecifiedOrmPersistentType
 	protected boolean javaPersistentTypeHasSpecifiedAccess() {
 		return (this.getJavaPersistentType().getSpecifiedAccess() != null) ||
 				this.getJavaPersistentType().hasAnyAnnotatedAttributes();
-	}
-
-	public AccessType getOwnerOverrideAccess() {
-		return this.getEntityMappings().getOverridePersistentTypeAccess();
-	}
-
-	public AccessType getOwnerDefaultAccess() {
-		return this.getEntityMappings().getDefaultPersistentTypeAccess();
 	}
 
 
@@ -1079,7 +1071,7 @@ public abstract class SpecifiedOrmPersistentType
 		}
 
 		if (this.mapping.isMetadataComplete()) {
-			AccessType accessType = this.getOwnerDefaultAccess();
+			AccessType accessType = this.getEntityMappings().getDefaultPersistentTypeAccess();
 			if (accessType != null) {
 				return accessType;
 			}
@@ -1097,7 +1089,7 @@ public abstract class SpecifiedOrmPersistentType
 			}
 		}
 
-		return this.getOwnerDefaultAccess();
+		return this.getEntityMappings().getDefaultPersistentTypeAccess();
 	}
 
 

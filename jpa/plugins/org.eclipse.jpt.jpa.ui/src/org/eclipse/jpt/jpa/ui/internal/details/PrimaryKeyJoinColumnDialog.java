@@ -58,7 +58,7 @@ public class PrimaryKeyJoinColumnDialog
 
 	@Override
 	protected PrimaryKeyJoinColumnStateObject buildStateObject() {
-		return new PrimaryKeyJoinColumnStateObject(this.getOwner(), this.getJoinColumn());
+		return new PrimaryKeyJoinColumnStateObject(this.getParent(), this.getJoinColumn());
 	}
 
 	@Override

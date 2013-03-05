@@ -46,14 +46,11 @@ public interface EclipseLinkJavaConverterContainer
 	JavaEclipseLinkTypeConverter addTypeConverter(String name, int index);
 
 	/**
-	 * Parent adapter
+	 * Parent
 	 */
-	interface ParentAdapter {
-		/**
-		 * Return the container's parent.
-		 */
-		JpaContextModel getConverterContainerParent();
-
+	interface Parent
+		extends JpaContextModel
+	{
 		/**
 		 * Return the element that is annotated with converters.
 		 */
@@ -63,6 +60,6 @@ public interface EclipseLinkJavaConverterContainer
 		 * Return whether the container's parent supports converters.
 		 * (Virtual attributes do not support converters.)
 		 */
-		boolean parentSupportsConverters();
+		boolean supportsConverters();
 	}
 }

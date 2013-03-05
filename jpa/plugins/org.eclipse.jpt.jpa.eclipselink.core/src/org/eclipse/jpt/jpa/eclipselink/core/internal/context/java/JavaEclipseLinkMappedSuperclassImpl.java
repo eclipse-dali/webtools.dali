@@ -48,7 +48,7 @@ public class JavaEclipseLinkMappedSuperclassImpl
 	implements 
 		JavaEclipseLinkMappedSuperclass, 
 		JavaCacheableReference2_0, 
-		EclipseLinkJavaConverterContainer.ParentAdapter,
+		EclipseLinkJavaConverterContainer.Parent,
 		JavaGeneratorContainer.Parent
 {
 	protected final JavaEclipseLinkCaching caching;
@@ -246,17 +246,13 @@ public class JavaEclipseLinkMappedSuperclassImpl
 		return ((CacheableReference2_0) this.getCaching()).calculateDefaultCacheable();
 	}
 
-	// ********** converter container parent adapter **********
-
-	public JpaContextModel getConverterContainerParent() {
-		return this;  // no adapter
-	}
+	// ********** converter container parent **********
 
 	public JavaResourceAnnotatedElement getJavaResourceAnnotatedElement() {
 		return this.getJavaResourceType();
 	}
 
-	public boolean parentSupportsConverters() {
+	public boolean supportsConverters() {
 		return true;
 	}
 

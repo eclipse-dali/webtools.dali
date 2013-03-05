@@ -35,7 +35,6 @@ import org.eclipse.jpt.jpa.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType;
-import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableReference2_0;
@@ -85,8 +84,8 @@ public class EclipseLink2_0JpaFactory
 	// ********** Java Context Model **********
 
 	@Override
-	public JavaPersistentType buildJavaPersistentType(PersistentType.Parent owner, JavaResourceType jrt) {
-		return new GenericJavaPersistentType2_0(owner, jrt);
+	public JavaPersistentType buildJavaPersistentType(PersistentType.Parent parent, JavaResourceType jrt) {
+		return new GenericJavaPersistentType2_0(parent, jrt);
 	}
 	
 	@Override
@@ -122,7 +121,7 @@ public class EclipseLink2_0JpaFactory
 		return new GenericJavaColumn(parentAdapter);
 	}
 
-	public JavaOrderable2_0 buildJavaOrderable(Orderable2_0.ParentAdapter<JavaAttributeMapping> parentAdapter) {
+	public JavaOrderable2_0 buildJavaOrderable(JavaOrderable2_0.ParentAdapter parentAdapter) {
 		return new GenericJavaOrderable(parentAdapter);
 	}
 

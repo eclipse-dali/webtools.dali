@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.As
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.AccessType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
@@ -28,7 +29,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class GenericJavaIdClassReference
 	extends AbstractJavaContextModel<JavaTypeMapping>
-	implements JavaIdClassReference
+	implements JavaIdClassReference, PersistentType.Parent
 {
 	protected String idClassName;
 	protected String fullyQualifiedIdClassName;

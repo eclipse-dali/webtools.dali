@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
-import org.eclipse.jpt.jpa.core.resource.orm.XmlConvertibleMapping;
 
 /**
  * <code>orm.xml</code> converter
@@ -37,6 +36,19 @@ public interface OrmConverter
 	 * model what is going on here....)
 	 */
 	void initialize();
+
+
+	// ********** parent adapter **********
+
+	/**
+	 * Interface allowing converters to be used in multiple places
+	 * (e.g. basic mappings, collection mappings, etc).
+	 */
+	public interface ParentAdapter
+		extends Converter.ParentAdapter<OrmAttributeMapping>
+	{
+		// specify generic argument
+	}
 
 
 	// ********** adapter **********
@@ -80,7 +92,7 @@ public interface OrmConverter
 		 * the context converter has been added to the context model (see {@link
 		 * OrmConverter#initialize()}.
 		 * 
-		 * @see #isActive(XmlConvertibleMapping)
+		 * @see #isActive(XmlAttributeMapping)
 		 */
 		OrmConverter buildNewConverter(OrmAttributeMapping parent, OrmXmlContextModelFactory factory);
 

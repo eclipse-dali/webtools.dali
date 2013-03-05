@@ -186,21 +186,6 @@ public interface PersistentType
 	}
 
 
-	// ********** owner **********
-
-	/**
-	 * Return the access type that overrides the client persistent type's
-	 * access type; <code>null</code> if there is no such access override.
-	 */
-	AccessType getOwnerOverrideAccess();
-
-	/**
-	 * Return the client persistent type's default access type;
-	 * <code>null</code> if there is no such access default.
-	 */
-	AccessType getOwnerDefaultAccess();
-
-
 	// ********** parent interface **********
 
 	interface Parent

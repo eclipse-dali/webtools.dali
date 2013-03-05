@@ -50,8 +50,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlVersion;
 
 public class EclipseLinkOrmXmlContextModelFactory
 	extends AbstractOrmXmlContextModelFactory
-{	
-
+{
 	// ********** EclipseLink-specific ORM Context Model **********
 	
 	@Override

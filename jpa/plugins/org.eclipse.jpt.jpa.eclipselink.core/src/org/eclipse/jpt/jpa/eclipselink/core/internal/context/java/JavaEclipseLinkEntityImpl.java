@@ -44,7 +44,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class JavaEclipseLinkEntityImpl
 	extends AbstractJavaEntity
-	implements JavaEclipseLinkEntity, EclipseLinkJavaConverterContainer.ParentAdapter
+	implements JavaEclipseLinkEntity, EclipseLinkJavaConverterContainer.Parent
 {
 	protected final JavaEclipseLinkCaching caching;
 
@@ -229,17 +229,13 @@ public class JavaEclipseLinkEntityImpl
 		return ((JavaCacheableReference2_0) this.getCaching()).calculateDefaultCacheable();
 	}
 
-	// ********** converter container parent adapter **********
-
-	public JpaContextModel getConverterContainerParent() {
-		return this;  // no adapter
-	}
+	// ********** converter container parent **********
 
 	public JavaResourceAnnotatedElement getJavaResourceAnnotatedElement() {
 		return this.getJavaResourceType();
 	}
 
-	public boolean parentSupportsConverters() {
+	public boolean supportsConverters() {
 		return true;
 	}
 

@@ -91,7 +91,6 @@ import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ManyToOneRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneRelationship2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAssociationOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAttributeOverrideContainer2_0;
@@ -384,12 +383,12 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		return this.getJpaFactory().buildJavaOrderable(this.buildOrderableParentAdapter());
 	}
 
-	protected Orderable2_0.ParentAdapter<JavaAttributeMapping> buildOrderableParentAdapter() {
+	protected JavaOrderable2_0.ParentAdapter buildOrderableParentAdapter() {
 		return new OrderableParentAdapter();
 	}
 
 	public class OrderableParentAdapter
-		implements Orderable2_0.ParentAdapter<JavaAttributeMapping>
+		implements JavaOrderable2_0.ParentAdapter
 	{
 		public JavaAttributeMapping getOrderableParent() {
 			return AbstractJavaElementCollectionMapping2_0.this;
@@ -1952,11 +1951,11 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 			return new AssociationOverrideJoinColumnValidator(this.getPersistentAttribute(), (AssociationOverride) override, (JoinColumn) column, (JoinColumn.ParentAdapter) columnParentAdapter, new CollectionTableTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter owner) {
+		public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
 			return JptValidator.Null.instance();
 		}
 
-		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter owner) {
+		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
 			return JptValidator.Null.instance();
 		}
 

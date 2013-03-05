@@ -33,10 +33,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class OrmEclipseLinkIdMapping
 	extends AbstractOrmIdMapping<XmlId>
-	implements
-		EclipseLinkIdMapping2_0,
-		EclipseLinkOrmConvertibleMapping,
-		EclipseLinkOrmConverterContainer.Parent
+	implements EclipseLinkIdMapping2_0, EclipseLinkOrmConvertibleMapping
 {
 	protected final OrmEclipseLinkMutable mutable;
 	

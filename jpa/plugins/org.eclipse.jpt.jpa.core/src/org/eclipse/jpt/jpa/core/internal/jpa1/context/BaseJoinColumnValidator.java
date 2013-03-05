@@ -19,23 +19,23 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 public abstract class BaseJoinColumnValidator<C extends BaseJoinColumn>
 	extends AbstractNamedColumnValidator<C>
 {
-	private final BaseJoinColumn.ParentAdapter joinColumnOwner;
+	private final BaseJoinColumn.ParentAdapter joinColumnParentAdapter;
 
 	protected BaseJoinColumnValidator(
 				C column,
-				BaseJoinColumn.ParentAdapter joinColumnOwner,
+				BaseJoinColumn.ParentAdapter joinColumnParentAdapter,
 				TableDescriptionProvider provider) {
 		super(column, provider);
-		this.joinColumnOwner = joinColumnOwner;
+		this.joinColumnParentAdapter = joinColumnParentAdapter;
 	}
 
 	protected BaseJoinColumnValidator(
 				PersistentAttribute persistentAttribute,
 				C column,
-				BaseJoinColumn.ParentAdapter joinColumnOwner,
+				BaseJoinColumn.ParentAdapter joinColumnParentAdapter,
 				TableDescriptionProvider provider) {
 		super(persistentAttribute, column, provider);
-		this.joinColumnOwner = joinColumnOwner;
+		this.joinColumnParentAdapter = joinColumnParentAdapter;
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public abstract class BaseJoinColumnValidator<C extends BaseJoinColumn>
 	}
 
 	protected void validateJoinColumnName(List<IMessage> messages) {
-		if ((this.column.getSpecifiedName() == null) && (this.joinColumnOwner.getJoinColumnsSize() > 1)) {
+		if ((this.column.getSpecifiedName() == null) && (this.joinColumnParentAdapter.getJoinColumnsSize() > 1)) {
 			messages.add(this.buildUnspecifiedNameMultipleJoinColumnsMessage());
 		}
 		else if (this.column.getName() != null){
@@ -59,7 +59,7 @@ public abstract class BaseJoinColumnValidator<C extends BaseJoinColumn>
 	}
 
 	protected void validateReferencedColumnName(List<IMessage> messages) {
-		if ((this.column.getSpecifiedReferencedColumnName() == null) && (this.joinColumnOwner.getJoinColumnsSize() > 1)) {
+		if ((this.column.getSpecifiedReferencedColumnName() == null) && (this.joinColumnParentAdapter.getJoinColumnsSize() > 1)) {
 			messages.add(this.buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage());
 		}
 		//bug 315292 is the reason we are only validating if there is a specified referenced column name

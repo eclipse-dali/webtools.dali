@@ -19,6 +19,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.AccessType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
@@ -40,7 +41,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class GenericOrmIdClassReference
 	extends AbstractOrmXmlContextModel<OrmIdTypeMapping>
-	implements OrmIdClassReference
+	implements OrmIdClassReference, PersistentType.Parent
 {
 	protected String specifiedIdClassName;
 	protected String defaultIdClassName;

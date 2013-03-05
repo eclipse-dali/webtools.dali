@@ -80,7 +80,7 @@ public class EclipseLinkOrmTenantDiscriminatorColumn2_3
 	 * tenant discriminator columns are part of a collection;
 	 * the 'tenant-discriminator-column' element will be removed/added
 	 * when the XML tenant discriminator column is removed from/added to
-	 * the owner's collection
+	 * the parent's collection
 	 */
 	@Override
 	protected XmlTenantDiscriminatorColumn buildXmlColumn() {

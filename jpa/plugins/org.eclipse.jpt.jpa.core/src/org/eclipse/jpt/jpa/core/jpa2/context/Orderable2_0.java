@@ -38,6 +38,8 @@ public interface Orderable2_0
 	String getDefaultTableName();
 
 
+	// ************ parent adapter ************
+
 	/**
 	 * interface allowing ordering in multiple places
 	 * (i.e. multi-value relationship and element collection mappings)

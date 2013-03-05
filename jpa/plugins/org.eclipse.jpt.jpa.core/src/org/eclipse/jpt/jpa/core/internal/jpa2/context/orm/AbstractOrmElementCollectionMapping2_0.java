@@ -41,7 +41,6 @@ import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
-import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -89,7 +88,6 @@ import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ManyToOneRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneRelationship2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmAssociationOverrideContainer2_0;
@@ -378,7 +376,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 	// ********** orderable **********
 
-	public Orderable getOrderable() {
+	public OrmOrderable2_0 getOrderable() {
 		return this.orderable;
 	}
 
@@ -387,12 +385,12 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		return this.getContextModelFactory2_0().buildOrmOrderable(this.buildOrderableParentAdapter());
 	}
 
-	protected Orderable2_0.ParentAdapter<OrmAttributeMapping> buildOrderableParentAdapter() {
+	protected OrmOrderable2_0.ParentAdapter buildOrderableParentAdapter() {
 		return new OrderableParentAdapter();
 	}
 
 	public class OrderableParentAdapter
-		implements Orderable2_0.ParentAdapter<OrmAttributeMapping>
+		implements OrmOrderable2_0.ParentAdapter
 	{
 		public OrmAttributeMapping getOrderableParent() {
 			return AbstractOrmElementCollectionMapping2_0.this;

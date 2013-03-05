@@ -284,12 +284,12 @@ public abstract class AbstractJavaEmbeddedMapping
 			return new AssociationOverrideJoinColumnValidator(this.getPersistentAttribute(), (AssociationOverride) override, (JoinColumn) column, (JoinColumn.ParentAdapter) parentAdapter, new EntityTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter owner) {
-			return new AssociationOverrideJoinColumnValidator(this.getPersistentAttribute(), override, column, owner, new JoinTableTableDescriptionProvider());
+		public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
+			return new AssociationOverrideJoinColumnValidator(this.getPersistentAttribute(), override, column, parentAdapter, new JoinTableTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter owner) {
-			return new AssociationOverrideInverseJoinColumnValidator(this.getPersistentAttribute(), override, column, owner, new JoinTableTableDescriptionProvider());
+		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
+			return new AssociationOverrideInverseJoinColumnValidator(this.getPersistentAttribute(), override, column, parentAdapter, new JoinTableTableDescriptionProvider());
 		}
 
 		public JptValidator buildJoinTableValidator(AssociationOverride override, Table table) {

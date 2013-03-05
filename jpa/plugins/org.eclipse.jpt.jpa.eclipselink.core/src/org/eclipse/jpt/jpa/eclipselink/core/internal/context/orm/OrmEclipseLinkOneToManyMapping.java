@@ -36,10 +36,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class OrmEclipseLinkOneToManyMapping
 	extends AbstractOrmOneToManyMapping<XmlOneToMany>
-	implements
-		EclipseLinkOneToManyMapping2_0,
-		EclipseLinkOrmConvertibleMapping,
-		EclipseLinkOrmConverterContainer.Parent
+	implements EclipseLinkOneToManyMapping2_0, EclipseLinkOrmConvertibleMapping
 {
 	protected final OrmEclipseLinkPrivateOwned privateOwned;
 

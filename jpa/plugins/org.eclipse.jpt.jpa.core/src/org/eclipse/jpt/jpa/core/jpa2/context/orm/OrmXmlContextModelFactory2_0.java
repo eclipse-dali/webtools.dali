@@ -9,11 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalMapping2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlElementCollection;
@@ -41,7 +39,7 @@ public interface OrmXmlContextModelFactory2_0
 	
 	OrphanRemovable2_0 buildOrmOrphanRemoval(OrphanRemovalMapping2_0 parent);
 	
-	OrmOrderable2_0 buildOrmOrderable(Orderable2_0.ParentAdapter<OrmAttributeMapping> parentAdapter);
+	OrmOrderable2_0 buildOrmOrderable(OrmOrderable2_0.ParentAdapter parentAdapter);
 	
 	OrmSpecifiedOrderColumn2_0 buildOrmOrderColumn(OrmSpecifiedOrderColumn2_0.ParentAdapter parentAdapter);
 	

@@ -304,11 +304,11 @@ public class GenericJavaOverrideRelationship
 		return this.getAssociationOverride2_0().buildJoinTableValidator(table);
 	}
 
-	public JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter owner) {
-		return this.getAssociationOverride2_0().buildJoinTableJoinColumnValidator(column, owner);
+	public JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
+		return this.getAssociationOverride2_0().buildJoinTableJoinColumnValidator(column, parentAdapter);
 	}
 
-	public JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter owner) {
-		return this.getAssociationOverride2_0().buildJoinTableInverseJoinColumnValidator(column, owner);
+	public JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
+		return this.getAssociationOverride2_0().buildJoinTableInverseJoinColumnValidator(column, parentAdapter);
 	}
 }

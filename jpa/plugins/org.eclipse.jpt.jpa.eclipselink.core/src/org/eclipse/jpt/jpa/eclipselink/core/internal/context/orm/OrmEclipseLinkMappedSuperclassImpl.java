@@ -52,10 +52,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class OrmEclipseLinkMappedSuperclassImpl
 	extends AbstractOrmMappedSuperclass<XmlMappedSuperclass>
-	implements
-		OrmEclipseLinkMappedSuperclass,
-		OrmCacheableReference2_0,
-		EclipseLinkOrmConverterContainer.Parent
+	implements OrmEclipseLinkMappedSuperclass, OrmCacheableReference2_0, EclipseLinkOrmConverterContainer.Parent
 {
 	protected final OrmEclipseLinkReadOnly readOnly;
 

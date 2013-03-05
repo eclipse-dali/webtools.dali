@@ -55,20 +55,20 @@ public class GenericOrmAssociationOverrideContainer
 		return this.parentAdapter.resolveOverriddenRelationship(associationOverrideName);
 	}
 
-	protected OrmAssociationOverrideContainer2_0.ParentAdapter getOwner2_0() {
+	protected OrmAssociationOverrideContainer2_0.ParentAdapter getParentAdapter2_0() {
 		return (OrmAssociationOverrideContainer2_0.ParentAdapter) this.parentAdapter;
 	}
 
-	public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter columnOwner) {
-		return this.getOwner2_0().buildJoinTableJoinColumnValidator(override, column, columnOwner);
+	public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter columnParentAdapter) {
+		return this.getParentAdapter2_0().buildJoinTableJoinColumnValidator(override, column, columnParentAdapter);
 	}
 
-	public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter columnOwner) {
-		return this.getOwner2_0().buildJoinTableInverseJoinColumnValidator(override, column, columnOwner);
+	public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter columnParentAdapter) {
+		return this.getParentAdapter2_0().buildJoinTableInverseJoinColumnValidator(override, column, columnParentAdapter);
 	}
 
 	public JptValidator buildJoinTableValidator(AssociationOverride override, Table table) {
-		return this.getOwner2_0().buildJoinTableValidator(override, table);
+		return this.getParentAdapter2_0().buildJoinTableValidator(override, table);
 	}
 
 	@Override

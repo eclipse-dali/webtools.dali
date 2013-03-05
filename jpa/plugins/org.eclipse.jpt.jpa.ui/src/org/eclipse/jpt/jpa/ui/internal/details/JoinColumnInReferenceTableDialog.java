@@ -56,6 +56,6 @@ public class JoinColumnInReferenceTableDialog
 
 	@Override
 	protected JoinColumnInReferenceTableStateObject buildStateObject() {
-		return new JoinColumnInReferenceTableStateObject(this.getOwner(), this.getJoinColumn());
+		return new JoinColumnInReferenceTableStateObject(this.getParent(), this.getJoinColumn());
 	}
 }

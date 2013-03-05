@@ -49,7 +49,7 @@ public class GenericOrmOrderable
 	protected boolean customOrdering = false;
 
 	// JPA 2.0
-	protected final ParentAdapter<OrmAttributeMapping> parentAdapter;
+	protected final OrmOrderable2_0.ParentAdapter parentAdapter;
 	protected boolean orderColumnOrdering = false;
 	protected final OrmSpecifiedOrderColumn2_0 orderColumn;  // this is null for JPA 1.0 mappings
 
@@ -58,13 +58,13 @@ public class GenericOrmOrderable
 	 * JPA 1.0
 	 */
 	public GenericOrmOrderable(OrmAttributeMapping parent) {
-		this(new ParentAdapter.Null<OrmAttributeMapping>(parent));
+		this(new OrmOrderable2_0.ParentAdapter.Null(parent));
 	}
 
 	/**
 	 * JPA 2.0
 	 */
-	public GenericOrmOrderable(ParentAdapter<OrmAttributeMapping> parentAdapter) {
+	public GenericOrmOrderable(OrmOrderable2_0.ParentAdapter parentAdapter) {
 		super(parentAdapter.getOrderableParent());
 
 		this.specifiedOrderBy = this.buildSpecifiedOrderBy();

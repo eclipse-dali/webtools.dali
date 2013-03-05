@@ -70,7 +70,7 @@ public interface BaseJoinColumn
 		Table getReferencedColumnDbTable();
 		
 		/**
-		 * Return the number of join columns in the owner's list the join
+		 * Return the number of join columns in the parent's list the join
 		 * column belongs to.
 		 */
 		int getJoinColumnsSize();

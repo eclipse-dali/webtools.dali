@@ -31,7 +31,7 @@ public interface RelationshipMapping
 	MappingRelationship getRelationship();
 
 	/**
-	 * Return the relationship owner or null if this is the owning side
+	 * Return the relationship owner or <code>null</code> if this is the owning side
  	 * or it is a unidirectional mapping.
 	 */
 	RelationshipMapping getRelationshipOwner();

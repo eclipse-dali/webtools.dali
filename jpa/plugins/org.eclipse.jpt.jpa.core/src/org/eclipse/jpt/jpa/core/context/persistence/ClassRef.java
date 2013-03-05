@@ -14,7 +14,6 @@ import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.DeleteTypeRefactoringParticipant;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -37,7 +36,7 @@ import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
  * @since 2.0
  */
 public interface ClassRef
-	extends JpaStructureNode, PersistentType.Parent, DeleteTypeRefactoringParticipant, TypeRefactoringParticipant
+	extends JpaStructureNode, DeleteTypeRefactoringParticipant, TypeRefactoringParticipant
 {
 	/**
 	 * Return whether the class ref is a reference to the specified type.

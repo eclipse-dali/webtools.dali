@@ -21,7 +21,7 @@ public class GenericOrmLobConverter
 	extends AbstractOrmConverter<Converter.ParentAdapter<OrmAttributeMapping>>
 	implements OrmLobConverter
 {
-	public GenericOrmLobConverter(OrmConverter.ParentAdapter<OrmAttributeMapping> parentAdapter) {
+	public GenericOrmLobConverter(OrmConverter.ParentAdapter parentAdapter) {
 		super(parentAdapter);
 	}
 

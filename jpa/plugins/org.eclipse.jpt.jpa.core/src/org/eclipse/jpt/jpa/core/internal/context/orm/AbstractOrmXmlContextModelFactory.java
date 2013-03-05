@@ -376,7 +376,7 @@ public abstract class AbstractOrmXmlContextModelFactory
 		return new GenericOrmBaseEnumeratedConverter(parentAdapter);
 	}
 	
-	public OrmConverter buildOrmLobConverter(OrmConverter.ParentAdapter<OrmAttributeMapping> parentAdapter) {
+	public OrmConverter buildOrmLobConverter(OrmConverter.ParentAdapter parentAdapter) {
 		return new GenericOrmLobConverter(parentAdapter);
 	}
 	

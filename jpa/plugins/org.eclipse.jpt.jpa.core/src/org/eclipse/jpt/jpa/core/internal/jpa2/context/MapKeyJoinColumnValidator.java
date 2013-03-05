@@ -21,17 +21,17 @@ public class MapKeyJoinColumnValidator
 {
 	protected MapKeyJoinColumnValidator(
 				JoinColumn column,
-				JoinColumn.ParentAdapter joinColumnOwner,
+				JoinColumn.ParentAdapter joinColumnParentAdapter,
 				TableDescriptionProvider provider) {
-		super(column, joinColumnOwner, provider);
+		super(column, joinColumnParentAdapter, provider);
 	}
 
 	public MapKeyJoinColumnValidator(
 				PersistentAttribute persistentAttribute,
 				JoinColumn column,
-				JoinColumn.ParentAdapter joinColumnOwner,
+				JoinColumn.ParentAdapter joinColumnParentAdapter,
 				TableDescriptionProvider provider) {
-		super(persistentAttribute, column, joinColumnOwner, provider);
+		super(persistentAttribute, column, joinColumnParentAdapter, provider);
 	}
 
 	@Override

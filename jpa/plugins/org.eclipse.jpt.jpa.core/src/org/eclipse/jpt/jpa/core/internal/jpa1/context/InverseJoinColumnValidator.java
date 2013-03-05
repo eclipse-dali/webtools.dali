@@ -20,17 +20,17 @@ public class InverseJoinColumnValidator
 {
 	protected InverseJoinColumnValidator(
 				JoinColumn column,
-				JoinColumn.ParentAdapter joinColumnOwner,
+				JoinColumn.ParentAdapter joinColumnParentAdapter,
 				TableDescriptionProvider provider) {
-		super(column, joinColumnOwner, provider);
+		super(column, joinColumnParentAdapter, provider);
 	}
 
 	public InverseJoinColumnValidator(
 				PersistentAttribute persistentAttribute,
 				JoinColumn column,
-				JoinColumn.ParentAdapter joinColumnOwner,
+				JoinColumn.ParentAdapter joinColumnParentAdapter,
 				TableDescriptionProvider provider) {
-		super(persistentAttribute, column, joinColumnOwner, provider);
+		super(persistentAttribute, column, joinColumnParentAdapter, provider);
 	}
 
 	@Override

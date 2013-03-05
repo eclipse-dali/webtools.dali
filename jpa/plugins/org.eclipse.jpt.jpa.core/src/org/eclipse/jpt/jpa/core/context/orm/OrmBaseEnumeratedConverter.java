@@ -33,7 +33,7 @@ public interface OrmBaseEnumeratedConverter
 	// ********** parent adapter **********
 
 	public interface ParentAdapter
-		extends Converter.ParentAdapter<OrmAttributeMapping>
+		extends OrmConverter.ParentAdapter
 	{
 		EnumType getXmlEnumType();
 

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context.orm;
 
+import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 
 /**
@@ -27,4 +28,26 @@ public interface OrmOrderable2_0
 	extends Orderable2_0
 {
 	OrmSpecifiedOrderColumn2_0 getOrderColumn();
+
+
+	// ************ parent adapter ************
+
+	/**
+	 * interface allowing ordering in multiple places
+	 * (i.e. multi-value relationship and element collection mappings)
+	 */
+	interface ParentAdapter
+		extends Orderable2_0.ParentAdapter<OrmAttributeMapping>
+	{
+		// specify generic argument
+		class Null
+			extends Orderable2_0.ParentAdapter.Null<OrmAttributeMapping>
+			implements ParentAdapter
+		{
+			public Null(OrmAttributeMapping parent) {
+				super(parent);
+			}
+		}
+
+	}
 }

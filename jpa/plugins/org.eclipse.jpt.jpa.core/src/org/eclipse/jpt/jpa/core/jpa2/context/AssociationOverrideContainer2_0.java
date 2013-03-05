@@ -31,9 +31,9 @@ public interface AssociationOverrideContainer2_0
 {
 	JptValidator buildJoinTableValidator(AssociationOverride override, Table table);
 
-	JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter owne);
+	JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter parentAdapter);
 
-	JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter owner);
+	JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter parentAdapter);
 
 
 	// ********** parent adapter **********
@@ -43,8 +43,8 @@ public interface AssociationOverrideContainer2_0
 	{
 		JptValidator buildJoinTableValidator(AssociationOverride override, Table table);
 
-		JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter owner);
+		JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter parentAdapter);
 
-		JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter owner);
+		JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter parentAdapter);
 	}
 }

@@ -53,7 +53,7 @@ public interface NamedColumn
 	/**
 	 * Return the name of the column's table. A column that does not have a
 	 * <em>specified</em> table still has a table (as determined by
-	 * the column's owner).
+	 * the column's parent).
 	 */
 	String getTableName();
 
@@ -114,7 +114,7 @@ public interface NamedColumn
 		JptValidator buildColumnValidator(NamedColumn column);
 
 		/**
-		 * Return the column owner's text range. This can be returned by the
+		 * Return the column parent's text range. This can be returned by the
 		 * column when its annotation is not present.
 		 */
 		TextRange getValidationTextRange();

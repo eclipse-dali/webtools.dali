@@ -53,9 +53,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class OrmEclipseLinkEntityImpl
 	extends AbstractOrmEntity<XmlEntity>
-	implements
-		OrmEclipseLinkEntity,
-		EclipseLinkOrmConverterContainer.Parent
+	implements OrmEclipseLinkEntity, EclipseLinkOrmConverterContainer.Parent
 {
 	protected final OrmEclipseLinkReadOnly readOnly;
 

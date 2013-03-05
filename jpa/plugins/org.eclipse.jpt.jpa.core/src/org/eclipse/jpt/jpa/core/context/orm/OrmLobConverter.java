@@ -63,7 +63,7 @@ public interface OrmLobConverter
 		}
 
 		public static class ConverterParentAdapter
-			implements Converter.ParentAdapter<OrmAttributeMapping>
+			implements OrmConverter.ParentAdapter
 		{
 			private final OrmAttributeMapping parent;
 			public ConverterParentAdapter(OrmAttributeMapping parent) {

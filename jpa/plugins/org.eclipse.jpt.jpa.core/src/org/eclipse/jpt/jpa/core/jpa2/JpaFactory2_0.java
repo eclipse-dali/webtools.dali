@@ -17,7 +17,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType;
-import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableReference2_0;
@@ -75,10 +74,10 @@ public interface JpaFactory2_0
 
 	JavaSpecifiedColumn buildJavaMapKeyColumn(JavaSpecifiedColumn.ParentAdapter parentAdapter);
 	
-	JavaOrderable2_0 buildJavaOrderable(Orderable2_0.ParentAdapter<JavaAttributeMapping> parentAdapter);
+	JavaOrderable2_0 buildJavaOrderable(JavaOrderable2_0.ParentAdapter parentAdapter);
 
 	/**
-	 * Use {@link #buildJavaOrderable(Orderable2_0.ParentAdapter)}.
+	 * Use {@link #buildJavaOrderable(JavaOrderable2_0.ParentAdapter)}.
 	 */
 	Orderable buildJavaOrderable(JavaAttributeMapping parent);
 }

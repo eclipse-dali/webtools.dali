@@ -31,11 +31,10 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
-import org.eclipse.jpt.jpa.core.context.ManagedType;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaNullTypeMapping;
@@ -311,14 +310,6 @@ public class VirtualJavaPersistentType
 
 	public JavaResourceType getJavaResourceType() {
 		return null;
-	}
-
-	public AccessType getOwnerOverrideAccess() {
-		throw new UnsupportedOperationException();
-	}
-
-	public AccessType getOwnerDefaultAccess() {
-		throw new UnsupportedOperationException();
 	}
 
 	public boolean isFor(String typeName) {

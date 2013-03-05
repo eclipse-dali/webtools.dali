@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
 
@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
  * @since 2.0
  */
 public interface OrmPersistentType
-	extends OrmManagedType, PersistentType, PersistentType.Parent
+	extends OrmManagedType, PersistentType
 {
 	
 	// ********** covariant overrides **********

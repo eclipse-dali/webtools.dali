@@ -52,7 +52,7 @@ public interface OverrideRelationship
 
 	String getDefaultTableName();
 
-	JptValidator buildColumnValidator(BaseColumn column, TableColumn.ParentAdapter owner);
+	JptValidator buildColumnValidator(BaseColumn column, TableColumn.ParentAdapter parentAdapter);
 
 	void initializeOnSpecified(SpecifiedOverrideRelationship specifiedRelationship);
 }

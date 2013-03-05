@@ -45,5 +45,4 @@ public interface Converter
 
 		JptValidator buildValidator(Converter converter);
 	}
-
 }

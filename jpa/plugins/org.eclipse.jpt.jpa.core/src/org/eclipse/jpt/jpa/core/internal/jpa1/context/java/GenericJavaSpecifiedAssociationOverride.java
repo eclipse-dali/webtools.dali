@@ -130,11 +130,11 @@ public class GenericJavaSpecifiedAssociationOverride
 		return this.getContainer2_0().buildJoinTableValidator(this, table);
 	}
 
-	public JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter owner) {
-		return this.getContainer2_0().buildJoinTableJoinColumnValidator(this, column, owner);
+	public JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
+		return this.getContainer2_0().buildJoinTableJoinColumnValidator(this, column, parentAdapter);
 	}
 
-	public JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter owner) {
-		return this.getContainer2_0().buildJoinTableInverseJoinColumnValidator(this, column, owner);
+	public JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
+		return this.getContainer2_0().buildJoinTableInverseJoinColumnValidator(this, column, parentAdapter);
 	}
 }

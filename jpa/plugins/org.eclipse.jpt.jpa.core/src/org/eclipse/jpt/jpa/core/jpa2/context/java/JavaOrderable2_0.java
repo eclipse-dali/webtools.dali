@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.jpa2.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 
 /**
@@ -30,4 +31,26 @@ public interface JavaOrderable2_0
 	JavaResourceAttribute getResourceAttribute();
 
 	JavaSpecifiedOrderColumn2_0 getOrderColumn();
+
+
+	// ************ parent adapter ************
+
+	/**
+	 * interface allowing ordering in multiple places
+	 * (i.e. multi-value relationship and element collection mappings)
+	 */
+	interface ParentAdapter
+		extends Orderable2_0.ParentAdapter<JavaAttributeMapping>
+	{
+		// specify generic argument
+		class Null
+			extends Orderable2_0.ParentAdapter.Null<JavaAttributeMapping>
+			implements ParentAdapter
+		{
+			public Null(JavaAttributeMapping parent) {
+				super(parent);
+			}
+		}
+
+	}
 }

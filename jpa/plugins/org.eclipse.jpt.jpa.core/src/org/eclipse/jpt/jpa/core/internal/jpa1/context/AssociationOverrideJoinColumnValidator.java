@@ -27,9 +27,9 @@ public class AssociationOverrideJoinColumnValidator
 	public AssociationOverrideJoinColumnValidator(
 				AssociationOverride override,
 				JoinColumn column,
-				JoinColumn.ParentAdapter joinColumnOwner,
+				JoinColumn.ParentAdapter joinColumnParentAdapter,
 				TableDescriptionProvider provider) {
-		super(column, joinColumnOwner, provider);
+		super(column, joinColumnParentAdapter, provider);
 		this.override = override;
 	}
 
@@ -37,9 +37,9 @@ public class AssociationOverrideJoinColumnValidator
 				PersistentAttribute persistentAttribute,
 				AssociationOverride override,
 				JoinColumn column,
-				JoinColumn.ParentAdapter joinColumnOwner,
+				JoinColumn.ParentAdapter joinColumnParentAdapter,
 				TableDescriptionProvider provider) {
-		super(persistentAttribute, column, joinColumnOwner, provider);
+		super(persistentAttribute, column, joinColumnParentAdapter, provider);
 		this.override = override;
 	}
 

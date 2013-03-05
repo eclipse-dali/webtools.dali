@@ -33,7 +33,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class JavaEclipseLinkEmbeddableImpl
 	extends AbstractJavaEmbeddable
-	implements JavaEclipseLinkEmbeddable, EclipseLinkJavaConverterContainer.ParentAdapter
+	implements JavaEclipseLinkEmbeddable, EclipseLinkJavaConverterContainer.Parent
 {
 	protected final EclipseLinkJavaConverterContainer converterContainer;
 
@@ -128,17 +128,13 @@ public class JavaEclipseLinkEmbeddableImpl
 		return false;
 	}
 
-	// ********** converter container parent adapter **********
-
-	public JpaContextModel getConverterContainerParent() {
-		return this;  // no adapter
-	}
+	// ********** converter container parent **********
 
 	public JavaResourceAnnotatedElement getJavaResourceAnnotatedElement() {
 		return this.getJavaResourceType();
 	}
 
-	public boolean parentSupportsConverters() {
+	public boolean supportsConverters() {
 		return true;
 	}
 

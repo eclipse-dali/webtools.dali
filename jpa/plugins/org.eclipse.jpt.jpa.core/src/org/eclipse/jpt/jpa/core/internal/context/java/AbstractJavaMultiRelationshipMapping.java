@@ -66,10 +66,10 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.context.MapKeyJoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.NullJavaMapKeyColumn2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.NullMapKeyJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.context.MultiRelationshipMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAttributeOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
@@ -105,7 +105,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	protected JavaConverter mapKeyConverter;  // map key converter - never null
 
 	protected final ContextListContainer<JavaSpecifiedJoinColumn, MapKeyJoinColumn2_0Annotation> specifiedMapKeyJoinColumnContainer;
-	protected final JoinColumn.ParentAdapter mapKeyJoinColumnOwner;
+	protected final JoinColumn.ParentAdapter mapKeyJoinColumnParentAdapter;
 
 	protected JavaSpecifiedJoinColumn defaultMapKeyJoinColumn;
 
@@ -131,7 +131,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 
 		this.mapKeyColumn = this.buildMapKeyColumn();
 		this.mapKeyConverter = this.buildMapKeyConverter();
-		this.mapKeyJoinColumnOwner = this.buildMapKeyJoinColumnOwner();
+		this.mapKeyJoinColumnParentAdapter = this.buildMapKeyJoinColumnParentAdapter();
 		this.specifiedMapKeyJoinColumnContainer = this.buildSpecifiedMapKeyJoinColumnContainer();
 		this.mapKeyAttributeOverrideContainer = this.buildMapKeyAttributeOverrideContainer();
 	}
@@ -191,12 +191,12 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 				this.getJpaFactory().buildJavaOrderable(this);
 	}
 
-	protected Orderable2_0.ParentAdapter<JavaAttributeMapping> buildOrderableParentAdapter() {
+	protected JavaOrderable2_0.ParentAdapter buildOrderableParentAdapter() {
 		return new OrderableParentAdapter();
 	}
 
 	public class OrderableParentAdapter
-		implements Orderable2_0.ParentAdapter<JavaAttributeMapping>
+		implements JavaOrderable2_0.ParentAdapter
 	{
 		public JavaAttributeMapping getOrderableParent() {
 			return AbstractJavaMultiRelationshipMapping.this;
@@ -773,7 +773,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		}
 	}
 
-	protected JoinColumn.ParentAdapter buildMapKeyJoinColumnOwner() {
+	protected JoinColumn.ParentAdapter buildMapKeyJoinColumnParentAdapter() {
 		return new MapKeyJoinColumnParentAdapter();
 	}
 
@@ -819,7 +819,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	}
 
 	protected JavaSpecifiedJoinColumn buildMapKeyJoinColumn(MapKeyJoinColumn2_0Annotation joinColumnAnnotation) {
-		return this.getJpaFactory().buildJavaJoinColumn(this.mapKeyJoinColumnOwner, joinColumnAnnotation);
+		return this.getJpaFactory().buildJavaJoinColumn(this.mapKeyJoinColumnParentAdapter, joinColumnAnnotation);
 	}
 
 	// ********** map key join column annotations **********

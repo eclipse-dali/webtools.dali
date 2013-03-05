@@ -135,8 +135,8 @@ import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
  * @version 3.3
  * @since 2.0
  */
-public interface JpaFactory 
-{
+public interface JpaFactory {
+
 	// ********** Core Model **********
 	
 	/**
@@ -257,7 +257,7 @@ public interface JpaFactory
 	
 	VirtualOverrideRelationship buildJavaVirtualOverrideRelationship(JavaVirtualAssociationOverride parent);
 	
-	JavaQueryContainer buildJavaQueryContainer(JavaQueryContainer.Parent owner);
+	JavaQueryContainer buildJavaQueryContainer(JavaQueryContainer.Parent parent);
 
 	JavaNamedQuery buildJavaNamedQuery(JavaQueryContainer parent, NamedQueryAnnotation namedQueryAnnotation);
 	

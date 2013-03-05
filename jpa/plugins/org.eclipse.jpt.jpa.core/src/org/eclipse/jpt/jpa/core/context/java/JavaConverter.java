@@ -43,6 +43,19 @@ public interface JavaConverter
 	void dispose();
 
 
+	// ********** parent adapter **********
+
+	/**
+	 * Interface allowing converters to be used in multiple places
+	 * (e.g. basic mappings, collection mappings, etc).
+	 */
+	public interface ParentAdapter
+		extends Converter.ParentAdapter<JavaAttributeMapping>
+	{
+		// specify generic argument
+	}
+
+
 	// ********** adapter **********
 
 	/**
@@ -138,12 +151,12 @@ public interface JavaConverter
 			}
 		}
 
-		protected Converter.ParentAdapter<JavaAttributeMapping> buildConverterParentAdapter(JavaAttributeMapping parent) {
+		protected JavaConverter.ParentAdapter buildConverterParentAdapter(JavaAttributeMapping parent) {
 			return new ConverterParentAdapter(parent);
 		}
 
 		public static class ConverterParentAdapter
-			implements Converter.ParentAdapter<JavaAttributeMapping>
+			implements JavaConverter.ParentAdapter
 		{
 			private final JavaAttributeMapping parent;
 			public ConverterParentAdapter(JavaAttributeMapping parent) {

@@ -25,6 +25,7 @@ import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.ManagedType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -48,7 +49,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class GenericClassRef
 	extends AbstractPersistenceXmlContextModel<PersistenceUnit>
-	implements ClassRef
+	implements ClassRef, PersistentType.Parent
 {
 	/**
 	 * This is <code>null</code> for a <em>virtual</em> class ref.

@@ -36,10 +36,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class EclipseLinkOrmElementCollectionMapping2_0
 	extends AbstractOrmElementCollectionMapping2_0<XmlElementCollection>
-	implements
-		EclipseLinkElementCollectionMapping2_0,
-		EclipseLinkOrmConvertibleMapping,
-		EclipseLinkOrmConverterContainer.Parent
+	implements EclipseLinkElementCollectionMapping2_0, EclipseLinkOrmConvertibleMapping
 {
 	protected final OrmEclipseLinkJoinFetch joinFetch;
 	

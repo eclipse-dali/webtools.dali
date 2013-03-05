@@ -2099,12 +2099,12 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			return new AssociationOverrideJoinColumnValidator((AssociationOverride) override, (JoinColumn) column, (JoinColumn.ParentAdapter) parentAdapter, new EntityTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter owner) {
-			return new AssociationOverrideJoinColumnValidator(override, column, owner, new JoinTableTableDescriptionProvider());
+		public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
+			return new AssociationOverrideJoinColumnValidator(override, column, parentAdapter, new JoinTableTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter owner) {
-			return new AssociationOverrideInverseJoinColumnValidator(override, column, owner, new JoinTableTableDescriptionProvider());
+		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
+			return new AssociationOverrideInverseJoinColumnValidator(override, column, parentAdapter, new JoinTableTableDescriptionProvider());
 		}
 
 		public JptValidator buildJoinTableValidator(AssociationOverride override, Table t) {

@@ -74,7 +74,7 @@ public class GenericOrmJoinColumn
 	 * join columns are part of a collection;
 	 * the 'join-column' element will be removed/added
 	 * when the XML join column is removed from/added to
-	 * the owner's collection
+	 * the parent's collection
 	 */
 	@Override
 	protected XmlJoinColumn buildXmlColumn() {

@@ -70,7 +70,7 @@ public class GenericOrmPrimaryKeyJoinColumn
 	 * primary key join columns are part of a collection;
 	 * the 'primary-key-join-column' element will be removed/added
 	 * when the XML join column is removed from/added to
-	 * the owner's collection
+	 * the parent's collection
 	 */
 	@Override
 	protected XmlPrimaryKeyJoinColumn buildXmlColumn() {

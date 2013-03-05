@@ -33,10 +33,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class OrmEclipseLinkManyToManyMapping
 	extends AbstractOrmManyToManyMapping<XmlManyToMany>
-	implements
-		EclipseLinkManyToManyMapping2_0, 
-		EclipseLinkOrmConvertibleMapping,
-		EclipseLinkOrmConverterContainer.Parent
+	implements EclipseLinkManyToManyMapping2_0, EclipseLinkOrmConvertibleMapping
 {
 	protected final OrmEclipseLinkJoinFetch joinFetch;
 	

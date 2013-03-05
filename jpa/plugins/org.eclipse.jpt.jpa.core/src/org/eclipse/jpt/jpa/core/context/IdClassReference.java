@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
  * @since 2.3
  */
 public interface IdClassReference
-	extends PersistentType.Parent
+	extends JpaContextModel
 {
 	// ********** id class name **********
 

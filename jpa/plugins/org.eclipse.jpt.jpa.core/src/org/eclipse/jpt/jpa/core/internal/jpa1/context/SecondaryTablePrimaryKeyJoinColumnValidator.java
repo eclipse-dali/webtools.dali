@@ -24,8 +24,8 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator
 	public SecondaryTablePrimaryKeyJoinColumnValidator(
 				SecondaryTable secondaryTable,
 				BaseJoinColumn column,
-				BaseJoinColumn.ParentAdapter owner) {
-		super(column, owner);
+				BaseJoinColumn.ParentAdapter parentAdapter) {
+		super(column, parentAdapter);
 		this.secondaryTable = secondaryTable;
 	}
 

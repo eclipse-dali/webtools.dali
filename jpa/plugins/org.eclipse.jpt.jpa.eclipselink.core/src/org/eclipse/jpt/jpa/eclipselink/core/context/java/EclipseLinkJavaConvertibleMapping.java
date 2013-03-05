@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.context.java;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvertibleMapping;
 
 /**
- * EclipseLink java convertible mapping.
+ * EclipseLink Java convertible mapping.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -24,8 +24,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvertibleMappin
  * @since 3.2
  */
 public interface EclipseLinkJavaConvertibleMapping
-	extends EclipseLinkConvertibleMapping, EclipseLinkJavaConverterContainer.ParentAdapter
+	extends EclipseLinkConvertibleMapping, EclipseLinkJavaConverterContainer.Parent
 {
 	EclipseLinkJavaConverterContainer getConverterContainer();
-
 }

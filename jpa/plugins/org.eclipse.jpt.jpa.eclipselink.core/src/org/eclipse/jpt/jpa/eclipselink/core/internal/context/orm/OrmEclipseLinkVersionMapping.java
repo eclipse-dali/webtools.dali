@@ -36,10 +36,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class OrmEclipseLinkVersionMapping
 	extends AbstractOrmVersionMapping<XmlVersion>
-	implements
-		EclipseLinkVersionMapping,
-		EclipseLinkOrmConvertibleMapping, 
-		EclipseLinkOrmConverterContainer.Parent
+	implements EclipseLinkVersionMapping, EclipseLinkOrmConvertibleMapping
 {	
 	protected final OrmEclipseLinkMutable mutable;
 	

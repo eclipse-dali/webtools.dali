@@ -57,7 +57,7 @@ public class InverseJoinColumnInJoinTableDialog
 	@Override
 	protected InverseJoinColumnInJoinTableStateObject buildStateObject() {
 		return new InverseJoinColumnInJoinTableStateObject(
-			getOwner(),
+			getParent(),
 			getJoinColumn()
 		);
 	}
