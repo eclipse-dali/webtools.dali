@@ -76,12 +76,12 @@ public class GenericPersistence
 		this.updateChildren();
 	}
 
-	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
+	public void addRootStructureNodesTo(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
 		if (this.getResource().equals(jpaFile.getFile())) {
 			rootStructureNodes.add(this);
 		} else {
 			if (this.persistenceUnit != null) {
-				this.persistenceUnit.gatherRootStructureNodes(jpaFile, rootStructureNodes);
+				this.persistenceUnit.addRootStructureNodesTo(jpaFile, rootStructureNodes);
 			}
 		}
 	}

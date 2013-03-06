@@ -141,7 +141,7 @@ public class GenericJpaFile
 			return;
 		}
 		Collection<JpaStructureNode> newRootStructureNodes = new HashSet<JpaStructureNode>();
-		persistenceXml.gatherRootStructureNodes(this, newRootStructureNodes);
+		persistenceXml.addRootStructureNodesTo(this, newRootStructureNodes);
 		this.synchronizeCollection(newRootStructureNodes, this.rootStructureNodes, ROOT_STRUCTURE_NODES_COLLECTION);
 	}
 

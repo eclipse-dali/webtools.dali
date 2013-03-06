@@ -194,12 +194,12 @@ public abstract class AbstractEntityMappings
 		this.updateChildren();
 	}
 
-	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
+	public void addRootStructureNodesTo(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
 		if (this.getResource().equals(jpaFile.getFile())) {
 			rootStructureNodes.add(this);
 		} else {
 			for (PersistentType persistentType : this.getPersistentTypes()) {
-				persistentType.gatherRootStructureNodes(jpaFile, rootStructureNodes);
+				persistentType.addRootStructureNodesTo(jpaFile, rootStructureNodes);
 			}
 		}
 	}

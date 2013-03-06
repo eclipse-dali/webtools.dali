@@ -936,7 +936,7 @@ public abstract class AbstractJavaPersistentType
 		return (fullTextRange == null) ? false : fullTextRange.includes(offset);
 	}
 
-	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
+	public void addRootStructureNodesTo(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
 		// the type's resource can be null if the resource type is "external"
 		if (ObjectTools.equals(this.getResource(), jpaFile.getFile())) {
 			for (JpaStructureNode root : rootStructureNodes) {

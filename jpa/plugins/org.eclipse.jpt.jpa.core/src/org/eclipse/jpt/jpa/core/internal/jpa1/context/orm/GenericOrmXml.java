@@ -269,9 +269,9 @@ public class GenericOrmXml
 		return (this.root == null) ? null : this.root.getPersistentType(name);
 	}
 
-	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
+	public void addRootStructureNodesTo(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
 		if (this.root != null) {
-			this.root.gatherRootStructureNodes(jpaFile, rootStructureNodes);
+			this.root.addRootStructureNodesTo(jpaFile, rootStructureNodes);
 		}
 	}
 

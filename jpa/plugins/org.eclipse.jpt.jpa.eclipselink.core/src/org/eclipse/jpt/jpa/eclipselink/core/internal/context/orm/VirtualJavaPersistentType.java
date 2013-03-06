@@ -79,7 +79,7 @@ public class VirtualJavaPersistentType
 		this.setSuperPersistentType(this.buildSuperPersistentType());
 	}
 
-	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
+	public void addRootStructureNodesTo(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
 		// NOP - virtual types do not have a corresponding Java type
 	}
 

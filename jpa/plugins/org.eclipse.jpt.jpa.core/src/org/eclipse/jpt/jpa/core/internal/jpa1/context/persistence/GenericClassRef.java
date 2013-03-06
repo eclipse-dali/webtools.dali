@@ -124,10 +124,10 @@ public class GenericClassRef
 		this.updateJavaManagedType();
 	}
 
-	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
+	public void addRootStructureNodesTo(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
 		JavaPersistentType javaPersistentType = this.getJavaPersistentType();
 		if (javaPersistentType != null) {
-			javaPersistentType.gatherRootStructureNodes(jpaFile, rootStructureNodes);
+			javaPersistentType.addRootStructureNodesTo(jpaFile, rootStructureNodes);
 		}
 	}
 

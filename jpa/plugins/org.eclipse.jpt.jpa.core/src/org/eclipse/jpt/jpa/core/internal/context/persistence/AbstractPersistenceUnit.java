@@ -311,12 +311,12 @@ public abstract class AbstractPersistenceUnit
 		this.updateChildren();
 	}
 
-	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
+	public void addRootStructureNodesTo(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
 		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
-			mappingFileRef.gatherRootStructureNodes(jpaFile, rootStructureNodes);
+			mappingFileRef.addRootStructureNodesTo(jpaFile, rootStructureNodes);
 		}
 		for (ClassRef classRef : this.getClassRefs()) {
-			classRef.gatherRootStructureNodes(jpaFile, rootStructureNodes);
+			classRef.addRootStructureNodesTo(jpaFile, rootStructureNodes);
 		}
 	}
 

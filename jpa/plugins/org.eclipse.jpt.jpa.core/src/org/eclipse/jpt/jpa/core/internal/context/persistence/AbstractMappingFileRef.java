@@ -79,9 +79,9 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 		this.updateMappingFile();
 	}
 
-	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
+	public void addRootStructureNodesTo(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
 		if (this.mappingFile != null) {
-			this.mappingFile.gatherRootStructureNodes(jpaFile, rootStructureNodes);
+			this.mappingFile.addRootStructureNodesTo(jpaFile, rootStructureNodes);
 		}
 	}
 

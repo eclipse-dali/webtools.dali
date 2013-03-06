@@ -82,7 +82,7 @@ public abstract class AbstractJarFileRef
 		this.updateJarFile();
 	}
 
-	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
+	public void addRootStructureNodesTo(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
 		// structure nodes are for the structure view, which is associated
 		// with the editor - .jar files do not have an editor(!)
 		throw new UnsupportedOperationException();

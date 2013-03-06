@@ -1010,9 +1010,9 @@ public abstract class SpecifiedOrmPersistentType
 		return OrmPersistentType.class;
 	}
 
-	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
+	public void addRootStructureNodesTo(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
 		if (this.getJavaPersistentType() != null) {
-			this.getJavaPersistentType().gatherRootStructureNodes(jpaFile, rootStructureNodes);
+			this.getJavaPersistentType().addRootStructureNodesTo(jpaFile, rootStructureNodes);
 		}
 	}
 

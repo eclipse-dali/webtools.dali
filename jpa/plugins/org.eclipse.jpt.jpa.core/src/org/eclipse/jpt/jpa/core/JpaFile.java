@@ -81,7 +81,7 @@ public interface JpaFile
 	 * Update the collection of root structure nodes.
 	 * This is called at the end of the project update.
 	 *  
-	 * @see JpaStructureNode#gatherRootStructureNodes(JpaFile, java.util.Collection)
+	 * @see JpaStructureNode#addRootStructureNodesTo(JpaFile, java.util.Collection)
 	 */
 	void updateRootStructureNodes();
 

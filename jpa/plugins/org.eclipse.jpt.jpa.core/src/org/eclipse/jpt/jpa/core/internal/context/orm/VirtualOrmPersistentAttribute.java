@@ -324,7 +324,7 @@ public class VirtualOrmPersistentAttribute
 		return null;
 	}
 
-	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
+	public void addRootStructureNodesTo(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
 		throw new UnsupportedOperationException();
 	}
 

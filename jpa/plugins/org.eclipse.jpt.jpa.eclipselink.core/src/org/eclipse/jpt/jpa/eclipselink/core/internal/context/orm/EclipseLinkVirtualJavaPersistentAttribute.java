@@ -62,7 +62,7 @@ public class EclipseLinkVirtualJavaPersistentAttribute
 		this.updateJpaContainerDefinition();
 	}
 
-	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
+	public void addRootStructureNodesTo(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
 		throw new UnsupportedOperationException();
 	}
 

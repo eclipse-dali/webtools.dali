@@ -65,7 +65,7 @@ public interface XmlFile
 	 * correspond to the given JPA file.
 	 * @see JpaFile#getRootStructureNodes()
 	 */
-	void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes);
+	void addRootStructureNodesTo(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes);
 
 	/**
 	 * Dispose the structure node and its children.
