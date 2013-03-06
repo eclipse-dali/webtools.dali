@@ -729,6 +729,15 @@
 				</visibleWhen>
 			</command>	
 
+			<command
+				commandId="org.eclipse.jpt.jpa.core.synchronizeClasses">
+				<visibleWhen>
+					<iterate ifEmpty="false">
+						<adapt type="org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml" />
+					</iterate>
+				</visibleWhen>
+			</command>
+
 		</menuContribution>
 		
 		<!-- contributions to the "JPA Tools" submenu -->
