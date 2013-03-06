@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,9 +8,6 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.common.utility;
-
-import java.io.Serializable;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * Simple interface for allowing clients to pass an exception handler to a
@@ -29,99 +26,4 @@ public interface ExceptionHandler {
 	 * The specified exception was thrown. Handle it appropriately.
 	 */
 	void handleException(Throwable t);
-
-	/**
-	 * Singleton implementation of the exception handler interface that does
-	 * nothing with the exception.
-	 */
-	final class Null
-		implements ExceptionHandler, Serializable
-	{
-		public static final ExceptionHandler INSTANCE = new Null();
-		public static ExceptionHandler instance() {
-			return INSTANCE;
-		}
-		// ensure single instance
-		private Null() {
-			super();
-		}
-		public void handleException(Throwable t) {
-			// do nothing
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.singletonToString(this);
-		}
-		private static final long serialVersionUID = 1L;
-		private Object readResolve() {
-			// replace this object with the singleton
-			return INSTANCE;
-		}
-	}
-
-	/**
-	 * Singleton implementation of the exception handler interface that
-	 * wraps the exception in a runtime exception and throws the runtime
-	 * exception.
-	 */
-	final class Runtime
-		implements ExceptionHandler, Serializable
-	{
-		public static final ExceptionHandler INSTANCE = new Runtime();
-		public static ExceptionHandler instance() {
-			return INSTANCE;
-		}
-		// ensure single instance
-		private Runtime() {
-			super();
-		}
-		public void handleException(Throwable t) {
-			// re-throw the exception unchecked
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException) t;
-			}
-			throw new RuntimeException(t);
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.singletonToString(this);
-		}
-		private static final long serialVersionUID = 1L;
-		private Object readResolve() {
-			// replace this object with the singleton
-			return INSTANCE;
-		}
-	}
-
-	/**
-	 * Singleton implementation of the exception handler interface that,
-	 * like what happens with an unhandled exception
-	 * (see {@link ThreadGroup#uncaughtException(Thread, Throwable)}),
-	 * prints the exception's stack trace to {@link System#err the
-	 * "standard" error output stream}.
-	 */
-	final class Default
-		implements ExceptionHandler, Serializable
-	{
-		public static final ExceptionHandler INSTANCE = new Default();
-		public static ExceptionHandler instance() {
-			return INSTANCE;
-		}
-		// ensure single instance
-		private Default() {
-			super();
-		}
-		public void handleException(Throwable t) {
-			t.printStackTrace();
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.singletonToString(this);
-		}
-		private static final long serialVersionUID = 1L;
-		private Object readResolve() {
-			// replace this object with the singleton
-			return INSTANCE;
-		}
-	}
 }

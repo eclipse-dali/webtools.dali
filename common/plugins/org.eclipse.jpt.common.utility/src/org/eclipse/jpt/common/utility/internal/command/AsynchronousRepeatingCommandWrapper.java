@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.RepeatingCommand;
 import org.eclipse.jpt.common.utility.internal.ConsumerThreadCoordinator;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.RuntimeExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.SimpleThreadFactory;
 import org.eclipse.jpt.common.utility.internal.StackTrace;
 import org.eclipse.jpt.common.utility.internal.reference.SynchronizedBoolean;
@@ -296,7 +297,7 @@ public class AsynchronousRepeatingCommandWrapper
 			return this.exceptionHandler;
 		}
 		protected ExceptionHandler buildDefaultExceptionHandler() {
-			return ExceptionHandler.Runtime.instance();
+			return RuntimeExceptionHandler.instance();
 		}
 	}
 }

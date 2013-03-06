@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,12 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.tests.internal.command;
 
-import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.RepeatingCommand;
 import org.eclipse.jpt.common.utility.internal.CollectingExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.ConsumerThreadCoordinator;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.RuntimeExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.command.AsynchronousRepeatingCommandWrapper;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.tests.internal.MultiThreadedTestCase;
@@ -44,13 +44,13 @@ public class AsynchronousRepeatingCommandWrapperTests
 		this.primaryModel1 = new PrimaryModel1();
 		this.secondaryModel1 = new SecondaryModel1(this.primaryModel1);
 		this.command1 = new SynchronizeSecondaryModelCommand1(this.secondaryModel1);
-		this.repeatingCommand1 = new AsynchronousRepeatingCommandWrapper(this.command1, this.buildThreadFactory(), null, ExceptionHandler.Runtime.instance());
+		this.repeatingCommand1 = new AsynchronousRepeatingCommandWrapper(this.command1, this.buildThreadFactory(), null, RuntimeExceptionHandler.instance());
 		this.primaryModel1.setSynchronizer(this.repeatingCommand1);
 
 		this.primaryModel2 = new PrimaryModel2();
 		this.secondaryModel2 = new SecondaryModel2(this.primaryModel2);
 		this.command2 = new SynchronizeSecondaryModelCommand2(this.primaryModel2, this.secondaryModel2);
-		this.repeatingCommand2 = new AsynchronousRepeatingCommandWrapper(this.command2, this.buildThreadFactory(), null, ExceptionHandler.Runtime.instance());
+		this.repeatingCommand2 = new AsynchronousRepeatingCommandWrapper(this.command2, this.buildThreadFactory(), null, RuntimeExceptionHandler.instance());
 		this.primaryModel2.setSynchronizer(this.repeatingCommand2);
 	}
 
@@ -169,7 +169,7 @@ public class AsynchronousRepeatingCommandWrapperTests
 	public void testNullCommand() {
 		boolean exCaught = false;
 		try {
-			RepeatingCommand s = new AsynchronousRepeatingCommandWrapper(null, this.buildThreadFactory(), null, ExceptionHandler.Runtime.instance());
+			RepeatingCommand s = new AsynchronousRepeatingCommandWrapper(null, this.buildThreadFactory(), null, RuntimeExceptionHandler.instance());
 			fail("bogus: " + s);
 		} catch (NullPointerException ex) {
 			exCaught = true;
@@ -178,7 +178,7 @@ public class AsynchronousRepeatingCommandWrapperTests
 	}
 
 	public void testThreadName() throws Exception {
-		RepeatingCommand s = new AsynchronousRepeatingCommandWrapper(this.command1, this.buildThreadFactory(), "sync", ExceptionHandler.Runtime.instance());
+		RepeatingCommand s = new AsynchronousRepeatingCommandWrapper(this.command1, this.buildThreadFactory(), "sync", RuntimeExceptionHandler.instance());
 		s.start();
 		ConsumerThreadCoordinator ctc = (ConsumerThreadCoordinator) ObjectTools.get(s, "consumerThreadCoordinator");
 		Thread t = (Thread) ObjectTools.get(ctc, "thread");
@@ -188,7 +188,7 @@ public class AsynchronousRepeatingCommandWrapperTests
 
 	public void testExecuteCalledBeforeStart() throws Exception {
 		SimpleCommand command = new SimpleCommand();
-		RepeatingCommand synchronizer = new AsynchronousRepeatingCommandWrapper(command, this.buildThreadFactory(), null, ExceptionHandler.Runtime.instance());
+		RepeatingCommand synchronizer = new AsynchronousRepeatingCommandWrapper(command, this.buildThreadFactory(), null, RuntimeExceptionHandler.instance());
 
 		synchronizer.execute();
 		synchronizer.start();

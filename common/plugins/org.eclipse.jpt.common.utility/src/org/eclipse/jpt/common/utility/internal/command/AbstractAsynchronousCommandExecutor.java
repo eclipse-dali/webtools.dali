@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,12 +10,12 @@
 package org.eclipse.jpt.common.utility.internal.command;
 
 import java.util.concurrent.ThreadFactory;
-
 import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.StatefulCommandExecutor;
 import org.eclipse.jpt.common.utility.internal.ConsumerThreadCoordinator;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.RuntimeExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.SimpleThreadFactory;
 import org.eclipse.jpt.common.utility.internal.collection.SynchronizedQueue;
 
@@ -271,7 +271,7 @@ public abstract class AbstractAsynchronousCommandExecutor<E extends StatefulComm
 			return this.exceptionHandler;
 		}
 		protected ExceptionHandler buildDefaultExceptionHandler() {
-			return ExceptionHandler.Runtime.instance();
+			return RuntimeExceptionHandler.instance();
 		}
 	}
 }
