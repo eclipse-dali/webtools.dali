@@ -215,7 +215,7 @@ public abstract class JavaMetadataConversionWizardPage
 
 		// no need to remove this listener, since we build the model ourselves
 		this.mappingFileNameModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.buildMappingFileNameListener());
-		this.setPageComplete(this.getOrmXmlResource() != null);
+		this.setPageComplete(this.getRootStructureNodes(this.getOrmXmlResource()).hasNext());
 	}
 
 	protected Control createMappingFileControl(Composite parent) {
@@ -301,7 +301,7 @@ public abstract class JavaMetadataConversionWizardPage
 	 * not <code>null</code>.
 	 */
 	protected EntityMappings getEntityMappings_(JptXmlResource ormXmlResource) {
-		Iterator<JpaStructureNode> nodes = this.jpaProject.getJpaFile(ormXmlResource.getFile()).getRootStructureNodes().iterator();
+		Iterator<JpaStructureNode> nodes = this.getRootStructureNodes(ormXmlResource);
 		return nodes.hasNext() ? (EntityMappings) nodes.next() : null;
 	}
 
@@ -623,6 +623,13 @@ public abstract class JavaMetadataConversionWizardPage
 
 
 	// ********** misc **********
+
+	/**
+	 * Return the root structure nodes of the given XML resource
+	 */
+	protected Iterator<JpaStructureNode> getRootStructureNodes(JptXmlResource ormXmlResource) {
+		 return this.jpaProject.getJpaFile(ormXmlResource.getFile()).getRootStructureNodes().iterator();
+	}
 
 	@Override
 	public final void performHelp() {
