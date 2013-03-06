@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.utility.tests.internal;
 
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.MultiThreadedExceptionHandler;
+import org.eclipse.jpt.common.utility.MultiThreadExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.CompositeMultiThreadedExceptionHandler;
 import org.eclipse.jpt.common.utility.tests.internal.CompositeExceptionHandlerTests.TestExceptionHandler;
 
@@ -37,7 +37,7 @@ public class CompositeMultiThreadedExceptionHandlerTests
 
 	public static class TestMultiThreadedExceptionHandler
 		extends TestExceptionHandler
-		implements MultiThreadedExceptionHandler
+		implements MultiThreadExceptionHandler
 	{
 		public volatile Thread thread = null;
 		public void handleException(Thread t, Throwable ex) {

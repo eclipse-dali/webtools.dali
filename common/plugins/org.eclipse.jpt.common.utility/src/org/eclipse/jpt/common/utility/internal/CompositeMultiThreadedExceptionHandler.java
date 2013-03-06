@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,30 +9,30 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal;
 
-import org.eclipse.jpt.common.utility.MultiThreadedExceptionHandler;
+import org.eclipse.jpt.common.utility.MultiThreadExceptionHandler;
 
 /**
  * An exception handler that forwards exceptions to a collection of other
  * exception handlers.
  */
 public class CompositeMultiThreadedExceptionHandler
-	extends AbstractCompositeExceptionHandler<MultiThreadedExceptionHandler>
-	implements MultiThreadedExceptionHandler
+	extends AbstractCompositeExceptionHandler<MultiThreadExceptionHandler>
+	implements MultiThreadExceptionHandler
 {
 	public CompositeMultiThreadedExceptionHandler() {
 		super();
 	}
 
-	public CompositeMultiThreadedExceptionHandler(MultiThreadedExceptionHandler... exceptionHandlers) {
+	public CompositeMultiThreadedExceptionHandler(MultiThreadExceptionHandler... exceptionHandlers) {
 		super(exceptionHandlers);
 	}
 
-	public CompositeMultiThreadedExceptionHandler(Iterable<? extends MultiThreadedExceptionHandler> exceptionHandlers) {
+	public CompositeMultiThreadedExceptionHandler(Iterable<? extends MultiThreadExceptionHandler> exceptionHandlers) {
 		super(exceptionHandlers);
 	}
 
 	public void handleException(Thread thread, Throwable t) {
-		for (MultiThreadedExceptionHandler handler : this.getExceptionHandlers()) {
+		for (MultiThreadExceptionHandler handler : this.getExceptionHandlers()) {
 			handler.handleException(thread, t);
 		}
 	}

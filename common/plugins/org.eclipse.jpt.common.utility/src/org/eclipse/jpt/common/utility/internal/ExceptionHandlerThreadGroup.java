@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal;
 
-import org.eclipse.jpt.common.utility.MultiThreadedExceptionHandler;
+import org.eclipse.jpt.common.utility.MultiThreadExceptionHandler;
 
 /**
  * This thread group overrides {@link #uncaughtException(Thread, Throwable)}
@@ -21,7 +21,7 @@ public class ExceptionHandlerThreadGroup
 	/**
 	 * Broadcasting delegate.
 	 */
-	private final MultiThreadedExceptionHandler exceptionHandler;
+	private final MultiThreadExceptionHandler exceptionHandler;
 
 
 	// ********** constructors/initialization **********
@@ -29,7 +29,7 @@ public class ExceptionHandlerThreadGroup
 	/**
 	 * @see ThreadGroup#ThreadGroup(String)
 	 */
-	public ExceptionHandlerThreadGroup(String name, MultiThreadedExceptionHandler exceptionHandler) {
+	public ExceptionHandlerThreadGroup(String name, MultiThreadExceptionHandler exceptionHandler) {
 		super(name);
 		if (exceptionHandler == null) {
 			throw new NullPointerException();
@@ -40,7 +40,7 @@ public class ExceptionHandlerThreadGroup
 	/**
 	 * @see ThreadGroup#ThreadGroup(ThreadGroup, String)
 	 */
-	public ExceptionHandlerThreadGroup(ThreadGroup parent, String name, MultiThreadedExceptionHandler exceptionHandler) {
+	public ExceptionHandlerThreadGroup(ThreadGroup parent, String name, MultiThreadExceptionHandler exceptionHandler) {
 		super(parent, name);
 		if (exceptionHandler == null) {
 			throw new NullPointerException();
@@ -62,7 +62,7 @@ public class ExceptionHandlerThreadGroup
 	 * Return the exception handler the thread group uses to forward any
 	 * uncaught exceptions.
 	 */
-	public MultiThreadedExceptionHandler getExceptionHandler() {
+	public MultiThreadExceptionHandler getExceptionHandler() {
 		return this.exceptionHandler;
 	}
 }
