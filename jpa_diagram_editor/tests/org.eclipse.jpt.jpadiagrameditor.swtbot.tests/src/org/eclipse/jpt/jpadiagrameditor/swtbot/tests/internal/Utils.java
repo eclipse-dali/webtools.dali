@@ -10,7 +10,6 @@ import java.util.concurrent.Semaphore;
  * @author i057508
  *
  */
-@SuppressWarnings({"restriction", "PMD"})
 public class Utils {
 
 	/**

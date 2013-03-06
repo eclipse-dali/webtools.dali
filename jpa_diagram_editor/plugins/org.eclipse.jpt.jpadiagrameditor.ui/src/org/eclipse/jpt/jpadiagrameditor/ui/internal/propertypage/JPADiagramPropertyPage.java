@@ -28,19 +28,31 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.QualifiedName;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.jface.window.Window;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.resource.ResourceMappingFile;
+import org.eclipse.jpt.jpa.ui.internal.jface.XmlMappingFileViewerFilter;
+import org.eclipse.jpt.jpa.ui.internal.wizards.SelectMappingFileDialog;
+import org.eclipse.jpt.jpa.ui.wizards.entity.JptJpaUiWizardsEntityMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.preferences.JPAEditorPreferenceInitializer;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.preferences.JPAEditorPreferencesPage;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -53,7 +65,10 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PropertyPage;
+import org.eclipse.ui.model.WorkbenchContentProvider;
+import org.eclipse.ui.model.WorkbenchLabelProvider;
 
+@SuppressWarnings("restriction")
 public class JPADiagramPropertyPage extends PropertyPage {
 
 	public static final String PROJECT_SETTINGS_PATH = "/.settings/org.eclipse.jpt.jpadiagrameditor.ui";	//$NON-NLS-1$;
@@ -75,6 +90,12 @@ public class JPADiagramPropertyPage extends PropertyPage {
 	private Button btnSetType;
 	private Button btnMapType;
 	private Button checkOneToManyOldStyle;
+	
+	
+	private Label displayNameLabel;
+	private Button xmlSupportButton;	
+	private Text ormXmlName;
+	private Button browseButton;
 
 	private boolean propsModified = false;
 
@@ -85,7 +106,9 @@ public class JPADiagramPropertyPage extends PropertyPage {
 	static public final QualifiedName PROP_DIRECT_EDIT_AFFECTS_CLASS 	= new QualifiedName(QUALIFIER, "directEditAffectsClass");	//$NON-NLS-1$;
 	static public final QualifiedName PROP_ACCESS_TYPE 					= new QualifiedName(QUALIFIER, "accessType");				//$NON-NLS-1$;
 	static public final QualifiedName PROP_COLLECTION_TYPE 				= new QualifiedName(QUALIFIER, "collectionType");			//$NON-NLS-1$;
-	static public final QualifiedName PROP_ONE_TO_MANY_OLD_STYLE = new QualifiedName(QUALIFIER, "oneToManyOldStyle");		//$NON-NLS-1$;
+	static public final QualifiedName PROP_ONE_TO_MANY_OLD_STYLE        = new QualifiedName(QUALIFIER, "oneToManyOldStyle");		//$NON-NLS-1$;
+	static public final QualifiedName PROP_ORM_XML_FILE_NAME            = new QualifiedName(QUALIFIER, "ormXmlFileName");		//$NON-NLS-1$;
+	static public final QualifiedName PROP_SUPPORT_ORM_XML              = new QualifiedName(QUALIFIER, "supportOrmXml");		//$NON-NLS-1$;
 
 	private IPreferenceStore store = JPADiagramEditorPlugin.getDefault().getPreferenceStore();
 
@@ -103,6 +126,9 @@ public class JPADiagramPropertyPage extends PropertyPage {
 		createDefaultCollectionTypeControl(composite);
 		if (!isJPA10Project)
 			createOneToManyOldStyleControl(composite);
+		
+	    createXMLstorageControl(composite);
+	    
 		Dialog.applyDialogFont(composite);
 		validatePage();
 		return composite;
@@ -264,7 +290,7 @@ public class JPADiagramPropertyPage extends PropertyPage {
 
 	private void createCollectionTypeButton(Composite composite, GridData gd, String defaultCollectionType) {
 		btnCollectionType = new Button(groupCollectionType, SWT.RADIO | SWT.FLAT);
-		btnCollectionType.setText(JPAEditorConstants.COLLECTION_TYPE);
+		btnCollectionType.setText("java.util.&Collection"); //$NON-NLS-1$
 		gd = new GridData();
 		btnCollectionType.setLayoutData(gd);
 		btnCollectionType.setSelection(defaultCollectionType.equals(JPAEditorPreferenceInitializer.PROPERTY_VAL_COLLECTION_TYPE));
@@ -278,7 +304,7 @@ public class JPADiagramPropertyPage extends PropertyPage {
 
 	private void createListTypeButton(Composite composite, GridData gd, String defaultCollectionType) {
 		btnListType = new Button(groupCollectionType, SWT.RADIO | SWT.FLAT);
-		btnListType.setText(JPAEditorConstants.LIST_TYPE);
+		btnListType.setText("java.util.&List"); //$NON-NLS-1$
 		gd = new GridData();
 		btnListType.setLayoutData(gd);
 		btnListType.setSelection(defaultCollectionType.equals(JPAEditorPreferenceInitializer.PROPERTY_VAL_LIST_TYPE));
@@ -292,7 +318,7 @@ public class JPADiagramPropertyPage extends PropertyPage {
 
 	private void createSetTypeButton(Composite composite, GridData gd, String defaultCollectionType) {
 		btnSetType = new Button(groupCollectionType, SWT.RADIO | SWT.FLAT);
-		btnSetType.setText(JPAEditorConstants.SET_TYPE);
+		btnSetType.setText("java.util.&Set"); //$NON-NLS-1$
 		gd = new GridData();
 		btnSetType.setLayoutData(gd);
 		btnSetType.setSelection(defaultCollectionType.equals(JPAEditorPreferenceInitializer.PROPERTY_VAL_SET_TYPE));
@@ -306,7 +332,7 @@ public class JPADiagramPropertyPage extends PropertyPage {
 
 	private void createMapTypeButton(Composite composite, GridData gd, String defaultCollectionType) {
 		btnMapType = new Button(groupCollectionType, SWT.RADIO | SWT.FLAT);
-		btnMapType.setText(JPAEditorConstants.MAP_TYPE);
+		btnMapType.setText("java.util.&Map"); //$NON-NLS-1$
 		gd = new GridData();
 		btnMapType.setLayoutData(gd);
 		btnMapType.setSelection(defaultCollectionType.equals(JPAEditorPreferenceInitializer.PROPERTY_VAL_MAP_TYPE));
@@ -367,6 +393,15 @@ public class JPADiagramPropertyPage extends PropertyPage {
 	    boolean defaultOneToManyOldStyle = store.getBoolean(JPAEditorPreferenceInitializer.PROPERTY_ONE_TO_MANY_OLD_STYLE);
 	    if (!isJPA10Project)
 	    	checkOneToManyOldStyle.setSelection(defaultOneToManyOldStyle);
+	    
+	    
+	    boolean xmlSupport = store.getBoolean(JPAEditorPreferenceInitializer.PROPERTY_DEFAULT_SUPPORT_ORM_XML);
+	    if(xmlSupport){
+	    	String ormXml = store.getString(JPAEditorPreferenceInitializer.PROPERTY_DEFAULT_ORM_XML_FILE_NAME);
+	    	ormXmlName.setText(ormXml);
+	    }
+
+	    
 		super.performDefaults();
     }
 
@@ -375,6 +410,9 @@ public class JPADiagramPropertyPage extends PropertyPage {
     																		project.getName());
     	IStatus statPack = JPAEditorPreferencesPage.validateDefaultPackage(txtDefaultEntityPackageField.getText().trim());
     	IStatus statPref = JPAEditorPreferencesPage.validateTableNamePrefix(txtDefaultTableNamePrefix.getText().trim());
+    	
+    	IStatus statOrmXml = validateXmlName(ormXmlName.getText().trim());
+    	
     	if (statFolder.getSeverity() == IStatus.ERROR) {
     		setErrorMessage(statFolder.getMessage());
     		setValid(false);
@@ -387,6 +425,11 @@ public class JPADiagramPropertyPage extends PropertyPage {
     	}
     	if (statPref.getSeverity() == IStatus.ERROR) {
     		setErrorMessage(statPref.getMessage());
+    		setValid(false);
+    		return;
+    	}
+    	if(statOrmXml.getSeverity() == IStatus.ERROR){
+    		setErrorMessage(statOrmXml.getMessage());
     		setValid(false);
     		return;
     	}
@@ -449,8 +492,12 @@ public class JPADiagramPropertyPage extends PropertyPage {
 		editorProps.put(PROP_DIRECT_EDIT_AFFECTS_CLASS.getLocalName(), "" + checkDirectEditAffectsClass.getSelection());	//$NON-NLS-1$;
 		editorProps.put(PROP_ACCESS_TYPE.getLocalName(), btnFieldBasedAccess.getSelection() ? JPAEditorPreferenceInitializer.PROPERTY_VAL_ACCESS_FIELD_BASED : JPAEditorPreferenceInitializer.PROPERTY_VAL_ACCESS_PROPERTY_BASED);
 		editorProps.put(PROP_COLLECTION_TYPE.getLocalName(), getCollectionProperty());
+
 		if (!isJPA10Project)
 			editorProps.put(PROP_ONE_TO_MANY_OLD_STYLE.getLocalName(), "" + checkOneToManyOldStyle.getSelection());	//$NON-NLS-1$;
+		
+		editorProps.put(PROP_SUPPORT_ORM_XML.getLocalName(), "" + xmlSupportButton.getSelection()); //$NON-NLS-1$
+		editorProps.put(PROP_ORM_XML_FILE_NAME.getLocalName(), ormXmlName.getText().trim());
 	}
 
 
@@ -479,6 +526,9 @@ public class JPADiagramPropertyPage extends PropertyPage {
 		editorDefaultProps.setProperty(PROP_ACCESS_TYPE.getLocalName(), store.getString(JPAEditorPreferenceInitializer.PROPERTY_ENTITY_ACCESS_TYPE));
 		editorDefaultProps.setProperty(PROP_COLLECTION_TYPE.getLocalName(), store.getString(JPAEditorPreferenceInitializer.PROPERTY_DEFAULT_COLLECTION_TYPE));
 		editorDefaultProps.setProperty(PROP_ONE_TO_MANY_OLD_STYLE.getLocalName(), "" + store.getBoolean(JPAEditorPreferenceInitializer.PROPERTY_ONE_TO_MANY_OLD_STYLE));	//$NON-NLS-1$;
+		
+		editorDefaultProps.setProperty(PROP_SUPPORT_ORM_XML.getLocalName(), "" + store.getBoolean(JPAEditorPreferenceInitializer.PROPERTY_DEFAULT_SUPPORT_ORM_XML));	//$NON-NLS-1$;
+		editorDefaultProps.setProperty(PROP_ORM_XML_FILE_NAME.getLocalName(), store.getString(JPAEditorPreferenceInitializer.PROPERTY_DEFAULT_ORM_XML_FILE_NAME));
 
 
 		return editorDefaultProps;
@@ -579,7 +629,16 @@ public class JPADiagramPropertyPage extends PropertyPage {
 		Properties props = JPADiagramPropertyPage.loadProperties(project);
 		return shouldOneToManyUnidirBeOldStyle(project, props);
 	}
+	
+	public static String getOrmXmlFileName(IProject project) {
+		Properties props = JPADiagramPropertyPage.loadProperties(project);
+		return getOrmXmlFileName(project, props);
+	}
 
+	public static boolean doesSupportOrmXml(IProject project) {
+		Properties props = JPADiagramPropertyPage.loadProperties(project);
+		return doesSupportOrmXml(project, props);
+	}
 //---------------------------------------------------------------------------------------------------
 
 	public static String getDefaultFolder(IProject project, Properties props) {
@@ -626,5 +685,203 @@ public class JPADiagramPropertyPage extends PropertyPage {
 	public static boolean shouldOneToManyUnidirBeOldStyle(IProject project, Properties props) {
 		return Boolean.parseBoolean(props.getProperty(PROP_ONE_TO_MANY_OLD_STYLE.getLocalName()));
 	}
+	
+	public static String getOrmXmlFileName(IProject project, Properties props) {
+		return props.getProperty(PROP_ORM_XML_FILE_NAME.getLocalName());
+	}
+	
+	public static boolean doesSupportOrmXml(IProject project, Properties props) {
+		return Boolean.parseBoolean(props.getProperty(PROP_SUPPORT_ORM_XML.getLocalName()));
+	}
+	
+	/**
+	 * Create the group, which manage entity mapping registration
+	 * @param parent the main composite
+	 */
+	private void createXMLstorageControl(Composite parent) {
+		Group group = createGroup(parent, JptJpaUiWizardsEntityMessages.XML_STORAGE_GROUP);
+		this.xmlSupportButton = createCheckButton(group, JptJpaUiWizardsEntityMessages.XML_SUPPORT);				
+		createBrowseGroup(group, JPAEditorMessages.JPADiagramPropertyPage_ChooseXMLLabel);
+		this.xmlSupportButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				boolean isChecked = xmlSupportButton.getSelection();
+				enableMappingXMLChooseGroup(isChecked);
+				validatePage();
+			    propsModified = true;
+			}
+		});
+	}
+	
+	/**
+	 * @param parent the main composite
+	 * @param text the name/title of the group
+	 * @return the created group
+	 */
+	private Group createGroup(Composite parent, String text) {
+		Group group = new Group(parent, SWT.NONE);		
+		GridData groupGridData = new GridData(GridData.FILL_HORIZONTAL);
+		groupGridData.horizontalSpan = 3;
+		group.setLayoutData(groupGridData);
+		group.setLayout(new GridLayout(3, false));
+		group.setText(text);	
+		group.setToolTipText(JPAEditorMessages.JPADiagramPropertyPage_ChooseXMLGroupTooltip);
+		return group;
+	}
+	
+	/**
+	 * Create check button
+	 * @param parent the main composite - inheritance group
+	 * @param text the label of the button
+	 * @return the created button
+	 */
+	private Button createCheckButton(Composite parent, String text) {
+		final Button button = new Button(parent, SWT.CHECK);		
+		GridData groupGridData = new GridData(GridData.FILL_HORIZONTAL);
+		groupGridData.horizontalSpan = 3;
+		button.setLayoutData(groupGridData);
+		button.setText(text);
+		button.setToolTipText(JPAEditorMessages.JPADiagramPropertyPage_ChooseXMLCheckboxTooltip);
+		button.setSelection(doesSupportOrmXml(project));
+		return button;
+	}
 
+	/**
+	 * Create XML group
+	 * @param parent the main composite
+	 * @param label the name of the group
+	 * @param property the related property to which this group will be synchronized
+	 * @return the created group
+	 */
+	private void createBrowseGroup(Composite parent, String label) {
+		Composite composite = new Composite(parent, SWT.NULL);
+		composite.setLayout(new GridLayout(3, false));
+		composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));	
+
+		this.displayNameLabel = new Label(composite, SWT.LEFT);
+		this.displayNameLabel.setText(label);
+		this.displayNameLabel.setToolTipText(JPAEditorMessages.JPADiagramPropertyPage_ChooseXMLTooltip);
+		this.displayNameLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
+
+		this.ormXmlName = new Text(composite, SWT.SINGLE | SWT.BORDER);
+		this.ormXmlName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		
+		String ormXmlFileName = editorProps.getProperty(PROP_ORM_XML_FILE_NAME.getLocalName());
+		this.ormXmlName.setText(ormXmlFileName);
+		this.ormXmlName.setToolTipText(JPAEditorMessages.JPADiagramPropertyPage_ChooseXMLTooltip);
+		    
+		this.browseButton = new Button(composite, SWT.PUSH);
+		this.browseButton.setText(JPAEditorMessages.JPADiagramPropertyPage_ChooseXmlBrowseButton);
+		this.browseButton.setToolTipText(JPAEditorMessages.JPADiagramPropertyPage_ChooseXMLTooltip);
+		GridData browseButtonData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+		browseButtonData.horizontalSpan = 1;
+		this.browseButton.setLayoutData(browseButtonData);		
+		this.browseButton.addSelectionListener(new SelectionListener() {
+			public void widgetSelected(SelectionEvent e) {
+				handleChooseXmlButtonPressed();
+				propsModified = true;
+			}
+
+			public void widgetDefaultSelected(SelectionEvent e) {
+				widgetSelected(e);
+			}
+		});
+		
+		this.ormXmlName.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				validatePage();
+				propsModified = true;
+			}
+		});
+		
+		enableMappingXMLChooseGroup(xmlSupportButton.getSelection());
+	}
+
+	/**
+	 * Process browsing when the Browse... button have been pressed. Allow choosing of 
+	 * XML for entity mapping registration
+	 *  
+	 */
+	private void handleChooseXmlButtonPressed() {		
+		if (project == null) {
+			return;
+		}
+		JpaProject jpaProject = this.getJpaProject(project);
+		if (jpaProject == null) {
+			return;
+		}
+		ViewerFilter filter = getDialogViewerFilter(jpaProject);
+		ITreeContentProvider contentProvider = new WorkbenchContentProvider();
+		ILabelProvider labelProvider = new WorkbenchLabelProvider();
+		SelectMappingFileDialog dialog = new SelectMappingFileDialog(getShell(), project, labelProvider, contentProvider);
+		dialog.setTitle(JptJpaUiWizardsEntityMessages.MAPPING_XML_TITLE);
+		dialog.setMessage(JptJpaUiWizardsEntityMessages.CHOOSE_MAPPING_XML_MESSAGE);
+		dialog.addFilter(filter);
+			
+		String ormFileName = this.ormXmlName.getText();
+		JptXmlResource resource = jpaProject.getMappingFileXmlResource(new Path(ormFileName));
+		IFile initialSelection = (resource != null) ? resource.getFile() : null;
+		dialog.setInput(project);
+
+		if (initialSelection != null) {
+			dialog.setInitialSelection(initialSelection);
+		}
+		if (dialog.open() == Window.OK) {
+			boolean noNameChange = false;
+			if (ormXmlName.getText().equals(dialog.getChosenName())) {
+				noNameChange = true;
+			}
+			ormXmlName.setText(dialog.getChosenName());
+			if (noNameChange) {
+				this.validatePage();
+			}
+		}
+	}	
+	
+	
+	/**
+	 * This method create filter for the browse/add alternative mapping XML 
+	 * @return new instance of viewer filter for the SelectMappingXMLDialog
+	 */
+	protected ViewerFilter getDialogViewerFilter(JpaProject jpaProject) {
+		return new XmlMappingFileViewerFilter(jpaProject, ResourceMappingFile.Root.CONTENT_TYPE);
+	}
+	
+	private void enableMappingXMLChooseGroup(boolean enabled) {
+		this.displayNameLabel.setEnabled(enabled);
+		this.ormXmlName.setEnabled(enabled);
+		this.browseButton.setEnabled(enabled);
+	}
+	
+	protected JpaProject getJpaProject(IProject project) {
+		return (JpaProject) project.getAdapter(JpaProject.class);
+	}
+	
+	/**
+	 * This method will be used to validate the correctness of xml file location. 
+	 * This method will accept a null parameter. 
+	 */
+	private IStatus validateXmlName(String xmlName) {
+		if (xmlSupportButton.getSelection()) {
+			JptXmlResource ormXmlResource = StringTools.isBlank(xmlName) ? null : getOrmXmlResource(xmlName);
+			if (ormXmlResource == null) {
+				
+				return new Status(IStatus.ERROR, 
+						  JPADiagramEditorPlugin.PLUGIN_ID, 
+						  JPAEditorMessages.JPADiagramPropertyPage_NotExistsXmlErrorMsg);
+			}
+			JpaProject jpaProject = this.getJpaProject(project);
+			if ((jpaProject == null) || jpaProject.getJpaFile(ormXmlResource.getFile()).getRootStructureNodesSize() == 0) {
+				return new Status(IStatus.ERROR, 
+						  JPADiagramEditorPlugin.PLUGIN_ID, 
+						  JPAEditorMessages.JPADiagramPropertyPage_NotAddedXMLErrorMsg);
+			}
+		}
+		return Status.OK_STATUS;
+	}
+
+	private JptXmlResource getOrmXmlResource(String xmlName) {
+		JpaProject jpaProject = this.getJpaProject(project);
+		return (jpaProject == null) ? null : jpaProject.getMappingFileXmlResource(new Path(xmlName));
+	}
 }

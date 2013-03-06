@@ -23,7 +23,7 @@ import org.eclipse.graphiti.mm.pictograms.FreeFormConnection;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.IWorkbenchSite;
@@ -33,11 +33,11 @@ public interface IJPAEditorUtil {
 		
 	public List<Point> createBendPointList(FreeFormConnection c, boolean selfRelation);
 	
-	public JavaPersistentType getJPType(ICompilationUnit cu);
+	public PersistentType getJPType(ICompilationUnit cu);
 	
 	public void organizeImports(ICompilationUnit cu, IWorkbenchSite ws);
 	
-	public ICompilationUnit getCompilationUnit(JavaPersistentType jpt);
+	public ICompilationUnit getCompilationUnit(PersistentType jpt);
 	
 	public void formatCode(ICompilationUnit cu, IWorkbenchSite ws);
 	
@@ -55,7 +55,7 @@ public interface IJPAEditorUtil {
 	
 	public IFile createEntityInProject(IProject project, 
 									   String entityName, 
-									   JavaPersistentType mappedSuperclass) throws Exception;
+									   PersistentType mappedSuperclass) throws Exception;
 	
 	public IFile createMappedSuperclassInProject(IProject project,
 			String mappedSuperclassName) throws Exception;

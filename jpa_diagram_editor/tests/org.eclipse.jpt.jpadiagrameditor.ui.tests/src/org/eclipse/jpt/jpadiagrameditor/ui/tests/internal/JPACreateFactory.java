@@ -48,9 +48,8 @@ import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProperties;
@@ -578,13 +577,13 @@ public class JPACreateFactory {
 	}
 	
 	public void addAttributes(IFile entity, String attName, String attType, String annotation, String attActName, boolean isCollection){
-		JavaPersistentType javaPersistentType = (JavaPersistentType)getPersistentType(entity);
+		PersistentType javaPersistentType = (PersistentType)getPersistentType(entity);
 		int cnt = 0;
 		while ((javaPersistentType == null) && (cnt < 100)) {
 			try {
 				Thread.sleep(250);
 			} catch (InterruptedException e) {}
-			javaPersistentType = (JavaPersistentType)getPersistentType(entity);
+			javaPersistentType = getPersistentType(entity);
 			cnt++;
 		}
 		if (javaPersistentType == null)

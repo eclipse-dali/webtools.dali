@@ -15,12 +15,14 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.relations;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+
+
 
 public interface IUnidirectionalRelation extends IRelation {
-	
-	public abstract JavaSpecifiedPersistentAttribute getAnnotatedAttribute();
-	
-	public abstract void setAnnotatedAttribute(JavaSpecifiedPersistentAttribute at);
+
+	public abstract PersistentAttribute getAnnotatedAttribute();
+
+	public abstract void setAnnotatedAttribute(PersistentAttribute at);
 	
 }

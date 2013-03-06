@@ -15,12 +15,12 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.relations;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 
 abstract public class OneToOneRelation extends AbstractRelation {
 	
-	public OneToOneRelation(JavaPersistentType owner, 
-							JavaPersistentType inverse) {
+	public OneToOneRelation(PersistentType owner, 
+							PersistentType inverse) {
 		super(owner, inverse);
 	}
 	

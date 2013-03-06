@@ -17,6 +17,7 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal.preferences;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 
 public class JPAEditorPreferenceInitializer extends
@@ -30,6 +31,8 @@ public class JPAEditorPreferenceInitializer extends
 	public static final String PROPERTY_DEFAULT_COLLECTION_TYPE 	= "org.eclipse.jpt.jpadiagrameditor.ui.entity.defaultCollectionType";		//$NON-NLS-1$
 	public static final String PROPERTY_ONE_TO_MANY_OLD_STYLE	  	= "org.eclipse.jpt.jpadiagrameditor.ui.entity.defaultOneToManyOldStyle";			//$NON-NLS-1$
 	
+	public static final String PROPERTY_DEFAULT_SUPPORT_ORM_XML	  	= "org.eclipse.jpt.jpadiagrameditor.ui.supportOrmXml";			//$NON-NLS-1$
+	public static final String PROPERTY_DEFAULT_ORM_XML_FILE_NAME	= "org.eclipse.jpt.jpadiagrameditor.ui.ormXmlFileName";			//$NON-NLS-1$
 
 	
 	
@@ -72,6 +75,8 @@ public class JPAEditorPreferenceInitializer extends
 		store.setDefault(PROPERTY_ENTITY_ACCESS_TYPE, PROPERTY_VAL_ACCESS_FIELD_BASED);
 		store.setDefault(PROPERTY_DEFAULT_COLLECTION_TYPE, PROPERTY_VAL_COLLECTION_TYPE);
 		store.setDefault(PROPERTY_ONE_TO_MANY_OLD_STYLE, false);
+		store.setDefault(PROPERTY_DEFAULT_SUPPORT_ORM_XML, false);
+		store.setDefault(PROPERTY_DEFAULT_ORM_XML_FILE_NAME, XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 	}
 
 }

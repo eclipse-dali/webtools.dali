@@ -18,7 +18,7 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal.relations;
 import org.eclipse.graphiti.mm.pictograms.Anchor;
 import org.eclipse.graphiti.mm.pictograms.Connection;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
@@ -29,11 +29,11 @@ public class IsARelation {
 	public final static String IS_A_CONNECTION_PROP_KEY = "is_is_a_connection";	//$NON-NLS-1$
 	
 	
-	protected JavaPersistentType subclass;
-	protected JavaPersistentType superclass;
+	protected PersistentType subclass;
+	protected PersistentType superclass;
 	
-	public IsARelation(JavaPersistentType subclass, 
-					   JavaPersistentType superclass) {
+	public IsARelation(PersistentType subclass, 
+					   PersistentType superclass) {
 		this.subclass = subclass;
 		this.superclass = superclass;
 	}
@@ -45,18 +45,18 @@ public class IsARelation {
 		Object endObj = fp.getBusinessObjectForPictogramElement((ContainerShape)end.eContainer());
 		if ((startObj == null) || (endObj == null))
 			throw new NullPointerException("Some of the connection ends is null");	//$NON-NLS-1$
-		if (!(startObj instanceof JavaPersistentType) || !(endObj instanceof JavaPersistentType))
+		if (!(startObj instanceof PersistentType) || !(endObj instanceof PersistentType))
 			throw new IllegalArgumentException();
-		this.subclass = (JavaPersistentType)startObj;
-		this.superclass = (JavaPersistentType)endObj;
+		this.subclass = (PersistentType)startObj;
+		this.superclass = (PersistentType)endObj;
 	}
 	
 	
-	public JavaPersistentType getSubclass() {
+	public PersistentType getSubclass() {
 		return subclass; 
 	}
 	
-	public JavaPersistentType getSuperclass() {
+	public PersistentType getSuperclass() {
 		return superclass; 
 	}
 	
@@ -77,14 +77,14 @@ public class IsARelation {
 		Object endObj = fp.getBusinessObjectForPictogramElement((ContainerShape)end.eContainer());
 		if ((startObj == null) || (endObj == null))
 			return null;
-		if (!(startObj instanceof JavaPersistentType) || !(endObj instanceof JavaPersistentType))
+		if (!(startObj instanceof PersistentType) || !(endObj instanceof PersistentType))
 			return null;
-		JavaPersistentType startJpt = (JavaPersistentType)startObj;
-		JavaPersistentType endJpt = (JavaPersistentType)endObj;
+		PersistentType startJpt = (PersistentType)startObj;
+		PersistentType endJpt = (PersistentType)endObj;
 		return generateId(startJpt, endJpt);
 	}
 	
-	private static String generateId(JavaPersistentType startJpt, JavaPersistentType endJpt) {
+	private static String generateId(PersistentType startJpt, PersistentType endJpt) {
 		return JPAEditorConstants.IS_A_RELATION_ID_PREFIX + 
 				startJpt.getName() + SEPARATOR + endJpt.getName();
 	}

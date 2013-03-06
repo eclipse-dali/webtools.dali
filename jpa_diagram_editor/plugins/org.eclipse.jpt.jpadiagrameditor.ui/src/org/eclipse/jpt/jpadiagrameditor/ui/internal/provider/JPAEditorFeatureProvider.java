@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.common.util.EList;
@@ -55,6 +56,7 @@ import org.eclipse.graphiti.internal.services.GraphitiInternal;
 import org.eclipse.graphiti.mm.algorithms.GraphicsAlgorithm;
 import org.eclipse.graphiti.mm.algorithms.Rectangle;
 import org.eclipse.graphiti.mm.algorithms.Text;
+import org.eclipse.graphiti.mm.algorithms.styles.AdaptedGradientColoredAreas;
 import org.eclipse.graphiti.mm.pictograms.Anchor;
 import org.eclipse.graphiti.mm.pictograms.Connection;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
@@ -62,6 +64,7 @@ import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.services.Graphiti;
+import org.eclipse.graphiti.services.IGaService;
 import org.eclipse.graphiti.services.IPeService;
 import org.eclipse.graphiti.ui.features.DefaultFeatureProvider;
 import org.eclipse.graphiti.util.IColorConstant;
@@ -71,11 +74,9 @@ import org.eclipse.jdt.internal.core.CompilationUnit;
 import org.eclipse.jdt.internal.core.SourceType;
 import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
@@ -238,7 +239,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
 				} catch (NullPointerException e) {
 					return true;
 				}
-				if (!rel.getSuperclass().equals(getFirstSuperclassBelongingToTheDiagram(rel.getSubclass()))) {
+				if (!rel.getSuperclass().getName().equals(getFirstSuperclassBelongingToTheDiagram(rel.getSubclass()).getName())) {
 					return true;
 				}
 			}
@@ -246,7 +247,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
 		return false;
 	}
 		
-	public JavaPersistentType getFirstSuperclassBelongingToTheDiagram(JavaPersistentType subclass) {
+	public PersistentType getFirstSuperclassBelongingToTheDiagram(PersistentType subclass) {
 		Iterable<PersistentType> h = subclass.getInheritanceHierarchy();
 
 		Iterator<PersistentType> iter = h.iterator();
@@ -257,7 +258,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
 		while (iter.hasNext()) {
 			PersistentType superclass = iter.next();
 			if (hasObjectWithName(getKeyForBusinessObject(superclass))) {
-				return (JavaPersistentType) superclass;
+				return superclass;
 			}
 			if (!cycleChecker.add(superclass))
 				return null;
@@ -271,11 +272,11 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
 	}
 
     	
-	public void addRemoveIgnore(JavaPersistentType jpt, String atName) {
+	public void addRemoveIgnore(PersistentType jpt, String atName) {
 		((JPASolver)getIndependenceSolver()).addRemoveIgnore(jpt.getName() + "." + atName);  //$NON-NLS-1$
 	}
 	
-	public void addAddIgnore(JavaPersistentType jpt, String atName) {
+	public void addAddIgnore(PersistentType jpt, String atName) {
 		((JPASolver)getIndependenceSolver()).addAddIgnore(jpt.getName() + "." + atName); //$NON-NLS-1$
 	}
 	
@@ -291,20 +292,20 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
     @Override
     public IAddFeature getAddFeature(IAddContext context) {
     	Object newObj = context.getNewObject(); 
-        if (newObj instanceof JavaPersistentType) {
+        if (newObj instanceof PersistentType) {
             return new AddJPAEntityFeature(this, true);
         } else if (newObj instanceof AbstractRelation) {
         	 return new AddRelationFeature(this);
         } else if (newObj instanceof HasReferanceRelation) {
         	return new AddHasReferenceRelationFeature(this);
-        } else if (newObj instanceof SpecifiedPersistentAttribute) { 
+        } else if (newObj instanceof PersistentAttribute) { 
         	if (Diagram.class.isInstance(context.getTargetContainer())) {     			
         		return null;
         	}
         	return new AddAttributeFeature(this);
         } else if (newObj instanceof CompilationUnit) {
         	CompilationUnit cu = (CompilationUnit)newObj;
-        	JavaPersistentType jpt = JPAEditorUtil.getJPType(cu);
+        	PersistentType jpt = JPAEditorUtil.getJPType(cu);
         	if (jpt != null) return new AddJPAEntityFeature(this, true);
         } else if ((newObj instanceof JpaModel)) {
         	return new AddAllEntitiesFeature(this);
@@ -326,12 +327,12 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
 	public IDeleteFeature getDeleteFeature(IDeleteContext context) {
     	PictogramElement pe = context.getPictogramElement();
     	Object bo = getBusinessObjectForPictogramElement(pe);
-    	if (bo instanceof JavaPersistentType) {
+    	if (bo instanceof PersistentType) {
     		return new DeleteJPAEntityFeature(this);	
     	} else if ((bo instanceof AbstractRelation) ||
     			(bo instanceof HasReferanceRelation || (bo instanceof IsARelation))) {
     		return new DeleteRelationFeature(this);
-    	} else if (bo instanceof JavaSpecifiedPersistentAttribute) {
+    	} else if (bo instanceof PersistentAttribute) {
     		return new ClickRemoveAttributeButtonFeature(this);
     	}
 		return null;
@@ -361,7 +362,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
     @Override
     public IResizeShapeFeature getResizeShapeFeature(IResizeShapeContext context) {
 		PictogramElement pe = context.getPictogramElement();
-		if (getBusinessObjectForPictogramElement(pe) instanceof JavaPersistentType) {
+		if (getBusinessObjectForPictogramElement(pe) instanceof PersistentType) {
 			return new ResizeJPAEntityFeature(this);
 		}
     	GraphicsAlgorithm ga = pe.getGraphicsAlgorithm();
@@ -382,7 +383,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
     public ILayoutFeature getLayoutFeature(ILayoutContext context) {
         PictogramElement pictogramElement = context.getPictogramElement();
         Object bo = getBusinessObjectForPictogramElement(pictogramElement);
-        if (bo instanceof JavaPersistentType) {
+        if (bo instanceof PersistentType) {
             return new LayoutJPAEntityFeature(this);
         }
         return super.getLayoutFeature(context);
@@ -395,7 +396,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
         Object bo = getBusinessObjectForPictogramElement(pe);   
         if (bo == null)
         	super.getRemoveFeature(context);
-    	if (bo instanceof JavaPersistentType) {
+    	if (bo instanceof PersistentType) {
     		return new RemoveJPAEntityFeature(this, true);	
     	} else if ((bo instanceof AbstractRelation) ||
     			(bo instanceof HasReferanceRelation) || (bo instanceof IsARelation)){ 
@@ -437,7 +438,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
     public IMoveShapeFeature getMoveShapeFeature(IMoveShapeContext context) {
         PictogramElement pe = context.getPictogramElement();
         Object bo = getBusinessObjectForPictogramElement(pe);
-        if (JavaPersistentType.class.isInstance(bo)) {
+        if (PersistentType.class.isInstance(bo)) {
         	return new MoveEntityShapeFeature(this);
         }
         if(bo == null){
@@ -470,7 +471,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
     		return super.getDirectEditingFeature(context);
         Object bo = getBusinessObjectForPictogramElement(pe);
         if (bo != null) {
-        	if (bo instanceof JavaSpecifiedPersistentAttribute) {
+        	if (bo instanceof PersistentAttribute) {
         		return new DirectEditAttributeFeature(this);
         	}
         }
@@ -481,13 +482,13 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
         if (csh == null) 
         	return super.getDirectEditingFeature(context); 
         bo = getBusinessObjectForPictogramElement(csh);
-        if (bo instanceof JavaPersistentType){ 
+        if (bo instanceof PersistentType){ 
             return new DirectEditJPAEntityFeature(this);
         }
         return super.getDirectEditingFeature(context);
     }
-    
-	public void renewAttributeJoiningStrategyPropertyListener(JavaSpecifiedPersistentAttribute jpa) {
+
+	public void renewAttributeJoiningStrategyPropertyListener(PersistentAttribute jpa) {
 		((JPASolver)getIndependenceSolver()).renewAttributeJoiningStrategyPropertyListener(jpa);
 	}
     
@@ -536,11 +537,11 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
     
     public Object remove(String key, boolean save) {
     	Object res = getBusinessObjectForKey(key);
-    	if (res instanceof JavaPersistentType) {
-    		final JavaPersistentType jpt = (JavaPersistentType)res;
+    	if (res instanceof PersistentType) {
+    		final PersistentType jpt = (PersistentType)res;
     		if (save)
     			JpaArtifactFactory.instance().forceSaveEntityClass(jpt, this);
-    		if(!(jpt.getMapping() instanceof JavaEntity)){
+    		if(!(jpt.getMapping() instanceof Entity)){
     			PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
     				public void run() {
     			          removeFromDiagramIfNotPersistentType(jpt);
@@ -551,7 +552,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
     	return ((JPASolver)getIndependenceSolver()).remove(key);
     }    
     
-    public Collection<JavaPersistentType> getPersistentTypes() {
+    public Collection<PersistentType> getPersistentTypes() {
     	return ((JPASolver)getIndependenceSolver()).getPersistentTypes();
     }
     
@@ -573,7 +574,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
 	}
 
     
-    private void removeFromDiagramIfNotPersistentType(final JavaPersistentType jpt) {
+    private void removeFromDiagramIfNotPersistentType(final PersistentType jpt) {
 		final PictogramElement cs = this.getPictogramElementForBusinessObject(jpt);
 		if (cs != null) {
 			final Shape shape = (Shape) cs;
@@ -594,8 +595,8 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
     public boolean hasObjectWithName(String name) {
     	return ((JPASolver)getIndependenceSolver()).containsKey(name);
     }
-    
-    public void replaceAttribute(final JavaSpecifiedPersistentAttribute oldAt, final JavaSpecifiedPersistentAttribute newAt) {
+
+    public void replaceAttribute(final PersistentAttribute oldAt, final PersistentAttribute newAt) {
     	final PictogramElement pe = this.getPictogramElementForBusinessObject(oldAt);
     	if (pe == null) {
     		//System.err.println("PictogramElement is null\n");
@@ -623,8 +624,8 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
     	});
     }
     
-    public boolean doesRelationExist(JavaPersistentType owner, 
-			JavaPersistentType inverse, 
+    public boolean doesRelationExist(PersistentType owner, 
+			PersistentType inverse, 
 			String ownerAttributeName,
 			String inverseAttributeName,
 			RelType relType, 
@@ -634,28 +635,28 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
     	return (getBusinessObjectForKey(id) != null);
     }
     
-    public boolean doesEmbeddedRelationExist(JavaPersistentType embeddable, JavaPersistentType embeddingEntity, String embeddedAttributeName, HasReferenceType relType){
+    public boolean doesEmbeddedRelationExist(PersistentType embeddable, PersistentType embeddingEntity, String embeddedAttributeName, HasReferenceType relType){
     	String id = HasReferanceRelation.generateId(embeddingEntity, embeddable, embeddedAttributeName, relType);
     	return (getBusinessObjectForKey(id) != null);
     }
-    
-	public boolean isRelationRelatedToAttribute(JavaSpecifiedPersistentAttribute jpa) {
+
+	public boolean isRelationRelatedToAttribute(PersistentAttribute jpa) {
 		return ((JPASolver)getIndependenceSolver()).isRelationRelatedToAttribute(jpa);
 	}
 
-	public IRelation getRelationRelatedToAttribute(JavaSpecifiedPersistentAttribute jpa) {
-		return ((JPASolver)getIndependenceSolver()).getRelationRelatedToAttribute(jpa, this);
+	public Set<IRelation> getRelationRelatedToAttribute(PersistentAttribute jpa, String typeName) {
+		return ((JPASolver)getIndependenceSolver()).getRelationRelatedToAttribute(jpa, typeName, this);
 	}    
-		
-	public HasReferanceRelation getEmbeddedRelationRelatedToAttribute(JavaSpecifiedPersistentAttribute jpa) {
+
+	public HasReferanceRelation getEmbeddedRelationRelatedToAttribute(PersistentAttribute jpa) {
 		return ((JPASolver)getIndependenceSolver()).getEmbeddedRelationToAttribute(jpa);
 	}
 	
-	public ICompilationUnit getCompilationUnit(JavaPersistentType jpt) {
+	public ICompilationUnit getCompilationUnit(PersistentType jpt) {
 		return ((JPASolver)getIndependenceSolver()).getCompilationUnit(jpt);
 	}
 
-	public void restoreEntity(JavaPersistentType jpt) {
+	public void restoreEntity(PersistentType jpt) {
 		((JPASolver)getIndependenceSolver()).restoreEntity(jpt);
 	}
 	
@@ -754,9 +755,9 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
 	
 	/**
 	 * Color the given persistent type in gray.
-	 * @param jpt - the {@link JavaPersistentType} to be colored.
+	 * @param jpt - the {@link PersistentType} to be colored.
 	 */
-	public void setGrayColor(final JavaPersistentType jpt) {
+	public void setGrayColor(final PersistentType jpt) {
 		final PictogramElement pe = getPictogramElementForBusinessObject(jpt);
 		if(pe == null)
 			return;
@@ -781,30 +782,32 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
 	 * type.
 	 */
 	public void setOriginalPersistentTypeColor(){
-		Diagram d = getDiagram();
+		final Diagram d = getDiagram();
 		JpaProject project = ModelIntegrationUtil.getProjectByDiagram(d.getName());
 		PersistenceUnit unit = project.getContextModelRoot().getPersistenceXml().
 								getRoot().getPersistenceUnits().iterator().next();
 		for (ClassRef classRef : unit.getClassRefs()) {
 			if (classRef.getJavaPersistentType() != null) { // null if
-				final JavaPersistentType jpt = classRef.getJavaPersistentType();
-				final PictogramElement pe = getPictogramElementForBusinessObject(jpt);
+				final PersistentType jpt = classRef.getJavaPersistentType();
+				PictogramElement pe = getPictogramElementForBusinessObject(jpt);
 				if(pe == null)
 					continue;
-				TransactionalEditingDomain ted = getTransactionalEditingDomain();
+				final GraphicsAlgorithm algo = pe.getGraphicsAlgorithm();
+				TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(algo);
 				
 				JPAEditorConstants.DIAGRAM_OBJECT_TYPE dot = JpaArtifactFactory.instance().determineDiagramObjectType(jpt);
-				final String renderingStyle = JpaArtifactFactory.instance().getRenderingStyle(dot);
+				String renderingStyle = JpaArtifactFactory.instance().getRenderingStyle(dot);
 				final IColorConstant foreground = JpaArtifactFactory.instance().getForeground(dot);
+				final AdaptedGradientColoredAreas gradientColoredArea = JPAEditorPredefinedColoredAreas.getAdaptedGradientColoredAreas(renderingStyle);
+				final IGaService gaService = Graphiti.getGaService();
 				if(ted == null)
 					continue;
 				ted.getCommandStack().execute(new RecordingCommand(ted) {
 
 					@Override
 					protected void doExecute() {
-						Graphiti.getGaService().setRenderingStyle(pe.getGraphicsAlgorithm(), 
-								JPAEditorPredefinedColoredAreas.getAdaptedGradientColoredAreas(renderingStyle));
-						pe.getGraphicsAlgorithm().setForeground(Graphiti.getGaService().manageColor(getDiagram(), foreground));
+						gaService.setRenderingStyle(algo, gradientColoredArea);
+						algo.setForeground(gaService.manageColor(d, foreground));
 					}
 				});
 			}

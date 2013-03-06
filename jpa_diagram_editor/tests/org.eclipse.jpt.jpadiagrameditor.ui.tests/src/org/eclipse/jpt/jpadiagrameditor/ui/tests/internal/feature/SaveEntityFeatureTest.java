@@ -15,8 +15,12 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.feature;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
+import static org.easymock.EasyMock.replay;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.easymock.EasyMock;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
@@ -27,7 +31,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.SaveEntityFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
@@ -65,7 +69,7 @@ public class SaveEntityFeatureTest {
 		assertNotNull(customerType);
 		
 		
-		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
+		PersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		int cnt = 0;
 		while ((cnt < 25) && (t1 == null)) {
 			Thread.sleep(200);
@@ -75,7 +79,7 @@ public class SaveEntityFeatureTest {
 		if (t1 == null)
 			return;
 		expect(featureProvider.getBusinessObjectForPictogramElement(pe)).andStubReturn(t1);
-		expect(featureProvider.getCompilationUnit(isA(JavaPersistentType.class))).andReturn(createCompilationUnitFrom(customerFile)).anyTimes();
+		expect(featureProvider.getCompilationUnit(isA(PersistentType.class))).andReturn(createCompilationUnitFrom(customerFile)).anyTimes();
 
 		
 		SaveEntityFeature ft = new SaveEntityFeature(featureProvider);

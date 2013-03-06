@@ -16,6 +16,7 @@
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.feature;
 
 import java.text.MessageFormat;
+
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
@@ -27,7 +28,7 @@ import org.eclipse.graphiti.ui.features.DefaultDeleteFeature;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
@@ -47,7 +48,7 @@ public class DeleteJPAEntityFeature extends DefaultDeleteFeature {
 	public void delete(final IDeleteContext context) {
     	PictogramElement pe = context.getPictogramElement();
     	
-    	JavaPersistentType jpt = (JavaPersistentType)getFeatureProvider().getBusinessObjectForPictogramElement(pe);
+    	PersistentType jpt = (PersistentType)getFeatureProvider().getBusinessObjectForPictogramElement(pe);
     	entityClassName = jpt.getName();
     	entityName = JPAEditorUtil.returnSimpleName(JpaArtifactFactory.instance().getEntityName(jpt));
     	TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(pe);
@@ -66,15 +67,15 @@ public class DeleteJPAEntityFeature extends DefaultDeleteFeature {
 	
     @Override
 	protected void deleteBusinessObject(Object bo) {
-    	JavaPersistentType jpt = null;
-		if (bo instanceof JavaPersistentType) {
-			jpt = (JavaPersistentType) bo;
+    	PersistentType jpt = null;
+		if (bo instanceof PersistentType) {
+			jpt = (PersistentType) bo;
 			
 		
 			JpaProject jpaProject = jpt.getJpaProject();
 			String name = jpt.getName();
 			
-			
+			JpaArtifactFactory.instance().deletePersistentTypeFromORMXml(jpaProject, jpt);
 //			JpaArtifactFactory.instance().forceSaveEntityClass(jpt, getFeatureProvider());
 			JpaArtifactFactory.instance().deleteEntityClass(jpt, getFeatureProvider());
 			if (! JpaPreferences.getDiscoverAnnotatedClasses(jpt.getJpaProject().getProject())) {

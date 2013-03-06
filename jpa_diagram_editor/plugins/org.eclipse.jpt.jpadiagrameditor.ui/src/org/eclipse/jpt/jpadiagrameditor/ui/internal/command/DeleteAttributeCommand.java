@@ -24,8 +24,9 @@ import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
@@ -35,12 +36,12 @@ import org.eclipse.ui.IWorkbenchSite;
 
 public class DeleteAttributeCommand implements Command {
 	
-	private JavaPersistentType jpt;
+	private PersistentType jpt;
 	private String attributeName;
 	private IJPAEditorFeatureProvider fp;
 	private ICompilationUnit unit;
 	
-	public DeleteAttributeCommand(ICompilationUnit unit, JavaPersistentType jpt, String attributeName,
+	public DeleteAttributeCommand(ICompilationUnit unit, PersistentType jpt, String attributeName,
 							IJPAEditorFeatureProvider fp) {
 		super();
 		this.jpt = jpt;
@@ -52,6 +53,9 @@ public class DeleteAttributeCommand implements Command {
 	public void execute() {
 		boolean isMethodAnnotated = false;
 		if(jpt != null) {
+			
+			JpaArtifactFactory.instance().removeOrmPersistentAttribute(jpt, attributeName);
+			
 			unit = fp.getCompilationUnit(jpt);		
 			isMethodAnnotated = JpaArtifactFactory.instance()
 				.isMethodAnnotated(jpt);
@@ -139,8 +143,12 @@ public class DeleteAttributeCommand implements Command {
 		IWorkbenchSite ws = ((IEditorPart) fp.getDiagramTypeProvider().getDiagramEditor()).getSite();
 		JPAEditorUtil.organizeImports(unit, ws);
 			
-		if(jpt != null)
-			jpt.getJavaResourceType().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
+		if(jpt != null) {
+			jpt.getJpaProject().getContextModelRoot().synchronizeWithResourceModel();
+			JavaResourceType jrt = jpt.getJavaResourceType();
+			jrt.getJavaResourceCompilationUnit().synchronizeWithJavaSource();
+			jpt.update();
+		}
 	}
 	
 }

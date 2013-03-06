@@ -22,7 +22,7 @@
    <requires>
       <import plugin="org.easymock" version="2.4.0" match="compatible"/>
       <import feature="org.eclipse.graphiti.feature" version="0.10.0" match="greaterOrEqual"/>
-      <import feature="org.eclipse.jpt.jpa.feature" version="3.2.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.jpt.jpa.feature" version="3.3.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
@@ -30,11 +30,5 @@
          download-size="0"
          install-size="0"
          version="0.0.0"/>
-<!--   
-   <plugin
-         id="org.eclipse.jpt.jpadiagrameditor.swtbot.tests"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
--->
+
 </feature>

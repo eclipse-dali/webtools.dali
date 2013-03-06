@@ -4,7 +4,7 @@ import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.ui.internal.parts.DiagramEditPart;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.JPACreateFactory;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.Utils;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
@@ -679,7 +679,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 		
 		editorProxy.createInheritedEntity(mappedSuperclass, jpaProject,
-				JptUiDetailsMessages.MappedSuperclassUiProvider_linkLabel,
+				JptJpaUiDetailsMessages.MappedSuperclassUiProvider_linkLabel,
 				true, false);
 
 		editorProxy.deleteDiagramElements();
@@ -720,7 +720,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.waitASecond();
 
 		editorProxy.testCreateAndDeleteIsARelation(superclass, subclassName,
-				JptUiDetailsMessages.MappedSuperclassUiProvider_linkLabel,
+				JptJpaUiDetailsMessages.MappedSuperclassUiProvider_linkLabel,
 				true, superclassName, subclass, false);
 
 		editorProxy.deleteDiagramElements();
@@ -765,7 +765,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.waitASecond();
 
 		editorProxy.testIsARelationProperties(superclass, subclassName,
-				JptUiDetailsMessages.MappedSuperclassUiProvider_linkLabel,
+				JptJpaUiDetailsMessages.MappedSuperclassUiProvider_linkLabel,
 				true, superclassName, subclass, false);
 
 		SWTBotGefEditPart secondSuperclass = editorProxy.addEntityToDiagram(
@@ -816,7 +816,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						mappedSuperclass,
 						entity,
 						IRelation.RelType.ONE_TO_ONE,
-						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy.deleteDiagramElements();
 
@@ -851,7 +851,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						mappedSuperclass,
 						entity,
 						IRelation.RelType.ONE_TO_MANY,
-						JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, false);
+						JptJpaUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, false);
 
 		editorProxy.deleteDiagramElements();
 
@@ -886,7 +886,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						mappedSuperclass,
 						entity,
 						IRelation.RelType.MANY_TO_ONE,
-						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy.deleteDiagramElements();
 
@@ -922,7 +922,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						mappedSuperclass,
 						entity,
 						IRelation.RelType.MANY_TO_MANY,
-						JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
+						JptJpaUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
 
 		editorProxy.deleteDiagramElements();
 

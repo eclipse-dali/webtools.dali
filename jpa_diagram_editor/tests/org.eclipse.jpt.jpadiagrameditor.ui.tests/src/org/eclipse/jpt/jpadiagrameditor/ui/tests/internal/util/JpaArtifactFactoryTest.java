@@ -15,8 +15,11 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.util;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.easymock.EasyMock;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
@@ -32,7 +35,7 @@ import org.eclipse.jpt.common.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.common.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IEclipseFacade;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
@@ -75,12 +78,12 @@ public class JpaArtifactFactoryTest {
 		JavaResourceAbstractType addressType = jpaProject.getJavaResourceType("com.test.Address");
 		assertNotNull(addressType);
 		
-		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+		PersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
 		while (t1 == null) {
 			Thread.sleep(200);
 			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
 		}
-		JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getQualifiedName());
+		PersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getQualifiedName());
 		while (t2 == null) {
 			Thread.sleep(200);
 			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getQualifiedName());
@@ -123,7 +126,7 @@ public class JpaArtifactFactoryTest {
 		assertNotNull(t1.getAttributeNamed(rel.getOwnerAttributeName()));
 		assertNotNull(t2.getAttributeNamed(rel.getInverseAttributeName()));		
 		
-		JavaPersistentAttribute jpa = t1.getAttributeNamed(rel.getOwnerAttributeName());
+		ReadOnlyPersistentAttribute jpa = t1.getAttributeNamed(rel.getOwnerAttributeName());
 		assertTrue(JpaArtifactFactory.instance().hasEntityAnnotation(t1));
 		
 		//JavaPersistentAttribute jpa1 =  JpaArtifactFactory.instance().getRelatedAttribute(t1, t2);
@@ -152,7 +155,7 @@ public class JpaArtifactFactoryTest {
 		JavaResourceAbstractType customerType = jpaProject.getJavaResourceType("com.test.Customer");
 		assertNotNull(customerType);
 				
-		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
+		PersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		while (t1 == null) {
 			Thread.sleep(200);
 			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());

@@ -28,7 +28,7 @@ import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.services.Graphiti;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.GraphicsUpdater;
@@ -54,7 +54,7 @@ public class ExpandAllEntitiesFeature extends AbstractCustomFeature{
 					String collapseFeatures = Graphiti.getPeService().getPropertyValue(el, JPAEditorConstants.COLLAPSE_FEATURES);
 					if (collapseFeatures != null) {
 						Object bo = getBusinessObjectForPictogramElement(el);
-						if(bo instanceof JavaPersistentType){
+						if(bo instanceof PersistentType){
 							ContainerShape containerShape = (ContainerShape) el;	
 							GraphicsUpdater.updateEntityShape(containerShape);
 							GraphicsUpdater.updateEntityHeigth(containerShape);

@@ -15,9 +15,15 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.relation;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
-import java.util.Set;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
+import static org.easymock.EasyMock.replay;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
 import org.easymock.EasyMock;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
@@ -28,9 +34,13 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.jpa.core.resource.java.OwnableRelationshipMappingAnnotation;
+import org.eclipse.jpt.jpa.core.MappingKeys;
+import org.eclipse.jpt.jpa.core.context.AttributeMapping;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.AbstractRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.ManyToManyBiDirRelation;
@@ -64,7 +74,7 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		Thread.sleep(2000);
 		featureProvider = EasyMock.createMock(IJPAEditorFeatureProvider.class);
 		expect(featureProvider.getBusinessObjectForPictogramElement(null)).andReturn(JPACreateFactory.getPersistentType(entity));
-		expect(featureProvider.getCompilationUnit(isA(JavaPersistentType.class))).andReturn(JavaCore.createCompilationUnitFrom(entity)).anyTimes();
+		expect(featureProvider.getCompilationUnit(isA(PersistentType.class))).andReturn(JavaCore.createCompilationUnitFrom(entity)).anyTimes();
 		replay(featureProvider);
 	}
 	
@@ -87,7 +97,7 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertNotNull(customerType);
 		
 		
-		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
+		PersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		while (t1 == null) {
 			Thread.sleep(200);
 			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
@@ -98,7 +108,7 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertNotNull(customerType);
 
 		
-		JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
+		PersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		while (t2 == null) {
 			Thread.sleep(200);
 			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
@@ -109,11 +119,15 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
 		assertEquals("address", rel.getOwnerAttributeName());
-		JavaSpecifiedPersistentAttribute ownerAt = t1.getAttributeNamed("address");
-		assertNotNull(ownerAt);
-		Set<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(ownerAt);
-		assertTrue(annotations.contains("OneToOne"));
-		assertNull(((OwnableRelationshipMappingAnnotation)ownerAt.getMapping()).getMappedBy());		
+		PersistentAttribute ownerAt = t1.getAttributeNamed("address");
+		assertNotNull(ownerAt);	
+		
+		AttributeMapping attributeMapping = JpaArtifactFactory.instance().getAttributeMapping(ownerAt);
+		assertTrue(RelationshipMapping.class.isInstance(attributeMapping));
+		assertEquals(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, attributeMapping.getKey());
+		RelationshipStrategy strategy = ((RelationshipMapping)attributeMapping).getRelationship().getStrategy();
+		assertTrue(SpecifiedMappedByRelationshipStrategy.class.isInstance(strategy));
+		assertNull(((SpecifiedMappedByRelationshipStrategy)strategy).getMappedByAttribute());
 		
 		assertTrue(cu1.isWorkingCopy());
 		IType javaType = cu1.findPrimaryType();
@@ -136,7 +150,7 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertNotNull(customerType);
 		
 		
-		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
+		PersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		while (t1 == null) {
 			Thread.sleep(200);
 			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
@@ -147,7 +161,7 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertNotNull(customerType);
 
 		
-		JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
+		PersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		while (t2 == null) {
 			Thread.sleep(200);
 			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
@@ -159,17 +173,25 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
 		assertEquals("address", rel.getOwnerAttributeName());
-		JavaSpecifiedPersistentAttribute ownerAt = t1.getAttributeNamed("address");
+		PersistentAttribute ownerAt = t1.getAttributeNamed("address");
 		assertNotNull(ownerAt);
-		Set<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(ownerAt);
-		assertTrue(annotations.contains("OneToOne"));
-		assertNull(((OwnableRelationshipMappingAnnotation)ownerAt.getMapping()).getMappedBy());
+
+		AttributeMapping attributeMapping = JpaArtifactFactory.instance().getAttributeMapping(ownerAt);
+		assertTrue(RelationshipMapping.class.isInstance(attributeMapping));
+		assertEquals(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, attributeMapping.getKey());
+		RelationshipStrategy strategy = ((RelationshipMapping)attributeMapping).getRelationship().getStrategy();
+		assertTrue(SpecifiedMappedByRelationshipStrategy.class.isInstance(strategy));
+		assertNull(((SpecifiedMappedByRelationshipStrategy)strategy).getMappedByAttribute());
 		
-		JavaSpecifiedPersistentAttribute inverseAt = t2.getAttributeNamed("customer");
+		PersistentAttribute inverseAt = t2.getAttributeNamed("customer");
 		assertNotNull(inverseAt);
-		annotations = JpaArtifactFactory.instance().getAnnotationNames(inverseAt);
-		assertTrue(annotations.contains("OneToOne"));
-		assertEquals("address", ((OwnableRelationshipMappingAnnotation)inverseAt.getMapping()).getMappedBy());
+		
+		attributeMapping = JpaArtifactFactory.instance().getAttributeMapping(inverseAt);
+		assertTrue(RelationshipMapping.class.isInstance(attributeMapping));
+		assertEquals(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, attributeMapping.getKey());
+		strategy = ((RelationshipMapping)attributeMapping).getRelationship().getStrategy();
+		assertTrue(SpecifiedMappedByRelationshipStrategy.class.isInstance(strategy));
+		assertEquals("address", ((SpecifiedMappedByRelationshipStrategy)strategy).getMappedByAttribute());
 
 		assertTrue(cu1.isWorkingCopy());
 		assertTrue(cu2.isWorkingCopy());
@@ -197,7 +219,7 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertNotNull(customerType);
 		
 		
-		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
+		PersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		while (t1 == null) {
 			Thread.sleep(200);
 			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
@@ -208,7 +230,7 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertNotNull(customerType);
 
 		
-		JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
+		PersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		while (t2 == null) {
 			Thread.sleep(200);
 			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
@@ -219,11 +241,15 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
 		assertEquals("address", rel.getOwnerAttributeName());
-		JavaSpecifiedPersistentAttribute ownerAt = t1.getAttributeNamed("address");
+		PersistentAttribute ownerAt = t1.getAttributeNamed("address");
 		assertNotNull(ownerAt);
-		Set<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(ownerAt);
-		assertTrue(annotations.contains("OneToMany"));
-		assertNull(((OwnableRelationshipMappingAnnotation)ownerAt.getMapping()).getMappedBy());	
+
+		AttributeMapping attributeMapping = JpaArtifactFactory.instance().getAttributeMapping(ownerAt);
+		assertTrue(RelationshipMapping.class.isInstance(attributeMapping));
+		assertEquals(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY, attributeMapping.getKey());
+		RelationshipStrategy strategy = ((RelationshipMapping)attributeMapping).getRelationship().getStrategy();
+		assertTrue(SpecifiedMappedByRelationshipStrategy.class.isInstance(strategy));
+		assertNull(((SpecifiedMappedByRelationshipStrategy)strategy).getMappedByAttribute());
 		
 		assertTrue(cu1.isWorkingCopy());
 		
@@ -247,7 +273,7 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertNotNull(customerType);
 		
 		
-		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
+		PersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		while (t1 == null) {
 			Thread.sleep(200);
 			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
@@ -258,7 +284,7 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertNotNull(customerType);
 
 		
-		JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
+		PersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		while (t2 == null) {
 			Thread.sleep(200);
 			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
@@ -269,10 +295,15 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
 		assertEquals("address", rel.getOwnerAttributeName());
-		JavaSpecifiedPersistentAttribute ownerAt = t1.getAttributeNamed("address");
+		PersistentAttribute ownerAt = t1.getAttributeNamed("address");
 		assertNotNull(ownerAt);
-		Set<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(ownerAt);
-		assertTrue(annotations.contains("ManyToOne"));
+		
+		AttributeMapping attributeMapping = JpaArtifactFactory.instance().getAttributeMapping(ownerAt);
+		assertTrue(RelationshipMapping.class.isInstance(attributeMapping));
+		assertEquals(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, attributeMapping.getKey());
+		RelationshipStrategy strategy = ((RelationshipMapping)attributeMapping).getRelationship().getStrategy();
+		assertTrue(SpecifiedMappedByRelationshipStrategy.class.isInstance(strategy));
+		assertNull(((SpecifiedMappedByRelationshipStrategy)strategy).getMappedByAttribute());
 		
 		assertTrue(cu1.isWorkingCopy());
 		
@@ -297,7 +328,7 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertNotNull(customerType);
 		
 		
-		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
+		PersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		while (t1 == null) {
 			Thread.sleep(200);
 			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
@@ -308,7 +339,7 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertNotNull(customerType);
 
 		
-		JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
+		PersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		while (t2 == null) {
 			Thread.sleep(200);
 			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
@@ -320,16 +351,25 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
 		assertEquals("address", rel.getOwnerAttributeName());
-		JavaSpecifiedPersistentAttribute ownerAt = t1.getAttributeNamed("address");
+		PersistentAttribute ownerAt = t1.getAttributeNamed("address");
 		assertNotNull(ownerAt);
-		Set<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(ownerAt);
-		assertTrue(annotations.contains("ManyToOne"));
+
+		AttributeMapping attributeMapping = JpaArtifactFactory.instance().getAttributeMapping(ownerAt);
+		assertTrue(RelationshipMapping.class.isInstance(attributeMapping));
+		assertEquals(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, attributeMapping.getKey());
+		RelationshipStrategy strategy = ((RelationshipMapping)attributeMapping).getRelationship().getStrategy();
+		assertTrue(SpecifiedMappedByRelationshipStrategy.class.isInstance(strategy));
+		assertNull(((SpecifiedMappedByRelationshipStrategy)strategy).getMappedByAttribute());
 		
-		JavaSpecifiedPersistentAttribute inverseAt = t2.getAttributeNamed("customer");
+		PersistentAttribute inverseAt = t2.getAttributeNamed("customer");
 		assertNotNull(inverseAt);
-		annotations = JpaArtifactFactory.instance().getAnnotationNames(inverseAt);
-		assertTrue(annotations.contains("OneToMany"));
-		assertEquals("address", ((OwnableRelationshipMappingAnnotation)inverseAt.getMapping()).getMappedBy());
+		
+		attributeMapping = JpaArtifactFactory.instance().getAttributeMapping(inverseAt);
+		assertTrue(RelationshipMapping.class.isInstance(attributeMapping));
+		assertEquals(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY, attributeMapping.getKey());
+		strategy = ((RelationshipMapping)attributeMapping).getRelationship().getStrategy();
+		assertTrue(SpecifiedMappedByRelationshipStrategy.class.isInstance(strategy));
+		assertEquals("address", ((SpecifiedMappedByRelationshipStrategy)strategy).getMappedByAttribute());
 		
 		assertTrue(cu1.isWorkingCopy());
 		assertTrue(cu2.isWorkingCopy());
@@ -357,7 +397,7 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertNotNull(customerType);
 		
 		
-		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
+		PersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		while (t1 == null) {
 			Thread.sleep(200);
 			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
@@ -368,7 +408,7 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertNotNull(customerType);
 
 		
-		JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
+		PersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		while (t2 == null) {
 			Thread.sleep(200);
 			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
@@ -379,11 +419,15 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
 		assertEquals("address", rel.getOwnerAttributeName());
-		JavaSpecifiedPersistentAttribute ownerAt = t1.getAttributeNamed("address");
+		PersistentAttribute ownerAt = t1.getAttributeNamed("address");
 		assertNotNull(ownerAt);
-		Set<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(ownerAt);
-		assertTrue(annotations.contains("ManyToMany"));
-		assertNull(((OwnableRelationshipMappingAnnotation)ownerAt.getMapping()).getMappedBy());
+		
+		AttributeMapping attributeMapping = JpaArtifactFactory.instance().getAttributeMapping(ownerAt);
+		assertTrue(RelationshipMapping.class.isInstance(attributeMapping));
+		assertEquals(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, attributeMapping.getKey());
+		RelationshipStrategy strategy = ((RelationshipMapping)attributeMapping).getRelationship().getStrategy();
+		assertTrue(SpecifiedMappedByRelationshipStrategy.class.isInstance(strategy));
+		assertNull(((SpecifiedMappedByRelationshipStrategy)strategy).getMappedByAttribute());
 		
 		assertTrue(cu1.isWorkingCopy());
 		
@@ -407,7 +451,7 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertNotNull(customerType);
 		
 		
-		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
+		PersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		while (t1 == null) {
 			Thread.sleep(200);
 			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
@@ -418,7 +462,7 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertNotNull(customerType);
 
 		
-		JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
+		PersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		while (t2 == null) {
 			Thread.sleep(200);
 			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
@@ -430,18 +474,27 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
 		assertEquals("address", rel.getOwnerAttributeName());
-		JavaSpecifiedPersistentAttribute ownerAt = t1.getAttributeNamed("address");
+		PersistentAttribute ownerAt = t1.getAttributeNamed("address");
 		assertNotNull(ownerAt);
-		Set<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(ownerAt);
-		assertTrue(annotations.contains("ManyToMany"));
-		assertNull(((OwnableRelationshipMappingAnnotation)ownerAt.getMapping()).getMappedBy());
+
+		AttributeMapping attributeMapping = JpaArtifactFactory.instance().getAttributeMapping(ownerAt);
+		assertTrue(RelationshipMapping.class.isInstance(attributeMapping));
+		assertEquals(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, attributeMapping.getKey());
+		RelationshipStrategy strategy = ((RelationshipMapping)attributeMapping).getRelationship().getStrategy();
+		assertTrue(SpecifiedMappedByRelationshipStrategy.class.isInstance(strategy));
+		assertNull(((SpecifiedMappedByRelationshipStrategy)strategy).getMappedByAttribute());
 		
-		JavaSpecifiedPersistentAttribute inverseAt = t2.getAttributeNamed("customer");
+		PersistentAttribute inverseAt = t2.getAttributeNamed("customer");
 		assertNotNull(inverseAt);
-		annotations = JpaArtifactFactory.instance().getAnnotationNames(inverseAt);
-		assertTrue(annotations.contains("ManyToMany"));
-		assertEquals("address", ((OwnableRelationshipMappingAnnotation)inverseAt.getMapping()).getMappedBy());
 		
+		
+		attributeMapping = JpaArtifactFactory.instance().getAttributeMapping(inverseAt);
+		assertTrue(RelationshipMapping.class.isInstance(attributeMapping));
+		assertEquals(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, attributeMapping.getKey());
+		strategy = ((RelationshipMapping)attributeMapping).getRelationship().getStrategy();
+		assertTrue(SpecifiedMappedByRelationshipStrategy.class.isInstance(strategy));
+		assertEquals("address", ((SpecifiedMappedByRelationshipStrategy)strategy).getMappedByAttribute());
+
 		assertTrue(cu1.isWorkingCopy());
 		assertTrue(cu2.isWorkingCopy());
 		
@@ -454,7 +507,13 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		
 	}
 	
-	
+	public boolean isMappedAs(PersistentAttribute jpa, String mappingKey){
+		AttributeMapping attributeMapping = JpaArtifactFactory.instance().getAttributeMapping(jpa);
+		assertTrue(RelationshipMapping.class.isInstance(attributeMapping));
+		assertEquals(mappingKey, attributeMapping.getKey());
+		
+		return false;
+	}
 }
 
 

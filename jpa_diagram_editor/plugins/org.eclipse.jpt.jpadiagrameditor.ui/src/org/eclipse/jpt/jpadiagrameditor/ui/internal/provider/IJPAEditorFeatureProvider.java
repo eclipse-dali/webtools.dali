@@ -18,6 +18,7 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal.provider;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
@@ -29,8 +30,8 @@ import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.services.IPeService;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.IModelIntegrationUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.HasReferanceRelation;
@@ -52,7 +53,7 @@ public interface IJPAEditorFeatureProvider extends IFeatureProvider{
 		
 	public HashSet<HasReferanceRelation> getAllExistingHasReferenceRelations();
 		
-	public ICompilationUnit getCompilationUnit(JavaPersistentType jpt);
+	public ICompilationUnit getCompilationUnit(PersistentType jpt);
 	
 	public boolean hasObjectWithName(String name);
 
@@ -62,28 +63,28 @@ public interface IJPAEditorFeatureProvider extends IFeatureProvider{
 	
     public Object remove(String key, boolean save);	
 
-	public IRelation getRelationRelatedToAttribute(JavaSpecifiedPersistentAttribute jpa);
-	
-	public HasReferanceRelation getEmbeddedRelationRelatedToAttribute(JavaSpecifiedPersistentAttribute jpa);
+	public Set<IRelation> getRelationRelatedToAttribute(PersistentAttribute jpa, String typeName);
+
+	public HasReferanceRelation getEmbeddedRelationRelatedToAttribute(PersistentAttribute jpa);
 	
 	public Object getBusinessObjectForKey(String key);
 
 	public void addJPTForUpdate(String jptName);
 
-    public boolean doesRelationExist(JavaPersistentType owner, 
-			JavaPersistentType inverse, 
+    public boolean doesRelationExist(PersistentType owner, 
+			PersistentType inverse, 
 			String ownerAttributeName,
 			String inverseAttributeName,
 			RelType relType, 
 			RelDir relDir);
     
-    public boolean doesEmbeddedRelationExist(JavaPersistentType embeddable, JavaPersistentType embeddingEntity, String embeddedAttributeName, HasReferenceType relType);
+    public boolean doesEmbeddedRelationExist(PersistentType embeddable, PersistentType embeddingEntity, String embeddedAttributeName, HasReferenceType relType);
     
-	public void restoreEntity(JavaPersistentType jpt);
+	public void restoreEntity(PersistentType jpt);
 	
-	public void addRemoveIgnore(JavaPersistentType jpt, String atName);
+	public void addRemoveIgnore(PersistentType jpt, String atName);
 	
-	public void addAddIgnore(JavaPersistentType jpt, String atName);
+	public void addAddIgnore(PersistentType jpt, String atName);
 	
     public void putKeyToBusinessObject(String key, Object bo);
     
@@ -92,10 +93,10 @@ public interface IJPAEditorFeatureProvider extends IFeatureProvider{
 	public int increaseAttribsNum(Shape sh);
 	
 	public int decreaseAttribsNum(Shape sh);
-	
-    public void replaceAttribute(JavaSpecifiedPersistentAttribute oldAt, JavaSpecifiedPersistentAttribute newAt);
-    	
-	public void renewAttributeJoiningStrategyPropertyListener(JavaSpecifiedPersistentAttribute jpa);
+
+    public void replaceAttribute(PersistentAttribute oldAt, PersistentAttribute newAt);
+
+	public void renewAttributeJoiningStrategyPropertyListener(PersistentAttribute jpa);
 	
 	public IPeService getPeService();
 
@@ -117,15 +118,15 @@ public interface IJPAEditorFeatureProvider extends IFeatureProvider{
 	
 	public Properties loadProperties(IProject project);
 
-	public Collection<JavaPersistentType> getPersistentTypes();
+	public Collection<PersistentType> getPersistentTypes();
 	
-	public JavaPersistentType getFirstSuperclassBelongingToTheDiagram(JavaPersistentType subclass);
+	public PersistentType getFirstSuperclassBelongingToTheDiagram(PersistentType subclass);
 	
 	public void removeAllRedundantIsARelations();
 	
 	public boolean existRedundantIsARelations();
 	
-	public void setGrayColor(final JavaPersistentType jpt);
+	public void setGrayColor(final PersistentType jpt);
 	
 	public void setOriginalPersistentTypeColor();
 

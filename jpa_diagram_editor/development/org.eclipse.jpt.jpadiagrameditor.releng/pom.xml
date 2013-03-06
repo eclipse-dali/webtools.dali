@@ -12,9 +12,9 @@
 		<eclipse-site>http://download.eclipse.org/eclipse/updates/4.3milestones/</eclipse-site>
 		<emf-site>http://download.eclipse.org/modeling/emf/emf/updates/2.9milestones/</emf-site>
 		<modeling-site>http://download.eclipse.org/modeling/emf/updates/releases</modeling-site>
-		<dtp-site>http://download.eclipse.org/datatools/downloads/drops/M_updates_1.10.1/</dtp-site>
+		<dtp-site>http://download.eclipse.org/datatools/downloads/drops/M_updates_1.10.2/</dtp-site>
 		<gef-site>http://download.eclipse.org/tools/gef/updates/milestones/</gef-site>
-		<wtp-site>http://build.eclipse.org/webtools/committers/wtp4x-R3.5.0-I/20121022195619/I-3.5.0-20121022195619/repository/</wtp-site>
+		<wtp-site>http://build.eclipse.org/webtools/committers/wtp4x-R3.5.0-I/20130307051714/I-3.5.0-20130307051714/repository/</wtp-site>
 		<graphiti-site>http://download.eclipse.org/graphiti/updates/milestones/</graphiti-site>
 		<swtbot-site>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site</swtbot-site>
 		<tycho.testArgLine>-Xmx512m -Xms128m -XX:PermSize=32m -XX:MaxPermSize=256m -DenableDebug -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=1044</tycho.testArgLine>

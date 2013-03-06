@@ -32,8 +32,8 @@ import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.jdt.core.Signature;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
@@ -65,7 +65,7 @@ public class DirectEditJPAEntityFeature extends AbstractDirectEditingFeature {
 	public String getInitialValue(IDirectEditingContext context) {
 	    Shape sh = (Shape)context.getPictogramElement();
 	    ContainerShape csh = sh.getContainer();
-	    JavaPersistentType jpt = (JavaPersistentType)getBusinessObjectForPictogramElement(csh);
+	    PersistentType jpt = (PersistentType)getBusinessObjectForPictogramElement(csh);
 	    return JPAEditorUtil.returnSimpleName(JpaArtifactFactory.instance().getEntityName(jpt));
 	}
 	
@@ -74,7 +74,7 @@ public class DirectEditJPAEntityFeature extends AbstractDirectEditingFeature {
 		//CSN #1305664 2010
 		PictogramElement pe = context.getPictogramElement();
 	    ContainerShape csh = ((Shape)pe).getContainer();	    
-	    JavaPersistentType jpt = (JavaPersistentType) getFeatureProvider().getBusinessObjectForPictogramElement(csh);
+	    PersistentType jpt = (PersistentType) getFeatureProvider().getBusinessObjectForPictogramElement(csh);
         String packageName = Signature.getQualifier(jpt.getName());
 	    PersistenceUnit unit = jpt.getPersistenceUnit();
         
@@ -104,7 +104,7 @@ public class DirectEditJPAEntityFeature extends AbstractDirectEditingFeature {
 	public void setValue(final String value, IDirectEditingContext context) {
 	    PictogramElement pe = context.getPictogramElement();
 	    ContainerShape csh = ((Shape)pe).getContainer();
-	    JavaPersistentType jpt = (JavaPersistentType)getBusinessObjectForPictogramElement(csh);
+	    PersistentType jpt = (PersistentType)getBusinessObjectForPictogramElement(csh);
 	    Properties props = JPADiagramPropertyPage.loadProperties(jpt.getJpaProject().getProject());
 
 	    String specifiedEntityMappingName = JpaArtifactFactory.instance().getSpecifiedEntityName(jpt);
@@ -116,9 +116,9 @@ public class DirectEditJPAEntityFeature extends AbstractDirectEditingFeature {
 	    
 	    JpaArtifactFactory.instance().renameEntity(jpt, value);
 //	    Properties props = JPADiagramPropertyPage.loadProperties(jpt.getJpaProject().getProject());
-			if ((JpaArtifactFactory.instance().hasEntityAnnotation(jpt) && JPADiagramPropertyPage.doesDirecteEditingAffectClassNameByDefault(jpt.getJpaProject().getProject(), props)) 
-					|| JpaArtifactFactory.instance().hasMappedSuperclassAnnotation(jpt) 
-					|| JpaArtifactFactory.instance().hasEmbeddableAnnotation(jpt)) {
+			if ((JpaArtifactFactory.instance().isEntity(jpt) && JPADiagramPropertyPage.doesDirecteEditingAffectClassNameByDefault(jpt.getJpaProject().getProject(), props)) 
+					|| JpaArtifactFactory.instance().isMappedSuperclass(jpt) 
+					|| JpaArtifactFactory.instance().isEmbeddable(jpt)) {
 				RenameEntityWithoutUIFeature ft = new RenameEntityWithoutUIFeature(getFeatureProvider(), value);
 				ft.execute(jpt);
 				return;
@@ -135,10 +135,10 @@ public class DirectEditJPAEntityFeature extends AbstractDirectEditingFeature {
 			}
 		});	    
 	    
-	    Set<JavaSpecifiedPersistentAttribute> ats = JpaArtifactFactory.instance().getRelatedAttributes(jpt);
-	    Iterator<JavaSpecifiedPersistentAttribute> it = ats.iterator();
+	    Set<PersistentAttribute> ats = JpaArtifactFactory.instance().getRelatedAttributes(jpt);
+	    Iterator<PersistentAttribute> it = ats.iterator();
 	    while (it.hasNext()) {
-	    	JavaSpecifiedPersistentAttribute at = it.next();
+	    	PersistentAttribute at = it.next();
 	    	PictogramElement pel = getFeatureProvider().getPictogramElementForBusinessObject(at);
 	    	String newAtName = JPAEditorUtil.decapitalizeFirstLetter(value);
 	    	if (JpaArtifactFactory.instance().isMethodAnnotated(at)) 

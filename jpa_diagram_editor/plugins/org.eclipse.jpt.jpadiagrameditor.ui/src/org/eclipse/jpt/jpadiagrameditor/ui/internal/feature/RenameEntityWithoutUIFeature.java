@@ -19,7 +19,7 @@ import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICustomContext;
 import org.eclipse.graphiti.features.context.impl.CustomContext;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 
 
@@ -32,7 +32,7 @@ public class RenameEntityWithoutUIFeature extends RefactorEntityFeature {
 		this.newName = newName;
 	}
 
-	public void execute(JavaPersistentType jpt) {
+	public void execute(PersistentType jpt) {
 		ICompilationUnit cu = getFeatureProvider().getCompilationUnit(jpt);
 		ats = JpaArtifactFactory.instance().getRelatedAttributes(jpt);
 		execute(new CustomContext(), newName, cu, jpt);

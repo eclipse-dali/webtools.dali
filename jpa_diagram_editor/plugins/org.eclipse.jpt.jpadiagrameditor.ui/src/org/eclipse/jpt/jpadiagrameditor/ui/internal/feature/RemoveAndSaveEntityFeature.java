@@ -31,8 +31,8 @@ import org.eclipse.graphiti.features.impl.DefaultRemoveFeature;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 
@@ -55,7 +55,7 @@ public class RemoveAndSaveEntityFeature extends DefaultRemoveFeature {
     		for (int i = lst.size() - 1; i >= 0; i--) {
     			Shape textShape = lst.get(i);
     			Object o = fp.getBusinessObjectForPictogramElement(textShape);
-    			if ((o != null) && (o instanceof JavaSpecifiedPersistentAttribute)) {
+    			if ((o != null) && (o instanceof PersistentAttribute)) {
     				shapesForDeletion.add(textShape);
     			}
     		}

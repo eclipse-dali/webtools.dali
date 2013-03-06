@@ -26,9 +26,9 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.propertypage.JPADiagramPropertyPage;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
@@ -46,7 +46,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 public class AddAttributeCommand implements Command {
 
 	private IJPAEditorFeatureProvider fp;
-	private JavaPersistentType jpt;
+	private PersistentType jpt;
 	private String attributeType;
 	private String mapKeyType;
 	private String attributeName;
@@ -69,7 +69,7 @@ public class AddAttributeCommand implements Command {
 	 * @param cu
 	 */
 	public AddAttributeCommand(IJPAEditorFeatureProvider fp,
-			JavaPersistentType jpt, String attributeType, String mapKeyType,
+			PersistentType jpt, String attributeType, String mapKeyType,
 			String attributeName, String actName, String[] attrTypes,
 			List<String> annotations,
 			boolean isCollection, ICompilationUnit cu) {
@@ -92,6 +92,9 @@ public class AddAttributeCommand implements Command {
 	public void execute() {
 		IType type = null;
 		try {
+//			if(jpt != null){
+//				cu = JPAEditorUtil.getCompilationUnit(jpt);
+//			}
 			JPAEditorUtil.createImport(cu, attributeType);
 			attributeType = JPAEditorUtil.returnSimpleName(attributeType);
 			type = cu.findPrimaryType();
@@ -113,21 +116,10 @@ public class AddAttributeCommand implements Command {
 					actName, cu, type, isCollection, attrTypes, contents);
 
 			if(jpt != null) {
-				JavaSpecifiedPersistentAttribute attr = jpt.getAttributeNamed(actName);
-				int cnt = 0;
-				while ((attr == null) && (cnt < 25)) {
-					try {
-						Thread.sleep(250);
-					} catch (InterruptedException e) {
-						JPADiagramEditorPlugin.logError("Cannnot create a new attribute with name " + attributeName, e); //$NON-NLS-1$				
-					}
-					jpt.getJavaResourceType().getJavaResourceCompilationUnit()
-							.synchronizeWithJavaSource();
-					jpt.update();
-					jpt.synchronizeWithResourceModel();
-					attr = jpt.getAttributeNamed(actName);
-					cnt++;
-				}
+				jpt.getJpaProject().getContextModelRoot().synchronizeWithResourceModel();
+				JavaResourceType jrt = jpt.getJavaResourceType();
+				jrt.getJavaResourceCompilationUnit().synchronizeWithJavaSource();
+				jpt.update();
 			}
 
 		} catch (JavaModelException e) {
@@ -152,7 +144,7 @@ public class AddAttributeCommand implements Command {
 	 * @throws JavaModelException
 	 */
 	private void createAttribute(IJPAEditorFeatureProvider fp,
-			JavaPersistentType jpt, String attrTypeName, String mapKeyType,
+			PersistentType jpt, String attrTypeName, String mapKeyType,
 			String attrName, String actName, ICompilationUnit cu, IType type,
 			boolean isCollection, String[] attrTypeElementNames, String annotationContents) throws JavaModelException {
 
@@ -216,7 +208,7 @@ public class AddAttributeCommand implements Command {
 	 * @throws JavaModelException
 	 */
 	private void createAttributeOfCollectiontype(IJPAEditorFeatureProvider fp,
-			JavaPersistentType jpt, String attributeType, String mapKeyType,
+			PersistentType jpt, String attributeType, String mapKeyType,
 			String attributeName, String actName, ICompilationUnit cu,
 			IType type) throws JavaModelException {
 		IProject project = jpt.getJpaProject().getProject();

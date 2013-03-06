@@ -26,7 +26,7 @@ import org.eclipse.graphiti.mm.Property;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.services.Graphiti;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.GraphicsUpdater;
@@ -44,7 +44,7 @@ public class ExpandEntityFeature extends AbstractCustomFeature{
 		final PictogramElement el = context.getPictogramElements()[0];
 
 		Object bo = getBusinessObjectForPictogramElement(el);
-		if(bo instanceof JavaPersistentType){
+		if(bo instanceof PersistentType){
 		final ContainerShape containerShape = (ContainerShape) el;
 	
 		TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(containerShape);
@@ -77,7 +77,7 @@ public class ExpandEntityFeature extends AbstractCustomFeature{
 				for (int i = 0; i < pes.length; i++) {
 					PictogramElement pe = pes[i];
 					Object bo = getBusinessObjectForPictogramElement(pe);
-					if (!(bo instanceof JavaPersistentType)) {
+					if (!(bo instanceof PersistentType)) {
 						return false;
 					}
 					if (!expandPossible) {

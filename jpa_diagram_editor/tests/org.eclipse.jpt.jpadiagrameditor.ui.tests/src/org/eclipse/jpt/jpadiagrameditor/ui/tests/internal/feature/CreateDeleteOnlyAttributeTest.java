@@ -22,8 +22,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+
 import org.easymock.EasyMock;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -44,6 +46,7 @@ import org.eclipse.jpt.common.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.common.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
@@ -59,7 +62,7 @@ public class CreateDeleteOnlyAttributeTest {
 	final String TEST_PROJECT = "Test";
 	private JpaProject jpaProject = null;
 	private JPACreateFactory factory = null;
-	JavaPersistentType jpt = null;
+	PersistentType jpt = null;
 	
 	@Before
 	public void setUp() throws Exception{
@@ -67,19 +70,19 @@ public class CreateDeleteOnlyAttributeTest {
 		jpaProject = factory.createJPAProject(TEST_PROJECT + "_" + System.currentTimeMillis());
 		assertNotNull(jpaProject);
 		IFile entity = factory.createEntity(jpaProject, "org.eclipse.Entity1");
-		jpt = (JavaPersistentType)JPACreateFactory.getPersistentType(entity);
+		jpt = (PersistentType)JPACreateFactory.getPersistentType(entity);
 		int c = 0;
 		while ((jpt == null) && (c < 100)) {
 			try {
 				Thread.sleep(250);
 			} catch (Exception e) {}
-			jpt = (JavaPersistentType)JPACreateFactory.getPersistentType(entity);
+			jpt = (PersistentType)JPACreateFactory.getPersistentType(entity);
 			c++;
 		}
 		featureProvider = EasyMock.createMock(IJPAEditorFeatureProvider.class);
 		expect(featureProvider.getBusinessObjectForPictogramElement(isA(ContainerShape.class))).andStubReturn(jpt);		
 		expect(featureProvider.getBusinessObjectForPictogramElement(null)).andReturn(JPACreateFactory.getPersistentType(entity));
-		expect(featureProvider.getCompilationUnit(isA(JavaPersistentType.class))).andReturn(JavaCore.createCompilationUnitFrom(entity)).anyTimes();
+		expect(featureProvider.getCompilationUnit(isA(PersistentType.class))).andReturn(JavaCore.createCompilationUnitFrom(entity)).anyTimes();
 		expect(featureProvider.addIfPossible(isA(IAddContext.class))).andStubReturn(null);
 		expect(featureProvider.getPictogramElementForBusinessObject(jpt)).andStubReturn(isA(ContainerShape.class));
 		ICompilationUnit cu = JavaCore.createCompilationUnitFrom(entity);

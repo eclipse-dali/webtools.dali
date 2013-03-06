@@ -25,7 +25,7 @@ import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.IModelIntegrationUtil;
@@ -75,7 +75,7 @@ public class JPAEditorMatchingStrategy implements IEditorMatchingStrategy {
 			} catch (CoreException e1) {
 				JPADiagramEditorPlugin.logError("Cannot get session property DOUBLE_CLICK", e1);  //$NON-NLS-1$		 							
 			}
-			JavaPersistentType inputJptType = null; 
+			PersistentType inputJptType = null; 
 			
 			if (fp == null) {
 				inputJptType = JPAEditorUtil.getJPType(JavaCore.createCompilationUnitFrom(entityFile));

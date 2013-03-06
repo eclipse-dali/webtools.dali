@@ -35,8 +35,6 @@ public class JPAEditorTestsActivator extends Plugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		JpaProjectManager jpaProjectManager = this.getJpaProjectManager();
-//		ReflectionTools.executeMethod(jpaProjectManager, "executeCommandsSynchronously"); //$NON-NLS-1$
 	}
 
 	protected JpaProjectManager getJpaProjectManager() {

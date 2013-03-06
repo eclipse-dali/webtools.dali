@@ -19,6 +19,7 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
 import static org.junit.Assert.assertNotNull;
+
 import org.easymock.EasyMock;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -33,7 +34,7 @@ import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IEclipseFacade;
@@ -61,7 +62,7 @@ public class JPAProjectListenerTest {
 		Thread.sleep(2000);
 		featureProvider = EasyMock.createMock(IJPAEditorFeatureProvider.class);
 		expect(featureProvider.getBusinessObjectForPictogramElement(null)).andReturn(JPACreateFactory.getPersistentType(entity));
-		expect(featureProvider.getCompilationUnit(isA(JavaPersistentType.class))).andReturn(JavaCore.createCompilationUnitFrom(entity)).anyTimes();
+		expect(featureProvider.getCompilationUnit(isA(PersistentType.class))).andReturn(JavaCore.createCompilationUnitFrom(entity)).anyTimes();
 	}
 
 	public ICompilationUnit createCompilationUnitFrom(IFile file) {
@@ -74,7 +75,7 @@ public class JPAProjectListenerTest {
 		slv.setFeatureProvider(featureProvider);
 		jpaProject.addCollectionChangeListener("mark", slv.new JPAProjectListener());
 		PersistenceUnit pu = JpaArtifactFactory.instance().getPersistenceUnit(jpaProject);
-		JavaPersistentType jpt = JpaArtifactFactory.instance().getJPT("org.eclipse.Entity1", pu);
+		PersistentType jpt = JpaArtifactFactory.instance().getJPT("org.eclipse.Entity1", pu);
 		ContainerShape cs = EasyMock.createMock(ContainerShape.class);
 		expect(featureProvider.getPictogramElementForBusinessObject(jpt)).andStubReturn(cs);
 		IRemoveFeature ft = EasyMock.createMock(IRemoveFeature.class);
@@ -91,7 +92,7 @@ public class JPAProjectListenerTest {
 		slv.setFeatureProvider(featureProvider);
 		jpaProject.addCollectionChangeListener("mark", slv.new JPAProjectListener());
 		PersistenceUnit pu = JpaArtifactFactory.instance().getPersistenceUnit(jpaProject);
-		JavaPersistentType jpt = JpaArtifactFactory.instance().getJPT("org.eclipse.Entity1", pu);
+		PersistentType jpt = JpaArtifactFactory.instance().getJPT("org.eclipse.Entity1", pu);
 		expect(featureProvider.getPictogramElementForBusinessObject(jpt)).andStubReturn(null);
 		IRemoveFeature ft = EasyMock.createMock(IRemoveFeature.class);
 		expect(featureProvider.getRemoveFeature(isA(IRemoveContext.class))).andReturn(ft);

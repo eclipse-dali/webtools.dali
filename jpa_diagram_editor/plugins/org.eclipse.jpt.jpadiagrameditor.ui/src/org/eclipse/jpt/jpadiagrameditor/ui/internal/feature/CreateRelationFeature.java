@@ -28,7 +28,6 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.ModelIntegrationUtil;
@@ -41,7 +40,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 
 abstract public class CreateRelationFeature extends AbstractCreateConnectionFeature {
 	
-	protected JavaPersistentType owner;
+	protected PersistentType owner;
 	
 	protected boolean isDerivedIdFeature;
 
@@ -51,30 +50,30 @@ abstract public class CreateRelationFeature extends AbstractCreateConnectionFeat
 	}
 
 	public boolean canCreate(ICreateConnectionContext context) {
-		owner = (JavaPersistentType)getPersistentType(context.getSourceAnchor());
-		JavaPersistentType inverse = (JavaPersistentType)getPersistentType(context.getTargetAnchor());
+		owner = getPersistentType(context.getSourceAnchor());
+		PersistentType inverse = getPersistentType(context.getTargetAnchor());
 	    if ((owner == null) || (inverse == null)) 
 	        return false;
-	    if (JpaArtifactFactory.instance().hasMappedSuperclassAnnotation(inverse) 
-	    		|| JpaArtifactFactory.instance().hasEmbeddableAnnotation(inverse))
+	    if (JpaArtifactFactory.instance().isMappedSuperclass(inverse) 
+	    		|| JpaArtifactFactory.instance().isEmbeddable(inverse))
 	    	return false;
-	    if(JpaArtifactFactory.instance().hasEmbeddableAnnotation(owner)) {
+	    if(JpaArtifactFactory.instance().isEmbeddable(owner)) {
 	    	if(!isRelationshipPossible() || isParentEntity(inverse) 
 	    			|| JPAEditorUtil.checkJPAFacetVersion(owner.getJpaProject(), JPAEditorUtil.JPA_PROJECT_FACET_10))
 	    		return false;
 	    }
 	    if ((this instanceof ICreateBiDirRelationFeature) && 
-	    	(JpaArtifactFactory.instance().hasMappedSuperclassAnnotation(owner)))
+	    	(JpaArtifactFactory.instance().isMappedSuperclass(owner)))
 	    	return false;
-	    if(isDerivedIdFeature && (!JpaArtifactFactory.instance().hasEntityAnnotation(owner)
-	    		|| !JpaArtifactFactory.instance().hasEntityAnnotation(inverse))){
+	    if(isDerivedIdFeature && (!JpaArtifactFactory.instance().isEntity(owner)
+	    		|| !JpaArtifactFactory.instance().isEntity(inverse))){
 	    	return false;
 	    }
 	    return true;
 	}
 
 	public boolean canStartConnection(ICreateConnectionContext context) {
-		owner = (JavaPersistentType)getPersistentType(context.getSourceAnchor()); 
+		owner = getPersistentType(context.getSourceAnchor()); 
 	    if (owner == null) 
 	        return false;
 	    return true;
@@ -82,16 +81,16 @@ abstract public class CreateRelationFeature extends AbstractCreateConnectionFeat
 	
 	public Connection create(ICreateConnectionContext context) {
 	    Connection newConnection = null;
-	    JavaPersistentType owner = (JavaPersistentType) getPersistentType(context.getSourceAnchor());
-	    JavaPersistentType inverse = (JavaPersistentType) getPersistentType(context.getTargetAnchor());
+	    PersistentType owner = getPersistentType(context.getSourceAnchor());
+	    PersistentType inverse = getPersistentType(context.getTargetAnchor());
 	    if (owner != null && inverse != null) {
 	    	
-//	    	List<JavaPersistentType> embeddingEntities = new ArrayList<JavaPersistentType>();	    	
-	    	if(JpaArtifactFactory.instance().hasEmbeddableAnnotation(owner) && (this instanceof ICreateBiDirRelationFeature)){
+//	    	List<PersistentType> embeddingEntities = new ArrayList<PersistentType>();	    	
+	    	if(JpaArtifactFactory.instance().isEmbeddable(owner) && (this instanceof ICreateBiDirRelationFeature)){
 	    		Set<HasReferanceRelation> refs = JpaArtifactFactory.instance().findAllHasReferenceRelationsByEmbeddable(owner, getFeatureProvider());
 //	    	    if(refs.size()>1){
 //					SelectEmbeddingEntitiesDialog dlg = new SelectEmbeddingEntitiesDialog(owner, getFeatureProvider());
-//					List<JavaPersistentType> selectedJPTs = dlg.selectInverseRelationshipEntities();
+//					List<PersistentType> selectedJPTs = dlg.selectInverseRelationshipEntities();
 //					if(selectedJPTs == null || selectedJPTs.isEmpty()){
 //						return null;
 //					}
@@ -100,7 +99,7 @@ abstract public class CreateRelationFeature extends AbstractCreateConnectionFeat
 //	    	    	embeddingEntities.add(refs.iterator().next().getEmbeddingEntity());
 //	    	    }
 	    	    
-//	    	    for(JavaPersistentType embeddingJPT : embeddingEntities) {
+//	    	    for(PersistentType embeddingJPT : embeddingEntities) {
 	    	    	newConnection = makeRelation(context, refs.iterator().next().getEmbeddingEntity());
 //	    	    }
 	    	} else {
@@ -111,7 +110,7 @@ abstract public class CreateRelationFeature extends AbstractCreateConnectionFeat
 	}
 
 	private Connection makeRelation(ICreateConnectionContext context,
-			JavaPersistentType embeddingJPT) {
+			PersistentType embeddingJPT) {
 		Connection newConnection;
 		AbstractRelation rel = createRelation(getFeatureProvider(), context.getSourceAnchor().getParent(), 
 														context.getTargetAnchor().getParent(), embeddingJPT);
@@ -143,7 +142,7 @@ abstract public class CreateRelationFeature extends AbstractCreateConnectionFeat
 	 * Creates a new OneToOneRelation between two PersistentType classes.
 	 */
 	abstract protected AbstractRelation createRelation(IJPAEditorFeatureProvider fp, PictogramElement source, 
-															   PictogramElement target, JavaPersistentType type);
+															   PictogramElement target, PersistentType type);
 	
 	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
@@ -186,17 +185,17 @@ abstract public class CreateRelationFeature extends AbstractCreateConnectionFeat
 		JpaProject project = ModelIntegrationUtil.getProjectByDiagram(d.getName());
 		PersistenceUnit unit = project.getContextModelRoot().getPersistenceXml().
 								getRoot().getPersistenceUnits().iterator().next();
-		if(JpaArtifactFactory.instance().hasEntityAnnotation(owner)){
+		if(JpaArtifactFactory.instance().isEntity(owner)){
 			disableAllJPTsThatAreNotEntities(unit);
 		} 
-		else if(JpaArtifactFactory.instance().hasMappedSuperclassAnnotation(owner)){
+		else if(JpaArtifactFactory.instance().isMappedSuperclass(owner)){
 			if (isDerivedIdFeature || (this instanceof ICreateBiDirRelationFeature)){
 				disableAllPersistentTypes(unit);
 			} else {
 				disableAllJPTsThatAreNotEntities(unit);
 			}
 		} 
-		else if(JpaArtifactFactory.instance().hasEmbeddableAnnotation(owner)) {
+		else if(JpaArtifactFactory.instance().isEmbeddable(owner)) {
 	    	if(isDerivedIdFeature || !isRelationshipPossible() || JPAEditorUtil.checkJPAFacetVersion(owner.getJpaProject(), JPAEditorUtil.JPA_PROJECT_FACET_10)) {
 	    		disableAllPersistentTypes(unit);
 	    	} else {
@@ -213,8 +212,8 @@ abstract public class CreateRelationFeature extends AbstractCreateConnectionFeat
 	private void disableAllJPTsThatAreNotEntities(PersistenceUnit unit) {
 		for (ClassRef classRef : unit.getClassRefs()) {
 			if (classRef.getJavaPersistentType() != null) {
-				final JavaPersistentType jpt = classRef.getJavaPersistentType();
-				if(JpaArtifactFactory.instance().hasEmbeddableAnnotation(jpt) || JpaArtifactFactory.instance().hasMappedSuperclassAnnotation(jpt) || isParentEntity(jpt)){
+				final PersistentType jpt = classRef.getJavaPersistentType();
+				if(JpaArtifactFactory.instance().isEmbeddable(jpt) || JpaArtifactFactory.instance().isMappedSuperclass(jpt) || isParentEntity(jpt)){
 					getFeatureProvider().setGrayColor(jpt);
 				}
 				
@@ -223,14 +222,14 @@ abstract public class CreateRelationFeature extends AbstractCreateConnectionFeat
 	}
 
 	/**
-	 * Disable (color in gray) all {@link JavaPersistentType}s registered in the
+	 * Disable (color in gray) all {@link PersistentType}s registered in the
 	 * persistence unit.
 	 * @param unit
 	 */
 	private void disableAllPersistentTypes(PersistenceUnit unit) {
 		for (ClassRef classRef : unit.getClassRefs()) {
 			if (classRef.getJavaPersistentType() != null) {
-				final JavaPersistentType jpt = classRef.getJavaPersistentType();
+				final PersistentType jpt = classRef.getJavaPersistentType();
 				getFeatureProvider().setGrayColor(jpt);
 			}
 		}
@@ -250,9 +249,9 @@ abstract public class CreateRelationFeature extends AbstractCreateConnectionFeat
 
 		for (ClassRef classRef : unit.getClassRefs()) {
 			if (classRef.getJavaPersistentType() != null) {
-				final JavaPersistentType jpt = classRef.getJavaPersistentType();
-				if((isJPA10Project && JpaArtifactFactory.instance().hasEmbeddableAnnotation(jpt))
-						|| (isDerivedIdFeature && !JpaArtifactFactory.instance().hasEntityAnnotation(jpt))){
+				final PersistentType jpt = classRef.getJavaPersistentType();
+				if((isJPA10Project && JpaArtifactFactory.instance().isEmbeddable(jpt))
+						|| (isDerivedIdFeature && !JpaArtifactFactory.instance().isEntity(jpt))){
 					getFeatureProvider().setGrayColor(jpt);
 				}
 				
@@ -260,12 +259,12 @@ abstract public class CreateRelationFeature extends AbstractCreateConnectionFeat
 		}
 	}
 	
-	private boolean isParentEntity(JavaPersistentType jpt) {
-		if(JpaArtifactFactory.instance().hasEntityAnnotation(jpt)){
+	private boolean isParentEntity(PersistentType jpt) {
+		if(JpaArtifactFactory.instance().isEntity(jpt)){
 			Set<HasReferanceRelation> refs = JpaArtifactFactory.instance().findAllHasReferenceRelationsByEmbeddable(owner, getFeatureProvider());
 			if(!refs.isEmpty()){
 				for(HasReferanceRelation ref : refs){
-					if(ref.getEmbeddingEntity().equals(jpt)){
+					if(ref.getEmbeddingEntity().getName().equals(jpt.getName())){
 						return true;
 					}
 					

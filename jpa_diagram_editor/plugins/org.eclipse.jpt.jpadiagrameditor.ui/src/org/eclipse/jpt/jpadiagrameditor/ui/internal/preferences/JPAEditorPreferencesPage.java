@@ -33,7 +33,6 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditor;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Button;
@@ -97,10 +96,10 @@ public class JPAEditorPreferencesPage extends FieldEditorPreferencePage
 				JPAEditorMessages.JPAEditorPreferencesPage_DefaultCollectionTypeSectionTittle,
 				1,
 			    new String[][] {
-					{JPAEditorConstants.COLLECTION_TYPE, JPAEditorPreferenceInitializer.PROPERTY_VAL_COLLECTION_TYPE},
-					{JPAEditorConstants.LIST_TYPE, JPAEditorPreferenceInitializer.PROPERTY_VAL_LIST_TYPE},		
-					{JPAEditorConstants.SET_TYPE, JPAEditorPreferenceInitializer.PROPERTY_VAL_SET_TYPE},
-					{JPAEditorConstants.MAP_TYPE, JPAEditorPreferenceInitializer.PROPERTY_VAL_MAP_TYPE}},
+					{"java.util.&Collection", JPAEditorPreferenceInitializer.PROPERTY_VAL_COLLECTION_TYPE}, //$NON-NLS-1$
+					{"java.util.&List", JPAEditorPreferenceInitializer.PROPERTY_VAL_LIST_TYPE},		 //$NON-NLS-1$
+					{"java.util.&Set", JPAEditorPreferenceInitializer.PROPERTY_VAL_SET_TYPE}, //$NON-NLS-1$
+					{"java.util.&Map", JPAEditorPreferenceInitializer.PROPERTY_VAL_MAP_TYPE}}, //$NON-NLS-1$
 					parent, true);
 		defaultCollectionTypeChooser.setPreferenceStore(getPreferenceStore());
 		defaultCollectionTypeChooser.getRadioBoxControl(parent).setToolTipText(JPAEditorMessages.JPAEditorPreferencesPage_DefaultCollectionTypeSectionDescription);

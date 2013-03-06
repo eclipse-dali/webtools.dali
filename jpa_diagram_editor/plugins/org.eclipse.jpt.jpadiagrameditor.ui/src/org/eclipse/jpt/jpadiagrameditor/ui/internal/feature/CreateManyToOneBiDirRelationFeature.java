@@ -15,17 +15,17 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.feature;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.AttributeMapping;
+import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorImageProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.HasReferanceRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.ManyToOneBiDirRelation;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 
@@ -40,9 +40,9 @@ public class CreateManyToOneBiDirRelationFeature extends CreateManyToOneRelation
 		
 	@Override
 	public ManyToOneBiDirRelation createRelation(IJPAEditorFeatureProvider fp, PictogramElement source, 
-			PictogramElement target, JavaPersistentType embeddingEntity) {
-		JavaPersistentType owner = (JavaPersistentType)(getBusinessObjectForPictogramElement(source));
-		JavaPersistentType inverse = (JavaPersistentType)(getBusinessObjectForPictogramElement(target));		
+			PictogramElement target, PersistentType embeddingEntity) {
+		PersistentType owner = (PersistentType)(getBusinessObjectForPictogramElement(source));
+		PersistentType inverse = (PersistentType)(getBusinessObjectForPictogramElement(target));		
 		
 		String ownerAttributeName = JPAEditorUtil.returnSimpleName(JpaArtifactFactory.instance().getEntityName(inverse));
 		String nameWithNonCapitalLetter = ownerAttributeName;
@@ -69,17 +69,15 @@ public class CreateManyToOneBiDirRelationFeature extends CreateManyToOneRelation
     
     @Override
     protected boolean isRelationshipPossible() {
-    	if(JpaArtifactFactory.instance().hasEmbeddableAnnotation(owner)) {
+    	if(JpaArtifactFactory.instance().isEmbeddable(owner)) {
 			Set<HasReferanceRelation> refs = JpaArtifactFactory.instance().findAllHasReferenceRelsByEmbeddableWithEntity(owner, getFeatureProvider());
 			if (refs.size() != 1){
 				return false;
 			} else {
 				for (HasReferanceRelation ref : refs) {
-					HashSet<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(ref.getEmbeddedAnnotatedAttribute());
-					for (String annotationName : annotations) {
-						if (annotationName.equals(JPAEditorConstants.ANNOTATION_EMBEDDED_ID)) {
-							return false;
-						}
+					AttributeMapping attributeMapping = JpaArtifactFactory.instance().getAttributeMapping(ref.getEmbeddedAnnotatedAttribute());
+					if (attributeMapping instanceof EmbeddedIdMapping) {
+						return false;
 					}
 				}
 			}

@@ -15,8 +15,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.feature;
 
-import java.util.HashSet;
-
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
@@ -29,17 +27,23 @@ import org.eclipse.graphiti.mm.algorithms.Text;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.services.Graphiti;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.AttributeMapping;
+import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
+import org.eclipse.jpt.jpa.core.context.IdMapping;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaNullAttributeMapping;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmNullAttributeMapping;
+import org.eclipse.jpt.jpa.core.jpa2.context.DerivedIdentity2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SingleRelationshipMapping2_0;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorImageProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.GraphicsUpdater;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants.ShapeType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.Wrp;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants.ShapeType;
-
 
 public class GraphicalAddAttributeFeature extends AbstractAddShapeFeature {
 
@@ -50,88 +54,120 @@ public class GraphicalAddAttributeFeature extends AbstractAddShapeFeature {
 	public PictogramElement add(final IAddContext context) {
 		final ContainerShape entityShape = context.getTargetContainer();
 		final Wrp wrp = new Wrp();
-		TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(entityShape);
+		TransactionalEditingDomain ted = TransactionUtil
+				.getEditingDomain(entityShape);
 		ted.getCommandStack().execute(new RecordingCommand(ted) {
 			@Override
 			protected void doExecute() {
-				JavaSpecifiedPersistentAttribute newAttr = (JavaSpecifiedPersistentAttribute) context.getNewObject();
+				PersistentAttribute newAttr = (PersistentAttribute) context
+						.getNewObject();
 				String txt = JPAEditorUtil.getText(newAttr);
-				HashSet<String> annots = JpaArtifactFactory.instance().getAnnotationNames(newAttr);
+				AttributeMapping attributeMapping = JpaArtifactFactory.instance().getAttributeMapping(newAttr);
+				if(!attributeMapping.getKey().equals(newAttr.getJavaPersistentAttribute().getMappingKey())){
+//					newAttr.getJavaPersistentAttribute().setMappingKey(attributeMapping.getKey());
+				}
 				ContainerShape textShape = null;
-				ContainerShape primaryShape = GraphicsUpdater.getPrimaryShape(entityShape);
-				ContainerShape relationShape = GraphicsUpdater.getRelationShape(entityShape);
-				ContainerShape basicShape = GraphicsUpdater.getBasicShape(entityShape);
-				textShape = addAttributeToProperlyShape(entityShape, txt, annots, primaryShape, relationShape, basicShape);
+				ContainerShape primaryShape = GraphicsUpdater
+						.getPrimaryShape(entityShape);
+				ContainerShape relationShape = GraphicsUpdater
+						.getRelationShape(entityShape);
+				ContainerShape basicShape = GraphicsUpdater
+						.getBasicShape(entityShape);
+				textShape = addAttributeToProperlyShape(entityShape, txt,
+						attributeMapping, primaryShape, relationShape, basicShape);
 				link(textShape, newAttr);
 				layoutPictogramElement(entityShape);
 				wrp.setObj(textShape);
 			}
-			
+
 		});
-		return (PictogramElement)wrp.getObj();
+		return (PictogramElement) wrp.getObj();
 	}
 
-	private ContainerShape addAttributeToProperlyShape(ContainerShape entityShape, String txt, HashSet<String> annots,
-			ContainerShape primaryShape, ContainerShape relationShape, ContainerShape basicShape) {
+	private ContainerShape addAttributeToProperlyShape(
+			ContainerShape entityShape, String txt, AttributeMapping attributeMapping,
+			ContainerShape primaryShape, ContainerShape relationShape,
+			ContainerShape basicShape) {
 		ContainerShape textShape = null;
-		if (annots.contains(JPAEditorConstants.ANNOTATION_ID) || annots.contains(JPAEditorConstants.ANNOTATION_EMBEDDED_ID)
-				|| annots.contains(JPAEditorConstants.ANNOTATION_MAPS_ID)) {
-			textShape = addAttributeToShape(entityShape, txt, annots, primaryShape);
-		} else if (!annots.contains(JPAEditorConstants.ANNOTATION_ID) && !annots.contains(JPAEditorConstants.ANNOTATION_MAPS_ID) 
-				 && (annots.contains(JPAEditorConstants.ANNOTATION_MANY_TO_MANY)
-				|| annots.contains(JPAEditorConstants.ANNOTATION_MANY_TO_ONE)
-				|| annots.contains(JPAEditorConstants.ANNOTATION_ONE_TO_MANY)
-				|| annots.contains(JPAEditorConstants.ANNOTATION_ONE_TO_ONE))) {
-			textShape = addAttributeToShape(entityShape, txt, annots, relationShape);
+		if((attributeMapping instanceof IdMapping) || (attributeMapping instanceof EmbeddedIdMapping)) {
+			 textShape = addAttributeToShape(entityShape, txt, attributeMapping,
+					primaryShape);
+		} else if (attributeMapping instanceof SingleRelationshipMapping2_0) {
+			DerivedIdentity2_0 identity = ((SingleRelationshipMapping2_0)attributeMapping).getDerivedIdentity();
+			if(identity.usesIdDerivedIdentityStrategy() || identity.usesMapsIdDerivedIdentityStrategy()){
+				textShape = addAttributeToShape(entityShape, txt, attributeMapping,
+						primaryShape);
+			} else {
+				textShape = addAttributeToShape(entityShape, txt, attributeMapping,
+						relationShape);
+			}
+		} else if (attributeMapping instanceof RelationshipMapping) {
+			textShape = addAttributeToShape(entityShape, txt, attributeMapping,
+					relationShape);
 		} else {
-			textShape = addAttributeToShape(entityShape, txt, annots, basicShape);
+			textShape = addAttributeToShape(entityShape, txt, attributeMapping,
+					basicShape);
 		}
 		return textShape;
 	}
 
-	private ContainerShape addAttributeToShape(ContainerShape entityShape, String txt, HashSet<String> annots,
-			ContainerShape containerShape) {
+	private ContainerShape addAttributeToShape(ContainerShape entityShape,
+			String txt, AttributeMapping attributeMapping, ContainerShape containerShape) {
 		ContainerShape textShape = null;
 		int childrenSizeBefore = containerShape.getChildren().size();
-		int containerHeightBefore = containerShape.getGraphicsAlgorithm().getHeight();
-		textShape = addAttribute(getFeatureProvider(), containerShape, txt, annots);
+		int containerHeightBefore = containerShape.getGraphicsAlgorithm()
+				.getHeight();
+		textShape = addAttribute(getFeatureProvider(), containerShape, txt,
+				attributeMapping);
 
-		GraphicsUpdater.updateContainer(containerShape, childrenSizeBefore, containerHeightBefore);
+		GraphicsUpdater.updateContainer(containerShape, childrenSizeBefore,
+				containerHeightBefore);
 		GraphicsUpdater.updateEntityShape(entityShape);
 
 		return textShape;
 	}
 
-	private static ContainerShape addAttribute(IJPAEditorFeatureProvider fp, ContainerShape containerShape,
-			String attribTxt, HashSet<String> annotations) {
+	@SuppressWarnings("restriction")
+	private static ContainerShape addAttribute(IJPAEditorFeatureProvider fp,
+			ContainerShape containerShape, String attribTxt,
+			AttributeMapping attributeMapping) {
 
-		int width = containerShape.getContainer().getGraphicsAlgorithm().getWidth();
-		ContainerShape iconShape = Graphiti.getPeService().createContainerShape(containerShape, false);
-		Graphiti.getPeService().setPropertyValue(iconShape, JPAEditorConstants.PROP_SHAPE_TYPE, ShapeType.ICON.toString());
+		int width = containerShape.getContainer().getGraphicsAlgorithm()
+				.getWidth();
+		ContainerShape iconShape = Graphiti.getPeService()
+				.createContainerShape(containerShape, false);
+		Graphiti.getPeService().setPropertyValue(iconShape,
+				JPAEditorConstants.PROP_SHAPE_TYPE, ShapeType.ICON.toString());
 		int attribIndex = fp.getAttribsNum(containerShape);
-		Rectangle iconRect = UpdateAttributeFeature.addRectangleForIcon(iconShape, attribIndex);
+		Rectangle iconRect = UpdateAttributeFeature.addRectangleForIcon(
+				iconShape, attribIndex);
 		Image icon = null;
-		Object ob = fp.getBusinessObjectForPictogramElement(containerShape.getContainer());
-		JavaPersistentType jpt = (JavaPersistentType)ob;
-		boolean isMethodAnnotated = JpaArtifactFactory.instance().isMethodAnnotated(jpt); 
-		boolean isCollection = isMethodAnnotated ? 
-				JpaArtifactFactory.instance().isGetterMethodReturnTypeCollection(containerShape.getContainer(), fp, attribTxt) :
-				JpaArtifactFactory.instance().isCollection(containerShape.getContainer(), fp, attribTxt); 
-		if (isCollection && annotations.isEmpty()) {
-			icon = Graphiti.getGaService().createImage(iconRect, JPAEditorImageProvider.ICON_UNMAPPED);
-		} else{
-		    icon = JPAEditorUtil.createAttributeIcon(iconRect, annotations);
+		boolean isCollection = JpaArtifactFactory.instance().isCollection(attributeMapping);
+		if (isCollection && ((attributeMapping instanceof GenericJavaNullAttributeMapping) 
+				|| (attributeMapping instanceof GenericOrmNullAttributeMapping))) {
+			icon = Graphiti.getGaService().createImage(iconRect,
+					JPAEditorImageProvider.ICON_UNMAPPED);
+		} else {
+			icon = JPAEditorUtil.createAttributeIcon(iconRect, attributeMapping);
 		}
-		Graphiti.getGaService().setLocationAndSize(icon, JPAEditorConstants.ICON_X, JPAEditorConstants.ICON_Y,
+		Graphiti.getGaService().setLocationAndSize(icon,
+				JPAEditorConstants.ICON_X, JPAEditorConstants.ICON_Y,
 				JPAEditorConstants.ICON_WIDTH, JPAEditorConstants.ICON_HEIGHT);
-		ContainerShape textShape = Graphiti.getPeService().createContainerShape(containerShape, false);
-		Graphiti.getPeService().setPropertyValue(textShape, JPAEditorConstants.PROP_SHAPE_TYPE, ShapeType.ATTRIBUTE.toString());
-		Rectangle textRectangle = UpdateAttributeFeature.addRectangleForText(textShape, attribIndex, width);
+		ContainerShape textShape = Graphiti.getPeService()
+				.createContainerShape(containerShape, false);
+		Graphiti.getPeService().setPropertyValue(textShape,
+				JPAEditorConstants.PROP_SHAPE_TYPE,
+				ShapeType.ATTRIBUTE.toString());
+		Rectangle textRectangle = UpdateAttributeFeature.addRectangleForText(
+				textShape, attribIndex, width);
 		textShape.setActive(true);
-		Text text = UpdateAttributeFeature.addText(fp, textRectangle, attribTxt);
-		Graphiti.getGaService().setWidth(text, width - JPAEditorConstants.ATTRIBUTE_TEXT_RECT_WIDTH_REDUCER);
-		Graphiti.getGaService().setLocationAndSize(text, 1, -2, width
-				- JPAEditorConstants.ATTRIBUTE_TEXT_RECT_WIDTH_REDUCER, JPAEditorConstants.ATTRIBUTE_RECT_HEIGHT);
+		Text text = UpdateAttributeFeature
+				.addText(fp, textRectangle, attribTxt);
+		Graphiti.getGaService().setWidth(text,
+				width - JPAEditorConstants.ATTRIBUTE_TEXT_RECT_WIDTH_REDUCER);
+		Graphiti.getGaService().setLocationAndSize(text, 1, -2,
+				width - JPAEditorConstants.ATTRIBUTE_TEXT_RECT_WIDTH_REDUCER,
+				JPAEditorConstants.ATTRIBUTE_RECT_HEIGHT);
 		fp.increaseAttribsNum(containerShape);
 		return textShape;
 	}

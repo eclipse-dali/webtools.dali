@@ -60,8 +60,8 @@ import org.eclipse.graphiti.tb.IContextMenuEntry;
 import org.eclipse.graphiti.tb.IDecorator;
 import org.eclipse.graphiti.tb.ImageDecorator;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.facade.EclipseFacade;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.AddAllEntitiesFeature;
@@ -364,8 +364,8 @@ public class JPAEditorToolBehaviorProvider extends DefaultToolBehaviorProvider {
 		IFeatureProvider featureProvider = getFeatureProvider();
 		Object bo = featureProvider.getBusinessObjectForPictogramElement(pe);
 
-		if (bo instanceof JavaPersistentType) {
-			JavaPersistentType persistentType = (JavaPersistentType) bo;
+		if (bo instanceof PersistentType) {
+			PersistentType persistentType = (PersistentType) bo;
 			IFile file = (IFile) persistentType.getResource();
 			if(!file.exists()){
 				return new IDecorator[0];
@@ -459,15 +459,15 @@ public class JPAEditorToolBehaviorProvider extends DefaultToolBehaviorProvider {
         
         Object bo = getFeatureProvider().getBusinessObjectForPictogramElement(pe);
 		if (bo != null) {
-			if (bo instanceof JavaPersistentType) {
+			if (bo instanceof PersistentType) {
 				String superPersistentTypeName = null;
-				if (((JavaPersistentType) bo).getSuperPersistentType() != null) {
-					superPersistentTypeName = ((JavaPersistentType) bo).getSuperPersistentType().getName();
+				if (((PersistentType) bo).getSuperPersistentType() != null) {
+					superPersistentTypeName = ((PersistentType) bo).getSuperPersistentType().getName();
 				}
-				return JPAEditorUtil.getTooltipText((JavaPersistentType)bo, superPersistentTypeName);
+				return JPAEditorUtil.getTooltipText((PersistentType)bo, superPersistentTypeName);
 			} else {
-				if (bo instanceof JavaSpecifiedPersistentAttribute) {
-					return JPAEditorUtil.getTooltipText((JavaSpecifiedPersistentAttribute)bo);
+				if (bo instanceof PersistentAttribute) {
+					return JPAEditorUtil.getTooltipText((PersistentAttribute)bo);
 				}
 			}
 		}
@@ -478,13 +478,13 @@ public class JPAEditorToolBehaviorProvider extends DefaultToolBehaviorProvider {
         if (csh == null) 
         	return null; 
         bo = getFeatureProvider().getBusinessObjectForPictogramElement(csh);
-		if (bo instanceof JavaPersistentType) {
+		if (bo instanceof PersistentType) {
 			String superPersistentTypeName = null;
-			if (((JavaPersistentType) bo).getSuperPersistentType() != null) {
-				superPersistentTypeName = ((JavaPersistentType) bo)
+			if (((PersistentType) bo).getSuperPersistentType() != null) {
+				superPersistentTypeName = ((PersistentType) bo)
 						.getSuperPersistentType().getName();
 			}
-			return JPAEditorUtil.getTooltipText((JavaPersistentType) bo,
+			return JPAEditorUtil.getTooltipText((PersistentType) bo,
 					superPersistentTypeName);
 		}
         return null;
@@ -683,9 +683,8 @@ public class JPAEditorToolBehaviorProvider extends DefaultToolBehaviorProvider {
 		PictogramElement pe = context.getPictogramElements()[0];
 		Object bo = getFeatureProvider().getBusinessObjectForPictogramElement(
 				pe);
-		if (bo instanceof JavaSpecifiedPersistentAttribute) {
-			JavaSpecifiedPersistentAttribute jpa = (JavaSpecifiedPersistentAttribute) bo;
-			IFile file = (IFile) jpa.getResource();
+		if(bo != null) {
+			IFile file = getResourceTobeOpened(bo);
 			try {
 				file.setSessionProperty(new QualifiedName(null, JPAEditorMatchingStrategy.DOUBLE_CLICK), "true");	//$NON-NLS-1$			
 				facade.getIDE().openEditor(file);
@@ -693,18 +692,6 @@ public class JPAEditorToolBehaviorProvider extends DefaultToolBehaviorProvider {
 				JPADiagramEditorPlugin.logError("Cannot open editor", e); //$NON-NLS-1$				
 			} catch (CoreException e) {
 				JPADiagramEditorPlugin.logError("Cannot open editor", e); //$NON-NLS-1$								
-			}
-		}
-		if (bo instanceof JavaPersistentType) {
-			JavaPersistentType jpt = (JavaPersistentType) bo;
-			IFile file = (IFile) jpt.getResource();
-			try {
-				file.setSessionProperty(new QualifiedName(null, JPAEditorMatchingStrategy.DOUBLE_CLICK), "true");	//$NON-NLS-1$
-				facade.getIDE().openEditor(file);
-			} catch (PartInitException e) {
-				JPADiagramEditorPlugin.logError("Cannot open editor", e); //$NON-NLS-1$							
-			} catch (CoreException e) {
-				JPADiagramEditorPlugin.logError("Cannot open editor", e); //$NON-NLS-1$				
 			}
 		}
 		if ((bo == null) && (pe.getGraphicsAlgorithm() instanceof Rectangle)) {
@@ -723,6 +710,19 @@ public class JPAEditorToolBehaviorProvider extends DefaultToolBehaviorProvider {
 
 		}
         return super.getDoubleClickFeature(context);
-	}   	
+	} 
+	
+	public IFile getResourceTobeOpened(Object bo){
+		IFile file = null;
+		if (bo instanceof PersistentAttribute) {
+			PersistentAttribute jpa = (PersistentAttribute) bo;
+			file = (IFile) jpa.getJavaPersistentAttribute().getResource();
+		} else if (bo instanceof PersistentType) {
+			PersistentType jpt = (PersistentType) bo;
+			file = (IFile) jpt.getResource();
+		}
+		
+		return file;
+	}
 	
 }

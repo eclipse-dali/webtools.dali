@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.WeakHashMap;
+
 import org.eclipse.core.internal.resources.File;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarkerDelta;
@@ -63,8 +64,8 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.PackageFragmentRoot;
 import org.eclipse.jpt.common.core.JptResourceModel;
-import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
@@ -85,24 +86,23 @@ import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
-import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
+import org.eclipse.jpt.jpa.core.context.AttributeMapping;
+import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
+import org.eclipse.jpt.jpa.core.context.MappingRelationship;
 import org.eclipse.jpt.jpa.core.context.OptionalMapping;
-import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.Relationship;
-import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.SingleRelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
-import org.eclipse.jpt.jpa.core.context.java.JavaManyToOneMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.core.resource.java.OwnableRelationshipMappingAnnotation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditor;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.facade.EclipseFacade;
@@ -133,21 +133,22 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 
 	private Hashtable<String, Object> keyToBO;
 	private WeakHashMap<JpaProject, WeakReference<CollectionChangeListener>> projectToEntityListener;
-	private WeakHashMap<JavaPersistentType, WeakReference<PropertyChangeListener>> entityToPropListener;
-	private WeakHashMap<JavaSpecifiedPersistentAttribute, WeakReference<AttributePropertyChangeListener>> attributeToPropListener;
-	private WeakHashMap<JavaSpecifiedPersistentAttribute, WeakReference<AttributeMappingOptionalityChangeListener>> attributeMappingOptionalityToPropListener;		
-	private WeakHashMap<JavaSpecifiedPersistentAttribute, WeakReference<AttributeJoiningStrategyPropertyChangeListener>> attributeJoiningStrategyToPropListener;	
-	private WeakHashMap<JavaSpecifiedPersistentAttribute, WeakReference<AttributeRelationshipReferencePropertyChangeListener>> attributeRelationshipReferenceToPropListener;
-	private WeakHashMap<JavaPersistentType, WeakReference<ListChangeListener>> entityToAtListener;
-	private WeakHashMap<JavaPersistentType, WeakReference<StateChangeListener>> entityToStateListener;
+	private WeakHashMap<PersistentType, WeakReference<PropertyChangeListener>> entityToPropListener;
+	private WeakHashMap<PersistentAttribute, WeakReference<AttributePropertyChangeListener>> attributeToPropListener;
+	private WeakHashMap<PersistentAttribute, WeakReference<AttributeMappingOptionalityChangeListener>> attributeMappingOptionalityToPropListener;		
+	private WeakHashMap<PersistentAttribute, WeakReference<AttributeJoiningStrategyPropertyChangeListener>> attributeJoiningStrategyToPropListener;	
+	private WeakHashMap<PersistentAttribute, WeakReference<AttributeRelationshipReferencePropertyChangeListener>> attributeRelationshipReferenceToPropListener;
+	private WeakHashMap<PersistentType, WeakReference<ListChangeListener>> entityToAtListener;
+	private WeakHashMap<PersistentType, WeakReference<ListChangeListener>> entityToOrmAtListener;
+	private WeakHashMap<PersistentType, WeakReference<StateChangeListener>> entityToStateListener;
 	private EntityChangeListener entityNameListener;
 	private IJPAEditorFeatureProvider featureProvider;
 	private HashSet<String> removeIgnore = new HashSet<String>();
 	private HashSet<String> removeRelIgnore = new HashSet<String>();
-	private Collection<JavaPersistentType> persistentTypes = new HashSet<JavaPersistentType>();
+	private Collection<PersistentType> persistentTypes = new HashSet<PersistentType>();
 
 	private HashSet<String> addIgnore = new HashSet<String>();
-	private Hashtable<String, IRelation> attribToRel = new Hashtable<String, IRelation>();
+	private Hashtable<String, IRelation> attribToRel;
 	private Hashtable<String, HasReferanceRelation> attribToEmbeddedRel = new Hashtable<String, HasReferanceRelation>();
 	private Hashtable<String, IsARelation> attribToIsARel = new Hashtable<String, IsARelation>();
 
@@ -179,14 +180,16 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		this.eclipseFacade = eclipseFacade;
 		eclipseFacade.getWorkspace().addResourceChangeListener(this, IResourceChangeEvent.PRE_CLOSE | IResourceChangeEvent.PRE_DELETE | IResourceChangeEvent.POST_BUILD);
 		keyToBO = new Hashtable<String, Object>();
+		attribToRel = new Hashtable<String, IRelation>();
 		projectToEntityListener = new WeakHashMap<JpaProject, WeakReference<CollectionChangeListener>>();
-		entityToPropListener = new WeakHashMap<JavaPersistentType, WeakReference<PropertyChangeListener>>();
-		attributeToPropListener = new WeakHashMap<JavaSpecifiedPersistentAttribute, WeakReference<AttributePropertyChangeListener>>();
-		attributeMappingOptionalityToPropListener = new WeakHashMap<JavaSpecifiedPersistentAttribute, WeakReference<AttributeMappingOptionalityChangeListener>>();
-		attributeJoiningStrategyToPropListener = new WeakHashMap<JavaSpecifiedPersistentAttribute, WeakReference<AttributeJoiningStrategyPropertyChangeListener>>();
-		attributeRelationshipReferenceToPropListener = new WeakHashMap<JavaSpecifiedPersistentAttribute, WeakReference<AttributeRelationshipReferencePropertyChangeListener>>(); 
-		entityToAtListener = new WeakHashMap<JavaPersistentType, WeakReference<ListChangeListener>>();
-		entityToStateListener = new WeakHashMap<JavaPersistentType, WeakReference<StateChangeListener>>();
+		entityToPropListener = new WeakHashMap<PersistentType, WeakReference<PropertyChangeListener>>();
+		attributeToPropListener = new WeakHashMap<PersistentAttribute, WeakReference<AttributePropertyChangeListener>>();
+		attributeMappingOptionalityToPropListener = new WeakHashMap<PersistentAttribute, WeakReference<AttributeMappingOptionalityChangeListener>>();
+		attributeJoiningStrategyToPropListener = new WeakHashMap<PersistentAttribute, WeakReference<AttributeJoiningStrategyPropertyChangeListener>>();
+		attributeRelationshipReferenceToPropListener = new WeakHashMap<PersistentAttribute, WeakReference<AttributeRelationshipReferencePropertyChangeListener>>(); 
+		entityToAtListener = new WeakHashMap<PersistentType, WeakReference<ListChangeListener>>();
+		entityToOrmAtListener = new WeakHashMap<PersistentType, WeakReference<ListChangeListener>>();
+		entityToStateListener = new WeakHashMap<PersistentType, WeakReference<StateChangeListener>>();
 		entityNameListener = new EntityChangeListener(this);
 		entityNameListener.setName("Entity Name Change Listener"); //$NON-NLS-1$
 		this.util = util;
@@ -210,7 +213,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		// to be update and break the iteration
 		boolean updateEditor = false;
 		FILE: for (IFile file : filesToUpdate) {
-			for (JavaPersistentType jpt : entityToPropListener.keySet()) {
+			for (PersistentType jpt : entityToPropListener.keySet()) {
 				if (jpt.getResource().equals(file)) {
 					final PictogramElement element = featureProvider.getPictogramElementForBusinessObject(jpt);
 					if (element == null)
@@ -284,8 +287,8 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 	public String getKeyForBusinessObject(Object bo) {
 		if (bo == null)
 			return ""; //$NON-NLS-1$
-		if (bo instanceof JavaPersistentType) {
-			JavaPersistentType jpt = (JavaPersistentType) bo;
+		if (bo instanceof PersistentType) {
+			PersistentType jpt = (PersistentType) bo;
 			String name = jpt.getName();
 			return name;
 		} else if (bo instanceof AbstractRelation) {
@@ -294,8 +297,8 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			return ((HasReferanceRelation)bo).getId();
 		} else if (bo instanceof IsARelation) {
 			return ((IsARelation)bo).getId();
-		} else if (bo instanceof JavaSpecifiedPersistentAttribute) {
-			JavaSpecifiedPersistentAttribute at = (JavaSpecifiedPersistentAttribute) bo;
+		} else if (bo instanceof PersistentAttribute) {
+			PersistentAttribute at = (PersistentAttribute) bo;
 			return (((PersistentType)at.getParent()).getName() + "-" + at.getName()); //$NON-NLS-1$
 		}
 		return bo.toString();
@@ -331,18 +334,21 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		return produceKeyForRel(rel.getInverse(), rel.getInverseAttributeName());
 	}
 
-	private String produceKeyForRel(JavaPersistentType jpt, String attributeName) {
+	private String produceKeyForRel(PersistentType jpt, String attributeName) {
 		return jpt.getName() + SEPARATOR + attributeName;
 	}
 
 	public void addKeyBusinessObject(String key, Object bo) {
 		keyToBO.put(key, bo);
-		if (bo instanceof JavaPersistentType) {
-			JavaPersistentType jpt = (JavaPersistentType) bo;
+		if (bo instanceof PersistentType) {
+			PersistentType jpt = (PersistentType) bo;
 			JpaProject proj = jpt.getJpaProject();
 			addListenersToProject(proj);
 			addListenersToEntity(jpt);
 			PictogramElement pe = featureProvider.getPictogramElementForBusinessObject(jpt);
+			if(pe == null) {
+				return;
+			}
 			Graphiti.getPeService().setPropertyValue(pe, JPAEditorConstants.PROP_ENTITY_CLASS_NAME, jpt.getName());
 			persistentTypes.add(jpt);
 		} else if (bo instanceof AbstractRelation) {
@@ -357,8 +363,8 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		} else if (bo instanceof IsARelation) {
 			IsARelation rel = (IsARelation) bo;
 			attribToIsARel.put(produceKeyForIsARel(rel), rel);
-		} else if (bo instanceof JavaSpecifiedPersistentAttribute) {
-			addPropertiesListenerToAttribute((JavaSpecifiedPersistentAttribute)bo);
+		} else if (bo instanceof PersistentAttribute) {
+			addPropertiesListenerToAttribute((PersistentAttribute)bo);
 		}
 	}
 
@@ -366,9 +372,9 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		if (key == null)
 			return null;
 		Object o = keyToBO.remove(key);
-		if (o instanceof JavaPersistentType) {
-			JavaPersistentType jpt = (JavaPersistentType) o;
-			for (JavaSpecifiedPersistentAttribute at : jpt.getAttributes()) {
+		if (o instanceof PersistentType) {
+			PersistentType jpt = (PersistentType) o;
+			for (PersistentAttribute at : jpt.getAttributes()) {
 				String k = getKeyForBusinessObject(at);
 				remove(k);
 			}
@@ -397,24 +403,29 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		} else if (o instanceof IsARelation) {
 			IsARelation rel = (IsARelation) o;
 			attribToIsARel.remove(produceKeyForIsARel(rel));
-		} else if (o instanceof JavaSpecifiedPersistentAttribute) {
-			removeListenersFromAttribute((JavaSpecifiedPersistentAttribute)o);
+		} else if (o instanceof PersistentAttribute) {
+			removeListenersFromAttribute((PersistentAttribute)o);
 		}
 		return o;
 	}
 
-	public ICompilationUnit getCompilationUnit(JavaPersistentType jpt) {
+	public ICompilationUnit getCompilationUnit(PersistentType jpt) {
 		return util.getCompilationUnit(jpt);
 	}
 
-	public boolean isRelationRelatedToAttribute(JavaSpecifiedPersistentAttribute jpa) {
-		String key = produceKeyForRel((JavaPersistentType)jpa.getParent(), jpa.getName());
+	public boolean isRelationRelatedToAttribute(PersistentAttribute jpa) {
+		String key = produceKeyForRel(jpa.getDeclaringPersistentType(), jpa.getName());
 		return attribToRel.containsKey(key);
 	}
-	
-	public IRelation getRelationRelatedToAttribute(JavaSpecifiedPersistentAttribute jpa, IJPAEditorFeatureProvider fp) {
-		String key = findRelationshipKey(jpa, fp);
-		return attribToRel.get(key);
+
+	public Set<IRelation> getRelationRelatedToAttribute(PersistentAttribute jpa, String typeName, IJPAEditorFeatureProvider fp) {
+		Set<String> keys = findRelationshipKey(jpa, typeName, fp);
+		Set<IRelation> relations = new HashSet<IRelation>();
+		Iterator<String> iter = keys.iterator();
+		while(iter.hasNext()){
+			relations.add(attribToRel.get(iter.next()));
+		}
+		return relations;
 	}
 	
 	/**
@@ -426,76 +437,76 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 	 * that consists of the name of the attribute which will be renamed and the name of the attribute in the embeddable class. If such an attribute
 	 * exists, the unique key for the existing relationship must be ganerated by the target entity and the name of the found attribute.
 	 * Otherwise the key must be generated by the name of the attribute that will be renamed and its parent entity.
-	 * @param jpa - the {@link JavaSpecifiedPersistentAttribute} which will be renamed
+	 * @param jpa - the {@link PersistentAttribute} which will be renamed
 	 * @param fp
 	 * @return the unique key for the relationship.
 	 */
-	private String findRelationshipKey(JavaSpecifiedPersistentAttribute jpa, IJPAEditorFeatureProvider fp){
+	private Set<String> findRelationshipKey(PersistentAttribute jpa, String typeName, IJPAEditorFeatureProvider fp){
 		JpaArtifactFactory jpaFactory = JpaArtifactFactory.instance();
+		Set<String> relationShipKeys = new HashSet<String>();
 		if(jpaFactory.isEmbeddedAttribute(jpa)){
-			Annotation embeddedAn = null;
-			Annotation[] anns = JpaArtifactFactory.instance().getAnnotations(jpa);
-			if(anns != null && anns.length > 0){
-				embeddedAn = anns[0];
+			PersistentType embeddableClass = null;
+			if(typeName != null){
+				embeddableClass = jpaFactory.findJPT(jpa, fp, typeName);
+			} else {
+				String attributeTypeName = jpaFactory.getRelTypeName(jpa);
+				embeddableClass = jpaFactory.findJPT(jpa, fp, attributeTypeName);
 			}
-			JavaPersistentType embeddableClass = jpaFactory.findJPT(jpa, fp, embeddedAn);
 			if(embeddableClass == null)
-				return ""; //$NON-NLS-1$
-			for (JavaSpecifiedPersistentAttribute relEntAt : embeddableClass.getAttributes())	{
-				IResource r = relEntAt.getParent().getResource();
+				return relationShipKeys; //$NON-NLS-1$
+			for (PersistentAttribute relEntAt : embeddableClass.getAttributes())	{
+				IResource r = relEntAt.getDeclaringPersistentType().getResource();
 				if (!r.exists())
 					throw new RuntimeException();
-				Annotation[] ans = jpaFactory.getAnnotations(relEntAt);
-				for (Annotation an : ans) {
-					String annotationName = JPAEditorUtil.returnSimpleName(an.getAnnotationName());
-					if (JPAEditorConstants.RELATION_ANNOTATIONS.contains(annotationName)) {
-						JavaPersistentType jpt = jpaFactory.findJPT(relEntAt, fp, an);
+				
+				AttributeMapping relationAttributeMapping = jpaFactory.getAttributeMapping(relEntAt);
+					if (relationAttributeMapping instanceof RelationshipMapping) {
+						PersistentType jpt = jpaFactory.findJPT(relEntAt, fp, jpaFactory.getRelTypeName(relEntAt));
 						if(jpt == null)
-							return ""; //$NON-NLS-1$
-						for(JavaSpecifiedPersistentAttribute attribute : jpt.getAttributes()){
-							Annotation[] inverseAnns = jpaFactory.getAnnotations(attribute);
-							for(Annotation inverseAn : inverseAnns){
-								String inverseAnName = JPAEditorUtil.returnSimpleName(inverseAn.getAnnotationName());
-								if(JPAEditorConstants.RELATION_ANNOTATIONS.contains(inverseAnName)){
-									String mappedBy = ((OwnableRelationshipMappingAnnotation)inverseAn).getMappedBy();
+							return relationShipKeys; //$NON-NLS-1$
+						for(PersistentAttribute attribute : jpt.getAttributes()){
+							AttributeMapping mapping = jpaFactory.getAttributeMapping(attribute);
+							if(mapping instanceof RelationshipMapping) {
+								RelationshipMapping relMapping = (RelationshipMapping) mapping;
+								MappingRelationship mappingRel = relMapping.getRelationship();
+								if(mappingRel instanceof MappedByRelationship) {
+									String mappedBy = ((MappedByRelationship)mappingRel).getMappedByStrategy().getMappedByAttribute();
 									if(mappedBy.equals(jpa.getName()+"."+relEntAt.getName())) //$NON-NLS-1$
-										return produceKeyForRel(jpt, attribute.getName());
+										relationShipKeys.add(produceKeyForRel(jpt, attribute.getName()));
 								}
 							}
 						}
-					}
 				}
 			}
-//		} else {
-//			JavaPersistentType embeddedJPT = (JavaPersistentType) jpa.getParent();
-//			if(jpaFactory.hasEmbeddableAnnotation(embeddedJPT)){
-//				Set<IRelation> rels  = featureProvider.getAllExistingIRelations();
-//				for(IRelation rel : rels){
-//					if(rel.getOwnerAnnotatedAttribute().equals(jpa) && (rel instanceof IBidirectionalRelation)){
-//						return findRelationshipKey(rel.getInverseAnnotatedAttribute(), featureProvider);
-//					}
-//				}
-//			}
+		} else {
+			relationShipKeys.add(produceKeyForRel((PersistentType) jpa.getParent(), jpa.getName()));
 		}
-		return produceKeyForRel((JavaPersistentType) jpa.getParent(), jpa.getName());
+		
+		return relationShipKeys;
 	}
 
-	
-	public HasReferanceRelation getEmbeddedRelationToAttribute(JavaSpecifiedPersistentAttribute jpa) {
-		String key = produceKeyForRel((JavaPersistentType)jpa.getParent(), jpa.getName());
+	public HasReferanceRelation getEmbeddedRelationToAttribute(PersistentAttribute jpa) {
+		String key = produceKeyForRel((PersistentType) jpa.getParent(), jpa.getName());
 		return attribToEmbeddedRel.get(key);
 	}
 
 	public Collection<Object> getVisualizedObjects() {
 		return keyToBO.values();
 	}	
-	
-	public void renewAttributeMappingPropListener(JavaSpecifiedPersistentAttribute jpa) {
+
+	public void renewAttributeMappingPropListener(PersistentAttribute ropa) {
+		PersistentAttribute jpa = ropa.getJavaPersistentAttribute();
 		renewAttributeJoiningStrategyPropertyListener(jpa);
 		renewAttributeMappingOptPropListener(jpa);
+		
+		PersistentAttribute pa = JpaArtifactFactory.instance().getORMPersistentAttribute(ropa);
+		if(pa != null) {
+			renewAttributeJoiningStrategyPropertyListener(pa);
+			renewAttributeMappingOptPropListener(pa);
+		}
 	}
-	
-	public void renewAttributeJoiningStrategyPropertyListener(JavaSpecifiedPersistentAttribute jpa) {
+
+	public void renewAttributeJoiningStrategyPropertyListener(PersistentAttribute jpa) {
 		AttributeJoiningStrategyPropertyChangeListener lsn = null;
 		if (attributeJoiningStrategyToPropListener == null) 
 			return;
@@ -503,7 +514,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		if (ref != null)
 			lsn = ref.get();
 		
-		JavaAttributeMapping jam = jpa.getMapping();
+		AttributeMapping jam = jpa.getMapping();
 		if ((jam == null) || !RelationshipMapping.class.isInstance(jam))
 			return;
 		SpecifiedRelationship rr = ((RelationshipMapping) jam).getRelationship();
@@ -524,16 +535,16 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		attributeJoiningStrategyToPropListener.put(jpa, ref);
 		
 	}
-	
-	public void renewAttributeMappingOptPropListener(JavaSpecifiedPersistentAttribute jpa) {
+
+	public void renewAttributeMappingOptPropListener(PersistentAttribute jpa) {
 		AttributeMappingOptionalityChangeListener lsn = null;
 		WeakReference<AttributeMappingOptionalityChangeListener> ref = attributeMappingOptionalityToPropListener.remove(jpa);
 		if (ref != null)
 			lsn = ref.get();	
-		JavaAttributeMapping jam = jpa.getMapping();
+		AttributeMapping jam = jpa.getMapping();
 		if (jam == null)
 			return;
-		if (!ManyToOneMapping.class.isInstance(jam) && !OneToOneMapping.class.isInstance(jam))
+		if (!SingleRelationshipMapping.class.isInstance(jam))
 			return;
 		
 		try {
@@ -570,13 +581,22 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		}
 	}
 
-	private void addListenersToEntity(JavaPersistentType jpt) {
+	private void addListenersToEntity(PersistentType jpt) {
 		addAtListenerToEntity(jpt);
+		addOrmAtListenerToEntity(jpt);
+		
+		MappingFileRef fileRef = JpaArtifactFactory.instance().getOrmXmlByForPersistentType(jpt);
+		if(fileRef != null) {
+			PersistentType pt = fileRef.getPersistentType(jpt.getName());
+			addPropertiesListenerToEntity(pt);
+			addStateListenerToEntity(pt);
+		}
+		
 		addPropertiesListenerToEntity(jpt);
 		addStateListenerToEntity(jpt);
 	}
 
-	private void addAtListenerToEntity(JavaPersistentType jpt) {
+	private void addAtListenerToEntity(PersistentType jpt) {
 		WeakReference<ListChangeListener> lsnrRef = entityToAtListener.get(jpt);
 		ListChangeListener lsnr = null;
 		if (lsnrRef != null)
@@ -588,8 +608,22 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			entityToAtListener.put(jpt, lsnrRef);
 		}
 	}
+	
+	private void addOrmAtListenerToEntity(PersistentType jpt) {
+		WeakReference<ListChangeListener> lsnrRef = entityToOrmAtListener.get(jpt);
+		ListChangeListener lsnr = null;
+		if (lsnrRef != null)
+			lsnr = lsnrRef.get();
+		if (lsnr == null) {
+			lsnr = new EntityAttributesChangeListener();
+			jpt.addListChangeListener(OrmPersistentType.SPECIFIED_ATTRIBUTES_LIST, lsnr);
+			jpt.addListChangeListener(OrmPersistentType.DEFAULT_ATTRIBUTES_LIST, lsnr);
+			lsnrRef = new WeakReference<ListChangeListener>(lsnr);
+			entityToOrmAtListener.put(jpt, lsnrRef);
+		}
+	}
 
-	private void addPropertiesListenerToEntity(JavaPersistentType jpt) {
+	private void addPropertiesListenerToEntity(PersistentType jpt) {
 		WeakReference<PropertyChangeListener> lsnrRef = entityToPropListener.get(jpt);
 		PropertyChangeListener lsnr = null;
 		if (lsnrRef != null)
@@ -602,48 +636,54 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		}
 	}
 
-	private void addPropertiesListenerToAttribute(JavaSpecifiedPersistentAttribute jpa) {
+	private void addPropertiesListenerToAttribute(PersistentAttribute ropa) {
+		PersistentAttribute jpa = ropa.getJavaPersistentAttribute();
 		addPropertiesListenerToAttributeItself(jpa);
 		addPropertiesListenerToJoiningStrategy(jpa);		
 		addPropertiesListenerToRelationshipReference(jpa);
-		addOptPropListenerToAttributeMapping(jpa);			
-	}
+		addOptPropListenerToAttributeMapping(jpa);	
 	
-	private void addPropertiesListenerToAttributeItself(JavaSpecifiedPersistentAttribute jpa) {
+		PersistentAttribute pa = JpaArtifactFactory.instance().getORMPersistentAttribute(ropa);
+		if(pa != null) {
+			addPropertiesListenerToAttributeItself(pa);
+			addPropertiesListenerToJoiningStrategy(pa);		
+			addPropertiesListenerToRelationshipReference(pa);
+			addOptPropListenerToAttributeMapping(pa);
+		}
+	}
+
+	private void addPropertiesListenerToAttributeItself(PersistentAttribute jpa) {
 		WeakReference<AttributePropertyChangeListener> lsnrRef = attributeToPropListener.get(jpa);
 		AttributePropertyChangeListener lsnr = null;
 		if (lsnrRef != null)
 			lsnr = lsnrRef.get();
 		if (lsnr == null) {
 			lsnr = new AttributePropertyChangeListener();
-			jpa.addPropertyChangeListener(SpecifiedPersistentAttribute.MAPPING_PROPERTY, lsnr);
+			jpa.addPropertyChangeListener(PersistentAttribute.MAPPING_PROPERTY, lsnr);
 			lsnrRef = new WeakReference<AttributePropertyChangeListener>(lsnr);
 			attributeToPropListener.put(jpa, lsnrRef);
 		}				
 	}
-	
-	private void addOptPropListenerToAttributeMapping(JavaSpecifiedPersistentAttribute jpa) {
+
+	private void addOptPropListenerToAttributeMapping(PersistentAttribute jpa) {
 		WeakReference<AttributeMappingOptionalityChangeListener> lsnrRef = attributeMappingOptionalityToPropListener.get(jpa);
 		AttributeMappingOptionalityChangeListener lsnr = null;
 		if (lsnrRef != null)
 			lsnr = lsnrRef.get();
 		if (lsnr == null) {
 			lsnr = new AttributeMappingOptionalityChangeListener();
-			JavaAttributeMapping jam = jpa.getMapping();
+			AttributeMapping jam = jpa.getMapping();
 			if (jam == null)
 				return;
-			if (!JavaManyToOneMapping.class.isInstance(jam) &&
-					!JavaOneToOneMapping.class.isInstance(jam))
+			if (SingleRelationshipMapping.class.isInstance(jam))
 				return;
 			jam.addPropertyChangeListener(OptionalMapping.SPECIFIED_OPTIONAL_PROPERTY, lsnr);
 			lsnrRef = new WeakReference<AttributeMappingOptionalityChangeListener>(lsnr);
 			attributeMappingOptionalityToPropListener.put(jpa, lsnrRef);
 		}
 	}
-	
-	
-	private void addPropertiesListenerToJoiningStrategy(JavaSpecifiedPersistentAttribute jpa) {
-		
+
+	private void addPropertiesListenerToJoiningStrategy(PersistentAttribute jpa) {		
 		WeakReference<AttributeJoiningStrategyPropertyChangeListener> lsnrRef = attributeJoiningStrategyToPropListener.get(jpa);
 		AttributeJoiningStrategyPropertyChangeListener lsnr = null;
 		lsnrRef = attributeJoiningStrategyToPropListener.get(jpa);
@@ -651,7 +691,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			lsnr = lsnrRef.get();
 		if (lsnr == null) {
 			lsnr = new AttributeJoiningStrategyPropertyChangeListener();
-			JavaAttributeMapping jam = jpa.getMapping();
+			AttributeMapping jam = jpa.getMapping();
 			if ((jam == null) || !RelationshipMapping.class.isInstance(jam))
 				return;
 			SpecifiedRelationship rr = ((RelationshipMapping) jam).getRelationship();
@@ -665,10 +705,8 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		}
 		
 	}
-	
-	
-	private void addPropertiesListenerToRelationshipReference(JavaSpecifiedPersistentAttribute jpa) {
-		
+
+	private void addPropertiesListenerToRelationshipReference(PersistentAttribute jpa) {		
 		WeakReference<AttributeRelationshipReferencePropertyChangeListener> lsnrRef = attributeRelationshipReferenceToPropListener.get(jpa);
 		AttributeRelationshipReferencePropertyChangeListener lsnr = null;
 		lsnrRef = attributeRelationshipReferenceToPropListener.get(jpa);
@@ -676,7 +714,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			lsnr = lsnrRef.get();
 		if (lsnr == null) {
 			lsnr = new AttributeRelationshipReferencePropertyChangeListener();
-			JavaAttributeMapping jam = jpa.getMapping();
+			AttributeMapping jam = jpa.getMapping();
 			if ((jam == null) || !RelationshipMapping.class.isInstance(jam))
 				return;
 			SpecifiedRelationship rr = ((RelationshipMapping) jam).getRelationship();
@@ -690,9 +728,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		
 	}
 	
-
-	
-	private void addStateListenerToEntity(JavaPersistentType jpt) {
+	private void addStateListenerToEntity(PersistentType jpt) {
 		WeakReference<StateChangeListener> lsnrRef = entityToStateListener.get(jpt);
 		StateChangeListener lsnr = null;
 		if (lsnrRef != null)
@@ -705,17 +741,30 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		}
 	}
 
-	private void removeListenersFromEntity(JavaPersistentType jpt) {
+	private void removeListenersFromEntity(PersistentType jpt) {
 		removeAtListenerFromEntity(jpt);
+		removeOrmAtListenerFromEntity(jpt);
+		
+		MappingFileRef fileRef = JpaArtifactFactory.instance().getOrmXmlByForPersistentType(jpt);
+		if(fileRef != null) {
+			PersistentType pt = fileRef.getPersistentType(jpt.getName());
+			removePropListenerFromEntity(pt);
+			removeStateListenerFromEntity(pt);
+		}
 		removePropListenerFromEntity(jpt);
 		removeStateListenerFromEntity(jpt);
 	}
-	
-	private void removeListenersFromAttribute(JavaSpecifiedPersistentAttribute jpa) {
+
+	private void removeListenersFromAttribute(PersistentAttribute ropa) {
+		PersistentAttribute jpa = ropa.getJavaPersistentAttribute();
 		removePropListenerFromAttribute(jpa);
+		
+		PersistentAttribute pa = JpaArtifactFactory.instance().getORMPersistentAttribute(ropa);
+		if(pa != null)
+			removePropListenerFromAttribute(pa);
 	}	
 
-	private void removeAtListenerFromEntity(JavaPersistentType jpt) {
+	private void removeAtListenerFromEntity(PersistentType jpt) {
 		WeakReference<ListChangeListener> lsnrRef = entityToAtListener.get(jpt);
 		ListChangeListener lsnr = null;
 		if (lsnrRef != null)
@@ -725,8 +774,21 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			jpt.removeListChangeListener(JavaPersistentType.ATTRIBUTES_LIST, lsnr);			
 		}
 	}
+	
+	private void removeOrmAtListenerFromEntity(PersistentType jpt) {
+		WeakReference<ListChangeListener> lsnrRef = entityToOrmAtListener.get(jpt);
+		ListChangeListener lsnr = null;
+		if (lsnrRef != null)
+			lsnr = lsnrRef.get();
+		if (lsnr != null) {
+			entityToOrmAtListener.remove(jpt);
+			jpt.removeListChangeListener(OrmPersistentType.SPECIFIED_ATTRIBUTES_LIST, lsnr);
+			jpt.removeListChangeListener(OrmPersistentType.DEFAULT_ATTRIBUTES_LIST, lsnr);			
 
-	private void removePropListenerFromEntity(JavaPersistentType jpt) {
+		}
+	}
+
+	private void removePropListenerFromEntity(PersistentType jpt) {
 		WeakReference<PropertyChangeListener> lsnrRef = entityToPropListener.get(jpt);
 		PropertyChangeListener lsnr = null;
 		if (lsnrRef != null)
@@ -740,15 +802,15 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			}		
 		}
 	}
-		
-	private void removePropListenerFromAttribute(JavaSpecifiedPersistentAttribute jpa) {
+
+	private void removePropListenerFromAttribute(PersistentAttribute jpa) {
 		removePropListenerFromAttributeItself(jpa);
 		removePropListenerFromJoiningStrategy(jpa);
 		removePropListenerFromRelationshipReference(jpa);
 		removeOptPropListenerFromAttributeMapping(jpa);
 	}	
-	
-	private void removePropListenerFromAttributeItself(JavaSpecifiedPersistentAttribute jpa) {
+
+	private void removePropListenerFromAttributeItself(PersistentAttribute jpa) {
 		WeakReference<AttributePropertyChangeListener> lsnrRef = attributeToPropListener.get(jpa);
 		PropertyChangeListener lsnr = null;
 		if (lsnrRef != null)
@@ -756,14 +818,14 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		if (lsnr != null) {
 			attributeToPropListener.remove(jpa);
 			try {
-				jpa.removePropertyChangeListener(SpecifiedPersistentAttribute.MAPPING_PROPERTY, lsnr);				
+				jpa.removePropertyChangeListener(PersistentAttribute.MAPPING_PROPERTY, lsnr);				
 			} catch (IllegalArgumentException e) {
 				//$NON-NLS-1$
 			}		
 		}
 	}	
-	
-	private void removePropListenerFromJoiningStrategy(JavaSpecifiedPersistentAttribute jpa) {
+
+	private void removePropListenerFromJoiningStrategy(PersistentAttribute jpa) {
 		WeakReference<AttributeJoiningStrategyPropertyChangeListener> lsnrRef = attributeJoiningStrategyToPropListener.get(jpa);
 		PropertyChangeListener lsnr = null;		
 		lsnrRef = attributeJoiningStrategyToPropListener.get(jpa);
@@ -772,7 +834,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		if (lsnr != null) {
 			attributeJoiningStrategyToPropListener.remove(jpa);
 			try {			
-				JavaAttributeMapping jam = jpa.getMapping();
+				AttributeMapping jam = jpa.getMapping();
 				if ((jam == null) || !RelationshipMapping.class.isInstance(jam))
 					return;
 				SpecifiedRelationship rr = ((RelationshipMapping) jam).getRelationship();
@@ -788,8 +850,8 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		}		
 		
 	}
-	
-	private void removeOptPropListenerFromAttributeMapping(JavaSpecifiedPersistentAttribute jpa) {
+
+	private void removeOptPropListenerFromAttributeMapping(PersistentAttribute jpa) {
 		WeakReference<AttributeMappingOptionalityChangeListener> lsnrRef = attributeMappingOptionalityToPropListener.get(jpa);
 		PropertyChangeListener lsnr = null;		
 		lsnrRef = attributeMappingOptionalityToPropListener.get(jpa);
@@ -798,7 +860,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		if (lsnr != null) {
 			attributeMappingOptionalityToPropListener.remove(jpa);
 			try {			
-				JavaAttributeMapping jam = jpa.getMapping();
+				AttributeMapping jam = jpa.getMapping();
 				if ((jam == null) || !RelationshipMapping.class.isInstance(jam))
 					return;
 				jam.removePropertyChangeListener(OptionalMapping.SPECIFIED_OPTIONAL_PROPERTY, lsnr);
@@ -807,9 +869,8 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			}		
 		}		
 	}	
-	
-	
-	private void removePropListenerFromRelationshipReference(JavaSpecifiedPersistentAttribute jpa) {
+
+	private void removePropListenerFromRelationshipReference(PersistentAttribute jpa) {
 		WeakReference<AttributeRelationshipReferencePropertyChangeListener> lsnrRef = attributeRelationshipReferenceToPropListener.get(jpa);
 		PropertyChangeListener lsnr = null;		
 		lsnrRef = attributeRelationshipReferenceToPropListener.get(jpa);
@@ -818,7 +879,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		if (lsnr != null) {
 			attributeRelationshipReferenceToPropListener.remove(jpa);
 			try {			
-				JavaAttributeMapping jam = jpa.getMapping();
+				AttributeMapping jam = jpa.getMapping();
 				if ((jam == null) || !RelationshipMapping.class.isInstance(jam))
 					return;
 				SpecifiedRelationship rr = ((RelationshipMapping) jam).getRelationship();
@@ -832,7 +893,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 	}
 		
 
-	private void removeStateListenerFromEntity(JavaPersistentType jpt) {
+	private void removeStateListenerFromEntity(PersistentType jpt) {
 		WeakReference<StateChangeListener> lsnrRef = entityToStateListener.get(jpt);
 		StateChangeListener lsnr = null;
 		if (lsnrRef != null)
@@ -845,13 +906,13 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 
 	//---------------
 	private void removeEntityStateChangeListeners() {
-		Iterator<JavaPersistentType> it = entityToStateListener.keySet().iterator();
-		Set<JavaPersistentType> s = new HashSet<JavaPersistentType>();
+		Iterator<PersistentType> it = entityToStateListener.keySet().iterator();
+		Set<PersistentType> s = new HashSet<PersistentType>();
 		while(it.hasNext()) 
 			s.add(it.next());
 		it = s.iterator();
 		while(it.hasNext()) {
-			JavaPersistentType jpt = it.next();
+			PersistentType jpt = it.next();
 			WeakReference<StateChangeListener> ref = entityToStateListener.remove(jpt);
 			StateChangeListener lsn = ref.get();
 			if (lsn != null) 
@@ -862,13 +923,13 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 	}
 	
 	private void removeEntityPropChangeListeners() {
-		Iterator<JavaPersistentType> it = entityToPropListener.keySet().iterator();
-		Set<JavaPersistentType> s = new HashSet<JavaPersistentType>();
+		Iterator<PersistentType> it = entityToPropListener.keySet().iterator();
+		Set<PersistentType> s = new HashSet<PersistentType>();
 		while(it.hasNext()) 
 			s.add(it.next());
 		it = s.iterator();		
 		while(it.hasNext()) {
-			JavaPersistentType jpt = it.next();
+			PersistentType jpt = it.next();
 			WeakReference<PropertyChangeListener> ref = entityToPropListener.remove(jpt);
 			PropertyChangeListener lsn = ref.get();
 			if (lsn != null) 
@@ -879,18 +940,18 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 	}
 	
 	private void removeAttributePropChangeListeners() {
-		Iterator<JavaSpecifiedPersistentAttribute> it = attributeToPropListener.keySet().iterator();
-		Set<JavaSpecifiedPersistentAttribute> s = new HashSet<JavaSpecifiedPersistentAttribute>();
+		Iterator<PersistentAttribute> it = attributeToPropListener.keySet().iterator();
+		Set<PersistentAttribute> s = new HashSet<PersistentAttribute>();
 		while(it.hasNext()) 
 			s.add(it.next());
 		it = s.iterator();		
 		while(it.hasNext()) {
-			JavaSpecifiedPersistentAttribute jpa = it.next();
+			PersistentAttribute jpa = it.next();
 			WeakReference<AttributePropertyChangeListener> ref = attributeToPropListener.remove(jpa);
 			PropertyChangeListener lsn = ref.get();
 			if (lsn != null) 
 				try {
-					jpa.removePropertyChangeListener(SpecifiedPersistentAttribute.MAPPING_PROPERTY, lsn);
+					jpa.removePropertyChangeListener(PersistentAttribute.MAPPING_PROPERTY, lsn);
 				} catch (IllegalArgumentException e) {
 					//$NON-NLS-1$
 				}
@@ -900,13 +961,13 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 	}	
 	
 	private void removeAttributeJoiningStrategyPropChangeListeners() {
-		Iterator<JavaSpecifiedPersistentAttribute> it = attributeJoiningStrategyToPropListener.keySet().iterator();
-		Set<JavaSpecifiedPersistentAttribute> s = new HashSet<JavaSpecifiedPersistentAttribute>();
+		Iterator<PersistentAttribute> it = attributeJoiningStrategyToPropListener.keySet().iterator();
+		Set<PersistentAttribute> s = new HashSet<PersistentAttribute>();
 		while(it.hasNext()) 
 			s.add(it.next());
 		it = s.iterator();		
 		while(it.hasNext()) {
-			JavaSpecifiedPersistentAttribute jpa = it.next();
+			PersistentAttribute jpa = it.next();
 			WeakReference<AttributeJoiningStrategyPropertyChangeListener> ref = attributeJoiningStrategyToPropListener.remove(jpa);
 			PropertyChangeListener lsn = ref.get();
 			if (lsn != null) 
@@ -921,20 +982,20 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 	}		
 	
 	private void removeOptPropListeners() {
-		Iterator<JavaSpecifiedPersistentAttribute> it = this.attributeMappingOptionalityToPropListener.keySet().iterator();
-		Set<JavaSpecifiedPersistentAttribute> s = new HashSet<JavaSpecifiedPersistentAttribute>();
+		Iterator<PersistentAttribute> it = this.attributeMappingOptionalityToPropListener.keySet().iterator();
+		Set<PersistentAttribute> s = new HashSet<PersistentAttribute>();
 		while(it.hasNext()) 
 			s.add(it.next());
 		it = s.iterator();		
 		while(it.hasNext()) {
-			JavaSpecifiedPersistentAttribute jpa = it.next();
+			PersistentAttribute jpa = it.next();
 			WeakReference<AttributeMappingOptionalityChangeListener> ref = attributeMappingOptionalityToPropListener.remove(jpa);
 			if (ref == null)
 				continue;
 			PropertyChangeListener lsn = ref.get();
 			if (lsn == null)
 				continue;
-			JavaAttributeMapping jam = jpa.getMapping();
+			AttributeMapping jam = jpa.getMapping();
 			if ((jam == null) || !RelationshipMapping.class.isInstance(jam))
 				continue;			
 			try {
@@ -948,20 +1009,29 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 	}	
 	
 	private void removeEntityAttributeChangeListeners() {
-		Iterator<JavaPersistentType> it = entityToAtListener.keySet().iterator();
-		Set<JavaPersistentType> s = new HashSet<JavaPersistentType>();
+		Iterator<PersistentType> it = entityToAtListener.keySet().iterator();
+		Set<PersistentType> s = new HashSet<PersistentType>();
 		while(it.hasNext()) 
 			s.add(it.next());
 		it = s.iterator();		
 		while(it.hasNext()) {
-			JavaPersistentType jpt = it.next();
+			PersistentType jpt = it.next();
 			WeakReference<ListChangeListener> ref = entityToAtListener.remove(jpt);
 			ListChangeListener lsn = ref.get();
-			if (lsn != null) 
+			if (lsn != null) {
 				jpt.removeListChangeListener(JavaPersistentType.ATTRIBUTES_LIST, lsn);
+			}
+			
+			WeakReference<ListChangeListener> ref1 = entityToOrmAtListener.remove(jpt);
+			ListChangeListener lsn1 = ref1.get();
+			if (lsn1 != null) {
+				jpt.removeListChangeListener(OrmPersistentType.SPECIFIED_ATTRIBUTES_LIST, lsn1);
+			}
 		}
 		entityToAtListener.clear();
+		entityToOrmAtListener.clear();
 		entityToAtListener = null;
+		entityToOrmAtListener = null;
 	}	
 	
 	private void removeProjectListeners() {		
@@ -996,10 +1066,11 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		Iterator<Object> it = keyToBO.values().iterator();
 		while (it.hasNext()) {
 			Object bo = it.next();
-			if (!JavaPersistentType.class.isInstance(bo))
+			if (!PersistentType.class.isInstance(bo))
 				continue;
-			ICompilationUnit cu = util.getCompilationUnit(((JavaPersistentType)bo));
-			util.discardWorkingCopyOnce(cu);
+			ICompilationUnit cu = util.getCompilationUnit(((PersistentType)bo));
+			if(cu != null)
+				util.discardWorkingCopyOnce(cu);
 		}
 		
 		util = null;
@@ -1026,7 +1097,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		return keyToBO.containsKey(key);
 	}
 
-	public void restoreEntity(JavaPersistentType jpt) {
+	public void restoreEntity(PersistentType jpt) {
 		if (jpt == null)
 			return;
 		ICompilationUnit cu = this.getCompilationUnit(jpt);
@@ -1046,7 +1117,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			Set<ICompilationUnit> affectedCompilationUnits = getAffectedCompilationUnits(jed);
 			
 			for (ICompilationUnit cu : affectedCompilationUnits) {
-				JavaPersistentType jpt = JPAEditorUtil.getJPType(cu);
+				PersistentType jpt = JPAEditorUtil.getJPType(cu);
 				for (final JPASolver solver : solversSet) {
 					final ContainerShape cs = (ContainerShape)solver.featureProvider.getPictogramElementForBusinessObject(jpt);
 					if (cs == null)
@@ -1101,7 +1172,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 				PersistenceUnit pu = JpaArtifactFactory.instance().getPersistenceUnit(jpaProject);
 				if(pu == null)
 					continue;
-				JavaPersistentType jpt = (JavaPersistentType)pu.getPersistentType(name);
+				PersistentType jpt = pu.getPersistentType(name);
 				final ContainerShape cs = (ContainerShape)featureProvider.getPictogramElementForBusinessObject(jpt);
 				if (cs == null)
 					return;
@@ -1159,14 +1230,14 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		synchronized public void propertyChanged(PropertyChangeEvent event) {
 			String propName = event.getPropertyName();
 			if (propName.equals(JPAEditorConstants.PROP_SPECIFIED_NAME)) {	
-				final JavaEntity je = (JavaEntity)event.getSource();
+				final Entity je = (Entity)event.getSource();
 				Runnable job = new Runnable() {
 					public void run() {
 						TransactionalEditingDomain ted = featureProvider.getTransactionalEditingDomain();
 						ted.getCommandStack().execute(new RecordingCommand(ted) {
 							@Override
 							protected void doExecute() {
-								JavaPersistentType jpt = je.getPersistentType(); 
+								PersistentType jpt = je.getPersistentType(); 
 								updateJPTName(jpt);
 							    String tableName = JPAEditorUtil.formTableName(jpt);
 							    JpaArtifactFactory.instance().setTableName(jpt, tableName);
@@ -1184,11 +1255,12 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		synchronized public void propertyChanged(PropertyChangeEvent event) {
 			
 			Model source = event.getSource();
-			if (!JavaSpecifiedPersistentAttribute.class.isInstance(source))
+			
+			if (!PersistentAttribute.class.isInstance(source))
 				return;
 			PictogramElement pe = featureProvider
-					.getPictogramElementForBusinessObject(((JavaSpecifiedPersistentAttribute) source)
-							.getParent());	
+					.getPictogramElementForBusinessObject(((PersistentAttribute) source)
+							.getDeclaringPersistentType());	
 			final GraphicalRemoveAttributeFeature remove = new GraphicalRemoveAttributeFeature(featureProvider);
 			final CustomContext ctx = new CustomContext();
 			ctx.setInnerPictogramElement(pe);
@@ -1199,8 +1271,8 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			};
 			Display.getDefault().asyncExec(runnable);
 			String propName = event.getPropertyName();
-			if (propName.equals(SpecifiedPersistentAttribute.MAPPING_PROPERTY)) {
-				renewAttributeMappingPropListener((JavaSpecifiedPersistentAttribute) source);
+			if (propName.equals(PersistentAttribute.MAPPING_PROPERTY)) {
+				renewAttributeMappingPropListener((PersistentAttribute) source);
 			}
 		}
 	}	
@@ -1223,12 +1295,12 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			if (nd == null)
 				return;
 			nd = nd.getParent();
-			if ((nd == null) || !JavaSpecifiedPersistentAttribute.class.isInstance(nd))
-				return;			
-			JavaSpecifiedPersistentAttribute at = (JavaSpecifiedPersistentAttribute)nd;
-			if (!at.getParent().getParent().getResource().exists())
+			if ((nd == null) || !PersistentAttribute.class.isInstance(nd))
 				return;
-			PictogramElement pe = featureProvider.getPictogramElementForBusinessObject(at.getParent());
+			PersistentAttribute at = (PersistentAttribute)nd;
+			if (!at.getDeclaringPersistentType().getParent().getResource().exists())
+				return;
+			PictogramElement pe = featureProvider.getPictogramElementForBusinessObject(at.getDeclaringPersistentType());
 			final GraphicalRemoveAttributeFeature remove = new GraphicalRemoveAttributeFeature(featureProvider); 
 			final CustomContext ctx = new CustomContext();
 			ctx.setInnerPictogramElement(pe);
@@ -1256,15 +1328,15 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			p = p.getParent();
 			if (p == null)
 				return;
-			if (!JavaSpecifiedPersistentAttribute.class.isInstance(p))
+			if (!PersistentAttribute.class.isInstance(p))
 				return;
-			JavaSpecifiedPersistentAttribute jpa = (JavaSpecifiedPersistentAttribute)p;
+			PersistentAttribute jpa = (PersistentAttribute)p;
 			renewAttributeJoiningStrategyPropertyListener(jpa);
-			if (!jpa.getParent().getParent().getResource().exists())
+			if (!jpa.getDeclaringPersistentType().getParent().getResource().exists())
 				return;
 			if (featureProvider == null)
 				return;
-			PictogramElement pe = featureProvider.getPictogramElementForBusinessObject(jpa.getParent());
+			PictogramElement pe = featureProvider.getPictogramElementForBusinessObject(jpa.getDeclaringPersistentType());
 			final GraphicalRemoveAttributeFeature remove = new GraphicalRemoveAttributeFeature(featureProvider); 
 			final CustomContext ctx = new CustomContext();
 			ctx.setInnerPictogramElement(pe);
@@ -1287,9 +1359,9 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			Boolean optional = (Boolean)event.getNewValue();
 			boolean isOptional = (optional == null) ? true : optional.booleanValue();
 			OptionalMapping nm = (OptionalMapping)event.getSource();
-			JavaSpecifiedPersistentAttribute jpa = (JavaSpecifiedPersistentAttribute)nm.getParent();
-			IRelation rel = featureProvider.getRelationRelatedToAttribute(jpa);
-			boolean atBeginning = !rel.getOwner().equals(jpa.getParent()) || 
+			PersistentAttribute jpa = (PersistentAttribute)nm.getParent();
+			IRelation rel = featureProvider.getRelationRelatedToAttribute(jpa, JpaArtifactFactory.instance().getRelTypeName(jpa)).iterator().next();
+			boolean atBeginning = !rel.getOwner().getName().equals(jpa.getDeclaringPersistentType().getName()) || 
 								  !rel.getOwnerAttributeName().equals(jpa.getName());
 			final Connection c = (Connection)featureProvider.getPictogramElementForBusinessObject(rel);
 			Collection<ConnectionDecorator> conDecs = c.getConnectionDecorators();
@@ -1331,23 +1403,23 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		@SuppressWarnings("unchecked")
 		synchronized public void run() {
 			try {
-				Iterator<JavaSpecifiedPersistentAttribute> it = (Iterator<JavaSpecifiedPersistentAttribute>) event.getItems().iterator();
+				ArrayIterator<PersistentAttribute> it = (ArrayIterator<PersistentAttribute>) event.getItems().iterator();
 				Set<Shape> shapesToRemove = new HashSet<Shape>();
 				while (it.hasNext()) {
-					JavaSpecifiedPersistentAttribute at = it.next();
+					PersistentAttribute at = it.next();
 					/*
 					String key = getKeyForBusinessObject(at);
 					remove(key);
 					*/
-					if (removeIgnore.remove(((PersistentType)at.getParent()).getName() + "." + at.getName())) //$NON-NLS-1$
+					if (removeIgnore.remove(at.getDeclaringPersistentType().getName() + "." + at.getName())) //$NON-NLS-1$
 						continue;
 					Shape atShape = (Shape) featureProvider.getPictogramElementForBusinessObject(at);
 					if (atShape == null)
-						continue;
+						continue;				
 					
-					
-					JavaPersistentType jpt = (JavaPersistentType)event.getSource();
-					JavaSpecifiedPersistentAttribute newAt = jpt.getAttributeNamed(at.getName());
+					PersistentType jpt = (PersistentType)event.getSource();
+					PersistentAttribute newAt = jpt.getAttributeNamed(at.getName());
+
 					if (newAt != null) {
 						RemoveAttributeFeature ft = new RemoveAttributeFeature(featureProvider, true, true);
 						RemoveContext c = new RemoveContext(atShape);
@@ -1364,21 +1436,23 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 					}
 
 					shapesToRemove.add(atShape);
-					IRelation rel = featureProvider.getRelationRelatedToAttribute(at);
-					if (rel == null)
-						continue;
-					Connection conn = (Connection) featureProvider.getPictogramElementForBusinessObject(rel);
-					if(conn == null){
-						HasReferanceRelation embedRel = featureProvider.getEmbeddedRelationRelatedToAttribute(at);
-						if(embedRel == null)
-							continue;
-						conn = (Connection)featureProvider.getPictogramElementForBusinessObject(embedRel);
-					}
-					while (conn != null) {
-						RemoveContext ctx = new RemoveContext(conn);
-						RemoveRelationFeature ft = new RemoveRelationFeature(featureProvider);
-						ft.remove(ctx);
-						conn = (Connection) featureProvider.getPictogramElementForBusinessObject(rel);
+					Set<IRelation> rels = featureProvider.getRelationRelatedToAttribute(at, JpaArtifactFactory.instance().getRelTypeName(at));
+					Iterator<IRelation> relIter = rels.iterator();
+					while(relIter.hasNext()) {
+						IRelation rel = relIter.next();
+						Connection conn = (Connection) featureProvider.getPictogramElementForBusinessObject(rel);
+						if(conn == null){
+							HasReferanceRelation embedRel = featureProvider.getEmbeddedRelationRelatedToAttribute(at);
+							if(embedRel == null)
+								continue;
+							conn = (Connection)featureProvider.getPictogramElementForBusinessObject(embedRel);
+						}
+						while (conn != null) {
+							RemoveContext ctx = new RemoveContext(conn);
+							RemoveRelationFeature ft = new RemoveRelationFeature(featureProvider);
+							ft.remove(ctx);
+							conn = (Connection) featureProvider.getPictogramElementForBusinessObject(rel);
+						}
 					}
 				}
 				Iterator<Shape> itr = shapesToRemove.iterator();
@@ -1388,7 +1462,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 					RemoveAttributeFeature ft = new RemoveAttributeFeature(featureProvider, true, true);
 					ft.remove(ctx);
 				}
-				JpaArtifactFactory.instance().addNewRelations(featureProvider, (JavaPersistentType) event.getSource());
+				JpaArtifactFactory.instance().addNewRelations(featureProvider, (PersistentType) event.getSource());
 			} catch (Exception e) {
 				//$NON-NLS-1$
 			}
@@ -1406,21 +1480,14 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		@SuppressWarnings("unchecked")
 		synchronized public void run() {
 			try {
-				JavaPersistentType jpt = (JavaPersistentType) event.getSource();
+				PersistentType jpt = (PersistentType) event.getSource();
 				ContainerShape entShape = (ContainerShape)featureProvider.getPictogramElementForBusinessObject(jpt);
 				
 				// remove invalidated relations (if any)
-				Iterator<JavaSpecifiedPersistentAttribute> it = (Iterator<JavaSpecifiedPersistentAttribute>) event.getItems().iterator();
+				ArrayIterator<PersistentAttribute> it = (ArrayIterator<PersistentAttribute>) event.getItems().iterator();
 				while (it.hasNext()) {
-					JavaSpecifiedPersistentAttribute at = it.next();
-					if(at.getMapping() == null || at.getMapping().getMappingAnnotation() == null){
-						at.getResourceAttribute().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
-					}
-					
-					//Shape atShape = (Shape) featureProvider.getPictogramElementForBusinessObject(at);
-					//if (atShape != null)
-					//	continue;
-					if (addIgnore.remove(((PersistentType)at.getParent()).getName() + "." + at.getName())) //$NON-NLS-1$
+					PersistentAttribute at = it.next();
+					if (addIgnore.remove(at.getDeclaringPersistentType().getName() + "." + at.getName())) //$NON-NLS-1$
 						continue;
 					AddContext ctx = new AddContext();
 					ctx.setNewObject(at);
@@ -1442,7 +1509,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 	}
 
 	
-	private void updateJPTName(JavaPersistentType jpt) {
+	private void updateJPTName(PersistentType jpt) {
 		String entName = JpaArtifactFactory.instance().getEntityName(jpt);
 		entName = JPAEditorUtil.returnSimpleName(entName);
 		ContainerShape entShape = (ContainerShape)featureProvider.getPictogramElementForBusinessObject(jpt);
@@ -1530,7 +1597,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		return resources;
 	}
 
-	public Collection<JavaPersistentType> getPersistentTypes() {
+	public Collection<PersistentType> getPersistentTypes() {
 		return persistentTypes;
 	}
 }

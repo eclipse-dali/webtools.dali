@@ -34,18 +34,11 @@ import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.util.BasicInternalEList;
 import org.eclipse.graphiti.dt.IDiagramTypeProvider;
-import org.eclipse.graphiti.mm.Property;
-import org.eclipse.graphiti.mm.pictograms.PictogramElement;
-import org.eclipse.graphiti.mm.pictograms.PictogramsPackage;
 import org.eclipse.graphiti.platform.IDiagramEditor;
-import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IEclipseFacade;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IJPAEditorUtil;
@@ -97,10 +90,10 @@ public class JPASolverTest {
 		return file;
 	}
 
-	private JavaPersistentType createJptForResource(IFile file, String name) {
-		JavaPersistentType jpt = EasyMock.createNiceMock(JavaPersistentType.class);
+	private PersistentType createJptForResource(IFile file, String name) {
+		PersistentType jpt = EasyMock.createNiceMock(PersistentType.class);
 		JpaProject jpaProject = EasyMock.createNiceMock(JpaProject.class);
-		JavaTypeMapping m = EasyMock.createNiceMock(JavaTypeMapping.class);
+		TypeMapping m = EasyMock.createNiceMock(TypeMapping.class);
 		expect(jpt.getResource()).andStubReturn(file);
 		expect(jpt.getJpaProject()).andStubReturn(jpaProject);
 		expect(jpt.getMapping()).andStubReturn(m);

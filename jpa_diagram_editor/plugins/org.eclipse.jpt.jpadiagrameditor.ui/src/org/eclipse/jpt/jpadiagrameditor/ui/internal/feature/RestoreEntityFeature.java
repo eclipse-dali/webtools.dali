@@ -19,7 +19,7 @@ import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICustomContext;
 import org.eclipse.graphiti.features.custom.AbstractCustomFeature;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
@@ -41,7 +41,7 @@ public class RestoreEntityFeature extends AbstractCustomFeature {
 	}
 	
 	public void execute(ICustomContext context) {
-		JavaPersistentType jpt = (JavaPersistentType)getFeatureProvider().getBusinessObjectForPictogramElement(context.getPictogramElements()[0]);
+		PersistentType jpt = (PersistentType)getFeatureProvider().getBusinessObjectForPictogramElement(context.getPictogramElements()[0]);
 		if (JPAEditorUtil.isEntityOpenElsewhere(jpt, true)) {
 			String shortEntName = JPAEditorUtil
 					.returnSimpleName(JpaArtifactFactory.instance()

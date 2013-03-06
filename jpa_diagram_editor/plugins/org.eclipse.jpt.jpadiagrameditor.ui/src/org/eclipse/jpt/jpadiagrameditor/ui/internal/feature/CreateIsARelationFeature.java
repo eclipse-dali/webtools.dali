@@ -26,9 +26,8 @@ import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
@@ -41,7 +40,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 
 public class CreateIsARelationFeature extends AbstractCreateConnectionFeature {
 	
-	private JavaPersistentType superclass;
+	private PersistentType superclass;
 	
 	public CreateIsARelationFeature(IFeatureProvider fp) {
 		this(fp, JPAEditorMessages.CreateIsARelationFeature_CreateIsARelationFeatureName, JPAEditorMessages.CreateIsARelationFeature_CreateIsARelationFeatureDescription);
@@ -53,33 +52,33 @@ public class CreateIsARelationFeature extends AbstractCreateConnectionFeature {
 	}
 
 	public boolean canCreate(ICreateConnectionContext context) {
-		superclass = (JavaPersistentType)getPersistentType(context.getSourceAnchor());
-		JavaPersistentType subclass = (JavaPersistentType)getPersistentType(context.getTargetAnchor());
+		superclass = getPersistentType(context.getSourceAnchor());
+		PersistentType subclass = getPersistentType(context.getTargetAnchor());
 	    if ((superclass == null) || (subclass == null)) 
 	        return false;
 		
-	    if(superclass.equals(subclass))
+	    if(superclass.getName().equals(subclass.getName()))
 	    	return false;
 	    
-	    if (!JpaArtifactFactory.instance().hasEntityAnnotation(subclass) || subclass.getSuperPersistentType() != null)
+	    if (!JpaArtifactFactory.instance().isEntity(subclass) || subclass.getSuperPersistentType() != null)
 	    	return false;
 
-	    if(!JpaArtifactFactory.instance().hasEntityAnnotation(superclass) && 
-	    				!JpaArtifactFactory.instance().hasMappedSuperclassAnnotation(superclass))
+	    if(!JpaArtifactFactory.instance().isEntity(superclass) && 
+	    				!JpaArtifactFactory.instance().isMappedSuperclass(superclass))
 	    	return false;
 	    return true;
 	}
 
 	public Connection create(ICreateConnectionContext context) {
-		superclass = (JavaPersistentType)getPersistentType(context.getSourceAnchor());
-		JavaPersistentType subclass = (JavaPersistentType)getPersistentType(context.getTargetAnchor());
+		superclass = getPersistentType(context.getSourceAnchor());
+		PersistentType subclass = getPersistentType(context.getTargetAnchor());
 		
 		if(JpaArtifactFactory.instance().hasOrInheritsPrimaryKey(superclass)){
-			for(JavaSpecifiedPersistentAttribute jpa : subclass.getAttributes()){
+			for(PersistentAttribute jpa : subclass.getAttributes()){
 				if(jpa.getMappingKey().equals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY)){
-					jpa.setMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
+					jpa.getJavaPersistentAttribute().setMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 				} else if(jpa.getMappingKey().equals(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY)) {
-					jpa.setMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
+					jpa.getJavaPersistentAttribute().setMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 				}
 			}
 		}
@@ -100,7 +99,7 @@ public class CreateIsARelationFeature extends AbstractCreateConnectionFeature {
 	}
 
 	public boolean canStartConnection(ICreateConnectionContext context) {
-		superclass = (JavaPersistentType)getPersistentType(context.getSourceAnchor());
+		superclass = getPersistentType(context.getSourceAnchor());
 
 	    if (superclass == null)
 	        return false;
@@ -159,8 +158,8 @@ public class CreateIsARelationFeature extends AbstractCreateConnectionFeature {
 								getRoot().getPersistenceUnits().iterator().next();
 		for (ClassRef classRef : unit.getClassRefs()) {
 			if (classRef.getJavaPersistentType() != null) {
-				final JavaPersistentType jpt = classRef.getJavaPersistentType();
-				if(!JpaArtifactFactory.instance().hasEntityAnnotation(jpt) || superclass.equals(jpt) || jpt.getSuperPersistentType() != null){
+				final PersistentType jpt = classRef.getJavaPersistentType();
+				if(!JpaArtifactFactory.instance().isEntity(jpt) || superclass.getName().equals(jpt.getName()) || jpt.getSuperPersistentType() != null){
 					getFeatureProvider().setGrayColor(jpt);
 				}
 			}
@@ -179,8 +178,8 @@ public class CreateIsARelationFeature extends AbstractCreateConnectionFeature {
 								getRoot().getPersistenceUnits().iterator().next();
 		for (ClassRef classRef : unit.getClassRefs()) {
 			if (classRef.getJavaPersistentType() != null) {
-				final JavaPersistentType jpt = classRef.getJavaPersistentType();
-				if(JpaArtifactFactory.instance().hasEmbeddableAnnotation(jpt)){
+				final PersistentType jpt = classRef.getJavaPersistentType();
+				if(JpaArtifactFactory.instance().isEmbeddable(jpt)){
 					getFeatureProvider().setGrayColor(jpt);
 				}
 				

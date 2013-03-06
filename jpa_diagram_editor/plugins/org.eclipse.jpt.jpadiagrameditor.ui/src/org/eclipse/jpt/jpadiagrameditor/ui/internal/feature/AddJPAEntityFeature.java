@@ -16,7 +16,7 @@
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.feature;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.emf.transaction.RecordingCommand;
@@ -46,8 +46,12 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.SourceType;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.MappingKeys;
+import org.eclipse.jpt.jpa.core.context.AttributeMapping;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.jpa2.context.DerivedIdentity2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SingleRelationshipMapping2_0;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.ModelIntegrationUtil;
@@ -84,28 +88,28 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 	public boolean canAdd(IAddContext context) {
 		Object newObj = context.getNewObject();
 
-		if (newObj instanceof JavaPersistentType) {
+		if (newObj instanceof PersistentType) {
 			if (context.getTargetContainer() instanceof Diagram) {
-				JavaPersistentType jpt = (JavaPersistentType) newObj;
+				PersistentType jpt = (PersistentType) newObj;
 				return checkJPTForAdding(jpt);
 			}
 		} else if (newObj instanceof ICompilationUnit) {
 			if (context.getTargetContainer() instanceof Diagram) {
 				ICompilationUnit cu = (ICompilationUnit) newObj;
-				JavaPersistentType jpt = JPAEditorUtil.getJPType(cu);
+				PersistentType jpt = JPAEditorUtil.getJPType(cu);
 				return checkJPTForAdding(jpt);
 			}
 		} if (newObj instanceof SourceType) {
 			if (context.getTargetContainer() instanceof Diagram) {
 				ICompilationUnit cu = ((SourceType)newObj).getCompilationUnit();
-				JavaPersistentType jpt = JPAEditorUtil.getJPType(cu);
+				PersistentType jpt = JPAEditorUtil.getJPType(cu);
 				return checkJPTForAdding(jpt);
 			}
 		}
 		return false;
 	}
 
-	private boolean checkJPTForAdding(JavaPersistentType jpt) {
+	private boolean checkJPTForAdding(PersistentType jpt) {
 		if (jpt == null)
 			return false;
 
@@ -126,9 +130,9 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 	public PictogramElement add(final IAddContext context) {
 		final IJPAEditorFeatureProvider fp = getFeatureProvider();
 		Object newObj = context.getNewObject();
-		JavaPersistentType jpt = null;
-		if (newObj instanceof JavaPersistentType) {
-			jpt = (JavaPersistentType) newObj;
+		PersistentType jpt = null;
+		if (newObj instanceof PersistentType) {
+			jpt = (PersistentType) newObj;
 		} else if (newObj instanceof ICompilationUnit) {
 			ICompilationUnit cu = (ICompilationUnit) newObj;
 			jpt = JPAEditorUtil.getJPType(cu);
@@ -137,11 +141,29 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 			ICompilationUnit cu = ((SourceType)newObj).getCompilationUnit();
 			jpt = JPAEditorUtil.getJPType(cu);
 		}
+		
+//		MappingFileRef fileRef = JpaArtifactFactory.instance().getOrmXmlByForPersistentType(jpt);
+//		if(fileRef != null) {
+//			if(fileRef.getPersistentType(jpt.getName()) != null){
+//				jpt = fileRef.getPersistentType(jpt.getName());
+//			}
+//		}
+		
 	
 		//TODO this is wrong, should not need to do any of these updates or syncs.
 		//should be changing the dali model synchronously so that all the syncs/updates are completed
-		//take a look at the JpaProjectManager.execute(Command, ExtendedCommandExecutor) 
-		jpt.getJavaResourceType().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
+		//take a look at the JpaProjectManager.execute(Command, ExtendedCommandExecutor)
+//		JavaResourceType jrt = null;
+//		if(jpt instanceof JavaPersistentType) {
+//			jrt = ((JavaPersistentType)jpt).getJavaResourceType();
+//		} else if (jpt instanceof OrmPersistentType){
+//			jrt = ((OrmPersistentType)jpt).getJavaPersistentType().getJavaResourceType();
+//		}
+//		
+//		if(jrt != null) {
+//			jrt.getJavaResourceCompilationUnit().synchronizeWithJavaSource();
+//		}
+//		
 		jpt.update();
 		jpt.synchronizeWithResourceModel();
 		
@@ -152,7 +174,7 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 	}
 
 	private void createEntity(final IAddContext context, final IJPAEditorFeatureProvider fp, final Diagram targetDiagram,
-			final Wrp wrp, final JavaPersistentType jpt) {
+			final Wrp wrp, final PersistentType jpt) {
 		
 		TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(targetDiagram);
 		
@@ -193,7 +215,7 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 		});
 	}
 	
-	private void createCompartments(IAddContext context, JavaPersistentType jpt,
+	private void createCompartments(IAddContext context, PersistentType jpt,
 			ContainerShape entityShape) {
 		JPAEditorConstants.DIAGRAM_OBJECT_TYPE dot = JpaArtifactFactory.instance().determineDiagramObjectType(jpt);
 		primaryShape = createCompartmentRectangle(entityShape, 
@@ -220,19 +242,31 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 		}
 	}
 
-	private void fillCompartments(JavaPersistentType jpt, ContainerShape entityShape) {
-		String[] primaryKeyAnnotations = new String[] {JPAEditorConstants.ANNOTATION_ID, JPAEditorConstants.ANNOTATION_EMBEDDED_ID, JPAEditorConstants.ANNOTATION_MAPS_ID};
-		for(String annotation : primaryKeyAnnotations){
-			addCompartmentChildren(primaryShape, jpt, annotation, null);
+	private void fillCompartments(PersistentType jpt, ContainerShape entityShape) {
+		String[] primaryMappingKeys = new String[] {MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "derived-id"}; //$NON-NLS-1$
+		for(String mappingKey : primaryMappingKeys){
+			addCompartmentChildren(primaryShape, jpt, mappingKey);
 		}
-		String[] relationAnnotations = new String[] {JPAEditorConstants.ANNOTATION_MANY_TO_MANY, 
-				JPAEditorConstants.ANNOTATION_MANY_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_MANY,
-				JPAEditorConstants.ANNOTATION_ONE_TO_ONE};
-	    for(String annotation : relationAnnotations){
-		   addCompartmentChildren(relationShape, jpt, annotation, primaryKeyAnnotations);
+		String[] relationMappingKeys = new String[] {MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, 
+				MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY, MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY,
+				MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY};
+	    for(String mappingKey : relationMappingKeys){
+		   addCompartmentChildren(relationShape, jpt, mappingKey);
 	    }
-        addBasicAttributes(basicShape, jpt);
+	   
+        addBasicAttributes(basicShape, jpt, Arrays.asList(primaryMappingKeys), Arrays.asList(relationMappingKeys));
         GraphicsUpdater.updateEntityShape(entityShape);
+	}
+	
+	private String getMappingKey(PersistentAttribute attr) {
+		AttributeMapping attrMapping = JpaArtifactFactory.instance().getAttributeMapping(attr);
+		if(attrMapping instanceof SingleRelationshipMapping2_0){
+			DerivedIdentity2_0 identity = ((SingleRelationshipMapping2_0)attrMapping).getDerivedIdentity();
+			if(identity.usesIdDerivedIdentityStrategy() || identity.usesMapsIdDerivedIdentityStrategy()){
+				return "derived-id"; //$NON-NLS-1$
+			}
+		}		
+		return attrMapping.getKey();
 	}
 
 	private ContainerShape createCompartmentRectangle(
@@ -283,38 +317,25 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 	}
 
 	private void addCompartmentChildren(
-			ContainerShape containerShape, JavaPersistentType jpt,
-			String attributeAnnotations, String[] excludeAnnotations) {
-		List<JavaSpecifiedPersistentAttribute> attributes = new ArrayList<JavaSpecifiedPersistentAttribute>();
+			ContainerShape containerShape, PersistentType jpt,
+			String attributeMappingKey) {
+		List<PersistentAttribute> attributes = new ArrayList<PersistentAttribute>();
 
-		for (JavaSpecifiedPersistentAttribute attribute : jpt.getAttributes()) {
-			HashSet<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(attribute);
-			if (annotations.contains(attributeAnnotations) && canAddAttribute(annotations, excludeAnnotations)) {
+		for (PersistentAttribute attribute : jpt.getAttributes()) {
+			String mappingKey  = getMappingKey(attribute);
+			if (attributeMappingKey.equals(mappingKey)) {
 				attributes.add(attribute);
 			}
 		}
 		addAttributes(containerShape, attributes);
 	}
 	
-	private boolean canAddAttribute(HashSet<String> annotations, String[] excludeAnnotations){
-		if(excludeAnnotations == null || excludeAnnotations.length == 0)
-			return true;
-		for(String annotation : excludeAnnotations){
-			if(annotations.contains(annotation))
-				return false;
-		}
-		
-		return true;
-	}
-	
-	private void addBasicAttributes(ContainerShape containerShape, JavaPersistentType jpt){
-		List<JavaSpecifiedPersistentAttribute> attributes = new ArrayList<JavaSpecifiedPersistentAttribute>();
-		
-		for (JavaSpecifiedPersistentAttribute attribute : jpt.getAttributes()){
-			HashSet<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(attribute);
-			if(!(annotations.contains(JPAEditorConstants.ANNOTATION_ID))&& !(annotations.contains(JPAEditorConstants.ANNOTATION_EMBEDDED_ID)) && !(annotations.contains(JPAEditorConstants.ANNOTATION_MANY_TO_MANY)) && 
-					!(annotations.contains(JPAEditorConstants.ANNOTATION_MANY_TO_ONE)) && !(annotations.contains(JPAEditorConstants.ANNOTATION_ONE_TO_MANY))&&
-					!(annotations.contains(JPAEditorConstants.ANNOTATION_ONE_TO_ONE)) && !(annotations.contains(JPAEditorConstants.ANNOTATION_MAPS_ID)) || annotations.isEmpty()){
+	private void addBasicAttributes(ContainerShape containerShape, PersistentType jpt, List<String> primaryKeyMappings, List<String> relationshipMappings){
+		List<PersistentAttribute> attributes = new ArrayList<PersistentAttribute>();
+
+		for (PersistentAttribute attribute : jpt.getAttributes()){
+			String mappingKey = getMappingKey(attribute); 
+			if(!(primaryKeyMappings.contains(mappingKey)) && !(relationshipMappings.contains(mappingKey))){
 				attributes.add(attribute);
 			}
 		}
@@ -322,9 +343,9 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 	}
 	
 	private void addAttributes(ContainerShape entityShape,
-			List<JavaSpecifiedPersistentAttribute> attributes) {
+			List<PersistentAttribute> attributes) {
 		for (int i = 0; i < attributes.size(); i++) {
-			JavaSpecifiedPersistentAttribute jpa = attributes.get(i);
+			PersistentAttribute jpa = attributes.get(i);
 			addAttribute(jpa, entityShape);
 		}
 	}
@@ -371,7 +392,7 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 		return typeIconId;		
 	}
 	
-	private ContainerShape addHeader(JavaPersistentType addedWrapper,
+	private ContainerShape addHeader(PersistentType addedWrapper,
 									 ContainerShape entityShape, 
 									 int width,
 									 JPAEditorConstants.DIAGRAM_OBJECT_TYPE dot) {
@@ -433,11 +454,11 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 
 	}
 
-	private void addAttribute(JavaSpecifiedPersistentAttribute pa,
+	private void addAttribute(PersistentAttribute pa,
 			ContainerShape compartmentShape) {
 		IJPAEditorFeatureProvider fp = getFeatureProvider();
 		fp.putKeyToBusinessObject(fp.getKeyForBusinessObject(pa), pa);
-		JavaPersistentType jpt = (JavaPersistentType)pa.getParent();
+		PersistentType jpt = (PersistentType) pa.getParent();
 		String key = fp.getKeyForBusinessObject(jpt);
 		if (fp.getBusinessObjectForKey(key) == null)
 			fp.putKeyToBusinessObject(key, jpt);

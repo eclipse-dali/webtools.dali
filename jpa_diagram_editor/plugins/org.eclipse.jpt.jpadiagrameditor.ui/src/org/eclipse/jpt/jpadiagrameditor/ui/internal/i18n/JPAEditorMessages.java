@@ -111,8 +111,22 @@ public class JPAEditorMessages extends NLS {
 
 	public static String JPADiagramEditor_waitingForMoin;
 	
+	public static String JPADiagramPropertyPage_ChooseXmlBrowseButton;
+
+	public static String JPADiagramPropertyPage_ChooseXMLCheckboxTooltip;
+
+	public static String JPADiagramPropertyPage_ChooseXMLGroupTooltip;
+
+	public static String JPADiagramPropertyPage_ChooseXMLLabel;
+
+	public static String JPADiagramPropertyPage_ChooseXMLTooltip;
+
 	public static String JPADiagramPropertyPage_errSavePropsMsgTitle;
 	public static String JPADiagramPropertyPage_errSavePropsMsgText;
+
+	public static String JPADiagramPropertyPage_NotAddedXMLErrorMsg;
+
+	public static String JPADiagramPropertyPage_NotExistsXmlErrorMsg;
 
 	public static String JPAEditorPreferencesPage_pageDescription;
 	public static String JPAEditorPreferencesPage_DefaultCollectionTypeSectionDescription;

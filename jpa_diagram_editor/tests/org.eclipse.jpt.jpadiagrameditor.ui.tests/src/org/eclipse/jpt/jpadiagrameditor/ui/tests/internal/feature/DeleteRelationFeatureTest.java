@@ -25,7 +25,7 @@ import org.eclipse.graphiti.features.context.IDeleteContext;
 import org.eclipse.graphiti.features.context.IRemoveContext;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.DeleteRelationFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IBidirectionalRelation;
@@ -48,8 +48,8 @@ public class DeleteRelationFeatureTest {
 		IBidirectionalRelation rel = EasyMock.createMock(IBidirectionalRelation.class); 
 		ICompilationUnit cu1 = EasyMock.createMock(ICompilationUnit.class);
 		ICompilationUnit cu2 = EasyMock.createMock(ICompilationUnit.class);
-		JavaPersistentType jpt1 = EasyMock.createMock(JavaPersistentType.class);
-		JavaPersistentType jpt2 = EasyMock.createMock(JavaPersistentType.class);
+		PersistentType jpt1 = EasyMock.createMock(PersistentType.class);
+		PersistentType jpt2 = EasyMock.createMock(PersistentType.class);
 
 		expect(featureProvider.getBusinessObjectForPictogramElement(pe)).andStubReturn(rel);
 		expect(rel.getOwner()).andStubReturn(jpt1);

@@ -25,7 +25,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.graphiti.features.context.IAddContext;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.OpenMiniatureViewFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.JPACreateFactory;
@@ -49,7 +49,7 @@ public class OpenMiniatureViewFeatureTest {
 		Thread.sleep(2000);
 		featureProvider = EasyMock.createMock(IJPAEditorFeatureProvider.class);
 		expect(featureProvider.getBusinessObjectForPictogramElement(null)).andReturn(JPACreateFactory.getPersistentType(entity));
-		expect(featureProvider.getCompilationUnit(isA(JavaPersistentType.class))).andReturn(JavaCore.createCompilationUnitFrom(entity)).anyTimes();
+		expect(featureProvider.getCompilationUnit(isA(PersistentType.class))).andReturn(JavaCore.createCompilationUnitFrom(entity)).anyTimes();
 		replay(featureProvider);
 	}
 	

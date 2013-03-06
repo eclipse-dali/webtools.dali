@@ -7,11 +7,11 @@ import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.ui.internal.parts.DiagramEditPart;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.jpa.core.resource.java.IdClassAnnotation;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
+import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.TypeMapping;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.JPACreateFactory;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.Utils;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
@@ -1109,7 +1109,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						entity2,
 						IRelation.RelType.ONE_TO_ONE,
-						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
 
 		// create One-to-One unidirectional relation from entity1 to entity2
 		editorProxy
@@ -1118,7 +1118,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						entity2,
 						IRelation.RelType.ONE_TO_ONE,
-						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy.deleteDiagramElements();
 
@@ -1149,7 +1149,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName,
 						entity1,
 						IRelation.RelType.ONE_TO_ONE,
-						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy.deleteDiagramElements();
 
@@ -1185,7 +1185,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						entity2,
 						IRelation.RelType.ONE_TO_ONE,
-						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
 
 		// create One-to-One bidirectional relation from entity1 to entity2
 		editorProxy
@@ -1194,7 +1194,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						entity2,
 						IRelation.RelType.ONE_TO_ONE,
-						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
 
 		// create One-to-One bidirectional relation from entity1 to entity2
 		editorProxy
@@ -1203,7 +1203,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						entity2,
 						IRelation.RelType.ONE_TO_ONE,
-						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy.deleteDiagramElements();
 
@@ -1233,7 +1233,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureName,
 						entity1,
 						IRelation.RelType.ONE_TO_ONE,
-						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy.deleteDiagramElements();
 
@@ -1268,7 +1268,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						entity2,
 						IRelation.RelType.ONE_TO_MANY,
-						JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, false);
+						JptJpaUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, false);
 
 		// create One-to-One bidirectional relation from entity1 to entity2
 		editorProxy
@@ -1277,7 +1277,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						entity2,
 						IRelation.RelType.ONE_TO_MANY,
-						JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, false);
+						JptJpaUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, false);
 
 		editorProxy.deleteDiagramElements();
 
@@ -1309,7 +1309,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						JPAEditorMessages.CreateOneToManyUniDirRelationFeature_oneToManyUniDirFeatureName,
 						entity1,
 						IRelation.RelType.ONE_TO_MANY,
-						JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, false);
+						JptJpaUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, false);
 
 		editorProxy.deleteDiagramElements();
 
@@ -1344,7 +1344,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						entity2,
 						IRelation.RelType.MANY_TO_ONE,
-						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true);
 
 		// create Many-to-One bidirectional relation from entity1 to entity2
 		editorProxy
@@ -1353,7 +1353,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						entity2,
 						IRelation.RelType.MANY_TO_ONE,
-						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy.deleteDiagramElements();
 
@@ -1384,7 +1384,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						JPAEditorMessages.CreateManyToOneUniDirRelationFeature_manyToOneUniDirFeatureName,
 						entity1,
 						IRelation.RelType.MANY_TO_ONE,
-						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy.deleteDiagramElements();
 
@@ -1420,8 +1420,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						entity2,
 						IRelation.RelType.MANY_TO_ONE,
-						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel,
-						JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel,
+						JptJpaUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, true);
 
 		// create Many-to-One bidirectional relation from entity1 to entity2
 		editorProxy
@@ -1430,8 +1430,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						entity2,
 						IRelation.RelType.MANY_TO_ONE,
-						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel,
-						JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel,
+						JptJpaUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, true);
 
 		// create Many-to-One bidirectional relation from entity1 to entity2
 		editorProxy
@@ -1440,8 +1440,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						entity2,
 						IRelation.RelType.MANY_TO_ONE,
-						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel,
-						JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel,
+						JptJpaUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, true);
 
 		editorProxy.deleteDiagramElements();
 
@@ -1472,8 +1472,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						JPAEditorMessages.CreateManyToOneBiDirRelationFeature_manyToOneBiDirFeatureName,
 						entity1,
 						IRelation.RelType.MANY_TO_ONE,
-						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel,
-						JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel,
+						JptJpaUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, true);
 
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();
@@ -1507,7 +1507,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						entity2,
 						IRelation.RelType.MANY_TO_MANY,
-						JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
+						JptJpaUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
 
 		// create Many-to-Many bidirectional relation from entity1 to entity2
 		editorProxy
@@ -1516,7 +1516,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						entity2,
 						IRelation.RelType.MANY_TO_MANY,
-						JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
+						JptJpaUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
 
 		editorProxy.deleteDiagramElements();
 
@@ -1547,7 +1547,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						JPAEditorMessages.CreateManyToManyUniDirRelationFeature_manyToManyUniDirFeatureName,
 						entity1,
 						IRelation.RelType.MANY_TO_MANY,
-						JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
+						JptJpaUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
 
 		editorProxy.deleteDiagramElements();
 
@@ -1583,7 +1583,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						entity2,
 						IRelation.RelType.MANY_TO_MANY,
-						JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
+						JptJpaUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
 
 		// create Many-to-Many bidirectional relation from entity1 to entity2
 		editorProxy
@@ -1592,7 +1592,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						entity2,
 						IRelation.RelType.MANY_TO_MANY,
-						JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
+						JptJpaUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
 
 		// create Many-to-Many bidirectional relation from entity1 to entity2
 		editorProxy
@@ -1601,7 +1601,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						entity2,
 						IRelation.RelType.MANY_TO_MANY,
-						JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
+						JptJpaUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
 
 		editorProxy.deleteDiagramElements();
 
@@ -1632,7 +1632,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						JPAEditorMessages.CreateManyToManyBiDirRelationFeature_manyToManyBiDirFeatureName,
 						entity1,
 						IRelation.RelType.MANY_TO_MANY,
-						JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
+						JptJpaUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
 
 		editorProxy.deleteDiagramElements();
 
@@ -1656,7 +1656,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				jpaProject);
 
 		editorProxy.createInheritedEntity(entity1, jpaProject,
-				JptUiDetailsMessages.EntityUiProvider_linkLabel, false, false);
+				JptJpaUiDetailsMessages.EntityUiProvider_linkLabel, false, false);
 
 		editorProxy.deleteDiagramElements();
 
@@ -1695,7 +1695,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.waitASecond();
 
 		editorProxy.testCreateAndDeleteIsARelation(superclass, subclassName,
-				JptUiDetailsMessages.EntityUiProvider_linkLabel, false,
+				JptJpaUiDetailsMessages.EntityUiProvider_linkLabel, false,
 				superclassName, subclass, true);
 
 		editorProxy.deleteDiagramElements();
@@ -1730,20 +1730,20 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.deleteEntityDefaultPK(dependentEntity);	
 		
 		editorProxy.testUniDirDerivedIdWithIdAnnotation(JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName,
-				dependentEntity, parentEntity, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
-				JPAEditorConstants.ANNOTATION_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel);
+				dependentEntity, parentEntity, IRelation.RelType.ONE_TO_ONE, "OneToOne",
+				"Id", JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel);
 
 		editorProxy.testBiDirDerivedIdWithIdAnnotation(JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureName,
-				dependentEntity, parentEntity, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
-				JPAEditorConstants.ANNOTATION_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel);
+				dependentEntity, parentEntity, IRelation.RelType.ONE_TO_ONE, "OneToOne",
+				"Id", JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel);
 		
 		editorProxy.testUniDirDerivedIdWithIdAnnotation(JPAEditorMessages.CreateManyToOneUniDirRelationFeature_manyToOneUniDirFeatureName,
-				dependentEntity, parentEntity, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
-				JPAEditorConstants.ANNOTATION_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel);
+				dependentEntity, parentEntity, IRelation.RelType.MANY_TO_ONE, "ManyToOne",
+				"Id", JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel);
 
 		editorProxy.testBiDirDerivedIdWithIdAnnotation(JPAEditorMessages.CreateManyToOneBiDirRelationFeature_manyToOneBiDirFeatureName,
-				dependentEntity, parentEntity, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
-				JPAEditorConstants.ANNOTATION_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel);
+				dependentEntity, parentEntity, IRelation.RelType.MANY_TO_ONE, "ManyToOne",
+				"Id", JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel);
 		
 		Utils.sayTestFinished("testSimpleDerivedIdWithoutDefaultPK");
 	}
@@ -1770,20 +1770,20 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				jpaProject);
 		
 		editorProxy.testUniDirDerivedIdWithIdAnnotation(JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName,
-				dependentEntity, parentEntity, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel);
+				dependentEntity, parentEntity, IRelation.RelType.ONE_TO_ONE, "OneToOne",
+				"MapsId", JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel);
 
 		editorProxy.testBiDirDerivedIdWithIdAnnotation(JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureName,
-				dependentEntity, parentEntity, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel);
+				dependentEntity, parentEntity, IRelation.RelType.ONE_TO_ONE, "OneToOne",
+				"MapsId", JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel);
 		
 		editorProxy.testUniDirDerivedIdWithIdAnnotation(JPAEditorMessages.CreateManyToOneUniDirRelationFeature_manyToOneUniDirFeatureName,
-				dependentEntity, parentEntity, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel);
+				dependentEntity, parentEntity, IRelation.RelType.MANY_TO_ONE, "ManyToOne",
+				"MapsId", JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel);
 
 		editorProxy.testBiDirDerivedIdWithIdAnnotation(JPAEditorMessages.CreateManyToOneBiDirRelationFeature_manyToOneBiDirFeatureName,
-				dependentEntity, parentEntity, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel);
+				dependentEntity, parentEntity, IRelation.RelType.MANY_TO_ONE, "ManyToOne",
+				"MapsId", JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel);
 		
 		Utils.sayTestFinished("testSimpleDerivedIdWithDefaultPK");
 	}
@@ -1821,20 +1821,20 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		
 		
 		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName,
-				dependentEntity, parentEntity, embeddable, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, false, false, null);
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.ONE_TO_ONE, "OneToOne",
+				"MapsId", JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, false, false, null);
 		
 		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureName,
-				dependentEntity, parentEntity, embeddable, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true, false, null);
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.ONE_TO_ONE, "OneToOne",
+				"MapsId", JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true, false, null);
 		
 		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateManyToOneUniDirRelationFeature_manyToOneUniDirFeatureName,
-				dependentEntity, parentEntity, embeddable, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, false, false, null);
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.MANY_TO_ONE, "ManyToOne",
+				"MapsId", JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, false, false, null);
 
 		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateManyToOneBiDirRelationFeature_manyToOneBiDirFeatureName,
-				dependentEntity, parentEntity, embeddable, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true, false, null);
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.MANY_TO_ONE, "ManyToOne",
+				"MapsId", JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true, false, null);
 		
 		Utils.sayTestFinished("testDerivedIdWithEmbeddedPK");
 	}
@@ -1864,20 +1864,20 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		IFile idClass = editorProxy.setIdClass(dependentEntity, "TestIdClass", jpaProject);
 		
 		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName,
-				dependentEntity, parentEntity, idClass, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, false, false, null);
+				dependentEntity, parentEntity, idClass, IRelation.RelType.ONE_TO_ONE, "OneToOne",
+				"MapsId", JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, false, false, null);
 		
 		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureName,
-				dependentEntity, parentEntity, idClass, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true, false, null);
+				dependentEntity, parentEntity, idClass, IRelation.RelType.ONE_TO_ONE, "OneToOne",
+				"MapsId", JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true, false, null);
 		
 		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateManyToOneUniDirRelationFeature_manyToOneUniDirFeatureName,
-				dependentEntity, parentEntity, idClass, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, false, false, null);
+				dependentEntity, parentEntity, idClass, IRelation.RelType.MANY_TO_ONE, "ManyToOne",
+				"MapsId", JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, false, false, null);
 
 		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateManyToOneBiDirRelationFeature_manyToOneBiDirFeatureName,
-				dependentEntity, parentEntity, idClass, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true, false, null);
+				dependentEntity, parentEntity, idClass, IRelation.RelType.MANY_TO_ONE, "ManyToOne",
+				"MapsId", JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true, false, null);
 		
 		Utils.sayTestFinished("testDerivedIdWithIdClassPK");
 	}
@@ -1907,25 +1907,27 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		SWTBotGefEditPart dependentEntity = editorProxy.addEntityToDiagram(50, 300,
 				jpaProject);
 		
-		JavaPersistentType parentJPTType= editorProxy.getJPTObjectForGefElement(dependentEntity);
-		Annotation an = parentJPTType.getJavaResourceType().addAnnotation(IdClassAnnotation.ANNOTATION_NAME);
-		((IdClassAnnotation)an).setValue(idClassFQN);
+		PersistentType parentJPTType= editorProxy.getJPTObjectForGefElement(dependentEntity);
+		
+		TypeMapping typeMapping = JpaArtifactFactory.instance().getTypeMapping(parentJPTType);
+		assertTrue(Entity.class.isInstance(typeMapping));
+		((Entity)typeMapping).getIdClassReference().setSpecifiedIdClassName(idClassFQN);
 		
 		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName,
-				dependentEntity, parentEntity, idClass, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, false, true, null);
+				dependentEntity, parentEntity, idClass, IRelation.RelType.ONE_TO_ONE, "OneToOne",
+				"MapsId", JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, false, true, null);
 		
 		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureName,
-				dependentEntity, parentEntity, idClass, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true, true, null);
+				dependentEntity, parentEntity, idClass, IRelation.RelType.ONE_TO_ONE, "OneToOne",
+				"MapsId", JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true, true, null);
 		
 		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateManyToOneUniDirRelationFeature_manyToOneUniDirFeatureName,
-				dependentEntity, parentEntity, idClass, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, false, true, null);
+				dependentEntity, parentEntity, idClass, IRelation.RelType.MANY_TO_ONE, "ManyToOne",
+				"MapsId", JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, false, true, null);
 
 		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateManyToOneBiDirRelationFeature_manyToOneBiDirFeatureName,
-				dependentEntity, parentEntity, idClass, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true, true, null);
+				dependentEntity, parentEntity, idClass, IRelation.RelType.MANY_TO_ONE, "ManyToOne",
+				"MapsId", JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true, true, null);
 		
 		Utils.sayTestFinished("testDerivedIdWithSameIdClassPK");
 	}
@@ -1962,20 +1964,20 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 
 		
 		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName,
-				dependentEntity, parentEntity, idClass, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, false, false, idClassFQN);
+				dependentEntity, parentEntity, idClass, IRelation.RelType.ONE_TO_ONE, "OneToOne",
+				"MapsId", JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, false, false, idClassFQN);
 		
 		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureName,
-				dependentEntity, parentEntity, idClass, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true, false, idClassFQN);
+				dependentEntity, parentEntity, idClass, IRelation.RelType.ONE_TO_ONE, "OneToOne",
+				"MapsId", JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true, false, idClassFQN);
 		
 		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateManyToOneUniDirRelationFeature_manyToOneUniDirFeatureName,
-				dependentEntity, parentEntity, idClass, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, false, false, idClassFQN);
+				dependentEntity, parentEntity, idClass, IRelation.RelType.MANY_TO_ONE, "ManyToOne",
+				"MapsId", JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, false, false, idClassFQN);
 
 		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateManyToOneBiDirRelationFeature_manyToOneBiDirFeatureName,
-				dependentEntity, parentEntity, idClass, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true, false, idClassFQN);
+				dependentEntity, parentEntity, idClass, IRelation.RelType.MANY_TO_ONE, "ManyToOne",
+				"MapsId", JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true, false, idClassFQN);
 		
 		Utils.sayTestFinished("testDerivedIdWithDifferentIdClassPK");
 	}	
@@ -2013,19 +2015,19 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		
 		
 		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName,
-				dependentEntity, parentEntity, embeddable, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, false, true, null);
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.ONE_TO_ONE, "OneToOne",
+				"MapsId", JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, false, true, null);
 		
 		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureName,
-				dependentEntity, parentEntity, embeddable, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true, true, null);		
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.ONE_TO_ONE, "OneToOne",
+				"MapsId", JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true, true, null);		
 		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateManyToOneUniDirRelationFeature_manyToOneUniDirFeatureName,
-				dependentEntity, parentEntity, embeddable, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, false, true, null);
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.MANY_TO_ONE, "ManyToOne",
+				"MapsId", JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, false, true, null);
 
 		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateManyToOneBiDirRelationFeature_manyToOneBiDirFeatureName,
-				dependentEntity, parentEntity, embeddable, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true, true, null);
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.MANY_TO_ONE, "ManyToOne",
+				"MapsId", JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true, true, null);
 		
 		Utils.sayTestFinished("testDerivedIdWithSameEmbeddedPK");
 	}
@@ -2040,6 +2042,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	 * Test that the created relation is successfully deleted. Repeats all steps for the other three
 	 * types of relation also.
 	 */
+	@Ignore
 	@Test
 	public void testDerivedIdWithDifferentEmbeddedPK(){
 		Utils.sayTestStarted("testDerivedIdWithDifferentEmbeddedPK");
@@ -2069,20 +2072,21 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		String idClassFQN = editorProxy.getJPTObjectForGefElement(parentEmbeddable).getName();
 
 		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName,
-				dependentEntity, parentEntity, dependentEmbeddable, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, false, false, idClassFQN);
+				dependentEntity, parentEntity, dependentEmbeddable, IRelation.RelType.ONE_TO_ONE, "OneToOne",
+				"MapsId", JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, false, false, idClassFQN);
 		
 		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureName,
-				dependentEntity, parentEntity, dependentEmbeddable, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true, false, idClassFQN);		
+				dependentEntity, parentEntity, dependentEmbeddable, IRelation.RelType.ONE_TO_ONE, "OneToOne",
+				"MapsId", JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true, false, idClassFQN);		
+		
 		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateManyToOneUniDirRelationFeature_manyToOneUniDirFeatureName,
-				dependentEntity, parentEntity, dependentEmbeddable, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, false, false, idClassFQN);
+				dependentEntity, parentEntity, dependentEmbeddable, IRelation.RelType.MANY_TO_ONE, "ManyToOne",
+				"MapsId", JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, false, false, idClassFQN);
 
 		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateManyToOneBiDirRelationFeature_manyToOneBiDirFeatureName,
-				dependentEntity, parentEntity, dependentEmbeddable, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true, false, idClassFQN);
-		
+				dependentEntity, parentEntity, dependentEmbeddable, IRelation.RelType.MANY_TO_ONE, "ManyToOne",
+				"MapsId", JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true, false, idClassFQN);
+
 		Utils.sayTestFinished("testDerivedIdWithDifferentEmbeddedPK");
 	}
 	
@@ -2114,9 +2118,10 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		JPACreateFactory.instance().createIdClassInProject(jpaProject.getProject(), new String[] {"org", "persistence"}, "TestIdClass");
 		String idClassFQN = "org.persistence.TestIdClass";
 		
-		JavaPersistentType parentJPTType= editorProxy.getJPTObjectForGefElement(parentEntity);
-		Annotation an = parentJPTType.getJavaResourceType().addAnnotation(IdClassAnnotation.ANNOTATION_NAME);
-		((IdClassAnnotation)an).setValue("TestIdClass");
+		PersistentType parentJPTType= editorProxy.getJPTObjectForGefElement(parentEntity);
+		TypeMapping typeMapping = JpaArtifactFactory.instance().getTypeMapping(parentJPTType);
+		assertTrue(Entity.class.isInstance(typeMapping));
+		((Entity)typeMapping).getIdClassReference().setSpecifiedIdClassName("TestIdClass");
 		
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(300, 50, jpaProject);
 		
@@ -2124,20 +2129,20 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				
 		
 		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName,
-				dependentEntity, parentEntity, embeddable, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, false, false, idClassFQN);
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.ONE_TO_ONE, "OneToOne",
+				"MapsId", JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, false, false, idClassFQN);
 		
 		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureName,
-				dependentEntity, parentEntity, embeddable, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true, false, idClassFQN);
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.ONE_TO_ONE, "OneToOne",
+				"MapsId", JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true, false, idClassFQN);
 		
 		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateManyToOneUniDirRelationFeature_manyToOneUniDirFeatureName,
-				dependentEntity, parentEntity, embeddable, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, false, false, idClassFQN);
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.MANY_TO_ONE, "ManyToOne",
+				"MapsId", JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, false, false, idClassFQN);
 
 		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateManyToOneBiDirRelationFeature_manyToOneBiDirFeatureName,
-				dependentEntity, parentEntity, embeddable, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true, false, idClassFQN);
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.MANY_TO_ONE, "ManyToOne",
+				"MapsId", JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true, false, idClassFQN);
 		
 		Utils.sayTestFinished("testDerivedIdWithIdClassAndEmbeddedPK");
 	}
@@ -2180,26 +2185,28 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.waitASecond();
 		editorProxy.addAttributeToJPT(embeddable, attrname);
 				
-		JavaPersistentType parentJPTType= editorProxy.getJPTObjectForGefElement(parentEntity);
-		Annotation an = parentJPTType.getJavaResourceType().addAnnotation(IdClassAnnotation.ANNOTATION_NAME);
-		((IdClassAnnotation)an).setValue(editorProxy.getJPTObjectForGefElement(embeddable).getSimpleName());
-		
+		PersistentType parentJPTType= editorProxy.getJPTObjectForGefElement(parentEntity);
+
+		String className = editorProxy.getJPTObjectForGefElement(embeddable).getSimpleName();
+		TypeMapping typeMapping = JpaArtifactFactory.instance().getTypeMapping(parentJPTType);
+		assertTrue(Entity.class.isInstance(typeMapping));
+		((Entity)typeMapping).getIdClassReference().setSpecifiedIdClassName(className);
 		
 		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName,
-				dependentEntity, parentEntity, embeddable, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, false, true, null);
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.ONE_TO_ONE, "OneToOne",
+				"MapsId", JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, false, true, null);
 		
 		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureName,
-				dependentEntity, parentEntity, embeddable, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true, true, null);
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.ONE_TO_ONE, "OneToOne",
+				"MapsId", JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true, true, null);
 		
 		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateManyToOneUniDirRelationFeature_manyToOneUniDirFeatureName,
-				dependentEntity, parentEntity, embeddable, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, false, true, null);
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.MANY_TO_ONE, "ManyToOne",
+				"MapsId", JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, false, true, null);
 
 		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateManyToOneBiDirRelationFeature_manyToOneBiDirFeatureName,
-				dependentEntity, parentEntity, embeddable, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true, true, null);
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.MANY_TO_ONE, "ManyToOne",
+				"MapsId", JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true, true, null);
 		
 		Utils.sayTestFinished("testDerivedIdWithIdClassAndSameEmbeddedPK");
 	}
@@ -2238,26 +2245,27 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		IFile idClass = JPACreateFactory.instance().createIdClassInProject(jpaProject.getProject(), new String[] {"org", "persistence"}, "TestIdClass");
 		String idClassFQN = editorProxy.getJPTObjectForGefElement(embeddable).getSimpleName();
 		
-		JavaPersistentType parentJPTType= editorProxy.getJPTObjectForGefElement(dependentEntity);
-		Annotation an = parentJPTType.getJavaResourceType().addAnnotation(IdClassAnnotation.ANNOTATION_NAME);
-		((IdClassAnnotation)an).setValue("TestIdClass");
+		PersistentType parentJPTType= editorProxy.getJPTObjectForGefElement(dependentEntity);
+		TypeMapping typeMapping = JpaArtifactFactory.instance().getTypeMapping(parentJPTType);
+		assertTrue(Entity.class.isInstance(typeMapping));
+		((Entity)typeMapping).getIdClassReference().setSpecifiedIdClassName("TestIdClass");
 				
 		
 		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName,
-				dependentEntity, parentEntity, idClass, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, false, false, idClassFQN);
+				dependentEntity, parentEntity, idClass, IRelation.RelType.ONE_TO_ONE, "OneToOne",
+				"MapsId", JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, false, false, idClassFQN);
 		
 		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureName,
-				dependentEntity, parentEntity, idClass, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true, false, idClassFQN);
+				dependentEntity, parentEntity, idClass, IRelation.RelType.ONE_TO_ONE, "OneToOne",
+				"MapsId", JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true, false, idClassFQN);
 		
 		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateManyToOneUniDirRelationFeature_manyToOneUniDirFeatureName,
-				dependentEntity, parentEntity, idClass, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, false, false, idClassFQN);
+				dependentEntity, parentEntity, idClass, IRelation.RelType.MANY_TO_ONE, "ManyToOne",
+				"MapsId", JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, false, false, idClassFQN);
 
 		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateManyToOneBiDirRelationFeature_manyToOneBiDirFeatureName,
-				dependentEntity, parentEntity, idClass, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true, false, idClassFQN);
+				dependentEntity, parentEntity, idClass, IRelation.RelType.MANY_TO_ONE, "ManyToOne",
+				"MapsId", JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true, false, idClassFQN);
 		
 		Utils.sayTestFinished("testDerivedIdWithEmbeddedPkAndIdClass");
 	}
@@ -2299,26 +2307,27 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		String attrnamString = editorProxy.getUniqueAttrName(parentEntity);
 		editorProxy.addAttributeToJPT(parentEntity, attrnamString);
 				
-		JavaPersistentType parentJPTType= editorProxy.getJPTObjectForGefElement(dependentEntity);
-		Annotation an = parentJPTType.getJavaResourceType().addAnnotation(IdClassAnnotation.ANNOTATION_NAME);
-		((IdClassAnnotation)an).setValue(editorProxy.getJPTObjectForGefElement(embeddable).getSimpleName());
-		
+		PersistentType parentJPTType= editorProxy.getJPTObjectForGefElement(dependentEntity);
+		String className = editorProxy.getJPTObjectForGefElement(embeddable).getSimpleName();
+		TypeMapping typeMapping = JpaArtifactFactory.instance().getTypeMapping(parentJPTType);
+		assertTrue(Entity.class.isInstance(typeMapping));
+		((Entity)typeMapping).getIdClassReference().setSpecifiedIdClassName(className);
 		
 		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName,
-				dependentEntity, parentEntity, (IFile)parentJPTType.getResource(), IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, false, true, null);
+				dependentEntity, parentEntity, (IFile)parentJPTType.getResource(), IRelation.RelType.ONE_TO_ONE, "OneToOne",
+				"MapsId", JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, false, true, null);
 		
 		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureName,
-				dependentEntity, parentEntity, (IFile)parentJPTType.getResource(), IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true, true, null);
+				dependentEntity, parentEntity, (IFile)parentJPTType.getResource(), IRelation.RelType.ONE_TO_ONE, "OneToOne",
+				"MapsId", JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true, true, null);
 		
 		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateManyToOneUniDirRelationFeature_manyToOneUniDirFeatureName,
-				dependentEntity, parentEntity, (IFile)parentJPTType.getResource(), IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, false, true, null);
+				dependentEntity, parentEntity, (IFile)parentJPTType.getResource(), IRelation.RelType.MANY_TO_ONE, "ManyToOne",
+				"MapsId", JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, false, true, null);
 
 		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateManyToOneBiDirRelationFeature_manyToOneBiDirFeatureName,
-				dependentEntity, parentEntity, (IFile)parentJPTType.getResource(), IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
-				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true, true, null);
+				dependentEntity, parentEntity, (IFile)parentJPTType.getResource(), IRelation.RelType.MANY_TO_ONE, "ManyToOne",
+				"MapsId", JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true, true, null);
 		
 		Utils.sayTestFinished("testDerivedIdWithEmbeddedPkAndSameIdClass");
 	}

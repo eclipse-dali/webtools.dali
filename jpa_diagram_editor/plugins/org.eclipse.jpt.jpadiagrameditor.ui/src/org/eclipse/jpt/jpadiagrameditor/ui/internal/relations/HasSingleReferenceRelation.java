@@ -17,13 +17,13 @@
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.relations;
 
 import org.eclipse.graphiti.mm.pictograms.Connection;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 
 public class HasSingleReferenceRelation extends HasReferanceRelation{
 
-	public HasSingleReferenceRelation(JavaPersistentType embeddingEntity,
-			JavaPersistentType embeddable) {
+	public HasSingleReferenceRelation(PersistentType embeddingEntity,
+			PersistentType embeddable) {
 		super(embeddingEntity, embeddable);
 	}
 	

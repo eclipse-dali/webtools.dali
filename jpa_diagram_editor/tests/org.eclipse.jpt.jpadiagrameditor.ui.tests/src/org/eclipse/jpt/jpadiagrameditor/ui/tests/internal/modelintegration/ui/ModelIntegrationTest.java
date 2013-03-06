@@ -20,6 +20,7 @@ import static org.easymock.EasyMock.isA;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+
 import org.easymock.EasyMock;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -35,7 +36,7 @@ import org.eclipse.graphiti.platform.IDiagramEditor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.ui.JPAEditorMatchingStrategy;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.IModelIntegrationUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
@@ -71,7 +72,7 @@ public class ModelIntegrationTest {
 		Thread.sleep(2000);
 		featureProvider = EasyMock.createMock(IJPAEditorFeatureProvider.class);
 		expect(featureProvider.getBusinessObjectForPictogramElement(null)).andReturn(JPACreateFactory.getPersistentType(entityFile));
-		expect(featureProvider.getCompilationUnit(isA(JavaPersistentType.class))).andReturn(JavaCore.createCompilationUnitFrom(entityFile)).anyTimes();
+		expect(featureProvider.getCompilationUnit(isA(PersistentType.class))).andReturn(JavaCore.createCompilationUnitFrom(entityFile)).anyTimes();
 	}
 	
 	@Test
@@ -83,7 +84,7 @@ public class ModelIntegrationTest {
 		ICompilationUnit cu = createCompilationUnitFrom(entityFile); 
 		
 		IJPAEditorUtil ut = EasyMock.createMock(IJPAEditorUtil.class);
-		JavaPersistentType inputJptType = (JavaPersistentType) JPACreateFactory.getPersistentType(entityFile);
+		PersistentType inputJptType = JPACreateFactory.getPersistentType(entityFile);
 		expect(ut.getJPType(cu)).andStubReturn(inputJptType);
 		expect(featureProvider.getJPAEditorUtil()).andStubReturn(ut);
 		Diagram d = EasyMock.createMock(Diagram.class);
@@ -120,7 +121,7 @@ public class ModelIntegrationTest {
 		ICompilationUnit cu = createCompilationUnitFrom(entityFile); 
 		
 		IJPAEditorUtil ut = EasyMock.createMock(IJPAEditorUtil.class);
-		JavaPersistentType inputJptType = (JavaPersistentType) JPACreateFactory.getPersistentType(entityFile);
+		PersistentType inputJptType = JPACreateFactory.getPersistentType(entityFile);
 		expect(ut.getJPType(cu)).andStubReturn(inputJptType);
 		expect(featureProvider.getJPAEditorUtil()).andStubReturn(ut);
 		Diagram d = EasyMock.createMock(Diagram.class);
@@ -178,7 +179,7 @@ public class ModelIntegrationTest {
 //		IFileEditorInput input = EasyMock.createMock(IFileEditorInput.class);
 //		IJPAEditorUtil ut = EasyMock.createMock(IJPAEditorUtil.class);
 //		expect(featureProvider.getJPAEditorUtil()).andStubReturn(ut);
-//		JavaPersistentType jpt = EasyMock.createMock(JavaPersistentType.class);
+//		PersistentType jpt = EasyMock.createMock(PersistentType.class);
 //		ICompilationUnit cu = JavaCore.createCompilationUnitFrom(entityFile);
 //		expect(ut.getJPType(cu)).andStubReturn(jpt);
 //		PersistenceUnit pu = EasyMock.createMock(PersistenceUnit.class);

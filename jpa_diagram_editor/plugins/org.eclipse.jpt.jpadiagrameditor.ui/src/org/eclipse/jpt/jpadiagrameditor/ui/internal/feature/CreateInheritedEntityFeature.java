@@ -28,7 +28,6 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
@@ -50,7 +49,7 @@ public class CreateInheritedEntityFeature extends AbstractCreateConnectionFeatur
 	}
 
 	public boolean canCreate(ICreateConnectionContext context) {
-		JavaPersistentType superclass = (JavaPersistentType)getPersistentType(context.getSourceAnchor());
+		PersistentType superclass = getPersistentType(context.getSourceAnchor());
 	    if (superclass == null)
 	    	return false;
 	    if (context.getTargetAnchor() == null)
@@ -61,7 +60,7 @@ public class CreateInheritedEntityFeature extends AbstractCreateConnectionFeatur
 	}
 
 	public Connection create(ICreateConnectionContext context) {
-		JavaPersistentType mappedSuperclass = (JavaPersistentType)getPersistentType(context.getSourceAnchor());
+		PersistentType mappedSuperclass = getPersistentType(context.getSourceAnchor());
 		CreateJPAEntityFeature createEntityFeature = null;
 		try {
 			createEntityFeature = new CreateJPAEntityFeature(
@@ -72,7 +71,7 @@ public class CreateInheritedEntityFeature extends AbstractCreateConnectionFeatur
 		}
 		ICreateContext ctx = new CreateContext();
 		Object[] res = createEntityFeature.create(ctx);
-		JavaPersistentType newEntity = (JavaPersistentType)res[0];
+		PersistentType newEntity = (PersistentType)res[0];
 		AddJPAEntityFeature ft = new AddJPAEntityFeature(getFeatureProvider(), true);
 		AddContext cont = new AddContext();
 		cont.setTargetContainer(getFeatureProvider().getDiagram());
@@ -83,7 +82,7 @@ public class CreateInheritedEntityFeature extends AbstractCreateConnectionFeatur
 	}
 
 	public boolean canStartConnection(ICreateConnectionContext context) {
-		JavaPersistentType superclass = (JavaPersistentType)getPersistentType(context.getSourceAnchor()); 
+		PersistentType superclass = getPersistentType(context.getSourceAnchor()); 
 	    if (superclass == null) 
 	        return false;
 	    return true;
@@ -137,8 +136,8 @@ public class CreateInheritedEntityFeature extends AbstractCreateConnectionFeatur
 	private void disableAllEmbeddables(PersistenceUnit unit) {
 		for (ClassRef classRef : unit.getClassRefs()) {
 			if (classRef.getJavaPersistentType() != null) {
-				final JavaPersistentType jpt = classRef.getJavaPersistentType();
-				if(JpaArtifactFactory.instance().hasEmbeddableAnnotation(jpt))
+				final PersistentType jpt = classRef.getJavaPersistentType();
+				if(JpaArtifactFactory.instance().isEmbeddable(jpt))
 					getFeatureProvider().setGrayColor(jpt);
 			}
 		}

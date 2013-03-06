@@ -20,6 +20,7 @@ import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertNotNull;
+
 import org.easymock.EasyMock;
 import org.eclipse.gef.EditPart;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
@@ -39,7 +40,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleListener;
 
-@SuppressWarnings({"restriction", "nls"})
+@SuppressWarnings({"nls"})
 public class EditorTest {
 
 	@Test

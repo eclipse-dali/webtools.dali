@@ -30,8 +30,8 @@ import org.eclipse.graphiti.features.IDeleteFeature;
 import org.eclipse.graphiti.features.context.IDeleteContext;
 import org.eclipse.graphiti.mm.Property;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.ClickRemoveAttributeButtonFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.DeleteJPAEntityFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.DeleteRelationFeature;
@@ -73,7 +73,7 @@ public class JPAEditorFeatureProviderTest {
 	@Test
 	public void testAttributeDeleteFeature(){
 		PictogramElement pe = replayPictogramElement();
-		JavaSpecifiedPersistentAttribute jpa = replayAttribute();
+		PersistentAttribute jpa = replayAttribute();
 		expect(solver.getBusinessObjectForKey(businessObjectKey)).andStubReturn(jpa);
 		IJPAEditorFeatureProvider provider = createFeatureProvider();
 		
@@ -87,7 +87,7 @@ public class JPAEditorFeatureProviderTest {
 	@Test
 	public void testEntityDeleteFeature(){
 		PictogramElement pe = replayPictogramElement();
-		JavaPersistentType jpt = replayJPT("TestEntity");
+		PersistentType jpt = replayJPT("TestEntity");
 		
 		expect(solver.getBusinessObjectForKey(businessObjectKey)).andStubReturn(jpt);
 		IJPAEditorFeatureProvider provider = createFeatureProvider();
@@ -102,8 +102,8 @@ public class JPAEditorFeatureProviderTest {
 	@Test
 	public void testRelationDeleteFeature(){
 		PictogramElement pe = replayPictogramElement();
-		JavaPersistentType jpt1 = replayJPT("TestEntity1");
-		JavaPersistentType jpt2 = replayJPT("TestEntity2");
+		PersistentType jpt1 = replayJPT("TestEntity1");
+		PersistentType jpt2 = replayJPT("TestEntity2");
 		IJPAEditorFeatureProvider provider = createFeatureProvider();
 
 		AbstractRelation relation = new ManyToManyUniDirRelation(provider, jpt1, jpt2, "attribute1", false);
@@ -116,15 +116,15 @@ public class JPAEditorFeatureProviderTest {
 		assertTrue(deleteFeature instanceof DeleteRelationFeature);
 	}
 
-	private JavaPersistentType replayJPT(String name){
-		JavaPersistentType jpt = EasyMock.createMock(JavaPersistentType.class);
+	private PersistentType replayJPT(String name){
+		PersistentType jpt = EasyMock.createMock(PersistentType.class);
 		expect(jpt.getName()).andReturn(name);
 		replay(jpt);
 		return jpt;
 	}
-	
-	private JavaSpecifiedPersistentAttribute replayAttribute(){
-		JavaSpecifiedPersistentAttribute attribute = EasyMock.createMock(JavaSpecifiedPersistentAttribute.class);
+
+	private PersistentAttribute replayAttribute(){
+		PersistentAttribute attribute = EasyMock.createMock(PersistentAttribute.class);
 		expect(attribute.getName()).andReturn("attribute");
 		replay(attribute);
 		return attribute;

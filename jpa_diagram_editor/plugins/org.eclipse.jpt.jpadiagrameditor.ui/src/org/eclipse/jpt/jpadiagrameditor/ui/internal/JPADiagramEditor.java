@@ -24,6 +24,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.transaction.RecordingCommand;
@@ -47,6 +48,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.utility.internal.model.value.DoublePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
@@ -55,9 +57,13 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaFile;
+import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.JpaFileModel;
 import org.eclipse.jpt.jpa.ui.selection.JpaEditorManager;
@@ -93,7 +99,7 @@ public class JPADiagramEditor extends DiagramEditor implements JpaEditorManager{
 	
 	public final static String ID = "org.eclipse.jpt.jpadiagrameditor.ui"; //$NON-NLS-1$
 
-	private JavaPersistentType inputJptType;
+	private PersistentType inputJptType;
 	private ISelectionManagerFactory jpaSelectionManagerFactory;
 	
 	private final ModifiablePropertyValueModel<IFile> fileModel = new SimplePropertyValueModel<IFile>();
@@ -148,7 +154,7 @@ public class JPADiagramEditor extends DiagramEditor implements JpaEditorManager{
 				boolean save = true;
 				while (chIt.hasNext()) {
 					ContainerShape sh = (ContainerShape)chIt.next();
-					JavaPersistentType jpt = (JavaPersistentType) getFeatureProvider()
+					PersistentType jpt = (PersistentType) getFeatureProvider()
 							.getBusinessObjectForPictogramElement(sh);
 					String entName = JPAEditorUtil.getText(jpt);
 					ICompilationUnit cu = JPAEditorUtil.getCompilationUnit(jpt);
@@ -181,13 +187,19 @@ public class JPADiagramEditor extends DiagramEditor implements JpaEditorManager{
 		ted.getCommandStack().execute(new RecordingCommand(ted) {
 			@Override
 			protected void doExecute() {
-				JPACheckSum.INSTANCE().assignEntityShapesMD5Strings(d, ModelIntegrationUtil.getProjectByDiagram(d.getName()));
+				
+				JpaProject jpaProject = ModelIntegrationUtil.getProjectByDiagram(d.getName());
+				
+				saveAllExistingOrmXmlsIfNecessary(jpaProject);
+				
+				JPACheckSum.INSTANCE().assignEntityShapesMD5Strings(d, jpaProject);
 				List<Shape> children = d.getChildren();
 				Iterator<Shape> chIt = children.iterator();
 				while (chIt.hasNext()) {
 					Shape sh = chIt.next();
-					JavaPersistentType jpt = (JavaPersistentType) getFeatureProvider()
+					PersistentType jpt = (PersistentType) getFeatureProvider()
 							.getBusinessObjectForPictogramElement(sh);
+					
 					if (jpt != null)
 						JpaArtifactFactory.instance().forceSaveEntityClass(jpt, (IJPAEditorFeatureProvider) getFeatureProvider());
 				}
@@ -212,6 +224,20 @@ public class JPADiagramEditor extends DiagramEditor implements JpaEditorManager{
 		xml.close();
 		
 		super.doSave(monitor);
+	}
+	
+	private void saveAllExistingOrmXmlsIfNecessary(JpaProject jpaProject) {
+		PersistenceUnit unit = JpaArtifactFactory.instance().getPersistenceUnit(jpaProject);
+		for(MappingFileRef fileRef : unit.getMappingFileRefs()){
+			JptXmlResource ormXmlRes = jpaProject.getMappingFileXmlResource(new Path(fileRef.getFileName()));
+			if(ormXmlRes != null) {
+				try {
+					ormXmlRes.saveIfNecessary();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 	@Override
@@ -313,15 +339,17 @@ public class JPADiagramEditor extends DiagramEditor implements JpaEditorManager{
 						.getBusinessObjectForPictogramElement(
 								(PictogramElement) m);
 				if ((bo == null) || (!(bo instanceof JpaStructureNode))){
+					if(jpaSelectionModel == null)
+						return;
 					jpaSelectionModel.setValue(null);
 					setFileModel(null);
 					return;
 				}
 				JpaStructureNode jpaStructureNode = (JpaStructureNode) bo;
-				jpaSelectionModel.setValue(jpaStructureNode);
 				setFileModel(jpaStructureNode);
-				selectionManager.setSelection(jpaStructureNode);
-//				jpaStructureNode.getJpaPlatform().buildJpaFile(jpaStructureNode.getJpaProject(), jpaFileModel.getValue().getFile());
+				jpaSelectionModel.setValue(selectedNode);
+
+				selectionManager.setSelection(selectedNode);
 				return;
 			}
 		}
@@ -377,16 +405,43 @@ public class JPADiagramEditor extends DiagramEditor implements JpaEditorManager{
 	}
 	
 	private void setFileModel(JpaStructureNode node) {
-		this.fileModel.setValue(getSelectedEntityFile(node));
+		this.fileModel.setValue(getSelectedEntityFile(node, false));
 	}
 	
-	private IFile getSelectedEntityFile(JpaStructureNode node) {
+	private JpaStructureNode selectedNode;
+	
+	private IFile getSelectedEntityFile(JpaStructureNode node, boolean fromAttribte) {
 		IResource resource = null;
 		if (node != null) {
-			if (node.getType().isAssignableFrom(JavaPersistentType.class)) {
-				resource = ((JavaPersistentType) node).getResource();
-			} else if (node.getType().isAssignableFrom(JavaSpecifiedPersistentAttribute.class)) {
-				resource = ((JavaSpecifiedPersistentAttribute) node).getResource();
+			if (node instanceof PersistentType) {
+				PersistentType pt = (PersistentType) node;
+				if(pt instanceof JavaPersistentType) {
+					JavaPersistentType jpt = (JavaPersistentType) pt;
+					MappingFileRef mappingFileRef = JpaArtifactFactory.instance().getOrmXmlByForPersistentType(jpt);
+					if(!fromAttribte)
+						selectedNode = jpt;
+					if(mappingFileRef != null){
+						PersistentType type = mappingFileRef.getMappingFile().getPersistentType(jpt.getName());
+						if(!fromAttribte)
+							selectedNode = type;
+						return getSelectedEntityFile(type, false);
+					}
+					
+					resource = ((JavaPersistentType) pt).getResource();
+				} else if (pt instanceof OrmPersistentType) {
+					OrmPersistentType ormPt = (OrmPersistentType) pt;
+					resource = ormPt.getParent().getResource();
+				}
+			} else if (node instanceof PersistentAttribute) {
+				PersistentType pt = ((PersistentAttribute) node).getDeclaringPersistentType();
+				selectedNode = node;
+				
+				MappingFileRef mappingFileRef = JpaArtifactFactory.instance().getOrmXmlByForPersistentType(((PersistentAttribute) node).getDeclaringPersistentType());
+				if(mappingFileRef != null){
+					PersistentType type = mappingFileRef.getMappingFile().getPersistentType(((PersistentAttribute) node).getDeclaringPersistentType().getName());
+					selectedNode = type.getAttributeNamed(((PersistentAttribute) node).getName());
+				}
+				return getSelectedEntityFile(pt, true);
 			}
 
 			if (resource != null && resource.exists() && (resource instanceof IFile)) {

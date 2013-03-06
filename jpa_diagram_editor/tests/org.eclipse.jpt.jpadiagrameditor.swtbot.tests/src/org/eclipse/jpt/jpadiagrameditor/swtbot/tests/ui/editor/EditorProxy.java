@@ -44,17 +44,19 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.MappingKeys;
+import org.eclipse.jpt.jpa.core.context.AttributeMapping;
+import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsId2_0Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.IdAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.IdClassAnnotation;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
+import org.eclipse.jpt.jpa.core.jpa2.context.DerivedIdentity2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SingleRelationshipMapping2_0;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.JPACreateFactory;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.Utils;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
@@ -213,9 +215,9 @@ public class EditorProxy {
 		PictogramElement el = (PictogramElement) attribute.part().getModel();
 		Object bo = fp.getBusinessObjectForPictogramElement(el);
 		assertTrue("The selected element is not an attribute!",
-				(bo instanceof JavaPersistentAttribute));
+				(bo instanceof PersistentAttribute));
 		String currentAttributeType = JPAEditorUtil
-				.getAttributeTypeName((JavaPersistentAttribute) bo);
+				.getAttributeTypeName((PersistentAttribute) bo);
 		return currentAttributeType;
 	}
 
@@ -229,7 +231,7 @@ public class EditorProxy {
 	public SWTBotGefEditPart addAttributeToJPT(SWTBotGefEditPart jptType,
 			String attributeName) {
 
-		JavaPersistentType jpt = getJPTObjectForGefElement(jptType);
+		PersistentType jpt = getJPTObjectForGefElement(jptType);
 
 		System.out.println(">>>>>> Attribute is trying to be added in "
 				+ jpt.getName());
@@ -255,7 +257,7 @@ public class EditorProxy {
 						JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
 						jptType));
 		
-		JavaPersistentAttribute jpa = getJPAObjectForGefElement(attribute);
+		PersistentAttribute jpa = getJPAObjectForGefElement(attribute);
 		assertNotNull(jpa);
 		assertEquals(
 				"The newly added attribute must be mapped as basic attribute.",
@@ -285,7 +287,7 @@ public class EditorProxy {
 						JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
 						jptType));
 
-		JavaPersistentAttribute jpa = getJPAObjectForGefElement(attribute);
+		PersistentAttribute jpa = getJPAObjectForGefElement(attribute);
 		assertEquals(
 				"The newly added attribute must be mapped as element-collection.",
 				MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY,
@@ -600,7 +602,7 @@ public class EditorProxy {
 		for (int i = 0; i < entitiesInDiagram.size(); i++) {
 			SWTBotGefEditPart editPart = entitiesInDiagram.get(i);
 			assertNotNull(editPart);
-			JavaPersistentType type = getJPTObjectForGefElement(editPart);
+			PersistentType type = getJPTObjectForGefElement(editPart);
 			if (type != null) {
 				editPart.select();
 				jpaDiagramEditor.clickContextMenu("Delete");
@@ -819,7 +821,7 @@ public class EditorProxy {
 
 		Object ob = fp.getBusinessObjectForPictogramElement(conn);
 		if (ob == null) {
-			JavaPersistentAttribute jpa = getJPAObjectForGefElement(attribute);
+			PersistentAttribute jpa = getJPAObjectForGefElement(attribute);
 			HasReferanceRelation rel = fp
 					.getEmbeddedRelationRelatedToAttribute(jpa);
 			assertNotNull(rel);
@@ -848,13 +850,13 @@ public class EditorProxy {
 	}
 
 	/**
-	 * Gets the business object (JavaPersistentType) for the given GEF element
+	 * Gets the business object (PersistentType) for the given GEF element
 	 * 
 	 * @param element
 	 * @return the java persistent type for the given element, null if the
 	 *         selected element is not an entity
 	 */
-	public JavaPersistentType getJPTObjectForGefElement(
+	public PersistentType getJPTObjectForGefElement(
 			SWTBotGefEditPart element) {
 		final IFeatureProvider fp = ((DiagramEditPart) jpaDiagramEditor
 				.mainEditPart().part()).getFeatureProvider();
@@ -862,20 +864,20 @@ public class EditorProxy {
 		if (el == null)
 			return null;
 		Object bo = fp.getBusinessObjectForPictogramElement(el);
-		if (bo instanceof JavaPersistentType) {
-			return (JavaPersistentType) bo;
+		if (bo instanceof PersistentType) {
+			return (PersistentType) bo;
 		}
 		return null;
 	}
 
-	public JavaPersistentAttribute getJPAObjectForGefElement(
+	public PersistentAttribute getJPAObjectForGefElement(
 			SWTBotGefEditPart element) {
 		final IFeatureProvider fp = ((DiagramEditPart) jpaDiagramEditor
 				.mainEditPart().part()).getFeatureProvider();
 		PictogramElement el = (PictogramElement) element.part().getModel();
 		Object bo = fp.getBusinessObjectForPictogramElement(el);
-		if (bo instanceof JavaPersistentAttribute) {
-			return (JavaPersistentAttribute) bo;
+		if (bo instanceof PersistentAttribute) {
+			return (PersistentAttribute) bo;
 		}
 		return null;
 	}
@@ -908,10 +910,10 @@ public class EditorProxy {
 		PictogramElement el = (PictogramElement) element.part().getModel();
 		Object bo = fp.getBusinessObjectForPictogramElement(el);
 		IResource res = null;
-		if (bo instanceof JavaPersistentAttribute) {
-			res = ((JavaPersistentAttribute) bo).getResource();
-		} else if (bo instanceof JavaPersistentType) {
-			res = ((JavaPersistentType) bo).getResource();
+		if (bo instanceof PersistentAttribute) {
+			res = ((PersistentAttribute) bo).getResource();
+		} else if (bo instanceof PersistentType) {
+			res = ((PersistentType) bo).getResource();
 		}
 
 		if (res != null) {
@@ -1316,7 +1318,7 @@ public class EditorProxy {
 	 * @return the name of the owner relationship attribute
 	 */
 	public String testOwnerRelationAttributeProperties(IRelation rel) {
-		JavaPersistentAttribute ownerAttr = rel.getOwnerAnnotatedAttribute();
+		PersistentAttribute ownerAttr = rel.getOwnerAnnotatedAttribute();
 		String attributeName = rel.getOwnerAttributeName();
 		assertNotNull(ownerAttr);
 		assertNotNull(jpaDiagramEditor.getEditPart(attributeName));
@@ -1332,7 +1334,7 @@ public class EditorProxy {
 	 */
 	public String testEmbeddedAttributeProperties(HasReferanceRelation rel,
 			String attributeMapping) {
-		JavaPersistentAttribute embeddedAttr = rel
+		PersistentAttribute embeddedAttr = rel
 				.getEmbeddedAnnotatedAttribute();
 		String attributeName = embeddedAttr.getName();
 		assertNotNull(embeddedAttr);
@@ -1350,7 +1352,7 @@ public class EditorProxy {
 	 * @return the name of the inverse relationship attribute
 	 */
 	public String testInverseRelationAttributeProperties(IRelation rel) {
-		JavaPersistentAttribute inverseAttr = rel
+		PersistentAttribute inverseAttr = rel
 				.getInverseAnnotatedAttribute();
 		String inverseAttributeName = rel.getInverseAttributeName();
 		assertNotNull(inverseAttr);
@@ -1928,9 +1930,9 @@ public class EditorProxy {
 		attribute.select();
 		attribute.click();
 		
-		JavaPersistentAttribute jpa = getJPAObjectForGefElement(attribute);
+		PersistentAttribute jpa = getJPAObjectForGefElement(attribute);
 		
-		HashSet<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(jpa);
+		HashSet<String> annotations = getAnnotationNames(jpa);
 		assertTrue(annotations.contains(relationAnnotation));
 		assertTrue(annotations.contains(derivedIdAnnotation));
 		
@@ -1944,17 +1946,19 @@ public class EditorProxy {
 			SWTBotGefEditPart owner, SWTBotGefEditPart inverse, SWTBotGefEditPart embeddable,
 			RelType reltype, String relationAnnotation, String derivedIdAnnotation, String linkLabel,
 			boolean isBiDir, boolean isSamePK, String idClassFQN){
-		int sourceConnSize = owner.sourceConnections().size();		
 		
+		int sourceConnSize = owner.sourceConnections().size();		
+				
 		if(isBiDir){
 			jpaDiagramEditor.activateTool(relationFeatureName, 1);
 		} else {
 			jpaDiagramEditor.activateTool(relationFeatureName, 0);
 		}
 		jpaDiagramEditor.click(owner);
+				
 		jpaDiagramEditor.click(inverse);
 		
-		bot.waitUntil(new ConnectionIsShown(owner, sourceConnSize), 10000);
+		bot.waitUntil(new ConnectionIsShown(owner, sourceConnSize), 20000);
 
 		waitASecond();
 		jpaDiagramEditor.activateDefaultTool();
@@ -1985,11 +1989,11 @@ public class EditorProxy {
 		attribute.select();
 		attribute.click();
 		
-		JavaPersistentAttribute jpa = getJPAObjectForGefElement(attribute);
+		PersistentAttribute jpa = getJPAObjectForGefElement(attribute);
 		
-		HashSet<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(jpa);
+		HashSet<String> annotations = getAnnotationNames(jpa);
 		assertTrue(annotations.contains(relationAnnotation));
-		assertTrue(annotations.contains(JPAEditorConstants.ANNOTATION_MAPS_ID));
+		assertTrue(annotations.contains("MapsId"));
 		
 		String helperAttributeName = null;
 		if(!isSamePK) {
@@ -2051,11 +2055,11 @@ public class EditorProxy {
 		attribute.select();
 		attribute.click();
 		
-		JavaPersistentAttribute jpa = getJPAObjectForGefElement(attribute);
+		PersistentAttribute jpa = getJPAObjectForGefElement(attribute);
 		
-		HashSet<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(jpa);
+		HashSet<String> annotations = getAnnotationNames(jpa);
 		assertTrue(annotations.contains(relationAnnotation));
-		assertTrue(annotations.contains(JPAEditorConstants.ANNOTATION_ID));
+		assertTrue(annotations.contains("Id"));
 		
 		String helperAttributeName = null;
 		if(!isSamePK) {
@@ -2078,18 +2082,32 @@ public class EditorProxy {
 
 	private String assertContainsHelperAttrInEmbeddable(
 			SWTBotGefEditPart inverse, SWTBotGefEditPart embeddable,
-			JavaPersistentAttribute jpa, String IdClassFQN) {
+			PersistentAttribute jpa, String IdClassFQN) {
 		String helperAttributeName = JPAEditorUtil.decapitalizeFirstLetter(getJPTObjectForGefElement(inverse).getSimpleName());
-		SWTBotGefEditPart helperAttr = getAttributeInPE(embeddable, helperAttributeName);
-		assertNotNull(helperAttr);
+//		SWTBotGefEditPart helperAttr = getAttributeInPE(embeddable, helperAttributeName);
 		
-		Annotation an = jpa.getResourceAttribute().getAnnotation(MapsId2_0Annotation.ANNOTATION_NAME);
-		assertNotNull(an);
-		assertTrue(an instanceof MapsId2_0Annotation);
-		String mapsIdValue = ((MapsId2_0Annotation)an).getValue();
-		assertEquals(mapsIdValue, helperAttributeName);
+		PersistentType pt = getJPTObjectForGefElement(embeddable);
+		PersistentAttribute helperAttr = pt.getAttributeNamed(helperAttributeName);
+		assertNotNull(pt.getAttributeNamed(helperAttributeName));
+		
+//		embeddable.part().refresh();
+//		
+//		helperAttr = getAttributeInPE(embeddable, helperAttributeName);
+//		assertNotNull(helperAttr);
+		
+		AttributeMapping attributeMapping = JpaArtifactFactory.instance().getAttributeMapping(jpa);
+		assertTrue(SingleRelationshipMapping2_0.class.isInstance(attributeMapping));
+		DerivedIdentity2_0 identity = ((SingleRelationshipMapping2_0)attributeMapping).getDerivedIdentity();
+		assertTrue(identity.usesMapsIdDerivedIdentityStrategy());
+		assertEquals(helperAttributeName, identity.getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
+		
+//		Annotation an = jpa.getResourceAttribute().getAnnotation(MapsId2_0Annotation.ANNOTATION_NAME);
+//		assertNotNull(an);
+//		assertTrue(an instanceof MapsId2_0Annotation);
+//		String mapsIdValue = ((MapsId2_0Annotation)an).getValue();
+//		assertEquals(mapsIdValue, helperAttributeName);
 						
-		String helperAttrType = JPAEditorUtil.getAttributeTypeNameWithGenerics(getJPAObjectForGefElement(helperAttr));
+		String helperAttrType = JPAEditorUtil.getAttributeTypeNameWithGenerics(helperAttr);
 			
 		if(IdClassFQN != null){
 			assertEquals(helperAttrType, IdClassFQN);
@@ -2103,13 +2121,23 @@ public class EditorProxy {
 	
 	private String assertContainsHelperAttrInIdClass(
 			SWTBotGefEditPart inverse, IFile idClass,
-			JavaPersistentAttribute jpa, String IdClassFQN) throws JavaModelException {
+			PersistentAttribute jpa, String IdClassFQN) throws JavaModelException {
 		
 		IType idClassType = JavaCore.createCompilationUnitFrom(idClass).findPrimaryType();
 		assertNotNull(idClassType);
 		
-		Annotation an = jpa.getResourceAttribute().getAnnotation(IdAnnotation.ANNOTATION_NAME);
-		assertNotNull(an);
+//		Annotation an = jpa.getResourceAttribute().getAnnotation(IdAnnotation.ANNOTATION_NAME);
+//		assertNotNull(an);
+		
+		
+		AttributeMapping attributeMapping = JpaArtifactFactory.instance().getAttributeMapping(jpa);
+		assertTrue(SingleRelationshipMapping2_0.class.isInstance(attributeMapping));
+		DerivedIdentity2_0 identity = ((SingleRelationshipMapping2_0)attributeMapping).getDerivedIdentity();
+		assertTrue(identity.usesIdDerivedIdentityStrategy());
+//		assertEquals(helperAttributeName, identity.getIdDerivedIdentityStrategy()..getSpecifiedIdAttributeName());
+		
+//		AttributeMapping attributeMapping = JpaArtifactFactory.instance().getAttributeMapping(jpa);
+//		assertTrue(IdMapping.class.isInstance(attributeMapping));
 		
 		IField helperAttr = idClassType.getField(jpa.getName());
 		assertNotNull(helperAttr);		
@@ -2172,9 +2200,9 @@ public class EditorProxy {
 		attribute.select();
 		attribute.click();
 		
-		JavaPersistentAttribute jpa = getJPAObjectForGefElement(attribute);
+		PersistentAttribute jpa = getJPAObjectForGefElement(attribute);
 		
-		HashSet<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(jpa);
+		HashSet<String> annotations = getAnnotationNames(jpa);
 		assertTrue(annotations.contains(relationAnnotation));
 		assertTrue(annotations.contains(derivedIdAnnotation));
 		
@@ -2219,11 +2247,11 @@ public class EditorProxy {
 		attribute.select();
 		attribute.click();
 		
-		JavaPersistentAttribute jpa = getJPAObjectForGefElement(attribute);
+		PersistentAttribute jpa = getJPAObjectForGefElement(attribute);
 		
-		HashSet<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(jpa);
-		assertTrue(annotations.contains(JPAEditorConstants.ANNOTATION_ONE_TO_ONE));
-		assertTrue(annotations.contains(JPAEditorConstants.ANNOTATION_MAPS_ID));
+		HashSet<String> annotations = getAnnotationNames(jpa);
+		assertTrue(annotations.contains("OneToOne"));
+		assertTrue(annotations.contains("MapsId"));
 	}
 
 	public void testSelfUniDirRelation(String relationFeatureName,
@@ -2241,7 +2269,7 @@ public class EditorProxy {
 		waitASecond();
 		jpaDiagramEditor.activateDefaultTool();
 
-		assertSelfConnectionIsCreated(entity);
+//		assertSelfConnectionIsCreated(entity);
 
 		SWTBotGefConnectionEditPart connection = getConnection(entity, entity);
 		assertNotNull("Connection must be shown in the diagram.", connection);
@@ -2624,9 +2652,9 @@ public class EditorProxy {
 
 		assertTypeIsCorretlyMapped(superclass, superclassMappingLinkLabel);
 		assertTypeIsCorretlyMapped(inheritedEntity,
-				JptUiDetailsMessages.EntityUiProvider_linkLabel);
+				JptJpaUiDetailsMessages.EntityUiProvider_linkLabel);
 
-		JavaPersistentType superJPT = (JavaPersistentType) getJPTObjectForGefElement(
+		PersistentType superJPT = getJPTObjectForGefElement(
 				inheritedEntity).getSuperPersistentType();
 		assertNotNull("The entity must has a super persitent type.", superJPT);
 		assertEquals(
@@ -2811,7 +2839,7 @@ public class EditorProxy {
 				embeddable);
 		assertNotNull("Connection must be shown in the diagram.", connection);
 
-		JavaPersistentType emb = getJPTObjectForGefElement(embeddable);
+		PersistentType emb = getJPTObjectForGefElement(embeddable);
 		String embAttr = JPAEditorUtil.decapitalizeFirstLetter(emb
 				.getSimpleName());
 
@@ -2833,8 +2861,7 @@ public class EditorProxy {
 
 		assertAttributeIsCorretlyMapped(attributeName, linkLabel);
 
-		JavaPersistentType parententity = (JavaPersistentType) rel
-				.getEmbeddedAnnotatedAttribute().getOwningPersistentType();
+		PersistentType parententity =  rel.getEmbeddedAnnotatedAttribute().getDeclaringPersistentType();
 		assertEquals("The entity must contain an embedded attribute.",
 				parententity, getJPTObjectForGefElement(embeddingEntity));
 		assertEquals(rel.getEmbeddingEntity(),
@@ -2850,7 +2877,7 @@ public class EditorProxy {
 	public String getUniqueAttrName(SWTBotGefEditPart jptType) {
 		IJPAEditorFeatureProvider fp = (IJPAEditorFeatureProvider) ((DiagramEditPart) jpaDiagramEditor
 				.mainEditPart().part()).getFeatureProvider();
-		JavaPersistentType jpt = getJPTObjectForGefElement(jptType);
+		PersistentType jpt = getJPTObjectForGefElement(jptType);
 		String attrName = JpaArtifactFactory.instance().genUniqueAttrName(jpt,
 				"java.lang.String", fp);
 
@@ -2898,7 +2925,7 @@ public class EditorProxy {
 		deleteDiagramElements();
 		Utils.printFormatted(">>>>>>>>>>>> elements are deleted from the diagram.");
 
-		ListIterator<PersistenceUnit> lit = jpaProject.getRootContextNode()
+		ListIterator<PersistenceUnit> lit = jpaProject.getContextModelRoot()
 				.getPersistenceXml().getRoot().getPersistenceUnits().iterator();
 		PersistenceUnit pu = lit.next();
 		Iterator<PersistentType> persistentTypesIterator = (Iterator<PersistentType>) pu
@@ -2926,15 +2953,15 @@ public class EditorProxy {
 		String embeddedAttributeName = embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity,
 				embeddable, HasReferenceType.SINGLE,
 				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
-				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel,
+				JptJpaUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel,
 				3);
 				
 		SWTBotGefEditPart embeddedAttribute = getAttributeInPE(embeddingEntity,
 				embeddedAttributeName);
 		
 		assertNotNull(embeddedAttribute);
-		JavaPersistentAttribute jpa = getJPAObjectForGefElement(embeddedAttribute);
-		jpa.setMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
+		PersistentAttribute jpa = getJPAObjectForGefElement(embeddedAttribute);
+		jpa.getJavaPersistentAttribute().setMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
 	}
 	
 	/**
@@ -2971,9 +2998,30 @@ public class EditorProxy {
 			throws IOException, CoreException, JavaModelException {
 		IFile idClass = JPACreateFactory.instance().createIdClassInProject(jpaProject.getProject(), new String[] {"org", "persistence"}, idClassName);
 		
-		JavaPersistentType jptType= getJPTObjectForGefElement(entity);
-		Annotation an = jptType.getJavaResourceType().addAnnotation(IdClassAnnotation.ANNOTATION_NAME);
-		((IdClassAnnotation)an).setValue(idClassName);
+		PersistentType jptType= getJPTObjectForGefElement(entity);
+		
+		TypeMapping typeMapping = JpaArtifactFactory.instance().getTypeMapping(jptType);
+		assertTrue(Entity.class.isInstance(typeMapping));
+		((Entity)typeMapping).getIdClassReference().setSpecifiedIdClassName(idClassName);
+		
+//		Annotation an = jptType.getJavaResourceType().addAnnotation(IdClassAnnotation.ANNOTATION_NAME);
+//		((IdClassAnnotation)an).setValue(idClassName);
 		return idClass;
+	}
+	
+	/**
+	 * Get all annotations as string for the given attribute.
+	 * @param persistentAttribite
+	 * @return a set of strings of all current annotation names of the given attribute.
+	 */
+	public HashSet<String> getAnnotationNames(PersistentAttribute persistentAttribite) {
+		HashSet<String> res = new HashSet<String>();
+		if(persistentAttribite != null) {
+			JavaResourceAttribute jrpt = persistentAttribite.getJavaPersistentAttribute().getResourceAttribute();
+			for (Annotation annotation : jrpt.getAnnotations()) {
+				res.add(JPAEditorUtil.returnSimpleName(annotation.getAnnotationName()));
+			}
+		}
+		return res;
 	}
 }

@@ -15,11 +15,11 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.relations;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 
 abstract public class ManyToOneRelation extends AbstractRelation{
 
-	public ManyToOneRelation(JavaPersistentType owner, JavaPersistentType inverse) {
+	public ManyToOneRelation(PersistentType owner, PersistentType inverse) {
 		super(owner, inverse);
 	}
 	

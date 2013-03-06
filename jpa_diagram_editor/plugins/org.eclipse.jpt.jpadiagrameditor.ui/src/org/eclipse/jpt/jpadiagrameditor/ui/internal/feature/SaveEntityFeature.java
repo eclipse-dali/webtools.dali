@@ -18,7 +18,7 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal.feature;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICustomContext;
 import org.eclipse.graphiti.features.custom.AbstractCustomFeature;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
@@ -36,7 +36,7 @@ public class SaveEntityFeature extends AbstractCustomFeature {
 	}	
 
 	public void execute(ICustomContext context) {
-		JavaPersistentType jpt = (JavaPersistentType)getFeatureProvider().getBusinessObjectForPictogramElement(context.getPictogramElements()[0]);
+		PersistentType jpt = (PersistentType)getFeatureProvider().getBusinessObjectForPictogramElement(context.getPictogramElements()[0]);
 		JpaArtifactFactory.instance().forceSaveEntityClass(jpt, getFeatureProvider());
 	}
 	

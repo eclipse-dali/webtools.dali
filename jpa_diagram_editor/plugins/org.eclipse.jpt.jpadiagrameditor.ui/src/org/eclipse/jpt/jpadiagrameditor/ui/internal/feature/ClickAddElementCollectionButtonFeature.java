@@ -22,10 +22,9 @@ import org.eclipse.graphiti.features.context.ICreateContext;
 import org.eclipse.graphiti.features.impl.AbstractCreateFeature;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollection2_0Annotation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
@@ -54,14 +53,14 @@ public class ClickAddElementCollectionButtonFeature extends AbstractCreateFeatur
 	
 	public Object[] create(ICreateContext context) {
 		ContainerShape entityShape = context.getTargetContainer();
-		JavaPersistentType jpt = (JavaPersistentType)getFeatureProvider().getBusinessObjectForPictogramElement(entityShape);
+		PersistentType jpt = (PersistentType)getFeatureProvider().getBusinessObjectForPictogramElement(entityShape);
 		String newAttrName = JpaArtifactFactory.instance().createNewAttribute(jpt, true, getFeatureProvider());
 
-		JavaSpecifiedPersistentAttribute newAttr = (JavaSpecifiedPersistentAttribute) jpt.resolveAttribute(newAttrName);
-		newAttr.setMappingKey(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
-		newAttr.getResourceAttribute().addAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME);
-
-		getFeatureProvider().addAddIgnore((JavaPersistentType)newAttr.getParent(), newAttr.getName());
+		PersistentAttribute newAttr = jpt.resolveAttribute(newAttrName);
+		newAttr.getJavaPersistentAttribute().setMappingKey(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
+		JpaArtifactFactory.instance().addOrmPersistentAttribute(jpt, newAttr, MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
+		
+		getFeatureProvider().addAddIgnore((PersistentType) newAttr.getParent(), newAttr.getName());
 		addGraphicalRepresentation(context, newAttr);
         getFeatureProvider().getDirectEditingInfo().setActive(true);
         

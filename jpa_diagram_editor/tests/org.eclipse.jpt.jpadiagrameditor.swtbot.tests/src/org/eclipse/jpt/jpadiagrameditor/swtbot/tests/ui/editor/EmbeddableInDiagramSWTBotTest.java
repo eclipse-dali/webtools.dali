@@ -7,13 +7,14 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.JptUiDetailsMessages2_0;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.jpa2.details.JptJpaUiDetailsMessages2_0;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.JPACreateFactory;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.Utils;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.HasReferanceRelation.HasReferenceType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
@@ -235,7 +236,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy._testEmbeddedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddable1,
 				embeddable2, HasReferenceType.COLLECTION,
 				MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY,
-				JptUiDetailsMessages2_0.ElementCollectionMapping2_0_linkLabel,
+				JptJpaUiDetailsMessages2_0.ELEMENT_COLLECTION_MAPPING_LINK_LABEL,
 				3);
 
 		editorProxy.deleteDiagramElements();
@@ -731,7 +732,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy._testEmbeddedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, entity, embeddable,
 				HasReferenceType.SINGLE,
 				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
-				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 2);
+				JptJpaUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 2);
 
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();
@@ -759,7 +760,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy._testEmbeddedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, entity,
 				embeddable, HasReferenceType.COLLECTION,
 				MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY,
-				JptUiDetailsMessages2_0.ElementCollectionMapping2_0_linkLabel,
+				JptJpaUiDetailsMessages2_0.ELEMENT_COLLECTION_MAPPING_LINK_LABEL,
 				2);
 
 		editorProxy.deleteDiagramElements();
@@ -788,7 +789,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy._testEmbeddedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddable1,
 				embeddable2, HasReferenceType.SINGLE,
 				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
-				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 2);
+				JptJpaUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 2);
 
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();
@@ -817,7 +818,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy._testEmbeddedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddable1,
 				embeddable2, HasReferenceType.COLLECTION,
 				MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY,
-				JptUiDetailsMessages2_0.ElementCollectionMapping2_0_linkLabel,
+				JptJpaUiDetailsMessages2_0.ELEMENT_COLLECTION_MAPPING_LINK_LABEL,
 				2);
 
 		editorProxy.deleteDiagramElements();
@@ -849,7 +850,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.embedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddable1,
 				embeddable2, HasReferenceType.COLLECTION,
 				MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY,
-				JptUiDetailsMessages2_0.ElementCollectionMapping2_0_linkLabel,
+				JptJpaUiDetailsMessages2_0.ELEMENT_COLLECTION_MAPPING_LINK_LABEL,
 				2);
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(200, 50,
@@ -861,10 +862,13 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy._testEmbeddedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, entity,
 				embeddable2, HasReferenceType.COLLECTION,
 				MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY,
-				JptUiDetailsMessages2_0.ElementCollectionMapping2_0_linkLabel,
+				JptJpaUiDetailsMessages2_0.ELEMENT_COLLECTION_MAPPING_LINK_LABEL,
 				4);
 
-		editorProxy.deleteAttributeInJPT(embeddable1, "embeddable2");
+		
+		String embeddableName = editorProxy.getJPTObjectForGefElement(embeddable2).getSimpleName();
+		String embeddingAttributeName = JPAEditorUtil.decapitalizeFirstLetter(embeddableName);
+		editorProxy.deleteAttributeInJPT(embeddable1, embeddingAttributeName);
 
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();
@@ -895,7 +899,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.embedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddable1,
 				embeddable2, HasReferenceType.COLLECTION,
 				MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY,
-				JptUiDetailsMessages2_0.ElementCollectionMapping2_0_linkLabel,
+				JptJpaUiDetailsMessages2_0.ELEMENT_COLLECTION_MAPPING_LINK_LABEL,
 				2);
 
 		SWTBotGefEditPart embeddable3 = editorProxy.addEmbeddableToDiagram(200, 50,
@@ -907,10 +911,12 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy._testEmbeddedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddable3,
 				embeddable2, HasReferenceType.COLLECTION,
 				MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY,
-				JptUiDetailsMessages2_0.ElementCollectionMapping2_0_linkLabel,
+				JptJpaUiDetailsMessages2_0.ELEMENT_COLLECTION_MAPPING_LINK_LABEL,
 				4);
 
-		editorProxy.deleteAttributeInJPT(embeddable1, "embeddable2");
+		String embeddableName = editorProxy.getJPTObjectForGefElement(embeddable2).getSimpleName();
+		String embeddingAttributeName = JPAEditorUtil.decapitalizeFirstLetter(embeddableName);
+		editorProxy.deleteAttributeInJPT(embeddable1, embeddingAttributeName);
 
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();
@@ -1131,7 +1137,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity, embeddable,
 				HasReferenceType.SINGLE,
 				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
-				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
+				JptJpaUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
 
 		editorProxy
 				.testBiDirRel(
@@ -1139,7 +1145,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						embeddable,
 						entity,
 						IRelation.RelType.ONE_TO_ONE,
-						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy
 				.testBiDirRelRemoveInverseAttribute(
@@ -1147,7 +1153,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						embeddable,
 						entity,
 						IRelation.RelType.ONE_TO_ONE,
-						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy
 				.testBiDirRelRemoveOwnerAttr(
@@ -1155,7 +1161,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						embeddable,
 						entity,
 						IRelation.RelType.ONE_TO_ONE,
-						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();
@@ -1194,7 +1200,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity, embeddable,
 				HasReferenceType.SINGLE,
 				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
-				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
+				JptJpaUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
 
 		editorProxy
 				.testBiDirRelWithTwoMappingTypes(
@@ -1202,8 +1208,8 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						embeddable,
 						entity,
 						IRelation.RelType.MANY_TO_ONE,
-						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel,
-						JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel,
+						JptJpaUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, true);
 
 		editorProxy
 				.testBiDirRelWithTwoMappingsWithoutInverseAttr(
@@ -1211,8 +1217,8 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						embeddable,
 						entity,
 						IRelation.RelType.MANY_TO_ONE,
-						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel,
-						JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel,
+						JptJpaUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, true);
 
 		editorProxy
 				.testBiDirRelWithTwoMappingsWithoutOwnerAttr(
@@ -1220,8 +1226,8 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						embeddable,
 						entity,
 						IRelation.RelType.MANY_TO_ONE,
-						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel,
-						JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel,
+						JptJpaUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, true);
 
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();
@@ -1261,7 +1267,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity, embeddable,
 				HasReferenceType.SINGLE,
 				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
-				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
+				JptJpaUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
 
 		editorProxy
 				.testBiDirRel(
@@ -1269,7 +1275,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						embeddable,
 						entity,
 						IRelation.RelType.MANY_TO_MANY,
-						JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
+						JptJpaUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
 
 		editorProxy
 				.testBiDirRelRemoveInverseAttribute(
@@ -1277,7 +1283,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						embeddable,
 						entity,
 						IRelation.RelType.MANY_TO_MANY,
-						JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
+						JptJpaUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
 
 		editorProxy
 				.testBiDirRelRemoveOwnerAttr(
@@ -1285,7 +1291,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						embeddable,
 						entity,
 						IRelation.RelType.MANY_TO_MANY,
-						JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
+						JptJpaUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
 
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();
@@ -1323,7 +1329,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity, embeddable,
 				HasReferenceType.SINGLE,
 				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
-				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
+				JptJpaUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
 
 		editorProxy
 				.testUniDirRelation(
@@ -1331,7 +1337,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						embeddable,
 						entity,
 						IRelation.RelType.ONE_TO_ONE,
-						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy
 				.testUniDirRelRemoveOwnerAttribute(
@@ -1339,7 +1345,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						embeddable,
 						entity,
 						IRelation.RelType.ONE_TO_ONE,
-						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();
@@ -1377,7 +1383,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity, embeddable,
 				HasReferenceType.SINGLE,
 				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
-				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
+				JptJpaUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
 
 		editorProxy
 				.testUniDirRelation(
@@ -1385,7 +1391,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						embeddable,
 						entity,
 						IRelation.RelType.MANY_TO_ONE,
-						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy
 				.testUniDirRelRemoveOwnerAttribute(
@@ -1393,7 +1399,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						embeddable,
 						entity,
 						IRelation.RelType.MANY_TO_ONE,
-						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();
@@ -1431,7 +1437,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity, embeddable,
 				HasReferenceType.SINGLE,
 				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
-				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
+				JptJpaUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
 
 		editorProxy
 				.testUniDirRelation(
@@ -1439,7 +1445,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						embeddable,
 						entity,
 						IRelation.RelType.MANY_TO_MANY,
-						JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
+						JptJpaUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
 
 		editorProxy
 				.testUniDirRelRemoveOwnerAttribute(
@@ -1447,7 +1453,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						embeddable,
 						entity,
 						IRelation.RelType.MANY_TO_MANY,
-						JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
+						JptJpaUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
 
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();
@@ -1485,7 +1491,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.embedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddingEntity,
 				embeddable, HasReferenceType.COLLECTION,
 				MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY,
-				JptUiDetailsMessages2_0.ElementCollectionMapping2_0_linkLabel,
+				JptJpaUiDetailsMessages2_0.ELEMENT_COLLECTION_MAPPING_LINK_LABEL,
 				3);
 
 		editorProxy
@@ -1494,7 +1500,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						embeddable,
 						entity,
 						IRelation.RelType.ONE_TO_ONE,
-						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy
 				.testBiDirRelRemoveInverseAttribute(
@@ -1502,7 +1508,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						embeddable,
 						entity,
 						IRelation.RelType.ONE_TO_ONE,
-						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy
 				.testBiDirRelRemoveOwnerAttr(
@@ -1510,7 +1516,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						embeddable,
 						entity,
 						IRelation.RelType.ONE_TO_ONE,
-						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();
@@ -1549,7 +1555,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.embedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddingEntity,
 				embeddable, HasReferenceType.COLLECTION,
 				MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY,
-				JptUiDetailsMessages2_0.ElementCollectionMapping2_0_linkLabel,
+				JptJpaUiDetailsMessages2_0.ELEMENT_COLLECTION_MAPPING_LINK_LABEL,
 				3);
 
 		editorProxy
@@ -1558,8 +1564,8 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						embeddable,
 						entity,
 						IRelation.RelType.MANY_TO_ONE,
-						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel,
-						JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel,
+						JptJpaUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, true);
 
 		editorProxy
 				.testBiDirRelWithTwoMappingsWithoutInverseAttr(
@@ -1567,8 +1573,8 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						embeddable,
 						entity,
 						IRelation.RelType.MANY_TO_ONE,
-						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel,
-						JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel,
+						JptJpaUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, true);
 
 		editorProxy
 				.testBiDirRelWithTwoMappingsWithoutOwnerAttr(
@@ -1576,8 +1582,8 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						embeddable,
 						entity,
 						IRelation.RelType.MANY_TO_ONE,
-						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel,
-						JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel,
+						JptJpaUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, true);
 
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();
@@ -1609,12 +1615,12 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity1, embeddable,
 				HasReferenceType.SINGLE,
 				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
-				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
+				JptJpaUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
 
 		editorProxy.embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity2, embeddable,
 				HasReferenceType.SINGLE,
 				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
-				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
+				JptJpaUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
 
 		editorProxy
 				.testNoConnectionIsCreatedWithEmbeddable(
@@ -1627,7 +1633,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						embeddable,
 						entity,
 						IRelation.RelType.ONE_TO_ONE,
-						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy
 				.testUniDirRelRemoveOwnerAttribute(
@@ -1635,7 +1641,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						embeddable,
 						entity,
 						IRelation.RelType.ONE_TO_ONE,
-						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();
@@ -1667,12 +1673,12 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity1, embeddable,
 				HasReferenceType.SINGLE,
 				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
-				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
+				JptJpaUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
 
 		editorProxy.embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity2, embeddable,
 				HasReferenceType.SINGLE,
 				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
-				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
+				JptJpaUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
 
 		editorProxy
 				.testNoConnectionIsCreatedWithEmbeddable(
@@ -1685,7 +1691,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						embeddable,
 						entity,
 						IRelation.RelType.MANY_TO_ONE,
-						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy
 				.testUniDirRelRemoveOwnerAttribute(
@@ -1693,7 +1699,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						embeddable,
 						entity,
 						IRelation.RelType.MANY_TO_ONE,
-						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();
@@ -1725,12 +1731,12 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity1, embeddable,
 				HasReferenceType.SINGLE,
 				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
-				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
+				JptJpaUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
 
 		editorProxy.embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity2, embeddable,
 				HasReferenceType.SINGLE,
 				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
-				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
+				JptJpaUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
 
 		editorProxy
 				.testNoConnectionIsCreatedWithEmbeddable(
@@ -1743,7 +1749,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						embeddable,
 						entity,
 						IRelation.RelType.MANY_TO_MANY,
-						JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
+						JptJpaUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
 
 		editorProxy
 				.testUniDirRelRemoveOwnerAttribute(
@@ -1751,7 +1757,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						embeddable,
 						entity,
 						IRelation.RelType.MANY_TO_MANY,
-						JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
+						JptJpaUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
 
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();
@@ -1789,7 +1795,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.embedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddingEntity,
 				embeddable, HasReferenceType.COLLECTION,
 				MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY,
-				JptUiDetailsMessages2_0.ElementCollectionMapping2_0_linkLabel,
+				JptJpaUiDetailsMessages2_0.ELEMENT_COLLECTION_MAPPING_LINK_LABEL,
 				3);
 
 		editorProxy
@@ -1798,7 +1804,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						embeddable,
 						entity,
 						IRelation.RelType.ONE_TO_ONE,
-						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy
 				.testUniDirRelRemoveOwnerAttribute(
@@ -1806,7 +1812,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						embeddable,
 						entity,
 						IRelation.RelType.ONE_TO_ONE,
-						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();
@@ -1844,7 +1850,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.embedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddingEntity,
 				embeddable, HasReferenceType.COLLECTION,
 				MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY,
-				JptUiDetailsMessages2_0.ElementCollectionMapping2_0_linkLabel,
+				JptJpaUiDetailsMessages2_0.ELEMENT_COLLECTION_MAPPING_LINK_LABEL,
 				3);
 
 		editorProxy
@@ -1853,7 +1859,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						embeddable,
 						entity,
 						IRelation.RelType.MANY_TO_ONE,
-						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy
 				.testUniDirRelRemoveOwnerAttribute(
@@ -1861,7 +1867,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						embeddable,
 						entity,
 						IRelation.RelType.MANY_TO_ONE,
-						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true);
+						JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();
@@ -1901,7 +1907,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.embedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddingEntity,
 				embeddable, HasReferenceType.COLLECTION,
 				MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY,
-				JptUiDetailsMessages2_0.ElementCollectionMapping2_0_linkLabel,
+				JptJpaUiDetailsMessages2_0.ELEMENT_COLLECTION_MAPPING_LINK_LABEL,
 				3);
 
 		editorProxy
@@ -1946,7 +1952,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.embedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddingEntity,
 				embeddable, HasReferenceType.COLLECTION,
 				MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY,
-				JptUiDetailsMessages2_0.ElementCollectionMapping2_0_linkLabel,
+				JptJpaUiDetailsMessages2_0.ELEMENT_COLLECTION_MAPPING_LINK_LABEL,
 				3);
 
 		editorProxy
@@ -2000,7 +2006,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.embedConnection(jpaDiagramEditor10, JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, entity, embeddable1,
 				HasReferenceType.SINGLE,
 				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
-				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 2);
+				JptJpaUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 2);
 
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(300, 300,
 				jpaProject);
@@ -2039,7 +2045,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 				JPAEditorMessages.CreateManyToManyBiDirRelationFeature_manyToManyBiDirFeatureName,
 				1, embeddable1, entity1);
 		
-		editorProxy.deleteAttributeInJPT(entity, "embeddable1");
+		String embeddableName = editorProxy.getJPTObjectForGefElement(embeddable1).getSimpleName();
+		String embeddingAttributeName = JPAEditorUtil.decapitalizeFirstLetter(embeddableName);
+		editorProxy.deleteAttributeInJPT(entity, embeddingAttributeName);
 		
 		editorProxy.deleteDiagramElements();
 		

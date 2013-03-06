@@ -27,8 +27,8 @@ import org.eclipse.graphiti.features.IDirectEditingFeature;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.IDirectEditingContext;
 import org.eclipse.jdt.core.JavaConventions;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.DirectEditAttributeFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
@@ -47,8 +47,8 @@ public class DirectEditAttributeFeatureTest {
 
 	@Test
 	public void testCheckValueValidStringByJavaConventions() {
-		JavaPersistentType jpt = EasyMock.createNiceMock(JavaPersistentType.class);
-		JavaSpecifiedPersistentAttribute jpa = configureJpaForJpt(jpt);
+		PersistentType jpt = EasyMock.createNiceMock(PersistentType.class);
+		PersistentAttribute jpa = configureJpaForJpt(jpt);
 		expect(jpt.getAttributeNamed(isA(String.class))).andStubReturn(jpa);
 		replay(jpa, jpt);
 
@@ -65,11 +65,11 @@ public class DirectEditAttributeFeatureTest {
 
 	@Test
 	public void testCheckValueValidStringDuplicateAttribute() {
-		JavaSpecifiedPersistentAttribute otherJpa = EasyMock.createMock(JavaSpecifiedPersistentAttribute.class);
-		JavaPersistentType jpt = EasyMock.createMock(JavaPersistentType.class);
+		PersistentAttribute otherJpa = EasyMock.createMock(PersistentAttribute.class);
+		PersistentType jpt = EasyMock.createMock(PersistentType.class);
 		expect(jpt.getAttributeNamed("attrName")).andStubReturn(otherJpa);
 
-		JavaSpecifiedPersistentAttribute jpa = configureJpaForJpt(jpt);
+		PersistentAttribute jpa = configureJpaForJpt(jpt);
 		replay(jpa, jpt, otherJpa);
 
 		IFeatureProvider provider = replayJpaForNullPe(jpa);
@@ -80,15 +80,15 @@ public class DirectEditAttributeFeatureTest {
 		assertEquals(MessageFormat.format(JPAEditorMessages.DirectEditAttributeFeature_attributeExists, "attrName"), feature.checkValueValid("attrName", context));
 	}
 
-	private IFeatureProvider replayJpaForNullPe(JavaSpecifiedPersistentAttribute jpa) {
+	private IFeatureProvider replayJpaForNullPe(PersistentAttribute jpa) {
 		IFeatureProvider provider = EasyMock.createMock(IJPAEditorFeatureProvider.class);
 		expect(provider.getBusinessObjectForPictogramElement(null)).andStubReturn(jpa);
 		replay(provider);
 		return provider;
 	}
 
-	private JavaSpecifiedPersistentAttribute configureJpaForJpt(JavaPersistentType jpt) {
-		JavaSpecifiedPersistentAttribute jpa = EasyMock.createMock(JavaSpecifiedPersistentAttribute.class);
+	private PersistentAttribute configureJpaForJpt(PersistentType jpt) {
+		PersistentAttribute jpa = EasyMock.createMock(PersistentAttribute.class);
 		expect(jpa.getParent()).andStubReturn(jpt);
 		return jpa;
 	}

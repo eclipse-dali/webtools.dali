@@ -19,8 +19,9 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal.command;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.ui.refactoring.RenameSupport;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.swt.widgets.Shell;
@@ -28,11 +29,11 @@ import org.eclipse.ui.IWorkbenchWindow;
 
 public class RenameEntityCommand implements Command {
 	
-	private JavaPersistentType jpt;
+	private PersistentType jpt;
 	private String newEntityName;
 	private IJPAEditorFeatureProvider fp;
 	
-	public RenameEntityCommand(JavaPersistentType jpt, String newEntityName, IJPAEditorFeatureProvider fp){
+	public RenameEntityCommand(PersistentType jpt, String newEntityName, IJPAEditorFeatureProvider fp){
 		super();
 		this.jpt = jpt;
 		this.newEntityName = newEntityName;
@@ -40,10 +41,11 @@ public class RenameEntityCommand implements Command {
 	}
 
 	public void execute() {
-		renameEntityClass(this.fp.getCompilationUnit(this.jpt), this.newEntityName);
-		if(jpt.getResource() != null && jpt.getResource().exists()) {
-			this.jpt.getJavaResourceType().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
-		}
+		renameEntityClass(fp.getCompilationUnit(jpt), newEntityName);
+		jpt.getJpaProject().getContextModelRoot().synchronizeWithResourceModel();
+		JavaResourceType jrt = jpt.getJavaResourceType();
+		jrt.getJavaResourceCompilationUnit().synchronizeWithJavaSource();
+		jpt.update();
 	}
 	
 	private void renameEntityClass(ICompilationUnit cu, String newName) {

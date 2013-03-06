@@ -47,8 +47,7 @@ import org.eclipse.graphiti.tb.IToolBehaviorProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditor;
@@ -114,12 +113,11 @@ public class JPAEditorDiagramTypeProvider extends AbstractDiagramTypeProvider {
 		
 		for (ClassRef classRef : unit.getClassRefs()) {
 			if (classRef.getJavaPersistentType() != null) { 
-				JavaPersistentType jpt = classRef.getJavaPersistentType(); 
-				if (jpt.getMappingKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY) {
+				PersistentType jpt = classRef.getJavaPersistentType(); 
 					PictogramElement pe = getFeatureProvider().getPictogramElementForBusinessObject(jpt);
 					if (pe == null)
 						return true;					
-				}
+//				}
 			}
 		}		
 		return false;
@@ -253,8 +251,10 @@ public class JPAEditorDiagramTypeProvider extends AbstractDiagramTypeProvider {
 				// create new pictograms
 				while (itr.hasMoreElements()) {
 					String entityName = itr.nextElement();
-					JavaPersistentType jpt = JpaArtifactFactory.instance().getContextPersistentType(proj, entityName);
+					PersistentType jpt = JpaArtifactFactory.instance().getContextPersistentType(proj, entityName);
 					if (jpt != null) {
+						if(getFeatureProvider().getPictogramElementForBusinessObject(jpt) != null)
+							continue;
 						SizePosition sp = marks.get(entityName);
 						AddContext ctx = new AddEntityContext(sp.primaryCollapsed,
 								sp.relationCollapsed, sp.basicCollapsed);

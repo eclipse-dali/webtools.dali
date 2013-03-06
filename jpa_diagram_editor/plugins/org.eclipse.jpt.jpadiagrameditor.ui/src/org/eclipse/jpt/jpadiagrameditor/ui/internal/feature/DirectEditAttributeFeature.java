@@ -16,6 +16,8 @@
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.feature;
 
 import java.text.MessageFormat;
+import java.util.Iterator;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -30,8 +32,8 @@ import org.eclipse.graphiti.mm.algorithms.Text;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.jdt.core.JavaConventions;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
@@ -60,7 +62,7 @@ public class DirectEditAttributeFeature extends AbstractDirectEditingFeature {
 
 	public String getInitialValue(IDirectEditingContext context) {
 		PictogramElement pe = context.getPictogramElement();
-		JavaSpecifiedPersistentAttribute jpa = (JavaSpecifiedPersistentAttribute)getFeatureProvider().
+		PersistentAttribute jpa = (PersistentAttribute)getFeatureProvider().
 											getBusinessObjectForPictogramElement(pe);
 		isMethodAnnotated = JpaArtifactFactory.instance().isMethodAnnotated(jpa);
 		Text txt = (Text) pe.getGraphicsAlgorithm().getGraphicsAlgorithmChildren().get(0);
@@ -85,8 +87,8 @@ public class DirectEditAttributeFeature extends AbstractDirectEditingFeature {
 
 	private IStatus checkDuplicateAttribute(String value, IDirectEditingContext context) {
 		PictogramElement pe = context.getPictogramElement();
-		JavaSpecifiedPersistentAttribute oldAt = (JavaSpecifiedPersistentAttribute) getBusinessObjectForPictogramElement(pe);
-		JavaSpecifiedPersistentAttribute newAl = ((JavaPersistentType)oldAt.getParent()).getAttributeNamed(value);
+		PersistentAttribute oldAt = (PersistentAttribute) getBusinessObjectForPictogramElement(pe);
+		PersistentAttribute newAl = ((PersistentType) oldAt.getParent()).getAttributeNamed(value);
 		if (newAl != null && !newAl.equals(oldAt)) {
 			String message = MessageFormat.format(JPAEditorMessages.DirectEditAttributeFeature_attributeExists, value);
 			return new Status(IStatus.ERROR, JPADiagramEditorPlugin.PLUGIN_ID, message);
@@ -104,18 +106,30 @@ public class DirectEditAttributeFeature extends AbstractDirectEditingFeature {
 		if (isMethodAnnotated)
 			value = JPAEditorUtil.produceValidAttributeName(value);
 		PictogramElement pe = context.getPictogramElement();
-		JavaSpecifiedPersistentAttribute oldAt = (JavaSpecifiedPersistentAttribute) getBusinessObjectForPictogramElement(pe);
+		PersistentAttribute oldAt = (PersistentAttribute) getBusinessObjectForPictogramElement(pe);
 
-		IRelation rel = getFeatureProvider().getRelationRelatedToAttribute(oldAt);
-		String inverseJPTName = null;
-		if (IBidirectionalRelation.class.isInstance(rel)) 
-			inverseJPTName = rel.getInverse().getName();
-		if (oldAt.getName().equals(value))
-			return;
-		try {
-			JpaArtifactFactory.instance().renameAttribute((JavaPersistentType)oldAt.getParent(), oldAt.getName(), value, inverseJPTName, getFeatureProvider());
-		} catch (InterruptedException e) {
-			return;
+		Set<IRelation> rels = getFeatureProvider().getRelationRelatedToAttribute(oldAt, JpaArtifactFactory.instance().getRelTypeName(oldAt));
+		if(!rels.isEmpty()) {
+			Iterator<IRelation> iter = rels.iterator();
+			while(iter.hasNext()) {
+				IRelation rel = iter.next();
+				String inverseJPTName = null;
+				if (IBidirectionalRelation.class.isInstance(rel)) 
+					inverseJPTName = rel.getInverse().getName();
+				if (oldAt.getName().equals(value))
+					return;
+				try {
+					JpaArtifactFactory.instance().renameAttribute((PersistentType) oldAt.getParent(), oldAt.getName(), value, inverseJPTName, getFeatureProvider());
+				} catch (InterruptedException e) {
+					return;
+				}
+			}
+		} else {
+			try {
+				JpaArtifactFactory.instance().renameAttribute((PersistentType) oldAt.getParent(), oldAt.getName(), value, null, getFeatureProvider());
+			} catch (InterruptedException e) {
+				return;
+			}
 		}
 		
 		if (pe.getGraphicsAlgorithm() == null)

@@ -29,20 +29,19 @@ import org.eclipse.graphiti.mm.algorithms.Text;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.ui.features.DefaultDeleteFeature;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandExecutor;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
+import org.eclipse.jpt.jpa.core.context.AttributeMapping;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsId2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.context.DerivedIdentity2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SingleRelationshipMapping2_0;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.command.DeleteAttributeCommand;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 
@@ -73,7 +72,7 @@ public class ClickRemoveAttributeButtonFeature extends DefaultDeleteFeature {
 	}
 		
 	private void deleteAttribute(ContainerShape pe, String attrName) {
-		JavaPersistentType jpt = (JavaPersistentType)getFeatureProvider().getBusinessObjectForPictogramElement(pe.getContainer().getContainer());
+		PersistentType jpt = (PersistentType)getFeatureProvider().getBusinessObjectForPictogramElement(pe.getContainer().getContainer());
 		deleteFieldFromCompositePKClass(attrName, jpt);
 		JpaArtifactFactory.instance().deleteAttribute(jpt, attrName, getFeatureProvider());
 	}
@@ -146,13 +145,13 @@ public class ClickRemoveAttributeButtonFeature extends DefaultDeleteFeature {
 	 * @param fqn - te fully qualified name of the composite primary key class
 	 * @return a collection of java persistent types that uses the same composite primary key class.
 	 */
-	private Set<JavaPersistentType> getAllJPTWithSameIDClassOrEmbeddedId(JavaPersistentType jpt, String fqn){
-		HashSet<JavaPersistentType> persistentTypes = new HashSet<JavaPersistentType>();
+	private Set<PersistentType> getAllJPTWithSameIDClassOrEmbeddedId(PersistentType jpt, String fqn){
+		HashSet<PersistentType> persistentTypes = new HashSet<PersistentType>();
 		ListIterator<PersistenceUnit> lit = jpt.getJpaProject().getContextModelRoot().getPersistenceXml().getRoot().getPersistenceUnits().iterator();		
 		PersistenceUnit pu = lit.next();
 		for(PersistentType persistentType : pu.getPersistentTypes()){
-			if(!persistentType.equals(jpt)  && ((hasSameEmbeddedId((JavaPersistentType) persistentType, fqn)) || hasSameIdClass((JavaPersistentType) persistentType, fqn))){
-				persistentTypes.add((JavaPersistentType) persistentType);
+			if(!persistentType.getName().equals(jpt.getName())  && ((hasSameEmbeddedId(persistentType, fqn)) || hasSameIdClass(persistentType, fqn))){
+				persistentTypes.add(persistentType);
 			}
 		}
 		return persistentTypes;
@@ -166,9 +165,9 @@ public class ClickRemoveAttributeButtonFeature extends DefaultDeleteFeature {
 	 * @return true if the java persistent type has an id class annotation with the given
 	 * fully qualified name, false otherwise.
 	 */
-	private boolean hasSameIdClass(JavaPersistentType jpt, String fqn){
+	private boolean hasSameIdClass(PersistentType jpt, String fqn){
 		JpaArtifactFactory jpaFactory = JpaArtifactFactory.instance();
-        if(jpaFactory.hasIDClassAnnotation(jpt) && jpaFactory.getIdType(jpt).equals(fqn)){
+        if(jpaFactory.hasIDClass(jpt) && jpaFactory.getIdType(jpt).equals(fqn)){
         	return true;
         }
         
@@ -183,9 +182,9 @@ public class ClickRemoveAttributeButtonFeature extends DefaultDeleteFeature {
 	 * @return true, if the java persistent type has an embedded id attribute with the
 	 * given fully qualified name.
 	 */
-	private boolean hasSameEmbeddedId(JavaPersistentType jpt, String fqn){
+	private boolean hasSameEmbeddedId(PersistentType jpt, String fqn){
 		JpaArtifactFactory jpaFactory = JpaArtifactFactory.instance();
-		for(JavaSpecifiedPersistentAttribute jpa : ((JavaPersistentType)jpt).getAttributes()){
+		for(PersistentAttribute jpa : jpt.getAttributes()){
 			if(jpaFactory.isEmbeddedId(jpa) && JPAEditorUtil.getAttributeTypeNameWithGenerics(jpa).equals(fqn)){
 				return true;
 			}
@@ -202,13 +201,14 @@ public class ClickRemoveAttributeButtonFeature extends DefaultDeleteFeature {
 	 * @param jpt - the java persistent type from which the attribute is originally deleted
 	 */
 	private void deleteFieldFromCompositePKClass(String attrName,
-			JavaPersistentType jpt) {
-		JavaSpecifiedPersistentAttribute jpa = jpt.getAttributeNamed(attrName);
-		HashSet<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(jpa);
-		if(annotations.contains(JPAEditorConstants.ANNOTATION_ONE_TO_ONE) || annotations.contains(JPAEditorConstants.ANNOTATION_MANY_TO_ONE)){
-			if(annotations.contains(JPAEditorConstants.ANNOTATION_ID)){
+			PersistentType jpt) {
+		PersistentAttribute jpa = jpt.getAttributeNamed(attrName);
+		AttributeMapping attributeMapping = JpaArtifactFactory.instance().getAttributeMapping(jpa);
+		if(attributeMapping instanceof SingleRelationshipMapping2_0){
+			DerivedIdentity2_0 derivedIdentity = ((SingleRelationshipMapping2_0)attributeMapping).getDerivedIdentity();
+			if(derivedIdentity.usesIdDerivedIdentityStrategy()){
 				deleteFieldFromIdClassCompositePK(attrName, jpt);
-			} else if(annotations.contains(JPAEditorConstants.ANNOTATION_MAPS_ID)){
+			} else if(derivedIdentity.usesMapsIdDerivedIdentityStrategy()){
 				deleteFieldFromEmbeddedIDCompositePK(jpt, jpa);
 			}
 		}
@@ -220,21 +220,25 @@ public class ClickRemoveAttributeButtonFeature extends DefaultDeleteFeature {
 	 * @param jpt - the java persistent type from which the attribute is originally deleted
 	 * @param jpa - the attribute to be deleted
 	 */
-	private void deleteFieldFromEmbeddedIDCompositePK(JavaPersistentType jpt,
-			JavaSpecifiedPersistentAttribute jpa) {
-		Annotation ann = jpa.getResourceAttribute().getAnnotation(MapsId2_0Annotation.ANNOTATION_NAME);
-		if(ann != null) {
-			String attribName = ((MapsId2_0Annotation)ann).getValue();
-			if(attribName == null)
-				return;
-			JpaArtifactFactory jpaFactory = JpaArtifactFactory.instance();
-			for(JavaSpecifiedPersistentAttribute jpa1 : jpt.getAttributes()){
-				if(jpaFactory.isEmbeddedId(jpa1)){
-					String fqn = JPAEditorUtil.getAttributeTypeNameWithGenerics(jpa1);
-					if(isDeleteAttributeAllowed(jpt, fqn)){
-						JavaPersistentType embeddedJPT = jpaFactory.getContextPersistentType(jpt.getJpaProject(), fqn);
-						if(embeddedJPT != null)
-							jpaFactory.deleteAttribute(embeddedJPT, attribName, getFeatureProvider());
+	private void deleteFieldFromEmbeddedIDCompositePK(PersistentType jpt,
+			PersistentAttribute jpa) {
+		
+		AttributeMapping attributeMapping = JpaArtifactFactory.instance().getAttributeMapping(jpa);
+		if(attributeMapping instanceof SingleRelationshipMapping2_0){
+			DerivedIdentity2_0 derivedIdentity = ((SingleRelationshipMapping2_0)attributeMapping).getDerivedIdentity();
+			if(derivedIdentity.usesMapsIdDerivedIdentityStrategy()){
+				String attribName = derivedIdentity.getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName();
+				if(attribName == null)
+					return;
+				JpaArtifactFactory jpaFactory = JpaArtifactFactory.instance();
+				for(PersistentAttribute jpa1 : jpt.getAttributes()){
+					if(jpaFactory.isEmbeddedId(jpa1)){
+						String fqn = JPAEditorUtil.getAttributeTypeNameWithGenerics(jpa1);
+						if(isDeleteAttributeAllowed(jpt, fqn)){
+							PersistentType embeddedJPT = jpaFactory.getContextPersistentType(jpt.getJpaProject(), fqn);
+							if(embeddedJPT != null)
+								jpaFactory.deleteAttribute(embeddedJPT, attribName, getFeatureProvider());
+						}
 					}
 				}
 			}
@@ -247,7 +251,7 @@ public class ClickRemoveAttributeButtonFeature extends DefaultDeleteFeature {
 	 * @param jpt - the java persistent type from which the attribute is originally deleted
 	 */
 	private void deleteFieldFromIdClassCompositePK(String attrName,
-			JavaPersistentType jpt) {
+			PersistentType jpt) {
 		JpaArtifactFactory jpaFactory = JpaArtifactFactory.instance();
 		String idClassFQN = jpaFactory.getIdType(jpt);
 		if(idClassFQN != null && isDeleteAttributeAllowed(jpt, idClassFQN)){
@@ -273,14 +277,16 @@ public class ClickRemoveAttributeButtonFeature extends DefaultDeleteFeature {
 	 * with the given fully qualified name and an derived identifiers; false - if there is at least
 	 * one java persistent type with composite primary class, that has an derived id.
 	 */
-	private boolean isDeleteAttributeAllowed(JavaPersistentType jpt, String fqn){
-		Set<JavaPersistentType> jpts = getAllJPTWithSameIDClassOrEmbeddedId(jpt, fqn);
-		for(JavaPersistentType perType : jpts){
-			for(JavaSpecifiedPersistentAttribute jpa : perType.getAttributes()){
-				HashSet<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(jpa);
-				if((annotations.contains(JPAEditorConstants.ANNOTATION_ONE_TO_ONE) || annotations.contains(JPAEditorConstants.ANNOTATION_MANY_TO_ONE)) &&
-						(annotations.contains(JPAEditorConstants.ANNOTATION_ID) || annotations.contains(JPAEditorConstants.ANNOTATION_MAPS_ID))){
-					return false;
+	private boolean isDeleteAttributeAllowed(PersistentType jpt, String fqn){
+		Set<PersistentType> jpts = getAllJPTWithSameIDClassOrEmbeddedId(jpt, fqn);
+		for(PersistentType perType : jpts){
+			for(PersistentAttribute jpa : perType.getAttributes()){
+				AttributeMapping attributeMapping = JpaArtifactFactory.instance().getAttributeMapping(jpa);
+				if(attributeMapping instanceof SingleRelationshipMapping2_0){
+					DerivedIdentity2_0 derivedIdentity = ((SingleRelationshipMapping2_0)attributeMapping).getDerivedIdentity();
+					if(derivedIdentity.usesIdDerivedIdentityStrategy() || derivedIdentity.usesMapsIdDerivedIdentityStrategy()){
+						return false;
+					}
 				}
 
 			}

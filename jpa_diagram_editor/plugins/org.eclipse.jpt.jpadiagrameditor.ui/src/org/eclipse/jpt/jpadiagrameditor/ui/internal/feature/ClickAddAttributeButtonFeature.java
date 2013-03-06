@@ -21,8 +21,8 @@ import org.eclipse.graphiti.features.context.ICreateContext;
 import org.eclipse.graphiti.features.impl.AbstractCreateFeature;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
@@ -52,12 +52,13 @@ public class ClickAddAttributeButtonFeature extends AbstractCreateFeature {
 	
 	public Object[] create(ICreateContext context) {
 		ContainerShape entityShape = context.getTargetContainer();
-		JavaPersistentType jpt = (JavaPersistentType)getFeatureProvider().getBusinessObjectForPictogramElement(entityShape);
+		PersistentType jpt = (PersistentType)getFeatureProvider().getBusinessObjectForPictogramElement(entityShape);
 		String newAttrName = JpaArtifactFactory.instance().createNewAttribute(jpt, false, getFeatureProvider());
 
-		JavaSpecifiedPersistentAttribute newAttr = (JavaSpecifiedPersistentAttribute) jpt.resolveAttribute(newAttrName);
+		PersistentAttribute newAttr = jpt.resolveAttribute(newAttrName);
 
-		getFeatureProvider().addAddIgnore((JavaPersistentType)newAttr.getParent(), newAttr.getName());
+		getFeatureProvider().addAddIgnore((PersistentType) newAttr.getParent(), newAttr.getName());
+		JpaArtifactFactory.instance().addOrmPersistentAttribute(jpt, newAttr, newAttr.getMappingKey());
 		addGraphicalRepresentation(context, newAttr);
         getFeatureProvider().getDirectEditingInfo().setActive(true);
         

@@ -20,8 +20,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jface.text.Document;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.text.edits.DeleteEdit;
@@ -33,11 +34,11 @@ import org.eclipse.text.edits.TextEditCopier;
 
 public class CreateEntityTypeHierarchy implements Command {
 
-	private JavaPersistentType subclass;
-	private JavaPersistentType superclass;
+	private PersistentType subclass;
+	private PersistentType superclass;
 	private boolean shouldCreate;
 
-	public CreateEntityTypeHierarchy(JavaPersistentType superclass, JavaPersistentType subclass, boolean shouldCreate) {
+	public CreateEntityTypeHierarchy(PersistentType superclass, PersistentType subclass, boolean shouldCreate) {
 		super();
 		this.superclass = superclass;
 		this.subclass = subclass;
@@ -47,12 +48,15 @@ public class CreateEntityTypeHierarchy implements Command {
 
 	public void execute() {
 		buildHierarchy(superclass, subclass, shouldCreate);
-		this.subclass.getJavaResourceType().getJavaResourceCompilationUnit()
-				.synchronizeWithJavaSource();
+		subclass.getJpaProject().getContextModelRoot().synchronizeWithResourceModel();
+		JavaResourceType jrt = subclass.getJavaResourceType();
+		jrt.getJavaResourceCompilationUnit().synchronizeWithJavaSource();
+		subclass.update();
+
 	}
 
-	private void buildHierarchy(JavaPersistentType superclass,
-			JavaPersistentType subclass, boolean build) {
+	private void buildHierarchy(PersistentType superclass,
+			PersistentType subclass, boolean build) {
 
 		try {
 			ICompilationUnit subCU = JPAEditorUtil.getCompilationUnit(subclass);
@@ -60,8 +64,8 @@ public class CreateEntityTypeHierarchy implements Command {
 			final Document document = new Document(subCU.getBuffer()
 					.getContents());
 			MultiTextEdit edit = new MultiTextEdit();
-			String str = document.get();
-
+			String str = document.get();			
+			
 			if (build) {
 				int offset = str.indexOf(subclass.getSimpleName())
 						+ subclass.getSimpleName().length();

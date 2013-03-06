@@ -39,7 +39,6 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.ui.actions.SelectionDispatchAction;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jpt.common.core.JptResourceModel;
-import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
@@ -49,11 +48,12 @@ import org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.AttributeMapping;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.core.resource.java.OwnableRelationshipMappingAnnotation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.GraphicsUpdater;
@@ -68,8 +68,9 @@ import org.eclipse.ui.IWorkbenchSite;
 
 public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 
-	protected Set<JavaSpecifiedPersistentAttribute> ats = null;
-	protected boolean hasNameAnnotation = false;
+	protected Set<PersistentAttribute> ats = null;
+	protected boolean hasEntitySpecifiedName = false;
+	private static final String REGEX_PATTERN = "(_[\\d]+)*"; //$NON-NLS-1$
 	
 	public RefactorEntityFeature(IFeatureProvider fp) {
 		super(fp);
@@ -82,10 +83,10 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
     	ICustomContext ctx = (ICustomContext)context;
     	PictogramElement pe = ctx.getInnerPictogramElement();
     	Object bo = getFeatureProvider().getBusinessObjectForPictogramElement(pe);
-    	if (bo instanceof JavaPersistentType) {
-    		JavaPersistentType jpt = (JavaPersistentType)bo;
+    	if (bo instanceof PersistentType) {
+    		PersistentType jpt = (PersistentType)bo;
     		ats = JpaArtifactFactory.instance().getRelatedAttributes(jpt);
-    		hasNameAnnotation = JpaArtifactFactory.instance().hasNameAnnotation(jpt);
+    		hasEntitySpecifiedName = JpaArtifactFactory.instance().hasEntitySpecifiedName(jpt);
     		return true;
     	}
     	if (pe instanceof Shape) {
@@ -93,10 +94,10 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
     		if (cs == null)
     			return false;
      		bo = getFeatureProvider().getBusinessObjectForPictogramElement(cs);
-        	if (bo instanceof JavaPersistentType) {
-        		JavaPersistentType jpt = (JavaPersistentType)bo;
+        	if (bo instanceof PersistentType) {
+        		PersistentType jpt = (PersistentType)bo;
         		ats = JpaArtifactFactory.instance().getRelatedAttributes(jpt);
-        		hasNameAnnotation = JpaArtifactFactory.instance().hasNameAnnotation(jpt);
+        		hasEntitySpecifiedName = JpaArtifactFactory.instance().hasEntitySpecifiedName(jpt);
         		return true;
         	}
     	}    	
@@ -111,7 +112,7 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 	public void execute(ICustomContext context, SelectionDispatchAction action) {
 		PictogramElement pe = context.getInnerPictogramElement();
 		final ContainerShape pict = ((Shape)pe).getContainer();
-	    final JavaPersistentType jpt = (JavaPersistentType)getBusinessObjectForPictogramElement(pict);
+	    final PersistentType jpt = (PersistentType)getBusinessObjectForPictogramElement(pict);
 		ICompilationUnit cu = getFeatureProvider().getCompilationUnit(jpt);
 		StructuredSelection sel = new StructuredSelection(cu);
 		final PersistenceUnit pu = JpaArtifactFactory.instance().getPersistenceUnit(jpt);
@@ -141,9 +142,9 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 		});
 	}
 	
-	public void execute(ICustomContext context, String newName, ICompilationUnit cu, JavaPersistentType originalJPT) {
+	public void execute(ICustomContext context, String newName, ICompilationUnit cu, PersistentType originalJPT) {
 		final Shape pict = (Shape)getFeatureProvider().getPictogramElementForBusinessObject(originalJPT);
-		final JavaPersistentType jpt = (JavaPersistentType)getFeatureProvider().
+		final PersistentType jpt = (PersistentType)getFeatureProvider().
 									getBusinessObjectForPictogramElement(pict);		
 		final PersistenceUnit pu = JpaArtifactFactory.instance().getPersistenceUnit(jpt);
 		final Semaphore s = new Semaphore(0);
@@ -164,7 +165,7 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 		});
 	}
 	
-	public static void remapEntity(final JavaPersistentType oldJPT,
+	public void remapEntity(final PersistentType oldJPT,
 								   final Shape pict,
 								   final PersistenceUnit pu,
 								   final boolean rename,
@@ -175,15 +176,22 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 				fp.getDiagramTypeProvider().getDiagramEditor().selectPictogramElements(new PictogramElement[] {});				 
 
 				String newJPTName = lsnr.getNewJPTName();
-				JavaPersistentType newJPT = JpaArtifactFactory.instance().getJPT(newJPTName, pu);
+				lsnr.setOldJptName(oldJPT.getSimpleName());
+				
+				if (!JpaPreferences.getDiscoverAnnotatedClasses(oldJPT.getJpaProject().getProject())) {
+					JPAEditorUtil.createUnregisterEntityFromXMLJob(oldJPT.getJpaProject(), oldJPT.getName());
+					JPAEditorUtil.createRegisterEntityInXMLJob(oldJPT.getJpaProject(), newJPTName);
+				}
+				
+				PersistentType newJPT = JpaArtifactFactory.instance().getJPT(newJPTName, pu);
 					
 				if(newJPT == null)
 					return;
 				
-				if (!JpaPreferences.getDiscoverAnnotatedClasses(newJPT.getJpaProject().getProject())) {
-					JPAEditorUtil.createUnregisterEntityFromXMLJob(newJPT.getJpaProject(), oldJPT.getName());
-					JPAEditorUtil.createRegisterEntityInXMLJob(newJPT.getJpaProject(), newJPTName);
-				}
+//				if (!JpaPreferences.getDiscoverAnnotatedClasses(oldJPT.getJpaProject().getProject())) {
+//					JPAEditorUtil.createUnregisterEntityFromXMLJob(oldJPT.getJpaProject(), oldJPT.getName());
+//					JPAEditorUtil.createRegisterEntityInXMLJob(oldJPT.getJpaProject(), newJPTName);
+//				}
 				
 				if (rename) {
 					String tableName = JPAEditorUtil.formTableName(newJPT);
@@ -192,11 +200,11 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 				
 				GraphicsUpdater.updateHeader((ContainerShape)pict, newJPT.getSimpleName());
 				linkNewElement(oldJPT, pict, fp, newJPT);
-				
-				for(JavaSpecifiedPersistentAttribute oldAttr : oldJPT.getAttributes()){
+
+				for(PersistentAttribute oldAttr : oldJPT.getAttributes()){
 					PictogramElement attrPict = fp.getPictogramElementForBusinessObject(oldAttr);
 					if(attrPict != null){
-						for(JavaSpecifiedPersistentAttribute newAttr : newJPT.getAttributes()){
+						for(PersistentAttribute newAttr : newJPT.getAttributes()){
 							if(newAttr.getName().equals(oldAttr.getName())){
 								linkNewElement(oldAttr, attrPict, fp, newAttr);
 							}
@@ -263,6 +271,7 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 	public class JPAProjectListener implements CollectionChangeListener {
 		private Semaphore s = null;
 		private String newJptName = null;
+		private String oldJptName = null;
 		
 		public JPAProjectListener(Semaphore s) {
 			this.s = s;
@@ -282,27 +291,35 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 			IType type = jrcu.getCompilationUnit().findPrimaryType();
 			newJptName = type.getFullyQualifiedName();
 			s.release();
-			if ((ats == null) || hasNameAnnotation)
+			if ((ats == null) || hasEntitySpecifiedName)
 				return;
-			final Iterator<JavaSpecifiedPersistentAttribute> iter = ats.iterator();
+
+			final Iterator<PersistentAttribute> iter = ats.iterator();
 			Runnable r = new Runnable() {
 				public void run() {
 					Hashtable<String, String> atOldToNewName = new Hashtable<String, String>();
-					Set<JavaSpecifiedPersistentAttribute> newSelfAts = new HashSet<JavaSpecifiedPersistentAttribute>();
+					Set<PersistentAttribute> newSelfAts = new HashSet<PersistentAttribute>();
 					while (iter.hasNext()) {
-						JavaSpecifiedPersistentAttribute at = iter.next();
-						JavaPersistentType atParent = (JavaPersistentType) at.getParent();
+						PersistentAttribute at = iter.next();
+						
+						String attributeNamPattern = JPAEditorUtil.decapitalizeFirstLetter(oldJptName) + REGEX_PATTERN;
+						boolean isSame = at.getName().matches(attributeNamPattern);
+						if(!isSame)
+							continue;
+						
+						PersistentType atParent = (PersistentType) at.getParent();
 						ICompilationUnit cu = getFeatureProvider().getCompilationUnit(atParent);
 						if (!cu.exists()) {
-							at = (JavaSpecifiedPersistentAttribute)at.getPersistenceUnit().getPersistentType(newJptName).getAttributeNamed(at.getName());
-							JavaSpecifiedPersistentAttribute newAt = null;
+							at = at.getPersistenceUnit().getPersistentType(newJptName).getAttributeNamed(at.getName());
 							try {
-								newAt = JpaArtifactFactory.instance().renameAttribute(atParent, at.getName(), JPAEditorUtil.returnSimpleName(newJptName), newJptName, getFeatureProvider());
+								PersistentAttribute newAt = JpaArtifactFactory.instance().renameAttribute(atParent, at.getName(), JPAEditorUtil.returnSimpleName(newJptName), newJptName, getFeatureProvider());
+								if(newAt != null) {
+									atOldToNewName.put(at.getName(), newAt.getName());
+									newSelfAts.add(newAt);
+								}
 							} catch (InterruptedException e) {
 								JPADiagramEditorPlugin.logError(e);
 							}
-							atOldToNewName.put(at.getName(), newAt.getName());
-							newSelfAts.add(newAt);
 						} else {
 							try {
 								JpaArtifactFactory.instance().renameAttribute(atParent, at.getName(), JPAEditorUtil.returnSimpleName(newJptName), newJptName, getFeatureProvider());
@@ -311,20 +328,19 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 							}
 						}
 					}
-					Iterator<JavaSpecifiedPersistentAttribute> itr =  newSelfAts.iterator();
+
+					Iterator<PersistentAttribute> itr =  newSelfAts.iterator();
 					while (itr.hasNext()) {
-						JavaSpecifiedPersistentAttribute at = itr.next();
-						JavaAttributeMapping m = at.getMapping();
-						Annotation mappingAnnotation = m.getMappingAnnotation();
-						if (mappingAnnotation == null)
-							return;
-						if (OwnableRelationshipMappingAnnotation.class.isInstance(mappingAnnotation)) {
-							OwnableRelationshipMappingAnnotation ownableMappingAnnotation = (OwnableRelationshipMappingAnnotation)mappingAnnotation;
-							String oldMappedBy = ownableMappingAnnotation.getMappedBy();
+						PersistentAttribute at = itr.next();
+						AttributeMapping m = JpaArtifactFactory.instance().getAttributeMapping(at);
+						if(m instanceof RelationshipMapping){
+							SpecifiedMappedByRelationshipStrategy mappedByRelationShipStrategy = (SpecifiedMappedByRelationshipStrategy)((RelationshipMapping)m).getRelationship().getStrategy();
+							String oldMappedBy = mappedByRelationShipStrategy.getMappedByAttribute();
 							if (oldMappedBy != null) {
 								String newMappedBy = atOldToNewName.get(oldMappedBy);
-								if (newMappedBy != null)
-									ownableMappingAnnotation.setMappedBy(newMappedBy);
+								if(newMappedBy != null) {
+									mappedByRelationShipStrategy.setMappedByAttribute(newMappedBy);
+								}
 							}
 						}
 					}
@@ -345,6 +361,10 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 		
 		public String getNewJPTName() {
 			return newJptName;
+		}
+
+		public void setOldJptName(String oldJptName) {
+			this.oldJptName = oldJptName;
 		}
 
 	}

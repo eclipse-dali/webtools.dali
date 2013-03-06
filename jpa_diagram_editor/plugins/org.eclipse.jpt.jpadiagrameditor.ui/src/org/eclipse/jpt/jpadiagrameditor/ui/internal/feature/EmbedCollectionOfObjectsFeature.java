@@ -29,14 +29,11 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollection2_0Annotation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.ModelIntegrationUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.propertypage.JPADiagramPropertyPage;
@@ -45,12 +42,13 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorImageProvi
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.HasCollectionReferenceRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.HasReferanceRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.HasReferanceRelation.HasReferenceType;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 
 public class EmbedCollectionOfObjectsFeature extends AbstractCreateConnectionFeature {
 	
-	private JavaPersistentType embeddingEntity;
+	private PersistentType embeddingEntity;
 
 	public EmbedCollectionOfObjectsFeature(IFeatureProvider fp) {
 		this(fp, JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureDescription);
@@ -62,16 +60,16 @@ public class EmbedCollectionOfObjectsFeature extends AbstractCreateConnectionFea
 	}
 
 	public boolean canCreate(ICreateConnectionContext context) {
-		JavaPersistentType embeddingEntity = (JavaPersistentType)getPersistentType(context.getSourceAnchor());
-		JavaPersistentType embeddable = (JavaPersistentType)getPersistentType(context.getTargetAnchor());
+		PersistentType embeddingEntity = getPersistentType(context.getSourceAnchor());
+		PersistentType embeddable = getPersistentType(context.getTargetAnchor());
 	    if ((embeddable == null) || (embeddingEntity == null)) 
 	        return false;
 		
-	    if (!JpaArtifactFactory.instance().hasEmbeddableAnnotation(embeddable))
+	    if (!JpaArtifactFactory.instance().isEmbeddable(embeddable))
 	    	return false;
 	    
-	    if(!JpaArtifactFactory.instance().hasEntityAnnotation(embeddingEntity) && 
-	    				!JpaArtifactFactory.instance().hasEmbeddableAnnotation(embeddingEntity))
+	    if(!JpaArtifactFactory.instance().isEntity(embeddingEntity) && 
+	    				!JpaArtifactFactory.instance().isEmbeddable(embeddingEntity))
 	    	return false;
 	    if(isNotAllowed(embeddingEntity, embeddable)){
 	    	return false;
@@ -80,18 +78,18 @@ public class EmbedCollectionOfObjectsFeature extends AbstractCreateConnectionFea
 	}
 
 	public Connection create(ICreateConnectionContext context) {
-		JavaPersistentType embeddingEntity = (JavaPersistentType)getPersistentType(context.getSourceAnchor());
-		JavaPersistentType embeddable = (JavaPersistentType)getPersistentType(context.getTargetAnchor());
+		PersistentType embeddingEntity = getPersistentType(context.getSourceAnchor());
+		PersistentType embeddable = getPersistentType(context.getTargetAnchor());
 		
 		boolean isMap = JPADiagramPropertyPage.isMapType(embeddingEntity.getJpaProject().getProject());
 		String mapKeyType = null;
 		if(isMap){
-			mapKeyType = "java.lang.String"; //$NON-NLS-1$
+			mapKeyType = JPAEditorConstants.STRING_TYPE;
 		}
-		
-		JavaSpecifiedPersistentAttribute embeddedAttribute = JPAEditorUtil.addAnnotatedAttribute(getFeatureProvider(), embeddingEntity, embeddable, true, mapKeyType);
-		embeddedAttribute.setMappingKey(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
-		embeddedAttribute.getResourceAttribute().addAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME);
+
+		PersistentAttribute embeddedAttribute = JPAEditorUtil.addAnnotatedAttribute(getFeatureProvider(), embeddingEntity, embeddable, true, mapKeyType);
+		embeddedAttribute.getJavaPersistentAttribute().setMappingKey(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
+		JpaArtifactFactory.instance().addOrmPersistentAttribute(embeddingEntity, embeddedAttribute, MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		
 		HasReferanceRelation rel = new HasCollectionReferenceRelation(embeddingEntity, embeddable);
 		rel.setEmbeddedAnnotatedAttribute(embeddedAttribute);
@@ -107,7 +105,7 @@ public class EmbedCollectionOfObjectsFeature extends AbstractCreateConnectionFea
 	}
 
 	public boolean canStartConnection(ICreateConnectionContext context) {
-		embeddingEntity = (JavaPersistentType)getPersistentType(context.getSourceAnchor());
+		embeddingEntity = getPersistentType(context.getSourceAnchor());
 	    if (embeddingEntity == null) 
 	        return false;
 	    return true;
@@ -138,14 +136,14 @@ public class EmbedCollectionOfObjectsFeature extends AbstractCreateConnectionFea
 	 * @return true if the given emebddable is embedded as element collection in an entity or it embed in itself
 	 * an element collection of another embeddable.
 	 */
-	private boolean isEmbeddableAlreadyEmbeddedAsElementCollection(JavaPersistentType jpt, boolean isEmbedded){
+	private boolean isEmbeddableAlreadyEmbeddedAsElementCollection(PersistentType jpt, boolean isEmbedded){
 		Set<HasReferanceRelation> refs = JpaArtifactFactory.instance().findAllHasReferenceRelationsByEmbeddable(jpt, getFeatureProvider());
 		if(!refs.isEmpty()){
 			for(HasReferanceRelation ref : refs){
 				if(ref.getReferenceType().equals(HasReferenceType.COLLECTION)){
-					if(!isEmbedded && ref.getEmbeddable().equals(jpt)){
+					if(!isEmbedded && ref.getEmbeddable().getName().equals(jpt.getName())){
 						return true;
-					} else if(isEmbedded && ref.getEmbeddingEntity().equals(jpt)){
+					} else if(isEmbedded && ref.getEmbeddingEntity().getName().equals(jpt.getName())){
 						return true;
 					}
 				}
@@ -163,18 +161,18 @@ public class EmbedCollectionOfObjectsFeature extends AbstractCreateConnectionFea
 	 * @param embeddable - the target entity of the connection
 	 * @return true if the connection is possible, false otherwise.
 	 */
-	private boolean isNotAllowed(JavaPersistentType embeddingEntity, JavaPersistentType embeddable){
+	private boolean isNotAllowed(PersistentType embeddingEntity, PersistentType embeddable){
 		boolean notAllowed = false;
-		if(JpaArtifactFactory.instance().hasEmbeddableAnnotation(embeddable)){
+		if(JpaArtifactFactory.instance().isEmbeddable(embeddable)){
 			for(PersistentAttribute attr : embeddable.getAllAttributes()){
 				if(attr.getMappingKey().equals(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY)){
 					return true;
 				}
 			}
 		}
-		if(JpaArtifactFactory.instance().hasEmbeddableAnnotation(embeddingEntity)){
+		if(JpaArtifactFactory.instance().isEmbeddable(embeddingEntity)){
 			notAllowed = isEmbeddableAlreadyEmbeddedAsElementCollection(embeddingEntity, false);
-		} else if(JpaArtifactFactory.instance().hasEntityAnnotation(embeddingEntity)){
+		} else if(JpaArtifactFactory.instance().isEntity(embeddingEntity)){
 			notAllowed = isEmbeddableAlreadyEmbeddedAsElementCollection(embeddable, true);
 		}
 		return notAllowed;		
@@ -213,11 +211,11 @@ public class EmbedCollectionOfObjectsFeature extends AbstractCreateConnectionFea
 		JpaProject project = ModelIntegrationUtil.getProjectByDiagram(d.getName());
 		PersistenceUnit unit = project.getContextModelRoot().getPersistenceXml().
 								getRoot().getPersistenceUnits().iterator().next();
-		if(JpaArtifactFactory.instance().hasEntityAnnotation(embeddingEntity) 
-				|| JpaArtifactFactory.instance().hasEmbeddableAnnotation(embeddingEntity)){
+		if(JpaArtifactFactory.instance().isEntity(embeddingEntity) 
+				|| JpaArtifactFactory.instance().isEmbeddable(embeddingEntity)){
 			disableAllNotEmbeddablesOrEmbedAsElementCollection(unit);
 		} 
-		else if(JpaArtifactFactory.instance().hasMappedSuperclassAnnotation(embeddingEntity)){
+		else if(JpaArtifactFactory.instance().isMappedSuperclass(embeddingEntity)){
 			disableAllPersistentType(unit);
 		}
 	}
@@ -230,9 +228,9 @@ public class EmbedCollectionOfObjectsFeature extends AbstractCreateConnectionFea
 	private void disableAllNotEmbeddablesOrEmbedAsElementCollection(PersistenceUnit unit) {
 		for (ClassRef classRef : unit.getClassRefs()) {
 			if (classRef.getJavaPersistentType() != null) {
-				final JavaPersistentType jpt = classRef.getJavaPersistentType();
-				if(JpaArtifactFactory.instance().hasEntityAnnotation(jpt) || JpaArtifactFactory.instance().hasMappedSuperclassAnnotation(jpt) 
-						|| embeddingEntity.equals(jpt) || isNotAllowed(embeddingEntity, jpt)){
+				final PersistentType jpt = classRef.getJavaPersistentType();
+				if(JpaArtifactFactory.instance().isEntity(jpt) || JpaArtifactFactory.instance().isMappedSuperclass(jpt) 
+						|| embeddingEntity.getName().equals(jpt.getName()) || isNotAllowed(embeddingEntity, jpt)){
 					getFeatureProvider().setGrayColor(jpt);
 				}
 				
@@ -241,14 +239,14 @@ public class EmbedCollectionOfObjectsFeature extends AbstractCreateConnectionFea
 	}
 
 	/**
-	 * Disable (color in gray) all {@link JavaPersistentType}s registered in the
+	 * Disable (color in gray) all {@link PersistentType}s registered in the
 	 * persistence unit.
 	 * @param unit
 	 */
 	private void disableAllPersistentType(PersistenceUnit unit) {
 		for (ClassRef classRef : unit.getClassRefs()) {
 			if (classRef.getJavaPersistentType() != null) {
-				final JavaPersistentType jpt = classRef.getJavaPersistentType();
+				final PersistentType jpt = classRef.getJavaPersistentType();
 				getFeatureProvider().setGrayColor(jpt);
 			}
 		}
@@ -266,8 +264,8 @@ public class EmbedCollectionOfObjectsFeature extends AbstractCreateConnectionFea
 								getRoot().getPersistenceUnits().iterator().next();
 		for (ClassRef classRef : unit.getClassRefs()) {
 			if (classRef.getJavaPersistentType() != null) {
-				final JavaPersistentType jpt = classRef.getJavaPersistentType();
-				if(JpaArtifactFactory.instance().hasMappedSuperclassAnnotation(jpt)){
+				final PersistentType jpt = classRef.getJavaPersistentType();
+				if(JpaArtifactFactory.instance().isMappedSuperclass(jpt)){
 					getFeatureProvider().setGrayColor(jpt);
 				}
 				

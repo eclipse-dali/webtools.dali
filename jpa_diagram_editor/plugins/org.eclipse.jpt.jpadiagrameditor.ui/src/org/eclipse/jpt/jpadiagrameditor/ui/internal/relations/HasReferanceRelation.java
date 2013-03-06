@@ -21,20 +21,20 @@ import java.util.Hashtable;
 import org.eclipse.graphiti.mm.pictograms.Anchor;
 import org.eclipse.graphiti.mm.pictograms.Connection;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
 
 public abstract class HasReferanceRelation {
 	protected final static String SEPARATOR = ";hasReference;";							//$NON-NLS-1$
 
-	protected JavaPersistentType embeddingEntity;
-	protected JavaPersistentType embeddable;
+	protected PersistentType embeddingEntity;
+	protected PersistentType embeddable;
 	
 	public final static Hashtable<HasReferenceType, String> relTypeToIdPart = new Hashtable<HasReferenceType, String>(); 
-	
-	private JavaSpecifiedPersistentAttribute embeddedAnnotatedAttribute;
+
+	private PersistentAttribute embeddedAnnotatedAttribute;
 	
 	public static enum HasReferenceType {
 		SINGLE, COLLECTION
@@ -45,8 +45,8 @@ public abstract class HasReferanceRelation {
 		relTypeToIdPart.put(HasReferenceType.COLLECTION, "1-N;"); //$NON-NLS-1$
 	}
 	
-	public HasReferanceRelation(JavaPersistentType embeddingEntity, 
-					   JavaPersistentType embeddable) {
+	public HasReferanceRelation(PersistentType embeddingEntity, 
+					   PersistentType embeddable) {
 		this.embeddingEntity = embeddingEntity;
 		this.embeddable = embeddable;
 	}
@@ -58,18 +58,18 @@ public abstract class HasReferanceRelation {
 		Object endObj = fp.getBusinessObjectForPictogramElement((ContainerShape)end.eContainer());
 		if ((endObj == null) || (startObj == null))
 			throw new NullPointerException("Some of the connection ends is null");	//$NON-NLS-1$
-		if (!(endObj instanceof JavaPersistentType) || !(startObj instanceof JavaPersistentType))
+		if (!(endObj instanceof PersistentType) || !(startObj instanceof PersistentType))
 			throw new IllegalArgumentException();
-		this.embeddingEntity = (JavaPersistentType)startObj;
-		this.embeddable = (JavaPersistentType)endObj;
+		this.embeddingEntity = (PersistentType)startObj;
+		this.embeddable = (PersistentType)endObj;
 	}
 	
 	
-	public JavaPersistentType getEmbeddable() {
+	public PersistentType getEmbeddable() {
 		return embeddable; 
 	}
 	
-	public JavaPersistentType getEmbeddingEntity() {
+	public PersistentType getEmbeddingEntity() {
 		return embeddingEntity; 
 	}
 
@@ -77,7 +77,7 @@ public abstract class HasReferanceRelation {
 		return generateId(embeddingEntity, embeddable, embeddedAnnotatedAttribute.getName(), getReferenceType());
 	}
 
-	public static String generateId(JavaPersistentType startJpt, JavaPersistentType endJpt, String embeddedAttributeName, HasReferenceType relType) {		
+	public static String generateId(PersistentType startJpt, PersistentType endJpt, String embeddedAttributeName, HasReferenceType relType) {		
 		return JPAEditorConstants.HAS_REFERENCE_RELATION_ID_PREFIX +
 				startJpt.getName() + SEPARATOR + relTypeToIdPart.get(relType) + endJpt.getName()+ "-" + embeddedAttributeName; //$NON-NLS-1$
 	}
@@ -96,11 +96,11 @@ public abstract class HasReferanceRelation {
 
 	public abstract HasReferenceType getReferenceType();
 
-	public JavaSpecifiedPersistentAttribute getEmbeddedAnnotatedAttribute() {
+	public PersistentAttribute getEmbeddedAnnotatedAttribute() {
 		return embeddedAnnotatedAttribute;
 	}
 
-	public void setEmbeddedAnnotatedAttribute(JavaSpecifiedPersistentAttribute embeddedAnnotatedAttribute) {
+	public void setEmbeddedAnnotatedAttribute(PersistentAttribute embeddedAnnotatedAttribute) {
 		this.embeddedAnnotatedAttribute = embeddedAnnotatedAttribute;
 	}
 }

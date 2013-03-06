@@ -15,8 +15,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.relations;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.propertypage.JPADiagramPropertyPage;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
@@ -25,11 +25,11 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 
 public class ManyToOneBiDirRelation  extends ManyToOneRelation implements IBidirectionalRelation{
 
-	public ManyToOneBiDirRelation(IJPAEditorFeatureProvider fp, JavaPersistentType owner, 
-								  JavaPersistentType inverse, 
+	public ManyToOneBiDirRelation(IJPAEditorFeatureProvider fp, PersistentType owner, 
+								  PersistentType inverse, 
 								  String ownerAttributeName,
 								  String inverseAttributeName,
-								  boolean createAttribs, JavaPersistentType embeddingEntity,
+								  boolean createAttribs, PersistentType embeddingEntity,
 								  boolean isDerivedIdFeature) {
 		super(owner, inverse);
 		this.ownerAttributeName = ownerAttributeName;
@@ -40,40 +40,39 @@ public class ManyToOneBiDirRelation  extends ManyToOneRelation implements IBidir
 	}	
 
 	@Override
-	public JavaSpecifiedPersistentAttribute getOwnerAnnotatedAttribute() {
+	public PersistentAttribute getOwnerAnnotatedAttribute() {
 		return ownerAnnotatedAttribute;
 	}
 
 	@Override
-	public void setOwnerAnnotatedAttribute(	JavaSpecifiedPersistentAttribute ownerAnnotatedAttribute) {
+	public void setOwnerAnnotatedAttribute(	PersistentAttribute ownerAnnotatedAttribute) {
 		this.ownerAnnotatedAttribute = ownerAnnotatedAttribute;
 	}
 
 	@Override
-	public JavaSpecifiedPersistentAttribute getInverseAnnotatedAttribute() {
+	public PersistentAttribute getInverseAnnotatedAttribute() {
 		return inverseAnnotatedAttribute;
 	}
 
 	@Override
-	public void setInverseAnnotatedAttribute(JavaSpecifiedPersistentAttribute inverseAnnotatedAttribute) {
+	public void setInverseAnnotatedAttribute(PersistentAttribute inverseAnnotatedAttribute) {
 		this.inverseAnnotatedAttribute = inverseAnnotatedAttribute;
 	}
 
-	private void createRelation(IJPAEditorFeatureProvider fp, JavaPersistentType embeddingEntity, boolean isDerivedIdFeature) {
+	private void createRelation(IJPAEditorFeatureProvider fp, PersistentType embeddingEntity, boolean isDerivedIdFeature) {
 		ownerAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, owner, inverse, false, null);
-		if(isDerivedIdFeature){
-			JpaArtifactFactory.instance().calculateDerivedIdAnnotation(owner, inverse, ownerAnnotatedAttribute);
-		}
-		
+			
 		boolean isMap = JPADiagramPropertyPage.isMapType(owner.getJpaProject().getProject());
 		String mapKeyType = getMapKeyType(isMap, owner, embeddingEntity);
-		if(JpaArtifactFactory.instance().hasEmbeddableAnnotation(owner)){
+		if(JpaArtifactFactory.instance().isEmbeddable(owner)){
 			inverseAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, inverse, embeddingEntity, true, mapKeyType);
-
 		} else {
 			inverseAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, inverse, owner, true, mapKeyType);
 		}
 		JpaArtifactFactory.instance().addManyToOneBidirectionalRelation(fp, owner, ownerAnnotatedAttribute, inverse, inverseAnnotatedAttribute, isMap);		
+		if(isDerivedIdFeature){
+			JpaArtifactFactory.instance().calculateDerivedIdAttribute(owner, inverse, ownerAnnotatedAttribute);
+		}
 	}
 		
 	@Override
@@ -81,8 +80,8 @@ public class ManyToOneBiDirRelation  extends ManyToOneRelation implements IBidir
 		return RelDir.BI;
 	}
 
-	private String getMapKeyType(boolean isMap, JavaPersistentType jpt, JavaPersistentType embeddingEntity){
-		if(JpaArtifactFactory.instance().hasEmbeddableAnnotation(jpt) && embeddingEntity!=null){
+	private String getMapKeyType(boolean isMap, PersistentType jpt, PersistentType embeddingEntity){
+		if(JpaArtifactFactory.instance().isEmbeddable(jpt) && embeddingEntity!=null){
 			return isMap ? JpaArtifactFactory.instance().getIdType(embeddingEntity) : null;
 		}
 		return isMap ? JpaArtifactFactory.instance().getIdType(jpt) : null;

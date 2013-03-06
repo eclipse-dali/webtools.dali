@@ -27,12 +27,10 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.core.resource.java.EmbeddedAnnotation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.ModelIntegrationUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
@@ -44,7 +42,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 
 public class EmbedSingleObjectFeature extends AbstractCreateConnectionFeature {
 	
-	private JavaPersistentType embeddingEntity;
+	private PersistentType embeddingEntity;
 
 	public EmbedSingleObjectFeature(IFeatureProvider fp) {
 		this(fp, JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureDescription);
@@ -56,31 +54,31 @@ public class EmbedSingleObjectFeature extends AbstractCreateConnectionFeature {
 	}
 
 	public boolean canCreate(ICreateConnectionContext context) {
-		embeddingEntity = (JavaPersistentType)getPersistentType(context.getSourceAnchor());
-		JavaPersistentType embeddable = (JavaPersistentType)getPersistentType(context.getTargetAnchor());
+		embeddingEntity = getPersistentType(context.getSourceAnchor());
+		PersistentType embeddable = getPersistentType(context.getTargetAnchor());
 	    if ((embeddingEntity == null) || (embeddable == null)) 
 	        return false;
 		
-	    if (!JpaArtifactFactory.instance().hasEmbeddableAnnotation(embeddable))
+	    if (!JpaArtifactFactory.instance().isEmbeddable(embeddable))
 	    	return false;
 	    
-	    if(JpaArtifactFactory.instance().hasEmbeddableAnnotation(embeddingEntity) && 
+	    if(JpaArtifactFactory.instance().isEmbeddable(embeddingEntity) && 
 	    				JPAEditorUtil.checkJPAFacetVersion(embeddable.getJpaProject(), JPAEditorUtil.JPA_PROJECT_FACET_10))
 	    	return false;
 	    
-	    if(!JpaArtifactFactory.instance().hasEntityAnnotation(embeddingEntity) && 
-	    				!JpaArtifactFactory.instance().hasEmbeddableAnnotation(embeddingEntity))
+	    if(!JpaArtifactFactory.instance().isEntity(embeddingEntity) && 
+	    				!JpaArtifactFactory.instance().isEmbeddable(embeddingEntity))
 	    	return false;
 	    return true;
 	}
 
 	public Connection create(ICreateConnectionContext context) {
-		JavaPersistentType embeddingEntity = (JavaPersistentType)getPersistentType(context.getSourceAnchor());
-		JavaPersistentType embeddable = (JavaPersistentType)getPersistentType(context.getTargetAnchor());
-		
-		JavaSpecifiedPersistentAttribute embeddedAttribute = JPAEditorUtil.addAnnotatedAttribute(getFeatureProvider(), embeddingEntity, embeddable, false, null);
-		embeddedAttribute.setMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
-		embeddedAttribute.getResourceAttribute().addAnnotation(EmbeddedAnnotation.ANNOTATION_NAME);
+		PersistentType embeddingEntity = getPersistentType(context.getSourceAnchor());
+		PersistentType embeddable = getPersistentType(context.getTargetAnchor());
+
+		PersistentAttribute embeddedAttribute = JPAEditorUtil.addAnnotatedAttribute(getFeatureProvider(), embeddingEntity, embeddable, false, null);
+		embeddedAttribute.getJavaPersistentAttribute().setMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
+		JpaArtifactFactory.instance().addOrmPersistentAttribute(embeddingEntity, embeddedAttribute, MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		
 		HasReferanceRelation rel = new HasSingleReferenceRelation(embeddingEntity, embeddable);
 		rel.setEmbeddedAnnotatedAttribute(embeddedAttribute);
@@ -96,7 +94,7 @@ public class EmbedSingleObjectFeature extends AbstractCreateConnectionFeature {
 	}
 
 	public boolean canStartConnection(ICreateConnectionContext context) {
-	    embeddingEntity = (JavaPersistentType)getPersistentType(context.getSourceAnchor());
+	    embeddingEntity = getPersistentType(context.getSourceAnchor());
 
 	    if (embeddingEntity == null)
 	        return false;
@@ -154,12 +152,12 @@ public class EmbedSingleObjectFeature extends AbstractCreateConnectionFeature {
 		PersistenceUnit unit = project.getContextModelRoot().getPersistenceXml().
 								getRoot().getPersistenceUnits().iterator().next();
 		boolean isJPA10Project = JPAEditorUtil.checkJPAFacetVersion(embeddingEntity.getJpaProject(), JPAEditorUtil.JPA_PROJECT_FACET_10);
-		if(JpaArtifactFactory.instance().hasEntityAnnotation(embeddingEntity)
-				|| (!isJPA10Project && JpaArtifactFactory.instance().hasEmbeddableAnnotation(embeddingEntity))){
+		if(JpaArtifactFactory.instance().isEntity(embeddingEntity)
+				|| (!isJPA10Project && JpaArtifactFactory.instance().isEmbeddable(embeddingEntity))){
 			disableAllJPTsThatAreNotEmbeddables(unit);
 		} 
-		else if(JpaArtifactFactory.instance().hasMappedSuperclassAnnotation(embeddingEntity)
-				|| (isJPA10Project && JpaArtifactFactory.instance().hasEmbeddableAnnotation(embeddingEntity))){
+		else if(JpaArtifactFactory.instance().isMappedSuperclass(embeddingEntity)
+				|| (isJPA10Project && JpaArtifactFactory.instance().isEmbeddable(embeddingEntity))){
 			disableAllPersistenTypes(unit);
 		}
 	}
@@ -172,8 +170,8 @@ public class EmbedSingleObjectFeature extends AbstractCreateConnectionFeature {
 	private void disableAllJPTsThatAreNotEmbeddables(PersistenceUnit unit) {
 		for (ClassRef classRef : unit.getClassRefs()) {
 			if (classRef.getJavaPersistentType() != null) {
-				final JavaPersistentType jpt = classRef.getJavaPersistentType();
-				if(JpaArtifactFactory.instance().hasEntityAnnotation(jpt) || JpaArtifactFactory.instance().hasMappedSuperclassAnnotation(jpt)){
+				final PersistentType jpt = classRef.getJavaPersistentType();
+				if(JpaArtifactFactory.instance().isEntity(jpt) || JpaArtifactFactory.instance().isMappedSuperclass(jpt)){
 					getFeatureProvider().setGrayColor(jpt);
 				}
 				
@@ -194,9 +192,9 @@ public class EmbedSingleObjectFeature extends AbstractCreateConnectionFeature {
 		boolean isJPA10Project = JPAEditorUtil.checkJPAFacetVersion(ModelIntegrationUtil.getProjectByDiagram(getDiagram().getName()), JPAEditorUtil.JPA_PROJECT_FACET_10);
 		for (ClassRef classRef : unit.getClassRefs()) {
 			if (classRef.getJavaPersistentType() != null) {
-				final JavaPersistentType jpt = classRef.getJavaPersistentType();
-				if(JpaArtifactFactory.instance().hasMappedSuperclassAnnotation(jpt) ||
-						(isJPA10Project && JpaArtifactFactory.instance().hasEmbeddableAnnotation(jpt))){
+				final PersistentType jpt = classRef.getJavaPersistentType();
+				if(JpaArtifactFactory.instance().isMappedSuperclass(jpt) ||
+						(isJPA10Project && JpaArtifactFactory.instance().isEmbeddable(jpt))){
 					getFeatureProvider().setGrayColor(jpt);
 				}
 				
@@ -205,14 +203,14 @@ public class EmbedSingleObjectFeature extends AbstractCreateConnectionFeature {
 	}
 
 	/**
-	 * Disable (color in gray) all {@link JavaPersistentType}s registered in the
+	 * Disable (color in gray) all {@link PersistentType}s registered in the
 	 * persistence unit.
 	 * @param unit
 	 */
 	private void disableAllPersistenTypes(PersistenceUnit unit) {
 		for (ClassRef classRef : unit.getClassRefs()) {
 			if (classRef.getJavaPersistentType() != null) {
-				final JavaPersistentType jpt = classRef.getJavaPersistentType();
+				final PersistentType jpt = classRef.getJavaPersistentType();
 				getFeatureProvider().setGrayColor(jpt);
 			}
 		}

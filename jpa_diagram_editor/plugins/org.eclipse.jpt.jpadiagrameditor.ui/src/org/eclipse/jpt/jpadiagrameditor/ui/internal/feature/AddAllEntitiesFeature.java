@@ -37,8 +37,9 @@ import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
+import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.ModelIntegrationUtil;
@@ -96,35 +97,12 @@ public class AddAllEntitiesFeature extends AbstractCustomFeature implements IAdd
 		lowerEdges[0] = lowestRightestPointOfExistingDiagram.y + ((lowestRightestPointOfExistingDiagram.y == 0) ? DIST_FROM_EDGE_V : DIST_V);		
 		TransactionalEditingDomain ted = ModelIntegrationUtil.getTransactionalEditingDomain(d);
 		
-		for (ClassRef classRef : unit.getClassRefs()) {
-			if (classRef.getJavaPersistentType() != null) { // null if
-				JavaPersistentType jpt = classRef.getJavaPersistentType(); 
-				if (JpaArtifactFactory.instance().hasAnyAnnotationType(jpt)) {
-					PictogramElement pe = getFeatureProvider().getPictogramElementForBusinessObject(jpt);
-					if (pe != null)
-						continue;
-					
-					final AddContext ctx = new AddContext();
-					ctx.setTargetContainer(d);
-					ctx.setNewObject(jpt);
-					
-					IndexAndLowerEdge ie = getMinLowerEdge();
-					
-					int x = DIST_FROM_EDGE_H + ie.index * (JPAEditorConstants.ENTITY_WIDTH + DIST_H);
-					ctx.setLocation(x, ie.lowerEdge);
-					final AddJPAEntityFeature ft = new AddJPAEntityFeature(getFeatureProvider(), false);
-					
-					ted.getCommandStack().execute(new RecordingCommand(ted) {
-						@Override
-						protected void doExecute() {
-							ft.add(ctx);
-						}
-					});
-					ContainerShape entityShape = (ContainerShape)getFeatureProvider().getPictogramElementForBusinessObject(jpt);
-					lowerEdges[ie.index] = entityShape.getGraphicsAlgorithm().getY() + entityShape.getGraphicsAlgorithm().getHeight() + DIST_V;
-				}
-			}
-		}		
+		showAllJavaPersistentTypes(d, unit, ted);
+		
+		for(MappingFileRef mappingFileRef : unit.getMappingFileRefs()) {
+			showAllOrmPersistentTypes(d, mappingFileRef, ted);
+		}
+		
 		ted.getCommandStack().execute(new RecordingCommand(ted) {
 			@Override
 			protected void doExecute() {
@@ -132,6 +110,53 @@ public class AddAllEntitiesFeature extends AbstractCustomFeature implements IAdd
 			}
 		});
 
+	}
+
+	private void showAllJavaPersistentTypes(Diagram d, PersistenceUnit unit,
+			TransactionalEditingDomain ted) {
+		for (ClassRef classRef : unit.getClassRefs()) {
+			if (classRef.getJavaPersistentType() != null) { // null if
+				PersistentType jpt = classRef.getJavaPersistentType(); 
+				if (JpaArtifactFactory.instance().isAnyKindPersistentType(jpt)) {
+					addPersistentTypeInDiagram(d, ted, jpt);
+				}
+			}
+		}
+	}
+	
+	private void showAllOrmPersistentTypes(Diagram d, MappingFileRef ormlXml,
+			TransactionalEditingDomain ted) {
+		for (PersistentType jpt : ormlXml.getPersistentTypes()) {
+			if (JpaArtifactFactory.instance().isAnyKindPersistentType(jpt)) {
+				addPersistentTypeInDiagram(d, ted, jpt);
+			}
+		}
+	}
+
+	private void addPersistentTypeInDiagram(Diagram d,
+			TransactionalEditingDomain ted, PersistentType jpt) {
+		PictogramElement pe = getFeatureProvider().getPictogramElementForBusinessObject(jpt);
+		if (pe != null)
+			return;
+		
+		final AddContext ctx = new AddContext();
+		ctx.setTargetContainer(d);
+		ctx.setNewObject(jpt);
+		
+		IndexAndLowerEdge ie = getMinLowerEdge();
+		
+		int x = DIST_FROM_EDGE_H + ie.index * (JPAEditorConstants.ENTITY_WIDTH + DIST_H);
+		ctx.setLocation(x, ie.lowerEdge);
+		final AddJPAEntityFeature ft = new AddJPAEntityFeature(getFeatureProvider(), false);
+		
+		ted.getCommandStack().execute(new RecordingCommand(ted) {
+			@Override
+			protected void doExecute() {
+				ft.add(ctx);
+			}
+		});
+		ContainerShape entityShape = (ContainerShape)getFeatureProvider().getPictogramElementForBusinessObject(jpt);
+		lowerEdges[ie.index] = entityShape.getGraphicsAlgorithm().getY() + entityShape.getGraphicsAlgorithm().getHeight() + DIST_V;
 	}
 	
 	private IndexAndLowerEdge getMinLowerEdge() {

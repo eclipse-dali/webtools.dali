@@ -17,15 +17,15 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal.relations;
 
 import java.util.Hashtable;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 
 abstract public class AbstractRelation implements IRelation {
 	protected final static String SEPARATOR = ";"; //$NON-NLS-1$
-	protected JavaPersistentType owner;
-	protected JavaPersistentType inverse;
-	protected JavaSpecifiedPersistentAttribute ownerAnnotatedAttribute;
-	protected JavaSpecifiedPersistentAttribute inverseAnnotatedAttribute;
+	protected PersistentType owner;
+	protected PersistentType inverse;
+	protected PersistentAttribute ownerAnnotatedAttribute;
+	protected PersistentAttribute inverseAnnotatedAttribute;
 
 	protected String ownerAttributeName;
 	protected String inverseAttributeName;
@@ -44,7 +44,7 @@ abstract public class AbstractRelation implements IRelation {
 		relDirToIdPart.put(RelDir.BI, "<->"); //$NON-NLS-1$
 	}
 	
-	public AbstractRelation(JavaPersistentType owner, JavaPersistentType inverse) {
+	public AbstractRelation(PersistentType owner, PersistentType inverse) {
 		this.owner = owner;
 		this.inverse = inverse;
 	}
@@ -53,29 +53,29 @@ abstract public class AbstractRelation implements IRelation {
 		return generateId(owner, inverse, getOwnerAttributeName(), getInverseAttributeName(), getRelType(), getRelDir());
 	}
 	
-	public JavaPersistentType getOwner() {
+	public PersistentType getOwner() {
 		return owner; 
 	}
 	
-	public JavaPersistentType getInverse() {
+	public PersistentType getInverse() {
 		return inverse; 
 	}	
-	
-	public JavaSpecifiedPersistentAttribute getInverseAnnotatedAttribute() {
+
+	public PersistentAttribute getInverseAnnotatedAttribute() {
 		return inverseAnnotatedAttribute;
 	}
-	
-	public JavaSpecifiedPersistentAttribute getOwnerAnnotatedAttribute() {
+
+	public PersistentAttribute getOwnerAnnotatedAttribute() {
 		return ownerAnnotatedAttribute;
 	}	
 	
 	public void setOwnerAnnotatedAttribute(
-			JavaSpecifiedPersistentAttribute ownerAnnotatedAttribute) {
+			PersistentAttribute ownerAnnotatedAttribute) {
 		this.ownerAnnotatedAttribute = ownerAnnotatedAttribute;
 	}
 
 	public void setInverseAnnotatedAttribute(
-			JavaSpecifiedPersistentAttribute inverseAnnotatedAttribute) {
+			PersistentAttribute inverseAnnotatedAttribute) {
 		this.inverseAnnotatedAttribute = inverseAnnotatedAttribute;
 	}
 
@@ -115,8 +115,8 @@ abstract public class AbstractRelation implements IRelation {
 	
 	public abstract RelDir getRelDir();
 	
-	public static String generateId(JavaPersistentType owner, 
-									JavaPersistentType inverse, 
+	public static String generateId(PersistentType owner, 
+									PersistentType inverse, 
 									String ownerAttributeName,
 									String inverseAttributeName,
 									RelType relType, 

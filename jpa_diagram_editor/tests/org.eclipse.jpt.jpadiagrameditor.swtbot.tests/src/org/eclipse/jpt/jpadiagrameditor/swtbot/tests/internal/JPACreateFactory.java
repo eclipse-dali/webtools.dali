@@ -48,10 +48,9 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProperties;
@@ -227,7 +226,7 @@ public class JPACreateFactory {
 		String name = nameElements.get(Math.max(0, nameElements.size()-1));
 //		SynchronousJpaProjectUpdater updater = new SynchronousJpaProjectUpdater(jpaProject);
 //		updater.start();
-		JpaRootContextNode jpaProjectContent = jpaProject.getRootContextNode();
+		JpaContextModelRoot jpaProjectContent = jpaProject.getContextModelRoot();
 		PersistenceXml persXML = jpaProjectContent.getPersistenceXml();
 		int cnt = 0;
 		while ((persXML == null) && (cnt < 100)) {		
@@ -524,9 +523,9 @@ public class JPACreateFactory {
 		}
 	}
 	
-	public static ReadOnlyPersistentAttribute getPersistentAttribute(IFile entity, String attributeName){
-		Set<ReadOnlyPersistentAttribute> result = getEntityFields(entity);
-		for(ReadOnlyPersistentAttribute attribute : result){
+	public static PersistentAttribute getPersistentAttribute(IFile entity, String attributeName){
+		Set<PersistentAttribute> result = getEntityFields(entity);
+		for(PersistentAttribute attribute : result){
 			if(attributeName.equals(attribute.getName())){
 				return attribute;
 			}
@@ -550,17 +549,17 @@ public class JPACreateFactory {
 		return jpaFile.getRootStructureNodes();
 	}
 	
-	public static Set<ReadOnlyPersistentAttribute> getEntityFields(IFile file){
-		Set<ReadOnlyPersistentAttribute> result = new HashSet<ReadOnlyPersistentAttribute>();
+	public static Set<PersistentAttribute> getEntityFields(IFile file){
+		Set<PersistentAttribute> result = new HashSet<PersistentAttribute>();
 		JpaFile jpaFile = getJpaFile(file);
 		if(jpaFile == null){
 			return result;
 		}
 		for (JpaStructureNode node : getRootNodes(jpaFile)) {
 			PersistentType entity = (PersistentType) node;
-			Iterator<ReadOnlyPersistentAttribute> attributes = entity.getAllAttributes().iterator();
+			Iterator<PersistentAttribute> attributes = entity.getAllAttributes().iterator();
 			while (attributes.hasNext()){
-				ReadOnlyPersistentAttribute attribute = attributes.next();
+				PersistentAttribute attribute = attributes.next();
 				result.add(attribute);
 			}
 		}
@@ -572,13 +571,13 @@ public class JPACreateFactory {
 	}
 	
 	public void addAttributes(IFile entity, String attName, String attType, String annotation, String attActName, boolean isCollection){
-		JavaPersistentType javaPersistentType = (JavaPersistentType)getPersistentType(entity);
+		PersistentType javaPersistentType = getPersistentType(entity);
 		int cnt = 0;
 		while ((javaPersistentType == null) && (cnt < 100)) {
 			try {
 				Thread.sleep(250);
 			} catch (InterruptedException e) {}
-			javaPersistentType = (JavaPersistentType)getPersistentType(entity);
+			javaPersistentType = getPersistentType(entity);
 			cnt++;
 		}
 		if (javaPersistentType == null)

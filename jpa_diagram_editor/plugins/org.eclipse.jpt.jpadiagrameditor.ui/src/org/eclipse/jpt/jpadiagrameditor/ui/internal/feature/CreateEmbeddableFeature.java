@@ -27,7 +27,8 @@ import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.MappingKeys;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
@@ -62,7 +63,7 @@ public class CreateEmbeddableFeature extends AbstractCreateFeature {
 			targetProject = jpaProject.getProject();
 		} else {
 			Shape sh = shapes.get(0);
-			JavaPersistentType jpt = (JavaPersistentType) getFeatureProvider()
+			PersistentType jpt = (PersistentType) getFeatureProvider()
 					.getBusinessObjectForPictogramElement(sh);
 			if (jpt == null)
 				return new Object[] {};
@@ -93,10 +94,13 @@ public class CreateEmbeddableFeature extends AbstractCreateFeature {
 		// jpaProject.updateAndWait();
 		PersistenceUnit pu = JpaArtifactFactory.instance().getPersistenceUnit(
 				jpaProject);
-		JavaPersistentType jpt = JpaArtifactFactory.instance().getJPT(
+		PersistentType jpt = JpaArtifactFactory.instance().getJPT(
 				embeddableName, pu);
 
 		if (jpt != null) {
+			if(JPADiagramPropertyPage.doesSupportOrmXml(targetProject)) {
+				JpaArtifactFactory.instance().addPersistentTypeToORMXml(jpaProject, embeddableName, MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
+			}
 			addGraphicalRepresentation(context, jpt);
 			IWorkbenchSite ws = ((IEditorPart) getDiagramEditor()).getSite();
 			ICompilationUnit cu = getFeatureProvider().getCompilationUnit(jpt);

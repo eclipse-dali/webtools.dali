@@ -26,7 +26,7 @@ import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 
@@ -64,11 +64,12 @@ public class JPACheckSum {
 		while (it.hasNext()) {
 			Shape pict = it.next();
 			String name = Graphiti.getPeService().getPropertyValue(pict, JPAEditorConstants.PROP_ENTITY_CLASS_NAME);
-			JavaPersistentType jpt = JpaArtifactFactory.instance().getJPT(name, pu);
+			PersistentType jpt = JpaArtifactFactory.instance().getJPT(name, pu);
 			String hash = "";	//$NON-NLS-1$
 			if (jpt != null) {
 				ICompilationUnit cu = JPAEditorUtil.getCompilationUnit(jpt);
-				hash = generateCompilationUnitMD5String(cu);
+				if(cu != null)
+					hash = generateCompilationUnitMD5String(cu);
 			}
 			Graphiti.getPeService().setPropertyValue(pict, JPAEditorConstants.PROP_ENTITY_CHECKSUM, hash);
 		}
@@ -95,7 +96,7 @@ public class JPACheckSum {
 			return true; 
 		PersistenceUnit pu = JpaArtifactFactory.instance().getPersistenceUnit(jpaProject);
 		String name = Graphiti.getPeService().getPropertyValue(sh, JPAEditorConstants.PROP_ENTITY_CLASS_NAME);
-		JavaPersistentType jpt = JpaArtifactFactory.instance().getJPT(name, pu);
+		PersistentType jpt = JpaArtifactFactory.instance().getJPT(name, pu);
 		String savedMD5 = getSavedShapeMD5(sh);	
 		String actualMD5 = "";	//$NON-NLS-1$
 		if (jpt != null) {

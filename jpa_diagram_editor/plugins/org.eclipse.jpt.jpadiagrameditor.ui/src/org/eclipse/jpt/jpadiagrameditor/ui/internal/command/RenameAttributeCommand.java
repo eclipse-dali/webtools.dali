@@ -17,8 +17,9 @@
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.command;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Iterator;
+import java.util.List;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
@@ -26,8 +27,14 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.ui.refactoring.RenameSupport;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
+import org.eclipse.jpt.jpa.core.context.orm.OrmManagedType;
+import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
@@ -37,14 +44,14 @@ import org.eclipse.ui.IWorkbenchWindow;
 
 public class RenameAttributeCommand implements Command {
 	
-	private JavaPersistentType jpt;
+	private PersistentType jpt;
 	private ICompilationUnit jptCompilationUnit;
 	private String oldName;
 	private String newName;
 	private IJPAEditorFeatureProvider fp;
 	
 	
-	public RenameAttributeCommand(ICompilationUnit jptCompilationUnit, JavaPersistentType jpt, String oldName,
+	public RenameAttributeCommand(ICompilationUnit jptCompilationUnit, PersistentType jpt, String oldName,
 			String newName, IJPAEditorFeatureProvider fp){
 		
 		super();
@@ -63,16 +70,51 @@ public class RenameAttributeCommand implements Command {
 		try {
 			boolean isMethodAnnotated = false;
 			if(jpt!= null){
+				renameAttribute(jpt, oldName, newName);			
 				isMethodAnnotated = JpaArtifactFactory.instance().isMethodAnnotated(jpt);
 			}
-			renameAttribute(jptCompilationUnit, oldName, this.newName, fp, isMethodAnnotated);
+			renameAttribute(jptCompilationUnit, oldName, newName, fp, isMethodAnnotated);
 			
 			if(jpt != null) {
-				jpt.getJavaResourceType().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
-				jpt.getJpaPlatform().buildJpaFile(jpt.getJpaProject(), (IFile) jptCompilationUnit.getResource());
+				jpt.getJpaProject().getContextModelRoot().synchronizeWithResourceModel();
+				JavaResourceType jrt = jpt.getJavaResourceType();
+				jrt.getJavaResourceCompilationUnit().synchronizeWithJavaSource();
+				jpt.update();
 			}
 		} catch (InterruptedException e) {
 			JPADiagramEditorPlugin.logError("Cannot rename attribute", e); //$NON-NLS-1$
+		}
+	}
+
+	private void renameAttribute(PersistentType jpt, String oldName, String newName) {
+		MappingFileRef mapFileRef = JpaArtifactFactory.instance().getOrmXmlByForPersistentType(jpt);
+		if(mapFileRef != null) {
+			EntityMappings root = (EntityMappings) mapFileRef.getMappingFile().getRoot();
+//			XmlEntityMappings xmlEntities  = root.getXmlEntityMappings();
+			Iterator<OrmManagedType> managedTypesIter = root.getManagedTypes().iterator();
+			while(managedTypesIter.hasNext()) {
+				XmlTypeMapping xmlType = (XmlTypeMapping) managedTypesIter.next().getXmlManagedType();
+				if(xmlType.getAttributes() == null)
+					return;
+				List<XmlAttributeMapping> attributeMappings  = xmlType.getAttributes().getAttributeMappings();
+				for(XmlAttributeMapping attr : attributeMappings){
+					if(attr.getName().equals(oldName)){
+						attr.setName(newName);
+					}
+				}
+			}
+			
+//			 List<XmlTypeMapping> typeMappings = xmlEntities.getTypeMappings();
+//			for(XmlTypeMapping xmlType : typeMappings){
+//				if(xmlType.getAttributes() == null)
+//					return;
+//				List<XmlAttributeMapping> attributeMappings  = xmlType.getAttributes().getAttributeMappings();
+//				for(XmlAttributeMapping attr : attributeMappings){
+//					if(attr.getName().equals(oldName)){
+//						attr.setName(newName);
+//					}
+//				}
+//			}
 		}
 	}
 	

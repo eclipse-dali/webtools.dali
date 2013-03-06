@@ -28,7 +28,7 @@ import org.eclipse.graphiti.mm.algorithms.GraphicsAlgorithm;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.services.Graphiti;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
@@ -77,7 +77,7 @@ public class CollapseEntityFeature extends AbstractCustomFeature implements ICus
 				for (int i = 0; i < pes.length; i++) {
 					PictogramElement pe = pes[i];
 					Object bo = getBusinessObjectForPictogramElement(pe);
-					if (!(bo instanceof JavaPersistentType)) {
+					if (!(bo instanceof PersistentType)) {
 						return false;
 					}
 					if (!collapsePossible) {

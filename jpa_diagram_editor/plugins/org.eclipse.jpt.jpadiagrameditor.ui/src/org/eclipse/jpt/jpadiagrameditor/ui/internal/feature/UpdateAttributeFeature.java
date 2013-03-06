@@ -28,7 +28,7 @@ import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.services.IGaService;
 import org.eclipse.graphiti.util.IColorConstant;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
@@ -40,7 +40,7 @@ public class UpdateAttributeFeature extends AbstractCustomFeature {
 		super(fp);
 	}
 
-	public void reconnect(JavaPersistentType jpt) {
+	public void reconnect(PersistentType jpt) {
 		IJPAEditorFeatureProvider fp = getFeatureProvider();
 		JpaArtifactFactory.instance().addNewRelations(fp, jpt);
 	}

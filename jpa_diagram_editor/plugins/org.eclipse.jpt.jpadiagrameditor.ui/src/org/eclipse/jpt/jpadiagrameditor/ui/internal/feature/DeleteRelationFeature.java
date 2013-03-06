@@ -22,8 +22,8 @@ import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.ui.features.DefaultDeleteFeature;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.AbstractRelation;
@@ -93,8 +93,8 @@ public class DeleteRelationFeature extends DefaultDeleteFeature{
 
     private void deleteInheritanceRelation(Object businessObjectForPictogramElement) {
 		IsARelation rel = (IsARelation)businessObjectForPictogramElement;
-		JavaPersistentType superclass = rel.getSuperclass();
-		JavaPersistentType subclass = rel.getSubclass();
+		PersistentType superclass = rel.getSuperclass();
+		PersistentType subclass = rel.getSubclass();
 		JpaArtifactFactory.instance().buildHierarchy(superclass, subclass, false);
 		
 		JPAEditorUtil.getCompilationUnit(subclass);
@@ -105,7 +105,7 @@ public class DeleteRelationFeature extends DefaultDeleteFeature{
     
 	private void deleteEmbeddedRelation(Object businessObjectForPictogramElement) {
 		HasReferanceRelation rel = (HasReferanceRelation)businessObjectForPictogramElement;
-		JavaSpecifiedPersistentAttribute attribute = rel.getEmbeddedAnnotatedAttribute();
+		PersistentAttribute attribute = rel.getEmbeddedAnnotatedAttribute();
 		PictogramElement textShape = getFeatureProvider().getPictogramElementForBusinessObject(attribute);
 		if(textShape == null)
 			return;
@@ -119,7 +119,7 @@ public class DeleteRelationFeature extends DefaultDeleteFeature{
 		
         if (rel instanceof IUnidirectionalRelation) {
         	IUnidirectionalRelation relation = (IUnidirectionalRelation)rel;
-    		JavaSpecifiedPersistentAttribute attribute = relation.getAnnotatedAttribute();
+    		PersistentAttribute attribute = relation.getAnnotatedAttribute();
     		PictogramElement textShape = getFeatureProvider().getPictogramElementForBusinessObject(attribute);
     		if(textShape == null)
     			return;
@@ -131,15 +131,14 @@ public class DeleteRelationFeature extends DefaultDeleteFeature{
         if (rel instanceof IBidirectionalRelation) { 			
         	IBidirectionalRelation relation = (IBidirectionalRelation)(rel);
         	ClickRemoveAttributeButtonFeature feat = new ClickRemoveAttributeButtonFeature(getFeatureProvider());
-        	
-    		JavaSpecifiedPersistentAttribute ownerAttribute = relation.getOwnerAnnotatedAttribute();
+    		PersistentAttribute ownerAttribute = relation.getOwnerAnnotatedAttribute();
     		PictogramElement ownerAttributeTextShape = getFeatureProvider().getPictogramElementForBusinessObject(ownerAttribute);
     		if(ownerAttributeTextShape == null)
     			return;
     		IDeleteContext deleteOwnerAttributeContext = new DeleteContext(ownerAttributeTextShape);
     		feat.delete(deleteOwnerAttributeContext, false);
-    		
-    		JavaSpecifiedPersistentAttribute inverseAttribute = relation.getInverseAnnotatedAttribute();
+
+    		PersistentAttribute inverseAttribute = relation.getInverseAnnotatedAttribute();
     		PictogramElement inverseAttributeTextShape = getFeatureProvider().getPictogramElementForBusinessObject(inverseAttribute);
     		if(inverseAttributeTextShape == null)
     			return;

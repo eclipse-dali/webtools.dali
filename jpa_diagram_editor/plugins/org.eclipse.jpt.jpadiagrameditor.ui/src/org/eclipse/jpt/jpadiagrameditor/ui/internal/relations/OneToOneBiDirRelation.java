@@ -15,19 +15,19 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.relations;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 
 
 public class OneToOneBiDirRelation extends OneToOneRelation implements IBidirectionalRelation{
-	public OneToOneBiDirRelation(IJPAEditorFeatureProvider fp, JavaPersistentType owner, 
-								 JavaPersistentType inverse, 
+	public OneToOneBiDirRelation(IJPAEditorFeatureProvider fp, PersistentType owner, 
+								 PersistentType inverse, 
 								 String ownerAttributeName,
 								 String inverseAttributeName,
-								 boolean createAttribs, JavaPersistentType embeddingEntity,
+								 boolean createAttribs, PersistentType embeddingEntity,
 								 boolean isDerivedIdFeature) {
 		super(owner, inverse);
 		this.ownerAttributeName = ownerAttributeName;
@@ -37,39 +37,40 @@ public class OneToOneBiDirRelation extends OneToOneRelation implements IBidirect
 	}
 
 	@Override
-	public JavaSpecifiedPersistentAttribute getOwnerAnnotatedAttribute() {
+	public PersistentAttribute getOwnerAnnotatedAttribute() {
 		return ownerAnnotatedAttribute;
 	}
 
 	@Override
 	public void setOwnerAnnotatedAttribute(
-			JavaSpecifiedPersistentAttribute ownerAnnotatedAttribute) {
+			PersistentAttribute ownerAnnotatedAttribute) {
 		this.ownerAnnotatedAttribute = ownerAnnotatedAttribute;
 	}
 
 	@Override
-	public JavaSpecifiedPersistentAttribute getInverseAnnotatedAttribute() {
+	public PersistentAttribute getInverseAnnotatedAttribute() {
 		return inverseAnnotatedAttribute;
 	}
 
 	@Override
 	public void setInverseAnnotatedAttribute(
-			JavaSpecifiedPersistentAttribute inverseAnnotatedAttribute) {
+			PersistentAttribute inverseAnnotatedAttribute) {
 		this.inverseAnnotatedAttribute = inverseAnnotatedAttribute;
 	}
 
-	private void createRelation(IJPAEditorFeatureProvider fp, JavaPersistentType embeddingEntity, boolean isDerivedIdFeature) {
+	private void createRelation(IJPAEditorFeatureProvider fp, PersistentType embeddingEntity, boolean isDerivedIdFeature) {
 		ownerAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, owner, inverse, false, null);
-		if(isDerivedIdFeature){
-			JpaArtifactFactory.instance().calculateDerivedIdAnnotation(owner, inverse, ownerAnnotatedAttribute);
-		}
 		
-		if(JpaArtifactFactory.instance().hasEmbeddableAnnotation(owner)){
+		if(JpaArtifactFactory.instance().isEmbeddable(owner)){
 			inverseAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, inverse, embeddingEntity, false, null);
 		} else {
 			inverseAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, inverse, owner, false, null);
 		}
+
 		JpaArtifactFactory.instance().addOneToOneBidirectionalRelation(fp, owner, ownerAnnotatedAttribute, inverse, inverseAnnotatedAttribute);		
+		if(isDerivedIdFeature){
+			JpaArtifactFactory.instance().calculateDerivedIdAttribute(owner, inverse, ownerAnnotatedAttribute);
+		}
 	} 	
 		
 	@Override

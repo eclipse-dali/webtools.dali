@@ -24,16 +24,14 @@ import java.util.Set;
 import org.eclipse.graphiti.features.context.impl.RemoveContext;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
+import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
-import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaNullTypeMapping;
-import org.eclipse.jpt.jpa.core.resource.java.OwnableRelationshipMappingAnnotation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.RemoveAndSaveEntityFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
@@ -102,7 +100,7 @@ public class EntityChangeListener extends Thread {
 					Iterator<String> itr = jptsToUpdate.iterator();
 					if (itr.hasNext()) {
 						String jptName = itr.next();
-						JavaPersistentType jpt = (JavaPersistentType)featureProvider.getBusinessObjectForKey(jptName);
+						PersistentType jpt = (PersistentType)featureProvider.getBusinessObjectForKey(jptName);
 						try {
 							JpaArtifactFactory.instance().remakeRelations(featureProvider, null, jpt);
 							jptsToUpdate.remove(jptName);
@@ -113,15 +111,15 @@ public class EntityChangeListener extends Thread {
 				Iterator<Object> it = vals.iterator();
 				while (it.hasNext()) {
 					Object o = it.next();
-					if (o instanceof JavaPersistentType) {
-						JavaPersistentType jpt = (JavaPersistentType)o;
+					if (o instanceof PersistentType) {
+						PersistentType jpt = (PersistentType)o;
 						final ContainerShape entShape = (ContainerShape)featureProvider.getPictogramElementForBusinessObject(o);
 						if (entShape == null) 
 							continue;
 						PersistenceUnit pu = JpaArtifactFactory.instance().getPersistenceUnit(jpt);
 						PersistentType pt = pu.getPersistentType(jpt.getName());
 						
-						if ((pt == null) || !JpaArtifactFactory.instance().hasAnyAnnotationType(jpt)) {
+						if ((pt == null) || !JpaArtifactFactory.instance().isAnyKindPersistentType(jpt)) {
 														
 							JpaArtifactFactory.instance().forceSaveEntityClass(jpt, featureProvider);
 							
@@ -149,41 +147,28 @@ public class EntityChangeListener extends Thread {
 						String attribName = jptAndAttrib[1];
 						String mappedBy = jptAndAttrib[2];
 						String oldMappedBy = jptAndAttrib[3];
-						JavaPersistentType jpt = (JavaPersistentType)pu.getPersistentType(entityName);
+						PersistentType jpt = pu.getPersistentType(entityName);
 						if (jpt != null) {
-							JavaSpecifiedPersistentAttribute jpa = jpt.getAttributeNamed(attribName);
+							PersistentAttribute jpa = jpt.getAttributeNamed(attribName);
 							if (jpa != null) {
-								JavaAttributeMapping mapping = jpa.getMapping();
-								if (OwnableRelationshipMappingAnnotation.class.isInstance(mapping.getMappingAnnotation())) {
-									JavaRelationshipMapping relationshipMapping = (JavaRelationshipMapping)mapping; 
+								AttributeMapping mapping = JpaArtifactFactory.instance().getAttributeMapping(jpa);
+								if (mapping instanceof RelationshipMapping) {
+									RelationshipMapping relationshipMapping = (RelationshipMapping) mapping; 
 									MappedByRelationship ownableRef = (MappedByRelationship)relationshipMapping.getRelationship();
-									if (!ownableRef.strategyIsMappedBy()) {
-									    ownableRef.setStrategyToMappedBy();
-									}
 									SpecifiedMappedByRelationshipStrategy mappedByStrategy = ownableRef.getMappedByStrategy();
 									String mappedByAttr = mappedByStrategy.getMappedByAttribute();
 																		
-									String[] mappedByAttrs = mappedByAttr.split("\\."); //$NON-NLS-1$
+									String[] mappedByAttrs = mappedByAttr.split(JPAEditorConstants.MAPPED_BY_ATTRIBUTE_SPLIT_SEPARATOR);
 									if(mappedByAttrs.length > 1){
 										if(mappedByAttrs[0].equals(oldMappedBy)){
-											mappedByAttr = mappedBy + "." + mappedByAttrs[1]; //$NON-NLS-1$
+											mappedByAttr = mappedBy + JPAEditorConstants.MAPPED_BY_ATTRIBUTE_SEPARATOR + mappedByAttrs[1];
 										} else if(mappedByAttrs[1].equals(oldMappedBy)){
-											mappedByAttr = mappedByAttrs[0] + "." + mappedBy; //$NON-NLS-1$
+											mappedByAttr = mappedByAttrs[0] + JPAEditorConstants.MAPPED_BY_ATTRIBUTE_SEPARATOR + mappedBy;
 										}
 									} else {
 										mappedByAttr = mappedBy;
 									}
 									mappedByStrategy.setMappedByAttribute(mappedByAttr);
-									
-									
-//									if(mappedByAttrs.length > 1){
-//										if(mappedByAttrs[0].equals(oldAt.getName())){
-//											mappedBy = newAt.getName() + "." + mappedByAttrs[1];
-//										} else if(mappedByAttrs[1].equals(oldAt.getName())){
-//											mappedBy = mappedByAttrs[0] + "." + newAt.getName();
-//										}
-//									} else {
-//										mappedBy = newAt.getName();
 									jpt.update();
 									attribsToUpdate.remove(jptAtMB);
 								}

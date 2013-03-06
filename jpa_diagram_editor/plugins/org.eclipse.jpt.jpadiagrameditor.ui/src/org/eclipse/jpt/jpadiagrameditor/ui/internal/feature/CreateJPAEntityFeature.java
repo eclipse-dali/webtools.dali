@@ -17,6 +17,7 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal.feature;
 
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -34,7 +35,8 @@ import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.MappingKeys;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditor;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
@@ -53,7 +55,7 @@ public class CreateJPAEntityFeature extends AbstractCreateFeature {
 	
 	private IPreferenceStore jpaPreferenceStore = JPADiagramEditorPlugin.getDefault().getPreferenceStore();
 	private boolean isMappedSuperclassChild;
-	private JavaPersistentType mappedSuperclass;
+	private PersistentType mappedSuperclass;
 	private String mappedSuperclassName;
 	private String mappedSuperclassPackage;
 	private boolean superHasPrimarykey;
@@ -86,7 +88,7 @@ public class CreateJPAEntityFeature extends AbstractCreateFeature {
 	}
 
 	public CreateJPAEntityFeature(IJPAEditorFeatureProvider fp,
-			JavaPersistentType mappedSuperclass) throws JavaModelException {
+			PersistentType mappedSuperclass) throws JavaModelException {
 		this(fp);
 		this.isMappedSuperclassChild = true;
 		this.mappedSuperclass = mappedSuperclass; 
@@ -109,7 +111,7 @@ public class CreateJPAEntityFeature extends AbstractCreateFeature {
 			targetProject = jpaProject.getProject();
 		} else {
 			Shape sh = shapes.get(0);
-			JavaPersistentType jpt = (JavaPersistentType)getFeatureProvider().getBusinessObjectForPictogramElement(sh);
+			PersistentType jpt = (PersistentType)getFeatureProvider().getBusinessObjectForPictogramElement(sh);
 			if (jpt == null)
 				return new Object[] {};
 			jpaProject = jpt.getJpaProject();
@@ -142,7 +144,7 @@ public class CreateJPAEntityFeature extends AbstractCreateFeature {
 				getJPAEditorUtil().
 					createEntityInProject(targetProject, entityName, jpaPreferenceStore, 
 										  isMappedSuperclassChild, mappedSuperclassName, 
-										  mappedSuperclassPackage, "id", superHasPrimarykey);	//$NON-NLS-1$				
+										  mappedSuperclassPackage, "id", superHasPrimarykey);	//$NON-NLS-1$
 			}
 		} catch (Exception e1) {
 			JPADiagramEditorPlugin.logError("Cannot create an entity in the project " + targetProject.getName(), e1);  //$NON-NLS-1$		 
@@ -157,7 +159,7 @@ public class CreateJPAEntityFeature extends AbstractCreateFeature {
 		
 		ListIterator<PersistenceUnit> lit = jpaProject.getContextModelRoot().getPersistenceXml().getRoot().getPersistenceUnits().iterator();		
 		PersistenceUnit pu = lit.next();
-		JavaPersistentType jpt = (JavaPersistentType)pu.getPersistentType(entityName);
+		PersistentType jpt = pu.getPersistentType(entityName);
 
 		int cnt = 0;
 		while ((jpt == null) && (cnt < 25)) {
@@ -166,11 +168,16 @@ public class CreateJPAEntityFeature extends AbstractCreateFeature {
 			} catch (InterruptedException e) {
 				JPADiagramEditorPlugin.logError("Thread sleep interrupted", e);  //$NON-NLS-1$		 
 			}
-			jpt = (JavaPersistentType)pu.getPersistentType(entityName);
+			jpt = pu.getPersistentType(entityName);
 			cnt++;
 		}		
 		
 		if (jpt != null) {
+			if(JPADiagramPropertyPage.doesSupportOrmXml(targetProject)) {
+				JpaArtifactFactory.instance().addPersistentTypeToORMXml(jpaProject, entityName, MappingKeys.ENTITY_TYPE_MAPPING_KEY);
+			}
+//			jpt = pu.getPersistentType(entityName);
+			
 			addGraphicalRepresentation(context, jpt);
 	        IWorkbenchSite ws = ((IEditorPart)getDiagramEditor()).getSite();
 	        ICompilationUnit cu = getFeatureProvider().getCompilationUnit(jpt);

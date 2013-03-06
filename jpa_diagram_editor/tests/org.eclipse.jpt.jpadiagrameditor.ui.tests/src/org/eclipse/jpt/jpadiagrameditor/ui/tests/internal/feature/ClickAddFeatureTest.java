@@ -19,6 +19,7 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
 import static org.junit.Assert.assertNotNull;
+
 import org.easymock.EasyMock;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.graphiti.dt.IDiagramTypeProvider;
@@ -29,7 +30,7 @@ import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.ClickAddAttributeButtonFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IJPAEditorUtil;
@@ -47,7 +48,7 @@ public class ClickAddFeatureTest {
 	final String TEST_PROJECT = "Test";
 	private JpaProject jpaProject = null;
 	private JPACreateFactory factory = null;
-	JavaPersistentType jpt = null;
+	PersistentType jpt = null;
 	ICompilationUnit cu = null;
 	
 	@Before
@@ -68,11 +69,11 @@ public class ClickAddFeatureTest {
 		IDirectEditingInfo dei = EasyMock.createMock(IDirectEditingInfo.class);
 		dei.setActive(true);
 		Thread.sleep(2000);
-		jpt = (JavaPersistentType)JPACreateFactory.getPersistentType(entity);
+		jpt = (PersistentType)JPACreateFactory.getPersistentType(entity);
 		int cnt = 0;
 		while ((cnt < 50) && (jpt == null)) {
 			Thread.sleep(200);
-			jpt = (JavaPersistentType)JPACreateFactory.getPersistentType(entity);
+			jpt = (PersistentType)JPACreateFactory.getPersistentType(entity);
 			cnt++;
 		}
 		featureProvider = EasyMock.createMock(IJPAEditorFeatureProvider.class);
@@ -85,7 +86,7 @@ public class ClickAddFeatureTest {
 			cu = JavaCore.createCompilationUnitFrom(entity);
 			cnt++;
 		}		
-		expect(featureProvider.getCompilationUnit((JavaPersistentType) EasyMock.anyObject())).andReturn(cu).anyTimes();
+		expect(featureProvider.getCompilationUnit((PersistentType) EasyMock.anyObject())).andReturn(cu).anyTimes();
 		expect(featureProvider.addIfPossible(isA(IAddContext.class))).andStubReturn(null);
 		expect(featureProvider.getDirectEditingInfo()).andStubReturn(dei);
 		

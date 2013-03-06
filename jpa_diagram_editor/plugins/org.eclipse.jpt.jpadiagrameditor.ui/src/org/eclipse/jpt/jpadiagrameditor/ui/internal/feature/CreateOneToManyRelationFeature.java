@@ -15,12 +15,13 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.feature;
 
-import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.jpt.jpa.core.context.AttributeMapping;
+import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
+import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.HasReferanceRelation;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 
 abstract class CreateOneToManyRelationFeature 
@@ -35,17 +36,15 @@ abstract class CreateOneToManyRelationFeature
 	 */
 	@Override
 	protected boolean isRelationshipPossible() {
-		if(JpaArtifactFactory.instance().hasEmbeddableAnnotation(owner)) {
+		if(JpaArtifactFactory.instance().isEmbeddable(owner)) {
 			Set<HasReferanceRelation> refs = JpaArtifactFactory.instance().findAllHasReferenceRelsByEmbeddableWithEntity(owner, getFeatureProvider());
 			if(refs.isEmpty()){
 				return false;
 			} else {
 				for (HasReferanceRelation ref : refs) {
-					HashSet<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(ref.getEmbeddedAnnotatedAttribute());
-					for (String annotationName : annotations) {
-						if (annotationName.equals(JPAEditorConstants.ANNOTATION_ELEMENT_COLLECTION) || annotationName.equals(JPAEditorConstants.ANNOTATION_EMBEDDED_ID)) {
+					AttributeMapping attributeMapping = JpaArtifactFactory.instance().getAttributeMapping(ref.getEmbeddedAnnotatedAttribute());
+					if ((attributeMapping instanceof ElementCollectionMapping2_0) || ( attributeMapping instanceof EmbeddedIdMapping)) {
 							return false;
-						}
 					}
 				}
 			}

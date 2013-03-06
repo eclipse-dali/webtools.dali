@@ -15,8 +15,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.relations;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.propertypage.JPADiagramPropertyPage;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
@@ -25,8 +25,8 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 
 public class OneToManyUniDirRelation extends OneToManyRelation implements IUnidirectionalRelation {
 
-	public OneToManyUniDirRelation(IJPAEditorFeatureProvider fp, JavaPersistentType owner, 
-								   JavaPersistentType inverse,
+	public OneToManyUniDirRelation(IJPAEditorFeatureProvider fp, PersistentType owner, 
+								   PersistentType inverse,
 								   String ownerAttributeName,
 								   boolean createAttribs) {
 		super(owner, inverse);
@@ -35,11 +35,11 @@ public class OneToManyUniDirRelation extends OneToManyRelation implements IUnidi
 			createRelation(fp);		
 	}	
 
-	public JavaSpecifiedPersistentAttribute getAnnotatedAttribute() {
+	public PersistentAttribute getAnnotatedAttribute() {
 		return ownerAnnotatedAttribute;
 	}
 
-	public void setAnnotatedAttribute(JavaSpecifiedPersistentAttribute annotatedAttribute) {
+	public void setAnnotatedAttribute(PersistentAttribute annotatedAttribute) {
 		this.ownerAnnotatedAttribute = annotatedAttribute;
 	}
 
@@ -56,7 +56,7 @@ public class OneToManyUniDirRelation extends OneToManyRelation implements IUnidi
 		return RelDir.UNI;
 	}
 	
-	private String getMapKeyType(boolean isMap, JavaPersistentType jpt){
+	private String getMapKeyType(boolean isMap, PersistentType jpt){
 		return isMap ? JpaArtifactFactory.instance().getIdType(jpt) : null;
 	}
 	

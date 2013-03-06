@@ -15,11 +15,13 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.feature;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
-
-import java.util.HashSet;
-import java.util.Iterator;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import org.easymock.EasyMock;
 import org.eclipse.core.resources.IFile;
@@ -34,8 +36,10 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.AttributeMapping;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.CreateManyToManyBiDirRelationFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.CreateManyToManyUniDirRelationFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.CreateManyToOneBiDirRelationFeature;
@@ -54,7 +58,6 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.OneToManyUniDirRel
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.OneToOneBiDirRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.OneToOneUniDirRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IEclipseFacade;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.JPACreateFactory;
 import org.junit.Before;
@@ -92,12 +95,12 @@ public class CreateRelationFeaturesTest {
 		JavaResourceAbstractType addressType = jpaProject.getJavaResourceType("com.test.Address");
 		assertNotNull(addressType);
 		
-		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
+		PersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		while (t1 == null) {
 			Thread.sleep(200);
 			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		}
-		JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
+		PersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		while (t2 == null) {
 			Thread.sleep(200);
 			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
@@ -143,7 +146,7 @@ public class CreateRelationFeaturesTest {
 		assertSame(rel.getInverse(), t2);
 		assertNotNull(t1.getAttributeNamed(rel.getOwnerAttributeName()));
 		assertTrue(JpaArtifactFactory.instance().isMethodAnnotated(t1));
-		JavaSpecifiedPersistentAttribute jpa = t1.getAttributeNamed("id");
+		PersistentAttribute jpa = t1.getAttributeNamed("id");
 		assertFalse(isRelationAnnotated(jpa));
 		jpa = t1.getAttributeNamed(rel.getOwnerAttributeName());
 		assertTrue(isRelationAnnotated(jpa));
@@ -166,12 +169,12 @@ public class CreateRelationFeaturesTest {
 		JavaResourceAbstractType addressType = jpaProject.getJavaResourceType("com.test.Address");
 		assertNotNull(addressType);
 		
-		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
+		PersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		while (t1 == null) {
 			Thread.sleep(200);
 			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		}
-		JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
+		PersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		while (t2 == null) {
 			Thread.sleep(200);
 			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
@@ -233,12 +236,12 @@ public class CreateRelationFeaturesTest {
 		JavaResourceAbstractType addressType = jpaProject.getJavaResourceType("com.test.Address");
 		assertNotNull(addressType);
 		
-		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
+		PersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		while (t1 == null) {
 			Thread.sleep(200);
 			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		}
-		JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
+		PersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		while (t2 == null) {
 			Thread.sleep(200);
 			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
@@ -299,12 +302,12 @@ public class CreateRelationFeaturesTest {
 		JavaResourceAbstractType addressType = jpaProject.getJavaResourceType("com.test.Address");
 		assertNotNull(addressType);
 		
-		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
+		PersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		while (t1 == null) {
 			Thread.sleep(200);
 			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		}
-		JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
+		PersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		while (t2 == null) {
 			Thread.sleep(200);
 			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
@@ -365,12 +368,12 @@ public class CreateRelationFeaturesTest {
 		JavaResourceAbstractType addressType = jpaProject.getJavaResourceType("com.test.Address");
 		assertNotNull(addressType);
 		
-		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
+		PersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		while (t1 == null) {
 			Thread.sleep(200);
 			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		}
-		JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
+		PersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		while (t2 == null) {
 			Thread.sleep(200);
 			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
@@ -430,12 +433,12 @@ public class CreateRelationFeaturesTest {
 		JavaResourceAbstractType addressType = jpaProject.getJavaResourceType("com.test.Address");
 		assertNotNull(addressType);
 		
-		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
+		PersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		while (t1 == null) {
 			Thread.sleep(200);
 			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		}
-		JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
+		PersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		while (t2 == null) {
 			Thread.sleep(200);
 			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
@@ -495,12 +498,12 @@ public class CreateRelationFeaturesTest {
 		JavaResourceAbstractType addressType = jpaProject.getJavaResourceType("com.test.Address");
 		assertNotNull(addressType);
 		
-		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
+		PersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		while (t1 == null) {
 			Thread.sleep(200);
 			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		}
-		JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
+		PersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		while (t2 == null) {
 			Thread.sleep(200);
 			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
@@ -549,14 +552,10 @@ public class CreateRelationFeaturesTest {
 		return JavaCore.createCompilationUnitFrom(file);
 	}
 
-	private boolean isRelationAnnotated(JavaSpecifiedPersistentAttribute jpa) {
-		
-		HashSet<String> anNames = JpaArtifactFactory.instance().getAnnotationNames(jpa);
-		Iterator<String> it = anNames.iterator();
-		while (it.hasNext()) {
-			String anName = it.next();
-			if (JPAEditorConstants.RELATION_ANNOTATIONS.contains(anName))
-				return true;
+	private boolean isRelationAnnotated(PersistentAttribute jpa) {
+		AttributeMapping mapping = JpaArtifactFactory.instance().getAttributeMapping(jpa);		
+		if(mapping instanceof RelationshipMapping){
+			return true;
 		}
 		return false;		
 	}

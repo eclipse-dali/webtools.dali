@@ -16,7 +16,7 @@
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.feature;
 
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorImageProvider;
@@ -35,9 +35,9 @@ public class CreateOneToManyUniDirRelationFeature extends CreateOneToManyRelatio
 		
 	@Override
 	public OneToManyUniDirRelation createRelation(IJPAEditorFeatureProvider fp, PictogramElement source, 
-			PictogramElement target, JavaPersistentType embeddingEntity) {
-		JavaPersistentType owner = (JavaPersistentType)(getBusinessObjectForPictogramElement(source));
-		JavaPersistentType inverse = (JavaPersistentType)(getBusinessObjectForPictogramElement(target));	
+			PictogramElement target, PersistentType embeddingEntity) {
+		PersistentType owner = (PersistentType)(getBusinessObjectForPictogramElement(source));
+		PersistentType inverse = (PersistentType)(getBusinessObjectForPictogramElement(target));	
 				
 		String attributeName = JPAEditorUtil.returnSimpleName(JpaArtifactFactory.instance().getEntityName(inverse));
 		String nameWithNonCapitalLetter = attributeName;

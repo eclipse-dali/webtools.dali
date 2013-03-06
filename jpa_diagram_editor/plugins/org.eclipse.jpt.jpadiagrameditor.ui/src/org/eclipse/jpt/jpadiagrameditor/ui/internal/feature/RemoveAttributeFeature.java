@@ -17,6 +17,7 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal.feature;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.IContext;
@@ -28,8 +29,8 @@ import org.eclipse.graphiti.features.impl.DefaultRemoveFeature;
 import org.eclipse.graphiti.mm.pictograms.Connection;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorFeatureProvider;
@@ -41,7 +42,7 @@ public class RemoveAttributeFeature extends DefaultRemoveFeature {
 
 	private boolean skipRemoveRelations = false;
 	private boolean skipCreateRelations = false;
-	private JavaPersistentType jpt = null;
+	private PersistentType jpt = null;
 	private ICustomFeature graphicalRemove;
 
 	public RemoveAttributeFeature(IFeatureProvider fp) {
@@ -88,10 +89,8 @@ public class RemoveAttributeFeature extends DefaultRemoveFeature {
 		Object bo = fp.getBusinessObjectForPictogramElement(pe);
 		if(bo == null)
 			return;
-		
-		if (bo instanceof JavaSpecifiedPersistentAttribute) {
-			JavaSpecifiedPersistentAttribute jpa = (JavaSpecifiedPersistentAttribute) bo;
-			
+		if (bo instanceof PersistentAttribute) {
+			PersistentAttribute jpa = (PersistentAttribute) bo;			
 			HashSet<String> ignores = ((JPAEditorFeatureProvider) getFeatureProvider()).getAddIgnore();
 			if (!ignores.isEmpty()) {
 				Iterator<String> iter = ignores.iterator();
@@ -103,11 +102,13 @@ public class RemoveAttributeFeature extends DefaultRemoveFeature {
 				}
 			}
 			
-			jpt = (JavaPersistentType)jpa.getParent();
+			jpt = (PersistentType) jpa.getParent();
 			fp.remove(fp.getKeyForBusinessObject(bo));
 			if (!skipRemoveRelations) {
-				IRelation rel = fp.getRelationRelatedToAttribute(jpa);
-				if(rel != null) {
+				Set<IRelation> rels = fp.getRelationRelatedToAttribute(jpa, JpaArtifactFactory.instance().getRelTypeName(jpa));
+				Iterator<IRelation> iter = rels.iterator();
+				while(iter.hasNext()){
+					IRelation rel = iter.next();
 					removeRelation(rel);
 				}
 				

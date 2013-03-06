@@ -80,11 +80,23 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.context.AttributeMapping;
+import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
+import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
+import org.eclipse.jpt.jpa.core.context.IdMapping;
+import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
+import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.TransientMapping;
+import org.eclipse.jpt.jpa.core.context.VersionMapping;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpa.core.jpa2.context.DerivedIdentity2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.ManyToOneMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneMapping2_0;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
@@ -154,14 +166,14 @@ public class JPAEditorUtil {
     	return null;
     }
     
-    public static Anchor getAnchor(JavaPersistentType jpt, IFeatureProvider fp) {
+    public static Anchor getAnchor(PersistentType jpt, IFeatureProvider fp) {
     	PictogramElement pe = fp.getPictogramElementForBusinessObject(jpt);
     	if ((pe == null) || (!(pe instanceof ContainerShape)))
     		return null;
     	return getAnchor((ContainerShape)pe);
     }
-    
-    public static String getText(JavaSpecifiedPersistentAttribute at) {
+
+    public static String getText(PersistentAttribute at) {
     	return at.getName();
     }
     
@@ -175,7 +187,7 @@ public class JPAEditorUtil {
     	return s;
     }
     
-	public static String getTooltipText(JavaPersistentType jpt,
+	public static String getTooltipText(PersistentType jpt,
 			String superPersistentTypeName) {
 		String res = jpt.getName();
 		if (superPersistentTypeName != null) {
@@ -186,17 +198,16 @@ public class JPAEditorUtil {
 				new Object[] { res });
 	}
 
-    
-    public static String getAttributeTypeName(JavaSpecifiedPersistentAttribute at) {
-    	return getAttributeTypeName(at.getResourceAttribute());
+    public static String getAttributeTypeName(PersistentAttribute at) {
+    	return JpaArtifactFactory.instance().getRelTypeName(at);
     }    
     
     public static String getAttributeTypeName(JavaResourceAttribute at) {
     	return at.getTypeBinding().getQualifiedName();
     }
-    
-    public static String getAttributeTypeNameWithGenerics(JavaSpecifiedPersistentAttribute at) {
-    	return getAttributeTypeNameWithGenerics(at.getResourceAttribute());
+
+    public static String getAttributeTypeNameWithGenerics(PersistentAttribute at) {
+    	return getAttributeTypeNameWithGenerics(at.getJavaPersistentAttribute().getResourceAttribute());
     }
 
     private static String getAttributeTypeNameWithGenerics(JavaResourceAttribute at) {
@@ -243,16 +254,16 @@ public class JPAEditorUtil {
     	return res.toString();    	
     }                    
     
-    public static String getText(JavaPersistentType jpt) {
+    public static String getText(PersistentType jpt) {
     	return JPAEditorUtil.returnSimpleName(JpaArtifactFactory.instance().getEntityName(jpt));
     }
     
-    public static String getTooltipText(JavaPersistentType jpt) {
+    public static String getTooltipText(PersistentType jpt) {
     	String res = jpt.getName();
     	return MessageFormat.format(JPAEditorMessages.JPAEditorUtil_fullnameTooltipText, new Object[] { res });
     }
     
-    public static JavaPersistentType getJPType(ICompilationUnit cu) {
+    public static PersistentType getJPType(ICompilationUnit cu) {
     	String name = cu.getElementName();
 		if (!name.endsWith(".java"))				//$NON-NLS-1$
 			return null;
@@ -267,9 +278,7 @@ public class JPAEditorUtil {
 			return null;
     	PersistenceUnit pu = JpaArtifactFactory.instance().getPersistenceUnit(proj);
     	PersistentType pt = pu.getPersistentType(name);
-		if ((pt == null) || (!(pt instanceof JavaPersistentType)))
-			return null;
-    	return	(JavaPersistentType)pt;
+    	return pt;
     }
     
     public static void setJPTNameInShape(ContainerShape cs, String newName) {
@@ -399,41 +408,40 @@ public class JPAEditorUtil {
 			return returnSimpleName(typeFQN);
 		} catch (JavaModelException e) {}
 		return typeFQN;
-	}
-
-	public static Image createAttributeIcon(Rectangle iconRect, Set<String> annotations) {
+	}	
+	
+	public static Image createAttributeIcon(Rectangle iconRect, AttributeMapping attributeMapping) {
 		Image icon = null;
-		if ((annotations == null) || (annotations.size() == 0) || annotations.contains(JPAEditorConstants.ANNOTATION_BASIC)) {
-			icon = Graphiti.getGaService().createImage(iconRect, JPAEditorImageProvider.ICON_BASIC);
-		} else if (annotations.contains(JPAEditorConstants.ANNOTATION_ID) && 
-				!annotations.contains(JPAEditorConstants.ANNOTATION_ONE_TO_ONE) &&
-				!annotations.contains(JPAEditorConstants.ANNOTATION_MANY_TO_ONE)) {
+		
+		if(attributeMapping instanceof IdMapping){
 			icon = Graphiti.getGaService().createImage(iconRect, JPAEditorImageProvider.PRIMARY_KEY);
-		} else if (annotations.contains(JPAEditorConstants.ANNOTATION_ONE_TO_ONE) ) {
-			if(annotations.contains(JPAEditorConstants.ANNOTATION_ID) || annotations.contains(JPAEditorConstants.ANNOTATION_MAPS_ID)){
+		}else if(attributeMapping instanceof OneToOneMapping2_0){
+			DerivedIdentity2_0 ident = ((OneToOneMapping2_0)attributeMapping).getDerivedIdentity();
+			if(ident.usesIdDerivedIdentityStrategy() || ident.usesMapsIdDerivedIdentityStrategy()){
 				icon = Graphiti.getGaService().createImage(iconRect, JPAEditorImageProvider.ONE_TO_ONE_PRIMARY_KEY);
 			} else {
 				icon = Graphiti.getGaService().createImage(iconRect, JPAEditorImageProvider.ICON_ONE_TO_ONE);
 			}
-		} else if (annotations.contains(JPAEditorConstants.ANNOTATION_ONE_TO_MANY)) {
+		} else if (attributeMapping instanceof OneToManyMapping) {
 			icon = Graphiti.getGaService().createImage(iconRect, JPAEditorImageProvider.ICON_ONE_TO_MANY);
-		} else if (annotations.contains(JPAEditorConstants.ANNOTATION_MANY_TO_ONE)){
-			if(annotations.contains(JPAEditorConstants.ANNOTATION_ID) || annotations.contains(JPAEditorConstants.ANNOTATION_MAPS_ID)){
+		} else if(attributeMapping instanceof ManyToOneMapping2_0) {
+			DerivedIdentity2_0 ident = ((ManyToOneMapping2_0)attributeMapping).getDerivedIdentity();
+			if(ident.usesIdDerivedIdentityStrategy() || ident.usesMapsIdDerivedIdentityStrategy()){
 				icon = Graphiti.getGaService().createImage(iconRect, JPAEditorImageProvider.MANY_TO_ONE_PRIMARY_KEY);
 			} else {
 				icon = Graphiti.getGaService().createImage(iconRect, JPAEditorImageProvider.ICON_MANY_TO_ONE);
 			}
-		} else if (annotations.contains(JPAEditorConstants.ANNOTATION_MANY_TO_MANY)) {
+		} else if (attributeMapping instanceof ManyToManyMapping) {
 			icon = Graphiti.getGaService().createImage(iconRect, JPAEditorImageProvider.ICON_MANY_TO_MANY);		
-		} else if(annotations.contains(JPAEditorConstants.ANNOTATION_EMBEDDED_ID)){
+		} else if (attributeMapping instanceof EmbeddedIdMapping) {
 			icon = Graphiti.getGaService().createImage(iconRect, JPAEditorImageProvider.ICON_EMBEDDED_ID);
-		} else if(annotations.contains(JPAEditorConstants.ANNOTATION_VERSION)){
+		} else if (attributeMapping instanceof VersionMapping) {
 			icon = Graphiti.getGaService().createImage(iconRect, JPAEditorImageProvider.ICON_VERSION);
-		} else if(annotations.contains(JPAEditorConstants.ANNOTATION_TRANSIENT)){
+		} else if (attributeMapping instanceof TransientMapping) {
 			icon = Graphiti.getGaService().createImage(iconRect, JPAEditorImageProvider.ICON_TRANSIENT);
-		} else if(annotations.contains(JPAEditorConstants.ANNOTATION_EMBEDDED)){
+		} else if (attributeMapping instanceof EmbeddedMapping) {
 			icon = Graphiti.getGaService().createImage(iconRect, JPAEditorImageProvider.ICON_EMBEDDED);
-		} else if(annotations.contains(JPAEditorConstants.ANNOTATION_ELEMENT_COLLECTION)){
+		} else if (attributeMapping instanceof ElementCollectionMapping2_0) {
 			icon = Graphiti.getGaService().createImage(iconRect, JPAEditorImageProvider.ICON_ELEMENT_COLLECTION);
 		} else {
 			icon = Graphiti.getGaService().createImage(iconRect, JPAEditorImageProvider.ICON_BASIC);			
@@ -919,7 +927,7 @@ public class JPAEditorUtil {
 		return new Point(x, y);
 	}
 	
-	public static String formTableName(JavaPersistentType jpt) { 
+	public static String formTableName(PersistentType jpt) { 
 		IProject project = jpt.getJpaProject().getProject();
 		Properties props = JPADiagramPropertyPage.loadProperties(project);
 	    String tableNamePrefix = JPADiagramPropertyPage.getDefaultTablePrefixName(project, props);
@@ -993,7 +1001,7 @@ public class JPAEditorUtil {
 				
 	static public IFile createEntityInProject(IProject project,
 											  String entityName,
-											  JavaPersistentType mappedSuperclass) throws Exception {
+											  PersistentType mappedSuperclass) throws Exception {
 		IFolder folder = getPackageFolder(project);
 		return createEntity(project, folder, entityName,
 				true, mappedSuperclass.getName(),
@@ -1106,7 +1114,7 @@ public class JPAEditorUtil {
 	}
 
 	
-	static public String produceUniqueAttributeName(JavaPersistentType jpt, 
+	static public String produceUniqueAttributeName(PersistentType jpt, 
 													String attributeNameCandidate) {
 		String name = attributeNameCandidate;
 		for (int i = 1; i < 100000000; i++) {
@@ -1117,7 +1125,7 @@ public class JPAEditorUtil {
 		return name;
 	}
 	
-	static public String produceUniqueAttributeName(JavaPersistentType jpt, String forbiddenName, String attributeNameCandidate) {
+	static public String produceUniqueAttributeName(PersistentType jpt, String forbiddenName, String attributeNameCandidate) {
 		String name = attributeNameCandidate;
 		for (int i = 1; i < 100000000; i++) {
 			if ((jpt.getAttributeNamed(name) == null) && !name.equals(forbiddenName))
@@ -1128,7 +1136,7 @@ public class JPAEditorUtil {
 	}
 	
 
-	public static boolean isEntityOpenElsewhere(JavaPersistentType jpt, boolean checkDirty) {
+	public static boolean isEntityOpenElsewhere(PersistentType jpt, boolean checkDirty) {
 		IEditorReference[] edRefs = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getEditorReferences();
 		for (int i = 0; i < edRefs.length; i++) {
 			IEditorPart ed = edRefs[i].getEditor(false);
@@ -1147,7 +1155,10 @@ public class JPAEditorUtil {
 		return false;		
 	}
 		
-	public static ICompilationUnit getCompilationUnit(JavaPersistentType jpt) {
+	public static ICompilationUnit getCompilationUnit(PersistentType jpt) {
+		if (jpt instanceof OrmPersistentType){
+			jpt = ((OrmPersistentType)jpt).getJavaPersistentType();
+		}
 		return getCompilationUnit((IFile) jpt.getResource());
 	}		
 	
@@ -1301,9 +1312,8 @@ public class JPAEditorUtil {
 		Text txt = (Text)ga;
 		return JPAEditorConstants.CARDINALITY_LABELS.contains(txt.getValue());
 	}
-	
-	
-    public static String getTooltipText(JavaSpecifiedPersistentAttribute at) {
+
+    public static String getTooltipText(PersistentAttribute at) {
     	String res = getAttributeTypeName(at);
     	return MessageFormat.format(JPAEditorMessages.JPAEditorUtil_typeTooltipText, new Object[] { res }); 
     }
@@ -1403,9 +1413,9 @@ public class JPAEditorUtil {
 		h2 = cutOffHeaderDirtyPrefix(h2);
 		return h1.equals(h2);
 	}
-	
-	public static JavaSpecifiedPersistentAttribute addAnnotatedAttribute(IJPAEditorFeatureProvider fp, JavaPersistentType referencingJPT, 
-			JavaPersistentType referencedJPT, boolean isCollection, String mapKeyType){
+
+	public static PersistentAttribute addAnnotatedAttribute(IJPAEditorFeatureProvider fp, PersistentType referencingJPT, 
+			PersistentType referencedJPT, boolean isCollection, String mapKeyType){
 		
 		String name = returnSimpleName(referencedJPT.getName());
 		String actName = returnSimpleName(JpaArtifactFactory.instance().getEntityName(referencedJPT));

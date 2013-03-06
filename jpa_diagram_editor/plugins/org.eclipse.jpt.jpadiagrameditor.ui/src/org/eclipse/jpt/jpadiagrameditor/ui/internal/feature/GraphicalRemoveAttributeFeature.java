@@ -29,8 +29,8 @@ import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.services.Graphiti;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.GraphicsUpdater;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
@@ -55,7 +55,7 @@ public class GraphicalRemoveAttributeFeature extends AbstractCustomFeature {
 			protected void doExecute() {
 				Shape sh = (Shape) pe;
 				Object bo = getFeatureProvider().getBusinessObjectForPictogramElement(sh);
-				if ((bo == null) || (!JavaPersistentType.class.isInstance(bo)))
+				if ((bo == null) || (!PersistentType.class.isInstance(bo)))
 					return;
 				ContainerShape entityShape = (ContainerShape) pe;
 				ContainerShape primShape = GraphicsUpdater.getPrimaryShape(entityShape);
@@ -67,23 +67,23 @@ public class GraphicalRemoveAttributeFeature extends AbstractCustomFeature {
 				removeCompartmentChildren(basicShape);
 
 				
-				readdCompartmentsChildren((JavaPersistentType) bo, entityShape, primShape, relationShape, basicShape);
+				readdCompartmentsChildren((PersistentType) bo, entityShape, primShape, relationShape, basicShape);
 
 				layoutPictogramElement(entityShape);
-				reconnect((JavaPersistentType) bo);
+				reconnect((PersistentType) bo);
 			}
 		});		
 
 	}
 
-	public void reconnect(JavaPersistentType jpt) {
+	public void reconnect(PersistentType jpt) {
 		JpaArtifactFactory.instance().addNewRelations(getFeatureProvider(), jpt);
 		JpaArtifactFactory.instance().rearrangeIsARelations(getFeatureProvider());
 	}
 
-	private void readdCompartmentsChildren(JavaPersistentType javaPersistentType, ContainerShape entityShape,
+	private void readdCompartmentsChildren(PersistentType persistentType, ContainerShape entityShape,
 			ContainerShape primaryShape, ContainerShape relationShape, ContainerShape basicShape) {
-		JPAEditorConstants.DIAGRAM_OBJECT_TYPE dot = JpaArtifactFactory.instance().determineDiagramObjectType(javaPersistentType);
+		JPAEditorConstants.DIAGRAM_OBJECT_TYPE dot = JpaArtifactFactory.instance().determineDiagramObjectType(persistentType);
 		UpdateAttributeFeature updateFeature = new UpdateAttributeFeature(getFeatureProvider());
 		updateFeature.addSeparatorsToShape(primaryShape, dot);
 		updateFeature.addSeparatorsToShape(relationShape, dot);
@@ -93,14 +93,14 @@ public class GraphicalRemoveAttributeFeature extends AbstractCustomFeature {
 		AddContext addContext = new AddContext();
 		addContext.setTargetContainer(entityShape);
 
-		for (JavaSpecifiedPersistentAttribute attribute : javaPersistentType.getAttributes()) {
+		for (PersistentAttribute attribute : persistentType.getAttributes()) {
 			addContext.setNewObject(attribute);
 			graphicalAdd.execute(addContext);
 			getFeatureProvider().renewAttributeJoiningStrategyPropertyListener(attribute);
-//			getFeatureProvider().addJPTForUpdate(javaPersistentType.getName());
+//			getFeatureProvider().addJPTForUpdate(persistentType.getName());
 		}
 		GraphicsUpdater.updateEntityShape(entityShape);
-		getFeatureProvider().addJPTForUpdate(javaPersistentType.getName());
+		getFeatureProvider().addJPTForUpdate(persistentType.getName());
 
 	}
 

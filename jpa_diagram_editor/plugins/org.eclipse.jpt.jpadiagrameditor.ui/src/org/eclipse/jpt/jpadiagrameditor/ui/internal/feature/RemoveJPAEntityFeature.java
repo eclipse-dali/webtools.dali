@@ -32,9 +32,8 @@ import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
@@ -58,15 +57,15 @@ public class RemoveJPAEntityFeature extends DefaultRemoveFeature {
     	PictogramElement pe = context.getPictogramElement();
     	final Object bo = getFeatureProvider().getBusinessObjectForPictogramElement(pe);
     	Set<Shape> shapesForDeletion = new HashSet<Shape>();
-    	if (bo instanceof JavaPersistentType) {
-    		JavaPersistentType jpt = (JavaPersistentType)bo;
+    	if (bo instanceof PersistentType) {
+    		PersistentType jpt = (PersistentType)bo;
     		JpaArtifactFactory.instance().restoreEntityClass(jpt, getFeatureProvider());    		
     		IFeatureProvider fp = getFeatureProvider();
     		List<Shape> lst = ((ContainerShape)pe).getChildren();
     		for (int i = lst.size() - 1; i >= 0; i--) {
     			Shape textShape = lst.get(i);
     			Object o = fp.getBusinessObjectForPictogramElement(textShape);
-    			if ((o != null) && (o instanceof JavaSpecifiedPersistentAttribute)) {
+    			if ((o != null) && (o instanceof PersistentAttribute)) {
     				shapesForDeletion.add(textShape);
     			}
     		}
@@ -94,9 +93,9 @@ public class RemoveJPAEntityFeature extends DefaultRemoveFeature {
 		final IRemoveContext context = (IRemoveContext)ctx; 
     	PictogramElement pe = context.getPictogramElement();
     	Object bo = getFeatureProvider().getBusinessObjectForPictogramElement(pe);
-    	if (!JavaPersistentType.class.isInstance(bo))
+    	if (!PersistentType.class.isInstance(bo))
     		return;
-    	JavaPersistentType jpt = (JavaPersistentType)bo;
+    	PersistentType jpt = (PersistentType)bo;
 		if (JPAEditorUtil.isEntityOpenElsewhere(jpt, true)) {
 			String shortEntName = JPAEditorUtil.returnSimpleName(JpaArtifactFactory.instance().getEntityName(jpt));
 			String message = NLS.bind(JPAEditorMessages.RemoveJPAEntityFeature_discardWarningMsg, shortEntName);

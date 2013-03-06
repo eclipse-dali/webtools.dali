@@ -36,7 +36,7 @@ import org.eclipse.graphiti.mm.algorithms.GraphicsAlgorithm;
 import org.eclipse.graphiti.mm.algorithms.Text;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.AddAttributeFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.junit.Before;
@@ -48,7 +48,7 @@ public class AddAttributeFeatureTest {
 
 	private AddContext context;
 
-	private JavaSpecifiedPersistentAttribute jpa;
+	private PersistentAttribute jpa;
 
 	private ContainerShape entityShape;
 
@@ -62,7 +62,7 @@ public class AddAttributeFeatureTest {
 	@Before
 	public void setUp() throws Exception {
 		featureProvider = EasyMock.createMock(IJPAEditorFeatureProvider.class);
-		jpa = EasyMock.createMock(JavaSpecifiedPersistentAttribute.class);
+		jpa = EasyMock.createMock(PersistentAttribute.class);
 		context = new AddContext();
 		context.setNewObject(jpa);
 		context.setTargetContainer(entityShape);

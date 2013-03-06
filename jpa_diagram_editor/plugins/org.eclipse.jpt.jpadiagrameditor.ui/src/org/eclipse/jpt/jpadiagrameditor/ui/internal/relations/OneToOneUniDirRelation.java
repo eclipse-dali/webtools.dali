@@ -15,8 +15,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.relations;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
@@ -24,8 +24,8 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 
 public class OneToOneUniDirRelation extends OneToOneRelation implements IUnidirectionalRelation {
 
-	public OneToOneUniDirRelation(IJPAEditorFeatureProvider fp, JavaPersistentType owner, 
-								  JavaPersistentType inverse, 
+	public OneToOneUniDirRelation(IJPAEditorFeatureProvider fp, PersistentType owner, 
+								  PersistentType inverse, 
 								  String ownerAttributeName,
 								  boolean createAttribs, boolean isDerivedIdFeature) {
 		super(owner, inverse);
@@ -33,21 +33,21 @@ public class OneToOneUniDirRelation extends OneToOneRelation implements IUnidire
 		if (createAttribs) 
 			createRelation(fp, isDerivedIdFeature);
 	}
-	
-	public JavaSpecifiedPersistentAttribute getAnnotatedAttribute() {
+
+	public PersistentAttribute getAnnotatedAttribute() {
 		return ownerAnnotatedAttribute;
 	}
 
-	public void setAnnotatedAttribute(JavaSpecifiedPersistentAttribute annotatedAttribute) {
+	public void setAnnotatedAttribute(PersistentAttribute annotatedAttribute) {
 		this.ownerAnnotatedAttribute = annotatedAttribute;
 	}
 
 	private void createRelation(IJPAEditorFeatureProvider fp, boolean isDerivedIdFeature) {
 		ownerAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, owner, inverse, false, null);
-		if(isDerivedIdFeature){
-			JpaArtifactFactory.instance().calculateDerivedIdAnnotation(owner, inverse, ownerAnnotatedAttribute);
-		}
 		JpaArtifactFactory.instance().addOneToOneUnidirectionalRelation(fp, owner, ownerAnnotatedAttribute);
+		if(isDerivedIdFeature){
+			JpaArtifactFactory.instance().calculateDerivedIdAttribute(owner, inverse, ownerAnnotatedAttribute);
+		}
 	} 
 		
 	@Override

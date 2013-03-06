@@ -34,8 +34,9 @@ import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.tb.IDecorator;
 import org.eclipse.graphiti.tb.IToolBehaviorProvider;
 import org.eclipse.graphiti.tb.ImageDecorator;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.ui.JPAEditorMatchingStrategy;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorToolBehaviorProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IEclipseFacade;
@@ -58,7 +59,7 @@ public class JPAEditorToolBehaviorProviderTest {
 	public void testGetRenderingDecoratorsPictogramElementError() throws Exception {
 		PictogramElement pe = replayPictogramElement(100, 100);
 		IMarker marker = replayMarker(IMarker.SEVERITY_ERROR, "Error message");
-		JavaPersistentType jpt = replayJptWithMarker(new IMarker[] { marker });
+		PersistentType jpt = replayJptWithMarker(new IMarker[] { marker });
 		IDiagramTypeProvider dtp = replayDiagramProvider(pe, jpt);
 
 		IToolBehaviorProvider provider = new JPAEditorToolBehaviorProvider(dtp);
@@ -72,7 +73,7 @@ public class JPAEditorToolBehaviorProviderTest {
 		PictogramElement pe = replayPictogramElement(100, 100);
 
 		IMarker marker = replayMarker(IMarker.SEVERITY_WARNING, "Warning message");
-		JavaPersistentType jpt = replayJptWithMarker(new IMarker[] { marker });
+		PersistentType jpt = replayJptWithMarker(new IMarker[] { marker });
 		IDiagramTypeProvider dtp = replayDiagramProvider(pe, jpt);
 
 		IToolBehaviorProvider provider = new JPAEditorToolBehaviorProvider(dtp);
@@ -85,7 +86,7 @@ public class JPAEditorToolBehaviorProviderTest {
 	public void testGetRenderingDecoratorsPictogramElementInfo() throws Exception {
 		PictogramElement pe = replayPictogramElement(100, 100);
 		IMarker marker = replayMarker(IMarker.SEVERITY_INFO, "Info message");
-		JavaPersistentType jpt = replayJptWithMarker(new IMarker[] { marker });
+		PersistentType jpt = replayJptWithMarker(new IMarker[] { marker });
 		IDiagramTypeProvider dtp = replayDiagramProvider(pe, jpt);
 
 		IToolBehaviorProvider provider = new JPAEditorToolBehaviorProvider(dtp);
@@ -97,7 +98,7 @@ public class JPAEditorToolBehaviorProviderTest {
 	@Test
 	public void testGetRenderingDecoratorsPictogramElementNoMarkers() throws Exception {
 		PictogramElement pe = replayPictogramElement(100, 100);
-		JavaPersistentType jpt = replayJptWithMarker(new IMarker[0]);
+		PersistentType jpt = replayJptWithMarker(new IMarker[0]);
 		IDiagramTypeProvider dtp = replayDiagramProvider(pe, jpt);
 
 		IToolBehaviorProvider provider = new JPAEditorToolBehaviorProvider(dtp);
@@ -110,7 +111,7 @@ public class JPAEditorToolBehaviorProviderTest {
 		PictogramElement pe = replayPictogramElement(100, 100);
 		IMarker warningMarker = replayMarker(IMarker.SEVERITY_WARNING, "warning");
 		IMarker errorMarker = replayMarker(IMarker.SEVERITY_ERROR, "error");
-		JavaPersistentType jpt = replayJptWithMarker(new IMarker[] { errorMarker, warningMarker });
+		PersistentType jpt = replayJptWithMarker(new IMarker[] { errorMarker, warningMarker });
 		IDiagramTypeProvider dtp = replayDiagramProvider(pe, jpt);
 		IToolBehaviorProvider provider = new JPAEditorToolBehaviorProvider(dtp);
 		IDecorator[] decorators = provider.getDecorators(pe);
@@ -122,7 +123,7 @@ public class JPAEditorToolBehaviorProviderTest {
 	public void testGetRenderingDecoratorsPictogramElementLocation() throws Exception {
 		PictogramElement pe = replayPictogramElement(100, 100);
 		IMarker marker = replayMarker(IMarker.SEVERITY_ERROR, "Error message");
-		JavaPersistentType jpt = replayJptWithMarker(new IMarker[] { marker });
+		PersistentType jpt = replayJptWithMarker(new IMarker[] { marker });
 		IDiagramTypeProvider dtp = replayDiagramProvider(pe, jpt);
 
 		IToolBehaviorProvider provider = new JPAEditorToolBehaviorProvider(dtp);
@@ -136,7 +137,7 @@ public class JPAEditorToolBehaviorProviderTest {
 	public void testGetDoubleClickOnJptFeature() throws PartInitException, CoreException {
 		PictogramElement pe = replayPictogramElement(100, 100);
 		IFile file = replayResource();
-		JavaPersistentType jpt = replayJpt(pe, file);
+		PersistentType jpt = replayJpt(pe, file);
 		IDiagramTypeProvider dtp = replayDiagramProvider(pe, jpt);
 		
 		IEclipseFacade facade = EasyMock.createMock(IEclipseFacade.class);
@@ -155,7 +156,7 @@ public class JPAEditorToolBehaviorProviderTest {
 	public void testGetDoubleClickOnJpaFeature() throws Exception {
 		PictogramElement pe = replayPictogramElement(100, 100);
 		IFile file = replayResource();
-		JavaSpecifiedPersistentAttribute jpa = replayJpa(pe, file);
+		PersistentAttribute jpa = replayJpa(pe, file);
 		IDiagramTypeProvider dtp = replayDiagramProviderForJpa(pe, jpa);
 		
 		IEclipseFacade eclipseFacade = EasyMock.createMock(IEclipseFacade.class);
@@ -170,7 +171,7 @@ public class JPAEditorToolBehaviorProviderTest {
 		verify(ide);
 	}
 	
-	private IDiagramTypeProvider replayDiagramProvider(PictogramElement pe, JavaPersistentType jpt) {
+	private IDiagramTypeProvider replayDiagramProvider(PictogramElement pe, PersistentType jpt) {
 		IFeatureProvider featureProvider = EasyMock.createMock(IFeatureProvider.class);
 		expect(featureProvider.getBusinessObjectForPictogramElement(pe)).andStubReturn(jpt);
 		IDiagramTypeProvider dtp = EasyMock.createMock(IDiagramTypeProvider.class);
@@ -187,8 +188,8 @@ public class JPAEditorToolBehaviorProviderTest {
 		return marker;
 	}
 
-	private JavaPersistentType replayJptWithMarker(IMarker[] markers) throws CoreException {
-		JavaPersistentType jpt = EasyMock.createMock(JavaPersistentType.class);
+	private PersistentType replayJptWithMarker(IMarker[] markers) throws CoreException {
+		PersistentType jpt = EasyMock.createMock(PersistentType.class);
 		IFile file = EasyMock.createMock(IFile.class);
 		expect(file.exists()).andReturn(true);
 		expect(file.findMarkers(null, true, IResource.DEPTH_INFINITE)).andStubReturn(markers);
@@ -213,25 +214,28 @@ public class JPAEditorToolBehaviorProviderTest {
 		return context;
 	}
 	
-	private JavaPersistentType replayJpt(PictogramElement pe, IFile file){
+	private PersistentType replayJpt(PictogramElement pe, IFile file){
 		IFeatureProvider featureProvider = EasyMock.createMock(IFeatureProvider.class);
-		JavaPersistentType jpt = EasyMock.createMock(JavaPersistentType.class);
+		PersistentType jpt = EasyMock.createMock(PersistentType.class);
 		expect(featureProvider.getBusinessObjectForPictogramElement(pe)).andStubReturn(jpt);
 		expect(jpt.getResource()).andReturn(file);
 		replay(jpt, featureProvider);
 		return jpt;
 	}
-	
-	private JavaSpecifiedPersistentAttribute replayJpa(PictogramElement pe, IFile file){
+
+	private PersistentAttribute replayJpa(PictogramElement pe, IFile file){
 		IFeatureProvider featureProvider = EasyMock.createMock(IFeatureProvider.class);
 		JavaSpecifiedPersistentAttribute jpa = EasyMock.createMock(JavaSpecifiedPersistentAttribute.class);
-		expect(featureProvider.getBusinessObjectForPictogramElement(pe)).andStubReturn(jpa);
+		PersistentAttribute pa = EasyMock.createMock(PersistentAttribute.class);
+
+		expect(featureProvider.getBusinessObjectForPictogramElement(pe)).andStubReturn(pa);
+		expect(pa.getJavaPersistentAttribute()).andReturn(jpa);
 		expect(jpa.getResource()).andReturn(file);
-		replay(jpa, featureProvider);
-		return jpa;
+		replay(pa, jpa, featureProvider);
+		return pa;
 	}
-	
-	private IDiagramTypeProvider replayDiagramProviderForJpa(PictogramElement pe, JavaSpecifiedPersistentAttribute jpa) {
+
+	private IDiagramTypeProvider replayDiagramProviderForJpa(PictogramElement pe, PersistentAttribute jpa) {
 		IFeatureProvider featureProvider = EasyMock.createMock(IFeatureProvider.class);
 		expect(featureProvider.getBusinessObjectForPictogramElement(pe)).andStubReturn(jpa);
 		IDiagramTypeProvider dtp = EasyMock.createMock(IDiagramTypeProvider.class);

@@ -29,8 +29,8 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.graphiti.features.context.ICustomContext;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.RefactorAttributeTypeFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
@@ -83,14 +83,14 @@ public class RefactorAttributeTypeFeatureTest {
 	@Test
 	public void testAttributeUtils(){
 		PersistenceUnit pu = JpaArtifactFactory.instance().getPersistenceUnit(jpaProject);
-		JavaPersistentType jpt = (JavaPersistentType)pu.getPersistentType("org.eclipse.Ent");
-		JavaSpecifiedPersistentAttribute at = jpt.getAttributeNamed("id");
+		PersistentType jpt = pu.getPersistentType("org.eclipse.Ent");
+		PersistentAttribute at = jpt.getAttributeNamed("id");
 		List<String> lst = JpaArtifactFactory.instance().getAnnotationStrings(at);
 		assertEquals(1, lst.size());
 		assertTrue(lst.contains("@Id"));
 		String typeName1 = JPAEditorUtil.getAttributeTypeName(at);
 		assertEquals("int", typeName1);
-		String typeName2 = JPAEditorUtil.getAttributeTypeName(at.getResourceAttribute());
+		String typeName2 = JPAEditorUtil.getAttributeTypeName(at.getJavaPersistentAttribute().getResourceAttribute());
 		assertEquals("int", typeName2);		
 	}
 	
