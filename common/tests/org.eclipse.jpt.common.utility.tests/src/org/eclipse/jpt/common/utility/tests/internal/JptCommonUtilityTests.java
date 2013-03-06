@@ -61,6 +61,7 @@ public class JptCommonUtilityTests {
 		suite.addTestSuite(CompositeMultiThreadedExceptionHandlerTests.class);
 		suite.addTestSuite(ExceptionHandlerTests.class);
 		suite.addTestSuite(ListenerListTests.class);
+		suite.addTestSuite(MapKeyAssociationTests.class);
 		suite.addTestSuite(NameToolsTests.class);
 		suite.addTestSuite(ObjectToolsTests.class);
 		suite.addTestSuite(PrintStreamExceptionHandlerTests.class);
