@@ -16,8 +16,8 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.AbstractJpaContextModel;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_0Definition;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_1Definition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXmlDefinition2_0;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXmlDefinition2_1;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmXmlContextModelFactory2_0;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.OrmXmlContextModelFactory2_1;
 
@@ -55,11 +55,11 @@ public abstract class AbstractOrmXmlContextModel<P extends JpaContextModel>
 	}
 
 	protected boolean isOrmXml2_0Compatible() {
-		return this.getResourceType().isKindOf(GenericOrmXml2_0Definition.instance().getResourceType());
+		return this.getResourceType().isKindOf(GenericOrmXmlDefinition2_0.instance().getResourceType());
 	}
 
 	protected boolean isOrmXml2_1Compatible() {
-		return this.getResourceType().isKindOf(GenericOrmXml2_1Definition.instance().getResourceType());
+		return this.getResourceType().isKindOf(GenericOrmXmlDefinition2_1.instance().getResourceType());
 	}
 
 	/**

@@ -43,11 +43,11 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaMappedSuperclassD
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaOneToManyMappingDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaOneToOneMappingDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaVersionMappingDefinition2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_0Definition;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_1Definition;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.GenericPersistenceXml2_0Definition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXmlDefinition2_0;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXmlDefinition2_1;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.GenericPersistenceXmlDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java.JavaConverterTypeDefinition;
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.persistence.GenericPersistenceXml2_1Definition;
+import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.persistence.GenericPersistenceXmlDefinition2_1;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -85,8 +85,8 @@ public class Generic2_1JpaPlatformProvider
 	protected static final JptResourceType[] MOST_RECENT_SUPPORTED_RESOURCE_TYPES = new JptResourceType[] {
 		JavaSourceFileDefinition.instance().getResourceType(),
 		JarDefinition.instance().getResourceType(),
-		GenericPersistenceXml2_1Definition.instance().getResourceType(),
-		GenericOrmXml2_1Definition.instance().getResourceType()
+		GenericPersistenceXmlDefinition2_1.instance().getResourceType(),
+		GenericOrmXmlDefinition2_1.instance().getResourceType()
 	};
 
 	@Override
@@ -182,10 +182,10 @@ public class Generic2_1JpaPlatformProvider
 		JavaSourceFileDefinition.instance(),
 		JarDefinition.instance(),
 		GenericPersistenceXmlDefinition.instance(),
-		GenericPersistenceXml2_0Definition.instance(),
-		GenericPersistenceXml2_1Definition.instance(),
+		GenericPersistenceXmlDefinition2_0.instance(),
+		GenericPersistenceXmlDefinition2_1.instance(),
 		GenericOrmXmlDefinition.instance(),
-		GenericOrmXml2_0Definition.instance(),
-		GenericOrmXml2_1Definition.instance()
+		GenericOrmXmlDefinition2_0.instance(),
+		GenericOrmXmlDefinition2_1.instance()
 	};
 }

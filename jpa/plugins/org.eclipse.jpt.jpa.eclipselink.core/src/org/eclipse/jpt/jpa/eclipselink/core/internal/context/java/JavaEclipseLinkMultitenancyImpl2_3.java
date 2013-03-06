@@ -677,7 +677,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 			);			
 		}
 		if (getSpecifiedType() == EclipseLinkMultitenantType2_3.VPD) {
-			String targetDatabase = getPersistenceUnit().getOptions().getTargetDatabase();
+			String targetDatabase = getPersistenceUnit().getEclipseLinkOptions().getTargetDatabase();
 			if (targetDatabase == null) {
 				messages.add(
 					this.buildValidationMessage(

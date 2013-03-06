@@ -11,9 +11,9 @@ package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.persistence;
 
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.JpaConnection2_0;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Connection;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Connection2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.Connection2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConnection;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConnection2_0;
 
 /**
  *  EclipseLink2_0ConnectionTests
@@ -21,34 +21,34 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Connection2_0;
 @SuppressWarnings("nls")
 public class EclipseLink2_0ConnectionTests extends EclipseLink2_0PersistenceUnitTestCase
 {
-	private Connection2_0 connection;
+	private EclipseLinkConnection2_0 connection;
 
-	public static final String NATIVE_SQL_KEY = Connection.ECLIPSELINK_NATIVE_SQL;
+	public static final String NATIVE_SQL_KEY = EclipseLinkConnection.ECLIPSELINK_NATIVE_SQL;
 	public static final Boolean NATIVE_SQL_TEST_VALUE = false;
 	public static final Boolean NATIVE_SQL_TEST_VALUE_2 = ! NATIVE_SQL_TEST_VALUE;
 	
-	public static final String DRIVER_KEY = JpaConnection2_0.PERSISTENCE_JDBC_DRIVER;
+	public static final String DRIVER_KEY = Connection2_0.PERSISTENCE_JDBC_DRIVER;
 	public static final String DRIVER_TEST_VALUE = "connection.driver";
 	public static final String DRIVER_TEST_VALUE_2 = "connection.driver.2";
-	public static final String LEGACY_DRIVER_KEY = Connection.ECLIPSELINK_DRIVER;
+	public static final String LEGACY_DRIVER_KEY = EclipseLinkConnection.ECLIPSELINK_DRIVER;
 	public static final String LEGACY_DRIVER_TEST_VALUE = "legacy.connection.driver";
 	
-	public static final String URL_KEY = JpaConnection2_0.PERSISTENCE_JDBC_URL;
+	public static final String URL_KEY = Connection2_0.PERSISTENCE_JDBC_URL;
 	public static final String URL_TEST_VALUE = "test";
 	public static final String URL_TEST_VALUE_2 = "test_2";
-	public static final String LEGACY_URL_KEY = Connection.ECLIPSELINK_URL;
+	public static final String LEGACY_URL_KEY = EclipseLinkConnection.ECLIPSELINK_URL;
 	public static final String LEGACY_URL_TEST_VALUE = "legacy.connection.url";
 
-	public static final String USER_KEY = JpaConnection2_0.PERSISTENCE_JDBC_USER;
+	public static final String USER_KEY = Connection2_0.PERSISTENCE_JDBC_USER;
 	public static final String USER_TEST_VALUE = "test";
 	public static final String USER_TEST_VALUE_2 = "test_2";
-	public static final String LEGACY_USER_KEY = Connection.ECLIPSELINK_USER;
+	public static final String LEGACY_USER_KEY = EclipseLinkConnection.ECLIPSELINK_USER;
 	public static final String LEGACY_USER_TEST_VALUE = "legacy.connection.user";
 
-	public static final String PASSWORD_KEY = JpaConnection2_0.PERSISTENCE_JDBC_PASSWORD;
+	public static final String PASSWORD_KEY = Connection2_0.PERSISTENCE_JDBC_PASSWORD;
 	public static final String PASSWORD_TEST_VALUE = "test";
 	public static final String PASSWORD_TEST_VALUE_2 = "test_2";
-	public static final String LEGACY_PASSWORD_KEY = Connection.ECLIPSELINK_PASSWORD;
+	public static final String LEGACY_PASSWORD_KEY = EclipseLinkConnection.ECLIPSELINK_PASSWORD;
 	public static final String LEGACY_PASSWORD_TEST_VALUE = "legacy.connection.password";
 
 	public EclipseLink2_0ConnectionTests(String name) {
@@ -58,13 +58,13 @@ public class EclipseLink2_0ConnectionTests extends EclipseLink2_0PersistenceUnit
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.connection = (Connection2_0) this.subject.getConnection();
+		this.connection = this.subject.getConnection();
 		PropertyChangeListener propertyChangeListener = this.buildPropertyChangeListener();
 		
-		this.connection.addPropertyChangeListener(Connection.DRIVER_PROPERTY, propertyChangeListener);
-		this.connection.addPropertyChangeListener(Connection.URL_PROPERTY, propertyChangeListener);
-		this.connection.addPropertyChangeListener(Connection.USER_PROPERTY, propertyChangeListener);
-		this.connection.addPropertyChangeListener(Connection.PASSWORD_PROPERTY, propertyChangeListener);
+		this.connection.addPropertyChangeListener(EclipseLinkConnection.DRIVER_PROPERTY, propertyChangeListener);
+		this.connection.addPropertyChangeListener(EclipseLinkConnection.URL_PROPERTY, propertyChangeListener);
+		this.connection.addPropertyChangeListener(EclipseLinkConnection.USER_PROPERTY, propertyChangeListener);
+		this.connection.addPropertyChangeListener(EclipseLinkConnection.PASSWORD_PROPERTY, propertyChangeListener);
 		
 		this.clearEvent();
 	}
@@ -102,13 +102,13 @@ public class EclipseLink2_0ConnectionTests extends EclipseLink2_0PersistenceUnit
 	protected Object getProperty(String propertyName) throws NoSuchFieldException {
 		Object modelValue = null;
 
-		if (propertyName.equals(Connection.DRIVER_PROPERTY))
+		if (propertyName.equals(EclipseLinkConnection.DRIVER_PROPERTY))
 			modelValue = this.connection.getDriver();
-		else if (propertyName.equals(Connection.URL_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.URL_PROPERTY))
 			modelValue = this.connection.getUrl();
-		else if (propertyName.equals(Connection.USER_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.USER_PROPERTY))
 			modelValue = this.connection.getUser();
-		else if (propertyName.equals(Connection.PASSWORD_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.PASSWORD_PROPERTY))
 			modelValue = this.connection.getPassword();
 		else
 			this.throwMissingDefinition("getProperty", propertyName);
@@ -117,13 +117,13 @@ public class EclipseLink2_0ConnectionTests extends EclipseLink2_0PersistenceUnit
 
 	@Override
 	protected void setProperty(String propertyName, Object newValue) throws Exception {
-		if (propertyName.equals(Connection.DRIVER_PROPERTY))
+		if (propertyName.equals(EclipseLinkConnection.DRIVER_PROPERTY))
 			this.connection.setDriver((String) newValue);
-		else if (propertyName.equals(Connection.URL_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.URL_PROPERTY))
 			this.connection.setUrl((String) newValue);
-		else if (propertyName.equals(Connection.USER_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.USER_PROPERTY))
 			this.connection.setUser((String) newValue);
-		else if (propertyName.equals(Connection.PASSWORD_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.PASSWORD_PROPERTY))
 			this.connection.setPassword((String) newValue);
 		else
 			this.throwMissingDefinition("setProperty", propertyName);

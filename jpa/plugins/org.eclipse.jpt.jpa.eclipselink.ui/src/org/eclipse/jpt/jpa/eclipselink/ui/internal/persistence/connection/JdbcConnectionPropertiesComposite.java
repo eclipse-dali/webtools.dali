@@ -34,7 +34,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaWorkspace;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Connection;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConnection;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.ui.JpaWorkbench;
@@ -54,7 +54,7 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
  *  JdbcConnectionPropertiesComposite
  */
 @SuppressWarnings("nls")
-public class JdbcConnectionPropertiesComposite<T extends Connection> 
+public class JdbcConnectionPropertiesComposite<T extends EclipseLinkConnection> 
 	extends Pane<T>
 {
 	/**
@@ -70,7 +70,7 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 	}
 
 	private ModifiablePropertyValueModel<String> buildPasswordHolder() {
-		return new PropertyAspectAdapter<Connection, String>(getSubjectHolder(), Connection.PASSWORD_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkConnection, String>(getSubjectHolder(), EclipseLinkConnection.PASSWORD_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return subject.getPassword();
@@ -95,7 +95,7 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 	}
 
 	private ModifiablePropertyValueModel<String> buildUrlHolder() {
-		return new PropertyAspectAdapter<Connection, String>(getSubjectHolder(), Connection.URL_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkConnection, String>(getSubjectHolder(), EclipseLinkConnection.URL_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return subject.getUrl();
@@ -112,7 +112,7 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 	}
 
 	private ModifiablePropertyValueModel<String> buildUserHolder() {
-		return new PropertyAspectAdapter<Connection, String>(getSubjectHolder(), Connection.USER_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkConnection, String>(getSubjectHolder(), EclipseLinkConnection.USER_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return subject.getUser();
@@ -176,14 +176,14 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 		bindParametersCheckBox.getCheckBox().setLayoutData(gridData);
 	}
 
-	private ClassChooserPane<Connection> initializeJdbcDriverClassChooser(Composite container) {
+	private ClassChooserPane<EclipseLinkConnection> initializeJdbcDriverClassChooser(Composite container) {
 
-		return new ClassChooserPane<Connection>(this, container) {
+		return new ClassChooserPane<EclipseLinkConnection>(this, container) {
 
 			@Override
 			protected ModifiablePropertyValueModel<String> buildTextHolder() {
-				return new PropertyAspectAdapter<Connection, String>(
-							this.getSubjectHolder(), Connection.DRIVER_PROPERTY) {
+				return new PropertyAspectAdapter<EclipseLinkConnection, String>(
+							this.getSubjectHolder(), EclipseLinkConnection.DRIVER_PROPERTY) {
 					@Override
 					protected String buildValue_() {
 						return this.subject.getDriver();
@@ -218,7 +218,7 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildBindParametersHolder() {
-		return new PropertyAspectAdapter<Connection, Boolean>(getSubjectHolder(), Connection.BIND_PARAMETERS_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkConnection, Boolean>(getSubjectHolder(), EclipseLinkConnection.BIND_PARAMETERS_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getBindParameters();
@@ -245,9 +245,9 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 	}
 
 	private PropertyValueModel<Boolean> buildDefaultBindParametersHolder() {
-		return new PropertyAspectAdapter<Connection, Boolean>(
+		return new PropertyAspectAdapter<EclipseLinkConnection, Boolean>(
 			getSubjectHolder(),
-			Connection.BIND_PARAMETERS_PROPERTY)
+			EclipseLinkConnection.BIND_PARAMETERS_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -271,7 +271,7 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 		ConnectionProfileFactory factory = this.getConnectionProfileFactory();
 		ConnectionProfile cp = (factory == null) ? null : factory.buildConnectionProfile(name);
 
-		Connection connection = getSubject();
+		EclipseLinkConnection connection = getSubject();
 		connection.setUrl((cp == null) ? "" : cp.getURL());
 		connection.setUser((cp == null) ? "" : cp.getUserName());
 		connection.setPassword((cp == null) ? "" : cp.getUserPassword());

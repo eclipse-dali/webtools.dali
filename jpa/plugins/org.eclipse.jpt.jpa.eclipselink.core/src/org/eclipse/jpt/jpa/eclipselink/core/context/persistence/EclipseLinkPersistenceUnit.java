@@ -65,16 +65,16 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.TenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkPersistenceUnitDefaults;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkCustomization;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkGeneralProperties;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkSchemaGeneration;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkSchemaGenerationImpl;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.osgi.util.NLS;
@@ -114,8 +114,10 @@ public class EclipseLinkPersistenceUnit
 	private/*final*/ GeneralProperties generalProperties;
 	private Customization customization;
 	private Caching caching;
-	private Logging logging;
-	private SchemaGeneration eclipseLinkSchemaGeneration;
+	private EclipseLinkLogging logging;
+	private EclipseLinkSchemaGeneration eclipseLinkSchemaGeneration;
+	private EclipseLinkConnection eclipseLinkConnection1_0;
+	private EclipseLinkOptions eclipseLinkOptions1_0;
 
 	/* global converter definitions, defined elsewhere in model */
 	protected final Vector<EclipseLinkConverter> converters = new Vector<EclipseLinkConverter>();
@@ -169,8 +171,13 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	@Override
-	public Connection getConnection() {
-		return (Connection) super.getConnection();
+	public EclipseLinkConnection2_0 getConnection() {
+		return (EclipseLinkConnection2_0) super.getConnection();
+	}
+
+	@Override
+	public EclipseLinkOptions2_0 getOptions() {
+		return (EclipseLinkOptions2_0) super.getOptions();
 	}
 
 	public Customization getCustomization() {
@@ -196,25 +203,28 @@ public class EclipseLinkPersistenceUnit
 		return cacheSharedDefaultProperty != null ? cacheSharedDefaultProperty.getValue() : null;
 	}
 
-	public Logging getLogging() {
+	public EclipseLinkLogging getLogging() {
 		return this.logging;
 	}
 
-	@Override
-	public Options getOptions() {
-		return (Options) super.getOptions();
+	public EclipseLinkSchemaGeneration getEclipseLinkSchemaGeneration() {
+		return this.eclipseLinkSchemaGeneration;
 	}
 
-	public SchemaGeneration getEclipseLinkSchemaGeneration() {
-		return this.eclipseLinkSchemaGeneration;
+	public EclipseLinkConnection getEclipseLinkConnection() {
+		return this.isPersistenceXml2_0Compatible() ?
+				this.getConnection() :
+				this.eclipseLinkConnection1_0;
+	}
+
+	public EclipseLinkOptions getEclipseLinkOptions() {
+		return this.isPersistenceXml2_0Compatible() ?
+				this.getOptions() :
+				this.eclipseLinkOptions1_0;
 	}
 
 	protected GeneralProperties buildEclipseLinkGeneralProperties() {
 		return new EclipseLinkGeneralProperties(this);
-	}
-
-	protected Connection buildEclipseLinkConnection() {
-		return (Connection) this.getContextModelFactory().buildConnection(this);
 	}
 
 	protected Customization buildEclipseLinkCustomization() {
@@ -225,16 +235,20 @@ public class EclipseLinkPersistenceUnit
 		return new EclipseLinkCaching(this);
 	}
 
-	protected Logging buildEclipseLinkLogging() {
-		return (Logging) this.getContextModelFactory().buildLogging(this);
+	protected EclipseLinkLogging buildEclipseLinkLogging() {
+		return this.getContextModelFactory().buildLogging(this);
 	}
 
-	protected Options buildEclipseLinkOptions() {
-		return (Options) this.getContextModelFactory().buildOptions(this);
+	protected EclipseLinkConnection buildEclipseLinkConnection1_0() {
+		return this.getContextModelFactory().buildConnection(this);
 	}
 
-	protected SchemaGeneration buildEclipseLinkSchemaGeneration() {
-		return new EclipseLinkSchemaGeneration(this);
+	protected EclipseLinkOptions buildEclipseLinkOptions1_0() {
+		return this.getContextModelFactory().buildOptions(this);
+	}
+
+	protected EclipseLinkSchemaGeneration buildEclipseLinkSchemaGeneration() {
+		return new EclipseLinkSchemaGenerationImpl(this);
 	}
 
 	@Override
@@ -245,6 +259,8 @@ public class EclipseLinkPersistenceUnit
 		this.caching = this.buildEclipseLinkCaching();
 		this.logging = this.buildEclipseLinkLogging();
 		this.eclipseLinkSchemaGeneration = this.buildEclipseLinkSchemaGeneration();
+		this.eclipseLinkConnection1_0 = this.buildEclipseLinkConnection1_0();
+		this.eclipseLinkOptions1_0 = this.buildEclipseLinkOptions1_0();
 	}
 
 	@Override
@@ -255,6 +271,8 @@ public class EclipseLinkPersistenceUnit
 		this.caching.propertyValueChanged(propertyName, newValue);
 		this.logging.propertyValueChanged(propertyName, newValue);
 		this.eclipseLinkSchemaGeneration.propertyValueChanged(propertyName, newValue);
+		this.eclipseLinkConnection1_0.propertyValueChanged(propertyName, newValue);
+		this.eclipseLinkOptions1_0.propertyValueChanged(propertyName, newValue);
 	}
 
 	@Override
@@ -265,6 +283,8 @@ public class EclipseLinkPersistenceUnit
 		this.caching.propertyRemoved(propertyName);
 		this.logging.propertyRemoved(propertyName);
 		this.eclipseLinkSchemaGeneration.propertyRemoved(propertyName);
+		this.eclipseLinkConnection1_0.propertyRemoved(propertyName);
+		this.eclipseLinkOptions1_0.propertyRemoved(propertyName);
 	}
 
 
@@ -666,7 +686,7 @@ public class EclipseLinkPersistenceUnit
 			return;
 		}
 
-		if (ArrayTools.contains(Logging.RESERVED_LOGGER_NAMES, loggerProperty.getValue())) {
+		if (ArrayTools.contains(EclipseLinkLogging.RESERVED_LOGGER_NAMES, loggerProperty.getValue())) {
 			return;
 		}
 
@@ -688,7 +708,7 @@ public class EclipseLinkPersistenceUnit
 					)
 			);
 		} else if (!JDTTools.typeIsSubType(
-				javaProject, loggerProperty.getValue(), Logging.ECLIPSELINK_LOGGER_CLASS_NAME)
+				javaProject, loggerProperty.getValue(), EclipseLinkLogging.ECLIPSELINK_LOGGER_CLASS_NAME)
 		) {
 			messages.add(
 					this.buildValidationMessage(
@@ -930,7 +950,7 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	private Property getLoggerProperty() {
-		return this.getProperty(Logging.ECLIPSELINK_LOGGER);
+		return this.getProperty(EclipseLinkLogging.ECLIPSELINK_LOGGER);
 	}
 
 	private Property getExceptionHandlerProperty() {
@@ -1078,7 +1098,8 @@ public class EclipseLinkPersistenceUnit
 		return IterableTools.concatenate(
 				super.createPersistenceUnitPropertiesRenameTypeEdits(originalType, newName),
 				this.customization.createRenameTypeEdits(originalType, newName),
-				this.logging.createRenameTypeEdits(originalType, newName)
+				this.logging.createRenameTypeEdits(originalType, newName),
+				this.eclipseLinkOptions1_0.createRenameTypeEdits(originalType, newName)
 			);
 	}
 
@@ -1088,7 +1109,8 @@ public class EclipseLinkPersistenceUnit
 		return IterableTools.concatenate(
 				super.createPersistenceUnitPropertiesMoveTypeEdits(originalType, newPackage),
 				this.customization.createMoveTypeEdits(originalType, newPackage),
-				this.logging.createMoveTypeEdits(originalType, newPackage)
+				this.logging.createMoveTypeEdits(originalType, newPackage),
+				this.eclipseLinkOptions1_0.createMoveTypeEdits(originalType, newPackage)
 			);
 	}
 
@@ -1098,7 +1120,8 @@ public class EclipseLinkPersistenceUnit
 		return IterableTools.concatenate(
 				super.createPersistenceUnitPropertiesRenamePackageEdits(originalPackage, newName),
 				this.customization.createRenamePackageEdits(originalPackage, newName),
-				this.logging.createRenamePackageEdits(originalPackage, newName)
+				this.logging.createRenamePackageEdits(originalPackage, newName),
+				this.eclipseLinkOptions1_0.createRenamePackageEdits(originalPackage, newName)
 			);
 	}
 

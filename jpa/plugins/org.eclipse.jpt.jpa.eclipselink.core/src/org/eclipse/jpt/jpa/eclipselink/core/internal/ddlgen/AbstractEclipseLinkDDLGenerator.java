@@ -36,13 +36,13 @@ import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Connection;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConnection;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.DdlGenerationType;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.LoggingLevel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.OutputMode;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.SchemaGeneration;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkSchemaGeneration;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_1JpaPlatformFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
 import org.eclipse.osgi.util.ManifestElement;
@@ -201,25 +201,25 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 	
 	protected void buildConnectionProperties(Properties properties) {
 		this.putProperty(properties,  
-			Connection.ECLIPSELINK_BIND_PARAMETERS,
+			EclipseLinkConnection.ECLIPSELINK_BIND_PARAMETERS,
 			FALSE);
 	}
 	
 	private void buildLoggingProperties(Properties properties) {
 		this.putProperty(properties,
-			Logging.ECLIPSELINK_LEVEL,
+			EclipseLinkLogging.ECLIPSELINK_LEVEL,
 			LoggingLevel.fine);
 		this.putProperty(properties,
-			Logging.ECLIPSELINK_TIMESTAMP,
+			EclipseLinkLogging.ECLIPSELINK_TIMESTAMP,
 			FALSE);
 		this.putProperty(properties,
-			Logging.ECLIPSELINK_THREAD,
+			EclipseLinkLogging.ECLIPSELINK_THREAD,
 			FALSE);
 		this.putProperty(properties,
-			Logging.ECLIPSELINK_SESSION,
+			EclipseLinkLogging.ECLIPSELINK_SESSION,
 			FALSE);
 		this.putProperty(properties,
-			Logging.ECLIPSELINK_EXCEPTIONS,
+			EclipseLinkLogging.ECLIPSELINK_EXCEPTIONS,
 			TRUE);
 	}
 	
@@ -257,30 +257,30 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 	
 	private void buildProjectLocationProperty(Properties properties) {
 		this.putProperty(properties, 
-			SchemaGeneration.ECLIPSELINK_APPLICATION_LOCATION,
+			EclipseLinkSchemaGeneration.ECLIPSELINK_APPLICATION_LOCATION,
 			this.getProjectLocation());
 	}
 	
 	private void buildDDLModeProperties(Properties properties) {
 		this.putProperty(properties,  
-			SchemaGeneration.ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE,
+			EclipseLinkSchemaGeneration.ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE,
 			this.outputMode);
 		
 		this.putProperty(properties,  
-			SchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE,
+			EclipseLinkSchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE,
 			DdlGenerationType.drop_and_create_tables);
 
 		this.putProperty(properties,  
-			SchemaGeneration.ECLIPSELINK_CREATE_FILE_NAME,
-			SchemaGeneration.DEFAULT_SCHEMA_GENERATION_CREATE_FILE_NAME);
+			EclipseLinkSchemaGeneration.ECLIPSELINK_CREATE_FILE_NAME,
+			EclipseLinkSchemaGeneration.DEFAULT_SCHEMA_GENERATION_CREATE_FILE_NAME);
 		this.putProperty(properties,  
-			SchemaGeneration.ECLIPSELINK_DROP_FILE_NAME,
-			SchemaGeneration.DEFAULT_SCHEMA_GENERATION_DROP_FILE_NAME);
+			EclipseLinkSchemaGeneration.ECLIPSELINK_DROP_FILE_NAME,
+			EclipseLinkSchemaGeneration.DEFAULT_SCHEMA_GENERATION_DROP_FILE_NAME);
 	}
 	
 	private void buildConnectionPoolingProperties(Properties properties) {
 		this.putProperty(properties,
-			Connection.ECLIPSELINK_READ_CONNECTIONS_SHARED,
+			EclipseLinkConnection.ECLIPSELINK_READ_CONNECTIONS_SHARED,
 			TRUE);
 	}
 	

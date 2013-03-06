@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.DdlGenerationType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.OutputMode;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.SchemaGeneration;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkSchemaGeneration;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.osgi.util.NLS;
@@ -31,9 +31,9 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
 public class PersistenceXmlSchemaGenerationComposite
-	extends Pane<SchemaGeneration>
+	extends Pane<EclipseLinkSchemaGeneration>
 {
-	public PersistenceXmlSchemaGenerationComposite(Pane<?> parent, PropertyValueModel<SchemaGeneration> schemaGenModel, Composite parentComposite) {
+	public PersistenceXmlSchemaGenerationComposite(Pane<?> parent, PropertyValueModel<EclipseLinkSchemaGeneration> schemaGenModel, Composite parentComposite) {
 		super(parent, schemaGenModel, parentComposite);
 	}
 
@@ -85,12 +85,12 @@ public class PersistenceXmlSchemaGenerationComposite
 
 	//************ DDL generation type ************
 
-	private EnumFormComboViewer<SchemaGeneration, DdlGenerationType> addDdlGenerationTypeCombo(Composite container) {
-		return new EnumFormComboViewer<SchemaGeneration, DdlGenerationType>(this, container) {
+	private EnumFormComboViewer<EclipseLinkSchemaGeneration, DdlGenerationType> addDdlGenerationTypeCombo(Composite container) {
+		return new EnumFormComboViewer<EclipseLinkSchemaGeneration, DdlGenerationType>(this, container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(SchemaGeneration.DDL_GENERATION_TYPE_PROPERTY);
+				propertyNames.add(EclipseLinkSchemaGeneration.DDL_GENERATION_TYPE_PROPERTY);
 			}
 
 			@Override
@@ -137,12 +137,12 @@ public class PersistenceXmlSchemaGenerationComposite
 
 	//************ output mode ************
 
-	private EnumFormComboViewer<SchemaGeneration, OutputMode> addBuildOutputModeCombo(Composite container) {
-		return new EnumFormComboViewer<SchemaGeneration, OutputMode>(this, container) {
+	private EnumFormComboViewer<EclipseLinkSchemaGeneration, OutputMode> addBuildOutputModeCombo(Composite container) {
+		return new EnumFormComboViewer<EclipseLinkSchemaGeneration, OutputMode>(this, container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(SchemaGeneration.OUTPUT_MODE_PROPERTY);
+				propertyNames.add(EclipseLinkSchemaGeneration.OUTPUT_MODE_PROPERTY);
 			}
 
 			@Override
@@ -189,7 +189,7 @@ public class PersistenceXmlSchemaGenerationComposite
 	//************ Create DDL file name ************
 
 	private PropertyValueModel<String> buildDefaultCreateDdlFileNameHolder() {
-		return new PropertyAspectAdapter<SchemaGeneration, String>(this.getSubjectHolder(), SchemaGeneration.DEFAULT_SCHEMA_GENERATION_CREATE_FILE_NAME) {
+		return new PropertyAspectAdapter<EclipseLinkSchemaGeneration, String>(this.getSubjectHolder(), EclipseLinkSchemaGeneration.DEFAULT_SCHEMA_GENERATION_CREATE_FILE_NAME) {
 			@Override
 			protected String buildValue_() {
 				return PersistenceXmlSchemaGenerationComposite.this.getDefaultCreateFileNameValue(subject);
@@ -204,7 +204,7 @@ public class PersistenceXmlSchemaGenerationComposite
 	}
 
 	private ModifiablePropertyValueModel<String> buildCreateDdlFileNameHolder() {
-		return new PropertyAspectAdapter<SchemaGeneration, String>(this.getSubjectHolder(), SchemaGeneration.CREATE_FILE_NAME_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkSchemaGeneration, String>(this.getSubjectHolder(), EclipseLinkSchemaGeneration.CREATE_FILE_NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 
@@ -226,7 +226,7 @@ public class PersistenceXmlSchemaGenerationComposite
 		};
 	}
 
-	private String getDefaultCreateFileNameValue(SchemaGeneration subject) {
+	private String getDefaultCreateFileNameValue(EclipseLinkSchemaGeneration subject) {
 		String defaultValue = subject.getDefaultCreateFileName();
 
 		if (defaultValue != null) {
@@ -243,7 +243,7 @@ public class PersistenceXmlSchemaGenerationComposite
 
 
 	private PropertyValueModel<String> buildDefaultDropDdlFileNameHolder() {
-		return new PropertyAspectAdapter<SchemaGeneration, String>(this.getSubjectHolder(), SchemaGeneration.DEFAULT_SCHEMA_GENERATION_DROP_FILE_NAME) {
+		return new PropertyAspectAdapter<EclipseLinkSchemaGeneration, String>(this.getSubjectHolder(), EclipseLinkSchemaGeneration.DEFAULT_SCHEMA_GENERATION_DROP_FILE_NAME) {
 			@Override
 			protected String buildValue_() {
 				return PersistenceXmlSchemaGenerationComposite.this.getDefaultDropDdlFileNameValue(subject);
@@ -258,7 +258,7 @@ public class PersistenceXmlSchemaGenerationComposite
 	}
 
 	private ModifiablePropertyValueModel<String> buildDropDdlFileNameHolder() {
-		return new PropertyAspectAdapter<SchemaGeneration, String>(this.getSubjectHolder(), SchemaGeneration.DROP_FILE_NAME_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkSchemaGeneration, String>(this.getSubjectHolder(), EclipseLinkSchemaGeneration.DROP_FILE_NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 
@@ -280,7 +280,7 @@ public class PersistenceXmlSchemaGenerationComposite
 		};
 	}
 
-	private String getDefaultDropDdlFileNameValue(SchemaGeneration subject) {
+	private String getDefaultDropDdlFileNameValue(EclipseLinkSchemaGeneration subject) {
 		String defaultValue = subject.getDefaultDropFileName();
 
 		if (defaultValue != null) {
@@ -292,13 +292,13 @@ public class PersistenceXmlSchemaGenerationComposite
 		return JptCommonUiMessages.DEFAULT_EMPTY;
 	}
 
-	private Pane<SchemaGeneration> buildDdlGenerationLocationComposite(Composite container) {
-		return new FolderChooserComboPane<SchemaGeneration>(this, container) {
+	private Pane<EclipseLinkSchemaGeneration> buildDdlGenerationLocationComposite(Composite container) {
+		return new FolderChooserComboPane<EclipseLinkSchemaGeneration>(this, container) {
 
 			@Override
 			protected ModifiablePropertyValueModel<String> buildTextHolder() {
-				return new PropertyAspectAdapter<SchemaGeneration, String>(
-										getSubjectHolder(), SchemaGeneration.APPLICATION_LOCATION_PROPERTY) {
+				return new PropertyAspectAdapter<EclipseLinkSchemaGeneration, String>(
+										getSubjectHolder(), EclipseLinkSchemaGeneration.APPLICATION_LOCATION_PROPERTY) {
 					@Override
 					protected String buildValue_() {
 
@@ -320,7 +320,7 @@ public class PersistenceXmlSchemaGenerationComposite
 				};
 			}
 
-			private String defaultValue(SchemaGeneration subject) {
+			private String defaultValue(EclipseLinkSchemaGeneration subject) {
 				String defaultValue = subject.getDefaultApplicationLocation();
 
 				if (defaultValue != null) {

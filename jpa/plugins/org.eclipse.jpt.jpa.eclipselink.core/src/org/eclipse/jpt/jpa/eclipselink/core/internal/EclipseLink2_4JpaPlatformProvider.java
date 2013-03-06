@@ -27,8 +27,8 @@ import org.eclipse.jpt.jpa.core.internal.context.java.JarDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaSourceFileDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaTransientMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_0Definition;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.GenericPersistenceXml2_0Definition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXmlDefinition2_0;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.GenericPersistenceXmlDefinition2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaArrayMappingDefinition2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicCollectionMappingDefinition2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMapMappingDefinition2_0;
@@ -48,15 +48,15 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJav
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaTransformationMappingDefinition2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaVariableOneToOneMappingDefinition2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaVersionMappingDefinition2_2;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml1_1Definition;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml1_2Definition;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_0Definition;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_1Definition;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_2Definition;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_3Definition;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_4Definition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition1_1;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition1_2;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition2_1;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition2_2;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLink2_4PersistenceXmlDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceXmlDefinition2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceXmlDefinition;
 
 /**
@@ -94,9 +94,9 @@ public class EclipseLink2_4JpaPlatformProvider
 	protected static final JptResourceType[] MOST_RECENT_SUPPORTED_RESOURCE_TYPES = new JptResourceType[] {
 		JavaSourceFileDefinition.instance().getResourceType(),
 		JarDefinition.instance().getResourceType(),
-		GenericPersistenceXml2_0Definition.instance().getResourceType(),
-		GenericOrmXml2_0Definition.instance().getResourceType(),
-		org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_4Definition.instance().getResourceType()
+		GenericPersistenceXmlDefinition2_0.instance().getResourceType(),
+		GenericOrmXmlDefinition2_0.instance().getResourceType(),
+		org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition2_4.instance().getResourceType()
 	};
 
 	@Override
@@ -125,17 +125,17 @@ public class EclipseLink2_4JpaPlatformProvider
 		JavaSourceFileDefinition.instance(),
 		JarDefinition.instance(),
 		EclipseLinkPersistenceXmlDefinition.instance(),
-		EclipseLink2_4PersistenceXmlDefinition.instance(),
+		EclipseLinkPersistenceXmlDefinition2_4.instance(),
 		GenericOrmXmlDefinition.instance(),
-		GenericOrmXml2_0Definition.instance(),
+		GenericOrmXmlDefinition2_0.instance(),
 		EclipseLinkOrmXmlDefinition.instance(),
-		EclipseLinkOrmXml1_1Definition.instance(),
-		EclipseLinkOrmXml1_2Definition.instance(),
-		EclipseLinkOrmXml2_0Definition.instance(),
-		EclipseLinkOrmXml2_1Definition.instance(),
-		EclipseLinkOrmXml2_2Definition.instance(),
-		EclipseLinkOrmXml2_3Definition.instance(),
-		EclipseLinkOrmXml2_4Definition.instance()
+		EclipseLinkOrmXmlDefinition1_1.instance(),
+		EclipseLinkOrmXmlDefinition1_2.instance(),
+		EclipseLinkOrmXmlDefinition2_0.instance(),
+		EclipseLinkOrmXmlDefinition2_1.instance(),
+		EclipseLinkOrmXmlDefinition2_2.instance(),
+		EclipseLinkOrmXmlDefinition2_3.instance(),
+		EclipseLinkOrmXmlDefinition2_4.instance()
 	};
 
 

@@ -209,19 +209,19 @@ public class EclipseLinkOrmBasicMappingTests
 		assertFalse(contextBasic.getMutable().isMutable());
 		
 		
-		getPersistenceUnit().getOptions().setTemporalMutable(Boolean.TRUE);
+		getPersistenceUnit().getEclipseLinkOptions().setTemporalMutable(Boolean.TRUE);
 		assertNull(resourceBasic.getMutable());
 		assertTrue(contextBasic.getMutable().isDefaultMutable());
 		assertNull(contextBasic.getMutable().getSpecifiedMutable());
 		assertTrue(contextBasic.getMutable().isMutable());
 		
-		getPersistenceUnit().getOptions().setTemporalMutable(Boolean.FALSE);
+		getPersistenceUnit().getEclipseLinkOptions().setTemporalMutable(Boolean.FALSE);
 		assertNull(resourceBasic.getMutable());
 		assertFalse(contextBasic.getMutable().isDefaultMutable());
 		assertNull(contextBasic.getMutable().getSpecifiedMutable());
 		assertFalse(contextBasic.getMutable().isMutable());
 		
-		getPersistenceUnit().getOptions().setTemporalMutable(null);
+		getPersistenceUnit().getEclipseLinkOptions().setTemporalMutable(null);
 		assertNull(resourceBasic.getMutable());
 		assertFalse(contextBasic.getMutable().isDefaultMutable());
 		assertNull(contextBasic.getMutable().getSpecifiedMutable());

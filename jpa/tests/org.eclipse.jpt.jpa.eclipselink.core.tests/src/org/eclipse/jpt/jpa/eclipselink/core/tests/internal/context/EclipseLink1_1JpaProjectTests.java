@@ -57,7 +57,7 @@ public class EclipseLink1_1JpaProjectTests
 		createDefaultOrmXmlFileWithEclipseLink1_1ContentType();
 		resource = this.getJpaProject().getDefaultOrmXmlResource();
 		assertNotNull(resource);
-		assertEquals(org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml1_1Definition.instance().getResourceType(), resource.getResourceType());
+		assertEquals(org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition1_1.instance().getResourceType(), resource.getResourceType());
 		assertEquals("src/META-INF/orm.xml", resource.getFile().getProjectRelativePath().toString());
 		
 		
@@ -97,7 +97,7 @@ public class EclipseLink1_1JpaProjectTests
 		createDefaultEclipseLink1_1OrmXmlFile();
 		resource = this.getJpaProject().getDefaultEclipseLinkOrmXmlResource();
 		assertNotNull(resource);
-		assertEquals(org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml1_1Definition.instance().getResourceType(), resource.getResourceType());
+		assertEquals(org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition1_1.instance().getResourceType(), resource.getResourceType());
 		assertEquals("src/META-INF/eclipselink-orm.xml", resource.getFile().getProjectRelativePath().toString());
 		
 		
@@ -151,7 +151,7 @@ public class EclipseLink1_1JpaProjectTests
 		createDefaultEclipseLink1_1OrmXmlFile();
 		resource = this.getJpaProject().getMappingFileXmlResource(org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings.DEFAULT_RUNTIME_PATH);
 		assertNotNull(resource);
-		assertEquals(org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml1_1Definition.instance().getResourceType(), resource.getResourceType());
+		assertEquals(org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition1_1.instance().getResourceType(), resource.getResourceType());
 		assertEquals("src/META-INF/eclipselink-orm.xml", resource.getFile().getProjectRelativePath().toString());
 		
 		//delete the eclipselink-orm.xml file and verify it is not returned from getMappingFileResource()
@@ -168,7 +168,7 @@ public class EclipseLink1_1JpaProjectTests
 		createEclipseLink1_1OrmXmlFile("orm2.xml");
 		resource = this.getJpaProject().getMappingFileXmlResource(new Path("META-INF/orm2.xml"));
 		assertNotNull(resource);
-		assertEquals(org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml1_1Definition.instance().getResourceType(), resource.getResourceType());
+		assertEquals(org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition1_1.instance().getResourceType(), resource.getResourceType());
 		assertEquals("src/META-INF/orm2.xml", resource.getFile().getProjectRelativePath().toString());
 		
 		//delete the orm2.xml file and verify it is not returned from getMappingFileResource()
@@ -180,7 +180,7 @@ public class EclipseLink1_1JpaProjectTests
 		createEclipseLink1_1OrmXmlFile("orm2.xml");
 		resource = this.getJpaProject().getMappingFileXmlResource(new Path("META-INF/orm2.xml"));
 		assertNotNull(resource);
-		assertEquals(org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml1_1Definition.instance().getResourceType(), resource.getResourceType());
+		assertEquals(org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition1_1.instance().getResourceType(), resource.getResourceType());
 		assertEquals("src/META-INF/orm2.xml", resource.getFile().getProjectRelativePath().toString());
 	}
 }

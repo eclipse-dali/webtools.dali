@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.JpaOptions2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.Options2_0;
 import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.jpa2.persistence.JptJpaUiPersistenceMessages2_0;
 import org.eclipse.swt.widgets.Composite;
@@ -62,18 +62,18 @@ public class PersistenceUnitOptions2_0EditorPageDefinition
 		new PersistenceUnit2_0OptionsEditorPage(buildOptionsModel(persistenceUnitModel), parent, widgetFactory, resourceManager);
 	}
 
-	public static PropertyValueModel<JpaOptions2_0> buildOptionsModel(PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
-		return new TransformationPropertyValueModel<PersistenceUnit, JpaOptions2_0>(persistenceUnitModel, OPTIONS_TRANSFORMER);
+	public static PropertyValueModel<Options2_0> buildOptionsModel(PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
+		return new TransformationPropertyValueModel<PersistenceUnit, Options2_0>(persistenceUnitModel, OPTIONS_TRANSFORMER);
 	}
 
-	public static final Transformer<PersistenceUnit, JpaOptions2_0> OPTIONS_TRANSFORMER = new OptionsTransformer();
+	public static final Transformer<PersistenceUnit, Options2_0> OPTIONS_TRANSFORMER = new OptionsTransformer();
 
 	public static class OptionsTransformer
-		extends AbstractTransformer<PersistenceUnit, JpaOptions2_0>
+		extends AbstractTransformer<PersistenceUnit, Options2_0>
 	{
 		@Override
-		protected JpaOptions2_0 transform_(PersistenceUnit persistenceUnit) {
-			return (JpaOptions2_0) ((PersistenceUnit2_0) persistenceUnit).getOptions();
+		protected Options2_0 transform_(PersistenceUnit persistenceUnit) {
+			return ((PersistenceUnit2_0) persistenceUnit).getOptions();
 		}
 	}
 }

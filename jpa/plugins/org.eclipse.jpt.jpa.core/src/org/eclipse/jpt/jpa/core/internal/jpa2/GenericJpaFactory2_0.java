@@ -61,7 +61,6 @@ public class GenericJpaFactory2_0
 	extends AbstractJpaFactory
 	implements JpaFactory2_0
 {
-
 	public GenericJpaFactory2_0() {
 		super();
 	}
@@ -107,7 +106,7 @@ public class GenericJpaFactory2_0
 		return new GenericJavaDerivedIdentity2_0(parent);
 	}
 
-	public JavaElementCollectionMapping2_0 buildJavaElementCollectionMapping2_0(JavaSpecifiedPersistentAttribute parent) {
+	public JavaElementCollectionMapping2_0 buildJavaElementCollectionMapping(JavaSpecifiedPersistentAttribute parent) {
 		return new GenericJavaElementCollectionMapping2_0(parent);
 	}
 

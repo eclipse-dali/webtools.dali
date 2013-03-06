@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Options2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOptions2_0;
 
 /**
  *  EclipseLinkOptions2_0Tests
@@ -27,28 +27,28 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Options2_0;
 @SuppressWarnings("nls")
 public class EclipseLink2_0OptionsTests extends EclipseLink2_0PersistenceUnitTestCase
 {
-	private Options2_0 options;
+	private EclipseLinkOptions2_0 options;
 	private ListChangeEvent prePersistEvent;
 	private ListChangeEvent preUpdateEvent;
 	private ListChangeEvent preRemoveEvent;
 
-	public static final String LOCK_TIMEOUT_KEY = Options2_0.PERSISTENCE_LOCK_TIMEOUT;
+	public static final String LOCK_TIMEOUT_KEY = EclipseLinkOptions2_0.PERSISTENCE_LOCK_TIMEOUT;
 	public static final Integer LOCK_TIMEOUT_TEST_VALUE = 100;
 	public static final Integer LOCK_TIMEOUT_TEST_VALUE_2 = 200;
 
-	public static final String QUERY_TIMEOUT_KEY = Options2_0.PERSISTENCE_QUERY_TIMEOUT;
+	public static final String QUERY_TIMEOUT_KEY = EclipseLinkOptions2_0.PERSISTENCE_QUERY_TIMEOUT;
 	public static final Integer QUERY_TIMEOUT_TEST_VALUE = 100;
 	public static final Integer QUERY_TIMEOUT_TEST_VALUE_2 = 200;
 	
-	public static final String VALIDATION_GROUP_PRE_PERSIST_KEY = Options2_0.PERSISTENCE_VALIDATION_GROUP_PRE_PERSIST;
+	public static final String VALIDATION_GROUP_PRE_PERSIST_KEY = EclipseLinkOptions2_0.PERSISTENCE_VALIDATION_GROUP_PRE_PERSIST;
 	public static final String VALIDATION_GROUP_PRE_PERSIST_TEST_VALUE = "test_pre-persist_group";
 	public static final String VALIDATION_GROUP_PRE_PERSIST_TEST_VALUE_2 = "test_2_pre-persist_group";
 	
-	public static final String VALIDATION_GROUP_PRE_UPDATE_KEY = Options2_0.PERSISTENCE_VALIDATION_GROUP_PRE_UPDATE;
+	public static final String VALIDATION_GROUP_PRE_UPDATE_KEY = EclipseLinkOptions2_0.PERSISTENCE_VALIDATION_GROUP_PRE_UPDATE;
 	public static final String VALIDATION_GROUP_PRE_UPDATE_TEST_VALUE = "test_pre-update_group";
 	public static final String VALIDATION_GROUP_PRE_UPDATE_TEST_VALUE_2 = "test_2_pre-update_group";
 	
-	public static final String VALIDATION_GROUP_PRE_REMOVE_KEY = Options2_0.PERSISTENCE_VALIDATION_GROUP_PRE_REMOVE;
+	public static final String VALIDATION_GROUP_PRE_REMOVE_KEY = EclipseLinkOptions2_0.PERSISTENCE_VALIDATION_GROUP_PRE_REMOVE;
 	public static final String VALIDATION_GROUP_PRE_REMOVE_TEST_VALUE = "test_pre-remove_group";
 	public static final String VALIDATION_GROUP_PRE_REMOVE_TEST_VALUE_2 = "test_2_pre-remove_group";
 
@@ -61,19 +61,19 @@ public class EclipseLink2_0OptionsTests extends EclipseLink2_0PersistenceUnitTes
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.options = (Options2_0) this.subject.getOptions();
+		this.options = this.subject.getOptions();
 		PropertyChangeListener propertyChangeListener = this.buildPropertyChangeListener();
 
-		this.options.addPropertyChangeListener(Options2_0.LOCK_TIMEOUT_PROPERTY, propertyChangeListener);
-		this.options.addPropertyChangeListener(Options2_0.QUERY_TIMEOUT_PROPERTY, propertyChangeListener);
-		this.options.addPropertyChangeListener(Options2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY, propertyChangeListener);
-		this.options.addPropertyChangeListener(Options2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY, propertyChangeListener);
-		this.options.addPropertyChangeListener(Options2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY, propertyChangeListener);
+		this.options.addPropertyChangeListener(EclipseLinkOptions2_0.LOCK_TIMEOUT_PROPERTY, propertyChangeListener);
+		this.options.addPropertyChangeListener(EclipseLinkOptions2_0.QUERY_TIMEOUT_PROPERTY, propertyChangeListener);
+		this.options.addPropertyChangeListener(EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY, propertyChangeListener);
+		this.options.addPropertyChangeListener(EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY, propertyChangeListener);
+		this.options.addPropertyChangeListener(EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY, propertyChangeListener);
 
 		ListChangeListener validationGroupListChangeListener = this.buildValidationGroupListChangeListener();
-		this.options.addListChangeListener(Options2_0.VALIDATION_GROUP_PRE_PERSIST_LIST, validationGroupListChangeListener);
-		this.options.addListChangeListener(Options2_0.VALIDATION_GROUP_PRE_UPDATE_LIST, validationGroupListChangeListener);
-		this.options.addListChangeListener(Options2_0.VALIDATION_GROUP_PRE_REMOVE_LIST, validationGroupListChangeListener);
+		this.options.addListChangeListener(EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_PERSIST_LIST, validationGroupListChangeListener);
+		this.options.addListChangeListener(EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_UPDATE_LIST, validationGroupListChangeListener);
+		this.options.addListChangeListener(EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_REMOVE_LIST, validationGroupListChangeListener);
 		
 		this.clearEvent();
 	}
@@ -105,19 +105,19 @@ public class EclipseLink2_0OptionsTests extends EclipseLink2_0PersistenceUnitTes
 	@Override
 	protected Object getProperty(String propertyName) throws NoSuchFieldException {
 		Object modelValue = null;
-		if (propertyName.equals(Options2_0.LOCK_TIMEOUT_PROPERTY))
+		if (propertyName.equals(EclipseLinkOptions2_0.LOCK_TIMEOUT_PROPERTY))
 			modelValue = this.options.getLockTimeout();
-		else if (propertyName.equals(Options2_0.QUERY_TIMEOUT_PROPERTY))
+		else if (propertyName.equals(EclipseLinkOptions2_0.QUERY_TIMEOUT_PROPERTY))
 			modelValue = this.options.getQueryTimeout();
-		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY)) {
+		else if (propertyName.equals(EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY)) {
 			ListIterator<String> iterator = this.options.getValidationGroupPrePersists().iterator();
 			modelValue = this.getFirstElement(iterator);
 		}
-		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY)) {
+		else if (propertyName.equals(EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY)) {
 			ListIterator<String> iterator = this.options.getValidationGroupPreUpdates().iterator();
 			modelValue = this.getFirstElement(iterator);
 		}
-		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY)) {
+		else if (propertyName.equals(EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY)) {
 			ListIterator<String> iterator = this.options.getValidationGroupPreRemoves().iterator();
 			modelValue = this.getFirstElement(iterator);
 		}
@@ -128,15 +128,15 @@ public class EclipseLink2_0OptionsTests extends EclipseLink2_0PersistenceUnitTes
 	
 	@Override
 	protected void setProperty(String propertyName, Object newValue) throws Exception {
-		if (propertyName.equals(Options2_0.LOCK_TIMEOUT_PROPERTY))
+		if (propertyName.equals(EclipseLinkOptions2_0.LOCK_TIMEOUT_PROPERTY))
 			this.options.setLockTimeout((Integer) newValue);
-		else if (propertyName.equals(Options2_0.QUERY_TIMEOUT_PROPERTY))
+		else if (propertyName.equals(EclipseLinkOptions2_0.QUERY_TIMEOUT_PROPERTY))
 			this.options.setQueryTimeout((Integer) newValue);
-		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY))
+		else if (propertyName.equals(EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY))
 			this.options.addValidationGroupPrePersist((String) newValue);
-		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY))
+		else if (propertyName.equals(EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY))
 			this.options.addValidationGroupPreUpdate((String) newValue);
-		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY))
+		else if (propertyName.equals(EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY))
 			this.options.addValidationGroupPreRemove((String) newValue);
 		else
 			this.throwMissingDefinition("setProperty", propertyName);
@@ -184,7 +184,7 @@ public class EclipseLink2_0OptionsTests extends EclipseLink2_0PersistenceUnitTes
 			VALIDATION_GROUP_PRE_PERSIST_KEY,
 			VALIDATION_GROUP_PRE_PERSIST_TEST_VALUE);
 		this.verifySetValidationGroupProperty(
-			Options2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY,
+			EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY,
 			VALIDATION_GROUP_PRE_PERSIST_KEY,
 			VALIDATION_GROUP_PRE_PERSIST_TEST_VALUE,
 			VALIDATION_GROUP_PRE_PERSIST_TEST_VALUE_2);
@@ -192,7 +192,7 @@ public class EclipseLink2_0OptionsTests extends EclipseLink2_0PersistenceUnitTes
 
 	public void testAddRemoveValidationGroupPrePersist() throws Exception {
 		this.verifyAddRemoveValidationGroupProperty(
-			Options2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY,
+			EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY,
 			VALIDATION_GROUP_PRE_PERSIST_KEY,
 			VALIDATION_GROUP_PRE_PERSIST_TEST_VALUE,
 			VALIDATION_GROUP_PRE_PERSIST_TEST_VALUE_2);
@@ -200,7 +200,7 @@ public class EclipseLink2_0OptionsTests extends EclipseLink2_0PersistenceUnitTes
 
 	public void testAddValidationGroupPrePersistCompositeValue() throws Exception {
 		this.verifyAddCompositeValue(
-			Options2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY,
+			EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY,
 			VALIDATION_GROUP_PRE_PERSIST_KEY,
 			VALIDATION_GROUP_PRE_PERSIST_TEST_VALUE,
 			VALIDATION_GROUP_PRE_PERSIST_TEST_VALUE_2);
@@ -208,7 +208,7 @@ public class EclipseLink2_0OptionsTests extends EclipseLink2_0PersistenceUnitTes
 
 	public void testRemoveValidationGroupPrePersistCompositeValue() throws Exception {
 		this.verifyRemoveCompositeValue(
-			Options2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY,
+			EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY,
 			VALIDATION_GROUP_PRE_PERSIST_KEY,
 			VALIDATION_GROUP_PRE_PERSIST_TEST_VALUE,
 			VALIDATION_GROUP_PRE_PERSIST_TEST_VALUE_2);
@@ -220,7 +220,7 @@ public class EclipseLink2_0OptionsTests extends EclipseLink2_0PersistenceUnitTes
 			VALIDATION_GROUP_PRE_UPDATE_KEY,
 			VALIDATION_GROUP_PRE_UPDATE_TEST_VALUE);
 		this.verifySetValidationGroupProperty(
-			Options2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY,
+			EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY,
 			VALIDATION_GROUP_PRE_UPDATE_KEY,
 			VALIDATION_GROUP_PRE_UPDATE_TEST_VALUE,
 			VALIDATION_GROUP_PRE_UPDATE_TEST_VALUE_2);
@@ -228,7 +228,7 @@ public class EclipseLink2_0OptionsTests extends EclipseLink2_0PersistenceUnitTes
 
 	public void testAddRemoveValidationGroupPreUpdate() throws Exception {
 		this.verifyAddRemoveValidationGroupProperty(
-			Options2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY,
+			EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY,
 			VALIDATION_GROUP_PRE_UPDATE_KEY,
 			VALIDATION_GROUP_PRE_UPDATE_TEST_VALUE,
 			VALIDATION_GROUP_PRE_UPDATE_TEST_VALUE_2);
@@ -236,7 +236,7 @@ public class EclipseLink2_0OptionsTests extends EclipseLink2_0PersistenceUnitTes
 
 	public void testAddValidationGroupPreUpdateCompositeValue() throws Exception {
 		this.verifyAddCompositeValue(
-			Options2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY,
+			EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY,
 			VALIDATION_GROUP_PRE_UPDATE_KEY,
 			VALIDATION_GROUP_PRE_UPDATE_TEST_VALUE,
 			VALIDATION_GROUP_PRE_UPDATE_TEST_VALUE_2);
@@ -244,7 +244,7 @@ public class EclipseLink2_0OptionsTests extends EclipseLink2_0PersistenceUnitTes
 
 	public void testRemoveValidationGroupPreUpdateCompositeValue() throws Exception {
 		this.verifyRemoveCompositeValue(
-			Options2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY,
+			EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY,
 			VALIDATION_GROUP_PRE_UPDATE_KEY,
 			VALIDATION_GROUP_PRE_UPDATE_TEST_VALUE,
 			VALIDATION_GROUP_PRE_UPDATE_TEST_VALUE_2);
@@ -256,7 +256,7 @@ public class EclipseLink2_0OptionsTests extends EclipseLink2_0PersistenceUnitTes
 			VALIDATION_GROUP_PRE_REMOVE_KEY,
 			VALIDATION_GROUP_PRE_REMOVE_TEST_VALUE);
 		this.verifySetValidationGroupProperty(
-			Options2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY,
+			EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY,
 			VALIDATION_GROUP_PRE_REMOVE_KEY,
 			VALIDATION_GROUP_PRE_REMOVE_TEST_VALUE,
 			VALIDATION_GROUP_PRE_REMOVE_TEST_VALUE_2);
@@ -264,7 +264,7 @@ public class EclipseLink2_0OptionsTests extends EclipseLink2_0PersistenceUnitTes
 
 	public void testAddRemoveValidationGroupPreRemove() throws Exception {
 		this.verifyAddRemoveValidationGroupProperty(
-			Options2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY,
+			EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY,
 			VALIDATION_GROUP_PRE_REMOVE_KEY,
 			VALIDATION_GROUP_PRE_REMOVE_TEST_VALUE,
 			VALIDATION_GROUP_PRE_REMOVE_TEST_VALUE_2);
@@ -272,7 +272,7 @@ public class EclipseLink2_0OptionsTests extends EclipseLink2_0PersistenceUnitTes
 
 	public void testAddValidationGroupPreRemoveCompositeValue() throws Exception {
 		this.verifyAddCompositeValue(
-			Options2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY,
+			EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY,
 			VALIDATION_GROUP_PRE_REMOVE_KEY,
 			VALIDATION_GROUP_PRE_REMOVE_TEST_VALUE,
 			VALIDATION_GROUP_PRE_REMOVE_TEST_VALUE_2);
@@ -280,7 +280,7 @@ public class EclipseLink2_0OptionsTests extends EclipseLink2_0PersistenceUnitTes
 
 	public void testRemoveValidationGroupPreRemoveCompositeValue() throws Exception {
 		this.verifyRemoveCompositeValue(
-			Options2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY,
+			EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY,
 			VALIDATION_GROUP_PRE_REMOVE_KEY,
 			VALIDATION_GROUP_PRE_REMOVE_TEST_VALUE,
 			VALIDATION_GROUP_PRE_REMOVE_TEST_VALUE_2);
@@ -289,19 +289,19 @@ public class EclipseLink2_0OptionsTests extends EclipseLink2_0PersistenceUnitTes
 	// ********** ValidationGroups list **********
 	public void testValidationGroupsList() throws Exception {
 		this.verifyListEvents(
-			Options2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY,
+			EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY,
 			VALIDATION_GROUP_PRE_PERSIST_TEST_VALUE_2,
-			Options2_0.VALIDATION_GROUP_PRE_PERSIST_LIST);
+			EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_PERSIST_LIST);
 		
 		this.verifyListEvents(
-			Options2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY,
+			EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY,
 			VALIDATION_GROUP_PRE_UPDATE_TEST_VALUE_2,
-			Options2_0.VALIDATION_GROUP_PRE_UPDATE_LIST);
+			EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_UPDATE_LIST);
 		
 		this.verifyListEvents(
-			Options2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY,
+			EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY,
 			VALIDATION_GROUP_PRE_REMOVE_TEST_VALUE_2,
-			Options2_0.VALIDATION_GROUP_PRE_REMOVE_LIST);
+			EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_REMOVE_LIST);
 	}
 
 	// ********** override **********
@@ -445,33 +445,33 @@ public class EclipseLink2_0OptionsTests extends EclipseLink2_0PersistenceUnitTes
 	private void validationGroupChanged(ListChangeEvent e) {
 		String listName = e.getListName();
 		
-		if (listName.equals(Options2_0.VALIDATION_GROUP_PRE_PERSIST_LIST))
+		if (listName.equals(EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_PERSIST_LIST))
 			this.prePersistEvent = e;
-		else if (listName.equals(Options2_0.VALIDATION_GROUP_PRE_UPDATE_LIST))
+		else if (listName.equals(EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_UPDATE_LIST))
 			this.preUpdateEvent = e;
-		else if (listName.equals(Options2_0.VALIDATION_GROUP_PRE_REMOVE_LIST))
+		else if (listName.equals(EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_REMOVE_LIST))
 			this.preRemoveEvent = e;
 		else
 			this.throwUnsupportedOperationException(e);
 	}
 
 	private void addValidationGroupValue(String propertyName, String propertyValue) throws NoSuchFieldException {
-		if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY))
+		if (propertyName.equals(EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY))
 			this.options.addValidationGroupPrePersist(propertyValue);
-		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY))
+		else if (propertyName.equals(EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY))
 			this.options.addValidationGroupPreUpdate(propertyValue);
-		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY))
+		else if (propertyName.equals(EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY))
 			this.options.addValidationGroupPreRemove(propertyValue);
 		else
 			this.throwMissingDefinition("addValidationGroupValue", propertyName);
 	}
 
 	private void removeValidationGroupValue(String propertyName, String propertyValue) throws NoSuchFieldException {
-		if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY))
+		if (propertyName.equals(EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY))
 			this.options.removeValidationGroupPrePersist(propertyValue);
-		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY))
+		else if (propertyName.equals(EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY))
 			this.options.removeValidationGroupPreUpdate(propertyValue);
-		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY))
+		else if (propertyName.equals(EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY))
 			this.options.removeValidationGroupPreRemove(propertyValue);
 		else
 			this.throwMissingDefinition("removeValidationGroupValue", propertyName);
@@ -479,11 +479,11 @@ public class EclipseLink2_0OptionsTests extends EclipseLink2_0PersistenceUnitTes
 
 	private boolean validationGroupValueExists(String propertyName, String propertyValue) throws NoSuchFieldException {
 		boolean result = false;
-		if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY))
+		if (propertyName.equals(EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY))
 			result = this.options.validationGroupPrePersistExists(propertyValue);
-		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY))
+		else if (propertyName.equals(EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY))
 			result = this.options.validationGroupPreUpdateExists(propertyValue);
-		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY))
+		else if (propertyName.equals(EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY))
 			result = this.options.validationGroupPreRemoveExists(propertyValue);
 		else
 			this.throwMissingDefinition("verifyValidationGroupValueExists", propertyName);
@@ -492,11 +492,11 @@ public class EclipseLink2_0OptionsTests extends EclipseLink2_0PersistenceUnitTes
 
 	private int getValidationGroupSize(String propertyName) throws NoSuchFieldException {
 		int result = 0;
-		if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY))
+		if (propertyName.equals(EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY))
 			result =  this.options.getValidationGroupPrePersistsSize();
-		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY))
+		else if (propertyName.equals(EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY))
 			result =  this.options.getValidationGroupPreUpdatesSize();
-		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY))
+		else if (propertyName.equals(EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY))
 			result =  this.options.getValidationGroupPreRemovesSize();
 		else
 			this.throwMissingDefinition("verifyValidationGroupSize", propertyName);
@@ -505,11 +505,11 @@ public class EclipseLink2_0OptionsTests extends EclipseLink2_0PersistenceUnitTes
 	
 	private ListChangeEvent getEventFor(String propertyName) throws NoSuchFieldException {
 		ListChangeEvent event = null;
-		if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY))
+		if (propertyName.equals(EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY))
 			event = this.prePersistEvent;
-		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY))
+		else if (propertyName.equals(EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY))
 			event = this.preUpdateEvent;
-		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY))
+		else if (propertyName.equals(EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY))
 			event = this.preRemoveEvent;
 		else
 			this.throwMissingDefinition("getEventFor", propertyName);

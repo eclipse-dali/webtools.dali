@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.JpaConnection2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.Connection2_0;
 import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.jpa2.persistence.JptJpaUiPersistenceMessages2_0;
@@ -63,18 +63,18 @@ public class PersistenceUnitConnection2_0EditorPageDefinition
 		new PersistenceUnitConnection2_0EditorPage(buildConnectionModel(persistenceUnitModel), parent, widgetFactory, resourceManager);
 	}
 
-	public static PropertyValueModel<JpaConnection2_0> buildConnectionModel(PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
-		return new TransformationPropertyValueModel<PersistenceUnit, JpaConnection2_0>(persistenceUnitModel, CONNECTION_TRANSFORMER);
+	public static PropertyValueModel<Connection2_0> buildConnectionModel(PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
+		return new TransformationPropertyValueModel<PersistenceUnit, Connection2_0>(persistenceUnitModel, CONNECTION_TRANSFORMER);
 	}
 
-	public static final Transformer<PersistenceUnit, JpaConnection2_0> CONNECTION_TRANSFORMER = new ConnectionTransformer();
+	public static final Transformer<PersistenceUnit, Connection2_0> CONNECTION_TRANSFORMER = new ConnectionTransformer();
 
 	public static class ConnectionTransformer
-		extends AbstractTransformer<PersistenceUnit, JpaConnection2_0>
+		extends AbstractTransformer<PersistenceUnit, Connection2_0>
 	{
 		@Override
-		protected JpaConnection2_0 transform_(PersistenceUnit persistenceUnit) {
-			return (JpaConnection2_0) ((PersistenceUnit2_0) persistenceUnit).getConnection();
+		protected Connection2_0 transform_(PersistenceUnit persistenceUnit) {
+			return ((PersistenceUnit2_0) persistenceUnit).getConnection();
 		}
 	}
 }

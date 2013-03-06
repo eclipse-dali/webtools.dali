@@ -10,30 +10,22 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence;
 
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.persistence.schemagen.NullGenericSchemaGeneration2_1;
-
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConnection;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOptions;
 
 public class EclipseLinkPersistenceXmlContextModelFactory
-		extends AbstractEclipseLinkPersistenceXmlContextModelFactory {
-
-	@Override
-	public PersistenceUnitProperties buildConnection(PersistenceUnit parent) {
-		return new EclipseLinkConnection(parent);
-	}
-	
-	@Override
-	public PersistenceUnitProperties buildOptions(PersistenceUnit parent) {
-		return new EclipseLinkOptions(parent);
-	}
-	
-	@Override
-	public PersistenceUnitProperties buildLogging(PersistenceUnit parent) {
-		return new EclipseLinkLogging(parent);
+	extends EclipseLinkAbstractPersistenceXmlContextModelFactory
+{
+	public EclipseLinkLogging buildLogging(PersistenceUnit parent) {
+		return new EclipseLinkLoggingImpl(parent);
 	}
 
-	@Override
-	public PersistenceUnitProperties buildSchemaGeneration(PersistenceUnit parent) {
-		return new NullGenericSchemaGeneration2_1(parent);
+	public EclipseLinkConnection buildConnection(PersistenceUnit parent) {
+		return new EclipseLinkConnectionImpl(parent);
+	}
+
+	public EclipseLinkOptions buildOptions(PersistenceUnit parent) {
+		return new EclipseLinkOptionsImpl(parent);
 	}
 }

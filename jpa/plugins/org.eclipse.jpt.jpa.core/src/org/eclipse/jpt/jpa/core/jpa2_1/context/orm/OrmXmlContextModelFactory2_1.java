@@ -9,16 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2_1.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
-import org.eclipse.jpt.jpa.core.resource.orm.XmlConverter;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.OrmNamedStoredProcedureQuery2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.OrmQueryContainer2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.OrmStoredProcedureParameter2_1;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmXmlContextModelFactory2_0;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlConverter;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedStoredProcedureQuery;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlStoredProcedureParameter;
 
 /**
- * JPA 2.1 <code>orm.xml</code> context node factory
+ * JPA 2.1 <code>orm.xml</code> context model factory
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -30,15 +30,11 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlStoredProcedureParameter;
  * @since 3.3
  */
 public interface OrmXmlContextModelFactory2_1
-	extends OrmXmlContextModelFactory
+	extends OrmXmlContextModelFactory2_0
 {
 	OrmConverterType2_1 buildOrmConverterType(EntityMappings2_1 parent, XmlConverter xmlConverter);
 
-	OrmNamedStoredProcedureQuery2_1 buildOrmNamedStoredProcedureQuery2_1(
-			OrmQueryContainer2_1 parent,
-			XmlNamedStoredProcedureQuery xmlNamedQuery);
+	OrmNamedStoredProcedureQuery2_1 buildOrmNamedStoredProcedureQuery(OrmQueryContainer2_1 parent, XmlNamedStoredProcedureQuery xmlNamedQuery);
 
-	OrmStoredProcedureParameter2_1 buildOrmStoredProcedureParameter(
-			OrmNamedStoredProcedureQuery2_1 parent,
-			XmlStoredProcedureParameter xmlParameter);
+	OrmStoredProcedureParameter2_1 buildOrmStoredProcedureParameter(OrmNamedStoredProcedureQuery2_1 parent, XmlStoredProcedureParameter xmlParameter);
 }

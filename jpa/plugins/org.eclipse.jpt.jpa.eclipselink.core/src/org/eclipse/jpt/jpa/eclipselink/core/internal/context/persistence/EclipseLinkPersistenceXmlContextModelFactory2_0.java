@@ -10,33 +10,26 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence;
 
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.persistence.schemagen.NullGenericSchemaGeneration2_1;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.JpaConnection2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.JpaOptions2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceXmlContextModelFactory2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConnection2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOptions2_0;
 
 
-public class EclipseLinkPersistenceXmlContextModelFactory2_0 
-		extends AbstractEclipseLinkPersistenceXmlContextModelFactory {
-
-	@Override
-	public JpaConnection2_0 buildConnection(PersistenceUnit parent) {
-		return new EclipseLinkConnection2_0((PersistenceUnit2_0) parent);
+public class EclipseLinkPersistenceXmlContextModelFactory2_0
+	extends EclipseLinkAbstractPersistenceXmlContextModelFactory
+	implements PersistenceXmlContextModelFactory2_0
+{
+	public EclipseLinkConnection2_0 buildConnection(PersistenceUnit parent) {
+		return new EclipseLinkConnectionImpl2_0((PersistenceUnit2_0) parent);
 	}
 	
-	@Override
-	public JpaOptions2_0 buildOptions(PersistenceUnit parent) {
-		return new EclipseLinkOptions2_0((PersistenceUnit2_0) parent);
+	public EclipseLinkOptions2_0 buildOptions(PersistenceUnit parent) {
+		return new EclipseLinkOptionsImpl2_0((PersistenceUnit2_0) parent);
 	}
 
-	@Override
-	public PersistenceUnitProperties buildLogging(PersistenceUnit parent) {
-		return new EclipseLinkLogging2_0((PersistenceUnit2_0) parent);
-	}
-
-	@Override
-	public PersistenceUnitProperties buildSchemaGeneration(PersistenceUnit parent) {
-		return new NullGenericSchemaGeneration2_1(parent);
+	public EclipseLinkLogging2_0 buildLogging(PersistenceUnit parent) {
+		return new EclipseLinkLoggingImpl2_0((PersistenceUnit2_0) parent);
 	}
 }

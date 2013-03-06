@@ -15,13 +15,11 @@ import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistence
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.PersistenceUnit2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationAction;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationTarget;
-import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen.JpaSchemaGeneration2_1;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen.SchemaGeneration2_1;
 
-/**
- *  GenericSchemaGeneration2_1
- */
-public class GenericSchemaGeneration2_1 extends AbstractPersistenceUnitProperties
-	implements JpaSchemaGeneration2_1
+public class GenericSchemaGeneration2_1
+	extends AbstractPersistenceUnitProperties
+	implements SchemaGeneration2_1
 {
 	// ********** GenericSchemaGeneration2_1 properties **********
 	private SchemaGenerationAction schemaGenDatabaseAction;
@@ -545,5 +543,4 @@ public class GenericSchemaGeneration2_1 extends AbstractPersistenceUnitPropertie
 	public String getDefaultSqlLoadScriptSource() {
 		return DEFAULT_SQL_LOAD_SCRIPT_SOURCE;
 	}
-	
 }

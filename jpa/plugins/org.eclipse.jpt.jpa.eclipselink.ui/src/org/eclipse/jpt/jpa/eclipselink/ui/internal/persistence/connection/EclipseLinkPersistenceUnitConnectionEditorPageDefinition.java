@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Connection;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConnection;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
@@ -64,18 +64,18 @@ public class EclipseLinkPersistenceUnitConnectionEditorPageDefinition
 		new EclipseLinkPersistenceUnitConnectionEditorPage(buildConnectionModel(persistenceUnitModel), parent, widgetFactory, resourceManager);
 	}
 
-	public static PropertyValueModel<Connection> buildConnectionModel(PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
-		return new TransformationPropertyValueModel<PersistenceUnit, Connection>(persistenceUnitModel, CONNECTION_TRANSFORMER);
+	public static PropertyValueModel<EclipseLinkConnection> buildConnectionModel(PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
+		return new TransformationPropertyValueModel<PersistenceUnit, EclipseLinkConnection>(persistenceUnitModel, CONNECTION_TRANSFORMER);
 	}
 
-	public static final Transformer<PersistenceUnit, Connection> CONNECTION_TRANSFORMER = new ConnectionTransformer();
+	public static final Transformer<PersistenceUnit, EclipseLinkConnection> CONNECTION_TRANSFORMER = new ConnectionTransformer();
 
 	public static class ConnectionTransformer
-		extends AbstractTransformer<PersistenceUnit, Connection>
+		extends AbstractTransformer<PersistenceUnit, EclipseLinkConnection>
 	{
 		@Override
-		protected Connection transform_(PersistenceUnit persistenceUnit) {
-			return ((EclipseLinkPersistenceUnit) persistenceUnit).getConnection();
+		protected EclipseLinkConnection transform_(PersistenceUnit persistenceUnit) {
+			return ((EclipseLinkPersistenceUnit) persistenceUnit).getEclipseLinkConnection();
 		}
 	}
 }

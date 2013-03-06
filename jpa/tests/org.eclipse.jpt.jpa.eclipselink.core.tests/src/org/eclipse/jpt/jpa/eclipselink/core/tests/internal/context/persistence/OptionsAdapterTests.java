@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.persistence;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Options;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOptions;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.TargetDatabase;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.TargetServer;
 
@@ -23,33 +23,33 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.TargetServer;
 @SuppressWarnings("nls")
 public class OptionsAdapterTests extends EclipseLinkPersistenceUnitTestCase
 {
-	private Options options;
+	private EclipseLinkOptions options;
 
-	private static final String SESSION_NAME_KEY = Options.ECLIPSELINK_SESSION_NAME;
+	private static final String SESSION_NAME_KEY = EclipseLinkOptions.ECLIPSELINK_SESSION_NAME;
 	private static final String SESSION_NAME_TEST_VALUE = "session-name.test";
 	private static final String SESSION_NAME_TEST_VALUE_2 = "session-name-2.test";
 
-	private static final String SESSIONS_XML_KEY = Options.ECLIPSELINK_SESSIONS_XML;
+	private static final String SESSIONS_XML_KEY = EclipseLinkOptions.ECLIPSELINK_SESSIONS_XML;
 	private static final String SESSIONS_XML_TEST_VALUE = "sessions-xml.test";
 	private static final String SESSIONS_XML_TEST_VALUE_2 = "sessions-xml-2.test";
 
-	public static final String TARGET_DATABASE_KEY = Options.ECLIPSELINK_TARGET_DATABASE;
+	public static final String TARGET_DATABASE_KEY = EclipseLinkOptions.ECLIPSELINK_TARGET_DATABASE;
 	public static final TargetDatabase TARGET_DATABASE_TEST_VALUE = TargetDatabase.cloudscape;
 	public static final String TARGET_DATABASE_TEST_VALUE_2 = "custom.targetDatabase.test";
 
-	private static final String TARGET_SERVER_KEY = Options.ECLIPSELINK_TARGET_SERVER;
+	private static final String TARGET_SERVER_KEY = EclipseLinkOptions.ECLIPSELINK_TARGET_SERVER;
 	private static final TargetServer TARGET_SERVER_TEST_VALUE = TargetServer.weblogic_9;
 	private static final String TARGET_SERVER_TEST_VALUE_2 = "custom.targetServer.test";
 
-	public static final String INCLUDE_DESCRIPTOR_QUERIES_KEY = Options.ECLIPSELINK_SESSION_INCLUDE_DESCRIPTOR_QUERIES;
+	public static final String INCLUDE_DESCRIPTOR_QUERIES_KEY = EclipseLinkOptions.ECLIPSELINK_SESSION_INCLUDE_DESCRIPTOR_QUERIES;
 	public static final Boolean INCLUDE_DESCRIPTOR_QUERIES_TEST_VALUE = false;
 	public static final Boolean INCLUDE_DESCRIPTOR_QUERIES_TEST_VALUE_2 = ! INCLUDE_DESCRIPTOR_QUERIES_TEST_VALUE;
 
-	public static final String SESSION_EVENT_LISTENER_KEY = Options.ECLIPSELINK_SESSION_EVENT_LISTENER;
+	public static final String SESSION_EVENT_LISTENER_KEY = EclipseLinkOptions.ECLIPSELINK_SESSION_EVENT_LISTENER;
 	public static final String SESSION_EVENT_LISTENER_TEST_VALUE = "acme.CustomSessionEventListener";
 	public static final String SESSION_EVENT_LISTENER_TEST_VALUE_2 = "oracle.sessions.CustomSessionEventListener";
 
-	public static final String TEMPORAL_MUTABLE_KEY = Options.ECLIPSELINK_TEMPORAL_MUTABLE;
+	public static final String TEMPORAL_MUTABLE_KEY = EclipseLinkOptions.ECLIPSELINK_TEMPORAL_MUTABLE;
 	public static final Boolean TEMPORAL_MUTABLE_TEST_VALUE = true;
 	public static final Boolean TEMPORAL_MUTABLE_TEST_VALUE_2 = ! TEMPORAL_MUTABLE_TEST_VALUE;
 
@@ -60,17 +60,17 @@ public class OptionsAdapterTests extends EclipseLinkPersistenceUnitTestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.options = this.subject.getOptions();
+		this.options = this.subject.getEclipseLinkOptions();
 		PropertyChangeListener propertyChangeListener = this.buildPropertyChangeListener();
 
-		this.options.addPropertyChangeListener(Options.SESSION_NAME_PROPERTY, propertyChangeListener);
-		this.options.addPropertyChangeListener(Options.SESSIONS_XML_PROPERTY, propertyChangeListener);
-		this.options.addPropertyChangeListener(Options.TARGET_DATABASE_PROPERTY, propertyChangeListener);
-		this.options.addPropertyChangeListener(Options.TARGET_SERVER_PROPERTY, propertyChangeListener);
-		this.options.addPropertyChangeListener(Options.SESSION_EVENT_LISTENER_PROPERTY, propertyChangeListener);
+		this.options.addPropertyChangeListener(EclipseLinkOptions.SESSION_NAME_PROPERTY, propertyChangeListener);
+		this.options.addPropertyChangeListener(EclipseLinkOptions.SESSIONS_XML_PROPERTY, propertyChangeListener);
+		this.options.addPropertyChangeListener(EclipseLinkOptions.TARGET_DATABASE_PROPERTY, propertyChangeListener);
+		this.options.addPropertyChangeListener(EclipseLinkOptions.TARGET_SERVER_PROPERTY, propertyChangeListener);
+		this.options.addPropertyChangeListener(EclipseLinkOptions.SESSION_EVENT_LISTENER_PROPERTY, propertyChangeListener);
 		this.options.addPropertyChangeListener(
-			Options.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY, propertyChangeListener);
-		this.options.addPropertyChangeListener(Options.TEMPORAL_MUTABLE_PROPERTY, propertyChangeListener);
+			EclipseLinkOptions.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY, propertyChangeListener);
+		this.options.addPropertyChangeListener(EclipseLinkOptions.TEMPORAL_MUTABLE_PROPERTY, propertyChangeListener);
 
 		this.clearEvent();
 	}
@@ -300,19 +300,19 @@ public class OptionsAdapterTests extends EclipseLinkPersistenceUnitTestCase
 	// ********** get/set property **********
 	@Override
 	protected void setProperty(String propertyName, Object newValue) throws Exception {
-		if (propertyName.equals(Options.SESSION_NAME_PROPERTY))
+		if (propertyName.equals(EclipseLinkOptions.SESSION_NAME_PROPERTY))
 			this.options.setSessionName((String) newValue);
-		else if (propertyName.equals(Options.SESSIONS_XML_PROPERTY))
+		else if (propertyName.equals(EclipseLinkOptions.SESSIONS_XML_PROPERTY))
 			this.options.setSessionsXml((String) newValue);
-		else if (propertyName.equals(Options.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY))
+		else if (propertyName.equals(EclipseLinkOptions.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY))
 			this.options.setIncludeDescriptorQueries((Boolean) newValue);
-		else if (propertyName.equals(Options.TARGET_DATABASE_PROPERTY))
+		else if (propertyName.equals(EclipseLinkOptions.TARGET_DATABASE_PROPERTY))
 			this.setTargetDatabaseProperty(newValue);
-		else if (propertyName.equals(Options.TARGET_SERVER_PROPERTY))
+		else if (propertyName.equals(EclipseLinkOptions.TARGET_SERVER_PROPERTY))
 			this.setTargetServerProperty(newValue);
-		else if (propertyName.equals(Options.SESSION_EVENT_LISTENER_PROPERTY))
+		else if (propertyName.equals(EclipseLinkOptions.SESSION_EVENT_LISTENER_PROPERTY))
 			this.options.setEventListener((String) newValue);
-		else if (propertyName.equals(Options.TEMPORAL_MUTABLE_PROPERTY))
+		else if (propertyName.equals(EclipseLinkOptions.TEMPORAL_MUTABLE_PROPERTY))
 			this.options.setTemporalMutable((Boolean) newValue);
 		else
 			this.throwMissingDefinition("setProperty", propertyName);
@@ -335,19 +335,19 @@ public class OptionsAdapterTests extends EclipseLinkPersistenceUnitTestCase
 	@Override
 	protected Object getProperty(String propertyName) throws NoSuchFieldException {
 		Object modelValue = null;
-		if (propertyName.equals(Options.SESSION_NAME_PROPERTY))
+		if (propertyName.equals(EclipseLinkOptions.SESSION_NAME_PROPERTY))
 			modelValue = this.options.getSessionName();
-		else if (propertyName.equals(Options.SESSIONS_XML_PROPERTY))
+		else if (propertyName.equals(EclipseLinkOptions.SESSIONS_XML_PROPERTY))
 			modelValue = this.options.getSessionsXml();
-		else if (propertyName.equals(Options.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY))
+		else if (propertyName.equals(EclipseLinkOptions.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY))
 			modelValue = this.options.getIncludeDescriptorQueries();
-		else if (propertyName.equals(Options.TARGET_DATABASE_PROPERTY))
+		else if (propertyName.equals(EclipseLinkOptions.TARGET_DATABASE_PROPERTY))
 			modelValue = this.options.getTargetDatabase();
-		else if (propertyName.equals(Options.TARGET_SERVER_PROPERTY))
+		else if (propertyName.equals(EclipseLinkOptions.TARGET_SERVER_PROPERTY))
 			modelValue = this.options.getTargetServer();
-		else if (propertyName.equals(Options.SESSION_EVENT_LISTENER_PROPERTY))
+		else if (propertyName.equals(EclipseLinkOptions.SESSION_EVENT_LISTENER_PROPERTY))
 			modelValue = this.options.getEventListener();
-		else if (propertyName.equals(Options.TEMPORAL_MUTABLE_PROPERTY))
+		else if (propertyName.equals(EclipseLinkOptions.TEMPORAL_MUTABLE_PROPERTY))
 			modelValue = this.options.getTemporalMutable();
 		else
 			this.throwMissingDefinition("getProperty", propertyName);
@@ -357,8 +357,8 @@ public class OptionsAdapterTests extends EclipseLinkPersistenceUnitTestCase
 	@Override
 	protected void verifyPutProperty(String propertyName, Object expectedValue) throws Exception {
 		Object expectedValue_ = expectedValue;
-		if (propertyName.equals(Options.TARGET_DATABASE_PROPERTY) ||
-			propertyName.equals(Options.TARGET_SERVER_PROPERTY)) {
+		if (propertyName.equals(EclipseLinkOptions.TARGET_DATABASE_PROPERTY) ||
+			propertyName.equals(EclipseLinkOptions.TARGET_SERVER_PROPERTY)) {
 			
 			expectedValue_ = this.convertToEclipseLinkStringValue(expectedValue);
 		}

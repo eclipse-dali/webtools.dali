@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.v2_0.persistence;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.GenericPersistenceXml2_0Definition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.GenericPersistenceXmlDefinition2_0;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.connection.EclipseLinkPersistenceUnitConnectionEditorPageDefinition;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.general.EclipseLinkPersistenceUnitGeneralEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.PersistenceResourceUiDefinition;
@@ -52,6 +52,6 @@ public class EclipseLinkPersistenceXml2_4UiDefinition
 	}
 
 	public boolean providesUi(JptResourceType resourceType) {
-		return resourceType.equals(GenericPersistenceXml2_0Definition.instance().getResourceType());
+		return resourceType.equals(GenericPersistenceXmlDefinition2_0.instance().getResourceType());
 	}
 }

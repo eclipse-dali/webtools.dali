@@ -41,11 +41,11 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.JpaOptions2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.Options2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.ValidationMode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging2_0;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Options2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOptions2_0;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.options.EclipseLinkPersistenceUnitOptionsEditorPage;
@@ -62,7 +62,7 @@ import org.eclipse.ui.progress.IProgressService;
 class EclipseLinkPersistenceUnitOptions2_0EditorPage 
 	extends EclipseLinkPersistenceUnitOptionsEditorPage {
 
-	private PropertyValueModel<Options2_0> optionsModel;
+	private PropertyValueModel<EclipseLinkOptions2_0> optionsModel;
 
 	public EclipseLinkPersistenceUnitOptions2_0EditorPage(
 			PropertyValueModel<PersistenceUnit> persistenceUnitModel,
@@ -119,24 +119,24 @@ class EclipseLinkPersistenceUnitOptions2_0EditorPage
 		return new EclipseLinkLogging2_0Composite(this, this.buildLoggingModel(), section).getControl();
 	}
 
-	protected PropertyValueModel<Logging2_0> buildLoggingModel() {
-		return new TransformationPropertyValueModel<PersistenceUnit, Logging2_0>(getSubjectHolder()) {
+	protected PropertyValueModel<EclipseLinkLogging2_0> buildLoggingModel() {
+		return new TransformationPropertyValueModel<PersistenceUnit, EclipseLinkLogging2_0>(getSubjectHolder()) {
 			@Override
-			protected Logging2_0 transform_(PersistenceUnit value) {
-				return (Logging2_0) ((EclipseLinkPersistenceUnit) value).getLogging();
+			protected EclipseLinkLogging2_0 transform_(PersistenceUnit value) {
+				return (EclipseLinkLogging2_0) ((EclipseLinkPersistenceUnit) value).getLogging();
 			}
 		};
 	}
 
 	private void addLockTimeoutCombo(Composite container) {
-		new IntegerCombo<Options2_0>(this, this.optionsModel, container) {
+		new IntegerCombo<EclipseLinkOptions2_0>(this, this.optionsModel, container) {
 			@Override
 			protected String getHelpId() {
 				return null; // TODO 
 			}
 			@Override
 			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<Options2_0, Integer>(this.getSubjectHolder()) {
+				return new PropertyAspectAdapter<EclipseLinkOptions2_0, Integer>(this.getSubjectHolder()) {
 					@Override
 					protected Integer buildValue_() {
 						return this.subject.getDefaultLockTimeout();
@@ -146,7 +146,7 @@ class EclipseLinkPersistenceUnitOptions2_0EditorPage
 
 			@Override
 			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<Options2_0, Integer>(this.getSubjectHolder(), Options2_0.LOCK_TIMEOUT_PROPERTY) {
+				return new PropertyAspectAdapter<EclipseLinkOptions2_0, Integer>(this.getSubjectHolder(), EclipseLinkOptions2_0.LOCK_TIMEOUT_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						return this.subject.getLockTimeout();
@@ -162,7 +162,7 @@ class EclipseLinkPersistenceUnitOptions2_0EditorPage
 	}
 
 	private void addQueryTimeoutCombo(Composite container) {
-		new IntegerCombo<Options2_0>(this, this.optionsModel, container) {
+		new IntegerCombo<EclipseLinkOptions2_0>(this, this.optionsModel, container) {
 			@Override
 			protected String getHelpId() {
 				return null;		// TODO
@@ -170,7 +170,7 @@ class EclipseLinkPersistenceUnitOptions2_0EditorPage
 
 			@Override
 			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<Options2_0, Integer>(this.getSubjectHolder()) {
+				return new PropertyAspectAdapter<EclipseLinkOptions2_0, Integer>(this.getSubjectHolder()) {
 					@Override
 					protected Integer buildValue_() {
 						return this.subject.getDefaultQueryTimeout();
@@ -180,7 +180,7 @@ class EclipseLinkPersistenceUnitOptions2_0EditorPage
 
 			@Override
 			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<Options2_0, Integer>(this.getSubjectHolder(), Options2_0.QUERY_TIMEOUT_PROPERTY) {
+				return new PropertyAspectAdapter<EclipseLinkOptions2_0, Integer>(this.getSubjectHolder(), EclipseLinkOptions2_0.QUERY_TIMEOUT_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						return this.subject.getQueryTimeout();
@@ -247,7 +247,7 @@ class EclipseLinkPersistenceUnitOptions2_0EditorPage
 	// ********** ValidationGroupPrePersists **********
 
 	private void addPrePersistListPane(Composite parent) {
-		new AddRemoveListPane<Options2_0, String>(
+		new AddRemoveListPane<EclipseLinkOptions2_0, String>(
 			this,
 			this.optionsModel,
 			parent,
@@ -278,7 +278,7 @@ class EclipseLinkPersistenceUnitOptions2_0EditorPage
 	}
 
 	private ListValueModel<String> buildPrePersistListModel() {
-		return new ListAspectAdapter<Options2_0, String>(this.optionsModel, JpaOptions2_0.VALIDATION_GROUP_PRE_PERSIST_LIST) {
+		return new ListAspectAdapter<EclipseLinkOptions2_0, String>(this.optionsModel, Options2_0.VALIDATION_GROUP_PRE_PERSIST_LIST) {
 			@Override
 			protected ListIterable<String> getListIterable() {
 				return subject.getValidationGroupPrePersists();
@@ -306,7 +306,7 @@ class EclipseLinkPersistenceUnitOptions2_0EditorPage
 	// ********** ValidationGroupPreUpdates **********
 
 	private void addPreUpdateListPane(Composite parent) {
-		new AddRemoveListPane<Options2_0, String>(
+		new AddRemoveListPane<EclipseLinkOptions2_0, String>(
 			this,
 			this.optionsModel,
 			parent,
@@ -337,7 +337,7 @@ class EclipseLinkPersistenceUnitOptions2_0EditorPage
 	}
 
 	private ListValueModel<String> buildPreUpdateListHolder() {
-		return new ListAspectAdapter<Options2_0, String>(this.optionsModel, Options2_0.VALIDATION_GROUP_PRE_UPDATE_LIST) {
+		return new ListAspectAdapter<EclipseLinkOptions2_0, String>(this.optionsModel, EclipseLinkOptions2_0.VALIDATION_GROUP_PRE_UPDATE_LIST) {
 			@Override
 			protected ListIterable<String> getListIterable() {
 				return subject.getValidationGroupPreUpdates();
@@ -365,7 +365,7 @@ class EclipseLinkPersistenceUnitOptions2_0EditorPage
 	// ********** ValidationGroupPreRemoves **********
 
 	private void addPreRemoveListPane(Composite parent) {
-		new AddRemoveListPane<Options2_0, String>(
+		new AddRemoveListPane<EclipseLinkOptions2_0, String>(
 			this,
 			this.optionsModel,
 			parent,
@@ -396,7 +396,7 @@ class EclipseLinkPersistenceUnitOptions2_0EditorPage
 	}
 
 	private ListValueModel<String> buildPreRemoveListHolder() {
-		return new ListAspectAdapter<Options2_0, String>(this.optionsModel, JpaOptions2_0.VALIDATION_GROUP_PRE_REMOVE_LIST) {
+		return new ListAspectAdapter<EclipseLinkOptions2_0, String>(this.optionsModel, Options2_0.VALIDATION_GROUP_PRE_REMOVE_LIST) {
 			@Override
 			protected ListIterable<String> getListIterable() {
 				return subject.getValidationGroupPreRemoves();
@@ -482,11 +482,11 @@ class EclipseLinkPersistenceUnitOptions2_0EditorPage
 		return new SimpleCollectionValueModel<String>();
 	}
 
-	private PropertyValueModel<Options2_0> buildOptions2_0Model() {
-		return new TransformationPropertyValueModel<PersistenceUnit, Options2_0>(getSubjectHolder()) {
+	private PropertyValueModel<EclipseLinkOptions2_0> buildOptions2_0Model() {
+		return new TransformationPropertyValueModel<PersistenceUnit, EclipseLinkOptions2_0>(getSubjectHolder()) {
 			@Override
-			protected Options2_0 transform_(PersistenceUnit value) {
-				return (Options2_0) ((PersistenceUnit2_0) value).getOptions();
+			protected EclipseLinkOptions2_0 transform_(PersistenceUnit value) {
+				return (EclipseLinkOptions2_0) ((PersistenceUnit2_0) value).getOptions();
 			}
 		};
 	}

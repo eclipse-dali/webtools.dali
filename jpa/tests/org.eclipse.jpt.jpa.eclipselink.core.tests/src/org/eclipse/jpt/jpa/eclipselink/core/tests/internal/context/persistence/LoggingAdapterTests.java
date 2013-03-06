@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logger;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.LoggingLevel;
 
 /**
@@ -23,33 +23,33 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.LoggingLevel;
 @SuppressWarnings("nls")
 public class LoggingAdapterTests extends EclipseLinkPersistenceUnitTestCase
 {
-	private Logging logging;
+	private EclipseLinkLogging logging;
 
-	public static final String LEVEL_KEY = Logging.ECLIPSELINK_LEVEL;
+	public static final String LEVEL_KEY = EclipseLinkLogging.ECLIPSELINK_LEVEL;
 	public static final LoggingLevel LEVEL_TEST_VALUE = LoggingLevel.fine;
 	public static final LoggingLevel LEVEL_TEST_VALUE_2 = LoggingLevel.finest;
 
-	public static final String TIMESTAMP_KEY = Logging.ECLIPSELINK_TIMESTAMP;
+	public static final String TIMESTAMP_KEY = EclipseLinkLogging.ECLIPSELINK_TIMESTAMP;
 	public static final Boolean TIMESTAMP_TEST_VALUE = false;
 	public static final Boolean TIMESTAMP_TEST_VALUE_2 = ! TIMESTAMP_TEST_VALUE;
 
-	public static final String THREAD_KEY = Logging.ECLIPSELINK_THREAD;
+	public static final String THREAD_KEY = EclipseLinkLogging.ECLIPSELINK_THREAD;
 	public static final Boolean THREAD_TEST_VALUE = false;
 	public static final Boolean THREAD_TEST_VALUE_2 = ! THREAD_TEST_VALUE;
 
-	public static final String SESSION_KEY = Logging.ECLIPSELINK_SESSION;
+	public static final String SESSION_KEY = EclipseLinkLogging.ECLIPSELINK_SESSION;
 	public static final Boolean SESSION_TEST_VALUE = false;
 	public static final Boolean SESSION_TEST_VALUE_2 = ! SESSION_TEST_VALUE;
 
-	public static final String EXCEPTIONS_KEY = Logging.ECLIPSELINK_EXCEPTIONS;
+	public static final String EXCEPTIONS_KEY = EclipseLinkLogging.ECLIPSELINK_EXCEPTIONS;
 	public static final Boolean EXCEPTIONS_TEST_VALUE = false;
 	public static final Boolean EXCEPTIONS_TEST_VALUE_2 = ! EXCEPTIONS_TEST_VALUE;
 
-	private static final String LOG_FILE_LOCATION_KEY = Logging.ECLIPSELINK_LOG_FILE_LOCATION;
+	private static final String LOG_FILE_LOCATION_KEY = EclipseLinkLogging.ECLIPSELINK_LOG_FILE_LOCATION;
 	private static final String LOG_FILE_LOCATION_TEST_VALUE = "C:/temp";
 	private static final String LOG_FILE_LOCATION_TEST_VALUE_2 = "C:/tmp";
 
-	private static final String LOGGER_KEY = Logging.ECLIPSELINK_LOGGER;
+	private static final String LOGGER_KEY = EclipseLinkLogging.ECLIPSELINK_LOGGER;
 	private static final Logger LOGGER_TEST_VALUE = Logger.java_logger;
 	private static final String LOGGER_TEST_VALUE_2 = "custom.logger.test";
 	
@@ -63,13 +63,13 @@ public class LoggingAdapterTests extends EclipseLinkPersistenceUnitTestCase
 		this.logging = this.subject.getLogging();
 		PropertyChangeListener propertyChangeListener = this.buildPropertyChangeListener();
 		
-		this.logging.addPropertyChangeListener(Logging.LEVEL_PROPERTY, propertyChangeListener);
-		this.logging.addPropertyChangeListener(Logging.TIMESTAMP_PROPERTY, propertyChangeListener);
-		this.logging.addPropertyChangeListener(Logging.THREAD_PROPERTY, propertyChangeListener);
-		this.logging.addPropertyChangeListener(Logging.SESSION_PROPERTY, propertyChangeListener);
-		this.logging.addPropertyChangeListener(Logging.EXCEPTIONS_PROPERTY, propertyChangeListener);
-		this.logging.addPropertyChangeListener(Logging.LOG_FILE_LOCATION_PROPERTY, propertyChangeListener);
-		this.logging.addPropertyChangeListener(Logging.LOGGER_PROPERTY, propertyChangeListener);
+		this.logging.addPropertyChangeListener(EclipseLinkLogging.LEVEL_PROPERTY, propertyChangeListener);
+		this.logging.addPropertyChangeListener(EclipseLinkLogging.TIMESTAMP_PROPERTY, propertyChangeListener);
+		this.logging.addPropertyChangeListener(EclipseLinkLogging.THREAD_PROPERTY, propertyChangeListener);
+		this.logging.addPropertyChangeListener(EclipseLinkLogging.SESSION_PROPERTY, propertyChangeListener);
+		this.logging.addPropertyChangeListener(EclipseLinkLogging.EXCEPTIONS_PROPERTY, propertyChangeListener);
+		this.logging.addPropertyChangeListener(EclipseLinkLogging.LOG_FILE_LOCATION_PROPERTY, propertyChangeListener);
+		this.logging.addPropertyChangeListener(EclipseLinkLogging.LOGGER_PROPERTY, propertyChangeListener);
 
 		this.clearEvent();
 	}
@@ -276,19 +276,19 @@ public class LoggingAdapterTests extends EclipseLinkPersistenceUnitTestCase
 	// ********** get/set property **********
 	@Override
 	protected void setProperty(String propertyName, Object newValue) throws Exception {
-		if (propertyName.equals(Logging.LEVEL_PROPERTY))
+		if (propertyName.equals(EclipseLinkLogging.LEVEL_PROPERTY))
 			this.logging.setLevel((LoggingLevel) newValue);
-		else if (propertyName.equals(Logging.TIMESTAMP_PROPERTY))
+		else if (propertyName.equals(EclipseLinkLogging.TIMESTAMP_PROPERTY))
 			this.logging.setTimestamp((Boolean) newValue);
-		else if (propertyName.equals(Logging.THREAD_PROPERTY))
+		else if (propertyName.equals(EclipseLinkLogging.THREAD_PROPERTY))
 			this.logging.setThread((Boolean) newValue);
-		else if (propertyName.equals(Logging.SESSION_PROPERTY))
+		else if (propertyName.equals(EclipseLinkLogging.SESSION_PROPERTY))
 			this.logging.setSession((Boolean) newValue);
-		else if (propertyName.equals(Logging.EXCEPTIONS_PROPERTY))
+		else if (propertyName.equals(EclipseLinkLogging.EXCEPTIONS_PROPERTY))
 			this.logging.setExceptions((Boolean) newValue);
-		else if (propertyName.equals(Logging.LOG_FILE_LOCATION_PROPERTY))
+		else if (propertyName.equals(EclipseLinkLogging.LOG_FILE_LOCATION_PROPERTY))
 			this.logging.setLogFileLocation((String) newValue);
-		else if (propertyName.equals(Logging.LOGGER_PROPERTY)) {
+		else if (propertyName.equals(EclipseLinkLogging.LOGGER_PROPERTY)) {
 			if (newValue.getClass().isEnum())
 				this.logging.setLogger((Logger) newValue);
 			else
@@ -301,19 +301,19 @@ public class LoggingAdapterTests extends EclipseLinkPersistenceUnitTestCase
 	@Override
 	protected Object getProperty(String propertyName) throws NoSuchFieldException {
 		Object modelValue = null;
-		if (propertyName.equals(Logging.LEVEL_PROPERTY))
+		if (propertyName.equals(EclipseLinkLogging.LEVEL_PROPERTY))
 			modelValue = this.logging.getLevel();
-		else if (propertyName.equals(Logging.TIMESTAMP_PROPERTY))
+		else if (propertyName.equals(EclipseLinkLogging.TIMESTAMP_PROPERTY))
 			modelValue = this.logging.getTimestamp();
-		else if (propertyName.equals(Logging.THREAD_PROPERTY))
+		else if (propertyName.equals(EclipseLinkLogging.THREAD_PROPERTY))
 			modelValue = this.logging.getThread();
-		else if (propertyName.equals(Logging.SESSION_PROPERTY))
+		else if (propertyName.equals(EclipseLinkLogging.SESSION_PROPERTY))
 			modelValue = this.logging.getSession();
-		else if (propertyName.equals(Logging.EXCEPTIONS_PROPERTY))
+		else if (propertyName.equals(EclipseLinkLogging.EXCEPTIONS_PROPERTY))
 			modelValue = this.logging.getExceptions();
-		else if (propertyName.equals(Logging.LOG_FILE_LOCATION_PROPERTY))
+		else if (propertyName.equals(EclipseLinkLogging.LOG_FILE_LOCATION_PROPERTY))
 			modelValue = this.logging.getLogFileLocation();
-		else if (propertyName.equals(Logging.LOGGER_PROPERTY))
+		else if (propertyName.equals(EclipseLinkLogging.LOGGER_PROPERTY))
 			modelValue = this.logging.getLogger();
 		else
 			this.throwMissingDefinition("getProperty", propertyName);
@@ -323,7 +323,7 @@ public class LoggingAdapterTests extends EclipseLinkPersistenceUnitTestCase
 	@Override
 	protected void verifyPutProperty(String propertyName, Object expectedValue) throws Exception {
 		Object expectedValue_ = expectedValue;
-		if (propertyName.equals(Logging.LOGGER_PROPERTY)) {
+		if (propertyName.equals(EclipseLinkLogging.LOGGER_PROPERTY)) {
 			
 			expectedValue_ = (expectedValue != null && expectedValue.getClass().isEnum()) ?
 				this.getPropertyStringValueOf(LOGGER_TEST_VALUE) : // model is storing EclipseLinkStringValue

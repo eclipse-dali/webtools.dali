@@ -97,7 +97,7 @@ public class JavaElementCollectionMappingDefinition2_0
 	private static final Iterable<String> SUPPORTING_ANNOTATION_NAMES = IterableTools.iterable(SUPPORTING_ANNOTATION_NAMES_ARRAY);
 
 	public JavaAttributeMapping buildMapping(JavaSpecifiedPersistentAttribute persistentAttribute, JpaFactory factory) {
-		return ((JpaFactory2_0) factory).buildJavaElementCollectionMapping2_0(persistentAttribute);
+		return ((JpaFactory2_0) factory).buildJavaElementCollectionMapping(persistentAttribute);
 	}
 
 	@Override

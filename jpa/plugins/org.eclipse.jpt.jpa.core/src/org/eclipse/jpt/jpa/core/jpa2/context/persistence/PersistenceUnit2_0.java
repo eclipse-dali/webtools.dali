@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,9 @@
 package org.eclipse.jpt.jpa.core.jpa2.context.persistence;
 
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.core.jpa2.MetamodelSynchronizer;
+import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.Connection2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.Options2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.ValidationMode;
 
@@ -106,9 +107,9 @@ public interface PersistenceUnit2_0
 
 	// ********** properties **********
 
-	PersistenceUnitProperties getConnection();
+	Connection2_0 getConnection();
 
-	PersistenceUnitProperties getOptions();
+	Options2_0 getOptions();
 
 	// ********** ORM persistence unit defaults **********
 

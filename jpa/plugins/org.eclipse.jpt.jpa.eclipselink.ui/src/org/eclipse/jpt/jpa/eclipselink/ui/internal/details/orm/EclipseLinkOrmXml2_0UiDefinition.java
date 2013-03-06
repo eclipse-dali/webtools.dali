@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 import java.util.List;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_0Definition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition2_0;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkBasicCollectionMappingUiDefinition;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkBasicMapMappingUiDefinition;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkTransformationMappingUiDefinition;
@@ -66,7 +66,7 @@ public class EclipseLinkOrmXml2_0UiDefinition
 	}
 	
 	public boolean providesUi(JptResourceType resourceType) {
-		return resourceType.equals(EclipseLinkOrmXml2_0Definition.instance().getResourceType());
+		return resourceType.equals(EclipseLinkOrmXmlDefinition2_0.instance().getResourceType());
 	}
 
 

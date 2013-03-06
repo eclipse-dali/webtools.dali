@@ -46,7 +46,7 @@ public class EclipseLink2_0JpaPlatformFactory
 		return new GenericJpaPlatform(
 			config,
 			buildJpaVersion(config.getJpaFacetVersion()),
-			new EclipseLink2_0JpaFactory(),
+			new EclipseLinkJpaFactory2_0(),
 			this.buildAnnotationProvider(),
 			EclipseLink2_0JpaPlatformProvider.instance(),
 			this.buildJpaVariation(),

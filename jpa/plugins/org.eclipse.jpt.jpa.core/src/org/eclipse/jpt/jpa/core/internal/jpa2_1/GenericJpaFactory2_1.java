@@ -23,7 +23,6 @@ import org.eclipse.jpt.jpa.core.jpa2_1.context.java.JavaConverterType2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.NamedStoredProcedureQuery2_1Annotation;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameter2_1Annotation;
 
-
 /**
  * Central class that allows extenders to easily replace implementations of
  * various Dali interfaces.
@@ -32,7 +31,6 @@ public class GenericJpaFactory2_1
 	extends GenericJpaFactory2_0
 	implements JpaFactory2_1
 {
-
 	public GenericJpaFactory2_1() {
 		super();
 	}
@@ -41,15 +39,11 @@ public class GenericJpaFactory2_1
 		return new GenericJavaConverterType(parent, jrt);
 	}
 
-	public JavaNamedStoredProcedureQuery2_1 buildJavaNamedStoredProcedureQuery2_1(
-			JavaQueryContainer2_1 parent, 
-			NamedStoredProcedureQuery2_1Annotation namedStoredProcedureQueryAnnotation) {
+	public JavaNamedStoredProcedureQuery2_1 buildJavaNamedStoredProcedureQuery(JavaQueryContainer2_1 parent, NamedStoredProcedureQuery2_1Annotation namedStoredProcedureQueryAnnotation) {
 		return new GenericJavaNamedStoredProcedureQuery2_1(parent, namedStoredProcedureQueryAnnotation);
 	}
 
-	public JavaStoredProcedureParameter2_1 buildJavaStoredProcedureParameter2_1(
-			JavaNamedStoredProcedureQuery2_1 parent,
-			StoredProcedureParameter2_1Annotation parameterAnnotation) {
+	public JavaStoredProcedureParameter2_1 buildJavaStoredProcedureParameter(JavaNamedStoredProcedureQuery2_1 parent, StoredProcedureParameter2_1Annotation parameterAnnotation) {
 		return new GenericJavaStoredProcedureParameter2_1(parent, parameterAnnotation);
 	}
 }

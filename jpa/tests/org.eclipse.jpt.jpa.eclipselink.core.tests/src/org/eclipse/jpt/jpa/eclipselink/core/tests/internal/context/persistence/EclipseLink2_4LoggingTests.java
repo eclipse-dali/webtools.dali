@@ -11,83 +11,83 @@ package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.persistence;
 
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging2_0;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.LoggingLevel;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_4JpaPlatformFactory;
 
 public class EclipseLink2_4LoggingTests
 	extends EclipseLink2_0PersistenceUnitTestCase
 {
-	private Logging2_0 logging;
+	private EclipseLinkLogging2_0 logging;
 
-	public static final String SQL_LOGGING_KEY = Logging2_0.ECLIPSELINK_SQL_CATEGORY_LOGGING_LEVEL;
+	public static final String SQL_LOGGING_KEY = EclipseLinkLogging2_0.ECLIPSELINK_SQL_CATEGORY_LOGGING_LEVEL;
 	public static final LoggingLevel SQL_LOGGING_TEST_VALUE = LoggingLevel.off;
 	public static final LoggingLevel SQL_LOGGING_TEST_VALUE_2 = LoggingLevel.severe;
 
-	public static final String TRANSACTION_LOGGING_KEY = Logging2_0.ECLIPSELINK_TRANSACTION_CATEGORY_LOGGING_LEVEL;
+	public static final String TRANSACTION_LOGGING_KEY = EclipseLinkLogging2_0.ECLIPSELINK_TRANSACTION_CATEGORY_LOGGING_LEVEL;
 	public static final LoggingLevel TRANSACTION_LOGGING_TEST_VALUE = LoggingLevel.warning;
 	public static final LoggingLevel TRANSACTION_LOGGING_TEST_VALUE_2 = LoggingLevel.info;
 
-	public static final String EVENT_LOGGING_KEY = Logging2_0.ECLIPSELINK_EVENT_CATEGORY_LOGGING_LEVEL;
+	public static final String EVENT_LOGGING_KEY = EclipseLinkLogging2_0.ECLIPSELINK_EVENT_CATEGORY_LOGGING_LEVEL;
 	public static final LoggingLevel EVENT_LOGGING_TEST_VALUE = LoggingLevel.config;
 	public static final LoggingLevel EVENT_LOGGING_TEST_VALUE_2 = LoggingLevel.fine;
 
-	public static final String CONNECTION_LOGGING_KEY = Logging2_0.ECLIPSELINK_CONNECTION_CATEGORY_LOGGING_LEVEL;
+	public static final String CONNECTION_LOGGING_KEY = EclipseLinkLogging2_0.ECLIPSELINK_CONNECTION_CATEGORY_LOGGING_LEVEL;
 	public static final LoggingLevel CONNECTION_LOGGING_TEST_VALUE = LoggingLevel.finer;
 	public static final LoggingLevel CONNECTION_LOGGING_TEST_VALUE_2 = LoggingLevel.finest;
 
-	public static final String QUERY_LOGGING_KEY = Logging2_0.ECLIPSELINK_QUERY_CATEGORY_LOGGING_LEVEL;
+	public static final String QUERY_LOGGING_KEY = EclipseLinkLogging2_0.ECLIPSELINK_QUERY_CATEGORY_LOGGING_LEVEL;
 	public static final LoggingLevel QUERY_LOGGING_TEST_VALUE = LoggingLevel.all;
 	public static final LoggingLevel QUERY_LOGGING_TEST_VALUE_2 = LoggingLevel.off;
 
-	public static final String CACHE_LOGGING_KEY = Logging2_0.ECLIPSELINK_CACHE_CATEGORY_LOGGING_LEVEL;
+	public static final String CACHE_LOGGING_KEY = EclipseLinkLogging2_0.ECLIPSELINK_CACHE_CATEGORY_LOGGING_LEVEL;
 	public static final LoggingLevel CACHE_LOGGING_TEST_VALUE = LoggingLevel.severe;
 	public static final LoggingLevel CACHE_LOGGING_TEST_VALUE_2 = LoggingLevel.warning;
 
-	public static final String PROPAGATION_LOGGING_KEY = Logging2_0.ECLIPSELINK_PROPAGATION_CATEGORY_LOGGING_LEVEL;
+	public static final String PROPAGATION_LOGGING_KEY = EclipseLinkLogging2_0.ECLIPSELINK_PROPAGATION_CATEGORY_LOGGING_LEVEL;
 	public static final LoggingLevel PROPAGATION_LOGGING_TEST_VALUE = LoggingLevel.info;
 	public static final LoggingLevel PROPAGATION_LOGGING_TEST_VALUE_2 = LoggingLevel.config;
 
-	public static final String SEQUENCING_LOGGING_KEY = Logging2_0.ECLIPSELINK_SEQUENCING_CATEGORY_LOGGING_LEVEL;
+	public static final String SEQUENCING_LOGGING_KEY = EclipseLinkLogging2_0.ECLIPSELINK_SEQUENCING_CATEGORY_LOGGING_LEVEL;
 	public static final LoggingLevel SEQUENCING_LOGGING_TEST_VALUE = LoggingLevel.fine;
 	public static final LoggingLevel SEQUENCING_LOGGING_TEST_VALUE_2 = LoggingLevel.finer;
 
-	public static final String EJB_LOGGING_KEY = Logging2_0.ECLIPSELINK_EJB_CATEGORY_LOGGING_LEVEL;
+	public static final String EJB_LOGGING_KEY = EclipseLinkLogging2_0.ECLIPSELINK_EJB_CATEGORY_LOGGING_LEVEL;
 	public static final LoggingLevel EJB_LOGGING_TEST_VALUE = LoggingLevel.finest;
 	public static final LoggingLevel EJB_LOGGING_TEST_VALUE_2 = LoggingLevel.all;
 
-	public static final String DMS_LOGGING_KEY = Logging2_0.ECLIPSELINK_DMS_CATEGORY_LOGGING_LEVEL;
+	public static final String DMS_LOGGING_KEY = EclipseLinkLogging2_0.ECLIPSELINK_DMS_CATEGORY_LOGGING_LEVEL;
 	public static final LoggingLevel DMS_LOGGING_TEST_VALUE = LoggingLevel.off;
 	public static final LoggingLevel DMS_LOGGING_TEST_VALUE_2 = LoggingLevel.severe;
 
-	public static final String WEAVER_LOGGING_KEY = Logging2_0.ECLIPSELINK_WEAVER_CATEGORY_LOGGING_LEVEL;
+	public static final String WEAVER_LOGGING_KEY = EclipseLinkLogging2_0.ECLIPSELINK_WEAVER_CATEGORY_LOGGING_LEVEL;
 	public static final LoggingLevel WEAVER_LOGGING_TEST_VALUE = LoggingLevel.finer;
 	public static final LoggingLevel WEAVER_LOGGING_TEST_VALUE_2 = LoggingLevel.finest;
 
-	public static final String PROPERTIES_LOGGING_KEY = Logging2_0.ECLIPSELINK_PROPERTIES_CATEGORY_LOGGING_LEVEL;
+	public static final String PROPERTIES_LOGGING_KEY = EclipseLinkLogging2_0.ECLIPSELINK_PROPERTIES_CATEGORY_LOGGING_LEVEL;
 	public static final LoggingLevel PROPERTIES_LOGGING_TEST_VALUE = LoggingLevel.all;
 	public static final LoggingLevel PROPERTIES_LOGGING_TEST_VALUE_2 = LoggingLevel.off;
 
-	public static final String SERVER_LOGGING_KEY = Logging2_0.ECLIPSELINK_SERVER_CATEGORY_LOGGING_LEVEL;
+	public static final String SERVER_LOGGING_KEY = EclipseLinkLogging2_0.ECLIPSELINK_SERVER_CATEGORY_LOGGING_LEVEL;
 	public static final LoggingLevel SERVER_LOGGING_TEST_VALUE = LoggingLevel.severe;
 	public static final LoggingLevel SERVER_LOGGING_TEST_VALUE_2 = LoggingLevel.warning;
 
 	// logging categories introduced by EclipseLink 2.4
 	
-	public static final String METADATA_LOGGING_KEY = Logging2_4.ECLIPSELINK_METADATA_CATEGORY_LOGGING_LEVEL;
+	public static final String METADATA_LOGGING_KEY = EclipseLinkLogging2_4.ECLIPSELINK_METADATA_CATEGORY_LOGGING_LEVEL;
 	public static final LoggingLevel METADATA_LOGGING_TEST_VALUE = LoggingLevel.warning;
 	public static final LoggingLevel METADATA_LOGGING_TEST_VALUE_2 = LoggingLevel.info;
 
-	public static final String METAMODEL_LOGGING_KEY = Logging2_4.ECLIPSELINK_METAMODEL_CATEGORY_LOGGING_LEVEL;
+	public static final String METAMODEL_LOGGING_KEY = EclipseLinkLogging2_4.ECLIPSELINK_METAMODEL_CATEGORY_LOGGING_LEVEL;
 	public static final LoggingLevel METAMODEL_LOGGING_TEST_VALUE = LoggingLevel.config;
 	public static final LoggingLevel METAMODEL_LOGGING_TEST_VALUE_2 = LoggingLevel.fine;
 
-	public static final String JPA_LOGGING_KEY = Logging2_4.ECLIPSELINK_JPA_CATEGORY_LOGGING_LEVEL;
+	public static final String JPA_LOGGING_KEY = EclipseLinkLogging2_4.ECLIPSELINK_JPA_CATEGORY_LOGGING_LEVEL;
 	public static final LoggingLevel JPA_LOGGING_TEST_VALUE = LoggingLevel.all;
 	public static final LoggingLevel JPA_LOGGING_TEST_VALUE_2 = LoggingLevel.off;
 
-	public static final String DDL_LOGGING_KEY = Logging2_4.ECLIPSELINK_DDL_CATEGORY_LOGGING_LEVEL;
+	public static final String DDL_LOGGING_KEY = EclipseLinkLogging2_4.ECLIPSELINK_DDL_CATEGORY_LOGGING_LEVEL;
 	public static final LoggingLevel DDL_LOGGING_TEST_VALUE = LoggingLevel.severe;
 	public static final LoggingLevel DDL_LOGGING_TEST_VALUE_2 = LoggingLevel.warning;
 
@@ -105,27 +105,27 @@ public class EclipseLink2_4LoggingTests
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.logging = (Logging2_0) this.subject.getLogging();
+		this.logging = (EclipseLinkLogging2_0) this.subject.getLogging();
 		PropertyChangeListener propertyChangeListener = this.buildPropertyChangeListener();
 		
-		this.logging.addPropertyChangeListener(Logging2_0.SQL_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
-		this.logging.addPropertyChangeListener(Logging2_0.TRANSACTION_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
-		this.logging.addPropertyChangeListener(Logging2_0.EVENT_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
-		this.logging.addPropertyChangeListener(Logging2_0.CONNECTION_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
-		this.logging.addPropertyChangeListener(Logging2_0.QUERY_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
-		this.logging.addPropertyChangeListener(Logging2_0.CACHE_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
-		this.logging.addPropertyChangeListener(Logging2_0.PROPAGATION_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
-		this.logging.addPropertyChangeListener(Logging2_0.SEQUENCING_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
-		this.logging.addPropertyChangeListener(Logging2_0.EJB_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
-		this.logging.addPropertyChangeListener(Logging2_0.DMS_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
-		this.logging.addPropertyChangeListener(Logging2_0.WEAVER_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
-		this.logging.addPropertyChangeListener(Logging2_0.PROPERTIES_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
-		this.logging.addPropertyChangeListener(Logging2_0.SERVER_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
+		this.logging.addPropertyChangeListener(EclipseLinkLogging2_0.SQL_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
+		this.logging.addPropertyChangeListener(EclipseLinkLogging2_0.TRANSACTION_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
+		this.logging.addPropertyChangeListener(EclipseLinkLogging2_0.EVENT_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
+		this.logging.addPropertyChangeListener(EclipseLinkLogging2_0.CONNECTION_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
+		this.logging.addPropertyChangeListener(EclipseLinkLogging2_0.QUERY_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
+		this.logging.addPropertyChangeListener(EclipseLinkLogging2_0.CACHE_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
+		this.logging.addPropertyChangeListener(EclipseLinkLogging2_0.PROPAGATION_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
+		this.logging.addPropertyChangeListener(EclipseLinkLogging2_0.SEQUENCING_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
+		this.logging.addPropertyChangeListener(EclipseLinkLogging2_0.EJB_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
+		this.logging.addPropertyChangeListener(EclipseLinkLogging2_0.DMS_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
+		this.logging.addPropertyChangeListener(EclipseLinkLogging2_0.WEAVER_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
+		this.logging.addPropertyChangeListener(EclipseLinkLogging2_0.PROPERTIES_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
+		this.logging.addPropertyChangeListener(EclipseLinkLogging2_0.SERVER_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
 
-		this.logging.addPropertyChangeListener(Logging2_4.METADATA_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
-		this.logging.addPropertyChangeListener(Logging2_4.METAMODEL_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
-		this.logging.addPropertyChangeListener(Logging2_4.JPA_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
-		this.logging.addPropertyChangeListener(Logging2_4.DDL_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
+		this.logging.addPropertyChangeListener(EclipseLinkLogging2_4.METADATA_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
+		this.logging.addPropertyChangeListener(EclipseLinkLogging2_4.METAMODEL_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
+		this.logging.addPropertyChangeListener(EclipseLinkLogging2_4.JPA_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
+		this.logging.addPropertyChangeListener(EclipseLinkLogging2_4.DDL_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
 
 		this.clearEvent();
 	}

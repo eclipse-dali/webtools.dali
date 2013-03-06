@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.tests.internal.jpa2.context.persistence;
 
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.JpaConnection2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.Connection2_0;
 
 /**
  *  GenericConnection2_0Tests
@@ -19,21 +19,21 @@ import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.JpaConnectio
 @SuppressWarnings("nls")
 public class Generic2_0ConnectionTests extends PersistenceUnit2_0TestCase
 {
-	private JpaConnection2_0 connection;
+	private Connection2_0 connection;
 
-	public static final String DRIVER_KEY = JpaConnection2_0.PERSISTENCE_JDBC_DRIVER;
+	public static final String DRIVER_KEY = Connection2_0.PERSISTENCE_JDBC_DRIVER;
 	public static final String DRIVER_TEST_VALUE = "test";
 	public static final String DRIVER_TEST_VALUE_2 = "test_2";
 	
-	public static final String URL_KEY = JpaConnection2_0.PERSISTENCE_JDBC_URL;
+	public static final String URL_KEY = Connection2_0.PERSISTENCE_JDBC_URL;
 	public static final String URL_TEST_VALUE = "test";
 	public static final String URL_TEST_VALUE_2 = "test_2";
 
-	public static final String USER_KEY = JpaConnection2_0.PERSISTENCE_JDBC_USER;
+	public static final String USER_KEY = Connection2_0.PERSISTENCE_JDBC_USER;
 	public static final String USER_TEST_VALUE = "test";
 	public static final String USER_TEST_VALUE_2 = "test_2";
 
-	public static final String PASSWORD_KEY = JpaConnection2_0.PERSISTENCE_JDBC_PASSWORD;
+	public static final String PASSWORD_KEY = Connection2_0.PERSISTENCE_JDBC_PASSWORD;
 	public static final String PASSWORD_TEST_VALUE = "test";
 	public static final String PASSWORD_TEST_VALUE_2 = "test_2";
 
@@ -46,13 +46,13 @@ public class Generic2_0ConnectionTests extends PersistenceUnit2_0TestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.connection = (JpaConnection2_0) this.subject.getConnection();
+		this.connection = this.subject.getConnection();
 		PropertyChangeListener propertyChangeListener = this.buildPropertyChangeListener();
 
-		this.connection.addPropertyChangeListener(JpaConnection2_0.DRIVER_PROPERTY, propertyChangeListener);
-		this.connection.addPropertyChangeListener(JpaConnection2_0.URL_PROPERTY, propertyChangeListener);
-		this.connection.addPropertyChangeListener(JpaConnection2_0.USER_PROPERTY, propertyChangeListener);
-		this.connection.addPropertyChangeListener(JpaConnection2_0.PASSWORD_PROPERTY, propertyChangeListener);
+		this.connection.addPropertyChangeListener(Connection2_0.DRIVER_PROPERTY, propertyChangeListener);
+		this.connection.addPropertyChangeListener(Connection2_0.URL_PROPERTY, propertyChangeListener);
+		this.connection.addPropertyChangeListener(Connection2_0.USER_PROPERTY, propertyChangeListener);
+		this.connection.addPropertyChangeListener(Connection2_0.PASSWORD_PROPERTY, propertyChangeListener);
 		
 		this.clearEvent();
 	}
@@ -83,13 +83,13 @@ public class Generic2_0ConnectionTests extends PersistenceUnit2_0TestCase
 	@Override
 	protected Object getProperty(String propertyName) throws NoSuchFieldException {
 		Object modelValue = null;
-		if (propertyName.equals(JpaConnection2_0.DRIVER_PROPERTY))
+		if (propertyName.equals(Connection2_0.DRIVER_PROPERTY))
 			modelValue = this.connection.getDriver();
-		else if (propertyName.equals(JpaConnection2_0.URL_PROPERTY))
+		else if (propertyName.equals(Connection2_0.URL_PROPERTY))
 			modelValue = this.connection.getUrl();
-		else if (propertyName.equals(JpaConnection2_0.USER_PROPERTY))
+		else if (propertyName.equals(Connection2_0.USER_PROPERTY))
 			modelValue = this.connection.getUser();
-		else if (propertyName.equals(JpaConnection2_0.PASSWORD_PROPERTY))
+		else if (propertyName.equals(Connection2_0.PASSWORD_PROPERTY))
 			modelValue = this.connection.getPassword();
 		else
 			this.throwMissingDefinition("getProperty", propertyName);
@@ -99,13 +99,13 @@ public class Generic2_0ConnectionTests extends PersistenceUnit2_0TestCase
 
 	@Override
 	protected void setProperty(String propertyName, Object newValue) throws Exception {
-		if (propertyName.equals(JpaConnection2_0.DRIVER_PROPERTY))
+		if (propertyName.equals(Connection2_0.DRIVER_PROPERTY))
 			this.connection.setDriver((String) newValue);
-		else if (propertyName.equals(JpaConnection2_0.URL_PROPERTY))
+		else if (propertyName.equals(Connection2_0.URL_PROPERTY))
 			this.connection.setUrl((String) newValue);
-		else if (propertyName.equals(JpaConnection2_0.USER_PROPERTY))
+		else if (propertyName.equals(Connection2_0.USER_PROPERTY))
 			this.connection.setUser((String) newValue);
-		else if (propertyName.equals(JpaConnection2_0.PASSWORD_PROPERTY))
+		else if (propertyName.equals(Connection2_0.PASSWORD_PROPERTY))
 			this.connection.setPassword((String) newValue);
 		else
 			this.throwMissingDefinition("setProperty", propertyName);

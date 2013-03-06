@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2_1.context.persistence;
 
-import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen.SchemaGeneration2_1;
 
 /**
  * JPA 2.1 <code>persistence-unit</code>
@@ -24,12 +24,10 @@ import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
  * @version 3.3
  * @since 3.3
  */
-public interface PersistenceUnit2_1 extends PersistenceUnit2_0
+public interface PersistenceUnit2_1
+	extends PersistenceUnit2_0
 {
-
-
 	// ********** properties **********
 
-	PersistenceUnitProperties getSchemaGeneration();
-	
+	SchemaGeneration2_1 getSchemaGeneration();
 }

@@ -38,11 +38,7 @@ public interface JpaFactory2_1
 
 	JavaConverterType2_1 buildJavaConverterType(JpaContextModel parent, JavaResourceType jrt); 
 
-	JavaNamedStoredProcedureQuery2_1 buildJavaNamedStoredProcedureQuery2_1(
-			JavaQueryContainer2_1 parent,
-			NamedStoredProcedureQuery2_1Annotation namedStoredProcedureQueryAnnotation);
+	JavaNamedStoredProcedureQuery2_1 buildJavaNamedStoredProcedureQuery(JavaQueryContainer2_1 parent, NamedStoredProcedureQuery2_1Annotation namedStoredProcedureQueryAnnotation);
 
-	JavaStoredProcedureParameter2_1 buildJavaStoredProcedureParameter2_1(
-			JavaNamedStoredProcedureQuery2_1 parent, 
-			StoredProcedureParameter2_1Annotation parameterAnnotation);
+	JavaStoredProcedureParameter2_1 buildJavaStoredProcedureParameter(JavaNamedStoredProcedureQuery2_1 parent, StoredProcedureParameter2_1Annotation parameterAnnotation);
 }

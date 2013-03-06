@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalMapping2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlElementCollection;
 
 /**
- * JPA 2.0 <code>orm.xml</code> context node factory
+ * JPA 2.0 <code>orm.xml</code> context model factory
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -33,7 +33,7 @@ public interface OrmXmlContextModelFactory2_0
 {
 	OrmDerivedIdentity2_0 buildOrmDerivedIdentity(OrmSingleRelationshipMapping2_0 parent);
 	
-	OrmElementCollectionMapping2_0 buildOrmElementCollectionMapping2_0(OrmSpecifiedPersistentAttribute parent, XmlElementCollection resourceMapping);
+	OrmElementCollectionMapping2_0 buildOrmElementCollectionMapping(OrmSpecifiedPersistentAttribute parent, XmlElementCollection resourceMapping);
 	
 	Cacheable2_0 buildOrmCacheable(OrmCacheableReference2_0 parent);
 	

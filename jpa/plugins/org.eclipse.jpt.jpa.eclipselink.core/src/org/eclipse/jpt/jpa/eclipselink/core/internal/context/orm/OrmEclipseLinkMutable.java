@@ -87,7 +87,7 @@ public class OrmEclipseLinkMutable
 			return false;
 		}
 		if (javaAttribute.typeIsDateOrCalendar()) {
-			Boolean puTemporalMutable = this.getPersistenceUnit().getOptions().getTemporalMutable();
+			Boolean puTemporalMutable = this.getPersistenceUnit().getEclipseLinkOptions().getTemporalMutable();
 			return (puTemporalMutable == null) ? false : puTemporalMutable.booleanValue();
 		}
 		return javaAttribute.typeIsSerializable();

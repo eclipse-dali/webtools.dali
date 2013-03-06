@@ -38,9 +38,9 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Options;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.SchemaGeneration;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOptions;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkSchemaGeneration;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.TargetDatabase;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.TargetServer;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
@@ -60,7 +60,7 @@ import com.ibm.icu.text.Collator;
 public class EclipseLinkPersistenceUnitOptionsEditorPage
 	extends Pane<PersistenceUnit>
 {
-	private PropertyValueModel<Options> optionsHolder;
+	private PropertyValueModel<EclipseLinkOptions> optionsHolder;
 
 	public EclipseLinkPersistenceUnitOptionsEditorPage(
 			PropertyValueModel<PersistenceUnit> persistenceUnitModel,
@@ -181,7 +181,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	}
 
 	protected Control initializeLoggingSection(Section section) {			
-		return new EclipseLinkLoggingComposite<Logging>(this, this.buildLoggingHolder(), section).getControl();
+		return new EclipseLinkLoggingComposite<EclipseLinkLogging>(this, this.buildLoggingHolder(), section).getControl();
 	}
 
 	protected Control initializeSchemaGenerationSection(Section section) {
@@ -201,30 +201,29 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 		return container;
 	}
 
-	private PropertyValueModel<SchemaGeneration> buildSchemaGenerationHolder() {
-		return new TransformationPropertyValueModel<PersistenceUnit, SchemaGeneration>(getSubjectHolder()) {
+	private PropertyValueModel<EclipseLinkSchemaGeneration> buildSchemaGenerationHolder() {
+		return new TransformationPropertyValueModel<PersistenceUnit, EclipseLinkSchemaGeneration>(getSubjectHolder()) {
 			@Override
-			protected SchemaGeneration transform_(PersistenceUnit value) {
+			protected EclipseLinkSchemaGeneration transform_(PersistenceUnit value) {
 				return ((EclipseLinkPersistenceUnit) value).getEclipseLinkSchemaGeneration();
 			}
 		};
 	}
 
-	private PropertyValueModel<Logging> buildLoggingHolder() {
-		return new TransformationPropertyValueModel<PersistenceUnit, Logging>(getSubjectHolder()) {
+	private PropertyValueModel<EclipseLinkLogging> buildLoggingHolder() {
+		return new TransformationPropertyValueModel<PersistenceUnit, EclipseLinkLogging>(getSubjectHolder()) {
 			@Override
-			protected Logging transform_(PersistenceUnit value) {
+			protected EclipseLinkLogging transform_(PersistenceUnit value) {
 				return ((EclipseLinkPersistenceUnit) value).getLogging();
 			}
 		};
 	}
 
-	private PropertyValueModel<Options> buildOptionsHolder() {
-		return new TransformationPropertyValueModel<PersistenceUnit, Options>(getSubjectHolder()) {
+	private PropertyValueModel<EclipseLinkOptions> buildOptionsHolder() {
+		return new TransformationPropertyValueModel<PersistenceUnit, EclipseLinkOptions>(getSubjectHolder()) {
 			@Override
-			protected Options transform_(PersistenceUnit value) {
-
-				return ((EclipseLinkPersistenceUnit)value).getOptions();
+			protected EclipseLinkOptions transform_(PersistenceUnit value) {
+				return ((EclipseLinkPersistenceUnit)value).getEclipseLinkOptions();
 			}
 		};
 	}
@@ -233,7 +232,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	//******** session name *********
 
 	private PropertyValueModel<String> buildDefaultSessionNameHolder() {
-		return new PropertyAspectAdapter<Options, String>(this.optionsHolder, Options.DEFAULT_SESSION_NAME) {
+		return new PropertyAspectAdapter<EclipseLinkOptions, String>(this.optionsHolder, EclipseLinkOptions.DEFAULT_SESSION_NAME) {
 			@Override
 			protected String buildValue_() {
 				return EclipseLinkPersistenceUnitOptionsEditorPage.this.getSessionNameDefaultValue(subject);
@@ -248,7 +247,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	}
 
 	private ModifiablePropertyValueModel<String> buildSessionNameHolder() {
-		return new PropertyAspectAdapter<Options, String>(this.optionsHolder, Options.SESSION_NAME_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkOptions, String>(this.optionsHolder, EclipseLinkOptions.SESSION_NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 
@@ -270,7 +269,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 		};
 	}
 
-	private String getSessionNameDefaultValue(Options subject) {
+	private String getSessionNameDefaultValue(EclipseLinkOptions subject) {
 		String defaultValue = subject.getDefaultSessionName();
 
 		if (defaultValue != null) {
@@ -286,7 +285,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	//******** sessions xml *********
 
 	private PropertyValueModel<String> buildDefaultSessionsXmlFileNameHolder() {
-		return new PropertyAspectAdapter<Options, String>(this.optionsHolder, Options.DEFAULT_SESSIONS_XML) {
+		return new PropertyAspectAdapter<EclipseLinkOptions, String>(this.optionsHolder, EclipseLinkOptions.DEFAULT_SESSIONS_XML) {
 			@Override
 			protected String buildValue_() {
 				return EclipseLinkPersistenceUnitOptionsEditorPage.this.getSessionsXmlDefaultValue(subject);
@@ -301,7 +300,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	}
 
 	private ModifiablePropertyValueModel<String> buildSessionsXmlFileNameHolder() {
-		return new PropertyAspectAdapter<Options, String>(this.optionsHolder, Options.SESSIONS_XML_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkOptions, String>(this.optionsHolder, EclipseLinkOptions.SESSIONS_XML_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 
@@ -323,7 +322,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 		};
 	}
 
-	private String getSessionsXmlDefaultValue(Options subject) {
+	private String getSessionsXmlDefaultValue(EclipseLinkOptions subject) {
 		String defaultValue = subject.getDefaultSessionsXml();
 
 		if (defaultValue != null) {
@@ -339,7 +338,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	//******** target database *********
 
 	private PropertyValueModel<String> buildDefaultTargetDatabaseHolder() {
-		return new PropertyAspectAdapter<Options, String>(this.optionsHolder, Options.DEFAULT_TARGET_DATABASE) {
+		return new PropertyAspectAdapter<EclipseLinkOptions, String>(this.optionsHolder, EclipseLinkOptions.DEFAULT_TARGET_DATABASE) {
 			@Override
 			protected String buildValue_() {
 				return EclipseLinkPersistenceUnitOptionsEditorPage.this.getTargetDatabaseDefaultValue(subject);
@@ -437,7 +436,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	}
 
 	private ModifiablePropertyValueModel<String> buildTargetDatabaseHolder() {
-		return new PropertyAspectAdapter<Options, String>(this.optionsHolder, Options.TARGET_DATABASE_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkOptions, String>(this.optionsHolder, EclipseLinkOptions.TARGET_DATABASE_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 
@@ -483,7 +482,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 		);
 	}
 
-	private String getTargetDatabaseDefaultValue(Options subject) {
+	private String getTargetDatabaseDefaultValue(EclipseLinkOptions subject) {
 		String defaultValue = subject.getDefaultTargetDatabase();
 
 		if (defaultValue != null) {
@@ -499,7 +498,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	//******** target server *********
 
 	private PropertyValueModel<String> buildDefaultTargetServerHolder() {
-		return new PropertyAspectAdapter<Options, String>(this.optionsHolder, Options.DEFAULT_TARGET_SERVER) {
+		return new PropertyAspectAdapter<EclipseLinkOptions, String>(this.optionsHolder, EclipseLinkOptions.DEFAULT_TARGET_SERVER) {
 			@Override
 			protected String buildValue_() {
 				return EclipseLinkPersistenceUnitOptionsEditorPage.this.getTargetServerDefaultValue(subject);
@@ -569,7 +568,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	}
 
 	private ModifiablePropertyValueModel<String> buildTargetServerHolder() {
-		return new PropertyAspectAdapter<Options, String>(this.optionsHolder, Options.TARGET_SERVER_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkOptions, String>(this.optionsHolder, EclipseLinkOptions.TARGET_SERVER_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				String name = subject.getTargetServer();
@@ -613,7 +612,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 		);
 	}
 
-	private String getTargetServerDefaultValue(Options subject) {
+	private String getTargetServerDefaultValue(EclipseLinkOptions subject) {
 		String defaultValue = subject.getDefaultTargetServer();
 
 		if (defaultValue != null) {
@@ -628,13 +627,13 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 
 	//********event listener *********
 
-	private ClassChooserPane<Options> initializeEventListenerClassChooser(Composite container, Hyperlink hyperlink) {
-		return new ClassChooserPane<Options>(this, this.optionsHolder, container, hyperlink) {
+	private ClassChooserPane<EclipseLinkOptions> initializeEventListenerClassChooser(Composite container, Hyperlink hyperlink) {
+		return new ClassChooserPane<EclipseLinkOptions>(this, this.optionsHolder, container, hyperlink) {
 
 			@Override
 			protected ModifiablePropertyValueModel<String> buildTextHolder() {
-				return new PropertyAspectAdapter<Options, String>(
-							this.getSubjectHolder(), Options.SESSION_EVENT_LISTENER_PROPERTY) {
+				return new PropertyAspectAdapter<EclipseLinkOptions, String>(
+							this.getSubjectHolder(), EclipseLinkOptions.SESSION_EVENT_LISTENER_PROPERTY) {
 					@Override
 					protected String buildValue_() {
 						return this.subject.getEventListener();
@@ -668,7 +667,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 
 			@Override
 			protected String getSuperInterfaceName() {
-				return Options.ECLIPSELINK_EVENT_LISTENER_CLASS_NAME;
+				return EclipseLinkOptions.ECLIPSELINK_EVENT_LISTENER_CLASS_NAME;
 			}
 		};
 	}
@@ -677,7 +676,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	//******** include descriptor queries *********
 	
 	private ModifiablePropertyValueModel<Boolean> buildIncludeDescriptorQueriesHolder() {
-		return new PropertyAspectAdapter<Options, Boolean>(this.optionsHolder, Options.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkOptions, Boolean>(this.optionsHolder, EclipseLinkOptions.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getIncludeDescriptorQueries();
@@ -704,9 +703,9 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	}
 	
 	private PropertyValueModel<Boolean> buildDefaultIncludeDescriptorQueriesHolder() {
-		return new PropertyAspectAdapter<Options, Boolean>(
+		return new PropertyAspectAdapter<EclipseLinkOptions, Boolean>(
 			this.optionsHolder,
-			Options.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY)
+			EclipseLinkOptions.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -722,7 +721,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	//******** temporal mutable *********
 
 	protected ModifiablePropertyValueModel<Boolean> buildTemporalMutableHolder() {
-		return new PropertyAspectAdapter<Options, Boolean>(this.optionsHolder, Options.TEMPORAL_MUTABLE_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkOptions, Boolean>(this.optionsHolder, EclipseLinkOptions.TEMPORAL_MUTABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getTemporalMutable();
@@ -749,9 +748,9 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	}
 	
 	private PropertyValueModel<Boolean> buildDefaultTemporalMutableHolder() {
-		return new PropertyAspectAdapter<Options, Boolean>(
+		return new PropertyAspectAdapter<EclipseLinkOptions, Boolean>(
 			this.optionsHolder,
-			Options.TEMPORAL_MUTABLE_PROPERTY)
+			EclipseLinkOptions.TEMPORAL_MUTABLE_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {

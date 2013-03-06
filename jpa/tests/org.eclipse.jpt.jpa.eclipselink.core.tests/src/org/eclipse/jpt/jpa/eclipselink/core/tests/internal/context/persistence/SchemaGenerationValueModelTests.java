@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.DdlGenerationType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.OutputMode;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.SchemaGeneration;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkSchemaGeneration;
 
 /**
  * SchemaGenerationValueModelTests
@@ -29,8 +29,8 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.SchemaGeneration
  */
 public class SchemaGenerationValueModelTests extends EclipseLinkPersistenceUnitTestCase
 {
-	private SchemaGeneration schemaGen;
-	private PropertyValueModel<SchemaGeneration> schemaGenHolder;
+	private EclipseLinkSchemaGeneration schemaGen;
+	private PropertyValueModel<EclipseLinkSchemaGeneration> schemaGenHolder;
 
 	private ModifiablePropertyValueModel<DdlGenerationType> ddlGenerationTypeHolder;
 	private PropertyChangeEvent ddlGenerationTypeEvent;
@@ -49,7 +49,7 @@ public class SchemaGenerationValueModelTests extends EclipseLinkPersistenceUnitT
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.schemaGen = this.subject.getEclipseLinkSchemaGeneration(); // Subject
-		this.schemaGenHolder = new SimplePropertyValueModel<SchemaGeneration>(this.schemaGen);
+		this.schemaGenHolder = new SimplePropertyValueModel<EclipseLinkSchemaGeneration>(this.schemaGen);
 		
 		this.ddlGenerationTypeHolder = this.buildDdlGenerationTypeAA(this.schemaGenHolder);
 		PropertyChangeListener ddlGenerationTypeListener = this.buildDdlGenerationTypeChangeListener();
@@ -69,10 +69,10 @@ public class SchemaGenerationValueModelTests extends EclipseLinkPersistenceUnitT
 	@Override
 	protected void populatePu() {
 		this.persistenceUnitSetProperty(
-			SchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE,
+			EclipseLinkSchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE,
 			DDL_GENERATION_TYPE_TEST_VALUE);
 		this.persistenceUnitSetProperty(
-			SchemaGeneration.ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE,
+			EclipseLinkSchemaGeneration.ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE,
 			OUTPUT_MODE_TEST_VALUE);
 		return;
 	}
@@ -83,8 +83,8 @@ public class SchemaGenerationValueModelTests extends EclipseLinkPersistenceUnitT
 	}
 
 	/** ****** DdlGenerationType ******* */
-	private ModifiablePropertyValueModel<DdlGenerationType> buildDdlGenerationTypeAA(PropertyValueModel<SchemaGeneration> subjectHolder) {
-		return new PropertyAspectAdapter<SchemaGeneration, DdlGenerationType>(subjectHolder, SchemaGeneration.DDL_GENERATION_TYPE_PROPERTY) {
+	private ModifiablePropertyValueModel<DdlGenerationType> buildDdlGenerationTypeAA(PropertyValueModel<EclipseLinkSchemaGeneration> subjectHolder) {
+		return new PropertyAspectAdapter<EclipseLinkSchemaGeneration, DdlGenerationType>(subjectHolder, EclipseLinkSchemaGeneration.DDL_GENERATION_TYPE_PROPERTY) {
 			@Override
 			protected DdlGenerationType buildValue_() {
 				return this.subject.getDdlGenerationType();
@@ -106,8 +106,8 @@ public class SchemaGenerationValueModelTests extends EclipseLinkPersistenceUnitT
 	}
 
 	/** ****** OutputMode ******* */
-	private ModifiablePropertyValueModel<OutputMode> buildOutputModeAA(PropertyValueModel<SchemaGeneration> subjectHolder) {
-		return new PropertyAspectAdapter<SchemaGeneration, OutputMode>(subjectHolder, SchemaGeneration.OUTPUT_MODE_PROPERTY) {
+	private ModifiablePropertyValueModel<OutputMode> buildOutputModeAA(PropertyValueModel<EclipseLinkSchemaGeneration> subjectHolder) {
+		return new PropertyAspectAdapter<EclipseLinkSchemaGeneration, OutputMode>(subjectHolder, EclipseLinkSchemaGeneration.OUTPUT_MODE_PROPERTY) {
 			@Override
 			protected OutputMode buildValue_() {
 				return this.subject.getOutputMode();
@@ -132,12 +132,12 @@ public class SchemaGenerationValueModelTests extends EclipseLinkPersistenceUnitT
 		/** ****** DdlGenerationType ******* */
 		this.verifyDdlGenerationTypeAAValue(DDL_GENERATION_TYPE_TEST_VALUE);
 		assertEquals(
-			SchemaGeneration.DEFAULT_SCHEMA_GENERATION_DDL_GENERATION_TYPE,
+			EclipseLinkSchemaGeneration.DEFAULT_SCHEMA_GENERATION_DDL_GENERATION_TYPE,
 			this.schemaGen.getDefaultDdlGenerationType());
 		/** ****** OutputMode ******* */
 		this.verifyOutputModeAAValue(OUTPUT_MODE_TEST_VALUE);
 		assertEquals(
-			SchemaGeneration.DEFAULT_SCHEMA_GENERATION_OUTPUT_MODE,
+			EclipseLinkSchemaGeneration.DEFAULT_SCHEMA_GENERATION_OUTPUT_MODE,
 			this.schemaGen.getDefaultOutputMode());
 	}
 
@@ -148,7 +148,7 @@ public class SchemaGenerationValueModelTests extends EclipseLinkPersistenceUnitT
 		DdlGenerationType newDdlGenerationType = DdlGenerationType.create_tables;
 		// Modify the persistenceUnit directly
 		this.subject.setProperty(
-			SchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE,
+			EclipseLinkSchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE,
 			this.getPropertyStringValueOf(newDdlGenerationType),
 			false);
 		this.verifyDdlGenerationTypeAAValue(newDdlGenerationType);
@@ -168,13 +168,13 @@ public class SchemaGenerationValueModelTests extends EclipseLinkPersistenceUnitT
 		/** ****** DdlGenerationType ******* */
 		this.ddlGenerationTypeEvent = null;
 		// Setting the persistenceUnit directly
-		this.subject.setProperty(SchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE, null, false);
+		this.subject.setProperty(EclipseLinkSchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE, null, false);
 		this.ddlGenerationTypeHolder.setValue(null);
 		// testing Holder
 		this.verifyDdlGenerationTypeAAValue(null);
 		assertNotNull(this.ddlGenerationTypeEvent);
 		// testing PU properties
-		PersistenceUnit.Property property = this.getPersistenceUnit().getProperty(SchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE);
+		PersistenceUnit.Property property = this.getPersistenceUnit().getProperty(EclipseLinkSchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE);
 		assertNull(property);
 		
 		/** ****** OutputMode ******* */
@@ -185,7 +185,7 @@ public class SchemaGenerationValueModelTests extends EclipseLinkPersistenceUnitT
 		this.verifyOutputModeAAValue(null);
 		assertNotNull(this.outputModeEvent);
 		// testing PU properties
-		property = this.getPersistenceUnit().getProperty(SchemaGeneration.ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE);
+		property = this.getPersistenceUnit().getProperty(EclipseLinkSchemaGeneration.ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE);
 		assertNull(property);
 	}
 
@@ -201,7 +201,7 @@ public class SchemaGenerationValueModelTests extends EclipseLinkPersistenceUnitT
 			testValue,
 			this.schemaGen.getDdlGenerationType(),
 			this.ddlGenerationTypeHolder,
-			SchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE);
+			EclipseLinkSchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE);
 	}
 
 	/**
@@ -215,7 +215,7 @@ public class SchemaGenerationValueModelTests extends EclipseLinkPersistenceUnitT
 			testValue,
 			this.schemaGen.getOutputMode(),
 			this.outputModeHolder,
-			SchemaGeneration.ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE);
+			EclipseLinkSchemaGeneration.ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE);
 	}
 
 	// ********** get/set property **********

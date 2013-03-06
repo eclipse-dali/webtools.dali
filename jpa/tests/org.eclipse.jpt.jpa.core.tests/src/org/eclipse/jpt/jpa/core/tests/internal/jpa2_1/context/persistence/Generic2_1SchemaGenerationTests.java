@@ -13,68 +13,68 @@ import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationAction;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationTarget;
-import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen.JpaSchemaGeneration2_1;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen.SchemaGeneration2_1;
 
 /**
  *  Generic2_1SchemaGenerationTests
  */
 public class Generic2_1SchemaGenerationTests extends PersistenceUnit2_1TestCase
 {
-	JpaSchemaGeneration2_1 schemaGeneration;
+	SchemaGeneration2_1 schemaGeneration;
 
-	public static final String SCHEMAGEN_DATABASE_ACTION_KEY = JpaSchemaGeneration2_1.PERSISTENCE_SCHEMAGEN_DATABASE_ACTION;
+	public static final String SCHEMAGEN_DATABASE_ACTION_KEY = SchemaGeneration2_1.PERSISTENCE_SCHEMAGEN_DATABASE_ACTION;
 	public static final SchemaGenerationAction SCHEMAGEN_DATABASE_ACTION_TEST_VALUE = SchemaGenerationAction.create;
 	public static final SchemaGenerationAction SCHEMAGEN_DATABASE_ACTION_TEST_VALUE_2 = SchemaGenerationAction.drop_and_create;
 
-	public static final String SCHEMAGEN_SCRIPTS_ACTION_KEY = JpaSchemaGeneration2_1.PERSISTENCE_SCHEMAGEN_SCRIPTS_ACTION;
+	public static final String SCHEMAGEN_SCRIPTS_ACTION_KEY = SchemaGeneration2_1.PERSISTENCE_SCHEMAGEN_SCRIPTS_ACTION;
 	public static final SchemaGenerationAction SCHEMAGEN_SCRIPTS_ACTION_TEST_VALUE = SchemaGenerationAction.drop_and_create;
 	public static final SchemaGenerationAction SCHEMAGEN_SCRIPTS_ACTION_TEST_VALUE_2 = SchemaGenerationAction.drop;
 
-	public static final String SCHEMAGEN_CREATE_SOURCE_KEY = JpaSchemaGeneration2_1.PERSISTENCE_SCHEMAGEN_CREATE_SOURCE;
+	public static final String SCHEMAGEN_CREATE_SOURCE_KEY = SchemaGeneration2_1.PERSISTENCE_SCHEMAGEN_CREATE_SOURCE;
 	public static final SchemaGenerationTarget SCHEMAGEN_CREATE_SOURCE_TEST_VALUE = SchemaGenerationTarget.metadata;
 	public static final SchemaGenerationTarget SCHEMAGEN_CREATE_SOURCE_TEST_VALUE_2 = SchemaGenerationTarget.metadata_then_script;
 
-	public static final String SCHEMAGEN_DROP_SOURCE_KEY = JpaSchemaGeneration2_1.PERSISTENCE_SCHEMAGEN_DROP_SOURCE;
+	public static final String SCHEMAGEN_DROP_SOURCE_KEY = SchemaGeneration2_1.PERSISTENCE_SCHEMAGEN_DROP_SOURCE;
 	public static final SchemaGenerationTarget SCHEMAGEN_DROP_SOURCE_TEST_VALUE = SchemaGenerationTarget.script_then_metadata;
 	public static final SchemaGenerationTarget SCHEMAGEN_DROP_SOURCE_TEST_VALUE_2 = SchemaGenerationTarget.script;
 	
-	public static final String CREATE_DATABASE_SCHEMAS_KEY = JpaSchemaGeneration2_1.PERSISTENCE_CREATE_DATABASE_SCHEMAS;
+	public static final String CREATE_DATABASE_SCHEMAS_KEY = SchemaGeneration2_1.PERSISTENCE_CREATE_DATABASE_SCHEMAS;
 	public static final Boolean CREATE_DATABASE_SCHEMAS_TEST_VALUE = true;
 	public static final Boolean CREATE_DATABASE_SCHEMAS_TEST_VALUE_2 = ! CREATE_DATABASE_SCHEMAS_TEST_VALUE;
 	
-	public static final String SCRIPTS_CREATE_TARGET_KEY = JpaSchemaGeneration2_1.PERSISTENCE_SCRIPTS_CREATE_TARGET;
+	public static final String SCRIPTS_CREATE_TARGET_KEY = SchemaGeneration2_1.PERSISTENCE_SCRIPTS_CREATE_TARGET;
 	public static final String SCRIPTS_CREATE_TARGET_TEST_VALUE = "ScriptsCreateTarget";
 	public static final String SCRIPTS_CREATE_TARGET_TEST_VALUE_2 = "ScriptsCreateTarget_2";
 	
-	public static final String SCRIPTS_DROP_TARGET_KEY = JpaSchemaGeneration2_1.PERSISTENCE_SCRIPTS_DROP_TARGET;
+	public static final String SCRIPTS_DROP_TARGET_KEY = SchemaGeneration2_1.PERSISTENCE_SCRIPTS_DROP_TARGET;
 	public static final String SCRIPTS_DROP_TARGET_TEST_VALUE = "ScriptsDropTarget";
 	public static final String SCRIPTS_DROP_TARGET_TEST_VALUE_2 = "ScriptsDropTarget_2";
 	
-	public static final String DATABASE_PRODUCT_NAME_KEY = JpaSchemaGeneration2_1.PERSISTENCE_DATABASE_PRODUCT_NAME;
+	public static final String DATABASE_PRODUCT_NAME_KEY = SchemaGeneration2_1.PERSISTENCE_DATABASE_PRODUCT_NAME;
 	public static final String DATABASE_PRODUCT_NAME_TEST_VALUE = "DatabaseProductName";
 	public static final String DATABASE_PRODUCT_NAME_TEST_VALUE_2 = "DatabaseProductName_2";
 	
-	public static final String DATABASE_MAJOR_VERSION_KEY = JpaSchemaGeneration2_1.PERSISTENCE_DATABASE_MAJOR_VERSION;
+	public static final String DATABASE_MAJOR_VERSION_KEY = SchemaGeneration2_1.PERSISTENCE_DATABASE_MAJOR_VERSION;
 	public static final String DATABASE_MAJOR_VERSION_TEST_VALUE = "DatabaseMajorVersion";
 	public static final String DATABASE_MAJOR_VERSION_TEST_VALUE_2 = "DatabaseMajorVersion_2";
 	
-	public static final String DATABASE_MINOR_VERSION_KEY = JpaSchemaGeneration2_1.PERSISTENCE_DATABASE_MINOR_VERSION;
+	public static final String DATABASE_MINOR_VERSION_KEY = SchemaGeneration2_1.PERSISTENCE_DATABASE_MINOR_VERSION;
 	public static final String DATABASE_MINOR_VERSION_TEST_VALUE = "DatabaseMinorVersion";
 	public static final String DATABASE_MINOR_VERSION_TEST_VALUE_2 = "DatabaseMinorVersion_2";
 	
-	public static final String CREATE_SCRIPT_SOURCE_KEY = JpaSchemaGeneration2_1.PERSISTENCE_CREATE_SCRIPT_SOURCE;
+	public static final String CREATE_SCRIPT_SOURCE_KEY = SchemaGeneration2_1.PERSISTENCE_CREATE_SCRIPT_SOURCE;
 	public static final String CREATE_SCRIPT_SOURCE_TEST_VALUE = "CreateScriptSource";
 	public static final String CREATE_SCRIPT_SOURCE_TEST_VALUE_2 = "CreateScriptSource_2";
 	
-	public static final String DROP_SCRIPT_SOURCE_KEY = JpaSchemaGeneration2_1.PERSISTENCE_DROP_SCRIPT_SOURCE;
+	public static final String DROP_SCRIPT_SOURCE_KEY = SchemaGeneration2_1.PERSISTENCE_DROP_SCRIPT_SOURCE;
 	public static final String DROP_SCRIPT_SOURCE_TEST_VALUE = "DropScriptSource";
 	public static final String DROP_SCRIPT_SOURCE_TEST_VALUE_2 = "DropScriptSource_2";
 	
-	public static final String CONNECTION_KEY = JpaSchemaGeneration2_1.PERSISTENCE_CONNECTION;
+	public static final String CONNECTION_KEY = SchemaGeneration2_1.PERSISTENCE_CONNECTION;
 	public static final String CONNECTION_TEST_VALUE = "Connection";
 	public static final String CONNECTION_TEST_VALUE_2 = "Connection_2";
 	
-	public static final String SQL_LOAD_SCRIPT_SOURCE_KEY = JpaSchemaGeneration2_1.PERSISTENCE_SQL_LOAD_SCRIPT_SOURCE;
+	public static final String SQL_LOAD_SCRIPT_SOURCE_KEY = SchemaGeneration2_1.PERSISTENCE_SQL_LOAD_SCRIPT_SOURCE;
 	public static final String SQL_LOAD_SCRIPT_SOURCE_TEST_VALUE = "SqlLoadScriptSource";
 	public static final String SQL_LOAD_SCRIPT_SOURCE_TEST_VALUE_2 = "SqlLoadScriptSource_2";
 
@@ -88,23 +88,23 @@ public class Generic2_1SchemaGenerationTests extends PersistenceUnit2_1TestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.schemaGeneration = (JpaSchemaGeneration2_1) this.subject.getSchemaGeneration();
+		this.schemaGeneration = (SchemaGeneration2_1) this.subject.getSchemaGeneration();
 		PropertyChangeListener propertyChangeListener = this.buildPropertyChangeListener();
 
-		this.schemaGeneration.addPropertyChangeListener(JpaSchemaGeneration2_1.SCHEMAGEN_DATABASE_ACTION_PROPERTY, propertyChangeListener);
-		this.schemaGeneration.addPropertyChangeListener(JpaSchemaGeneration2_1.SCHEMAGEN_SCRIPTS_ACTION_PROPERTY, propertyChangeListener);
-		this.schemaGeneration.addPropertyChangeListener(JpaSchemaGeneration2_1.SCHEMAGEN_CREATE_SOURCE_PROPERTY, propertyChangeListener);
-		this.schemaGeneration.addPropertyChangeListener(JpaSchemaGeneration2_1.SCHEMAGEN_DROP_SOURCE_PROPERTY, propertyChangeListener);
-		this.schemaGeneration.addPropertyChangeListener(JpaSchemaGeneration2_1.CREATE_DATABASE_SCHEMAS_PROPERTY, propertyChangeListener);
-		this.schemaGeneration.addPropertyChangeListener(JpaSchemaGeneration2_1.SCRIPTS_CREATE_TARGET_PROPERTY, propertyChangeListener);
-		this.schemaGeneration.addPropertyChangeListener(JpaSchemaGeneration2_1.SCRIPTS_DROP_TARGET_PROPERTY, propertyChangeListener);
-		this.schemaGeneration.addPropertyChangeListener(JpaSchemaGeneration2_1.DATABASE_PRODUCT_NAME_PROPERTY, propertyChangeListener);
-		this.schemaGeneration.addPropertyChangeListener(JpaSchemaGeneration2_1.DATABASE_MAJOR_VERSION_PROPERTY, propertyChangeListener);
-		this.schemaGeneration.addPropertyChangeListener(JpaSchemaGeneration2_1.DATABASE_MINOR_VERSION_PROPERTY, propertyChangeListener);
-		this.schemaGeneration.addPropertyChangeListener(JpaSchemaGeneration2_1.CREATE_SCRIPT_SOURCE_PROPERTY, propertyChangeListener);
-		this.schemaGeneration.addPropertyChangeListener(JpaSchemaGeneration2_1.DROP_SCRIPT_SOURCE_PROPERTY, propertyChangeListener);
-		this.schemaGeneration.addPropertyChangeListener(JpaSchemaGeneration2_1.CONNECTION_PROPERTY, propertyChangeListener);
-		this.schemaGeneration.addPropertyChangeListener(JpaSchemaGeneration2_1.SQL_LOAD_SCRIPT_SOURCE_PROPERTY, propertyChangeListener);
+		this.schemaGeneration.addPropertyChangeListener(SchemaGeneration2_1.SCHEMAGEN_DATABASE_ACTION_PROPERTY, propertyChangeListener);
+		this.schemaGeneration.addPropertyChangeListener(SchemaGeneration2_1.SCHEMAGEN_SCRIPTS_ACTION_PROPERTY, propertyChangeListener);
+		this.schemaGeneration.addPropertyChangeListener(SchemaGeneration2_1.SCHEMAGEN_CREATE_SOURCE_PROPERTY, propertyChangeListener);
+		this.schemaGeneration.addPropertyChangeListener(SchemaGeneration2_1.SCHEMAGEN_DROP_SOURCE_PROPERTY, propertyChangeListener);
+		this.schemaGeneration.addPropertyChangeListener(SchemaGeneration2_1.CREATE_DATABASE_SCHEMAS_PROPERTY, propertyChangeListener);
+		this.schemaGeneration.addPropertyChangeListener(SchemaGeneration2_1.SCRIPTS_CREATE_TARGET_PROPERTY, propertyChangeListener);
+		this.schemaGeneration.addPropertyChangeListener(SchemaGeneration2_1.SCRIPTS_DROP_TARGET_PROPERTY, propertyChangeListener);
+		this.schemaGeneration.addPropertyChangeListener(SchemaGeneration2_1.DATABASE_PRODUCT_NAME_PROPERTY, propertyChangeListener);
+		this.schemaGeneration.addPropertyChangeListener(SchemaGeneration2_1.DATABASE_MAJOR_VERSION_PROPERTY, propertyChangeListener);
+		this.schemaGeneration.addPropertyChangeListener(SchemaGeneration2_1.DATABASE_MINOR_VERSION_PROPERTY, propertyChangeListener);
+		this.schemaGeneration.addPropertyChangeListener(SchemaGeneration2_1.CREATE_SCRIPT_SOURCE_PROPERTY, propertyChangeListener);
+		this.schemaGeneration.addPropertyChangeListener(SchemaGeneration2_1.DROP_SCRIPT_SOURCE_PROPERTY, propertyChangeListener);
+		this.schemaGeneration.addPropertyChangeListener(SchemaGeneration2_1.CONNECTION_PROPERTY, propertyChangeListener);
+		this.schemaGeneration.addPropertyChangeListener(SchemaGeneration2_1.SQL_LOAD_SCRIPT_SOURCE_PROPERTY, propertyChangeListener);
 
 		this.clearEvent();
 	}
@@ -388,33 +388,33 @@ public class Generic2_1SchemaGenerationTests extends PersistenceUnit2_1TestCase
 	// ********** get/set property **********
 	@Override
 	protected void setProperty(String propertyName, Object newValue) throws Exception {
-		if (propertyName.equals(JpaSchemaGeneration2_1.SCHEMAGEN_DATABASE_ACTION_PROPERTY))
+		if (propertyName.equals(SchemaGeneration2_1.SCHEMAGEN_DATABASE_ACTION_PROPERTY))
 			this.schemaGeneration.setSchemaGenDatabaseAction((SchemaGenerationAction) newValue);
-		else if (propertyName.equals(JpaSchemaGeneration2_1.SCHEMAGEN_SCRIPTS_ACTION_PROPERTY))
+		else if (propertyName.equals(SchemaGeneration2_1.SCHEMAGEN_SCRIPTS_ACTION_PROPERTY))
 			this.schemaGeneration.setSchemaGenScriptsAction((SchemaGenerationAction) newValue);
-		else if (propertyName.equals(JpaSchemaGeneration2_1.SCHEMAGEN_CREATE_SOURCE_PROPERTY))
+		else if (propertyName.equals(SchemaGeneration2_1.SCHEMAGEN_CREATE_SOURCE_PROPERTY))
 			this.schemaGeneration.setSchemaGenCreateSource((SchemaGenerationTarget) newValue);
-		else if (propertyName.equals(JpaSchemaGeneration2_1.SCHEMAGEN_DROP_SOURCE_PROPERTY))
+		else if (propertyName.equals(SchemaGeneration2_1.SCHEMAGEN_DROP_SOURCE_PROPERTY))
 			this.schemaGeneration.setSchemaGenDropSource((SchemaGenerationTarget) newValue);
-		else if (propertyName.equals(JpaSchemaGeneration2_1.CREATE_DATABASE_SCHEMAS_PROPERTY))
+		else if (propertyName.equals(SchemaGeneration2_1.CREATE_DATABASE_SCHEMAS_PROPERTY))
 				this.schemaGeneration.setCreateDatabaseSchemas((Boolean) newValue);
-		else if (propertyName.equals(JpaSchemaGeneration2_1.SCRIPTS_CREATE_TARGET_PROPERTY))
+		else if (propertyName.equals(SchemaGeneration2_1.SCRIPTS_CREATE_TARGET_PROPERTY))
 			this.schemaGeneration.setScriptsCreateTarget((String) newValue);
-		else if (propertyName.equals(JpaSchemaGeneration2_1.SCRIPTS_DROP_TARGET_PROPERTY))
+		else if (propertyName.equals(SchemaGeneration2_1.SCRIPTS_DROP_TARGET_PROPERTY))
 			this.schemaGeneration.setScriptsDropTarget((String) newValue);
-		else if (propertyName.equals(JpaSchemaGeneration2_1.DATABASE_PRODUCT_NAME_PROPERTY))
+		else if (propertyName.equals(SchemaGeneration2_1.DATABASE_PRODUCT_NAME_PROPERTY))
 			this.schemaGeneration.setDatabaseProductName((String) newValue);
-		else if (propertyName.equals(JpaSchemaGeneration2_1.DATABASE_MAJOR_VERSION_PROPERTY))
+		else if (propertyName.equals(SchemaGeneration2_1.DATABASE_MAJOR_VERSION_PROPERTY))
 			this.schemaGeneration.setDatabaseMajorVersion((String) newValue);
-		else if (propertyName.equals(JpaSchemaGeneration2_1.DATABASE_MINOR_VERSION_PROPERTY))
+		else if (propertyName.equals(SchemaGeneration2_1.DATABASE_MINOR_VERSION_PROPERTY))
 			this.schemaGeneration.setDatabaseMinorVersion((String) newValue);
-		else if (propertyName.equals(JpaSchemaGeneration2_1.CREATE_SCRIPT_SOURCE_PROPERTY))
+		else if (propertyName.equals(SchemaGeneration2_1.CREATE_SCRIPT_SOURCE_PROPERTY))
 			this.schemaGeneration.setCreateScriptSource((String) newValue);
-		else if (propertyName.equals(JpaSchemaGeneration2_1.DROP_SCRIPT_SOURCE_PROPERTY))
+		else if (propertyName.equals(SchemaGeneration2_1.DROP_SCRIPT_SOURCE_PROPERTY))
 			this.schemaGeneration.setDropScriptSource((String) newValue);
-		else if (propertyName.equals(JpaSchemaGeneration2_1.CONNECTION_PROPERTY))
+		else if (propertyName.equals(SchemaGeneration2_1.CONNECTION_PROPERTY))
 			this.schemaGeneration.setConnection((String) newValue);
-		else if (propertyName.equals(JpaSchemaGeneration2_1.SQL_LOAD_SCRIPT_SOURCE_PROPERTY))
+		else if (propertyName.equals(SchemaGeneration2_1.SQL_LOAD_SCRIPT_SOURCE_PROPERTY))
 			this.schemaGeneration.setSqlLoadScriptSource((String) newValue);
 		else
 			this.throwMissingDefinition("setProperty", propertyName);
@@ -424,33 +424,33 @@ public class Generic2_1SchemaGenerationTests extends PersistenceUnit2_1TestCase
 	@Override
 	protected Object getProperty(String propertyName) throws NoSuchFieldException {
 		Object modelValue = null;
-		if (propertyName.equals(JpaSchemaGeneration2_1.SCHEMAGEN_DATABASE_ACTION_PROPERTY))
+		if (propertyName.equals(SchemaGeneration2_1.SCHEMAGEN_DATABASE_ACTION_PROPERTY))
 			modelValue = this.schemaGeneration.getSchemaGenDatabaseAction();
-		else if (propertyName.equals(JpaSchemaGeneration2_1.SCHEMAGEN_SCRIPTS_ACTION_PROPERTY))
+		else if (propertyName.equals(SchemaGeneration2_1.SCHEMAGEN_SCRIPTS_ACTION_PROPERTY))
 			modelValue = this.schemaGeneration.getSchemaGenScriptsAction();
-		else if (propertyName.equals(JpaSchemaGeneration2_1.SCHEMAGEN_CREATE_SOURCE_PROPERTY))
+		else if (propertyName.equals(SchemaGeneration2_1.SCHEMAGEN_CREATE_SOURCE_PROPERTY))
 			modelValue = this.schemaGeneration.getSchemaGenCreateSource();
-		else if (propertyName.equals(JpaSchemaGeneration2_1.SCHEMAGEN_DROP_SOURCE_PROPERTY))
+		else if (propertyName.equals(SchemaGeneration2_1.SCHEMAGEN_DROP_SOURCE_PROPERTY))
 			modelValue = this.schemaGeneration.getSchemaGenDropSource();
-		else if (propertyName.equals(JpaSchemaGeneration2_1.CREATE_DATABASE_SCHEMAS_PROPERTY))
+		else if (propertyName.equals(SchemaGeneration2_1.CREATE_DATABASE_SCHEMAS_PROPERTY))
 			modelValue = this.schemaGeneration.getCreateDatabaseSchemas();
-		else if (propertyName.equals(JpaSchemaGeneration2_1.SCRIPTS_CREATE_TARGET_PROPERTY))
+		else if (propertyName.equals(SchemaGeneration2_1.SCRIPTS_CREATE_TARGET_PROPERTY))
 			modelValue = this.schemaGeneration.getScriptsCreateTarget();
-		else if (propertyName.equals(JpaSchemaGeneration2_1.SCRIPTS_DROP_TARGET_PROPERTY))
+		else if (propertyName.equals(SchemaGeneration2_1.SCRIPTS_DROP_TARGET_PROPERTY))
 			modelValue = this.schemaGeneration.getScriptsDropTarget();
-		else if (propertyName.equals(JpaSchemaGeneration2_1.DATABASE_PRODUCT_NAME_PROPERTY))
+		else if (propertyName.equals(SchemaGeneration2_1.DATABASE_PRODUCT_NAME_PROPERTY))
 			modelValue = this.schemaGeneration.getDatabaseProductName();
-		else if (propertyName.equals(JpaSchemaGeneration2_1.DATABASE_MAJOR_VERSION_PROPERTY))
+		else if (propertyName.equals(SchemaGeneration2_1.DATABASE_MAJOR_VERSION_PROPERTY))
 			modelValue = this.schemaGeneration.getDatabaseMajorVersion();
-		else if (propertyName.equals(JpaSchemaGeneration2_1.DATABASE_MINOR_VERSION_PROPERTY))
+		else if (propertyName.equals(SchemaGeneration2_1.DATABASE_MINOR_VERSION_PROPERTY))
 			modelValue = this.schemaGeneration.getDatabaseMinorVersion();
-		else if (propertyName.equals(JpaSchemaGeneration2_1.CREATE_SCRIPT_SOURCE_PROPERTY))
+		else if (propertyName.equals(SchemaGeneration2_1.CREATE_SCRIPT_SOURCE_PROPERTY))
 			modelValue = this.schemaGeneration.getCreateScriptSource();
-		else if (propertyName.equals(JpaSchemaGeneration2_1.DROP_SCRIPT_SOURCE_PROPERTY))
+		else if (propertyName.equals(SchemaGeneration2_1.DROP_SCRIPT_SOURCE_PROPERTY))
 			modelValue = this.schemaGeneration.getDropScriptSource();
-		else if (propertyName.equals(JpaSchemaGeneration2_1.CONNECTION_PROPERTY))
+		else if (propertyName.equals(SchemaGeneration2_1.CONNECTION_PROPERTY))
 			modelValue = this.schemaGeneration.getConnection();
-		else if (propertyName.equals(JpaSchemaGeneration2_1.SQL_LOAD_SCRIPT_SOURCE_PROPERTY))
+		else if (propertyName.equals(SchemaGeneration2_1.SQL_LOAD_SCRIPT_SOURCE_PROPERTY))
 			modelValue = this.schemaGeneration.getSqlLoadScriptSource();
 		else
 			this.throwMissingDefinition("getProperty", propertyName);

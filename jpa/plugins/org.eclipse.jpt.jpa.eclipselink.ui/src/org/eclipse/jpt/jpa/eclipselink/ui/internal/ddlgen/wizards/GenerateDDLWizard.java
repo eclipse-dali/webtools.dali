@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.OutputMode;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.SchemaGeneration;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkSchemaGeneration;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.ddlgen.EclipseLinkDDLGenerator;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
@@ -213,7 +213,7 @@ public class GenerateDDLWizard extends Wizard {
 
 			IPath projecName = new Path(this.getJavaProject().getProject().getName());
 			IContainer container = (IContainer)ResourcesPlugin.getWorkspace().getRoot().findMember(projecName);
-			IFile sqlFile = container.getFile(new Path(SchemaGeneration.DEFAULT_SCHEMA_GENERATION_CREATE_FILE_NAME));
+			IFile sqlFile = container.getFile(new Path(EclipseLinkSchemaGeneration.DEFAULT_SCHEMA_GENERATION_CREATE_FILE_NAME));
 
 			this.openEditor(sqlFile);
 		}

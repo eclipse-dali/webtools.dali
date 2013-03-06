@@ -60,7 +60,7 @@ public class OrmElementCollectionMapping2_0Definition
 			OrmSpecifiedPersistentAttribute parent, 
 			XmlAttributeMapping xmlMapping, 
 			OrmXmlContextModelFactory factory) {
-		return ((OrmXmlContextModelFactory2_0) factory).buildOrmElementCollectionMapping2_0(parent, (XmlElementCollection) xmlMapping);
+		return ((OrmXmlContextModelFactory2_0) factory).buildOrmElementCollectionMapping(parent, (XmlElementCollection) xmlMapping);
 	}
 	
 	public boolean isSingleRelationshipMapping() {

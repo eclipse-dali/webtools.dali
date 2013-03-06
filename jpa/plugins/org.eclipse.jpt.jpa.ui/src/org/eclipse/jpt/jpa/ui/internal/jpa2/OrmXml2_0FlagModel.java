@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2;
 import org.eclipse.jpt.common.core.JptResourceTypeReference;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_0Definition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXmlDefinition2_0;
 
 public class OrmXml2_0FlagModel<R extends JptResourceTypeReference>
 	extends TransformationPropertyValueModel<R, Boolean>
@@ -23,6 +23,6 @@ public class OrmXml2_0FlagModel<R extends JptResourceTypeReference>
 
 	@Override
 	protected Boolean transform_(R ref) {
-		return Boolean.valueOf(ref.getResourceType().isKindOf(GenericOrmXml2_0Definition.instance().getResourceType()));
+		return Boolean.valueOf(ref.getResourceType().isKindOf(GenericOrmXmlDefinition2_0.instance().getResourceType()));
 	}
 }

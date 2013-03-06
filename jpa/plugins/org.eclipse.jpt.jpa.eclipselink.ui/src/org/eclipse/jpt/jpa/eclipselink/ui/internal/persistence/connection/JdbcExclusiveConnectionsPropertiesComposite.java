@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Connection;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConnection;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.ExclusiveConnectionMode;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  JdbcExclusiveConnectionsPropertiesComposite
  */
-public class JdbcExclusiveConnectionsPropertiesComposite<T extends Connection> 
+public class JdbcExclusiveConnectionsPropertiesComposite<T extends EclipseLinkConnection> 
 	extends Pane<T>
 {
 	public JdbcExclusiveConnectionsPropertiesComposite(Pane<T> parentComposite, Composite parent, PropertyValueModel<Boolean> enabledModel) {
@@ -68,12 +68,12 @@ public class JdbcExclusiveConnectionsPropertiesComposite<T extends Connection>
 
 	}
 
-	private EnumFormComboViewer<Connection, ExclusiveConnectionMode> addExclusiveConnectionModeCombo(Composite container) {
-		return new EnumFormComboViewer<Connection, ExclusiveConnectionMode>(this, container) {
+	private EnumFormComboViewer<EclipseLinkConnection, ExclusiveConnectionMode> addExclusiveConnectionModeCombo(Composite container) {
+		return new EnumFormComboViewer<EclipseLinkConnection, ExclusiveConnectionMode>(this, container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(Connection.EXCLUSIVE_CONNECTION_MODE_PROPERTY);
+				propertyNames.add(EclipseLinkConnection.EXCLUSIVE_CONNECTION_MODE_PROPERTY);
 			}
 
 			@Override
@@ -117,7 +117,7 @@ public class JdbcExclusiveConnectionsPropertiesComposite<T extends Connection>
 	}
 	
 	private ModifiablePropertyValueModel<Boolean> buildLazyConnectionHolder() {
-		return new PropertyAspectAdapter<Connection, Boolean>(this.getSubjectHolder(), Connection.LAZY_CONNECTION_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkConnection, Boolean>(this.getSubjectHolder(), EclipseLinkConnection.LAZY_CONNECTION_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getLazyConnection();
@@ -144,9 +144,9 @@ public class JdbcExclusiveConnectionsPropertiesComposite<T extends Connection>
 	}
 	
 	private PropertyValueModel<Boolean> buildDefaultLazyConnectionHolder() {
-		return new PropertyAspectAdapter<Connection, Boolean>(
+		return new PropertyAspectAdapter<EclipseLinkConnection, Boolean>(
 			this.getSubjectHolder(),
-			Connection.LAZY_CONNECTION_PROPERTY)
+			EclipseLinkConnection.LAZY_CONNECTION_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {

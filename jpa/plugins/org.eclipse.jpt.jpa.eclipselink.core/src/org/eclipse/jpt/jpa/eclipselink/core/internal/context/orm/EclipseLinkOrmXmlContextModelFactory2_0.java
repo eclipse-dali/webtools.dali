@@ -47,7 +47,7 @@ public class EclipseLinkOrmXmlContextModelFactory2_0
 		return new GenericOrmDerivedIdentity2_0(parent);
 	}
 	
-	public OrmElementCollectionMapping2_0 buildOrmElementCollectionMapping2_0(OrmSpecifiedPersistentAttribute parent, org.eclipse.jpt.jpa.core.resource.orm.XmlElementCollection resourceMapping) {
+	public OrmElementCollectionMapping2_0 buildOrmElementCollectionMapping(OrmSpecifiedPersistentAttribute parent, org.eclipse.jpt.jpa.core.resource.orm.XmlElementCollection resourceMapping) {
 		return new EclipseLinkOrmElementCollectionMapping2_0(parent, (XmlElementCollection) resourceMapping);
 	}
 	

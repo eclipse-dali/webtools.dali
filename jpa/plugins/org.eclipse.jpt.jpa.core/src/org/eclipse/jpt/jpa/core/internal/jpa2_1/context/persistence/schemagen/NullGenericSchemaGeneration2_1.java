@@ -14,13 +14,14 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnitProperties;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationAction;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationTarget;
-import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen.JpaSchemaGeneration2_1;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen.SchemaGeneration2_1;
 
 /**
- *  NullGenericSchemaGeneration2_1
+ * <em>null</em> schema generation
  */
-public class NullGenericSchemaGeneration2_1 extends AbstractPersistenceUnitProperties
-	implements JpaSchemaGeneration2_1
+public class NullGenericSchemaGeneration2_1
+	extends AbstractPersistenceUnitProperties
+	implements SchemaGeneration2_1
 {
 	// ********** constructors **********
 	public NullGenericSchemaGeneration2_1(PersistenceUnit parent) {

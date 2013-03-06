@@ -65,9 +65,9 @@ import org.eclipse.jpt.jpa.core.context.ManagedType;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitMetadata;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.Query;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
@@ -85,18 +85,23 @@ import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistentTypeContainer;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.connection.NullConnection2_0;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.options.NullOptions2_0;
+import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.persistence.schemagen.NullGenericSchemaGeneration2_1;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MappingFilePersistenceUnitDefaults2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.Connection2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.Options2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.ValidationMode;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.PersistenceUnit2_1;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen.SchemaGeneration2_1;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
@@ -188,13 +193,12 @@ public abstract class AbstractPersistenceUnit
 	protected boolean defaultCascadePersist;
 	protected boolean defaultDelimitedIdentifiers;
 
-	//****** JPA 2.0 features
-	protected PersistenceUnitProperties connection;
-	protected PersistenceUnitProperties options;
+	protected final Vector<JpaStructureNode> children = new Vector<JpaStructureNode>();
 
-	//****** JPA 2.1 features
-	protected PersistenceUnitProperties genericSchemaGeneration;
-	
+	//****** JPA 2.0 features
+	protected Connection2_0 connection;
+	protected Options2_0 options;
+
 	protected SharedCacheMode specifiedSharedCacheMode;
 	protected SharedCacheMode defaultSharedCacheMode;
 
@@ -203,8 +207,9 @@ public abstract class AbstractPersistenceUnit
 
 	protected final Set<IFile> metamodelFiles = Collections.synchronizedSet(new HashSet<IFile>());
 
-	protected final Vector<JpaStructureNode> children = new Vector<JpaStructureNode>();
-
+	//****** JPA 2.1 features
+	protected SchemaGeneration2_1 schemaGeneration;
+	
 
 	// ********** construction/initialization **********
 
@@ -1204,7 +1209,7 @@ public abstract class AbstractPersistenceUnit
 	public void propertyValueChanged(String propertyName, String newValue) {
 		this.connection.propertyValueChanged(propertyName, newValue);
 		this.options.propertyValueChanged(propertyName, newValue);
-		this.genericSchemaGeneration.propertyValueChanged(propertyName, newValue);
+		this.schemaGeneration.propertyValueChanged(propertyName, newValue);
 	}
 
 	protected void propertyAdded(String propertyName, String value) {
@@ -1214,13 +1219,31 @@ public abstract class AbstractPersistenceUnit
 	protected void propertyRemoved(String propertyName) {
 		this.connection.propertyRemoved(propertyName);
 		this.options.propertyRemoved(propertyName);
-		this.genericSchemaGeneration.propertyRemoved(propertyName);
+		this.schemaGeneration.propertyRemoved(propertyName);
 	}
 
 	protected void initializeProperties() {
-		this.connection = this.getContextModelFactory().buildConnection(this);
-		this.options = this.getContextModelFactory().buildOptions(this);
-		this.genericSchemaGeneration = this.getContextModelFactory().buildSchemaGeneration(this);
+		this.connection = this.buildConnection();
+		this.options = this.buildOptions();
+		this.schemaGeneration = this.buildSchemaGeneration();
+	}
+
+	protected Connection2_0 buildConnection() {
+		return this.isPersistenceXml2_0Compatible() ?
+				this.getContextModelFactory2_0().buildConnection(this) :
+				new NullConnection2_0(this);
+	}
+
+	protected Options2_0 buildOptions() {
+		return this.isPersistenceXml2_0Compatible() ?
+				this.getContextModelFactory2_0().buildOptions(this) :
+				new NullOptions2_0(this);
+	}
+
+	protected SchemaGeneration2_1 buildSchemaGeneration() {
+		return this.isPersistenceXml2_1Compatible() ?
+				this.getContextModelFactory2_1().buildSchemaGeneration(this) :
+				new NullGenericSchemaGeneration2_1(this);
 	}
 
 	protected void syncProperties() {
@@ -1406,19 +1429,19 @@ public abstract class AbstractPersistenceUnit
 
 	// ********** PersistenceUnit2_0 implementation **********
 
-	public PersistenceUnitProperties getConnection() {
+	public Connection2_0 getConnection() {
 		return this.connection;
 	}
 
-	public PersistenceUnitProperties getOptions() {
+	public Options2_0 getOptions() {
 		return this.options;
 	}
 
 
 	// ********** PersistenceUnit2_1 implementation **********
 
-	public PersistenceUnitProperties getSchemaGeneration() {
-		return this.genericSchemaGeneration;
+	public SchemaGeneration2_1 getSchemaGeneration() {
+		return this.schemaGeneration;
 	}
 
 

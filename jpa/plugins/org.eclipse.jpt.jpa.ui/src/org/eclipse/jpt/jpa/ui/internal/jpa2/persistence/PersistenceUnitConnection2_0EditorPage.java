@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitTransactionType;
-import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.JpaConnection2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.Connection2_0;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.jpa2.persistence.JptJpaUiPersistenceMessages2_0;
 import org.eclipse.swt.layout.GridData;
@@ -31,10 +31,10 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
 public class PersistenceUnitConnection2_0EditorPage
-	extends Pane<JpaConnection2_0>
+	extends Pane<Connection2_0>
 {
 	public PersistenceUnitConnection2_0EditorPage(
-			PropertyValueModel<JpaConnection2_0> subjectModel,
+			PropertyValueModel<Connection2_0> subjectModel,
             Composite parent,
             WidgetFactory widgetFactory,
             ResourceManager resourceManager) {
@@ -167,7 +167,7 @@ public class PersistenceUnitConnection2_0EditorPage
 	}
 
 	private PropertyValueModel<PersistenceUnit> buildPersistenceUnitModel() {
-		return new PropertyAspectAdapter<JpaConnection2_0, PersistenceUnit>(this.getSubjectHolder()) {
+		return new PropertyAspectAdapter<Connection2_0, PersistenceUnit>(this.getSubjectHolder()) {
 			@Override
 			protected PersistenceUnit buildValue_() {
 				return this.subject.getPersistenceUnit();
@@ -180,7 +180,7 @@ public class PersistenceUnitConnection2_0EditorPage
 	}
 
 	private void clearResourceLocalProperties() {
-		JpaConnection2_0 connection = this.getSubject();
+		Connection2_0 connection = this.getSubject();
 		connection.getPersistenceUnit().setNonJtaDataSource(null);
 		connection.setDriver(null);
 		connection.setUrl(null);

@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.JpaOptions2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.Options2_0;
 
 /**
  *  GenericOptions2_0Tests
@@ -28,28 +28,28 @@ import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.JpaOptions2_0;
 @SuppressWarnings("nls")
 public class Generic2_0OptionsTests extends PersistenceUnit2_0TestCase
 {
-	private JpaOptions2_0 options;
+	private Options2_0 options;
 	private ListChangeEvent prePersistEvent;
 	private ListChangeEvent preUpdateEvent;
 	private ListChangeEvent preRemoveEvent;
 
-	public static final String LOCK_TIMEOUT_KEY = JpaOptions2_0.PERSISTENCE_LOCK_TIMEOUT;
+	public static final String LOCK_TIMEOUT_KEY = Options2_0.PERSISTENCE_LOCK_TIMEOUT;
 	public static final Integer LOCK_TIMEOUT_TEST_VALUE = 100;
 	public static final Integer LOCK_TIMEOUT_TEST_VALUE_2 = 200;
 
-	public static final String QUERY_TIMEOUT_KEY = JpaOptions2_0.PERSISTENCE_QUERY_TIMEOUT;
+	public static final String QUERY_TIMEOUT_KEY = Options2_0.PERSISTENCE_QUERY_TIMEOUT;
 	public static final Integer QUERY_TIMEOUT_TEST_VALUE = 100;
 	public static final Integer QUERY_TIMEOUT_TEST_VALUE_2 = 200;
 	
-	public static final String VALIDATION_GROUP_PRE_PERSIST_KEY = JpaOptions2_0.PERSISTENCE_VALIDATION_GROUP_PRE_PERSIST;
+	public static final String VALIDATION_GROUP_PRE_PERSIST_KEY = Options2_0.PERSISTENCE_VALIDATION_GROUP_PRE_PERSIST;
 	public static final String VALIDATION_GROUP_PRE_PERSIST_TEST_VALUE = "test_pre-persist_group";
 	public static final String VALIDATION_GROUP_PRE_PERSIST_TEST_VALUE_2 = "test_2_pre-persist_group";
 	
-	public static final String VALIDATION_GROUP_PRE_UPDATE_KEY = JpaOptions2_0.PERSISTENCE_VALIDATION_GROUP_PRE_UPDATE;
+	public static final String VALIDATION_GROUP_PRE_UPDATE_KEY = Options2_0.PERSISTENCE_VALIDATION_GROUP_PRE_UPDATE;
 	public static final String VALIDATION_GROUP_PRE_UPDATE_TEST_VALUE = "test_pre-update_group";
 	public static final String VALIDATION_GROUP_PRE_UPDATE_TEST_VALUE_2 = "test_2_pre-update_group";
 	
-	public static final String VALIDATION_GROUP_PRE_REMOVE_KEY = JpaOptions2_0.PERSISTENCE_VALIDATION_GROUP_PRE_REMOVE;
+	public static final String VALIDATION_GROUP_PRE_REMOVE_KEY = Options2_0.PERSISTENCE_VALIDATION_GROUP_PRE_REMOVE;
 	public static final String VALIDATION_GROUP_PRE_REMOVE_TEST_VALUE = "test_pre-remove_group";
 	public static final String VALIDATION_GROUP_PRE_REMOVE_TEST_VALUE_2 = "test_2_pre-remove_group";
 
@@ -62,19 +62,19 @@ public class Generic2_0OptionsTests extends PersistenceUnit2_0TestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.options = (JpaOptions2_0) this.subject.getOptions();
+		this.options = this.subject.getOptions();
 		PropertyChangeListener propertyChangeListener = this.buildPropertyChangeListener();
 
-		this.options.addPropertyChangeListener(JpaOptions2_0.LOCK_TIMEOUT_PROPERTY, propertyChangeListener);
-		this.options.addPropertyChangeListener(JpaOptions2_0.QUERY_TIMEOUT_PROPERTY, propertyChangeListener);
-		this.options.addPropertyChangeListener(JpaOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY, propertyChangeListener);
-		this.options.addPropertyChangeListener(JpaOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY, propertyChangeListener);
-		this.options.addPropertyChangeListener(JpaOptions2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY, propertyChangeListener);
+		this.options.addPropertyChangeListener(Options2_0.LOCK_TIMEOUT_PROPERTY, propertyChangeListener);
+		this.options.addPropertyChangeListener(Options2_0.QUERY_TIMEOUT_PROPERTY, propertyChangeListener);
+		this.options.addPropertyChangeListener(Options2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY, propertyChangeListener);
+		this.options.addPropertyChangeListener(Options2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY, propertyChangeListener);
+		this.options.addPropertyChangeListener(Options2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY, propertyChangeListener);
 
 		ListChangeListener validationGroupListChangeListener = this.buildValidationGroupListChangeListener();
-		this.options.addListChangeListener(JpaOptions2_0.VALIDATION_GROUP_PRE_PERSIST_LIST, validationGroupListChangeListener);
-		this.options.addListChangeListener(JpaOptions2_0.VALIDATION_GROUP_PRE_UPDATE_LIST, validationGroupListChangeListener);
-		this.options.addListChangeListener(JpaOptions2_0.VALIDATION_GROUP_PRE_REMOVE_LIST, validationGroupListChangeListener);
+		this.options.addListChangeListener(Options2_0.VALIDATION_GROUP_PRE_PERSIST_LIST, validationGroupListChangeListener);
+		this.options.addListChangeListener(Options2_0.VALIDATION_GROUP_PRE_UPDATE_LIST, validationGroupListChangeListener);
+		this.options.addListChangeListener(Options2_0.VALIDATION_GROUP_PRE_REMOVE_LIST, validationGroupListChangeListener);
 		
 		this.clearEvent();
 	}
@@ -106,19 +106,19 @@ public class Generic2_0OptionsTests extends PersistenceUnit2_0TestCase
 	@Override
 	protected Object getProperty(String propertyName) throws NoSuchFieldException {
 		Object modelValue = null;
-		if (propertyName.equals(JpaOptions2_0.LOCK_TIMEOUT_PROPERTY))
+		if (propertyName.equals(Options2_0.LOCK_TIMEOUT_PROPERTY))
 			modelValue = this.options.getLockTimeout();
-		else if (propertyName.equals(JpaOptions2_0.QUERY_TIMEOUT_PROPERTY))
+		else if (propertyName.equals(Options2_0.QUERY_TIMEOUT_PROPERTY))
 			modelValue = this.options.getQueryTimeout();
-		else if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY)) {
+		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY)) {
 			ListIterator<String> iterator = this.options.getValidationGroupPrePersists().iterator();
 			modelValue = this.getFirstElement(iterator);
 		}
-		else if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY)) {
+		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY)) {
 			ListIterator<String> iterator = this.options.getValidationGroupPreUpdates().iterator();
 			modelValue = this.getFirstElement(iterator);
 		}
-		else if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY)) {
+		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY)) {
 			ListIterator<String> iterator = this.options.getValidationGroupPreRemoves().iterator();
 			modelValue = this.getFirstElement(iterator);
 		}
@@ -129,15 +129,15 @@ public class Generic2_0OptionsTests extends PersistenceUnit2_0TestCase
 	
 	@Override
 	protected void setProperty(String propertyName, Object newValue) throws Exception {
-		if (propertyName.equals(JpaOptions2_0.LOCK_TIMEOUT_PROPERTY))
+		if (propertyName.equals(Options2_0.LOCK_TIMEOUT_PROPERTY))
 			this.options.setLockTimeout((Integer) newValue);
-		else if (propertyName.equals(JpaOptions2_0.QUERY_TIMEOUT_PROPERTY))
+		else if (propertyName.equals(Options2_0.QUERY_TIMEOUT_PROPERTY))
 			this.options.setQueryTimeout((Integer) newValue);
-		else if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY))
+		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY))
 			this.options.addValidationGroupPrePersist((String) newValue);
-		else if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY))
+		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY))
 			this.options.addValidationGroupPreUpdate((String) newValue);
-		else if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY))
+		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY))
 			this.options.addValidationGroupPreRemove((String) newValue);
 		else
 			this.throwMissingDefinition("setProperty", propertyName);
@@ -185,7 +185,7 @@ public class Generic2_0OptionsTests extends PersistenceUnit2_0TestCase
 			VALIDATION_GROUP_PRE_PERSIST_KEY,
 			VALIDATION_GROUP_PRE_PERSIST_TEST_VALUE);
 		this.verifySetValidationGroupProperty(
-			JpaOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY,
+			Options2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY,
 			VALIDATION_GROUP_PRE_PERSIST_KEY,
 			VALIDATION_GROUP_PRE_PERSIST_TEST_VALUE,
 			VALIDATION_GROUP_PRE_PERSIST_TEST_VALUE_2);
@@ -193,7 +193,7 @@ public class Generic2_0OptionsTests extends PersistenceUnit2_0TestCase
 
 	public void testAddRemoveValidationGroupPrePersist() throws Exception {
 		this.verifyAddRemoveValidationGroupProperty(
-			JpaOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY,
+			Options2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY,
 			VALIDATION_GROUP_PRE_PERSIST_KEY,
 			VALIDATION_GROUP_PRE_PERSIST_TEST_VALUE,
 			VALIDATION_GROUP_PRE_PERSIST_TEST_VALUE_2);
@@ -201,7 +201,7 @@ public class Generic2_0OptionsTests extends PersistenceUnit2_0TestCase
 
 	public void testAddValidationGroupPrePersistCompositeValue() throws Exception {
 		this.verifyAddCompositeValue(
-			JpaOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY,
+			Options2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY,
 			VALIDATION_GROUP_PRE_PERSIST_KEY,
 			VALIDATION_GROUP_PRE_PERSIST_TEST_VALUE,
 			VALIDATION_GROUP_PRE_PERSIST_TEST_VALUE_2);
@@ -209,7 +209,7 @@ public class Generic2_0OptionsTests extends PersistenceUnit2_0TestCase
 
 	public void testRemoveValidationGroupPrePersistCompositeValue() throws Exception {
 		this.verifyRemoveCompositeValue(
-			JpaOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY,
+			Options2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY,
 			VALIDATION_GROUP_PRE_PERSIST_KEY,
 			VALIDATION_GROUP_PRE_PERSIST_TEST_VALUE,
 			VALIDATION_GROUP_PRE_PERSIST_TEST_VALUE_2);
@@ -221,7 +221,7 @@ public class Generic2_0OptionsTests extends PersistenceUnit2_0TestCase
 			VALIDATION_GROUP_PRE_UPDATE_KEY,
 			VALIDATION_GROUP_PRE_UPDATE_TEST_VALUE);
 		this.verifySetValidationGroupProperty(
-			JpaOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY,
+			Options2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY,
 			VALIDATION_GROUP_PRE_UPDATE_KEY,
 			VALIDATION_GROUP_PRE_UPDATE_TEST_VALUE,
 			VALIDATION_GROUP_PRE_UPDATE_TEST_VALUE_2);
@@ -229,7 +229,7 @@ public class Generic2_0OptionsTests extends PersistenceUnit2_0TestCase
 
 	public void testAddRemoveValidationGroupPreUpdate() throws Exception {
 		this.verifyAddRemoveValidationGroupProperty(
-			JpaOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY,
+			Options2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY,
 			VALIDATION_GROUP_PRE_UPDATE_KEY,
 			VALIDATION_GROUP_PRE_UPDATE_TEST_VALUE,
 			VALIDATION_GROUP_PRE_UPDATE_TEST_VALUE_2);
@@ -237,7 +237,7 @@ public class Generic2_0OptionsTests extends PersistenceUnit2_0TestCase
 
 	public void testAddValidationGroupPreUpdateCompositeValue() throws Exception {
 		this.verifyAddCompositeValue(
-			JpaOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY,
+			Options2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY,
 			VALIDATION_GROUP_PRE_UPDATE_KEY,
 			VALIDATION_GROUP_PRE_UPDATE_TEST_VALUE,
 			VALIDATION_GROUP_PRE_UPDATE_TEST_VALUE_2);
@@ -245,7 +245,7 @@ public class Generic2_0OptionsTests extends PersistenceUnit2_0TestCase
 
 	public void testRemoveValidationGroupPreUpdateCompositeValue() throws Exception {
 		this.verifyRemoveCompositeValue(
-			JpaOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY,
+			Options2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY,
 			VALIDATION_GROUP_PRE_UPDATE_KEY,
 			VALIDATION_GROUP_PRE_UPDATE_TEST_VALUE,
 			VALIDATION_GROUP_PRE_UPDATE_TEST_VALUE_2);
@@ -257,7 +257,7 @@ public class Generic2_0OptionsTests extends PersistenceUnit2_0TestCase
 			VALIDATION_GROUP_PRE_REMOVE_KEY,
 			VALIDATION_GROUP_PRE_REMOVE_TEST_VALUE);
 		this.verifySetValidationGroupProperty(
-			JpaOptions2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY,
+			Options2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY,
 			VALIDATION_GROUP_PRE_REMOVE_KEY,
 			VALIDATION_GROUP_PRE_REMOVE_TEST_VALUE,
 			VALIDATION_GROUP_PRE_REMOVE_TEST_VALUE_2);
@@ -265,7 +265,7 @@ public class Generic2_0OptionsTests extends PersistenceUnit2_0TestCase
 
 	public void testAddRemoveValidationGroupPreRemove() throws Exception {
 		this.verifyAddRemoveValidationGroupProperty(
-			JpaOptions2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY,
+			Options2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY,
 			VALIDATION_GROUP_PRE_REMOVE_KEY,
 			VALIDATION_GROUP_PRE_REMOVE_TEST_VALUE,
 			VALIDATION_GROUP_PRE_REMOVE_TEST_VALUE_2);
@@ -273,7 +273,7 @@ public class Generic2_0OptionsTests extends PersistenceUnit2_0TestCase
 
 	public void testAddValidationGroupPreRemoveCompositeValue() throws Exception {
 		this.verifyAddCompositeValue(
-			JpaOptions2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY,
+			Options2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY,
 			VALIDATION_GROUP_PRE_REMOVE_KEY,
 			VALIDATION_GROUP_PRE_REMOVE_TEST_VALUE,
 			VALIDATION_GROUP_PRE_REMOVE_TEST_VALUE_2);
@@ -281,7 +281,7 @@ public class Generic2_0OptionsTests extends PersistenceUnit2_0TestCase
 
 	public void testRemoveValidationGroupPreRemoveCompositeValue() throws Exception {
 		this.verifyRemoveCompositeValue(
-			JpaOptions2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY,
+			Options2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY,
 			VALIDATION_GROUP_PRE_REMOVE_KEY,
 			VALIDATION_GROUP_PRE_REMOVE_TEST_VALUE,
 			VALIDATION_GROUP_PRE_REMOVE_TEST_VALUE_2);
@@ -290,19 +290,19 @@ public class Generic2_0OptionsTests extends PersistenceUnit2_0TestCase
 	// ********** ValidationGroups list **********
 	public void testValidationGroupsList() throws Exception {
 		this.verifyListEvents(
-			JpaOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY,
+			Options2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY,
 			VALIDATION_GROUP_PRE_PERSIST_TEST_VALUE_2,
-			JpaOptions2_0.VALIDATION_GROUP_PRE_PERSIST_LIST);
+			Options2_0.VALIDATION_GROUP_PRE_PERSIST_LIST);
 		
 		this.verifyListEvents(
-			JpaOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY,
+			Options2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY,
 			VALIDATION_GROUP_PRE_UPDATE_TEST_VALUE_2,
-			JpaOptions2_0.VALIDATION_GROUP_PRE_UPDATE_LIST);
+			Options2_0.VALIDATION_GROUP_PRE_UPDATE_LIST);
 		
 		this.verifyListEvents(
-			JpaOptions2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY,
+			Options2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY,
 			VALIDATION_GROUP_PRE_REMOVE_TEST_VALUE_2,
-			JpaOptions2_0.VALIDATION_GROUP_PRE_REMOVE_LIST);
+			Options2_0.VALIDATION_GROUP_PRE_REMOVE_LIST);
 	}
 
 	// ********** override **********
@@ -446,33 +446,33 @@ public class Generic2_0OptionsTests extends PersistenceUnit2_0TestCase
 	private void validationGroupChanged(ListChangeEvent e) {
 		String listName = e.getListName();
 		
-		if (listName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_PERSIST_LIST))
+		if (listName.equals(Options2_0.VALIDATION_GROUP_PRE_PERSIST_LIST))
 			this.prePersistEvent = e;
-		else if (listName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_UPDATE_LIST))
+		else if (listName.equals(Options2_0.VALIDATION_GROUP_PRE_UPDATE_LIST))
 			this.preUpdateEvent = e;
-		else if (listName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_REMOVE_LIST))
+		else if (listName.equals(Options2_0.VALIDATION_GROUP_PRE_REMOVE_LIST))
 			this.preRemoveEvent = e;
 		else
 			this.throwUnsupportedOperationException(e);
 	}
 
 	private void addValidationGroupValue(String propertyName, String propertyValue) throws NoSuchFieldException {
-		if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY))
+		if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY))
 			this.options.addValidationGroupPrePersist(propertyValue);
-		else if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY))
+		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY))
 			this.options.addValidationGroupPreUpdate(propertyValue);
-		else if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY))
+		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY))
 			this.options.addValidationGroupPreRemove(propertyValue);
 		else
 			this.throwMissingDefinition("addValidationGroupValue", propertyName);
 	}
 
 	private void removeValidationGroupValue(String propertyName, String propertyValue) throws NoSuchFieldException {
-		if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY))
+		if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY))
 			this.options.removeValidationGroupPrePersist(propertyValue);
-		else if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY))
+		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY))
 			this.options.removeValidationGroupPreUpdate(propertyValue);
-		else if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY))
+		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY))
 			this.options.removeValidationGroupPreRemove(propertyValue);
 		else
 			this.throwMissingDefinition("removeValidationGroupValue", propertyName);
@@ -480,11 +480,11 @@ public class Generic2_0OptionsTests extends PersistenceUnit2_0TestCase
 
 	private boolean validationGroupValueExists(String propertyName, String propertyValue) throws NoSuchFieldException {
 		boolean result = false;
-		if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY))
+		if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY))
 			result = this.options.validationGroupPrePersistExists(propertyValue);
-		else if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY))
+		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY))
 			result = this.options.validationGroupPreUpdateExists(propertyValue);
-		else if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY))
+		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY))
 			result = this.options.validationGroupPreRemoveExists(propertyValue);
 		else
 			this.throwMissingDefinition("verifyValidationGroupValueExists", propertyName);
@@ -493,11 +493,11 @@ public class Generic2_0OptionsTests extends PersistenceUnit2_0TestCase
 
 	private int getValidationGroupSize(String propertyName) throws NoSuchFieldException {
 		int result = 0;
-		if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY))
+		if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY))
 			result =  this.options.getValidationGroupPrePersistsSize();
-		else if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY))
+		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY))
 			result =  this.options.getValidationGroupPreUpdatesSize();
-		else if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY))
+		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY))
 			result =  this.options.getValidationGroupPreRemovesSize();
 		else
 			this.throwMissingDefinition("verifyValidationGroupSize", propertyName);
@@ -506,11 +506,11 @@ public class Generic2_0OptionsTests extends PersistenceUnit2_0TestCase
 	
 	private ListChangeEvent getEventFor(String propertyName) throws NoSuchFieldException {
 		ListChangeEvent event = null;
-		if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY))
+		if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY))
 			event = this.prePersistEvent;
-		else if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY))
+		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY))
 			event = this.preUpdateEvent;
-		else if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY))
+		else if (propertyName.equals(Options2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY))
 			event = this.preRemoveEvent;
 		else
 			this.throwMissingDefinition("getEventFor", propertyName);

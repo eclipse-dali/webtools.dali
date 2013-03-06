@@ -27,7 +27,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaWorkspace;
-import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.JpaConnection2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.Connection2_0;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
 import org.eclipse.jpt.jpa.ui.JpaWorkbench;
@@ -46,20 +46,20 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
  *  JdbcConnectionPropertiesComposite
  */
 @SuppressWarnings("nls")
-public class JdbcConnectionPropertiesComposite extends Pane<JpaConnection2_0>
+public class JdbcConnectionPropertiesComposite extends Pane<Connection2_0>
 {
 	/**
 	 * The constant ID used to retrieve the dialog settings.
 	 */
 	private static final String DIALOG_SETTINGS = "org.eclipse.jpt.jpa.ui.internal.jpa2.dialogs.ConnectionDialog";
 
-	public JdbcConnectionPropertiesComposite(Pane<JpaConnection2_0> parentComposite, Composite parent, PropertyValueModel<Boolean> enabledModel) {
+	public JdbcConnectionPropertiesComposite(Pane<Connection2_0> parentComposite, Composite parent, PropertyValueModel<Boolean> enabledModel) {
 
 		super(parentComposite, parent, enabledModel);
 	}
 
 	private ModifiablePropertyValueModel<String> buildPasswordHolder() {
-		return new PropertyAspectAdapter<JpaConnection2_0, String>(this.getSubjectHolder(), JpaConnection2_0.PASSWORD_PROPERTY) {
+		return new PropertyAspectAdapter<Connection2_0, String>(this.getSubjectHolder(), Connection2_0.PASSWORD_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getPassword();
@@ -84,7 +84,7 @@ public class JdbcConnectionPropertiesComposite extends Pane<JpaConnection2_0>
 	}
 
 	private ModifiablePropertyValueModel<String> buildUrlHolder() {
-		return new PropertyAspectAdapter<JpaConnection2_0, String>(this.getSubjectHolder(), JpaConnection2_0.URL_PROPERTY) {
+		return new PropertyAspectAdapter<Connection2_0, String>(this.getSubjectHolder(), Connection2_0.URL_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getUrl();
@@ -101,7 +101,7 @@ public class JdbcConnectionPropertiesComposite extends Pane<JpaConnection2_0>
 	}
 
 	private ModifiablePropertyValueModel<String> buildUserHolder() {
-		return new PropertyAspectAdapter<JpaConnection2_0, String>(this.getSubjectHolder(), JpaConnection2_0.USER_PROPERTY) {
+		return new PropertyAspectAdapter<Connection2_0, String>(this.getSubjectHolder(), Connection2_0.USER_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getUser();
@@ -164,7 +164,7 @@ public class JdbcConnectionPropertiesComposite extends Pane<JpaConnection2_0>
 		ConnectionProfileFactory factory = this.getConnectionProfileFactory();
 		ConnectionProfile cp = (factory == null) ? null : factory.buildConnectionProfile(name);
 
-		JpaConnection2_0 connection = getSubject();
+		Connection2_0 connection = getSubject();
 		connection.setUrl((cp == null) ? "" : cp.getURL());
 		connection.setUser((cp == null) ? "" : cp.getUserName());
 		connection.setPassword((cp == null) ? "" : cp.getUserPassword());
@@ -194,14 +194,14 @@ public class JdbcConnectionPropertiesComposite extends Pane<JpaConnection2_0>
 		return this.getShell();
 	}
 
-	private ClassChooserPane<JpaConnection2_0> initializeJdbcDriverClassChooser(Composite container) {
+	private ClassChooserPane<Connection2_0> initializeJdbcDriverClassChooser(Composite container) {
 
-		return new ClassChooserPane<JpaConnection2_0>(this, container) {
+		return new ClassChooserPane<Connection2_0>(this, container) {
 
 			@Override
 			protected ModifiablePropertyValueModel<String> buildTextHolder() {
-				return new PropertyAspectAdapter<JpaConnection2_0, String>(
-							this.getSubjectHolder(), JpaConnection2_0.DRIVER_PROPERTY) {
+				return new PropertyAspectAdapter<Connection2_0, String>(
+							this.getSubjectHolder(), Connection2_0.DRIVER_PROPERTY) {
 					@Override
 					protected String buildValue_() {
 						return this.subject.getDriver();

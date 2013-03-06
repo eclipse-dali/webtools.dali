@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.DdlGenerationType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.OutputMode;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.SchemaGeneration;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkSchemaGeneration;
 
 /**
  * Tests the update of OutputMode model object by the SchemaGeneration adapter
@@ -29,10 +29,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.SchemaGeneration
 @SuppressWarnings("nls")
 public class SchemaGenerationBasicAdapterTests extends EclipseLinkPersistenceUnitTestCase
 {
-	private SchemaGeneration schemaGeneration;
+	private EclipseLinkSchemaGeneration schemaGeneration;
 
-	public static final String outputModeKey = SchemaGeneration.ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE;
-	public static final String ddlGenTypeKey = SchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE;
+	public static final String outputModeKey = EclipseLinkSchemaGeneration.ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE;
+	public static final String ddlGenTypeKey = EclipseLinkSchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE;
 
 	public static final OutputMode OUTPUT_MODE_TEST_VALUE = OutputMode.sql_script;
 	public static final OutputMode OUTPUT_MODE_TEST_VALUE_2 = OutputMode.database;
@@ -50,8 +50,8 @@ public class SchemaGenerationBasicAdapterTests extends EclipseLinkPersistenceUni
 		
 		this.schemaGeneration = this.subject.getEclipseLinkSchemaGeneration();
 		PropertyChangeListener propertyChangeListener = this.buildPropertyChangeListener();
-		this.schemaGeneration.addPropertyChangeListener(SchemaGeneration.OUTPUT_MODE_PROPERTY, propertyChangeListener);
-		this.schemaGeneration.addPropertyChangeListener(SchemaGeneration.DDL_GENERATION_TYPE_PROPERTY, propertyChangeListener);
+		this.schemaGeneration.addPropertyChangeListener(EclipseLinkSchemaGeneration.OUTPUT_MODE_PROPERTY, propertyChangeListener);
+		this.schemaGeneration.addPropertyChangeListener(EclipseLinkSchemaGeneration.DDL_GENERATION_TYPE_PROPERTY, propertyChangeListener);
 		this.clearEvent();
 	}
 
@@ -84,7 +84,7 @@ public class SchemaGenerationBasicAdapterTests extends EclipseLinkPersistenceUni
 		ListValueModel<PersistenceUnit.Property> propertiesAdapter = this.buildPropertiesAdapter(this.subjectHolder);
 		ListValueModel<PersistenceUnit.Property> propertyListAdapter = new ItemPropertyListValueModelAdapter<PersistenceUnit.Property>(propertiesAdapter, PersistenceUnit.Property.VALUE_PROPERTY);
 		
-		this.verifyHasListeners(this.schemaGeneration, SchemaGeneration.OUTPUT_MODE_PROPERTY);
+		this.verifyHasListeners(this.schemaGeneration, EclipseLinkSchemaGeneration.OUTPUT_MODE_PROPERTY);
 		
 		// Basic
 		assertTrue(schemaGeneration.itemIsProperty(this.getPersistenceUnit().getProperty(outputModeKey)));
@@ -92,7 +92,7 @@ public class SchemaGenerationBasicAdapterTests extends EclipseLinkPersistenceUni
 		
 		// Replace
 		this.persistenceUnitSetProperty(outputModeKey, OUTPUT_MODE_TEST_VALUE_2);
-		this.verifyPutEvent(SchemaGeneration.OUTPUT_MODE_PROPERTY, OUTPUT_MODE_TEST_VALUE_2, this.schemaGeneration.getOutputMode());
+		this.verifyPutEvent(EclipseLinkSchemaGeneration.OUTPUT_MODE_PROPERTY, OUTPUT_MODE_TEST_VALUE_2, this.schemaGeneration.getOutputMode());
 		
 		// Remove
 		this.clearEvent();
@@ -108,16 +108,16 @@ public class SchemaGenerationBasicAdapterTests extends EclipseLinkPersistenceUni
 		++this.propertiesTotal;
 		++this.modelPropertiesSize;
 		this.persistenceUnitSetProperty(outputModeKey, OUTPUT_MODE_TEST_VALUE);
-		this.verifyPutEvent(SchemaGeneration.OUTPUT_MODE_PROPERTY, OUTPUT_MODE_TEST_VALUE, this.schemaGeneration.getOutputMode());
+		this.verifyPutEvent(EclipseLinkSchemaGeneration.OUTPUT_MODE_PROPERTY, OUTPUT_MODE_TEST_VALUE, this.schemaGeneration.getOutputMode());
 		
 		// Replace again
 		this.persistenceUnitSetProperty(outputModeKey, OUTPUT_MODE_TEST_VALUE_2);
-		this.verifyPutEvent(SchemaGeneration.OUTPUT_MODE_PROPERTY, OUTPUT_MODE_TEST_VALUE_2, this.schemaGeneration.getOutputMode());
+		this.verifyPutEvent(EclipseLinkSchemaGeneration.OUTPUT_MODE_PROPERTY, OUTPUT_MODE_TEST_VALUE_2, this.schemaGeneration.getOutputMode());
 		
 		// Replace by setting model object
 		this.clearEvent();
 		this.schemaGeneration.setOutputMode(OUTPUT_MODE_TEST_VALUE);
-		this.verifyPutEvent(SchemaGeneration.OUTPUT_MODE_PROPERTY, OUTPUT_MODE_TEST_VALUE, this.schemaGeneration.getOutputMode());
+		this.verifyPutEvent(EclipseLinkSchemaGeneration.OUTPUT_MODE_PROPERTY, OUTPUT_MODE_TEST_VALUE, this.schemaGeneration.getOutputMode());
 	}
 
 	// ****** convenience methods *******

@@ -210,19 +210,19 @@ public class EclipseLinkOrmVersionMappingTests
 		assertFalse(contextVersion.getMutable().isMutable());
 		
 		
-		getPersistenceUnit().getOptions().setTemporalMutable(Boolean.TRUE);
+		getPersistenceUnit().getEclipseLinkOptions().setTemporalMutable(Boolean.TRUE);
 		assertNull(resourceVersion.getMutable());
 		assertTrue(contextVersion.getMutable().isDefaultMutable());
 		assertNull(contextVersion.getMutable().getSpecifiedMutable());
 		assertTrue(contextVersion.getMutable().isMutable());
 		
-		getPersistenceUnit().getOptions().setTemporalMutable(Boolean.FALSE);
+		getPersistenceUnit().getEclipseLinkOptions().setTemporalMutable(Boolean.FALSE);
 		assertNull(resourceVersion.getMutable());
 		assertFalse(contextVersion.getMutable().isDefaultMutable());
 		assertNull(contextVersion.getMutable().getSpecifiedMutable());
 		assertFalse(contextVersion.getMutable().isMutable());
 		
-		getPersistenceUnit().getOptions().setTemporalMutable(null);
+		getPersistenceUnit().getEclipseLinkOptions().setTemporalMutable(null);
 		assertNull(resourceVersion.getMutable());
 		assertFalse(contextVersion.getMutable().isDefaultMutable());
 		assertNull(contextVersion.getMutable().getSpecifiedMutable());

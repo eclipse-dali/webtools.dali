@@ -7,10 +7,9 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-
 package org.eclipse.jpt.jpa.core.resource.persistence.v2_1;
 
-import org.eclipse.jpt.jpa.core.resource.persistence.JPA;
+import org.eclipse.jpt.jpa.core.resource.persistence.v2_0.JPA2_0;
 
 /**
  * JPA persistence2_1.xml-related stuff (elements, attributes etc.)
@@ -26,13 +25,11 @@ import org.eclipse.jpt.jpa.core.resource.persistence.JPA;
  */
 @SuppressWarnings("nls")
 public interface JPA2_1
-	extends JPA
+	extends JPA2_0
 {
-
 	String SCHEMA_NAMESPACE = "http://xmlns.jcp.org/xml/ns/persistence";
 	String SCHEMA_LOCATION = "http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd";
 	String SCHEMA_VERSION = "2.1";
 	
-	// JPA 2.1 specific nodes
-
+	// no JPA 2.1 specific nodes...
 }

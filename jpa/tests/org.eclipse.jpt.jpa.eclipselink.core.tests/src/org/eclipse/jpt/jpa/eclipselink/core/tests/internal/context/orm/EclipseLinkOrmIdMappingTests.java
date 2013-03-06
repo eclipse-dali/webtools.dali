@@ -210,19 +210,19 @@ public class EclipseLinkOrmIdMappingTests
 		assertFalse(contextId.getMutable().isMutable());
 		
 		
-		getPersistenceUnit().getOptions().setTemporalMutable(Boolean.TRUE);
+		getPersistenceUnit().getEclipseLinkOptions().setTemporalMutable(Boolean.TRUE);
 		assertNull(resourceId.getMutable());
 		assertTrue(contextId.getMutable().isDefaultMutable());
 		assertNull(contextId.getMutable().getSpecifiedMutable());
 		assertTrue(contextId.getMutable().isMutable());
 		
-		getPersistenceUnit().getOptions().setTemporalMutable(Boolean.FALSE);
+		getPersistenceUnit().getEclipseLinkOptions().setTemporalMutable(Boolean.FALSE);
 		assertNull(resourceId.getMutable());
 		assertFalse(contextId.getMutable().isDefaultMutable());
 		assertNull(contextId.getMutable().getSpecifiedMutable());
 		assertFalse(contextId.getMutable().isMutable());
 		
-		getPersistenceUnit().getOptions().setTemporalMutable(null);
+		getPersistenceUnit().getEclipseLinkOptions().setTemporalMutable(null);
 		assertNull(resourceId.getMutable());
 		assertFalse(contextId.getMutable().isDefaultMutable());
 		assertNull(contextId.getMutable().getSpecifiedMutable());

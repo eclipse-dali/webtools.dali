@@ -62,7 +62,7 @@ public interface JpaFactory2_0
 	
 	JavaDerivedIdentity2_0 buildJavaDerivedIdentity(JavaSingleRelationshipMapping2_0 parent);
 	
-	JavaElementCollectionMapping2_0 buildJavaElementCollectionMapping2_0(JavaSpecifiedPersistentAttribute parent);
+	JavaElementCollectionMapping2_0 buildJavaElementCollectionMapping(JavaSpecifiedPersistentAttribute parent);
 	
 	Cacheable2_0 buildJavaCacheable(JavaCacheableReference2_0 parent);
 	

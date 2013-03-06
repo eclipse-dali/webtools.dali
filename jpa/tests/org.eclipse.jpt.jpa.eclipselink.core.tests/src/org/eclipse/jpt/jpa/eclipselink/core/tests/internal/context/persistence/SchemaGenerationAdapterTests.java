@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.DdlGenerationType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.OutputMode;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.SchemaGeneration;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkSchemaGeneration;
 
 /**
  * Tests the update of OutputMode model object by the SchemaGeneration adapter
@@ -23,25 +23,25 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.SchemaGeneration
 @SuppressWarnings("nls")
 public class SchemaGenerationAdapterTests extends EclipseLinkPersistenceUnitTestCase
 {
-	private SchemaGeneration schemaGeneration;
+	private EclipseLinkSchemaGeneration schemaGeneration;
 
-	public static final String DDL_GENERATION_TYPE_KEY = SchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE;
+	public static final String DDL_GENERATION_TYPE_KEY = EclipseLinkSchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE;
 	public static final DdlGenerationType DDL_GENERATION_TYPE_TEST_VALUE = DdlGenerationType.drop_and_create_tables;
 	public static final DdlGenerationType DDL_GENERATION_TYPE_TEST_VALUE_2 = DdlGenerationType.none;
 
-	public static final String OUTPUT_MODE_KEY = SchemaGeneration.ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE;
+	public static final String OUTPUT_MODE_KEY = EclipseLinkSchemaGeneration.ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE;
 	public static final OutputMode OUTPUT_MODE_TEST_VALUE = OutputMode.sql_script;
 	public static final OutputMode OUTPUT_MODE_TEST_VALUE_2 = OutputMode.database;
 
-	private static final String CREATE_FILE_NAME_KEY = SchemaGeneration.ECLIPSELINK_CREATE_FILE_NAME;
+	private static final String CREATE_FILE_NAME_KEY = EclipseLinkSchemaGeneration.ECLIPSELINK_CREATE_FILE_NAME;
 	private static final String CREATE_FILE_NAME_TEST_VALUE = "create-file-name.test";
 	private static final String CREATE_FILE_NAME_TEST_VALUE_2 = "create-file-name-2.test";
 
-	private static final String DROP_FILE_NAME_KEY = SchemaGeneration.ECLIPSELINK_DROP_FILE_NAME;
+	private static final String DROP_FILE_NAME_KEY = EclipseLinkSchemaGeneration.ECLIPSELINK_DROP_FILE_NAME;
 	private static final String DROP_FILE_NAME_TEST_VALUE = "drop-file-name.test";
 	private static final String DROP_FILE_NAME_TEST_VALUE_2 = "drop-file-name-2.test";
 
-	private static final String APPLICATION_LOCATION_KEY = SchemaGeneration.ECLIPSELINK_APPLICATION_LOCATION;
+	private static final String APPLICATION_LOCATION_KEY = EclipseLinkSchemaGeneration.ECLIPSELINK_APPLICATION_LOCATION;
 	private static final String APPLICATION_LOCATION_TEST_VALUE = "C:/temp";
 	private static final String APPLICATION_LOCATION_TEST_VALUE_2 = "C:/tmp";
 
@@ -55,11 +55,11 @@ public class SchemaGenerationAdapterTests extends EclipseLinkPersistenceUnitTest
 		this.schemaGeneration = this.subject.getEclipseLinkSchemaGeneration();
 		
 		PropertyChangeListener propertyChangeListener = this.buildPropertyChangeListener();
-		this.schemaGeneration.addPropertyChangeListener(SchemaGeneration.OUTPUT_MODE_PROPERTY, propertyChangeListener);
-		this.schemaGeneration.addPropertyChangeListener(SchemaGeneration.DDL_GENERATION_TYPE_PROPERTY, propertyChangeListener);
-		this.schemaGeneration.addPropertyChangeListener(SchemaGeneration.CREATE_FILE_NAME_PROPERTY, propertyChangeListener);
-		this.schemaGeneration.addPropertyChangeListener(SchemaGeneration.DROP_FILE_NAME_PROPERTY, propertyChangeListener);
-		this.schemaGeneration.addPropertyChangeListener(SchemaGeneration.APPLICATION_LOCATION_PROPERTY, propertyChangeListener);
+		this.schemaGeneration.addPropertyChangeListener(EclipseLinkSchemaGeneration.OUTPUT_MODE_PROPERTY, propertyChangeListener);
+		this.schemaGeneration.addPropertyChangeListener(EclipseLinkSchemaGeneration.DDL_GENERATION_TYPE_PROPERTY, propertyChangeListener);
+		this.schemaGeneration.addPropertyChangeListener(EclipseLinkSchemaGeneration.CREATE_FILE_NAME_PROPERTY, propertyChangeListener);
+		this.schemaGeneration.addPropertyChangeListener(EclipseLinkSchemaGeneration.DROP_FILE_NAME_PROPERTY, propertyChangeListener);
+		this.schemaGeneration.addPropertyChangeListener(EclipseLinkSchemaGeneration.APPLICATION_LOCATION_PROPERTY, propertyChangeListener);
 		this.clearEvent();
 	}
 
@@ -212,17 +212,17 @@ public class SchemaGenerationAdapterTests extends EclipseLinkPersistenceUnitTest
 	// ********** get/set property **********
 	@Override
 	protected void setProperty(String propertyName, Object newValue) throws NoSuchFieldException {
-		if (propertyName.equals(SchemaGeneration.OUTPUT_MODE_PROPERTY))
+		if (propertyName.equals(EclipseLinkSchemaGeneration.OUTPUT_MODE_PROPERTY))
 			this.schemaGeneration.setOutputMode((OutputMode) newValue);
 		// else if( propertyName.equals( Caching.CACHE_SIZE_PROPERTY))
 		// TODO
-		else if (propertyName.equals(SchemaGeneration.DDL_GENERATION_TYPE_PROPERTY))
+		else if (propertyName.equals(EclipseLinkSchemaGeneration.DDL_GENERATION_TYPE_PROPERTY))
 			this.schemaGeneration.setDdlGenerationType((DdlGenerationType) newValue);
-		else if (propertyName.equals(SchemaGeneration.APPLICATION_LOCATION_PROPERTY))
+		else if (propertyName.equals(EclipseLinkSchemaGeneration.APPLICATION_LOCATION_PROPERTY))
 			this.schemaGeneration.setApplicationLocation((String) newValue);
-		else if (propertyName.equals(SchemaGeneration.CREATE_FILE_NAME_PROPERTY))
+		else if (propertyName.equals(EclipseLinkSchemaGeneration.CREATE_FILE_NAME_PROPERTY))
 			this.schemaGeneration.setCreateFileName((String) newValue);
-		else if (propertyName.equals(SchemaGeneration.DROP_FILE_NAME_PROPERTY))
+		else if (propertyName.equals(EclipseLinkSchemaGeneration.DROP_FILE_NAME_PROPERTY))
 			this.schemaGeneration.setDropFileName((String) newValue);
 		else
 			this.throwMissingDefinition("setProperty", propertyName);
@@ -231,15 +231,15 @@ public class SchemaGenerationAdapterTests extends EclipseLinkPersistenceUnitTest
 	@Override
 	protected Object getProperty(String propertyName) throws NoSuchFieldException {
 		Object modelValue = null;
-		if (propertyName.equals(SchemaGeneration.OUTPUT_MODE_PROPERTY))
+		if (propertyName.equals(EclipseLinkSchemaGeneration.OUTPUT_MODE_PROPERTY))
 			modelValue = this.schemaGeneration.getOutputMode();
-		else if (propertyName.equals(SchemaGeneration.DDL_GENERATION_TYPE_PROPERTY))
+		else if (propertyName.equals(EclipseLinkSchemaGeneration.DDL_GENERATION_TYPE_PROPERTY))
 			modelValue = this.schemaGeneration.getDdlGenerationType();
-		else if (propertyName.equals(SchemaGeneration.APPLICATION_LOCATION_PROPERTY))
+		else if (propertyName.equals(EclipseLinkSchemaGeneration.APPLICATION_LOCATION_PROPERTY))
 			modelValue = this.schemaGeneration.getApplicationLocation();
-		else if (propertyName.equals(SchemaGeneration.CREATE_FILE_NAME_PROPERTY))
+		else if (propertyName.equals(EclipseLinkSchemaGeneration.CREATE_FILE_NAME_PROPERTY))
 			modelValue = this.schemaGeneration.getCreateFileName();
-		else if (propertyName.equals(SchemaGeneration.DROP_FILE_NAME_PROPERTY))
+		else if (propertyName.equals(EclipseLinkSchemaGeneration.DROP_FILE_NAME_PROPERTY))
 			modelValue = this.schemaGeneration.getDropFileName();
 		else
 			this.throwMissingDefinition("getProperty", propertyName);

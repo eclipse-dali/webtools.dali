@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitTransactionType;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Connection;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConnection;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.swt.layout.GridData;
@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  ConnectionPropertiesComposite
  */
-public class ConnectionPropertiesComposite<T extends Connection> 
+public class ConnectionPropertiesComposite<T extends EclipseLinkConnection> 
 	extends Pane<T>
 {
 	public ConnectionPropertiesComposite(
@@ -156,7 +156,7 @@ public class ConnectionPropertiesComposite<T extends Connection>
 	}
 
 	private PropertyValueModel<PersistenceUnit> buildPersistenceUnitHolder() {
-		return new PropertyAspectAdapter<Connection, PersistenceUnit>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<EclipseLinkConnection, PersistenceUnit>(getSubjectHolder()) {
 			@Override
 			protected PersistenceUnit buildValue_() {
 				return this.subject.getPersistenceUnit();

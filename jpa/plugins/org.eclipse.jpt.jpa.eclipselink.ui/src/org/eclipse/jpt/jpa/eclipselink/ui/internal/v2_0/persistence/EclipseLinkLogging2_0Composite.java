@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.LoggingLevel;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.options.EclipseLinkLoggingComposite;
@@ -32,11 +32,11 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
 public class EclipseLinkLogging2_0Composite
-	extends EclipseLinkLoggingComposite<Logging2_0>
+	extends EclipseLinkLoggingComposite<EclipseLinkLogging2_0>
 {
 	public EclipseLinkLogging2_0Composite(
 			Pane<?> parent,
-			PropertyValueModel<Logging2_0> subjectModel,
+			PropertyValueModel<EclipseLinkLogging2_0> subjectModel,
 			Composite parentComposite) {
 		super(parent, subjectModel, parentComposite);
 	}
@@ -72,49 +72,49 @@ public class EclipseLinkLogging2_0Composite
 		loggingClient.setLayout(new GridLayout(2, false));
 
 		this.addLabel(loggingClient, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_CACHE_LOGGING_LEVEL_LABEL);
-		this.addLoggingLevelCombo(loggingClient, Logging2_0.CACHE_CATEGORY_LOGGING_PROPERTY);
+		this.addLoggingLevelCombo(loggingClient, EclipseLinkLogging2_0.CACHE_CATEGORY_LOGGING_PROPERTY);
 
 		this.addLabel(loggingClient, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_CONNECTION_LOGGING_LEVEL_LABEL);
-		this.addLoggingLevelCombo(loggingClient, Logging2_0.CONNECTION_CATEGORY_LOGGING_PROPERTY);
+		this.addLoggingLevelCombo(loggingClient, EclipseLinkLogging2_0.CONNECTION_CATEGORY_LOGGING_PROPERTY);
 
 		this.addLabel(loggingClient, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_DMS_LOGGING_LEVEL_LABEL);
-		this.addLoggingLevelCombo(loggingClient, Logging2_0.DMS_CATEGORY_LOGGING_PROPERTY);
+		this.addLoggingLevelCombo(loggingClient, EclipseLinkLogging2_0.DMS_CATEGORY_LOGGING_PROPERTY);
 
 		this.addLabel(loggingClient, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_EJB_LOGGING_LEVEL_LABEL);
-		this.addLoggingLevelCombo(loggingClient, Logging2_0.EJB_CATEGORY_LOGGING_PROPERTY);
+		this.addLoggingLevelCombo(loggingClient, EclipseLinkLogging2_0.EJB_CATEGORY_LOGGING_PROPERTY);
 
 		this.addLabel(loggingClient, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_EJB_OR_METADATA_LOGGING_LEVEL_LABEL);
-		this.addLoggingLevelCombo(loggingClient, Logging2_0.EJB_OR_METADATA_CATEGORY_LOGGING_PROPERTY);
+		this.addLoggingLevelCombo(loggingClient, EclipseLinkLogging2_0.EJB_OR_METADATA_CATEGORY_LOGGING_PROPERTY);
 
 		this.addLabel(loggingClient, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_EVENT_LOGGING_LEVEL_LABEL);
-		this.addLoggingLevelCombo(loggingClient, Logging2_0.EVENT_CATEGORY_LOGGING_PROPERTY);
+		this.addLoggingLevelCombo(loggingClient, EclipseLinkLogging2_0.EVENT_CATEGORY_LOGGING_PROPERTY);
 
 		this.addLabel(loggingClient, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_JPA_METAMODEL_LOGGING_LEVEL_LABEL);
-		this.addLoggingLevelCombo(loggingClient, Logging2_0.JPA_METAMODEL_CATEGORY_LOGGING_PROPERTY);
+		this.addLoggingLevelCombo(loggingClient, EclipseLinkLogging2_0.JPA_METAMODEL_CATEGORY_LOGGING_PROPERTY);
 
 		this.addLabel(loggingClient, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_PROPAGATION_LOGGING_LEVEL_LABEL);
-		this.addLoggingLevelCombo(loggingClient, Logging2_0.PROPAGATION_CATEGORY_LOGGING_PROPERTY);
+		this.addLoggingLevelCombo(loggingClient, EclipseLinkLogging2_0.PROPAGATION_CATEGORY_LOGGING_PROPERTY);
 
 		this.addLabel(loggingClient, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_PROPERTIES_LOGGING_LEVEL_LABEL);
-		this.addLoggingLevelCombo(loggingClient, Logging2_0.PROPERTIES_CATEGORY_LOGGING_PROPERTY);
+		this.addLoggingLevelCombo(loggingClient, EclipseLinkLogging2_0.PROPERTIES_CATEGORY_LOGGING_PROPERTY);
 
 		this.addLabel(loggingClient, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_QUERY_LOGGING_LEVEL_LABEL);
-		this.addLoggingLevelCombo(loggingClient, Logging2_0.QUERY_CATEGORY_LOGGING_PROPERTY);
+		this.addLoggingLevelCombo(loggingClient, EclipseLinkLogging2_0.QUERY_CATEGORY_LOGGING_PROPERTY);
 
 		this.addLabel(loggingClient, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_SEQUENCING_LOGGING_LEVEL_LABEL);
-		this.addLoggingLevelCombo(loggingClient, Logging2_0.SEQUENCING_CATEGORY_LOGGING_PROPERTY);
+		this.addLoggingLevelCombo(loggingClient, EclipseLinkLogging2_0.SEQUENCING_CATEGORY_LOGGING_PROPERTY);
 
 		this.addLabel(loggingClient, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_SERVER_LOGGING_LEVEL_LABEL);
-		this.addLoggingLevelCombo(loggingClient, Logging2_0.SERVER_CATEGORY_LOGGING_PROPERTY);
+		this.addLoggingLevelCombo(loggingClient, EclipseLinkLogging2_0.SERVER_CATEGORY_LOGGING_PROPERTY);
 
 		this.addLabel(loggingClient, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_SQL_LOGGING_LEVEL_LABEL);
-		this.addLoggingLevelCombo(loggingClient, Logging2_0.SQL_CATEGORY_LOGGING_PROPERTY);
+		this.addLoggingLevelCombo(loggingClient, EclipseLinkLogging2_0.SQL_CATEGORY_LOGGING_PROPERTY);
 
 		this.addLabel(loggingClient, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_TRANSACTION_LOGGING_LEVEL_LABEL);
-		this.addLoggingLevelCombo(loggingClient, Logging2_0.TRANSACTION_CATEGORY_LOGGING_PROPERTY);
+		this.addLoggingLevelCombo(loggingClient, EclipseLinkLogging2_0.TRANSACTION_CATEGORY_LOGGING_PROPERTY);
 
 		this.addLabel(loggingClient, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_WEAVER_LOGGING_LEVEL_LABEL);
-		this.addLoggingLevelCombo(loggingClient, Logging2_0.WEAVER_CATEGORY_LOGGING_PROPERTY);
+		this.addLoggingLevelCombo(loggingClient, EclipseLinkLogging2_0.WEAVER_CATEGORY_LOGGING_PROPERTY);
 
 		return loggingClient;
 	}
@@ -139,7 +139,7 @@ public class EclipseLinkLogging2_0Composite
 	}
 	
 	private ModifiablePropertyValueModel<Boolean> buildConnectionHolder() {
-		return new PropertyAspectAdapter<Logging2_0, Boolean>(getSubjectHolder(), Logging2_0.CONNECTION_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkLogging2_0, Boolean>(getSubjectHolder(), EclipseLinkLogging2_0.CONNECTION_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getConnection();
@@ -166,9 +166,9 @@ public class EclipseLinkLogging2_0Composite
 	}
 
 	private PropertyValueModel<Boolean> buildDefaultConnectionHolder() {
-		return new PropertyAspectAdapter<Logging2_0, Boolean>(
+		return new PropertyAspectAdapter<EclipseLinkLogging2_0, Boolean>(
 			getSubjectHolder(),
-			Logging2_0.CONNECTION_PROPERTY)
+			EclipseLinkLogging2_0.CONNECTION_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -179,29 +179,29 @@ public class EclipseLinkLogging2_0Composite
 			}
 		};
 	}
-	private static final String DEFAULT_PROPERTY = Logging2_0.CATEGORIES_DEFAULT_LOGGING_PROPERTY;
+	private static final String DEFAULT_PROPERTY = EclipseLinkLogging2_0.CATEGORIES_DEFAULT_LOGGING_PROPERTY;
 
-	protected EnumFormComboViewer<Logging2_0, LoggingLevel> addLoggingLevelCombo(Composite container, final String category) {
-		return new EnumFormComboViewer<Logging2_0, LoggingLevel>(this, container) {
+	protected EnumFormComboViewer<EclipseLinkLogging2_0, LoggingLevel> addLoggingLevelCombo(Composite container, final String category) {
+		return new EnumFormComboViewer<EclipseLinkLogging2_0, LoggingLevel>(this, container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
 				propertyNames.add(DEFAULT_PROPERTY);
-				propertyNames.add(Logging2_0.SQL_CATEGORY_LOGGING_PROPERTY);
-				propertyNames.add(Logging2_0.TRANSACTION_CATEGORY_LOGGING_PROPERTY);
-				propertyNames.add(Logging2_0.EVENT_CATEGORY_LOGGING_PROPERTY);
-				propertyNames.add(Logging2_0.CONNECTION_CATEGORY_LOGGING_PROPERTY);
-				propertyNames.add(Logging2_0.QUERY_CATEGORY_LOGGING_PROPERTY);
-				propertyNames.add(Logging2_0.CACHE_CATEGORY_LOGGING_PROPERTY);
-				propertyNames.add(Logging2_0.PROPAGATION_CATEGORY_LOGGING_PROPERTY);
-				propertyNames.add(Logging2_0.SEQUENCING_CATEGORY_LOGGING_PROPERTY);
-				propertyNames.add(Logging2_0.EJB_CATEGORY_LOGGING_PROPERTY);
-				propertyNames.add(Logging2_0.DMS_CATEGORY_LOGGING_PROPERTY);
-				propertyNames.add(Logging2_0.EJB_OR_METADATA_CATEGORY_LOGGING_PROPERTY);
-				propertyNames.add(Logging2_0.JPA_METAMODEL_CATEGORY_LOGGING_PROPERTY);
-				propertyNames.add(Logging2_0.WEAVER_CATEGORY_LOGGING_PROPERTY);
-				propertyNames.add(Logging2_0.PROPERTIES_CATEGORY_LOGGING_PROPERTY);
-				propertyNames.add(Logging2_0.SERVER_CATEGORY_LOGGING_PROPERTY);
+				propertyNames.add(EclipseLinkLogging2_0.SQL_CATEGORY_LOGGING_PROPERTY);
+				propertyNames.add(EclipseLinkLogging2_0.TRANSACTION_CATEGORY_LOGGING_PROPERTY);
+				propertyNames.add(EclipseLinkLogging2_0.EVENT_CATEGORY_LOGGING_PROPERTY);
+				propertyNames.add(EclipseLinkLogging2_0.CONNECTION_CATEGORY_LOGGING_PROPERTY);
+				propertyNames.add(EclipseLinkLogging2_0.QUERY_CATEGORY_LOGGING_PROPERTY);
+				propertyNames.add(EclipseLinkLogging2_0.CACHE_CATEGORY_LOGGING_PROPERTY);
+				propertyNames.add(EclipseLinkLogging2_0.PROPAGATION_CATEGORY_LOGGING_PROPERTY);
+				propertyNames.add(EclipseLinkLogging2_0.SEQUENCING_CATEGORY_LOGGING_PROPERTY);
+				propertyNames.add(EclipseLinkLogging2_0.EJB_CATEGORY_LOGGING_PROPERTY);
+				propertyNames.add(EclipseLinkLogging2_0.DMS_CATEGORY_LOGGING_PROPERTY);
+				propertyNames.add(EclipseLinkLogging2_0.EJB_OR_METADATA_CATEGORY_LOGGING_PROPERTY);
+				propertyNames.add(EclipseLinkLogging2_0.JPA_METAMODEL_CATEGORY_LOGGING_PROPERTY);
+				propertyNames.add(EclipseLinkLogging2_0.WEAVER_CATEGORY_LOGGING_PROPERTY);
+				propertyNames.add(EclipseLinkLogging2_0.PROPERTIES_CATEGORY_LOGGING_PROPERTY);
+				propertyNames.add(EclipseLinkLogging2_0.SERVER_CATEGORY_LOGGING_PROPERTY);
 			}
 
 			@Override

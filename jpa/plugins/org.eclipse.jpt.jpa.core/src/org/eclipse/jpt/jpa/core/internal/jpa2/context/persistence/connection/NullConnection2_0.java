@@ -1,27 +1,26 @@
 /*******************************************************************************
-* Copyright (c) 2009 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.connection;
 
 import java.util.Map;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnitProperties;
-import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.JpaConnection2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.Connection2_0;
 
 /**
- *  GenericConnection2_0
+ * <em>null</em> connection
  */
-public class NullConnection2_0 extends AbstractPersistenceUnitProperties
-	implements JpaConnection2_0
+public class NullConnection2_0
+	extends AbstractPersistenceUnitProperties
+	implements Connection2_0
 {
-	
-
 	// ********** constructors **********
 	public NullConnection2_0(PersistenceUnit parent) {
 		super(parent);

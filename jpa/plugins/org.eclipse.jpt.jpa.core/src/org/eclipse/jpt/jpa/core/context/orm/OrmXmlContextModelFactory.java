@@ -72,8 +72,8 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlVersion;
 // TODO bjv we need a factory interface for a 1.0 orm.xml in a 2.0 project...
 // since it must return slightly different objects (e.g. 2.0 attribute mappings)
 // OrmXml1_0ContextNodeFactory2_0 ?
-public interface OrmXmlContextModelFactory
-{
+public interface OrmXmlContextModelFactory {
+
 	EntityMappings buildEntityMappings(OrmXml parent, XmlEntityMappings entityMappings);
 
 	OrmPersistenceUnitMetadata buildOrmPersistenceUnitMetadata(EntityMappings parent);

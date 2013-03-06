@@ -56,9 +56,7 @@ public class GenericOrmXmlContextModelFactory2_0
 		return new GenericOrmDerivedIdentity2_0(parent);
 	}
 	
-	public OrmElementCollectionMapping2_0 buildOrmElementCollectionMapping2_0(
-			OrmSpecifiedPersistentAttribute parent, XmlElementCollection resourceMapping) {
-		
+	public OrmElementCollectionMapping2_0 buildOrmElementCollectionMapping(OrmSpecifiedPersistentAttribute parent, XmlElementCollection resourceMapping) {
 		return new GenericOrmElementCollectionMapping2_0(parent, resourceMapping);
 	}
 	

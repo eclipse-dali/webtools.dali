@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.BatchWriting;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Connection;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConnection;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.osgi.util.NLS;
@@ -35,10 +35,10 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
 public class EclipseLinkPersistenceUnitConnectionEditorPage
-	extends Pane<Connection>
+	extends Pane<EclipseLinkConnection>
 {
 	public EclipseLinkPersistenceUnitConnectionEditorPage(
-		PropertyValueModel<Connection> connectionModel,
+		PropertyValueModel<EclipseLinkConnection> connectionModel,
 		Composite parentComposite,
 		WidgetFactory widgetFactory,
 		ResourceManager resourceManager
@@ -98,7 +98,7 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 		gridData.horizontalSpan = 2;
 		nativeSqlCheckBox.getCheckBox().setLayoutData(gridData);
 
-		ConnectionPropertiesComposite<Connection> connectionPropertiesComposite = new ConnectionPropertiesComposite<Connection>(this, client);
+		ConnectionPropertiesComposite<EclipseLinkConnection> connectionPropertiesComposite = new ConnectionPropertiesComposite<EclipseLinkConnection>(this, client);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		connectionPropertiesComposite.getControl().setLayoutData(gridData);
@@ -160,7 +160,7 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 	}
 
 	private PropertyValueModel<PersistenceUnit> buildPersistenceUnitHolder() {
-		return new PropertyAspectAdapter<Connection, PersistenceUnit>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<EclipseLinkConnection, PersistenceUnit>(getSubjectHolder()) {
 			@Override
 			protected PersistenceUnit buildValue_() {
 				return this.subject.getPersistenceUnit();
@@ -173,7 +173,7 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 	}
 
 	private void clearResourceLocalProperties() {
-		Connection connection = this.getSubject();
+		EclipseLinkConnection connection = this.getSubject();
 		connection.getPersistenceUnit().setNonJtaDataSource(null);
 		connection.setDriver(null);
 		connection.setUrl(null);
@@ -189,12 +189,12 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 		connection.setLazyConnection(null);
 	}
 
-	private EnumFormComboViewer<Connection, BatchWriting> addBatchWritingCombo(Composite container) {
-		return new EnumFormComboViewer<Connection, BatchWriting>(this, container) {
+	private EnumFormComboViewer<EclipseLinkConnection, BatchWriting> addBatchWritingCombo(Composite container) {
+		return new EnumFormComboViewer<EclipseLinkConnection, BatchWriting>(this, container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(Connection.BATCH_WRITING_PROPERTY);
+				propertyNames.add(EclipseLinkConnection.BATCH_WRITING_PROPERTY);
 			}
 
 			@Override
@@ -241,7 +241,7 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildNativeSqlHolder() {
-		return new PropertyAspectAdapter<Connection, Boolean>(getSubjectHolder(), Connection.NATIVE_SQL_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkConnection, Boolean>(getSubjectHolder(), EclipseLinkConnection.NATIVE_SQL_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getNativeSql();
@@ -269,9 +269,9 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 	}
 
 	private PropertyValueModel<Boolean> buildDefaultNativeSqlHolder() {
-		return new PropertyAspectAdapter<Connection, Boolean>(
+		return new PropertyAspectAdapter<EclipseLinkConnection, Boolean>(
 			getSubjectHolder(),
-			Connection.NATIVE_SQL_PROPERTY)
+			EclipseLinkConnection.NATIVE_SQL_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -285,7 +285,7 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 
 
 	private ModifiablePropertyValueModel<Boolean> buildCacheStatementsHolder() {
-		return new PropertyAspectAdapter<Connection, Boolean>(getSubjectHolder(), Connection.CACHE_STATEMENTS_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkConnection, Boolean>(getSubjectHolder(), EclipseLinkConnection.CACHE_STATEMENTS_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getCacheStatements();
@@ -310,8 +310,8 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 		};
 	}
 
-	private IntegerCombo<Connection> addCacheStatementsSizeCombo(Composite container) {
-		return new IntegerCombo<Connection>(this, container) {
+	private IntegerCombo<EclipseLinkConnection> addCacheStatementsSizeCombo(Composite container) {
+		return new IntegerCombo<EclipseLinkConnection>(this, container) {
 			@Override
 			protected String getHelpId() {
 				return JpaHelpContextIds.PERSISTENCE_XML_CONNECTION;
@@ -319,7 +319,7 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 
 			@Override
 			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<Connection, Integer>(getSubjectHolder()) {
+				return new PropertyAspectAdapter<EclipseLinkConnection, Integer>(getSubjectHolder()) {
 					@Override
 					protected Integer buildValue_() {
 						return this.subject.getDefaultCacheStatementsSize();
@@ -329,7 +329,7 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 
 			@Override
 			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<Connection, Integer>(getSubjectHolder(), Connection.CACHE_STATEMENTS_SIZE_PROPERTY) {
+				return new PropertyAspectAdapter<EclipseLinkConnection, Integer>(getSubjectHolder(), EclipseLinkConnection.CACHE_STATEMENTS_SIZE_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						return this.subject.getCacheStatementsSize();

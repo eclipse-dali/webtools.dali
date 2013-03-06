@@ -17,14 +17,14 @@ import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Options;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOptions;
 
 /**
  * OptionsValueModelTests
  */
 public class OptionsValueModelTests extends EclipseLinkPersistenceUnitTestCase
 {
-	private Options options;
+	private EclipseLinkOptions options;
 
 	private ModifiablePropertyValueModel<Boolean> includeDescriptorQueriesHolder;
 	private PropertyChangeListener includeDescriptorQueriesListener;
@@ -39,8 +39,8 @@ public class OptionsValueModelTests extends EclipseLinkPersistenceUnitTestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.options = this.subject.getOptions(); // Subject
-		PropertyValueModel<Options> optionsHolder = new SimplePropertyValueModel<Options>(this.options);
+		this.options = this.subject.getEclipseLinkOptions(); // Subject
+		PropertyValueModel<EclipseLinkOptions> optionsHolder = new SimplePropertyValueModel<EclipseLinkOptions>(this.options);
 		
 		this.includeDescriptorQueriesHolder = this.buildIncludeDescriptorQueriesAA(optionsHolder);
 		this.includeDescriptorQueriesListener = this.buildIncludeDescriptorQueriesChangeListener();
@@ -51,13 +51,13 @@ public class OptionsValueModelTests extends EclipseLinkPersistenceUnitTestCase
 	public void testHasListeners() {
 		AbstractModel subjectOptions = (AbstractModel) this.options; // Subject
 		
-		PropertyAspectAdapter<Options, Boolean> includeDescriptorQueriesAA = 
-			(PropertyAspectAdapter<Options, Boolean>) this.includeDescriptorQueriesHolder;
+		PropertyAspectAdapter<EclipseLinkOptions, Boolean> includeDescriptorQueriesAA = 
+			(PropertyAspectAdapter<EclipseLinkOptions, Boolean>) this.includeDescriptorQueriesHolder;
 		assertTrue(includeDescriptorQueriesAA.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
-		assertTrue(subjectOptions.hasAnyPropertyChangeListeners(Options.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY));
+		assertTrue(subjectOptions.hasAnyPropertyChangeListeners(EclipseLinkOptions.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY));
 		
 		includeDescriptorQueriesAA.removePropertyChangeListener(PropertyValueModel.VALUE, this.includeDescriptorQueriesListener);
-		assertFalse(subjectOptions.hasAnyPropertyChangeListeners(Options.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY));
+		assertFalse(subjectOptions.hasAnyPropertyChangeListeners(EclipseLinkOptions.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY));
 		assertFalse(includeDescriptorQueriesAA.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 	}
 
@@ -67,7 +67,7 @@ public class OptionsValueModelTests extends EclipseLinkPersistenceUnitTestCase
 	@Override
 	protected void populatePu() {
 		this.persistenceUnitSetProperty(
-			Options.ECLIPSELINK_SESSION_INCLUDE_DESCRIPTOR_QUERIES, 
+			EclipseLinkOptions.ECLIPSELINK_SESSION_INCLUDE_DESCRIPTOR_QUERIES, 
 			INCLUDE_DESCRIPTOR_QUERIES_TEST_VALUE);
 		return;
 	}
@@ -78,8 +78,8 @@ public class OptionsValueModelTests extends EclipseLinkPersistenceUnitTestCase
 	}
 
 	// ****** IncludeDescriptorQueries *******
-	private ModifiablePropertyValueModel<Boolean> buildIncludeDescriptorQueriesAA(PropertyValueModel<Options> subjectHolder) {
-		return new PropertyAspectAdapter<Options, Boolean>(subjectHolder, Options.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY) {
+	private ModifiablePropertyValueModel<Boolean> buildIncludeDescriptorQueriesAA(PropertyValueModel<EclipseLinkOptions> subjectHolder) {
+		return new PropertyAspectAdapter<EclipseLinkOptions, Boolean>(subjectHolder, EclipseLinkOptions.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getIncludeDescriptorQueries();
@@ -104,7 +104,7 @@ public class OptionsValueModelTests extends EclipseLinkPersistenceUnitTestCase
 	public void testValue() {
 		// ****** IncludeDescriptorQueries ******* 
 		this.verifyIncludeDescriptorQueriesAAValue(INCLUDE_DESCRIPTOR_QUERIES_TEST_VALUE);
-		assertEquals(Options.DEFAULT_SESSION_INCLUDE_DESCRIPTOR_QUERIES, this.options.getDefaultIncludeDescriptorQueries());
+		assertEquals(EclipseLinkOptions.DEFAULT_SESSION_INCLUDE_DESCRIPTOR_QUERIES, this.options.getDefaultIncludeDescriptorQueries());
 	}
 
 	public void testSetValue() throws Exception {
@@ -128,7 +128,7 @@ public class OptionsValueModelTests extends EclipseLinkPersistenceUnitTestCase
 		this.verifyIncludeDescriptorQueriesAAValue(null);
 		assertNotNull(this.includeDescriptorQueriesEvent);
 		// testing PU properties
-		this.verifyPuHasNotProperty(Options.ECLIPSELINK_SESSION_INCLUDE_DESCRIPTOR_QUERIES, notDeleted);
+		this.verifyPuHasNotProperty(EclipseLinkOptions.ECLIPSELINK_SESSION_INCLUDE_DESCRIPTOR_QUERIES, notDeleted);
 	}
 
 	// ****** convenience methods *******
@@ -144,7 +144,7 @@ public class OptionsValueModelTests extends EclipseLinkPersistenceUnitTestCase
 			testValue, 
 			this.options.getIncludeDescriptorQueries(), 
 			this.includeDescriptorQueriesHolder, 
-			Options.ECLIPSELINK_SESSION_INCLUDE_DESCRIPTOR_QUERIES);
+			EclipseLinkOptions.ECLIPSELINK_SESSION_INCLUDE_DESCRIPTOR_QUERIES);
 	}
 
 	// ********** get/set property **********

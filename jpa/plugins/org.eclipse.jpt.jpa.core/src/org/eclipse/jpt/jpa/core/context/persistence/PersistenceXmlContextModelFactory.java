@@ -31,8 +31,8 @@ import org.eclipse.jpt.jpa.core.resource.persistence.XmlProperty;
  * @version 2.3
  * @since 2.3
  */
-public interface PersistenceXmlContextModelFactory
-{	
+public interface PersistenceXmlContextModelFactory {
+
 	Persistence buildPersistence(PersistenceXml parent, XmlPersistence resourcePersistence);
 	
 	PersistenceUnit buildPersistenceUnit(Persistence parent, XmlPersistenceUnit resourcePersistenceUnit);
@@ -62,10 +62,4 @@ public interface PersistenceXmlContextModelFactory
 	JarFile buildJarFile(JarFileRef parent, JavaResourcePackageFragmentRoot jarResourcePackageFragmentRoot);
 
 	PersistenceUnit.Property buildProperty(PersistenceUnit parent, XmlProperty property);
-	
-	PersistenceUnitProperties buildConnection(PersistenceUnit parent);
-	
-	PersistenceUnitProperties buildOptions(PersistenceUnit parent);
-
-	PersistenceUnitProperties buildSchemaGeneration(PersistenceUnit parent);
 }

@@ -21,20 +21,15 @@ public class GenericOrmXmlContextModelFactory2_1
 	extends GenericOrmXmlContextModelFactory2_0
 	implements OrmXmlContextModelFactory2_1
 {
-
 	public OrmConverterType2_1 buildOrmConverterType(EntityMappings2_1 parent, XmlConverter xmlConverter) {
 		return new GenericOrmConverterType(parent, xmlConverter);
 	}
 
-	public OrmNamedStoredProcedureQuery2_1 buildOrmNamedStoredProcedureQuery2_1(
-			OrmQueryContainer2_1 parent, 
-			XmlNamedStoredProcedureQuery xmlNamedStoredProcedureQuery) {
+	public OrmNamedStoredProcedureQuery2_1 buildOrmNamedStoredProcedureQuery(OrmQueryContainer2_1 parent, XmlNamedStoredProcedureQuery xmlNamedStoredProcedureQuery) {
 		return new GenericOrmNamedStoredProcedureQuery2_1(parent, xmlNamedStoredProcedureQuery);
 	}
 	
-	public OrmStoredProcedureParameter2_1 buildOrmStoredProcedureParameter(
-			OrmNamedStoredProcedureQuery2_1 parent,
-			XmlStoredProcedureParameter xmlParameter) {
+	public OrmStoredProcedureParameter2_1 buildOrmStoredProcedureParameter(OrmNamedStoredProcedureQuery2_1 parent, XmlStoredProcedureParameter xmlParameter) {
 		return new GenericOrmStoredProcedureParameter2_1(parent, xmlParameter);
 	}
 }

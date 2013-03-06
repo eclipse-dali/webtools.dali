@@ -27,5 +27,7 @@ Require-Bundle: org.eclipse.core.resources;bundle-version="[3.4.0,4.0.0)",
 Export-Package: org.eclipse.jpt.dbws.eclipselink.core.internal.gen;x-internal:=true,
  org.eclipse.jpt.dbws.eclipselink.ui,
  org.eclipse.jpt.dbws.eclipselink.ui.internal;x-internal:=true,
+ org.eclipse.jpt.dbws.eclipselink.ui.internal.handlers;x-internal:=true,
+ org.eclipse.jpt.dbws.eclipselink.ui.internal.plugin;x-internal:=true,
  org.eclipse.jpt.dbws.eclipselink.ui.internal.wizards.gen;x-internal:=true
 Import-Package: com.ibm.icu.text;version="4.0.1"

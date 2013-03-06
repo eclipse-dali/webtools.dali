@@ -41,8 +41,8 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaMappedSuperclassD
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaOneToManyMappingDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaOneToOneMappingDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaVersionMappingDefinition2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_0Definition;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.GenericPersistenceXml2_0Definition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXmlDefinition2_0;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.GenericPersistenceXmlDefinition2_0;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -80,8 +80,8 @@ public class Generic2_0JpaPlatformProvider
 	protected static final JptResourceType[] MOST_RECENT_SUPPORTED_RESOURCE_TYPES = new JptResourceType[] {
 		JavaSourceFileDefinition.instance().getResourceType(),
 		JarDefinition.instance().getResourceType(),
-		GenericPersistenceXml2_0Definition.instance().getResourceType(),
-		GenericOrmXml2_0Definition.instance().getResourceType()
+		GenericPersistenceXmlDefinition2_0.instance().getResourceType(),
+		GenericOrmXmlDefinition2_0.instance().getResourceType()
 	};
 
 	@Override
@@ -158,8 +158,8 @@ public class Generic2_0JpaPlatformProvider
 		JavaSourceFileDefinition.instance(),
 		JarDefinition.instance(),
 		GenericPersistenceXmlDefinition.instance(),
-		GenericPersistenceXml2_0Definition.instance(),
+		GenericPersistenceXmlDefinition2_0.instance(),
 		GenericOrmXmlDefinition.instance(),
-		GenericOrmXml2_0Definition.instance()
+		GenericOrmXmlDefinition2_0.instance()
 	};
 }

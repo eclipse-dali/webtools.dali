@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.ddlgen;
 import java.util.Properties;
 
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.JpaConnection2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.Connection2_0;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.OutputMode;
@@ -63,16 +63,16 @@ public class EclipseLink2_0DDLGenerator extends AbstractEclipseLinkDDLGenerator
 		ConnectionProfile cp = this.getConnectionProfile();
 
 		this.putProperty(properties, 
-			JpaConnection2_0.PERSISTENCE_JDBC_DRIVER,
+			Connection2_0.PERSISTENCE_JDBC_DRIVER,
 			(cp == null) ? "" : cp.getDriverClassName()); //$NON-NLS-1$
 		this.putProperty(properties,
-			JpaConnection2_0.PERSISTENCE_JDBC_URL,
+			Connection2_0.PERSISTENCE_JDBC_URL,
 			(cp == null) ? "" : cp.getURL()); //$NON-NLS-1$
 		this.putProperty(properties,
-			JpaConnection2_0.PERSISTENCE_JDBC_USER,
+			Connection2_0.PERSISTENCE_JDBC_USER,
 			(cp == null) ? "" : cp.getUserName()); //$NON-NLS-1$
 		this.putProperty(properties,
-			JpaConnection2_0.PERSISTENCE_JDBC_PASSWORD,
+			Connection2_0.PERSISTENCE_JDBC_PASSWORD,
 			(cp == null) ? "" : cp.getUserPassword()); //$NON-NLS-1$
 	}
 }

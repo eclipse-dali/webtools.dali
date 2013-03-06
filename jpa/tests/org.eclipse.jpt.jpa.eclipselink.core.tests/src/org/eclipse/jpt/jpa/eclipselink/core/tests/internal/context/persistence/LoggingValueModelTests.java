@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging;
 
 /**
  * LoggingValueModelTests
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging;
 @SuppressWarnings("nls")
 public class LoggingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 {
-	private Logging logging;
+	private EclipseLinkLogging logging;
 
 	private ModifiablePropertyValueModel<Boolean> timestampHolder;
 	private PropertyChangeListener timestampListener;
@@ -41,7 +41,7 @@ public class LoggingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.logging = this.subject.getLogging(); // Subject
-		PropertyValueModel<Logging> loggingHolder = new SimplePropertyValueModel<Logging>(this.logging);
+		PropertyValueModel<EclipseLinkLogging> loggingHolder = new SimplePropertyValueModel<EclipseLinkLogging>(this.logging);
 		
 		this.timestampHolder = this.buildTimestampAA(loggingHolder);
 		this.timestampListener = this.buildTimestampChangeListener();
@@ -52,13 +52,13 @@ public class LoggingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 	public void testHasListeners() {
 		AbstractModel subjectLogging = (AbstractModel) this.logging; // Subject
 		
-		PropertyAspectAdapter<Logging, Boolean> timestampAA = 
-			(PropertyAspectAdapter<Logging, Boolean>) this.timestampHolder;
+		PropertyAspectAdapter<EclipseLinkLogging, Boolean> timestampAA = 
+			(PropertyAspectAdapter<EclipseLinkLogging, Boolean>) this.timestampHolder;
 		assertTrue(timestampAA.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
-		assertTrue(subjectLogging.hasAnyPropertyChangeListeners(Logging.TIMESTAMP_PROPERTY));
+		assertTrue(subjectLogging.hasAnyPropertyChangeListeners(EclipseLinkLogging.TIMESTAMP_PROPERTY));
 		
 		timestampAA.removePropertyChangeListener(PropertyValueModel.VALUE, this.timestampListener);
-		assertFalse(subjectLogging.hasAnyPropertyChangeListeners(Logging.TIMESTAMP_PROPERTY));
+		assertFalse(subjectLogging.hasAnyPropertyChangeListeners(EclipseLinkLogging.TIMESTAMP_PROPERTY));
 		assertFalse(timestampAA.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 	}
 
@@ -68,7 +68,7 @@ public class LoggingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 	@Override
 	protected void populatePu() {
 		this.persistenceUnitSetProperty(
-			Logging.ECLIPSELINK_TIMESTAMP, 
+			EclipseLinkLogging.ECLIPSELINK_TIMESTAMP, 
 			TIMESTAMP_TEST_VALUE);
 		return;
 	}
@@ -79,8 +79,8 @@ public class LoggingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 	}
 
 	// ****** Timestamp *******
-	private ModifiablePropertyValueModel<Boolean> buildTimestampAA(PropertyValueModel<Logging> subjectHolder) {
-		return new PropertyAspectAdapter<Logging, Boolean>(subjectHolder, Logging.TIMESTAMP_PROPERTY) {
+	private ModifiablePropertyValueModel<Boolean> buildTimestampAA(PropertyValueModel<EclipseLinkLogging> subjectHolder) {
+		return new PropertyAspectAdapter<EclipseLinkLogging, Boolean>(subjectHolder, EclipseLinkLogging.TIMESTAMP_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getTimestamp();
@@ -105,7 +105,7 @@ public class LoggingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 	public void testValue() {
 		// ****** Timestamp ******* 
 		this.verifyTimestampAAValue(TIMESTAMP_TEST_VALUE);
-		assertEquals(Logging.DEFAULT_TIMESTAMP, this.logging.getDefaultTimestamp());
+		assertEquals(EclipseLinkLogging.DEFAULT_TIMESTAMP, this.logging.getDefaultTimestamp());
 	}
 
 	public void testSetValue() throws Exception {
@@ -129,7 +129,7 @@ public class LoggingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 		this.verifyTimestampAAValue(null);
 		assertNotNull(this.timestampEvent);
 		// testing PU properties
-		this.verifyPuHasNotProperty(Logging.ECLIPSELINK_TIMESTAMP, notDeleted);
+		this.verifyPuHasNotProperty(EclipseLinkLogging.ECLIPSELINK_TIMESTAMP, notDeleted);
 	}
 
 	// ****** convenience methods *******
@@ -145,7 +145,7 @@ public class LoggingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 			testValue, 
 			this.logging.getTimestamp(), 
 			this.timestampHolder, 
-			Logging.ECLIPSELINK_TIMESTAMP);
+			EclipseLinkLogging.ECLIPSELINK_TIMESTAMP);
 	}
 
 	// ********** get/set property **********

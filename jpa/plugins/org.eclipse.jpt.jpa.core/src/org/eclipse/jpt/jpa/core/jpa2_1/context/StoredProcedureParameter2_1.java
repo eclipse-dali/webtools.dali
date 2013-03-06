@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2_1.context;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.jpa2_1.ParameterMode2_1;
 
 /**
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.jpa2_1.ParameterMode2_1;
  * @since 3.3
  */
 public interface StoredProcedureParameter2_1
-	extends JpaContextNode
+	extends JpaContextModel
 {
 
 	// ********* name **********

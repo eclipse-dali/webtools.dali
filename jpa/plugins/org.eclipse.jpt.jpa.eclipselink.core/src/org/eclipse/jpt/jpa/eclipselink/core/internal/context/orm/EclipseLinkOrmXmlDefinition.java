@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
 
 public class EclipseLinkOrmXmlDefinition
-	extends AbstractEclipseLinkOrmXmlDefinition
+	extends EclipseLinkAbstractOrmXmlDefinition
 {
 	// singleton
 	private static final OrmXmlDefinition INSTANCE = new EclipseLinkOrmXmlDefinition();

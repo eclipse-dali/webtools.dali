@@ -10,33 +10,14 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence;
 
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.persistence.schemagen.NullGenericSchemaGeneration2_1;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.JpaConnection2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.JpaOptions2_0;
-
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging2_4;
 
 public class EclipseLinkPersistenceXmlContextModelFactory2_4
-		extends AbstractEclipseLinkPersistenceXmlContextModelFactory {
-
+	extends EclipseLinkPersistenceXmlContextModelFactory2_0
+{
 	@Override
-	public JpaConnection2_0 buildConnection(PersistenceUnit parent) {
-		return new EclipseLinkConnection2_0((PersistenceUnit2_0) parent);
-	}
-	
-	@Override
-	public JpaOptions2_0 buildOptions(PersistenceUnit parent) {
-		return new EclipseLinkOptions2_0((PersistenceUnit2_0) parent);
-	}
-	
-	@Override
-	public PersistenceUnitProperties buildLogging(PersistenceUnit parent) {
-		return new EclipseLinkLogging2_4((PersistenceUnit2_0) parent);
-	}
-
-	@Override
-	public PersistenceUnitProperties buildSchemaGeneration(PersistenceUnit parent) {
-		return new NullGenericSchemaGeneration2_1(parent);
+	public EclipseLinkLogging2_4 buildLogging(PersistenceUnit parent) {
+		return new EclipseLinkLoggingImpl2_4((PersistenceUnit2_0) parent);
 	}
 }

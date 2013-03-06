@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm;
 import java.util.List;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_1Definition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXmlDefinition2_1;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.jpa.ui.details.JpaUiFactory;
@@ -64,7 +64,7 @@ public class OrmXml2_1UiDefinition
 	}
 	
 	public boolean providesUi(JptResourceType resourceType) {
-		return resourceType.equals(GenericOrmXml2_1Definition.instance().getResourceType());
+		return resourceType.equals(GenericOrmXmlDefinition2_1.instance().getResourceType());
 	}
 
 

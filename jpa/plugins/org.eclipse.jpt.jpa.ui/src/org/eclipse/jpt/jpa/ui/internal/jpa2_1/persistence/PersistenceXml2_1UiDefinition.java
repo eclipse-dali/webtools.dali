@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2_1.persistence;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.persistence.GenericPersistenceXml2_1Definition;
+import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.persistence.GenericPersistenceXmlDefinition2_1;
 import org.eclipse.jpt.jpa.ui.JavaManagedTypeUiDefinition;
 import org.eclipse.jpt.jpa.ui.PersistenceResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
@@ -52,7 +52,7 @@ public class PersistenceXml2_1UiDefinition
 	}
 
 	public boolean providesUi(JptResourceType resourceType) {
-		return resourceType.equals(GenericPersistenceXml2_1Definition.instance().getResourceType());
+		return resourceType.equals(GenericPersistenceXmlDefinition2_1.instance().getResourceType());
 	}
 
 	@Override

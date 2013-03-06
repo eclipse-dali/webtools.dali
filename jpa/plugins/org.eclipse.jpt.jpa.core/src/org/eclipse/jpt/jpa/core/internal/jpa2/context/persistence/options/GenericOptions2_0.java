@@ -1,12 +1,12 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2013 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.options;
 
 import java.util.List;
@@ -16,13 +16,11 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnitProperties;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.JpaOptions2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.Options2_0;
 
-/**
- * JPA 2.0 options
- */
-public class GenericOptions2_0 extends AbstractPersistenceUnitProperties
-	implements JpaOptions2_0
+public class GenericOptions2_0
+	extends AbstractPersistenceUnitProperties
+	implements Options2_0
 {
 	// ********** GenericConnection properties **********
 	private Integer lockTimeout;

@@ -39,7 +39,7 @@ public class GenericOrmTable
 	@Override
 	protected XmlTable buildXmlTable() {
 		XmlTable xmlTable = EmfTools.create(
-			this.getResourceNodeFactory(), 
+			this.getResourceModelFactory(), 
 			OrmPackage.eINSTANCE.getXmlTable(), 
 			XmlTable.class);
 		this.getXmlEntity().setTable(xmlTable);

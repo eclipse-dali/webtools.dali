@@ -274,7 +274,7 @@ public class GenericOrmQueryContainer
 
 	protected XmlNamedStoredProcedureQuery buildXmlNamedStoredProcedureQuery() {
 		return EmfTools.create(
-			this.getResourceNodeFactory(), 
+			this.getResourceModelFactory(), 
 			OrmPackage.eINSTANCE.getXmlNamedStoredProcedureQuery(), 
 			XmlNamedStoredProcedureQuery.class);
 	}
@@ -295,7 +295,7 @@ public class GenericOrmQueryContainer
 
 	protected OrmNamedStoredProcedureQuery2_1 buildNamedStoredProcedureQuery(XmlNamedStoredProcedureQuery xmlNamedQuery) {
 		return this.isOrmXml2_1Compatible() ?
-				this.getContextModelFactory2_1().buildOrmNamedStoredProcedureQuery2_1(this, xmlNamedQuery) :
+				this.getContextModelFactory2_1().buildOrmNamedStoredProcedureQuery(this, xmlNamedQuery) :
 				null;
 	}
 

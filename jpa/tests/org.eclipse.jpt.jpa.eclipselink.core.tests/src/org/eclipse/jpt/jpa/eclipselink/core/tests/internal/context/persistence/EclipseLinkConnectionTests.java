@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.BatchWriting;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Connection;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConnection;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.ExclusiveConnectionMode;
 
 /**
@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.ExclusiveConnect
 @SuppressWarnings("nls")
 public class EclipseLinkConnectionTests extends EclipseLinkPersistenceUnitTestCase
 {
-	private Connection connection;
+	private EclipseLinkConnection connection;
 
 	public static final PersistenceUnitTransactionType TRANSACTION_TYPE_TEST_VALUE = PersistenceUnitTransactionType.RESOURCE_LOCAL;
 	public static final PersistenceUnitTransactionType TRANSACTION_TYPE_TEST_VALUE_2 = PersistenceUnitTransactionType.JTA;
@@ -33,67 +33,67 @@ public class EclipseLinkConnectionTests extends EclipseLinkPersistenceUnitTestCa
 	public static final String NON_JTA_DATA_SOURCE_TEST_VALUE = "Test_Non_JTA";
 	public static final String NON_JTA_DATA_SOURCE_TEST_VALUE_2 = "Test_Non_JTA_2";
 	
-	public static final String NATIVE_SQL_KEY = Connection.ECLIPSELINK_NATIVE_SQL;
+	public static final String NATIVE_SQL_KEY = EclipseLinkConnection.ECLIPSELINK_NATIVE_SQL;
 	public static final Boolean NATIVE_SQL_TEST_VALUE = false;
 	public static final Boolean NATIVE_SQL_TEST_VALUE_2 = ! NATIVE_SQL_TEST_VALUE;
 
-	public static final String BATCH_WRITING_KEY = Connection.ECLIPSELINK_BATCH_WRITING;
+	public static final String BATCH_WRITING_KEY = EclipseLinkConnection.ECLIPSELINK_BATCH_WRITING;
 	public static final BatchWriting BATCH_WRITING_TEST_VALUE = BatchWriting.oracle_jdbc;
 	public static final BatchWriting BATCH_WRITING_TEST_VALUE_2 = BatchWriting.buffered;
 	
-	public static final String CACHE_STATEMENTS_KEY = Connection.ECLIPSELINK_CACHE_STATEMENTS;
+	public static final String CACHE_STATEMENTS_KEY = EclipseLinkConnection.ECLIPSELINK_CACHE_STATEMENTS;
 	public static final Boolean CACHE_STATEMENTS_TEST_VALUE = false;
 	public static final Boolean CACHE_STATEMENTS_TEST_VALUE_2 = ! CACHE_STATEMENTS_TEST_VALUE;
 	
-	public static final String CACHE_STATEMENTS_SIZE_KEY = Connection.ECLIPSELINK_CACHE_STATEMENTS_SIZE;
+	public static final String CACHE_STATEMENTS_SIZE_KEY = EclipseLinkConnection.ECLIPSELINK_CACHE_STATEMENTS_SIZE;
 	public static final Integer CACHE_STATEMENTS_SIZE_TEST_VALUE = 100;
 	public static final Integer CACHE_STATEMENTS_SIZE_TEST_VALUE_2 = 200;
 	
-	public static final String DRIVER_KEY = Connection.ECLIPSELINK_DRIVER;
+	public static final String DRIVER_KEY = EclipseLinkConnection.ECLIPSELINK_DRIVER;
 	public static final String DRIVER_TEST_VALUE = "connection.driver";
 	public static final String DRIVER_TEST_VALUE_2 = "connection.driver.2";
 	
-	public static final String URL_KEY = Connection.ECLIPSELINK_URL;
+	public static final String URL_KEY = EclipseLinkConnection.ECLIPSELINK_URL;
 	public static final String URL_TEST_VALUE = "test";
 	public static final String URL_TEST_VALUE_2 = "test_2";
 
-	public static final String USER_KEY = Connection.ECLIPSELINK_USER;
+	public static final String USER_KEY = EclipseLinkConnection.ECLIPSELINK_USER;
 	public static final String USER_TEST_VALUE = "test";
 	public static final String USER_TEST_VALUE_2 = "test_2";
 
-	public static final String PASSWORD_KEY = Connection.ECLIPSELINK_PASSWORD;
+	public static final String PASSWORD_KEY = EclipseLinkConnection.ECLIPSELINK_PASSWORD;
 	public static final String PASSWORD_TEST_VALUE = "test";
 	public static final String PASSWORD_TEST_VALUE_2 = "test_2";
 	
-	public static final String BIND_PARAMETERS_KEY = Connection.ECLIPSELINK_BIND_PARAMETERS;
+	public static final String BIND_PARAMETERS_KEY = EclipseLinkConnection.ECLIPSELINK_BIND_PARAMETERS;
 	public static final Boolean BIND_PARAMETERS_TEST_VALUE = false;
 	public static final Boolean BIND_PARAMETERS_TEST_VALUE_2 = ! BIND_PARAMETERS_TEST_VALUE;
 	
-	public static final String READ_CONNECTIONS_SHARED_KEY = Connection.ECLIPSELINK_READ_CONNECTIONS_SHARED;
+	public static final String READ_CONNECTIONS_SHARED_KEY = EclipseLinkConnection.ECLIPSELINK_READ_CONNECTIONS_SHARED;
 	public static final Boolean READ_CONNECTIONS_SHARED_TEST_VALUE = false;
 	public static final Boolean READ_CONNECTIONS_SHARED_TEST_VALUE_2 = ! READ_CONNECTIONS_SHARED_TEST_VALUE;
 	
-	public static final String READ_CONNECTIONS_MIN_KEY = Connection.ECLIPSELINK_READ_CONNECTIONS_MIN;
+	public static final String READ_CONNECTIONS_MIN_KEY = EclipseLinkConnection.ECLIPSELINK_READ_CONNECTIONS_MIN;
 	public static final Integer READ_CONNECTIONS_MIN_TEST_VALUE = 100;
 	public static final Integer READ_CONNECTIONS_MIN_TEST_VALUE_2 = 200;
 	
-	public static final String READ_CONNECTIONS_MAX_KEY = Connection.ECLIPSELINK_READ_CONNECTIONS_MAX;
+	public static final String READ_CONNECTIONS_MAX_KEY = EclipseLinkConnection.ECLIPSELINK_READ_CONNECTIONS_MAX;
 	public static final Integer READ_CONNECTIONS_MAX_TEST_VALUE = 100;
 	public static final Integer READ_CONNECTIONS_MAX_TEST_VALUE_2 = 200;
 	
-	public static final String WRITE_CONNECTIONS_MIN_KEY = Connection.ECLIPSELINK_WRITE_CONNECTIONS_MIN;
+	public static final String WRITE_CONNECTIONS_MIN_KEY = EclipseLinkConnection.ECLIPSELINK_WRITE_CONNECTIONS_MIN;
 	public static final Integer WRITE_CONNECTIONS_MIN_TEST_VALUE = 100;
 	public static final Integer WRITE_CONNECTIONS_MIN_TEST_VALUE_2 = 200;
 	
-	public static final String WRITE_CONNECTIONS_MAX_KEY = Connection.ECLIPSELINK_WRITE_CONNECTIONS_MAX;
+	public static final String WRITE_CONNECTIONS_MAX_KEY = EclipseLinkConnection.ECLIPSELINK_WRITE_CONNECTIONS_MAX;
 	public static final Integer WRITE_CONNECTIONS_MAX_TEST_VALUE = 100;
 	public static final Integer WRITE_CONNECTIONS_MAX_TEST_VALUE_2 = 200;
 
-	public static final String EXCLUSIVE_CONNECTION_MODE_KEY = Connection.ECLIPSELINK_EXCLUSIVE_CONNECTION_MODE;
+	public static final String EXCLUSIVE_CONNECTION_MODE_KEY = EclipseLinkConnection.ECLIPSELINK_EXCLUSIVE_CONNECTION_MODE;
 	public static final ExclusiveConnectionMode EXCLUSIVE_CONNECTION_MODE_TEST_VALUE = ExclusiveConnectionMode.always;
 	public static final ExclusiveConnectionMode EXCLUSIVE_CONNECTION_MODE_TEST_VALUE_2 = ExclusiveConnectionMode.isolated;
 	
-	public static final String LAZY_CONNECTION_KEY = Connection.ECLIPSELINK_LAZY_CONNECTION;
+	public static final String LAZY_CONNECTION_KEY = EclipseLinkConnection.ECLIPSELINK_LAZY_CONNECTION;
 	public static final Boolean LAZY_CONNECTION_TEST_VALUE = false;
 	public static final Boolean LAZY_CONNECTION_TEST_VALUE_2 = ! LAZY_CONNECTION_TEST_VALUE;
 	
@@ -106,25 +106,25 @@ public class EclipseLinkConnectionTests extends EclipseLinkPersistenceUnitTestCa
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.connection = this.subject.getConnection();
+		this.connection = this.subject.getEclipseLinkConnection();
 		PropertyChangeListener propertyChangeListener = this.buildPropertyChangeListener();
 		
-		this.connection.addPropertyChangeListener(Connection.NATIVE_SQL_PROPERTY, propertyChangeListener);
-		this.connection.addPropertyChangeListener(Connection.BATCH_WRITING_PROPERTY, propertyChangeListener);
-		this.connection.addPropertyChangeListener(Connection.CACHE_STATEMENTS_PROPERTY, propertyChangeListener);
-		this.connection.addPropertyChangeListener(Connection.CACHE_STATEMENTS_SIZE_PROPERTY, propertyChangeListener);
-		this.connection.addPropertyChangeListener(Connection.DRIVER_PROPERTY, propertyChangeListener);
-		this.connection.addPropertyChangeListener(Connection.URL_PROPERTY, propertyChangeListener);
-		this.connection.addPropertyChangeListener(Connection.USER_PROPERTY, propertyChangeListener);
-		this.connection.addPropertyChangeListener(Connection.PASSWORD_PROPERTY, propertyChangeListener);
-		this.connection.addPropertyChangeListener(Connection.BIND_PARAMETERS_PROPERTY, propertyChangeListener);
-		this.connection.addPropertyChangeListener(Connection.READ_CONNECTIONS_SHARED_PROPERTY, propertyChangeListener);
-		this.connection.addPropertyChangeListener(Connection.READ_CONNECTIONS_MIN_PROPERTY, propertyChangeListener);
-		this.connection.addPropertyChangeListener(Connection.READ_CONNECTIONS_MAX_PROPERTY, propertyChangeListener);
-		this.connection.addPropertyChangeListener(Connection.WRITE_CONNECTIONS_MIN_PROPERTY, propertyChangeListener);
-		this.connection.addPropertyChangeListener(Connection.WRITE_CONNECTIONS_MAX_PROPERTY, propertyChangeListener);
-		this.connection.addPropertyChangeListener(Connection.EXCLUSIVE_CONNECTION_MODE_PROPERTY, propertyChangeListener);
-		this.connection.addPropertyChangeListener(Connection.LAZY_CONNECTION_PROPERTY, propertyChangeListener);
+		this.connection.addPropertyChangeListener(EclipseLinkConnection.NATIVE_SQL_PROPERTY, propertyChangeListener);
+		this.connection.addPropertyChangeListener(EclipseLinkConnection.BATCH_WRITING_PROPERTY, propertyChangeListener);
+		this.connection.addPropertyChangeListener(EclipseLinkConnection.CACHE_STATEMENTS_PROPERTY, propertyChangeListener);
+		this.connection.addPropertyChangeListener(EclipseLinkConnection.CACHE_STATEMENTS_SIZE_PROPERTY, propertyChangeListener);
+		this.connection.addPropertyChangeListener(EclipseLinkConnection.DRIVER_PROPERTY, propertyChangeListener);
+		this.connection.addPropertyChangeListener(EclipseLinkConnection.URL_PROPERTY, propertyChangeListener);
+		this.connection.addPropertyChangeListener(EclipseLinkConnection.USER_PROPERTY, propertyChangeListener);
+		this.connection.addPropertyChangeListener(EclipseLinkConnection.PASSWORD_PROPERTY, propertyChangeListener);
+		this.connection.addPropertyChangeListener(EclipseLinkConnection.BIND_PARAMETERS_PROPERTY, propertyChangeListener);
+		this.connection.addPropertyChangeListener(EclipseLinkConnection.READ_CONNECTIONS_SHARED_PROPERTY, propertyChangeListener);
+		this.connection.addPropertyChangeListener(EclipseLinkConnection.READ_CONNECTIONS_MIN_PROPERTY, propertyChangeListener);
+		this.connection.addPropertyChangeListener(EclipseLinkConnection.READ_CONNECTIONS_MAX_PROPERTY, propertyChangeListener);
+		this.connection.addPropertyChangeListener(EclipseLinkConnection.WRITE_CONNECTIONS_MIN_PROPERTY, propertyChangeListener);
+		this.connection.addPropertyChangeListener(EclipseLinkConnection.WRITE_CONNECTIONS_MAX_PROPERTY, propertyChangeListener);
+		this.connection.addPropertyChangeListener(EclipseLinkConnection.EXCLUSIVE_CONNECTION_MODE_PROPERTY, propertyChangeListener);
+		this.connection.addPropertyChangeListener(EclipseLinkConnection.LAZY_CONNECTION_PROPERTY, propertyChangeListener);
 		
 		this.clearEvent();
 	}
@@ -175,37 +175,37 @@ public class EclipseLinkConnectionTests extends EclipseLinkPersistenceUnitTestCa
 	// ********** get/set property **********
 	@Override
 	protected void setProperty(String propertyName, Object newValue) throws Exception {
-		if (propertyName.equals(Connection.NATIVE_SQL_PROPERTY))
+		if (propertyName.equals(EclipseLinkConnection.NATIVE_SQL_PROPERTY))
 			this.connection.setNativeSql((Boolean) newValue);
-		else if (propertyName.equals(Connection.BATCH_WRITING_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.BATCH_WRITING_PROPERTY))
 			this.connection.setBatchWriting((BatchWriting) newValue);
-		else if (propertyName.equals(Connection.CACHE_STATEMENTS_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.CACHE_STATEMENTS_PROPERTY))
 			this.connection.setCacheStatements((Boolean) newValue);
-		else if (propertyName.equals(Connection.CACHE_STATEMENTS_SIZE_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.CACHE_STATEMENTS_SIZE_PROPERTY))
 			this.connection.setCacheStatementsSize((Integer) newValue);
-		else if (propertyName.equals(Connection.DRIVER_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.DRIVER_PROPERTY))
 			this.connection.setDriver((String) newValue);
-		else if (propertyName.equals(Connection.URL_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.URL_PROPERTY))
 			this.connection.setUrl((String) newValue);
-		else if (propertyName.equals(Connection.USER_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.USER_PROPERTY))
 			this.connection.setUser((String) newValue);
-		else if (propertyName.equals(Connection.PASSWORD_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.PASSWORD_PROPERTY))
 			this.connection.setPassword((String) newValue);
-		else if (propertyName.equals(Connection.BIND_PARAMETERS_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.BIND_PARAMETERS_PROPERTY))
 			this.connection.setBindParameters((Boolean) newValue);
-		else if (propertyName.equals(Connection.READ_CONNECTIONS_SHARED_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.READ_CONNECTIONS_SHARED_PROPERTY))
 			this.connection.setReadConnectionsShared((Boolean) newValue);
-		else if (propertyName.equals(Connection.READ_CONNECTIONS_MIN_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.READ_CONNECTIONS_MIN_PROPERTY))
 			this.connection.setReadConnectionsMin((Integer) newValue);
-		else if (propertyName.equals(Connection.READ_CONNECTIONS_MAX_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.READ_CONNECTIONS_MAX_PROPERTY))
 			this.connection.setReadConnectionsMax((Integer) newValue);
-		else if (propertyName.equals(Connection.WRITE_CONNECTIONS_MIN_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.WRITE_CONNECTIONS_MIN_PROPERTY))
 			this.connection.setWriteConnectionsMin((Integer) newValue);
-		else if (propertyName.equals(Connection.WRITE_CONNECTIONS_MAX_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.WRITE_CONNECTIONS_MAX_PROPERTY))
 			this.connection.setWriteConnectionsMax((Integer) newValue);
-		else if (propertyName.equals(Connection.EXCLUSIVE_CONNECTION_MODE_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.EXCLUSIVE_CONNECTION_MODE_PROPERTY))
 			this.connection.setExclusiveConnectionMode((ExclusiveConnectionMode) newValue);
-		else if (propertyName.equals(Connection.LAZY_CONNECTION_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.LAZY_CONNECTION_PROPERTY))
 			this.connection.setLazyConnection((Boolean) newValue);
 		else
 			this.throwMissingDefinition("setProperty", propertyName);
@@ -214,37 +214,37 @@ public class EclipseLinkConnectionTests extends EclipseLinkPersistenceUnitTestCa
 	@Override
 	protected Object getProperty(String propertyName) throws NoSuchFieldException {
 		Object modelValue = null;
-		if (propertyName.equals(Connection.NATIVE_SQL_PROPERTY))
+		if (propertyName.equals(EclipseLinkConnection.NATIVE_SQL_PROPERTY))
 			modelValue = this.connection.getNativeSql();
-		else if (propertyName.equals(Connection.BATCH_WRITING_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.BATCH_WRITING_PROPERTY))
 			modelValue = this.connection.getBatchWriting();
-		else if (propertyName.equals(Connection.CACHE_STATEMENTS_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.CACHE_STATEMENTS_PROPERTY))
 			modelValue = this.connection.getCacheStatements();
-		else if (propertyName.equals(Connection.CACHE_STATEMENTS_SIZE_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.CACHE_STATEMENTS_SIZE_PROPERTY))
 			modelValue = this.connection.getCacheStatementsSize();
-		else if (propertyName.equals(Connection.DRIVER_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.DRIVER_PROPERTY))
 			modelValue = this.connection.getDriver();
-		else if (propertyName.equals(Connection.URL_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.URL_PROPERTY))
 			modelValue = this.connection.getUrl();
-		else if (propertyName.equals(Connection.USER_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.USER_PROPERTY))
 			modelValue = this.connection.getUser();
-		else if (propertyName.equals(Connection.PASSWORD_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.PASSWORD_PROPERTY))
 			modelValue = this.connection.getPassword();
-		else if (propertyName.equals(Connection.BIND_PARAMETERS_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.BIND_PARAMETERS_PROPERTY))
 			modelValue = this.connection.getBindParameters();
-		else if (propertyName.equals(Connection.READ_CONNECTIONS_SHARED_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.READ_CONNECTIONS_SHARED_PROPERTY))
 			modelValue = this.connection.getReadConnectionsShared();
-		else if (propertyName.equals(Connection.READ_CONNECTIONS_MIN_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.READ_CONNECTIONS_MIN_PROPERTY))
 			modelValue = this.connection.getReadConnectionsMin();
-		else if (propertyName.equals(Connection.READ_CONNECTIONS_MAX_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.READ_CONNECTIONS_MAX_PROPERTY))
 			modelValue = this.connection.getReadConnectionsMax();
-		else if (propertyName.equals(Connection.WRITE_CONNECTIONS_MIN_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.WRITE_CONNECTIONS_MIN_PROPERTY))
 			modelValue = this.connection.getWriteConnectionsMin();
-		else if (propertyName.equals(Connection.WRITE_CONNECTIONS_MAX_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.WRITE_CONNECTIONS_MAX_PROPERTY))
 			modelValue = this.connection.getWriteConnectionsMax();
-		else if (propertyName.equals(Connection.EXCLUSIVE_CONNECTION_MODE_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.EXCLUSIVE_CONNECTION_MODE_PROPERTY))
 			modelValue = this.connection.getExclusiveConnectionMode();
-		else if (propertyName.equals(Connection.LAZY_CONNECTION_PROPERTY))
+		else if (propertyName.equals(EclipseLinkConnection.LAZY_CONNECTION_PROPERTY))
 			modelValue = this.connection.getLazyConnection();
 		else
 			this.throwMissingDefinition("getProperty", propertyName);

@@ -13,7 +13,7 @@ import java.util.Properties;
 
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Connection;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConnection;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.OutputMode;
 
 /**
@@ -41,16 +41,16 @@ public class EclipseLinkDDLGenerator extends AbstractEclipseLinkDDLGenerator
 		ConnectionProfile cp = this.getConnectionProfile();
 
 		this.putProperty(properties, 
-			Connection.ECLIPSELINK_DRIVER,
+			EclipseLinkConnection.ECLIPSELINK_DRIVER,
 			(cp == null) ? "" : cp.getDriverClassName()); //$NON-NLS-1$
 		this.putProperty(properties,
-			Connection.ECLIPSELINK_URL,
+			EclipseLinkConnection.ECLIPSELINK_URL,
 			(cp == null) ? "" : cp.getURL()); //$NON-NLS-1$
 		this.putProperty(properties,
-			Connection.ECLIPSELINK_USER,
+			EclipseLinkConnection.ECLIPSELINK_USER,
 			(cp == null) ? "" : cp.getUserName()); //$NON-NLS-1$
 		this.putProperty(properties,
-			Connection.ECLIPSELINK_PASSWORD,
+			EclipseLinkConnection.ECLIPSELINK_PASSWORD,
 			(cp == null) ? "" : cp.getUserPassword()); //$NON-NLS-1$
 	}
 }

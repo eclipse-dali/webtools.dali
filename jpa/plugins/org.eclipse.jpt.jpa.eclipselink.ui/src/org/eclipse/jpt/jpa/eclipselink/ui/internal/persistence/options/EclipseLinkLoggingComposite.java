@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.LoggingLevel;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
@@ -28,7 +28,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
-public class EclipseLinkLoggingComposite<T extends Logging>
+public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 	extends Pane<T>
 {
 	public EclipseLinkLoggingComposite(
@@ -106,12 +106,12 @@ public class EclipseLinkLoggingComposite<T extends Logging>
 
 	//************* logging level ************
 
-	private EnumFormComboViewer<Logging, LoggingLevel> addLoggingLevelCombo(Composite container) {
-		return new EnumFormComboViewer<Logging, LoggingLevel>(this, container) {
+	private EnumFormComboViewer<EclipseLinkLogging, LoggingLevel> addLoggingLevelCombo(Composite container) {
+		return new EnumFormComboViewer<EclipseLinkLogging, LoggingLevel>(this, container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(Logging.LEVEL_PROPERTY);
+				propertyNames.add(EclipseLinkLogging.LEVEL_PROPERTY);
 			}
 
 			@Override
@@ -174,13 +174,13 @@ public class EclipseLinkLoggingComposite<T extends Logging>
 
 	//************* logging level ************
 
-	private FileChooserComboPane<Logging> addLogFileLocationComposite(Composite parent) {
-		return new FileChooserComboPane<Logging>(this, parent) {
+	private FileChooserComboPane<EclipseLinkLogging> addLogFileLocationComposite(Composite parent) {
+		return new FileChooserComboPane<EclipseLinkLogging>(this, parent) {
 	
 			@Override
 			protected ModifiablePropertyValueModel<String> buildTextHolder() {
-				return new PropertyAspectAdapter<Logging, String>(
-										getSubjectHolder(), Logging.LOG_FILE_LOCATION_PROPERTY) {
+				return new PropertyAspectAdapter<EclipseLinkLogging, String>(
+										getSubjectHolder(), EclipseLinkLogging.LOG_FILE_LOCATION_PROPERTY) {
 					@Override
 					protected String buildValue_() {
 	
@@ -202,7 +202,7 @@ public class EclipseLinkLoggingComposite<T extends Logging>
 				};
 			}
 	
-			private String defaultValue(Logging subject) {
+			private String defaultValue(EclipseLinkLogging subject) {
 				String defaultValue = subject.getDefaultLogFileLocation();
 	
 				if (defaultValue != null) {
@@ -237,7 +237,7 @@ public class EclipseLinkLoggingComposite<T extends Logging>
 	//************* timestamp ************
 	
 	private ModifiablePropertyValueModel<Boolean> buildTimestampHolder() {
-		return new PropertyAspectAdapter<Logging, Boolean>(getSubjectHolder(), Logging.TIMESTAMP_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkLogging, Boolean>(getSubjectHolder(), EclipseLinkLogging.TIMESTAMP_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getTimestamp();
@@ -263,9 +263,9 @@ public class EclipseLinkLoggingComposite<T extends Logging>
 		};
 	}
 	private PropertyValueModel<Boolean> buildDefaultTimestampHolder() {
-		return new PropertyAspectAdapter<Logging, Boolean>(
+		return new PropertyAspectAdapter<EclipseLinkLogging, Boolean>(
 			getSubjectHolder(),
-			Logging.TIMESTAMP_PROPERTY)
+			EclipseLinkLogging.TIMESTAMP_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -281,7 +281,7 @@ public class EclipseLinkLoggingComposite<T extends Logging>
 	//************* thread ************
 	
 	private ModifiablePropertyValueModel<Boolean> buildThreadHolder() {
-		return new PropertyAspectAdapter<Logging, Boolean>(getSubjectHolder(), Logging.THREAD_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkLogging, Boolean>(getSubjectHolder(), EclipseLinkLogging.THREAD_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getThread();
@@ -308,9 +308,9 @@ public class EclipseLinkLoggingComposite<T extends Logging>
 	}
 	
 	private PropertyValueModel<Boolean> buildDefaultThreadHolder() {
-		return new PropertyAspectAdapter<Logging, Boolean>(
+		return new PropertyAspectAdapter<EclipseLinkLogging, Boolean>(
 			getSubjectHolder(),
-			Logging.THREAD_PROPERTY)
+			EclipseLinkLogging.THREAD_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -326,7 +326,7 @@ public class EclipseLinkLoggingComposite<T extends Logging>
 	//************* session ************
 
 	private ModifiablePropertyValueModel<Boolean> buildSessionHolder() {
-		return new PropertyAspectAdapter<Logging, Boolean>(getSubjectHolder(), Logging.SESSION_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkLogging, Boolean>(getSubjectHolder(), EclipseLinkLogging.SESSION_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSession();
@@ -353,9 +353,9 @@ public class EclipseLinkLoggingComposite<T extends Logging>
 	}
 	
 	private PropertyValueModel<Boolean> buildDefaultSessionHolder() {
-		return new PropertyAspectAdapter<Logging, Boolean>(
+		return new PropertyAspectAdapter<EclipseLinkLogging, Boolean>(
 			getSubjectHolder(),
-			Logging.SESSION_PROPERTY)
+			EclipseLinkLogging.SESSION_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -371,7 +371,7 @@ public class EclipseLinkLoggingComposite<T extends Logging>
 	//********** exceptions ************
 	
 	private ModifiablePropertyValueModel<Boolean> buildExceptionsHolder() {
-		return new PropertyAspectAdapter<Logging, Boolean>(getSubjectHolder(), Logging.EXCEPTIONS_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkLogging, Boolean>(getSubjectHolder(), EclipseLinkLogging.EXCEPTIONS_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getExceptions();
@@ -398,9 +398,9 @@ public class EclipseLinkLoggingComposite<T extends Logging>
 	}
 	
 	private PropertyValueModel<Boolean> buildDefaultExceptionsHolder() {
-		return new PropertyAspectAdapter<Logging, Boolean>(
+		return new PropertyAspectAdapter<EclipseLinkLogging, Boolean>(
 			getSubjectHolder(),
-			Logging.EXCEPTIONS_PROPERTY)
+			EclipseLinkLogging.EXCEPTIONS_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {

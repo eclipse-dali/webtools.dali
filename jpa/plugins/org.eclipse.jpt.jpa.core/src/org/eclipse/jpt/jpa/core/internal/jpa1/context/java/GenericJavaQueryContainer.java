@@ -286,7 +286,7 @@ public class GenericJavaQueryContainer
 	}
 
 	protected JavaNamedStoredProcedureQuery2_1 buildNamedStoredProcedureQuery(NamedStoredProcedureQuery2_1Annotation namedStoredProcedureQueryAnnotation) {
-		return this.getJpaFactory2_1().buildJavaNamedStoredProcedureQuery2_1(this, namedStoredProcedureQueryAnnotation);
+		return this.getJpaFactory2_1().buildJavaNamedStoredProcedureQuery(this, namedStoredProcedureQueryAnnotation);
 	}
 
 	protected void syncNamedStoredProcedureQueries() {

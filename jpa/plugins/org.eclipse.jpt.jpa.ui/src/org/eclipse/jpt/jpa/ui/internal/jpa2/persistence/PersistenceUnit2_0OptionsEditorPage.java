@@ -39,7 +39,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.JpaOptions2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.Options2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.ValidationMode;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
@@ -54,10 +54,10 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.progress.IProgressService;
 
 public class PersistenceUnit2_0OptionsEditorPage 
-	extends Pane<JpaOptions2_0>
+	extends Pane<Options2_0>
 {
 	public PersistenceUnit2_0OptionsEditorPage(
-			PropertyValueModel<JpaOptions2_0> subjectModel,
+			PropertyValueModel<Options2_0> subjectModel,
             Composite parent,
             WidgetFactory widgetFactory,
             ResourceManager resourceManager) {
@@ -114,14 +114,14 @@ public class PersistenceUnit2_0OptionsEditorPage
 	//************ lock timeout **********
 
 	private void addLockTimeoutCombo(Composite parent) {
-		new IntegerCombo<JpaOptions2_0>(this, parent) {
+		new IntegerCombo<Options2_0>(this, parent) {
 			@Override
 			protected String getHelpId() {
 				return null;		// TODO
 			}
 			@Override
 			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<JpaOptions2_0, Integer>(getSubjectHolder()) {
+				return new PropertyAspectAdapter<Options2_0, Integer>(getSubjectHolder()) {
 					@Override
 					protected Integer buildValue_() {
 						return this.subject.getDefaultLockTimeout();
@@ -131,7 +131,7 @@ public class PersistenceUnit2_0OptionsEditorPage
 
 			@Override
 			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<JpaOptions2_0, Integer>(getSubjectHolder(), JpaOptions2_0.LOCK_TIMEOUT_PROPERTY) {
+				return new PropertyAspectAdapter<Options2_0, Integer>(getSubjectHolder(), Options2_0.LOCK_TIMEOUT_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						return this.subject.getLockTimeout();
@@ -150,14 +150,14 @@ public class PersistenceUnit2_0OptionsEditorPage
 	//************ query timeout **********
 
 	private void addQueryTimeoutCombo(Composite parent) {
-		new IntegerCombo<JpaOptions2_0>(this, parent) {		
+		new IntegerCombo<Options2_0>(this, parent) {		
 			@Override
 			protected String getHelpId() {
 				return null;		// TODO
 			}
 			@Override
 			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<JpaOptions2_0, Integer>(getSubjectHolder()) {
+				return new PropertyAspectAdapter<Options2_0, Integer>(getSubjectHolder()) {
 					@Override
 					protected Integer buildValue_() {
 						return this.subject.getDefaultQueryTimeout();
@@ -167,7 +167,7 @@ public class PersistenceUnit2_0OptionsEditorPage
 
 			@Override
 			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<JpaOptions2_0, Integer>(getSubjectHolder(), JpaOptions2_0.QUERY_TIMEOUT_PROPERTY) {
+				return new PropertyAspectAdapter<Options2_0, Integer>(getSubjectHolder(), Options2_0.QUERY_TIMEOUT_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						return this.subject.getQueryTimeout();
@@ -186,7 +186,7 @@ public class PersistenceUnit2_0OptionsEditorPage
 	// ********** ValidationGroupPrePersists **********
 
 	private void addPrePersistListPane(Composite parent) {
-		new AddRemoveListPane<JpaOptions2_0, String>(
+		new AddRemoveListPane<Options2_0, String>(
 			this,
 			parent,
 			this.buildPrePersistAdapter(),
@@ -216,7 +216,7 @@ public class PersistenceUnit2_0OptionsEditorPage
 	}
 
 	private ListValueModel<String> buildPrePersistListModel() {
-		return new ListAspectAdapter<JpaOptions2_0, String>(getSubjectHolder(), JpaOptions2_0.VALIDATION_GROUP_PRE_PERSIST_LIST) {
+		return new ListAspectAdapter<Options2_0, String>(getSubjectHolder(), Options2_0.VALIDATION_GROUP_PRE_PERSIST_LIST) {
 			@Override
 			protected ListIterable<String> getListIterable() {
 				return subject.getValidationGroupPrePersists();
@@ -246,7 +246,7 @@ public class PersistenceUnit2_0OptionsEditorPage
 	// ********** ValidationGroupPreUpdates **********
 
 	private void addPreUpdateListPane(Composite parent) {
-		new AddRemoveListPane<JpaOptions2_0, String>(
+		new AddRemoveListPane<Options2_0, String>(
 			this,
 			parent,
 			this.buildPreUpdateAdapter(),
@@ -276,7 +276,7 @@ public class PersistenceUnit2_0OptionsEditorPage
 	}
 
 	private ListValueModel<String> buildPreUpdateListModel() {
-		return new ListAspectAdapter<JpaOptions2_0, String>(getSubjectHolder(), JpaOptions2_0.VALIDATION_GROUP_PRE_UPDATE_LIST) {
+		return new ListAspectAdapter<Options2_0, String>(getSubjectHolder(), Options2_0.VALIDATION_GROUP_PRE_UPDATE_LIST) {
 			@Override
 			protected ListIterable<String> getListIterable() {
 				return subject.getValidationGroupPreUpdates();
@@ -306,7 +306,7 @@ public class PersistenceUnit2_0OptionsEditorPage
 	// ********** ValidationGroupPreRemoves **********
 
 	private void addPreRemoveListPane(Composite parent) {
-		new AddRemoveListPane<JpaOptions2_0, String>(
+		new AddRemoveListPane<Options2_0, String>(
 			this,
 			parent,
 			this.buildPreRemoveAdapter(),
@@ -336,7 +336,7 @@ public class PersistenceUnit2_0OptionsEditorPage
 	}
 
 	private ListValueModel<String> buildPreRemoveListModel() {
-		return new ListAspectAdapter<JpaOptions2_0, String>(getSubjectHolder(), JpaOptions2_0.VALIDATION_GROUP_PRE_REMOVE_LIST) {
+		return new ListAspectAdapter<Options2_0, String>(getSubjectHolder(), Options2_0.VALIDATION_GROUP_PRE_REMOVE_LIST) {
 			@Override
 			protected ListIterable<String> getListIterable() {
 				return subject.getValidationGroupPreRemoves();
@@ -366,7 +366,7 @@ public class PersistenceUnit2_0OptionsEditorPage
 	// ********** Private methods **********
 
 	private PropertyValueModel<PersistenceUnit2_0> buildPersistenceUnit2_0Model() {
-		return new PropertyAspectAdapter<JpaOptions2_0, PersistenceUnit2_0>(this.getSubjectHolder()) {
+		return new PropertyAspectAdapter<Options2_0, PersistenceUnit2_0>(this.getSubjectHolder()) {
 			@Override
 			protected PersistenceUnit2_0 buildValue_() {
 				return (PersistenceUnit2_0) this.subject.getPersistenceUnit();

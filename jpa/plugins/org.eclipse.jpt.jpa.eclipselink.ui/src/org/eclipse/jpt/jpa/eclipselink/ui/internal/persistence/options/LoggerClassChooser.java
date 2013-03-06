@@ -31,7 +31,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logger;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
@@ -41,7 +41,7 @@ import com.ibm.icu.text.Collator;
 /**
  *  LoggerComposite
  */
-public class LoggerClassChooser extends ClassChooserComboPane<Logging>
+public class LoggerClassChooser extends ClassChooserComboPane<EclipseLinkLogging>
 {
 	/**
 	 * Creates a new <code>LoggerComposite</code>.
@@ -49,7 +49,7 @@ public class LoggerClassChooser extends ClassChooserComboPane<Logging>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public LoggerClassChooser(Pane<? extends Logging> parentPane,
+	public LoggerClassChooser(Pane<? extends EclipseLinkLogging> parentPane,
 	                           Composite parent,
 	                           Hyperlink hyperlink) {
 
@@ -71,12 +71,12 @@ public class LoggerClassChooser extends ClassChooserComboPane<Logging>
     
     @Override
     protected String getSuperInterfaceName() {
-    	return Logging.ECLIPSELINK_LOGGER_CLASS_NAME;
+    	return EclipseLinkLogging.ECLIPSELINK_LOGGER_CLASS_NAME;
     }
     
 	@Override
 	protected ModifiablePropertyValueModel<String> buildTextHolder() {
-		return new PropertyAspectAdapter<Logging, String>(this.getSubjectHolder(), Logging.LOGGER_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkLogging, String>(this.getSubjectHolder(), EclipseLinkLogging.LOGGER_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 
@@ -99,7 +99,7 @@ public class LoggerClassChooser extends ClassChooserComboPane<Logging>
 	}
 
 	private PropertyValueModel<String> buildDefaultLoggerHolder() {
-		return new PropertyAspectAdapter<Logging, String>(this.getSubjectHolder(), Logging.DEFAULT_LOGGER) {
+		return new PropertyAspectAdapter<EclipseLinkLogging, String>(this.getSubjectHolder(), EclipseLinkLogging.DEFAULT_LOGGER) {
 			@Override
 			protected String buildValue_() {
 				return LoggerClassChooser.this.getDefaultValue(this.subject);
@@ -183,7 +183,7 @@ public class LoggerClassChooser extends ClassChooserComboPane<Logging>
 		);
 	}
 
-	private String getDefaultValue(Logging subject) {
+	private String getDefaultValue(EclipseLinkLogging subject) {
 		String defaultValue = subject.getDefaultLogger();
 
 		if (defaultValue != null) {

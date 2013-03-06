@@ -44,7 +44,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJav
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaTransformationMappingDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaVariableOneToOneMappingDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaVersionMappingDefinition;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml1_1Definition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition1_1;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceXmlDefinition;
 
@@ -85,7 +85,7 @@ public class EclipseLink1_1JpaPlatformProvider
 		JarDefinition.instance().getResourceType(),
 		GenericPersistenceXmlDefinition.instance().getResourceType(),
 		GenericOrmXmlDefinition.instance().getResourceType(),
-		org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml1_1Definition.instance().getResourceType()
+		org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition1_1.instance().getResourceType()
 	};
 
 	@Override
@@ -174,6 +174,6 @@ public class EclipseLink1_1JpaPlatformProvider
 		EclipseLinkPersistenceXmlDefinition.instance(),
 		GenericOrmXmlDefinition.instance(),
 		EclipseLinkOrmXmlDefinition.instance(),
-		EclipseLinkOrmXml1_1Definition.instance()
+		EclipseLinkOrmXmlDefinition1_1.instance()
 	};
 }

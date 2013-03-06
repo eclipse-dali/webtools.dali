@@ -122,7 +122,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1
 	}
 
 	protected JavaStoredProcedureParameter2_1 buildParameter(StoredProcedureParameter2_1Annotation parameterAnnotation) {
-		return this.getJpaFactory2_1().buildJavaStoredProcedureParameter2_1(this, parameterAnnotation);
+		return this.getJpaFactory2_1().buildJavaStoredProcedureParameter(this, parameterAnnotation);
 	}
 
 	protected void syncParameters() {
