@@ -25,6 +25,7 @@ import org.eclipse.jpt.common.utility.collection.Bag;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.ReverseComparator;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.EmptyBag;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
@@ -266,7 +267,7 @@ public class CollectionToolsTests
 	}
 
 	public void testBagObjectArray_Empty() {
-		Bag<String> b = CollectionTools.bag(Bag.Empty.<String>instance());
+		Bag<String> b = CollectionTools.bag(EmptyBag.<String>instance());
 		assertEquals(0, b.size());
 	}
 

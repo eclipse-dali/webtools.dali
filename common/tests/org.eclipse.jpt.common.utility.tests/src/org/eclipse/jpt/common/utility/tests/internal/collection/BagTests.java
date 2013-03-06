@@ -12,6 +12,7 @@ package org.eclipse.jpt.common.utility.tests.internal.collection;
 import junit.framework.TestCase;
 
 import org.eclipse.jpt.common.utility.collection.Bag;
+import org.eclipse.jpt.common.utility.internal.collection.EmptyBag;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
@@ -23,37 +24,37 @@ public class BagTests extends TestCase {
 	}
 
 	public void testEmptyBag_iterator() throws Exception {
-		assertFalse(Bag.Empty.instance().iterator().hasNext());
+		assertFalse(EmptyBag.instance().iterator().hasNext());
 	}
 
 	public void testEmptyBag_size() throws Exception {
-		assertEquals(0, Bag.Empty.instance().size());
+		assertEquals(0, EmptyBag.instance().size());
 	}
 
 	public void testEmptyBag_uniqueIterator() throws Exception {
-		assertFalse(Bag.Empty.instance().uniqueIterator().hasNext());
+		assertFalse(EmptyBag.instance().uniqueIterator().hasNext());
 	}
 
 	public void testEmptyBag_uniqueCount() throws Exception {
-		assertEquals(0, Bag.Empty.instance().uniqueCount());
+		assertEquals(0, EmptyBag.instance().uniqueCount());
 	}
 
 	public void testEmptyBag_count() throws Exception {
-		assertEquals(0, Bag.Empty.instance().count("foo"));
+		assertEquals(0, EmptyBag.instance().count("foo"));
 	}
 
 	public void testEmptyBag_entries() throws Exception {
-		assertFalse(Bag.Empty.instance().entries().hasNext());
+		assertFalse(EmptyBag.instance().entries().hasNext());
 	}
 
 	public void testEmptyBag_remove() throws Exception {
-		assertFalse(Bag.Empty.instance().remove("foo", 3));
+		assertFalse(EmptyBag.instance().remove("foo", 3));
 	}
 
 	public void testEmptyBag_add() throws Exception {
 		boolean exCaught = false;
 		try {
-			Bag.Empty.instance().add("foo", 3);
+			EmptyBag.instance().add("foo", 3);
 			fail();
 		} catch (UnsupportedOperationException ex) {
 			exCaught = true;
@@ -62,22 +63,22 @@ public class BagTests extends TestCase {
 	}
 
 	public void testEmptyBag_equals() throws Exception {
-		assertTrue(Bag.Empty.instance().equals(Bag.Empty.instance()));
-		assertFalse(Bag.Empty.instance().equals("foo"));
+		assertTrue(EmptyBag.instance().equals(EmptyBag.instance()));
+		assertFalse(EmptyBag.instance().equals("foo"));
 
 		Bag<Object> bag = new HashBag<Object>();
-		assertTrue(Bag.Empty.instance().equals(bag));
+		assertTrue(EmptyBag.instance().equals(bag));
 		bag.add("foo");
-		assertFalse(Bag.Empty.instance().equals(bag));
+		assertFalse(EmptyBag.instance().equals(bag));
 	}
 
 	public void testEmptyBag_hashCode() throws Exception {
-		assertEquals(0, Bag.Empty.instance().hashCode());
+		assertEquals(0, EmptyBag.instance().hashCode());
 	}
 
 	public void testEmptyBag_serialization() throws Exception {
-		Bag<?> xxx = TestTools.serialize(Bag.Empty.instance());
-		assertSame(Bag.Empty.instance(), xxx);
+		Bag<?> xxx = TestTools.serialize(EmptyBag.instance());
+		assertSame(EmptyBag.instance(), xxx);
 	}
 
 }
