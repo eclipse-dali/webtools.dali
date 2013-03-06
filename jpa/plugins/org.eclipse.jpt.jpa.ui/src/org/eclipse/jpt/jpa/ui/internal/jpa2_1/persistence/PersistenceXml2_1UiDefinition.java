@@ -48,6 +48,7 @@ public class PersistenceXml2_1UiDefinition
 		definitions.add(PersistenceUnitGeneralEditorPageDefinition.instance());
 		definitions.add(PersistenceUnitConnection2_0EditorPageDefinition.instance());
 		definitions.add(PersistenceUnitOptions2_0EditorPageDefinition.instance());
+		definitions.add(PersistenceUnitSchemaGeneration2_1EditorPageDefinition.instance());
 		definitions.add(PersistenceUnitPropertiesEditorPageDefinition.instance());
 	}
 
