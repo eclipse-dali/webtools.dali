@@ -81,7 +81,7 @@ public class FieldAccessor
 	}
 
 	public IJavaElement getJavaElement() {
-		PersistentType persistentType = this.getAttribute().getOwningPersistentType();
+		PersistentType persistentType = this.getAttribute().getDeclaringPersistentType();
 		if (persistentType instanceof JavaElementReference) {
 			IType jdtType = (IType) ((JavaElementReference) persistentType).getJavaElement();
 			return (jdtType == null) ? null : jdtType.getField(this.getAttribute().getName());

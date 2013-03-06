@@ -272,7 +272,7 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 	}
 
 	public OrmTypeMapping getTypeMapping() {
-		return this.getPersistentAttribute().getOwningTypeMapping();
+		return this.getPersistentAttribute().getDeclaringTypeMapping();
 	}
 
 	protected JavaSpecifiedPersistentAttribute getJavaPersistentAttribute() {
@@ -280,7 +280,7 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 	}
 
 	protected EntityMappings getEntityMappings() {
-		return this.getPersistentAttribute().getOwningPersistentType().getParent();
+		return this.getPersistentAttribute().getDeclaringPersistentType().getParent();
 	}
 
 	protected PersistentType resolvePersistentType(String className) {

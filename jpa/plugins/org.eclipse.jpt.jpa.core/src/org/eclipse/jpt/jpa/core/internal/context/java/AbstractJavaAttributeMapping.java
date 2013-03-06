@@ -139,7 +139,7 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 	}
 
 	public TypeMapping getTypeMapping() {
-		return this.getPersistentAttribute().getOwningTypeMapping();
+		return this.getPersistentAttribute().getDeclaringTypeMapping();
 	}
 
 	public JavaResourceAttribute getResourceAttribute() {

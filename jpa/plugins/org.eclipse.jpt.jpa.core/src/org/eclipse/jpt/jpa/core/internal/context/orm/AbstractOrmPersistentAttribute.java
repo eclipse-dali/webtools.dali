@@ -147,7 +147,7 @@ public abstract class AbstractOrmPersistentAttribute
 		OrmAttributeMapping old = this.mapping;
 		this.mapping = mapping;
 		this.firePropertyChanged(MAPPING_PROPERTY, old, mapping);
-		this.getOwningPersistentType().changeMapping(this, old, mapping);
+		this.getDeclaringPersistentType().changeMapping(this, old, mapping);
 	}
 
 	/**
@@ -207,7 +207,7 @@ public abstract class AbstractOrmPersistentAttribute
 		if (name == null) {
 			return null;
 		}
-		JavaPersistentType javaType = this.getOwningPersistentTypeJavaType();
+		JavaPersistentType javaType = this.getDeclaringPersistentTypeJavaType();
 		if (javaType == null) {
 			return null;
 		}
@@ -229,7 +229,7 @@ public abstract class AbstractOrmPersistentAttribute
 	}
 
 	protected JavaSpecifiedPersistentAttribute getCachedJavaAttribute() {
-		JavaResourceType javaResourceType = this.getOwningPersistentTypeJavaType().getJavaResourceType();
+		JavaResourceType javaResourceType = this.getDeclaringPersistentTypeJavaType().getJavaResourceType();
 		if (javaResourceType == null) {
 			return null; 
 		}
@@ -346,12 +346,12 @@ public abstract class AbstractOrmPersistentAttribute
 
 	protected JavaSpecifiedPersistentAttribute buildJavaPersistentField(JavaResourceField javaResourceField) {
 		// pass in our parent orm persistent type as the parent to the cached Java attribute...
-		return this.getJpaFactory().buildJavaPersistentField(this.getOwningPersistentType(), javaResourceField);
+		return this.getJpaFactory().buildJavaPersistentField(this.getDeclaringPersistentType(), javaResourceField);
 	}
 
 	protected JavaSpecifiedPersistentAttribute buildJavaPersistentProperty(JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter) {
 		// pass in our parent orm persistent type as the parent to the cached Java attribute...
-		return this.getJpaFactory().buildJavaPersistentProperty(this.getOwningPersistentType(), javaResourceGetter, javaResourceSetter);
+		return this.getJpaFactory().buildJavaPersistentProperty(this.getDeclaringPersistentType(), javaResourceGetter, javaResourceSetter);
 	}
 
 
@@ -381,7 +381,7 @@ public abstract class AbstractOrmPersistentAttribute
 	}
 
 	protected AccessType buildDefaultAccess() {
-		return this.getOwningPersistentType().getAccess();
+		return this.getDeclaringPersistentType().getAccess();
 	}
 
 	public AccessType getSpecifiedAccess() {
@@ -423,7 +423,7 @@ public abstract class AbstractOrmPersistentAttribute
 	}
 
 	public OrmPersistentAttribute removeFromXml() {
-		return this.getOwningPersistentType().removeAttributeFromXml(this);
+		return this.getDeclaringPersistentType().removeAttributeFromXml(this);
 	}
 
 	public OrmSpecifiedPersistentAttribute addToXml() {
@@ -513,7 +513,7 @@ public abstract class AbstractOrmPersistentAttribute
 			// if the name is empty or whitespace, there will already be an attribute mapping error
 			return;
 		}
-		JavaPersistentType javaType = this.getOwningPersistentTypeJavaType();
+		JavaPersistentType javaType = this.getDeclaringPersistentTypeJavaType();
 		if (javaType == null) {
 			// it's not very helpful to point out that we cannot resolve an attribute
 			// of an unresolved type (which already has its own error message)
@@ -577,16 +577,16 @@ public abstract class AbstractOrmPersistentAttribute
 
 	// ********** misc **********
 
-	public OrmPersistentType getOwningPersistentType() {
+	public OrmPersistentType getDeclaringPersistentType() {
 		return this.parent;
 	}
 
-	protected JavaPersistentType getOwningPersistentTypeJavaType() {
-		return this.getOwningPersistentType().getJavaPersistentType();
+	protected JavaPersistentType getDeclaringPersistentTypeJavaType() {
+		return this.getDeclaringPersistentType().getJavaPersistentType();
 	}
 
-	public OrmTypeMapping getOwningTypeMapping() {
-		return this.getOwningPersistentType().getMapping();
+	public OrmTypeMapping getDeclaringTypeMapping() {
+		return this.getDeclaringPersistentType().getMapping();
 	}
 
 	public String getPrimaryKeyColumnName() {
@@ -599,7 +599,7 @@ public abstract class AbstractOrmPersistentAttribute
 	
 	public String getTypeName(PersistentType contextType) {
 		while (contextType != null) {
-			if (contextType == this.getOwningPersistentType()) {
+			if (contextType == this.getDeclaringPersistentType()) {
 				return this.getTypeName();
 			}
 			TypeBinding typeBinding = contextType.getAttributeTypeBinding(this);

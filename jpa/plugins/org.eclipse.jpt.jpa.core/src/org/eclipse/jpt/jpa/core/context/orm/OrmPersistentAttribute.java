@@ -50,9 +50,9 @@ public interface OrmPersistentAttribute
 		}
 	}
 
-	OrmPersistentType getOwningPersistentType();
+	OrmPersistentType getDeclaringPersistentType();
 
-	OrmTypeMapping getOwningTypeMapping();
+	OrmTypeMapping getDeclaringTypeMapping();
 
 	/**
 	 * If the <code>orm.xml</code> attribute is <em>virtual</em>, the returned Java

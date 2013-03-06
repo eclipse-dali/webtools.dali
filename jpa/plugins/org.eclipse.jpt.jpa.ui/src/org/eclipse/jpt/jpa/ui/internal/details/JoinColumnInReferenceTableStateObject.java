@@ -44,7 +44,7 @@ public class JoinColumnInReferenceTableStateObject
 	}
 	
 	private TypeMapping getTypeMapping() {
-		return getOwner().getPersistentAttribute().getOwningTypeMapping();
+		return getOwner().getPersistentAttribute().getDeclaringTypeMapping();
 	}
 	
 	@Override

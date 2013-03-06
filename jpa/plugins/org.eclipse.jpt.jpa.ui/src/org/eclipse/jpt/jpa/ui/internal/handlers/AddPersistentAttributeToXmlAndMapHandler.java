@@ -57,7 +57,7 @@ public class AddPersistentAttributeToXmlAndMapHandler
 	}
 
 	private OrmPersistentAttribute addAndMap(OrmPersistentAttribute attribute, IWorkbenchWindow window) {
-		OrmPersistentType type = attribute.getOwningPersistentType();
+		OrmPersistentType type = attribute.getDeclaringPersistentType();
 		String attributeName = attribute.getName();
 		
 		AddPersistentAttributeToXmlAndMapDialog dialog = new AddPersistentAttributeToXmlAndMapDialog(window.getShell(), attribute);

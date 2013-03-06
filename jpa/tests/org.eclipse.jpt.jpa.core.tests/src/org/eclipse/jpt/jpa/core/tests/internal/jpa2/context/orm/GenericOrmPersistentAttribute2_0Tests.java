@@ -410,7 +410,7 @@ public class GenericOrmPersistentAttribute2_0Tests
 		
 		assertEquals(AccessType.FIELD, ormFieldAttribute.getAccess());
 		assertEquals(AccessType.PROPERTY, ormPropertyAttribute.getAccess());
-		assertEquals(AccessType.FIELD, javaPersistentAttribute.getOwningPersistentType().getAccess());
+		assertEquals(AccessType.FIELD, javaPersistentAttribute.getDeclaringPersistentType().getAccess());
 		assertTrue(ormFieldAttribute.isVirtual());
 		assertTrue(ormPropertyAttribute.isVirtual());
 		assertNotSame(javaPersistentAttribute, ormPropertyAttribute.getJavaPersistentAttribute());

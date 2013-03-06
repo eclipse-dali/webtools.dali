@@ -112,6 +112,6 @@ public class PersistentAttributeItemLabelProvider
 	}
 
 	protected PropertyValueModel<String> buildTypeTextModel() {
-		return new PersistentTypeItemLabelProvider.TextModel(this.item.getOwningPersistentType());
+		return new PersistentTypeItemLabelProvider.TextModel(this.item.getDeclaringPersistentType());
 	}
 }

@@ -99,15 +99,16 @@ public interface PersistentAttribute
 	// ********** misc **********
 
 	/**
-	 * Return the persistent type that owns (declares) the attribute.
+	 * Return the persistent type that declares the attribute.
 	 */
-	PersistentType getOwningPersistentType();
+	PersistentType getDeclaringPersistentType();
 	
 	/**
-	 * Return the attribute's owning persistent type's mapping (as opposed to
+	 * Return the attribute's declaring persistent type's mapping (as opposed to
 	 * the attribute's target type's mapping).
+	 * @see #getDeclaringPersistentType()
 	 */
-	TypeMapping getOwningTypeMapping();
+	TypeMapping getDeclaringTypeMapping();
 	
 	/**
 	 * Return the resolved, qualified name of the attribute's type

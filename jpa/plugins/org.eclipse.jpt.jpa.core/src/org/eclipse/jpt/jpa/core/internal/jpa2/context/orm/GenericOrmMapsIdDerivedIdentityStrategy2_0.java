@@ -109,7 +109,7 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 	}
 
 	protected Iterable<AttributeMapping> getAllAttributeMappings() {
-		return this.getPersistentAttribute().getOwningTypeMapping().getAllAttributeMappings();
+		return this.getPersistentAttribute().getDeclaringTypeMapping().getAllAttributeMappings();
 	}
 
 	public Iterable<String> getSortedCandidateIdAttributeNames() {

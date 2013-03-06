@@ -155,13 +155,13 @@ public class VirtualOrmPersistentAttribute
 	// ********** Java persistent attribute **********
 
 	public JavaSpecifiedPersistentAttribute getJavaPersistentAttribute() {
-		return this.getOwningTypeMapping().isMetadataComplete() ?
+		return this.getDeclaringTypeMapping().isMetadataComplete() ?
 				this.getUnannotatedJavaAttribute() :
 				this.annotatedJavaAttribute;
 	}
 
 	public JavaSpecifiedPersistentAttribute resolveJavaPersistentAttribute() {
-		JavaPersistentType javaType = this.getOwningPersistentType().getJavaPersistentType();
+		JavaPersistentType javaType = this.getDeclaringPersistentType().getJavaPersistentType();
 		return (javaType == null) ? null : javaType.getAttributeFor(this.getJavaResourceAttribute());
 	}
 
@@ -182,12 +182,12 @@ public class VirtualOrmPersistentAttribute
 
 	protected JavaSpecifiedPersistentAttribute buildUnannotatedJavaAttribute() {
 		// pass in the orm persistent type as the parent...
-		return this.javaAccessor.buildUnannotatedJavaAttribute(this.getOwningPersistentType());
+		return this.javaAccessor.buildUnannotatedJavaAttribute(this.getDeclaringPersistentType());
 	}
 
 	protected JavaSpecifiedPersistentAttribute buildJavaAttribute(Accessor accessor) {
 		// pass in the orm persistent type as the parent...
-		return this.getJpaFactory().buildJavaPersistentAttribute(this.getOwningPersistentType(), accessor);
+		return this.getJpaFactory().buildJavaPersistentAttribute(this.getDeclaringPersistentType(), accessor);
 	}
 
 	protected void syncLocalJavaAttributes() {
@@ -282,11 +282,11 @@ public class VirtualOrmPersistentAttribute
 		if (this.mapping.getKey() == null) {
 			throw new IllegalStateException("Use addToXml(String) instead and specify a mapping type"); //$NON-NLS-1$
 		}
-		return this.getOwningPersistentType().addAttributeToXml(this);
+		return this.getDeclaringPersistentType().addAttributeToXml(this);
 	}
 
 	public OrmSpecifiedPersistentAttribute addToXml(String mappingKey) {
-		return this.getOwningPersistentType().addAttributeToXml(this, mappingKey);
+		return this.getDeclaringPersistentType().addAttributeToXml(this, mappingKey);
 	}
 
 
@@ -344,7 +344,7 @@ public class VirtualOrmPersistentAttribute
 	}
 
 	public TextRange getValidationTextRange() {
-		return this.getOwningTypeMapping().getAttributesTextRange();
+		return this.getDeclaringTypeMapping().getAttributesTextRange();
 	}
 
 
@@ -365,12 +365,12 @@ public class VirtualOrmPersistentAttribute
 
 	// ********** misc **********
 
-	public OrmPersistentType getOwningPersistentType() {
+	public OrmPersistentType getDeclaringPersistentType() {
 		return this.parent;
 	}
 
-	public OrmTypeMapping getOwningTypeMapping() {
-		return this.getOwningPersistentType().getMapping();
+	public OrmTypeMapping getDeclaringTypeMapping() {
+		return this.getDeclaringPersistentType().getMapping();
 	}
 
 	public String getPrimaryKeyColumnName() {
@@ -383,7 +383,7 @@ public class VirtualOrmPersistentAttribute
 	
 	public String getTypeName(PersistentType contextType) {
 		while (contextType != null) {
-			if (contextType == this.getOwningPersistentType()) {
+			if (contextType == this.getDeclaringPersistentType()) {
 				return this.getTypeName();
 			}
 			TypeBinding typeBinding = contextType.getAttributeTypeBinding(this);

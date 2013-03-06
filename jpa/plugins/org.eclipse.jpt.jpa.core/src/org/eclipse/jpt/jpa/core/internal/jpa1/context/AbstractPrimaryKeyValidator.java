@@ -244,7 +244,7 @@ public abstract class AbstractPrimaryKeyValidator
 		// This is for validating if a type mapping has extra id attributes that do not match
 		// an attribute on the id class, which is a supplement of the validation right above
 		for (AttributeMapping attributeMapping : getPrimaryKeyMappings(typeMapping())) {
-			AccessType type = attributeMapping.getPersistentAttribute().getOwningPersistentType().getAccess();
+			AccessType type = attributeMapping.getPersistentAttribute().getDeclaringPersistentType().getAccess();
 			if (type == AccessType.FIELD) {
 				checkMissingAttribute(idClass, attributeMapping, messages, reporter);
 			} else if (type == AccessType.PROPERTY) {

@@ -579,12 +579,12 @@ public abstract class AbstractJavaPersistentAttribute
 
 	// ********** misc **********
 
-	public PersistentType getOwningPersistentType() {
+	public PersistentType getDeclaringPersistentType() {
 		return this.parent;
 	}
 
-	public TypeMapping getOwningTypeMapping() {
-		return this.getOwningPersistentType().getMapping();
+	public TypeMapping getDeclaringTypeMapping() {
+		return this.getDeclaringPersistentType().getMapping();
 	}
 
 	public JavaSpecifiedPersistentAttribute getJavaPersistentAttribute() {
@@ -630,7 +630,7 @@ public abstract class AbstractJavaPersistentAttribute
 
 	public TextRange getValidationTextRange() {
 		return this.isVirtual() ?
-				this.getOwningPersistentType().getValidationTextRange() :
+				this.getDeclaringPersistentType().getValidationTextRange() :
 				this.getSelectionTextRange();
 	}
 
@@ -658,7 +658,7 @@ public abstract class AbstractJavaPersistentAttribute
 	 * as its own.)
 	 */
 	public boolean isVirtual() {
-		IContentType persistentTypeContentType = this.getOwningPersistentType().getResourceType().getContentType();
+		IContentType persistentTypeContentType = this.getDeclaringPersistentType().getResourceType().getContentType();
 		return ! persistentTypeContentType.isKindOf(JavaResourceCompilationUnit.CONTENT_TYPE)
 				&& ! persistentTypeContentType.isKindOf(JavaResourcePackageFragmentRoot.JAR_CONTENT_TYPE);
 	}

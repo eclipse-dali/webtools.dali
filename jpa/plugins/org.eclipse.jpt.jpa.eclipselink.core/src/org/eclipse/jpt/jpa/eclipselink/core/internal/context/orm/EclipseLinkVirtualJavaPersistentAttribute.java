@@ -411,12 +411,12 @@ public class EclipseLinkVirtualJavaPersistentAttribute
 
 	// ********** misc **********
 
-	public OrmPersistentType getOwningPersistentType() {
+	public OrmPersistentType getDeclaringPersistentType() {
 		return this.parent;
 	}
 
-	public TypeMapping getOwningTypeMapping() {
-		return this.getOwningPersistentType().getMapping();
+	public TypeMapping getDeclaringTypeMapping() {
+		return this.getDeclaringPersistentType().getMapping();
 	}
 
 	protected EntityMappings getEntityMappings() {

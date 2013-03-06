@@ -36,7 +36,7 @@ public class GenericOrmPersistentAttribute
 	protected void validateAttribute(List<IMessage> messages, IReporter reporter) {
 		super.validateAttribute(messages, reporter);
 		if (this.javaPersistentAttribute != null) {
-			JavaPersistentType javaPersistentType = this.getOwningPersistentType().getJavaPersistentType();
+			JavaPersistentType javaPersistentType = this.getDeclaringPersistentType().getJavaPersistentType();
 			if ((javaPersistentType != null) && (javaPersistentType.getAttributeNamed(this.javaPersistentAttribute.getName()) == null)) {
 				messages.add(
 						this.buildValidationMessage(
@@ -44,7 +44,7 @@ public class GenericOrmPersistentAttribute
 							this.mapping.getNameTextRange(),
 							JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INHERITED_ATTRIBUTES_NOT_SUPPORTED,
 							this.getName(),
-							this.getOwningPersistentType().getClass_()
+							this.getDeclaringPersistentType().getClass_()
 						)
 					);
 			}
