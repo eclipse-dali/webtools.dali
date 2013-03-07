@@ -16,7 +16,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
-import org.eclipse.jpt.common.utility.command.CommandExecutor;
+import org.eclipse.jpt.common.utility.command.CommandContext;
 
 /**
  * Dali resource for JDT compilation unit (i.e. a Java source code file).
@@ -49,7 +49,7 @@ public interface JavaResourceCompilationUnit
 	 * This allows the resource model to modify the Java source code on the
 	 * UI thread when it is executing on another thread.
 	 */
-	CommandExecutor getModifySharedDocumentCommandExecutor();
+	CommandContext getModifySharedDocumentCommandContext();
 
 	/**
 	 * Resolve type information that could be dependent on other files being

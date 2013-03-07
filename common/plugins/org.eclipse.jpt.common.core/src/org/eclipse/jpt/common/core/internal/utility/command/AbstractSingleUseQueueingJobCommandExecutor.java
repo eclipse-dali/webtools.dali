@@ -10,10 +10,10 @@
 package org.eclipse.jpt.common.core.internal.utility.command;
 
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
-import org.eclipse.jpt.common.core.utility.command.CombinedCommandExecutor;
+import org.eclipse.jpt.common.core.utility.command.CombinedCommandContext;
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.command.StatefulCommandExecutor;
+import org.eclipse.jpt.common.utility.command.StatefulCommandContext;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.command.AbstractSingleUseQueueingCommandExecutor;
 
@@ -25,8 +25,8 @@ import org.eclipse.jpt.common.utility.internal.command.AbstractSingleUseQueueing
  * <strong>NB:</strong> This executor <em>ignores</em> any
  * {@link ISchedulingRule scheduling rules}.
  */
-public abstract class AbstractSingleUseQueueingJobCommandExecutor<E1 extends AbstractSingleUseQueueingCommandExecutor<E2>, E2 extends StatefulCommandExecutor>
-	implements CombinedCommandExecutor, StatefulCommandExecutor
+public abstract class AbstractSingleUseQueueingJobCommandExecutor<E1 extends AbstractSingleUseQueueingCommandExecutor<E2>, E2 extends StatefulCommandContext>
+	implements CombinedCommandContext, StatefulCommandContext
 {
 	/**
 	 * Since the {@link JobCommand}s are simply converted into {@link Command}s,

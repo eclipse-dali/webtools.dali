@@ -55,7 +55,7 @@ final class SourceMethod
 				signature,
 				occurrence,
 				javaResourceCompilationUnit.getCompilationUnit(),
-				javaResourceCompilationUnit.getModifySharedDocumentCommandExecutor(),
+				javaResourceCompilationUnit.getModifySharedDocumentCommandContext(),
 				javaResourceCompilationUnit.getAnnotationEditFormatter());
 		SourceMethod sm = new SourceMethod(parent, method);
 		sm.initialize(methodDeclaration);

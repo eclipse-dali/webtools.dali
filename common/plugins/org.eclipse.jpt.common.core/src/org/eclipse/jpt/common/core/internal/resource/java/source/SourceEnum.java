@@ -50,7 +50,7 @@ final class SourceEnum
 		Enum _enum = new JDTEnum(
 			enumDeclaration,
 				javaResourceCompilationUnit.getCompilationUnit(),
-				javaResourceCompilationUnit.getModifySharedDocumentCommandExecutor(),
+				javaResourceCompilationUnit.getModifySharedDocumentCommandContext(),
 				javaResourceCompilationUnit.getAnnotationEditFormatter());
 		SourceEnum jre = new SourceEnum(javaResourceCompilationUnit, _enum);
 		jre.initialize(enumDeclaration);
@@ -70,7 +70,7 @@ final class SourceEnum
 				enumDeclaration,
 				occurrence,
 				javaResourceCompilationUnit.getCompilationUnit(),
-				javaResourceCompilationUnit.getModifySharedDocumentCommandExecutor(),
+				javaResourceCompilationUnit.getModifySharedDocumentCommandContext(),
 				javaResourceCompilationUnit.getAnnotationEditFormatter());
 		SourceEnum jre = new SourceEnum(javaResourceCompilationUnit, _enum);
 		jre.initialize(enumDeclaration);

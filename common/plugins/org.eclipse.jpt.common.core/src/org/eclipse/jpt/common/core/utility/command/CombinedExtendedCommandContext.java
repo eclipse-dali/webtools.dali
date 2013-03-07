@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,11 +13,11 @@ import java.io.Serializable;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
+import org.eclipse.jpt.common.utility.command.ExtendedCommandContext;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
- * Combine the synchronouse job command executor and command executor
+ * Combine the synchronous job command context and command context
  * interfaces.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
@@ -26,18 +26,18 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface CombinedExtendedCommandExecutor
-	extends CombinedCommandExecutor, ExtendedJobCommandExecutor, ExtendedCommandExecutor
+public interface CombinedExtendedCommandContext
+	extends CombinedCommandContext, ExtendedJobCommandContext, ExtendedCommandContext
 {
 	/**
 	 * Singleton implementation of the command executor interface
 	 * that simply executes the command without any sort of enhancement.
 	 */
 	final class Default
-		implements CombinedExtendedCommandExecutor, Serializable
+		implements CombinedExtendedCommandContext, Serializable
 	{
-		public static final CombinedExtendedCommandExecutor INSTANCE = new Default();
-		public static CombinedExtendedCommandExecutor instance() {
+		public static final CombinedExtendedCommandContext INSTANCE = new Default();
+		public static CombinedExtendedCommandContext instance() {
 			return INSTANCE;
 		}
 		// ensure single instance
@@ -101,10 +101,10 @@ public interface CombinedExtendedCommandExecutor
 	 * that ignores any commands.
 	 */
 	final class Inactive
-		implements CombinedExtendedCommandExecutor, Serializable
+		implements CombinedExtendedCommandContext, Serializable
 	{
-		public static final CombinedExtendedCommandExecutor INSTANCE = new Inactive();
-		public static CombinedExtendedCommandExecutor instance() {
+		public static final CombinedExtendedCommandContext INSTANCE = new Inactive();
+		public static CombinedExtendedCommandContext instance() {
 			return INSTANCE;
 		}
 		// ensure single instance

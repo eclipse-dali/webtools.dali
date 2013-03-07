@@ -10,35 +10,35 @@
 package org.eclipse.jpt.common.utility.internal.command;
 
 import org.eclipse.jpt.common.utility.ExceptionHandler;
-import org.eclipse.jpt.common.utility.command.CommandExecutor;
+import org.eclipse.jpt.common.utility.command.CommandContext;
 
 /**
  * @see AbstractSafeCommandExecutor
  */
 public class SafeCommandExecutor
-	extends AbstractSafeCommandExecutor<CommandExecutor>
+	extends AbstractSafeCommandExecutor<CommandContext>
 {
 	/**
 	 * <strong>NB:</strong> The default exception handler simply
 	 * <em>ignores</em> any and all exceptions.
 	 */
 	public SafeCommandExecutor() {
-		this(CommandExecutor.Default.instance());
+		this(CommandContext.Default.instance());
 	}
 
 	/**
 	 * <strong>NB:</strong> The default exception handler simply
 	 * <em>ignores</em> any and all exceptions.
 	 */
-	public SafeCommandExecutor(CommandExecutor commandExecutor) {
+	public SafeCommandExecutor(CommandContext commandExecutor) {
 		super(commandExecutor);
 	}
 
 	public SafeCommandExecutor(ExceptionHandler exceptionHandler) {
-		this(CommandExecutor.Default.instance(), exceptionHandler);
+		this(CommandContext.Default.instance(), exceptionHandler);
 	}
 
-	public SafeCommandExecutor(CommandExecutor commandExecutor, ExceptionHandler exceptionHandler) {
+	public SafeCommandExecutor(CommandContext commandExecutor, ExceptionHandler exceptionHandler) {
 		super(commandExecutor, exceptionHandler);
 	}
 }

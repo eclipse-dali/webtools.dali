@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.core.internal.utility.command;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
-import org.eclipse.jpt.common.core.utility.command.JobCommandExecutor;
+import org.eclipse.jpt.common.core.utility.command.JobCommandContext;
 import org.eclipse.jpt.common.core.utility.command.NotifyingRepeatingJobCommand;
 import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
@@ -40,13 +40,13 @@ public class NotifyingRepeatingJobCommandWrapper
 
 	/**
 	 * Construct a notifying repeating command wrapper that executes the
-	 * specified command and uses the specified command executor to execute the
+	 * specified command and uses the specified command context to execute the
 	 * wrapped command whenever it is not already executing.
 	 * Any exceptions thrown by the command or listener will be handled by the
 	 * specified exception handler.
 	 */
-	public NotifyingRepeatingJobCommandWrapper(JobCommand command, JobCommandExecutor startCommandExecutor, ExceptionHandler exceptionHandler) {
-		super(command, startCommandExecutor, exceptionHandler);
+	public NotifyingRepeatingJobCommandWrapper(JobCommand command, JobCommandContext startCommandContext, ExceptionHandler exceptionHandler) {
+		super(command, startCommandContext, exceptionHandler);
 	}
 
 

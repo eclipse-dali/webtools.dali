@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceTypeCache;
-import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
+import org.eclipse.jpt.common.utility.command.ExtendedCommandContext;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
@@ -405,20 +405,20 @@ public interface JaxbProject
 	// ********** modifying shared documents **********
 
 	/**
-	 * Set a thread-specific implementation of the {@link ExtendedCommandExecutor}
+	 * Set a thread-specific implementation of the {@link ExtendedCommandContext}
 	 * interface that will be used to execute a command to modify a shared
-	 * document. If necessary, the command executor can be cleared by
-	 * setting it to null.
+	 * document. If necessary, the command context can be cleared by
+	 * setting it to <code>null</code>.
 	 * This allows background clients to modify documents that are
-	 * already present in the UI. See implementations of {@link ExtendedCommandExecutor}.
+	 * already present in the UI. See implementations of {@link ExtendedCommandContext}.
 	 */
-	void setThreadLocalModifySharedDocumentCommandExecutor(ExtendedCommandExecutor commandExecutor);
+	void setThreadLocalModifySharedDocumentCommandContext(ExtendedCommandContext commandContext);
 
 	/**
 	 * Return the project-wide implementation of the
-	 * {@link ExtendedCommandExecutor} interface.
+	 * {@link ExtendedCommandContext} interface.
 	 */
-	ExtendedCommandExecutor getModifySharedDocumentCommandExecutor();
+	ExtendedCommandContext getModifySharedDocumentCommandContext();
 
 
 	// ********** construction config **********

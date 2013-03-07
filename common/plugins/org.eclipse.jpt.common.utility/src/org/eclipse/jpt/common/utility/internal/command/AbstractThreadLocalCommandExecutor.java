@@ -10,14 +10,14 @@
 package org.eclipse.jpt.common.utility.internal.command;
 
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.command.CommandExecutor;
+import org.eclipse.jpt.common.utility.command.CommandContext;
 
 /**
  * This command executor allows the client to
  * specify a different command executor for each thread.
  */
-public abstract class AbstractThreadLocalCommandExecutor<E extends CommandExecutor>
-	implements CommandExecutor
+public abstract class AbstractThreadLocalCommandExecutor<E extends CommandContext>
+	implements CommandContext
 {
 	protected final ThreadLocal<E> threadLocal;
 	protected final E defaultCommandExecutor;

@@ -46,7 +46,7 @@ final class SourceField
 				name,
 				occurrence,
 				javaResourceCompilationUnit.getCompilationUnit(),
-				javaResourceCompilationUnit.getModifySharedDocumentCommandExecutor(),
+				javaResourceCompilationUnit.getModifySharedDocumentCommandContext(),
 				javaResourceCompilationUnit.getAnnotationEditFormatter());
 		SourceField sf = new SourceField(parent, field);
 		sf.initialize(fieldDeclaration, variableDeclaration);

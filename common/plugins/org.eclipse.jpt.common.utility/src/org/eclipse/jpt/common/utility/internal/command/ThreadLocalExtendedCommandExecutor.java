@@ -10,23 +10,23 @@
 package org.eclipse.jpt.common.utility.internal.command;
 
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
+import org.eclipse.jpt.common.utility.command.ExtendedCommandContext;
 
 /**
  * @see AbstractThreadLocalCommandExecutor
  */
 public class ThreadLocalExtendedCommandExecutor
-	extends AbstractThreadLocalCommandExecutor<ExtendedCommandExecutor>
-	implements ExtendedCommandExecutor
+	extends AbstractThreadLocalCommandExecutor<ExtendedCommandContext>
+	implements ExtendedCommandContext
 {
 	/**
 	 * The default command executor simply executes commands directly.
 	 */
 	public ThreadLocalExtendedCommandExecutor() {
-		this(ExtendedCommandExecutor.Default.instance());
+		this(ExtendedCommandContext.Default.instance());
 	}
 
-	public ThreadLocalExtendedCommandExecutor(ExtendedCommandExecutor defaultCommandExecutor) {
+	public ThreadLocalExtendedCommandExecutor(ExtendedCommandContext defaultCommandExecutor) {
 		super(defaultCommandExecutor);
 	}
 

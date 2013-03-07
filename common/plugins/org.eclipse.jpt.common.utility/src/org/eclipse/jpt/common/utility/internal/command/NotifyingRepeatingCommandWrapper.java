@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.utility.internal.command;
 import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.command.NotifyingRepeatingCommand;
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.command.CommandExecutor;
+import org.eclipse.jpt.common.utility.command.CommandContext;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
 
 /**
@@ -56,7 +56,7 @@ public class NotifyingRepeatingCommandWrapper
 	 * Any exceptions thrown by the command or listener will be handled by the
 	 * specified exception handler.
 	 */
-	public NotifyingRepeatingCommandWrapper(Command command, CommandExecutor startCommandExecutor, ExceptionHandler exceptionHandler) {
+	public NotifyingRepeatingCommandWrapper(Command command, CommandContext startCommandExecutor, ExceptionHandler exceptionHandler) {
 		super(command, startCommandExecutor, exceptionHandler);
 	}
 

@@ -10,28 +10,28 @@
 package org.eclipse.jpt.common.utility.internal.command;
 
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
-import org.eclipse.jpt.common.utility.command.StatefulExtendedCommandExecutor;
+import org.eclipse.jpt.common.utility.command.ExtendedCommandContext;
+import org.eclipse.jpt.common.utility.command.StatefulExtendedCommandContext;
 
 /**
- * Straightforward implementation of {@link StatefulExtendedCommandExecutor}
+ * Straightforward implementation of {@link StatefulExtendedCommandContext}
  * that executes commands immediately by default. This executor can
  * also be used to adapt simple
- * {@link org.eclipse.jpt.common.utility.command.CommandExecutor CommandExecutor}s
+ * {@link org.eclipse.jpt.common.utility.command.CommandContext CommandExecutor}s
  * to the
- * {@link StatefulExtendedCommandExecutor} interface, providing support for
+ * {@link StatefulExtendedCommandContext} interface, providing support for
  * lifecycle state. Any calls to {@link #waitToExecute(Command)} suspend the
  * calling thread until the command executor is {@link #start() started}.
  */
 public class SimpleStatefulExtendedCommandExecutor
-	extends AbstractStatefulCommandExecutor<ExtendedCommandExecutor>
-	implements StatefulExtendedCommandExecutor
+	extends AbstractStatefulCommandExecutor<ExtendedCommandContext>
+	implements StatefulExtendedCommandContext
 {
 	public SimpleStatefulExtendedCommandExecutor() {
-		this(ExtendedCommandExecutor.Default.instance());
+		this(ExtendedCommandContext.Default.instance());
 	}
 
-	public SimpleStatefulExtendedCommandExecutor(ExtendedCommandExecutor commandExecutor) {
+	public SimpleStatefulExtendedCommandExecutor(ExtendedCommandContext commandExecutor) {
 		super(commandExecutor);
 	}
 

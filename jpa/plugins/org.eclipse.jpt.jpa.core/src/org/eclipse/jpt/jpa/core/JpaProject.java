@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot
 import org.eclipse.jpt.common.core.resource.java.JavaResourceTypeCache;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
-import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
+import org.eclipse.jpt.common.utility.command.ExtendedCommandContext;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
@@ -540,9 +540,9 @@ public interface JpaProject
 
 		/**
 		 * Return the project-wide implementation of the
-		 * {@link ExtendedCommandExecutor} interface.
+		 * {@link ExtendedCommandContext} interface.
 		 */
-		ExtendedCommandExecutor getModifySharedDocumentCommandExecutor();
+		ExtendedCommandContext getModifySharedDocumentCommandContext();
 
 		/**
 		 * Return the JPA project's JPA workspace.

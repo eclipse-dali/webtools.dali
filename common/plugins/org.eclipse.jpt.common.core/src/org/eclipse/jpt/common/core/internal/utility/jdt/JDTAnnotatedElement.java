@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.command.CommandExecutor;
+import org.eclipse.jpt.common.utility.command.CommandContext;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.text.edits.MalformedTreeException;
 import org.eclipse.text.edits.TextEdit;
@@ -48,7 +48,7 @@ public abstract class JDTAnnotatedElement
 	 * (file) when it is open in an editor and should be modified on the UI
 	 * thread
 	 */
-	private final CommandExecutor modifySharedDocumentCommandExecutor;
+	private final CommandContext modifySharedDocumentCommandContext;
 
 	/** this will format the annotated element's annotations a bit */
 	private final AnnotationEditFormatter annotationEditFormatter;
@@ -59,19 +59,19 @@ public abstract class JDTAnnotatedElement
 	protected JDTAnnotatedElement(
 			String name,
 			ICompilationUnit compilationUnit,
-			CommandExecutor modifySharedDocumentCommandExecutor) {
-		this(name, compilationUnit, modifySharedDocumentCommandExecutor, DefaultAnnotationEditFormatter.instance());
+			CommandContext modifySharedDocumentCommandContext) {
+		this(name, compilationUnit, modifySharedDocumentCommandContext, DefaultAnnotationEditFormatter.instance());
 	}
 
 	protected JDTAnnotatedElement(
 			String name,
 			ICompilationUnit compilationUnit,
-			CommandExecutor modifySharedDocumentCommandExecutor,
+			CommandContext modifySharedDocumentCommandContext,
 			AnnotationEditFormatter annotationEditFormatter) {
 		super();
 		this.name = name;
 		this.compilationUnit = compilationUnit;
-		this.modifySharedDocumentCommandExecutor = modifySharedDocumentCommandExecutor;
+		this.modifySharedDocumentCommandContext = modifySharedDocumentCommandContext;
 		this.annotationEditFormatter = annotationEditFormatter;
 	}
 
@@ -141,7 +141,7 @@ public abstract class JDTAnnotatedElement
 	
 			TextEdit edits = astRoot.rewrite(doc, this.compilationUnit.getJavaProject().getOptions(true));
 			if (sharedDocument) {
-				this.modifySharedDocumentCommandExecutor.execute(new ModifySharedDocumentCommand(edits, doc));
+				this.modifySharedDocumentCommandContext.execute(new ModifySharedDocumentCommand(edits, doc));
 			} else {
 				this.applyEdits(edits, doc);
 			}

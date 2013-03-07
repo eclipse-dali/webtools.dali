@@ -62,7 +62,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageInfoCompilat
 import org.eclipse.jpt.common.core.resource.java.JavaResourceTypeCache;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
-import org.eclipse.jpt.common.core.utility.command.JobCommandExecutor;
+import org.eclipse.jpt.common.core.utility.command.JobCommandContext;
 import org.eclipse.jpt.common.core.utility.command.NotifyingRepeatingJobCommand;
 import org.eclipse.jpt.common.core.utility.command.RepeatingJobCommand;
 import org.eclipse.jpt.common.utility.internal.BitTools;
@@ -744,7 +744,7 @@ public abstract class AbstractJpaProject
 					jdtCompilationUnit,
 					this.jpaPlatform.getAnnotationProvider(),
 					this.jpaPlatform.getAnnotationEditFormatter(),
-					this.manager.getModifySharedDocumentCommandExecutor()
+					this.manager.getModifySharedDocumentCommandContext()
 				);
 	}
 
@@ -1860,7 +1860,7 @@ public abstract class AbstractJpaProject
 	protected RepeatingJobCommand buildSynchronizeContextModelCommand() {
 		return new RepeatingJobCommandWrapper(
 					this.buildSynchronizeContextModelJobCommand(),
-					this.buildStartSynchronizeContextModelJobCommandExecutor(),
+					this.buildStartSynchronizeContextModelJobCommandContext(),
 					JptJpaCorePlugin.instance().getExceptionHandler()
 				);
 	}
@@ -1869,8 +1869,8 @@ public abstract class AbstractJpaProject
 		return new SynchronizeContextModelJobCommand();
 	}
 
-	protected JobCommandExecutor buildStartSynchronizeContextModelJobCommandExecutor() {
-		return new ManagerJobCommandExecutor(this.buildSynchronizeContextModelJobName());
+	protected JobCommandContext buildStartSynchronizeContextModelJobCommandContext() {
+		return new ManagerJobCommandContext(this.buildSynchronizeContextModelJobName());
 	}
 
 	protected String buildSynchronizeContextModelJobName() {
@@ -1942,7 +1942,7 @@ public abstract class AbstractJpaProject
 	protected NotifyingRepeatingJobCommand buildUpdateCommand() {
 		return new NotifyingRepeatingJobCommandWrapper(
 					this.buildUpdateJobCommand(),
-					this.buildStartUpdateJobCommandExecutor(),
+					this.buildStartUpdateJobCommandContext(),
 					JptJpaCorePlugin.instance().getExceptionHandler()
 				);
 	}
@@ -1951,8 +1951,8 @@ public abstract class AbstractJpaProject
 		return new UpdateJobCommand();
 	}
 
-	protected JobCommandExecutor buildStartUpdateJobCommandExecutor() {
-		return new ManagerJobCommandExecutor(this.buildUpdateJobName());
+	protected JobCommandContext buildStartUpdateJobCommandContext() {
+		return new ManagerJobCommandContext(this.buildUpdateJobName());
 	}
 
 	protected String buildUpdateJobName() {
@@ -2048,14 +2048,14 @@ public abstract class AbstractJpaProject
 	 * Delegate execution to the JPA project manager, which will determine
 	 * whether commands are executed synchronously or asynchronously.
 	 * 
-	 * @see #buildStartSynchronizeContextModelJobCommandExecutor()
-	 * @see #buildStartUpdateJobCommandExecutor()
+	 * @see #buildStartSynchronizeContextModelJobCommandContext()
+	 * @see #buildStartUpdateJobCommandContext()
 	 */
-	protected class ManagerJobCommandExecutor
-		implements JobCommandExecutor
+	protected class ManagerJobCommandContext
+		implements JobCommandContext
 	{
 		protected final String defaultJobName;
-		protected ManagerJobCommandExecutor(String defaultJobName) {
+		protected ManagerJobCommandContext(String defaultJobName) {
 			super();
 			if (defaultJobName == null) {
 				throw new NullPointerException();

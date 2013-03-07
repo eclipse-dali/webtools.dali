@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Red Hat, Inc. and others. All rights reserved.
+ * Copyright (c) 2005, 2013 Red Hat, Inc. and others. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,7 @@ import org.eclipse.jdt.core.dom.PackageDeclaration;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedPackage;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
-import org.eclipse.jpt.common.utility.command.CommandExecutor;
+import org.eclipse.jpt.common.utility.command.CommandContext;
 
 public class JDTPackage
 	extends JDTAnnotatedElement 
@@ -24,19 +24,19 @@ public class JDTPackage
 {
 	protected JDTPackage(PackageDeclaration declaringPackage,
 			ICompilationUnit compilationUnit,
-			CommandExecutor modifySharedDocumentCommandExecutor) {
+			CommandContext modifySharedDocumentCommandContext) {
 		super(declaringPackage.getName().getFullyQualifiedName(), 
 				compilationUnit,
-				modifySharedDocumentCommandExecutor);
+				modifySharedDocumentCommandContext);
 	}
 
 	public JDTPackage(
 			PackageDeclaration declaringPackage,
 			ICompilationUnit compilationUnit,
-			CommandExecutor modifySharedDocumentCommandExecutor,
+			CommandContext modifySharedDocumentCommandContext,
 			AnnotationEditFormatter annotationEditFormatter) {
 		super(declaringPackage.getName().getFullyQualifiedName(),
-				compilationUnit, modifySharedDocumentCommandExecutor, annotationEditFormatter);
+				compilationUnit, modifySharedDocumentCommandContext, annotationEditFormatter);
 	}
 
 	@Override

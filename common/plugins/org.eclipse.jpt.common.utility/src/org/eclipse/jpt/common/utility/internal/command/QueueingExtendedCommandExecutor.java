@@ -10,8 +10,8 @@
 package org.eclipse.jpt.common.utility.internal.command;
 
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
-import org.eclipse.jpt.common.utility.command.StatefulExtendedCommandExecutor;
+import org.eclipse.jpt.common.utility.command.ExtendedCommandContext;
+import org.eclipse.jpt.common.utility.command.StatefulExtendedCommandContext;
 
 /**
  * Calls to {@link #waitToExecute(Command)} will suspend the current thread
@@ -21,18 +21,18 @@ import org.eclipse.jpt.common.utility.command.StatefulExtendedCommandExecutor;
  * @see AbstractQueueingCommandExecutor
  */
 public class QueueingExtendedCommandExecutor
-	extends AbstractQueueingCommandExecutor<StatefulExtendedCommandExecutor>
-	implements StatefulExtendedCommandExecutor
+	extends AbstractQueueingCommandExecutor<StatefulExtendedCommandContext>
+	implements StatefulExtendedCommandContext
 {
 	public QueueingExtendedCommandExecutor() {
-		this(ExtendedCommandExecutor.Default.instance());
+		this(ExtendedCommandContext.Default.instance());
 	}
 
-	public QueueingExtendedCommandExecutor(ExtendedCommandExecutor commandExecutor) {
+	public QueueingExtendedCommandExecutor(ExtendedCommandContext commandExecutor) {
 		this(new SimpleStatefulExtendedCommandExecutor(commandExecutor));
 	}
 
-	public QueueingExtendedCommandExecutor(StatefulExtendedCommandExecutor commandExecutor) {
+	public QueueingExtendedCommandExecutor(StatefulExtendedCommandContext commandExecutor) {
 		super(commandExecutor);
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,7 @@ import java.io.Serializable;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
- * This interface extends the normal command executor; it allows the client
+ * This interface extends the normal command context; it allows the client
  * to specify when a command <em>must</em> be executed synchronously.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
@@ -22,8 +22,8 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface ExtendedCommandExecutor
-	extends CommandExecutor
+public interface ExtendedCommandContext
+	extends CommandContext
 {
 	/**
 	 * Suspend the current thread until the specified command is executed.
@@ -56,10 +56,10 @@ public interface ExtendedCommandExecutor
 	 * that simply executes the command without any sort of enhancement.
 	 */
 	final class Default
-		implements ExtendedCommandExecutor, Serializable
+		implements ExtendedCommandContext, Serializable
 	{
-		public static final ExtendedCommandExecutor INSTANCE = new Default();
-		public static ExtendedCommandExecutor instance() {
+		public static final ExtendedCommandContext INSTANCE = new Default();
+		public static ExtendedCommandContext instance() {
 			return INSTANCE;
 		}
 		// ensure single instance
@@ -93,10 +93,10 @@ public interface ExtendedCommandExecutor
 	 * that ignores any commands.
 	 */
 	final class Inactive
-		implements ExtendedCommandExecutor, Serializable
+		implements ExtendedCommandContext, Serializable
 	{
-		public static final ExtendedCommandExecutor INSTANCE = new Inactive();
-		public static ExtendedCommandExecutor instance() {
+		public static final ExtendedCommandContext INSTANCE = new Inactive();
+		public static ExtendedCommandContext instance() {
 			return INSTANCE;
 		}
 		// ensure single instance

@@ -49,7 +49,7 @@ public class JavaResourceModelProvider
 					JavaCore.createCompilationUnitFrom(file),
 					jaxbProject.getPlatform().getAnnotationProvider(),
 					jaxbProject.getPlatform().getAnnotationEditFormatter(),
-					jaxbProject.getModifySharedDocumentCommandExecutor()
+					jaxbProject.getModifySharedDocumentCommandContext()
 				);
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Red Hat, Inc. and others. All rights reserved.
+ * Copyright (c) 2010, 2013 Red Hat, Inc. and others. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageInfoCompilationUnit;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
-import org.eclipse.jpt.common.utility.command.CommandExecutor;
+import org.eclipse.jpt.common.utility.command.CommandContext;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 
 /**
@@ -37,8 +37,8 @@ public final class SourcePackageInfoCompilationUnit
 			ICompilationUnit compilationUnit,
 			AnnotationProvider annotationProvider, 
 			AnnotationEditFormatter annotationEditFormatter,
-			CommandExecutor modifySharedDocumentCommandExecutor) {
-		super(compilationUnit, annotationProvider, annotationEditFormatter, modifySharedDocumentCommandExecutor);  // the JPA compilation unit is the root of its sub-tree
+			CommandContext modifySharedDocumentCommandContext) {
+		super(compilationUnit, annotationProvider, annotationEditFormatter, modifySharedDocumentCommandContext);  // the JPA compilation unit is the root of its sub-tree
 		this.package_ = this.buildPackage();
 	}
 

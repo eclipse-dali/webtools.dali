@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,7 @@ import java.io.Serializable;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
- * This interface allows clients to control how an interruptible command is executed.
+ * This interface allows clients to control a command's context.
  * This is useful when the server provides the command but the client provides
  * the context (e.g. the client would like to dispatch the command to the UI
  * thread).
@@ -23,34 +23,65 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
- * 
- * @see org.eclipse.jpt.common.utility.command.CommandExecutor
  */
-public interface InterruptibleCommandExecutor {
+public interface CommandContext {
 
 	/**
-	 * Execute the specified command.
+	 * Execute the specified command, synchronously or asynchronously.
+	 * The commands themselves must be executed in the order in which
+	 * they are passed to the command executor (at least when passed
+	 * from clients executing on the same thread).
 	 */
-	void execute(InterruptibleCommand command) throws InterruptedException;
+	void execute(Command command);
 
 
 	/**
-	 * Singleton implementation of the interruptible command executor interface
+	 * Singleton implementation of the command executor interface
 	 * that simply executes the command without any sort of enhancement.
 	 */
 	final class Default
-		implements InterruptibleCommandExecutor, Serializable
+		implements CommandContext, Serializable
 	{
-		public static final InterruptibleCommandExecutor INSTANCE = new Default();
-		public static InterruptibleCommandExecutor instance() {
+		public static final CommandContext INSTANCE = new Default();
+		public static CommandContext instance() {
 			return INSTANCE;
 		}
 		// ensure single instance
 		private Default() {
 			super();
 		}
-		public void execute(InterruptibleCommand command) throws InterruptedException {
+		public void execute(Command command) {
 			command.execute();
+		}
+		@Override
+		public String toString() {
+			return ObjectTools.singletonToString(this);
+		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return INSTANCE;
+		}
+	}
+
+
+	/**
+	 * Singleton implementation of the command executor interface
+	 * that ignores any commands.
+	 */
+	final class Inactive
+		implements CommandContext, Serializable
+	{
+		public static final CommandContext INSTANCE = new Inactive();
+		public static CommandContext instance() {
+			return INSTANCE;
+		}
+		// ensure single instance
+		private Inactive() {
+			super();
+		}
+		public void execute(Command command) {
+			// do nothing
 		}
 		@Override
 		public String toString() {

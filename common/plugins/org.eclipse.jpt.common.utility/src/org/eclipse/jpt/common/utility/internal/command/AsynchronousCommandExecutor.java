@@ -11,15 +11,15 @@ package org.eclipse.jpt.common.utility.internal.command;
 
 import java.util.concurrent.ThreadFactory;
 import org.eclipse.jpt.common.utility.ExceptionHandler;
-import org.eclipse.jpt.common.utility.command.CommandExecutor;
-import org.eclipse.jpt.common.utility.command.StatefulCommandExecutor;
+import org.eclipse.jpt.common.utility.command.CommandContext;
+import org.eclipse.jpt.common.utility.command.StatefulCommandContext;
 import org.eclipse.jpt.common.utility.internal.SimpleThreadFactory;
 
 /**
  * @see AbstractAsynchronousCommandExecutor
  */
 public class AsynchronousCommandExecutor
-	extends AbstractAsynchronousCommandExecutor<StatefulCommandExecutor>
+	extends AbstractAsynchronousCommandExecutor<StatefulCommandContext>
 {
 	/**
 	 * Construct an asynchronous command executor.
@@ -40,7 +40,7 @@ public class AsynchronousCommandExecutor
 	 * specified exception handler.
 	 */
 	public AsynchronousCommandExecutor(String threadName, ExceptionHandler exceptionHandler) {
-		this(new SimpleStatefulCommandExecutor(CommandExecutor.Default.instance()), SimpleThreadFactory.instance(), threadName, exceptionHandler);
+		this(new SimpleStatefulCommandExecutor(CommandContext.Default.instance()), SimpleThreadFactory.instance(), threadName, exceptionHandler);
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class AsynchronousCommandExecutor
 	 * Any exceptions thrown by a command will be handled by the
 	 * specified exception handler.
 	 */
-	public AsynchronousCommandExecutor(StatefulCommandExecutor commandExecutor, ThreadFactory threadFactory, String threadName, ExceptionHandler exceptionHandler) {
+	public AsynchronousCommandExecutor(StatefulCommandContext commandExecutor, ThreadFactory threadFactory, String threadName, ExceptionHandler exceptionHandler) {
 		super(commandExecutor, threadFactory, threadName, exceptionHandler);
 	}
 
@@ -74,7 +74,7 @@ public class AsynchronousCommandExecutor
 	 * Config useful for instantiating an {@link AsynchronousCommandExecutor}.
 	 */
 	public interface Config
-		extends AbstractAsynchronousCommandExecutor.Config<StatefulCommandExecutor>
+		extends AbstractAsynchronousCommandExecutor.Config<StatefulCommandContext>
 	{
 		// generic
 	}
@@ -83,17 +83,17 @@ public class AsynchronousCommandExecutor
 	 * Config useful for instantiating an {@link AsynchronousCommandExecutor}.
 	 */
 	public static class SimpleConfig
-		extends AbstractAsynchronousCommandExecutor.SimpleConfig<StatefulCommandExecutor>
+		extends AbstractAsynchronousCommandExecutor.SimpleConfig<StatefulCommandContext>
 		implements Config
 	{
 		public SimpleConfig() {
 			super();
 		}
-		public SimpleConfig(StatefulCommandExecutor commandExecutor, ThreadFactory threadFactory, String threadName, ExceptionHandler exceptionHandler) {
+		public SimpleConfig(StatefulCommandContext commandExecutor, ThreadFactory threadFactory, String threadName, ExceptionHandler exceptionHandler) {
 			super(commandExecutor, threadFactory, threadName, exceptionHandler);
 		}
 		@Override
-		protected StatefulCommandExecutor buildDefaultCommandExecutor() {
+		protected StatefulCommandContext buildDefaultCommandExecutor() {
 			return new SimpleStatefulCommandExecutor();
 		}
 	}

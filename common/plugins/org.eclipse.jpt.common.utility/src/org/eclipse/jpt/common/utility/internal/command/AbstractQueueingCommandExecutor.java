@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.utility.internal.command;
 
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.command.StatefulCommandExecutor;
+import org.eclipse.jpt.common.utility.command.StatefulCommandContext;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.LinkedQueue;
 import org.eclipse.jpt.common.utility.internal.reference.SynchronizedBoolean;
@@ -21,8 +21,8 @@ import org.eclipse.jpt.common.utility.internal.reference.SynchronizedBoolean;
  * {@link #stop() stopped}. These commands will be
  * executed when the executor is {@link #start() started}.
  */
-public abstract class AbstractQueueingCommandExecutor<E extends StatefulCommandExecutor>
-	implements StatefulCommandExecutor
+public abstract class AbstractQueueingCommandExecutor<E extends StatefulCommandContext>
+	implements StatefulCommandContext
 {
 	protected final E commandExecutor;
 	protected final SynchronizedBoolean active = new SynchronizedBoolean(false);

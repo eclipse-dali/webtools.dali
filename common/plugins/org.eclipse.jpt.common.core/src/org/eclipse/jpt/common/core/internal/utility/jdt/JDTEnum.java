@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,7 +20,7 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.common.core.utility.jdt.Enum;
 import org.eclipse.jpt.common.core.utility.jdt.Type;
-import org.eclipse.jpt.common.utility.command.CommandExecutor;
+import org.eclipse.jpt.common.utility.command.CommandContext;
 
 /**
  * Adapt and extend a JDT enum.
@@ -36,8 +36,8 @@ public class JDTEnum
 	public JDTEnum(
 			EnumDeclaration enumDeclaration,
 			ICompilationUnit compilationUnit,
-			CommandExecutor modifySharedDocumentCommandExecutor) {
-		this(enumDeclaration, compilationUnit, modifySharedDocumentCommandExecutor, DefaultAnnotationEditFormatter.instance());
+			CommandContext modifySharedDocumentCommandContext) {
+		this(enumDeclaration, compilationUnit, modifySharedDocumentCommandContext, DefaultAnnotationEditFormatter.instance());
 	}
 
 	/**
@@ -46,9 +46,9 @@ public class JDTEnum
 	public JDTEnum(
 			EnumDeclaration enumDeclaration,
 			ICompilationUnit compilationUnit,
-			CommandExecutor modifySharedDocumentCommandExecutor,
+			CommandContext modifySharedDocumentCommandContext,
 			AnnotationEditFormatter annotationEditFormatter) {
-		super(null, enumDeclaration, 1, compilationUnit, modifySharedDocumentCommandExecutor, annotationEditFormatter);
+		super(null, enumDeclaration, 1, compilationUnit, modifySharedDocumentCommandContext, annotationEditFormatter);
 	}
 
 	/**
@@ -59,8 +59,8 @@ public class JDTEnum
 			EnumDeclaration enumDeclaration,
 			int occurrence,
 			ICompilationUnit compilationUnit,
-			CommandExecutor modifySharedDocumentCommandExecutor) {
-		this(declaringType, enumDeclaration, occurrence, compilationUnit, modifySharedDocumentCommandExecutor, DefaultAnnotationEditFormatter.instance());
+			CommandContext modifySharedDocumentCommandContext) {
+		this(declaringType, enumDeclaration, occurrence, compilationUnit, modifySharedDocumentCommandContext, DefaultAnnotationEditFormatter.instance());
 	}
 
 	/**
@@ -71,9 +71,9 @@ public class JDTEnum
 			EnumDeclaration enumDeclaration,
 			int occurrence,
 			ICompilationUnit compilationUnit,
-			CommandExecutor modifySharedDocumentCommandExecutor,
+			CommandContext modifySharedDocumentCommandContext,
 			AnnotationEditFormatter annotationEditFormatter) {
-		super(declaringType, enumDeclaration, occurrence, compilationUnit, modifySharedDocumentCommandExecutor, annotationEditFormatter);
+		super(declaringType, enumDeclaration, occurrence, compilationUnit, modifySharedDocumentCommandContext, annotationEditFormatter);
 	}
 
 	/**

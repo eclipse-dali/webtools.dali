@@ -87,7 +87,7 @@ final class SourceType
 		Type type = new JDTType(
 				typeDeclaration,
 				javaResourceCompilationUnit.getCompilationUnit(),
-				javaResourceCompilationUnit.getModifySharedDocumentCommandExecutor(),
+				javaResourceCompilationUnit.getModifySharedDocumentCommandContext(),
 				javaResourceCompilationUnit.getAnnotationEditFormatter());
 		SourceType jrpt = new SourceType(javaResourceCompilationUnit, type);
 		jrpt.initialize(typeDeclaration);
@@ -107,7 +107,7 @@ final class SourceType
 				typeDeclaration,
 				occurrence,
 				javaResourceCompilationUnit.getCompilationUnit(),
-				javaResourceCompilationUnit.getModifySharedDocumentCommandExecutor(),
+				javaResourceCompilationUnit.getModifySharedDocumentCommandContext(),
 				javaResourceCompilationUnit.getAnnotationEditFormatter());
 		SourceType jrpt = new SourceType(javaResourceCompilationUnit, type);
 		jrpt.initialize(typeDeclaration);

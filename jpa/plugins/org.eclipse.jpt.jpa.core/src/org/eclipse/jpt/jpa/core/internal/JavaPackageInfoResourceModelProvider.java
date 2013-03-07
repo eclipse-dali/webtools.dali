@@ -64,7 +64,7 @@ public class JavaPackageInfoResourceModelProvider
 				compilationUnit,
 				jpaProject.getJpaPlatform().getAnnotationProvider(),
 				jpaProject.getJpaPlatform().getAnnotationEditFormatter(),
-				jpaProject.getManager().getModifySharedDocumentCommandExecutor()
+				jpaProject.getManager().getModifySharedDocumentCommandContext()
 			);
 	}
 

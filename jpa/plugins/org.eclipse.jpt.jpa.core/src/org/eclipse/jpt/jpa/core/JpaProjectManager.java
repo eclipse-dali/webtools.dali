@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core;
 
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
+import org.eclipse.jpt.common.utility.command.ExtendedCommandContext;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.reference.BooleanReference;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
@@ -81,7 +81,7 @@ public interface JpaProjectManager
 	 * when either the workspace is "headless" (non-UI) or none of the change
 	 * events are fired from anywhere but the UI thread (e.g. Java Reconciler
 	 * fires change events in a background thread).
-	 * @see #execute(Command, ExtendedCommandExecutor)
+	 * @see #execute(Command, ExtendedCommandContext)
 	 */
 	void execute(Command batchCommand) throws InterruptedException;
 
@@ -94,7 +94,7 @@ public interface JpaProjectManager
 	 * command executor that will modify on the UI thread any documents that are
 	 * currently open in the UI.
 	 */
-	void execute(Command command, ExtendedCommandExecutor threadLocalModifySharedDocumentCommandExecutor) throws InterruptedException;
+	void execute(Command command, ExtendedCommandContext threadLocalModifySharedDocumentCommandContext) throws InterruptedException;
 
 
 	// ********** async event listener flags **********
@@ -109,7 +109,7 @@ public interface JpaProjectManager
 	 * </ul>
 	 * This flag provides a way for clients to modify the context model directly
 	 * without worrying about collisions caused by asynchronous JDT events.
-	 * @see #execute(Command, ExtendedCommandExecutor)
+	 * @see #execute(Command, ExtendedCommandContext)
 	 *
 	 */
 	void addJavaEventListenerFlag(BooleanReference flag);

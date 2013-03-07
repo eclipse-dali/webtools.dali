@@ -42,7 +42,7 @@ final class SourceEnumConstant
 				name,
 				occurrence,
 				javaResourceCompilationUnit.getCompilationUnit(),
-				javaResourceCompilationUnit.getModifySharedDocumentCommandExecutor(),
+				javaResourceCompilationUnit.getModifySharedDocumentCommandContext(),
 				javaResourceCompilationUnit.getAnnotationEditFormatter());
 		SourceEnumConstant jrec = new SourceEnumConstant(parent, enumConstant);
 		jrec.initialize(enumConstantDeclaration);

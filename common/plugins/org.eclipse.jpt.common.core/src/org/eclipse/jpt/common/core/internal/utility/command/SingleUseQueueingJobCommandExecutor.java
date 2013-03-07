@@ -10,8 +10,8 @@
 package org.eclipse.jpt.common.core.internal.utility.command;
 
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
-import org.eclipse.jpt.common.utility.command.CommandExecutor;
-import org.eclipse.jpt.common.utility.command.StatefulCommandExecutor;
+import org.eclipse.jpt.common.utility.command.CommandContext;
+import org.eclipse.jpt.common.utility.command.StatefulCommandContext;
 import org.eclipse.jpt.common.utility.internal.command.SingleUseQueueingCommandExecutor;
 
 /**
@@ -19,17 +19,17 @@ import org.eclipse.jpt.common.utility.internal.command.SingleUseQueueingCommandE
  * adding support for executing {@link JobCommand}s.
  */
 public class SingleUseQueueingJobCommandExecutor
-	extends AbstractSingleUseQueueingJobCommandExecutor<SingleUseQueueingCommandExecutor, StatefulCommandExecutor>
+	extends AbstractSingleUseQueueingJobCommandExecutor<SingleUseQueueingCommandExecutor, StatefulCommandContext>
 {
 	public SingleUseQueueingJobCommandExecutor() {
 		this(new SingleUseQueueingCommandExecutor());
 	}
 
-	public SingleUseQueueingJobCommandExecutor(CommandExecutor commandExecutor) {
+	public SingleUseQueueingJobCommandExecutor(CommandContext commandExecutor) {
 		this(new SingleUseQueueingCommandExecutor(commandExecutor));
 	}
 
-	public SingleUseQueueingJobCommandExecutor(StatefulCommandExecutor commandExecutor) {
+	public SingleUseQueueingJobCommandExecutor(StatefulCommandContext commandExecutor) {
 		this(new SingleUseQueueingCommandExecutor(commandExecutor));
 	}
 

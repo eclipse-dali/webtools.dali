@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,7 @@ import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
- * This interface allows clients to control how a job command is executed.
+ * This interface allows clients to control a job command's context.
  * This is useful when the server provides the command but the client provides
  * the context (e.g. the client would like to execute the command synchronously
  * rather than dispatching it to a job queue).
@@ -26,7 +26,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JobCommandExecutor {
+public interface JobCommandContext {
 
 	/**
 	 * Execute the specified command, synchronously or asynchronously.
@@ -61,10 +61,10 @@ public interface JobCommandExecutor {
 	 * that simply executes the command without any sort of enhancement.
 	 */
 	final class Default
-		implements JobCommandExecutor, Serializable
+		implements JobCommandContext, Serializable
 	{
-		public static final JobCommandExecutor INSTANCE = new Default();
-		public static JobCommandExecutor instance() {
+		public static final JobCommandContext INSTANCE = new Default();
+		public static JobCommandContext instance() {
 			return INSTANCE;
 		}
 		// ensure single instance
@@ -97,10 +97,10 @@ public interface JobCommandExecutor {
 	 * that ignores any commands.
 	 */
 	final class Inactive
-		implements JobCommandExecutor, Serializable
+		implements JobCommandContext, Serializable
 	{
-		public static final JobCommandExecutor INSTANCE = new Inactive();
-		public static JobCommandExecutor instance() {
+		public static final JobCommandContext INSTANCE = new Inactive();
+		public static JobCommandContext instance() {
 			return INSTANCE;
 		}
 		// ensure single instance

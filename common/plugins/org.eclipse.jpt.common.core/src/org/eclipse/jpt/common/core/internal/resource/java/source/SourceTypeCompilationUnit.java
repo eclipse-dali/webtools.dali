@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.As
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
-import org.eclipse.jpt.common.utility.command.CommandExecutor;
+import org.eclipse.jpt.common.utility.command.CommandContext;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 
 /**
@@ -51,8 +51,8 @@ public final class SourceTypeCompilationUnit
 			ICompilationUnit compilationUnit,
 			AnnotationProvider annotationProvider, 
 			AnnotationEditFormatter annotationEditFormatter,
-			CommandExecutor modifySharedDocumentCommandExecutor) {
-		super(compilationUnit, annotationProvider, annotationEditFormatter, modifySharedDocumentCommandExecutor);  // the compilation unit is the root of its sub-tree
+			CommandContext modifySharedDocumentCommandContext) {
+		super(compilationUnit, annotationProvider, annotationEditFormatter, modifySharedDocumentCommandContext);  // the compilation unit is the root of its sub-tree
 		this.primaryType = this.buildPrimaryType();
 	}
 

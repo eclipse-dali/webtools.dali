@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.utility.tests.internal.command;
 
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.command.StatefulCommandExecutor;
+import org.eclipse.jpt.common.utility.command.StatefulCommandContext;
 import org.eclipse.jpt.common.utility.internal.RuntimeExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.command.AsynchronousExtendedCommandExecutor;
 import org.eclipse.jpt.common.utility.tests.internal.MultiThreadedTestCase;
@@ -27,13 +27,13 @@ public class AsynchronousCommandExecutorTests
 		AsynchronousExtendedCommandExecutor.SimpleConfig config = new AsynchronousExtendedCommandExecutor.SimpleConfig();
 		config.setThreadFactory(this.buildThreadFactory());
 		config.setExceptionHandler(RuntimeExceptionHandler.instance());
-		StatefulCommandExecutor commandExecutor = new AsynchronousExtendedCommandExecutor(config);
-		commandExecutor.start();
-		commandExecutor.execute(command);
-		commandExecutor.execute(command);
-		commandExecutor.execute(command);
+		StatefulCommandContext commandContext = new AsynchronousExtendedCommandExecutor(config);
+		commandContext.start();
+		commandContext.execute(command);
+		commandContext.execute(command);
+		commandContext.execute(command);
 		Thread.sleep(TWO_TICKS);  // wait for the command to execute
-		commandExecutor.stop();
+		commandContext.stop();
 		assertEquals(3, command.count);
 	}
 

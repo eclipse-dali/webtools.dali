@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.utility.internal.command;
 
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.command.StatefulCommandExecutor;
+import org.eclipse.jpt.common.utility.command.StatefulCommandContext;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.LinkedQueue;
 
@@ -25,8 +25,8 @@ import org.eclipse.jpt.common.utility.internal.collection.LinkedQueue;
  * Once the executor is {@link #stop() stopped}, no further commands will be
  * executed; and the executor can<em>not</em> be {@link #start() restarted}.
  */
-public abstract class AbstractSingleUseQueueingCommandExecutor<E extends StatefulCommandExecutor>
-	implements StatefulCommandExecutor
+public abstract class AbstractSingleUseQueueingCommandExecutor<E extends StatefulCommandContext>
+	implements StatefulCommandContext
 {
 	protected final E commandExecutor;
 	private State state;

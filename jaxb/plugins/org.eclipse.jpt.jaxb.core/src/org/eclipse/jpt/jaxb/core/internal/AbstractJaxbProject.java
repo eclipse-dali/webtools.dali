@@ -52,7 +52,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageInfoCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceTypeCache;
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
+import org.eclipse.jpt.common.utility.command.ExtendedCommandContext;
 import org.eclipse.jpt.common.utility.internal.BitTools;
 import org.eclipse.jpt.common.utility.internal.command.ThreadLocalExtendedCommandExecutor;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
@@ -183,7 +183,7 @@ public abstract class AbstractJaxbProject
 	/**
 	 * Support for modifying documents shared with the UI.
 	 */
-	protected final ThreadLocalExtendedCommandExecutor modifySharedDocumentCommandExecutor;
+	protected final ThreadLocalExtendedCommandExecutor modifySharedDocumentCommandContext;
 
 
 	// ********** constructor/initialization **********
@@ -198,7 +198,7 @@ public abstract class AbstractJaxbProject
 		
 		this.schemaLibrary = new SchemaLibraryImpl(this);
 		
-		this.modifySharedDocumentCommandExecutor = this.buildModifySharedDocumentCommandExecutor();
+		this.modifySharedDocumentCommandContext = this.buildModifySharedDocumentCommandContext();
 
 		this.resourceModelListener = this.buildResourceModelListener();
 		// build the JPA files corresponding to the Eclipse project's files
@@ -231,7 +231,7 @@ public abstract class AbstractJaxbProject
 		return this.project;
 	}
 
-	protected ThreadLocalExtendedCommandExecutor buildModifySharedDocumentCommandExecutor() {
+	protected ThreadLocalExtendedCommandExecutor buildModifySharedDocumentCommandContext() {
 		return new ThreadLocalExtendedCommandExecutor();
 	}
 
@@ -545,7 +545,7 @@ public abstract class AbstractJaxbProject
 					jdtCompilationUnit,
 					this.jaxbPlatform.getAnnotationProvider(),
 					this.jaxbPlatform.getAnnotationEditFormatter(),
-					this.modifySharedDocumentCommandExecutor
+					this.modifySharedDocumentCommandContext
 				);
 	}
 
@@ -1410,12 +1410,12 @@ public abstract class AbstractJaxbProject
 
 	// ********** support for modifying documents shared with the UI **********
 
-	public void setThreadLocalModifySharedDocumentCommandExecutor(ExtendedCommandExecutor commandExecutor) {
-		this.modifySharedDocumentCommandExecutor.set(commandExecutor);
+	public void setThreadLocalModifySharedDocumentCommandContext(ExtendedCommandContext commandContext) {
+		this.modifySharedDocumentCommandContext.set(commandContext);
 	}
 
-	public ExtendedCommandExecutor getModifySharedDocumentCommandExecutor() {
-		return this.modifySharedDocumentCommandExecutor;
+	public ExtendedCommandContext getModifySharedDocumentCommandContext() {
+		return this.modifySharedDocumentCommandContext;
 	}
 
 

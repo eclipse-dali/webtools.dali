@@ -17,7 +17,7 @@ import org.eclipse.jdt.core.dom.EnumDeclaration;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.common.core.utility.jdt.Enum;
 import org.eclipse.jpt.common.core.utility.jdt.EnumConstant;
-import org.eclipse.jpt.common.utility.command.CommandExecutor;
+import org.eclipse.jpt.common.utility.command.CommandContext;
 
 /**
  * Adapt and extend a JDT enum constant.
@@ -34,8 +34,8 @@ public class JDTEnumConstant
 			String name,
 			int occurrence,
 			ICompilationUnit compilationUnit,
-			CommandExecutor modifySharedDocumentCommandExecutor) {
-		this(declaringEnum, name, occurrence, compilationUnit, modifySharedDocumentCommandExecutor, DefaultAnnotationEditFormatter.instance());
+			CommandContext modifySharedDocumentCommandContext) {
+		this(declaringEnum, name, occurrence, compilationUnit, modifySharedDocumentCommandContext, DefaultAnnotationEditFormatter.instance());
 	}
 	
 	public JDTEnumConstant(
@@ -43,16 +43,16 @@ public class JDTEnumConstant
 			String name,
 			int occurrence,
 			ICompilationUnit compilationUnit,
-			CommandExecutor modifySharedDocumentCommandExecutor,
+			CommandContext modifySharedDocumentCommandContext,
 			AnnotationEditFormatter annotationEditFormatter) {
-		super(declaringEnum, name, occurrence, compilationUnit, modifySharedDocumentCommandExecutor, annotationEditFormatter);
+		super(declaringEnum, name, occurrence, compilationUnit, modifySharedDocumentCommandContext, annotationEditFormatter);
 	}
 
 	/**
 	 * constructor for testing
 	 */
 	public JDTEnumConstant(Enum declaringEnum, String name, int occurrence, ICompilationUnit compilationUnit) {
-		this(declaringEnum, name, occurrence, compilationUnit, CommandExecutor.Default.instance(), DefaultAnnotationEditFormatter.instance());
+		this(declaringEnum, name, occurrence, compilationUnit, CommandContext.Default.instance(), DefaultAnnotationEditFormatter.instance());
 	}
 
 	@Override

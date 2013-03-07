@@ -35,7 +35,7 @@ import org.eclipse.jpt.common.core.JptCommonCoreMessages;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.command.StatefulCommandExecutor;
+import org.eclipse.jpt.common.utility.command.StatefulCommandContext;
 import org.eclipse.jpt.common.utility.internal.ExceptionHandlerAdapter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.command.AsynchronousExtendedCommandExecutor;
@@ -155,7 +155,7 @@ public class InternalJaxbProjectManager
 	 * Determine how Resource and Java change events are
 	 * handled (i.e. synchronously or asynchronously).
 	 */
-	private volatile StatefulCommandExecutor eventHandler =
+	private volatile StatefulCommandContext eventHandler =
 			new AsynchronousExtendedCommandExecutor(
 					JptCommonCoreMessages.DALI_EVENT_HANDLER_THREAD_NAME,
 					new LocalExceptionHandler()

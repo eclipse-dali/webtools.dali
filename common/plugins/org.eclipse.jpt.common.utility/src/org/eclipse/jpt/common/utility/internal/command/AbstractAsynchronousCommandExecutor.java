@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.utility.internal.command;
 import java.util.concurrent.ThreadFactory;
 import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.command.StatefulCommandExecutor;
+import org.eclipse.jpt.common.utility.command.StatefulCommandContext;
 import org.eclipse.jpt.common.utility.internal.ConsumerThreadCoordinator;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.RuntimeExceptionHandler;
@@ -22,15 +22,15 @@ import org.eclipse.jpt.common.utility.internal.collection.SynchronizedQueue;
 /**
  * This command executor will dispatch commands to be executed in a separate
  * thread, allowing calls to
- * {@link org.eclipse.jpt.common.utility.command.CommandExecutor#execute(Command)}
+ * {@link org.eclipse.jpt.common.utility.command.CommandContext#execute(Command)}
  * to return immediately.
  * <p>
  * <strong>NB:</strong> If a client-supplied command throws a runtime exception
  * while it is executing, the command executor will use its
  * {@link ExceptionHandler exception handler} to handle the exception.
  */
-public abstract class AbstractAsynchronousCommandExecutor<E extends StatefulCommandExecutor>
-	implements StatefulCommandExecutor
+public abstract class AbstractAsynchronousCommandExecutor<E extends StatefulCommandContext>
+	implements StatefulCommandContext
 {
 	/**
 	 * The wrapped command executor.
@@ -202,7 +202,7 @@ public abstract class AbstractAsynchronousCommandExecutor<E extends StatefulComm
 	/**
 	 * Config useful for instantiating an {@link AbstractAsynchronousCommandExecutor}.
 	 */
-	public interface Config<E extends StatefulCommandExecutor> {
+	public interface Config<E extends StatefulCommandContext> {
 		E getCommandExecutor();
 		ThreadFactory getThreadFactory();
 		String getThreadName();
@@ -212,7 +212,7 @@ public abstract class AbstractAsynchronousCommandExecutor<E extends StatefulComm
 	/**
 	 * Config useful for instantiating an {@link AbstractAsynchronousCommandExecutor}.
 	 */
-	protected abstract static class SimpleConfig<E extends StatefulCommandExecutor>
+	protected abstract static class SimpleConfig<E extends StatefulCommandContext>
 		implements Config<E>
 	{
 		private volatile E commandExecutor;

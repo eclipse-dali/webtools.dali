@@ -10,20 +10,20 @@
 package org.eclipse.jpt.common.utility.internal.command;
 
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.command.CommandExecutor;
-import org.eclipse.jpt.common.utility.command.StatefulCommandExecutor;
+import org.eclipse.jpt.common.utility.command.CommandContext;
+import org.eclipse.jpt.common.utility.command.StatefulCommandContext;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.reference.SynchronizedBoolean;
 
 /**
- * Straightforward implementation of {@link StatefulCommandExecutor}
+ * Straightforward implementation of {@link StatefulCommandContext}
  * that executes commands immediately by default. This executor can
- * also be used to adapt simple {@link CommandExecutor}s to the
- * {@link StatefulCommandExecutor} interface, providing support for
+ * also be used to adapt simple {@link CommandContext}s to the
+ * {@link StatefulCommandContext} interface, providing support for
  * lifecycle state.
  */
-public abstract class AbstractStatefulCommandExecutor<E extends CommandExecutor>
-	implements StatefulCommandExecutor
+public abstract class AbstractStatefulCommandExecutor<E extends CommandContext>
+	implements StatefulCommandContext
 {
 	protected final SynchronizedBoolean active = new SynchronizedBoolean(false);
 	protected final E commandExecutor;

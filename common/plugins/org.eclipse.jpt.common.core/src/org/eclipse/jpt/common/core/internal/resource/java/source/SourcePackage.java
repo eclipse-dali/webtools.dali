@@ -39,7 +39,7 @@ public final class SourcePackage
 		AnnotatedPackage pack = new JDTPackage(
 				declaringPackage,
 				parent.getCompilationUnit(), 
-				parent.getModifySharedDocumentCommandExecutor(),
+				parent.getModifySharedDocumentCommandContext(),
 				parent.getAnnotationEditFormatter());
 		SourcePackage jrpp = new SourcePackage(parent, pack);
 		jrpp.initialize(declaringPackage);

@@ -10,11 +10,11 @@
 package org.eclipse.jpt.common.core.internal.utility.command;
 
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
-import org.eclipse.jpt.common.core.utility.command.CombinedExtendedCommandExecutor;
+import org.eclipse.jpt.common.core.utility.command.CombinedExtendedCommandContext;
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
-import org.eclipse.jpt.common.utility.command.StatefulExtendedCommandExecutor;
+import org.eclipse.jpt.common.utility.command.ExtendedCommandContext;
+import org.eclipse.jpt.common.utility.command.StatefulExtendedCommandContext;
 import org.eclipse.jpt.common.utility.internal.command.SingleUseQueueingExtendedCommandExecutor;
 
 /**
@@ -22,18 +22,18 @@ import org.eclipse.jpt.common.utility.internal.command.SingleUseQueueingExtended
  * adding support for executing {@link JobCommand}s.
  */
 public class SingleUseQueueingExtendedJobCommandExecutor
-	extends AbstractSingleUseQueueingJobCommandExecutor<SingleUseQueueingExtendedCommandExecutor, StatefulExtendedCommandExecutor>
-	implements CombinedExtendedCommandExecutor, StatefulExtendedCommandExecutor
+	extends AbstractSingleUseQueueingJobCommandExecutor<SingleUseQueueingExtendedCommandExecutor, StatefulExtendedCommandContext>
+	implements CombinedExtendedCommandContext, StatefulExtendedCommandContext
 {
 	public SingleUseQueueingExtendedJobCommandExecutor() {
 		this(new SingleUseQueueingExtendedCommandExecutor());
 	}
 
-	public SingleUseQueueingExtendedJobCommandExecutor(ExtendedCommandExecutor commandExecutor) {
+	public SingleUseQueueingExtendedJobCommandExecutor(ExtendedCommandContext commandExecutor) {
 		this(new SingleUseQueueingExtendedCommandExecutor(commandExecutor));
 	}
 
-	public SingleUseQueueingExtendedJobCommandExecutor(StatefulExtendedCommandExecutor commandExecutor) {
+	public SingleUseQueueingExtendedJobCommandExecutor(StatefulExtendedCommandContext commandExecutor) {
 		this(new SingleUseQueueingExtendedCommandExecutor(commandExecutor));
 	}
 

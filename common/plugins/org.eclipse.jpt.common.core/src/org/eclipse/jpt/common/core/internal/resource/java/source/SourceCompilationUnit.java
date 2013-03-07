@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
-import org.eclipse.jpt.common.utility.command.CommandExecutor;
+import org.eclipse.jpt.common.utility.command.CommandContext;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
 
 /**
@@ -39,8 +39,8 @@ public abstract class SourceCompilationUnit
 	/** improved annotation formatting */
 	private final AnnotationEditFormatter annotationEditFormatter;
 
-	/** pluggable executor that allows the document to be modified on another thread */
-	private final CommandExecutor modifySharedDocumentCommandExecutor;
+	/** pluggable context that allows the document to be modified on another thread */
+	private final CommandContext modifySharedDocumentCommandContext;
 
 	/** listeners notified whenever the resource model changes */
 	private final ListenerList<JptResourceModelListener> resourceModelListenerList;
@@ -52,12 +52,12 @@ public abstract class SourceCompilationUnit
 			ICompilationUnit compilationUnit,
 			AnnotationProvider annotationProvider, 
 			AnnotationEditFormatter annotationEditFormatter,
-			CommandExecutor modifySharedDocumentCommandExecutor) {
+			CommandContext modifySharedDocumentCommandContext) {
 		super(null);  // the JPA compilation unit is the root of its sub-tree
 		this.compilationUnit = compilationUnit;
 		this.annotationProvider = annotationProvider;
 		this.annotationEditFormatter = annotationEditFormatter;
-		this.modifySharedDocumentCommandExecutor = modifySharedDocumentCommandExecutor;
+		this.modifySharedDocumentCommandContext = modifySharedDocumentCommandContext;
 		this.resourceModelListenerList = new ListenerList<JptResourceModelListener>(JptResourceModelListener.class);
 	}
 
@@ -123,8 +123,8 @@ public abstract class SourceCompilationUnit
 		return this.compilationUnit;
 	}
 
-	public CommandExecutor getModifySharedDocumentCommandExecutor() {
-		return this.modifySharedDocumentCommandExecutor;
+	public CommandContext getModifySharedDocumentCommandContext() {
+		return this.modifySharedDocumentCommandContext;
 	}
 	
 	public AnnotationEditFormatter getAnnotationEditFormatter()  {

@@ -9,22 +9,22 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.command;
 
-import org.eclipse.jpt.common.utility.command.CommandExecutor;
+import org.eclipse.jpt.common.utility.command.CommandContext;
 
 /**
  * @see AbstractThreadLocalCommandExecutor
  */
 public class ThreadLocalCommandExecutor
-	extends AbstractThreadLocalCommandExecutor<CommandExecutor>
+	extends AbstractThreadLocalCommandExecutor<CommandContext>
 {
 	/**
 	 * The default command executor simply executes commands directly.
 	 */
 	public ThreadLocalCommandExecutor() {
-		this(CommandExecutor.Default.instance());
+		this(CommandContext.Default.instance());
 	}
 
-	public ThreadLocalCommandExecutor(CommandExecutor defaultCommandExecutor) {
+	public ThreadLocalCommandExecutor(CommandContext defaultCommandExecutor) {
 		super(defaultCommandExecutor);
 	}
 }

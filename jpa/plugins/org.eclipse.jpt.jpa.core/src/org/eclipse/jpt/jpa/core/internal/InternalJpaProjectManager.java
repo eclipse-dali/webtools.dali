@@ -42,10 +42,10 @@ import org.eclipse.jpt.common.core.internal.utility.command.CommandJobCommandAda
 import org.eclipse.jpt.common.core.internal.utility.command.JobCommandAdapter;
 import org.eclipse.jpt.common.core.internal.utility.command.SimpleJobCommandExecutor;
 import org.eclipse.jpt.common.core.internal.utility.command.SingleUseQueueingExtendedJobCommandExecutor;
-import org.eclipse.jpt.common.core.utility.command.ExtendedJobCommandExecutor;
+import org.eclipse.jpt.common.core.utility.command.ExtendedJobCommandContext;
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
+import org.eclipse.jpt.common.utility.command.ExtendedCommandContext;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.command.CommandAdapter;
 import org.eclipse.jpt.common.utility.internal.command.ThreadLocalExtendedCommandExecutor;
@@ -160,10 +160,10 @@ class InternalJpaProjectManager
 	/**
 	 * Determine how commands (Resource and Java change events etc.) are
 	 * handled (i.e. synchronously or asynchronously).
-	 * The default command executor executes commands asynchronously via
+	 * The default command context executes commands asynchronously via
 	 * Eclipse {@link Job jobs}.
 	 */
-	private volatile ExtendedJobCommandExecutor commandExecutor;
+	private volatile ExtendedJobCommandContext commandContext;
 
 	/**
 	 * All the JPA projects in the workspace.
@@ -237,7 +237,7 @@ class InternalJpaProjectManager
 	/**
 	 * Support for modifying documents shared with the UI.
 	 */
-	private final ThreadLocalExtendedCommandExecutor modifySharedDocumentCommandExecutor = new ThreadLocalExtendedCommandExecutor();
+	private final ThreadLocalExtendedCommandExecutor modifySharedDocumentCommandContext = new ThreadLocalExtendedCommandExecutor();
 
 
 	// ********** constructor **********
@@ -255,7 +255,7 @@ class InternalJpaProjectManager
 		// dump a stack trace so we can determine what triggers this
 		JptJpaCorePlugin.instance().dumpStackTrace(TRACE_OPTION, "*** new JPA project manager ***"); //$NON-NLS-1$
 		try {
-			this.commandExecutor = this.buildAsynchronousCommandExecutor();
+			this.commandContext = this.buildAsynchronousCommandContext();
 			this.buildJpaProjects();  // typically async
 			this.getWorkspace().addResourceChangeListener(this.resourceChangeListener, RESOURCE_CHANGE_EVENT_TYPES);
 			JavaCore.addElementChangedListener(this.javaElementChangeListener, JAVA_CHANGE_EVENT_TYPES);
@@ -316,9 +316,9 @@ class InternalJpaProjectManager
 		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "*** JPA project manager dispose ***"); //$NON-NLS-1$
 		JavaCore.removeElementChangedListener(this.javaElementChangeListener);
 		this.getWorkspace().removeResourceChangeListener(this.resourceChangeListener);
-		ExtendedJobCommandExecutor oldCE = this.commandExecutor;
+		ExtendedJobCommandContext oldCE = this.commandContext;
 		// if the current executor is async, commands can continue to execute after we replace it here...
-		this.commandExecutor = ExtendedJobCommandExecutor.Inactive.instance();
+		this.commandContext = ExtendedJobCommandContext.Inactive.instance();
 		this.clearJpaProjects(oldCE);  // synchronous
 		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "*** JPA project manager DEAD ***"); //$NON-NLS-1$
 	}
@@ -332,7 +332,7 @@ class InternalJpaProjectManager
 	 * file (e.g. an JPA-annotated Java file) as the workspace shuts down. This
 	 * will trigger a validation job once the file is saved.
 	 */
-	private void clearJpaProjects(ExtendedJobCommandExecutor oldCE) {
+	private void clearJpaProjects(ExtendedJobCommandContext oldCE) {
 		try {
 			this.clearJpaProjects_(oldCE);
 		} catch (InterruptedException ex) {
@@ -342,7 +342,7 @@ class InternalJpaProjectManager
 		}
 	}
 
-	private void clearJpaProjects_(ExtendedJobCommandExecutor oldCE) throws InterruptedException {
+	private void clearJpaProjects_(ExtendedJobCommandContext oldCE) throws InterruptedException {
 		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: clear JPA projects"); //$NON-NLS-1$
 		ClearJpaProjectsCommand command = new ClearJpaProjectsCommand();
 		oldCE.waitToExecute(command, JptJpaCoreMessages.DISPOSE_JPA_PROJECTS_JOB_NAME, this.getWorkspaceRoot());
@@ -1001,12 +1001,12 @@ class InternalJpaProjectManager
 
 	// ********** support for modifying documents shared with the UI **********
 
-	public ExtendedCommandExecutor getModifySharedDocumentCommandExecutor() {
-		return this.modifySharedDocumentCommandExecutor;
+	public ExtendedCommandContext getModifySharedDocumentCommandContext() {
+		return this.modifySharedDocumentCommandContext;
 	}
 
-	private void setThreadLocalModifySharedDocumentCommandExecutor(ExtendedCommandExecutor commandExecutor) {
-		this.modifySharedDocumentCommandExecutor.set(commandExecutor);
+	private void setThreadLocalModifySharedDocumentCommandContext(ExtendedCommandContext commandContext) {
+		this.modifySharedDocumentCommandContext.set(commandContext);
 	}
 
 
@@ -1045,7 +1045,7 @@ class InternalJpaProjectManager
 	 * front of the command queue.
 	 * <p>
 	 * Called by JPA project <em>synchronizes</em> and <em>updates</em>:
-	 * @see org.eclipse.jpt.jpa.core.internal.AbstractJpaProject.ManagerJobCommandExecutor#execute(JobCommand, String)
+	 * @see org.eclipse.jpt.jpa.core.internal.AbstractJpaProject.ManagerJobCommandContext#execute(JobCommand, String)
 	 */
 	public void execute(JobCommand command, String jobName, JpaProject jpaProject) {
 		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: client command: {0}", command); //$NON-NLS-1$
@@ -1057,7 +1057,7 @@ class InternalJpaProjectManager
 	}
 
 	private void execute(JobCommand command, String jobName, ISchedulingRule schedulingRule) {
-		this.commandExecutor.execute(command, jobName, schedulingRule);
+		this.commandContext.execute(command, jobName, schedulingRule);
 	}
 
 	private void waitToExecute(Command command, String jobName, ISchedulingRule schedulingRule) throws InterruptedException {
@@ -1089,15 +1089,15 @@ class InternalJpaProjectManager
 			command.execute(new NullProgressMonitor());
 			return true;
 		}
-		return this.commandExecutor.waitToExecute(command, jobName, schedulingRule, timeout);
+		return this.commandContext.waitToExecute(command, jobName, schedulingRule, timeout);
 	}
 
 	public void execute(Command command) throws InterruptedException {
 		this.execute(command, null);
 	}
 
-	public void execute(Command command, ExtendedCommandExecutor threadLocalModifySharedDocumentCommandExecutor) throws InterruptedException {
-		this.setThreadLocalModifySharedDocumentCommandExecutor(threadLocalModifySharedDocumentCommandExecutor);
+	public void execute(Command command, ExtendedCommandContext threadLocalModifySharedDocumentCommandContext) throws InterruptedException {
+		this.setThreadLocalModifySharedDocumentCommandContext(threadLocalModifySharedDocumentCommandContext);
 		this.executeCommandsSynchronously();
 		try {
 			command.execute();
@@ -1105,7 +1105,7 @@ class InternalJpaProjectManager
 			this.executeCommandsAsynchronously();
 		}
 		// not really necessary - thread locals are GCed
-		this.setThreadLocalModifySharedDocumentCommandExecutor(null);
+		this.setThreadLocalModifySharedDocumentCommandContext(null);
 	}
 
 	/**
@@ -1120,40 +1120,40 @@ class InternalJpaProjectManager
 	 * @see #executeCommandsAsynchronously()
 	 */
 	private synchronized void executeCommandsSynchronously() throws InterruptedException {
-		if ( ! (this.commandExecutor instanceof SimpleJobCommandExecutor)) {
+		if ( ! (this.commandContext instanceof SimpleJobCommandExecutor)) {
 			throw new IllegalStateException();
 		}
 
 		// de-activate Java events
 		this.addJavaEventListenerFlag(BooleanReference.False.instance());
 		// save the current executor
-		SimpleJobCommandExecutor oldCE = (SimpleJobCommandExecutor) this.commandExecutor;
+		SimpleJobCommandExecutor oldContext = (SimpleJobCommandExecutor) this.commandContext;
 		// install a new (not-yet-started) executor
-		SingleUseQueueingExtendedJobCommandExecutor newCE = this.buildSynchronousCommandExecutor();
-		this.commandExecutor = newCE;
+		SingleUseQueueingExtendedJobCommandExecutor newContext = this.buildSynchronousCommandContext();
+		this.commandContext = newContext;
 		// wait for all the outstanding commands to finish
-		oldCE.waitToExecute(Command.Null.instance());
+		oldContext.waitToExecute(Command.Null.instance());
 		// start up the new executor (it will now execute any commands that
 		// arrived while we were waiting on the outstanding commands)
-		newCE.start();
+		newContext.start();
 	}
 
-	private SingleUseQueueingExtendedJobCommandExecutor buildSynchronousCommandExecutor() {
+	private SingleUseQueueingExtendedJobCommandExecutor buildSynchronousCommandContext() {
 		return new SingleUseQueueingExtendedJobCommandExecutor();
 	}
 
 	private synchronized void executeCommandsAsynchronously() {
-		if ( ! (this.commandExecutor instanceof SingleUseQueueingExtendedJobCommandExecutor)) {
+		if ( ! (this.commandContext instanceof SingleUseQueueingExtendedJobCommandExecutor)) {
 			throw new IllegalStateException();
 		}
 
 		// no need to wait on a synchronous executor...
-		this.commandExecutor = this.buildAsynchronousCommandExecutor();
+		this.commandContext = this.buildAsynchronousCommandContext();
 		// re-activate Java events
 		this.removeJavaEventListenerFlag(BooleanReference.False.instance());
 	}
 
-	private SimpleJobCommandExecutor buildAsynchronousCommandExecutor() {
+	private SimpleJobCommandExecutor buildAsynchronousCommandContext() {
 		return new SimpleJobCommandExecutor(JptCommonCoreMessages.DALI_JOB_NAME);
 	}
 

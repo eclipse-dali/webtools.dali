@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.utility.internal.command;
 import java.util.ArrayList;
 import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.command.CommandExecutor;
+import org.eclipse.jpt.common.utility.command.CommandContext;
 import org.eclipse.jpt.common.utility.command.RepeatingCommand;
 import org.eclipse.jpt.common.utility.internal.StackTrace;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -47,7 +47,7 @@ public class RepeatingCommandWrapper
 	 * {@link #startCommand start command} asynchronously; after which,
 	 * subsequent overlapping executions are executed synchronously.
 	 */
-	private final CommandExecutor startCommandExecutor;
+	private final CommandContext startCommandExecutor;
 
 	/**
 	 * This handles the exceptions thrown by the <em>wrapped</em> command.
@@ -77,7 +77,7 @@ public class RepeatingCommandWrapper
 	 * specified exception handler.
 	 */
 	public RepeatingCommandWrapper(Command command, ExceptionHandler exceptionHandler) {
-		this(command, CommandExecutor.Default.instance(), exceptionHandler);
+		this(command, CommandContext.Default.instance(), exceptionHandler);
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class RepeatingCommandWrapper
 	 * Any exceptions thrown by the command will be handled by the
 	 * specified exception handler.
 	 */
-	public RepeatingCommandWrapper(Command command, CommandExecutor startCommandExecutor, ExceptionHandler exceptionHandler) {
+	public RepeatingCommandWrapper(Command command, CommandContext startCommandExecutor, ExceptionHandler exceptionHandler) {
 		super();
 		if ((command == null) || (startCommandExecutor == null) || (exceptionHandler == null)) {
 			throw new NullPointerException();

@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.utility.internal.command;
 
 import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.command.CommandExecutor;
+import org.eclipse.jpt.common.utility.command.CommandContext;
 import org.eclipse.jpt.common.utility.internal.NullExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
@@ -19,8 +19,8 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * This command executor wraps another command executor and uses an exception
  * handler to handle any exceptions thrown by an executing command.
  */
-public abstract class AbstractSafeCommandExecutor<E extends CommandExecutor>
-	implements CommandExecutor
+public abstract class AbstractSafeCommandExecutor<E extends CommandContext>
+	implements CommandContext
 {
 	protected final E commandExecutor;
 	protected final ExceptionHandler exceptionHandler;

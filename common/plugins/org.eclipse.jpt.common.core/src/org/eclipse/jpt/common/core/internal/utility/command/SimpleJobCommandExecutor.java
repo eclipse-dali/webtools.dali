@@ -13,7 +13,7 @@ import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
-import org.eclipse.jpt.common.core.utility.command.CombinedExtendedCommandExecutor;
+import org.eclipse.jpt.common.core.utility.command.CombinedExtendedCommandContext;
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
@@ -28,7 +28,7 @@ import org.eclipse.jpt.common.utility.internal.reference.SynchronizedBoolean;
  * {@link LocalJobChangeListener job listener}.
  */
 public class SimpleJobCommandExecutor
-	implements CombinedExtendedCommandExecutor
+	implements CombinedExtendedCommandContext
 {
 	private final String defaultJobName;
 	private final ISchedulingRule defaultJobSchedulingRule;

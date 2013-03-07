@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
-import org.eclipse.jpt.common.core.utility.command.JobCommandExecutor;
+import org.eclipse.jpt.common.core.utility.command.JobCommandContext;
 import org.eclipse.jpt.common.core.utility.command.RepeatingJobCommand;
 import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.StackTrace;
@@ -29,7 +29,7 @@ import org.eclipse.jpt.common.utility.internal.command.RepeatingCommandState;
  * <strong>NB:</strong> The {@link IProgressMonitor progress monitor} passed to
  * the job command wrapper is <em>ignored</em>. The {@link IProgressMonitor
  * progress monitor} passed to the <em>wrapped</em> job command is determined by
- * the {@link #startCommandExecutor start command executor}. That same
+ * the {@link #startCommandContext start command executor}. That same
  * {@link IProgressMonitor progress monitor} is passed to the <em>wrapped</em>
  * job command for every execution during an execution "cycle". It is
  * <em>not</em> reset with each execution; so several
@@ -59,13 +59,13 @@ public class RepeatingJobCommandWrapper
 	private final JobCommand startCommand;
 
 	/**
-	 * The client-supplied command executor that provides the context for the
+	 * The client-supplied command context that provides the context for the
 	 * {@link #startCommand start command}. By default, the start command is
 	 * executed directly; but this executor provides a hook for executing the
 	 * {@link #startCommand start command} asynchronously; after which,
 	 * subsequent overlapping executions are executed synchronously.
 	 */
-	private final JobCommandExecutor startCommandExecutor;
+	private final JobCommandContext startCommandContext;
 
 	/**
 	 * This handles the exceptions thrown by the <em>wrapped</em> command.
@@ -97,23 +97,23 @@ public class RepeatingJobCommandWrapper
 	 * specified exception handler.
 	 */
 	public RepeatingJobCommandWrapper(JobCommand command, ExceptionHandler exceptionHandler) {
-		this(command, JobCommandExecutor.Default.instance(), exceptionHandler);
+		this(command, JobCommandContext.Default.instance(), exceptionHandler);
 	}
 
 	/**
 	 * Construct a repeating command wrapper that executes the specified
-	 * command and uses the specified command executor to execute the wrapped
+	 * command and uses the specified command context to execute the wrapped
 	 * command whenever it is not already executing.
 	 * Any exceptions thrown by the command will be handled by the
 	 * specified exception handler.
 	 */
-	public RepeatingJobCommandWrapper(JobCommand command, JobCommandExecutor startCommandExecutor, ExceptionHandler exceptionHandler) {
+	public RepeatingJobCommandWrapper(JobCommand command, JobCommandContext startCommandContext, ExceptionHandler exceptionHandler) {
 		super();
-		if ((command == null) || (startCommandExecutor == null) || (exceptionHandler == null)) {
+		if ((command == null) || (startCommandContext == null) || (exceptionHandler == null)) {
 			throw new NullPointerException();
 		}
 		this.command = command;
-		this.startCommandExecutor = startCommandExecutor;
+		this.startCommandContext = startCommandContext;
 		this.startCommand = this.buildStartJobCommand();
 		this.exceptionHandler = exceptionHandler;
 		this.state = this.buildState();
@@ -154,7 +154,7 @@ public class RepeatingJobCommandWrapper
 	}
 
 	/* private protected */ void executeStartCommand() {
-		this.startCommandExecutor.execute(this.startCommand);
+		this.startCommandContext.execute(this.startCommand);
 	}
 
 	public void stop() throws InterruptedException {
@@ -163,7 +163,7 @@ public class RepeatingJobCommandWrapper
 
 	/**
 	 * The start command.
-	 * @see #startCommandExecutor
+	 * @see #startCommandContext
 	 */
 	/* CU private */ class StartJobCommand
 		implements JobCommand

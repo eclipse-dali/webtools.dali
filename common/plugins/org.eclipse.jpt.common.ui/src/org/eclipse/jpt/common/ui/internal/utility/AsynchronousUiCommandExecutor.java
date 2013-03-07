@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.ui.internal.utility;
 
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
+import org.eclipse.jpt.common.utility.command.ExtendedCommandContext;
 
 /**
  * This command executor asynchronously executes a {@link Command command}
@@ -23,9 +23,9 @@ import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
 public final class AsynchronousUiCommandExecutor
 	extends AbstractUiCommandExecutor
 {
-	public static final ExtendedCommandExecutor INSTANCE = new AsynchronousUiCommandExecutor();
+	public static final ExtendedCommandContext INSTANCE = new AsynchronousUiCommandExecutor();
 
-	public static ExtendedCommandExecutor instance() {
+	public static ExtendedCommandContext instance() {
 		return INSTANCE;
 	}
 

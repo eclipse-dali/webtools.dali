@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,7 @@ import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
- * This interface extends the normal command executor to allow the client
+ * This interface extends the normal command context to allow the client
  * to control when a command is required to be executed synchronously.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
@@ -24,8 +24,8 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface ExtendedJobCommandExecutor
-	extends JobCommandExecutor
+public interface ExtendedJobCommandContext
+	extends JobCommandContext
 {
 	/**
 	 * Suspend the current thread until the specified command is executed.
@@ -115,10 +115,10 @@ public interface ExtendedJobCommandExecutor
 	 * that simply executes the command without any sort of enhancement.
 	 */
 	final class Default
-		implements ExtendedJobCommandExecutor, Serializable
+		implements ExtendedJobCommandContext, Serializable
 	{
-		public static final ExtendedJobCommandExecutor INSTANCE = new Default();
-		public static ExtendedJobCommandExecutor instance() {
+		public static final ExtendedJobCommandContext INSTANCE = new Default();
+		public static ExtendedJobCommandContext instance() {
 			return INSTANCE;
 		}
 		// ensure single instance
@@ -172,10 +172,10 @@ public interface ExtendedJobCommandExecutor
 	 * that ignores any commands.
 	 */
 	final class Inactive
-		implements ExtendedJobCommandExecutor, Serializable
+		implements ExtendedJobCommandContext, Serializable
 	{
-		public static final ExtendedJobCommandExecutor INSTANCE = new Inactive();
-		public static ExtendedJobCommandExecutor instance() {
+		public static final ExtendedJobCommandContext INSTANCE = new Inactive();
+		public static ExtendedJobCommandContext instance() {
 			return INSTANCE;
 		}
 		// ensure single instance

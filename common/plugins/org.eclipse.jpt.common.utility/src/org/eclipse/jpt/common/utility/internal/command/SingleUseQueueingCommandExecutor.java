@@ -9,25 +9,25 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.command;
 
-import org.eclipse.jpt.common.utility.command.CommandExecutor;
-import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
-import org.eclipse.jpt.common.utility.command.StatefulCommandExecutor;
+import org.eclipse.jpt.common.utility.command.CommandContext;
+import org.eclipse.jpt.common.utility.command.ExtendedCommandContext;
+import org.eclipse.jpt.common.utility.command.StatefulCommandContext;
 
 /**
  * @see AbstractSingleUseQueueingCommandExecutor
  */
 public class SingleUseQueueingCommandExecutor
-	extends AbstractSingleUseQueueingCommandExecutor<StatefulCommandExecutor>
+	extends AbstractSingleUseQueueingCommandExecutor<StatefulCommandContext>
 {
 	public SingleUseQueueingCommandExecutor() {
-		this(ExtendedCommandExecutor.Default.instance());
+		this(ExtendedCommandContext.Default.instance());
 	}
 
-	public SingleUseQueueingCommandExecutor(CommandExecutor commandExecutor) {
+	public SingleUseQueueingCommandExecutor(CommandContext commandExecutor) {
 		this(new SimpleStatefulCommandExecutor(commandExecutor));
 	}
 
-	public SingleUseQueueingCommandExecutor(StatefulCommandExecutor commandExecutor) {
+	public SingleUseQueueingCommandExecutor(StatefulCommandContext commandExecutor) {
 		super(commandExecutor);
 	}
 }

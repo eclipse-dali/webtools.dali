@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.utility.internal.reference.SynchronizedBoolean;
  * "secondary" thread).
  * <p>
  * Typically, Thread A dispatches {@Command commands} to a
- * {@link org.eclipse.jpt.common.utility.command.CommandExecutor command
+ * {@link org.eclipse.jpt.common.utility.command.CommandContext command
  * executor}) that executes the {@Command commands} asynchronously on Thread B.
  * A <em>synchronizing</em> command allows Thread A to
  * dispatch a <em>synchronizing</em> command to Thread B and suspend until
@@ -86,7 +86,7 @@ public class SynchronizingCommand
 
 	/**
 	 * Typically called by a
-	 * {@link org.eclipse.jpt.common.utility.command.CommandExecutor command
+	 * {@link org.eclipse.jpt.common.utility.command.CommandContext command
 	 * executor} executing Thread B.
 	 * <p>
 	 * The "synchronizing" command has reached the front of the command queue

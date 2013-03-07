@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.utility.internal.reference;
 
 import java.io.Serializable;
 import org.eclipse.jpt.common.utility.command.InterruptibleCommand;
-import org.eclipse.jpt.common.utility.command.InterruptibleCommandExecutor;
+import org.eclipse.jpt.common.utility.command.InterruptibleCommandContext;
 import org.eclipse.jpt.common.utility.reference.ModifiableBooleanReference;
 
 /**
@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.utility.reference.ModifiableBooleanReference;
  * @see SimpleBooleanReference
  */
 public class SynchronizedBoolean
-	implements InterruptibleCommandExecutor, ModifiableBooleanReference, Cloneable, Serializable
+	implements InterruptibleCommandContext, ModifiableBooleanReference, Cloneable, Serializable
 {
 	/** Backing <code>boolean</code>. */
 	private boolean value;

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.utility.tests.internal.command;
 
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.command.CommandExecutor;
+import org.eclipse.jpt.common.utility.command.CommandContext;
 import org.eclipse.jpt.common.utility.internal.command.CommandRunnable;
 import org.eclipse.jpt.common.utility.internal.command.RunnableCommand;
 import org.eclipse.jpt.common.utility.internal.command.ThreadLocalCommand;
@@ -111,7 +111,7 @@ public class CommandTests
 		assertEquals(2, testRunnable2.testCommand.count);
 	}
 
-	static class TestCommandExecutor implements CommandExecutor {
+	static class TestCommandContext implements CommandContext {
 		int count = 0;
 		public void execute(Command command) {
 			this.count++;

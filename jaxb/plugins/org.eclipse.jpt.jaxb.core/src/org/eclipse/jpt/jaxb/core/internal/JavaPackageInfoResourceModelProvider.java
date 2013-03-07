@@ -55,7 +55,7 @@ public class JavaPackageInfoResourceModelProvider
 						compilationUnit,
 						jaxbProject.getPlatform().getAnnotationProvider(),
 						jaxbProject.getPlatform().getAnnotationEditFormatter(),
-						jaxbProject.getModifySharedDocumentCommandExecutor());
+						jaxbProject.getModifySharedDocumentCommandContext());
 			} 
 			//ignore package-info placed in default package as
 			//it doesn't have package declaration and can't hold annotations

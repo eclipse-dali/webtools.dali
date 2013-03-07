@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,7 +21,7 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jpt.common.core.utility.jdt.AbstractType;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.common.core.utility.jdt.Type;
-import org.eclipse.jpt.common.utility.command.CommandExecutor;
+import org.eclipse.jpt.common.utility.command.CommandContext;
 
 /**
  * Adapt and extend a JDT abstract type.
@@ -37,8 +37,8 @@ public abstract class AbstractJDTType
 	protected AbstractJDTType(
 			AbstractTypeDeclaration typeDeclaration,
 			ICompilationUnit compilationUnit,
-			CommandExecutor modifySharedDocumentCommandExecutor) {
-		this(typeDeclaration, compilationUnit, modifySharedDocumentCommandExecutor, DefaultAnnotationEditFormatter.instance());
+			CommandContext modifySharedDocumentCommandContext) {
+		this(typeDeclaration, compilationUnit, modifySharedDocumentCommandContext, DefaultAnnotationEditFormatter.instance());
 	}
 
 	/**
@@ -47,9 +47,9 @@ public abstract class AbstractJDTType
 	protected AbstractJDTType(
 			AbstractTypeDeclaration typeDeclaration,
 			ICompilationUnit compilationUnit,
-			CommandExecutor modifySharedDocumentCommandExecutor,
+			CommandContext modifySharedDocumentCommandContext,
 			AnnotationEditFormatter annotationEditFormatter) {
-		this(null, typeDeclaration, 1, compilationUnit, modifySharedDocumentCommandExecutor, annotationEditFormatter);
+		this(null, typeDeclaration, 1, compilationUnit, modifySharedDocumentCommandContext, annotationEditFormatter);
 	}
 
 	/**
@@ -60,8 +60,8 @@ public abstract class AbstractJDTType
 			AbstractTypeDeclaration typeDeclaration,
 			int occurrence,
 			ICompilationUnit compilationUnit,
-			CommandExecutor modifySharedDocumentCommandExecutor) {
-		this(declaringType, typeDeclaration, occurrence, compilationUnit, modifySharedDocumentCommandExecutor, DefaultAnnotationEditFormatter.instance());
+			CommandContext modifySharedDocumentCommandContext) {
+		this(declaringType, typeDeclaration, occurrence, compilationUnit, modifySharedDocumentCommandContext, DefaultAnnotationEditFormatter.instance());
 	}
 
 	/**
@@ -72,16 +72,16 @@ public abstract class AbstractJDTType
 			AbstractTypeDeclaration typeDeclaration,
 			int occurrence,
 			ICompilationUnit compilationUnit,
-			CommandExecutor modifySharedDocumentCommandExecutor,
+			CommandContext modifySharedDocumentCommandContext,
 			AnnotationEditFormatter annotationEditFormatter) {
-		super(declaringType, typeDeclaration.getName().getFullyQualifiedName(), occurrence, compilationUnit, modifySharedDocumentCommandExecutor, annotationEditFormatter);
+		super(declaringType, typeDeclaration.getName().getFullyQualifiedName(), occurrence, compilationUnit, modifySharedDocumentCommandContext, annotationEditFormatter);
 	}
 
 	/**
 	 * constructor for testing
 	 */
 	protected AbstractJDTType(Type declaringType, String name, int occurrence, ICompilationUnit compilationUnit) {
-		super(declaringType, name, occurrence, compilationUnit, CommandExecutor.Default.instance(), DefaultAnnotationEditFormatter.instance());
+		super(declaringType, name, occurrence, compilationUnit, CommandContext.Default.instance(), DefaultAnnotationEditFormatter.instance());
 	}
 
 	@Override
