@@ -2083,20 +2083,18 @@ public abstract class AbstractPersistenceUnit
 		return result;
 	}
 	
-	// ********** add persistent types - Make Persistent **********
+	// ********** add persistent types **********
 
-	//TODO add API - added this post-M6
 	/**
 	 * Annotate the given types with the given mapping key
 	 * Specify the types in the persistence.xml if listInPersistenceXml is true.
 	 */
-	public void addPersistentTypes(AbstractPersistenceUnit.MappedType[] mappedTypes, boolean listInPersistenceXml, IProgressMonitor pm) {
+	public void addPersistentTypes(PersistentType.Config[] typeConfigs, boolean listInPersistenceXml, IProgressMonitor pm) {
 		SubMonitor sm = SubMonitor.convert(pm, 10);
-		this.annotateClasses(mappedTypes, sm.newChild(6));
+		this.annotateClasses(typeConfigs, sm.newChild(6));
 		if (listInPersistenceXml) {
-			this.listInPersistenceXml(mappedTypes, sm.newChild(4));
-		}
-		else {
+			this.listInPersistenceXml(typeConfigs, sm.newChild(4));
+		} else {
 			sm.subTask(JptJpaCoreMessages.MAKE_PERSISTENT_UPDATING_JPA_MODEL);
 			//TODO have to call this since I am modifying only the Java resource model
 			//in the non-'list in persisistence.xml' case
@@ -2105,31 +2103,31 @@ public abstract class AbstractPersistenceUnit
 		}
 	}
 
-	protected void annotateClasses(AbstractPersistenceUnit.MappedType[] mappedTypes, IProgressMonitor pm) {
-		SubMonitor sm = SubMonitor.convert(pm, mappedTypes.length);
+	protected void annotateClasses(PersistentType.Config[] typeConfigs, IProgressMonitor pm) {
+		SubMonitor sm = SubMonitor.convert(pm, typeConfigs.length);
 		sm.setTaskName(JptJpaCoreMessages.MAKE_PERSISTENT_PROCESSING_JAVA_CLASSES);
 		// TODO modify the context model - need to have API for creating a JavaPersistentType with a given mappingKey.
 		// be careful not to modify the context model in such a way that you end up with updates being run for
 		// every persistent type added.
-		for (AbstractPersistenceUnit.MappedType mappedType : mappedTypes) {
+		for (PersistentType.Config typeConfig : typeConfigs) {
 			if (sm.isCanceled()) {
 				return;
 			}
-			String typeName = mappedType.getFullyQualifiedName();
+			String typeName = typeConfig.getName();
 			sm.subTask(NLS.bind(JptJpaCoreMessages.MAKE_PERSISTENT_ANNOTATING_CLASS, typeName));
 			JavaResourceAbstractType type = this.getJpaProject().getJavaResourceType(typeName);
-			type.addAnnotation(this.getJavaTypeMappingDefinition(mappedType.getMappingKey()).getAnnotationName());
+			type.addAnnotation(this.getJavaTypeMappingDefinition(typeConfig.getMappingKey()).getAnnotationName());
 			sm.worked(1);
 		}
 	}
 
-	protected void listInPersistenceXml(AbstractPersistenceUnit.MappedType[] mappedTypes, IProgressMonitor pm) {
+	protected void listInPersistenceXml(PersistentType.Config[] typeConfigs, IProgressMonitor pm) {
 		SubMonitor sm = SubMonitor.convert(pm, 11);
 		sm.setTaskName(JptJpaCoreMessages.MAKE_PERSISTENT_LISTING_IN_PERSISTENCE_XML);
 		Collection<XmlJavaClassRef> addedXmlClassRefs = new ArrayList<XmlJavaClassRef>();
 		Collection<ClassRef> addedClassRefs = new ArrayList<ClassRef>();
-		for (AbstractPersistenceUnit.MappedType mappedType : mappedTypes) {
-			String typeName = mappedType.getFullyQualifiedName();
+		for (PersistentType.Config typeConfig : typeConfigs) {
+			String typeName = typeConfig.getName();
 			XmlJavaClassRef xmlClassRef = this.buildXmlJavaClassRef(typeName);
 			addedXmlClassRefs.add(xmlClassRef);
 			addedClassRefs.add(this.buildClassRef(xmlClassRef));
@@ -2932,11 +2930,5 @@ public abstract class AbstractPersistenceUnit
 		public void printBodySourceOn(BodySourceWriter pw, Map<String, Collection<MetamodelSourceType>> memberTypeTree) {
 			this.metamodelSynchronizer.printBodySourceOn(pw, memberTypeTree);
 		}
-	}
-
-
-	public static interface MappedType {
-		String getFullyQualifiedName();
-		String getMappingKey();
 	}
 }

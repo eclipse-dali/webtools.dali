@@ -67,13 +67,12 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaSourceFileDefinition;
-import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractEntityMappings;
-import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
 import org.eclipse.jpt.jpa.core.resource.ResourceMappingFile;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
@@ -108,7 +107,7 @@ public class JpaMakePersistentWizardPage
 	private TableViewer classTableViewer;
 	private final String helpContextId;
 
-	private final Type[] selectedTypes;
+	private final TypeConfig[] selectedTypes;
 
 	/* CU private */ final JpaProject jpaProject;
 	private JptResourceType jptResourceType;
@@ -149,20 +148,20 @@ public class JpaMakePersistentWizardPage
 		this.setMessage(JptJpaUiMessages.JpaMakePersistentWizardPage_message);
 	}
 
-	protected Type[] buildSelectedTypes(Set<IType> selectedJdtTypes) {
-		return ArrayTools.array(this.buildSelectedTypesIterable(selectedJdtTypes), Type.class);
+	protected TypeConfig[] buildSelectedTypes(Set<IType> selectedJdtTypes) {
+		return ArrayTools.array(this.buildSelectedTypesIterable(selectedJdtTypes), TypeConfig.class);
 	}
 
-	protected Iterable<Type> buildSelectedTypesIterable(Set<IType> selectedJdtTypes) {
-		return new TransformationIterable<IType, Type>(this.selectNonPersistentJdtTypes(selectedJdtTypes), new JdtTypeTransformer());
+	protected Iterable<TypeConfig> buildSelectedTypesIterable(Set<IType> selectedJdtTypes) {
+		return new TransformationIterable<IType, TypeConfig>(this.selectNonPersistentJdtTypes(selectedJdtTypes), new JdtTypeTransformer());
 	}
 
 	/* CU private */ class JdtTypeTransformer
-		extends TransformerAdapter<IType, Type>
+		extends TransformerAdapter<IType, TypeConfig>
 	{
 		@Override
-		public Type transform(IType jdtType) {
-			return new Type(jdtType);
+		public TypeConfig transform(IType jdtType) {
+			return new TypeConfig(jdtType);
 		}
 	}
 
@@ -381,12 +380,12 @@ public class JpaMakePersistentWizardPage
 		column.setEditingSupport(new EditingSupport(this.classTableViewer) {
 			@Override
 			protected Object getValue(Object element) {
-				return getMappingUiDefinition(((Type) element).mappingKey);
+				return getMappingUiDefinition(((TypeConfig) element).mappingKey);
 			}
 
 			@Override
 			protected void setValue(Object element, Object value) {
-				((Type) element).setMappingKey(((MappingUiDefinition) value).getKey());
+				((TypeConfig) element).setMappingKey(((MappingUiDefinition) value).getKey());
 				getViewer().update(element, null);
 			}
 		
@@ -423,7 +422,7 @@ public class JpaMakePersistentWizardPage
 	protected IStructuredContentProvider buildMappingComboCellEditorContentProvider() {
 		return new IStructuredContentProvider() {
 			public Object[] getElements(Object inputElement) {
-				return ArrayTools.array(((Type) inputElement).getTypeMappingUiDefinitions());
+				return ArrayTools.array(((TypeConfig) inputElement).getTypeMappingUiDefinitions());
 			}
 
 			public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
@@ -461,7 +460,7 @@ public class JpaMakePersistentWizardPage
 		}
 
 		private MappingUiDefinition getMappingUiDefinition(Object element) {
-			return JpaMakePersistentWizardPage.this.getMappingUiDefinition(((Type) element).mappingKey);
+			return JpaMakePersistentWizardPage.this.getMappingUiDefinition(((TypeConfig) element).mappingKey);
 		}
 		private ResourceManager getResourceManager() {
 			return JpaMakePersistentWizardPage.this.resourceManager;
@@ -579,19 +578,20 @@ public class JpaMakePersistentWizardPage
 	}
 
 
-	private class Type implements AbstractPersistenceUnit.MappedType {
-
+	public class TypeConfig
+		implements PersistentType.Config
+	{
 		private final IType jdtType;
 
 		/* CU private */ String mappingKey;
 
-		protected Type(IType jdtType) {
+		public TypeConfig(IType jdtType) {
 			super();
 			this.jdtType = jdtType;
 			this.mappingKey = MappingKeys.ENTITY_TYPE_MAPPING_KEY;
 		}
 
-		public String getFullyQualifiedName() {
+		public String getName() {
 			return this.jdtType.getFullyQualifiedName();
 		}
 
@@ -612,7 +612,7 @@ public class JpaMakePersistentWizardPage
 	private final class TypeContentProvider implements IStructuredContentProvider
 	{
 		public Object[] getElements(Object inputElement){
-			return (Type[]) inputElement;
+			return (TypeConfig[]) inputElement;
 		}
 
 		public void dispose(){}
@@ -630,12 +630,12 @@ public class JpaMakePersistentWizardPage
 
 		@Override
 		public String getText(Object element) {
-			return this.javaElementLabelProvider.getText(((Type) element).jdtType);
+			return this.javaElementLabelProvider.getText(((TypeConfig) element).jdtType);
 		}
 
 		@Override
 		public Image getImage(Object element) {
-			return this.javaElementLabelProvider.getImage(((Type) element).jdtType);
+			return this.javaElementLabelProvider.getImage(((TypeConfig) element).jdtType);
 		}
 	}
 
@@ -644,7 +644,7 @@ public class JpaMakePersistentWizardPage
 
 		@Override
 		public int compare(Viewer viewer, Object e1, Object e2) {
-			return this.javaElementComparator.compare(viewer, ((Type) e1).jdtType,  ((Type) e2).jdtType);
+			return this.javaElementComparator.compare(viewer, ((TypeConfig) e1).jdtType,  ((TypeConfig) e2).jdtType);
 		}
 	}
 	
@@ -677,13 +677,13 @@ public class JpaMakePersistentWizardPage
 	{
 		private final JpaProject jpaProject;
 		private final JptXmlResource ormXmlResource;
-		private final AbstractPersistenceUnit.MappedType[] selectedTypes;
+		private final PersistentType.Config[] selectedTypeConfigs;
 
-		AddToOrmXmlRunnable(JpaProject jpaProject, JptXmlResource ormXmlResource, AbstractPersistenceUnit.MappedType[] selectedTypes) {
+		AddToOrmXmlRunnable(JpaProject jpaProject, JptXmlResource ormXmlResource, PersistentType.Config[] selectedTypeConfigs) {
 			super();
 			this.jpaProject = jpaProject;
 			this.ormXmlResource = ormXmlResource;
-			this.selectedTypes = selectedTypes;
+			this.selectedTypeConfigs = selectedTypeConfigs;
 		}
 
 		public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
@@ -699,7 +699,7 @@ public class JpaMakePersistentWizardPage
 			// lock the orm.xml resource, it is the only thing we will be modifying.
 			ISchedulingRule rule = workspace.getRuleFactory().modifyRule(this.ormXmlResource.getFile());
 			workspace.run(
-				new AddToOrmXmlWorkspaceRunnable(this.jpaProject, this.ormXmlResource, this.selectedTypes),
+				new AddToOrmXmlWorkspaceRunnable(this.jpaProject, this.ormXmlResource, this.selectedTypeConfigs),
 				rule,
 				IWorkspace.AVOID_UPDATE,
 				monitor
@@ -718,13 +718,13 @@ public class JpaMakePersistentWizardPage
 	{
 		private final JpaProject jpaProject;
 		private final JptXmlResource ormXmlResource;
-		private final AbstractPersistenceUnit.MappedType[] selectedTypes;
+		private final PersistentType.Config[] selectedTypeConfigs;
 
-		AddToOrmXmlWorkspaceRunnable(JpaProject jpaProject, JptXmlResource ormXmlResource, AbstractPersistenceUnit.MappedType[] selectedTypes) {
+		AddToOrmXmlWorkspaceRunnable(JpaProject jpaProject, JptXmlResource ormXmlResource, PersistentType.Config[] selectedTypeConfigs) {
 			super();
 			this.jpaProject = jpaProject;
 			this.ormXmlResource = ormXmlResource;
-			this.selectedTypes = selectedTypes;
+			this.selectedTypeConfigs = selectedTypeConfigs;
 		}
 
 		public void run(IProgressMonitor monitor) {
@@ -735,7 +735,7 @@ public class JpaMakePersistentWizardPage
 			if (jpaProjectManager == null) {
 				return;
 			}
-			Command addToOrmXmlCommand = new AddToOrmXmlCommand(this.getEntityMappings(),this.selectedTypes, monitor);
+			Command addToOrmXmlCommand = new AddToOrmXmlCommand(this.getEntityMappings(),this.selectedTypeConfigs, monitor);
 			try {
 				jpaProjectManager.execute(addToOrmXmlCommand, SynchronousUiCommandExecutor.instance());
 			} catch (InterruptedException ex) {
@@ -772,24 +772,23 @@ public class JpaMakePersistentWizardPage
 		implements Command
 	{
 		private final EntityMappings entityMappings;
-		private final AbstractPersistenceUnit.MappedType[] selectedTypes;
+		private final PersistentType.Config[] selectedTypeConfigs;
 		private final IProgressMonitor monitor;
 
-		AddToOrmXmlCommand(EntityMappings entityMappings, AbstractPersistenceUnit.MappedType[] selectedTypes, IProgressMonitor monitor) {
+		AddToOrmXmlCommand(EntityMappings entityMappings, PersistentType.Config[] selectedTypeConfigs, IProgressMonitor monitor) {
 			super();
 			this.entityMappings = entityMappings;
-			this.selectedTypes = selectedTypes;
+			this.selectedTypeConfigs = selectedTypeConfigs;
 			this.monitor = monitor;
 		}
 
 		public void execute() {
-			//TODO add API to EntityMappings - added this post-M6
-			((AbstractEntityMappings) this.entityMappings).addPersistentTypes(this.selectedTypes, this.monitor);
+			this.entityMappings.addPersistentTypes(this.selectedTypeConfigs, this.monitor);
 		}
 
 		@Override
 		public String toString() {
-			return ObjectTools.toString(this, this.selectedTypes);
+			return ObjectTools.toString(this, this.selectedTypeConfigs);
 		}
 	}
 
@@ -803,13 +802,13 @@ public class JpaMakePersistentWizardPage
 		implements IRunnableWithProgress
 	{
 		private final JpaProject jpaProject;
-		private final AbstractPersistenceUnit.MappedType[] selectedTypes;
+		private final PersistentType.Config[] selectedTypeConfigs;
 		private final boolean listInPersistenceXml;
 
-		AnnotateInJavaRunnable(JpaProject jpaProject, AbstractPersistenceUnit.MappedType[] selectedTypes, boolean listInPersistenceXml) {
+		AnnotateInJavaRunnable(JpaProject jpaProject, PersistentType.Config[] selectedTypeConfigs, boolean listInPersistenceXml) {
 			super();
 			this.jpaProject = jpaProject;
-			this.selectedTypes = selectedTypes;
+			this.selectedTypeConfigs = selectedTypeConfigs;
 			this.listInPersistenceXml = listInPersistenceXml;
 		}
 
@@ -826,7 +825,7 @@ public class JpaMakePersistentWizardPage
 			// lock the entire project, since we could be modifying multiple java files and the persistence.xml file
 			ISchedulingRule rule = workspace.getRuleFactory().modifyRule(this.jpaProject.getProject());
 			workspace.run(
-				new AnnotateInJavaWorkspaceRunnable(this.jpaProject, this.selectedTypes, this.listInPersistenceXml),
+				new AnnotateInJavaWorkspaceRunnable(this.jpaProject, this.selectedTypeConfigs, this.listInPersistenceXml),
 				rule,
 				IWorkspace.AVOID_UPDATE,
 				monitor
@@ -844,13 +843,13 @@ public class JpaMakePersistentWizardPage
 		implements IWorkspaceRunnable
 	{
 		private final JpaProject jpaProject;
-		private final AbstractPersistenceUnit.MappedType[] selectedTypes;
+		private final PersistentType.Config[] selectedTypeConfigs;
 		private final boolean listInPersistenceXml;
 
-		AnnotateInJavaWorkspaceRunnable(JpaProject jpaProject, AbstractPersistenceUnit.MappedType[] selectedTypes, boolean listInPersistenceXml) {
+		AnnotateInJavaWorkspaceRunnable(JpaProject jpaProject, PersistentType.Config[] selectedTypeConfigs, boolean listInPersistenceXml) {
 			super();
 			this.jpaProject = jpaProject;
-			this.selectedTypes = selectedTypes;
+			this.selectedTypeConfigs = selectedTypeConfigs;
 			this.listInPersistenceXml = listInPersistenceXml;
 		}
 
@@ -866,7 +865,7 @@ public class JpaMakePersistentWizardPage
 			if (jpaProjectManager == null) {
 				return;
 			}
-			Command annotateInJavaCommand = new AnnotateInJavaCommand(persistenceUnit, this.selectedTypes, this.listInPersistenceXml, monitor);
+			Command annotateInJavaCommand = new AnnotateInJavaCommand(persistenceUnit, this.selectedTypeConfigs, this.listInPersistenceXml, monitor);
 			try {
 				jpaProjectManager.execute(annotateInJavaCommand, SynchronousUiCommandExecutor.instance());
 			} catch (InterruptedException ex) {
@@ -924,26 +923,25 @@ public class JpaMakePersistentWizardPage
 		implements Command
 	{
 		private final PersistenceUnit persistenceUnit;
-		private final AbstractPersistenceUnit.MappedType[] selectedTypes;
+		private final PersistentType.Config[] selectedTypeConfigs;
 		private final boolean listInPersistenceXml;
 		private final IProgressMonitor monitor;
 
-		AnnotateInJavaCommand(PersistenceUnit persistenceUnit, AbstractPersistenceUnit.MappedType[] selectedTypes, boolean listInPersistenceXml, IProgressMonitor monitor) {
+		AnnotateInJavaCommand(PersistenceUnit persistenceUnit, PersistentType.Config[] selectedTypeConfigs, boolean listInPersistenceXml, IProgressMonitor monitor) {
 			super();
 			this.persistenceUnit = persistenceUnit;
-			this.selectedTypes = selectedTypes;
+			this.selectedTypeConfigs = selectedTypeConfigs;
 			this.listInPersistenceXml = listInPersistenceXml;
 			this.monitor = monitor;
 		}
 
 		public void execute() {
-			//TODO add API to PersistenceUnit - added this post-M6
-			((AbstractPersistenceUnit) this.persistenceUnit).addPersistentTypes(this.selectedTypes, this.listInPersistenceXml, this.monitor);
+			this.persistenceUnit.addPersistentTypes(this.selectedTypeConfigs, this.listInPersistenceXml, this.monitor);
 		}
 
 		@Override
 		public String toString() {
-			return ObjectTools.toString(this, this.selectedTypes);
+			return ObjectTools.toString(this, this.selectedTypeConfigs);
 		}
 	}
 }

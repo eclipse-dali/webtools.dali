@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
@@ -203,5 +204,17 @@ public interface PersistentType
 		 */
 		AccessType getDefaultPersistentTypeAccess();
 
+	}
+
+
+	// ********** config **********
+
+	/**
+	 * Config that can be used to add persistent types to a persistence unit.
+	 * @see org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit#addPersistentTypes(Config[], boolean, IProgressMonitor)
+	 */
+	interface Config {
+		String getName();
+		String getMappingKey();
 	}
 }

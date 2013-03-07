@@ -62,7 +62,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
-import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.EntityMappings2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.OrmConverterType2_1;
@@ -716,26 +715,26 @@ public abstract class AbstractEntityMappings
 	}
 
 	//TODO add API - added this post-M6
-	public void addPersistentTypes(AbstractPersistenceUnit.MappedType[] mappedTypes, IProgressMonitor pm) {
+	public void addPersistentTypes(PersistentType.Config[] typeConfigs, IProgressMonitor pm) {
 		SubMonitor sm = SubMonitor.convert(pm, 3);
 		if (sm.isCanceled()) {
 			return;
 		}
-		this.addMappedSuperclasses(mappedTypes, sm.newChild(1));
+		this.addMappedSuperclasses(typeConfigs, sm.newChild(1));
 		if (sm.isCanceled()) {
 			return;
 		}
-		this.addEntities(mappedTypes, sm.newChild(1));
+		this.addEntities(typeConfigs, sm.newChild(1));
 		if (sm.isCanceled()) {
 			return;
 		}
-		this.addEmbeddables(mappedTypes, sm.newChild(1));
+		this.addEmbeddables(typeConfigs, sm.newChild(1));
 	}
 
-	protected void addMappedSuperclasses(AbstractPersistenceUnit.MappedType[] types, IProgressMonitor pm) {
+	protected void addMappedSuperclasses(PersistentType.Config[] typeConfigs, IProgressMonitor pm) {
 		SubMonitor sm = SubMonitor.convert(pm, 5);
 		sm.setTaskName(JptJpaCoreMessages.MAKE_PERSISTENT_PROCESSING_MAPPED_SUPERCLASSES);
-		List<OrmPersistentType> addedItems = this.addOrmPersistentTypes(types, MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, sm.newChild(4));
+		List<OrmPersistentType> addedItems = this.addOrmPersistentTypes(typeConfigs, MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, sm.newChild(4));
 		if (addedItems.size() == 0 || sm.isCanceled()) {
 			return;
 		}
@@ -749,10 +748,10 @@ public abstract class AbstractEntityMappings
 		sm.worked(1);
 	}
 
-	protected void addEntities(AbstractPersistenceUnit.MappedType[] types, IProgressMonitor pm) {
+	protected void addEntities(PersistentType.Config[] typeConfigs, IProgressMonitor pm) {
 		SubMonitor sm = SubMonitor.convert(pm, 5);
 		sm.setTaskName(JptJpaCoreMessages.MAKE_PERSISTENT_PROCESSING_ENTITIES);
-		List<OrmPersistentType> addedItems = this.addOrmPersistentTypes(types, MappingKeys.ENTITY_TYPE_MAPPING_KEY, sm.newChild(4));
+		List<OrmPersistentType> addedItems = this.addOrmPersistentTypes(typeConfigs, MappingKeys.ENTITY_TYPE_MAPPING_KEY, sm.newChild(4));
 		if (addedItems.size() == 0 || sm.isCanceled()) {
 			return;
 		}
@@ -766,10 +765,10 @@ public abstract class AbstractEntityMappings
 		sm.worked(1);
 	}
 
-	protected void addEmbeddables(AbstractPersistenceUnit.MappedType[] types, IProgressMonitor pm) {
+	protected void addEmbeddables(PersistentType.Config[] typeConfigs, IProgressMonitor pm) {
 		SubMonitor sm = SubMonitor.convert(pm, 5);
 		sm.setTaskName(JptJpaCoreMessages.MAKE_PERSISTENT_PROCESSING_EMBEDDABLES);
-		List<OrmPersistentType> addedItems = this.addOrmPersistentTypes(types, MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, sm.newChild(4));
+		List<OrmPersistentType> addedItems = this.addOrmPersistentTypes(typeConfigs, MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, sm.newChild(4));
 		if (addedItems.size() == 0 || sm.isCanceled()) {
 			return;
 		}
@@ -783,19 +782,19 @@ public abstract class AbstractEntityMappings
 		sm.worked(1);
 	}
 
-	protected List<OrmPersistentType> addOrmPersistentTypes(AbstractPersistenceUnit.MappedType[] types, String mappingKey, IProgressMonitor pm) {
+	protected List<OrmPersistentType> addOrmPersistentTypes(PersistentType.Config[] typeConfigs, String mappingKey, IProgressMonitor pm) {
 		SubMonitor sm = SubMonitor.convert(pm, 10);
 		List<OrmPersistentType> addedItems = new ArrayList<OrmPersistentType>();
-		for(AbstractPersistenceUnit.MappedType type : types) {
-			if (type.getMappingKey() == mappingKey) {
-				String className = type.getFullyQualifiedName();
-				sm.subTask(NLS.bind(JptJpaCoreMessages.MAKE_PERSISTENT_BUILDING_PERSISTENT_TYPE, className));
-				OrmTypeMappingDefinition md = this.getMappingFileDefinition().getTypeMappingDefinition(type.getMappingKey());
+		for(PersistentType.Config typeConfig : typeConfigs) {
+			if (typeConfig.getMappingKey() == mappingKey) {
+				String typeName = typeConfig.getName();
+				sm.subTask(NLS.bind(JptJpaCoreMessages.MAKE_PERSISTENT_BUILDING_PERSISTENT_TYPE, typeName));
+				OrmTypeMappingDefinition md = this.getMappingFileDefinition().getTypeMappingDefinition(typeConfig.getMappingKey());
 				XmlTypeMapping xmlTypeMapping = md.buildResourceMapping(this.getResourceModelFactory());
 
 				// adds short name if package name is relevant
-				className = this.normalizeClassName(className);
-				xmlTypeMapping.setClassName(className);
+				typeName = this.normalizeClassName(typeName);
+				xmlTypeMapping.setClassName(typeName);
 
 				addedItems.add((OrmPersistentType) this.buildManagedType(xmlTypeMapping));
 			}

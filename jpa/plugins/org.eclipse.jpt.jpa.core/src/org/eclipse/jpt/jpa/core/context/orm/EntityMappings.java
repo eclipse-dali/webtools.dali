@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
@@ -209,7 +210,12 @@ public interface EntityMappings
 	 */
 	String qualify(String className);
 
+	/**
+	 * Add types to the entity mappings with the specified names and
+	 * corresponding mapping types.
+	 */
+	void addPersistentTypes(PersistentType.Config[] typeConfigs, IProgressMonitor monitor);
+
 	//TODO would like to remove this eventually
 	void dispose();
-
 }

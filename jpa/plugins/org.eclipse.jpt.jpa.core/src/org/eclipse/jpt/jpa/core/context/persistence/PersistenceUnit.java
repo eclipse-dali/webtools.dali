@@ -45,7 +45,12 @@ import org.eclipse.jpt.jpa.core.resource.persistence.XmlProperty;
  * @since 2.0
  */
 public interface PersistenceUnit
-	extends JpaStructureNode, PersistentTypeContainer, MappingFileRefactoringParticipant, DeleteTypeRefactoringParticipant, TypeRefactoringParticipant
+	extends
+		JpaStructureNode,
+		PersistentTypeContainer,
+		MappingFileRefactoringParticipant,
+		DeleteTypeRefactoringParticipant,
+		TypeRefactoringParticipant
 {
 	/**
 	 * Covariant override.
@@ -747,6 +752,12 @@ public interface PersistenceUnit
 	// ********** misc **********
 
 	/**
+	 * Add types to the persistence unit with the specified names and
+	 * corresponding mapping types.
+	 */
+	void addPersistentTypes(PersistentType.Config[] typeConfigs, boolean listInPersistenceXml, IProgressMonitor monitor);
+
+	/**
 	 * Return the XML resource model corresponding to the
 	 * persistence unit.
 	 */
@@ -821,5 +832,4 @@ public interface PersistenceUnit
 
 	//TODO would like to remove this eventually
 	void dispose();
-
 }
