@@ -370,7 +370,9 @@ public class ORMGenColumn
 	}
 	
 	public boolean isUpdateable() {
-		return !"false".equals(customized(UPDATEABLE)); //defaults to true //$NON-NLS-1$
+		return (this.isForeignKey() && this.isPartOfCompositePrimaryKey()) ?
+				false : 
+				!"false".equals(customized(UPDATEABLE)); //defaults to true //$NON-NLS-1$
 	}
 	
 	public void setUpdateable(boolean value) {
@@ -378,7 +380,9 @@ public class ORMGenColumn
 	}
 	
 	public boolean isInsertable() {
-		return !"false".equals(customized(INSERTABLE)); //defaults to true //$NON-NLS-1$
+		return (this.isForeignKey() && this.isPartOfCompositePrimaryKey()) ?
+				false : 
+				!"false".equals(customized(INSERTABLE)); //defaults to true //$NON-NLS-1$
 	}
 	
 	public void setInsertable(boolean value) {
