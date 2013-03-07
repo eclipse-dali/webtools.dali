@@ -14,6 +14,7 @@ ${table.importStatements}
 #if( !${table.defaultname} || $customizer.generateDDLAnnotations)
 @Table(name=$customizer.convertToJavaStringLiteral(${table.name}))
 #end
+@NamedQuery(name="${table.className}.findAll", query="SELECT ${table.aliasForQuery} FROM ${table.className} ${table.aliasForQuery}")
 public class ${table.className} ${table.generateExtendsImplements()} {
 	private static final long serialVersionUID = 1L;
 #####
