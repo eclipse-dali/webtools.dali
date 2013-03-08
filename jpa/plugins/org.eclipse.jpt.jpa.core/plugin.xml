@@ -82,7 +82,7 @@
 		<!-- IFile
 				-> JpaFile.Reference
 				-> JpaFile
-				-> JpaXmlResource
+				-> JptXmlResource
 		-->
 		<factory
 			adaptableType="org.eclipse.core.resources.IFile"
@@ -92,28 +92,28 @@
 			<adapter type="org.eclipse.jpt.common.core.resource.xml.JptXmlResource"/>
 		</factory>
 
-		<!-- IResource -> JpaPlatformConfig -->
+		<!-- IResource -> JpaPlatform.Config -->
 		<factory
 			adaptableType="org.eclipse.core.resources.IResource"
 			class="org.eclipse.jpt.jpa.core.internal.platform.ResourceAdapterFactory">
 			<adapter type="org.eclipse.jpt.jpa.core.JpaPlatform$Config"/>
 		</factory>
 
-		<!-- IJavaElement -> JpaPlatformConfig -->
+		<!-- IJavaElement -> JpaPlatform.Config -->
 		<factory
 			adaptableType="org.eclipse.jdt.core.IJavaElement"
 			class="org.eclipse.jpt.jpa.core.internal.platform.JavaElementAdapterFactory">
 			<adapter type="org.eclipse.jpt.jpa.core.JpaPlatform$Config"/>
 		</factory>
 
-		<!-- JpaLibraryProviderInstallOperationConfig -> JpaPlatformConfig -->
+		<!-- JpaLibraryProviderInstallOperationConfig -> JpaPlatform.Config -->
 		<factory
 			adaptableType="org.eclipse.jpt.jpa.core.libprov.JpaLibraryProviderInstallOperationConfig"
 			class="org.eclipse.jpt.jpa.core.internal.libprov.JpaLibraryProviderInstallOperationConfigAdapterFactory">
 			<adapter type="org.eclipse.jpt.jpa.core.JpaPlatform$Config"/>
 		</factory>
 
-		<!-- XmlFile -> JpaPlatformConfig -->
+		<!-- XmlFile -> JpaPlatform.Config -->
 		<factory
 			adaptableType="org.eclipse.jpt.jpa.core.context.XmlFile"
 			class="org.eclipse.jpt.jpa.core.internal.XmlFileAdapterFactory">
