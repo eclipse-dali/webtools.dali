@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.db.tests.internal;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import org.eclipse.jpt.common.utility.internal.jdbc.ResultSetTools;
 
 import junit.framework.TestCase;
 
@@ -51,10 +52,10 @@ public class JDBCTests extends TestCase {
 		Class.forName(config.driverClassName);
 		Connection connection = DriverManager.getConnection(this.buildURL(config), config.user, config.password);
 		System.out.println("CATALOGS:");
-		JDBCTools.dump(connection.getMetaData().getCatalogs());
+		ResultSetTools.dump(connection.getMetaData().getCatalogs());
 		System.out.println();
 		System.out.println("SCHEMATA:");
-		JDBCTools.dump(connection.getMetaData().getSchemas());
+		ResultSetTools.dump(connection.getMetaData().getSchemas());
 		connection.close();
 		System.out.println();
 	}

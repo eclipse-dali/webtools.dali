@@ -9,14 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.db.internal.driver;
 
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.eclipse.datatools.connectivity.sqm.core.definition.DatabaseDefinition;
@@ -24,9 +19,7 @@ import org.eclipse.datatools.connectivity.sqm.internal.core.RDBCorePlugin;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.jdbc.ResultSetIterator;
-import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.internal.jdbc.ConnectionTools;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
@@ -408,57 +401,7 @@ abstract class AbstractDTPDriverAdapter
 	}
 
 	List<Map<String, Object>> execute_(String sql) throws SQLException {
-		Statement jdbcStatement = this.createJDBCStatement();
-		List<Map<String, Object>> rows = Collections.emptyList();
-		try {
-			jdbcStatement.execute(sql);
-			rows = this.buildRows(jdbcStatement.getResultSet());
-		} finally {
-			jdbcStatement.close();
-		}
-		return rows;
-	}
-
-	Statement createJDBCStatement() throws SQLException {
-		return this.getConnectionProfile().getJDBCConnection().createStatement();
-	}
-
-	List<Map<String, Object>> buildRows(ResultSet resultSet) throws SQLException {
-		List<Map<String, Object>> rows = new ArrayList<Map<String, Object>>();
-		CollectionTools.addAll(rows, this.buildResultSetIterator(resultSet));
-		return rows;
-	}
-
-	Iterator<Map<String, Object>> buildResultSetIterator(ResultSet resultSet) throws SQLException {
-		return new ResultSetIterator<Map<String, Object>>(resultSet, new ListResultSetIteratorTransformer(resultSet.getMetaData()));
-	}
-
-	/**
-	 * Convert each row in the result set into a map whose key is the column
-	 * name and value is the column value.
-	 */
-	static class ListResultSetIteratorTransformer
-		extends TransformerAdapter<ResultSet, Map<String, Object>>
-	{
-		private final int columnCount;
-		private final String[] columnNames;
-
-		ListResultSetIteratorTransformer(ResultSetMetaData rsMetaData) throws SQLException {
-			super();
-			this.columnCount = rsMetaData.getColumnCount();
-			this.columnNames = new String[this.columnCount + 1];  // leave the zero slot empty
-			for (int i = 1; i <= this.columnCount; i++) {  // NB: ResultSet index/subscript is 1-based
-				this.columnNames[i] = rsMetaData.getColumnName(i);
-			}
-		}
-
-		public Map<String, Object> buildNext(ResultSet rs) throws SQLException {
-			HashMap<String, Object> row = new HashMap<String, Object>(this.columnCount);
-			for (int i = 1; i <= this.columnCount; i++) {  // NB: ResultSet index/subscript is 1-based
-				row.put(this.columnNames[i], rs.getObject(i));
-			}
-			return row;
-		}
+		return ConnectionTools.execute(this.getConnectionProfile().getJDBCConnection(), sql);
 	}
 
 

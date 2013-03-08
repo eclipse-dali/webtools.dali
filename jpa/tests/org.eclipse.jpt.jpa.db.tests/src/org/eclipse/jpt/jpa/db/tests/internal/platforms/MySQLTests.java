@@ -10,8 +10,7 @@
 package org.eclipse.jpt.jpa.db.tests.internal.platforms;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
@@ -309,7 +308,7 @@ public class MySQLTests extends DTPPlatformTests {
 
 	protected int getLowerCaseTableNamesFromDatabase() throws SQLException {
 		// the underscore is a wild character on MySQL, so we need to escape it
-		ArrayList<HashMap<String, Object>> rows = this.execute("show variables like 'lower\\_case\\_table\\_names'");
+		List<Map<String, Object>> rows = this.execute("show variables like 'lower\\_case\\_table\\_names'");
 		Map<String, Object> row = rows.get(0);
 		String value = (String) row.get("Value");  // Windows?
 		if (value == null) {
@@ -408,7 +407,7 @@ public class MySQLTests extends DTPPlatformTests {
 	}
 
 	protected boolean getANSIQuotesFromDatabase() throws SQLException {
-		ArrayList<HashMap<String, Object>> rows = this.execute("SELECT @@SESSION.sql_mode");
+		List<Map<String, Object>> rows = this.execute("SELECT @@SESSION.sql_mode");
 		Map<String, Object> row = rows.get(0);
 		String sql_mode = (String) row.get("@@SESSION.sql_mode");
 		String[] modes = sql_mode.split(",");

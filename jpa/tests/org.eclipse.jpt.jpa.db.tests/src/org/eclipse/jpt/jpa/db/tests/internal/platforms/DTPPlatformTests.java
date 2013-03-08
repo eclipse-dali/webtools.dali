@@ -15,12 +15,8 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -46,10 +42,9 @@ import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObjectListener;
 import org.eclipse.datatools.connectivity.sqm.core.rte.RefreshManager;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.io.WriterTools;
-import org.eclipse.jpt.common.utility.internal.jdbc.ResultSetIterator;
-import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.internal.jdbc.ConnectionTools;
+import org.eclipse.jpt.common.utility.internal.jdbc.ResultSetTools;
 import org.eclipse.jpt.common.utility.io.IndentingPrintWriter;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Column;
@@ -729,7 +724,7 @@ public abstract class DTPPlatformTests
 
 	protected void dumpOn(String sql, IndentingPrintWriter pw, int columnWidth) throws Exception {
 		pw.println(sql);
-		for (HashMap<String, Object> row : this.execute(sql)) {
+		for (Map<String, Object> row : this.execute(sql)) {
 			for (Map.Entry<String, Object> field : row.entrySet()) {
 				WriterTools.fit(pw, String.valueOf(field.getKey()), columnWidth/2);
 				pw.print('=');
@@ -740,44 +735,8 @@ public abstract class DTPPlatformTests
 		}
 	}
 
-	protected ArrayList<HashMap<String, Object>> execute(String sql) throws SQLException {
-		Statement jdbcStatement = this.createJDBCStatement();
-		jdbcStatement.execute(sql);
-		ArrayList<HashMap<String, Object>> rows = this.buildRows(jdbcStatement.getResultSet());
-		jdbcStatement.close();
-		return rows;
-	}
-
-	protected ArrayList<HashMap<String, Object>> buildRows(ResultSet resultSet) throws SQLException {
-		ArrayList<HashMap<String, Object>> rows = new ArrayList<HashMap<String, Object>>();
-		CollectionTools.addAll(rows, this.buildResultSetIterator(resultSet));
-		return rows;
-	}
-
-	protected Iterator<HashMap<String, Object>> buildResultSetIterator(ResultSet resultSet) throws SQLException {
-		return new ResultSetIterator<HashMap<String, Object>>(resultSet, new MapResultSetIteratorTransformer(resultSet.getMetaData()));
-	}
-
-	public static class MapResultSetIteratorTransformer
-		extends TransformerAdapter<ResultSet, HashMap<String, Object>>
-	{
-		private final int columnCount;
-		private final String[] columnNames;
-		public MapResultSetIteratorTransformer(ResultSetMetaData rsMetaData) throws SQLException {
-			super();
-			this.columnCount = rsMetaData.getColumnCount();
-			this.columnNames = new String[this.columnCount + 1];  // leave zero slot empty
-			for (int i = 1; i <= this.columnCount; i++) {  // NB: ResultSet index/subscript is 1-based
-				this.columnNames[i] = rsMetaData.getColumnName(i);
-			}
-		}
-		public HashMap<String, Object> buildNext(ResultSet rs) throws SQLException {
-			HashMap<String, Object> row = new HashMap<String, Object>(this.columnCount);
-			for (int i = 1; i <= this.columnCount; i++) {  // NB: ResultSet index/subscript is 1-based
-				row.put(this.columnNames[i], rs.getObject(i));
-			}
-			return row;
-		}
+	protected List<Map<String, Object>> execute(String sql) throws SQLException {
+		return ConnectionTools.execute(this.getJDBCConnection(), sql);
 	}
 
 	protected Statement createJDBCStatement() throws SQLException {
@@ -939,9 +898,8 @@ public abstract class DTPPlatformTests
 	protected void dumpJDBCCatalogsOn(IndentingPrintWriter pw) throws SQLException {
 		pw.println("JDBC catalogs: ");
 		pw.indent();
-			ArrayList<HashMap<String, Object>> rows = this.buildRows(this.getDatabaseMetaData().getCatalogs());
-			for (Iterator<HashMap<String, Object>> stream = rows.iterator(); stream.hasNext(); ) {
-				HashMap<String, Object> row = stream.next();
+			List<Map<String, Object>> rows = ResultSetTools.convertToMaps(this.getDatabaseMetaData().getCatalogs());
+			for (Map<String, Object> row : rows) {
 				pw.println(row.get("TABLE_CAT"));
 			}
 		pw.undent();
@@ -960,8 +918,8 @@ public abstract class DTPPlatformTests
 	protected void dumpJDBCSchemataOn(IndentingPrintWriter pw) throws SQLException {
 		pw.println("JDBC schemata: ");
 		pw.indent();
-			ArrayList<HashMap<String, Object>> rows = this.buildRows(this.getDatabaseMetaData().getSchemas());
-			for (HashMap<String, Object> row : rows) {
+			List<Map<String, Object>> rows = ResultSetTools.convertToMaps(this.getDatabaseMetaData().getSchemas());
+			for (Map<String, Object> row : rows) {
 				if (row.size() == 2) {  // catalogs were added in jdk 1.4
 					Object catalog = row.get("TABLE_CATALOG");
 					pw.print(catalog);

@@ -11,10 +11,8 @@ package org.eclipse.jpt.common.utility.internal.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.NoSuchElementException;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * A <code>ResultSetIterator</code> wraps an SQL {@link ResultSet}
@@ -22,19 +20,20 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * <p>
  * To use, supply:<ul>
  * <li> a {@link ResultSet}
- * <li> a {@link Transformer} that converts a row in the {@link ResultSet}
+ * <li> a {@link ResultSetRowTransformer} that converts a row in the {@link ResultSet}
  * into the desired object
  * </ul>
+ * The iterator will {@link ResultSet#close() close the result set} once all
+ * the rows have been retrieved by the iterator.
  * 
  * @param <E> the type of elements returned by the iterator
  * 
+ * @see ResultSetTools#iterator(ResultSet, ResultSetRowTransformer)
  * @see java.sql.ResultSet
  */
-public class ResultSetIterator<E>
-	implements Iterator<E>
-{
+public class ResultSetIterator<E> {
 	private final ResultSet resultSet;
-	private final Transformer<? super ResultSet, ? extends E> transformer;
+	private final ResultSetRowTransformer<? extends E> transformer;
 	private E next;
 	private boolean done;
 
@@ -43,7 +42,7 @@ public class ResultSetIterator<E>
 	 * Construct an iterator on the specified result set that returns
 	 * the objects produced by the specified transformer.
 	 */
-	public ResultSetIterator(ResultSet resultSet, Transformer<? super ResultSet, ? extends E> transformer) {
+	public ResultSetIterator(ResultSet resultSet, ResultSetRowTransformer<? extends E> transformer) throws SQLException {
 		super();
 		if ((resultSet == null) || (transformer == null)) {
 			throw new NullPointerException();
@@ -58,15 +57,7 @@ public class ResultSetIterator<E>
 	 * Build the next object for the iterator to return.
 	 * Close the result set when we reach the end.
 	 */
-	private E buildNext() {
-		try {
-			return this.buildNext_();
-		} catch (SQLException ex) {
-			throw new RuntimeException(ex);
-		}
-	}
-
-	private E buildNext_() throws SQLException {
+	private E buildNext() throws SQLException {
 		if (this.resultSet.next()) {
 			return this.transformer.transform(this.resultSet);
 		}
@@ -79,17 +70,13 @@ public class ResultSetIterator<E>
 		return ! this.done;
 	}
 
-	public E next() {
+	public E next() throws SQLException {
 		if (this.done) {
 			throw new NoSuchElementException();
 		}
 		E temp = this.next;
 		this.next = this.buildNext();
 		return temp;
-	}
-
-	public void remove() {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
