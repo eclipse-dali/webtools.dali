@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
  * @version 2.3
  * @since 2.3
  */
-public interface StaticMetamodelAnnotation
+public interface StaticMetamodelAnnotation2_0
 	extends Annotation
 {
 	String ANNOTATION_NAME = JPA2_0.STATIC_METAMODEL;

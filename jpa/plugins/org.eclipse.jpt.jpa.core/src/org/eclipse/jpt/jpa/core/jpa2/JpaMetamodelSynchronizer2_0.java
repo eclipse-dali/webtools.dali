@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.GeneratedAnnotation2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.StaticMetamodelAnnotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.StaticMetamodelAnnotation2_0;
 
 /**
  * JPA 2.0 Canonical Metamodel synchronizer.
@@ -196,7 +196,7 @@ public interface JpaMetamodelSynchronizer2_0 {
 			// if we get here we know we have a top-level type, since only top-level
 			// types are annotated @Generated; now see if anything is a metamodel
 			for (JavaResourceAbstractType type : jrat.getAllTypes()) {
-				if (type.getAnnotation(StaticMetamodelAnnotation.ANNOTATION_NAME) != null) {
+				if (type.getAnnotation(StaticMetamodelAnnotation2_0.ANNOTATION_NAME) != null) {
 					return true;
 				}
 			}

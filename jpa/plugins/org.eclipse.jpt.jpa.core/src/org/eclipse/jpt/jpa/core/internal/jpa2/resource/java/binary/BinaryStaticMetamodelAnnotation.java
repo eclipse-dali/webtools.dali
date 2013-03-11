@@ -13,14 +13,14 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.StaticMetamodelAnnotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.StaticMetamodelAnnotation2_0;
 
 /**
  * javax.persistence.metamodel.StaticMetamodel
  */
 public final class BinaryStaticMetamodelAnnotation
 	extends BinaryAnnotation
-	implements StaticMetamodelAnnotation
+	implements StaticMetamodelAnnotation2_0
 {
 	private String value;
 

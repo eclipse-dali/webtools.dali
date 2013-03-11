@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.binary.BinaryStaticMetamodelAnnotation;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source.SourceStaticMetamodelAnnotation;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.StaticMetamodelAnnotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.StaticMetamodelAnnotation2_0;
 
 /**
  * javax.persistence.metamodel.StaticMetamodel
@@ -40,19 +40,19 @@ public final class StaticMetamodelAnnotationDefinition
 		super();
 	}
 
-	public StaticMetamodelAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
+	public StaticMetamodelAnnotation2_0 buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
 		return new SourceStaticMetamodelAnnotation(parent, annotatedElement);
 	}
 
-	public StaticMetamodelAnnotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
+	public StaticMetamodelAnnotation2_0 buildNullAnnotation(JavaResourceAnnotatedElement parent) {
 		throw new UnsupportedOperationException();
 	}
 
-	public StaticMetamodelAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
+	public StaticMetamodelAnnotation2_0 buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		return new BinaryStaticMetamodelAnnotation(parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {
-		return StaticMetamodelAnnotation.ANNOTATION_NAME;
+		return StaticMetamodelAnnotation2_0.ANNOTATION_NAME;
 	}
 }
