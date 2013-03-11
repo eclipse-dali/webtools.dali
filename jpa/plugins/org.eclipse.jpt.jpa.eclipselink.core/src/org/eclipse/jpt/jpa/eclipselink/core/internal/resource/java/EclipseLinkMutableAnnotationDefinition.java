@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.BinaryEclipseLinkMutableAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.SourceEclipseLinkMutableAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkMutableAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MutableAnnotation;
 
 /**
  * org.eclipse.persistence.annotations.Mutable
@@ -54,6 +54,6 @@ public class EclipseLinkMutableAnnotationDefinition
 	}
 
 	public String getAnnotationName() {
-		return EclipseLinkMutableAnnotation.ANNOTATION_NAME;
+		return MutableAnnotation.ANNOTATION_NAME;
 	}
 }

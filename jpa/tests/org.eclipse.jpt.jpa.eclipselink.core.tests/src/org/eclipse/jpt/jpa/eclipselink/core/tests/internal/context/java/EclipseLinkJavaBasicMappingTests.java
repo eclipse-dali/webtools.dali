@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConvertAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkMutableAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MutableAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 
 @SuppressWarnings("nls")
@@ -201,7 +201,7 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkContextModelTes
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		EclipseLinkMutableAnnotation mutableAnnotation = (EclipseLinkMutableAnnotation) resourceField.getAnnotation(EclipseLinkMutableAnnotation.ANNOTATION_NAME);
+		MutableAnnotation mutableAnnotation = (MutableAnnotation) resourceField.getAnnotation(MutableAnnotation.ANNOTATION_NAME);
 		mutableAnnotation.setValue(Boolean.TRUE);
 		getJpaProject().synchronizeContextModel();
 		
@@ -215,11 +215,11 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkContextModelTes
 		getJpaProject().synchronizeContextModel();
 		assertEquals(Boolean.FALSE, mutable.getSpecifiedMutable());
 		
-		resourceField.removeAnnotation(EclipseLinkMutableAnnotation.ANNOTATION_NAME);
+		resourceField.removeAnnotation(MutableAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		assertEquals(null, mutable.getSpecifiedMutable());
 		
-		resourceField.addAnnotation(EclipseLinkMutableAnnotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(MutableAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		assertEquals(Boolean.TRUE, mutable.getSpecifiedMutable());
 	}
@@ -235,18 +235,18 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkContextModelTes
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		EclipseLinkMutableAnnotation mutableAnnotation = (EclipseLinkMutableAnnotation) resourceField.getAnnotation(EclipseLinkMutableAnnotation.ANNOTATION_NAME);
+		MutableAnnotation mutableAnnotation = (MutableAnnotation) resourceField.getAnnotation(MutableAnnotation.ANNOTATION_NAME);
 		assertEquals(null, mutableAnnotation.getValue());
 		
 		mutable.setSpecifiedMutable(Boolean.TRUE);	
 		assertEquals(null, mutableAnnotation.getValue());
 
 		mutable.setSpecifiedMutable(null);
-		mutableAnnotation = (EclipseLinkMutableAnnotation) resourceField.getAnnotation(EclipseLinkMutableAnnotation.ANNOTATION_NAME);
+		mutableAnnotation = (MutableAnnotation) resourceField.getAnnotation(MutableAnnotation.ANNOTATION_NAME);
 		assertEquals(null, mutableAnnotation);
 		
 		mutable.setSpecifiedMutable(Boolean.FALSE);	
-		mutableAnnotation = (EclipseLinkMutableAnnotation) resourceField.getAnnotation(EclipseLinkMutableAnnotation.ANNOTATION_NAME);
+		mutableAnnotation = (MutableAnnotation) resourceField.getAnnotation(MutableAnnotation.ANNOTATION_NAME);
 		assertEquals(Boolean.FALSE, mutableAnnotation.getValue());
 		
 		mutable.setSpecifiedMutable(Boolean.TRUE);	
@@ -264,7 +264,7 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkContextModelTes
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		resourceField.removeAnnotation(EclipseLinkMutableAnnotation.ANNOTATION_NAME);
+		resourceField.removeAnnotation(MutableAnnotation.ANNOTATION_NAME);
 		assertTrue(mutable.isDefaultMutable());
 		
 		mutable.setSpecifiedMutable(Boolean.FALSE);	
@@ -286,7 +286,7 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkContextModelTes
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		resourceField.removeAnnotation(EclipseLinkMutableAnnotation.ANNOTATION_NAME);
+		resourceField.removeAnnotation(MutableAnnotation.ANNOTATION_NAME);
 		assertFalse(mutable.isDefaultMutable());
 		
 		mutable.setSpecifiedMutable(Boolean.TRUE);	
@@ -314,7 +314,7 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkContextModelTes
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		resourceField.removeAnnotation(EclipseLinkMutableAnnotation.ANNOTATION_NAME);
+		resourceField.removeAnnotation(MutableAnnotation.ANNOTATION_NAME);
 		assertTrue(mutable.isMutable());
 		
 		mutable.setSpecifiedMutable(Boolean.TRUE);	

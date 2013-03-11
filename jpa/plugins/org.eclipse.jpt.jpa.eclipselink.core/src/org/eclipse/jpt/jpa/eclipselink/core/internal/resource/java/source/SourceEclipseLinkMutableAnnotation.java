@@ -22,14 +22,14 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkMutableAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MutableAnnotation;
 
 /**
  * <code>org.eclipse.persistence.annotations.Mutable</code>
  */
 public final class SourceEclipseLinkMutableAnnotation
 	extends SourceAnnotation
-	implements EclipseLinkMutableAnnotation
+	implements MutableAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 

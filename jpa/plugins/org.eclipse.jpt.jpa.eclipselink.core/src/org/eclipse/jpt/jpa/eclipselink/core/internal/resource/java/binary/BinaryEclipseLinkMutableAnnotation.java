@@ -14,14 +14,14 @@ import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotatio
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkMutableAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MutableAnnotation;
 
 /**
  * <code>org.eclipse.persistence.annotations.Mutable</code>
  */
 public final class BinaryEclipseLinkMutableAnnotation
 	extends BinaryAnnotation
-	implements EclipseLinkMutableAnnotation
+	implements MutableAnnotation
 {
 	private Boolean value;
 

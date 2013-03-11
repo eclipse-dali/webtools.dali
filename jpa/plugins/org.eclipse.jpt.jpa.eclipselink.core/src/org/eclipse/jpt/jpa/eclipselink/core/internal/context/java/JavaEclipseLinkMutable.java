@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkMutableAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MutableAnnotation;
 
 public class JavaEclipseLinkMutable
 	extends AbstractJavaContextModel<JavaAttributeMapping>
@@ -61,7 +61,7 @@ public class JavaEclipseLinkMutable
 
 	public void setSpecifiedMutable(Boolean mutable) {
 		if (this.valuesAreDifferent(mutable, this.specifiedMutable)) {
-			EclipseLinkMutableAnnotation annotation = this.getMutableAnnotation();
+			MutableAnnotation annotation = this.getMutableAnnotation();
 			if (mutable == null) {
 				if (annotation != null) {
 					this.removeMutableAnnotation();
@@ -88,7 +88,7 @@ public class JavaEclipseLinkMutable
 	}
 
 	protected Boolean buildSpecifiedMutable() {
-		EclipseLinkMutableAnnotation annotation = this.getMutableAnnotation();
+		MutableAnnotation annotation = this.getMutableAnnotation();
 		if (annotation == null) {
 			return null;
 		}
@@ -120,12 +120,12 @@ public class JavaEclipseLinkMutable
 
 	// ********** mutable annotation **********
 
-	protected EclipseLinkMutableAnnotation getMutableAnnotation() {
-		return (EclipseLinkMutableAnnotation) this.getResourceAttribute().getAnnotation(this.getMutableAnnotationName());
+	protected MutableAnnotation getMutableAnnotation() {
+		return (MutableAnnotation) this.getResourceAttribute().getAnnotation(this.getMutableAnnotationName());
 	}
 
-	protected EclipseLinkMutableAnnotation addMutableAnnotation() {
-		return (EclipseLinkMutableAnnotation) this.getResourceAttribute().addAnnotation(this.getMutableAnnotationName());
+	protected MutableAnnotation addMutableAnnotation() {
+		return (MutableAnnotation) this.getResourceAttribute().addAnnotation(this.getMutableAnnotationName());
 	}
 
 	protected void removeMutableAnnotation() {
@@ -133,7 +133,7 @@ public class JavaEclipseLinkMutable
 	}
 
 	protected String getMutableAnnotationName() {
-		return EclipseLinkMutableAnnotation.ANNOTATION_NAME;
+		return MutableAnnotation.ANNOTATION_NAME;
 	}
 
 
@@ -165,7 +165,7 @@ public class JavaEclipseLinkMutable
 	}
 
 	protected TextRange getAnnotationTextRange() {
-		EclipseLinkMutableAnnotation annotation = this.getMutableAnnotation();
+		MutableAnnotation annotation = this.getMutableAnnotation();
 		return (annotation == null) ? null : annotation.getTextRange();
 	}
 }

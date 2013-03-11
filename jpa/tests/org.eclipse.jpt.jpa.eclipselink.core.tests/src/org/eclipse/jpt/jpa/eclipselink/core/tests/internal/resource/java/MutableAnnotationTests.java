@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkMutableAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MutableAnnotation;
 
 @SuppressWarnings("nls")
 public class MutableAnnotationTests extends EclipseLinkJavaResourceModelTestCase {
@@ -72,7 +72,7 @@ public class MutableAnnotationTests extends EclipseLinkJavaResourceModelTestCase
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkMutableAnnotation mutableAnnotation = (EclipseLinkMutableAnnotation) resourceField.getAnnotation(EclipseLink.MUTABLE);
+		MutableAnnotation mutableAnnotation = (MutableAnnotation) resourceField.getAnnotation(EclipseLink.MUTABLE);
 		assertEquals(Boolean.TRUE, mutableAnnotation.getValue());
 	}
 
@@ -81,7 +81,7 @@ public class MutableAnnotationTests extends EclipseLinkJavaResourceModelTestCase
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkMutableAnnotation mutableAnnotation = (EclipseLinkMutableAnnotation) resourceField.getAnnotation(EclipseLink.MUTABLE);
+		MutableAnnotation mutableAnnotation = (MutableAnnotation) resourceField.getAnnotation(EclipseLink.MUTABLE);
 		assertEquals(Boolean.TRUE, mutableAnnotation.getValue());
 		
 		mutableAnnotation.setValue(Boolean.FALSE);
@@ -99,7 +99,7 @@ public class MutableAnnotationTests extends EclipseLinkJavaResourceModelTestCase
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkMutableAnnotation mutableAnnotation = (EclipseLinkMutableAnnotation) resourceField.getAnnotation(EclipseLink.MUTABLE);
+		MutableAnnotation mutableAnnotation = (MutableAnnotation) resourceField.getAnnotation(EclipseLink.MUTABLE);
 		assertEquals(Boolean.TRUE, mutableAnnotation.getValue());
 		
 		mutableAnnotation.setValue(null);
