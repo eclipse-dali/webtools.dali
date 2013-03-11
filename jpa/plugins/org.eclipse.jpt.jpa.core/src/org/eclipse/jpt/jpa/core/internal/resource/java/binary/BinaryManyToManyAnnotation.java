@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.ManyToMany2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.ManyToManyAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
 /**
@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.resource.java.JPA;
  */
 public final class BinaryManyToManyAnnotation
 	extends BinaryRelationshipMappingAnnotation
-	implements ManyToMany2_0Annotation
+	implements ManyToManyAnnotation2_0
 {
 	private String mappedBy;
 
