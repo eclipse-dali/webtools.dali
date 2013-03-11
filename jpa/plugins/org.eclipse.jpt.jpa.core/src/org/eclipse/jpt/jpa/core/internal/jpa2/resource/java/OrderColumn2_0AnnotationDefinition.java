@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.binary.BinaryOrderColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source.SourceOrderColumn2_0Annotation;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumn2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumnAnnotation2_0;
 
 /**
  * javax.persistence.OrderColumn
@@ -54,6 +54,6 @@ public final class OrderColumn2_0AnnotationDefinition
 	}
 
 	public String getAnnotationName() {
-		return OrderColumn2_0Annotation.ANNOTATION_NAME;
+		return OrderColumnAnnotation2_0.ANNOTATION_NAME;
 	}
 }

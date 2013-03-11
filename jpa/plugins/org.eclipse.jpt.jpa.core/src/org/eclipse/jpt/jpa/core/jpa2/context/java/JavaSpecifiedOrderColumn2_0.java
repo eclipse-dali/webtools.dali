@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.jpa2.context.java;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedNamedColumn;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedOrderColumn2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumn2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumnAnnotation2_0;
 
 /**
  * Java specified order column
@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumn2_0Annotation;
 public interface JavaSpecifiedOrderColumn2_0
 	extends SpecifiedOrderColumn2_0, JavaSpecifiedNamedColumn
 {
-	OrderColumn2_0Annotation getColumnAnnotation();
+	OrderColumnAnnotation2_0 getColumnAnnotation();
 
 
 	// ********** parent adapter **********
@@ -40,7 +40,7 @@ public interface JavaSpecifiedOrderColumn2_0
 	interface ParentAdapter
 		extends NamedColumn.ParentAdapter
 	{
-		OrderColumn2_0Annotation getColumnAnnotation();
+		OrderColumnAnnotation2_0 getColumnAnnotation();
 		void removeColumnAnnotation();
 	}
 }

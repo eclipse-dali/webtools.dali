@@ -11,13 +11,13 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaNamedColumn;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSpecifiedOrderColumn2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumn2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumnAnnotation2_0;
 
 /**
  * Java order column
  */
 public class GenericJavaOrderColumn2_0
-	extends AbstractJavaNamedColumn<JavaSpecifiedOrderColumn2_0.ParentAdapter, OrderColumn2_0Annotation>
+	extends AbstractJavaNamedColumn<JavaSpecifiedOrderColumn2_0.ParentAdapter, OrderColumnAnnotation2_0>
 	implements JavaSpecifiedOrderColumn2_0
 {
 	protected Boolean specifiedNullable;
@@ -39,7 +39,7 @@ public class GenericJavaOrderColumn2_0
 	}
 
 	@Override
-	protected void initialize(OrderColumn2_0Annotation columnAnnotation) {
+	protected void initialize(OrderColumnAnnotation2_0 columnAnnotation) {
 		super.initialize(columnAnnotation);
 		this.specifiedNullable = this.buildSpecifiedNullable(columnAnnotation);
 		this.specifiedInsertable = this.buildSpecifiedInsertable(columnAnnotation);
@@ -49,7 +49,7 @@ public class GenericJavaOrderColumn2_0
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel(OrderColumn2_0Annotation columnAnnotation) {
+	public void synchronizeWithResourceModel(OrderColumnAnnotation2_0 columnAnnotation) {
 		super.synchronizeWithResourceModel(columnAnnotation);
 		this.setSpecifiedNullable_(this.buildSpecifiedNullable(columnAnnotation));
 		this.setSpecifiedInsertable_(this.buildSpecifiedInsertable(columnAnnotation));
@@ -71,7 +71,7 @@ public class GenericJavaOrderColumn2_0
 	 * If we are in a JPA 1.0 project, return a <em>null</em> annotation.
 	 */
 	@Override
-	public OrderColumn2_0Annotation getColumnAnnotation() {
+	public OrderColumnAnnotation2_0 getColumnAnnotation() {
 		return this.parentAdapter.getColumnAnnotation();
 	}
 
@@ -105,7 +105,7 @@ public class GenericJavaOrderColumn2_0
 		this.firePropertyChanged(SPECIFIED_NULLABLE_PROPERTY, old, nullable);
 	}
 
-	protected Boolean buildSpecifiedNullable(OrderColumn2_0Annotation columnAnnotation) {
+	protected Boolean buildSpecifiedNullable(OrderColumnAnnotation2_0 columnAnnotation) {
 		return columnAnnotation.getNullable();
 	}
 
@@ -148,7 +148,7 @@ public class GenericJavaOrderColumn2_0
 		this.firePropertyChanged(SPECIFIED_INSERTABLE_PROPERTY, old, insertable);
 	}
 
-	protected Boolean buildSpecifiedInsertable(OrderColumn2_0Annotation columnAnnotation) {
+	protected Boolean buildSpecifiedInsertable(OrderColumnAnnotation2_0 columnAnnotation) {
 		return columnAnnotation.getInsertable();
 	}
 
@@ -191,7 +191,7 @@ public class GenericJavaOrderColumn2_0
 		this.firePropertyChanged(SPECIFIED_UPDATABLE_PROPERTY, old, updatable);
 	}
 
-	protected Boolean buildSpecifiedUpdatable(OrderColumn2_0Annotation columnAnnotation) {
+	protected Boolean buildSpecifiedUpdatable(OrderColumnAnnotation2_0 columnAnnotation) {
 		return columnAnnotation.getUpdatable();
 	}
 

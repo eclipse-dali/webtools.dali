@@ -19,14 +19,14 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceNamedColumnAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumn2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumnAnnotation2_0;
 
 /**
  * <code>javax.persistence.OrderColumn</code>
  */
 public final class SourceOrderColumn2_0Annotation
 	extends SourceNamedColumnAnnotation
-	implements OrderColumn2_0Annotation
+	implements OrderColumnAnnotation2_0
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 

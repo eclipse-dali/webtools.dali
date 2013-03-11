@@ -12,14 +12,14 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.resource.java.NullNamedColumnAnnotation;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumn2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumnAnnotation2_0;
 
 /**
  * <code>javax.persistence.OrderColumn</code>
  */
 public final class NullOrderColumn2_0Annotation
-	extends NullNamedColumnAnnotation<OrderColumn2_0Annotation>
-	implements OrderColumn2_0Annotation
+	extends NullNamedColumnAnnotation<OrderColumnAnnotation2_0>
+	implements OrderColumnAnnotation2_0
 {	
 	public NullOrderColumn2_0Annotation(JavaResourceAnnotatedElement parent) {
 		super(parent);

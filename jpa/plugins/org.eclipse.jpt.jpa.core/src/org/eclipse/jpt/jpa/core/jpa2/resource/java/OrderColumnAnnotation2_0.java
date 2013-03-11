@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation;
  * @version 2.3
  * @since 2.3
  */
-public interface OrderColumn2_0Annotation
+public interface OrderColumnAnnotation2_0
 	extends NamedColumnAnnotation
 {
 	String ANNOTATION_NAME = JPA2_0.ORDER_COLUMN;

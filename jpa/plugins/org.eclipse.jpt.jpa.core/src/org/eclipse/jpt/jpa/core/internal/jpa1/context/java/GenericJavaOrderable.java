@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.OrderColumn2_0Annota
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSpecifiedOrderColumn2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumn2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumnAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.OrderByAnnotation;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Table;
@@ -52,7 +52,7 @@ public class GenericJavaOrderable
 	protected boolean customOrdering = false;
 
 	// JPA 1.0
-	protected OrderColumn2_0Annotation nullOrderColumnAnnotation;
+	protected OrderColumnAnnotation2_0 nullOrderColumnAnnotation;
 
 	// JPA 2.0
 	protected final JavaOrderable2_0.ParentAdapter parentAdapter;
@@ -344,8 +344,8 @@ public class GenericJavaOrderable
 
 	// ********** order column annotation **********
 
-	protected OrderColumn2_0Annotation getOrderColumnAnnotation() {
-		return (OrderColumn2_0Annotation) this.getResourceAttribute().getAnnotation(OrderColumn2_0Annotation.ANNOTATION_NAME);
+	protected OrderColumnAnnotation2_0 getOrderColumnAnnotation() {
+		return (OrderColumnAnnotation2_0) this.getResourceAttribute().getAnnotation(OrderColumnAnnotation2_0.ANNOTATION_NAME);
 	}
 
 	/**
@@ -355,8 +355,8 @@ public class GenericJavaOrderable
 		return this.isJpa2_0Compatible() && (this.getOrderColumnAnnotation() != null);
 	}
 
-	protected OrderColumn2_0Annotation addOrderColumnAnnotation() {
-		return (OrderColumn2_0Annotation) this.getResourceAttribute().addAnnotation(OrderColumn2_0Annotation.ANNOTATION_NAME);
+	protected OrderColumnAnnotation2_0 addOrderColumnAnnotation() {
+		return (OrderColumnAnnotation2_0) this.getResourceAttribute().addAnnotation(OrderColumnAnnotation2_0.ANNOTATION_NAME);
 	}
 
 	protected void removeOrderColumnAnnotation() {
@@ -366,29 +366,29 @@ public class GenericJavaOrderable
 	}
 
 	protected void removeOrderColumnAnnotation_() {
-		this.getResourceAttribute().removeAnnotation(OrderColumn2_0Annotation.ANNOTATION_NAME);
+		this.getResourceAttribute().removeAnnotation(OrderColumnAnnotation2_0.ANNOTATION_NAME);
 	}
 
 	/**
 	 * If we are in a JPA 1.0 project, return a <em>null</em> annotation.
 	 */
-	public OrderColumn2_0Annotation getNonNullOrderColumnAnnotation() {
+	public OrderColumnAnnotation2_0 getNonNullOrderColumnAnnotation() {
 		// hmmmm...
 		return this.isJpa2_0Compatible() ?
-				(OrderColumn2_0Annotation) this.getResourceAttribute().getNonNullAnnotation(OrderColumn2_0Annotation.ANNOTATION_NAME) :
+				(OrderColumnAnnotation2_0) this.getResourceAttribute().getNonNullAnnotation(OrderColumnAnnotation2_0.ANNOTATION_NAME) :
 				this.getNullOrderColumnAnnotation();
 	}
 
-	protected OrderColumn2_0Annotation getNullOrderColumnAnnotation() {
+	protected OrderColumnAnnotation2_0 getNullOrderColumnAnnotation() {
 		if (this.nullOrderColumnAnnotation == null) {
 			this.nullOrderColumnAnnotation = this.buildNullOrderColumnAnnotation();
 		}
 		return this.nullOrderColumnAnnotation;
 	}
 
-	protected OrderColumn2_0Annotation buildNullOrderColumnAnnotation() {
+	protected OrderColumnAnnotation2_0 buildNullOrderColumnAnnotation() {
 		// hmmmm...
-		return (OrderColumn2_0Annotation) OrderColumn2_0AnnotationDefinition.instance().buildNullAnnotation(this.getResourceAttribute());
+		return (OrderColumnAnnotation2_0) OrderColumn2_0AnnotationDefinition.instance().buildNullAnnotation(this.getResourceAttribute());
 	}
 
 
@@ -503,7 +503,7 @@ public class GenericJavaOrderable
 			return new OrderColumnValidator(this.getPersistentAttribute(), (SpecifiedOrderColumn2_0) column);
 		}
 
-		public OrderColumn2_0Annotation getColumnAnnotation() {
+		public OrderColumnAnnotation2_0 getColumnAnnotation() {
 			return GenericJavaOrderable.this.getNonNullOrderColumnAnnotation();
 		}
 

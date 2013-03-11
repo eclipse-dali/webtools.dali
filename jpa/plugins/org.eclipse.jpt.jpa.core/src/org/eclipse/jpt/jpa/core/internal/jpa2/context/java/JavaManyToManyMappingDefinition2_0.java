@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumnAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumeratedAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumnAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporalAnnotation2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumn2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumnAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
@@ -67,7 +67,7 @@ public class JavaManyToManyMappingDefinition2_0
 		MapKeyJoinColumnAnnotation2_0.ANNOTATION_NAME,
 		JPA2_0.MAP_KEY_JOIN_COLUMNS,
 		MapKeyTemporalAnnotation2_0.ANNOTATION_NAME,
-		OrderColumn2_0Annotation.ANNOTATION_NAME
+		OrderColumnAnnotation2_0.ANNOTATION_NAME
 	};
 	private static final Iterable<String> SUPPORTING_ANNOTATION_NAMES_2_0 = IterableTools.iterable(SUPPORTING_ANNOTATION_NAMES_ARRAY_2_0);
 
