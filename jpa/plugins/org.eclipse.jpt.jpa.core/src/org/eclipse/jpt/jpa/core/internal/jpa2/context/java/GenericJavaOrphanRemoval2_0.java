@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.OwningRelationshipMapping2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.OwningRelationshipMappingAnnotation2_0;
 
 /**
  * Java orphan removal
@@ -72,7 +72,7 @@ public class GenericJavaOrphanRemoval2_0
 	}
 
 	protected Boolean buildSpecifiedOrphanRemoval() {
-		OwningRelationshipMapping2_0Annotation annotation = this.getMappingAnnotation();
+		OwningRelationshipMappingAnnotation2_0 annotation = this.getMappingAnnotation();
 		return (annotation == null) ? null : annotation.getOrphanRemoval();
 	}
 
@@ -97,12 +97,12 @@ public class GenericJavaOrphanRemoval2_0
 		return (JavaAttributeMapping) this.parent;
 	}
 
-	protected OwningRelationshipMapping2_0Annotation getMappingAnnotation() {
-		return (OwningRelationshipMapping2_0Annotation) this.getMapping().getMappingAnnotation();
+	protected OwningRelationshipMappingAnnotation2_0 getMappingAnnotation() {
+		return (OwningRelationshipMappingAnnotation2_0) this.getMapping().getMappingAnnotation();
 	}
 
-	protected OwningRelationshipMapping2_0Annotation getMappingAnnotationForUpdate() {
-		return (OwningRelationshipMapping2_0Annotation) this.getMapping().getAnnotationForUpdate();
+	protected OwningRelationshipMappingAnnotation2_0 getMappingAnnotationForUpdate() {
+		return (OwningRelationshipMappingAnnotation2_0) this.getMapping().getAnnotationForUpdate();
 	}
 
 
@@ -114,7 +114,7 @@ public class GenericJavaOrphanRemoval2_0
 	}
 
 	protected TextRange getAnnotationTextRange() {
-		OwningRelationshipMapping2_0Annotation annotation = this.getMappingAnnotation();
+		OwningRelationshipMappingAnnotation2_0 annotation = this.getMappingAnnotation();
 		return (annotation == null) ? null : annotation.getOrphanRemovalTextRange();
 	}
 }

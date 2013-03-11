@@ -28,7 +28,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * @version 2.3
  * @since 2.3
  */
-public interface OwningRelationshipMapping2_0Annotation
+public interface OwningRelationshipMappingAnnotation2_0
 	extends Annotation
 {
 	// ********** orphan removal **********
