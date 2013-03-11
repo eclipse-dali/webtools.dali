@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.BinaryEclipseLinkMultitenantAnnotation2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.SourceEclipseLinkMultitenantAnnotation2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkMultitenantAnnotation2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MultitenantAnnotation2_3;
 
 public class EclipseLinkMultitenant2_3AnnotationDefinition
 	implements AnnotationDefinition
@@ -56,6 +56,6 @@ public class EclipseLinkMultitenant2_3AnnotationDefinition
 	}
 	
 	public String getAnnotationName() {
-		return EclipseLinkMultitenantAnnotation2_3.ANNOTATION_NAME;
+		return MultitenantAnnotation2_3.ANNOTATION_NAME;
 	}
 }

@@ -47,7 +47,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_4JpaPlatformFa
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.TenantDiscriminatorColumnValidator2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.NullEclipseLinkTenantDiscriminatorColumnAnnotation2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkMultitenantAnnotation2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MultitenantAnnotation2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TenantDiscriminatorColumnAnnotation2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -77,7 +77,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 	public JavaEclipseLinkMultitenancyImpl2_3(EclipseLinkJavaNonEmbeddableTypeMapping parent) {
 		super(parent);
 
-		EclipseLinkMultitenantAnnotation2_3 multitenantAnnotation = this.getMultitenantAnnotation();
+		MultitenantAnnotation2_3 multitenantAnnotation = this.getMultitenantAnnotation();
 		this.specifiedMultitenant = multitenantAnnotation.isSpecified();
 		this.specifiedType = EclipseLinkMultitenantType2_3.fromJavaResourceModel(multitenantAnnotation.getValue());
 		this.specifiedIncludeCriteria = multitenantAnnotation.getIncludeCriteria();
@@ -94,7 +94,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 
-		EclipseLinkMultitenantAnnotation2_3 multitenantAnnotation = this.getMultitenantAnnotation();
+		MultitenantAnnotation2_3 multitenantAnnotation = this.getMultitenantAnnotation();
 		this.setSpecifiedType_(EclipseLinkMultitenantType2_3.fromJavaResourceModel(multitenantAnnotation.getValue()));
 		this.setSpecifiedIncludeCriteria_(multitenantAnnotation.getIncludeCriteria());
 		this.syncSpecifiedTenantDiscriminatorColumns();
@@ -512,16 +512,16 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 
 	// ********** multitenant annotation **********
 
-	protected EclipseLinkMultitenantAnnotation2_3 addMultitenantAnnotation() {
-		return (EclipseLinkMultitenantAnnotation2_3) this.getJavaResourceType().addAnnotation(this.getMultitenantAnnotationName());
+	protected MultitenantAnnotation2_3 addMultitenantAnnotation() {
+		return (MultitenantAnnotation2_3) this.getJavaResourceType().addAnnotation(this.getMultitenantAnnotationName());
 	}
 
 	protected void removeMultitenantAnnotation() {
 		this.getJavaResourceType().removeAnnotation(this.getMultitenantAnnotationName());
 	}
 
-	protected EclipseLinkMultitenantAnnotation2_3 getMultitenantAnnotation() {
-		return (EclipseLinkMultitenantAnnotation2_3) this.getJavaResourceType().getNonNullAnnotation(this.getMultitenantAnnotationName());
+	protected MultitenantAnnotation2_3 getMultitenantAnnotation() {
+		return (MultitenantAnnotation2_3) this.getJavaResourceType().getNonNullAnnotation(this.getMultitenantAnnotationName());
 	}
 
 	protected TextRange getMultitenantAnnotationTextRange() {
@@ -533,7 +533,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 	}
 
 	protected String getMultitenantAnnotationName() {
-		return EclipseLinkMultitenantAnnotation2_3.ANNOTATION_NAME;
+		return MultitenantAnnotation2_3.ANNOTATION_NAME;
 	}
 
 

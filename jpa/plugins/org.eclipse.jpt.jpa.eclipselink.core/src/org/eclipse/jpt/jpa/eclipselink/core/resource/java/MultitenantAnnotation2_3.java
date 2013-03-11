@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * @version 3.1
  * @since 3.1
  */
-public interface EclipseLinkMultitenantAnnotation2_3
+public interface MultitenantAnnotation2_3
 	extends Annotation
 {
 	String ANNOTATION_NAME = EclipseLink.MULTITENANT;

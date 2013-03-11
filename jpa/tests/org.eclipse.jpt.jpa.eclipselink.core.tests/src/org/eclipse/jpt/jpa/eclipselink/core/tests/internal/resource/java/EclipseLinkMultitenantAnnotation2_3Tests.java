@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkMultitenantAnnotation2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MultitenantAnnotation2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MultitenantType2_3;
 
 @SuppressWarnings("nls")
@@ -68,7 +68,7 @@ public class EclipseLinkMultitenantAnnotation2_3Tests
 		ICompilationUnit cu = this.createTestMultitenant();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		EclipseLinkMultitenantAnnotation2_3 multitenant = (EclipseLinkMultitenantAnnotation2_3) resourceType.getAnnotation(EclipseLink.MULTITENANT);
+		MultitenantAnnotation2_3 multitenant = (MultitenantAnnotation2_3) resourceType.getAnnotation(EclipseLink.MULTITENANT);
 		assertNotNull(multitenant);
 	}
 
@@ -76,7 +76,7 @@ public class EclipseLinkMultitenantAnnotation2_3Tests
 		ICompilationUnit cu = this.createTestMultitenantWithValue();
 		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		EclipseLinkMultitenantAnnotation2_3 multitenant = (EclipseLinkMultitenantAnnotation2_3) resourceType.getAnnotation(EclipseLink.MULTITENANT);
+		MultitenantAnnotation2_3 multitenant = (MultitenantAnnotation2_3) resourceType.getAnnotation(EclipseLink.MULTITENANT);
 		assertEquals(MultitenantType2_3.SINGLE_TABLE, multitenant.getValue());
 	}
 
@@ -84,7 +84,7 @@ public class EclipseLinkMultitenantAnnotation2_3Tests
 		ICompilationUnit cu = this.createTestMultitenantWithValue();
 		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		EclipseLinkMultitenantAnnotation2_3 multitenant = (EclipseLinkMultitenantAnnotation2_3) resourceType.getAnnotation(EclipseLink.MULTITENANT);
+		MultitenantAnnotation2_3 multitenant = (MultitenantAnnotation2_3) resourceType.getAnnotation(EclipseLink.MULTITENANT);
 		assertEquals(MultitenantType2_3.SINGLE_TABLE, multitenant.getValue());
 		
 		multitenant.setValue(MultitenantType2_3.TABLE_PER_TENANT);

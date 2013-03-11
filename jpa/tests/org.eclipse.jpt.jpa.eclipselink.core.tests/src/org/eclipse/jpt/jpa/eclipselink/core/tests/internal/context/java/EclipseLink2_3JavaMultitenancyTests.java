@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaSpecifie
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkMultitenantAnnotation2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MultitenantAnnotation2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TenantDiscriminatorColumnAnnotation2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MultitenantType2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLink2_3ContextModelTestCase;
@@ -180,7 +180,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 		assertEquals(null, getJavaMultitenancy().getSpecifiedType());
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		EclipseLinkMultitenantAnnotation2_3 multitenant = (EclipseLinkMultitenantAnnotation2_3) resourceType.getAnnotation(EclipseLinkMultitenantAnnotation2_3.ANNOTATION_NAME);
+		MultitenantAnnotation2_3 multitenant = (MultitenantAnnotation2_3) resourceType.getAnnotation(MultitenantAnnotation2_3.ANNOTATION_NAME);
 
 		multitenant.setValue(MultitenantType2_3.SINGLE_TABLE);
 		getJpaProject().synchronizeContextModel();
@@ -213,7 +213,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 		assertEquals(EclipseLinkMultitenantType2_3.SINGLE_TABLE, getJavaMultitenancy().getSpecifiedType());
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		EclipseLinkMultitenantAnnotation2_3 multitenant = (EclipseLinkMultitenantAnnotation2_3) resourceType.getAnnotation(EclipseLinkMultitenantAnnotation2_3.ANNOTATION_NAME);
+		MultitenantAnnotation2_3 multitenant = (MultitenantAnnotation2_3) resourceType.getAnnotation(MultitenantAnnotation2_3.ANNOTATION_NAME);
 		assertEquals(MultitenantType2_3.SINGLE_TABLE, multitenant.getValue());
 
 
@@ -245,7 +245,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 		assertNull(getJavaMultitenancy().getSpecifiedIncludeCriteria());
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		EclipseLinkMultitenantAnnotation2_3 multitenant = (EclipseLinkMultitenantAnnotation2_3) resourceType.getAnnotation(EclipseLinkMultitenantAnnotation2_3.ANNOTATION_NAME);
+		MultitenantAnnotation2_3 multitenant = (MultitenantAnnotation2_3) resourceType.getAnnotation(MultitenantAnnotation2_3.ANNOTATION_NAME);
 		multitenant.setIncludeCriteria(Boolean.FALSE);
 		getJpaProject().synchronizeContextModel();
 
@@ -260,7 +260,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 		getJpaProject().synchronizeContextModel();
 
 		assertNull(getJavaMultitenancy().getSpecifiedIncludeCriteria());
-		multitenant = (EclipseLinkMultitenantAnnotation2_3) resourceType.getAnnotation(EclipseLinkMultitenantAnnotation2_3.ANNOTATION_NAME);
+		multitenant = (MultitenantAnnotation2_3) resourceType.getAnnotation(MultitenantAnnotation2_3.ANNOTATION_NAME);
 		assertNotNull(multitenant);
 	}
 
@@ -271,7 +271,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 		assertNull(getJavaMultitenancy().getSpecifiedIncludeCriteria());
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		EclipseLinkMultitenantAnnotation2_3 multitenant = (EclipseLinkMultitenantAnnotation2_3) resourceType.getAnnotation(EclipseLinkMultitenantAnnotation2_3.ANNOTATION_NAME);
+		MultitenantAnnotation2_3 multitenant = (MultitenantAnnotation2_3) resourceType.getAnnotation(MultitenantAnnotation2_3.ANNOTATION_NAME);
 
 		assertNull(multitenant.getIncludeCriteria());
 
@@ -279,7 +279,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 		assertEquals(Boolean.TRUE, multitenant.getIncludeCriteria());
 
 		getJavaMultitenancy().setSpecifiedIncludeCriteria(null);
-		multitenant = (EclipseLinkMultitenantAnnotation2_3) resourceType.getAnnotation(EclipseLinkMultitenantAnnotation2_3.ANNOTATION_NAME);
+		multitenant = (MultitenantAnnotation2_3) resourceType.getAnnotation(MultitenantAnnotation2_3.ANNOTATION_NAME);
 		assertNull(multitenant.getIncludeCriteria());
 		assertNull(getJavaMultitenancy().getSpecifiedIncludeCriteria());
 	}

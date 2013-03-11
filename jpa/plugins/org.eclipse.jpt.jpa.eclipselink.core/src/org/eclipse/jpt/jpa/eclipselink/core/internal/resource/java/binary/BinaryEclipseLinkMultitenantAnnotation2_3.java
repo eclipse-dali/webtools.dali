@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotatio
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkMultitenantAnnotation2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MultitenantAnnotation2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MultitenantType2_3;
 
 /**
@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MultitenantType2_3;
  */
 public class BinaryEclipseLinkMultitenantAnnotation2_3
 	extends BinaryAnnotation
-	implements EclipseLinkMultitenantAnnotation2_3
+	implements MultitenantAnnotation2_3
 {
 	private MultitenantType2_3 value;
 	private Boolean includeCriteria; // added in EclipseLink 2.4

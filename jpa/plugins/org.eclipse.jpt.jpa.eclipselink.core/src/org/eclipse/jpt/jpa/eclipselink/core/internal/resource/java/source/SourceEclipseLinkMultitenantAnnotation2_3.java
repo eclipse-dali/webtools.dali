@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkMultitenantAnnotation2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MultitenantAnnotation2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MultitenantType2_3;
 
 /**
@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MultitenantType2_3;
  */
 public class SourceEclipseLinkMultitenantAnnotation2_3
 	extends SourceAnnotation
-	implements EclipseLinkMultitenantAnnotation2_3
+	implements MultitenantAnnotation2_3
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER 
 			= new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
