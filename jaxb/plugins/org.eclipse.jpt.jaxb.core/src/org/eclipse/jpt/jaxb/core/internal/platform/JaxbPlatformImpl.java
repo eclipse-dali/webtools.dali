@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.core.internal.platform;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.AnnotationProvider;
-import org.eclipse.jpt.common.core.GenericAnnotationProvider;
+import org.eclipse.jpt.common.core.SimpleAnnotationProvider;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.DefaultAnnotationEditFormatter;
@@ -41,7 +41,7 @@ public final class JaxbPlatformImpl
 	public JaxbPlatformImpl(JaxbPlatformDefinition jaxbPlatformDefinition) {
 		super();
 		this.platformDefinition = jaxbPlatformDefinition;
-		this.annotationProvider = new GenericAnnotationProvider(this.platformDefinition.getAnnotationDefinitions(), this.platformDefinition.getNestableAnnotationDefinitions());
+		this.annotationProvider = new SimpleAnnotationProvider(this.platformDefinition.getAnnotationDefinitions(), this.platformDefinition.getNestableAnnotationDefinitions());
 	}
 	
 	

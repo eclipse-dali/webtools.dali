@@ -38,14 +38,14 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
  * passing in the appropriate array of annotation definition providers necessary
  * to build the annotations for the platform (vendor and/or version).
  */
-public final class GenericAnnotationProvider
+public final class SimpleAnnotationProvider
 	implements AnnotationProvider
 {
 	private final AnnotationDefinition[] annotationDefinitions;
 
 	private final NestableAnnotationDefinition[] nestableAnnotationDefinitions;
 	
-	public GenericAnnotationProvider(AnnotationDefinition[] annotationDefinitions, NestableAnnotationDefinition[] nestableAnnotationDefinitions) {
+	public SimpleAnnotationProvider(AnnotationDefinition[] annotationDefinitions, NestableAnnotationDefinition[] nestableAnnotationDefinitions) {
 		super();
 		this.annotationDefinitions = annotationDefinitions;
 		this.nestableAnnotationDefinitions = nestableAnnotationDefinitions;

@@ -17,7 +17,7 @@ import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.AnnotationProvider;
-import org.eclipse.jpt.common.core.GenericAnnotationProvider;
+import org.eclipse.jpt.common.core.SimpleAnnotationProvider;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourcePackageInfoCompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceTypeCompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.jdt.NullAnnotationEditFormatter;
@@ -194,7 +194,7 @@ public abstract class JavaResourceModelTestCase
 	}
 
 	protected AnnotationProvider buildAnnotationProvider() {
-		return new GenericAnnotationProvider(this.annotationDefinitions(), this.nestableAnnotationDefinitions());
+		return new SimpleAnnotationProvider(this.annotationDefinitions(), this.nestableAnnotationDefinitions());
 	}
 	
 	protected abstract AnnotationDefinition[] annotationDefinitions();

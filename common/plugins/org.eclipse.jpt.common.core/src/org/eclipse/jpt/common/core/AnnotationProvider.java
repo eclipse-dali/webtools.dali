@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
  * This is used to provide annotations and nestable annotations. An exception will
  * be thrown on an attempt to build an annotation that does not exist.
  * 
- * @see GenericAnnotationProvider
+ * @see SimpleAnnotationProvider
  * 
  * This interface is not intended to be implemented.
  *  
