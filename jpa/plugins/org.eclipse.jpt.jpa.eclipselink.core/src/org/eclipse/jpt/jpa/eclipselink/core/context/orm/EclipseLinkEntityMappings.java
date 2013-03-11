@@ -46,7 +46,7 @@ public interface EclipseLinkEntityMappings
 	 * Return a list iterable of the specified tenant discriminator columns.
 	 * This will not be null.
 	 */
-	ListIterable<OrmSpecifiedTenantDiscriminatorColumn2_3> getSpecifiedTenantDiscriminatorColumns();
+	ListIterable<EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3> getSpecifiedTenantDiscriminatorColumns();
 		String SPECIFIED_TENANT_DISCRIMINATOR_COLUMNS_LIST = "specifiedTenantDiscriminatorColumns"; //$NON-NLS-1$
 
 	/**
@@ -63,18 +63,18 @@ public interface EclipseLinkEntityMappings
 	 * Add a specified tenant discriminator column and return the object
 	 * representing it.
 	 */
-	OrmSpecifiedTenantDiscriminatorColumn2_3 addSpecifiedTenantDiscriminatorColumn();
+	EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3 addSpecifiedTenantDiscriminatorColumn();
 
 	/**
 	 * Add a specified tenant discriminator column and return the object
 	 * representing it.
 	 */
-	OrmSpecifiedTenantDiscriminatorColumn2_3 addSpecifiedTenantDiscriminatorColumn(int index);
+	EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3 addSpecifiedTenantDiscriminatorColumn(int index);
 
 	/**
 	 * Remove the specified tenant discriminator column.
 	 */
-	void removeSpecifiedTenantDiscriminatorColumn(OrmSpecifiedTenantDiscriminatorColumn2_3 tenantDiscriminatorColumn);
+	void removeSpecifiedTenantDiscriminatorColumn(EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3 tenantDiscriminatorColumn);
 
 	/**
 	 * Remove the specified tenant discriminator column at the index.

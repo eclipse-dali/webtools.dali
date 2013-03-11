@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminatorC
  * @version 3.3
  * @since 3.1
  */
-public interface OrmSpecifiedTenantDiscriminatorColumn2_3
+public interface EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3
 	extends EclipseLinkSpecifiedTenantDiscriminatorColumn2_3
 {
 	XmlTenantDiscriminatorColumn getXmlColumn();

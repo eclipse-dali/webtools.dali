@@ -37,7 +37,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVirtualTenantDisc
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmSpecifiedTenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmUuidGenerator;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
@@ -57,7 +57,7 @@ public class EclipseLinkEntityMappingsImpl
 {
 	protected final EclipseLinkOrmConverterContainer converterContainer;
 
-	protected final ContextListContainer<OrmSpecifiedTenantDiscriminatorColumn2_3, XmlTenantDiscriminatorColumn> specifiedTenantDiscriminatorColumnContainer;
+	protected final ContextListContainer<EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3, XmlTenantDiscriminatorColumn> specifiedTenantDiscriminatorColumnContainer;
 	protected final EclipseLinkTenantDiscriminatorColumn2_3.ParentAdapter tenantDiscriminatorColumnParentAdapter;
 
 	protected final ContextListContainer<EclipseLinkVirtualTenantDiscriminatorColumn2_3, EclipseLinkTenantDiscriminatorColumn2_3> defaultTenantDiscriminatorColumnContainer;
@@ -192,7 +192,7 @@ public class EclipseLinkEntityMappingsImpl
 
 	// ********** specified tenant discriminator columns **********
 
-	public ListIterable<OrmSpecifiedTenantDiscriminatorColumn2_3> getSpecifiedTenantDiscriminatorColumns() {
+	public ListIterable<EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3> getSpecifiedTenantDiscriminatorColumns() {
 		return this.specifiedTenantDiscriminatorColumnContainer.getContextElements();
 	}
 
@@ -208,17 +208,17 @@ public class EclipseLinkEntityMappingsImpl
 		return this.getSpecifiedTenantDiscriminatorColumnsSize() != 0;
 	}
 
-	public OrmSpecifiedTenantDiscriminatorColumn2_3 getSpecifiedTenantDiscriminatorColumn(int index) {
+	public EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3 getSpecifiedTenantDiscriminatorColumn(int index) {
 		return this.specifiedTenantDiscriminatorColumnContainer.getContextElement(index);
 	}
 
-	public OrmSpecifiedTenantDiscriminatorColumn2_3 addSpecifiedTenantDiscriminatorColumn() {
+	public EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3 addSpecifiedTenantDiscriminatorColumn() {
 		return this.addSpecifiedTenantDiscriminatorColumn(this.getSpecifiedTenantDiscriminatorColumnsSize());
 	}
 
-	public OrmSpecifiedTenantDiscriminatorColumn2_3 addSpecifiedTenantDiscriminatorColumn(int index) {
+	public EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3 addSpecifiedTenantDiscriminatorColumn(int index) {
 		XmlTenantDiscriminatorColumn xmlJoinColumn = this.buildXmlTenantDiscriminatorColumn();
-		OrmSpecifiedTenantDiscriminatorColumn2_3 joinColumn = this.specifiedTenantDiscriminatorColumnContainer.addContextElement(index, xmlJoinColumn);
+		EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3 joinColumn = this.specifiedTenantDiscriminatorColumnContainer.addContextElement(index, xmlJoinColumn);
 		this.getXmlEntityMappings().getTenantDiscriminatorColumns().add(index, xmlJoinColumn);
 		return joinColumn;
 	}
@@ -227,7 +227,7 @@ public class EclipseLinkEntityMappingsImpl
 		return EclipseLinkOrmFactory.eINSTANCE.createXmlTenantDiscriminatorColumn();
 	}
 
-	public void removeSpecifiedTenantDiscriminatorColumn(OrmSpecifiedTenantDiscriminatorColumn2_3 tenantDiscriminatorColumn) {
+	public void removeSpecifiedTenantDiscriminatorColumn(EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3 tenantDiscriminatorColumn) {
 		this.removeSpecifiedTenantDiscriminatorColumn(this.specifiedTenantDiscriminatorColumnContainer.indexOfContextElement(tenantDiscriminatorColumn));
 	}
 
@@ -257,14 +257,14 @@ public class EclipseLinkEntityMappingsImpl
 	 *  specified tenant discriminator column container
 	 */
 	protected class SpecifiedTenantDiscriminatorColumnContainer
-		extends ContextListContainer<OrmSpecifiedTenantDiscriminatorColumn2_3, XmlTenantDiscriminatorColumn>
+		extends ContextListContainer<EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3, XmlTenantDiscriminatorColumn>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return SPECIFIED_TENANT_DISCRIMINATOR_COLUMNS_LIST;
 		}
 		@Override
-		protected OrmSpecifiedTenantDiscriminatorColumn2_3 buildContextElement(XmlTenantDiscriminatorColumn resourceElement) {
+		protected EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3 buildContextElement(XmlTenantDiscriminatorColumn resourceElement) {
 			return EclipseLinkEntityMappingsImpl.this.buildTenantDiscriminatorColumn(resourceElement);
 		}
 		@Override
@@ -272,7 +272,7 @@ public class EclipseLinkEntityMappingsImpl
 			return EclipseLinkEntityMappingsImpl.this.getXmlTenantDiscriminatorColumns();
 		}
 		@Override
-		protected XmlTenantDiscriminatorColumn getResourceElement(OrmSpecifiedTenantDiscriminatorColumn2_3 contextElement) {
+		protected XmlTenantDiscriminatorColumn getResourceElement(EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3 contextElement) {
 			return contextElement.getXmlColumn();
 		}
 	}
@@ -287,7 +287,7 @@ public class EclipseLinkEntityMappingsImpl
 		return container;
 	}
 
-	protected OrmSpecifiedTenantDiscriminatorColumn2_3 buildTenantDiscriminatorColumn(XmlTenantDiscriminatorColumn xmlTenantDiscriminatorColumn) {
+	protected EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3 buildTenantDiscriminatorColumn(XmlTenantDiscriminatorColumn xmlTenantDiscriminatorColumn) {
 		return new EclipseLinkOrmTenantDiscriminatorColumn2_3(this.tenantDiscriminatorColumnParentAdapter, xmlTenantDiscriminatorColumn);
 	}
 
@@ -334,7 +334,7 @@ public class EclipseLinkEntityMappingsImpl
 		this.defaultTenantDiscriminatorColumnContainer.moveContextElement(index, tenantDiscriminatorColumn);
 	}
 
-	protected EclipseLinkVirtualTenantDiscriminatorColumn2_3 addDefaultTenantDiscriminatorColumn(int index, OrmSpecifiedTenantDiscriminatorColumn2_3 ormTenantDiscriminatorColumn) {
+	protected EclipseLinkVirtualTenantDiscriminatorColumn2_3 addDefaultTenantDiscriminatorColumn(int index, EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3 ormTenantDiscriminatorColumn) {
 		return this.defaultTenantDiscriminatorColumnContainer.addContextElement(index, ormTenantDiscriminatorColumn);
 	}
 

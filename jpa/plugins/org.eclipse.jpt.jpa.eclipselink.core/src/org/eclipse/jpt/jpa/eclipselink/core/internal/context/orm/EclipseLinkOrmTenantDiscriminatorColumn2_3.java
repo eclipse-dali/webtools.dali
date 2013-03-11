@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.AbstractOrmNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTenantDiscriminatorColumn2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmSpecifiedTenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminatorColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminatorColumn_2_3;
 
@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscrimin
  */
 public class EclipseLinkOrmTenantDiscriminatorColumn2_3
 	extends AbstractOrmNamedDiscriminatorColumn<EclipseLinkTenantDiscriminatorColumn2_3.ParentAdapter, XmlTenantDiscriminatorColumn>
-	implements OrmSpecifiedTenantDiscriminatorColumn2_3
+	implements EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3
 {
 	/** @see org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmNamedColumn#AbstractOrmNamedColumn(org.eclipse.jpt.jpa.core.context.NamedColumn.ParentAdapter, org.eclipse.jpt.jpa.core.resource.orm.XmlNamedColumn) */
 	protected /* final */ XmlTenantDiscriminatorColumn xmlTenantDiscriminatorColumn;  // never null

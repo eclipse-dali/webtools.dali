@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmSpecifiedTenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.TenantDiscriminatorColumnsComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.TenantDiscriminatorColumnsComposite.TenantDiscriminatorColumnsEditor;
@@ -77,7 +77,7 @@ public class EclipseLinkEntityMappingsTenantDiscriminatorColumnsComposite extend
 	class TenantDiscriminatorColumnsProvider implements TenantDiscriminatorColumnsEditor<EntityMappings> {
 
 		public EclipseLinkTenantDiscriminatorColumn2_3 addTenantDiscriminatorColumn(EntityMappings subject) {
-			OrmSpecifiedTenantDiscriminatorColumn2_3 column = ((EclipseLinkEntityMappings) subject).addSpecifiedTenantDiscriminatorColumn();
+			EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3 column = ((EclipseLinkEntityMappings) subject).addSpecifiedTenantDiscriminatorColumn();
 			column.setSpecifiedName(EclipseLinkTenantDiscriminatorColumn2_3.DEFAULT_NAME);
 			return column;
 		}
@@ -111,7 +111,7 @@ public class EclipseLinkEntityMappingsTenantDiscriminatorColumnsComposite extend
 		}
 
 		public void removeTenantDiscriminatorColumn(EntityMappings subject, EclipseLinkTenantDiscriminatorColumn2_3 column) {
-			((EclipseLinkEntityMappings) subject).removeSpecifiedTenantDiscriminatorColumn((OrmSpecifiedTenantDiscriminatorColumn2_3) column);
+			((EclipseLinkEntityMappings) subject).removeSpecifiedTenantDiscriminatorColumn((EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3) column);
 		}
 	}
 

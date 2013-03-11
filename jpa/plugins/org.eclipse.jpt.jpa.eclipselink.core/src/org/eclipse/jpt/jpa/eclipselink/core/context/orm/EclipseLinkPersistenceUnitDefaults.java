@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.context.orm;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmPersistenceUnitDefaults2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkSpecifiedAccessMethodsContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmSpecifiedTenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3;
 
 /**
  * EclipseLink <code>orm.xml</code> file
@@ -29,7 +29,7 @@ public interface EclipseLinkPersistenceUnitDefaults
 	 * Return a list iterable of the tenant discriminator columns.
 	 * This will not be null.
 	 */
-	ListIterable<OrmSpecifiedTenantDiscriminatorColumn2_3> getTenantDiscriminatorColumns();
+	ListIterable<EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3> getTenantDiscriminatorColumns();
 		String TENANT_DISCRIMINATOR_COLUMNS_LIST = "tenantDiscriminatorColumns"; //$NON-NLS-1$
 
 	/**
@@ -46,18 +46,18 @@ public interface EclipseLinkPersistenceUnitDefaults
 	 * Add a tenant discriminator column and return the object
 	 * representing it.
 	 */
-	OrmSpecifiedTenantDiscriminatorColumn2_3 addTenantDiscriminatorColumn();
+	EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3 addTenantDiscriminatorColumn();
 
 	/**
 	 * Add a tenant discriminator column and return the object
 	 * representing it.
 	 */
-	OrmSpecifiedTenantDiscriminatorColumn2_3 addTenantDiscriminatorColumn(int index);
+	EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3 addTenantDiscriminatorColumn(int index);
 
 	/**
 	 * Remove the tenant discriminator column.
 	 */
-	void removeTenantDiscriminatorColumn(OrmSpecifiedTenantDiscriminatorColumn2_3 tenantDiscriminatorColumn);
+	void removeTenantDiscriminatorColumn(EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3 tenantDiscriminatorColumn);
 
 	/**
 	 * Remove the tenant discriminator column at the index.
