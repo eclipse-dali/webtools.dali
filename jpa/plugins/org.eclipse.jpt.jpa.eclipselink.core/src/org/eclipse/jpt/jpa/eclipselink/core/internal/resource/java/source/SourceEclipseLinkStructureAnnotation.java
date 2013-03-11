@@ -14,14 +14,14 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotat
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkStructureAnnotation2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.StructureAnnotation2_3;
 
 /**
  * org.eclipse.persistence.annotations.Structure
  */
 public final class SourceEclipseLinkStructureAnnotation
 	extends SourceAnnotation
-	implements EclipseLinkStructureAnnotation2_3
+	implements StructureAnnotation2_3
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 

@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkStructureAnnotation2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.StructureAnnotation2_3;
 
 public class EclipseLinkJavaStructureMappingDefinition2_3
 	implements JavaAttributeMappingDefinition
@@ -43,7 +43,7 @@ public class EclipseLinkJavaStructureMappingDefinition2_3
 	}
 
 	public String getAnnotationName() {
-		return EclipseLinkStructureAnnotation2_3.ANNOTATION_NAME;
+		return StructureAnnotation2_3.ANNOTATION_NAME;
 	}
 
 	public boolean isSpecified(JavaSpecifiedPersistentAttribute persistentAttribute) {

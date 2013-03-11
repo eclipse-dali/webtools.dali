@@ -13,10 +13,10 @@ import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaAttributeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkStructureMapping2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkStructureAnnotation2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.StructureAnnotation2_3;
 
 public class JavaEclipseLinkStructureMapping2_3
-	extends AbstractJavaAttributeMapping<EclipseLinkStructureAnnotation2_3>
+	extends AbstractJavaAttributeMapping<StructureAnnotation2_3>
 	implements EclipseLinkStructureMapping2_3
 {
 
@@ -33,6 +33,6 @@ public class JavaEclipseLinkStructureMapping2_3
 
 	@Override
 	protected String getAnnotationName() {
-		return EclipseLinkStructureAnnotation2_3.ANNOTATION_NAME;
+		return StructureAnnotation2_3.ANNOTATION_NAME;
 	}
 }

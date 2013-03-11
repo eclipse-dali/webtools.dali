@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
  * @version 3.2
  * @since 3.2
  */
-public interface EclipseLinkStructureAnnotation2_3
+public interface StructureAnnotation2_3
 	extends Annotation
 {
 	String ANNOTATION_NAME = EclipseLink.STRUCTURE;
