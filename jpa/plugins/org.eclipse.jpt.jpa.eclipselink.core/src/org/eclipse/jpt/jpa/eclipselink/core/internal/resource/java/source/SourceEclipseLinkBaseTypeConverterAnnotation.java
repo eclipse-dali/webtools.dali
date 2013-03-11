@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkBaseTypeConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.BaseTypeConverterAnnotation;
 
 /**
  * <code>
@@ -33,7 +33,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkBaseTypeCon
  */
 abstract class SourceEclipseLinkBaseTypeConverterAnnotation
 	extends SourceEclipseLinkNamedConverterAnnotation
-	implements EclipseLinkBaseTypeConverterAnnotation
+	implements BaseTypeConverterAnnotation
 {
 	final DeclarationAnnotationElementAdapter<String> dataTypeDeclarationAdapter;
 	final AnnotationElementAdapter<String> dataTypeAdapter;

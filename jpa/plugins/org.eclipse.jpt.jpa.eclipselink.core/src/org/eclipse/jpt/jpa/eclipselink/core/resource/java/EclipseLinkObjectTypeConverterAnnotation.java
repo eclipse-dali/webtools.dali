@@ -26,7 +26,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
  * @since 2.1
  */
 public interface EclipseLinkObjectTypeConverterAnnotation
-	extends EclipseLinkBaseTypeConverterAnnotation
+	extends BaseTypeConverterAnnotation
 {
 	String ANNOTATION_NAME = EclipseLink.OBJECT_TYPE_CONVERTER;
 	

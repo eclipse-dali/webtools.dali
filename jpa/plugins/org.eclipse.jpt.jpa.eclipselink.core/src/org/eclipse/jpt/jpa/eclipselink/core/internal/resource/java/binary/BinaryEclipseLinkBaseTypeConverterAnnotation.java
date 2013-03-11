@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkBaseTypeConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.BaseTypeConverterAnnotation;
 
 /**
  * <code>
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkBaseTypeCon
  */
 abstract class BinaryEclipseLinkBaseTypeConverterAnnotation
 	extends BinaryEclipseLinkNamedConverterAnnotation
-	implements EclipseLinkBaseTypeConverterAnnotation
+	implements BaseTypeConverterAnnotation
 {
 	String dataType;
 	String objectType;

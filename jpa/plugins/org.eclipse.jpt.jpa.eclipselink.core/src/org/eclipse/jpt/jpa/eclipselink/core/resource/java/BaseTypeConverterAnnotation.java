@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface EclipseLinkBaseTypeConverterAnnotation
+public interface BaseTypeConverterAnnotation
 	extends EclipseLinkNamedConverterAnnotation
 {
 	/**
