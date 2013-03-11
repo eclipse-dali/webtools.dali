@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.orm.OrmGenerator;
-import org.eclipse.jpt.jpa.eclipselink.core.context.UuidGenerator;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkUuidGenerator;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaUuidGenerator;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlUuidGenerator_2_4;
 
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlUuidGenerator_2
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface OrmUuidGenerator
-	extends UuidGenerator, OrmGenerator
+	extends EclipseLinkUuidGenerator, OrmGenerator
 {
 	XmlUuidGenerator_2_4 getXmlGenerator();
 

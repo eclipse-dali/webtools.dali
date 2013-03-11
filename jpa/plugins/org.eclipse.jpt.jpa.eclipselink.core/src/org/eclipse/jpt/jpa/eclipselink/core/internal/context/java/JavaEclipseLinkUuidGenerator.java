@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaGenerator;
-import org.eclipse.jpt.jpa.eclipselink.core.context.UuidGenerator;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkUuidGenerator;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaUuidGenerator;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkUuidGeneratorAnnotation2_4;
@@ -30,8 +30,8 @@ public class JavaEclipseLinkUuidGenerator
 
 	// ********** misc **********
 	
-	public Class<UuidGenerator> getType() {
-		return UuidGenerator.class;
+	public Class<EclipseLinkUuidGenerator> getType() {
+		return EclipseLinkUuidGenerator.class;
 	}
 
 

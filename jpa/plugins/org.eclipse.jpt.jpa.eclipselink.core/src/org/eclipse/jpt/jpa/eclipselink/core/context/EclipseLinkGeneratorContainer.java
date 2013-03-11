@@ -32,9 +32,9 @@ public interface EclipseLinkGeneratorContainer
 
 	String UUID_GENERATOR_PROPERTY = "uuidGenerator"; //$NON-NLS-1$
 
-	UuidGenerator getUuidGenerator();
+	EclipseLinkUuidGenerator getUuidGenerator();
 
-	UuidGenerator addUuidGenerator();
+	EclipseLinkUuidGenerator addUuidGenerator();
 
 	void removeUuidGenerator();
 }
