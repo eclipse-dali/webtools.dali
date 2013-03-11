@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * @version 3.3
  * @since 2.1
  */
-public interface EclipseLinkCustomizerAnnotation
+public interface CustomizerAnnotation
 	extends Annotation
 {
 	String ANNOTATION_NAME = EclipseLink.CUSTOMIZER;

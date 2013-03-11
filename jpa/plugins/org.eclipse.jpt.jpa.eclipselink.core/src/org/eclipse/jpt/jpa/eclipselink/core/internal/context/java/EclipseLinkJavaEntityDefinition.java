@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.JavaTypeMappingDefinitionW
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ChangeTrackingAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConverterAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkCustomizerAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CustomizerAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkExistenceCheckingAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkReadOnlyAnnotation;
@@ -60,7 +60,7 @@ public class EclipseLinkJavaEntityDefinition
 		CacheAnnotation.ANNOTATION_NAME,
 		ChangeTrackingAnnotation.ANNOTATION_NAME,
 		ConverterAnnotation.ANNOTATION_NAME,
-		EclipseLinkCustomizerAnnotation.ANNOTATION_NAME,
+		CustomizerAnnotation.ANNOTATION_NAME,
 		EclipseLinkExistenceCheckingAnnotation.ANNOTATION_NAME,
 		EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME,
 		EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME,

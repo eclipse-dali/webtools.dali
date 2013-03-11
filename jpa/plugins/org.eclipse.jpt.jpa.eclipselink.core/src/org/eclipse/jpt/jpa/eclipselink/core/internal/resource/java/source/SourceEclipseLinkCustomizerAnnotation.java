@@ -23,14 +23,14 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkCustomizerAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CustomizerAnnotation;
 
 /**
  * <code>org.eclipse.persistence.annotations.Customizer</code>
  */
 public final class SourceEclipseLinkCustomizerAnnotation
 	extends SourceAnnotation
-	implements EclipseLinkCustomizerAnnotation
+	implements CustomizerAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 

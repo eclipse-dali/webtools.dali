@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaTypeMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkCustomizerAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CustomizerAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -64,7 +64,7 @@ public class JavaEclipseLinkCustomizer
 
 	public void setSpecifiedCustomizerClass(String customizerClass) {
 		if (this.valuesAreDifferent(customizerClass, this.specifiedCustomizerClass)) {
-			EclipseLinkCustomizerAnnotation annotation = this.getCustomizerAnnotation();
+			CustomizerAnnotation annotation = this.getCustomizerAnnotation();
 			if (customizerClass == null) {
 				if (annotation != null) {
 					this.removeCustomizerAnnotation();
@@ -87,7 +87,7 @@ public class JavaEclipseLinkCustomizer
 	}
 
 	protected String buildSpecifiedCustomizerClass() {
-		EclipseLinkCustomizerAnnotation annotation = this.getCustomizerAnnotation();
+		CustomizerAnnotation annotation = this.getCustomizerAnnotation();
 		return (annotation == null) ? null : annotation.getValue();
 	}
 
@@ -109,19 +109,19 @@ public class JavaEclipseLinkCustomizer
 	}
 
 	protected String buildFullyQualifiedCustomizerClass() {
-		EclipseLinkCustomizerAnnotation annotation = this.getCustomizerAnnotation();
+		CustomizerAnnotation annotation = this.getCustomizerAnnotation();
 		return (annotation == null) ? null : annotation.getFullyQualifiedCustomizerClassName();
 	}
 
 
 	// ********** customizer annotation **********
 
-	protected EclipseLinkCustomizerAnnotation getCustomizerAnnotation() {
-		return (EclipseLinkCustomizerAnnotation) this.getJavaResourceType().getAnnotation(this.getCustomizerAnnotationName());
+	protected CustomizerAnnotation getCustomizerAnnotation() {
+		return (CustomizerAnnotation) this.getJavaResourceType().getAnnotation(this.getCustomizerAnnotationName());
 	}
 
-	protected EclipseLinkCustomizerAnnotation addCustomizerAnnotation() {
-		return (EclipseLinkCustomizerAnnotation) this.getJavaResourceType().addAnnotation(this.getCustomizerAnnotationName());
+	protected CustomizerAnnotation addCustomizerAnnotation() {
+		return (CustomizerAnnotation) this.getJavaResourceType().addAnnotation(this.getCustomizerAnnotationName());
 	}
 
 	protected void removeCustomizerAnnotation() {
@@ -129,7 +129,7 @@ public class JavaEclipseLinkCustomizer
 	}
 
 	protected String getCustomizerAnnotationName() {
-		return EclipseLinkCustomizerAnnotation.ANNOTATION_NAME;
+		return CustomizerAnnotation.ANNOTATION_NAME;
 	}
 
 

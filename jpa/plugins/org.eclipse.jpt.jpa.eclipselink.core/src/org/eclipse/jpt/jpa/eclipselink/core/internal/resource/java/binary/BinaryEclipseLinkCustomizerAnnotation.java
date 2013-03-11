@@ -14,14 +14,14 @@ import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotatio
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkCustomizerAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CustomizerAnnotation;
 
 /**
  * <code>org.eclipse.persistence.annotations.Customizer</code>
  */
 public final class BinaryEclipseLinkCustomizerAnnotation
 	extends BinaryAnnotation
-	implements EclipseLinkCustomizerAnnotation
+	implements CustomizerAnnotation
 {
 	private String value;
 

@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkReadOnly;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ChangeTrackingAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkCustomizerAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CustomizerAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkReadOnlyAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 
@@ -169,19 +169,19 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkContextMode
 		assertEquals("Bar", customizer.getSpecifiedCustomizerClass());
 			
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		EclipseLinkCustomizerAnnotation customizerAnnotation = (EclipseLinkCustomizerAnnotation) resourceType.getAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);		
+		CustomizerAnnotation customizerAnnotation = (CustomizerAnnotation) resourceType.getAnnotation(CustomizerAnnotation.ANNOTATION_NAME);		
 		assertEquals("Bar", customizerAnnotation.getValue());
 
 		
 		customizer.setSpecifiedCustomizerClass(null);
 		assertEquals(null, customizer.getSpecifiedCustomizerClass());
-		customizerAnnotation = (EclipseLinkCustomizerAnnotation) resourceType.getAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);		
+		customizerAnnotation = (CustomizerAnnotation) resourceType.getAnnotation(CustomizerAnnotation.ANNOTATION_NAME);		
 		assertEquals(null, customizerAnnotation);
 
 
 		customizer.setSpecifiedCustomizerClass("Bar");
 		assertEquals("Bar", customizer.getSpecifiedCustomizerClass());
-		customizerAnnotation = (EclipseLinkCustomizerAnnotation) resourceType.getAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);		
+		customizerAnnotation = (CustomizerAnnotation) resourceType.getAnnotation(CustomizerAnnotation.ANNOTATION_NAME);		
 		assertEquals("Bar", customizerAnnotation.getValue());
 	}
 	
@@ -194,16 +194,16 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkContextMode
 		assertEquals("Foo", customizer.getSpecifiedCustomizerClass());
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		EclipseLinkCustomizerAnnotation customizerAnnotation = (EclipseLinkCustomizerAnnotation) resourceType.getAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);
+		CustomizerAnnotation customizerAnnotation = (CustomizerAnnotation) resourceType.getAnnotation(CustomizerAnnotation.ANNOTATION_NAME);
 		customizerAnnotation.setValue("Bar");
 		getJpaProject().synchronizeContextModel();
 		assertEquals("Bar", customizer.getSpecifiedCustomizerClass());
 		
-		resourceType.removeAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);
+		resourceType.removeAnnotation(CustomizerAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		assertEquals(null, customizer.getSpecifiedCustomizerClass());
 		
-		customizerAnnotation = (EclipseLinkCustomizerAnnotation) resourceType.addAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);		
+		customizerAnnotation = (CustomizerAnnotation) resourceType.addAnnotation(CustomizerAnnotation.ANNOTATION_NAME);		
 		getJpaProject().synchronizeContextModel();
 		assertEquals(null, customizer.getSpecifiedCustomizerClass());
 		

@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.BinaryEclipseLinkCustomizerAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.SourceEclipseLinkCustomizerAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkCustomizerAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CustomizerAnnotation;
 
 /**
  * org.eclipse.persistence.annotations.Customizer
@@ -54,6 +54,6 @@ public class EclipseLinkCustomizerAnnotationDefinition
 	}
 
 	public String getAnnotationName() {
-		return EclipseLinkCustomizerAnnotation.ANNOTATION_NAME;
+		return CustomizerAnnotation.ANNOTATION_NAME;
 	}
 }
