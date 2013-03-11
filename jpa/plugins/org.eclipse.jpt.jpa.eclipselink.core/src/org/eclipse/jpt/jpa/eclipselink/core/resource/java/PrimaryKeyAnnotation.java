@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
  * @version 2.3
  * @since 2.3
  */
-public interface EclipseLinkPrimaryKeyAnnotation
+public interface PrimaryKeyAnnotation
 	extends Annotation
 {
 	String ANNOTATION_NAME = EclipseLink.PRIMARY_KEY;

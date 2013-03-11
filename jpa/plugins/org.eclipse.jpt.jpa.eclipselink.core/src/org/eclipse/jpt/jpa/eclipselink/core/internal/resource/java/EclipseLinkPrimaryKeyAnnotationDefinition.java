@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.BinaryEclipseLinkPrimaryKeyAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.SourceEclipseLinkPrimaryKeyAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkPrimaryKeyAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.PrimaryKeyAnnotation;
 
 public class EclipseLinkPrimaryKeyAnnotationDefinition
 	implements AnnotationDefinition
@@ -56,6 +56,6 @@ public class EclipseLinkPrimaryKeyAnnotationDefinition
 	}
 	
 	public String getAnnotationName() {
-		return EclipseLinkPrimaryKeyAnnotation.ANNOTATION_NAME;
+		return PrimaryKeyAnnotation.ANNOTATION_NAME;
 	}
 }

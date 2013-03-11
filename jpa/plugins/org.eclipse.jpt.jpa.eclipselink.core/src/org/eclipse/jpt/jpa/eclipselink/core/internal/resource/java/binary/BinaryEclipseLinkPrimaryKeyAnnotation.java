@@ -13,14 +13,14 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkPrimaryKeyAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.PrimaryKeyAnnotation;
 
 /**
  * org.eclipse.persistence.annotations.PrimaryKey
  */
 public class BinaryEclipseLinkPrimaryKeyAnnotation
 	extends BinaryAnnotation
-	implements EclipseLinkPrimaryKeyAnnotation
+	implements PrimaryKeyAnnotation
 {
 	public BinaryEclipseLinkPrimaryKeyAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
