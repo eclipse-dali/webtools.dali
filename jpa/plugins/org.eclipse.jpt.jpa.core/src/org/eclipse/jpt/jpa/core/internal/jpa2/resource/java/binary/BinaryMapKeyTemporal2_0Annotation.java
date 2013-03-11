@@ -13,21 +13,21 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryBaseTemporalAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporal2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporalAnnotation2_0;
 
 /**
  * <code>javax.persistence.MapKeyTemporal</code>
  */
 public final class BinaryMapKeyTemporal2_0Annotation
 	extends BinaryBaseTemporalAnnotation
-	implements MapKeyTemporal2_0Annotation
+	implements MapKeyTemporalAnnotation2_0
 {
 	public BinaryMapKeyTemporal2_0Annotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {
-		return MapKeyTemporal2_0Annotation.ANNOTATION_NAME;
+		return MapKeyTemporalAnnotation2_0.ANNOTATION_NAME;
 	}
 	
 	@Override

@@ -11,14 +11,14 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jpa.core.internal.resource.java.NullBaseTemporalAnnotation;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporal2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporalAnnotation2_0;
 
 /**
  * <code>javax.persistence.MapKeyTemporal</code>
  */
 public final class NullMapKeyTemporal2_0Annotation
-	extends NullBaseTemporalAnnotation<MapKeyTemporal2_0Annotation>
-	implements MapKeyTemporal2_0Annotation
+	extends NullBaseTemporalAnnotation<MapKeyTemporalAnnotation2_0>
+	implements MapKeyTemporalAnnotation2_0
 {
 	protected NullMapKeyTemporal2_0Annotation(JavaResourceAnnotatedElement parent) {
 		super(parent);

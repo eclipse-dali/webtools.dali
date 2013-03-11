@@ -15,16 +15,16 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceBaseTemporalAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporal2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporalAnnotation2_0;
 
 /**
  * <code>javax.persistence.MapKeyTemporal</code>
  */
 public final class SourceMapKeyTemporal2_0Annotation
 	extends SourceBaseTemporalAnnotation
-	implements MapKeyTemporal2_0Annotation
+	implements MapKeyTemporalAnnotation2_0
 {
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(MapKeyTemporal2_0Annotation.ANNOTATION_NAME);
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(MapKeyTemporalAnnotation2_0.ANNOTATION_NAME);
 
 
 	public SourceMapKeyTemporal2_0Annotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
@@ -32,7 +32,7 @@ public final class SourceMapKeyTemporal2_0Annotation
 	}
 
 	public String getAnnotationName() {
-		return MapKeyTemporal2_0Annotation.ANNOTATION_NAME;
+		return MapKeyTemporalAnnotation2_0.ANNOTATION_NAME;
 	}
 
 	@Override

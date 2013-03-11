@@ -59,7 +59,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClassAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumnAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumeratedAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumnAnnotation2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporal2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporalAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.BasicAnnotation;
@@ -2258,7 +2258,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		MapKeyTemporal2_0Annotation temporal = (MapKeyTemporal2_0Annotation) resourceField.getAnnotation(MapKeyTemporal2_0Annotation.ANNOTATION_NAME);
+		MapKeyTemporalAnnotation2_0 temporal = (MapKeyTemporalAnnotation2_0) resourceField.getAnnotation(MapKeyTemporalAnnotation2_0.ANNOTATION_NAME);
 		
 		assertNotNull(temporal);
 		assertEquals(null, temporal.getValue());
@@ -2267,7 +2267,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertEquals(org.eclipse.jpt.jpa.core.resource.java.TemporalType.TIME, temporal.getValue());
 		
 		((BaseTemporalConverter) elementCollectionMapping.getMapKeyConverter()).setTemporalType(null);
-		assertNull(resourceField.getAnnotation(MapKeyTemporal2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(MapKeyTemporalAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testGetMapKeyTemporalUpdatesFromResourceModelChange() throws Exception {
@@ -2282,7 +2282,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		MapKeyTemporal2_0Annotation temporal = (MapKeyTemporal2_0Annotation) resourceField.addAnnotation(MapKeyTemporal2_0Annotation.ANNOTATION_NAME);
+		MapKeyTemporalAnnotation2_0 temporal = (MapKeyTemporalAnnotation2_0) resourceField.addAnnotation(MapKeyTemporalAnnotation2_0.ANNOTATION_NAME);
 		temporal.setValue(org.eclipse.jpt.jpa.core.resource.java.TemporalType.TIME);
 		getJpaProject().synchronizeContextModel();
 		
@@ -2290,7 +2290,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		temporal.setValue(null);
 		getJpaProject().synchronizeContextModel();
-		assertNotNull(resourceField.getAnnotation(MapKeyTemporal2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(MapKeyTemporalAnnotation2_0.ANNOTATION_NAME));
 		assertNull(((BaseTemporalConverter) elementCollectionMapping.getMapKeyConverter()).getTemporalType());
 		assertFalse(elementCollectionMapping.isDefault());
 		assertSame(elementCollectionMapping, persistentAttribute.getMapping());

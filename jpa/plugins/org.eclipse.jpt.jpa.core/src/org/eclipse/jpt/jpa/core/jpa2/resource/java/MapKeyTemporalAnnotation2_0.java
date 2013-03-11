@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.resource.java.BaseTemporalAnnotation;
  * @version 2.3
  * @since 2.3
  */
-public interface MapKeyTemporal2_0Annotation
+public interface MapKeyTemporalAnnotation2_0
 	extends BaseTemporalAnnotation
 {
 	String ANNOTATION_NAME = JPA2_0.MAP_KEY_TEMPORAL;

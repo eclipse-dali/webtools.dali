@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.JavaElementCollectionTemporalConverterValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.JavaTemporalConverterValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaMapKeyTemporalConverterValidator;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporal2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporalAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.TemporalAnnotation;
 
 /**
@@ -140,11 +140,11 @@ public interface JavaBaseTemporalConverter
 
 		@Override
 		protected String getAnnotationName() {
-			return MapKeyTemporal2_0Annotation.ANNOTATION_NAME;
+			return MapKeyTemporalAnnotation2_0.ANNOTATION_NAME;
 		}
 
 		public JavaConverter buildConverter(Annotation converterAnnotation, JavaAttributeMapping parent, JpaFactory factory) {
-			return factory.buildJavaBaseTemporalConverter(this.buildConverterParentAdapter(parent), (MapKeyTemporal2_0Annotation) converterAnnotation);
+			return factory.buildJavaBaseTemporalConverter(this.buildConverterParentAdapter(parent), (MapKeyTemporalAnnotation2_0) converterAnnotation);
 		}
 
 		@Override

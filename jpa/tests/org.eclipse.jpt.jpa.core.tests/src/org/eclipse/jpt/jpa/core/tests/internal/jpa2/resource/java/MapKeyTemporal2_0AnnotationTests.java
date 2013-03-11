@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporal2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporalAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.TemporalType;
 
@@ -58,7 +58,7 @@ public class MapKeyTemporal2_0AnnotationTests extends JavaResourceModel2_0TestCa
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		MapKeyTemporal2_0Annotation temporal = (MapKeyTemporal2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_TEMPORAL);
+		MapKeyTemporalAnnotation2_0 temporal = (MapKeyTemporalAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_TEMPORAL);
 		assertNotNull(temporal);
 	}
 	
@@ -67,7 +67,7 @@ public class MapKeyTemporal2_0AnnotationTests extends JavaResourceModel2_0TestCa
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		MapKeyTemporal2_0Annotation temporal = (MapKeyTemporal2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_TEMPORAL);
+		MapKeyTemporalAnnotation2_0 temporal = (MapKeyTemporalAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_TEMPORAL);
 		assertEquals(TemporalType.DATE, temporal.getValue());
 	}
 	
@@ -76,7 +76,7 @@ public class MapKeyTemporal2_0AnnotationTests extends JavaResourceModel2_0TestCa
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 
-		MapKeyTemporal2_0Annotation temporal = (MapKeyTemporal2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_TEMPORAL);
+		MapKeyTemporalAnnotation2_0 temporal = (MapKeyTemporalAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_TEMPORAL);
 
 		temporal.setValue(TemporalType.TIME);
 		
