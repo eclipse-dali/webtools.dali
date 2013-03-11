@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkPrivateOwned;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkPrivateOwnedAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.PrivateOwnedAnnotation;
 
 public class JavaEclipseLinkPrivateOwned
 	extends AbstractJavaContextModel<JavaAttributeMapping>
@@ -46,7 +46,7 @@ public class JavaEclipseLinkPrivateOwned
 
 	public void setPrivateOwned(boolean privateOwned) {
 		if (privateOwned != this.privateOwned) {
-			EclipseLinkPrivateOwnedAnnotation annotation = this.getPrivateOwnedAnnotation();
+			PrivateOwnedAnnotation annotation = this.getPrivateOwnedAnnotation();
 			if (privateOwned) {
 				if (annotation == null) {
 					this.addPrivateOwnedAnnotation();
@@ -74,12 +74,12 @@ public class JavaEclipseLinkPrivateOwned
 
 	// ********** private owned annotation **********
 
-	protected EclipseLinkPrivateOwnedAnnotation getPrivateOwnedAnnotation() {
-		return (EclipseLinkPrivateOwnedAnnotation) this.getResourceAttribute().getAnnotation(this.getPrivateOwnedAnnotationName());
+	protected PrivateOwnedAnnotation getPrivateOwnedAnnotation() {
+		return (PrivateOwnedAnnotation) this.getResourceAttribute().getAnnotation(this.getPrivateOwnedAnnotationName());
 	}
 
-	protected EclipseLinkPrivateOwnedAnnotation addPrivateOwnedAnnotation() {
-		return (EclipseLinkPrivateOwnedAnnotation) this.getResourceAttribute().addAnnotation(this.getPrivateOwnedAnnotationName());
+	protected PrivateOwnedAnnotation addPrivateOwnedAnnotation() {
+		return (PrivateOwnedAnnotation) this.getResourceAttribute().addAnnotation(this.getPrivateOwnedAnnotationName());
 	}
 
 	protected void removePrivateOwnedAnnotation() {
@@ -87,7 +87,7 @@ public class JavaEclipseLinkPrivateOwned
 	}
 
 	protected String getPrivateOwnedAnnotationName() {
-		return EclipseLinkPrivateOwnedAnnotation.ANNOTATION_NAME;
+		return PrivateOwnedAnnotation.ANNOTATION_NAME;
 	}
 
 
@@ -110,7 +110,7 @@ public class JavaEclipseLinkPrivateOwned
 	}
 
 	protected TextRange getAnnotationTextRange() {
-		EclipseLinkPrivateOwnedAnnotation annotation = this.getPrivateOwnedAnnotation();
+		PrivateOwnedAnnotation annotation = this.getPrivateOwnedAnnotation();
 		return (annotation == null) ? null : annotation.getTextRange();
 	}
 }

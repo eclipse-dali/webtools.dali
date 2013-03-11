@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkPrivateOwned;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkRelationshipMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkJoinFetchAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkPrivateOwnedAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.PrivateOwnedAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 
 @SuppressWarnings("nls")
@@ -126,11 +126,11 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkContextModel
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		assertNull(resourceField.getAnnotation(EclipseLinkPrivateOwnedAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(PrivateOwnedAnnotation.ANNOTATION_NAME));
 		assertEquals(false, privateOwnable.isPrivateOwned());
 
 		privateOwnable.setPrivateOwned(true);
-		assertNotNull(resourceField.getAnnotation(EclipseLinkPrivateOwnedAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(PrivateOwnedAnnotation.ANNOTATION_NAME));
 		assertEquals(true, privateOwnable.isPrivateOwned());
 	}
 	
@@ -146,12 +146,12 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkContextModel
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		resourceField.removeAnnotation(EclipseLinkPrivateOwnedAnnotation.ANNOTATION_NAME);
+		resourceField.removeAnnotation(PrivateOwnedAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(false, privateOwnable.isPrivateOwned());
 		
-		resourceField.addAnnotation(EclipseLinkPrivateOwnedAnnotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(PrivateOwnedAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		assertEquals(true, privateOwnable.isPrivateOwned());
 	}

@@ -12,14 +12,14 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkPrivateOwnedAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.PrivateOwnedAnnotation;
 
 /**
  * org.eclipse.persistence.annotations.PrivateOwned
  */
 public final class BinaryEclipseLinkPrivateOwnedAnnotation
 	extends BinaryAnnotation
-	implements EclipseLinkPrivateOwnedAnnotation
+	implements PrivateOwnedAnnotation
 {
 
 	public BinaryEclipseLinkPrivateOwnedAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {

@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkPrivateOwnedAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.PrivateOwnedAnnotation;
 
 @SuppressWarnings("nls")
 public class PrivateOwnedTests extends EclipseLinkJavaResourceModelTestCase {
@@ -43,7 +43,7 @@ public class PrivateOwnedTests extends EclipseLinkJavaResourceModelTestCase {
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkPrivateOwnedAnnotation privateOwned = (EclipseLinkPrivateOwnedAnnotation) resourceField.getAnnotation(EclipseLink.PRIVATE_OWNED);
+		PrivateOwnedAnnotation privateOwned = (PrivateOwnedAnnotation) resourceField.getAnnotation(EclipseLink.PRIVATE_OWNED);
 		assertNotNull(privateOwned);
 	}
 
