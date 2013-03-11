@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * @version 3.3
  * @since 3.3
  */
-public interface StoredProcedureParameter2_1Annotation
+public interface StoredProcedureParameterAnnotation2_1
 	extends NestableAnnotation
 {
 	String ANNOTATION_NAME = JPA2_1.NAMED_STORED_PROCEDURE_PARAMETER;

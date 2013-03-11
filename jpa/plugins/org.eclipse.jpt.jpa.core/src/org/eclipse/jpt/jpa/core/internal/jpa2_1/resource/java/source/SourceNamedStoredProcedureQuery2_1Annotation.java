@@ -34,7 +34,7 @@ import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceQueryAnnotat
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceQueryHintAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.JPA2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.NamedStoredProcedureQueryAnnotation2_1;
-import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameter2_1Annotation;
+import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameterAnnotation2_1;
 import org.eclipse.jpt.jpa.core.resource.java.QueryHintAnnotation;
 
 /**
@@ -168,7 +168,7 @@ public final class SourceNamedStoredProcedureQuery2_1Annotation
 		return JPA2_1.NAMED_STORED_PROCEDURE_QUERY__PARAMETERS;
 	}
 	
-	public StoredProcedureParameter2_1Annotation buildParameter(int index) {
+	public StoredProcedureParameterAnnotation2_1 buildParameter(int index) {
 		return SourceStoredProcedureParameter2_1Annotation.buildNamedStoredProcedureQuery2_1Parameter(this, this.annotatedElement, this.daa, index);
 	}
 
@@ -220,7 +220,7 @@ public final class SourceNamedStoredProcedureQuery2_1Annotation
 
 
 	// ***** parameters
-	public ListIterable<StoredProcedureParameter2_1Annotation> getParameters() {
+	public ListIterable<StoredProcedureParameterAnnotation2_1> getParameters() {
 		return this.storedProcedureParametersContainer.getNestedAnnotations();
 	}
 
@@ -228,11 +228,11 @@ public final class SourceNamedStoredProcedureQuery2_1Annotation
 		return this.storedProcedureParametersContainer.getNestedAnnotationsSize();
 	}
 
-	public StoredProcedureParameter2_1Annotation parameterAt(int index) {
+	public StoredProcedureParameterAnnotation2_1 parameterAt(int index) {
 		return this.storedProcedureParametersContainer.getNestedAnnotation(index);
 	}
 
-	public StoredProcedureParameter2_1Annotation addParameter(int index) {
+	public StoredProcedureParameterAnnotation2_1 addParameter(int index) {
 		return this.storedProcedureParametersContainer.addNestedAnnotation(index);
 	}
 
@@ -426,7 +426,7 @@ public final class SourceNamedStoredProcedureQuery2_1Annotation
 	 * adapt the AnnotationContainer interface to the xml schema's xmlns
 	 */
 	class StoredProcedureParameterAnnotationContainer
-		extends AnnotationContainer<StoredProcedureParameter2_1Annotation>
+		extends AnnotationContainer<StoredProcedureParameterAnnotation2_1>
 	{
 		@Override
 		protected String getNestedAnnotationsListName() {
@@ -438,10 +438,10 @@ public final class SourceNamedStoredProcedureQuery2_1Annotation
 		}
 		@Override
 		protected String getNestedAnnotationName() {
-			return StoredProcedureParameter2_1Annotation.ANNOTATION_NAME;
+			return StoredProcedureParameterAnnotation2_1.ANNOTATION_NAME;
 		}
 		@Override
-		protected StoredProcedureParameter2_1Annotation buildNestedAnnotation(int index) {
+		protected StoredProcedureParameterAnnotation2_1 buildNestedAnnotation(int index) {
 			return SourceNamedStoredProcedureQuery2_1Annotation.this.buildParameter(index);
 		}
 	}

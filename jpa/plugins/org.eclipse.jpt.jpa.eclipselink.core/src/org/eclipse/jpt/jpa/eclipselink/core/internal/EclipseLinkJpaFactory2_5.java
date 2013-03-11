@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java.JavaStoredProcedure
 import org.eclipse.jpt.jpa.core.jpa2_1.JpaFactory2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.java.JavaConverterType2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.NamedStoredProcedureQueryAnnotation2_1;
-import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameter2_1Annotation;
+import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameterAnnotation2_1;
 
 /**
  *  EclipseLink 2.5 factory
@@ -41,7 +41,7 @@ public class EclipseLinkJpaFactory2_5
 		return new GenericJavaNamedStoredProcedureQuery2_1(parent, namedStoredProcedureQueryAnnotation);
 	}
 
-	public JavaStoredProcedureParameter2_1 buildJavaStoredProcedureParameter(JavaNamedStoredProcedureQuery2_1 parent, StoredProcedureParameter2_1Annotation parameterAnnotation) {
+	public JavaStoredProcedureParameter2_1 buildJavaStoredProcedureParameter(JavaNamedStoredProcedureQuery2_1 parent, StoredProcedureParameterAnnotation2_1 parameterAnnotation) {
 		return new GenericJavaStoredProcedureParameter2_1(parent, parameterAnnotation);
 	}
 }

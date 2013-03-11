@@ -15,14 +15,14 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.JPA2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.ParameterMode_2_1;
-import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameter2_1Annotation;
+import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameterAnnotation2_1;
 
 /**
  * javax.persistence.StoredProcedureParameter
  */
 public final class BinaryStoredProcedureParameter2_1Annotation 
 	extends BinaryAnnotation
-	implements StoredProcedureParameter2_1Annotation
+	implements StoredProcedureParameterAnnotation2_1
 {
 	private String name;
 	private ParameterMode_2_1 mode;

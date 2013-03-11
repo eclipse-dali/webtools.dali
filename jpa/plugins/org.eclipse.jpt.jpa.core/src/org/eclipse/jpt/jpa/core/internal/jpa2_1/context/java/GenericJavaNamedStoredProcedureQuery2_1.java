@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.OrmQueryContainer2_1
 import org.eclipse.jpt.jpa.core.jpa2_1.context.NamedStoredProcedureQuery2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.StoredProcedureParameter2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.NamedStoredProcedureQueryAnnotation2_1;
-import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameter2_1Annotation;
+import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameterAnnotation2_1;
 
 /**
  * <code>orm.xml</code> named stored procedure query
@@ -33,7 +33,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1
 {
 	protected String procedureName;
 
-	protected final ContextListContainer<JavaStoredProcedureParameter2_1, StoredProcedureParameter2_1Annotation> parameterContainer;
+	protected final ContextListContainer<JavaStoredProcedureParameter2_1, StoredProcedureParameterAnnotation2_1> parameterContainer;
 
 	protected final Vector<String> resultClasses = new Vector<String>();
 
@@ -99,7 +99,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1
 	}
 
 	public JavaStoredProcedureParameter2_1 addParameter(int index) {
-		StoredProcedureParameter2_1Annotation annotation = this.queryAnnotation.addParameter(index);
+		StoredProcedureParameterAnnotation2_1 annotation = this.queryAnnotation.addParameter(index);
 		return this.parameterContainer.addContextElement(index, annotation);
 	}
 
@@ -121,7 +121,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1
 		return this.parameterContainer.get(index);
 	}
 
-	protected JavaStoredProcedureParameter2_1 buildParameter(StoredProcedureParameter2_1Annotation parameterAnnotation) {
+	protected JavaStoredProcedureParameter2_1 buildParameter(StoredProcedureParameterAnnotation2_1 parameterAnnotation) {
 		return this.getJpaFactory2_1().buildJavaStoredProcedureParameter(this, parameterAnnotation);
 	}
 
@@ -129,11 +129,11 @@ public class GenericJavaNamedStoredProcedureQuery2_1
 		this.parameterContainer.synchronizeWithResourceModel();
 	}
 
-	protected ListIterable<StoredProcedureParameter2_1Annotation> getParameterAnnotations() {
+	protected ListIterable<StoredProcedureParameterAnnotation2_1> getParameterAnnotations() {
 		return this.queryAnnotation.getParameters();
 	}
 
-	protected ContextListContainer<JavaStoredProcedureParameter2_1, StoredProcedureParameter2_1Annotation> buildParameterContainer() {
+	protected ContextListContainer<JavaStoredProcedureParameter2_1, StoredProcedureParameterAnnotation2_1> buildParameterContainer() {
 		ParameterContainer container = new ParameterContainer();
 		container.initialize();
 		return container;
@@ -143,22 +143,22 @@ public class GenericJavaNamedStoredProcedureQuery2_1
 	 * stored procedure parameter container
 	 */
 	protected class ParameterContainer
-		extends ContextListContainer<JavaStoredProcedureParameter2_1, StoredProcedureParameter2_1Annotation>
+		extends ContextListContainer<JavaStoredProcedureParameter2_1, StoredProcedureParameterAnnotation2_1>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return PARAMETERS_LIST;
 		}
 		@Override
-		protected JavaStoredProcedureParameter2_1 buildContextElement(StoredProcedureParameter2_1Annotation resourceElement) {
+		protected JavaStoredProcedureParameter2_1 buildContextElement(StoredProcedureParameterAnnotation2_1 resourceElement) {
 			return GenericJavaNamedStoredProcedureQuery2_1.this.buildParameter(resourceElement);
 		}
 		@Override
-		protected ListIterable<StoredProcedureParameter2_1Annotation> getResourceElements() {
+		protected ListIterable<StoredProcedureParameterAnnotation2_1> getResourceElements() {
 			return GenericJavaNamedStoredProcedureQuery2_1.this.getParameterAnnotations();
 		}
 		@Override
-		protected StoredProcedureParameter2_1Annotation getResourceElement(JavaStoredProcedureParameter2_1 contextElement) {
+		protected StoredProcedureParameterAnnotation2_1 getResourceElement(JavaStoredProcedureParameter2_1 contextElement) {
 			return contextElement.getStoredProcedureParameter2_1Annotation();
 		}
 	}

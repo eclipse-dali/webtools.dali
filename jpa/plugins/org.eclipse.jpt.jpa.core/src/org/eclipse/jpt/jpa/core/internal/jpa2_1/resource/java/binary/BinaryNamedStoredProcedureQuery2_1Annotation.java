@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryQueryAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.JPA2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.NamedStoredProcedureQueryAnnotation2_1;
-import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameter2_1Annotation;
+import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameterAnnotation2_1;
 
 /**
  * javax.persistence.NamedStoredProcedureQuery
@@ -28,7 +28,7 @@ public final class BinaryNamedStoredProcedureQuery2_1Annotation
 	implements NamedStoredProcedureQueryAnnotation2_1
 {
 	private String procedureName;
-	private final Vector<StoredProcedureParameter2_1Annotation> parameters;
+	private final Vector<StoredProcedureParameterAnnotation2_1> parameters;
 	private final Vector<String> resultClasses;
 	private final Vector<String> resultSetMappings;
 
@@ -96,7 +96,7 @@ public final class BinaryNamedStoredProcedureQuery2_1Annotation
 	}
 
 	// ********* parameters ***********
-	public ListIterable<StoredProcedureParameter2_1Annotation> getParameters() {
+	public ListIterable<StoredProcedureParameterAnnotation2_1> getParameters() {
 		return IterableTools.cloneLive(this.parameters);
 	}
 
@@ -104,11 +104,11 @@ public final class BinaryNamedStoredProcedureQuery2_1Annotation
 		return this.parameters.size();
 	}
 
-	public StoredProcedureParameter2_1Annotation parameterAt(int index) {
+	public StoredProcedureParameterAnnotation2_1 parameterAt(int index) {
 		return this.parameters.get(index);
 	}
 
-	public StoredProcedureParameter2_1Annotation addParameter(int index) {
+	public StoredProcedureParameterAnnotation2_1 addParameter(int index) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -120,9 +120,9 @@ public final class BinaryNamedStoredProcedureQuery2_1Annotation
 		throw new UnsupportedOperationException();
 	}
 	
-	private Vector<StoredProcedureParameter2_1Annotation> buildParameters() {
+	private Vector<StoredProcedureParameterAnnotation2_1> buildParameters() {
 		Object[] jdtParameters = this.getJdtMemberValues(this.getParametersElementName());
-		Vector<StoredProcedureParameter2_1Annotation> result = new Vector<StoredProcedureParameter2_1Annotation>(jdtParameters.length);
+		Vector<StoredProcedureParameterAnnotation2_1> result = new Vector<StoredProcedureParameterAnnotation2_1>(jdtParameters.length);
 		for (Object jdtParameter : jdtParameters) {
 			result.add(new BinaryStoredProcedureParameter2_1Annotation(this, (IAnnotation) jdtParameter));
 		}

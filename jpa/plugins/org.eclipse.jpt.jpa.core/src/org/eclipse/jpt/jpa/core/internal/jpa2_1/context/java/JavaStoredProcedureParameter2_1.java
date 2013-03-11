@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java;
 
 import org.eclipse.jpt.jpa.core.jpa2_1.context.StoredProcedureParameter2_1;
-import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameter2_1Annotation;
+import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameterAnnotation2_1;
 
 /**
  * Java stored procedure parameter
@@ -27,5 +27,5 @@ import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameter2_1
 public interface JavaStoredProcedureParameter2_1
 	extends StoredProcedureParameter2_1
 {
-	StoredProcedureParameter2_1Annotation getStoredProcedureParameter2_1Annotation();
+	StoredProcedureParameterAnnotation2_1 getStoredProcedureParameter2_1Annotation();
 }

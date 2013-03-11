@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.JPA2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.NamedStoredProcedureQueryAnnotation2_1;
-import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameter2_1Annotation;
+import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameterAnnotation2_1;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.QueryHintAnnotation;
 
@@ -216,7 +216,7 @@ public class NamedStoredProcedureQueries2_1AnnotationTests
 		
 		assertEquals(2, namedQuery.getParametersSize());
 		
-		ListIterator<StoredProcedureParameter2_1Annotation> iterator = namedQuery.getParameters().iterator();
+		ListIterator<StoredProcedureParameterAnnotation2_1> iterator = namedQuery.getParameters().iterator();
 		assertEquals("BAR", iterator.next().getName());
 		assertNull(iterator.next().getName());
 	}

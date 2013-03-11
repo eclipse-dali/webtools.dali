@@ -60,7 +60,7 @@ public interface NamedStoredProcedureQueryAnnotation2_1
 	 * Corresponds to the 'parameters' element of the NamedStoredProcedureQuery annotation.
 	 * Return an empty iterator if the element does not exist in Java.
 	 */
-	ListIterable<StoredProcedureParameter2_1Annotation> getParameters();
+	ListIterable<StoredProcedureParameterAnnotation2_1> getParameters();
 		String PARAMETERS_LIST = "parameters"; //$NON-NLS-1$
 
 	/**
@@ -71,12 +71,12 @@ public interface NamedStoredProcedureQueryAnnotation2_1
 	/**
 	 * Corresponds to the 'parameters' element of the NamedStoredProcedureQuery annotation.
 	 */
-	StoredProcedureParameter2_1Annotation parameterAt(int index);
+	StoredProcedureParameterAnnotation2_1 parameterAt(int index);
 
 	/**
 	 * Corresponds to the 'parameters' element of the NamedStoredProcedureQuery annotation.
 	 */
-	StoredProcedureParameter2_1Annotation addParameter(int index);
+	StoredProcedureParameterAnnotation2_1 addParameter(int index);
 
 	/**
 	 * Corresponds to the 'parameters' element of the NamedStoredProcedureQuery annotation.
