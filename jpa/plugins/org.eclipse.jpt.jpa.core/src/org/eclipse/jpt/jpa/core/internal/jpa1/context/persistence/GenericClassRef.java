@@ -110,7 +110,6 @@ public class GenericClassRef
 		// virtual class refs are matched by name in the persistence unit
 		// so no need to sync it here (also, 'xmlJavaClassRef' is null...)
 		if (this.isNotVirtual()) {
-			// the name probably never changes...
 			this.setClassName_(this.xmlJavaClassRef.getJavaClass());
 		}
 		if (this.javaManagedType != null) {
@@ -179,20 +178,20 @@ public class GenericClassRef
 
 	protected void updateJavaManagedType() {
 		this.resourceType = this.resolveJavaResourceType();
-		if (this.resourceType == null || this.resourceType.getAstNodeType() != AstNodeType.TYPE) {
+		if ((this.resourceType == null) || (this.resourceType.getAstNodeType() != AstNodeType.TYPE)) {
 			if (this.javaManagedType != null) {
 				this.setJavaManagedType(null);
 			}
 		} else {
 			JavaResourceType jrt = (JavaResourceType) this.resourceType;
-			JavaManagedTypeDefinition managedTypeDefinition = this.getJavaManagedTypeDefinition(jrt);
+			JavaManagedTypeDefinition def = this.getJavaManagedTypeDefinition(jrt);
 			if (this.javaManagedType == null) {
-				this.setJavaManagedType(this.buildJavaManagedType(jrt, managedTypeDefinition));
+				this.setJavaManagedType(this.buildJavaManagedType(jrt, def));
 			} else {
-				if (this.javaManagedType.getType() == managedTypeDefinition.getType()) {
+				if ((this.javaManagedType.getJavaResourceType() == jrt) && (this.javaManagedType.getType() == def.getType())) {
 					this.javaManagedType.update();
 				} else {
-					this.setJavaManagedType(this.buildJavaManagedType(jrt, managedTypeDefinition));
+					this.setJavaManagedType(this.buildJavaManagedType(jrt, def));
 				}
 			}
 		}
