@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaRelationshipMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.RelationshipMapping2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.RelationshipMappingAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.RelationshipMappingAnnotation;
 
 public class GenericJavaCascade
@@ -214,7 +214,7 @@ public class GenericJavaCascade
 	}
 
 	protected boolean buildDetach_() {
-		RelationshipMapping2_0Annotation annotation = this.getMappingAnnotation2_0();
+		RelationshipMappingAnnotation2_0 annotation = this.getMappingAnnotation2_0();
 		return (annotation != null) && annotation.isCascadeDetach();
 	}
 
@@ -234,12 +234,12 @@ public class GenericJavaCascade
 		return this.getMapping().getAnnotationForUpdate();
 	}
 
-	protected RelationshipMapping2_0Annotation getMappingAnnotation2_0() {
-		return (RelationshipMapping2_0Annotation) this.getMappingAnnotation();
+	protected RelationshipMappingAnnotation2_0 getMappingAnnotation2_0() {
+		return (RelationshipMappingAnnotation2_0) this.getMappingAnnotation();
 	}
 
-	protected RelationshipMapping2_0Annotation getMappingAnnotationForUpdate2_0() {
-		return (RelationshipMapping2_0Annotation) this.getMappingAnnotationForUpdate();
+	protected RelationshipMappingAnnotation2_0 getMappingAnnotationForUpdate2_0() {
+		return (RelationshipMappingAnnotation2_0) this.getMappingAnnotationForUpdate();
 	}
 
 	public TextRange getValidationTextRange() {

@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.resource.java.RelationshipMappingAnnotation;
  * @version 2.3
  * @since 2.3
  */
-public interface RelationshipMapping2_0Annotation
+public interface RelationshipMappingAnnotation2_0
 	extends RelationshipMappingAnnotation
 {
 	/**

@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotatio
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.RelationshipMapping2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.RelationshipMappingAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.CascadeType;
 import org.eclipse.jpt.jpa.core.resource.java.FetchType;
 
@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.resource.java.FetchType;
  */
 abstract class BinaryRelationshipMappingAnnotation
 	extends BinaryAnnotation
-	implements RelationshipMapping2_0Annotation
+	implements RelationshipMappingAnnotation2_0
 {
 	String targetEntity;
 	FetchType fetch;

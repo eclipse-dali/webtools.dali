@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.RelationshipMapping2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.RelationshipMappingAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.CascadeType;
 import org.eclipse.jpt.jpa.core.resource.java.FetchType;
 
@@ -39,7 +39,7 @@ import org.eclipse.jpt.jpa.core.resource.java.FetchType;
  */
 abstract class SourceRelationshipMappingAnnotation
 	extends SourceAnnotation
-	implements RelationshipMapping2_0Annotation
+	implements RelationshipMappingAnnotation2_0
 {
 	final DeclarationAnnotationElementAdapter<String> targetEntityDeclarationAdapter;
 	final AnnotationElementAdapter<String> targetEntityAdapter;
