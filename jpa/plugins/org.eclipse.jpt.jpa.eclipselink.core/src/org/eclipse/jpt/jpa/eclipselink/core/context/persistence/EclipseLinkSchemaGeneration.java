@@ -26,13 +26,13 @@ public interface EclipseLinkSchemaGeneration
 		static final String ECLIPSELINK_DDL_GENERATION_TYPE = "eclipselink.ddl-generation";
 		static final DdlGenerationType DEFAULT_SCHEMA_GENERATION_DDL_GENERATION_TYPE = DdlGenerationType.none;
 
-	OutputMode getDefaultOutputMode();
-	OutputMode getOutputMode();
-	void setOutputMode(OutputMode outputMode); // put
+	EclipseLinkOutputMode getDefaultOutputMode();
+	EclipseLinkOutputMode getOutputMode();
+	void setOutputMode(EclipseLinkOutputMode outputMode); // put
 		static final String OUTPUT_MODE_PROPERTY = "outputMode";
 		// EclipseLink key string
 		static final String ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE = "eclipselink.ddl-generation.output-mode";
-		static final OutputMode DEFAULT_SCHEMA_GENERATION_OUTPUT_MODE = null;		// No Default
+		static final EclipseLinkOutputMode DEFAULT_SCHEMA_GENERATION_OUTPUT_MODE = null;		// No Default
 
 	String getDefaultCreateFileName();
 	String getCreateFileName();

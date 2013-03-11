@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.DdlGenerationType;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.OutputMode;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOutputMode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkSchemaGeneration;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
@@ -137,8 +137,8 @@ public class PersistenceXmlSchemaGenerationComposite
 
 	//************ output mode ************
 
-	private EnumFormComboViewer<EclipseLinkSchemaGeneration, OutputMode> addBuildOutputModeCombo(Composite container) {
-		return new EnumFormComboViewer<EclipseLinkSchemaGeneration, OutputMode>(this, container) {
+	private EnumFormComboViewer<EclipseLinkSchemaGeneration, EclipseLinkOutputMode> addBuildOutputModeCombo(Composite container) {
+		return new EnumFormComboViewer<EclipseLinkSchemaGeneration, EclipseLinkOutputMode>(this, container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
@@ -146,17 +146,17 @@ public class PersistenceXmlSchemaGenerationComposite
 			}
 
 			@Override
-			protected OutputMode[] getChoices() {
-				return OutputMode.values();
+			protected EclipseLinkOutputMode[] getChoices() {
+				return EclipseLinkOutputMode.values();
 			}
 
 			@Override
-			protected OutputMode getDefaultValue() {
+			protected EclipseLinkOutputMode getDefaultValue() {
 				return this.getSubject().getDefaultOutputMode();
 			}
 
 			@Override
-			protected String displayString(OutputMode value) {
+			protected String displayString(EclipseLinkOutputMode value) {
 				switch (value) {
 					case both :
 						return JptJpaEclipseLinkUiMessages.OUTPUT_MODE_COMPOSITE_BOTH;
@@ -170,12 +170,12 @@ public class PersistenceXmlSchemaGenerationComposite
 			}
 
 			@Override
-			protected OutputMode getValue() {
+			protected EclipseLinkOutputMode getValue() {
 				return this.getSubject().getOutputMode();
 			}
 
 			@Override
-			protected void setValue(OutputMode value) {
+			protected void setValue(EclipseLinkOutputMode value) {
 				this.getSubject().setOutputMode(value);
 			}
 			@Override

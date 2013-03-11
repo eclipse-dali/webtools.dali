@@ -14,7 +14,7 @@ import java.util.Properties;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConnection;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.OutputMode;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOutputMode;
 
 /**
  *  EclipseLinkDLLGenerator launches the EclipseLink DDL generator in a separate VM.
@@ -31,7 +31,7 @@ public class EclipseLinkDDLGenerator extends AbstractEclipseLinkDDLGenerator
 	
 	// ********** constructors **********
 
-	public EclipseLinkDDLGenerator(String puName, JpaProject jpaProject, OutputMode outputMode) {
+	public EclipseLinkDDLGenerator(String puName, JpaProject jpaProject, EclipseLinkOutputMode outputMode) {
 		super(puName, jpaProject, outputMode);
 	}
 

@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.DdlGenerationType;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.OutputMode;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOutputMode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkSchemaGeneration;
 
 /**
@@ -30,8 +30,8 @@ public class SchemaGenerationAdapterTests extends EclipseLinkPersistenceUnitTest
 	public static final DdlGenerationType DDL_GENERATION_TYPE_TEST_VALUE_2 = DdlGenerationType.none;
 
 	public static final String OUTPUT_MODE_KEY = EclipseLinkSchemaGeneration.ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE;
-	public static final OutputMode OUTPUT_MODE_TEST_VALUE = OutputMode.sql_script;
-	public static final OutputMode OUTPUT_MODE_TEST_VALUE_2 = OutputMode.database;
+	public static final EclipseLinkOutputMode OUTPUT_MODE_TEST_VALUE = EclipseLinkOutputMode.sql_script;
+	public static final EclipseLinkOutputMode OUTPUT_MODE_TEST_VALUE_2 = EclipseLinkOutputMode.database;
 
 	private static final String CREATE_FILE_NAME_KEY = EclipseLinkSchemaGeneration.ECLIPSELINK_CREATE_FILE_NAME;
 	private static final String CREATE_FILE_NAME_TEST_VALUE = "create-file-name.test";
@@ -213,7 +213,7 @@ public class SchemaGenerationAdapterTests extends EclipseLinkPersistenceUnitTest
 	@Override
 	protected void setProperty(String propertyName, Object newValue) throws NoSuchFieldException {
 		if (propertyName.equals(EclipseLinkSchemaGeneration.OUTPUT_MODE_PROPERTY))
-			this.schemaGeneration.setOutputMode((OutputMode) newValue);
+			this.schemaGeneration.setOutputMode((EclipseLinkOutputMode) newValue);
 		// else if( propertyName.equals( Caching.CACHE_SIZE_PROPERTY))
 		// TODO
 		else if (propertyName.equals(EclipseLinkSchemaGeneration.DDL_GENERATION_TYPE_PROPERTY))

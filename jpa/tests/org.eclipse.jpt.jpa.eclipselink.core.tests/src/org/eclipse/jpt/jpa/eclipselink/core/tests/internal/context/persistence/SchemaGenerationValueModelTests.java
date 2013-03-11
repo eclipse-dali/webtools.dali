@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.DdlGenerationType;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.OutputMode;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOutputMode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkSchemaGeneration;
 
 /**
@@ -35,11 +35,11 @@ public class SchemaGenerationValueModelTests extends EclipseLinkPersistenceUnitT
 	private ModifiablePropertyValueModel<DdlGenerationType> ddlGenerationTypeHolder;
 	private PropertyChangeEvent ddlGenerationTypeEvent;
 
-	private ModifiablePropertyValueModel<OutputMode> outputModeHolder;
+	private ModifiablePropertyValueModel<EclipseLinkOutputMode> outputModeHolder;
 	private PropertyChangeEvent outputModeEvent;
 
 	public static final DdlGenerationType DDL_GENERATION_TYPE_TEST_VALUE = DdlGenerationType.drop_and_create_tables;
-	public static final OutputMode OUTPUT_MODE_TEST_VALUE = OutputMode.sql_script;
+	public static final EclipseLinkOutputMode OUTPUT_MODE_TEST_VALUE = EclipseLinkOutputMode.sql_script;
 
 	public SchemaGenerationValueModelTests(String name) {
 		super(name);
@@ -106,15 +106,15 @@ public class SchemaGenerationValueModelTests extends EclipseLinkPersistenceUnitT
 	}
 
 	/** ****** OutputMode ******* */
-	private ModifiablePropertyValueModel<OutputMode> buildOutputModeAA(PropertyValueModel<EclipseLinkSchemaGeneration> subjectHolder) {
-		return new PropertyAspectAdapter<EclipseLinkSchemaGeneration, OutputMode>(subjectHolder, EclipseLinkSchemaGeneration.OUTPUT_MODE_PROPERTY) {
+	private ModifiablePropertyValueModel<EclipseLinkOutputMode> buildOutputModeAA(PropertyValueModel<EclipseLinkSchemaGeneration> subjectHolder) {
+		return new PropertyAspectAdapter<EclipseLinkSchemaGeneration, EclipseLinkOutputMode>(subjectHolder, EclipseLinkSchemaGeneration.OUTPUT_MODE_PROPERTY) {
 			@Override
-			protected OutputMode buildValue_() {
+			protected EclipseLinkOutputMode buildValue_() {
 				return this.subject.getOutputMode();
 			}
 
 			@Override
-			protected void setValue_(OutputMode enumValue) {
+			protected void setValue_(EclipseLinkOutputMode enumValue) {
 				this.subject.setOutputMode(enumValue);
 			}
 		};
@@ -157,7 +157,7 @@ public class SchemaGenerationValueModelTests extends EclipseLinkPersistenceUnitT
 		/** ****** OutputMode ******* */
 		this.outputModeEvent = null;
 		this.verifyHasListeners(this.outputModeHolder, PropertyValueModel.VALUE);
-		OutputMode newOutputMode = OutputMode.database;
+		EclipseLinkOutputMode newOutputMode = EclipseLinkOutputMode.database;
 		// Modify the property holder
 		this.outputModeHolder.setValue(newOutputMode);
 		this.verifyOutputModeAAValue(newOutputMode);
@@ -210,7 +210,7 @@ public class SchemaGenerationValueModelTests extends EclipseLinkPersistenceUnitT
 	 * 2. aspect adapter value<br>
 	 * 3. persistenceUnit property value<br>
 	 */
-	protected void verifyOutputModeAAValue(OutputMode testValue) {
+	protected void verifyOutputModeAAValue(EclipseLinkOutputMode testValue) {
 		this.verifyAAValue(
 			testValue,
 			this.schemaGen.getOutputMode(),

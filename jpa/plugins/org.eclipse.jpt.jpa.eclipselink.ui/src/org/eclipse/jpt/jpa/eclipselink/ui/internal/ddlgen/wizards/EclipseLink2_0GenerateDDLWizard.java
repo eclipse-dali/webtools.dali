@@ -15,7 +15,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jpt.common.core.gen.JptGenerator;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.OutputMode;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOutputMode;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.ddlgen.EclipseLink2_0DDLGenerator;
 import org.eclipse.wst.validation.ValidationFramework;
 
@@ -29,7 +29,7 @@ public class EclipseLink2_0GenerateDDLWizard extends GenerateDDLWizard {
 	}
 
 	@Override
-	protected WorkspaceJob buildGenerateDDLJob(String puName, JpaProject project, OutputMode outputMode) {
+	protected WorkspaceJob buildGenerateDDLJob(String puName, JpaProject project, EclipseLinkOutputMode outputMode) {
 		return new Generate2_0DDLJob(puName, project, outputMode);
 	}
 
@@ -39,7 +39,7 @@ public class EclipseLink2_0GenerateDDLWizard extends GenerateDDLWizard {
 
 		// ********** constructor **********
 		
-		protected Generate2_0DDLJob(String puName, JpaProject jpaProject, OutputMode outputMode) {
+		protected Generate2_0DDLJob(String puName, JpaProject jpaProject, EclipseLinkOutputMode outputMode) {
 			super(puName, jpaProject, outputMode);
 		}
 
@@ -54,7 +54,7 @@ public class EclipseLink2_0GenerateDDLWizard extends GenerateDDLWizard {
 		protected void postGenerate() {
 			super.postGenerate();
 
-			if(this.outputMode != OutputMode.database) {
+			if(this.outputMode != EclipseLinkOutputMode.database) {
 				this.validateProject();
 			}
 		}

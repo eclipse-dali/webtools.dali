@@ -14,14 +14,14 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 /**
  *  OutputMode
  */
-public enum OutputMode implements PersistenceXmlEnumValue {
+public enum EclipseLinkOutputMode implements PersistenceXmlEnumValue {
 	both("both"),  //$NON-NLS-1$
 	database("database"), //$NON-NLS-1$
 	sql_script("sql-script");  //$NON-NLS-1$
 
 	private final String propertyValue;
 
-	OutputMode(String propertyValue) {
+	EclipseLinkOutputMode(String propertyValue) {
 		this.propertyValue = propertyValue;
 	}
 

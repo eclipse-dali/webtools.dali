@@ -13,7 +13,7 @@ import java.util.Map;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.DdlGenerationType;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.OutputMode;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOutputMode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkSchemaGeneration;
 
 public class EclipseLinkSchemaGenerationImpl
@@ -22,7 +22,7 @@ public class EclipseLinkSchemaGenerationImpl
 {
 	// ********** EclipseLink properties **********
 	
-	private OutputMode outputMode;
+	private EclipseLinkOutputMode outputMode;
 	private DdlGenerationType ddlGenerationType;
 	private String createFileName;
 	private String dropFileName;
@@ -40,7 +40,7 @@ public class EclipseLinkSchemaGenerationImpl
 	@Override
 	protected void initializeProperties() {
 		this.outputMode = 
-			this.getEnumValue(ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE, OutputMode.values());
+			this.getEnumValue(ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE, EclipseLinkOutputMode.values());
 		this.ddlGenerationType = 
 			this.getEnumValue(ECLIPSELINK_DDL_GENERATION_TYPE, DdlGenerationType.values());
 		this.createFileName = 
@@ -136,25 +136,25 @@ public class EclipseLinkSchemaGenerationImpl
 	}
 
 	// ********** OutputMode **********
-	public OutputMode getOutputMode() {
+	public EclipseLinkOutputMode getOutputMode() {
 		return this.outputMode;
 	}
 
-	public void setOutputMode(OutputMode newOutputMode) {
-		OutputMode old = this.outputMode;
+	public void setOutputMode(EclipseLinkOutputMode newOutputMode) {
+		EclipseLinkOutputMode old = this.outputMode;
 		this.outputMode = newOutputMode;
 		this.putProperty(OUTPUT_MODE_PROPERTY, newOutputMode);
 		this.firePropertyChanged(OUTPUT_MODE_PROPERTY, old, newOutputMode);
 	}
 
 	private void outputModeChanged(String stringValue) {
-		OutputMode newValue = getEnumValueOf(stringValue, OutputMode.values());
-		OutputMode old = this.outputMode;
+		EclipseLinkOutputMode newValue = getEnumValueOf(stringValue, EclipseLinkOutputMode.values());
+		EclipseLinkOutputMode old = this.outputMode;
 		this.outputMode = newValue;
 		this.firePropertyChanged(OUTPUT_MODE_PROPERTY, old, newValue);
 	}
 
-	public OutputMode getDefaultOutputMode() {
+	public EclipseLinkOutputMode getDefaultOutputMode() {
 		return DEFAULT_SCHEMA_GENERATION_OUTPUT_MODE;
 	}
 

@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.ui.internal.dialogs.OptionalMessageDialog;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.OutputMode;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOutputMode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkSchemaGeneration;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.ddlgen.EclipseLinkDDLGenerator;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
@@ -74,9 +74,9 @@ public class GenerateDDLWizard extends Wizard {
 	
 	@Override
 	public boolean performFinish() {
-		OutputMode outputMode = this.getOutputMode();
+		EclipseLinkOutputMode outputMode = this.getOutputMode();
 
-		if((outputMode != OutputMode.sql_script) && ( ! this.displayGeneratingDDLWarning())) {
+		if((outputMode != EclipseLinkOutputMode.sql_script) && ( ! this.displayGeneratingDDLWarning())) {
 			return false;
 		}
 		
@@ -89,20 +89,20 @@ public class GenerateDDLWizard extends Wizard {
     	return this.dbSettingsPageCanFinish() && this.generationOutputModePageCanFinish();
     }
 
-	protected void scheduleGenerateDDLJob(OutputMode outputMode) {
+	protected void scheduleGenerateDDLJob(EclipseLinkOutputMode outputMode) {
 			
 		WorkspaceJob generateDDLJob = this.buildGenerateDDLJob(this.puName, this.jpaProject, outputMode);
 
 		generateDDLJob.schedule();
 	}
 	
-	protected WorkspaceJob buildGenerateDDLJob(String puName, JpaProject project, OutputMode outputMode) {
+	protected WorkspaceJob buildGenerateDDLJob(String puName, JpaProject project, EclipseLinkOutputMode outputMode) {
 		return new GenerateDDLJob(puName, project, outputMode);
 	}
 
 	// ********** intra-wizard methods **********
     
-    public OutputMode getOutputMode() {
+    public EclipseLinkOutputMode getOutputMode() {
 		return this.generationOutputModePage.getOutputMode();
 	}
 	
@@ -169,11 +169,11 @@ public class GenerateDDLWizard extends Wizard {
 	protected static class GenerateDDLJob extends AbstractJptGenerateJob {
 		protected final String puName;
 		protected final JpaProject jpaProject;
-		protected final OutputMode outputMode;
+		protected final EclipseLinkOutputMode outputMode;
 
 		// ********** constructor **********
 
-		protected GenerateDDLJob(String puName, JpaProject jpaProject, OutputMode outputMode) {
+		protected GenerateDDLJob(String puName, JpaProject jpaProject, EclipseLinkOutputMode outputMode) {
 			
 			super(JptJpaEclipseLinkUiMessages.ECLIPSELINK_GENERATE_TABLES_JOB, jpaProject.getJavaProject());
 
@@ -191,7 +191,7 @@ public class GenerateDDLWizard extends Wizard {
 
 		@Override
 		protected void postGenerate() {
-			if(this.outputMode != OutputMode.database) {
+			if(this.outputMode != EclipseLinkOutputMode.database) {
 				this.refreshProject();
 				this.openGeneratedSqlFile();
 			}

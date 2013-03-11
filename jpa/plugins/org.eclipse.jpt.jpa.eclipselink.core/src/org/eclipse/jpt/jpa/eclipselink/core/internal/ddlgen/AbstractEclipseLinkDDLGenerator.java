@@ -41,7 +41,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.DdlGenerationType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.LoggingLevel;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.OutputMode;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOutputMode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkSchemaGeneration;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_1JpaPlatformFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
@@ -64,11 +64,11 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 
 	private final String puName;
 	private final JpaProject jpaProject;
-	private final OutputMode outputMode;
+	private final EclipseLinkOutputMode outputMode;
 
 	// ********** constructors **********
 
-	protected AbstractEclipseLinkDDLGenerator(String puName, JpaProject jpaProject, OutputMode outputMode) {
+	protected AbstractEclipseLinkDDLGenerator(String puName, JpaProject jpaProject, EclipseLinkOutputMode outputMode) {
 		super(JavaCore.create(jpaProject.getProject()));
 		this.puName = puName;
 		this.jpaProject = jpaProject;

@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.DdlGenerationType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.OutputMode;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOutputMode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkSchemaGeneration;
 
 /**
@@ -34,8 +34,8 @@ public class SchemaGenerationBasicAdapterTests extends EclipseLinkPersistenceUni
 	public static final String outputModeKey = EclipseLinkSchemaGeneration.ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE;
 	public static final String ddlGenTypeKey = EclipseLinkSchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE;
 
-	public static final OutputMode OUTPUT_MODE_TEST_VALUE = OutputMode.sql_script;
-	public static final OutputMode OUTPUT_MODE_TEST_VALUE_2 = OutputMode.database;
+	public static final EclipseLinkOutputMode OUTPUT_MODE_TEST_VALUE = EclipseLinkOutputMode.sql_script;
+	public static final EclipseLinkOutputMode OUTPUT_MODE_TEST_VALUE_2 = EclipseLinkOutputMode.database;
 	
 	public static final DdlGenerationType DDL_GENERATION_TYPE_TEST_VALUE = DdlGenerationType.drop_and_create_tables;
 	public static final DdlGenerationType DDL_GENERATION_TYPE_TEST_VALUE_2 = DdlGenerationType.none;

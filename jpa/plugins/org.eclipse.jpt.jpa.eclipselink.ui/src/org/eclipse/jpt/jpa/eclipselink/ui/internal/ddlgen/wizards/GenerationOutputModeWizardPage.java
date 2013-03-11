@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.ddlgen.wizards;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.OutputMode;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOutputMode;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -51,7 +51,7 @@ public class GenerationOutputModeWizardPage extends WizardPage {
 
 	// ********** intra-wizard methods **********
 
-	public OutputMode getOutputMode() {
+	public EclipseLinkOutputMode getOutputMode() {
 		return this.outputModeGroup.getOutputMode();
 	}
 
@@ -59,7 +59,7 @@ public class GenerationOutputModeWizardPage extends WizardPage {
 	// ********** Generation OutputMode Group **********
 
 	class GenerationOutputModeGroup {
-		private OutputMode outputMode;
+		private EclipseLinkOutputMode outputMode;
 		
 		private final Button databaseButton;
 		private final Button sqlScriptButton;
@@ -109,13 +109,13 @@ public class GenerationOutputModeWizardPage extends WizardPage {
 		private void outputModeButtonChanged() {
 
 			if(this.databaseButton.getSelection()) {
-				this.outputMode = OutputMode.database;
+				this.outputMode = EclipseLinkOutputMode.database;
 			}
 			else if(this.sqlScriptButton.getSelection()) {
-				this.outputMode = OutputMode.sql_script;
+				this.outputMode = EclipseLinkOutputMode.sql_script;
 			}
 			else if(this.bothButton.getSelection()) {
-				this.outputMode = OutputMode.both;
+				this.outputMode = EclipseLinkOutputMode.both;
 			}
 		}
 
@@ -129,7 +129,7 @@ public class GenerationOutputModeWizardPage extends WizardPage {
 			return radioButton;
 		}
 
-		private OutputMode getOutputMode() {
+		private EclipseLinkOutputMode getOutputMode() {
 			return this.outputMode;
 		}
 	}
