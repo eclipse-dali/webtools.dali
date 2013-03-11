@@ -113,7 +113,7 @@ public class EclipseLinkPersistenceUnit
 
 	private/*final*/ EclipseLinkGeneralProperties generalProperties;
 	private EclipseLinkCustomization customization;
-	private Caching caching;
+	private EclipseLinkCaching caching;
 	private EclipseLinkLogging logging;
 	private EclipseLinkSchemaGeneration eclipseLinkSchemaGeneration;
 	private EclipseLinkConnection eclipseLinkConnection1_0;
@@ -184,7 +184,7 @@ public class EclipseLinkPersistenceUnit
 		return this.customization;
 	}
 
-	public Caching getCaching() {
+	public EclipseLinkCaching getCaching() {
 		return this.caching;
 	}
 
@@ -231,7 +231,7 @@ public class EclipseLinkPersistenceUnit
 		return new EclipseLinkCustomization(this);
 	}
 
-	protected Caching buildEclipseLinkCaching() {
+	protected EclipseLinkCaching buildEclipseLinkCaching() {
 		return new EclipseLinkCaching(this);
 	}
 
@@ -879,40 +879,40 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	private Property getCacheTypeDefaultProperty() {
-		return this.getProperty(Caching.ECLIPSELINK_CACHE_TYPE_DEFAULT);
+		return this.getProperty(EclipseLinkCaching.ECLIPSELINK_CACHE_TYPE_DEFAULT);
 	}
 
 	private Property getCacheSizeDefaultProperty() {
-		return this.getProperty(Caching.ECLIPSELINK_CACHE_SIZE_DEFAULT);
+		return this.getProperty(EclipseLinkCaching.ECLIPSELINK_CACHE_SIZE_DEFAULT);
 	}
 
 	private Property getCacheSharedDefaultProperty() {
-		return this.getProperty(Caching.ECLIPSELINK_CACHE_SHARED_DEFAULT);
+		return this.getProperty(EclipseLinkCaching.ECLIPSELINK_CACHE_SHARED_DEFAULT);
 	}
 
 	private Property getFlushClearCacheProperty() {
-		return this.getProperty(Caching.ECLIPSELINK_FLUSH_CLEAR_CACHE);
+		return this.getProperty(EclipseLinkCaching.ECLIPSELINK_FLUSH_CLEAR_CACHE);
 	}
 
 	/**
 	 * Returns all Shared Cache Properties, including Entity and default.
 	 */
 	private Iterable<Property> getSharedCacheProperties() {
-		return this.getPropertiesWithNamePrefix(Caching.ECLIPSELINK_SHARED_CACHE);
+		return this.getPropertiesWithNamePrefix(EclipseLinkCaching.ECLIPSELINK_SHARED_CACHE);
 	}
 
 	/**
 	 * Returns Entity Cache Size Properties, excluding default.
 	 */
 	private Iterable<Property> getEntityCacheSizeProperties() {
-		return this.getEntityPropertiesWithPrefix(Caching.ECLIPSELINK_CACHE_SIZE);
+		return this.getEntityPropertiesWithPrefix(EclipseLinkCaching.ECLIPSELINK_CACHE_SIZE);
 	}
 
 	/**
 	 * Returns Entity Cache Type Properties, excluding default.
 	 */
 	private Iterable<Property> getEntityCacheTypeProperties() {
-		return this.getEntityPropertiesWithPrefix(Caching.ECLIPSELINK_CACHE_TYPE);
+		return this.getEntityPropertiesWithPrefix(EclipseLinkCaching.ECLIPSELINK_CACHE_TYPE);
 	}
 
 	/**

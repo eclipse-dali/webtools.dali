@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CacheType;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.osgi.util.NLS;
@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  CacheDefaultsComposite
  */
-public class CacheDefaultsComposite<T extends Caching> extends Pane<T>
+public class CacheDefaultsComposite<T extends EclipseLinkCaching> extends Pane<T>
 {
 	public CacheDefaultsComposite(Pane<T> subjectHolder,
 	                                       Composite container) {
@@ -71,12 +71,12 @@ public class CacheDefaultsComposite<T extends Caching> extends Pane<T>
 		sharedCacheCheckBox.getCheckBox().setLayoutData(gridData);
 	}
 
-	protected EnumFormComboViewer<Caching, CacheType> buildDefaultCacheTypeCombo(Composite container) {
-		return new EnumFormComboViewer<Caching, CacheType>(this, container) {
+	protected EnumFormComboViewer<EclipseLinkCaching, CacheType> buildDefaultCacheTypeCombo(Composite container) {
+		return new EnumFormComboViewer<EclipseLinkCaching, CacheType>(this, container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(Caching.CACHE_TYPE_DEFAULT_PROPERTY);
+				propertyNames.add(EclipseLinkCaching.CACHE_TYPE_DEFAULT_PROPERTY);
 			}
 
 			@Override
@@ -133,7 +133,7 @@ public class CacheDefaultsComposite<T extends Caching> extends Pane<T>
 	}	
 
 	protected void addDefaultCacheSizeCombo(Composite container) {
-		new IntegerCombo<Caching>(this, container) {	
+		new IntegerCombo<EclipseLinkCaching>(this, container) {	
 			@Override
 			protected String getHelpId() {
 				return EclipseLinkHelpContextIds.PERSISTENCE_CACHING_DEFAULT_SIZE;
@@ -141,7 +141,7 @@ public class CacheDefaultsComposite<T extends Caching> extends Pane<T>
 
 			@Override
 			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<Caching, Integer>(getSubjectHolder()) {
+				return new PropertyAspectAdapter<EclipseLinkCaching, Integer>(getSubjectHolder()) {
 					@Override
 					protected Integer buildValue_() {
 						return this.subject.getDefaultCacheSizeDefault();
@@ -151,7 +151,7 @@ public class CacheDefaultsComposite<T extends Caching> extends Pane<T>
 
 			@Override
 			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<Caching, Integer>(getSubjectHolder(), Caching.CACHE_SIZE_DEFAULT_PROPERTY) {
+				return new PropertyAspectAdapter<EclipseLinkCaching, Integer>(getSubjectHolder(), EclipseLinkCaching.CACHE_SIZE_DEFAULT_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						return this.subject.getCacheSizeDefault();
@@ -167,7 +167,7 @@ public class CacheDefaultsComposite<T extends Caching> extends Pane<T>
 	}
 	
 	private ModifiablePropertyValueModel<Boolean> buildDefaultSharedCacheHolder() {
-		return new PropertyAspectAdapter<Caching, Boolean>(getSubjectHolder(), Caching.SHARED_CACHE_DEFAULT_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(getSubjectHolder(), EclipseLinkCaching.SHARED_CACHE_DEFAULT_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSharedCacheDefault();
@@ -193,9 +193,9 @@ public class CacheDefaultsComposite<T extends Caching> extends Pane<T>
 		};
 	}
 	private PropertyValueModel<Boolean> buildDefaultDefaultSharedCacheHolder() {
-		return new PropertyAspectAdapter<Caching, Boolean>(
+		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(
 			getSubjectHolder(),
-			Caching.SHARED_CACHE_DEFAULT_PROPERTY)
+			EclipseLinkCaching.SHARED_CACHE_DEFAULT_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {

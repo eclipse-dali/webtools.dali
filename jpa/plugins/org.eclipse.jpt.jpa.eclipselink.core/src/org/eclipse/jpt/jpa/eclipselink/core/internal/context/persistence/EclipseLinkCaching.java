@@ -18,15 +18,15 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CacheType;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCachingEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkFlushClearCache;
 
 /**
  * EclipseLinkCaching encapsulates EclipseLink Caching properties.
  */
-public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
-	implements Caching
+public class EclipseLinkCaching
+	extends EclipseLinkPersistenceUnitProperties
+	implements org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCaching
 {
 	// ********** EclipseLink properties **********
 	private CacheType cacheTypeDefault;

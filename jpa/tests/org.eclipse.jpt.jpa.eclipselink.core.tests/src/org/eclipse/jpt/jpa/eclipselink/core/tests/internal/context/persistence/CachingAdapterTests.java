@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CacheType;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCachingEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkFlushClearCache;
 
@@ -31,37 +31,37 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkFlush
 @SuppressWarnings("nls")
 public class CachingAdapterTests extends EclipseLinkPersistenceUnitTestCase
 {
-	private Caching caching;
+	private EclipseLinkCaching caching;
 	private ListEvent entitiesEvent;
 
 	public static final String ENTITY_TEST = "Employee";
 	public static final String ENTITY_TEST_2 = "Address";
 
-	public static final String CACHE_TYPE_DEFAULT_KEY = Caching.ECLIPSELINK_CACHE_TYPE_DEFAULT;
+	public static final String CACHE_TYPE_DEFAULT_KEY = EclipseLinkCaching.ECLIPSELINK_CACHE_TYPE_DEFAULT;
 	public static final CacheType CACHE_TYPE_DEFAULT_TEST_VALUE = CacheType.soft_weak;
 	public static final CacheType CACHE_TYPE_DEFAULT_TEST_VALUE_2 = CacheType.full;
 
-	public static final String CACHE_SIZE_DEFAULT_KEY = Caching.ECLIPSELINK_CACHE_SIZE_DEFAULT;
+	public static final String CACHE_SIZE_DEFAULT_KEY = EclipseLinkCaching.ECLIPSELINK_CACHE_SIZE_DEFAULT;
 	public static final Integer CACHE_SIZE_DEFAULT_TEST_VALUE = 12345;
 	public static final Integer CACHE_SIZE_DEFAULT_TEST_VALUE_2 = 67890;
 
-	public static final String SHARED_CACHE_DEFAULT_KEY = Caching.ECLIPSELINK_CACHE_SHARED_DEFAULT;
+	public static final String SHARED_CACHE_DEFAULT_KEY = EclipseLinkCaching.ECLIPSELINK_CACHE_SHARED_DEFAULT;
 	public static final Boolean SHARED_CACHE_DEFAULT_TEST_VALUE = false;
 	public static final Boolean SHARED_CACHE_DEFAULT_TEST_VALUE_2 = true;
 
-	public static final String CACHE_TYPE_KEY = Caching.ECLIPSELINK_CACHE_TYPE + ENTITY_TEST;
+	public static final String CACHE_TYPE_KEY = EclipseLinkCaching.ECLIPSELINK_CACHE_TYPE + ENTITY_TEST;
 	public static final CacheType CACHE_TYPE_TEST_VALUE = CacheType.soft_weak;
 	public static final CacheType CACHE_TYPE_TEST_VALUE_2 = CacheType.full;
 
-	public static final String SHARED_CACHE_KEY = Caching.ECLIPSELINK_SHARED_CACHE + ENTITY_TEST;
+	public static final String SHARED_CACHE_KEY = EclipseLinkCaching.ECLIPSELINK_SHARED_CACHE + ENTITY_TEST;
 	public static final Boolean SHARED_CACHE_TEST_VALUE = false;
 	public static final Boolean SHARED_CACHE_TEST_VALUE_2 = true;
 
-	public static final String CACHE_SIZE_KEY = Caching.ECLIPSELINK_CACHE_SIZE + ENTITY_TEST;
+	public static final String CACHE_SIZE_KEY = EclipseLinkCaching.ECLIPSELINK_CACHE_SIZE + ENTITY_TEST;
 	public static final Integer CACHE_SIZE_TEST_VALUE = 12345;
 	public static final Integer CACHE_SIZE_TEST_VALUE_2 = 67890;
 	
-	public static final String FLUSH_CLEAR_CACHE_KEY = Caching.ECLIPSELINK_FLUSH_CLEAR_CACHE;
+	public static final String FLUSH_CLEAR_CACHE_KEY = EclipseLinkCaching.ECLIPSELINK_FLUSH_CLEAR_CACHE;
 	public static final EclipseLinkFlushClearCache FLUSH_CLEAR_CACHE_TEST_VALUE = EclipseLinkFlushClearCache.drop;
 	public static final EclipseLinkFlushClearCache FLUSH_CLEAR_CACHE_TEST_VALUE_2 = EclipseLinkFlushClearCache.merge;
 
@@ -75,16 +75,16 @@ public class CachingAdapterTests extends EclipseLinkPersistenceUnitTestCase
 		this.caching = this.getPersistenceUnit().getCaching();
 		PropertyChangeListener propertyChangeListener = this.buildPropertyChangeListener();
 		
-		this.caching.addPropertyChangeListener(Caching.CACHE_TYPE_DEFAULT_PROPERTY, propertyChangeListener);
-		this.caching.addPropertyChangeListener(Caching.CACHE_SIZE_DEFAULT_PROPERTY, propertyChangeListener);
-		this.caching.addPropertyChangeListener(Caching.SHARED_CACHE_DEFAULT_PROPERTY, propertyChangeListener);
+		this.caching.addPropertyChangeListener(EclipseLinkCaching.CACHE_TYPE_DEFAULT_PROPERTY, propertyChangeListener);
+		this.caching.addPropertyChangeListener(EclipseLinkCaching.CACHE_SIZE_DEFAULT_PROPERTY, propertyChangeListener);
+		this.caching.addPropertyChangeListener(EclipseLinkCaching.SHARED_CACHE_DEFAULT_PROPERTY, propertyChangeListener);
 		this.caching.addPropertyChangeListener(EclipseLinkCachingEntity.CACHE_TYPE_PROPERTY, propertyChangeListener);
 		this.caching.addPropertyChangeListener(EclipseLinkCachingEntity.CACHE_SIZE_PROPERTY, propertyChangeListener);
 		this.caching.addPropertyChangeListener(EclipseLinkCachingEntity.SHARED_CACHE_PROPERTY, propertyChangeListener);
-		this.caching.addPropertyChangeListener(Caching.FLUSH_CLEAR_CACHE_PROPERTY, propertyChangeListener);
+		this.caching.addPropertyChangeListener(EclipseLinkCaching.FLUSH_CLEAR_CACHE_PROPERTY, propertyChangeListener);
 		
 		ListChangeListener entitiesChangeListener = this.buildEntitiesChangeListener();
-		this.caching.addListChangeListener(Caching.ENTITIES_LIST, entitiesChangeListener);
+		this.caching.addListChangeListener(EclipseLinkCaching.ENTITIES_LIST, entitiesChangeListener);
 		this.clearEvent();
 	}
 
@@ -166,7 +166,7 @@ public class CachingAdapterTests extends EclipseLinkPersistenceUnitTestCase
 		// verify event received
 		assertNotNull("No Event Fired.", this.entitiesEvent);
 		// verify event for the expected property
-		assertEquals("Wrong Event.", this.entitiesEvent.getListName(), Caching.ENTITIES_LIST);
+		assertEquals("Wrong Event.", this.entitiesEvent.getListName(), EclipseLinkCaching.ENTITIES_LIST);
 
 		// remove
 		this.clearEvent();
@@ -176,7 +176,7 @@ public class CachingAdapterTests extends EclipseLinkPersistenceUnitTestCase
 		// verify event received
 		assertNotNull("No Event Fired.", this.entitiesEvent);
 		// verify event for the expected property
-		assertEquals("Wrong Event.", this.entitiesEvent.getListName(), Caching.ENTITIES_LIST);
+		assertEquals("Wrong Event.", this.entitiesEvent.getListName(), EclipseLinkCaching.ENTITIES_LIST);
 	}
 
 	// ********** CacheTypeDefault **********
@@ -401,13 +401,13 @@ public class CachingAdapterTests extends EclipseLinkPersistenceUnitTestCase
 	// ********** get/set property **********
 	@Override
 	protected void setProperty(String propertyName, Object newValue) throws Exception {
-		if (propertyName.equals(Caching.CACHE_TYPE_DEFAULT_PROPERTY))
+		if (propertyName.equals(EclipseLinkCaching.CACHE_TYPE_DEFAULT_PROPERTY))
 			this.caching.setCacheTypeDefault((CacheType) newValue);
-		else if (propertyName.equals(Caching.CACHE_SIZE_DEFAULT_PROPERTY))
+		else if (propertyName.equals(EclipseLinkCaching.CACHE_SIZE_DEFAULT_PROPERTY))
 			this.caching.setCacheSizeDefault((Integer) newValue);
-		else if (propertyName.equals(Caching.SHARED_CACHE_DEFAULT_PROPERTY))
+		else if (propertyName.equals(EclipseLinkCaching.SHARED_CACHE_DEFAULT_PROPERTY))
 			this.caching.setSharedCacheDefault((Boolean) newValue);
-		else if (propertyName.equals(Caching.FLUSH_CLEAR_CACHE_PROPERTY))
+		else if (propertyName.equals(EclipseLinkCaching.FLUSH_CLEAR_CACHE_PROPERTY))
 			this.caching.setFlushClearCache((EclipseLinkFlushClearCache) newValue);
 		else
 			this.throwMissingDefinition("setProperty", propertyName);
@@ -427,11 +427,11 @@ public class CachingAdapterTests extends EclipseLinkPersistenceUnitTestCase
 	@Override
 	protected Object getProperty(String propertyName) throws NoSuchFieldException {
 		Object modelValue = null;
-		if (propertyName.equals(Caching.CACHE_TYPE_DEFAULT_PROPERTY))
+		if (propertyName.equals(EclipseLinkCaching.CACHE_TYPE_DEFAULT_PROPERTY))
 			modelValue = this.caching.getCacheTypeDefault();
-		else if (propertyName.equals(Caching.CACHE_SIZE_DEFAULT_PROPERTY))
+		else if (propertyName.equals(EclipseLinkCaching.CACHE_SIZE_DEFAULT_PROPERTY))
 			modelValue = this.caching.getCacheSizeDefault();
-		else if (propertyName.equals(Caching.SHARED_CACHE_DEFAULT_PROPERTY))
+		else if (propertyName.equals(EclipseLinkCaching.SHARED_CACHE_DEFAULT_PROPERTY))
 			modelValue = this.caching.getSharedCacheDefault();
 		else if (propertyName.equals(EclipseLinkCachingEntity.CACHE_SIZE_PROPERTY))
 			modelValue = this.caching.getCacheSizeOf(ENTITY_TEST);
@@ -439,7 +439,7 @@ public class CachingAdapterTests extends EclipseLinkPersistenceUnitTestCase
 			modelValue = this.caching.getCacheTypeOf(ENTITY_TEST);
 		else if (propertyName.equals(EclipseLinkCachingEntity.SHARED_CACHE_PROPERTY))
 			modelValue = this.caching.getSharedCacheOf(ENTITY_TEST);
-		else if (propertyName.equals(Caching.FLUSH_CLEAR_CACHE_PROPERTY))
+		else if (propertyName.equals(EclipseLinkCaching.FLUSH_CLEAR_CACHE_PROPERTY))
 			modelValue = this.caching.getFlushClearCache();
 		else
 			this.throwMissingDefinition("getProperty", propertyName);

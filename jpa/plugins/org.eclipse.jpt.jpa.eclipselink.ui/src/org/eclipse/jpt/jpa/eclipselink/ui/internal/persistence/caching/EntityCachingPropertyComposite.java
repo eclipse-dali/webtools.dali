@@ -28,7 +28,7 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CacheType;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCachingEntity;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
@@ -49,7 +49,7 @@ public class EntityCachingPropertyComposite extends Pane<EclipseLinkCachingEntit
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public EntityCachingPropertyComposite(Pane<? extends Caching> parentComposite,
+	public EntityCachingPropertyComposite(Pane<? extends EclipseLinkCaching> parentComposite,
 	                                      PropertyValueModel<EclipseLinkCachingEntity> subjectHolder,
 	                                      PropertyValueModel<Boolean> enabledModel,
 	                                      Composite parent) {
@@ -95,17 +95,17 @@ public class EntityCachingPropertyComposite extends Pane<EclipseLinkCachingEntit
 			propertyNames.add(EclipseLinkCachingEntity.CACHE_TYPE_PROPERTY);
 		}
 
-		private PropertyValueModel<Caching> buildCachingHolder() {
-			return new TransformationPropertyValueModel<EclipseLinkCachingEntity, Caching>(getSubjectHolder()) {
+		private PropertyValueModel<EclipseLinkCaching> buildCachingHolder() {
+			return new TransformationPropertyValueModel<EclipseLinkCachingEntity, EclipseLinkCaching>(getSubjectHolder()) {
 				@Override
-				protected Caching transform_(EclipseLinkCachingEntity value) {
+				protected EclipseLinkCaching transform_(EclipseLinkCachingEntity value) {
 					return value.getParent();
 				}
 			};
 		}
 
 		private PropertyValueModel<CacheType> buildDefaultCacheTypeHolder() {
-			return new PropertyAspectAdapter<Caching, CacheType>(buildCachingHolder(), Caching.CACHE_TYPE_DEFAULT_PROPERTY) {
+			return new PropertyAspectAdapter<EclipseLinkCaching, CacheType>(buildCachingHolder(), EclipseLinkCaching.CACHE_TYPE_DEFAULT_PROPERTY) {
 				@Override
 				protected CacheType buildValue_() {
 					CacheType cacheType = subject.getCacheTypeDefault();
@@ -208,7 +208,7 @@ public class EntityCachingPropertyComposite extends Pane<EclipseLinkCachingEntit
 		return this.getSubjectHolder().getValue().getName();
 	}
 
-	private Caching getSubjectParent() {
+	private EclipseLinkCaching getSubjectParent() {
 		return this.getSubjectHolder().getValue().getParent();
 	}
 
@@ -220,7 +220,7 @@ public class EntityCachingPropertyComposite extends Pane<EclipseLinkCachingEntit
 			}
 			@Override
 			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<Caching, Integer>(buildCachingHolder(), Caching.CACHE_SIZE_DEFAULT_PROPERTY) {
+				return new PropertyAspectAdapter<EclipseLinkCaching, Integer>(buildCachingHolder(), EclipseLinkCaching.CACHE_SIZE_DEFAULT_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						Integer value = this.subject.getCacheSizeDefault();
@@ -249,10 +249,10 @@ public class EntityCachingPropertyComposite extends Pane<EclipseLinkCachingEntit
 		};
 	}
 
-	private PropertyValueModel<Caching> buildCachingHolder() {
-		return new TransformationPropertyValueModel<EclipseLinkCachingEntity, Caching>(this.getSubjectHolder()) {
+	private PropertyValueModel<EclipseLinkCaching> buildCachingHolder() {
+		return new TransformationPropertyValueModel<EclipseLinkCachingEntity, EclipseLinkCaching>(this.getSubjectHolder()) {
 			@Override
-			protected Caching transform_(EclipseLinkCachingEntity value) {
+			protected EclipseLinkCaching transform_(EclipseLinkCachingEntity value) {
 				return value.getParent();
 			}
 		};
@@ -323,7 +323,7 @@ public class EntityCachingPropertyComposite extends Pane<EclipseLinkCachingEntit
 	}
 
 	private PropertyValueModel<Boolean> buildDefaultSharedCacheHolder() {
-		return new PropertyAspectAdapter<Caching, Boolean>(buildCachingHolder(), Caching.SHARED_CACHE_DEFAULT_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(buildCachingHolder(), EclipseLinkCaching.SHARED_CACHE_DEFAULT_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				Boolean value = this.subject.getSharedCacheDefault();

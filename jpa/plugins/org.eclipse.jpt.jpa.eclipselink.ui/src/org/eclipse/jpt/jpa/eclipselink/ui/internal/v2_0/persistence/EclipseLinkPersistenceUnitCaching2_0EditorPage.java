@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CacheType;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.caching.EclipseLinkPersistenceUnitCachingEditorPage;
@@ -37,10 +37,10 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
 public class EclipseLinkPersistenceUnitCaching2_0EditorPage
-	extends EclipseLinkPersistenceUnitCachingEditorPage<Caching>
+	extends EclipseLinkPersistenceUnitCachingEditorPage<EclipseLinkCaching>
 {
 	public EclipseLinkPersistenceUnitCaching2_0EditorPage(
-			PropertyValueModel<Caching> subjectModel,
+			PropertyValueModel<EclipseLinkCaching> subjectModel,
 			Composite parentComposite,
             WidgetFactory widgetFactory,
             ResourceManager resourceManager) {
@@ -97,7 +97,7 @@ public class EclipseLinkPersistenceUnitCaching2_0EditorPage
 	}
 
 	private PropertyValueModel<PersistenceUnit2_0> buildPersistenceUnit2_0Model() {
-		return new PropertyAspectAdapter<Caching, PersistenceUnit2_0>(this.getSubjectHolder()) {
+		return new PropertyAspectAdapter<EclipseLinkCaching, PersistenceUnit2_0>(this.getSubjectHolder()) {
 			@Override
 			protected PersistenceUnit2_0 buildValue_() {
 				return (PersistenceUnit2_0) this.subject.getPersistenceUnit();
@@ -187,12 +187,12 @@ public class EclipseLinkPersistenceUnitCaching2_0EditorPage
 		}
 	}
 
-	protected EnumFormComboViewer<Caching, CacheType> buildDefaultCacheTypeCombo(Composite container) {
-		return new EnumFormComboViewer<Caching, CacheType>(this, container) {
+	protected EnumFormComboViewer<EclipseLinkCaching, CacheType> buildDefaultCacheTypeCombo(Composite container) {
+		return new EnumFormComboViewer<EclipseLinkCaching, CacheType>(this, container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(Caching.CACHE_TYPE_DEFAULT_PROPERTY);
+				propertyNames.add(EclipseLinkCaching.CACHE_TYPE_DEFAULT_PROPERTY);
 			}
 
 			@Override
@@ -248,8 +248,8 @@ public class EclipseLinkPersistenceUnitCaching2_0EditorPage
 		};
 	}
 
-	protected IntegerCombo<Caching> addDefaultCacheSizeCombo(Composite container) {
-		return new IntegerCombo<Caching>(this, container) {	
+	protected IntegerCombo<EclipseLinkCaching> addDefaultCacheSizeCombo(Composite container) {
+		return new IntegerCombo<EclipseLinkCaching>(this, container) {	
 			@Override
 			protected String getHelpId() {
 				return EclipseLinkHelpContextIds.PERSISTENCE_CACHING_DEFAULT_SIZE;
@@ -257,7 +257,7 @@ public class EclipseLinkPersistenceUnitCaching2_0EditorPage
 
 			@Override
 			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<Caching, Integer>(getSubjectHolder()) {
+				return new PropertyAspectAdapter<EclipseLinkCaching, Integer>(getSubjectHolder()) {
 					@Override
 					protected Integer buildValue_() {
 						return this.subject.getDefaultCacheSizeDefault();
@@ -267,7 +267,7 @@ public class EclipseLinkPersistenceUnitCaching2_0EditorPage
 
 			@Override
 			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<Caching, Integer>(getSubjectHolder(), Caching.CACHE_SIZE_DEFAULT_PROPERTY) {
+				return new PropertyAspectAdapter<EclipseLinkCaching, Integer>(getSubjectHolder(), EclipseLinkCaching.CACHE_SIZE_DEFAULT_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						return this.subject.getCacheSizeDefault();

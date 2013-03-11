@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 /**
  *  Caching
  */
-public interface Caching extends PersistenceUnitProperties
+public interface EclipseLinkCaching extends PersistenceUnitProperties
 {
 	CacheType getDefaultCacheTypeDefault();
 	CacheType getCacheTypeDefault();

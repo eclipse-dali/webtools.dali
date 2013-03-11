@@ -21,11 +21,11 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 public class EclipseLinkCachingEntity extends AbstractModel implements Cloneable, Serializable
 {
 	private String name;
-	private Caching parent;
+	private EclipseLinkCaching parent;
 
-	public static final String CACHE_TYPE_PROPERTY = Caching.CACHE_TYPE_PROPERTY;
-	public static final String CACHE_SIZE_PROPERTY = Caching.CACHE_SIZE_PROPERTY;
-	public static final String SHARED_CACHE_PROPERTY = Caching.SHARED_CACHE_PROPERTY;
+	public static final String CACHE_TYPE_PROPERTY = EclipseLinkCaching.CACHE_TYPE_PROPERTY;
+	public static final String CACHE_SIZE_PROPERTY = EclipseLinkCaching.CACHE_SIZE_PROPERTY;
+	public static final String SHARED_CACHE_PROPERTY = EclipseLinkCaching.SHARED_CACHE_PROPERTY;
 
 	// ********** EclipseLink properties **********
 	private CacheType cacheType;
@@ -35,7 +35,7 @@ public class EclipseLinkCachingEntity extends AbstractModel implements Cloneable
 	private static final long serialVersionUID = 1L;
 
 	// ********** constructors **********
-	public EclipseLinkCachingEntity(Caching parent, String name) {
+	public EclipseLinkCachingEntity(EclipseLinkCaching parent, String name) {
 		this(parent);
 		if(StringTools.isBlank(name)) {
 			throw new IllegalArgumentException();
@@ -43,7 +43,7 @@ public class EclipseLinkCachingEntity extends AbstractModel implements Cloneable
 		this.name = name;
 	}
 	
-	private EclipseLinkCachingEntity(Caching parent) {
+	private EclipseLinkCachingEntity(EclipseLinkCaching parent) {
 		this.parent = parent;
 	}
 
@@ -88,7 +88,7 @@ public class EclipseLinkCachingEntity extends AbstractModel implements Cloneable
 		return ! StringTools.isBlank(this.name);
 	}
 
-	public Caching getParent() {
+	public EclipseLinkCaching getParent() {
 		return this.parent;
 	}
 	

@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkExistenceType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTimeOfDay;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEntity;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ExistenceCheckingAnnotation;
@@ -126,7 +126,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkContextModelTestCase
 		
 		assertTrue(caching.isDefaultShared());
 		
-		getPersistenceUnit().setProperty(Caching.ECLIPSELINK_CACHE_SHARED_DEFAULT, "false");
+		getPersistenceUnit().setProperty(EclipseLinkCaching.ECLIPSELINK_CACHE_SHARED_DEFAULT, "false");
 		
 		assertFalse(caching.isDefaultShared());
 	}
@@ -191,7 +191,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkContextModelTestCase
 		
 		assertEquals(EclipseLinkCacheType.SOFT_WEAK, caching.getDefaultType());
 		
-		getPersistenceUnit().setProperty(Caching.ECLIPSELINK_CACHE_TYPE_DEFAULT, EclipseLinkCacheType.FULL.toString());
+		getPersistenceUnit().setProperty(EclipseLinkCaching.ECLIPSELINK_CACHE_TYPE_DEFAULT, EclipseLinkCacheType.FULL.toString());
 		
 		assertEquals(EclipseLinkCacheType.FULL, caching.getDefaultType());
 	}
@@ -664,7 +664,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkContextModelTestCase
 		
 		assertEquals(100, caching.getDefaultSize());
 		
-		getPersistenceUnit().setProperty(Caching.ECLIPSELINK_CACHE_SIZE_DEFAULT, "333");
+		getPersistenceUnit().setProperty(EclipseLinkCaching.ECLIPSELINK_CACHE_SIZE_DEFAULT, "333");
 		
 		assertEquals(333, caching.getDefaultSize());
 	}

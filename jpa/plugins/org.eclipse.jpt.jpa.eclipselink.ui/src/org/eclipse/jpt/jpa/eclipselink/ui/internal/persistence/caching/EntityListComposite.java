@@ -31,7 +31,7 @@ import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCachingEntity;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
@@ -44,7 +44,7 @@ import org.eclipse.ui.progress.IProgressService;
 /**
  *  EntityListComposite
  */
-public class EntityListComposite<T extends Caching> extends Pane<T>
+public class EntityListComposite<T extends EclipseLinkCaching> extends Pane<T>
 {
 	private ModifiableCollectionValueModel<EclipseLinkCachingEntity> selectedEntitiesModel;
 	private PropertyValueModel<EclipseLinkCachingEntity> selectedEntityModel;
@@ -89,7 +89,7 @@ public class EntityListComposite<T extends Caching> extends Pane<T>
 	protected void initializeLayout(Composite container) {
 
 		// Entities add/remove list pane
-		new AddRemoveListPane<Caching, EclipseLinkCachingEntity>(
+		new AddRemoveListPane<EclipseLinkCaching, EclipseLinkCachingEntity>(
 			this,
 			container,
 			this.buildEntitiesAdapter(),
@@ -197,8 +197,8 @@ public class EntityListComposite<T extends Caching> extends Pane<T>
 	}
 
 	private ListValueModel<EclipseLinkCachingEntity> buildEntitiesListHolder() {
-		return new ListAspectAdapter<Caching, EclipseLinkCachingEntity>(
-					this.getSubjectHolder(), Caching.ENTITIES_LIST) {
+		return new ListAspectAdapter<EclipseLinkCaching, EclipseLinkCachingEntity>(
+					this.getSubjectHolder(), EclipseLinkCaching.ENTITIES_LIST) {
 			@Override
 			protected ListIterable<EclipseLinkCachingEntity> getListIterable() {
 				return this.subject.getEntities();

@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkFlushClearCache;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-public class EclipseLinkPersistenceUnitCachingEditorPage<T extends Caching>
+public class EclipseLinkPersistenceUnitCachingEditorPage<T extends EclipseLinkCaching>
 	extends Pane<T>
 {
 	public EclipseLinkPersistenceUnitCachingEditorPage(
@@ -72,12 +72,12 @@ public class EclipseLinkPersistenceUnitCachingEditorPage<T extends Caching>
 		this.addFlushClearCacheCombo(client);
 	}
 
-	protected EnumFormComboViewer<Caching, EclipseLinkFlushClearCache> addFlushClearCacheCombo(Composite container) {
-		return new EnumFormComboViewer<Caching, EclipseLinkFlushClearCache>(this, container) {
+	protected EnumFormComboViewer<EclipseLinkCaching, EclipseLinkFlushClearCache> addFlushClearCacheCombo(Composite container) {
+		return new EnumFormComboViewer<EclipseLinkCaching, EclipseLinkFlushClearCache>(this, container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(Caching.FLUSH_CLEAR_CACHE_PROPERTY);
+				propertyNames.add(EclipseLinkCaching.FLUSH_CLEAR_CACHE_PROPERTY);
 			}
 
 			@Override

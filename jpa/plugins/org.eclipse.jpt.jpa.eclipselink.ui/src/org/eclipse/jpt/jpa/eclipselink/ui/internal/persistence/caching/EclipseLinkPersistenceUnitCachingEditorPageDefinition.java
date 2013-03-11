@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
@@ -61,20 +61,20 @@ public class EclipseLinkPersistenceUnitCachingEditorPageDefinition
 
 	@Override
 	protected void buildEditorPageContent(Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager, PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
-		new EclipseLinkPersistenceUnitCachingEditorPage<Caching>(buildCachingModel(persistenceUnitModel), parentComposite, widgetFactory, resourceManager);
+		new EclipseLinkPersistenceUnitCachingEditorPage<EclipseLinkCaching>(buildCachingModel(persistenceUnitModel), parentComposite, widgetFactory, resourceManager);
 	}
 
-	public static PropertyValueModel<Caching> buildCachingModel(PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
-		return new TransformationPropertyValueModel<PersistenceUnit, Caching>(persistenceUnitModel, CACHING_TRANSFORMER);
+	public static PropertyValueModel<EclipseLinkCaching> buildCachingModel(PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
+		return new TransformationPropertyValueModel<PersistenceUnit, EclipseLinkCaching>(persistenceUnitModel, CACHING_TRANSFORMER);
 	}
 
-	public static final Transformer<PersistenceUnit, Caching> CACHING_TRANSFORMER = new CachingTransformer();
+	public static final Transformer<PersistenceUnit, EclipseLinkCaching> CACHING_TRANSFORMER = new CachingTransformer();
 
 	public static class CachingTransformer
-		extends AbstractTransformer<PersistenceUnit, Caching>
+		extends AbstractTransformer<PersistenceUnit, EclipseLinkCaching>
 	{
 		@Override
-		protected Caching transform_(PersistenceUnit persistenceUnit) {
+		protected EclipseLinkCaching transform_(PersistenceUnit persistenceUnit) {
 			return ((EclipseLinkPersistenceUnit) persistenceUnit).getCaching();
 		}
 	}
