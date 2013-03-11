@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefiniti
 import org.eclipse.jpt.jpa.core.internal.context.java.DefaultJavaAttributeMappingDefinitionWrapper;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaEmbeddedMappingDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConverterAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ObjectTypeConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.StructConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TypeConverterAnnotation;
 
@@ -53,7 +53,7 @@ public class EclipseLinkJavaEmbeddedMappingDefinition
 
 	private static final String[] ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES_ARRAY = new String[] {
 		ConverterAnnotation.ANNOTATION_NAME,
-		EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME,
+		ObjectTypeConverterAnnotation.ANNOTATION_NAME,
 		StructConverterAnnotation.ANNOTATION_NAME,
 		TypeConverterAnnotation.ANNOTATION_NAME,
 	};

@@ -17,14 +17,14 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConversionValueAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ObjectTypeConverterAnnotation;
 
 /**
  * <code>org.eclipse.persistence.annotations.ObjectTypeConverter</code>
  */
 public final class BinaryEclipseLinkObjectTypeConverterAnnotation
 	extends BinaryEclipseLinkBaseTypeConverterAnnotation
-	implements EclipseLinkObjectTypeConverterAnnotation
+	implements ObjectTypeConverterAnnotation
 {
 	private String defaultObjectValue;
 	private final Vector<ConversionValueAnnotation> conversionValues;

@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConvert
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkBasicMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConversionValueAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ObjectTypeConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 
 @SuppressWarnings("nls")
@@ -137,19 +137,19 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 			
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		EclipseLinkObjectTypeConverterAnnotation converterAnnotation = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);		
+		ObjectTypeConverterAnnotation converterAnnotation = (ObjectTypeConverterAnnotation) resourceField.getAnnotation(0, ObjectTypeConverterAnnotation.ANNOTATION_NAME);		
 		assertEquals("bar", converterAnnotation.getName());
 
 		
 		converter.setName(null);
 		assertEquals(null, converter.getName());
-		converterAnnotation = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);		
+		converterAnnotation = (ObjectTypeConverterAnnotation) resourceField.getAnnotation(0, ObjectTypeConverterAnnotation.ANNOTATION_NAME);		
 		assertEquals(null, converterAnnotation.getName());
 
 
 		converter.setName("bar");
 		assertEquals("bar", converter.getName());
-		converterAnnotation = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);		
+		converterAnnotation = (ObjectTypeConverterAnnotation) resourceField.getAnnotation(0, ObjectTypeConverterAnnotation.ANNOTATION_NAME);		
 		assertEquals("bar", converterAnnotation.getName());
 	}
 	
@@ -165,16 +165,16 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		EclipseLinkObjectTypeConverterAnnotation converterAnnotation = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);
+		ObjectTypeConverterAnnotation converterAnnotation = (ObjectTypeConverterAnnotation) resourceField.getAnnotation(0, ObjectTypeConverterAnnotation.ANNOTATION_NAME);
 		converterAnnotation.setName("bar");
 		getJpaProject().synchronizeContextModel();
 		assertEquals("bar", converter.getName());
 		
-		resourceField.removeAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);
+		resourceField.removeAnnotation(0, ObjectTypeConverterAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		assertFalse(basicMapping.getConverterContainer().getObjectTypeConverters().iterator().hasNext());
 		
-		converterAnnotation = (EclipseLinkObjectTypeConverterAnnotation) resourceField.addAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);		
+		converterAnnotation = (ObjectTypeConverterAnnotation) resourceField.addAnnotation(0, ObjectTypeConverterAnnotation.ANNOTATION_NAME);		
 		getJpaProject().synchronizeContextModel();
 		converter = basicMapping.getConverterContainer().getObjectTypeConverters().iterator().next();
 		assertNotNull(converter);
@@ -209,19 +209,19 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 			
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		EclipseLinkObjectTypeConverterAnnotation converterAnnotation = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);		
+		ObjectTypeConverterAnnotation converterAnnotation = (ObjectTypeConverterAnnotation) resourceField.getAnnotation(0, ObjectTypeConverterAnnotation.ANNOTATION_NAME);		
 		assertEquals("Bar", converterAnnotation.getDataType());
 
 		
 		converter.setDataType(null);
 		assertEquals(null, converter.getDataType());
-		converterAnnotation = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);		
+		converterAnnotation = (ObjectTypeConverterAnnotation) resourceField.getAnnotation(0, ObjectTypeConverterAnnotation.ANNOTATION_NAME);		
 		assertEquals(null, converterAnnotation.getDataType());
 
 
 		converter.setDataType("Bar");
 		assertEquals("Bar", converter.getDataType());
-		converterAnnotation = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);		
+		converterAnnotation = (ObjectTypeConverterAnnotation) resourceField.getAnnotation(0, ObjectTypeConverterAnnotation.ANNOTATION_NAME);		
 		assertEquals("Bar", converterAnnotation.getDataType());
 	}
 	
@@ -237,16 +237,16 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		EclipseLinkObjectTypeConverterAnnotation converterAnnotation = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);
+		ObjectTypeConverterAnnotation converterAnnotation = (ObjectTypeConverterAnnotation) resourceField.getAnnotation(0, ObjectTypeConverterAnnotation.ANNOTATION_NAME);
 		converterAnnotation.setDataType("Bar");
 		getJpaProject().synchronizeContextModel();
 		assertEquals("Bar", converter.getDataType());
 		
-		resourceField.removeAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);
+		resourceField.removeAnnotation(0, ObjectTypeConverterAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		assertFalse(basicMapping.getConverterContainer().getObjectTypeConverters().iterator().hasNext());
 		
-		converterAnnotation = (EclipseLinkObjectTypeConverterAnnotation) resourceField.addAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);		
+		converterAnnotation = (ObjectTypeConverterAnnotation) resourceField.addAnnotation(0, ObjectTypeConverterAnnotation.ANNOTATION_NAME);		
 		getJpaProject().synchronizeContextModel();
 		converter = basicMapping.getConverterContainer().getObjectTypeConverters().iterator().next();
 		assertNotNull(converter);
@@ -281,19 +281,19 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 			
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		EclipseLinkObjectTypeConverterAnnotation converterAnnotation = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);		
+		ObjectTypeConverterAnnotation converterAnnotation = (ObjectTypeConverterAnnotation) resourceField.getAnnotation(0, ObjectTypeConverterAnnotation.ANNOTATION_NAME);		
 		assertEquals("Bar", converterAnnotation.getObjectType());
 
 		
 		converter.setObjectType(null);
 		assertEquals(null, converter.getObjectType());
-		converterAnnotation = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);		
+		converterAnnotation = (ObjectTypeConverterAnnotation) resourceField.getAnnotation(0, ObjectTypeConverterAnnotation.ANNOTATION_NAME);		
 		assertEquals(null, converterAnnotation.getObjectType());
 
 
 		converter.setObjectType("Bar");
 		assertEquals("Bar", converter.getObjectType());
-		converterAnnotation = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);		
+		converterAnnotation = (ObjectTypeConverterAnnotation) resourceField.getAnnotation(0, ObjectTypeConverterAnnotation.ANNOTATION_NAME);		
 		assertEquals("Bar", converterAnnotation.getObjectType());
 	}
 	
@@ -309,16 +309,16 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		EclipseLinkObjectTypeConverterAnnotation converterAnnotation = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);
+		ObjectTypeConverterAnnotation converterAnnotation = (ObjectTypeConverterAnnotation) resourceField.getAnnotation(0, ObjectTypeConverterAnnotation.ANNOTATION_NAME);
 		converterAnnotation.setObjectType("Bar");
 		getJpaProject().synchronizeContextModel();
 		assertEquals("Bar", converter.getObjectType());
 		
-		resourceField.removeAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);
+		resourceField.removeAnnotation(0, ObjectTypeConverterAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		assertFalse(basicMapping.getConverterContainer().getObjectTypeConverters().iterator().hasNext());
 		
-		converterAnnotation = (EclipseLinkObjectTypeConverterAnnotation) resourceField.addAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);		
+		converterAnnotation = (ObjectTypeConverterAnnotation) resourceField.addAnnotation(0, ObjectTypeConverterAnnotation.ANNOTATION_NAME);		
 		getJpaProject().synchronizeContextModel();
 		converter = basicMapping.getConverterContainer().getObjectTypeConverters().iterator().next();
 		assertNotNull(converter);
@@ -339,7 +339,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		EclipseLinkObjectTypeConverterAnnotation converterAnnotation = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);
+		ObjectTypeConverterAnnotation converterAnnotation = (ObjectTypeConverterAnnotation) resourceField.getAnnotation(0, ObjectTypeConverterAnnotation.ANNOTATION_NAME);
 		
 		EclipseLinkConversionValue conversionValue = converter.addConversionValue(0);
 		conversionValue.setDataValue("F");
@@ -398,7 +398,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		EclipseLinkObjectTypeConverterAnnotation converterAnnotation = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);
+		ObjectTypeConverterAnnotation converterAnnotation = (ObjectTypeConverterAnnotation) resourceField.getAnnotation(0, ObjectTypeConverterAnnotation.ANNOTATION_NAME);
 		
 		converter.addConversionValue(0).setDataValue("F");
 		converter.addConversionValue(1).setDataValue("M");
@@ -435,7 +435,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		EclipseLinkObjectTypeConverterAnnotation converterAnnotation = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);
+		ObjectTypeConverterAnnotation converterAnnotation = (ObjectTypeConverterAnnotation) resourceField.getAnnotation(0, ObjectTypeConverterAnnotation.ANNOTATION_NAME);
 
 		converter.addConversionValue(0).setDataValue("F");
 		converter.addConversionValue(1).setDataValue("M");
@@ -471,7 +471,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		EclipseLinkObjectTypeConverterAnnotation converterAnnotation = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);
+		ObjectTypeConverterAnnotation converterAnnotation = (ObjectTypeConverterAnnotation) resourceField.getAnnotation(0, ObjectTypeConverterAnnotation.ANNOTATION_NAME);
 		
 		converterAnnotation.addConversionValue(0).setDataValue("F");
 		converterAnnotation.addConversionValue(1).setDataValue("M");
@@ -530,7 +530,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		EclipseLinkObjectTypeConverterAnnotation converterAnnotation = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);
+		ObjectTypeConverterAnnotation converterAnnotation = (ObjectTypeConverterAnnotation) resourceField.getAnnotation(0, ObjectTypeConverterAnnotation.ANNOTATION_NAME);
 	
 		assertEquals(0, converter.getConversionValuesSize());
 		
@@ -568,19 +568,19 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 			
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		EclipseLinkObjectTypeConverterAnnotation converterAnnotation = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);		
+		ObjectTypeConverterAnnotation converterAnnotation = (ObjectTypeConverterAnnotation) resourceField.getAnnotation(0, ObjectTypeConverterAnnotation.ANNOTATION_NAME);		
 		assertEquals("baz", converterAnnotation.getDefaultObjectValue());
 
 		
 		converter.setDefaultObjectValue(null);
 		assertEquals(null, converter.getDefaultObjectValue());
-		converterAnnotation = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);		
+		converterAnnotation = (ObjectTypeConverterAnnotation) resourceField.getAnnotation(0, ObjectTypeConverterAnnotation.ANNOTATION_NAME);		
 		assertEquals(null, converterAnnotation.getDefaultObjectValue());
 
 
 		converter.setDefaultObjectValue("bar");
 		assertEquals("bar", converter.getDefaultObjectValue());
-		converterAnnotation = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);		
+		converterAnnotation = (ObjectTypeConverterAnnotation) resourceField.getAnnotation(0, ObjectTypeConverterAnnotation.ANNOTATION_NAME);		
 		assertEquals("bar", converterAnnotation.getDefaultObjectValue());
 	}
 	
@@ -596,16 +596,16 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		EclipseLinkObjectTypeConverterAnnotation converterAnnotation = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);
+		ObjectTypeConverterAnnotation converterAnnotation = (ObjectTypeConverterAnnotation) resourceField.getAnnotation(0, ObjectTypeConverterAnnotation.ANNOTATION_NAME);
 		converterAnnotation.setDefaultObjectValue("baz");
 		getJpaProject().synchronizeContextModel();
 		assertEquals("baz", converter.getDefaultObjectValue());
 		
-		resourceField.removeAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);
+		resourceField.removeAnnotation(0, ObjectTypeConverterAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		assertFalse(basicMapping.getConverterContainer().getObjectTypeConverters().iterator().hasNext());
 		
-		converterAnnotation = (EclipseLinkObjectTypeConverterAnnotation) resourceField.addAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);		
+		converterAnnotation = (ObjectTypeConverterAnnotation) resourceField.addAnnotation(0, ObjectTypeConverterAnnotation.ANNOTATION_NAME);		
 		getJpaProject().synchronizeContextModel();
 		converter = basicMapping.getConverterContainer().getObjectTypeConverters().iterator().next();
 		assertNotNull(converter);

@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.JavaTypeMappingDefinitionW
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ChangeTrackingAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CustomizerAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ObjectTypeConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.StructConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TypeConverterAnnotation;
 
@@ -57,7 +57,7 @@ public class EclipseLinkJavaEmbeddableDefinition
 		ChangeTrackingAnnotation.ANNOTATION_NAME,
 		ConverterAnnotation.ANNOTATION_NAME,
 		CustomizerAnnotation.ANNOTATION_NAME,
-		EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME,
+		ObjectTypeConverterAnnotation.ANNOTATION_NAME,
 		StructConverterAnnotation.ANNOTATION_NAME,
 		TypeConverterAnnotation.ANNOTATION_NAME,
 	};

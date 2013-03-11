@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ChangeTrackingAnnotati
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CustomizerAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ExistenceCheckingAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ObjectTypeConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ReadOnlyAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.StructConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TypeConverterAnnotation;
@@ -62,7 +62,7 @@ public class EclipseLinkJavaEntityDefinition
 		ConverterAnnotation.ANNOTATION_NAME,
 		CustomizerAnnotation.ANNOTATION_NAME,
 		ExistenceCheckingAnnotation.ANNOTATION_NAME,
-		EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME,
+		ObjectTypeConverterAnnotation.ANNOTATION_NAME,
 		ReadOnlyAnnotation.ANNOTATION_NAME,
 		StructConverterAnnotation.ANNOTATION_NAME,
 		TypeConverterAnnotation.ANNOTATION_NAME,

@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConvert
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConversionValueAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ObjectTypeConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -31,7 +31,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>org.eclipse.persistence.annotations.ObjectTypeConverter</code>
  */
 public class JavaEclipseLinkObjectTypeConverter
-	extends JavaEclipseLinkConverter<EclipseLinkObjectTypeConverterAnnotation>
+	extends JavaEclipseLinkConverter<ObjectTypeConverterAnnotation>
 	implements EclipseLinkObjectTypeConverter
 {
 	private String dataType;
@@ -45,7 +45,7 @@ public class JavaEclipseLinkObjectTypeConverter
 	private String defaultObjectValue;
 
 
-	public JavaEclipseLinkObjectTypeConverter(EclipseLinkJavaConverterContainer parent, EclipseLinkObjectTypeConverterAnnotation converterAnnotation) {
+	public JavaEclipseLinkObjectTypeConverter(EclipseLinkJavaConverterContainer parent, ObjectTypeConverterAnnotation converterAnnotation) {
 		super(parent, converterAnnotation);
 		this.dataType = converterAnnotation.getDataType();
 		this.objectType = converterAnnotation.getObjectType();

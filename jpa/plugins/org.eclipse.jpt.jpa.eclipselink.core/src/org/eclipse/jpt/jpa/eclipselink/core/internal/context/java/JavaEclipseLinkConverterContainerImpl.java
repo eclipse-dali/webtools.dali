@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkStructConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConverterAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ObjectTypeConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.StructConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TypeConverterAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -36,7 +36,7 @@ public class JavaEclipseLinkConverterContainerImpl
 	implements EclipseLinkJavaConverterContainer
 {
 	protected final ContextListContainer<JavaEclipseLinkCustomConverter, ConverterAnnotation> customConverterContainer;
-	protected final ContextListContainer<JavaEclipseLinkObjectTypeConverter, EclipseLinkObjectTypeConverterAnnotation> objectTypeConverterContainer;
+	protected final ContextListContainer<JavaEclipseLinkObjectTypeConverter, ObjectTypeConverterAnnotation> objectTypeConverterContainer;
 	protected final ContextListContainer<JavaEclipseLinkStructConverter, StructConverterAnnotation> structConverterContainer;
 	protected final ContextListContainer<JavaEclipseLinkTypeConverter, TypeConverterAnnotation> typeConverterContainer;
 
@@ -173,12 +173,12 @@ public class JavaEclipseLinkConverterContainerImpl
 	}
 
 	public JavaEclipseLinkObjectTypeConverter addObjectTypeConverter(String name, int index) {
-		EclipseLinkObjectTypeConverterAnnotation annotation = this.addObjectTypeConverterAnnotation(name, index);
+		ObjectTypeConverterAnnotation annotation = this.addObjectTypeConverterAnnotation(name, index);
 		return this.objectTypeConverterContainer.addContextElement(index, annotation);
 	}
 
-	protected EclipseLinkObjectTypeConverterAnnotation addObjectTypeConverterAnnotation(String name, int index) {
-		EclipseLinkObjectTypeConverterAnnotation annotation =  (EclipseLinkObjectTypeConverterAnnotation) this.getJavaResourceAnnotatedElement().addAnnotation(index, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);
+	protected ObjectTypeConverterAnnotation addObjectTypeConverterAnnotation(String name, int index) {
+		ObjectTypeConverterAnnotation annotation =  (ObjectTypeConverterAnnotation) this.getJavaResourceAnnotatedElement().addAnnotation(index, ObjectTypeConverterAnnotation.ANNOTATION_NAME);
 		annotation.setName(name);
 		return annotation;
 	}
@@ -188,16 +188,16 @@ public class JavaEclipseLinkConverterContainerImpl
 	}
 
 	public void removeObjectTypeConverter(int index) {
-		this.getJavaResourceAnnotatedElement().removeAnnotation(index, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);
+		this.getJavaResourceAnnotatedElement().removeAnnotation(index, ObjectTypeConverterAnnotation.ANNOTATION_NAME);
 		this.objectTypeConverterContainer.removeContextElement(index);
 	}
 
 	public void moveObjectTypeConverter(int targetIndex, int sourceIndex) {
-		this.getJavaResourceAnnotatedElement().moveAnnotation(targetIndex, sourceIndex, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);
+		this.getJavaResourceAnnotatedElement().moveAnnotation(targetIndex, sourceIndex, ObjectTypeConverterAnnotation.ANNOTATION_NAME);
 		this.objectTypeConverterContainer.moveContextElement(targetIndex, sourceIndex);
 	}
 
-	protected JavaEclipseLinkObjectTypeConverter buildObjectTypeConverter(EclipseLinkObjectTypeConverterAnnotation converterAnnotation) {
+	protected JavaEclipseLinkObjectTypeConverter buildObjectTypeConverter(ObjectTypeConverterAnnotation converterAnnotation) {
 		return new JavaEclipseLinkObjectTypeConverter(this, converterAnnotation);
 	}
 
@@ -205,17 +205,17 @@ public class JavaEclipseLinkConverterContainerImpl
 		this.objectTypeConverterContainer.synchronizeWithResourceModel();
 	}
 
-	protected ListIterable<EclipseLinkObjectTypeConverterAnnotation> getObjectTypeConverterAnnotations() {
+	protected ListIterable<ObjectTypeConverterAnnotation> getObjectTypeConverterAnnotations() {
 		return this.parent.supportsConverters() ? 
-				new SubListIterableWrapper<NestableAnnotation, EclipseLinkObjectTypeConverterAnnotation>(this.getNestableObjectTypeConverterAnnotations_()) :
-				EmptyListIterable.<EclipseLinkObjectTypeConverterAnnotation>instance();
+				new SubListIterableWrapper<NestableAnnotation, ObjectTypeConverterAnnotation>(this.getNestableObjectTypeConverterAnnotations_()) :
+				EmptyListIterable.<ObjectTypeConverterAnnotation>instance();
 	}
 
 	protected ListIterable<NestableAnnotation> getNestableObjectTypeConverterAnnotations_() {
-		return this.getJavaResourceAnnotatedElement().getAnnotations(EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);
+		return this.getJavaResourceAnnotatedElement().getAnnotations(ObjectTypeConverterAnnotation.ANNOTATION_NAME);
 	}
 
-	protected ContextListContainer<JavaEclipseLinkObjectTypeConverter, EclipseLinkObjectTypeConverterAnnotation> buildObjectTypeConverterContainer() {
+	protected ContextListContainer<JavaEclipseLinkObjectTypeConverter, ObjectTypeConverterAnnotation> buildObjectTypeConverterContainer() {
 		ObjectTypeConverterContainer container = new ObjectTypeConverterContainer();
 		container.initialize();
 		return container;
@@ -225,22 +225,22 @@ public class JavaEclipseLinkConverterContainerImpl
 	 * objectType converter container
 	 */
 	protected class ObjectTypeConverterContainer
-		extends ContextListContainer<JavaEclipseLinkObjectTypeConverter, EclipseLinkObjectTypeConverterAnnotation>
+		extends ContextListContainer<JavaEclipseLinkObjectTypeConverter, ObjectTypeConverterAnnotation>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return OBJECT_TYPE_CONVERTERS_LIST;
 		}
 		@Override
-		protected JavaEclipseLinkObjectTypeConverter buildContextElement(EclipseLinkObjectTypeConverterAnnotation resourceElement) {
+		protected JavaEclipseLinkObjectTypeConverter buildContextElement(ObjectTypeConverterAnnotation resourceElement) {
 			return JavaEclipseLinkConverterContainerImpl.this.buildObjectTypeConverter(resourceElement);
 		}
 		@Override
-		protected ListIterable<EclipseLinkObjectTypeConverterAnnotation> getResourceElements() {
+		protected ListIterable<ObjectTypeConverterAnnotation> getResourceElements() {
 			return JavaEclipseLinkConverterContainerImpl.this.getObjectTypeConverterAnnotations();
 		}
 		@Override
-		protected EclipseLinkObjectTypeConverterAnnotation getResourceElement(JavaEclipseLinkObjectTypeConverter contextElement) {
+		protected ObjectTypeConverterAnnotation getResourceElement(JavaEclipseLinkObjectTypeConverter contextElement) {
 			return contextElement.getConverterAnnotation();
 		}
 	}

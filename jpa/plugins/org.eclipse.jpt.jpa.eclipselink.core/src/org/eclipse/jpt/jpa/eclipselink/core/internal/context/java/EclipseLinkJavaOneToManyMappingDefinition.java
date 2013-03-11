@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.JavaAttributeMappingDefini
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaOneToManyMappingDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkJoinFetchAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ObjectTypeConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.PrivateOwnedAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.StructConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TypeConverterAnnotation;
@@ -59,7 +59,7 @@ public class EclipseLinkJavaOneToManyMappingDefinition
 	private static final String[] ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES_ARRAY = new String[] {
 		ConverterAnnotation.ANNOTATION_NAME,
 		EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME,
-		EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME,
+		ObjectTypeConverterAnnotation.ANNOTATION_NAME,
 		PrivateOwnedAnnotation.ANNOTATION_NAME,
 		StructConverterAnnotation.ANNOTATION_NAME,
 		TypeConverterAnnotation.ANNOTATION_NAME,

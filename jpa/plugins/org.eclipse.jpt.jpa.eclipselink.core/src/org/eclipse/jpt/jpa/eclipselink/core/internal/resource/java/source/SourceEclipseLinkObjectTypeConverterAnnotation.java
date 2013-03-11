@@ -28,14 +28,14 @@ import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapt
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConversionValueAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ObjectTypeConverterAnnotation;
 
 /**
  * <code>org.eclipse.persistence.annotations.ObjectTypeConverter</code>
  */
 public final class SourceEclipseLinkObjectTypeConverterAnnotation
 	extends SourceEclipseLinkBaseTypeConverterAnnotation
-	implements EclipseLinkObjectTypeConverterAnnotation
+	implements ObjectTypeConverterAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 	private static final DeclarationAnnotationAdapter CONTAINER_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(EclipseLink.OBJECT_TYPE_CONVERTERS);

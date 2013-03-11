@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConvertAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkMutableAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ObjectTypeConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.StructConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TypeConverterAnnotation;
 
@@ -60,7 +60,7 @@ public class EclipseLinkJavaBasicMappingDefinition
 		ConvertAnnotation.ANNOTATION_NAME,
 		ConverterAnnotation.ANNOTATION_NAME,
 		EclipseLinkMutableAnnotation.ANNOTATION_NAME,
-		EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME,
+		ObjectTypeConverterAnnotation.ANNOTATION_NAME,
 		StructConverterAnnotation.ANNOTATION_NAME,
 		TypeConverterAnnotation.ANNOTATION_NAME,
 		GeneratedValueAnnotation.ANNOTATION_NAME,

@@ -36,7 +36,7 @@ import org.eclipse.jpt.jpa.core.resource.java.TableAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConverterAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ObjectTypeConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ReadOnlyAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.StructConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TypeConverterAnnotation;
@@ -118,8 +118,8 @@ public class EclipseLink2_2JavaEntityTests extends EclipseLink2_2ContextModelTes
 		assertNotNull(resourceType.getAnnotation(1, TypeConverterAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(0, StructConverterAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(1, StructConverterAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceType.getAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceType.getAnnotation(1, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceType.getAnnotation(0, ObjectTypeConverterAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceType.getAnnotation(1, ObjectTypeConverterAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME));
 	}
 
@@ -174,8 +174,8 @@ public class EclipseLink2_2JavaEntityTests extends EclipseLink2_2ContextModelTes
 		assertNotNull(resourceType.getAnnotation(1, TypeConverterAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(0, StructConverterAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(1, StructConverterAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceType.getAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceType.getAnnotation(1, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceType.getAnnotation(0, ObjectTypeConverterAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceType.getAnnotation(1, ObjectTypeConverterAnnotation.ANNOTATION_NAME));
 		assertNull(resourceType.getAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME));
 	}
 }

@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ArrayAnnotation2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConvertAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConverterAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ObjectTypeConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.StructConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TypeConverterAnnotation;
 
@@ -63,7 +63,7 @@ public class EclipseLinkJavaArrayMappingDefinition2_3
 	private static final String[] ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES_ARRAY = new String[] {
 		ConvertAnnotation.ANNOTATION_NAME,
 		ConverterAnnotation.ANNOTATION_NAME,
-		EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME,
+		ObjectTypeConverterAnnotation.ANNOTATION_NAME,
 		StructConverterAnnotation.ANNOTATION_NAME,
 		TypeConverterAnnotation.ANNOTATION_NAME
 	};
