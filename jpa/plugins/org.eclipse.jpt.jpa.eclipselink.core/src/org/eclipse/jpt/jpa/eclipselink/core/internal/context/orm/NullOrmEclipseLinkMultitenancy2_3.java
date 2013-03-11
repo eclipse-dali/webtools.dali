@@ -17,13 +17,13 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMultitenantType2_
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVirtualTenantDiscriminatorColumn2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMultitenancy2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkNonEmbeddableTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmSpecifiedTenantDiscriminatorColumn2_3;
 
 public class NullOrmEclipseLinkMultitenancy2_3
 	extends AbstractOrmXmlContextModel<OrmEclipseLinkNonEmbeddableTypeMapping>
-	implements OrmEclipseLinkMultitenancy2_3
+	implements EclipseLinkOrmMultitenancy2_3
 {
 
 	public NullOrmEclipseLinkMultitenancy2_3(OrmEclipseLinkNonEmbeddableTypeMapping parent) {

@@ -34,7 +34,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaMappedSu
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmMappedSuperclass;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMultitenancy2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_3JpaPlatformFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
@@ -64,7 +64,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 
 	protected final EclipseLinkOrmConverterContainer converterContainer;
 
-	protected final OrmEclipseLinkMultitenancy2_3 multitenancy;
+	protected final EclipseLinkOrmMultitenancy2_3 multitenancy;
 
 	protected final OrmQueryContainer queryContainer;
 
@@ -189,12 +189,12 @@ public class OrmEclipseLinkMappedSuperclassImpl
 
 	// ********** multitenancy **********
 
-	public OrmEclipseLinkMultitenancy2_3 getMultitenancy() {
+	public EclipseLinkOrmMultitenancy2_3 getMultitenancy() {
 		return this.multitenancy;
 	}
 
 
-	protected OrmEclipseLinkMultitenancy2_3 buildMultitenancy() {
+	protected EclipseLinkOrmMultitenancy2_3 buildMultitenancy() {
 		return this.isEclipseLink2_3Compatible() ?
 			new OrmEclipseLinkMultitenancyImpl2_3(this) :
 			new NullOrmEclipseLinkMultitenancy2_3(this);

@@ -30,7 +30,7 @@ public interface OrmEclipseLinkNonEmbeddableTypeMapping
 
 	EclipseLinkJavaNonEmbeddableTypeMapping getJavaTypeMappingForDefaults();
 
-	OrmEclipseLinkMultitenancy2_3 getMultitenancy();
+	EclipseLinkOrmMultitenancy2_3 getMultitenancy();
 
 	OrmGeneratorContainer getGeneratorContainer();
 }
