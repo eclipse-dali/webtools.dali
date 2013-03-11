@@ -14,15 +14,15 @@ import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AbstractNamedColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
-import org.eclipse.jpt.jpa.eclipselink.core.context.TenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class TenantDiscriminatorColumnValidator2_3
-	extends AbstractNamedColumnValidator<TenantDiscriminatorColumn2_3>
+	extends AbstractNamedColumnValidator<EclipseLinkTenantDiscriminatorColumn2_3>
 {
 	public TenantDiscriminatorColumnValidator2_3(
-			TenantDiscriminatorColumn2_3 namedColumn) {
+			EclipseLinkTenantDiscriminatorColumn2_3 namedColumn) {
 		super(namedColumn, new EntityTableDescriptionProvider());
 	}
 
@@ -74,8 +74,8 @@ public class TenantDiscriminatorColumnValidator2_3
 		}
 
 		@Override
-		protected TenantDiscriminatorColumn2_3 getColumn() {
-			return (TenantDiscriminatorColumn2_3) super.getColumn();
+		protected EclipseLinkTenantDiscriminatorColumn2_3 getColumn() {
+			return (EclipseLinkTenantDiscriminatorColumn2_3) super.getColumn();
 		}
 
 		@Override

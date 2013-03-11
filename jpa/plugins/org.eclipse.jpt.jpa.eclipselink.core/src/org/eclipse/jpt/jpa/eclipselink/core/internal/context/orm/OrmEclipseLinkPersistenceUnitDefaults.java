@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.AbstractOrmPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.db.Table;
-import org.eclipse.jpt.jpa.eclipselink.core.context.TenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
@@ -41,7 +41,7 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 {
 
 	protected final ContextListContainer<OrmSpecifiedTenantDiscriminatorColumn2_3, XmlTenantDiscriminatorColumn> tenantDiscriminatorColumnContainer;
-	protected final TenantDiscriminatorColumn2_3.ParentAdapter tenantDiscriminatorColumnParentAdapter;
+	protected final EclipseLinkTenantDiscriminatorColumn2_3.ParentAdapter tenantDiscriminatorColumnParentAdapter;
 
 	protected String specifiedGetMethod;
 	protected String specifiedSetMethod;
@@ -171,7 +171,7 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 		}
 	}
 
-	protected TenantDiscriminatorColumn2_3.ParentAdapter buildTenantDiscriminatorColumnParentAdapter() {
+	protected EclipseLinkTenantDiscriminatorColumn2_3.ParentAdapter buildTenantDiscriminatorColumnParentAdapter() {
 		return new TenantDiscriminatorColumnParentAdapter();
 	}
 
@@ -189,18 +189,18 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 	// ********** tenant discriminator column parent adapter **********
 
 	public class TenantDiscriminatorColumnParentAdapter
-		implements TenantDiscriminatorColumn2_3.ParentAdapter
+		implements EclipseLinkTenantDiscriminatorColumn2_3.ParentAdapter
 	{
 		public JpaContextModel getColumnParent() {
 			return OrmEclipseLinkPersistenceUnitDefaults.this;
 		}
 
 		public String getDefaultContextPropertyName() {
-			return TenantDiscriminatorColumn2_3.DEFAULT_CONTEXT_PROPERTY;
+			return EclipseLinkTenantDiscriminatorColumn2_3.DEFAULT_CONTEXT_PROPERTY;
 		}
 
 		public boolean getDefaultPrimaryKey() {
-			return TenantDiscriminatorColumn2_3.DEFAULT_PRIMARY_KEY;
+			return EclipseLinkTenantDiscriminatorColumn2_3.DEFAULT_PRIMARY_KEY;
 		}
 
 		public int getDefaultLength() {
@@ -219,7 +219,7 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 		}
 
 		public String getDefaultColumnName(NamedColumn column) {
-			return TenantDiscriminatorColumn2_3.DEFAULT_NAME;
+			return EclipseLinkTenantDiscriminatorColumn2_3.DEFAULT_NAME;
 		}
 
 		/**

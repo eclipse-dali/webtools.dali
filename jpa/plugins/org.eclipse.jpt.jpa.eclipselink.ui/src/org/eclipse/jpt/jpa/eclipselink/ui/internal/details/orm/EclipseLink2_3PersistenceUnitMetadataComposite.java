@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
-import org.eclipse.jpt.jpa.eclipselink.core.context.TenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
@@ -166,13 +166,13 @@ public class EclipseLink2_3PersistenceUnitMetadataComposite extends PersistenceU
 
 	class TenantDiscriminatorColumnsProvider implements TenantDiscriminatorColumnsEditor<OrmPersistenceUnitDefaults> {
 
-		public TenantDiscriminatorColumn2_3 addTenantDiscriminatorColumn(OrmPersistenceUnitDefaults subject) {
+		public EclipseLinkTenantDiscriminatorColumn2_3 addTenantDiscriminatorColumn(OrmPersistenceUnitDefaults subject) {
 			OrmSpecifiedTenantDiscriminatorColumn2_3 column = ((EclipseLinkPersistenceUnitDefaults) subject).addTenantDiscriminatorColumn();
-			column.setSpecifiedName(TenantDiscriminatorColumn2_3.DEFAULT_NAME);
+			column.setSpecifiedName(EclipseLinkTenantDiscriminatorColumn2_3.DEFAULT_NAME);
 			return column;
 		}
 
-		public ListIterable<TenantDiscriminatorColumn2_3> getDefaultTenantDiscriminatorColumns(OrmPersistenceUnitDefaults subject) {
+		public ListIterable<EclipseLinkTenantDiscriminatorColumn2_3> getDefaultTenantDiscriminatorColumns(OrmPersistenceUnitDefaults subject) {
 			return EmptyListIterable.instance();
 		}
 
@@ -184,8 +184,8 @@ public class EclipseLink2_3PersistenceUnitMetadataComposite extends PersistenceU
 			return ""; //$NON-NLS-1$
 		}
 
-		public ListIterable<TenantDiscriminatorColumn2_3> getSpecifiedTenantDiscriminatorColumns(OrmPersistenceUnitDefaults subject) {
-			return new SuperListIterableWrapper<TenantDiscriminatorColumn2_3>(((EclipseLinkPersistenceUnitDefaults) subject).getTenantDiscriminatorColumns());
+		public ListIterable<EclipseLinkTenantDiscriminatorColumn2_3> getSpecifiedTenantDiscriminatorColumns(OrmPersistenceUnitDefaults subject) {
+			return new SuperListIterableWrapper<EclipseLinkTenantDiscriminatorColumn2_3>(((EclipseLinkPersistenceUnitDefaults) subject).getTenantDiscriminatorColumns());
 		}
 
 		public int getSpecifiedTenantDiscriminatorColumnsSize(OrmPersistenceUnitDefaults subject) {
@@ -200,7 +200,7 @@ public class EclipseLink2_3PersistenceUnitMetadataComposite extends PersistenceU
 			return ((EclipseLinkPersistenceUnitDefaults) subject).hasTenantDiscriminatorColumns();
 		}
 
-		public void removeTenantDiscriminatorColumn(OrmPersistenceUnitDefaults subject, TenantDiscriminatorColumn2_3 column) {
+		public void removeTenantDiscriminatorColumn(OrmPersistenceUnitDefaults subject, EclipseLinkTenantDiscriminatorColumn2_3 column) {
 			((EclipseLinkPersistenceUnitDefaults) subject).removeTenantDiscriminatorColumn((OrmSpecifiedTenantDiscriminatorColumn2_3) column);
 		}
 	}

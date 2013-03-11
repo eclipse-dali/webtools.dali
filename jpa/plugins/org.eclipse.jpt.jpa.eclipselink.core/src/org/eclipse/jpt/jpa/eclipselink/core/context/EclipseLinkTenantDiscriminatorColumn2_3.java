@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.TableColumn;
 
@@ -25,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.TableColumn;
  * @version 3.1
  * @since 3.1
  */
-public interface TenantDiscriminatorColumn2_3
+public interface EclipseLinkTenantDiscriminatorColumn2_3
 	extends NamedDiscriminatorColumn, TableColumn
 {
 	String DEFAULT_NAME = "TENANT_ID"; //$NON-NLS-1$

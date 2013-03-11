@@ -63,7 +63,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkJpaProject;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCoreMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.context.TenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
@@ -122,7 +122,7 @@ public class EclipseLinkPersistenceUnit
 	/* global converter definitions, defined elsewhere in model */
 	protected final Vector<EclipseLinkConverter> converters = new Vector<EclipseLinkConverter>();
 
-	protected final Vector<TenantDiscriminatorColumn2_3> defaultTenantDiscriminatorColumns = new Vector<TenantDiscriminatorColumn2_3>();
+	protected final Vector<EclipseLinkTenantDiscriminatorColumn2_3> defaultTenantDiscriminatorColumns = new Vector<EclipseLinkTenantDiscriminatorColumn2_3>();
 
 	protected String defaultGetMethod;
 	protected String defaultSetMethod;
@@ -383,16 +383,16 @@ public class EclipseLinkPersistenceUnit
 	 */
 	public static final String DEFAULT_TENANT_DISCRIMINATOR_COLUMNS_LIST = "defaultTenantDiscriminatorColumns"; //$NON-NLS-1$
 
-	public ListIterable<TenantDiscriminatorColumn2_3> getDefaultTenantDiscriminatorColumns() {
+	public ListIterable<EclipseLinkTenantDiscriminatorColumn2_3> getDefaultTenantDiscriminatorColumns() {
 		return IterableTools.cloneLive(this.defaultTenantDiscriminatorColumns);
 	}
 
-	protected void setDefaultTenantDiscriminatorColumns(Iterable<TenantDiscriminatorColumn2_3> tenantDiscriminatorColumns) {
+	protected void setDefaultTenantDiscriminatorColumns(Iterable<EclipseLinkTenantDiscriminatorColumn2_3> tenantDiscriminatorColumns) {
 		this.synchronizeList(tenantDiscriminatorColumns, this.defaultTenantDiscriminatorColumns, DEFAULT_TENANT_DISCRIMINATOR_COLUMNS_LIST);
 	}
 
-	protected ListIterable<TenantDiscriminatorColumn2_3> buildDefaultTenantDiscriminatorColumns(EclipseLinkPersistenceUnitDefaults defaults) {
-		return (defaults == null) ? EmptyListIterable.<TenantDiscriminatorColumn2_3> instance() : new SuperListIterableWrapper<TenantDiscriminatorColumn2_3>(defaults.getTenantDiscriminatorColumns());
+	protected ListIterable<EclipseLinkTenantDiscriminatorColumn2_3> buildDefaultTenantDiscriminatorColumns(EclipseLinkPersistenceUnitDefaults defaults) {
+		return (defaults == null) ? EmptyListIterable.<EclipseLinkTenantDiscriminatorColumn2_3> instance() : new SuperListIterableWrapper<EclipseLinkTenantDiscriminatorColumn2_3>(defaults.getTenantDiscriminatorColumns());
 	}
 
 

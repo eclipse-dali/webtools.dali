@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.VirtualTableColumn;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface VirtualTenantDiscriminatorColumn2_3
-	extends VirtualNamedDiscriminatorColumn, VirtualTableColumn, TenantDiscriminatorColumn2_3
+	extends VirtualNamedDiscriminatorColumn, VirtualTableColumn, EclipseLinkTenantDiscriminatorColumn2_3
 {
-	TenantDiscriminatorColumn2_3 getOverriddenColumn();
+	EclipseLinkTenantDiscriminatorColumn2_3 getOverriddenColumn();
 }

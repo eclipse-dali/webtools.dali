@@ -74,7 +74,7 @@ public interface EclipseLinkMultitenancy2_3
 	/**
 	 * Return the tenant discriminator columns whether specified or default.
 	 */
-	ListIterable<? extends TenantDiscriminatorColumn2_3> getTenantDiscriminatorColumns();
+	ListIterable<? extends EclipseLinkTenantDiscriminatorColumn2_3> getTenantDiscriminatorColumns();
 
 	/**
 	 * Return the number of tenant discriminator columns, whether specified and default.

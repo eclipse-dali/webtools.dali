@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.TableColumn;
 import org.eclipse.jpt.jpa.db.Table;
-import org.eclipse.jpt.jpa.eclipselink.core.context.TenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.SpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
@@ -39,10 +39,10 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
-public class TenantDiscriminatorColumnComposite extends Pane<TenantDiscriminatorColumn2_3> {
+public class TenantDiscriminatorColumnComposite extends Pane<EclipseLinkTenantDiscriminatorColumn2_3> {
 
 	public TenantDiscriminatorColumnComposite(Pane<?> parentPane,
-	                                   PropertyValueModel<TenantDiscriminatorColumn2_3> subjectHolder,
+	                                   PropertyValueModel<EclipseLinkTenantDiscriminatorColumn2_3> subjectHolder,
 	                                   Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
@@ -90,12 +90,12 @@ public class TenantDiscriminatorColumnComposite extends Pane<TenantDiscriminator
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		pkCheckBox.getCheckBox().setLayoutData(gridData);
-		SWTTools.controlVisibleState(new EclipseLink2_4ProjectFlagModel<TenantDiscriminatorColumn2_3>(this.getSubjectHolder()), pkCheckBox.getCheckBox());
+		SWTTools.controlVisibleState(new EclipseLink2_4ProjectFlagModel<EclipseLinkTenantDiscriminatorColumn2_3>(this.getSubjectHolder()), pkCheckBox.getCheckBox());
 	}
 
-	private ColumnCombo<TenantDiscriminatorColumn2_3> addNameCombo(Composite container) {
+	private ColumnCombo<EclipseLinkTenantDiscriminatorColumn2_3> addNameCombo(Composite container) {
 
-		return new ColumnCombo<TenantDiscriminatorColumn2_3>(this, container) {
+		return new ColumnCombo<EclipseLinkTenantDiscriminatorColumn2_3>(this, container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
@@ -125,7 +125,7 @@ public class TenantDiscriminatorColumnComposite extends Pane<TenantDiscriminator
 
 			@Override
 			protected Table getDbTable_() {
-				TenantDiscriminatorColumn2_3 column = this.getSubject();
+				EclipseLinkTenantDiscriminatorColumn2_3 column = this.getSubject();
 				return (column == null) ? null : column.getDbTable();
 			}
 
@@ -158,9 +158,9 @@ public class TenantDiscriminatorColumnComposite extends Pane<TenantDiscriminator
 		TableColumn.SPECIFIED_TABLE_NAME_PROPERTY
 	});
 
-	private Pane<TenantDiscriminatorColumn2_3> addTableCombo(Composite container) {
+	private Pane<EclipseLinkTenantDiscriminatorColumn2_3> addTableCombo(Composite container) {
 
-		return new DatabaseObjectCombo<TenantDiscriminatorColumn2_3>(this, container) {
+		return new DatabaseObjectCombo<EclipseLinkTenantDiscriminatorColumn2_3>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -187,7 +187,7 @@ public class TenantDiscriminatorColumnComposite extends Pane<TenantDiscriminator
 			// TODO we need to listen for this list to change...
 			@Override
 			protected Iterable<String> getValues_() {
-				TenantDiscriminatorColumn2_3 column = this.getSubject();
+				EclipseLinkTenantDiscriminatorColumn2_3 column = this.getSubject();
 				return (column != null) ? column.getCandidateTableNames() : EmptyIterable.<String> instance();
 			}
 
@@ -210,15 +210,15 @@ public class TenantDiscriminatorColumnComposite extends Pane<TenantDiscriminator
 		};
 	}
 
-	private Pane<TenantDiscriminatorColumn2_3> addContextPropertyCombo(Composite container) {
+	private Pane<EclipseLinkTenantDiscriminatorColumn2_3> addContextPropertyCombo(Composite container) {
 
-		return new ComboPane<TenantDiscriminatorColumn2_3>(this, container) {
+		return new ComboPane<EclipseLinkTenantDiscriminatorColumn2_3>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(TenantDiscriminatorColumn2_3.DEFAULT_CONTEXT_PROPERTY);
-				propertyNames.add(TenantDiscriminatorColumn2_3.SPECIFIED_CONTEXT_PROPERTY_PROPERTY);
+				propertyNames.add(EclipseLinkTenantDiscriminatorColumn2_3.DEFAULT_CONTEXT_PROPERTY);
+				propertyNames.add(EclipseLinkTenantDiscriminatorColumn2_3.SPECIFIED_CONTEXT_PROPERTY_PROPERTY);
 			}
 
 			@Override
@@ -260,9 +260,9 @@ public class TenantDiscriminatorColumnComposite extends Pane<TenantDiscriminator
 		};
 	}
 
-	private EnumFormComboViewer<TenantDiscriminatorColumn2_3, DiscriminatorType> addDiscriminatorTypeCombo(Composite container) {
+	private EnumFormComboViewer<EclipseLinkTenantDiscriminatorColumn2_3, DiscriminatorType> addDiscriminatorTypeCombo(Composite container) {
 
-		return new EnumFormComboViewer<TenantDiscriminatorColumn2_3, DiscriminatorType>(
+		return new EnumFormComboViewer<EclipseLinkTenantDiscriminatorColumn2_3, DiscriminatorType>(
 			this,
 			getSubjectHolder(),
 			container)
@@ -321,7 +321,7 @@ public class TenantDiscriminatorColumnComposite extends Pane<TenantDiscriminator
 	}
 
 	private void addLengthCombo(Composite container) {
-		new IntegerCombo<TenantDiscriminatorColumn2_3>(this, container) {
+		new IntegerCombo<EclipseLinkTenantDiscriminatorColumn2_3>(this, container) {
 
 			@Override
 			protected String getHelpId() {
@@ -330,7 +330,7 @@ public class TenantDiscriminatorColumnComposite extends Pane<TenantDiscriminator
 
 			@Override
 			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<TenantDiscriminatorColumn2_3, Integer>(getSubjectHolder(), NamedDiscriminatorColumn.DEFAULT_LENGTH_PROPERTY) {
+				return new PropertyAspectAdapter<EclipseLinkTenantDiscriminatorColumn2_3, Integer>(getSubjectHolder(), NamedDiscriminatorColumn.DEFAULT_LENGTH_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						return Integer.valueOf(this.subject.getDefaultLength());
@@ -340,7 +340,7 @@ public class TenantDiscriminatorColumnComposite extends Pane<TenantDiscriminator
 
 			@Override
 			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<TenantDiscriminatorColumn2_3, Integer>(getSubjectHolder(), NamedDiscriminatorColumn.SPECIFIED_LENGTH_PROPERTY) {
+				return new PropertyAspectAdapter<EclipseLinkTenantDiscriminatorColumn2_3, Integer>(getSubjectHolder(), NamedDiscriminatorColumn.SPECIFIED_LENGTH_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						return this.subject.getSpecifiedLength();
@@ -355,8 +355,8 @@ public class TenantDiscriminatorColumnComposite extends Pane<TenantDiscriminator
 		};
 	}
 
-	private ModifiablePropertyValueModel<String> buildColumnDefinitionHolder(PropertyValueModel<? extends TenantDiscriminatorColumn2_3> discriminatorColumnHolder) {
-		return new PropertyAspectAdapter<TenantDiscriminatorColumn2_3, String>(discriminatorColumnHolder, NamedColumn.COLUMN_DEFINITION_PROPERTY) {
+	private ModifiablePropertyValueModel<String> buildColumnDefinitionHolder(PropertyValueModel<? extends EclipseLinkTenantDiscriminatorColumn2_3> discriminatorColumnHolder) {
+		return new PropertyAspectAdapter<EclipseLinkTenantDiscriminatorColumn2_3, String>(discriminatorColumnHolder, NamedColumn.COLUMN_DEFINITION_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getColumnDefinition();
@@ -372,7 +372,7 @@ public class TenantDiscriminatorColumnComposite extends Pane<TenantDiscriminator
 	}
 
 	ModifiablePropertyValueModel<Boolean> buildPrimaryKeyHolder() {
-		return new PropertyAspectAdapter<TenantDiscriminatorColumn2_3, Boolean>(getSubjectHolder(), TenantDiscriminatorColumn2_3.SPECIFIED_PRIMARY_KEY_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkTenantDiscriminatorColumn2_3, Boolean>(getSubjectHolder(), EclipseLinkTenantDiscriminatorColumn2_3.SPECIFIED_PRIMARY_KEY_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSpecifiedPrimaryKey();
@@ -399,10 +399,10 @@ public class TenantDiscriminatorColumnComposite extends Pane<TenantDiscriminator
 	}
 
 	PropertyValueModel<Boolean> buildDefaultPrimaryKeyHolder() {
-		return new PropertyAspectAdapter<TenantDiscriminatorColumn2_3, Boolean>(
+		return new PropertyAspectAdapter<EclipseLinkTenantDiscriminatorColumn2_3, Boolean>(
 				getSubjectHolder(),
-				TenantDiscriminatorColumn2_3.SPECIFIED_PRIMARY_KEY_PROPERTY,
-				TenantDiscriminatorColumn2_3.DEFAULT_PRIMARY_KEY_PROPERTY) {
+				EclipseLinkTenantDiscriminatorColumn2_3.SPECIFIED_PRIMARY_KEY_PROPERTY,
+				EclipseLinkTenantDiscriminatorColumn2_3.DEFAULT_PRIMARY_KEY_PROPERTY) {
 
 			@Override
 			protected Boolean buildValue_() {

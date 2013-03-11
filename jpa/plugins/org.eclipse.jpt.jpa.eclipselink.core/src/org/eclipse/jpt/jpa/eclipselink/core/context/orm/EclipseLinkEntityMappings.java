@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkSpecifiedAccessMethodsContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.context.TenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTenantDiscriminatorColumn2_3;
 
 public interface EclipseLinkEntityMappings 
 	extends EntityMappings, EclipseLinkSpecifiedAccessMethodsContainer
@@ -32,7 +32,7 @@ public interface EclipseLinkEntityMappings
 	/**
 	 * Return the tenant discriminator columns whether specified or default.
 	 */
-	ListIterable<TenantDiscriminatorColumn2_3> getTenantDiscriminatorColumns();
+	ListIterable<EclipseLinkTenantDiscriminatorColumn2_3> getTenantDiscriminatorColumns();
 
 	/**
 	 * Return the number of tenant discriminator columns, whether specified and default.
@@ -94,7 +94,7 @@ public interface EclipseLinkEntityMappings
 	 * This will not be null. If there are specified tenant discriminator columns
 	 * then there will be no default tenant discriminator columns.
 	 */
-	ListIterable<? extends TenantDiscriminatorColumn2_3> getDefaultTenantDiscriminatorColumns();
+	ListIterable<? extends EclipseLinkTenantDiscriminatorColumn2_3> getDefaultTenantDiscriminatorColumns();
 		String DEFAULT_TENANT_DISCRIMINATOR_COLUMNS_LIST = "defaultTenantDiscriminatorColumns"; //$NON-NLS-1$
 
 	/**
