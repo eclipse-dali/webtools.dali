@@ -66,13 +66,13 @@ public interface Caching extends PersistenceUnitProperties
 		static final String ECLIPSELINK_SHARED_CACHE = "eclipselink.cache.shared."; //$NON-NLS-1$
 		static final Boolean DEFAULT_SHARED_CACHE = Boolean.TRUE;
 
-	FlushClearCache getDefaultFlushClearCache();
-	FlushClearCache getFlushClearCache();
-	void setFlushClearCache(FlushClearCache newFlushClearCache);
+	EclipseLinkFlushClearCache getDefaultFlushClearCache();
+	EclipseLinkFlushClearCache getFlushClearCache();
+	void setFlushClearCache(EclipseLinkFlushClearCache newFlushClearCache);
 		static final String FLUSH_CLEAR_CACHE_PROPERTY = "flushClearCache"; //$NON-NLS-1$
 		// EclipseLink key string
 		static final String ECLIPSELINK_FLUSH_CLEAR_CACHE = "eclipselink.flush-clear.cache"; //$NON-NLS-1$
-		static final FlushClearCache DEFAULT_FLUSH_CLEAR_CACHE = FlushClearCache.drop_invalidate;
+		static final EclipseLinkFlushClearCache DEFAULT_FLUSH_CLEAR_CACHE = EclipseLinkFlushClearCache.drop_invalidate;
 
 	void removeDefaultCachingProperties();
 

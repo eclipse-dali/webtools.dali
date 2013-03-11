@@ -14,14 +14,14 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 /**
  *  FlushClearCache
  */
-public enum FlushClearCache implements PersistenceXmlEnumValue {
+public enum EclipseLinkFlushClearCache implements PersistenceXmlEnumValue {
 	drop("Drop"), //$NON-NLS-1$
 	drop_invalidate("DropInvalidate"), //$NON-NLS-1$
 	merge("Merge");  //$NON-NLS-1$
 
 	private final String propertyValue;
 
-	FlushClearCache(String propertyValue) {
+	EclipseLinkFlushClearCache(String propertyValue) {
 		this.propertyValue = propertyValue;
 	}
 

@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.FlushClearCache;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkFlushClearCache;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.swt.layout.GridData;
@@ -72,8 +72,8 @@ public class EclipseLinkPersistenceUnitCachingEditorPage<T extends Caching>
 		this.addFlushClearCacheCombo(client);
 	}
 
-	protected EnumFormComboViewer<Caching, FlushClearCache> addFlushClearCacheCombo(Composite container) {
-		return new EnumFormComboViewer<Caching, FlushClearCache>(this, container) {
+	protected EnumFormComboViewer<Caching, EclipseLinkFlushClearCache> addFlushClearCacheCombo(Composite container) {
+		return new EnumFormComboViewer<Caching, EclipseLinkFlushClearCache>(this, container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
@@ -81,8 +81,8 @@ public class EclipseLinkPersistenceUnitCachingEditorPage<T extends Caching>
 			}
 
 			@Override
-			protected FlushClearCache[] getChoices() {
-				return FlushClearCache.values();
+			protected EclipseLinkFlushClearCache[] getChoices() {
+				return EclipseLinkFlushClearCache.values();
 			}
 
 			@Override
@@ -91,12 +91,12 @@ public class EclipseLinkPersistenceUnitCachingEditorPage<T extends Caching>
 			}
 
 			@Override
-			protected FlushClearCache getDefaultValue() {
+			protected EclipseLinkFlushClearCache getDefaultValue() {
 				return this.getSubject().getDefaultFlushClearCache();
 			}
 
 			@Override
-			protected String displayString(FlushClearCache value) {
+			protected String displayString(EclipseLinkFlushClearCache value) {
 				switch (value) {
 					case drop :
 						return JptJpaEclipseLinkUiMessages.FLUSH_CLEAR_CACHE_COMPOSITE_DROP;
@@ -110,12 +110,12 @@ public class EclipseLinkPersistenceUnitCachingEditorPage<T extends Caching>
 			}
 
 			@Override
-			protected FlushClearCache getValue() {
+			protected EclipseLinkFlushClearCache getValue() {
 				return this.getSubject().getFlushClearCache();
 			}
 
 			@Override
-			protected void setValue(FlushClearCache value) {
+			protected void setValue(EclipseLinkFlushClearCache value) {
 				this.getSubject().setFlushClearCache(value);
 			}
 

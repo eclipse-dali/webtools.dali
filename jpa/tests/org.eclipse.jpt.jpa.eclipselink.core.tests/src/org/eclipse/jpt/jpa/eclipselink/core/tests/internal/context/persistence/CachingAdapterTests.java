@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CachingEntity;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.FlushClearCache;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkFlushClearCache;
 
 /**
  * Tests the update of model objects by the Caching adapter when the
@@ -62,8 +62,8 @@ public class CachingAdapterTests extends EclipseLinkPersistenceUnitTestCase
 	public static final Integer CACHE_SIZE_TEST_VALUE_2 = 67890;
 	
 	public static final String FLUSH_CLEAR_CACHE_KEY = Caching.ECLIPSELINK_FLUSH_CLEAR_CACHE;
-	public static final FlushClearCache FLUSH_CLEAR_CACHE_TEST_VALUE = FlushClearCache.drop;
-	public static final FlushClearCache FLUSH_CLEAR_CACHE_TEST_VALUE_2 = FlushClearCache.merge;
+	public static final EclipseLinkFlushClearCache FLUSH_CLEAR_CACHE_TEST_VALUE = EclipseLinkFlushClearCache.drop;
+	public static final EclipseLinkFlushClearCache FLUSH_CLEAR_CACHE_TEST_VALUE_2 = EclipseLinkFlushClearCache.merge;
 
 	public CachingAdapterTests(String name) {
 		super(name);
@@ -408,7 +408,7 @@ public class CachingAdapterTests extends EclipseLinkPersistenceUnitTestCase
 		else if (propertyName.equals(Caching.SHARED_CACHE_DEFAULT_PROPERTY))
 			this.caching.setSharedCacheDefault((Boolean) newValue);
 		else if (propertyName.equals(Caching.FLUSH_CLEAR_CACHE_PROPERTY))
-			this.caching.setFlushClearCache((FlushClearCache) newValue);
+			this.caching.setFlushClearCache((EclipseLinkFlushClearCache) newValue);
 		else
 			this.throwMissingDefinition("setProperty", propertyName);
 	}

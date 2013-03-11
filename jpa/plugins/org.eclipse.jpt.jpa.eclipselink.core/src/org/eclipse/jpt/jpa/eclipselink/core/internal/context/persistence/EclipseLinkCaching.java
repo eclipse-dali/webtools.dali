@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CachingEntity;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.FlushClearCache;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkFlushClearCache;
 
 /**
  * EclipseLinkCaching encapsulates EclipseLink Caching properties.
@@ -32,7 +32,7 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 	private CacheType cacheTypeDefault;
 	private Integer cacheSizeDefault;
 	private Boolean sharedCacheDefault;
-	private FlushClearCache flushClearCache;
+	private EclipseLinkFlushClearCache flushClearCache;
 
 	private List<CachingEntity> entities;
 	
@@ -55,7 +55,7 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 		this.sharedCacheDefault = 
 			this.getBooleanValue(ECLIPSELINK_CACHE_SHARED_DEFAULT);
 		this.flushClearCache = 
-			this.getEnumValue(ECLIPSELINK_FLUSH_CLEAR_CACHE, FlushClearCache.values());
+			this.getEnumValue(ECLIPSELINK_FLUSH_CLEAR_CACHE, EclipseLinkFlushClearCache.values());
 		
 		Set<PersistenceUnit.Property> cacheTypeProperties = 
 			this.getPropertiesSetWithPrefix(ECLIPSELINK_CACHE_TYPE);
@@ -363,25 +363,25 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 
 	// ********** FlushClearCache **********
 	
-	public FlushClearCache getFlushClearCache() {
+	public EclipseLinkFlushClearCache getFlushClearCache() {
 		return this.flushClearCache;
 	}
 	
-	public void setFlushClearCache(FlushClearCache newFlushClearCache) {
-		FlushClearCache old = this.flushClearCache;
+	public void setFlushClearCache(EclipseLinkFlushClearCache newFlushClearCache) {
+		EclipseLinkFlushClearCache old = this.flushClearCache;
 		this.flushClearCache = newFlushClearCache;
 		this.putProperty(FLUSH_CLEAR_CACHE_PROPERTY, newFlushClearCache);
 		this.firePropertyChanged(FLUSH_CLEAR_CACHE_PROPERTY, old, newFlushClearCache);
 	}
 
 	private void flushClearCacheChanged(String stringValue) {
-		FlushClearCache newValue = getEnumValueOf(stringValue, FlushClearCache.values());
-		FlushClearCache old = this.flushClearCache;
+		EclipseLinkFlushClearCache newValue = getEnumValueOf(stringValue, EclipseLinkFlushClearCache.values());
+		EclipseLinkFlushClearCache old = this.flushClearCache;
 		this.flushClearCache = newValue;
 		this.firePropertyChanged(FLUSH_CLEAR_CACHE_PROPERTY, old, newValue);
 	}
 	
-	public FlushClearCache getDefaultFlushClearCache() {
+	public EclipseLinkFlushClearCache getDefaultFlushClearCache() {
 		return DEFAULT_FLUSH_CLEAR_CACHE;
 	}
 
