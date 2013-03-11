@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkBaseConvertAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.BaseConvertAnnotation;
 
 /**
  * <code><ul>
@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkBaseConvert
  */
 public abstract class BinaryEclipseLinkBaseConvertAnnotation
 	extends BinaryAnnotation
-	implements EclipseLinkBaseConvertAnnotation
+	implements BaseConvertAnnotation
 {
 	private String value;
 

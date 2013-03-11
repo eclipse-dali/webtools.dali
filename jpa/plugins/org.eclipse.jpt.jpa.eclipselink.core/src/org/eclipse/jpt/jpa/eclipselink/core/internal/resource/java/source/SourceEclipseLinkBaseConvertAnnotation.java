@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkBaseConvertAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.BaseConvertAnnotation;
 
 /**
  * <code><ul>
@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkBaseConvert
  */
 public abstract class SourceEclipseLinkBaseConvertAnnotation
 	extends SourceAnnotation
-	implements EclipseLinkBaseConvertAnnotation
+	implements BaseConvertAnnotation
 {
 	private final DeclarationAnnotationElementAdapter<String> valueDeclarationAdapter;
 	private final AnnotationElementAdapter<String> valueAdapter;

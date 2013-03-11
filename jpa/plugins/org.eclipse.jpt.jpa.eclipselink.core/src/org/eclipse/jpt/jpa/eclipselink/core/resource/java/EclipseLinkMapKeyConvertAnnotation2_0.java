@@ -23,7 +23,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.resource.java;
  * @since 3.1
  */
 public interface EclipseLinkMapKeyConvertAnnotation2_0
-	extends EclipseLinkBaseConvertAnnotation
+	extends BaseConvertAnnotation
 {
 	String ANNOTATION_NAME = EclipseLink.MAP_KEY_CONVERT;
 }
