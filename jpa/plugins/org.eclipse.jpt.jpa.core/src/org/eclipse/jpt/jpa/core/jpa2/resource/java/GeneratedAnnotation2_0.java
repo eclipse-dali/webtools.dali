@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
  * @version 2.3
  * @since 2.3
  */
-public interface GeneratedAnnotation
+public interface GeneratedAnnotation2_0
 	extends Annotation
 {
 	String ANNOTATION_NAME = "javax.annotation.Generated";  // requires JRE 1.6 //$NON-NLS-1$

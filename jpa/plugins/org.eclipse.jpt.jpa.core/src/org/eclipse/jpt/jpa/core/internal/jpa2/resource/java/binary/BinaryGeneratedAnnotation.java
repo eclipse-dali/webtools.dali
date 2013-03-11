@@ -15,14 +15,14 @@ import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotatio
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.GeneratedAnnotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.GeneratedAnnotation2_0;
 
 /**
  * javax.annotation.Generated
  */
 public final class BinaryGeneratedAnnotation
 	extends BinaryAnnotation
-	implements GeneratedAnnotation
+	implements GeneratedAnnotation2_0
 {
 	private final Vector<String> values;
 	private String date;

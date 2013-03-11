@@ -26,14 +26,14 @@ import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.GeneratedAnnotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.GeneratedAnnotation2_0;
 
 /**
  * javax.annotation.Generated
  */
 public final class SourceGeneratedAnnotation
 	extends SourceAnnotation
-	implements GeneratedAnnotation
+	implements GeneratedAnnotation2_0
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 

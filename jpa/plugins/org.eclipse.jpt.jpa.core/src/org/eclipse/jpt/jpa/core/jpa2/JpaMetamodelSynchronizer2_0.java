@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.GeneratedAnnotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.GeneratedAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.StaticMetamodelAnnotation;
 
 /**
@@ -176,7 +176,7 @@ public interface JpaMetamodelSynchronizer2_0 {
 		 * <code>value</code> and <code>date</code>.
 		 */
 		public static boolean isGenerated(JavaResourceAbstractType jrat) {
-			GeneratedAnnotation generatedAnnotation = (GeneratedAnnotation) jrat.getAnnotation(GeneratedAnnotation.ANNOTATION_NAME);
+			GeneratedAnnotation2_0 generatedAnnotation = (GeneratedAnnotation2_0) jrat.getAnnotation(GeneratedAnnotation2_0.ANNOTATION_NAME);
 			if (generatedAnnotation == null) {
 				return false;
 			}

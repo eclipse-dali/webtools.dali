@@ -35,7 +35,7 @@ import org.eclipse.jpt.jpa.core.jpa2.JpaMetamodelSynchronizer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.GeneratedAnnotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.GeneratedAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import com.ibm.icu.text.DateFormat;
 import com.ibm.icu.text.SimpleDateFormat;
@@ -114,7 +114,7 @@ public class GenericMetamodelSynchronizer
 			return newSource;
 		}
 
-		String date = ((GeneratedAnnotation) genType.getAnnotation(GeneratedAnnotation.ANNOTATION_NAME)).getDate();  // if we get here, this will be non-empty
+		String date = ((GeneratedAnnotation2_0) genType.getAnnotation(GeneratedAnnotation2_0.ANNOTATION_NAME)).getDate();  // if we get here, this will be non-empty
 		int dateBegin = oldSource.indexOf(date);
 		if (dateBegin == -1) {
 			return null;  // hmmm...

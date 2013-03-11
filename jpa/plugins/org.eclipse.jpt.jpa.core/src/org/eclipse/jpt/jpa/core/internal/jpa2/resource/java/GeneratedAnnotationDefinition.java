@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.binary.BinaryGeneratedAnnotation;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source.SourceGeneratedAnnotation;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.GeneratedAnnotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.GeneratedAnnotation2_0;
 
 /**
  * javax.annotation.Generated
@@ -40,19 +40,19 @@ public final class GeneratedAnnotationDefinition
 		super();
 	}
 
-	public GeneratedAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
+	public GeneratedAnnotation2_0 buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
 		return new SourceGeneratedAnnotation(parent, annotatedElement);
 	}
 
-	public GeneratedAnnotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
+	public GeneratedAnnotation2_0 buildNullAnnotation(JavaResourceAnnotatedElement parent) {
 		throw new UnsupportedOperationException();
 	}
 
-	public GeneratedAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
+	public GeneratedAnnotation2_0 buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		return new BinaryGeneratedAnnotation(parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {
-		return GeneratedAnnotation.ANNOTATION_NAME;
+		return GeneratedAnnotation2_0.ANNOTATION_NAME;
 	}
 }
