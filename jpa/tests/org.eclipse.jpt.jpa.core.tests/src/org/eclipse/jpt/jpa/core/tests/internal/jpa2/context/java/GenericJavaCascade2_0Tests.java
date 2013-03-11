@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.OneToOne2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.OneToOneAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.OneToOneAnnotation;
 import org.eclipse.jpt.jpa.core.tests.internal.jpa2.context.Generic2_0ContextModelTestCase;
@@ -57,7 +57,7 @@ public class GenericJavaCascade2_0Tests
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		OneToOne2_0Annotation annotation = (OneToOne2_0Annotation) resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
+		OneToOneAnnotation2_0 annotation = (OneToOneAnnotation2_0) resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToOneMapping2_0 mapping = (OneToOneMapping2_0) persistentAttribute.getMapping();
@@ -85,7 +85,7 @@ public class GenericJavaCascade2_0Tests
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		OneToOne2_0Annotation annotation = (OneToOne2_0Annotation) resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
+		OneToOneAnnotation2_0 annotation = (OneToOneAnnotation2_0) resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToOneMapping2_0 mapping = (OneToOneMapping2_0) persistentAttribute.getMapping();

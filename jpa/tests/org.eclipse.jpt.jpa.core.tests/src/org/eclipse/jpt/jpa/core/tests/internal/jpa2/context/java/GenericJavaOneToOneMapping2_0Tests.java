@@ -47,7 +47,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.AccessAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollectionAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsIdAnnotation2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.OneToOne2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.OneToOneAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.BasicAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.EmbeddedAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.EmbeddedIdAnnotation;
@@ -878,7 +878,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		assertNull(mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 		
 		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
-		OneToOne2_0Annotation oneToOne = (OneToOne2_0Annotation) resourceField.getAnnotation(JPA.ONE_TO_ONE);
+		OneToOneAnnotation2_0 oneToOne = (OneToOneAnnotation2_0) resourceField.getAnnotation(JPA.ONE_TO_ONE);
 		oneToOne.setOrphanRemoval(Boolean.FALSE);
 		getJpaProject().synchronizeContextModel();
 		
@@ -908,7 +908,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		mappingsOrphanRemoval.setSpecifiedOrphanRemoval(Boolean.TRUE);
 		
 		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
-		OneToOne2_0Annotation oneToOne = (OneToOne2_0Annotation) resourceField.getAnnotation(JPA.ONE_TO_ONE);
+		OneToOneAnnotation2_0 oneToOne = (OneToOneAnnotation2_0) resourceField.getAnnotation(JPA.ONE_TO_ONE);
 		
 		assertEquals(Boolean.TRUE, oneToOne.getOrphanRemoval());
 		
@@ -929,7 +929,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		mappingsOrphanRemoval.setSpecifiedOrphanRemoval(Boolean.TRUE);
 		
 		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
-		OneToOne2_0Annotation oneToOne = (OneToOne2_0Annotation) resourceField.getAnnotation(JPA.ONE_TO_ONE);
+		OneToOneAnnotation2_0 oneToOne = (OneToOneAnnotation2_0) resourceField.getAnnotation(JPA.ONE_TO_ONE);
 		
 		assertEquals(Boolean.TRUE, oneToOne.getOrphanRemoval());
 		
@@ -952,7 +952,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		assertNull(mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 
 		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
-		OneToOne2_0Annotation oneToOne = (OneToOne2_0Annotation) resourceField.getAnnotation(JPA.ONE_TO_ONE);
+		OneToOneAnnotation2_0 oneToOne = (OneToOneAnnotation2_0) resourceField.getAnnotation(JPA.ONE_TO_ONE);
 		oneToOne.setOrphanRemoval(Boolean.FALSE);
 		getJpaProject().synchronizeContextModel();
 
