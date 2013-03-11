@@ -24,14 +24,14 @@ import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.NullEclipseLinkWriteTransformerColumnAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkWriteTransformerAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.WriteTransformerAnnotation;
 
 /**
  * <code>org.eclipse.persistence.annotations.WriteTransformer</code>
  */
 public final class SourceEclipseLinkWriteTransformerAnnotation
 	extends SourceEclipseLinkTransformerAnnotation
-	implements EclipseLinkWriteTransformerAnnotation
+	implements WriteTransformerAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 

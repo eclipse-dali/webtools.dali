@@ -16,14 +16,14 @@ import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryColumnAnnota
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.NullEclipseLinkWriteTransformerColumnAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkWriteTransformerAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.WriteTransformerAnnotation;
 
 /**
  * <code>org.eclipse.persistence.annotations.ReadTransformer</code>
  */
 public class BinaryEclipseLinkWriteTransformerAnnotation
 	extends BinaryEclipseLinkTransformerAnnotation
-	implements EclipseLinkWriteTransformerAnnotation
+	implements WriteTransformerAnnotation
 {
 	private ColumnAnnotation column;
 	private final ColumnAnnotation nullColumn;

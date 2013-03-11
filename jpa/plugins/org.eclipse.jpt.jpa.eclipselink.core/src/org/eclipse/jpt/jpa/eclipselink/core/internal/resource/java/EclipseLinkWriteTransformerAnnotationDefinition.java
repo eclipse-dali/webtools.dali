@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.BinaryEclipseLinkWriteTransformerAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.SourceEclipseLinkWriteTransformerAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkWriteTransformerAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.WriteTransformerAnnotation;
 
 /**
  * org.eclipse.persistence.annotations.WriteTransformer
@@ -54,6 +54,6 @@ public class EclipseLinkWriteTransformerAnnotationDefinition
 	}
 
 	public String getAnnotationName() {
-		return EclipseLinkWriteTransformerAnnotation.ANNOTATION_NAME;
+		return WriteTransformerAnnotation.ANNOTATION_NAME;
 	}
 }

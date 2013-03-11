@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java;
 
 import org.eclipse.jpt.jpa.core.internal.resource.java.NullColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkWriteTransformerAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.WriteTransformerAnnotation;
 
 /**
  * <code>javax.persistence.Column</code>
@@ -19,12 +19,12 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkWriteTransf
 public final class NullEclipseLinkWriteTransformerColumnAnnotation
 	extends NullColumnAnnotation
 {	
-	public NullEclipseLinkWriteTransformerColumnAnnotation(EclipseLinkWriteTransformerAnnotation parent) {
+	public NullEclipseLinkWriteTransformerColumnAnnotation(WriteTransformerAnnotation parent) {
 		super(parent);
 	}
 
-	private EclipseLinkWriteTransformerAnnotation getWriteTransformerAnnotation() {
-		return (EclipseLinkWriteTransformerAnnotation) this.parent;
+	private WriteTransformerAnnotation getWriteTransformerAnnotation() {
+		return (WriteTransformerAnnotation) this.parent;
 	}
 	
 	@Override
