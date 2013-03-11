@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.BinaryEclipseLinkExistenceCheckingAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.SourceEclipseLinkExistenceCheckingAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkExistenceCheckingAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ExistenceCheckingAnnotation;
  
 /**
  * org.eclipse.persistence.annotations.ExistenceChecking
@@ -54,6 +54,6 @@ public class EclipseLinkExistenceCheckingAnnotationDefinition
 	}
 
 	public String getAnnotationName() {
-		return EclipseLinkExistenceCheckingAnnotation.ANNOTATION_NAME;
+		return ExistenceCheckingAnnotation.ANNOTATION_NAME;
 	}
 }

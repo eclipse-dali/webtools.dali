@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkExistenceCheckingAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ExistenceCheckingAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ExistenceType;
 
 @SuppressWarnings("nls")
@@ -54,7 +54,7 @@ public class ExistenceCheckingTests extends EclipseLinkJavaResourceModelTestCase
 		ICompilationUnit cu = this.createTestExistenceChecking();
 		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		EclipseLinkExistenceCheckingAnnotation existenceChecking = (EclipseLinkExistenceCheckingAnnotation) resourceType.getAnnotation(EclipseLink.EXISTENCE_CHECKING);
+		ExistenceCheckingAnnotation existenceChecking = (ExistenceCheckingAnnotation) resourceType.getAnnotation(EclipseLink.EXISTENCE_CHECKING);
 		assertNotNull(existenceChecking);
 	}
 
@@ -62,7 +62,7 @@ public class ExistenceCheckingTests extends EclipseLinkJavaResourceModelTestCase
 		ICompilationUnit cu = this.createTestExistenceCheckingWithValue();
 		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		EclipseLinkExistenceCheckingAnnotation existenceChecking = (EclipseLinkExistenceCheckingAnnotation) resourceType.getAnnotation(EclipseLink.EXISTENCE_CHECKING);
+		ExistenceCheckingAnnotation existenceChecking = (ExistenceCheckingAnnotation) resourceType.getAnnotation(EclipseLink.EXISTENCE_CHECKING);
 		assertEquals(ExistenceType.ASSUME_EXISTENCE, existenceChecking.getValue());
 	}
 
@@ -70,7 +70,7 @@ public class ExistenceCheckingTests extends EclipseLinkJavaResourceModelTestCase
 		ICompilationUnit cu = this.createTestExistenceCheckingWithValue();
 		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		EclipseLinkExistenceCheckingAnnotation existenceChecking = (EclipseLinkExistenceCheckingAnnotation) resourceType.getAnnotation(EclipseLink.EXISTENCE_CHECKING);
+		ExistenceCheckingAnnotation existenceChecking = (ExistenceCheckingAnnotation) resourceType.getAnnotation(EclipseLink.EXISTENCE_CHECKING);
 		assertEquals(ExistenceType.ASSUME_EXISTENCE, existenceChecking.getValue());
 		
 		existenceChecking.setValue(ExistenceType.ASSUME_NON_EXISTENCE);

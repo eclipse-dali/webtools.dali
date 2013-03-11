@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkExistenceCheckingAnnotation
+public interface ExistenceCheckingAnnotation
 	extends Annotation
 {
 	String ANNOTATION_NAME = EclipseLink.EXISTENCE_CHECKING;

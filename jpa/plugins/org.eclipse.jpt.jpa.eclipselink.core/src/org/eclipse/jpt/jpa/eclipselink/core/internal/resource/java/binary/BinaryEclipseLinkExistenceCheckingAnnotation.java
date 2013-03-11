@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotatio
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkExistenceCheckingAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ExistenceCheckingAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ExistenceType;
 
 /**
@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ExistenceType;
  */
 public final class BinaryEclipseLinkExistenceCheckingAnnotation
 	extends BinaryAnnotation
-	implements EclipseLinkExistenceCheckingAnnotation
+	implements ExistenceCheckingAnnotation
 {
 	private ExistenceType value;
 

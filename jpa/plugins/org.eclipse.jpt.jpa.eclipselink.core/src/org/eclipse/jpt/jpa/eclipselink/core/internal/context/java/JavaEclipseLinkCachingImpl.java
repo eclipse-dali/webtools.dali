@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaNonEmbeddableTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkExistenceCheckingAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ExistenceCheckingAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTimeOfDayAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -77,7 +77,7 @@ public class JavaEclipseLinkCachingImpl
 		this.expiry = cacheAnnotation.getExpiry();
 		this.expiryTimeOfDay = this.buildExpiryTimeOfDay(cacheAnnotation.getExpiryTimeOfDay());
 
-		EclipseLinkExistenceCheckingAnnotation ecAnnotation = this.getExistenceCheckingAnnotation();
+		ExistenceCheckingAnnotation ecAnnotation = this.getExistenceCheckingAnnotation();
 		this.existenceChecking = (ecAnnotation != null);
 		this.specifiedExistenceType = this.buildSpecifiedExistenceType(ecAnnotation);
 
@@ -106,7 +106,7 @@ public class JavaEclipseLinkCachingImpl
 		this.setExpiry_(cacheAnnotation.getExpiry());
 		this.syncExpiryTimeOfDay(cacheAnnotation.getExpiryTimeOfDay());
 
-		EclipseLinkExistenceCheckingAnnotation ecAnnotation = this.getExistenceCheckingAnnotation();
+		ExistenceCheckingAnnotation ecAnnotation = this.getExistenceCheckingAnnotation();
 		this.setExistenceChecking_(ecAnnotation != null);
 		this.setSpecifiedExistenceType_(this.buildSpecifiedExistenceType(ecAnnotation));
 
@@ -496,7 +496,7 @@ public class JavaEclipseLinkCachingImpl
 		this.firePropertyChanged(SPECIFIED_EXISTENCE_TYPE_PROPERTY, old, type);
 	}
 
-	protected EclipseLinkExistenceType buildSpecifiedExistenceType(EclipseLinkExistenceCheckingAnnotation ecAnnotation) {
+	protected EclipseLinkExistenceType buildSpecifiedExistenceType(ExistenceCheckingAnnotation ecAnnotation) {
 		return (ecAnnotation == null) ? null : EclipseLinkExistenceType.fromJavaResourceModel(ecAnnotation.getValue());
 	}
 
@@ -588,12 +588,12 @@ public class JavaEclipseLinkCachingImpl
 
 	// ********** existence checking annotation **********
 
-	protected EclipseLinkExistenceCheckingAnnotation getExistenceCheckingAnnotation() {
-		return (EclipseLinkExistenceCheckingAnnotation) this.getJavaResourceType().getAnnotation(this.getExistenceCheckingAnnotationName());
+	protected ExistenceCheckingAnnotation getExistenceCheckingAnnotation() {
+		return (ExistenceCheckingAnnotation) this.getJavaResourceType().getAnnotation(this.getExistenceCheckingAnnotationName());
 	}
 
-	protected EclipseLinkExistenceCheckingAnnotation addExistenceCheckingAnnotation() {
-		return (EclipseLinkExistenceCheckingAnnotation) this.getJavaResourceType().addAnnotation(this.getExistenceCheckingAnnotationName());
+	protected ExistenceCheckingAnnotation addExistenceCheckingAnnotation() {
+		return (ExistenceCheckingAnnotation) this.getJavaResourceType().addAnnotation(this.getExistenceCheckingAnnotationName());
 	}
 
 	protected void removeExistenceCheckingAnnotation() {
@@ -601,7 +601,7 @@ public class JavaEclipseLinkCachingImpl
 	}
 
 	protected String getExistenceCheckingAnnotationName() {
-		return EclipseLinkExistenceCheckingAnnotation.ANNOTATION_NAME;
+		return ExistenceCheckingAnnotation.ANNOTATION_NAME;
 	}
 
 
