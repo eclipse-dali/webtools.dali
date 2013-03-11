@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * @version 2.3
  * @since 2.3
  */
-public interface MapKeyClass2_0Annotation 
+public interface MapKeyClassAnnotation2_0 
 	extends Annotation
 {
 	String ANNOTATION_NAME = JPA2_0.MAP_KEY_CLASS;

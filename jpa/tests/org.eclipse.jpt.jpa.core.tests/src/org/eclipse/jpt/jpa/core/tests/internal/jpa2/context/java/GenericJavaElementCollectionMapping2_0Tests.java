@@ -55,7 +55,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaElementCollectionMapping2_
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.AccessAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollectionAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClassAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumerated2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
@@ -1059,12 +1059,12 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		assertNull(elementCollectionMapping.getSpecifiedMapKeyClass());
-		assertNull(resourceField.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(MapKeyClassAnnotation2_0.ANNOTATION_NAME));
 		
 		//set mapKey in the resource model, verify context model does not change
-		resourceField.addAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(MapKeyClassAnnotation2_0.ANNOTATION_NAME);
 		assertNull(elementCollectionMapping.getSpecifiedMapKeyClass());
-		MapKeyClass2_0Annotation mapKeyClass = (MapKeyClass2_0Annotation) resourceField.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+		MapKeyClassAnnotation2_0 mapKeyClass = (MapKeyClassAnnotation2_0) resourceField.getAnnotation(MapKeyClassAnnotation2_0.ANNOTATION_NAME);
 		assertNotNull(mapKeyClass);
 				
 		//set mapKey name in the resource model, verify context model updated
@@ -1082,11 +1082,11 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertNull(mapKeyClass.getValue());
 		
 		mapKeyClass.setValue("myMapKeyClass");
-		resourceField.removeAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+		resourceField.removeAnnotation(MapKeyClassAnnotation2_0.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 
 		assertNull(elementCollectionMapping.getSpecifiedMapKeyClass());
-		assertNull(resourceField.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(MapKeyClassAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testModifyMapKeyClass() throws Exception {
@@ -1100,18 +1100,18 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		assertNull(elementCollectionMapping.getSpecifiedMapKeyClass());
-		assertNull(resourceField.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(MapKeyClassAnnotation2_0.ANNOTATION_NAME));
 					
 		//set mapKey  in the context model, verify resource model updated
 		elementCollectionMapping.setSpecifiedMapKeyClass("String");
-		MapKeyClass2_0Annotation mapKeyClass = (MapKeyClass2_0Annotation) resourceField.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+		MapKeyClassAnnotation2_0 mapKeyClass = (MapKeyClassAnnotation2_0) resourceField.getAnnotation(MapKeyClassAnnotation2_0.ANNOTATION_NAME);
 		assertEquals("String", elementCollectionMapping.getSpecifiedMapKeyClass());
 		assertEquals("String", mapKeyClass.getValue());
 	
 		//set mapKey to null in the context model
 		elementCollectionMapping.setSpecifiedMapKeyClass(null);
 		assertNull(elementCollectionMapping.getSpecifiedMapKeyClass());
-		assertNull(resourceField.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(MapKeyClassAnnotation2_0.ANNOTATION_NAME));
 	}
 
 	public void testDefaultMapKeyClass() throws Exception {

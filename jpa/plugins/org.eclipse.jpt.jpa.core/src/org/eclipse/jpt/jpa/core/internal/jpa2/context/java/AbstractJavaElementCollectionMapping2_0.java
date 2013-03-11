@@ -98,7 +98,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollectionAnnotation2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClassAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
@@ -824,7 +824,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 
 	public void setSpecifiedMapKeyClass(String mapKeyClass) {
 		if (this.valuesAreDifferent(mapKeyClass, this.specifiedMapKeyClass)) {
-			MapKeyClass2_0Annotation annotation = this.getMapKeyClassAnnotation();
+			MapKeyClassAnnotation2_0 annotation = this.getMapKeyClassAnnotation();
 			if (mapKeyClass == null) {
 				if (annotation != null) {
 					this.removeMapKeyClassAnnotation();
@@ -847,7 +847,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	protected String buildSpecifiedMapKeyClass() {
-		MapKeyClass2_0Annotation annotation = this.getMapKeyClassAnnotation();
+		MapKeyClassAnnotation2_0 annotation = this.getMapKeyClassAnnotation();
 		return (annotation == null) ? null : annotation.getValue();
 	}
 
@@ -899,16 +899,16 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 
 	// ********** map key class annotation **********
 
-	protected MapKeyClass2_0Annotation getMapKeyClassAnnotation() {
-		return (MapKeyClass2_0Annotation) this.getResourceAttribute().getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+	protected MapKeyClassAnnotation2_0 getMapKeyClassAnnotation() {
+		return (MapKeyClassAnnotation2_0) this.getResourceAttribute().getAnnotation(MapKeyClassAnnotation2_0.ANNOTATION_NAME);
 	}
 
-	protected MapKeyClass2_0Annotation addMapKeyClassAnnotation() {
-		return (MapKeyClass2_0Annotation) this.getResourceAttribute().addAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+	protected MapKeyClassAnnotation2_0 addMapKeyClassAnnotation() {
+		return (MapKeyClassAnnotation2_0) this.getResourceAttribute().addAnnotation(MapKeyClassAnnotation2_0.ANNOTATION_NAME);
 	}
 
 	protected void removeMapKeyClassAnnotation() {
-		this.getResourceAttribute().removeAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+		this.getResourceAttribute().removeAnnotation(MapKeyClassAnnotation2_0.ANNOTATION_NAME);
 	}
 
 
@@ -1656,7 +1656,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	protected TextRange getMapKeyClassTextRange() {
-		MapKeyClass2_0Annotation annotation = this.getMapKeyClassAnnotation();
+		MapKeyClassAnnotation2_0 annotation = this.getMapKeyClassAnnotation();
 		return annotation == null ? getMappingAnnotationTextRange() : annotation.getTextRange();
 	}
 

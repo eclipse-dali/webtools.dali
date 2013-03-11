@@ -14,14 +14,14 @@ import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotatio
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClassAnnotation2_0;
 
 /**
  * <code>javax.persistence.MapKeyClass</code>
  */
 public final class BinaryMapKeyClass2_0Annotation
 	extends BinaryAnnotation
-	implements MapKeyClass2_0Annotation 
+	implements MapKeyClassAnnotation2_0 
 {
 	private String value;
 

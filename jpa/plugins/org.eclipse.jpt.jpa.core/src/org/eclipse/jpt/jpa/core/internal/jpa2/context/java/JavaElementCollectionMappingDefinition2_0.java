@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.AccessAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.CollectionTableAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollectionAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClassAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumerated2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
@@ -84,7 +84,7 @@ public class JavaElementCollectionMappingDefinition2_0
 		EnumeratedAnnotation.ANNOTATION_NAME,
 		LobAnnotation.ANNOTATION_NAME,
 		MapKeyAnnotation.ANNOTATION_NAME,
-		MapKeyClass2_0Annotation.ANNOTATION_NAME,
+		MapKeyClassAnnotation2_0.ANNOTATION_NAME,
 		MapKeyColumn2_0Annotation.ANNOTATION_NAME,
 		MapKeyEnumerated2_0Annotation.ANNOTATION_NAME,
 		MapKeyJoinColumn2_0Annotation.ANNOTATION_NAME,

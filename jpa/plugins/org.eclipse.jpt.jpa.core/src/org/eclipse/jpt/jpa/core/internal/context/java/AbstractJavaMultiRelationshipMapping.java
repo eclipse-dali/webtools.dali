@@ -70,7 +70,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAttributeOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClassAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.MapKeyAnnotation;
@@ -386,7 +386,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 
 	public void setSpecifiedMapKeyClass(String mapKeyClass) {
 		if (this.valuesAreDifferent(mapKeyClass, this.specifiedMapKeyClass)) {
-			MapKeyClass2_0Annotation annotation = this.getMapKeyClassAnnotation();
+			MapKeyClassAnnotation2_0 annotation = this.getMapKeyClassAnnotation();
 			if (mapKeyClass == null) {
 				if (annotation != null) {
 					this.removeMapKeyClassAnnotation();
@@ -409,7 +409,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	}
 
 	protected String buildSpecifiedMapKeyClass() {
-		MapKeyClass2_0Annotation annotation = this.getMapKeyClassAnnotation();
+		MapKeyClassAnnotation2_0 annotation = this.getMapKeyClassAnnotation();
 		return (annotation == null) ? null : annotation.getValue();
 	}
 
@@ -464,20 +464,20 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 
 	// ********** map key class annotation **********
 
-	protected MapKeyClass2_0Annotation getMapKeyClassAnnotation() {
+	protected MapKeyClassAnnotation2_0 getMapKeyClassAnnotation() {
 		return this.isJpa2_0Compatible() ? this.getMapKeyClassAnnotation_() : null;
 	}
 
-	protected MapKeyClass2_0Annotation getMapKeyClassAnnotation_() {
-		return (MapKeyClass2_0Annotation) this.getResourceAttribute().getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+	protected MapKeyClassAnnotation2_0 getMapKeyClassAnnotation_() {
+		return (MapKeyClassAnnotation2_0) this.getResourceAttribute().getAnnotation(MapKeyClassAnnotation2_0.ANNOTATION_NAME);
 	}
 
-	protected MapKeyClass2_0Annotation addMapKeyClassAnnotation() {
-		return (MapKeyClass2_0Annotation) this.getResourceAttribute().addAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+	protected MapKeyClassAnnotation2_0 addMapKeyClassAnnotation() {
+		return (MapKeyClassAnnotation2_0) this.getResourceAttribute().addAnnotation(MapKeyClassAnnotation2_0.ANNOTATION_NAME);
 	}
 
 	protected void removeMapKeyClassAnnotation() {
-		this.getResourceAttribute().removeAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+		this.getResourceAttribute().removeAnnotation(MapKeyClassAnnotation2_0.ANNOTATION_NAME);
 	}
 
 
@@ -999,7 +999,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	}
 
 	protected TextRange getMapKeyClassAnnotationTextRange() {
-		MapKeyClass2_0Annotation annotation = this.getMapKeyClassAnnotation();
+		MapKeyClassAnnotation2_0 annotation = this.getMapKeyClassAnnotation();
 		return (annotation == null) ? null : annotation.getTextRange();
 	}
 

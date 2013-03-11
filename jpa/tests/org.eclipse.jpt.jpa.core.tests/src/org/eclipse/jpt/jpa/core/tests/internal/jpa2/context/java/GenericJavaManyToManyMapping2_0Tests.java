@@ -56,7 +56,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.AccessAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollectionAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClassAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumerated2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
@@ -848,12 +848,12 @@ public class GenericJavaManyToManyMapping2_0Tests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		assertNull(manyToManyMapping.getSpecifiedMapKeyClass());
-		assertNull(resourceField.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(MapKeyClassAnnotation2_0.ANNOTATION_NAME));
 		
 		//set mapKey in the resource model, verify context model does not change
-		resourceField.addAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(MapKeyClassAnnotation2_0.ANNOTATION_NAME);
 		assertNull(manyToManyMapping.getSpecifiedMapKeyClass());
-		MapKeyClass2_0Annotation mapKeyClassAnnotation = (MapKeyClass2_0Annotation) resourceField.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+		MapKeyClassAnnotation2_0 mapKeyClassAnnotation = (MapKeyClassAnnotation2_0) resourceField.getAnnotation(MapKeyClassAnnotation2_0.ANNOTATION_NAME);
 		assertNotNull(mapKeyClassAnnotation);
 				
 		//set mapKey name in the resource model, verify context model updated
@@ -869,10 +869,10 @@ public class GenericJavaManyToManyMapping2_0Tests
 		assertNull(mapKeyClassAnnotation.getValue());
 		
 		mapKeyClassAnnotation.setValue("myMapKeyClass");
-		resourceField.removeAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+		resourceField.removeAnnotation(MapKeyClassAnnotation2_0.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		assertNull(manyToManyMapping.getSpecifiedMapKeyClass());
-		assertNull(resourceField.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(MapKeyClassAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testModifyMapKeyClass() throws Exception {
@@ -886,18 +886,18 @@ public class GenericJavaManyToManyMapping2_0Tests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		assertNull(manyToManyMapping.getSpecifiedMapKeyClass());
-		assertNull(resourceField.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(MapKeyClassAnnotation2_0.ANNOTATION_NAME));
 					
 		//set mapKey  in the context model, verify resource model updated
 		manyToManyMapping.setSpecifiedMapKeyClass("String");
-		MapKeyClass2_0Annotation mapKeyClass = (MapKeyClass2_0Annotation) resourceField.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+		MapKeyClassAnnotation2_0 mapKeyClass = (MapKeyClassAnnotation2_0) resourceField.getAnnotation(MapKeyClassAnnotation2_0.ANNOTATION_NAME);
 		assertEquals("String", manyToManyMapping.getSpecifiedMapKeyClass());
 		assertEquals("String", mapKeyClass.getValue());
 	
 		//set mapKey to null in the context model
 		manyToManyMapping.setSpecifiedMapKeyClass(null);
 		assertNull(manyToManyMapping.getSpecifiedMapKeyClass());
-		assertNull(resourceField.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(MapKeyClassAnnotation2_0.ANNOTATION_NAME));
 	}
 
 	public void testDefaultMapKeyClass() throws Exception {

@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClassAnnotation2_0;
 
 @SuppressWarnings("nls")
 public class MapKeyClass2_0AnnotationTests extends JavaResourceModel2_0TestCase {
@@ -71,7 +71,7 @@ public class MapKeyClass2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 
-		MapKeyClass2_0Annotation mapKeyClass = (MapKeyClass2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_CLASS);
+		MapKeyClassAnnotation2_0 mapKeyClass = (MapKeyClassAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_CLASS);
 		assertNotNull(mapKeyClass);
 		assertNull(mapKeyClass.getValue());
 	}
@@ -81,7 +81,7 @@ public class MapKeyClass2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 
-		MapKeyClass2_0Annotation mapKeyClass = (MapKeyClass2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_CLASS);
+		MapKeyClassAnnotation2_0 mapKeyClass = (MapKeyClassAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_CLASS);
 		assertEquals(MAP_KEY_CLASS_VALUE, mapKeyClass.getValue());
 	}
 
@@ -90,7 +90,7 @@ public class MapKeyClass2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 
-		MapKeyClass2_0Annotation mapKeyClass = (MapKeyClass2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_CLASS);
+		MapKeyClassAnnotation2_0 mapKeyClass = (MapKeyClassAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_CLASS);
 		assertEquals(MAP_KEY_CLASS_VALUE, mapKeyClass.getValue());
 		
 		mapKeyClass.setValue("foo");
@@ -108,7 +108,7 @@ public class MapKeyClass2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 
-		MapKeyClass2_0Annotation mapKeyClass = (MapKeyClass2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_CLASS);
+		MapKeyClassAnnotation2_0 mapKeyClass = (MapKeyClassAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_CLASS);
 		assertNotNull(mapKeyClass.getValue());
 		assertEquals("MyClass", mapKeyClass.getFullyQualifiedClassName()); //bug 196200 changed this
 
@@ -124,7 +124,7 @@ public class MapKeyClass2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 
-		MapKeyClass2_0Annotation mapKeyClass = (MapKeyClass2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_CLASS);
+		MapKeyClassAnnotation2_0 mapKeyClass = (MapKeyClassAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_CLASS);
 		assertEquals("int", mapKeyClass.getValue());
 		assertEquals("int", mapKeyClass.getFullyQualifiedClassName());
 	}
@@ -134,7 +134,7 @@ public class MapKeyClass2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 
-		MapKeyClass2_0Annotation mapKeyClass = (MapKeyClass2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_CLASS);
+		MapKeyClassAnnotation2_0 mapKeyClass = (MapKeyClassAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_CLASS);
 		assertEquals(MAP_KEY_CLASS_VALUE, mapKeyClass.getValue());
 
 		mapKeyClass.setValue("int");
