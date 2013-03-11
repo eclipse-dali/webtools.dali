@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.BinaryEclipseLinkMapKeyConvertAnnotation2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.SourceEclipseLinkMapKeyConvertAnnotation2_0;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkMapKeyConvertAnnotation2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MapKeyConvertAnnotation2_0;
 
 /**
  * org.eclipse.persistence.annotations.MapKeyConvert
@@ -54,6 +54,6 @@ public class EclipseLinkMapKeyConvert2_0AnnotationDefinition
 	}
 
 	public String getAnnotationName() {
-		return EclipseLinkMapKeyConvertAnnotation2_0.ANNOTATION_NAME;
+		return MapKeyConvertAnnotation2_0.ANNOTATION_NAME;
 	}
 }

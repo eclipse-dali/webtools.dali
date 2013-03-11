@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkMapKeyConvertAnnotation2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MapKeyConvertAnnotation2_0;
 
 @SuppressWarnings("nls")
 public class MapKeyConvertAnnotation2_0Tests extends EclipseLink2_0JavaResourceModelTestCase {
@@ -70,7 +70,7 @@ public class MapKeyConvertAnnotation2_0Tests extends EclipseLink2_0JavaResourceM
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkMapKeyConvertAnnotation2_0 convert = (EclipseLinkMapKeyConvertAnnotation2_0) resourceField.getAnnotation(EclipseLink.MAP_KEY_CONVERT);
+		MapKeyConvertAnnotation2_0 convert = (MapKeyConvertAnnotation2_0) resourceField.getAnnotation(EclipseLink.MAP_KEY_CONVERT);
 		assertEquals("myConverter", convert.getValue());
 	}
 
@@ -79,7 +79,7 @@ public class MapKeyConvertAnnotation2_0Tests extends EclipseLink2_0JavaResourceM
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkMapKeyConvertAnnotation2_0 convert = (EclipseLinkMapKeyConvertAnnotation2_0) resourceField.getAnnotation(EclipseLink.MAP_KEY_CONVERT);
+		MapKeyConvertAnnotation2_0 convert = (MapKeyConvertAnnotation2_0) resourceField.getAnnotation(EclipseLink.MAP_KEY_CONVERT);
 		assertEquals("myConverter", convert.getValue());
 		
 		convert.setValue("Bar");
@@ -93,7 +93,7 @@ public class MapKeyConvertAnnotation2_0Tests extends EclipseLink2_0JavaResourceM
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkMapKeyConvertAnnotation2_0 convert = (EclipseLinkMapKeyConvertAnnotation2_0) resourceField.getAnnotation(EclipseLink.MAP_KEY_CONVERT);
+		MapKeyConvertAnnotation2_0 convert = (MapKeyConvertAnnotation2_0) resourceField.getAnnotation(EclipseLink.MAP_KEY_CONVERT);
 		assertEquals("myConverter", convert.getValue());
 		
 		convert.setValue(null);

@@ -14,16 +14,16 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkMapKeyConvertAnnotation2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MapKeyConvertAnnotation2_0;
 
 /**
  * <code>org.eclipse.persistence.annotations.MapKeyConvert</code>
  */
 public final class SourceEclipseLinkMapKeyConvertAnnotation2_0
 	extends SourceEclipseLinkBaseConvertAnnotation
-	implements EclipseLinkMapKeyConvertAnnotation2_0
+	implements MapKeyConvertAnnotation2_0
 {
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(EclipseLinkMapKeyConvertAnnotation2_0.ANNOTATION_NAME);
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(MapKeyConvertAnnotation2_0.ANNOTATION_NAME);
 
 
 	public SourceEclipseLinkMapKeyConvertAnnotation2_0(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
@@ -31,7 +31,7 @@ public final class SourceEclipseLinkMapKeyConvertAnnotation2_0
 	}
 
 	public String getAnnotationName() {
-		return EclipseLinkMapKeyConvertAnnotation2_0.ANNOTATION_NAME;
+		return MapKeyConvertAnnotation2_0.ANNOTATION_NAME;
 	}
 
 	@Override

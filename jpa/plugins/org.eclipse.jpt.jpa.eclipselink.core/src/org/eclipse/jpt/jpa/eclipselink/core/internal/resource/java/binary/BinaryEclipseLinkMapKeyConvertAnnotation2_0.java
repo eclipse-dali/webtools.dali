@@ -12,14 +12,14 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkMapKeyConvertAnnotation2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MapKeyConvertAnnotation2_0;
 
 /**
  * <code>org.eclipse.persistence.annotations.MapKeyConvert</code>
  */
 public final class BinaryEclipseLinkMapKeyConvertAnnotation2_0
 	extends BinaryEclipseLinkBaseConvertAnnotation
-	implements EclipseLinkMapKeyConvertAnnotation2_0
+	implements MapKeyConvertAnnotation2_0
 {
 
 	public BinaryEclipseLinkMapKeyConvertAnnotation2_0(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
@@ -27,7 +27,7 @@ public final class BinaryEclipseLinkMapKeyConvertAnnotation2_0
 	}
 
 	public String getAnnotationName() {
-		return EclipseLinkMapKeyConvertAnnotation2_0.ANNOTATION_NAME;
+		return MapKeyConvertAnnotation2_0.ANNOTATION_NAME;
 	}
 
 	@Override
