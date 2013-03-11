@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java;
 
 import org.eclipse.jpt.jpa.core.internal.resource.java.NullJoinTableAnnotation;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.AssociationOverride2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.AssociationOverrideAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
 
 /**
@@ -20,12 +20,12 @@ import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
 public final class NullAssociationOverrideJoinTableAnnotation
 	extends NullJoinTableAnnotation
 {
-	public NullAssociationOverrideJoinTableAnnotation(AssociationOverride2_0Annotation parent) {
+	public NullAssociationOverrideJoinTableAnnotation(AssociationOverrideAnnotation2_0 parent) {
 		super(parent);
 	}
 
-	private AssociationOverride2_0Annotation getAssociationOverride2_0Annotation() {
-		return (AssociationOverride2_0Annotation) this.parent;
+	private AssociationOverrideAnnotation2_0 getAssociationOverride2_0Annotation() {
+		return (AssociationOverrideAnnotation2_0) this.parent;
 	}
 
 	@Override

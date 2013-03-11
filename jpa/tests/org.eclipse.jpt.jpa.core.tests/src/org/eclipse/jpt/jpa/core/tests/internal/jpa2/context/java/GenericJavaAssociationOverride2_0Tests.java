@@ -34,7 +34,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumnRelationship
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.VirtualOverrideRelationship2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.AssociationOverride2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.AssociationOverrideAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.tests.internal.jpa2.context.Generic2_0ContextModelTestCase;
@@ -477,7 +477,7 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		SpecifiedJoinTableRelationshipStrategy joiningStrategy = ((SpecifiedOverrideRelationship2_0) javaAssociationOverride.getRelationship()).getJoinTableStrategy();
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(PACKAGE_NAME + ".AnnotationTestTypeChild", AstNodeType.TYPE);
-		AssociationOverride2_0Annotation associationOverrideResource = (AssociationOverride2_0Annotation) resourceType.getAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
+		AssociationOverrideAnnotation2_0 associationOverrideResource = (AssociationOverrideAnnotation2_0) resourceType.getAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
 
 		
 		SpecifiedJoinTable joinTable = joiningStrategy.getJoinTable();
@@ -498,7 +498,7 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		SpecifiedJoinTableRelationshipStrategy joiningStrategy = ((SpecifiedOverrideRelationship2_0) javaAssociationOverride.getRelationship()).getJoinTableStrategy();
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(PACKAGE_NAME + ".AnnotationTestTypeChild", AstNodeType.TYPE);
-		AssociationOverride2_0Annotation associationOverrideResource = (AssociationOverride2_0Annotation) resourceType.getAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
+		AssociationOverrideAnnotation2_0 associationOverrideResource = (AssociationOverrideAnnotation2_0) resourceType.getAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
 	
 		associationOverrideResource.getJoinTable().setName("MY_JOIN_TABLE");
 		getJpaProject().synchronizeContextModel();

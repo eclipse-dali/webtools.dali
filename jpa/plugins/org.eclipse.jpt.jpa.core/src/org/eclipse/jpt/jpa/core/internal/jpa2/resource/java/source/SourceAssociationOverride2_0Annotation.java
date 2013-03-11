@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapt
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.NullAssociationOverrideJoinTableAnnotation;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceAssociationOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceJoinTableAnnotation;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.AssociationOverride2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.AssociationOverrideAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
@@ -34,7 +34,7 @@ import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
  */
 public final class SourceAssociationOverride2_0Annotation
 	extends SourceAssociationOverrideAnnotation
-	implements AssociationOverride2_0Annotation
+	implements AssociationOverrideAnnotation2_0
 {
 	private ElementAnnotationAdapter joinTableAdapter;
 	private JoinTableAnnotation joinTable;

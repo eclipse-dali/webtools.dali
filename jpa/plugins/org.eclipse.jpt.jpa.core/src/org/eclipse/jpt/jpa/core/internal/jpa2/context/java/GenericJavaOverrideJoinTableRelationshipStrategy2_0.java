@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSpecifiedOverrideRelationship2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.AssociationOverride2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.AssociationOverrideAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
 
 public class GenericJavaOverrideJoinTableRelationshipStrategy2_0
@@ -42,9 +42,9 @@ public class GenericJavaOverrideJoinTableRelationshipStrategy2_0
 		this.getOverrideAnnotation().removeJoinTable();
 	}
 
-	protected AssociationOverride2_0Annotation getOverrideAnnotation() {
+	protected AssociationOverrideAnnotation2_0 getOverrideAnnotation() {
 		// only JPA 2.0 association overrides can have a join table (join strategy)
-		return (AssociationOverride2_0Annotation) this.getRelationship().getOverrideAnnotation();
+		return (AssociationOverrideAnnotation2_0) this.getRelationship().getOverrideAnnotation();
 	}
 
 

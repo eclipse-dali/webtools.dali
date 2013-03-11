@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.jpa.core.internal.resource.java.NullJoinTableAnnotation;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryAssociationOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryJoinTableAnnotation;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.AssociationOverride2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.AssociationOverrideAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
 
@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
  */
 public final class BinaryAssociationOverride2_0Annotation
 	extends BinaryAssociationOverrideAnnotation
-	implements AssociationOverride2_0Annotation
+	implements AssociationOverrideAnnotation2_0
 {
 	private JoinTableAnnotation joinTable;
 	private final JoinTableAnnotation nullJoinTable;

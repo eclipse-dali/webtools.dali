@@ -48,7 +48,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.NamedQuery2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSpecifiedOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.AssociationOverride2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.AssociationOverrideAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.Cacheable2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.NamedQuery2_0Annotation;
@@ -2037,7 +2037,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		JavaSpecifiedAssociationOverride associationOverride = getJavaEntity().getAssociationOverrideContainer().getSpecifiedOverrides().iterator().next();
 		assertEquals("a", associationOverride.getName());
 		
-		AssociationOverride2_0Annotation annotation = (AssociationOverride2_0Annotation) getJavaPersistentType().getJavaResourceType().getAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
+		AssociationOverrideAnnotation2_0 annotation = (AssociationOverrideAnnotation2_0) getJavaPersistentType().getJavaResourceType().getAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
 		annotation.getJoinTable().setName("FOO");
 		annotation.getJoinTable().addInverseJoinColumn(0).setName("BAR");
 		

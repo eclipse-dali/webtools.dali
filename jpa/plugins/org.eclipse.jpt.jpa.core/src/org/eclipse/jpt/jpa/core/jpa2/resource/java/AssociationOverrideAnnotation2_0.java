@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
  * @version 2.3
  * @since 2.3
  */
-public interface AssociationOverride2_0Annotation
+public interface AssociationOverrideAnnotation2_0
 	extends AssociationOverrideAnnotation
 {
 	/**
