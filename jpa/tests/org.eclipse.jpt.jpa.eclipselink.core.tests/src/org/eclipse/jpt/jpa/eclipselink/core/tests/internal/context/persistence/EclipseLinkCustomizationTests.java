@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CustomizationEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Profiler;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Weaving;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkWeaving;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkCustomization;
 
 /**
@@ -78,8 +78,8 @@ public class EclipseLinkCustomizationTests extends EclipseLinkPersistenceUnitTes
 	private static final String SESSION_CUSTOMIZER_TEST_VALUE_2 = "java.lang.Boolean";
 
 	public static final String WEAVING_KEY = Customization.ECLIPSELINK_WEAVING;
-	public static final Weaving WEAVING_TEST_VALUE = Weaving.false_;
-	public static final Weaving WEAVING_TEST_VALUE_2 = Weaving.static_;
+	public static final EclipseLinkWeaving WEAVING_TEST_VALUE = EclipseLinkWeaving.false_;
+	public static final EclipseLinkWeaving WEAVING_TEST_VALUE_2 = EclipseLinkWeaving.static_;
 
 	public static final String CUSTOMIZER_KEY = Customization.ECLIPSELINK_DESCRIPTOR_CUSTOMIZER + ENTITY_TEST;
 	public static final String CUSTOMIZER_TEST_VALUE = "acme.sessions.DescriptorCustomizer";
@@ -268,7 +268,7 @@ public class EclipseLinkCustomizationTests extends EclipseLinkPersistenceUnitTes
 		else if (propertyName.equals(Customization.SESSION_CUSTOMIZER_PROPERTY))
 			this.customization.addSessionCustomizer((String) newValue);
 		else if (propertyName.equals(Customization.WEAVING_PROPERTY))
-			this.customization.setWeaving((Weaving) newValue);
+			this.customization.setWeaving((EclipseLinkWeaving) newValue);
 		else if (propertyName.equals(Customization.PROFILER_PROPERTY)) {
 			if (newValue.getClass().isEnum())
 				this.customization.setProfiler((Profiler) newValue);

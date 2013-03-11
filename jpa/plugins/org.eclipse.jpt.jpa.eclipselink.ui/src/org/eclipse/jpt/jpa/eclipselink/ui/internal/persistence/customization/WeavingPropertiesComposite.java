@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Weaving;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkWeaving;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.osgi.util.NLS;
@@ -111,8 +111,8 @@ public class WeavingPropertiesComposite extends Pane<Customization>
 
 	// ********* weaving **********
 
-	private EnumFormComboViewer<Customization, Weaving> addWeavingCombo(Composite container) {
-		return new EnumFormComboViewer<Customization, Weaving>(this, container) {
+	private EnumFormComboViewer<Customization, EclipseLinkWeaving> addWeavingCombo(Composite container) {
+		return new EnumFormComboViewer<Customization, EclipseLinkWeaving>(this, container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
@@ -120,17 +120,17 @@ public class WeavingPropertiesComposite extends Pane<Customization>
 			}
 
 			@Override
-			protected Weaving[] getChoices() {
-				return Weaving.values();
+			protected EclipseLinkWeaving[] getChoices() {
+				return EclipseLinkWeaving.values();
 			}
 
 			@Override
-			protected Weaving getDefaultValue() {
+			protected EclipseLinkWeaving getDefaultValue() {
 				return getSubject().getDefaultWeaving();
 			}
 
 			@Override
-			protected String displayString(Weaving value) {
+			protected String displayString(EclipseLinkWeaving value) {
 				switch (value) {
 					case true_ :
 						return JptJpaEclipseLinkUiMessages.WEAVING_COMPOSITE_TRUE_;
@@ -144,12 +144,12 @@ public class WeavingPropertiesComposite extends Pane<Customization>
 			}
 
 			@Override
-			protected Weaving getValue() {
+			protected EclipseLinkWeaving getValue() {
 				return getSubject().getWeaving();
 			}
 
 			@Override
-			protected void setValue(Weaving value) {
+			protected void setValue(EclipseLinkWeaving value) {
 				getSubject().setWeaving(value);
 			}
 

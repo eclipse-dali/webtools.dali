@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CustomizationEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Profiler;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Weaving;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkWeaving;
 import org.eclipse.text.edits.ReplaceEdit;
 
 /**
@@ -35,7 +35,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 {
 	// ********** EclipseLink properties **********
 	private Boolean throwExceptions;
-	private Weaving weaving;
+	private EclipseLinkWeaving weaving;
 	private Boolean weavingLazy;
 	private Boolean weavingChangeTracking;
 	private Boolean weavingFetchGroups;
@@ -65,7 +65,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		this.throwExceptions = 
 			this.getBooleanValue(ECLIPSELINK_THROW_EXCEPTIONS);
 		this.weaving = 
-			this.getEnumValue(ECLIPSELINK_WEAVING, Weaving.values());
+			this.getEnumValue(ECLIPSELINK_WEAVING, EclipseLinkWeaving.values());
 		this.weavingLazy = 
 			this.getBooleanValue(ECLIPSELINK_WEAVING_LAZY);
 		this.weavingChangeTracking = 
@@ -541,25 +541,25 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 
 	// ********** Weaving **********
 	
-	public Weaving getWeaving() {
+	public EclipseLinkWeaving getWeaving() {
 		return this.weaving;
 	}
 	
-	public void setWeaving(Weaving newWeaving) {
-		Weaving old = this.weaving;
+	public void setWeaving(EclipseLinkWeaving newWeaving) {
+		EclipseLinkWeaving old = this.weaving;
 		this.weaving = newWeaving;
 		this.putProperty(WEAVING_PROPERTY, newWeaving);
 		this.firePropertyChanged(WEAVING_PROPERTY, old, newWeaving);
 	}
 
 	private void weavingChanged(String stringValue) {
-		Weaving newValue = getEnumValueOf(stringValue, Weaving.values());
-		Weaving old = this.weaving;
+		EclipseLinkWeaving newValue = getEnumValueOf(stringValue, EclipseLinkWeaving.values());
+		EclipseLinkWeaving old = this.weaving;
 		this.weaving = newValue;
 		this.firePropertyChanged(WEAVING_PROPERTY, old, newValue);
 	}
 	
-	public Weaving getDefaultWeaving() {
+	public EclipseLinkWeaving getDefaultWeaving() {
 		return DEFAULT_WEAVING;
 	}
 

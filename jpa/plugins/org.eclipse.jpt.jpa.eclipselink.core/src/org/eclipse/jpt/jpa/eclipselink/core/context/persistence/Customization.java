@@ -25,13 +25,13 @@ public interface Customization extends PersistenceUnitProperties
 		static final String ECLIPSELINK_THROW_EXCEPTIONS = "eclipselink.orm.throw.exceptions"; //$NON-NLS-1$
 		static final Boolean DEFAULT_THROW_EXCEPTIONS = Boolean.TRUE;
 	
-	Weaving getDefaultWeaving();
-	Weaving getWeaving();
-	void setWeaving(Weaving newWeaving);
+	EclipseLinkWeaving getDefaultWeaving();
+	EclipseLinkWeaving getWeaving();
+	void setWeaving(EclipseLinkWeaving newWeaving);
 		static final String WEAVING_PROPERTY = "weaving"; //$NON-NLS-1$
 		// EclipseLink key string
 		static final String ECLIPSELINK_WEAVING = "eclipselink.weaving"; //$NON-NLS-1$
-		static final Weaving DEFAULT_WEAVING = Weaving.true_;
+		static final EclipseLinkWeaving DEFAULT_WEAVING = EclipseLinkWeaving.true_;
  
 	Boolean getDefaultWeavingLazy();
 	Boolean getWeavingLazy();

@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 /**
  *  Weaving
  */
-public enum Weaving implements PersistenceXmlEnumValue {
+public enum EclipseLinkWeaving implements PersistenceXmlEnumValue {
 	true_("true"), //$NON-NLS-1$
 	false_("false"),  //$NON-NLS-1$
 	static_("static"); //$NON-NLS-1$
@@ -25,7 +25,7 @@ public enum Weaving implements PersistenceXmlEnumValue {
 	 */
 	private final String propertyValue;
 
-	Weaving(String propertyValue) {
+	EclipseLinkWeaving(String propertyValue) {
 		this.propertyValue = propertyValue;
 	}
 
