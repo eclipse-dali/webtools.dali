@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.emf.ecore.EFactory;
-import org.eclipse.jpt.common.core.resource.xml.EFactoryTools;
+import org.eclipse.jpt.common.core.internal.resource.xml.EFactoryTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
