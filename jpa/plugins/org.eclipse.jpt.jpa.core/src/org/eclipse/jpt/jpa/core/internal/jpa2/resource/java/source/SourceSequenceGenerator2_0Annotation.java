@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceSequenceGeneratorAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.SequenceGenerator2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.SequenceGeneratorAnnotation2_0;
 
 /**
  * JPA 2.0
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.SequenceGenerator2_0Annotatio
  */
 public final class SourceSequenceGenerator2_0Annotation
 	extends SourceSequenceGeneratorAnnotation
-	implements SequenceGenerator2_0Annotation
+	implements SequenceGeneratorAnnotation2_0
 {
 	private static final DeclarationAnnotationElementAdapter<String> CATALOG_ADAPTER = buildAdapter(JPA2_0.SEQUENCE_GENERATOR__CATALOG);
 	private final AnnotationElementAdapter<String> catalogAdapter;

@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinarySequenceGeneratorAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.SequenceGenerator2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.SequenceGeneratorAnnotation2_0;
 
 /**
  * JPA 2.0
@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.SequenceGenerator2_0Annotatio
  */
 public final class BinarySequenceGenerator2_0Annotation
 	extends BinarySequenceGeneratorAnnotation
-	implements SequenceGenerator2_0Annotation
+	implements SequenceGeneratorAnnotation2_0
 {
 	private String catalog;
 	private String schema;

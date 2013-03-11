@@ -47,7 +47,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaElementCollectionMapping2_
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSpecifiedOrderColumn2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.SequenceGenerator2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.SequenceGeneratorAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.EmbeddableAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.jpa.db.DatabaseIdentifierAdapter;
@@ -99,7 +99,7 @@ public class GenericJpaFactory2_0
 
 	@Override
 	public JavaSequenceGenerator buildJavaSequenceGenerator(JavaGeneratorContainer parent, SequenceGeneratorAnnotation annotation) {
-		return new GenericJavaSequenceGenerator2_0(parent, (SequenceGenerator2_0Annotation) annotation);
+		return new GenericJavaSequenceGenerator2_0(parent, (SequenceGeneratorAnnotation2_0) annotation);
 	}
 
 	public JavaDerivedIdentity2_0 buildJavaDerivedIdentity(JavaSingleRelationshipMapping2_0 parent) {

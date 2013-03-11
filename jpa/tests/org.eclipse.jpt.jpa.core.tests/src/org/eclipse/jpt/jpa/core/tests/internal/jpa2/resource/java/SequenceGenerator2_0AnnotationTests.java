@@ -15,7 +15,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.SequenceGenerator2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.SequenceGeneratorAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
 /**
@@ -38,7 +38,7 @@ public class SequenceGenerator2_0AnnotationTests extends JavaResourceModel2_0Tes
 		JavaResourceType resourceType = this.buildJavaResourceType(cu);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
-		SequenceGenerator2_0Annotation sequenceGenerator = (SequenceGenerator2_0Annotation) resourceField.getAnnotation(JPA.SEQUENCE_GENERATOR);
+		SequenceGeneratorAnnotation2_0 sequenceGenerator = (SequenceGeneratorAnnotation2_0) resourceField.getAnnotation(JPA.SEQUENCE_GENERATOR);
 		assertEquals(GENERATOR_CATALOG, sequenceGenerator.getCatalog());
 	}
 
@@ -47,7 +47,7 @@ public class SequenceGenerator2_0AnnotationTests extends JavaResourceModel2_0Tes
 		JavaResourceType resourceType = this.buildJavaResourceType(cu);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
-		SequenceGenerator2_0Annotation sequenceGenerator = (SequenceGenerator2_0Annotation) resourceField.getAnnotation(JPA.SEQUENCE_GENERATOR);
+		SequenceGeneratorAnnotation2_0 sequenceGenerator = (SequenceGeneratorAnnotation2_0) resourceField.getAnnotation(JPA.SEQUENCE_GENERATOR);
 		assertEquals(GENERATOR_CATALOG, sequenceGenerator.getCatalog());
 		
 		sequenceGenerator.setCatalog("foo");
@@ -68,7 +68,7 @@ public class SequenceGenerator2_0AnnotationTests extends JavaResourceModel2_0Tes
 		JavaResourceType resourceType = this.buildJavaResourceType(cu);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
-		SequenceGenerator2_0Annotation sequenceGenerator = (SequenceGenerator2_0Annotation) resourceField.getAnnotation(JPA.SEQUENCE_GENERATOR);
+		SequenceGeneratorAnnotation2_0 sequenceGenerator = (SequenceGeneratorAnnotation2_0) resourceField.getAnnotation(JPA.SEQUENCE_GENERATOR);
 		assertEquals(GENERATOR_SCHEMA, sequenceGenerator.getSchema());
 	}
 
@@ -77,7 +77,7 @@ public class SequenceGenerator2_0AnnotationTests extends JavaResourceModel2_0Tes
 		JavaResourceType resourceType = this.buildJavaResourceType(cu);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
-		SequenceGenerator2_0Annotation sequenceGenerator = (SequenceGenerator2_0Annotation) resourceField.getAnnotation(JPA.SEQUENCE_GENERATOR);
+		SequenceGeneratorAnnotation2_0 sequenceGenerator = (SequenceGeneratorAnnotation2_0) resourceField.getAnnotation(JPA.SEQUENCE_GENERATOR);
 		assertEquals(GENERATOR_SCHEMA, sequenceGenerator.getSchema());
 		
 		sequenceGenerator.setSchema("foo");

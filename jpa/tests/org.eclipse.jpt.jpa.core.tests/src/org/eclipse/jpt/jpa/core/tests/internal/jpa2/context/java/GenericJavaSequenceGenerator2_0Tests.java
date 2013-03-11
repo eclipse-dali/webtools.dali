@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.jpa2.context.SequenceGenerator2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.SequenceGenerator2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.SequenceGeneratorAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
@@ -50,7 +50,7 @@ public class GenericJavaSequenceGenerator2_0Tests extends Generic2_0ContextModel
 		
 		assertNull(sequenceGenerator.getCatalog());
 		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
-		SequenceGenerator2_0Annotation annotation = (SequenceGenerator2_0Annotation) resourceField.getAnnotation(JPA.SEQUENCE_GENERATOR);	
+		SequenceGeneratorAnnotation2_0 annotation = (SequenceGeneratorAnnotation2_0) resourceField.getAnnotation(JPA.SEQUENCE_GENERATOR);	
 		
 		annotation.setCatalog("testCatalog");
 		getJpaProject().synchronizeContextModel();
@@ -84,7 +84,7 @@ public class GenericJavaSequenceGenerator2_0Tests extends Generic2_0ContextModel
 		sequenceGenerator.setSpecifiedCatalog("testCatalog");
 		
 		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
-		SequenceGenerator2_0Annotation annotation = (SequenceGenerator2_0Annotation) resourceField.getAnnotation(JPA.SEQUENCE_GENERATOR);	
+		SequenceGeneratorAnnotation2_0 annotation = (SequenceGeneratorAnnotation2_0) resourceField.getAnnotation(JPA.SEQUENCE_GENERATOR);	
 		assertEquals("testCatalog", annotation.getCatalog());
 		
 		sequenceGenerator.setSpecifiedCatalog(null);
@@ -102,7 +102,7 @@ public class GenericJavaSequenceGenerator2_0Tests extends Generic2_0ContextModel
 
 		assertNull(sequenceGenerator.getSchema());
 		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
-		SequenceGenerator2_0Annotation annotation = (SequenceGenerator2_0Annotation) resourceField.getAnnotation(JPA.SEQUENCE_GENERATOR);	
+		SequenceGeneratorAnnotation2_0 annotation = (SequenceGeneratorAnnotation2_0) resourceField.getAnnotation(JPA.SEQUENCE_GENERATOR);	
 		
 		annotation.setSchema("testSchema");
 		getJpaProject().synchronizeContextModel();
@@ -167,7 +167,7 @@ public class GenericJavaSequenceGenerator2_0Tests extends Generic2_0ContextModel
 		sequenceGenerator.setSpecifiedSchema("testSchema");
 		
 		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
-		SequenceGenerator2_0Annotation annotation = (SequenceGenerator2_0Annotation) resourceField.getAnnotation(JPA.SEQUENCE_GENERATOR);	
+		SequenceGeneratorAnnotation2_0 annotation = (SequenceGeneratorAnnotation2_0) resourceField.getAnnotation(JPA.SEQUENCE_GENERATOR);	
 		assertEquals("testSchema", annotation.getSchema());
 		
 		sequenceGenerator.setSpecifiedSchema(null);

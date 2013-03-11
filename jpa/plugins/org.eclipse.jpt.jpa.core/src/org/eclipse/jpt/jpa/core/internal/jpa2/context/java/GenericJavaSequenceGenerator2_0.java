@@ -15,14 +15,14 @@ import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaSequenceGenerator;
 import org.eclipse.jpt.jpa.core.jpa2.context.SequenceGenerator2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSequenceGenerator2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.SequenceGenerator2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.SequenceGeneratorAnnotation2_0;
 
 /**
  * JPA 2.0
  * Java sequence generator
  */
 public class GenericJavaSequenceGenerator2_0
-	extends AbstractJavaSequenceGenerator<SequenceGenerator2_0Annotation>
+	extends AbstractJavaSequenceGenerator<SequenceGeneratorAnnotation2_0>
 	implements JavaSequenceGenerator2_0
 {
 	protected String specifiedCatalog;
@@ -32,7 +32,7 @@ public class GenericJavaSequenceGenerator2_0
 	protected String defaultSchema;
 
 
-	public GenericJavaSequenceGenerator2_0(JavaGeneratorContainer parent, SequenceGenerator2_0Annotation generatorAnnotation) {
+	public GenericJavaSequenceGenerator2_0(JavaGeneratorContainer parent, SequenceGeneratorAnnotation2_0 generatorAnnotation) {
 		super(parent, generatorAnnotation);
 		this.specifiedCatalog = generatorAnnotation.getCatalog();
 		this.specifiedSchema = generatorAnnotation.getSchema();

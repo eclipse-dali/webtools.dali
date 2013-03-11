@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
  * @version 2.3
  * @since 2.3
  */
-public interface SequenceGenerator2_0Annotation
+public interface SequenceGeneratorAnnotation2_0
 	extends SequenceGeneratorAnnotation
 {
 	// ********** catalog **********
