@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTransformerAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TransformerAnnotation;
 
 /**
  * <code><ul>
@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTransformer
  */
 abstract class SourceEclipseLinkTransformerAnnotation
 	extends SourceAnnotation
-	implements EclipseLinkTransformerAnnotation
+	implements TransformerAnnotation
 {
 	final DeclarationAnnotationElementAdapter<String> transformerClassDeclarationAdapter;
 	final AnnotationElementAdapter<String> transformerClassAdapter;

@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
  * @since 2.1
  */
 public interface WriteTransformerAnnotation
-	extends EclipseLinkTransformerAnnotation
+	extends TransformerAnnotation
 {
 	String ANNOTATION_NAME = EclipseLink.WRITE_TRANSFORMER;
 

@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTransformerAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TransformerAnnotation;
 
 /**
  * <code><ul>
@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTransformer
  */
 abstract class BinaryEclipseLinkTransformerAnnotation
 	extends BinaryAnnotation
-	implements EclipseLinkTransformerAnnotation
+	implements TransformerAnnotation
 {
 	private String transformerClass;
 	private String method;

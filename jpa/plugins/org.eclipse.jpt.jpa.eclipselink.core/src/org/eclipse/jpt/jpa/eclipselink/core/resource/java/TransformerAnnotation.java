@@ -26,7 +26,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkTransformerAnnotation
+public interface TransformerAnnotation
 	extends Annotation
 {
 	/**
