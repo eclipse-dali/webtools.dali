@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType;
+import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableReference2_0;
@@ -55,7 +55,7 @@ public interface JpaFactory2_0
 	 */
 	DatabaseIdentifierAdapter buildDatabaseIdentifierAdapter(JpaDataSource dataSource);
 
-	MetamodelSourceType.Synchronizer buildMetamodelSynchronizer(MetamodelSourceType sourceType);
+	MetamodelSourceType2_0.Synchronizer buildMetamodelSynchronizer(MetamodelSourceType2_0 sourceType);
 
 	
 	// ********** Java Context Model **********

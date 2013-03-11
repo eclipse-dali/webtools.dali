@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
  * @since 2.3
  */
 public interface PersistentType2_0
-	extends PersistentType, MetamodelSourceType
+	extends PersistentType, MetamodelSourceType2_0
 {
 	/**
 	 * Return the name of the persistent type's "declaring type".

@@ -56,7 +56,7 @@ import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.java.PropertyAccessor;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
-import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType;
+import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.Attributes;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
@@ -94,7 +94,7 @@ public abstract class SpecifiedOrmPersistentType
 
 	protected String declaringTypeName;
 
-	protected final MetamodelSourceType.Synchronizer metamodelSynchronizer;
+	protected final MetamodelSourceType2_0.Synchronizer metamodelSynchronizer;
 
 	protected final Vector<OrmPersistentAttribute> children = new Vector<OrmPersistentAttribute>();
 
@@ -942,7 +942,7 @@ public abstract class SpecifiedOrmPersistentType
 
 	// ********** metamodel **********
 
-	protected MetamodelSourceType.Synchronizer buildMetamodelSynchronizer() {
+	protected MetamodelSourceType2_0.Synchronizer buildMetamodelSynchronizer() {
 		return this.isJpa2_0Compatible() ?
 				this.getJpaFactory2_0().buildMetamodelSynchronizer(this) :
 				null;
@@ -964,13 +964,13 @@ public abstract class SpecifiedOrmPersistentType
 	 * All <code>orm.xml</code> persistent types must be able to generate a static metamodel
 	 * because 1.0 <code>orm.xml</code> files can be referenced from 2.0 persistence.xml files.
 	 */
-	public void synchronizeMetamodel(Map<String, Collection<MetamodelSourceType>> memberTypeTree) {
+	public void synchronizeMetamodel(Map<String, Collection<MetamodelSourceType2_0>> memberTypeTree) {
 		if (this.getJavaPersistentType() != null) {
 			this.metamodelSynchronizer.synchronize(memberTypeTree);
 		}
 	}
 
-	public void printBodySourceOn(BodySourceWriter pw, Map<String, Collection<MetamodelSourceType>> memberTypeTree) {
+	public void printBodySourceOn(BodySourceWriter pw, Map<String, Collection<MetamodelSourceType2_0>> memberTypeTree) {
 		if (this.getJavaPersistentType() != null) {
 			this.metamodelSynchronizer.printBodySourceOn(pw, memberTypeTree);
 		}

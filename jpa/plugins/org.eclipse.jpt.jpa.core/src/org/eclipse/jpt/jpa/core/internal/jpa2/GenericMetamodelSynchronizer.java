@@ -34,7 +34,7 @@ import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2.JpaMetamodelSynchronizer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType;
+import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.GeneratedAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import com.ibm.icu.text.DateFormat;
@@ -48,12 +48,12 @@ import com.ibm.icu.text.SimpleDateFormat;
  */
 @SuppressWarnings("nls")
 public class GenericMetamodelSynchronizer
-	implements MetamodelSourceType.Synchronizer
+	implements MetamodelSourceType2_0.Synchronizer
 {
-	protected final MetamodelSourceType sourceType;
+	protected final MetamodelSourceType2_0 sourceType;
 
 
-	public GenericMetamodelSynchronizer(MetamodelSourceType sourceType) {
+	public GenericMetamodelSynchronizer(MetamodelSourceType2_0 sourceType) {
 		super();
 		this.sourceType = sourceType;
 	}
@@ -65,7 +65,7 @@ public class GenericMetamodelSynchronizer
 
 	// ********** synchronize **********
 
-	public void synchronize(Map<String, Collection<MetamodelSourceType>> memberTypeTree) {
+	public void synchronize(Map<String, Collection<MetamodelSourceType2_0>> memberTypeTree) {
 		try {
 			this.synchronize_(memberTypeTree);
 		} catch (JavaModelException ex) {
@@ -73,7 +73,7 @@ public class GenericMetamodelSynchronizer
 		}
 	}
 
-	protected void synchronize_(Map<String, Collection<MetamodelSourceType>> memberTypeTree) throws JavaModelException {
+	protected void synchronize_(Map<String, Collection<MetamodelSourceType2_0>> memberTypeTree) throws JavaModelException {
 		IPackageFragment pkg = this.getPackageFragment();
 		String fileName = this.getFileName();
 
@@ -98,7 +98,7 @@ public class GenericMetamodelSynchronizer
 	 * 
 	 * return null if the old source is not to be replaced
 	 */
-	protected String buildSource(ICompilationUnit compilationUnit, Map<String, Collection<MetamodelSourceType>> memberTypeTree) throws JavaModelException {
+	protected String buildSource(ICompilationUnit compilationUnit, Map<String, Collection<MetamodelSourceType2_0>> memberTypeTree) throws JavaModelException {
 		IFile file = (IFile) compilationUnit.getResource();
 		JavaResourceAbstractType genType = this.getJpaProject().getGeneratedMetamodelTopLevelType(file);
 		if (genType == null) {
@@ -168,11 +168,11 @@ public class GenericMetamodelSynchronizer
 		return this.buildClassName(this.sourceType.getName());
 	}
 
-	protected String buildClassName(Map<String, Collection<MetamodelSourceType>> memberTypeTree) {
+	protected String buildClassName(Map<String, Collection<MetamodelSourceType2_0>> memberTypeTree) {
 		return this.buildClassName(this.sourceType.getName(), memberTypeTree);
 	}
 
-	protected String buildClassName(String sourceTypeName, Map<String, Collection<MetamodelSourceType>> memberTypeTree) {
+	protected String buildClassName(String sourceTypeName, Map<String, Collection<MetamodelSourceType2_0>> memberTypeTree) {
 		String current = sourceTypeName;
 		LinkedStack<String> stack = new LinkedStack<String>();
 
@@ -215,7 +215,7 @@ public class GenericMetamodelSynchronizer
 	 * build the "body" source first; then build the "package" and "imports" source
 	 * and concatenate the "body" source to it
 	 */
-	protected String buildSource(Map<String, Collection<MetamodelSourceType>> memberTypeTree) {
+	protected String buildSource(Map<String, Collection<MetamodelSourceType2_0>> memberTypeTree) {
 		// build the body source first so we can gather up the import statements
 		BodySourceWriter bodySourceWriter = this.buildBodySourceWriter(memberTypeTree);
 
@@ -226,14 +226,14 @@ public class GenericMetamodelSynchronizer
 		return sw.toString();
 	}
 
-	protected BodySourceWriter buildBodySourceWriter(Map<String, Collection<MetamodelSourceType>> memberTypeTree) {
+	protected BodySourceWriter buildBodySourceWriter(Map<String, Collection<MetamodelSourceType2_0>> memberTypeTree) {
 		BodySourceWriter pw = new BodySourceWriter(this.getPackageName(), 
 													this.getClassName(), this.getLineSeparator());
 		this.printBodySourceOn(pw, memberTypeTree);
 		return pw;
 	}
 
-	public void printBodySourceOn(BodySourceWriter pw, Map<String, Collection<MetamodelSourceType>> memberTypeTree) {
+	public void printBodySourceOn(BodySourceWriter pw, Map<String, Collection<MetamodelSourceType2_0>> memberTypeTree) {
 		this.printClassDeclarationOn(pw, memberTypeTree);
 		pw.print(" {");
 		pw.println();
@@ -250,7 +250,7 @@ public class GenericMetamodelSynchronizer
 
 	// ********** class declaration **********
 
-	protected void printClassDeclarationOn(BodySourceWriter pw, Map<String, Collection<MetamodelSourceType>> memberTypeTree) {
+	protected void printClassDeclarationOn(BodySourceWriter pw, Map<String, Collection<MetamodelSourceType2_0>> memberTypeTree) {
 		boolean topLevel = this.sourceTypeIsTopLevel(memberTypeTree);
 		if (topLevel) {
 			this.printGeneratedAnnotationOn(pw);
@@ -276,7 +276,7 @@ public class GenericMetamodelSynchronizer
 	 * Return whether the source type is a top level type.
 	 * This can be inferred from the specified member type tree.
 	 */
-	protected boolean sourceTypeIsTopLevel(Map<String, Collection<MetamodelSourceType>> memberTypeTree) {
+	protected boolean sourceTypeIsTopLevel(Map<String, Collection<MetamodelSourceType2_0>> memberTypeTree) {
 		return this.sourceTypeIsTopLevel(this.sourceType.getName(), memberTypeTree);
 	}
 
@@ -284,7 +284,7 @@ public class GenericMetamodelSynchronizer
 	 * Return whether the specified source type is a top level type.
 	 * This can be inferred from the specified member type tree.
 	 */
-	protected boolean sourceTypeIsTopLevel(String sourceTypeName, Map<String, Collection<MetamodelSourceType>> memberTypeTree) {
+	protected boolean sourceTypeIsTopLevel(String sourceTypeName, Map<String, Collection<MetamodelSourceType2_0>> memberTypeTree) {
 		return this.getDeclaringTypeName(sourceTypeName, memberTypeTree) == null;
 	}
 
@@ -293,7 +293,7 @@ public class GenericMetamodelSynchronizer
 	 * implied by the specified member type tree. Return null if the source
 	 * type is a top-level type.
 	 */
-	protected String getDeclaringTypeName(String sourceTypeName, Map<String, Collection<MetamodelSourceType>> memberTypeTree) {
+	protected String getDeclaringTypeName(String sourceTypeName, Map<String, Collection<MetamodelSourceType2_0>> memberTypeTree) {
 		int lastPeriod = sourceTypeName.lastIndexOf('.');
 		if (lastPeriod == -1) {
 			return null;  // default package top-level type
@@ -387,13 +387,13 @@ public class GenericMetamodelSynchronizer
 
 	// ********** member types **********
 
-	protected void printMemberTypesOn(BodySourceWriter pw, Map<String, Collection<MetamodelSourceType>> memberTypeTree, boolean attributesPrinted) {
-		Collection<MetamodelSourceType> memberTypes = memberTypeTree.get(this.sourceType.getName());
+	protected void printMemberTypesOn(BodySourceWriter pw, Map<String, Collection<MetamodelSourceType2_0>> memberTypeTree, boolean attributesPrinted) {
+		Collection<MetamodelSourceType2_0> memberTypes = memberTypeTree.get(this.sourceType.getName());
 		if (memberTypes != null) {
 			if (attributesPrinted) {
 				pw.println();
 			}
-			for (Iterator<MetamodelSourceType> stream = memberTypes.iterator(); stream.hasNext(); ) {
+			for (Iterator<MetamodelSourceType2_0> stream = memberTypes.iterator(); stream.hasNext(); ) {
 				stream.next().printBodySourceOn(pw, memberTypeTree);
 				if (stream.hasNext()) {
 					pw.println();

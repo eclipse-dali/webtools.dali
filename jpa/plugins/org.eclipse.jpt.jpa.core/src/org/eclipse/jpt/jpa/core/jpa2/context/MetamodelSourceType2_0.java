@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,10 +14,11 @@ import java.util.Comparator;
 import java.util.Map;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.common.core.utility.BodySourceWriter;
+import org.eclipse.jpt.common.utility.internal.ComparatorAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import com.ibm.icu.text.Collator;
 
 /**
@@ -32,7 +33,7 @@ import com.ibm.icu.text.Collator;
  * @version 2.3
  * @since 2.3
  */
-public interface MetamodelSourceType {
+public interface MetamodelSourceType2_0 {
 
 	/**
 	 * Return the source type's name.
@@ -68,24 +69,27 @@ public interface MetamodelSourceType {
 	 * Synchronize the source type's metamodel, using the specified member type
 	 * tree.
 	 */
-	void synchronizeMetamodel(Map<String, Collection<MetamodelSourceType>> memberTypeTree);
+	void synchronizeMetamodel(Map<String, Collection<MetamodelSourceType2_0>> memberTypeTree);
 
 	/**
 	 * Print the body of the source type's metamodel class on the specified
 	 * writer, using the specified member type tree.
 	 */
-	void printBodySourceOn(BodySourceWriter pw, Map<String, Collection<MetamodelSourceType>> memberTypeTree);
+	void printBodySourceOn(BodySourceWriter pw, Map<String, Collection<MetamodelSourceType2_0>> memberTypeTree);
 
 
 	/**
 	 * {@link Comparator} that can be used to compare source types.
 	 */
-	Comparator<MetamodelSourceType> COMPARATOR =
-			new Comparator<MetamodelSourceType>() {
-				public int compare(MetamodelSourceType type1, MetamodelSourceType type2) {
-					return Collator.getInstance().compare(type1.getName(), type2.getName());
-				}
-			};
+	Comparator<MetamodelSourceType2_0> COMPARATOR = new MetamodelSourceTypeComparator();
+	class MetamodelSourceTypeComparator
+		extends ComparatorAdapter<MetamodelSourceType2_0>
+	{
+		@Override
+		public int compare(MetamodelSourceType2_0 type1, MetamodelSourceType2_0 type2) {
+			return Collator.getInstance().compare(type1.getName(), type2.getName());
+		}
+	}
 
 
 	/**
@@ -102,13 +106,12 @@ public interface MetamodelSourceType {
 		 * Synchronize the metamodel with the current state of the source
 		 * type, using the specified member type tree.
 		 */
-		void synchronize(Map<String, Collection<MetamodelSourceType>> memberTypeTree);
+		void synchronize(Map<String, Collection<MetamodelSourceType2_0>> memberTypeTree);
 
 		/**
 		 * Print the body of the metamodel class on the specified writer,
 		 * using the specified member type tree.
 		 */
-		void printBodySourceOn(BodySourceWriter pw, Map<String, Collection<MetamodelSourceType>> memberTypeTree);
+		void printBodySourceOn(BodySourceWriter pw, Map<String, Collection<MetamodelSourceType2_0>> memberTypeTree);
 	}
-
 }

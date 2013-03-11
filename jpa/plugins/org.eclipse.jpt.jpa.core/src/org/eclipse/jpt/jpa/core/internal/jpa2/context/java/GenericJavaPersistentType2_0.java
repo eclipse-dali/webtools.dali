@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.BodySourceWriter;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentType;
-import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType;
+import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
 
 /**
@@ -29,7 +29,7 @@ public class GenericJavaPersistentType2_0
 {
 	protected String declaringTypeName;
 
-	protected final MetamodelSourceType.Synchronizer metamodelSynchronizer;
+	protected final MetamodelSourceType2_0.Synchronizer metamodelSynchronizer;
 
 
 	public GenericJavaPersistentType2_0(PersistentType.Parent parent, JavaResourceType jrt) {
@@ -79,11 +79,11 @@ public class GenericJavaPersistentType2_0
 		return true;
 	}
 
-	public void synchronizeMetamodel(Map<String, Collection<MetamodelSourceType>> memberTypeTree) {
+	public void synchronizeMetamodel(Map<String, Collection<MetamodelSourceType2_0>> memberTypeTree) {
 		this.metamodelSynchronizer.synchronize(memberTypeTree);
 	}
 
-	public void printBodySourceOn(BodySourceWriter pw, Map<String, Collection<MetamodelSourceType>> memberTypeTree) {
+	public void printBodySourceOn(BodySourceWriter pw, Map<String, Collection<MetamodelSourceType2_0>> memberTypeTree) {
 		this.metamodelSynchronizer.printBodySourceOn(pw, memberTypeTree);
 	}
 
@@ -91,7 +91,7 @@ public class GenericJavaPersistentType2_0
 		// do nothing - probably shouldn't be called...
 	}
 
-	protected MetamodelSourceType.Synchronizer buildMetamodelSynchronizer() {
+	protected MetamodelSourceType2_0.Synchronizer buildMetamodelSynchronizer() {
 		return this.getJpaFactory2_0().buildMetamodelSynchronizer(this);
 	}
 

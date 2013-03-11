@@ -94,7 +94,7 @@ import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MappingFilePersistenceUnitDefaults2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType;
+import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.Connection2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.Options2_0;
@@ -2720,12 +2720,12 @@ public abstract class AbstractPersistenceUnit
 
 		// build a list of the top-level types and a tree of their associated
 		// member types etc.
-		ArrayList<MetamodelSourceType> topLevelTypes = new ArrayList<MetamodelSourceType>(allPersistentTypes.size());
-		HashMap<String, Collection<MetamodelSourceType>> memberTypeTree = new HashMap<String, Collection<MetamodelSourceType>>();
+		ArrayList<MetamodelSourceType2_0> topLevelTypes = new ArrayList<MetamodelSourceType2_0>(allPersistentTypes.size());
+		HashMap<String, Collection<MetamodelSourceType2_0>> memberTypeTree = new HashMap<String, Collection<MetamodelSourceType2_0>>();
 		for (PersistentType type1_0 : allPersistentTypes.values()) {
 			PersistentType2_0 type = (PersistentType2_0) type1_0;
 			String declaringTypeName = type.getDeclaringTypeName();
-			MetamodelSourceType memberType = type;
+			MetamodelSourceType2_0 memberType = type;
 			while (true) {
 				if (declaringTypeName == null) {
 					topLevelTypes.add(memberType);
@@ -2733,9 +2733,9 @@ public abstract class AbstractPersistenceUnit
 				}
 
 				// associate the member type with its declaring type
-				Collection<MetamodelSourceType> memberTypes = memberTypeTree.get(declaringTypeName);
+				Collection<MetamodelSourceType2_0> memberTypes = memberTypeTree.get(declaringTypeName);
 				if (memberTypes == null) {
-					memberTypes = new ArrayList<MetamodelSourceType>();
+					memberTypes = new ArrayList<MetamodelSourceType2_0>();
 					memberTypeTree.put(declaringTypeName, memberTypes);
 				}
 				memberTypes.add(memberType);
@@ -2778,10 +2778,10 @@ public abstract class AbstractPersistenceUnit
 		// since, on Windows, file names are case-insensitive :-(
 		// sort the original list so we end up with the same top-level type
 		// remaining every time (i.e. the one that sorts out first)
-		Collections.sort(topLevelTypes, MetamodelSourceType.COMPARATOR);
+		Collections.sort(topLevelTypes, MetamodelSourceType2_0.COMPARATOR);
 		HashSet<String> names = new HashSet<String>(topLevelTypes.size());
-		for (Iterator<MetamodelSourceType> stream = topLevelTypes.iterator(); stream.hasNext(); ) {
-			MetamodelSourceType topLevelType = stream.next();
+		for (Iterator<MetamodelSourceType2_0> stream = topLevelTypes.iterator(); stream.hasNext(); ) {
+			MetamodelSourceType2_0 topLevelType = stream.next();
 			// hopefully this is case-insensitive enough...
 			if ( ! names.add(topLevelType.getName().toLowerCase())) {
 				stream.remove();
@@ -2791,7 +2791,7 @@ public abstract class AbstractPersistenceUnit
 		// copy the list of metamodel files...
 		HashSet<IFile> deadMetamodelFiles = new HashSet<IFile>(this.metamodelFiles);
 		this.metamodelFiles.clear();
-		for (MetamodelSourceType topLevelType : topLevelTypes) {
+		for (MetamodelSourceType2_0 topLevelType : topLevelTypes) {
 			IFile metamodelFile = topLevelType.getMetamodelFile();
 			// ...remove whatever files are still present...
 			deadMetamodelFiles.remove(metamodelFile);
@@ -2809,7 +2809,7 @@ public abstract class AbstractPersistenceUnit
 		}
 
 		// now generate the metamodel classes
-		for (MetamodelSourceType topLevelType : topLevelTypes) {
+		for (MetamodelSourceType2_0 topLevelType : topLevelTypes) {
 			topLevelType.synchronizeMetamodel(memberTypeTree);
 		}
 		return Status.OK_STATUS;
@@ -2829,9 +2829,9 @@ public abstract class AbstractPersistenceUnit
 		return allPersistentTypes;
 	}
 
-	protected MetamodelSourceType selectSourceType(Iterable<MetamodelSourceType> types, String typeName) {
+	protected MetamodelSourceType2_0 selectSourceType(Iterable<MetamodelSourceType2_0> types, String typeName) {
 		if (types != null) {
-			for (MetamodelSourceType type : types) {
+			for (MetamodelSourceType2_0 type : types) {
 				if (type.getName().equals(typeName)) {
 					return type;
 				}
@@ -2840,7 +2840,7 @@ public abstract class AbstractPersistenceUnit
 		return null;
 	}
 
-	protected MetamodelSourceType buildNonPersistentMetamodelSourceType(String nonPersistentTypeName) {
+	protected MetamodelSourceType2_0 buildNonPersistentMetamodelSourceType(String nonPersistentTypeName) {
 		return new NonPersistentMetamodelSourceType(nonPersistentTypeName, this.getJpaProject());
 	}
 
@@ -2878,11 +2878,11 @@ public abstract class AbstractPersistenceUnit
 
 	// ***** Metamodel source for non-persistent types
 	protected static class NonPersistentMetamodelSourceType
-		implements MetamodelSourceType
+		implements MetamodelSourceType2_0
 	{
 		protected final String name;
 		protected final JpaProject jpaProject;
-		protected final MetamodelSourceType.Synchronizer metamodelSynchronizer;
+		protected final MetamodelSourceType2_0.Synchronizer metamodelSynchronizer;
 
 		protected NonPersistentMetamodelSourceType(String name, JpaProject jpaProject) {
 			super();
@@ -2891,7 +2891,7 @@ public abstract class AbstractPersistenceUnit
 			this.metamodelSynchronizer = this.buildMetamodelSynchronizer();
 		}
 
-		protected MetamodelSourceType.Synchronizer buildMetamodelSynchronizer() {
+		protected MetamodelSourceType2_0.Synchronizer buildMetamodelSynchronizer() {
 			return this.getJpaFactory().buildMetamodelSynchronizer(this);
 		}
 
@@ -2923,11 +2923,11 @@ public abstract class AbstractPersistenceUnit
 			return this.jpaProject;
 		}
 
-		public void synchronizeMetamodel(Map<String, Collection<MetamodelSourceType>> memberTypeTree) {
+		public void synchronizeMetamodel(Map<String, Collection<MetamodelSourceType2_0>> memberTypeTree) {
 			this.metamodelSynchronizer.synchronize(memberTypeTree);
 		}
 
-		public void printBodySourceOn(BodySourceWriter pw, Map<String, Collection<MetamodelSourceType>> memberTypeTree) {
+		public void printBodySourceOn(BodySourceWriter pw, Map<String, Collection<MetamodelSourceType2_0>> memberTypeTree) {
 			this.metamodelSynchronizer.printBodySourceOn(pw, memberTypeTree);
 		}
 	}
