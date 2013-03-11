@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumnAnnotation2_0;
 
 @SuppressWarnings("nls")
 public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase {
@@ -109,15 +109,15 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 		});
 	}
 	
-	private MapKeyJoinColumn2_0Annotation mapKeyJoinColumnAt(int index, JavaResourceMember resourceMember) {
-		return (MapKeyJoinColumn2_0Annotation) resourceMember.getAnnotation(index, JPA2_0.MAP_KEY_JOIN_COLUMN);
+	private MapKeyJoinColumnAnnotation2_0 mapKeyJoinColumnAt(int index, JavaResourceMember resourceMember) {
+		return (MapKeyJoinColumnAnnotation2_0) resourceMember.getAnnotation(index, JPA2_0.MAP_KEY_JOIN_COLUMN);
 	}
 
 	public void testGetName() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumnWithName();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
+		MapKeyJoinColumnAnnotation2_0 column = this.mapKeyJoinColumnAt(0, resourceField);
 		assertNotNull(column);
 		assertEquals(COLUMN_NAME, column.getName());
 	}
@@ -126,7 +126,7 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 		ICompilationUnit cu = this.createTestJoinColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
+		MapKeyJoinColumnAnnotation2_0 column = this.mapKeyJoinColumnAt(0, resourceField);
 		assertNotNull(column);
 		assertNull(column.getName());
 		assertNull(column.getNullable());
@@ -142,7 +142,7 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 		ICompilationUnit cu = this.createTestJoinColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
+		MapKeyJoinColumnAnnotation2_0 column = this.mapKeyJoinColumnAt(0, resourceField);
 
 		assertNotNull(column);
 		assertNull(column.getName());
@@ -157,7 +157,7 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 		ICompilationUnit cu = this.createTestJoinColumnWithName();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
+		MapKeyJoinColumnAnnotation2_0 column = this.mapKeyJoinColumnAt(0, resourceField);
 
 		assertEquals(COLUMN_NAME, column.getName());
 		
@@ -171,7 +171,7 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 		ICompilationUnit cu = this.createTestJoinColumnWithTable();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
+		MapKeyJoinColumnAnnotation2_0 column = this.mapKeyJoinColumnAt(0, resourceField);
 		assertEquals(COLUMN_TABLE, column.getTable());
 	}
 
@@ -179,7 +179,7 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 		ICompilationUnit cu = this.createTestJoinColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
+		MapKeyJoinColumnAnnotation2_0 column = this.mapKeyJoinColumnAt(0, resourceField);
 
 		assertNotNull(column);
 		assertNull(column.getTable());
@@ -198,7 +198,7 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 		ICompilationUnit cu = this.createTestJoinColumnWithReferencedColumnName();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
+		MapKeyJoinColumnAnnotation2_0 column = this.mapKeyJoinColumnAt(0, resourceField);
 		assertEquals(COLUMN_REFERENCED_COLUMN_NAME, column.getReferencedColumnName());
 	}
 
@@ -206,7 +206,7 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 		ICompilationUnit cu = this.createTestJoinColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
+		MapKeyJoinColumnAnnotation2_0 column = this.mapKeyJoinColumnAt(0, resourceField);
 
 		assertNotNull(column);
 		assertNull(column.getReferencedColumnName());
@@ -225,7 +225,7 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 		ICompilationUnit cu = this.createTestJoinColumnWithColumnDefinition();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
+		MapKeyJoinColumnAnnotation2_0 column = this.mapKeyJoinColumnAt(0, resourceField);
 		assertEquals(COLUMN_COLUMN_DEFINITION, column.getColumnDefinition());
 	}
 
@@ -233,7 +233,7 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 		ICompilationUnit cu = this.createTestJoinColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
+		MapKeyJoinColumnAnnotation2_0 column = this.mapKeyJoinColumnAt(0, resourceField);
 
 		assertNotNull(column);
 		assertNull(column.getColumnDefinition());
@@ -252,7 +252,7 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 		ICompilationUnit cu = this.createTestJoinColumnWithBooleanElement("unique");
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
+		MapKeyJoinColumnAnnotation2_0 column = this.mapKeyJoinColumnAt(0, resourceField);
 
 		assertEquals(Boolean.TRUE, column.getUnique());
 	}
@@ -261,7 +261,7 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 		ICompilationUnit cu = this.createTestJoinColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
+		MapKeyJoinColumnAnnotation2_0 column = this.mapKeyJoinColumnAt(0, resourceField);
 
 		assertNotNull(column);
 		assertNull(column.getUnique());
@@ -279,7 +279,7 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 		ICompilationUnit cu = this.createTestJoinColumnWithBooleanElement("nullable");
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
+		MapKeyJoinColumnAnnotation2_0 column = this.mapKeyJoinColumnAt(0, resourceField);
 
 		assertEquals(Boolean.TRUE, column.getNullable());
 	}
@@ -288,7 +288,7 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 		ICompilationUnit cu = this.createTestJoinColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
+		MapKeyJoinColumnAnnotation2_0 column = this.mapKeyJoinColumnAt(0, resourceField);
 
 		assertNotNull(column);
 		assertNull(column.getNullable());
@@ -306,7 +306,7 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 		ICompilationUnit cu = this.createTestJoinColumnWithBooleanElement("insertable");
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
+		MapKeyJoinColumnAnnotation2_0 column = this.mapKeyJoinColumnAt(0, resourceField);
 
 		assertEquals(Boolean.TRUE, column.getInsertable());
 	}
@@ -315,7 +315,7 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 		ICompilationUnit cu = this.createTestJoinColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
+		MapKeyJoinColumnAnnotation2_0 column = this.mapKeyJoinColumnAt(0, resourceField);
 
 		assertNotNull(column);
 		assertNull(column.getInsertable());
@@ -333,7 +333,7 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 		ICompilationUnit cu = this.createTestJoinColumnWithBooleanElement("updatable");
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
+		MapKeyJoinColumnAnnotation2_0 column = this.mapKeyJoinColumnAt(0, resourceField);
 
 		assertEquals(Boolean.TRUE, column.getUpdatable());
 	}
@@ -342,7 +342,7 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 		ICompilationUnit cu = this.createTestJoinColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
+		MapKeyJoinColumnAnnotation2_0 column = this.mapKeyJoinColumnAt(0, resourceField);
 
 		assertNotNull(column);
 		assertNull(column.getUpdatable());

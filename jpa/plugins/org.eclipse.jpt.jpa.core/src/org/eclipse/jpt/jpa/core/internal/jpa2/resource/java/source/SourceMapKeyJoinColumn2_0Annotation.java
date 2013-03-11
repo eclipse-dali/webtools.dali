@@ -22,14 +22,14 @@ import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceBaseJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumnAnnotation2_0;
 
 /**
  * <code>javax.persistence.MapKeyJoinColumn</code>
  */
 public final class SourceMapKeyJoinColumn2_0Annotation
 	extends SourceBaseJoinColumnAnnotation
-	implements MapKeyJoinColumn2_0Annotation
+	implements MapKeyJoinColumnAnnotation2_0
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 	private static final DeclarationAnnotationAdapter CONTAINER_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA2_0.MAP_KEY_JOIN_COLUMNS);

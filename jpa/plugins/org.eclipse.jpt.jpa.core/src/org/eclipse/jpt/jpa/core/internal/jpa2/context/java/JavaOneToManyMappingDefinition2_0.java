@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClassAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumnAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumeratedAnnotation2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumnAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporal2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
@@ -64,7 +64,7 @@ public class JavaOneToManyMappingDefinition2_0
 		MapKeyClassAnnotation2_0.ANNOTATION_NAME,
 		MapKeyColumnAnnotation2_0.ANNOTATION_NAME,
 		MapKeyEnumeratedAnnotation2_0.ANNOTATION_NAME,
-		MapKeyJoinColumn2_0Annotation.ANNOTATION_NAME,
+		MapKeyJoinColumnAnnotation2_0.ANNOTATION_NAME,
 		JPA2_0.MAP_KEY_JOIN_COLUMNS,
 		MapKeyTemporal2_0Annotation.ANNOTATION_NAME,
 		OrderColumn2_0Annotation.ANNOTATION_NAME

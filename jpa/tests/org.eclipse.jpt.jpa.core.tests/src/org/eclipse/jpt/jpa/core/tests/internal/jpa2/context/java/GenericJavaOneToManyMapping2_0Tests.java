@@ -58,7 +58,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClassAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumnAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumeratedAnnotation2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumnAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporal2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OneToMany2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
@@ -1911,14 +1911,14 @@ public class GenericJavaOneToManyMapping2_0Tests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		//add an annotation to the resource model and verify the context model is updated
-		MapKeyJoinColumn2_0Annotation joinColumn = (MapKeyJoinColumn2_0Annotation) resourceField.addAnnotation(0, JPA2_0.MAP_KEY_JOIN_COLUMN);
+		MapKeyJoinColumnAnnotation2_0 joinColumn = (MapKeyJoinColumnAnnotation2_0) resourceField.addAnnotation(0, JPA2_0.MAP_KEY_JOIN_COLUMN);
 		joinColumn.setName("FOO");
 		getJpaProject().synchronizeContextModel();
 		specifiedMapKeyJoinColumns = oneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();	
 		assertEquals("FOO", specifiedMapKeyJoinColumns.next().getName());
 		assertFalse(specifiedMapKeyJoinColumns.hasNext());
 
-		joinColumn = (MapKeyJoinColumn2_0Annotation) resourceField.addAnnotation(0, JPA2_0.MAP_KEY_JOIN_COLUMN);
+		joinColumn = (MapKeyJoinColumnAnnotation2_0) resourceField.addAnnotation(0, JPA2_0.MAP_KEY_JOIN_COLUMN);
 		joinColumn.setName("BAR");
 		getJpaProject().synchronizeContextModel();
 		specifiedMapKeyJoinColumns = oneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();		
@@ -1927,7 +1927,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		assertFalse(specifiedMapKeyJoinColumns.hasNext());
 
 
-		joinColumn = (MapKeyJoinColumn2_0Annotation) resourceField.addAnnotation(0, JPA2_0.MAP_KEY_JOIN_COLUMN);
+		joinColumn = (MapKeyJoinColumnAnnotation2_0) resourceField.addAnnotation(0, JPA2_0.MAP_KEY_JOIN_COLUMN);
 		joinColumn.setName("BAZ");
 		getJpaProject().synchronizeContextModel();
 		specifiedMapKeyJoinColumns = oneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();		
@@ -2019,9 +2019,9 @@ public class GenericJavaOneToManyMapping2_0Tests
 		Iterator<NestableAnnotation> joinColumnsIterator = 
 			resourceField.getAnnotations(JPA2_0.MAP_KEY_JOIN_COLUMN).iterator();
 
-		assertEquals("BAZ", ((MapKeyJoinColumn2_0Annotation) joinColumnsIterator.next()).getName());
-		assertEquals("BAR", ((MapKeyJoinColumn2_0Annotation) joinColumnsIterator.next()).getName());
-		assertEquals("FOO", ((MapKeyJoinColumn2_0Annotation) joinColumnsIterator.next()).getName());
+		assertEquals("BAZ", ((MapKeyJoinColumnAnnotation2_0) joinColumnsIterator.next()).getName());
+		assertEquals("BAR", ((MapKeyJoinColumnAnnotation2_0) joinColumnsIterator.next()).getName());
+		assertEquals("FOO", ((MapKeyJoinColumnAnnotation2_0) joinColumnsIterator.next()).getName());
 		assertFalse(joinColumnsIterator.hasNext());
 	}
 
@@ -2041,9 +2041,9 @@ public class GenericJavaOneToManyMapping2_0Tests
 		Iterator<NestableAnnotation> joinColumnsIterator = 
 			resourceField.getAnnotations(JPA2_0.MAP_KEY_JOIN_COLUMN).iterator();
 
-		assertEquals("FOO", ((MapKeyJoinColumn2_0Annotation) joinColumnsIterator.next()).getName());
-		assertEquals("BAR", ((MapKeyJoinColumn2_0Annotation) joinColumnsIterator.next()).getName());
-		assertEquals("BAZ", ((MapKeyJoinColumn2_0Annotation) joinColumnsIterator.next()).getName());
+		assertEquals("FOO", ((MapKeyJoinColumnAnnotation2_0) joinColumnsIterator.next()).getName());
+		assertEquals("BAR", ((MapKeyJoinColumnAnnotation2_0) joinColumnsIterator.next()).getName());
+		assertEquals("BAZ", ((MapKeyJoinColumnAnnotation2_0) joinColumnsIterator.next()).getName());
 		assertFalse(joinColumnsIterator.hasNext());
 	}
 
@@ -2066,8 +2066,8 @@ public class GenericJavaOneToManyMapping2_0Tests
 		oneToManyMapping.removeSpecifiedMapKeyJoinColumn(1);
 
 		Iterator<NestableAnnotation> joinColumnResources = resourceField.getAnnotations(JPA2_0.MAP_KEY_JOIN_COLUMN).iterator();
-		assertEquals("FOO", ((MapKeyJoinColumn2_0Annotation) joinColumnResources.next()).getName());		
-		assertEquals("BAZ", ((MapKeyJoinColumn2_0Annotation) joinColumnResources.next()).getName());
+		assertEquals("FOO", ((MapKeyJoinColumnAnnotation2_0) joinColumnResources.next()).getName());		
+		assertEquals("BAZ", ((MapKeyJoinColumnAnnotation2_0) joinColumnResources.next()).getName());
 		assertFalse(joinColumnResources.hasNext());
 
 		Iterator<? extends SpecifiedJoinColumn> joinColumnsIterator = oneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
@@ -2078,7 +2078,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 
 		oneToManyMapping.removeSpecifiedMapKeyJoinColumn(1);
 		joinColumnResources = resourceField.getAnnotations(JPA2_0.MAP_KEY_JOIN_COLUMN).iterator();
-		assertEquals("FOO", ((MapKeyJoinColumn2_0Annotation) joinColumnResources.next()).getName());		
+		assertEquals("FOO", ((MapKeyJoinColumnAnnotation2_0) joinColumnResources.next()).getName());		
 		assertFalse(joinColumnResources.hasNext());
 
 		joinColumnsIterator = oneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
@@ -2091,7 +2091,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		assertFalse(joinColumnResources.hasNext());
 		joinColumnsIterator = oneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
 		assertFalse(joinColumnsIterator.hasNext());
-		assertEquals(0, resourceField.getAnnotationsSize(MapKeyJoinColumn2_0Annotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(MapKeyJoinColumnAnnotation2_0.ANNOTATION_NAME));
 	}
 
 	public void testMoveSpecifiedJoinColumn() throws Exception {
@@ -2119,9 +2119,9 @@ public class GenericJavaOneToManyMapping2_0Tests
 		assertEquals("FOO", joinColumns.next().getSpecifiedName());
 
 		javaJoinColumns = resourceField.getAnnotations(JPA2_0.MAP_KEY_JOIN_COLUMN).iterator();
-		assertEquals("BAR", ((MapKeyJoinColumn2_0Annotation) javaJoinColumns.next()).getName());
-		assertEquals("BAZ", ((MapKeyJoinColumn2_0Annotation) javaJoinColumns.next()).getName());
-		assertEquals("FOO", ((MapKeyJoinColumn2_0Annotation) javaJoinColumns.next()).getName());
+		assertEquals("BAR", ((MapKeyJoinColumnAnnotation2_0) javaJoinColumns.next()).getName());
+		assertEquals("BAZ", ((MapKeyJoinColumnAnnotation2_0) javaJoinColumns.next()).getName());
+		assertEquals("FOO", ((MapKeyJoinColumnAnnotation2_0) javaJoinColumns.next()).getName());
 
 
 		oneToManyMapping.moveSpecifiedMapKeyJoinColumn(0, 1);
@@ -2131,9 +2131,9 @@ public class GenericJavaOneToManyMapping2_0Tests
 		assertEquals("FOO", joinColumns.next().getSpecifiedName());
 
 		javaJoinColumns = resourceField.getAnnotations(JPA2_0.MAP_KEY_JOIN_COLUMN).iterator();
-		assertEquals("BAZ", ((MapKeyJoinColumn2_0Annotation) javaJoinColumns.next()).getName());
-		assertEquals("BAR", ((MapKeyJoinColumn2_0Annotation) javaJoinColumns.next()).getName());
-		assertEquals("FOO", ((MapKeyJoinColumn2_0Annotation) javaJoinColumns.next()).getName());
+		assertEquals("BAZ", ((MapKeyJoinColumnAnnotation2_0) javaJoinColumns.next()).getName());
+		assertEquals("BAR", ((MapKeyJoinColumnAnnotation2_0) javaJoinColumns.next()).getName());
+		assertEquals("FOO", ((MapKeyJoinColumnAnnotation2_0) javaJoinColumns.next()).getName());
 	}
 
 	public void testUpdateSpecifiedMapKeyJoinColumns() throws Exception {
@@ -2145,9 +2145,9 @@ public class GenericJavaOneToManyMapping2_0Tests
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
-		((MapKeyJoinColumn2_0Annotation) resourceField.addAnnotation(0, JPA2_0.MAP_KEY_JOIN_COLUMN)).setName("FOO");
-		((MapKeyJoinColumn2_0Annotation) resourceField.addAnnotation(1, JPA2_0.MAP_KEY_JOIN_COLUMN)).setName("BAR");
-		((MapKeyJoinColumn2_0Annotation) resourceField.addAnnotation(2, JPA2_0.MAP_KEY_JOIN_COLUMN)).setName("BAZ");
+		((MapKeyJoinColumnAnnotation2_0) resourceField.addAnnotation(0, JPA2_0.MAP_KEY_JOIN_COLUMN)).setName("FOO");
+		((MapKeyJoinColumnAnnotation2_0) resourceField.addAnnotation(1, JPA2_0.MAP_KEY_JOIN_COLUMN)).setName("BAR");
+		((MapKeyJoinColumnAnnotation2_0) resourceField.addAnnotation(2, JPA2_0.MAP_KEY_JOIN_COLUMN)).setName("BAZ");
 		getJpaProject().synchronizeContextModel();
 
 		ListIterator<? extends SpecifiedJoinColumn> joinColumnsIterator = oneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
@@ -2156,7 +2156,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		assertEquals("BAZ", joinColumnsIterator.next().getName());
 		assertFalse(joinColumnsIterator.hasNext());
 
-		resourceField.moveAnnotation(2, 0, MapKeyJoinColumn2_0Annotation.ANNOTATION_NAME);
+		resourceField.moveAnnotation(2, 0, MapKeyJoinColumnAnnotation2_0.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		joinColumnsIterator = oneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
 		assertEquals("BAR", joinColumnsIterator.next().getName());
@@ -2164,7 +2164,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		assertEquals("FOO", joinColumnsIterator.next().getName());
 		assertFalse(joinColumnsIterator.hasNext());
 
-		resourceField.moveAnnotation(0, 1, MapKeyJoinColumn2_0Annotation.ANNOTATION_NAME);
+		resourceField.moveAnnotation(0, 1, MapKeyJoinColumnAnnotation2_0.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		joinColumnsIterator = oneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
 		assertEquals("BAZ", joinColumnsIterator.next().getName());

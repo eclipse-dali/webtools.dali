@@ -13,14 +13,14 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryBaseJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumnAnnotation2_0;
 
 /**
  * <code>javax.persistence.MapKeyJoinColumn</code>
  */
 public final class BinaryMapKeyJoinColumn2_0Annotation
 	extends BinaryBaseJoinColumnAnnotation
-	implements MapKeyJoinColumn2_0Annotation
+	implements MapKeyJoinColumnAnnotation2_0
 {
 
 	public BinaryMapKeyJoinColumn2_0Annotation(JavaResourceModel parent, IAnnotation jdtAnnotation) {

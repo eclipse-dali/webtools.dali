@@ -72,7 +72,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClassAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumnAnnotation2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumnAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.MapKeyAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
@@ -104,7 +104,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	protected final JavaSpecifiedColumn mapKeyColumn;
 	protected JavaConverter mapKeyConverter;  // map key converter - never null
 
-	protected final ContextListContainer<JavaSpecifiedJoinColumn, MapKeyJoinColumn2_0Annotation> specifiedMapKeyJoinColumnContainer;
+	protected final ContextListContainer<JavaSpecifiedJoinColumn, MapKeyJoinColumnAnnotation2_0> specifiedMapKeyJoinColumnContainer;
 	protected final JoinColumn.ParentAdapter mapKeyJoinColumnParentAdapter;
 
 	protected JavaSpecifiedJoinColumn defaultMapKeyJoinColumn;
@@ -721,7 +721,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	}
 
 	public JavaSpecifiedJoinColumn addSpecifiedMapKeyJoinColumn(int index) {
-		MapKeyJoinColumn2_0Annotation annotation = this.addMapKeyJoinColumnAnnotation(index);
+		MapKeyJoinColumnAnnotation2_0 annotation = this.addMapKeyJoinColumnAnnotation(index);
 		return this.specifiedMapKeyJoinColumnContainer.addContextElement(index, annotation);
 	}
 
@@ -743,7 +743,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		this.specifiedMapKeyJoinColumnContainer.synchronizeWithResourceModel();
 	}
 
-	protected ContextListContainer<JavaSpecifiedJoinColumn, MapKeyJoinColumn2_0Annotation> buildSpecifiedMapKeyJoinColumnContainer() {
+	protected ContextListContainer<JavaSpecifiedJoinColumn, MapKeyJoinColumnAnnotation2_0> buildSpecifiedMapKeyJoinColumnContainer() {
 		SpecifiedMapKeyJoinColumnContainer container = new SpecifiedMapKeyJoinColumnContainer();
 		container.initialize();
 		return container;
@@ -753,23 +753,23 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	 * specified map key join column container
 	 */
 	public class SpecifiedMapKeyJoinColumnContainer
-		extends ContextListContainer<JavaSpecifiedJoinColumn, MapKeyJoinColumn2_0Annotation>
+		extends ContextListContainer<JavaSpecifiedJoinColumn, MapKeyJoinColumnAnnotation2_0>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return SPECIFIED_MAP_KEY_JOIN_COLUMNS_LIST;
 		}
 		@Override
-		protected JavaSpecifiedJoinColumn buildContextElement(MapKeyJoinColumn2_0Annotation resourceElement) {
+		protected JavaSpecifiedJoinColumn buildContextElement(MapKeyJoinColumnAnnotation2_0 resourceElement) {
 			return AbstractJavaMultiRelationshipMapping.this.buildMapKeyJoinColumn(resourceElement);
 		}
 		@Override
-		protected ListIterable<MapKeyJoinColumn2_0Annotation> getResourceElements() {
+		protected ListIterable<MapKeyJoinColumnAnnotation2_0> getResourceElements() {
 			return AbstractJavaMultiRelationshipMapping.this.getMapKeyJoinColumnAnnotations();
 		}
 		@Override
-		protected MapKeyJoinColumn2_0Annotation getResourceElement(JavaSpecifiedJoinColumn contextElement) {
-			return (MapKeyJoinColumn2_0Annotation) contextElement.getColumnAnnotation();
+		protected MapKeyJoinColumnAnnotation2_0 getResourceElement(JavaSpecifiedJoinColumn contextElement) {
+			return (MapKeyJoinColumnAnnotation2_0) contextElement.getColumnAnnotation();
 		}
 	}
 
@@ -818,36 +818,36 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 				getKeyType() == Type.ENTITY_TYPE;
 	}
 
-	protected JavaSpecifiedJoinColumn buildMapKeyJoinColumn(MapKeyJoinColumn2_0Annotation joinColumnAnnotation) {
+	protected JavaSpecifiedJoinColumn buildMapKeyJoinColumn(MapKeyJoinColumnAnnotation2_0 joinColumnAnnotation) {
 		return this.getJpaFactory().buildJavaJoinColumn(this.mapKeyJoinColumnParentAdapter, joinColumnAnnotation);
 	}
 
 	// ********** map key join column annotations **********
 
-	protected ListIterable<MapKeyJoinColumn2_0Annotation> getMapKeyJoinColumnAnnotations() {
+	protected ListIterable<MapKeyJoinColumnAnnotation2_0> getMapKeyJoinColumnAnnotations() {
 		if (isJpa2_0Compatible()) {
-			return new SubListIterableWrapper<NestableAnnotation, MapKeyJoinColumn2_0Annotation>(this.getNestableMapKeyJoinColumnAnnotations());
+			return new SubListIterableWrapper<NestableAnnotation, MapKeyJoinColumnAnnotation2_0>(this.getNestableMapKeyJoinColumnAnnotations());
 		}
 		return EmptyListIterable.instance();
 	}
 
 	protected ListIterable<NestableAnnotation> getNestableMapKeyJoinColumnAnnotations() {
-		return this.getResourceAttribute().getAnnotations(MapKeyJoinColumn2_0Annotation.ANNOTATION_NAME);
+		return this.getResourceAttribute().getAnnotations(MapKeyJoinColumnAnnotation2_0.ANNOTATION_NAME);
 	}
 
-	protected MapKeyJoinColumn2_0Annotation addMapKeyJoinColumnAnnotation(int index) {
-		return (MapKeyJoinColumn2_0Annotation) this.getResourceAttribute().addAnnotation(index, MapKeyJoinColumn2_0Annotation.ANNOTATION_NAME);
+	protected MapKeyJoinColumnAnnotation2_0 addMapKeyJoinColumnAnnotation(int index) {
+		return (MapKeyJoinColumnAnnotation2_0) this.getResourceAttribute().addAnnotation(index, MapKeyJoinColumnAnnotation2_0.ANNOTATION_NAME);
 	}
 
 	protected void removeMapKeyJoinColumnAnnotation(int index) {
-		this.getResourceAttribute().removeAnnotation(index, MapKeyJoinColumn2_0Annotation.ANNOTATION_NAME);
+		this.getResourceAttribute().removeAnnotation(index, MapKeyJoinColumnAnnotation2_0.ANNOTATION_NAME);
 	}
 
 	protected void moveMapKeyJoinColumnAnnotation(int targetIndex, int sourceIndex) {
-		this.getResourceAttribute().moveAnnotation(targetIndex, sourceIndex, MapKeyJoinColumn2_0Annotation.ANNOTATION_NAME);
+		this.getResourceAttribute().moveAnnotation(targetIndex, sourceIndex, MapKeyJoinColumnAnnotation2_0.ANNOTATION_NAME);
 	}
 
-	protected MapKeyJoinColumn2_0Annotation buildNullMapKeyJoinColumnAnnotation() {
+	protected MapKeyJoinColumnAnnotation2_0 buildNullMapKeyJoinColumnAnnotation() {
 		return new NullMapKeyJoinColumnAnnotation(this.getResourceAttribute());
 	}
 

@@ -12,14 +12,14 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.resource.java.NullBaseColumnAnnotation;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumnAnnotation2_0;
 
 /**
  * <code>javax.persistence.MapKeyJoinColumn</code>
  */
 public final class NullMapKeyJoinColumnAnnotation
-	extends NullBaseColumnAnnotation<MapKeyJoinColumn2_0Annotation>
-	implements MapKeyJoinColumn2_0Annotation
+	extends NullBaseColumnAnnotation<MapKeyJoinColumnAnnotation2_0>
+	implements MapKeyJoinColumnAnnotation2_0
 {	
 	public NullMapKeyJoinColumnAnnotation(JavaResourceModel parent) {
 		super(parent);
