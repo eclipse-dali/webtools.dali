@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProp
 import org.eclipse.jpt.jpa.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.jpa.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkJpaProject;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEmbeddable;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEmbeddable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
@@ -106,8 +106,8 @@ public abstract class EclipseLinkContextModelTestCase
 		return (JavaEclipseLinkEntity) getJavaPersistentType().getMapping();
 	}
 
-	protected JavaEclipseLinkEmbeddable getJavaEmbeddable() {
-		return (JavaEclipseLinkEmbeddable) getJavaPersistentType().getMapping();
+	protected EclipseLinkJavaEmbeddable getJavaEmbeddable() {
+		return (EclipseLinkJavaEmbeddable) getJavaPersistentType().getMapping();
 	}
 	
 	protected JavaEclipseLinkMappedSuperclass getJavaMappedSuperclass() {

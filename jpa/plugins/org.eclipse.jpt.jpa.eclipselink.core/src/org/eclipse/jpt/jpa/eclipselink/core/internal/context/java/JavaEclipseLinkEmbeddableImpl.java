@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEmbeddable;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEmbeddable;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkTypeMappingValidator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -33,7 +33,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class JavaEclipseLinkEmbeddableImpl
 	extends AbstractJavaEmbeddable
-	implements JavaEclipseLinkEmbeddable, EclipseLinkJavaConverterContainer.Parent
+	implements EclipseLinkJavaEmbeddable, EclipseLinkJavaConverterContainer.Parent
 {
 	protected final EclipseLinkJavaConverterContainer converterContainer;
 

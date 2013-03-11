@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEmbeddable;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEmbeddable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
@@ -53,6 +53,6 @@ public class EclipseLink1_2JavaUiFactory
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaEclipseLinkEmbeddable1_2Composite((PropertyValueModel<? extends JavaEclipseLinkEmbeddable>) embeddableModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaEclipseLinkEmbeddable1_2Composite((PropertyValueModel<? extends EclipseLinkJavaEmbeddable>) embeddableModel, parentComposite, widgetFactory, resourceManager);
 	}
 }

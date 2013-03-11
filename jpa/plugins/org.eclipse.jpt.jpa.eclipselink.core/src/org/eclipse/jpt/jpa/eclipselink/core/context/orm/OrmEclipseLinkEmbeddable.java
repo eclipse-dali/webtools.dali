@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkEmbeddable;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEmbeddable;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEmbeddable;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEmbeddable;
 
 /**
@@ -31,7 +31,7 @@ public interface OrmEclipseLinkEmbeddable
 {
 	XmlEmbeddable getXmlTypeMapping();
 
-	JavaEclipseLinkEmbeddable getJavaTypeMapping();
+	EclipseLinkJavaEmbeddable getJavaTypeMapping();
 
-	JavaEclipseLinkEmbeddable getJavaTypeMappingForDefaults();
+	EclipseLinkJavaEmbeddable getJavaTypeMappingForDefaults();
 }

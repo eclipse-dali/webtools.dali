@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkEmbeddable;
  * @version 2.1
  * @since 2.1
  */
-public interface JavaEclipseLinkEmbeddable
+public interface EclipseLinkJavaEmbeddable
 	extends JavaEmbeddable, EclipseLinkEmbeddable, EclipseLinkJavaTypeMapping
 {
 	// combine various interfaces

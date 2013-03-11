@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEmbeddable;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEmbeddable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEmbeddable;
@@ -145,13 +145,13 @@ public class OrmEclipseLinkEmbeddableImpl
 	// ********** misc **********
 
 	@Override
-	public JavaEclipseLinkEmbeddable getJavaTypeMapping() {
-		return (JavaEclipseLinkEmbeddable) super.getJavaTypeMapping();
+	public EclipseLinkJavaEmbeddable getJavaTypeMapping() {
+		return (EclipseLinkJavaEmbeddable) super.getJavaTypeMapping();
 	}
 
 	@Override
-	public JavaEclipseLinkEmbeddable getJavaTypeMappingForDefaults() {
-		return (JavaEclipseLinkEmbeddable) super.getJavaTypeMappingForDefaults();
+	public EclipseLinkJavaEmbeddable getJavaTypeMappingForDefaults() {
+		return (EclipseLinkJavaEmbeddable) super.getJavaTypeMappingForDefaults();
 	}
 
 	@Override

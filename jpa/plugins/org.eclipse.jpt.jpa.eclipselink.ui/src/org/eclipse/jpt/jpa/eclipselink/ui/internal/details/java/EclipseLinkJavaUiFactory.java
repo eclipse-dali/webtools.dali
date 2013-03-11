@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkManyToOneMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkOneToManyMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkOneToOneMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVersionMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEmbeddable;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEmbeddable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkManyToManyMappingComposite;
@@ -73,7 +73,7 @@ public class EclipseLinkJavaUiFactory
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaEclipseLinkEmbeddableComposite((PropertyValueModel<? extends JavaEclipseLinkEmbeddable>) embeddableModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaEclipseLinkEmbeddableComposite((PropertyValueModel<? extends EclipseLinkJavaEmbeddable>) embeddableModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 	
