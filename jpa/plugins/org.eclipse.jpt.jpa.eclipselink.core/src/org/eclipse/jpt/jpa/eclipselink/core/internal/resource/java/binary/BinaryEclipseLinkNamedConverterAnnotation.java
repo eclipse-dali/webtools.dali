@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkNamedConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.NamedConverterAnnotation;
 
 /**
  * <code>
@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkNamedConver
  */
 abstract class BinaryEclipseLinkNamedConverterAnnotation
 	extends BinaryAnnotation
-	implements EclipseLinkNamedConverterAnnotation
+	implements NamedConverterAnnotation
 {
 	String name;
 

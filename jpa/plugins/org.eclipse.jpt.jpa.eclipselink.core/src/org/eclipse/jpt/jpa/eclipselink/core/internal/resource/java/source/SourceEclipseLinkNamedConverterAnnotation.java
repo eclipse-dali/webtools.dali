@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapt
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.jpa.core.resource.java.OverrideAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkNamedConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.NamedConverterAnnotation;
 
 /**
  * <code>
@@ -35,7 +35,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkNamedConver
  */
 abstract class SourceEclipseLinkNamedConverterAnnotation
 	extends SourceAnnotation
-	implements EclipseLinkNamedConverterAnnotation
+	implements NamedConverterAnnotation
 {
 	final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
 	final AnnotationElementAdapter<String> nameAdapter;

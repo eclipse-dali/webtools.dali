@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface BaseTypeConverterAnnotation
-	extends EclipseLinkNamedConverterAnnotation
+	extends NamedConverterAnnotation
 {
 	/**
 	 * Corresponds to the 'dataType' element of the TypeConverter annotation.

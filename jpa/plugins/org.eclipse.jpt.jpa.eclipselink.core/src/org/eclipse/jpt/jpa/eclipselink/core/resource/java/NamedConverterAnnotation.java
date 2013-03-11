@@ -28,7 +28,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * @version 3.2
  * @since 2.1
  */
-public interface EclipseLinkNamedConverterAnnotation
+public interface NamedConverterAnnotation
 	extends NestableAnnotation
 {
 	/**

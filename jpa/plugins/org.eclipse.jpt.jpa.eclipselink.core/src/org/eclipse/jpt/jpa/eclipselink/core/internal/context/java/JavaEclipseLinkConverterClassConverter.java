@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterClassConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkNamedConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.NamedConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -32,7 +32,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * </ul>
  * </code>
  */
-public abstract class JavaEclipseLinkConverterClassConverter<A extends EclipseLinkNamedConverterAnnotation>
+public abstract class JavaEclipseLinkConverterClassConverter<A extends NamedConverterAnnotation>
 	extends JavaEclipseLinkConverter<A>
 	implements EclipseLinkConverterClassConverter
 {
