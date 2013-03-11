@@ -15,7 +15,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOptions;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.TargetDatabase;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkTargetDatabase;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkTargetServer;
 import org.eclipse.text.edits.ReplaceEdit;
 
@@ -68,7 +68,7 @@ public class EclipseLinkOptionsImpl
 		if (value == null) {
 			return null;
 		}
-		TargetDatabase standardTargetDatabase = this.getEnumValue(ECLIPSELINK_TARGET_DATABASE, TargetDatabase.values());
+		EclipseLinkTargetDatabase standardTargetDatabase = this.getEnumValue(ECLIPSELINK_TARGET_DATABASE, EclipseLinkTargetDatabase.values());
 		return (standardTargetDatabase == null) ? value : getPropertyStringValueOf(standardTargetDatabase);
 	}
 	
@@ -246,7 +246,7 @@ public class EclipseLinkOptionsImpl
 	 * 
 	 * @param newTargetDatabase - TargetDatabase
 	 */
-	public void setTargetDatabase(TargetDatabase newTargetDatabase) {
+	public void setTargetDatabase(EclipseLinkTargetDatabase newTargetDatabase) {
 		if( newTargetDatabase == null) {
 			this.setTargetDatabase_((String) null);
 			return;
@@ -266,7 +266,7 @@ public class EclipseLinkOptionsImpl
 			this.setTargetDatabase_((String) null);
 			return;
 		}
-		TargetDatabase customTargetDatabase = TargetDatabase.getTargetDatabaseFor(newTargetDatabase);
+		EclipseLinkTargetDatabase customTargetDatabase = EclipseLinkTargetDatabase.getTargetDatabaseFor(newTargetDatabase);
 		if(customTargetDatabase == null) {	// custom TargetDatabase class
 			this.setTargetDatabase_(newTargetDatabase);
 		}

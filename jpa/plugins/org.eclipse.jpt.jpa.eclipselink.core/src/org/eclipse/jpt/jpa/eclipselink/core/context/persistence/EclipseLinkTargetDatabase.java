@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 /**
  *  TargetDatabase
  */
-public enum TargetDatabase implements PersistenceXmlEnumValue {
+public enum EclipseLinkTargetDatabase implements PersistenceXmlEnumValue {
 	attunity("Attunity"), //$NON-NLS-1$
 	auto("Auto"), //$NON-NLS-1$
 	cloudscape("Cloudscape"), //$NON-NLS-1$
@@ -43,7 +43,7 @@ public enum TargetDatabase implements PersistenceXmlEnumValue {
 
 	private final String propertyValue;
 
-	TargetDatabase(String propertyValue) {
+	EclipseLinkTargetDatabase(String propertyValue) {
 		this.propertyValue = propertyValue;
 	}
 
@@ -57,8 +57,8 @@ public enum TargetDatabase implements PersistenceXmlEnumValue {
 	/**
 	 * Return the TargetDatabase value corresponding to the given literal.
 	 */
-	public static TargetDatabase getTargetDatabaseFor(String literal) {
-		for (TargetDatabase targetDatabase : TargetDatabase.values()) {
+	public static EclipseLinkTargetDatabase getTargetDatabaseFor(String literal) {
+		for (EclipseLinkTargetDatabase targetDatabase : EclipseLinkTargetDatabase.values()) {
 			if (targetDatabase.toString().equals(literal)) {
 				return targetDatabase;
 			}

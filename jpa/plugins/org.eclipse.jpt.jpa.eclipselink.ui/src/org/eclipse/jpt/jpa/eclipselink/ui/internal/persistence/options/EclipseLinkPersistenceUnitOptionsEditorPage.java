@@ -41,7 +41,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersi
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOptions;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkSchemaGeneration;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.TargetDatabase;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkTargetDatabase;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkTargetServer;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
@@ -353,7 +353,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	}
 
 	private String buildTargetDatabaseDisplayString(String targetDatabaseName) {
-		switch (TargetDatabase.valueOf(targetDatabaseName)) {
+		switch (EclipseLinkTargetDatabase.valueOf(targetDatabaseName)) {
 			case attunity :
 				return JptJpaEclipseLinkUiMessages.TARGET_DATABASE_COMPOSITE_ATTUNITY;
 			case auto :
@@ -424,7 +424,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 			@Override
 			public String transform(String value) {
 				try {
-					TargetDatabase.valueOf(value);
+					EclipseLinkTargetDatabase.valueOf(value);
 					value = buildTargetDatabaseDisplayString(value);
 				}
 				catch (Exception e) {
@@ -466,7 +466,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	}
 
 	private Iterator<String> buildTargetDatabases() {
-		return IteratorTools.transform(IteratorTools.iterator(TargetDatabase.values()), PersistenceXmlEnumValue.ENUM_NAME_TRANSFORMER);
+		return IteratorTools.transform(IteratorTools.iterator(EclipseLinkTargetDatabase.values()), PersistenceXmlEnumValue.ENUM_NAME_TRANSFORMER);
 	}
 
 	private CollectionValueModel<String> buildTargetDatabasesCollectionHolder() {

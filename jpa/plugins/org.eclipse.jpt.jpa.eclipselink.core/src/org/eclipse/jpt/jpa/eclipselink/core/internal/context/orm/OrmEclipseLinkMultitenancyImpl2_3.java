@@ -41,7 +41,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmMultitenan
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmNonEmbeddableTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.TargetDatabase;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkTargetDatabase;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_4JpaPlatformFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.TenantDiscriminatorColumnValidator2_3;
@@ -707,7 +707,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 					)
 				);
 			}
-			else if (!TargetDatabase.isOracleDatabase(targetDatabase)) {
+			else if (!EclipseLinkTargetDatabase.isOracleDatabase(targetDatabase)) {
 				messages.add(
 					this.buildValidationMessage(
 						this.getValidationTextRange(),

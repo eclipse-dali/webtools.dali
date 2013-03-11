@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOptions;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.TargetDatabase;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkTargetDatabase;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkTargetServer;
 
 /**
@@ -34,7 +34,7 @@ public class OptionsAdapterTests extends EclipseLinkPersistenceUnitTestCase
 	private static final String SESSIONS_XML_TEST_VALUE_2 = "sessions-xml-2.test";
 
 	public static final String TARGET_DATABASE_KEY = EclipseLinkOptions.ECLIPSELINK_TARGET_DATABASE;
-	public static final TargetDatabase TARGET_DATABASE_TEST_VALUE = TargetDatabase.cloudscape;
+	public static final EclipseLinkTargetDatabase TARGET_DATABASE_TEST_VALUE = EclipseLinkTargetDatabase.cloudscape;
 	public static final String TARGET_DATABASE_TEST_VALUE_2 = "custom.targetDatabase.test";
 
 	private static final String TARGET_SERVER_KEY = EclipseLinkOptions.ECLIPSELINK_TARGET_SERVER;
@@ -190,7 +190,7 @@ public class OptionsAdapterTests extends EclipseLinkPersistenceUnitTestCase
 
 		// test set (TargetDatabase) null
 		this.clearEvent();
-		this.options.setTargetDatabase((TargetDatabase) null);
+		this.options.setTargetDatabase((EclipseLinkTargetDatabase) null);
 		assertNull(this.getPersistenceUnit().getProperty(elKey));
 		this.verifyPutProperty(propertyName, null);
 		
@@ -320,7 +320,7 @@ public class OptionsAdapterTests extends EclipseLinkPersistenceUnitTestCase
 
 	private void setTargetDatabaseProperty(Object newValue) {
 		if (newValue.getClass().isEnum())
-			this.options.setTargetDatabase((TargetDatabase) newValue);
+			this.options.setTargetDatabase((EclipseLinkTargetDatabase) newValue);
 		else
 			this.options.setTargetDatabase((String) newValue);
 	}

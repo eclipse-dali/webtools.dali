@@ -44,11 +44,11 @@ public interface EclipseLinkOptions
 	String getDefaultTargetDatabase();
 	String getTargetDatabase();
 	void setTargetDatabase(String newTargetDatabase);
-	void setTargetDatabase(TargetDatabase newTargetDatabase);
+	void setTargetDatabase(EclipseLinkTargetDatabase newTargetDatabase);
 		static final String TARGET_DATABASE_PROPERTY = "targetDatabase"; //$NON-NLS-1$
 		// EclipseLink key string
 		static final String ECLIPSELINK_TARGET_DATABASE = "eclipselink.target-database"; //$NON-NLS-1$
-		static final String DEFAULT_TARGET_DATABASE = TargetDatabase.auto.getPropertyValue();
+		static final String DEFAULT_TARGET_DATABASE = EclipseLinkTargetDatabase.auto.getPropertyValue();
 
 	String getDefaultTargetServer();
 	String getTargetServer();
