@@ -40,6 +40,7 @@ import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
@@ -628,7 +629,10 @@ public abstract class JavaMetadataConversionWizardPage
 	 * Return the root structure nodes of the given XML resource
 	 */
 	protected Iterator<JpaStructureNode> getRootStructureNodes(JptXmlResource ormXmlResource) {
-		 return this.jpaProject.getJpaFile(ormXmlResource.getFile()).getRootStructureNodes().iterator();
+		if (ormXmlResource == null) {
+			return EmptyIterator.instance();
+		}
+		return this.jpaProject.getJpaFile(ormXmlResource.getFile()).getRootStructureNodes().iterator();
 	}
 
 	@Override
