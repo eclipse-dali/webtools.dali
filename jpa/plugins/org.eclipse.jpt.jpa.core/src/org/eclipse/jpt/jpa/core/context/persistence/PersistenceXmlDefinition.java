@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.persistence;
 
 import org.eclipse.emf.ecore.EFactory;
-import org.eclipse.jpt.jpa.core.ResourceDefinition;
+import org.eclipse.jpt.jpa.core.JpaResourceDefinition;
 
 /**
  * <code>persistence.xml</code> definition
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.ResourceDefinition;
  * @since 2.3
  */
 public interface PersistenceXmlDefinition 
-	extends ResourceDefinition
+	extends JpaResourceDefinition
 {
 	EFactory getResourceModelFactory();
 

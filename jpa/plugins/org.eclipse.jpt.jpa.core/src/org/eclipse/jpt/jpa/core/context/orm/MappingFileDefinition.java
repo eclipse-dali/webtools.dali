@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import org.eclipse.jpt.jpa.core.ResourceDefinition;
+import org.eclipse.jpt.jpa.core.JpaResourceDefinition;
 
 /**
  * A JPA platform can support multiple mapping files. Each will
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.ResourceDefinition;
  * @since 2.3
  */
 public interface MappingFileDefinition
-	extends ResourceDefinition
+	extends JpaResourceDefinition
 {
 	// nothing yet
 }

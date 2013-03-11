@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaPlatformProvider;
 import org.eclipse.jpt.jpa.core.JpaResourceModelProvider;
-import org.eclipse.jpt.jpa.core.ResourceDefinition;
+import org.eclipse.jpt.jpa.core.JpaResourceDefinition;
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition;
@@ -46,7 +46,7 @@ public abstract class AbstractJpaPlatformProvider
 
 	protected ArrayList<JavaAttributeMappingDefinition> specifiedJavaAttributeMappingDefinitions;
 
-	protected ArrayList<ResourceDefinition> resourceDefinitions;
+	protected ArrayList<JpaResourceDefinition> resourceDefinitions;
 
 
 	/**
@@ -206,23 +206,23 @@ public abstract class AbstractJpaPlatformProvider
 
 	// ********** resource definitions **********
 
-	public final synchronized Iterable<ResourceDefinition> getResourceDefinitions() {
+	public final synchronized Iterable<JpaResourceDefinition> getResourceDefinitions() {
 		if (this.resourceDefinitions == null) {
 			this.resourceDefinitions = this.buildResourceDefinitions();
 		}
 		return this.resourceDefinitions;
 	}
 
-	protected ArrayList<ResourceDefinition> buildResourceDefinitions() {
-		ArrayList<ResourceDefinition> definitions = new ArrayList<ResourceDefinition>();
+	protected ArrayList<JpaResourceDefinition> buildResourceDefinitions() {
+		ArrayList<JpaResourceDefinition> definitions = new ArrayList<JpaResourceDefinition>();
 		this.addResourceDefinitionsTo(definitions);
 		this.validateResourceDefinitions(definitions);
 		return definitions;
 	}
 
-	protected abstract void addResourceDefinitionsTo(ArrayList<ResourceDefinition> definitions);
+	protected abstract void addResourceDefinitionsTo(ArrayList<JpaResourceDefinition> definitions);
 
-	protected void validateResourceDefinitions(ArrayList<ResourceDefinition> definitions) {
+	protected void validateResourceDefinitions(ArrayList<JpaResourceDefinition> definitions) {
 		String message = "Duplicate resource definitions listed for resource type ''{0}'': {1}"; //$NON-NLS-1$
 		this.validate(definitions, JptResourceTypeReference.RESOURCE_TYPE_TRANSFORMER, message);
 	}

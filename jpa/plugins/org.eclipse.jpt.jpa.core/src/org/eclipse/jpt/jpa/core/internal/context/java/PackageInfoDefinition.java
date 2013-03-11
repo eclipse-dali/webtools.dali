@@ -13,21 +13,21 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
-import org.eclipse.jpt.jpa.core.ResourceDefinition;
+import org.eclipse.jpt.jpa.core.JpaResourceDefinition;
 
 /**
  * <code>package-info</code> Java source code files.
  */
 public class PackageInfoDefinition
-	implements ResourceDefinition
+	implements JpaResourceDefinition
 {
 	// singleton
-	private static final ResourceDefinition INSTANCE = new PackageInfoDefinition();
+	private static final JpaResourceDefinition INSTANCE = new PackageInfoDefinition();
 
 	/**
 	 * Return the singleton
 	 */
-	public static ResourceDefinition instance() {
+	public static JpaResourceDefinition instance() {
 		return INSTANCE;
 	}
 

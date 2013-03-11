@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.core.JptResourceTypeReference;
  * @version 2.3
  * @since 2.3
  */
-public interface ResourceDefinition
+public interface JpaResourceDefinition
 	extends JptResourceTypeReference
 {
 	// methods refactored to JptResourceTypeReference...

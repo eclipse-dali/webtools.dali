@@ -164,7 +164,7 @@ public interface JpaPlatform
 	 * supported by the JPA platform.
 	 * This method is consistent with {@link #supportsResourceType(JptResourceType)}.
 	 */
-	ResourceDefinition getResourceDefinition(JptResourceType resourceType);
+	JpaResourceDefinition getResourceDefinition(JptResourceType resourceType);
 
 	/**
 	 * Return the most recent supported resource type for the specified content

@@ -52,7 +52,7 @@ public interface JpaPlatformProvider {
 	/**
 	 * Return the JPA platform's resource definitions.
 	 */
-	Iterable<ResourceDefinition> getResourceDefinitions();
+	Iterable<JpaResourceDefinition> getResourceDefinitions();
 
 	/**
 	 * Return the JPA platform's Java managed type definitions.

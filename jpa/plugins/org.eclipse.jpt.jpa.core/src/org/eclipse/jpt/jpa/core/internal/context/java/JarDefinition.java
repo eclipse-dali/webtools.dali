@@ -13,18 +13,18 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
-import org.eclipse.jpt.jpa.core.ResourceDefinition;
+import org.eclipse.jpt.jpa.core.JpaResourceDefinition;
 
 public class JarDefinition
-	implements ResourceDefinition
+	implements JpaResourceDefinition
 {
 	// singleton
-	private static final ResourceDefinition INSTANCE = new JarDefinition();
+	private static final JpaResourceDefinition INSTANCE = new JarDefinition();
 
 	/**
 	 * Return the singleton
 	 */
-	public static ResourceDefinition instance() {
+	public static JpaResourceDefinition instance() {
 		return INSTANCE;
 	}
 

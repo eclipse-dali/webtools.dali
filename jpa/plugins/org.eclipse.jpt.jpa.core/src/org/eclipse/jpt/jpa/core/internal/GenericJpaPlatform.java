@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.JpaPlatformProvider;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaResourceModelProvider;
-import org.eclipse.jpt.jpa.core.ResourceDefinition;
+import org.eclipse.jpt.jpa.core.JpaResourceDefinition;
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition;
@@ -201,16 +201,16 @@ public class GenericJpaPlatform
 		return this.getResourceDefinition_(resourceType) != null;
 	}
 
-	public ResourceDefinition getResourceDefinition(JptResourceType resourceType) {
-		ResourceDefinition definition = this.getResourceDefinition_(resourceType);
+	public JpaResourceDefinition getResourceDefinition(JptResourceType resourceType) {
+		JpaResourceDefinition definition = this.getResourceDefinition_(resourceType);
 		if (definition == null) {
 			throw new IllegalArgumentException("Illegal resource type: " + resourceType); //$NON-NLS-1$
 		}
 		return definition;
 	}
 
-	protected ResourceDefinition getResourceDefinition_(JptResourceType resourceType) {
-		for (ResourceDefinition resourceDefinition : this.platformProvider.getResourceDefinitions()) {
+	protected JpaResourceDefinition getResourceDefinition_(JptResourceType resourceType) {
+		for (JpaResourceDefinition resourceDefinition : this.platformProvider.getResourceDefinitions()) {
 			if (resourceDefinition.getResourceType().equals(resourceType)) {
 				return resourceDefinition;
 			}
