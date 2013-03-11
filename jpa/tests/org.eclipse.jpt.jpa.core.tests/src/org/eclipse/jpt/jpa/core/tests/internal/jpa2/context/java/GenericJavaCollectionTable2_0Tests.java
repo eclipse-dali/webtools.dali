@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaElementCollectionMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.CollectionTable2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.CollectionTableAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
@@ -81,15 +81,15 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
-		CollectionTable2_0Annotation resourceCollectionTable = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		CollectionTableAnnotation2_0 resourceCollectionTable = (CollectionTableAnnotation2_0) resourceField.getAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
 		
 		assertNull(collectionTable.getSpecifiedName());
 		assertNull(resourceCollectionTable);
 		
 		
 		//set name in the resource model, verify context model updated
-		resourceField.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
-		resourceCollectionTable = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
+		resourceCollectionTable = (CollectionTableAnnotation2_0) resourceField.getAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
 		resourceCollectionTable.setName("FOO");
 		getJpaProject().synchronizeContextModel();
 		assertEquals("FOO", collectionTable.getSpecifiedName());
@@ -106,10 +106,10 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		assertEquals("FOO", collectionTable.getSpecifiedName());
 		assertEquals("FOO", resourceCollectionTable.getName());
 
-		resourceField.removeAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		resourceField.removeAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		assertNull(collectionTable.getSpecifiedName());
-		assertNull(resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testModifySpecifiedName() throws Exception {
@@ -122,21 +122,21 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
-		CollectionTable2_0Annotation resourceCollectionTable3 = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		CollectionTableAnnotation2_0 resourceCollectionTable3 = (CollectionTableAnnotation2_0) resourceField.getAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
 		
 		assertNull(collectionTable.getSpecifiedName());
 		assertNull(resourceCollectionTable3);
 	
 		//set name in the context model, verify resource model modified
 		collectionTable.setSpecifiedName("foo");
-		resourceCollectionTable3 = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		resourceCollectionTable3 = (CollectionTableAnnotation2_0) resourceField.getAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
 		assertEquals("foo", collectionTable.getSpecifiedName());
 		assertEquals("foo", resourceCollectionTable3.getName());
 		
 		//set name to null in the context model
 		collectionTable.setSpecifiedName(null);
 		assertNull(collectionTable.getSpecifiedName());
-		assertNull(resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testDefaultName() throws Exception {
@@ -151,12 +151,12 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		assertNull(resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME));
 
 		//add the collection table annotation, verify default collection table name is the same
-		resourceField.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
 		assertEquals(TYPE_NAME + "_projects", collectionTable.getDefaultName());
-		assertNotNull(resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME));
 		
 		//set the entity name, verify default collection table name updates
 		getJavaEntity().setSpecifiedName("Foo");
@@ -173,15 +173,15 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
-		CollectionTable2_0Annotation resourceCollectionTable = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		CollectionTableAnnotation2_0 resourceCollectionTable = (CollectionTableAnnotation2_0) resourceField.getAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
 		
 		assertNull(collectionTable.getSpecifiedSchema());
 		assertNull(resourceCollectionTable);
 		
 		
 		//set schema in the resource model, verify context model updated
-		resourceField.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
-		resourceCollectionTable = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
+		resourceCollectionTable = (CollectionTableAnnotation2_0) resourceField.getAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
 		resourceCollectionTable.setSchema("FOO");
 		getJpaProject().synchronizeContextModel();
 		assertEquals("FOO", collectionTable.getSpecifiedSchema());
@@ -198,10 +198,10 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		assertEquals("FOO", collectionTable.getSpecifiedSchema());
 		assertEquals("FOO", resourceCollectionTable.getSchema());
 
-		resourceField.removeAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		resourceField.removeAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		assertNull(collectionTable.getSpecifiedSchema());
-		assertNull(resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testModifySpecifiedSchema() throws Exception {
@@ -214,21 +214,21 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
-		CollectionTable2_0Annotation resourceCollectionTable = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		CollectionTableAnnotation2_0 resourceCollectionTable = (CollectionTableAnnotation2_0) resourceField.getAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
 		
 		assertNull(collectionTable.getSpecifiedSchema());
 		assertNull(resourceCollectionTable);
 	
 		//set schema in the context model, verify resource model modified
 		collectionTable.setSpecifiedSchema("foo");
-		resourceCollectionTable = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		resourceCollectionTable = (CollectionTableAnnotation2_0) resourceField.getAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
 		assertEquals("foo", collectionTable.getSpecifiedSchema());
 		assertEquals("foo", resourceCollectionTable.getSchema());
 		
 		//set schema to null in the context model
 		collectionTable.setSpecifiedSchema(null);
 		assertNull(collectionTable.getSpecifiedSchema());
-		assertNull(resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME));
 	}
 
 	public void testUpdateSpecifiedCatalog() throws Exception {
@@ -241,15 +241,15 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
-		CollectionTable2_0Annotation resourceCollectionTable = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		CollectionTableAnnotation2_0 resourceCollectionTable = (CollectionTableAnnotation2_0) resourceField.getAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
 		
 		assertNull(collectionTable.getSpecifiedCatalog());
 		assertNull(resourceCollectionTable);
 		
 		
 		//set catalog in the resource model, verify context model updated
-		resourceField.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
-		resourceCollectionTable = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
+		resourceCollectionTable = (CollectionTableAnnotation2_0) resourceField.getAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
 		resourceCollectionTable.setCatalog("FOO");
 		getJpaProject().synchronizeContextModel();
 		assertEquals("FOO", collectionTable.getSpecifiedCatalog());
@@ -266,10 +266,10 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		assertEquals("FOO", collectionTable.getSpecifiedCatalog());
 		assertEquals("FOO", resourceCollectionTable.getCatalog());
 
-		resourceField.removeAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		resourceField.removeAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		assertNull(collectionTable.getSpecifiedCatalog());
-		assertNull(resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testModifySpecifiedCatalog() throws Exception {
@@ -282,21 +282,21 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
-		CollectionTable2_0Annotation resourceCollectionTable = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		CollectionTableAnnotation2_0 resourceCollectionTable = (CollectionTableAnnotation2_0) resourceField.getAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
 		
 		assertNull(collectionTable.getSpecifiedCatalog());
 		assertNull(resourceCollectionTable);
 	
 		//set catalog in the context model, verify resource model modified
 		collectionTable.setSpecifiedCatalog("foo");
-		resourceCollectionTable = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		resourceCollectionTable = (CollectionTableAnnotation2_0) resourceField.getAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
 		assertEquals("foo", collectionTable.getSpecifiedCatalog());
 		assertEquals("foo", resourceCollectionTable.getCatalog());
 		
 		//set catalog to null in the context model
 		collectionTable.setSpecifiedCatalog(null);
 		assertNull(collectionTable.getSpecifiedCatalog());
-		assertNull(resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME));
 	}
 
 	public void testAddSpecifiedJoinColumn() throws Exception {
@@ -313,7 +313,7 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		SpecifiedJoinColumn joinColumn = collectionTable.addSpecifiedJoinColumn(0);
 		joinColumn.setSpecifiedName("FOO");
 				
-		CollectionTable2_0Annotation joinTableResource = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		CollectionTableAnnotation2_0 joinTableResource = (CollectionTableAnnotation2_0) resourceField.getAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
 
 		assertEquals("FOO", joinTableResource.joinColumnAt(0).getName());
 		
@@ -355,7 +355,7 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		collectionTable.addSpecifiedJoinColumn(1).setSpecifiedName("BAR");
 		collectionTable.addSpecifiedJoinColumn(2).setSpecifiedName("BAZ");
 		
-		CollectionTable2_0Annotation joinTableResource = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		CollectionTableAnnotation2_0 joinTableResource = (CollectionTableAnnotation2_0) resourceField.getAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
 		assertEquals(3, joinTableResource.getJoinColumnsSize());
 		
 		collectionTable.removeSpecifiedJoinColumn(0);
@@ -385,7 +385,7 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		collectionTable.addSpecifiedJoinColumn(1).setSpecifiedName("BAR");
 		collectionTable.addSpecifiedJoinColumn(2).setSpecifiedName("BAZ");
 		
-		CollectionTable2_0Annotation joinTableResource = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		CollectionTableAnnotation2_0 joinTableResource = (CollectionTableAnnotation2_0) resourceField.getAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
 		assertEquals(3, joinTableResource.getJoinColumnsSize());
 		
 		
@@ -421,7 +421,7 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
-		CollectionTable2_0Annotation joinTableResource = (CollectionTable2_0Annotation) resourceField.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		CollectionTableAnnotation2_0 joinTableResource = (CollectionTableAnnotation2_0) resourceField.addAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
 	
 		joinTableResource.addJoinColumn(0);
 		joinTableResource.addJoinColumn(1);
@@ -504,7 +504,7 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		CollectionTable2_0Annotation joinTableAnnotation = (CollectionTable2_0Annotation) resourceField.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		CollectionTableAnnotation2_0 joinTableAnnotation = (CollectionTableAnnotation2_0) resourceField.addAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
 		joinTableAnnotation.addUniqueConstraint(0).addColumnName(0, "foo");
 		joinTableAnnotation.addUniqueConstraint(0).addColumnName(0, "bar");
 		getJpaProject().synchronizeContextModel();
@@ -527,7 +527,7 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		CollectionTable2_0Annotation joinTableAnnotation = (CollectionTable2_0Annotation) resourceField.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		CollectionTableAnnotation2_0 joinTableAnnotation = (CollectionTableAnnotation2_0) resourceField.addAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
 		joinTableAnnotation.addUniqueConstraint(0).addColumnName(0, "foo");
 		joinTableAnnotation.addUniqueConstraint(1).addColumnName(0, "bar");
 		
@@ -547,7 +547,7 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		CollectionTable2_0Annotation joinTableAnnotation = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		CollectionTableAnnotation2_0 joinTableAnnotation = (CollectionTableAnnotation2_0) resourceField.getAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
 		ListIterator<UniqueConstraintAnnotation> uniqueConstraints = joinTableAnnotation.getUniqueConstraints().iterator();
 		
 		assertEquals("BAZ", uniqueConstraints.next().columnNameAt(0));
@@ -568,7 +568,7 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		CollectionTable2_0Annotation joinTableAnnotation = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		CollectionTableAnnotation2_0 joinTableAnnotation = (CollectionTableAnnotation2_0) resourceField.getAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
 		ListIterator<UniqueConstraintAnnotation> uniqueConstraints = joinTableAnnotation.getUniqueConstraints().iterator();
 		
 		assertEquals("BAZ", uniqueConstraints.next().columnNameAt(0));
@@ -589,7 +589,7 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		CollectionTable2_0Annotation joinTableAnnotation = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		CollectionTableAnnotation2_0 joinTableAnnotation = (CollectionTableAnnotation2_0) resourceField.getAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
 		
 		assertEquals(3, joinTableAnnotation.getUniqueConstraintsSize());
 
@@ -635,7 +635,7 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		CollectionTable2_0Annotation joinTableAnnotation = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		CollectionTableAnnotation2_0 joinTableAnnotation = (CollectionTableAnnotation2_0) resourceField.getAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
 		
 		assertEquals(3, joinTableAnnotation.getUniqueConstraintsSize());
 		
@@ -672,7 +672,7 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		JavaCollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		CollectionTable2_0Annotation joinTableAnnotation = (CollectionTable2_0Annotation) resourceField.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		CollectionTableAnnotation2_0 joinTableAnnotation = (CollectionTableAnnotation2_0) resourceField.addAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
 	
 		joinTableAnnotation.addUniqueConstraint(0).addColumnName("FOO");
 		joinTableAnnotation.addUniqueConstraint(1).addColumnName("BAR");

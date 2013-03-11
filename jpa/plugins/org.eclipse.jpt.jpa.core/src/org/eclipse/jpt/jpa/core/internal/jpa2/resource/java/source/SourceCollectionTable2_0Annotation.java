@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapt
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceBaseTableAnnotation;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceJoinColumnAnnotation;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.CollectionTable2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.CollectionTableAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
@@ -31,9 +31,9 @@ import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
  */
 public final class SourceCollectionTable2_0Annotation
 	extends SourceBaseTableAnnotation
-	implements CollectionTable2_0Annotation
+	implements CollectionTableAnnotation2_0
 {
-	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(CollectionTable2_0Annotation.ANNOTATION_NAME);
+	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(CollectionTableAnnotation2_0.ANNOTATION_NAME);
 
 	private static final DeclarationAnnotationElementAdapter<String> NAME_ADAPTER = ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA2_0.COLLECTION_TABLE__NAME);
 

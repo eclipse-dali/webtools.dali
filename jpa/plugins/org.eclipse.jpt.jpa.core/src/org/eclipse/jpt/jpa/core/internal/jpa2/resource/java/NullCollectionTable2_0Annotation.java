@@ -13,15 +13,15 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.internal.resource.java.NullBaseTableAnnotation;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.CollectionTable2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.CollectionTableAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
 
 /**
  * <code>javax.persistence.CollectionTable</code>
  */
 public final class NullCollectionTable2_0Annotation
-	extends NullBaseTableAnnotation<CollectionTable2_0Annotation>
-	implements CollectionTable2_0Annotation
+	extends NullBaseTableAnnotation<CollectionTableAnnotation2_0>
+	implements CollectionTableAnnotation2_0
 {
 	public NullCollectionTable2_0Annotation(JavaResourceModel parent) {
 		super(parent);

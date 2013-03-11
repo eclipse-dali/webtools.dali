@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.CollectionTable2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.CollectionTableAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
@@ -115,7 +115,7 @@ public class CollectionTable2_0AnnotationTests extends JavaResourceModel2_0TestC
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		CollectionTable2_0Annotation table = (CollectionTable2_0Annotation) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
+		CollectionTableAnnotation2_0 table = (CollectionTableAnnotation2_0) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
 		assertNotNull(table);
 		assertEquals(TABLE_NAME, table.getName());
 	}
@@ -125,7 +125,7 @@ public class CollectionTable2_0AnnotationTests extends JavaResourceModel2_0TestC
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		CollectionTable2_0Annotation table = (CollectionTable2_0Annotation) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
+		CollectionTableAnnotation2_0 table = (CollectionTableAnnotation2_0) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
 		assertNotNull(table);
 		assertNull(table.getName());
 		assertNull(table.getCatalog());
@@ -137,7 +137,7 @@ public class CollectionTable2_0AnnotationTests extends JavaResourceModel2_0TestC
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		CollectionTable2_0Annotation table = (CollectionTable2_0Annotation) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
+		CollectionTableAnnotation2_0 table = (CollectionTableAnnotation2_0) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
 		assertNotNull(table);
 		assertNull(table.getName());
 
@@ -152,7 +152,7 @@ public class CollectionTable2_0AnnotationTests extends JavaResourceModel2_0TestC
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		CollectionTable2_0Annotation table = (CollectionTable2_0Annotation) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
+		CollectionTableAnnotation2_0 table = (CollectionTableAnnotation2_0) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
 		assertEquals(TABLE_NAME, table.getName());
 		
 		table.setName(null);
@@ -166,7 +166,7 @@ public class CollectionTable2_0AnnotationTests extends JavaResourceModel2_0TestC
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		CollectionTable2_0Annotation table = (CollectionTable2_0Annotation) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
+		CollectionTableAnnotation2_0 table = (CollectionTableAnnotation2_0) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
 		assertNotNull(table);
 		assertEquals(CATALOG_NAME, table.getCatalog());
 	}
@@ -176,7 +176,7 @@ public class CollectionTable2_0AnnotationTests extends JavaResourceModel2_0TestC
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		CollectionTable2_0Annotation table = (CollectionTable2_0Annotation) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
+		CollectionTableAnnotation2_0 table = (CollectionTableAnnotation2_0) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
 		assertNotNull(table);
 		assertNull(table.getCatalog());
 
@@ -191,7 +191,7 @@ public class CollectionTable2_0AnnotationTests extends JavaResourceModel2_0TestC
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		CollectionTable2_0Annotation table = (CollectionTable2_0Annotation) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
+		CollectionTableAnnotation2_0 table = (CollectionTableAnnotation2_0) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
 		assertEquals(CATALOG_NAME, table.getCatalog());
 		
 		table.setCatalog(null);
@@ -205,7 +205,7 @@ public class CollectionTable2_0AnnotationTests extends JavaResourceModel2_0TestC
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		CollectionTable2_0Annotation table = (CollectionTable2_0Annotation) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
+		CollectionTableAnnotation2_0 table = (CollectionTableAnnotation2_0) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
 		assertNotNull(table);
 		assertEquals(SCHEMA_NAME, table.getSchema());
 	}
@@ -215,7 +215,7 @@ public class CollectionTable2_0AnnotationTests extends JavaResourceModel2_0TestC
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		CollectionTable2_0Annotation table = (CollectionTable2_0Annotation) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
+		CollectionTableAnnotation2_0 table = (CollectionTableAnnotation2_0) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
 		assertNotNull(table);
 		assertNull(table.getSchema());
 
@@ -230,7 +230,7 @@ public class CollectionTable2_0AnnotationTests extends JavaResourceModel2_0TestC
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		CollectionTable2_0Annotation table = (CollectionTable2_0Annotation) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
+		CollectionTableAnnotation2_0 table = (CollectionTableAnnotation2_0) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
 		assertEquals(SCHEMA_NAME, table.getSchema());
 		
 		table.setSchema(null);
@@ -244,7 +244,7 @@ public class CollectionTable2_0AnnotationTests extends JavaResourceModel2_0TestC
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		CollectionTable2_0Annotation table = (CollectionTable2_0Annotation) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
+		CollectionTableAnnotation2_0 table = (CollectionTableAnnotation2_0) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
 		
 		assertEquals(0, table.getUniqueConstraintsSize());
 	}
@@ -254,7 +254,7 @@ public class CollectionTable2_0AnnotationTests extends JavaResourceModel2_0TestC
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		CollectionTable2_0Annotation table = (CollectionTable2_0Annotation) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
+		CollectionTableAnnotation2_0 table = (CollectionTableAnnotation2_0) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
 
 		
 		table.addUniqueConstraint(0);
@@ -268,7 +268,7 @@ public class CollectionTable2_0AnnotationTests extends JavaResourceModel2_0TestC
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		CollectionTable2_0Annotation table = (CollectionTable2_0Annotation) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
+		CollectionTableAnnotation2_0 table = (CollectionTableAnnotation2_0) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
 				
 		assertEquals(3, table.getUniqueConstraintsSize());
 	}
@@ -278,7 +278,7 @@ public class CollectionTable2_0AnnotationTests extends JavaResourceModel2_0TestC
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		CollectionTable2_0Annotation table = (CollectionTable2_0Annotation) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
+		CollectionTableAnnotation2_0 table = (CollectionTableAnnotation2_0) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
 		
 		table.addUniqueConstraint(0).addColumnName("FOO");
 		table.addUniqueConstraint(1);
@@ -296,7 +296,7 @@ public class CollectionTable2_0AnnotationTests extends JavaResourceModel2_0TestC
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		CollectionTable2_0Annotation table = (CollectionTable2_0Annotation) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
+		CollectionTableAnnotation2_0 table = (CollectionTableAnnotation2_0) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
 		assertEquals("BAR", table.uniqueConstraintAt(0).columnNameAt(0));
 		assertEquals("FOO", table.uniqueConstraintAt(1).columnNameAt(0));
 		assertEquals("BAZ", table.uniqueConstraintAt(2).columnNameAt(0));
@@ -323,7 +323,7 @@ public class CollectionTable2_0AnnotationTests extends JavaResourceModel2_0TestC
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		CollectionTable2_0Annotation table = (CollectionTable2_0Annotation) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
+		CollectionTableAnnotation2_0 table = (CollectionTableAnnotation2_0) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
 		assertSourceContains("@CollectionTable(uniqueConstraints = {@UniqueConstraint(columnNames = {\"BAR\"}), @UniqueConstraint(columnNames = {\"FOO\"}), @UniqueConstraint(columnNames = {\"BAZ\"})})", cu);
 		
 		table.moveUniqueConstraint(2, 0);
@@ -335,7 +335,7 @@ public class CollectionTable2_0AnnotationTests extends JavaResourceModel2_0TestC
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		CollectionTable2_0Annotation table = (CollectionTable2_0Annotation) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
+		CollectionTableAnnotation2_0 table = (CollectionTableAnnotation2_0) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
 		assertSourceContains("@CollectionTable(uniqueConstraints = {@UniqueConstraint(columnNames = {\"BAR\"}), @UniqueConstraint(columnNames = {\"FOO\"}), @UniqueConstraint(columnNames = {\"BAZ\"})})", cu);
 		
 		table.moveUniqueConstraint(0, 2);
@@ -347,7 +347,7 @@ public class CollectionTable2_0AnnotationTests extends JavaResourceModel2_0TestC
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		CollectionTable2_0Annotation table = (CollectionTable2_0Annotation) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
+		CollectionTableAnnotation2_0 table = (CollectionTableAnnotation2_0) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
 				
 		assertEquals(0, table.getJoinColumnsSize());
 	}
@@ -357,7 +357,7 @@ public class CollectionTable2_0AnnotationTests extends JavaResourceModel2_0TestC
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		CollectionTable2_0Annotation table = (CollectionTable2_0Annotation) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
+		CollectionTableAnnotation2_0 table = (CollectionTableAnnotation2_0) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
 
 		
 		table.addJoinColumn(0);
@@ -371,7 +371,7 @@ public class CollectionTable2_0AnnotationTests extends JavaResourceModel2_0TestC
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		CollectionTable2_0Annotation table = (CollectionTable2_0Annotation) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
+		CollectionTableAnnotation2_0 table = (CollectionTableAnnotation2_0) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
 				
 		assertEquals(2, table.getJoinColumnsSize());
 	}
@@ -381,7 +381,7 @@ public class CollectionTable2_0AnnotationTests extends JavaResourceModel2_0TestC
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		CollectionTable2_0Annotation table = (CollectionTable2_0Annotation) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
+		CollectionTableAnnotation2_0 table = (CollectionTableAnnotation2_0) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
 		
 		table.addJoinColumn(0).setName("FOO");
 		table.addJoinColumn(1);
@@ -398,7 +398,7 @@ public class CollectionTable2_0AnnotationTests extends JavaResourceModel2_0TestC
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		CollectionTable2_0Annotation table = (CollectionTable2_0Annotation) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
+		CollectionTableAnnotation2_0 table = (CollectionTableAnnotation2_0) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
 		table.addJoinColumn(0).setName("FOO");
 		
 		assertEquals("FOO", table.joinColumnAt(0).getName());
@@ -428,7 +428,7 @@ public class CollectionTable2_0AnnotationTests extends JavaResourceModel2_0TestC
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		CollectionTable2_0Annotation table = (CollectionTable2_0Annotation) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
+		CollectionTableAnnotation2_0 table = (CollectionTableAnnotation2_0) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
 		JoinColumnAnnotation joinColumn = table.joinColumnAt(0);
 		joinColumn.setReferencedColumnName("REF_NAME");
 		joinColumn.setUnique(Boolean.FALSE);
@@ -454,7 +454,7 @@ public class CollectionTable2_0AnnotationTests extends JavaResourceModel2_0TestC
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		CollectionTable2_0Annotation table = (CollectionTable2_0Annotation) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
+		CollectionTableAnnotation2_0 table = (CollectionTableAnnotation2_0) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
 		
 		JoinColumnAnnotation joinColumn = table.joinColumnAt(0);
 		joinColumn.setReferencedColumnName("REF_NAME");
@@ -483,7 +483,7 @@ public class CollectionTable2_0AnnotationTests extends JavaResourceModel2_0TestC
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		CollectionTable2_0Annotation table = (CollectionTable2_0Annotation) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
+		CollectionTableAnnotation2_0 table = (CollectionTableAnnotation2_0) resourceField.getAnnotation(JPA2_0.COLLECTION_TABLE);
 				
 		assertEquals(2, table.getJoinColumnsSize());
 		

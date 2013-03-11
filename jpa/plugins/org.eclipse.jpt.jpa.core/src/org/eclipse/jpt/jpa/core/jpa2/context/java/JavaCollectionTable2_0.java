@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.jpa2.context.java;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedReferenceTable;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.CollectionTable2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.CollectionTableAnnotation2_0;
 
 /**
  * Java collection table
@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.CollectionTable2_0Annotation;
 public interface JavaCollectionTable2_0
 	extends CollectionTable2_0, JavaSpecifiedReferenceTable
 {
-	CollectionTable2_0Annotation getTableAnnotation();
+	CollectionTableAnnotation2_0 getTableAnnotation();
 
 
 	// ********** parent adapter **********

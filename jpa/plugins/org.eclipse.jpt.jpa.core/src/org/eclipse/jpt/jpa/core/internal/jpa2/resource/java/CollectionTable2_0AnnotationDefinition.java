@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.binary.BinaryCollectionTable2_0Annotation;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source.SourceCollectionTable2_0Annotation;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.CollectionTable2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.CollectionTableAnnotation2_0;
 
 /**
  * javax.persistence.CollectionTable
@@ -54,6 +54,6 @@ public final class CollectionTable2_0AnnotationDefinition
 	}
 
 	public String getAnnotationName() {
-		return CollectionTable2_0Annotation.ANNOTATION_NAME;
+		return CollectionTableAnnotation2_0.ANNOTATION_NAME;
 	}
 }

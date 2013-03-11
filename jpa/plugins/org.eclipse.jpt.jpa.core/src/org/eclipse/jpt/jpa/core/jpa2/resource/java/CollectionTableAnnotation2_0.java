@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.resource.java.ReferenceTableAnnotation;
  * @version 2.3
  * @since 2.3
  */
-public interface CollectionTable2_0Annotation 
+public interface CollectionTableAnnotation2_0 
 	extends ReferenceTableAnnotation
 {
 	String ANNOTATION_NAME = JPA2_0.COLLECTION_TABLE;

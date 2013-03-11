@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryBaseTableAnnotation;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryJoinColumnAnnotation;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.CollectionTable2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.CollectionTableAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
 
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
  */
 public final class BinaryCollectionTable2_0Annotation
 	extends BinaryBaseTableAnnotation
-	implements CollectionTable2_0Annotation
+	implements CollectionTableAnnotation2_0
 {
 	private final Vector<JoinColumnAnnotation> joinColumns;
 

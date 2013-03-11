@@ -25,13 +25,13 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.JoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaReferenceTable;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaElementCollectionMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.CollectionTable2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.CollectionTableAnnotation2_0;
 
 /**
  * Java collection table
  */
 public class GenericJavaCollectionTable2_0
-	extends GenericJavaReferenceTable<JavaElementCollectionMapping2_0, JavaCollectionTable2_0.ParentAdapter, CollectionTable2_0Annotation>
+	extends GenericJavaReferenceTable<JavaElementCollectionMapping2_0, JavaCollectionTable2_0.ParentAdapter, CollectionTableAnnotation2_0>
 	implements JavaCollectionTable2_0
 {
 	public GenericJavaCollectionTable2_0(JavaCollectionTable2_0.ParentAdapter parentAdapter) {
@@ -47,13 +47,13 @@ public class GenericJavaCollectionTable2_0
 	// ********** table annotation **********
 
 	@Override
-	public CollectionTable2_0Annotation getTableAnnotation() {
-		return (CollectionTable2_0Annotation) this.getElementCollectionMapping().getResourceAttribute().getNonNullAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+	public CollectionTableAnnotation2_0 getTableAnnotation() {
+		return (CollectionTableAnnotation2_0) this.getElementCollectionMapping().getResourceAttribute().getNonNullAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
 	}
 
 	@Override
 	protected void removeTableAnnotation() {
-		this.getElementCollectionMapping().getResourceAttribute().removeAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		this.getElementCollectionMapping().getResourceAttribute().removeAnnotation(CollectionTableAnnotation2_0.ANNOTATION_NAME);
 	}
 
 
