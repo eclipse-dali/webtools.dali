@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2_1.persistence;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen.SchemaGeneration2_1;
 import org.eclipse.jpt.jpa.ui.jpa2_1.persistence.JptJpaUiPersistenceMessages2_1;
 import org.eclipse.swt.widgets.Composite;
@@ -19,11 +20,19 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  DataLoadingComposite
  */
-public class DataLoadingComposite<T extends SchemaGeneration2_1> extends Pane<T>
+public class DataLoadingComposite extends Pane<SchemaGeneration2_1>
 {
-	public DataLoadingComposite(Pane<T> subjectHolder, Composite container) {
-
-		super(subjectHolder, container);
+	public DataLoadingComposite(
+			Pane<SchemaGeneration2_1> parent, 
+			Composite container) {
+		super(parent, container);
+	}
+	
+	public DataLoadingComposite(
+			Pane<?> parent, 
+			PropertyValueModel<SchemaGeneration2_1> schemaGenModel, 
+			Composite container) {
+		super(parent, schemaGenModel, container);
 	}
 	
 	@Override
@@ -42,7 +51,6 @@ public class DataLoadingComposite<T extends SchemaGeneration2_1> extends Pane<T>
 		// SqlLoadScriptSource
 		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SchemaGenerationComposite_sqlLoadScriptSourceLabel); 
 		this.addText(parentComposite, this.buildSqlLoadScriptSourceHolder());
-		
 	}
 
 	// ********** SqlLoadScriptSource **********

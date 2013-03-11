@@ -29,11 +29,19 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  SchemaGenerationComposite
  */
-public class SchemaGenerationComposite<T extends SchemaGeneration2_1> extends Pane<T>
+public class SchemaGenerationComposite extends Pane<SchemaGeneration2_1>
 {
-	public SchemaGenerationComposite(Pane<T> subjectHolder, Composite container) {
-
-		super(subjectHolder, container);
+	public SchemaGenerationComposite(
+			Pane<SchemaGeneration2_1> parent, 
+			Composite container) {
+		super(parent, container);
+	}
+	
+	public SchemaGenerationComposite(
+			Pane<?> parent, 
+			PropertyValueModel<SchemaGeneration2_1> schemaGenModel, 
+			Composite container) {
+		super(parent, schemaGenModel, container);
 	}
 	
 	@Override
@@ -98,7 +106,6 @@ public class SchemaGenerationComposite<T extends SchemaGeneration2_1> extends Pa
 		// Connection
 		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SchemaGenerationComposite_connection);
 		this.addText(parentComposite, this.buildConnectionHolder());
-
 	}
 
 	// ********** ScriptsCreateTarget **********
@@ -384,11 +391,6 @@ public class SchemaGenerationComposite<T extends SchemaGeneration2_1> extends Pa
 			protected void setValue(SchemaGenerationAction2_1 value) {
 				this.getSubject().setSchemaGenDatabaseAction(value);
 			}
-
-//			@Override
-//			protected String getHelpId() {
-//				return 	// TODO - 
-//			}
 		};
 	}
 	

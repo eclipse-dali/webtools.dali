@@ -49,7 +49,8 @@ public class EclipseLinkPersistenceXml2_5UiDefinition
 		definitions.add(EclipseLinkPersistenceUnitConnectionEditorPageDefinition.instance());
 		definitions.add(EclipseLinkPersistenceUnitCustomization2_0EditorPageDefinition.instance());
 		definitions.add(EclipseLinkPersistenceUnitCaching2_0EditorPageDefinition.instance());
-		definitions.add(EclipseLinkPersistenceUnitOptions2_4EditorPageDefinition.instance());
+		definitions.add(EclipseLinkPersistenceUnitOptions2_5EditorPageDefinition.instance());
+		definitions.add(EclipseLinkPersistenceUnitSchemaGeneration2_5EditorPageDefinition.instance());
 		definitions.add(PersistenceUnitPropertiesEditorPageDefinition.instance());
 	}
 

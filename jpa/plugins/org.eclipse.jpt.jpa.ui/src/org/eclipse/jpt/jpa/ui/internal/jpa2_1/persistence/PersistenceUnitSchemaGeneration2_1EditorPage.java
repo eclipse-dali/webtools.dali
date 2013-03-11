@@ -56,14 +56,14 @@ public class PersistenceUnitSchemaGeneration2_1EditorPage
 
 		// ********** Schema Generation properties **********
 
-		SchemaGenerationComposite<SchemaGeneration2_1> schemaGenerationComposite = new SchemaGenerationComposite<SchemaGeneration2_1>(this, client);
+		SchemaGenerationComposite schemaGenerationComposite = new SchemaGenerationComposite(this, client);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		schemaGenerationComposite.getControl().setLayoutData(gridData);
 		
 		// ********** Data Loading **********
 
-		DataLoadingComposite<SchemaGeneration2_1> dataLoadingComposite = new DataLoadingComposite<SchemaGeneration2_1>(this, client);
+		DataLoadingComposite dataLoadingComposite = new DataLoadingComposite(this, client);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		dataLoadingComposite.getControl().setLayoutData(gridData);

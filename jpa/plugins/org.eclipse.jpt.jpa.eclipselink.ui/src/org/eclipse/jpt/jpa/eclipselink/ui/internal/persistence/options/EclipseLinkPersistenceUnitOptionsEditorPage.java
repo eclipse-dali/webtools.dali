@@ -62,6 +62,8 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 {
 	private PropertyValueModel<EclipseLinkOptions> optionsHolder;
 
+	// ********** constructor **********
+	
 	public EclipseLinkPersistenceUnitOptionsEditorPage(
 			PropertyValueModel<PersistenceUnit> persistenceUnitModel,
             Composite parentComposite,
@@ -77,6 +79,97 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 
 	@Override
 	protected void initializeLayout(Composite container) {
+
+		this.buildOptionsSection(container);
+		
+		this.buildSchemaGenerationSection(container);
+		
+		this.buildLoggingSection(container);
+
+		this.buildMiscellaneousSection(container);
+	}
+	
+	// ********** Logging **********
+
+	protected Section buildLoggingSection(Composite container) {
+		Section loggingSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR);
+		loggingSection.setText(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_SECTION_TITLE);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.verticalAlignment = SWT.TOP;
+		loggingSection.setLayoutData(gridData);
+		Control loggingComposite = this.initializeLoggingSection(loggingSection);
+		loggingSection.setClient(loggingComposite);
+		return loggingSection;
+	}
+
+	protected Control initializeLoggingSection(Section section) {			
+		return new EclipseLinkLoggingComposite<EclipseLinkLogging>(this, this.buildLoggingHolder(), section).getControl();
+	}
+
+	private PropertyValueModel<EclipseLinkLogging> buildLoggingHolder() {
+		return new TransformationPropertyValueModel<PersistenceUnit, EclipseLinkLogging>(this.getSubjectHolder()) {
+			@Override
+			protected EclipseLinkLogging transform_(PersistenceUnit value) {
+				return ((EclipseLinkPersistenceUnit) value).getLogging();
+			}
+		};
+	}
+	
+	// ********** EclipseLink SchemaGeneration **********
+
+	protected Section buildSchemaGenerationSection(Composite container) {
+		Section schemaGenerationSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR);
+		schemaGenerationSection.setText(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_ECLIPSELINK_SCHEMA_GENERATION_TAB_SECTION_TITLE);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.verticalAlignment = SWT.TOP;
+		schemaGenerationSection.setLayoutData(gridData);
+		Control schemaGenerationComposite = this.initializeSchemaGenerationSection(schemaGenerationSection);
+		schemaGenerationSection.setClient(schemaGenerationComposite);
+		return schemaGenerationSection;
+	}
+
+	protected Control initializeSchemaGenerationSection(Section section) {
+		return new PersistenceXmlSchemaGenerationComposite(this, this.buildSchemaGenerationHolder(), section).getControl();
+	}
+
+	private PropertyValueModel<EclipseLinkSchemaGeneration> buildSchemaGenerationHolder() {
+		return new TransformationPropertyValueModel<PersistenceUnit, EclipseLinkSchemaGeneration>(this.getSubjectHolder()) {
+			@Override
+			protected EclipseLinkSchemaGeneration transform_(PersistenceUnit value) {
+				return ((EclipseLinkPersistenceUnit) value).getEclipseLinkSchemaGeneration();
+			}
+		};
+	}
+	
+	// ********** Miscellaneous **********
+
+	protected Section buildMiscellaneousSection(Composite container) {
+		Section miscellaneousSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR);
+		miscellaneousSection.setText(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_MISCELLANEOUS_SECTION_TITLE);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.verticalAlignment = SWT.TOP;
+		miscellaneousSection.setLayoutData(gridData);
+		Control miscellaneousComposite = this.initializeMiscellaneousSection(miscellaneousSection);
+		miscellaneousSection.setClient(miscellaneousComposite);
+		return miscellaneousSection;
+	}
+
+	protected Control initializeMiscellaneousSection(Section section) {			
+		Composite container = this.addSubPane(section);
+		this.addTriStateCheckBoxWithDefault(
+			container,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_TEMPORAL_MUTABLE_LABEL,
+			this.buildTemporalMutableHolder(),
+			this.buildTemporalMutableStringHolder(),
+			EclipseLinkHelpContextIds.PERSISTENCE_OPTIONS
+		);
+
+		return container;
+	}
+	
+	// ********** Options **********
+
+	protected Section buildOptionsSection(Composite container) {
 		Section sessionOptionsSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR);
 		sessionOptionsSection.setText(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_SESSION_SECTION_TITLE);
 		Control sessionOptionsComposite = this.initializeSessionOptionsSection(sessionOptionsSection);
@@ -84,30 +177,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 		gridData.verticalAlignment = SWT.TOP;
 		sessionOptionsSection.setLayoutData(gridData);
 		sessionOptionsSection.setClient(sessionOptionsComposite);
-
-		Section schemaGenerationSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR);
-		schemaGenerationSection.setText(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_SCHEMA_GENERATION_TAB_SECTION_TITLE);
-		gridData = new GridData(GridData.FILL_HORIZONTAL);
-		gridData.verticalAlignment = SWT.TOP;
-		schemaGenerationSection.setLayoutData(gridData);
-		Control schemaGenerationComposite = this.initializeSchemaGenerationSection(schemaGenerationSection);
-		schemaGenerationSection.setClient(schemaGenerationComposite);
-
-		Section loggingSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR);
-		loggingSection.setText(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_SECTION_TITLE);
-		gridData = new GridData(GridData.FILL_HORIZONTAL);
-		gridData.verticalAlignment = SWT.TOP;
-		loggingSection.setLayoutData(gridData);
-		Control loggingComposite = this.initializeLoggingSection(loggingSection);
-		loggingSection.setClient(loggingComposite);
-
-		Section miscellaneousSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR);
-		miscellaneousSection.setText(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_MISCELLANEOUS_SECTION_TITLE);
-		gridData = new GridData(GridData.FILL_HORIZONTAL);
-		gridData.verticalAlignment = SWT.TOP;
-		miscellaneousSection.setLayoutData(gridData);
-		Control miscellaneousComposite = this.initializeMiscellaneousSection(miscellaneousSection);
-		miscellaneousSection.setClient(miscellaneousComposite);
+		return sessionOptionsSection;
 	}
 
 	private Control initializeSessionOptionsSection(Section section) {
@@ -122,7 +192,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 		Composite container = this.addPane(section, layout);
 
 		this.addLabel(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_SESSION_NAME);
-		Combo sessionNameCombo = addEditableCombo(
+		Combo sessionNameCombo = this.addEditableCombo(
 			container,
 			this.buildDefaultSessionNameListHolder(),
 			this.buildSessionNameHolder(),
@@ -133,7 +203,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 
 
 		this.addLabel(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_SESSIONS_XML);
-		Combo sessionsXmlCombo = addEditableCombo(
+		Combo sessionsXmlCombo = this.addEditableCombo(
 			container,
 			this.buildDefaultSessionsXmlFileNameListHolder(),
 			this.buildSessionsXmlFileNameHolder(),
@@ -143,7 +213,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 
 
 		this.addLabel(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_TARGET_DATABASE_LABEL);
-		Combo targetDatabaseCombo = addEditableCombo(
+		Combo targetDatabaseCombo = this.addEditableCombo(
 			container,
 			this.buildTargetDatabaseListHolder(),
 			this.buildTargetDatabaseHolder(),
@@ -154,7 +224,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 
 
 		this.addLabel(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_TARGET_SERVER_LABEL);
-		Combo targetServerCombo = addEditableCombo(
+		Combo targetServerCombo = this.addEditableCombo(
 			container,
 			this.buildTargetServerListHolder(),
 			this.buildTargetServerHolder(),
@@ -180,54 +250,14 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 		return container;
 	}
 
-	protected Control initializeLoggingSection(Section section) {			
-		return new EclipseLinkLoggingComposite<EclipseLinkLogging>(this, this.buildLoggingHolder(), section).getControl();
-	}
-
-	protected Control initializeSchemaGenerationSection(Section section) {
-		return new PersistenceXmlSchemaGenerationComposite(this, this.buildSchemaGenerationHolder(), section).getControl();
-	}
-
-	protected Control initializeMiscellaneousSection(Section section) {			
-		Composite container = this.addSubPane(section);
-		this.addTriStateCheckBoxWithDefault(
-			container,
-			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_TEMPORAL_MUTABLE_LABEL,
-			this.buildTemporalMutableHolder(),
-			this.buildTemporalMutableStringHolder(),
-			EclipseLinkHelpContextIds.PERSISTENCE_OPTIONS
-		);
-
-		return container;
-	}
-
-	private PropertyValueModel<EclipseLinkSchemaGeneration> buildSchemaGenerationHolder() {
-		return new TransformationPropertyValueModel<PersistenceUnit, EclipseLinkSchemaGeneration>(getSubjectHolder()) {
-			@Override
-			protected EclipseLinkSchemaGeneration transform_(PersistenceUnit value) {
-				return ((EclipseLinkPersistenceUnit) value).getEclipseLinkSchemaGeneration();
-			}
-		};
-	}
-
-	private PropertyValueModel<EclipseLinkLogging> buildLoggingHolder() {
-		return new TransformationPropertyValueModel<PersistenceUnit, EclipseLinkLogging>(getSubjectHolder()) {
-			@Override
-			protected EclipseLinkLogging transform_(PersistenceUnit value) {
-				return ((EclipseLinkPersistenceUnit) value).getLogging();
-			}
-		};
-	}
-
 	private PropertyValueModel<EclipseLinkOptions> buildOptionsHolder() {
-		return new TransformationPropertyValueModel<PersistenceUnit, EclipseLinkOptions>(getSubjectHolder()) {
+		return new TransformationPropertyValueModel<PersistenceUnit, EclipseLinkOptions>(this.getSubjectHolder()) {
 			@Override
 			protected EclipseLinkOptions transform_(PersistenceUnit value) {
 				return ((EclipseLinkPersistenceUnit)value).getEclipseLinkOptions();
 			}
 		};
 	}
-
 
 	//******** session name *********
 
@@ -477,8 +507,8 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 
 	private ListValueModel<String> buildTargetDatabasesListHolder() {
 		return new SortedListValueModelAdapter<String>(
-			buildTargetDatabasesCollectionHolder(),
-			buildTargetDatabaseComparator()
+			this.buildTargetDatabasesCollectionHolder(),
+			this.buildTargetDatabaseComparator()
 		);
 	}
 
