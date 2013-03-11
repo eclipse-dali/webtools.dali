@@ -27,4 +27,5 @@ import org.eclipse.jpt.jpa.core.context.IdClassReference;
 public interface JavaIdClassReference
 	extends IdClassReference
 {
+	// nothing yet
 }
