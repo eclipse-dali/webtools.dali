@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.resource.persistence.v2_0.XmlPersistenceUnitVali
  * @version 2.3
  * @since 2.3
  */
-public enum ValidationMode 
+public enum ValidationMode2_0 
 {
 	AUTO(XmlPersistenceUnitValidationModeType_2_0.AUTO),
 	CALLBACK(XmlPersistenceUnitValidationModeType_2_0.CALLBACK),
@@ -34,7 +34,7 @@ public enum ValidationMode
 
 	private XmlPersistenceUnitValidationModeType_2_0 xmlEnumValue;
 
-	ValidationMode(XmlPersistenceUnitValidationModeType_2_0 xmlEnumValue) {
+	ValidationMode2_0(XmlPersistenceUnitValidationModeType_2_0 xmlEnumValue) {
 		if (xmlEnumValue == null) {
 			throw new NullPointerException();
 		}
@@ -48,12 +48,12 @@ public enum ValidationMode
 	
 	// ********** static methods **********
 
-	public static ValidationMode fromXmlResourceModel(XmlPersistenceUnitValidationModeType_2_0 xmlValidationMode) {
+	public static ValidationMode2_0 fromXmlResourceModel(XmlPersistenceUnitValidationModeType_2_0 xmlValidationMode) {
 		return (xmlValidationMode == null) ? null : fromXmlResourceModel_(xmlValidationMode);
 	}
 
-	private static ValidationMode fromXmlResourceModel_(XmlPersistenceUnitValidationModeType_2_0 xmlValidationMode) {
-		for (ValidationMode validationMode : ValidationMode.values()) {
+	private static ValidationMode2_0 fromXmlResourceModel_(XmlPersistenceUnitValidationModeType_2_0 xmlValidationMode) {
+		for (ValidationMode2_0 validationMode : ValidationMode2_0.values()) {
 			if (validationMode.getXmlEnumValue().equals(xmlValidationMode)) {
 				return validationMode;
 			}
@@ -61,7 +61,7 @@ public enum ValidationMode
 		return null;
 	}
 
-	public static XmlPersistenceUnitValidationModeType_2_0 toXmlResourceModel(ValidationMode validationMode) {
+	public static XmlPersistenceUnitValidationModeType_2_0 toXmlResourceModel(ValidationMode2_0 validationMode) {
 		return (validationMode == null) ? null : validationMode.getXmlEnumValue();
 	}
 

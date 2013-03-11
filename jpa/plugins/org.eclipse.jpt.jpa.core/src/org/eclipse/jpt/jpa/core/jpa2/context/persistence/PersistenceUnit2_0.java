@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.jpa2.JpaMetamodelSynchronizer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.Connection2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.Options2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.ValidationMode;
+import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.ValidationMode2_0;
 
 /**
  * JPA 2.0 <code>persistence-unit</code>
@@ -74,7 +74,7 @@ public interface PersistenceUnit2_0
 	 * Return the persistence unit's validation mode,
 	 * whether specified or defaulted.
 	 */
-	ValidationMode getValidationMode();
+	ValidationMode2_0 getValidationMode();
 
 	/**
 	 * String constant associated with changes to the persistence unit's 
@@ -85,12 +85,12 @@ public interface PersistenceUnit2_0
 	/** 
 	 * Return the persistence unit's specified validation mode.
 	 */
-	ValidationMode getSpecifiedValidationMode();
+	ValidationMode2_0 getSpecifiedValidationMode();
 
 	/** 
 	 * Set the persistence unit's specified validation mode.
 	 */
-	void setSpecifiedValidationMode(ValidationMode validationMode);
+	void setSpecifiedValidationMode(ValidationMode2_0 validationMode);
 
 	/**
 	 * String constant associated with changes to the persistence unit's 
@@ -101,9 +101,9 @@ public interface PersistenceUnit2_0
 	/** 
 	 * Return the persistence unit's default validation mode.
 	 */
-	ValidationMode getDefaultValidationMode();
+	ValidationMode2_0 getDefaultValidationMode();
 	
-	ValidationMode DEFAULT_VALIDATION_MODE = ValidationMode.AUTO;
+	ValidationMode2_0 DEFAULT_VALIDATION_MODE = ValidationMode2_0.AUTO;
 
 	// ********** properties **********
 

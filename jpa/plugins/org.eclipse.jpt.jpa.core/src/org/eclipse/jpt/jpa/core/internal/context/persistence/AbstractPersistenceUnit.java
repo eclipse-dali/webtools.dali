@@ -99,7 +99,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.Connection2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.Options2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.ValidationMode;
+import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.ValidationMode2_0;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.PersistenceUnit2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen.SchemaGeneration2_1;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
@@ -202,8 +202,8 @@ public abstract class AbstractPersistenceUnit
 	protected SharedCacheMode2_0 specifiedSharedCacheMode;
 	protected SharedCacheMode2_0 defaultSharedCacheMode;
 
-	protected ValidationMode specifiedValidationMode;
-	protected ValidationMode defaultValidationMode = DEFAULT_VALIDATION_MODE;
+	protected ValidationMode2_0 specifiedValidationMode;
+	protected ValidationMode2_0 defaultValidationMode = DEFAULT_VALIDATION_MODE;
 
 	protected final Set<IFile> metamodelFiles = Collections.synchronizedSet(new HashSet<IFile>());
 
@@ -1505,40 +1505,40 @@ public abstract class AbstractPersistenceUnit
 
 	// ********** validation mode **********
 
-	public ValidationMode getValidationMode() {
+	public ValidationMode2_0 getValidationMode() {
 		return (this.specifiedValidationMode != null) ? this.specifiedValidationMode : this.defaultValidationMode;
 	}
 
-	public ValidationMode getSpecifiedValidationMode() {
+	public ValidationMode2_0 getSpecifiedValidationMode() {
 		return this.specifiedValidationMode;
 	}
 
-	public void setSpecifiedValidationMode(ValidationMode specifiedValidationMode) {
+	public void setSpecifiedValidationMode(ValidationMode2_0 specifiedValidationMode) {
 		this.setSpecifiedValidationMode_(specifiedValidationMode);
-		this.xmlPersistenceUnit.setValidationMode(ValidationMode.toXmlResourceModel(specifiedValidationMode));
+		this.xmlPersistenceUnit.setValidationMode(ValidationMode2_0.toXmlResourceModel(specifiedValidationMode));
 	}
 
-	protected void setSpecifiedValidationMode_(ValidationMode validationMode) {
-		ValidationMode old = this.specifiedValidationMode;
+	protected void setSpecifiedValidationMode_(ValidationMode2_0 validationMode) {
+		ValidationMode2_0 old = this.specifiedValidationMode;
 		this.specifiedValidationMode = validationMode;
 		this.firePropertyChanged(SPECIFIED_VALIDATION_MODE_PROPERTY, old, validationMode);
 	}
 
-	public ValidationMode getDefaultValidationMode() {
+	public ValidationMode2_0 getDefaultValidationMode() {
 		return this.defaultValidationMode;
 	}
 
-	protected void setDefaultValidationMode(ValidationMode defaultValidationMode) {
-		ValidationMode old = this.defaultValidationMode;
+	protected void setDefaultValidationMode(ValidationMode2_0 defaultValidationMode) {
+		ValidationMode2_0 old = this.defaultValidationMode;
 		this.defaultValidationMode = defaultValidationMode;
 		this.firePropertyChanged(DEFAULT_VALIDATION_MODE_PROPERTY, old, defaultValidationMode);
 	}
 
-	protected ValidationMode buildSpecifiedValidationMode() {
-		return ValidationMode.fromXmlResourceModel(this.xmlPersistenceUnit.getValidationMode());
+	protected ValidationMode2_0 buildSpecifiedValidationMode() {
+		return ValidationMode2_0.fromXmlResourceModel(this.xmlPersistenceUnit.getValidationMode());
 	}
 
-	protected ValidationMode buildDefaultValidationMode() {
+	protected ValidationMode2_0 buildDefaultValidationMode() {
 		return DEFAULT_VALIDATION_MODE;
 	}
 

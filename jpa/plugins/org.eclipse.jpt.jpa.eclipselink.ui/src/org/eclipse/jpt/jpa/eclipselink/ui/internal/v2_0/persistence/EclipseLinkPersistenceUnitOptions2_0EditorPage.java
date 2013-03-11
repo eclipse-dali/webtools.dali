@@ -42,7 +42,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.Options2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.ValidationMode;
+import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.ValidationMode2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOptions2_0;
@@ -195,8 +195,8 @@ class EclipseLinkPersistenceUnitOptions2_0EditorPage
 		};
 	}
 
-	private EnumFormComboViewer<PersistenceUnit, ValidationMode> addValidationModeCombo(Composite parent) {
-		return new EnumFormComboViewer<PersistenceUnit, ValidationMode>(this, this.getSubjectHolder(), parent) {
+	private EnumFormComboViewer<PersistenceUnit, ValidationMode2_0> addValidationModeCombo(Composite parent) {
+		return new EnumFormComboViewer<PersistenceUnit, ValidationMode2_0>(this, this.getSubjectHolder(), parent) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
@@ -204,8 +204,8 @@ class EclipseLinkPersistenceUnitOptions2_0EditorPage
 			}
 
 			@Override
-			protected ValidationMode[] getChoices() {
-				return ValidationMode.values();
+			protected ValidationMode2_0[] getChoices() {
+				return ValidationMode2_0.values();
 			}
 
 			@Override
@@ -214,12 +214,12 @@ class EclipseLinkPersistenceUnitOptions2_0EditorPage
 			}
 
 			@Override
-			protected ValidationMode getDefaultValue() {
+			protected ValidationMode2_0 getDefaultValue() {
 				return ((PersistenceUnit2_0) this.getSubject()).getDefaultValidationMode();
 			}
 
 			@Override
-			protected String displayString(ValidationMode value) {
+			protected String displayString(ValidationMode2_0 value) {
 				switch (value) {
 					case AUTO :
 						return JptJpaUiPersistenceMessages2_0.VALIDATION_MODE_COMPOSITE_AUTO;
@@ -233,12 +233,12 @@ class EclipseLinkPersistenceUnitOptions2_0EditorPage
 			}
 
 			@Override
-			protected ValidationMode getValue() {
+			protected ValidationMode2_0 getValue() {
 				return ((PersistenceUnit2_0) this.getSubject()).getSpecifiedValidationMode();
 			}
 
 			@Override
-			protected void setValue(ValidationMode value) {
+			protected void setValue(ValidationMode2_0 value) {
 				((PersistenceUnit2_0) this.getSubject()).setSpecifiedValidationMode(value);
 			}
 		};
