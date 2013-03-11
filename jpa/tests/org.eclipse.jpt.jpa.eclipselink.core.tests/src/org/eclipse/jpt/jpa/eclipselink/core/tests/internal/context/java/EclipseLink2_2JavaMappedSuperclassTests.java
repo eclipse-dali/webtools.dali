@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkReadOnlyAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkStructConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.StructConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TypeConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLink2_2ContextModelTestCase;
 
@@ -84,8 +84,8 @@ public class EclipseLink2_2JavaMappedSuperclassTests extends EclipseLink2_2Conte
 		assertNotNull(resourceType.getAnnotation(1, ConverterAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(0, TypeConverterAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(1, TypeConverterAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceType.getAnnotation(0, EclipseLinkStructConverterAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceType.getAnnotation(1, EclipseLinkStructConverterAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceType.getAnnotation(0, StructConverterAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceType.getAnnotation(1, StructConverterAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(1, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
@@ -121,8 +121,8 @@ public class EclipseLink2_2JavaMappedSuperclassTests extends EclipseLink2_2Conte
 		assertNotNull(resourceType.getAnnotation(1, ConverterAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(0, TypeConverterAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(1, TypeConverterAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceType.getAnnotation(0, EclipseLinkStructConverterAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceType.getAnnotation(1, EclipseLinkStructConverterAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceType.getAnnotation(0, StructConverterAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceType.getAnnotation(1, StructConverterAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(1, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME));
 		assertNull(resourceType.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
@@ -153,7 +153,7 @@ public class EclipseLink2_2JavaMappedSuperclassTests extends EclipseLink2_2Conte
 		assertNull(resourceType.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
 		assertEquals(0, resourceType.getAnnotationsSize(ConverterAnnotation.ANNOTATION_NAME));
 		assertEquals(0, resourceType.getAnnotationsSize(TypeConverterAnnotation.ANNOTATION_NAME));
-		assertEquals(0, resourceType.getAnnotationsSize(EclipseLinkStructConverterAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceType.getAnnotationsSize(StructConverterAnnotation.ANNOTATION_NAME));
 		assertEquals(0, resourceType.getAnnotationsSize(EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME));
 	}
 }

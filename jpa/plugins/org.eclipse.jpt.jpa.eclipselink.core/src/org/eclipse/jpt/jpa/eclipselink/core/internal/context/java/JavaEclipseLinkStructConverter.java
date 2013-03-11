@@ -14,17 +14,17 @@ import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkStructConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkStructConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.StructConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 
 /**
  * <code>org.eclipse.persistence.annotations.StructConverter</code>
  */
 public class JavaEclipseLinkStructConverter
-	extends JavaEclipseLinkConverterClassConverter<EclipseLinkStructConverterAnnotation>
+	extends JavaEclipseLinkConverterClassConverter<StructConverterAnnotation>
 	implements EclipseLinkStructConverter
 {
-	public JavaEclipseLinkStructConverter(EclipseLinkJavaConverterContainer parent, EclipseLinkStructConverterAnnotation converterAnnotation) {
+	public JavaEclipseLinkStructConverter(EclipseLinkJavaConverterContainer parent, StructConverterAnnotation converterAnnotation) {
 		super(parent, converterAnnotation, converterAnnotation.getConverter());
 	}
 

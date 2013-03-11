@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ArrayAnnotation2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConvertAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkStructConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.StructConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TypeConverterAnnotation;
 
 public class EclipseLinkJavaArrayMappingDefinition2_3
@@ -64,7 +64,7 @@ public class EclipseLinkJavaArrayMappingDefinition2_3
 		ConvertAnnotation.ANNOTATION_NAME,
 		ConverterAnnotation.ANNOTATION_NAME,
 		EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME,
-		EclipseLinkStructConverterAnnotation.ANNOTATION_NAME,
+		StructConverterAnnotation.ANNOTATION_NAME,
 		TypeConverterAnnotation.ANNOTATION_NAME
 	};
 	private static final Iterable<String> ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES = IterableTools.iterable(ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES_ARRAY);

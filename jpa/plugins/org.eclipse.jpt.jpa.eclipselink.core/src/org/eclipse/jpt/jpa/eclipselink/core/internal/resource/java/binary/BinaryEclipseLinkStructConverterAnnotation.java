@@ -13,14 +13,14 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkStructConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.StructConverterAnnotation;
 
 /**
  * <code>org.eclipse.persistence.annotations.StructConverter</code>
  */
 public final class BinaryEclipseLinkStructConverterAnnotation
 	extends BinaryEclipseLinkNamedConverterAnnotation
-	implements EclipseLinkStructConverterAnnotation
+	implements StructConverterAnnotation
 {
 	private String converter;
 

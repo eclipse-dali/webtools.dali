@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CustomizerAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ExistenceCheckingAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkReadOnlyAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkStructConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.StructConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TypeConverterAnnotation;
 
 public class EclipseLinkJavaEntityDefinition
@@ -64,7 +64,7 @@ public class EclipseLinkJavaEntityDefinition
 		ExistenceCheckingAnnotation.ANNOTATION_NAME,
 		EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME,
 		EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME,
-		EclipseLinkStructConverterAnnotation.ANNOTATION_NAME,
+		StructConverterAnnotation.ANNOTATION_NAME,
 		TypeConverterAnnotation.ANNOTATION_NAME,
 	};
 	// 'public' because EclipseLink MappedSuperclass also supports these annotations
