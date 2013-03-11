@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.DefaultJavaAttributeMappingDefinitionWrapper;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaEmbeddedMappingDefinition;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.AccessAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
@@ -51,7 +51,7 @@ public class JavaEmbeddedMappingDefinition2_0
 	}
 
 	private static final String[] SUPPORTING_ANNOTATION_NAMES_ARRAY_2_0 = new String[] {
-		Access2_0Annotation.ANNOTATION_NAME,
+		AccessAnnotation2_0.ANNOTATION_NAME,
 		AssociationOverrideAnnotation.ANNOTATION_NAME,
 		JPA.ASSOCIATION_OVERRIDES,
 	};

@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.binary.BinaryAccess2_0Annotation;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source.SourceAccess2_0Annotation;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.AccessAnnotation2_0;
 
 /**
  * javax.persistence.Access
@@ -54,6 +54,6 @@ public final class Access2_0AnnotationDefinition
 	}
 
 	public String getAnnotationName() {
-		return Access2_0Annotation.ANNOTATION_NAME;
+		return AccessAnnotation2_0.ANNOTATION_NAME;
 	}
 }

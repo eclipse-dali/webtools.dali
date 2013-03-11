@@ -45,7 +45,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.AccessAnnotation2_0;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -164,12 +164,12 @@ public abstract class AbstractJavaPersistentType
 
 	// ********** access annotation **********
 
-	protected Access2_0Annotation getAccessAnnotation() {
-		return (Access2_0Annotation) this.resourceType.getNonNullAnnotation(this.getAccessAnnotationName());
+	protected AccessAnnotation2_0 getAccessAnnotation() {
+		return (AccessAnnotation2_0) this.resourceType.getNonNullAnnotation(this.getAccessAnnotationName());
 	}
 
 	protected void removeAccessAnnotationIfUnset() {
-		Access2_0Annotation accessAnnotation = this.getAccessAnnotation();
+		AccessAnnotation2_0 accessAnnotation = this.getAccessAnnotation();
 		if ((accessAnnotation != null) && accessAnnotation.isUnset()) {
 			this.removeAccessAnnotation();
 		}
@@ -180,7 +180,7 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	protected String getAccessAnnotationName() {
-		return Access2_0Annotation.ANNOTATION_NAME;
+		return AccessAnnotation2_0.ANNOTATION_NAME;
 	}
 
 

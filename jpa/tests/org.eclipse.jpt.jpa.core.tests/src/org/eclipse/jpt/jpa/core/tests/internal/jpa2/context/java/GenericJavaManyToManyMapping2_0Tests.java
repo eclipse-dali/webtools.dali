@@ -53,7 +53,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.ManyToManyMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.AccessAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollection2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
@@ -381,7 +381,7 @@ public class GenericJavaManyToManyMapping2_0Tests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(manyToManyMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
@@ -392,7 +392,7 @@ public class GenericJavaManyToManyMapping2_0Tests
 		assertNotNull(resourceField.getAnnotation(BasicAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToDefault() throws Exception {
@@ -405,7 +405,7 @@ public class GenericJavaManyToManyMapping2_0Tests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(manyToManyMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
@@ -414,7 +414,7 @@ public class GenericJavaManyToManyMapping2_0Tests
 		assertNull(resourceField.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToVersionMapping() throws Exception {
@@ -427,7 +427,7 @@ public class GenericJavaManyToManyMapping2_0Tests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(manyToManyMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
@@ -438,7 +438,7 @@ public class GenericJavaManyToManyMapping2_0Tests
 		assertNotNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToIdMapping() throws Exception {
@@ -451,7 +451,7 @@ public class GenericJavaManyToManyMapping2_0Tests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(manyToManyMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
@@ -462,7 +462,7 @@ public class GenericJavaManyToManyMapping2_0Tests
 		assertNotNull(resourceField.getAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToEmbeddedMapping() throws Exception {
@@ -475,7 +475,7 @@ public class GenericJavaManyToManyMapping2_0Tests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(manyToManyMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
@@ -486,7 +486,7 @@ public class GenericJavaManyToManyMapping2_0Tests
 		assertNotNull(resourceField.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToEmbeddedIdMapping() throws Exception {
@@ -499,7 +499,7 @@ public class GenericJavaManyToManyMapping2_0Tests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(manyToManyMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
@@ -510,7 +510,7 @@ public class GenericJavaManyToManyMapping2_0Tests
 		assertNotNull(resourceField.getAnnotation(EmbeddedIdAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToTransientMapping() throws Exception {
@@ -523,7 +523,7 @@ public class GenericJavaManyToManyMapping2_0Tests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(manyToManyMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
@@ -534,7 +534,7 @@ public class GenericJavaManyToManyMapping2_0Tests
 		assertNotNull(resourceField.getAnnotation(TransientAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToOneToOneMapping() throws Exception {
@@ -547,7 +547,7 @@ public class GenericJavaManyToManyMapping2_0Tests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(manyToManyMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
@@ -558,7 +558,7 @@ public class GenericJavaManyToManyMapping2_0Tests
 		assertNotNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToOneToManyMapping() throws Exception {
@@ -571,7 +571,7 @@ public class GenericJavaManyToManyMapping2_0Tests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(manyToManyMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
@@ -582,7 +582,7 @@ public class GenericJavaManyToManyMapping2_0Tests
 		assertNotNull(resourceField.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToManyToOneMapping() throws Exception {
@@ -595,7 +595,7 @@ public class GenericJavaManyToManyMapping2_0Tests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(manyToManyMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
@@ -606,7 +606,7 @@ public class GenericJavaManyToManyMapping2_0Tests
 		assertNotNull(resourceField.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToElementCollectionMapping() throws Exception {
@@ -619,7 +619,7 @@ public class GenericJavaManyToManyMapping2_0Tests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(manyToManyMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
@@ -630,7 +630,7 @@ public class GenericJavaManyToManyMapping2_0Tests
 		assertNotNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 	}
 		
 	public void testCandidateMappedByAttributeNames() throws Exception {

@@ -52,7 +52,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaElementCollectionMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.AccessAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollection2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
@@ -413,7 +413,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(elementCollectionMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
@@ -422,7 +422,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		assertNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(BasicAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
 		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
@@ -437,14 +437,14 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(elementCollectionMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping().isDefault());
 	
 		assertNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
 		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
@@ -459,7 +459,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(elementCollectionMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
@@ -468,7 +468,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		assertNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
 		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
@@ -483,7 +483,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(elementCollectionMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
@@ -492,7 +492,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		assertNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(IdAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
 		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
@@ -507,7 +507,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(elementCollectionMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
@@ -516,7 +516,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		assertNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
@@ -531,7 +531,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(elementCollectionMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
@@ -540,7 +540,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		assertNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(EmbeddedIdAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
 		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
@@ -555,7 +555,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(elementCollectionMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
@@ -564,7 +564,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		assertNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(TransientAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
 		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
@@ -579,7 +579,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(elementCollectionMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
@@ -588,7 +588,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		assertNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
 		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
@@ -603,7 +603,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(elementCollectionMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
@@ -612,7 +612,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		assertNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
 		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
@@ -627,8 +627,8 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(elementCollectionMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
@@ -637,7 +637,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		assertNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
 		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}

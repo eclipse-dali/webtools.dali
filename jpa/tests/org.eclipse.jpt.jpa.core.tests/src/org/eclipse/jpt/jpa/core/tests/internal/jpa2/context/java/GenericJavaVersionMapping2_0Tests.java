@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.core.context.TransientMapping;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.AccessAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollection2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.BasicAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
@@ -85,7 +85,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		versionMapping.getColumn().setSpecifiedName("FOO");
 		versionMapping.setConverter(BaseTemporalConverter.class);
 		((BaseTemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(versionMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
@@ -94,7 +94,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		
 		assertNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(BasicAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 	}
@@ -111,7 +111,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		((BaseTemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(versionMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
@@ -119,7 +119,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		assertEquals(TemporalType.TIME, ((BaseTemporalConverter) ((BasicMapping) persistentAttribute.getMapping()).getConverter()).getTemporalType());
 		
 		assertNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 	}
@@ -136,7 +136,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		versionMapping.getColumn().setSpecifiedName("FOO");
 		versionMapping.setConverter(BaseTemporalConverter.class);
 		((BaseTemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(versionMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
@@ -144,7 +144,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		assertEquals(TemporalType.TIME, ((BaseTemporalConverter) ((IdMapping) persistentAttribute.getMapping()).getConverter()).getTemporalType());
 		
 		assertNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
@@ -162,7 +162,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		versionMapping.getColumn().setSpecifiedName("FOO");
 		versionMapping.setConverter(BaseTemporalConverter.class);
 		((BaseTemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(versionMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
@@ -170,7 +170,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		
 		assertNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 	}
@@ -187,7 +187,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		versionMapping.getColumn().setSpecifiedName("FOO");
 		versionMapping.setConverter(BaseTemporalConverter.class);
 		((BaseTemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(versionMapping.isDefault());
 
 		persistentAttribute.setMappingKey(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
@@ -195,7 +195,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		
 		assertNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(TransientAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 	}
@@ -212,7 +212,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		versionMapping.getColumn().setSpecifiedName("FOO");
 		versionMapping.setConverter(BaseTemporalConverter.class);
 		((BaseTemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(versionMapping.isDefault());
 
 		persistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
@@ -220,7 +220,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		
 		assertNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(EmbeddedIdAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 	}
@@ -237,7 +237,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		versionMapping.getColumn().setSpecifiedName("FOO");
 		versionMapping.setConverter(BaseTemporalConverter.class);
 		((BaseTemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(versionMapping.isDefault());
 
 		persistentAttribute.setMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
@@ -245,7 +245,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		
 		assertNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 	}
@@ -262,7 +262,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		versionMapping.getColumn().setSpecifiedName("FOO");
 		versionMapping.setConverter(BaseTemporalConverter.class);
 		((BaseTemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(versionMapping.isDefault());
 
 		persistentAttribute.setMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
@@ -270,7 +270,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		
 		assertNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 	}
@@ -287,7 +287,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		versionMapping.getColumn().setSpecifiedName("FOO");
 		versionMapping.setConverter(BaseTemporalConverter.class);
 		((BaseTemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(versionMapping.isDefault());
 
 		persistentAttribute.setMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
@@ -295,7 +295,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		
 		assertNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 	}
@@ -312,7 +312,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		versionMapping.getColumn().setSpecifiedName("FOO");
 		versionMapping.setConverter(BaseTemporalConverter.class);
 		((BaseTemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(versionMapping.isDefault());
 
 		persistentAttribute.setMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
@@ -320,7 +320,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		
 		assertNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 	}
@@ -337,7 +337,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		versionMapping.getColumn().setSpecifiedName("FOO");
 		versionMapping.setConverter(BaseTemporalConverter.class);
 		((BaseTemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(versionMapping.isDefault());
 
 		persistentAttribute.setMappingKey(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
@@ -345,7 +345,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		
 		assertNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 	}

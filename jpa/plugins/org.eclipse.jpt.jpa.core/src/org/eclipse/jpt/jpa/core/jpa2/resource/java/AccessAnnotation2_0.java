@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.resource.java.AccessType;
  * @version 2.3
  * @since 2.3
  */
-public interface Access2_0Annotation
+public interface AccessAnnotation2_0
 	extends Annotation
 {
 	String ANNOTATION_NAME = JPA2_0.ACCESS;

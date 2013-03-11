@@ -12,15 +12,15 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java;
 import org.eclipse.jpt.common.core.internal.resource.java.NullAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.AccessAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.AccessType;
 
 /**
  * <code>javax.persistence.Access</code>
  */
 public final class NullAccess2_0Annotation
-	extends NullAnnotation<Access2_0Annotation>
-	implements Access2_0Annotation
+	extends NullAnnotation<AccessAnnotation2_0>
+	implements AccessAnnotation2_0
 {
 
 	protected NullAccess2_0Annotation(JavaResourceAnnotatedElement parent) {

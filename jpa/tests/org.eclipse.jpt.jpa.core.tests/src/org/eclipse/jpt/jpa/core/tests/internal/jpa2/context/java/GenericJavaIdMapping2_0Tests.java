@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.core.context.TransientMapping;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.AccessAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollection2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.BasicAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
@@ -92,7 +92,7 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
 		idMapping.getGeneratorContainer().addSequenceGenerator();
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(idMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
@@ -101,7 +101,7 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		
 		assertNull(resourceField.getAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(BasicAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
@@ -124,7 +124,7 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
 		idMapping.getGeneratorContainer().addSequenceGenerator();
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(idMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
@@ -132,7 +132,7 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		assertEquals(TemporalType.TIME, ((BaseTemporalConverter) ((BasicMapping) persistentAttribute.getMapping()).getConverter()).getTemporalType());
 		
 		assertNull(resourceField.getAnnotation(IdAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
@@ -152,7 +152,7 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		idMapping.getColumn().setSpecifiedName("FOO");
 		idMapping.setConverter(BaseTemporalConverter.class);
 		((BaseTemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
 		idMapping.getGeneratorContainer().addSequenceGenerator();
@@ -164,7 +164,7 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		
 		assertNull(resourceField.getAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
@@ -187,7 +187,7 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
 		idMapping.getGeneratorContainer().addSequenceGenerator();
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(idMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
@@ -195,7 +195,7 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		
 		assertNull(resourceField.getAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
@@ -218,7 +218,7 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
 		idMapping.getGeneratorContainer().addSequenceGenerator();
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(idMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
@@ -226,7 +226,7 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		
 		assertNull(resourceField.getAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(TransientAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
@@ -249,7 +249,7 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
 		idMapping.getGeneratorContainer().addSequenceGenerator();
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(idMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
@@ -257,7 +257,7 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		
 		assertNull(resourceField.getAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(EmbeddedIdAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
@@ -280,7 +280,7 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
 		idMapping.getGeneratorContainer().addSequenceGenerator();
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(idMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
@@ -288,7 +288,7 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		
 		assertNotNull(resourceField.getAnnotation(IdAnnotation.ANNOTATION_NAME));//OneToOne with Id annotation is valid in JPA 2.0
 		assertNotNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
@@ -311,7 +311,7 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
 		idMapping.getGeneratorContainer().addSequenceGenerator();
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(idMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
@@ -319,7 +319,7 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		
 		assertNull(resourceField.getAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
@@ -342,7 +342,7 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
 		idMapping.getGeneratorContainer().addSequenceGenerator();
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(idMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
@@ -350,7 +350,7 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		
 		assertNotNull(resourceField.getAnnotation(IdAnnotation.ANNOTATION_NAME));//ManyToOne with Id annotation is valid in JPA 2.0
 		assertNotNull(resourceField.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
@@ -373,7 +373,7 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
 		idMapping.getGeneratorContainer().addSequenceGenerator();
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(idMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
@@ -381,7 +381,7 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		
 		assertNull(resourceField.getAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
@@ -405,7 +405,7 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
 		idMapping.getGeneratorContainer().addSequenceGenerator();
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(idMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
@@ -413,7 +413,7 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		
 		assertNull(resourceField.getAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));

@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.AccessAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.CollectionTable2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollection2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
@@ -74,7 +74,7 @@ public class JavaElementCollectionMappingDefinition2_0
 	}
 
 	private static final String[] SUPPORTING_ANNOTATION_NAMES_ARRAY = new String[] {
-		Access2_0Annotation.ANNOTATION_NAME,
+		AccessAnnotation2_0.ANNOTATION_NAME,
 		AssociationOverrideAnnotation.ANNOTATION_NAME,
 		JPA.ASSOCIATION_OVERRIDES,
 		AttributeOverrideAnnotation.ANNOTATION_NAME,

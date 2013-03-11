@@ -34,7 +34,7 @@ import org.eclipse.jpt.jpa.core.context.TransientMapping;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.AccessAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollection2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.BasicAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
@@ -93,7 +93,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		((BaseEnumeratedConverter) basicMapping.getConverter()).setSpecifiedEnumType(EnumType.STRING);
 		resourceField.addAnnotation(LobAnnotation.ANNOTATION_NAME);
 		resourceField.addAnnotation(TemporalAnnotation.ANNOTATION_NAME);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		basicMapping.setSpecifiedFetch(FetchType.EAGER);
 		basicMapping.setSpecifiedOptional(Boolean.FALSE);
 		assertFalse(basicMapping.isDefault());
@@ -109,7 +109,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		assertNotNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(LobAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(EnumeratedAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testBasicMorphToId() throws Exception {
@@ -126,7 +126,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		((BaseTemporalConverter) basicMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		resourceField.addAnnotation(LobAnnotation.ANNOTATION_NAME);
 		resourceField.addAnnotation(EnumeratedAnnotation.ANNOTATION_NAME);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		basicMapping.setSpecifiedFetch(FetchType.EAGER);
 		basicMapping.setSpecifiedOptional(Boolean.FALSE);
 		assertFalse(basicMapping.isDefault());
@@ -141,7 +141,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		assertNotNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(LobAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(EnumeratedAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testBasicMorphToVersion() throws Exception {
@@ -158,7 +158,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		((BaseTemporalConverter) basicMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		resourceField.addAnnotation(LobAnnotation.ANNOTATION_NAME);
 		resourceField.addAnnotation(EnumeratedAnnotation.ANNOTATION_NAME);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(basicMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
@@ -171,7 +171,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		assertNotNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(LobAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(EnumeratedAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testBasicMorphToEmbedded() throws Exception {
@@ -187,7 +187,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		resourceField.addAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 		resourceField.addAnnotation(LobAnnotation.ANNOTATION_NAME);
 		resourceField.addAnnotation(EnumeratedAnnotation.ANNOTATION_NAME);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(basicMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
@@ -199,7 +199,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		assertNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(LobAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(EnumeratedAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testBasicMorphToEmbeddedId() throws Exception {
@@ -215,7 +215,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		resourceField.addAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 		resourceField.addAnnotation(LobAnnotation.ANNOTATION_NAME);
 		resourceField.addAnnotation(EnumeratedAnnotation.ANNOTATION_NAME);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(basicMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
@@ -227,7 +227,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		assertNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(LobAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(EnumeratedAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 	}
 
 	public void testBasicMorphToTransient() throws Exception {
@@ -243,7 +243,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		resourceField.addAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 		resourceField.addAnnotation(LobAnnotation.ANNOTATION_NAME);
 		resourceField.addAnnotation(EnumeratedAnnotation.ANNOTATION_NAME);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(basicMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
@@ -255,7 +255,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		assertNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(LobAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(EnumeratedAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testBasicMorphToOneToOne() throws Exception {
@@ -271,7 +271,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		resourceField.addAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 		resourceField.addAnnotation(LobAnnotation.ANNOTATION_NAME);
 		resourceField.addAnnotation(EnumeratedAnnotation.ANNOTATION_NAME);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		basicMapping.setSpecifiedFetch(FetchType.EAGER);
 		basicMapping.setSpecifiedOptional(Boolean.FALSE);
 		assertFalse(basicMapping.isDefault());
@@ -282,7 +282,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 //TODO	assertEquals(FetchType.EAGER, ((OneToOneMapping) persistentAttribute.getMapping()).getSpecifiedFetch());
 //		assertEquals(Boolean.FALSE, ((OneToOneMapping) persistentAttribute.getMapping()).getSpecifiedOptional());
 		assertNotNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(BasicAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
@@ -303,7 +303,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		resourceField.addAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 		resourceField.addAnnotation(LobAnnotation.ANNOTATION_NAME);
 		resourceField.addAnnotation(EnumeratedAnnotation.ANNOTATION_NAME);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		basicMapping.setSpecifiedFetch(FetchType.EAGER);
 		basicMapping.setSpecifiedOptional(Boolean.FALSE);
 		assertFalse(basicMapping.isDefault());
@@ -313,7 +313,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		
 //TODO	assertEquals(FetchType.EAGER, ((OneToManyMapping) persistentAttribute.getMapping()).getSpecifiedFetch());
 		assertNotNull(resourceField.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(BasicAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
@@ -333,7 +333,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		resourceField.addAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 		resourceField.addAnnotation(LobAnnotation.ANNOTATION_NAME);
 		resourceField.addAnnotation(EnumeratedAnnotation.ANNOTATION_NAME);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		basicMapping.setSpecifiedFetch(FetchType.EAGER);
 		basicMapping.setSpecifiedOptional(Boolean.FALSE);
 		assertFalse(basicMapping.isDefault());
@@ -344,7 +344,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 //TODO	assertEquals(FetchType.EAGER, ((ManyToOneMapping) persistentAttribute.getMapping()).getSpecifiedFetch());
 //		assertEquals(Boolean.FALSE, ((ManyToOneMapping) persistentAttribute.getMapping()).getSpecifiedOptional());
 		assertNotNull(resourceField.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(BasicAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
@@ -365,7 +365,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		resourceField.addAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 		resourceField.addAnnotation(LobAnnotation.ANNOTATION_NAME);
 		resourceField.addAnnotation(EnumeratedAnnotation.ANNOTATION_NAME);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		basicMapping.setSpecifiedFetch(FetchType.EAGER);
 		basicMapping.setSpecifiedOptional(Boolean.FALSE);
 		assertFalse(basicMapping.isDefault());
@@ -375,7 +375,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		
 //		assertEquals(FetchType.EAGER, ((ManyToManyMapping) persistentAttribute.getMapping()).getSpecifiedFetch());
 		assertNotNull(resourceField.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(BasicAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
@@ -396,7 +396,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		resourceField.addAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 		resourceField.addAnnotation(LobAnnotation.ANNOTATION_NAME);
 		resourceField.addAnnotation(EnumeratedAnnotation.ANNOTATION_NAME);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		basicMapping.setSpecifiedFetch(FetchType.EAGER);
 		basicMapping.setSpecifiedOptional(Boolean.FALSE);
 		assertFalse(basicMapping.isDefault());
@@ -407,7 +407,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 //		assertEquals(FetchType.EAGER, ((ElementCollectionMapping2_0) persistentAttribute.getMapping()).getSpecifiedFetch());
 		assertNotNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(BasicAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(LobAnnotation.ANNOTATION_NAME));

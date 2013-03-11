@@ -43,7 +43,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.AccessAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollection2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsId2_0Annotation;
@@ -298,7 +298,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		SpecifiedJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(oneToOneMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
@@ -308,7 +308,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		assertNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(BasicAnnotation.ANNOTATION_NAME));
 		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToDefault() throws Exception {
@@ -321,7 +321,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		SpecifiedJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(oneToOneMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
@@ -329,7 +329,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 	
 		assertNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
 		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToVersionMapping() throws Exception {
@@ -342,7 +342,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		SpecifiedJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(oneToOneMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
@@ -352,7 +352,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		assertNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
 		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToIdMapping() throws Exception {
@@ -365,7 +365,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		SpecifiedJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(oneToOneMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
@@ -375,7 +375,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		assertNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToEmbeddedMapping() throws Exception {
@@ -388,7 +388,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		SpecifiedJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(oneToOneMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
@@ -398,7 +398,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		assertNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
 		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToEmbeddedIdMapping() throws Exception {
@@ -411,7 +411,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		SpecifiedJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(oneToOneMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
@@ -421,7 +421,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		assertNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(EmbeddedIdAnnotation.ANNOTATION_NAME));
 		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToTransientMapping() throws Exception {
@@ -434,7 +434,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		SpecifiedJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(oneToOneMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
@@ -444,7 +444,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		assertNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(TransientAnnotation.ANNOTATION_NAME));
 		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToManyToOneMapping() throws Exception {
@@ -457,7 +457,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		SpecifiedJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(oneToOneMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
@@ -467,7 +467,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		assertNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToOneToManyMapping() throws Exception {
@@ -480,7 +480,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		SpecifiedJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(oneToOneMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
@@ -490,7 +490,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		assertNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToManyToManyMapping() throws Exception {
@@ -503,7 +503,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		SpecifiedJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(oneToOneMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
@@ -513,7 +513,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		assertNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
 		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToElementCollectionMapping() throws Exception {
@@ -526,7 +526,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		SpecifiedJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
-		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(AccessAnnotation2_0.ANNOTATION_NAME);
 		assertFalse(oneToOneMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
@@ -536,7 +536,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		assertNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
 		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 	}
 		
 	public void testUpdateId() throws Exception {

@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaAttributeMappingDefinitionWrapper;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.AccessAnnotation2_0;
 
 public class EclipseLinkJavaBasicCollectionMappingDefinition2_0
 	extends JavaAttributeMappingDefinitionWrapper
@@ -48,7 +48,7 @@ public class EclipseLinkJavaBasicCollectionMappingDefinition2_0
 	}
 
 	public static final String[] SUPPORTING_ANNOTATION_NAMES_ARRAY_2_0 = new String[] {
-		Access2_0Annotation.ANNOTATION_NAME,
+		AccessAnnotation2_0.ANNOTATION_NAME,
 	};
 	private static final Iterable<String> SUPPORTING_ANNOTATION_NAMES_2_0 = IterableTools.iterable(SUPPORTING_ANNOTATION_NAMES_ARRAY_2_0);
 
