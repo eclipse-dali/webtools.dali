@@ -59,7 +59,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.StaticMetamodelAnnotation;
  * @version 2.3
  * @since 2.3
  */
-public interface MetamodelSynchronizer {
+public interface JpaMetamodelSynchronizer2_0 {
 	/**
 	 * The value used to tag a generated type:
 	 * <pre>
@@ -80,11 +80,11 @@ public interface MetamodelSynchronizer {
 	 * does nothing. (Not sure we need this....)
 	 */
 	final class Null
-		implements MetamodelSynchronizer, Serializable
+		implements JpaMetamodelSynchronizer2_0, Serializable
 	{
-		public static final MetamodelSynchronizer INSTANCE = new Null();
+		public static final JpaMetamodelSynchronizer2_0 INSTANCE = new Null();
 
-		public static MetamodelSynchronizer instance() {
+		public static JpaMetamodelSynchronizer2_0 instance() {
 			return INSTANCE;
 		}
 

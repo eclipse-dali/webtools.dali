@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.jpa2.context.persistence;
 
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.jpa.core.jpa2.MetamodelSynchronizer;
+import org.eclipse.jpt.jpa.core.jpa2.JpaMetamodelSynchronizer2_0;
 
 /**
  * JPA 2.0 <code>persistence.xml</code> file.
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.jpa2.MetamodelSynchronizer;
  * @since 2.3
  */
 public interface PersistenceXml2_0
-	extends PersistenceXml, MetamodelSynchronizer
+	extends PersistenceXml, JpaMetamodelSynchronizer2_0
 {
 	// combine interfaces
 }

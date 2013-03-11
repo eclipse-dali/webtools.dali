@@ -86,7 +86,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
-import org.eclipse.jpt.jpa.core.jpa2.MetamodelSynchronizer;
+import org.eclipse.jpt.jpa.core.jpa2.JpaMetamodelSynchronizer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.JpaContextModelRoot2_0;
 import org.eclipse.jpt.jpa.core.jpa2_1.JpaProject2_1;
 import org.eclipse.jpt.jpa.core.libprov.JpaLibraryProviderInstallOperationConfig;
@@ -1000,7 +1000,7 @@ public abstract class AbstractJpaProject
 		IPackageFragmentRoot genSourceFolder = this.getMetamodelPackageFragmentRoot();
 		return IterableTools.filter(
 				this.getInternalSourceJavaResourceTypes(),
-				new MetamodelSynchronizer.MetamodelTools.IsGeneratedMetamodelTopLevelType(genSourceFolder)
+				new JpaMetamodelSynchronizer2_0.MetamodelTools.IsGeneratedMetamodelTopLevelType(genSourceFolder)
 			);
 	}
 
@@ -1013,7 +1013,7 @@ public abstract class AbstractJpaProject
 		if (primaryType == null) {
 			return null;  // no types in the file
 		}
-		return MetamodelSynchronizer.MetamodelTools.isGeneratedMetamodelTopLevelType(primaryType) ? primaryType : null;
+		return JpaMetamodelSynchronizer2_0.MetamodelTools.isGeneratedMetamodelTopLevelType(primaryType) ? primaryType : null;
 	}
 
 	protected JavaResourceCompilationUnit getJavaResourceCompilationUnit(IFile file) {

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.jpa2.context;
 
 import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
-import org.eclipse.jpt.jpa.core.jpa2.MetamodelSynchronizer;
+import org.eclipse.jpt.jpa.core.jpa2.JpaMetamodelSynchronizer2_0;
 
 /**
  * Root of the Dali JPA 2.0 context model.
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.jpa2.MetamodelSynchronizer;
  * @since 2.3
  */
 public interface JpaContextModelRoot2_0
-	extends JpaContextModelRoot, MetamodelSynchronizer
+	extends JpaContextModelRoot, JpaMetamodelSynchronizer2_0
 {
 	// nothing yet...
 }

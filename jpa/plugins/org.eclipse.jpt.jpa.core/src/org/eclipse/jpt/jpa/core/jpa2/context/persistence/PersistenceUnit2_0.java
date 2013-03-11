@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.jpa2.context.persistence;
 
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.core.jpa2.MetamodelSynchronizer;
+import org.eclipse.jpt.jpa.core.jpa2.JpaMetamodelSynchronizer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.Connection2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.Options2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode;
@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.ValidationMode;
  * @since 2.3
  */
 public interface PersistenceUnit2_0
-	extends PersistenceUnit, MetamodelSynchronizer
+	extends PersistenceUnit, JpaMetamodelSynchronizer2_0
 {
 	// ********** shared cache mode **********
 

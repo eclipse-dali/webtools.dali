@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
-import org.eclipse.jpt.jpa.core.jpa2.MetamodelSynchronizer;
+import org.eclipse.jpt.jpa.core.jpa2.JpaMetamodelSynchronizer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType;
@@ -306,7 +306,7 @@ public class GenericMetamodelSynchronizer
 		pw.printAnnotation("javax.annotation.Generated");
 		pw.print('(');
 		pw.print("value=");
-		pw.printStringLiteral(MetamodelSynchronizer.METAMODEL_GENERATED_ANNOTATION_VALUE);
+		pw.printStringLiteral(JpaMetamodelSynchronizer2_0.METAMODEL_GENERATED_ANNOTATION_VALUE);
 		pw.print(", ");
 		pw.print("date=");
 		pw.printStringLiteral(format(new Date()));

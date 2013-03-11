@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.internal.context.AbstractJpaContextModel;
-import org.eclipse.jpt.jpa.core.jpa2.MetamodelSynchronizer;
+import org.eclipse.jpt.jpa.core.jpa2.JpaMetamodelSynchronizer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.JpaContextModelRoot2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceXml2_0;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
@@ -282,7 +282,7 @@ public class GenericContextModelRoot
 			if (persistenceUnit.specifiesManagedType(jrat.getTypeBinding().getQualifiedName())) {
 				orphans.remove(jrat);
 			}
-			else if (MetamodelSynchronizer.MetamodelTools.isMetamodel(jrat)) {
+			else if (JpaMetamodelSynchronizer2_0.MetamodelTools.isMetamodel(jrat)) {
 				orphans.remove(jrat);
 			}
 		}

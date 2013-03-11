@@ -80,7 +80,7 @@ public interface JpaProject2_0
 	/**
 	 * Return the JPA project's generated metamodel Java resource
 	 * top-level types.
-	 * @see MetamodelSynchronizer.MetamodelTools#isGeneratedMetamodelTopLevelType(JavaResourceAbstractType, IPackageFragmentRoot)
+	 * @see JpaMetamodelSynchronizer2_0.MetamodelTools#isGeneratedMetamodelTopLevelType(JavaResourceAbstractType, IPackageFragmentRoot)
 	 */
 	Iterable<JavaResourceAbstractType> getGeneratedMetamodelTopLevelTypes();
 
