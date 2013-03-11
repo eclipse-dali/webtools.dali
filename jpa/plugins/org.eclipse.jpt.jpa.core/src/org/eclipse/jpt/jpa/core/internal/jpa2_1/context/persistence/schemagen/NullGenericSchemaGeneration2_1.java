@@ -13,7 +13,7 @@ import java.util.Map;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnitProperties;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationAction2_1;
-import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationTarget;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationTarget2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen.SchemaGeneration2_1;
 
 /**
@@ -88,29 +88,29 @@ public class NullGenericSchemaGeneration2_1
 
 	// ********** SchemaGenCreateSource **********
 	
-	public SchemaGenerationTarget getSchemaGenCreateSource() {
+	public SchemaGenerationTarget2_1 getSchemaGenCreateSource() {
 		return null;
 	}
 	
-	public void setSchemaGenCreateSource(SchemaGenerationTarget newSchemaGenCreateSource) {
+	public void setSchemaGenCreateSource(SchemaGenerationTarget2_1 newSchemaGenCreateSource) {
 		throw new UnsupportedOperationException();
 	}
 
-	public SchemaGenerationTarget getDefaultSchemaGenCreateSource() {
+	public SchemaGenerationTarget2_1 getDefaultSchemaGenCreateSource() {
 		return DEFAULT_SCHEMAGEN_CREATE_SOURCE;
 	}
 
 	// ********** SchemaGenDropSource **********
 	
-	public SchemaGenerationTarget getSchemaGenDropSource() {
+	public SchemaGenerationTarget2_1 getSchemaGenDropSource() {
 		return null;
 	}
 	
-	public void setSchemaGenDropSource(SchemaGenerationTarget newSchemaGenDropSource) {
+	public void setSchemaGenDropSource(SchemaGenerationTarget2_1 newSchemaGenDropSource) {
 		throw new UnsupportedOperationException();
 	}
 
-	public SchemaGenerationTarget getDefaultSchemaGenDropSource() {
+	public SchemaGenerationTarget2_1 getDefaultSchemaGenDropSource() {
 		return DEFAULT_SCHEMAGEN_DROP_SOURCE;
 	}
 

@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnitProperties;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.PersistenceUnit2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationAction2_1;
-import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationTarget;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationTarget2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen.SchemaGeneration2_1;
 
 public class GenericSchemaGeneration2_1
@@ -24,8 +24,8 @@ public class GenericSchemaGeneration2_1
 	// ********** GenericSchemaGeneration2_1 properties **********
 	private SchemaGenerationAction2_1 schemaGenDatabaseAction;
 	private SchemaGenerationAction2_1 schemaGenScriptsAction;
-	private SchemaGenerationTarget schemaGenCreateSource;
-	private SchemaGenerationTarget schemaGenDropSource;
+	private SchemaGenerationTarget2_1 schemaGenCreateSource;
+	private SchemaGenerationTarget2_1 schemaGenDropSource;
 	private Boolean createDatabaseSchemas;
 	private String scriptsCreateTarget;
 	private String scriptsDropTarget;
@@ -53,9 +53,9 @@ public class GenericSchemaGeneration2_1
 		this.schemaGenScriptsAction = 
 			this.getEnumValue(PERSISTENCE_SCHEMAGEN_SCRIPTS_ACTION, SchemaGenerationAction2_1.values());
 		this.schemaGenCreateSource = 
-			this.getEnumValue(PERSISTENCE_SCHEMAGEN_CREATE_SOURCE, SchemaGenerationTarget.values());
+			this.getEnumValue(PERSISTENCE_SCHEMAGEN_CREATE_SOURCE, SchemaGenerationTarget2_1.values());
 		this.schemaGenDropSource = 
-			this.getEnumValue(PERSISTENCE_SCHEMAGEN_DROP_SOURCE, SchemaGenerationTarget.values());
+			this.getEnumValue(PERSISTENCE_SCHEMAGEN_DROP_SOURCE, SchemaGenerationTarget2_1.values());
 		this.createDatabaseSchemas = 
 			this.getBooleanValue(PERSISTENCE_CREATE_DATABASE_SCHEMAS);
 		this.scriptsCreateTarget = 
@@ -276,49 +276,49 @@ public class GenericSchemaGeneration2_1
 
 	// ********** SchemaGenCreateSource **********
 	
-	public SchemaGenerationTarget getSchemaGenCreateSource() {
+	public SchemaGenerationTarget2_1 getSchemaGenCreateSource() {
 		return this.schemaGenCreateSource;
 	}
 	
-	public void setSchemaGenCreateSource(SchemaGenerationTarget newSchemaGenCreateSource) {
-		SchemaGenerationTarget old = this.schemaGenCreateSource;
+	public void setSchemaGenCreateSource(SchemaGenerationTarget2_1 newSchemaGenCreateSource) {
+		SchemaGenerationTarget2_1 old = this.schemaGenCreateSource;
 		this.schemaGenCreateSource = newSchemaGenCreateSource;
 		this.putProperty(SCHEMAGEN_CREATE_SOURCE_PROPERTY, newSchemaGenCreateSource);
 		this.firePropertyChanged(SCHEMAGEN_CREATE_SOURCE_PROPERTY, old, newSchemaGenCreateSource);
 	}
 
 	private void schemaGenCreateSourceChanged(String stringValue) {
-		SchemaGenerationTarget newValue = this.getEnumValueOf(stringValue, SchemaGenerationTarget.values());
-		SchemaGenerationTarget old = this.schemaGenCreateSource;
+		SchemaGenerationTarget2_1 newValue = this.getEnumValueOf(stringValue, SchemaGenerationTarget2_1.values());
+		SchemaGenerationTarget2_1 old = this.schemaGenCreateSource;
 		this.schemaGenCreateSource = newValue;
 		this.firePropertyChanged(SCHEMAGEN_CREATE_SOURCE_PROPERTY, old, newValue);
 	}
 	
-	public SchemaGenerationTarget getDefaultSchemaGenCreateSource() {
+	public SchemaGenerationTarget2_1 getDefaultSchemaGenCreateSource() {
 		return DEFAULT_SCHEMAGEN_CREATE_SOURCE;
 	}
 
 	// ********** SchemaGenDropSource **********
 	
-	public SchemaGenerationTarget getSchemaGenDropSource() {
+	public SchemaGenerationTarget2_1 getSchemaGenDropSource() {
 		return this.schemaGenDropSource;
 	}
 	
-	public void setSchemaGenDropSource(SchemaGenerationTarget newSchemaGenDropSource) {
-		SchemaGenerationTarget old = this.schemaGenDropSource;
+	public void setSchemaGenDropSource(SchemaGenerationTarget2_1 newSchemaGenDropSource) {
+		SchemaGenerationTarget2_1 old = this.schemaGenDropSource;
 		this.schemaGenDropSource = newSchemaGenDropSource;
 		this.putProperty(SCHEMAGEN_DROP_SOURCE_PROPERTY, newSchemaGenDropSource);
 		this.firePropertyChanged(SCHEMAGEN_DROP_SOURCE_PROPERTY, old, newSchemaGenDropSource);
 	}
 
 	private void schemaGenDropSourceChanged(String stringValue) {
-		SchemaGenerationTarget newValue = this.getEnumValueOf(stringValue, SchemaGenerationTarget.values());
-		SchemaGenerationTarget old = this.schemaGenDropSource;
+		SchemaGenerationTarget2_1 newValue = this.getEnumValueOf(stringValue, SchemaGenerationTarget2_1.values());
+		SchemaGenerationTarget2_1 old = this.schemaGenDropSource;
 		this.schemaGenDropSource = newValue;
 		this.firePropertyChanged(SCHEMAGEN_DROP_SOURCE_PROPERTY, old, newValue);
 	}
 	
-	public SchemaGenerationTarget getDefaultSchemaGenDropSource() {
+	public SchemaGenerationTarget2_1 getDefaultSchemaGenDropSource() {
 		return DEFAULT_SCHEMAGEN_DROP_SOURCE;
 	}
 

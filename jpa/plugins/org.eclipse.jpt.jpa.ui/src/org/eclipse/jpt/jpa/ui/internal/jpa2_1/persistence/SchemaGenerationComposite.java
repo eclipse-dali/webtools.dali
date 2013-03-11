@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationAction2_1;
-import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationTarget;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationTarget2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen.SchemaGeneration2_1;
 import org.eclipse.jpt.jpa.ui.jpa2_1.persistence.JptJpaUiPersistenceMessages2_1;
 import org.eclipse.osgi.util.NLS;
@@ -448,9 +448,9 @@ public class SchemaGenerationComposite<T extends SchemaGeneration2_1> extends Pa
 	}		
 	
 	// ********** CreateSource **********
-	private EnumFormComboViewer<SchemaGeneration2_1, SchemaGenerationTarget> buildCreateSourceCombo(Composite container) {
+	private EnumFormComboViewer<SchemaGeneration2_1, SchemaGenerationTarget2_1> buildCreateSourceCombo(Composite container) {
 	
-		return new EnumFormComboViewer<SchemaGeneration2_1, SchemaGenerationTarget>(this, 
+		return new EnumFormComboViewer<SchemaGeneration2_1, SchemaGenerationTarget2_1>(this, 
 											this.getSubjectHolder(), 
 											container) {
 			@Override
@@ -460,17 +460,17 @@ public class SchemaGenerationComposite<T extends SchemaGeneration2_1> extends Pa
 			}
 	
 			@Override
-			protected SchemaGenerationTarget[] getChoices() {
-				return SchemaGenerationTarget.values();
+			protected SchemaGenerationTarget2_1[] getChoices() {
+				return SchemaGenerationTarget2_1.values();
 			}
 	
 			@Override
-			protected SchemaGenerationTarget getDefaultValue() {
+			protected SchemaGenerationTarget2_1 getDefaultValue() {
 				return this.getSubject().getDefaultSchemaGenCreateSource();
 			}
 	
 			@Override
-			protected String displayString(SchemaGenerationTarget value) {
+			protected String displayString(SchemaGenerationTarget2_1 value) {
 				switch (value) {
 					case metadata :
 						return JptJpaUiPersistenceMessages2_1.SchemaGenerationTarget_metadata;
@@ -486,12 +486,12 @@ public class SchemaGenerationComposite<T extends SchemaGeneration2_1> extends Pa
 			}
 	
 			@Override
-			protected SchemaGenerationTarget getValue() {
+			protected SchemaGenerationTarget2_1 getValue() {
 				return this.getSubject().getSchemaGenCreateSource();
 			}
 	
 			@Override
-			protected void setValue(SchemaGenerationTarget value) {
+			protected void setValue(SchemaGenerationTarget2_1 value) {
 				this.getSubject().setSchemaGenCreateSource(value);
 			}
 	
@@ -503,9 +503,9 @@ public class SchemaGenerationComposite<T extends SchemaGeneration2_1> extends Pa
 	}
 	
 	// ********** DropSource **********
-	private EnumFormComboViewer<SchemaGeneration2_1, SchemaGenerationTarget> buildDropSourceCombo(Composite container) {
+	private EnumFormComboViewer<SchemaGeneration2_1, SchemaGenerationTarget2_1> buildDropSourceCombo(Composite container) {
 
-		return new EnumFormComboViewer<SchemaGeneration2_1, SchemaGenerationTarget>(this, 
+		return new EnumFormComboViewer<SchemaGeneration2_1, SchemaGenerationTarget2_1>(this, 
 											this.getSubjectHolder(), 
 											container) {
 			@Override
@@ -515,17 +515,17 @@ public class SchemaGenerationComposite<T extends SchemaGeneration2_1> extends Pa
 			}
 
 			@Override
-			protected SchemaGenerationTarget[] getChoices() {
-				return SchemaGenerationTarget.values();
+			protected SchemaGenerationTarget2_1[] getChoices() {
+				return SchemaGenerationTarget2_1.values();
 			}
 
 			@Override
-			protected SchemaGenerationTarget getDefaultValue() {
+			protected SchemaGenerationTarget2_1 getDefaultValue() {
 				return this.getSubject().getDefaultSchemaGenDropSource();
 			}
 
 			@Override
-			protected String displayString(SchemaGenerationTarget value) {
+			protected String displayString(SchemaGenerationTarget2_1 value) {
 				switch (value) {
 					case metadata :
 						return JptJpaUiPersistenceMessages2_1.SchemaGenerationTarget_metadata;
@@ -541,12 +541,12 @@ public class SchemaGenerationComposite<T extends SchemaGeneration2_1> extends Pa
 			}
 
 			@Override
-			protected SchemaGenerationTarget getValue() {
+			protected SchemaGenerationTarget2_1 getValue() {
 				return this.getSubject().getSchemaGenDropSource();
 			}
 
 			@Override
-			protected void setValue(SchemaGenerationTarget value) {
+			protected void setValue(SchemaGenerationTarget2_1 value) {
 				this.getSubject().setSchemaGenDropSource(value);
 			}
 

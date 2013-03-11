@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 /**
  *  SchemaGenerationSource
  */
-public enum SchemaGenerationTarget implements PersistenceXmlEnumValue {
+public enum SchemaGenerationTarget2_1 implements PersistenceXmlEnumValue {
 	metadata("metadata"),  //$NON-NLS-1$
 	script("script"),  //$NON-NLS-1$
 	metadata_then_script("metadata-then-script"),  //$NON-NLS-1$
@@ -22,7 +22,7 @@ public enum SchemaGenerationTarget implements PersistenceXmlEnumValue {
 
 	private final String propertyValue;
 	
-	SchemaGenerationTarget(String propertyValue) {
+	SchemaGenerationTarget2_1(String propertyValue) {
 		this.propertyValue = propertyValue;
 	}
 

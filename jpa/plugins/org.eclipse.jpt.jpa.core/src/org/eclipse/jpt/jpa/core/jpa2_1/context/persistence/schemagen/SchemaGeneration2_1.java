@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen;
 
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationAction2_1;
-import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationTarget;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationTarget2_1;
 
 /**
  * JPA 2.1 schema generation
@@ -36,21 +36,21 @@ public interface SchemaGeneration2_1
 		static final String PERSISTENCE_SCHEMAGEN_SCRIPTS_ACTION = "javax.persistence.schema-generation.scripts.action"; //$NON-NLS-1$
 		static final SchemaGenerationAction2_1 DEFAULT_SCHEMAGEN_SCRIPTS_ACTION = SchemaGenerationAction2_1.none;
 
-	SchemaGenerationTarget getDefaultSchemaGenCreateSource();
-	SchemaGenerationTarget getSchemaGenCreateSource();
-	void setSchemaGenCreateSource(SchemaGenerationTarget newSchemaGenSource);
+	SchemaGenerationTarget2_1 getDefaultSchemaGenCreateSource();
+	SchemaGenerationTarget2_1 getSchemaGenCreateSource();
+	void setSchemaGenCreateSource(SchemaGenerationTarget2_1 newSchemaGenSource);
 		static final String SCHEMAGEN_CREATE_SOURCE_PROPERTY = "schemaGenCreateSource"; //$NON-NLS-1$
 		// Property key string
 		static final String PERSISTENCE_SCHEMAGEN_CREATE_SOURCE = "javax.persistence.schema-generation.create-source"; //$NON-NLS-1$
-		static final SchemaGenerationTarget DEFAULT_SCHEMAGEN_CREATE_SOURCE = null;
+		static final SchemaGenerationTarget2_1 DEFAULT_SCHEMAGEN_CREATE_SOURCE = null;
 
-	SchemaGenerationTarget getDefaultSchemaGenDropSource();
-	SchemaGenerationTarget getSchemaGenDropSource();
-	void setSchemaGenDropSource(SchemaGenerationTarget newSchemaGenSource);
+	SchemaGenerationTarget2_1 getDefaultSchemaGenDropSource();
+	SchemaGenerationTarget2_1 getSchemaGenDropSource();
+	void setSchemaGenDropSource(SchemaGenerationTarget2_1 newSchemaGenSource);
 		static final String SCHEMAGEN_DROP_SOURCE_PROPERTY = "schemaGenDropSource"; //$NON-NLS-1$
 		// Property key string
 		static final String PERSISTENCE_SCHEMAGEN_DROP_SOURCE = "javax.persistence.schema-generation.drop-source"; //$NON-NLS-1$
-		static final SchemaGenerationTarget DEFAULT_SCHEMAGEN_DROP_SOURCE = null;
+		static final SchemaGenerationTarget2_1 DEFAULT_SCHEMAGEN_DROP_SOURCE = null;
 
 	Boolean getDefaultCreateDatabaseSchemas();
 	Boolean getCreateDatabaseSchemas();

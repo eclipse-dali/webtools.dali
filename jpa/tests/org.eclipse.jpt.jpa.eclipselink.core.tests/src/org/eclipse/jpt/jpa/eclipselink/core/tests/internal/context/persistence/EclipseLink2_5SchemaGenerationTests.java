@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.persistence;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationAction2_1;
-import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationTarget;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationTarget2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen.SchemaGeneration2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_5JpaPlatformFactory;
 
@@ -35,12 +35,12 @@ public class EclipseLink2_5SchemaGenerationTests
 	public static final SchemaGenerationAction2_1 SCHEMAGEN_SCRIPTS_ACTION_TEST_VALUE_2 = SchemaGenerationAction2_1.drop;
 
 	public static final String SCHEMAGEN_CREATE_SOURCE_KEY = SchemaGeneration2_1.PERSISTENCE_SCHEMAGEN_CREATE_SOURCE;
-	public static final SchemaGenerationTarget SCHEMAGEN_CREATE_SOURCE_TEST_VALUE = SchemaGenerationTarget.metadata;
-	public static final SchemaGenerationTarget SCHEMAGEN_CREATE_SOURCE_TEST_VALUE_2 = SchemaGenerationTarget.metadata_then_script;
+	public static final SchemaGenerationTarget2_1 SCHEMAGEN_CREATE_SOURCE_TEST_VALUE = SchemaGenerationTarget2_1.metadata;
+	public static final SchemaGenerationTarget2_1 SCHEMAGEN_CREATE_SOURCE_TEST_VALUE_2 = SchemaGenerationTarget2_1.metadata_then_script;
 
 	public static final String SCHEMAGEN_DROP_SOURCE_KEY = SchemaGeneration2_1.PERSISTENCE_SCHEMAGEN_DROP_SOURCE;
-	public static final SchemaGenerationTarget SCHEMAGEN_DROP_SOURCE_TEST_VALUE = SchemaGenerationTarget.script_then_metadata;
-	public static final SchemaGenerationTarget SCHEMAGEN_DROP_SOURCE_TEST_VALUE_2 = SchemaGenerationTarget.script;
+	public static final SchemaGenerationTarget2_1 SCHEMAGEN_DROP_SOURCE_TEST_VALUE = SchemaGenerationTarget2_1.script_then_metadata;
+	public static final SchemaGenerationTarget2_1 SCHEMAGEN_DROP_SOURCE_TEST_VALUE_2 = SchemaGenerationTarget2_1.script;
 	
 	public static final String CREATE_DATABASE_SCHEMAS_KEY = SchemaGeneration2_1.PERSISTENCE_CREATE_DATABASE_SCHEMAS;
 	public static final Boolean CREATE_DATABASE_SCHEMAS_TEST_VALUE = true;
@@ -401,9 +401,9 @@ public class EclipseLink2_5SchemaGenerationTests
 		else if (propertyName.equals(SchemaGeneration2_1.SCHEMAGEN_SCRIPTS_ACTION_PROPERTY))
 			this.schemaGeneration.setSchemaGenScriptsAction((SchemaGenerationAction2_1) newValue);
 		else if (propertyName.equals(SchemaGeneration2_1.SCHEMAGEN_CREATE_SOURCE_PROPERTY))
-			this.schemaGeneration.setSchemaGenCreateSource((SchemaGenerationTarget) newValue);
+			this.schemaGeneration.setSchemaGenCreateSource((SchemaGenerationTarget2_1) newValue);
 		else if (propertyName.equals(SchemaGeneration2_1.SCHEMAGEN_DROP_SOURCE_PROPERTY))
-			this.schemaGeneration.setSchemaGenDropSource((SchemaGenerationTarget) newValue);
+			this.schemaGeneration.setSchemaGenDropSource((SchemaGenerationTarget2_1) newValue);
 		else if (propertyName.equals(SchemaGeneration2_1.CREATE_DATABASE_SCHEMAS_PROPERTY))
 				this.schemaGeneration.setCreateDatabaseSchemas((Boolean) newValue);
 		else if (propertyName.equals(SchemaGeneration2_1.SCRIPTS_CREATE_TARGET_PROPERTY))
