@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkExistenceType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTimeOfDay;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlCache;
@@ -55,7 +55,7 @@ public class EclipseLinkOrmCachingTests
 		createTestEntity();
 		
 		OrmPersistentType type = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmEclipseLinkEntity entity = (OrmEclipseLinkEntity)type.getMapping();
+		EclipseLinkOrmEntity entity = (EclipseLinkOrmEntity)type.getMapping();
 		EclipseLinkCaching caching = entity.getCaching();
 		
 		assertEquals(true, caching.isShared());
@@ -73,7 +73,7 @@ public class EclipseLinkOrmCachingTests
 		createTestEntity();
 		
 		OrmPersistentType type = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmEclipseLinkEntity entity = (OrmEclipseLinkEntity)type.getMapping();
+		EclipseLinkOrmEntity entity = (EclipseLinkOrmEntity)type.getMapping();
 		EclipseLinkCaching caching = entity.getCaching();
 		
 		caching.setSpecifiedType(EclipseLinkCacheType.HARD_WEAK);
@@ -112,7 +112,7 @@ public class EclipseLinkOrmCachingTests
 		createTestEntity();
 		
 		OrmPersistentType type = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmEclipseLinkEntity entity = (OrmEclipseLinkEntity)type.getMapping();
+		EclipseLinkOrmEntity entity = (EclipseLinkOrmEntity)type.getMapping();
 		EclipseLinkCaching caching = entity.getCaching();
 		
 		assertTrue(caching.isDefaultShared());
@@ -126,7 +126,7 @@ public class EclipseLinkOrmCachingTests
 		createTestEntity();
 		
 		OrmPersistentType type = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmEclipseLinkEntity entity = (OrmEclipseLinkEntity)type.getMapping();
+		EclipseLinkOrmEntity entity = (EclipseLinkOrmEntity)type.getMapping();
 		EclipseLinkCaching caching = entity.getCaching();
 		
 		assertEquals(true, caching.isShared());
@@ -137,7 +137,7 @@ public class EclipseLinkOrmCachingTests
 		createTestEntity();
 		
 		OrmPersistentType type = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmEclipseLinkEntity entity = (OrmEclipseLinkEntity)type.getMapping();
+		EclipseLinkOrmEntity entity = (EclipseLinkOrmEntity)type.getMapping();
 		EclipseLinkCaching caching = entity.getCaching();
 		
 		assertEquals(EclipseLinkCacheType.SOFT_WEAK, caching.getType());
@@ -160,7 +160,7 @@ public class EclipseLinkOrmCachingTests
 		createTestEntity();
 		
 		OrmPersistentType type = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmEclipseLinkEntity entity = (OrmEclipseLinkEntity)type.getMapping();
+		EclipseLinkOrmEntity entity = (EclipseLinkOrmEntity)type.getMapping();
 		EclipseLinkCaching caching = entity.getCaching();
 		
 		assertEquals(EclipseLinkCacheType.SOFT_WEAK, caching.getDefaultType());
@@ -174,7 +174,7 @@ public class EclipseLinkOrmCachingTests
 		createTestEntity();
 		
 		OrmPersistentType type = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmEclipseLinkEntity entity = (OrmEclipseLinkEntity)type.getMapping();
+		EclipseLinkOrmEntity entity = (EclipseLinkOrmEntity)type.getMapping();
 		EclipseLinkCaching caching = entity.getCaching();
 		
 		assertEquals(EclipseLinkCacheType.SOFT_WEAK, caching.getType());
@@ -185,7 +185,7 @@ public class EclipseLinkOrmCachingTests
 		createTestEntity();
 		
 		OrmPersistentType type = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmEclipseLinkEntity entity = (OrmEclipseLinkEntity)type.getMapping();
+		EclipseLinkOrmEntity entity = (EclipseLinkOrmEntity)type.getMapping();
 		EclipseLinkCaching caching = entity.getCaching();
 		
 		assertEquals(false, caching.isAlwaysRefresh());
@@ -202,7 +202,7 @@ public class EclipseLinkOrmCachingTests
 		createTestEntity();
 		
 		OrmPersistentType type = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmEclipseLinkEntity entity = (OrmEclipseLinkEntity)type.getMapping();
+		EclipseLinkOrmEntity entity = (EclipseLinkOrmEntity)type.getMapping();
 		EclipseLinkCaching caching = entity.getCaching();
 		
 		assertEquals(false, caching.isAlwaysRefresh());
@@ -213,7 +213,7 @@ public class EclipseLinkOrmCachingTests
 		createTestEntity();
 		
 		OrmPersistentType type = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmEclipseLinkEntity entity = (OrmEclipseLinkEntity)type.getMapping();
+		EclipseLinkOrmEntity entity = (EclipseLinkOrmEntity)type.getMapping();
 		EclipseLinkCaching caching = entity.getCaching();
 		
 		assertEquals(false, caching.isRefreshOnlyIfNewer());
@@ -230,7 +230,7 @@ public class EclipseLinkOrmCachingTests
 		createTestEntity();
 		
 		OrmPersistentType type = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmEclipseLinkEntity entity = (OrmEclipseLinkEntity)type.getMapping();
+		EclipseLinkOrmEntity entity = (EclipseLinkOrmEntity)type.getMapping();
 		EclipseLinkCaching caching = entity.getCaching();
 		
 		assertEquals(false, caching.isRefreshOnlyIfNewer());
@@ -241,7 +241,7 @@ public class EclipseLinkOrmCachingTests
 		createTestEntity();
 		
 		OrmPersistentType type = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmEclipseLinkEntity entity = (OrmEclipseLinkEntity)type.getMapping();
+		EclipseLinkOrmEntity entity = (EclipseLinkOrmEntity)type.getMapping();
 		EclipseLinkCaching caching = entity.getCaching();
 		
 		assertEquals(false, caching.isDisableHits());
@@ -258,7 +258,7 @@ public class EclipseLinkOrmCachingTests
 		createTestEntity();
 		
 		OrmPersistentType type = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmEclipseLinkEntity entity = (OrmEclipseLinkEntity)type.getMapping();
+		EclipseLinkOrmEntity entity = (EclipseLinkOrmEntity)type.getMapping();
 		EclipseLinkCaching caching = entity.getCaching();
 		
 		assertEquals(false, caching.isDisableHits());
@@ -269,7 +269,7 @@ public class EclipseLinkOrmCachingTests
 		createTestEntity();
 		
 		OrmPersistentType type = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmEclipseLinkEntity entity = (OrmEclipseLinkEntity)type.getMapping();
+		EclipseLinkOrmEntity entity = (EclipseLinkOrmEntity)type.getMapping();
 		EclipseLinkCaching caching = entity.getCaching();
 		
 		assertEquals(EclipseLinkCacheCoordinationType.SEND_OBJECT_CHANGES, caching.getCoordinationType());
@@ -293,7 +293,7 @@ public class EclipseLinkOrmCachingTests
 		createTestEntity();
 		
 		OrmPersistentType type = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmEclipseLinkEntity entity = (OrmEclipseLinkEntity)type.getMapping();
+		EclipseLinkOrmEntity entity = (EclipseLinkOrmEntity)type.getMapping();
 		EclipseLinkCaching caching = entity.getCaching();
 		
 		assertEquals(EclipseLinkCacheCoordinationType.SEND_OBJECT_CHANGES, caching.getCoordinationType());
@@ -303,7 +303,7 @@ public class EclipseLinkOrmCachingTests
 		createTestEntity();
 		
 		OrmPersistentType type = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmEclipseLinkEntity entity = (OrmEclipseLinkEntity)type.getMapping();
+		EclipseLinkOrmEntity entity = (EclipseLinkOrmEntity)type.getMapping();
 		
 		assertNull(entity.getCaching().getExpiry());
 		
@@ -313,7 +313,7 @@ public class EclipseLinkOrmCachingTests
 		createTestEntity();
 		
 		OrmPersistentType type = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmEclipseLinkEntity entity = (OrmEclipseLinkEntity)type.getMapping();
+		EclipseLinkOrmEntity entity = (EclipseLinkOrmEntity)type.getMapping();
 		EclipseLinkCaching caching = entity.getCaching();
 		
 		caching.setExpiry(Integer.valueOf(58));
@@ -328,7 +328,7 @@ public class EclipseLinkOrmCachingTests
 		createTestEntity();
 		
 		OrmPersistentType type = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmEclipseLinkEntity entity = (OrmEclipseLinkEntity)type.getMapping();
+		EclipseLinkOrmEntity entity = (EclipseLinkOrmEntity)type.getMapping();
 		EclipseLinkCaching caching = entity.getCaching();
 		
 		caching.addExpiryTimeOfDay();
@@ -345,7 +345,7 @@ public class EclipseLinkOrmCachingTests
 		createTestEntity();
 		
 		OrmPersistentType type = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmEclipseLinkEntity entity = (OrmEclipseLinkEntity)type.getMapping();
+		EclipseLinkOrmEntity entity = (EclipseLinkOrmEntity)type.getMapping();
 		EclipseLinkCaching caching = entity.getCaching();
 		
 		assertNull(caching.getExpiryTimeOfDay());
@@ -355,7 +355,7 @@ public class EclipseLinkOrmCachingTests
 		createTestEntity();
 		
 		OrmPersistentType type = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmEclipseLinkEntity entity = (OrmEclipseLinkEntity)type.getMapping();
+		EclipseLinkOrmEntity entity = (EclipseLinkOrmEntity)type.getMapping();
 		EclipseLinkCaching caching = entity.getCaching();
 		
 		assertNull(caching.getExpiryTimeOfDay());
@@ -370,7 +370,7 @@ public class EclipseLinkOrmCachingTests
 		createTestEntity();
 		
 		OrmPersistentType type = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmEclipseLinkEntity entity = (OrmEclipseLinkEntity)type.getMapping();
+		EclipseLinkOrmEntity entity = (EclipseLinkOrmEntity)type.getMapping();
 		EclipseLinkCaching caching = entity.getCaching();
 		
 		assertNull(caching.getExpiryTimeOfDay());
@@ -380,7 +380,7 @@ public class EclipseLinkOrmCachingTests
 		createTestEntity();
 		
 		OrmPersistentType type = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmEclipseLinkEntity entity = (OrmEclipseLinkEntity)type.getMapping();
+		EclipseLinkOrmEntity entity = (EclipseLinkOrmEntity)type.getMapping();
 		EclipseLinkCaching caching = entity.getCaching();
 		
 		caching.setExpiry(Integer.valueOf(800));
@@ -397,7 +397,7 @@ public class EclipseLinkOrmCachingTests
 		createTestEntity();
 		
 		OrmPersistentType type = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmEclipseLinkEntity entity = (OrmEclipseLinkEntity)type.getMapping();
+		EclipseLinkOrmEntity entity = (EclipseLinkOrmEntity)type.getMapping();
 		EclipseLinkCaching caching = entity.getCaching();
 		
 		assertEquals(100, caching.getSize());
@@ -413,7 +413,7 @@ public class EclipseLinkOrmCachingTests
 		createTestEntity();
 		
 		OrmPersistentType type = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmEclipseLinkEntity entity = (OrmEclipseLinkEntity)type.getMapping();
+		EclipseLinkOrmEntity entity = (EclipseLinkOrmEntity)type.getMapping();
 		EclipseLinkCaching caching = entity.getCaching();
 		
 		assertEquals(100, caching.getDefaultSize());
@@ -427,7 +427,7 @@ public class EclipseLinkOrmCachingTests
 		createTestEntity();
 		
 		OrmPersistentType type = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmEclipseLinkEntity entity = (OrmEclipseLinkEntity)type.getMapping();
+		EclipseLinkOrmEntity entity = (EclipseLinkOrmEntity)type.getMapping();
 		EclipseLinkCaching caching = entity.getCaching();
 		
 		assertEquals(100, caching.getSize());
@@ -443,7 +443,7 @@ public class EclipseLinkOrmCachingTests
 		createTestEntity();
 
 		OrmPersistentType type = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmEclipseLinkEntity entity = (OrmEclipseLinkEntity)type.getMapping();
+		EclipseLinkOrmEntity entity = (EclipseLinkOrmEntity)type.getMapping();
 		EclipseLinkCaching caching = entity.getCaching();
 		XmlCache xmlCache = entity.getXmlTypeMapping().getCache();
 
@@ -473,7 +473,7 @@ public class EclipseLinkOrmCachingTests
 		createTestEntity();
 
 		OrmPersistentType type = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmEclipseLinkEntity entity = (OrmEclipseLinkEntity)type.getMapping();
+		EclipseLinkOrmEntity entity = (EclipseLinkOrmEntity)type.getMapping();
 		EclipseLinkCaching caching = entity.getCaching();
 		XmlCache xmlCache = entity.getXmlTypeMapping().getCache();
 

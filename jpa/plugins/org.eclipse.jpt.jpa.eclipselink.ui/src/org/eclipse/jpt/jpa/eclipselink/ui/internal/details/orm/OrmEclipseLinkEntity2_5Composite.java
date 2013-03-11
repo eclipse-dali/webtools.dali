@@ -13,7 +13,7 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkMultitenancyComposite;
@@ -27,11 +27,11 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
 public class OrmEclipseLinkEntity2_5Composite 
-	extends AbstractOrmEclipseLinkEntity2_xComposite<OrmEclipseLinkEntity>
+	extends AbstractOrmEclipseLinkEntity2_xComposite<EclipseLinkOrmEntity>
 {
 
 	public OrmEclipseLinkEntity2_5Composite(
-			PropertyValueModel<? extends OrmEclipseLinkEntity> entityModel,
+			PropertyValueModel<? extends EclipseLinkOrmEntity> entityModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
@@ -71,8 +71,8 @@ public class OrmEclipseLinkEntity2_5Composite
 		return new EclipseLinkMultitenancyComposite(this, this.buildMultitenancyModel(), container).getControl();
 	}
 
-	private PropertyAspectAdapter<OrmEclipseLinkEntity, OrmEclipseLinkMultitenancy2_3> buildMultitenancyModel() {
-		return new PropertyAspectAdapter<OrmEclipseLinkEntity, OrmEclipseLinkMultitenancy2_3>(getSubjectHolder()) {
+	private PropertyAspectAdapter<EclipseLinkOrmEntity, OrmEclipseLinkMultitenancy2_3> buildMultitenancyModel() {
+		return new PropertyAspectAdapter<EclipseLinkOrmEntity, OrmEclipseLinkMultitenancy2_3>(getSubjectHolder()) {
 			@Override
 			protected OrmEclipseLinkMultitenancy2_3 buildValue_() {
 				return this.subject.getMultitenancy();

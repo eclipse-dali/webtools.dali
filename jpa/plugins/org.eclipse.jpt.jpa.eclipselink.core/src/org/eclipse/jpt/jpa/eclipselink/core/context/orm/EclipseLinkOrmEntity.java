@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntity;
  * @version 2.1
  * @since 2.1
  */
-public interface OrmEclipseLinkEntity
+public interface EclipseLinkOrmEntity
 	extends OrmEntity, EclipseLinkEntity, OrmEclipseLinkNonEmbeddableTypeMapping
 {
 	XmlEntity getXmlTypeMapping();

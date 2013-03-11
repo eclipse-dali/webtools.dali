@@ -12,14 +12,14 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmEntity;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Entity2_0OverridesComposite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Generation2_0Composite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Queries2_0Composite;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-public abstract class AbstractOrmEclipseLinkEntity2_xComposite<T extends OrmEclipseLinkEntity>
+public abstract class AbstractOrmEclipseLinkEntity2_xComposite<T extends EclipseLinkOrmEntity>
 	extends AbstractOrmEclipseLinkEntityComposite<T>
 {
 	protected AbstractOrmEclipseLinkEntity2_xComposite(

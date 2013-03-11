@@ -12,14 +12,14 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmEntity;
 import org.eclipse.swt.widgets.Composite;
 
 public class OrmEclipseLinkEntityComposite
-	extends AbstractOrmEclipseLinkEntityComposite<OrmEclipseLinkEntity>
+	extends AbstractOrmEclipseLinkEntityComposite<EclipseLinkOrmEntity>
 {
 	public OrmEclipseLinkEntityComposite(
-			PropertyValueModel<? extends OrmEclipseLinkEntity> entityModel,
+			PropertyValueModel<? extends EclipseLinkOrmEntity> entityModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
