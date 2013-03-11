@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.JavaManyToManyMappingDefin
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.AccessAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClassAnnotation2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumnAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumerated2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporal2_0Annotation;
@@ -62,7 +62,7 @@ public class JavaManyToManyMappingDefinition2_0
 		AttributeOverrideAnnotation.ANNOTATION_NAME,
 		JPA.ATTRIBUTE_OVERRIDES,
 		MapKeyClassAnnotation2_0.ANNOTATION_NAME,
-		MapKeyColumn2_0Annotation.ANNOTATION_NAME,
+		MapKeyColumnAnnotation2_0.ANNOTATION_NAME,
 		MapKeyEnumerated2_0Annotation.ANNOTATION_NAME,
 		MapKeyJoinColumn2_0Annotation.ANNOTATION_NAME,
 		JPA2_0.MAP_KEY_JOIN_COLUMNS,

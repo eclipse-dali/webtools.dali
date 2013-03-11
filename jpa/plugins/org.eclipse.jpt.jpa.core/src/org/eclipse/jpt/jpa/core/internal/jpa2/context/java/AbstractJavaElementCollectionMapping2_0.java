@@ -99,7 +99,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaElementCollectionMapping2_
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollectionAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClassAnnotation2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumnAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.CompleteColumnAnnotation;
@@ -926,12 +926,12 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		return new MapKeyColumnParentAdapter();
 	}
 
-	protected MapKeyColumn2_0Annotation getMapKeyColumnAnnotation() {
-		return (MapKeyColumn2_0Annotation) this.getResourceAttribute().getNonNullAnnotation(MapKeyColumn2_0Annotation.ANNOTATION_NAME);
+	protected MapKeyColumnAnnotation2_0 getMapKeyColumnAnnotation() {
+		return (MapKeyColumnAnnotation2_0) this.getResourceAttribute().getNonNullAnnotation(MapKeyColumnAnnotation2_0.ANNOTATION_NAME);
 	}
 
 	protected void removeMapKeyColumnAnnotation() {
-		this.getResourceAttribute().removeAnnotation(MapKeyColumn2_0Annotation.ANNOTATION_NAME);
+		this.getResourceAttribute().removeAnnotation(MapKeyColumnAnnotation2_0.ANNOTATION_NAME);
 	}
 
 	// ********** map key converter **********
@@ -1850,7 +1850,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 			return AbstractJavaElementCollectionMapping2_0.this;
 		}
 
-		public MapKeyColumn2_0Annotation getColumnAnnotation() {
+		public MapKeyColumnAnnotation2_0 getColumnAnnotation() {
 			return AbstractJavaElementCollectionMapping2_0.this.getMapKeyColumnAnnotation();
 		}
 

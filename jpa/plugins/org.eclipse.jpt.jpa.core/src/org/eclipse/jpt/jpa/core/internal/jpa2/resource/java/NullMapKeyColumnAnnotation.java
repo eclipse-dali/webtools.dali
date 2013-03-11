@@ -11,14 +11,14 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.jpa.core.internal.resource.java.NullCompleteColumnAnnotation;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumnAnnotation2_0;
 
 /**
  * <code>javax.persistence.MapKeyColumn</code>
  */
 public final class NullMapKeyColumnAnnotation
-	extends NullCompleteColumnAnnotation<MapKeyColumn2_0Annotation>
-	implements MapKeyColumn2_0Annotation
+	extends NullCompleteColumnAnnotation<MapKeyColumnAnnotation2_0>
+	implements MapKeyColumnAnnotation2_0
 {
 	public NullMapKeyColumnAnnotation(JavaResourceModel parent) {
 		super(parent);

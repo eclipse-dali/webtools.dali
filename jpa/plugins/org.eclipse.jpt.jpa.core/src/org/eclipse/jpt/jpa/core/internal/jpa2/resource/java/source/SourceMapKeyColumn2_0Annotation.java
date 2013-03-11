@@ -15,16 +15,16 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceCompleteColumnAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumnAnnotation2_0;
 
 /**
  * <code>javax.persistence.MapKeyColumn</code>
  */
 public final class SourceMapKeyColumn2_0Annotation
 	extends SourceCompleteColumnAnnotation
-	implements MapKeyColumn2_0Annotation
+	implements MapKeyColumnAnnotation2_0
 {
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(MapKeyColumn2_0Annotation.ANNOTATION_NAME);
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(MapKeyColumnAnnotation2_0.ANNOTATION_NAME);
 
 
 	public SourceMapKeyColumn2_0Annotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
@@ -32,7 +32,7 @@ public final class SourceMapKeyColumn2_0Annotation
 	}
 
 	public String getAnnotationName() {
-		return MapKeyColumn2_0Annotation.ANNOTATION_NAME;
+		return MapKeyColumnAnnotation2_0.ANNOTATION_NAME;
 	}
 
 

@@ -13,14 +13,14 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryCompleteColumnAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumnAnnotation2_0;
 
 /**
  * <code>javax.persistence.MapKeyColumn</code>
  */
 public final class BinaryMapKeyColumn2_0Annotation
 	extends BinaryCompleteColumnAnnotation
-	implements MapKeyColumn2_0Annotation
+	implements MapKeyColumnAnnotation2_0
 {
 
 	public BinaryMapKeyColumn2_0Annotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {

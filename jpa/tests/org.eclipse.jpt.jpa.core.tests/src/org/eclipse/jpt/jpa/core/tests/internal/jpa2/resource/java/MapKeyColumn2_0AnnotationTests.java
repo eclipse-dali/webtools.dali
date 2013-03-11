@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumnAnnotation2_0;
 
 @SuppressWarnings("nls")
 public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase {
@@ -111,7 +111,7 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 		ICompilationUnit cu = this.createTestColumnWithName();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
+		MapKeyColumnAnnotation2_0 column = (MapKeyColumnAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
 		assertNotNull(column);
 		assertEquals(COLUMN_NAME, column.getName());
 	}
@@ -120,7 +120,7 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 		ICompilationUnit cu = this.createTestColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
+		MapKeyColumnAnnotation2_0 column = (MapKeyColumnAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
 		assertNotNull(column);
 		assertNull(column.getName());
 		assertNull(column.getNullable());
@@ -135,7 +135,7 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 		ICompilationUnit cu = this.createTestColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
+		MapKeyColumnAnnotation2_0 column = (MapKeyColumnAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
 
 		assertNotNull(column);
 		assertNull(column.getName());
@@ -150,7 +150,7 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 		ICompilationUnit cu = this.createTestColumnWithName();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
+		MapKeyColumnAnnotation2_0 column = (MapKeyColumnAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
 
 		assertEquals(COLUMN_NAME, column.getName());
 		
@@ -164,7 +164,7 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 		ICompilationUnit cu = this.createTestColumnWithTable();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
+		MapKeyColumnAnnotation2_0 column = (MapKeyColumnAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
 		assertEquals(COLUMN_TABLE, column.getTable());
 	}
 
@@ -172,7 +172,7 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 		ICompilationUnit cu = this.createTestColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
+		MapKeyColumnAnnotation2_0 column = (MapKeyColumnAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
 
 		assertNotNull(column);
 		assertNull(column.getTable());
@@ -191,7 +191,7 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 		ICompilationUnit cu = this.createTestColumnWithColumnDefinition();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
+		MapKeyColumnAnnotation2_0 column = (MapKeyColumnAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
 		assertEquals(COLUMN_COLUMN_DEFINITION, column.getColumnDefinition());
 	}
 
@@ -199,7 +199,7 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 		ICompilationUnit cu = this.createTestColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
+		MapKeyColumnAnnotation2_0 column = (MapKeyColumnAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
 
 		assertNotNull(column);
 		assertNull(column.getColumnDefinition());
@@ -218,7 +218,7 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 		ICompilationUnit cu = this.createTestColumnWithBooleanElement("unique");
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
+		MapKeyColumnAnnotation2_0 column = (MapKeyColumnAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
 
 		assertEquals(Boolean.TRUE, column.getUnique());
 	}
@@ -227,7 +227,7 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 		ICompilationUnit cu = this.createTestColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
+		MapKeyColumnAnnotation2_0 column = (MapKeyColumnAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
 
 		assertNotNull(column);
 		assertNull(column.getUnique());
@@ -245,7 +245,7 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 		ICompilationUnit cu = this.createTestColumnWithBooleanElement("nullable");
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
+		MapKeyColumnAnnotation2_0 column = (MapKeyColumnAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
 
 		assertEquals(Boolean.TRUE, column.getNullable());
 	}
@@ -254,7 +254,7 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 		ICompilationUnit cu = this.createTestColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
+		MapKeyColumnAnnotation2_0 column = (MapKeyColumnAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
 
 		assertNotNull(column);
 		assertNull(column.getNullable());
@@ -272,7 +272,7 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 		ICompilationUnit cu = this.createTestColumnWithBooleanElement("insertable");
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
+		MapKeyColumnAnnotation2_0 column = (MapKeyColumnAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
 
 		assertEquals(Boolean.TRUE, column.getInsertable());
 	}
@@ -281,7 +281,7 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 		ICompilationUnit cu = this.createTestColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
+		MapKeyColumnAnnotation2_0 column = (MapKeyColumnAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
 
 		assertNotNull(column);
 		assertNull(column.getInsertable());
@@ -299,7 +299,7 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 		ICompilationUnit cu = this.createTestColumnWithBooleanElement("updatable");
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
+		MapKeyColumnAnnotation2_0 column = (MapKeyColumnAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
 
 		assertEquals(Boolean.TRUE, column.getUpdatable());
 	}
@@ -308,7 +308,7 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 		ICompilationUnit cu = this.createTestColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
+		MapKeyColumnAnnotation2_0 column = (MapKeyColumnAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
 
 		assertNotNull(column);
 		assertNull(column.getUpdatable());
@@ -326,7 +326,7 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 		ICompilationUnit cu = this.createTestColumnWithIntElement("length");
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
+		MapKeyColumnAnnotation2_0 column = (MapKeyColumnAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
 
 		assertEquals(Integer.valueOf(5), column.getLength());
 	}
@@ -335,7 +335,7 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 		ICompilationUnit cu = this.createTestColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
+		MapKeyColumnAnnotation2_0 column = (MapKeyColumnAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
 
 		assertNotNull(column);
 		assertNull(column.getLength());
@@ -353,7 +353,7 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 		ICompilationUnit cu = this.createTestColumnWithIntElement("precision");
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
+		MapKeyColumnAnnotation2_0 column = (MapKeyColumnAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
 
 		assertEquals(Integer.valueOf(5), column.getPrecision());
 	}
@@ -362,7 +362,7 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 		ICompilationUnit cu = this.createTestColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
+		MapKeyColumnAnnotation2_0 column = (MapKeyColumnAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
 
 		assertNotNull(column);
 		assertEquals(null, column.getPrecision());
@@ -380,7 +380,7 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 		ICompilationUnit cu = this.createTestColumnWithIntElement("scale");
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
+		MapKeyColumnAnnotation2_0 column = (MapKeyColumnAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
 
 		assertEquals(Integer.valueOf(5), column.getScale());
 	}
@@ -389,7 +389,7 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 		ICompilationUnit cu = this.createTestColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
-		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
+		MapKeyColumnAnnotation2_0 column = (MapKeyColumnAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_COLUMN);
 
 		assertNotNull(column);
 		assertNull(column.getScale());

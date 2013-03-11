@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.resource.java.CompleteColumnAnnotation;
  * @version 2.3
  * @since 2.3
  */
-public interface MapKeyColumn2_0Annotation 
+public interface MapKeyColumnAnnotation2_0 
 	extends CompleteColumnAnnotation
 {
 	String ANNOTATION_NAME = JPA2_0.MAP_KEY_COLUMN;

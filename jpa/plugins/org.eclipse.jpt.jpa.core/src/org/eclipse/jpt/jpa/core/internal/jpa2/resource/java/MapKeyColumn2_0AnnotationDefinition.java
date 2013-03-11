@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.binary.BinaryMapKeyColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source.SourceMapKeyColumn2_0Annotation;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumnAnnotation2_0;
 
 /**
  * javax.persistence.MapKeyColumn
@@ -54,6 +54,6 @@ public final class MapKeyColumn2_0AnnotationDefinition
 	}
 
 	public String getAnnotationName() {
-		return MapKeyColumn2_0Annotation.ANNOTATION_NAME;
+		return MapKeyColumnAnnotation2_0.ANNOTATION_NAME;
 	}
 }
