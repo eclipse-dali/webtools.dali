@@ -13,7 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.Cacheable2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.CacheableAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 
 @SuppressWarnings("nls")
@@ -68,7 +68,7 @@ public class Cacheable2_0AnnotationTests extends JavaResourceModel2_0TestCase {
 		ICompilationUnit cu = this.createTestCacheableWithValue();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		
-		Cacheable2_0Annotation cacheableAnnotation = (Cacheable2_0Annotation) resourceType.getAnnotation(JPA2_0.CACHEABLE);
+		CacheableAnnotation2_0 cacheableAnnotation = (CacheableAnnotation2_0) resourceType.getAnnotation(JPA2_0.CACHEABLE);
 		assertEquals(Boolean.TRUE, cacheableAnnotation.getValue());
 	}
 
@@ -76,7 +76,7 @@ public class Cacheable2_0AnnotationTests extends JavaResourceModel2_0TestCase {
 		ICompilationUnit cu = this.createTestCacheableWithValue();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		
-		Cacheable2_0Annotation cacheableAnnotation = (Cacheable2_0Annotation) resourceType.getAnnotation(JPA2_0.CACHEABLE);
+		CacheableAnnotation2_0 cacheableAnnotation = (CacheableAnnotation2_0) resourceType.getAnnotation(JPA2_0.CACHEABLE);
 		assertEquals(Boolean.TRUE, cacheableAnnotation.getValue());
 		
 		cacheableAnnotation.setValue(Boolean.FALSE);
@@ -93,7 +93,7 @@ public class Cacheable2_0AnnotationTests extends JavaResourceModel2_0TestCase {
 		ICompilationUnit cu = this.createTestCacheableWithValue();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 	
-		Cacheable2_0Annotation cacheableAnnotation = (Cacheable2_0Annotation) resourceType.getAnnotation(JPA2_0.CACHEABLE);
+		CacheableAnnotation2_0 cacheableAnnotation = (CacheableAnnotation2_0) resourceType.getAnnotation(JPA2_0.CACHEABLE);
 		assertEquals(Boolean.TRUE, cacheableAnnotation.getValue());
 		
 		cacheableAnnotation.setValue(null);

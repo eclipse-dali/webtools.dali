@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.binary.BinaryCacheable2_0Annotation;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source.SourceCacheable2_0Annotation;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.Cacheable2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.CacheableAnnotation2_0;
 
 /**
  * javax.persistence.Cacheable
@@ -54,6 +54,6 @@ public final class Cacheable2_0AnnotationDefinition
 	}
 
 	public String getAnnotationName() {
-		return Cacheable2_0Annotation.ANNOTATION_NAME;
+		return CacheableAnnotation2_0.ANNOTATION_NAME;
 	}
 }

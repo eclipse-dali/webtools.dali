@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CacheableReference2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.Cacheable2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.CacheableAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkChangeTracking;
@@ -393,24 +393,24 @@ public class EclipseLink2_0JavaMappedSuperclassTests extends EclipseLink2_0Conte
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		Cacheable2_0 cacheable = ((CacheableReference2_0) getJavaPersistentType().getMapping()).getCacheable();
-		Cacheable2_0Annotation cacheableAnnotation = (Cacheable2_0Annotation) getJavaPersistentType().getJavaResourceType().getAnnotation(JPA2_0.CACHEABLE);
+		CacheableAnnotation2_0 cacheableAnnotation = (CacheableAnnotation2_0) getJavaPersistentType().getJavaResourceType().getAnnotation(JPA2_0.CACHEABLE);
 		assertEquals(null, cacheable.getSpecifiedCacheable());
 		assertEquals(null, cacheableAnnotation);
 		
 		cacheable.setSpecifiedCacheable(Boolean.FALSE);
-		cacheableAnnotation = (Cacheable2_0Annotation) getJavaPersistentType().getJavaResourceType().getAnnotation(JPA2_0.CACHEABLE);		
+		cacheableAnnotation = (CacheableAnnotation2_0) getJavaPersistentType().getJavaResourceType().getAnnotation(JPA2_0.CACHEABLE);		
 		assertEquals(Boolean.FALSE, cacheable.getSpecifiedCacheable());
 		assertEquals(Boolean.FALSE, cacheableAnnotation.getValue());
 		assertSourceContains("@Cacheable(false)", cu);
 		
 		cacheable.setSpecifiedCacheable(Boolean.TRUE);
-		cacheableAnnotation = (Cacheable2_0Annotation) getJavaPersistentType().getJavaResourceType().getAnnotation(JPA2_0.CACHEABLE);		
+		cacheableAnnotation = (CacheableAnnotation2_0) getJavaPersistentType().getJavaResourceType().getAnnotation(JPA2_0.CACHEABLE);		
 		assertEquals(Boolean.TRUE, cacheable.getSpecifiedCacheable());
 		assertEquals(null, cacheableAnnotation.getValue());
 		assertSourceContains("@Cacheable", cu);
 		
 		cacheable.setSpecifiedCacheable(null);
-		cacheableAnnotation = (Cacheable2_0Annotation) getJavaPersistentType().getJavaResourceType().getAnnotation(JPA2_0.CACHEABLE);		
+		cacheableAnnotation = (CacheableAnnotation2_0) getJavaPersistentType().getJavaResourceType().getAnnotation(JPA2_0.CACHEABLE);		
 		assertEquals(null, cacheable.getSpecifiedCacheable());
 		assertEquals(null, cacheableAnnotation);
 		assertSourceDoesNotContain("@Cacheable", cu);
@@ -421,13 +421,13 @@ public class EclipseLink2_0JavaMappedSuperclassTests extends EclipseLink2_0Conte
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		Cacheable2_0 cacheable = ((CacheableReference2_0) getJavaPersistentType().getMapping()).getCacheable();
-		Cacheable2_0Annotation cacheableAnnotation = (Cacheable2_0Annotation) getJavaPersistentType().getJavaResourceType().getAnnotation(JPA2_0.CACHEABLE);
+		CacheableAnnotation2_0 cacheableAnnotation = (CacheableAnnotation2_0) getJavaPersistentType().getJavaResourceType().getAnnotation(JPA2_0.CACHEABLE);
 		assertEquals(null, cacheable.getSpecifiedCacheable());
 		assertEquals(null, cacheableAnnotation);
 		
 		getJavaPersistentType().getJavaResourceType().addAnnotation(JPA2_0.CACHEABLE);
 		getJpaProject().synchronizeContextModel();
-		cacheableAnnotation = (Cacheable2_0Annotation) getJavaPersistentType().getJavaResourceType().getAnnotation(JPA2_0.CACHEABLE);
+		cacheableAnnotation = (CacheableAnnotation2_0) getJavaPersistentType().getJavaResourceType().getAnnotation(JPA2_0.CACHEABLE);
 		assertEquals(Boolean.TRUE, cacheable.getSpecifiedCacheable());
 		assertEquals(null, cacheableAnnotation.getValue());
 		assertSourceContains("@Cacheable", cu);
@@ -452,7 +452,7 @@ public class EclipseLink2_0JavaMappedSuperclassTests extends EclipseLink2_0Conte
 
 		getJavaPersistentType().getJavaResourceType().removeAnnotation(JPA2_0.CACHEABLE);
 		getJpaProject().synchronizeContextModel();
-		cacheableAnnotation = (Cacheable2_0Annotation) getJavaPersistentType().getJavaResourceType().getAnnotation(JPA2_0.CACHEABLE);		
+		cacheableAnnotation = (CacheableAnnotation2_0) getJavaPersistentType().getJavaResourceType().getAnnotation(JPA2_0.CACHEABLE);		
 		assertEquals(null,  cacheable.getSpecifiedCacheable());
 		assertEquals(null, cacheableAnnotation);
 		assertSourceDoesNotContain("@Cacheable", cu);

@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableReference2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.Cacheable2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.CacheableAnnotation2_0;
 
 /**
  * Java cacheable
@@ -63,7 +63,7 @@ public class GenericJavaCacheable2_0
 			if (cacheable == null) {
 				this.removeCacheableAnnotation();
 			} else {
-				Cacheable2_0Annotation annotation = this.getCacheableAnnotationForUpdate();
+				CacheableAnnotation2_0 annotation = this.getCacheableAnnotationForUpdate();
 				Boolean value = annotation.getValue();
 				if (cacheable.booleanValue()) {
 					if ((value != null) && ! value.booleanValue()) {  // @Cacheable(false)
@@ -85,7 +85,7 @@ public class GenericJavaCacheable2_0
 	}
 
 	private Boolean buildSpecifiedCacheable() {
-		Cacheable2_0Annotation annotation = this.getCacheableAnnotation();
+		CacheableAnnotation2_0 annotation = this.getCacheableAnnotation();
 		if (annotation == null) {
 			return null;
 		}
@@ -114,20 +114,20 @@ public class GenericJavaCacheable2_0
 	/**
 	 * Return <code>null</code> if the annotation does not exists.
 	 */
-	protected Cacheable2_0Annotation getCacheableAnnotation() {
-		return (Cacheable2_0Annotation) this.getJavaResourceType().getAnnotation(this.getCacheableAnnotationName());
+	protected CacheableAnnotation2_0 getCacheableAnnotation() {
+		return (CacheableAnnotation2_0) this.getJavaResourceType().getAnnotation(this.getCacheableAnnotationName());
 	}
 
 	/**
 	 * Build the annotation if it does not exist.
 	 */
-	protected Cacheable2_0Annotation getCacheableAnnotationForUpdate() {
-		Cacheable2_0Annotation annotation = this.getCacheableAnnotation();
+	protected CacheableAnnotation2_0 getCacheableAnnotationForUpdate() {
+		CacheableAnnotation2_0 annotation = this.getCacheableAnnotation();
 		return (annotation != null) ? annotation : this.buildCacheableAnnotation();
 	}
 
-	protected Cacheable2_0Annotation buildCacheableAnnotation() {
-		return (Cacheable2_0Annotation) this.getJavaResourceType().addAnnotation(this.getCacheableAnnotationName());
+	protected CacheableAnnotation2_0 buildCacheableAnnotation() {
+		return (CacheableAnnotation2_0) this.getJavaResourceType().addAnnotation(this.getCacheableAnnotationName());
 	}
 
 	protected void removeCacheableAnnotation() {
@@ -135,7 +135,7 @@ public class GenericJavaCacheable2_0
 	}
 
 	protected String getCacheableAnnotationName() {
-		return Cacheable2_0Annotation.ANNOTATION_NAME;
+		return CacheableAnnotation2_0.ANNOTATION_NAME;
 	}
 
 
@@ -158,7 +158,7 @@ public class GenericJavaCacheable2_0
 	}
 
 	protected TextRange getAnnotationTextRange() {
-		Cacheable2_0Annotation annotation = this.getCacheableAnnotation();
+		CacheableAnnotation2_0 annotation = this.getCacheableAnnotation();
 		return (annotation == null) ? null : annotation.getTextRange();
 	}
 }
