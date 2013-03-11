@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.JavaEntityDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaTypeMappingDefinitionWrapper;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ChangeTrackingAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkCustomizerAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkExistenceCheckingAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
@@ -59,7 +59,7 @@ public class EclipseLinkJavaEntityDefinition
 	private static final String[] ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES_ARRAY = new String[] {
 		CacheAnnotation.ANNOTATION_NAME,
 		ChangeTrackingAnnotation.ANNOTATION_NAME,
-		EclipseLinkConverterAnnotation.ANNOTATION_NAME,
+		ConverterAnnotation.ANNOTATION_NAME,
 		EclipseLinkCustomizerAnnotation.ANNOTATION_NAME,
 		EclipseLinkExistenceCheckingAnnotation.ANNOTATION_NAME,
 		EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME,

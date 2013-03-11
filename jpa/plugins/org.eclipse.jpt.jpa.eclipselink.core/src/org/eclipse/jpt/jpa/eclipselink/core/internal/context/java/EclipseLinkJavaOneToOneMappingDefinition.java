@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaAttributeMappingDefinitionWrapper;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaOneToOneMappingDefinition;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkJoinFetchAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkPrivateOwnedAnnotation;
@@ -57,7 +57,7 @@ public class EclipseLinkJavaOneToOneMappingDefinition
 	}
 
 	private static final String[] ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES_ARRAY = new String[] {
-		EclipseLinkConverterAnnotation.ANNOTATION_NAME,
+		ConverterAnnotation.ANNOTATION_NAME,
 		EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME,
 		EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME,
 		EclipseLinkPrivateOwnedAnnotation.ANNOTATION_NAME,

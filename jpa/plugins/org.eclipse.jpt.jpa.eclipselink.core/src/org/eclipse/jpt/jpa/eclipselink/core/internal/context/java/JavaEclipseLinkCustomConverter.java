@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -23,13 +23,13 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
  * <code>org.eclipse.persistence.annotations.Converter</code>
  */
 public class JavaEclipseLinkCustomConverter
-	extends JavaEclipseLinkConverterClassConverter<EclipseLinkConverterAnnotation>
+	extends JavaEclipseLinkConverterClassConverter<ConverterAnnotation>
 	implements EclipseLinkCustomConverter
 {
 	private String fullyQualifiedConverterClass;
 
 
-	public JavaEclipseLinkCustomConverter(EclipseLinkJavaConverterContainer parent, EclipseLinkConverterAnnotation converterAnnotation) {
+	public JavaEclipseLinkCustomConverter(EclipseLinkJavaConverterContainer parent, ConverterAnnotation converterAnnotation) {
 		super(parent, converterAnnotation, converterAnnotation.getConverterClass());
 	}
 
