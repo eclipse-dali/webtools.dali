@@ -13,7 +13,7 @@ import java.util.Map;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnitProperties;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.PersistenceUnit2_1;
-import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationAction;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationAction2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationTarget;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen.SchemaGeneration2_1;
 
@@ -22,8 +22,8 @@ public class GenericSchemaGeneration2_1
 	implements SchemaGeneration2_1
 {
 	// ********** GenericSchemaGeneration2_1 properties **********
-	private SchemaGenerationAction schemaGenDatabaseAction;
-	private SchemaGenerationAction schemaGenScriptsAction;
+	private SchemaGenerationAction2_1 schemaGenDatabaseAction;
+	private SchemaGenerationAction2_1 schemaGenScriptsAction;
 	private SchemaGenerationTarget schemaGenCreateSource;
 	private SchemaGenerationTarget schemaGenDropSource;
 	private Boolean createDatabaseSchemas;
@@ -49,9 +49,9 @@ public class GenericSchemaGeneration2_1
 	@Override
 	protected void initializeProperties() {
 		this.schemaGenDatabaseAction = 
-			this.getEnumValue(PERSISTENCE_SCHEMAGEN_DATABASE_ACTION, SchemaGenerationAction.values());
+			this.getEnumValue(PERSISTENCE_SCHEMAGEN_DATABASE_ACTION, SchemaGenerationAction2_1.values());
 		this.schemaGenScriptsAction = 
-			this.getEnumValue(PERSISTENCE_SCHEMAGEN_SCRIPTS_ACTION, SchemaGenerationAction.values());
+			this.getEnumValue(PERSISTENCE_SCHEMAGEN_SCRIPTS_ACTION, SchemaGenerationAction2_1.values());
 		this.schemaGenCreateSource = 
 			this.getEnumValue(PERSISTENCE_SCHEMAGEN_CREATE_SOURCE, SchemaGenerationTarget.values());
 		this.schemaGenDropSource = 
@@ -228,49 +228,49 @@ public class GenericSchemaGeneration2_1
 
 	// ********** SchemaGenDatabaseAction **********
 	
-	public SchemaGenerationAction getSchemaGenDatabaseAction() {
+	public SchemaGenerationAction2_1 getSchemaGenDatabaseAction() {
 		return this.schemaGenDatabaseAction;
 	}
 	
-	public void setSchemaGenDatabaseAction(SchemaGenerationAction newSchemaGenDatabaseAction) {
-		SchemaGenerationAction old = this.schemaGenDatabaseAction;
+	public void setSchemaGenDatabaseAction(SchemaGenerationAction2_1 newSchemaGenDatabaseAction) {
+		SchemaGenerationAction2_1 old = this.schemaGenDatabaseAction;
 		this.schemaGenDatabaseAction = newSchemaGenDatabaseAction;
 		this.putProperty(SCHEMAGEN_DATABASE_ACTION_PROPERTY, newSchemaGenDatabaseAction);
 		this.firePropertyChanged(SCHEMAGEN_DATABASE_ACTION_PROPERTY, old, newSchemaGenDatabaseAction);
 	}
 
 	private void schemaGenDatabaseActionChanged(String stringValue) {
-		SchemaGenerationAction newValue = this.getEnumValueOf(stringValue, SchemaGenerationAction.values());
-		SchemaGenerationAction old = this.schemaGenDatabaseAction;
+		SchemaGenerationAction2_1 newValue = this.getEnumValueOf(stringValue, SchemaGenerationAction2_1.values());
+		SchemaGenerationAction2_1 old = this.schemaGenDatabaseAction;
 		this.schemaGenDatabaseAction = newValue;
 		this.firePropertyChanged(SCHEMAGEN_DATABASE_ACTION_PROPERTY, old, newValue);
 	}
 	
-	public SchemaGenerationAction getDefaultSchemaGenDatabaseAction() {
+	public SchemaGenerationAction2_1 getDefaultSchemaGenDatabaseAction() {
 		return DEFAULT_SCHEMAGEN_DATABASE_ACTION;
 	}
 
 	// ********** SchemaGenScriptsAction **********
 	
-	public SchemaGenerationAction getSchemaGenScriptsAction() {
+	public SchemaGenerationAction2_1 getSchemaGenScriptsAction() {
 		return this.schemaGenScriptsAction;
 	}
 	
-	public void setSchemaGenScriptsAction(SchemaGenerationAction newSchemaGenScriptsAction) {
-		SchemaGenerationAction old = this.schemaGenScriptsAction;
+	public void setSchemaGenScriptsAction(SchemaGenerationAction2_1 newSchemaGenScriptsAction) {
+		SchemaGenerationAction2_1 old = this.schemaGenScriptsAction;
 		this.schemaGenScriptsAction = newSchemaGenScriptsAction;
 		this.putProperty(SCHEMAGEN_SCRIPTS_ACTION_PROPERTY, newSchemaGenScriptsAction);
 		this.firePropertyChanged(SCHEMAGEN_SCRIPTS_ACTION_PROPERTY, old, newSchemaGenScriptsAction);
 	}
 
 	private void schemaGenScriptsActionChanged(String stringValue) {
-		SchemaGenerationAction newValue = this.getEnumValueOf(stringValue, SchemaGenerationAction.values());
-		SchemaGenerationAction old = this.schemaGenScriptsAction;
+		SchemaGenerationAction2_1 newValue = this.getEnumValueOf(stringValue, SchemaGenerationAction2_1.values());
+		SchemaGenerationAction2_1 old = this.schemaGenScriptsAction;
 		this.schemaGenScriptsAction = newValue;
 		this.firePropertyChanged(SCHEMAGEN_SCRIPTS_ACTION_PROPERTY, old, newValue);
 	}
 	
-	public SchemaGenerationAction getDefaultSchemaGenScriptsAction() {
+	public SchemaGenerationAction2_1 getDefaultSchemaGenScriptsAction() {
 		return DEFAULT_SCHEMAGEN_SCRIPTS_ACTION;
 	}
 

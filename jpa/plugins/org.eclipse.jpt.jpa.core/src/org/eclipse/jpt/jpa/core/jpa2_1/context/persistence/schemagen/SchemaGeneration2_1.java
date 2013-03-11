@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen;
 
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationAction;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationAction2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationTarget;
 
 /**
@@ -20,21 +20,21 @@ public interface SchemaGeneration2_1
 	extends PersistenceUnitProperties
 {
 	// Schema Generation 
-	SchemaGenerationAction getDefaultSchemaGenDatabaseAction();
-	SchemaGenerationAction getSchemaGenDatabaseAction();
-	void setSchemaGenDatabaseAction(SchemaGenerationAction newSchemaGenAction);
+	SchemaGenerationAction2_1 getDefaultSchemaGenDatabaseAction();
+	SchemaGenerationAction2_1 getSchemaGenDatabaseAction();
+	void setSchemaGenDatabaseAction(SchemaGenerationAction2_1 newSchemaGenAction);
 		static final String SCHEMAGEN_DATABASE_ACTION_PROPERTY = "schemaGenDatabaseAction"; //$NON-NLS-1$
 		// Property key string
 		static final String PERSISTENCE_SCHEMAGEN_DATABASE_ACTION = "javax.persistence.schema-generation.database.action"; //$NON-NLS-1$
-		static final SchemaGenerationAction DEFAULT_SCHEMAGEN_DATABASE_ACTION = SchemaGenerationAction.none;
+		static final SchemaGenerationAction2_1 DEFAULT_SCHEMAGEN_DATABASE_ACTION = SchemaGenerationAction2_1.none;
 
-	SchemaGenerationAction getDefaultSchemaGenScriptsAction();
-	SchemaGenerationAction getSchemaGenScriptsAction();
-	void setSchemaGenScriptsAction(SchemaGenerationAction newSchemaGenAction);
+	SchemaGenerationAction2_1 getDefaultSchemaGenScriptsAction();
+	SchemaGenerationAction2_1 getSchemaGenScriptsAction();
+	void setSchemaGenScriptsAction(SchemaGenerationAction2_1 newSchemaGenAction);
 		static final String SCHEMAGEN_SCRIPTS_ACTION_PROPERTY = "schemaGenScriptsAction"; //$NON-NLS-1$
 		// Property key string
 		static final String PERSISTENCE_SCHEMAGEN_SCRIPTS_ACTION = "javax.persistence.schema-generation.scripts.action"; //$NON-NLS-1$
-		static final SchemaGenerationAction DEFAULT_SCHEMAGEN_SCRIPTS_ACTION = SchemaGenerationAction.none;
+		static final SchemaGenerationAction2_1 DEFAULT_SCHEMAGEN_SCRIPTS_ACTION = SchemaGenerationAction2_1.none;
 
 	SchemaGenerationTarget getDefaultSchemaGenCreateSource();
 	SchemaGenerationTarget getSchemaGenCreateSource();

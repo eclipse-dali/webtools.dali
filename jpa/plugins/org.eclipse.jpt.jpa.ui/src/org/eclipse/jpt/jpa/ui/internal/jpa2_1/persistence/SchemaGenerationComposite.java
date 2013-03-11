@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationAction;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationAction2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationTarget;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen.SchemaGeneration2_1;
 import org.eclipse.jpt.jpa.ui.jpa2_1.persistence.JptJpaUiPersistenceMessages2_1;
@@ -338,9 +338,9 @@ public class SchemaGenerationComposite<T extends SchemaGeneration2_1> extends Pa
 	}
 	
 	// ********** DatabaseAction **********
-	private EnumFormComboViewer<SchemaGeneration2_1, SchemaGenerationAction> buildDatabaseActionCombo(Composite container) {
+	private EnumFormComboViewer<SchemaGeneration2_1, SchemaGenerationAction2_1> buildDatabaseActionCombo(Composite container) {
 
-		return new EnumFormComboViewer<SchemaGeneration2_1, SchemaGenerationAction>(this, 
+		return new EnumFormComboViewer<SchemaGeneration2_1, SchemaGenerationAction2_1>(this, 
 											this.getSubjectHolder(), 
 											container) {
 			@Override
@@ -350,17 +350,17 @@ public class SchemaGenerationComposite<T extends SchemaGeneration2_1> extends Pa
 			}
 
 			@Override
-			protected SchemaGenerationAction[] getChoices() {
-				return SchemaGenerationAction.values();
+			protected SchemaGenerationAction2_1[] getChoices() {
+				return SchemaGenerationAction2_1.values();
 			}
 
 			@Override
-			protected SchemaGenerationAction getDefaultValue() {
+			protected SchemaGenerationAction2_1 getDefaultValue() {
 				return this.getSubject().getDefaultSchemaGenDatabaseAction();
 			}
 
 			@Override
-			protected String displayString(SchemaGenerationAction value) {
+			protected String displayString(SchemaGenerationAction2_1 value) {
 				switch (value) {
 					case none :
 						return JptJpaUiPersistenceMessages2_1.SchemaGenerationAction_none;
@@ -376,12 +376,12 @@ public class SchemaGenerationComposite<T extends SchemaGeneration2_1> extends Pa
 			}
 
 			@Override
-			protected SchemaGenerationAction getValue() {
+			protected SchemaGenerationAction2_1 getValue() {
 				return this.getSubject().getSchemaGenDatabaseAction();
 			}
 
 			@Override
-			protected void setValue(SchemaGenerationAction value) {
+			protected void setValue(SchemaGenerationAction2_1 value) {
 				this.getSubject().setSchemaGenDatabaseAction(value);
 			}
 
@@ -393,9 +393,9 @@ public class SchemaGenerationComposite<T extends SchemaGeneration2_1> extends Pa
 	}
 	
 	// ********** ScriptsAction **********
-	private EnumFormComboViewer<SchemaGeneration2_1, SchemaGenerationAction> buildScriptsActionCombo(Composite container) {
+	private EnumFormComboViewer<SchemaGeneration2_1, SchemaGenerationAction2_1> buildScriptsActionCombo(Composite container) {
 	
-		return new EnumFormComboViewer<SchemaGeneration2_1, SchemaGenerationAction>(this, 
+		return new EnumFormComboViewer<SchemaGeneration2_1, SchemaGenerationAction2_1>(this, 
 											this.getSubjectHolder(), 
 											container) {
 			@Override
@@ -405,17 +405,17 @@ public class SchemaGenerationComposite<T extends SchemaGeneration2_1> extends Pa
 			}
 	
 			@Override
-			protected SchemaGenerationAction[] getChoices() {
-				return SchemaGenerationAction.values();
+			protected SchemaGenerationAction2_1[] getChoices() {
+				return SchemaGenerationAction2_1.values();
 			}
 	
 			@Override
-			protected SchemaGenerationAction getDefaultValue() {
+			protected SchemaGenerationAction2_1 getDefaultValue() {
 				return this.getSubject().getDefaultSchemaGenScriptsAction();
 			}
 	
 			@Override
-			protected String displayString(SchemaGenerationAction value) {
+			protected String displayString(SchemaGenerationAction2_1 value) {
 				switch (value) {
 					case none :
 						return JptJpaUiPersistenceMessages2_1.SchemaGenerationAction_none;
@@ -431,12 +431,12 @@ public class SchemaGenerationComposite<T extends SchemaGeneration2_1> extends Pa
 			}
 	
 			@Override
-			protected SchemaGenerationAction getValue() {
+			protected SchemaGenerationAction2_1 getValue() {
 				return this.getSubject().getSchemaGenScriptsAction();
 			}
 	
 			@Override
-			protected void setValue(SchemaGenerationAction value) {
+			protected void setValue(SchemaGenerationAction2_1 value) {
 				this.getSubject().setSchemaGenScriptsAction(value);
 			}
 	

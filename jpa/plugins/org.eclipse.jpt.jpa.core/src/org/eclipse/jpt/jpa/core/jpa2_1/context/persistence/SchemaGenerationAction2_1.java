@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 /**
  *  SchemaGenerationAction
  */
-public enum SchemaGenerationAction implements PersistenceXmlEnumValue {
+public enum SchemaGenerationAction2_1 implements PersistenceXmlEnumValue {
 	none("none"),  //$NON-NLS-1$
 	create("create"),  //$NON-NLS-1$
 	drop_and_create("drop-and-create"),  //$NON-NLS-1$
@@ -22,7 +22,7 @@ public enum SchemaGenerationAction implements PersistenceXmlEnumValue {
 
 	private final String propertyValue;
 
-	SchemaGenerationAction(String propertyValue) {
+	SchemaGenerationAction2_1(String propertyValue) {
 		this.propertyValue = propertyValue;
 	}
 

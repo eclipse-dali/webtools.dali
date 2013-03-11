@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2_1.context.persistence.schemagen;
 import java.util.Map;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnitProperties;
-import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationAction;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationAction2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationTarget;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen.SchemaGeneration2_1;
 
@@ -60,29 +60,29 @@ public class NullGenericSchemaGeneration2_1
 
 	// ********** SchemaGenDatabaseAction **********
 	
-	public SchemaGenerationAction getSchemaGenDatabaseAction() {
+	public SchemaGenerationAction2_1 getSchemaGenDatabaseAction() {
 		return null;
 	}
 	
-	public void setSchemaGenDatabaseAction(SchemaGenerationAction newSchemaGenDatabaseAction) {
+	public void setSchemaGenDatabaseAction(SchemaGenerationAction2_1 newSchemaGenDatabaseAction) {
 		throw new UnsupportedOperationException();
 	}
 
-	public SchemaGenerationAction getDefaultSchemaGenDatabaseAction() {
+	public SchemaGenerationAction2_1 getDefaultSchemaGenDatabaseAction() {
 		return DEFAULT_SCHEMAGEN_DATABASE_ACTION;
 	}
 
 	// ********** SchemaGenScriptsAction **********
 	
-	public SchemaGenerationAction getSchemaGenScriptsAction() {
+	public SchemaGenerationAction2_1 getSchemaGenScriptsAction() {
 		return null;
 	}
 	
-	public void setSchemaGenScriptsAction(SchemaGenerationAction newSchemaGenScriptsAction) {
+	public void setSchemaGenScriptsAction(SchemaGenerationAction2_1 newSchemaGenScriptsAction) {
 		throw new UnsupportedOperationException();
 	}
 
-	public SchemaGenerationAction getDefaultSchemaGenScriptsAction() {
+	public SchemaGenerationAction2_1 getDefaultSchemaGenScriptsAction() {
 		return DEFAULT_SCHEMAGEN_SCRIPTS_ACTION;
 	}
 
