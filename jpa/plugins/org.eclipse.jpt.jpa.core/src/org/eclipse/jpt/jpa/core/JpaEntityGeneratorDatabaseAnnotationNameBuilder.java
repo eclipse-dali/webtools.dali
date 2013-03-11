@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * @version 2.1
  * @since 2.1
  */
-public interface EntityGeneratorDatabaseAnnotationNameBuilder {
+public interface JpaEntityGeneratorDatabaseAnnotationNameBuilder {
 
 	/**
 	 * Given the name of an entity and the table to which it is mapped,

@@ -36,7 +36,7 @@ import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.ui.internal.dialogs.OptionalMessageDialog;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.core.EntityGeneratorDatabaseAnnotationNameBuilder;
+import org.eclipse.jpt.jpa.core.JpaEntityGeneratorDatabaseAnnotationNameBuilder;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -445,8 +445,8 @@ public class GenerateEntitiesFromSchemaWizard
 	 * expected by the entity generator
 	 */
 	static class LocalDatabaseAnnotationNameBuilder implements DatabaseAnnotationNameBuilder {
-		private EntityGeneratorDatabaseAnnotationNameBuilder builder;
-		LocalDatabaseAnnotationNameBuilder(EntityGeneratorDatabaseAnnotationNameBuilder builder) {
+		private JpaEntityGeneratorDatabaseAnnotationNameBuilder builder;
+		LocalDatabaseAnnotationNameBuilder(JpaEntityGeneratorDatabaseAnnotationNameBuilder builder) {
 			super();
 			this.builder = builder;
 		}

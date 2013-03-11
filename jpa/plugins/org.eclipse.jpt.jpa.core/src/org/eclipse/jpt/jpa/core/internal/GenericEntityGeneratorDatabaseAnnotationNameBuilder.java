@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal;
 
-import org.eclipse.jpt.jpa.core.EntityGeneratorDatabaseAnnotationNameBuilder;
+import org.eclipse.jpt.jpa.core.JpaEntityGeneratorDatabaseAnnotationNameBuilder;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.ForeignKey;
 import org.eclipse.jpt.jpa.db.Table;
@@ -18,12 +18,12 @@ import org.eclipse.jpt.jpa.db.Table;
  * Singleton that delegates to the db object passed in.
  */
 public final class GenericEntityGeneratorDatabaseAnnotationNameBuilder
-	implements EntityGeneratorDatabaseAnnotationNameBuilder
+	implements JpaEntityGeneratorDatabaseAnnotationNameBuilder
 {
-	public static final EntityGeneratorDatabaseAnnotationNameBuilder INSTANCE
+	public static final JpaEntityGeneratorDatabaseAnnotationNameBuilder INSTANCE
 				= new GenericEntityGeneratorDatabaseAnnotationNameBuilder();
 
-	public static EntityGeneratorDatabaseAnnotationNameBuilder instance() {
+	public static JpaEntityGeneratorDatabaseAnnotationNameBuilder instance() {
 		return INSTANCE;
 	}
 

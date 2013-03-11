@@ -187,7 +187,7 @@ public interface JpaPlatform
 	 * used by Entity Generation to determine whether and how the entity generator
 	 * prints the names of various database objects.
 	 */
-	EntityGeneratorDatabaseAnnotationNameBuilder getEntityGeneratorDatabaseAnnotationNameBuilder();
+	JpaEntityGeneratorDatabaseAnnotationNameBuilder getEntityGeneratorDatabaseAnnotationNameBuilder();
 
 
 	// ********** platform variation **********

@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.DefaultAnnotationEditFor
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.jpa.core.EntityGeneratorDatabaseAnnotationNameBuilder;
+import org.eclipse.jpt.jpa.core.JpaEntityGeneratorDatabaseAnnotationNameBuilder;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
@@ -234,7 +234,7 @@ public class GenericJpaPlatform
 		return this.config.getJpaPlatformManager().getJpaWorkspace().getConnectionProfileFactory();
 	}
 
-	public EntityGeneratorDatabaseAnnotationNameBuilder getEntityGeneratorDatabaseAnnotationNameBuilder() {
+	public JpaEntityGeneratorDatabaseAnnotationNameBuilder getEntityGeneratorDatabaseAnnotationNameBuilder() {
 		return GenericEntityGeneratorDatabaseAnnotationNameBuilder.instance();
 	}
 
