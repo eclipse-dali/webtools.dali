@@ -34,7 +34,7 @@ import org.eclipse.jem.util.emf.workbench.ProjectResourceSet;
 import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
-import org.eclipse.jpt.common.core.resource.xml.JpaXmlResourceProvider;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResourceProvider;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.wst.common.componentcore.internal.impl.WTPResourceFactoryRegistry;
 import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
@@ -54,7 +54,7 @@ import org.eclipse.wst.common.internal.emfworkbench.validateedit.ResourceStateVa
  * @since 2.2
  */
 public abstract class AbstractJptXmlResourceProvider
-	implements JpaXmlResourceProvider, IEMFContextContributor, ResourceStateInputProvider, ResourceStateValidator
+	implements JptXmlResourceProvider, IEMFContextContributor, ResourceStateInputProvider, ResourceStateValidator
 {
 	protected IProject project;
 	

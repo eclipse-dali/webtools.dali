@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
-import org.eclipse.jpt.common.core.resource.xml.JpaXmlResourceProvider;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResourceProvider;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
@@ -100,7 +100,7 @@ public class OrmFileCreationOperation
 	}
 
 	@Override
-	protected JpaXmlResourceProvider getXmlResourceProvider(IFile file) {
+	protected JptXmlResourceProvider getXmlResourceProvider(IFile file) {
 		return OrmXmlResourceProvider.getXmlResourceProvider(file);
 	}
 }

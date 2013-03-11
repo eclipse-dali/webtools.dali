@@ -27,7 +27,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
-import org.eclipse.jpt.common.core.resource.xml.JpaXmlResourceProvider;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResourceProvider;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -128,7 +128,7 @@ public abstract class AbstractJpaFileCreationOperation
 	protected void createFile(IProgressMonitor monitor) throws ExecutionException {
 		String fileName = getDataModel().getStringProperty(FILE_NAME);
 		IFile newFile = this.container.getFile(new Path(fileName));
-		JpaXmlResourceProvider resourceProvider = getXmlResourceProvider(newFile);
+		JptXmlResourceProvider resourceProvider = getXmlResourceProvider(newFile);
 		try {
 			resourceProvider.createFileAndResource(getDataModel(), monitor);
 		}
@@ -147,5 +147,5 @@ public abstract class AbstractJpaFileCreationOperation
 		}
 	}
 	
-	protected abstract JpaXmlResourceProvider getXmlResourceProvider(IFile file);
+	protected abstract JptXmlResourceProvider getXmlResourceProvider(IFile file);
 }

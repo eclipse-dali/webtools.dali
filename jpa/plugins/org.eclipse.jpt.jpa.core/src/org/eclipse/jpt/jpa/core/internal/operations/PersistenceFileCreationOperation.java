@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.operations;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.jpt.common.core.resource.xml.JpaXmlResourceProvider;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResourceProvider;
 import org.eclipse.jpt.jpa.core.internal.resource.persistence.PersistenceXmlResourceProvider;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
@@ -24,7 +24,7 @@ public class PersistenceFileCreationOperation
 	
 	
 	@Override
-	protected JpaXmlResourceProvider getXmlResourceProvider(IFile file) {
+	protected JptXmlResourceProvider getXmlResourceProvider(IFile file) {
 		return PersistenceXmlResourceProvider.getXmlResourceProvider(file);
 	}
 }
