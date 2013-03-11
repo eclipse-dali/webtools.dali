@@ -33,7 +33,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTenantDiscriminatorColumn2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.context.SpecifiedTenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.osgi.util.NLS;
@@ -176,7 +176,7 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaModel>
 			}
 
 			public void removeSelectedItems(CollectionValueModel<EclipseLinkTenantDiscriminatorColumn2_3> selectedItemsModel) {
-				SpecifiedTenantDiscriminatorColumn2_3 column = (SpecifiedTenantDiscriminatorColumn2_3) selectedItemsModel.iterator().next();
+				EclipseLinkSpecifiedTenantDiscriminatorColumn2_3 column = (EclipseLinkSpecifiedTenantDiscriminatorColumn2_3) selectedItemsModel.iterator().next();
 				TenantDiscriminatorColumnsComposite.this.tenantDiscriminatorColumnsEditor.removeTenantDiscriminatorColumn(getSubject(), column);
 			}
 		};

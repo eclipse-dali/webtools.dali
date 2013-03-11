@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.TableColumn;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTenantDiscriminatorColumn2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.context.SpecifiedTenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
@@ -120,7 +120,7 @@ public class TenantDiscriminatorColumnComposite extends Pane<EclipseLinkTenantDi
 
 			@Override
 			protected void setValue(String value) {
-				((SpecifiedTenantDiscriminatorColumn2_3) this.getSubject()).setSpecifiedName(value);
+				((EclipseLinkSpecifiedTenantDiscriminatorColumn2_3) this.getSubject()).setSpecifiedName(value);
 			}
 
 			@Override
@@ -176,7 +176,7 @@ public class TenantDiscriminatorColumnComposite extends Pane<EclipseLinkTenantDi
 
 			@Override
 			protected void setValue(String value) {
-				((SpecifiedTenantDiscriminatorColumn2_3) this.getSubject()).setSpecifiedTableName(value);
+				((EclipseLinkSpecifiedTenantDiscriminatorColumn2_3) this.getSubject()).setSpecifiedTableName(value);
 			}
 
 			@Override
@@ -228,7 +228,7 @@ public class TenantDiscriminatorColumnComposite extends Pane<EclipseLinkTenantDi
 
 			@Override
 			protected void setValue(String value) {
-				((SpecifiedTenantDiscriminatorColumn2_3) this.getSubject()).setSpecifiedContextProperty(value);
+				((EclipseLinkSpecifiedTenantDiscriminatorColumn2_3) this.getSubject()).setSpecifiedContextProperty(value);
 			}
 
 			@Override
@@ -310,7 +310,7 @@ public class TenantDiscriminatorColumnComposite extends Pane<EclipseLinkTenantDi
 
 			@Override
 			protected void setValue(DiscriminatorType value) {
-				((SpecifiedTenantDiscriminatorColumn2_3) this.getSubject()).setSpecifiedDiscriminatorType(value);
+				((EclipseLinkSpecifiedTenantDiscriminatorColumn2_3) this.getSubject()).setSpecifiedDiscriminatorType(value);
 			}
 
 			@Override
@@ -348,7 +348,7 @@ public class TenantDiscriminatorColumnComposite extends Pane<EclipseLinkTenantDi
 
 					@Override
 					protected void setValue_(Integer value) {
-						((SpecifiedTenantDiscriminatorColumn2_3) this.subject).setSpecifiedLength(value);
+						((EclipseLinkSpecifiedTenantDiscriminatorColumn2_3) this.subject).setSpecifiedLength(value);
 					}
 				};
 			}
@@ -366,7 +366,7 @@ public class TenantDiscriminatorColumnComposite extends Pane<EclipseLinkTenantDi
 				if (value.length() == 0) {
 					value = null;
 				}
-				((SpecifiedTenantDiscriminatorColumn2_3) this.subject).setColumnDefinition(value);
+				((EclipseLinkSpecifiedTenantDiscriminatorColumn2_3) this.subject).setColumnDefinition(value);
 			}
 		};
 	}
@@ -380,7 +380,7 @@ public class TenantDiscriminatorColumnComposite extends Pane<EclipseLinkTenantDi
 
 			@Override
 			protected void setValue_(Boolean value) {
-				((SpecifiedTenantDiscriminatorColumn2_3) this.subject).setSpecifiedPrimaryKey(value);
+				((EclipseLinkSpecifiedTenantDiscriminatorColumn2_3) this.subject).setSpecifiedPrimaryKey(value);
 			}
 		};
 	}

@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedTableColumn;
  * @version 3.1
  * @since 3.1
  */
-public interface SpecifiedTenantDiscriminatorColumn2_3
+public interface EclipseLinkSpecifiedTenantDiscriminatorColumn2_3
 	extends SpecifiedNamedDiscriminatorColumn, EclipseLinkTenantDiscriminatorColumn2_3, SpecifiedTableColumn
 {
 	void setSpecifiedContextProperty(String contextProperty);
