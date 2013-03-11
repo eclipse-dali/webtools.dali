@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.context.java;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMultitenancy2_3;
 
-public interface JavaEclipseLinkMultitenancy2_3
+public interface EclipseLinkJavaMultitenancy2_3
 	extends EclipseLinkMultitenancy2_3
 {
 

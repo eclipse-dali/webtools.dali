@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMultitenantType2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEntity;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMultitenancy2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkPersistenceUnitDefaults;
@@ -155,7 +155,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 		this.javaProject.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
 	}
 
-	public JavaEclipseLinkMultitenancy2_3 getJavaMultitenancy() {
+	public EclipseLinkJavaMultitenancy2_3 getJavaMultitenancy() {
 		return getJavaEntity().getMultitenancy();
 	}
 
@@ -299,7 +299,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 		createTestEntityWithMultitenant();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		JavaEclipseLinkMultitenancy2_3 javaMultitenancy = getJavaMultitenancy();		
+		EclipseLinkJavaMultitenancy2_3 javaMultitenancy = getJavaMultitenancy();		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 
 		assertEquals(0, javaMultitenancy.getSpecifiedTenantDiscriminatorColumnsSize());
@@ -406,7 +406,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 		createTestEntityWithMultitenant();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		JavaEclipseLinkMultitenancy2_3 javaMultitenancy = getJavaMultitenancy();	
+		EclipseLinkJavaMultitenancy2_3 javaMultitenancy = getJavaMultitenancy();	
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 
 		javaMultitenancy.addSpecifiedTenantDiscriminatorColumn(0).setSpecifiedName("FOO");
@@ -445,7 +445,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		JavaEclipseLinkMultitenancy2_3 javaMultitenancy = getJavaMultitenancy();	
+		EclipseLinkJavaMultitenancy2_3 javaMultitenancy = getJavaMultitenancy();	
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 
 		((EclipseLinkTenantDiscriminatorColumnAnnotation2_3) resourceType.addAnnotation(0, EclipseLinkTenantDiscriminatorColumnAnnotation2_3.ANNOTATION_NAME)).setName("FOO");
@@ -501,7 +501,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		JavaEclipseLinkMultitenancy2_3 multitenancy = getJavaMultitenancy();
+		EclipseLinkJavaMultitenancy2_3 multitenancy = getJavaMultitenancy();
 		assertEquals(1, multitenancy.getTenantDiscriminatorColumnsSize());
 		assertEquals("MS_TENANT_ID", multitenancy.getTenantDiscriminatorColumns().iterator().next().getName());
 
@@ -518,7 +518,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		JavaEclipseLinkMultitenancy2_3 multitenancy = getJavaMultitenancy();
+		EclipseLinkJavaMultitenancy2_3 multitenancy = getJavaMultitenancy();
 		assertTrue(multitenancy.isMultitenant()); //multitenant by default from root entity
 		assertFalse(multitenancy.isSpecifiedMultitenant());
 		assertEquals(1, multitenancy.getTenantDiscriminatorColumnsSize());
@@ -563,7 +563,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 		EclipseLinkPersistenceUnitDefaults persistenceUnitDefaults = (EclipseLinkPersistenceUnitDefaults) getMappingFile().getRoot().getPersistenceUnitMetadata().getPersistenceUnitDefaults();
 		persistenceUnitDefaults.addTenantDiscriminatorColumn().setSpecifiedName("PU_TENANT_ID");
 
-		JavaEclipseLinkMultitenancy2_3 multitenancy = getJavaMultitenancy();
+		EclipseLinkJavaMultitenancy2_3 multitenancy = getJavaMultitenancy();
 		assertFalse(multitenancy.isMultitenant());
 		assertEquals(0, multitenancy.getTenantDiscriminatorColumnsSize());
 
@@ -589,7 +589,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 		EclipseLinkEntityMappings entityMappings = (EclipseLinkEntityMappings) getMappingFile().getRoot();
 		entityMappings.addSpecifiedTenantDiscriminatorColumn().setSpecifiedName("EM_TENANT_ID");
 
-		JavaEclipseLinkMultitenancy2_3 multitenancy = getJavaMultitenancy();
+		EclipseLinkJavaMultitenancy2_3 multitenancy = getJavaMultitenancy();
 		assertFalse(multitenancy.isMultitenant());
 		assertEquals(0, multitenancy.getTenantDiscriminatorColumnsSize());
 

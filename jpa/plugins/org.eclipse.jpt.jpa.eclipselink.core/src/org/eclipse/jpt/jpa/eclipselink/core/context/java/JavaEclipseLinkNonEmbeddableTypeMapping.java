@@ -26,7 +26,7 @@ public interface JavaEclipseLinkNonEmbeddableTypeMapping
 {
 	EclipseLinkJavaCaching getCaching();
 
-	JavaEclipseLinkMultitenancy2_3 getMultitenancy();
+	EclipseLinkJavaMultitenancy2_3 getMultitenancy();
 
 	JavaGeneratorContainer getGeneratorContainer();
 }

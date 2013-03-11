@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkReadOnly;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMultitenancy2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_3JpaPlatformFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkMappedSuperclassPrimaryKeyValidator;
@@ -61,7 +61,7 @@ public class JavaEclipseLinkMappedSuperclassImpl
 
 	protected final JavaEclipseLinkCustomizer customizer;
 
-	protected final JavaEclipseLinkMultitenancy2_3 multitenancy;
+	protected final EclipseLinkJavaMultitenancy2_3 multitenancy;
 
 	protected final JavaGeneratorContainer generatorContainer;
 
@@ -177,12 +177,12 @@ public class JavaEclipseLinkMappedSuperclassImpl
 
 	// ********** multitenancy **********
 
-	public JavaEclipseLinkMultitenancy2_3 getMultitenancy() {
+	public EclipseLinkJavaMultitenancy2_3 getMultitenancy() {
 		return this.multitenancy;
 	}
 
 
-	protected JavaEclipseLinkMultitenancy2_3 buildMultitenancy() {
+	protected EclipseLinkJavaMultitenancy2_3 buildMultitenancy() {
 		return this.isEclipseLink2_3Compatible() ?
 			new JavaEclipseLinkMultitenancyImpl2_3(this) :
 			new NullJavaEclipseLinkMultitenancy2_3(this);

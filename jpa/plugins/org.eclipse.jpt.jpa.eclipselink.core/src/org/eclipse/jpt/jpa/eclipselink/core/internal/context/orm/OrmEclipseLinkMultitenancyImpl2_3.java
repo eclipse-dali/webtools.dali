@@ -33,7 +33,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMultitenantType2_
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVirtualTenantDiscriminatorColumn2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMultitenancy2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkNonEmbeddableTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
@@ -106,7 +106,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 		this.updateModels(this.getSpecifiedTenantDiscriminatorColumns());
 
 		boolean xmlMultitenantNotSpecified = (this.getXmlMultitenant() == null);
-		JavaEclipseLinkMultitenancy2_3 javaMultitenantPolicy = this.getJavaMultitenancyPolicyForDefaults();
+		EclipseLinkJavaMultitenancy2_3 javaMultitenantPolicy = this.getJavaMultitenancyPolicyForDefaults();
 		boolean javaMultitenantPolicySpecified = javaMultitenantPolicy != null;
 		boolean useJavaValue = (xmlMultitenantNotSpecified && javaMultitenantPolicySpecified);
 
@@ -417,7 +417,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 		if (this.getType() == null || this.getType() == EclipseLinkMultitenantType2_3.TABLE_PER_TENANT) {
 			return EmptyListIterable.instance();
 		}
-		JavaEclipseLinkMultitenancy2_3 javaMultitenancy = this.getJavaMultitenancyPolicyForDefaults();
+		EclipseLinkJavaMultitenancy2_3 javaMultitenancy = this.getJavaMultitenancyPolicyForDefaults();
 		if (javaMultitenancy != null && !this.isSpecifiedMultitenant()) {
 			if (javaMultitenancy.hasSpecifiedTenantDiscriminatorColumns()) {
 				return new SuperListIterableWrapper<EclipseLinkTenantDiscriminatorColumn2_3>(javaMultitenancy.getSpecifiedTenantDiscriminatorColumns());
@@ -626,7 +626,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 		return this.getTypeMapping().getJavaTypeMappingForDefaults();
 	}
 
-	protected JavaEclipseLinkMultitenancy2_3 getJavaMultitenancyPolicyForDefaults() {
+	protected EclipseLinkJavaMultitenancy2_3 getJavaMultitenancyPolicyForDefaults() {
 		JavaEclipseLinkNonEmbeddableTypeMapping javaTypeMapping = this.getJavaTypeMappingForDefaults();
 		return (javaTypeMapping == null) ? null : javaTypeMapping.getMultitenancy();
 	}
