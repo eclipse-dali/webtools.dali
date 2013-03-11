@@ -14,14 +14,14 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotat
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkReadOnlyAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ReadOnlyAnnotation;
 
 /**
  * org.eclipse.persistence.annotations.ReadOnly
  */
 public final class SourceEclipseLinkReadOnlyAnnotation
 	extends SourceAnnotation
-	implements EclipseLinkReadOnlyAnnotation
+	implements ReadOnlyAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 

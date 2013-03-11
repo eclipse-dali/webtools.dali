@@ -12,14 +12,14 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkReadOnlyAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ReadOnlyAnnotation;
 
 /**
  * org.eclipse.persistence.annotations.ReadOnly
  */
 public final class BinaryEclipseLinkReadOnlyAnnotation
 	extends BinaryAnnotation
-	implements EclipseLinkReadOnlyAnnotation
+	implements ReadOnlyAnnotation
 {
 
 	public BinaryEclipseLinkReadOnlyAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {

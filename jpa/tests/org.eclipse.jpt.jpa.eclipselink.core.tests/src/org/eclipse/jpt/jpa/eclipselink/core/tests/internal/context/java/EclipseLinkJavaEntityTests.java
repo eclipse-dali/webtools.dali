@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkReadOnly;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ChangeTrackingAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CustomizerAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkReadOnlyAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ReadOnlyAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 
 @SuppressWarnings("nls")
@@ -351,15 +351,15 @@ public class EclipseLinkJavaEntityTests extends EclipseLinkContextModelTestCase
 		readOnly.setSpecifiedReadOnly(Boolean.FALSE);
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		assertNull(resourceType.getAnnotation(EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME));
+		assertNull(resourceType.getAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME));
 		assertNull(readOnly.getSpecifiedReadOnly());//Boolean.FALSE and null really mean the same thing since there are only 2 states in the java resource model
 
 		readOnly.setSpecifiedReadOnly(Boolean.TRUE);
-		assertNotNull(resourceType.getAnnotation(EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceType.getAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME));
 		assertEquals(Boolean.TRUE, readOnly.getSpecifiedReadOnly());
 
 		readOnly.setSpecifiedReadOnly(null);
-		assertNull(resourceType.getAnnotation(EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME));
+		assertNull(resourceType.getAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME));
 		assertNull(readOnly.getSpecifiedReadOnly());//Boolean.FALSE and null really mean the same thing since there are only 2 states in the java resource model
 	}
 	
@@ -373,13 +373,13 @@ public class EclipseLinkJavaEntityTests extends EclipseLinkContextModelTestCase
 		
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		resourceType.removeAnnotation(EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME);
+		resourceType.removeAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		
 		assertNull(readOnly.getSpecifiedReadOnly());
 		assertEquals(false, readOnly.isDefaultReadOnly());
 		
-		resourceType.addAnnotation(EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME);
+		resourceType.addAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		assertEquals(Boolean.TRUE, readOnly.getSpecifiedReadOnly());
 	}

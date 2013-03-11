@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkReadOnly;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaNonEmbeddableTypeMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkReadOnlyAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ReadOnlyAnnotation;
 
 public class JavaEclipseLinkReadOnly
 	extends AbstractJavaContextModel<EclipseLinkJavaNonEmbeddableTypeMapping>
@@ -52,7 +52,7 @@ public class JavaEclipseLinkReadOnly
 	public void setSpecifiedReadOnly(Boolean readOnly) {
 		readOnly = (readOnly == null) ? null : readOnly.booleanValue() ? readOnly : null;
 		if (this.valuesAreDifferent(readOnly, this.specifiedReadOnly)) {
-			EclipseLinkReadOnlyAnnotation annotation = this.getReadOnlyAnnotation();
+			ReadOnlyAnnotation annotation = this.getReadOnlyAnnotation();
 			if (readOnly != null) {
 				if (annotation == null) {
 					this.addReadOnlyAnnotation();
@@ -84,8 +84,8 @@ public class JavaEclipseLinkReadOnly
 
 	// ********** read-only annotation **********
 
-	protected EclipseLinkReadOnlyAnnotation getReadOnlyAnnotation() {
-		return (EclipseLinkReadOnlyAnnotation) this.getJavaResourceType().getAnnotation(this.getReadOnlyAnnotationName());
+	protected ReadOnlyAnnotation getReadOnlyAnnotation() {
+		return (ReadOnlyAnnotation) this.getJavaResourceType().getAnnotation(this.getReadOnlyAnnotationName());
 	}
 
 	protected void addReadOnlyAnnotation() {
@@ -97,7 +97,7 @@ public class JavaEclipseLinkReadOnly
 	}
 
 	protected String getReadOnlyAnnotationName() {
-		return EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME;
+		return ReadOnlyAnnotation.ANNOTATION_NAME;
 	}
 
 
@@ -125,7 +125,7 @@ public class JavaEclipseLinkReadOnly
 	}
 
 	protected TextRange getAnnotationTextRange() {
-		EclipseLinkReadOnlyAnnotation annotation = this.getReadOnlyAnnotation();
+		ReadOnlyAnnotation annotation = this.getReadOnlyAnnotation();
 		return (annotation == null) ? null : annotation.getTextRange();
 	}
 }

@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkReadOnlyAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ReadOnlyAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.StructConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TypeConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLink2_2ContextModelTestCase;
@@ -90,7 +90,7 @@ public class EclipseLink2_2JavaMappedSuperclassTests extends EclipseLink2_2Conte
 		assertNotNull(resourceType.getAnnotation(1, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceType.getAnnotation(EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceType.getAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testMorphToEmbeddable() throws Exception {
@@ -127,7 +127,7 @@ public class EclipseLink2_2JavaMappedSuperclassTests extends EclipseLink2_2Conte
 		assertNotNull(resourceType.getAnnotation(1, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME));
 		assertNull(resourceType.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
 		assertNull(resourceType.getAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME));
-		assertNull(resourceType.getAnnotation(EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME));
+		assertNull(resourceType.getAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testMorphToNull() throws Exception {

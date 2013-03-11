@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkReadOnlyAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ReadOnlyAnnotation;
 
 @SuppressWarnings("nls")
 public class ReadOnlyTests extends EclipseLinkJavaResourceModelTestCase {
@@ -40,7 +40,7 @@ public class ReadOnlyTests extends EclipseLinkJavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestReadOnly();
 		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		EclipseLinkReadOnlyAnnotation readOnly = (EclipseLinkReadOnlyAnnotation) resourceType.getAnnotation(EclipseLink.READ_ONLY);
+		ReadOnlyAnnotation readOnly = (ReadOnlyAnnotation) resourceType.getAnnotation(EclipseLink.READ_ONLY);
 		assertNotNull(readOnly);
 	}
 
