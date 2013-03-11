@@ -12,14 +12,14 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmVirtualNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTenantDiscriminatorColumn2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.context.VirtualTenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVirtualTenantDiscriminatorColumn2_3;
 
 /**
  * <code>orm.xml</code> virtual tenant discriminator column
  */
 public class EclipseLinkOrmVirtualTenantDiscriminatorColumn2_3
 	extends AbstractOrmVirtualNamedDiscriminatorColumn<EclipseLinkTenantDiscriminatorColumn2_3.ParentAdapter, EclipseLinkTenantDiscriminatorColumn2_3>
-	implements VirtualTenantDiscriminatorColumn2_3
+	implements EclipseLinkVirtualTenantDiscriminatorColumn2_3
 {
 	protected final EclipseLinkTenantDiscriminatorColumn2_3 overriddenColumn;
 

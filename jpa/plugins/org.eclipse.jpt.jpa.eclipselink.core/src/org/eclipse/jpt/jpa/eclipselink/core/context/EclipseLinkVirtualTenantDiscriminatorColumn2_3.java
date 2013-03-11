@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.VirtualTableColumn;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface VirtualTenantDiscriminatorColumn2_3
+public interface EclipseLinkVirtualTenantDiscriminatorColumn2_3
 	extends VirtualNamedDiscriminatorColumn, VirtualTableColumn, EclipseLinkTenantDiscriminatorColumn2_3
 {
 	EclipseLinkTenantDiscriminatorColumn2_3 getOverriddenColumn();

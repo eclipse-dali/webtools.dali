@@ -136,7 +136,7 @@ public interface EclipseLinkMultitenancy2_3
 	 * This will not be null. If there are specified tenant discriminator columns
 	 * then there will be no default tenant discriminator columns.
 	 */
-	ListIterable<? extends VirtualTenantDiscriminatorColumn2_3> getDefaultTenantDiscriminatorColumns();
+	ListIterable<? extends EclipseLinkVirtualTenantDiscriminatorColumn2_3> getDefaultTenantDiscriminatorColumns();
 		String DEFAULT_TENANT_DISCRIMINATOR_COLUMNS_LIST = "defaultTenantDiscriminatorColumns"; //$NON-NLS-1$
 
 	/**
