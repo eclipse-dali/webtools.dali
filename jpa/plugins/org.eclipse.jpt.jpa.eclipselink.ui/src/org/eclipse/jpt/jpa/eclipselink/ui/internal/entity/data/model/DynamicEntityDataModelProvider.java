@@ -36,6 +36,7 @@ import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
+import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
@@ -45,7 +46,9 @@ import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
+import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkJpaProject;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.entity.data.operation.NewDynamicEntityClassOperation;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
@@ -585,7 +588,8 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 		}
 		PersistenceUnit pu = this.getPersistenceUnit();
 		if (pu != null) {
-			for (String name : ((EclipseLinkPersistenceUnit)this.getPersistenceUnit()).getEclipseLinkDynamicPersistentTypeNames()) {
+			// getJpaProject() returns an EclipseLink project to ensure safe cast here - bug 397926
+			for (String name : ((EclipseLinkPersistenceUnit) pu).getEclipseLinkDynamicPersistentTypeNames()) {
 				if (ObjectTools.equals(name, fullyQualifiedName)) {
 					return JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(JptJpaEclipseLinkUiMessages.ECLIPSELINK_DYNAMIC_ENTITY_WIZARD_DYNAMIC_TYPE_EXISTS_ERROR, fullyQualifiedName);
 
@@ -594,7 +598,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 				}
 			}
 		} else {
-			return JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(JptJpaEclipseLinkUiMessages.ECLIPSELINK_DYNAMIC_ENTITY_WIZARD_PERSISTENCE_UNIT_NOT_FOUND_ERROR);
+			return JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(JptJpaEclipseLinkUiMessages.ECLIPSELINK_DYNAMIC_ENTITY_WIZARD_ECLIPSELINK_PROJECT_NOT_FOUND_ERROR);
 		}
 		return Status.OK_STATUS;
 	}
@@ -633,15 +637,24 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 
 	// ****************** misc ***********************
 
-	protected JpaProject getJpaProject() {
+	protected EclipseLinkJpaProject getJpaProject() {
 		IProject project = getTargetProject();
-		return ((project != null) && ProjectTools.hasFacet(project, JpaProject.FACET)) ?
-				this.getJpaProject(project) :
-					null;
+		return (project != null) && isEclipseLinkProject(project) ? this.getJpaProject(project) : null;
 	}
 
-	protected JpaProject getJpaProject(IProject project) {
-		return (JpaProject) project.getAdapter(JpaProject.class);
+	protected boolean isEclipseLinkProject(IProject project) {
+		return this.getJpaPlatformConfig(project) == null ?
+				false: 
+				ProjectTools.hasFacet(project, JpaProject.FACET)  &&
+				this.getJpaPlatformConfig(project).getGroupConfig().getId().equals(EclipseLinkJpaPlatformFactory.GROUP_ID);
+	}
+
+	protected EclipseLinkJpaProject getJpaProject(IProject project) {
+		return (EclipseLinkJpaProject) project.getAdapter(JpaProject.class);
+	}
+
+	protected JpaPlatform.Config getJpaPlatformConfig(IProject project) {
+		return (JpaPlatform.Config) project.getAdapter(JpaPlatform.Config.class);
 	}
 
 	protected PersistenceUnit getPersistenceUnit() {
@@ -659,8 +672,11 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 	}
 
 	protected PersistenceXml getPersistenceXml() {
-		JpaContextModelRoot rcn = this.getJpaProject().getContextModelRoot();
-		return (rcn == null) ? null : rcn.getPersistenceXml();
+		if (this.getJpaProject() != null) {
+			JpaContextModelRoot rcn = this.getJpaProject().getContextModelRoot();
+			return (rcn == null) ? null : rcn.getPersistenceXml();
+		}
+		return null;
 	}
 	
 	protected OrmAttributeMappingDefinition getAttributeMappingDefinition(String mappingKey) {
