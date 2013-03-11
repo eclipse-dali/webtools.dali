@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaNonEmbed
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ExistenceCheckingAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTimeOfDayAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TimeOfDayAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -392,7 +392,7 @@ public class JavaEclipseLinkCachingImpl
 		if (this.expiryTimeOfDay != null) {
 			throw new IllegalStateException("expiry time of day already exists: " + this.expiryTimeOfDay); //$NON-NLS-1$
 		}
-		EclipseLinkTimeOfDayAnnotation timeOfDayAnnotation = this.getCacheAnnotation().addExpiryTimeOfDay();
+		TimeOfDayAnnotation timeOfDayAnnotation = this.getCacheAnnotation().addExpiryTimeOfDay();
 		EclipseLinkJavaTimeOfDay timeOfDay = this.buildExpiryTimeOfDay(timeOfDayAnnotation);
 		this.setExpiryTimeOfDay(timeOfDay);
 
@@ -426,7 +426,7 @@ public class JavaEclipseLinkCachingImpl
 		this.firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, old, timeOfDay);
 	}
 
-	protected void syncExpiryTimeOfDay(EclipseLinkTimeOfDayAnnotation timeOfDayAnnotation) {
+	protected void syncExpiryTimeOfDay(TimeOfDayAnnotation timeOfDayAnnotation) {
 		if (timeOfDayAnnotation == null) {
 			if (this.expiryTimeOfDay != null) {
 				this.setExpiryTimeOfDay(null);
@@ -440,7 +440,7 @@ public class JavaEclipseLinkCachingImpl
 		}
 	}
 
-	protected EclipseLinkJavaTimeOfDay buildExpiryTimeOfDay(EclipseLinkTimeOfDayAnnotation timeOfDayAnnotation) {
+	protected EclipseLinkJavaTimeOfDay buildExpiryTimeOfDay(TimeOfDayAnnotation timeOfDayAnnotation) {
 		return (timeOfDayAnnotation == null) ? null : new EclipseLinkJavaTimeOfDay(this, timeOfDayAnnotation);
 	}
 

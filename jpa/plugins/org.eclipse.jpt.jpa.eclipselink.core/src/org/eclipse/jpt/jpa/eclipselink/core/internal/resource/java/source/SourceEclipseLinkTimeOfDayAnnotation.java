@@ -21,14 +21,14 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTimeOfDayAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TimeOfDayAnnotation;
 
 /**
  * org.eclipse.persistence.annotations.TimeOfDay
  */
 public final class SourceEclipseLinkTimeOfDayAnnotation
 	extends SourceAnnotation
-	implements EclipseLinkTimeOfDayAnnotation
+	implements TimeOfDayAnnotation
 {
 	private final DeclarationAnnotationElementAdapter<Integer> hourDeclarationAdapter;
 	private final AnnotationElementAdapter<Integer> hourAdapter;

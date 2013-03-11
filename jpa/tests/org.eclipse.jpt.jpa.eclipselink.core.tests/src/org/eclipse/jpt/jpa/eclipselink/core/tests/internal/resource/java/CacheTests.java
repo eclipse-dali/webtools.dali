@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheIsolationType2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTimeOfDayAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TimeOfDayAnnotation;
 
 @SuppressWarnings("nls")
 public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
@@ -297,7 +297,7 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
 		CacheAnnotation cache = (CacheAnnotation) resourceType.getAnnotation(EclipseLink.CACHE);
-		EclipseLinkTimeOfDayAnnotation timeOfDay = cache.getExpiryTimeOfDay();
+		TimeOfDayAnnotation timeOfDay = cache.getExpiryTimeOfDay();
 		assertNotNull(timeOfDay);
 	}
 

@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheIsolationType2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTimeOfDayAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TimeOfDayAnnotation;
 
 /**
  * <code>org.eclipse.persistence.annotations.Cache</code>
@@ -84,7 +84,7 @@ public final class SourceEclipseLinkCacheAnnotation
 
 	private static final NestedDeclarationAnnotationAdapter EXPIRY_TIME_OF_DAY_ADAPTER = buildExpiryTimeOfDayAdapter();
 	private final ElementAnnotationAdapter expiryTimeOfDayAdapter;
-	private EclipseLinkTimeOfDayAnnotation expiryTimeOfDay;
+	private TimeOfDayAnnotation expiryTimeOfDay;
 	private TextRange expiryTimeOfDayTextRange;
 
 	private static final DeclarationAnnotationElementAdapter<String> ISOLATION_ADAPTER = buildIsolationAdapter();
@@ -463,11 +463,11 @@ public final class SourceEclipseLinkCacheAnnotation
 	}
 
 	// ***** expiry time of day
-	public EclipseLinkTimeOfDayAnnotation getExpiryTimeOfDay() {
+	public TimeOfDayAnnotation getExpiryTimeOfDay() {
 		return this.expiryTimeOfDay;
 	}
 
-	public EclipseLinkTimeOfDayAnnotation addExpiryTimeOfDay() {
+	public TimeOfDayAnnotation addExpiryTimeOfDay() {
 		if (this.expiryTimeOfDay != null) {
 			throw new IllegalStateException("'expiryTimeOfDay' element already exists: " + this.expiryTimeOfDay); //$NON-NLS-1$
 		}
@@ -480,12 +480,12 @@ public final class SourceEclipseLinkCacheAnnotation
 		if (this.expiryTimeOfDay == null) {
 			throw new IllegalStateException("'expiryTimeOfDay' element does not exist"); //$NON-NLS-1$
 		}
-		EclipseLinkTimeOfDayAnnotation old = this.expiryTimeOfDay;
+		TimeOfDayAnnotation old = this.expiryTimeOfDay;
 		this.expiryTimeOfDay = null;
 		old.removeAnnotation();
 	}
 
-	private EclipseLinkTimeOfDayAnnotation buildExpiryTimeOfDay() {
+	private TimeOfDayAnnotation buildExpiryTimeOfDay() {
 		return new SourceEclipseLinkTimeOfDayAnnotation(this, this.annotatedElement, EXPIRY_TIME_OF_DAY_ADAPTER);
 	}
 
@@ -495,7 +495,7 @@ public final class SourceEclipseLinkCacheAnnotation
 			this.syncExpiryTimeOfDay_(null);
 		} else {
 			if (this.expiryTimeOfDay == null) {
-				EclipseLinkTimeOfDayAnnotation tod = this.buildExpiryTimeOfDay();
+				TimeOfDayAnnotation tod = this.buildExpiryTimeOfDay();
 				tod.initialize(expirtyTimeOfDayAnnotation);
 				this.syncExpiryTimeOfDay_(tod);
 			} else {
@@ -504,8 +504,8 @@ public final class SourceEclipseLinkCacheAnnotation
 		}
 	}
 
-	private void syncExpiryTimeOfDay_(EclipseLinkTimeOfDayAnnotation astExpiryTimeOfDay) {
-		EclipseLinkTimeOfDayAnnotation old = this.expiryTimeOfDay;
+	private void syncExpiryTimeOfDay_(TimeOfDayAnnotation astExpiryTimeOfDay) {
+		TimeOfDayAnnotation old = this.expiryTimeOfDay;
 		this.expiryTimeOfDay = astExpiryTimeOfDay;
 		this.firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, old, astExpiryTimeOfDay);
 	}

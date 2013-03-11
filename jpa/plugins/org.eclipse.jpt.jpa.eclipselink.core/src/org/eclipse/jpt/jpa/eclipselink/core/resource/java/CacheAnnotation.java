@@ -118,10 +118,10 @@ public interface CacheAnnotation
 	 * Corresponds to the 'expiryTimeOfDay' element of the Cache annotation.
 	 * Return null if the element does not exist in Java.
 	 */
-	EclipseLinkTimeOfDayAnnotation getExpiryTimeOfDay();
+	TimeOfDayAnnotation getExpiryTimeOfDay();
 		String EXPIRY_TIME_OF_DAY_PROPERTY = "expiryTimeOfDay"; //$NON-NLS-1$
 
-	EclipseLinkTimeOfDayAnnotation addExpiryTimeOfDay();
+	TimeOfDayAnnotation addExpiryTimeOfDay();
 
 	void removeExpiryTimeOfDay();
 		

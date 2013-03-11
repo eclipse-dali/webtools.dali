@@ -14,14 +14,14 @@ import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotatio
 import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTimeOfDayAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TimeOfDayAnnotation;
 
 /**
  * <code>org.eclipse.persistence.annotations.TimeOfDay</code>
  */
 public final class BinaryEclipseLinkTimeOfDayAnnotation
 	extends BinaryAnnotation
-	implements EclipseLinkTimeOfDayAnnotation
+	implements TimeOfDayAnnotation
 {
 	private Integer hour;
 	private Integer minute;

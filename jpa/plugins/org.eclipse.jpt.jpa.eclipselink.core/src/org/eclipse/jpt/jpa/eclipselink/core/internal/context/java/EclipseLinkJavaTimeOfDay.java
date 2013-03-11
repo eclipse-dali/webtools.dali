@@ -13,13 +13,13 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTimeOfDay;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaCaching;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTimeOfDayAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TimeOfDayAnnotation;
 
 public class EclipseLinkJavaTimeOfDay
 	extends AbstractJavaContextModel<EclipseLinkJavaCaching>
 	implements EclipseLinkTimeOfDay
 {
-	protected final EclipseLinkTimeOfDayAnnotation todAnnotation;
+	protected final TimeOfDayAnnotation todAnnotation;
 
 	protected Integer hour;
 	protected Integer minute;
@@ -27,7 +27,7 @@ public class EclipseLinkJavaTimeOfDay
 	protected Integer millisecond;
 
 
-	public EclipseLinkJavaTimeOfDay(EclipseLinkJavaCaching parent, EclipseLinkTimeOfDayAnnotation todAnnotation) {
+	public EclipseLinkJavaTimeOfDay(EclipseLinkJavaCaching parent, TimeOfDayAnnotation todAnnotation) {
 		super(parent);
 		this.todAnnotation = todAnnotation;
 		this.hour = todAnnotation.getHour();
@@ -127,7 +127,7 @@ public class EclipseLinkJavaTimeOfDay
 		return this.parent;
 	}
 
-	public EclipseLinkTimeOfDayAnnotation getTimeOfDayAnnotation() {
+	public TimeOfDayAnnotation getTimeOfDayAnnotation() {
 		return this.todAnnotation;
 	}
 

@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheIsolationType2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTimeOfDayAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TimeOfDayAnnotation;
 
 /**
  * <code>org.eclipse.persistence.annotations.Cache</code>
@@ -31,7 +31,7 @@ public final class BinaryEclipseLinkCacheAnnotation
 	private Integer size;
 	private Boolean shared;
 	private Integer expiry;
-	private EclipseLinkTimeOfDayAnnotation expiryTimeOfDay;
+	private TimeOfDayAnnotation expiryTimeOfDay;
 	private Boolean alwaysRefresh;
 	private Boolean refreshOnlyIfNewer;
 	private Boolean disableHits;
@@ -169,11 +169,11 @@ public final class BinaryEclipseLinkCacheAnnotation
 	}
 
 	// ***** expiry time of day
-	public EclipseLinkTimeOfDayAnnotation getExpiryTimeOfDay() {
+	public TimeOfDayAnnotation getExpiryTimeOfDay() {
 		return this.expiryTimeOfDay;
 	}
 
-	public EclipseLinkTimeOfDayAnnotation addExpiryTimeOfDay() {
+	public TimeOfDayAnnotation addExpiryTimeOfDay() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -181,12 +181,12 @@ public final class BinaryEclipseLinkCacheAnnotation
 		throw new UnsupportedOperationException();
 	}
 
-	private EclipseLinkTimeOfDayAnnotation buildExpiryTimeOfDay() {
+	private TimeOfDayAnnotation buildExpiryTimeOfDay() {
 		IAnnotation jdtTimeOfDay = this.getJdtExpiryTimeOfDay();
 		return (jdtTimeOfDay == null) ? null : this.buildTimeOfDay(jdtTimeOfDay);
 	}
 
-	private EclipseLinkTimeOfDayAnnotation buildTimeOfDay(IAnnotation jdtTimeOfDay) {
+	private TimeOfDayAnnotation buildTimeOfDay(IAnnotation jdtTimeOfDay) {
 		return new BinaryEclipseLinkTimeOfDayAnnotation(this, jdtTimeOfDay);
 	}
 
@@ -194,8 +194,8 @@ public final class BinaryEclipseLinkCacheAnnotation
 		return (IAnnotation) this.getJdtMemberValue(EclipseLink.CACHE__EXPIRY_TIME_OF_DAY);
 	}
 
-	private void setExpiryTimeOfDay(EclipseLinkTimeOfDayAnnotation expiryTimeOfDay) {
-		EclipseLinkTimeOfDayAnnotation old = this.expiryTimeOfDay;
+	private void setExpiryTimeOfDay(TimeOfDayAnnotation expiryTimeOfDay) {
+		TimeOfDayAnnotation old = this.expiryTimeOfDay;
 		this.expiryTimeOfDay = expiryTimeOfDay;
 		this.firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, old, expiryTimeOfDay);
 	}
