@@ -92,11 +92,11 @@ public interface Customization extends PersistenceUnitProperties
 		static final String ECLIPSELINK_SESSION_CUSTOMIZER = "eclipselink.session.customizer"; //$NON-NLS-1$
 		String ECLIPSELINK_SESSION_CUSTOMIZER_CLASS_NAME = "org.eclipse.persistence.config.SessionCustomizer"; //$NON-NLS-1$
 
-	ListIterable<CustomizationEntity> getEntities();
+	ListIterable<EclipseLinkCustomizationEntity> getEntities();
 	Iterable<String> getEntityNames();
 	int getEntitiesSize();
 	boolean entityExists(String entity);
-	CustomizationEntity addEntity(String entity);
+	EclipseLinkCustomizationEntity addEntity(String entity);
 	void removeEntity(String entity);
 		static final String ENTITIES_LIST = "entities"; //$NON-NLS-1$
 		

@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CustomizationEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomizationEntity;
 
 /**
  * CustomizationValueModelTests
@@ -107,39 +107,39 @@ public class CustomizationValueModelTests extends EclipseLinkPersistenceUnitTest
 	/** ****** Basic Entity's Properties Tests ******* */
 
 	public void testClone() {
-		CustomizationEntity entity = this.buildEntity("TestEntity", CUSTOMIZER_TEST_VALUE);
+		EclipseLinkCustomizationEntity entity = this.buildEntity("TestEntity", CUSTOMIZER_TEST_VALUE);
 
 		this.verifyClone(entity, entity.clone());
 	}
 	
 	public void testEquals() {
-		CustomizationEntity entity1 = this.buildEntity("TestEntityA", CUSTOMIZER_TEST_VALUE);
-		CustomizationEntity entity2 = this.buildEntity("TestEntityB", CUSTOMIZER_TEST_VALUE);
+		EclipseLinkCustomizationEntity entity1 = this.buildEntity("TestEntityA", CUSTOMIZER_TEST_VALUE);
+		EclipseLinkCustomizationEntity entity2 = this.buildEntity("TestEntityB", CUSTOMIZER_TEST_VALUE);
 		assertEquals(entity1, entity2);
-		CustomizationEntity entity3 = this.buildEntity("TestEntityC", CUSTOMIZER_TEST_VALUE);
+		EclipseLinkCustomizationEntity entity3 = this.buildEntity("TestEntityC", CUSTOMIZER_TEST_VALUE);
 		assertEquals(entity1, entity3);
 		assertEquals(entity2, entity3);
 	}
 	
 	public void testIsEmpty() {
-		CustomizationEntity entity = this.buildEntity("TestEntity");
+		EclipseLinkCustomizationEntity entity = this.buildEntity("TestEntity");
 		assertTrue(entity.isEmpty());
 		this.customization.setDescriptorCustomizerOf(entity.getName(), CUSTOMIZER_TEST_VALUE);
 		assertFalse(entity.isEmpty());
 	}
 
-	private void verifyClone(CustomizationEntity original, CustomizationEntity clone) {
+	private void verifyClone(EclipseLinkCustomizationEntity original, EclipseLinkCustomizationEntity clone) {
 		assertNotSame(original, clone);
 		assertEquals(original, original);
 		assertEquals(original, clone);
 	}
 
-	private CustomizationEntity buildEntity(String name) {
+	private EclipseLinkCustomizationEntity buildEntity(String name) {
 		return this.customization.addEntity(name);
 	}
 
-	private CustomizationEntity buildEntity(String name, String aClassName) {
-		CustomizationEntity entity = this.customization.addEntity(name);
+	private EclipseLinkCustomizationEntity buildEntity(String name, String aClassName) {
+		EclipseLinkCustomizationEntity entity = this.customization.addEntity(name);
 		this.customization.setDescriptorCustomizerOf(entity.getName(), aClassName);
 		return entity;
 	}

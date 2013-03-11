@@ -37,7 +37,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CustomizationEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomizationEntity;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
@@ -52,8 +52,8 @@ import org.eclipse.ui.progress.IProgressService;
  */
 public class EntityListComposite extends Pane<Customization>
 {
-	private ModifiableCollectionValueModel<CustomizationEntity> selectedEntitiesModel;
-	private PropertyValueModel<CustomizationEntity> selectedEntityModel;
+	private ModifiableCollectionValueModel<EclipseLinkCustomizationEntity> selectedEntitiesModel;
+	private PropertyValueModel<EclipseLinkCustomizationEntity> selectedEntityModel;
 
 	public EntityListComposite(Pane<? extends Customization> parentComposite, Composite parent) {
 
@@ -67,14 +67,14 @@ public class EntityListComposite extends Pane<Customization>
 		this.selectedEntityModel = this.buildSelectedEntityModel(this.selectedEntitiesModel);
 	}
 
-	private ModifiableCollectionValueModel<CustomizationEntity> buildSelectedEntitiesModel() {
-		return new SimpleCollectionValueModel<CustomizationEntity>();
+	private ModifiableCollectionValueModel<EclipseLinkCustomizationEntity> buildSelectedEntitiesModel() {
+		return new SimpleCollectionValueModel<EclipseLinkCustomizationEntity>();
 	}
 
-	private PropertyValueModel<CustomizationEntity> buildSelectedEntityModel(CollectionValueModel<CustomizationEntity> selectedEntitiesModel) {
-		return new CollectionPropertyValueModelAdapter<CustomizationEntity, CustomizationEntity>(selectedEntitiesModel) {
+	private PropertyValueModel<EclipseLinkCustomizationEntity> buildSelectedEntityModel(CollectionValueModel<EclipseLinkCustomizationEntity> selectedEntitiesModel) {
+		return new CollectionPropertyValueModelAdapter<EclipseLinkCustomizationEntity, EclipseLinkCustomizationEntity>(selectedEntitiesModel) {
 			@Override
-			protected CustomizationEntity buildValue() {
+			protected EclipseLinkCustomizationEntity buildValue() {
 				if (this.collectionModel.size() == 1) {
 					return this.collectionModel.iterator().next();
 				}
@@ -94,7 +94,7 @@ public class EntityListComposite extends Pane<Customization>
 	@Override
 	protected void initializeLayout(Composite container) {
 		// Entities add/remove list pane
-		new AddRemoveListPane<Customization, CustomizationEntity>(
+		new AddRemoveListPane<Customization, EclipseLinkCustomizationEntity>(
 			this,
 			container,
 			this.buildEntitiesAdapter(),
@@ -109,28 +109,28 @@ public class EntityListComposite extends Pane<Customization>
 		this.initializeClassChooser(container, customizationHyperlink);
 	}
 
-	private AddRemoveListPane.Adapter<CustomizationEntity> buildEntitiesAdapter() {
-		return new AddRemoveListPane.AbstractAdapter<CustomizationEntity>() {
+	private AddRemoveListPane.Adapter<EclipseLinkCustomizationEntity> buildEntitiesAdapter() {
+		return new AddRemoveListPane.AbstractAdapter<EclipseLinkCustomizationEntity>() {
 
-			public CustomizationEntity addNewItem() {
+			public EclipseLinkCustomizationEntity addNewItem() {
 				return EntityListComposite.this.addEntity();
 			}
 
 			@Override
-			public PropertyValueModel<Boolean> buildRemoveButtonEnabledModel(CollectionValueModel<CustomizationEntity> selectedItemsModel) {
+			public PropertyValueModel<Boolean> buildRemoveButtonEnabledModel(CollectionValueModel<EclipseLinkCustomizationEntity> selectedItemsModel) {
 				//enable the remove button only when 1 item is selected, same as the optional button
 				return this.buildSingleSelectedItemEnabledModel(selectedItemsModel);
 			}
 
-			public void removeSelectedItems(CollectionValueModel<CustomizationEntity> selectedItemsModel) {
+			public void removeSelectedItems(CollectionValueModel<EclipseLinkCustomizationEntity> selectedItemsModel) {
 				//assume only 1 item since remove button is disabled otherwise
-				CustomizationEntity customizationEntity = selectedItemsModel.iterator().next();
+				EclipseLinkCustomizationEntity customizationEntity = selectedItemsModel.iterator().next();
 				getSubject().removeEntity(customizationEntity.getName());
 			}
 		};
 	}
 	
-	private CustomizationEntity addEntity() {
+	private EclipseLinkCustomizationEntity addEntity() {
 		IType type = this.chooseEntity();
 
 		if (type != null) {
@@ -190,21 +190,21 @@ public class EntityListComposite extends Pane<Customization>
 		return new LabelProvider() {
 			@Override
 			public String getText(Object element) {
-				CustomizationEntity entityCustomization = (CustomizationEntity) element;
+				EclipseLinkCustomizationEntity entityCustomization = (EclipseLinkCustomizationEntity) element;
 				return entityCustomization.getName();
 			}
 		};
 	}
 
-	private ModifiablePropertyValueModel<CustomizationEntity> buildEntityHolder() {
-		return new SimplePropertyValueModel<CustomizationEntity>();
+	private ModifiablePropertyValueModel<EclipseLinkCustomizationEntity> buildEntityHolder() {
+		return new SimplePropertyValueModel<EclipseLinkCustomizationEntity>();
 	}
 
-	private ListValueModel<CustomizationEntity> buildEntitiesListHolder() {
-		return new ListAspectAdapter<Customization, CustomizationEntity>(
+	private ListValueModel<EclipseLinkCustomizationEntity> buildEntitiesListHolder() {
+		return new ListAspectAdapter<Customization, EclipseLinkCustomizationEntity>(
 				this.getSubjectHolder(), Customization.ENTITIES_LIST) {
 			@Override
-			protected ListIterable<CustomizationEntity> getListIterable() {
+			protected ListIterable<EclipseLinkCustomizationEntity> getListIterable() {
 				return this.subject.getEntities();
 			}
 			@Override
@@ -214,23 +214,23 @@ public class EntityListComposite extends Pane<Customization>
 		};
 	}
 
-	private PropertyValueModel<Boolean> buildPaneEnablerHolder(PropertyValueModel<CustomizationEntity> entityHolder) {
-		return new TransformationPropertyValueModel<CustomizationEntity, Boolean>(entityHolder) {
+	private PropertyValueModel<Boolean> buildPaneEnablerHolder(PropertyValueModel<EclipseLinkCustomizationEntity> entityHolder) {
+		return new TransformationPropertyValueModel<EclipseLinkCustomizationEntity, Boolean>(entityHolder) {
 			@Override
-			protected Boolean transform_(CustomizationEntity value) {
+			protected Boolean transform_(EclipseLinkCustomizationEntity value) {
 				return Boolean.valueOf(value.entityNameIsValid());
 			}
 		};
 	}
 
 
-	private ClassChooserPane<CustomizationEntity> initializeClassChooser(Composite container, Hyperlink hyperlink) {
-		return new ClassChooserPane<CustomizationEntity>(this, this.selectedEntityModel, this.buildPaneEnablerHolder(this.selectedEntityModel), container, hyperlink) {
+	private ClassChooserPane<EclipseLinkCustomizationEntity> initializeClassChooser(Composite container, Hyperlink hyperlink) {
+		return new ClassChooserPane<EclipseLinkCustomizationEntity>(this, this.selectedEntityModel, this.buildPaneEnablerHolder(this.selectedEntityModel), container, hyperlink) {
 
 			@Override
 			protected ModifiablePropertyValueModel<String> buildTextHolder() {
-				return new PropertyAspectAdapter<CustomizationEntity, String>(
-					this.getSubjectHolder(), CustomizationEntity.DESCRIPTOR_CUSTOMIZER_PROPERTY) {
+				return new PropertyAspectAdapter<EclipseLinkCustomizationEntity, String>(
+					this.getSubjectHolder(), EclipseLinkCustomizationEntity.DESCRIPTOR_CUSTOMIZER_PROPERTY) {
 					@Override
 					protected String buildValue_() {
 						return getSubjectParent().getDescriptorCustomizerOf(getSubjectName());

@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CustomizationEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomizationEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkProfiler;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkWeaving;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkCustomization;
@@ -114,7 +114,7 @@ public class EclipseLinkCustomizationTests extends EclipseLinkPersistenceUnitTes
 		this.customization.addPropertyChangeListener(Customization.WEAVING_PROPERTY, propertyChangeListener);
 		this.customization.addPropertyChangeListener(Customization.VALIDATION_ONLY_PROPERTY, propertyChangeListener);
 		this.customization.addPropertyChangeListener(Customization.VALIDATE_SCHEMA_PROPERTY, propertyChangeListener);
-		this.customization.addPropertyChangeListener(CustomizationEntity.DESCRIPTOR_CUSTOMIZER_PROPERTY, propertyChangeListener);
+		this.customization.addPropertyChangeListener(EclipseLinkCustomizationEntity.DESCRIPTOR_CUSTOMIZER_PROPERTY, propertyChangeListener);
 		this.customization.addPropertyChangeListener(Customization.SESSION_CUSTOMIZER_PROPERTY, propertyChangeListener);
 		this.customization.addPropertyChangeListener(Customization.PROFILER_PROPERTY, propertyChangeListener);
 		this.customization.addPropertyChangeListener(Customization.EXCEPTION_HANDLER_PROPERTY, propertyChangeListener);
@@ -310,7 +310,7 @@ public class EclipseLinkCustomizationTests extends EclipseLinkPersistenceUnitTes
 				modelValue = iterator.next();
 			}
 		}
-		else if (propertyName.equals(CustomizationEntity.DESCRIPTOR_CUSTOMIZER_PROPERTY))
+		else if (propertyName.equals(EclipseLinkCustomizationEntity.DESCRIPTOR_CUSTOMIZER_PROPERTY))
 			modelValue = this.customization.getDescriptorCustomizerOf(ENTITY_TEST);
 		else
 			this.throwMissingDefinition("getProperty", propertyName);
@@ -590,7 +590,7 @@ public class EclipseLinkCustomizationTests extends EclipseLinkPersistenceUnitTes
 			CUSTOMIZER_KEY,
 			CUSTOMIZER_TEST_VALUE);
 		this.verifySetCustomizationProperty(
-			CustomizationEntity.DESCRIPTOR_CUSTOMIZER_PROPERTY,
+			EclipseLinkCustomizationEntity.DESCRIPTOR_CUSTOMIZER_PROPERTY,
 			CUSTOMIZER_KEY,
 			CUSTOMIZER_TEST_VALUE,
 			CUSTOMIZER_TEST_VALUE_2);
@@ -598,7 +598,7 @@ public class EclipseLinkCustomizationTests extends EclipseLinkPersistenceUnitTes
 
 	public void testAddRemoveCustomization() throws Exception {
 		this.verifyAddRemoveCustomizationProperty(
-			CustomizationEntity.DESCRIPTOR_CUSTOMIZER_PROPERTY,
+			EclipseLinkCustomizationEntity.DESCRIPTOR_CUSTOMIZER_PROPERTY,
 			CUSTOMIZER_KEY,
 			CUSTOMIZER_TEST_VALUE,
 			CUSTOMIZER_TEST_VALUE_2);
@@ -741,8 +741,8 @@ public class EclipseLinkCustomizationTests extends EclipseLinkPersistenceUnitTes
 
 	protected void verifyCustomizationEvent(String propertyName, String entityName, Object expectedValue) throws Exception {
 		// verify event value
-		CustomizationEntity entity = (CustomizationEntity) this.propertyChangedEvent.getNewValue();
-		if (propertyName.equals(CustomizationEntity.DESCRIPTOR_CUSTOMIZER_PROPERTY)) {
+		EclipseLinkCustomizationEntity entity = (EclipseLinkCustomizationEntity) this.propertyChangedEvent.getNewValue();
+		if (propertyName.equals(EclipseLinkCustomizationEntity.DESCRIPTOR_CUSTOMIZER_PROPERTY)) {
 			assertEquals(expectedValue, entity.getParent().getDescriptorCustomizerOf(entityName));
 			assertEquals(expectedValue, this.customization.getDescriptorCustomizerOf(entityName));
 		}
@@ -752,7 +752,7 @@ public class EclipseLinkCustomizationTests extends EclipseLinkPersistenceUnitTes
 	}
 
 	protected void setCustomizationProperty(String propertyName, String entityName, Object newValue) throws NoSuchFieldException {
-		if (propertyName.equals(CustomizationEntity.DESCRIPTOR_CUSTOMIZER_PROPERTY))
+		if (propertyName.equals(EclipseLinkCustomizationEntity.DESCRIPTOR_CUSTOMIZER_PROPERTY))
 			this.customization.setDescriptorCustomizerOf(entityName, (String) newValue);
 		else
 			this.throwMissingDefinition("setCustomizationProperty", propertyName);

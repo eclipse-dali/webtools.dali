@@ -18,7 +18,9 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 /**
  *  Entity
  */
-public class CustomizationEntity extends AbstractModel implements Cloneable, Serializable
+public class EclipseLinkCustomizationEntity
+	extends AbstractModel
+	implements Cloneable, Serializable
 {
 	private String name;
 	private Customization parent;
@@ -31,29 +33,25 @@ public class CustomizationEntity extends AbstractModel implements Cloneable, Ser
 	private static final long serialVersionUID = 1L;
 
 	// ********** constructors **********
-	public CustomizationEntity(Customization parent, String name) {
+	public EclipseLinkCustomizationEntity(Customization parent, String name) {
 		this(parent);
-		this.initialize(name);
-	}
-
-	private CustomizationEntity(Customization parent) {
-		this.parent = parent;
-	}
-	
-	private void initialize(String name) {
 		if(StringTools.isBlank(name)) {
 			throw new IllegalArgumentException();
 		}
 		this.name = name;
 	}
 
+	private EclipseLinkCustomizationEntity(Customization parent) {
+		this.parent = parent;
+	}
+	
 	// ********** behaviors **********
 	@Override
 	public boolean equals(Object o) {
-		if ( ! (o instanceof CustomizationEntity)) {
+		if ( ! (o instanceof EclipseLinkCustomizationEntity)) {
 			return false;
 		}
-		CustomizationEntity customizer = (CustomizationEntity) o;
+		EclipseLinkCustomizationEntity customizer = (EclipseLinkCustomizationEntity) o;
 		return (
 			(this.descriptorCustomizer == null ?
 				customizer.descriptorCustomizer == null : 
@@ -66,9 +64,9 @@ public class CustomizationEntity extends AbstractModel implements Cloneable, Ser
 	}
 	
 	 @Override
-	 public CustomizationEntity clone() {
+	 public EclipseLinkCustomizationEntity clone() {
 		 try {
-			 return (CustomizationEntity)super.clone();
+			 return (EclipseLinkCustomizationEntity)super.clone();
 		 }
 		 catch (CloneNotSupportedException ex) {
 			 throw new InternalError();
@@ -91,12 +89,12 @@ public class CustomizationEntity extends AbstractModel implements Cloneable, Ser
 	public String getName() {
 		return this.name;
 	}
-	public static final Transformer<CustomizationEntity, String> NAME_TRANSFORMER = new NameTransformer();
+	public static final Transformer<EclipseLinkCustomizationEntity, String> NAME_TRANSFORMER = new NameTransformer();
 	public static class NameTransformer
-		extends TransformerAdapter<CustomizationEntity, String>
+		extends TransformerAdapter<EclipseLinkCustomizationEntity, String>
 	{
 		@Override
-		public String transform(CustomizationEntity entity) {
+		public String transform(EclipseLinkCustomizationEntity entity) {
 			return entity.getName();
 		}
 	}

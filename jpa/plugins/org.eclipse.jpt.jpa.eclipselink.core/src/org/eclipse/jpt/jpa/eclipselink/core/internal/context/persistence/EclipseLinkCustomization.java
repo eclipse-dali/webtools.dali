@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CustomizationEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomizationEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkProfiler;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkWeaving;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -47,7 +47,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	private String profiler; // storing EclipseLinkStringValue since value can be Profiler or custom class
 	private String exceptionHandler;
 
-	private List<CustomizationEntity> entities;
+	private List<EclipseLinkCustomizationEntity> entities;
 	
 	// ********** constructors **********
 	public EclipseLinkCustomization(PersistenceUnit parent) {
@@ -60,7 +60,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	 */
 	@Override
 	protected void initializeProperties() {
-		this.entities = new ArrayList<CustomizationEntity>();
+		this.entities = new ArrayList<EclipseLinkCustomizationEntity>();
 
 		this.throwExceptions = 
 			this.getBooleanValue(ECLIPSELINK_THROW_EXCEPTIONS);
@@ -289,11 +289,11 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		throw new IllegalArgumentException("Illegal property: " + property); //$NON-NLS-1$
 	}
 	
-	public CustomizationEntity addEntity(String entityName) {
+	public EclipseLinkCustomizationEntity addEntity(String entityName) {
 		if (this.entityExists(entityName)) {
 			throw new IllegalStateException("Duplicate entity: " + entityName); //$NON-NLS-1$
 		}
-		CustomizationEntity newEntity = this.buildEntity(entityName);
+		EclipseLinkCustomizationEntity newEntity = this.buildEntity(entityName);
 		this.addItemToList(newEntity, this.entities, ENTITIES_LIST);
 		return newEntity;
 	}
@@ -302,7 +302,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		if ( ! this.entityExists(entityName)) {
 			return;
 		}
-		CustomizationEntity entity = this.getEntityNamed(entityName);
+		EclipseLinkCustomizationEntity entity = this.getEntityNamed(entityName);
 		this.clearEntity(entity);
 		this.removeEntity(entity);
 	}
@@ -588,12 +588,12 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	// ********** DescriptorCustomizer **********
 	
 	public String getDescriptorCustomizerOf(String entityName) {
-		CustomizationEntity entity = this.getEntityNamed(entityName);
+		EclipseLinkCustomizationEntity entity = this.getEntityNamed(entityName);
 		return (entity == null) ? null : entity.getDescriptorCustomizer();
 	}
 	
 	public void setDescriptorCustomizerOf(String entityName, String newDescriptorCustomizer) {
-		CustomizationEntity old = this.setEntityDescriptorCustomizerOf(entityName, newDescriptorCustomizer);
+		EclipseLinkCustomizationEntity old = this.setEntityDescriptorCustomizerOf(entityName, newDescriptorCustomizer);
 		this.putStringValue(ECLIPSELINK_DESCRIPTOR_CUSTOMIZER, entityName, newDescriptorCustomizer, false);
 		this.firePropertyChanged(DESCRIPTOR_CUSTOMIZER_PROPERTY, old, this.getEntityNamed(entityName));
 	}
@@ -601,7 +601,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	private void descriptorCustomizerChanged(String propertyName, String stringValue) {
 		String entityName = this.extractEntityNameOf(propertyName);
 		if( ! StringTools.isBlank(entityName)) {
-			CustomizationEntity old = this.setEntityDescriptorCustomizerOf(entityName, stringValue);
+			EclipseLinkCustomizationEntity old = this.setEntityDescriptorCustomizerOf(entityName, stringValue);
 			this.firePropertyChanged(DESCRIPTOR_CUSTOMIZER_PROPERTY, old, this.getEntityNamed(entityName));
 		}
 	}
@@ -613,12 +613,12 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	/**
 	 * Returns the old Entity
 	 */
-	private CustomizationEntity setEntityDescriptorCustomizerOf(String entityName, String descriptorCustomizerClassName) {
+	private EclipseLinkCustomizationEntity setEntityDescriptorCustomizerOf(String entityName, String descriptorCustomizerClassName) {
 		 if(( ! this.entityExists(entityName)) && StringTools.isBlank(descriptorCustomizerClassName)) {
 				//this is a property that is currently being added, we don't need to deal with it until the value is set
 				 return null;
 			 }
-		CustomizationEntity entity = (this.entityExists(entityName)) ?
+		EclipseLinkCustomizationEntity entity = (this.entityExists(entityName)) ?
 						this.getEntityNamed(entityName) :
 						this.addEntity(entityName);
 		return this.setEntityDescriptorCustomizerOf(entity, descriptorCustomizerClassName);
@@ -627,11 +627,11 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	/**
 	 * Returns the old Entity
 	 */
-	private CustomizationEntity setEntityDescriptorCustomizerOf(CustomizationEntity entity, String descriptorCustomizerClassName) {
+	private EclipseLinkCustomizationEntity setEntityDescriptorCustomizerOf(EclipseLinkCustomizationEntity entity, String descriptorCustomizerClassName) {
 		if(entity == null) {
 			throw new IllegalArgumentException();
 		}
-		CustomizationEntity old = entity.clone();
+		EclipseLinkCustomizationEntity old = entity.clone();
 		entity.setDescriptorCustomizer(descriptorCustomizerClassName);
 		return old;
 	}
@@ -640,7 +640,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	 * Convenience method to update the descriptorCustomizerClassName in entities.
 	 * Returns the old Entity
 	 */
-	private CustomizationEntity setEntityDescriptorCustomizerOf(PersistenceUnit.Property descriptorCustomizerProperty) {
+	private EclipseLinkCustomizationEntity setEntityDescriptorCustomizerOf(PersistenceUnit.Property descriptorCustomizerProperty) {
 		String entityName = this.extractEntityNameOf(descriptorCustomizerProperty);
 		if(StringTools.isBlank(entityName)) {
 			return null;
@@ -715,7 +715,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	/**
 	 * Set all Entity properties to default.
 	 */
-	private void clearEntity(CustomizationEntity entity) {
+	private void clearEntity(EclipseLinkCustomizationEntity entity) {
 		if(entity.isEmpty()) {
 			return;
 		}
@@ -726,8 +726,8 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	/**
 	 * Returns the Entity with the given name.
 	 */
-	private CustomizationEntity getEntityNamed(String name) {
-		for(CustomizationEntity entity: this.entities) {
+	private EclipseLinkCustomizationEntity getEntityNamed(String name) {
+		for(EclipseLinkCustomizationEntity entity: this.entities) {
 			if(entity.getName().equals(name)) {
 				return entity;
 			}
@@ -735,11 +735,11 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		return null;
 	}
 
-	private CustomizationEntity buildEntity(String name) {
-		return new CustomizationEntity(this, name);
+	private EclipseLinkCustomizationEntity buildEntity(String name) {
+		return new EclipseLinkCustomizationEntity(this, name);
 	}
 	
-	private void removeEntity(CustomizationEntity entity) {
+	private void removeEntity(EclipseLinkCustomizationEntity entity) {
 		if(entity == null) {
 			throw new NullPointerException();
 		}
@@ -750,7 +750,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	 * Return whether the Entity exist.
 	 */
 	public boolean entityExists(String name) {
-		for(CustomizationEntity entity: this.entities) {
+		for(EclipseLinkCustomizationEntity entity: this.entities) {
 			if(entity.getName().equals(name)) {
 				return true;
 			}
@@ -760,12 +760,12 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 
 	// ****** entities list *******
 
-	public ListIterable<CustomizationEntity> getEntities() {
+	public ListIterable<EclipseLinkCustomizationEntity> getEntities() {
 		return IterableTools.cloneLive(this.entities);
 	}
 
 	public Iterable<String> getEntityNames() {
-		return IterableTools.transform(this.getEntities(), CustomizationEntity.NAME_TRANSFORMER);
+		return IterableTools.transform(this.getEntities(), EclipseLinkCustomizationEntity.NAME_TRANSFORMER);
 	}
 
 	public int getEntitiesSize() {
