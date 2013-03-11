@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.BinaryEclipseLinkBasicCollectionAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.SourceEclipseLinkBasicCollectionAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkBasicCollectionAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.BasicCollectionAnnotation;
 
 /**
  * org.eclipse.persistence.annotations.BasicCollection
@@ -54,6 +54,6 @@ public class EclipseLinkBasicCollectionAnnotationDefinition
 	}
 
 	public String getAnnotationName() {
-		return EclipseLinkBasicCollectionAnnotation.ANNOTATION_NAME;
+		return BasicCollectionAnnotation.ANNOTATION_NAME;
 	}
 }

@@ -19,10 +19,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkBasicCollectionMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkBasicCollectionAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.BasicCollectionAnnotation;
 
 public class JavaEclipseLinkBasicCollectionMapping
-	extends AbstractJavaAttributeMapping<EclipseLinkBasicCollectionAnnotation>
+	extends AbstractJavaAttributeMapping<BasicCollectionAnnotation>
 	implements EclipseLinkBasicCollectionMapping, EclipseLinkJavaConvertibleMapping
 {
 
@@ -89,6 +89,6 @@ public class JavaEclipseLinkBasicCollectionMapping
 	
 	@Override
 	protected String getAnnotationName() {
-		return EclipseLinkBasicCollectionAnnotation.ANNOTATION_NAME;
+		return BasicCollectionAnnotation.ANNOTATION_NAME;
 	}
 }
