@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkReadOnly;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_3JpaPlatformFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
@@ -46,7 +46,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public class JavaEclipseLinkMappedSuperclassImpl
 	extends AbstractJavaMappedSuperclass
 	implements 
-		JavaEclipseLinkMappedSuperclass, 
+		EclipseLinkJavaMappedSuperclass, 
 		JavaCacheableReference2_0, 
 		EclipseLinkJavaConverterContainer.Parent,
 		JavaGeneratorContainer.Parent

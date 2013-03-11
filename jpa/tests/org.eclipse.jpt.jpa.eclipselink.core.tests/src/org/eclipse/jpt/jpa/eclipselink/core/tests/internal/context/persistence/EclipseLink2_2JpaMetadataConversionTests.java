@@ -33,7 +33,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkStructConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEmbeddable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEntity;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
@@ -752,7 +752,7 @@ public class EclipseLink2_2JpaMetadataConversionTests extends EclipseLink2_2Cont
 		createTestMappedSuperclassWithConverters();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaEclipseLinkMappedSuperclass mappedSuperclass = getJavaMappedSuperclass();
+		EclipseLinkJavaMappedSuperclass mappedSuperclass = getJavaMappedSuperclass();
 		addXmlMappingFileRef(org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 		EclipseLinkEntityMappings entityMappings = getEntityMappings();
 		
@@ -801,7 +801,7 @@ public class EclipseLink2_2JpaMetadataConversionTests extends EclipseLink2_2Cont
 		createTestMappedSuperclassWithConverterOnConvertibleMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaEclipseLinkMappedSuperclass mappedSuperclass = getJavaMappedSuperclass();
+		EclipseLinkJavaMappedSuperclass mappedSuperclass = getJavaMappedSuperclass();
 		addXmlMappingFileRef(org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 		EclipseLinkEntityMappings entityMappings = getEntityMappings();
 		

@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
@@ -265,13 +265,13 @@ public class OrmEclipseLinkMappedSuperclassImpl
 	// ********** misc **********
 
 	@Override
-	public JavaEclipseLinkMappedSuperclass getJavaTypeMapping() {
-		return (JavaEclipseLinkMappedSuperclass) super.getJavaTypeMapping();
+	public EclipseLinkJavaMappedSuperclass getJavaTypeMapping() {
+		return (EclipseLinkJavaMappedSuperclass) super.getJavaTypeMapping();
 	}
 
 	@Override
-	public JavaEclipseLinkMappedSuperclass getJavaTypeMappingForDefaults() {
-		return (JavaEclipseLinkMappedSuperclass) super.getJavaTypeMappingForDefaults();
+	public EclipseLinkJavaMappedSuperclass getJavaTypeMappingForDefaults() {
+		return (EclipseLinkJavaMappedSuperclass) super.getJavaTypeMappingForDefaults();
 	}
 
 	@Override
@@ -285,7 +285,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 	}
 
 	protected boolean usesJavaPrimaryKeyColumns() {
-		JavaEclipseLinkMappedSuperclass javaMappedSuperclass = this.getJavaTypeMappingForDefaults();
+		EclipseLinkJavaMappedSuperclass javaMappedSuperclass = this.getJavaTypeMappingForDefaults();
 		return (javaMappedSuperclass != null) && javaMappedSuperclass.usesPrimaryKeyColumns();
 	}
 

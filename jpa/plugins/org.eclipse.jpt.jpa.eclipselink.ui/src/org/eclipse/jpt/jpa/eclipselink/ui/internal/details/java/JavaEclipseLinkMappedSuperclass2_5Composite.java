@@ -13,7 +13,7 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkMultitenancyComposite;
@@ -32,11 +32,11 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 
 public class JavaEclipseLinkMappedSuperclass2_5Composite
-	extends AbstractJavaEclipseLinkMappedSuperclassComposite<JavaEclipseLinkMappedSuperclass>
+	extends AbstractJavaEclipseLinkMappedSuperclassComposite<EclipseLinkJavaMappedSuperclass>
 {
 
 	protected JavaEclipseLinkMappedSuperclass2_5Composite(
-			PropertyValueModel<? extends JavaEclipseLinkMappedSuperclass> mappedSuperclassModel,
+			PropertyValueModel<? extends EclipseLinkJavaMappedSuperclass> mappedSuperclassModel,
 			Composite parentComposite, WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
 		super(mappedSuperclassModel, parentComposite, widgetFactory, resourceManager);
@@ -97,8 +97,8 @@ public class JavaEclipseLinkMappedSuperclass2_5Composite
 		return new EclipseLinkMultitenancyComposite(this, this.buildMultitenancyModel(), container).getControl();
 	}
 
-	private PropertyAspectAdapter<JavaEclipseLinkMappedSuperclass, JavaEclipseLinkMultitenancy2_3> buildMultitenancyModel() {
-		return new PropertyAspectAdapter<JavaEclipseLinkMappedSuperclass, JavaEclipseLinkMultitenancy2_3>(getSubjectHolder()) {
+	private PropertyAspectAdapter<EclipseLinkJavaMappedSuperclass, JavaEclipseLinkMultitenancy2_3> buildMultitenancyModel() {
+		return new PropertyAspectAdapter<EclipseLinkJavaMappedSuperclass, JavaEclipseLinkMultitenancy2_3>(getSubjectHolder()) {
 			@Override
 			protected JavaEclipseLinkMultitenancy2_3 buildValue_() {
 				return this.subject.getMultitenancy();
