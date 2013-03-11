@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkReadTransformerAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ReadTransformerAnnotation;
 
 @SuppressWarnings("nls")
 public class ReadTransformerAnnotationTests extends EclipseLinkJavaResourceModelTestCase {
@@ -83,7 +83,7 @@ public class ReadTransformerAnnotationTests extends EclipseLinkJavaResourceModel
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkReadTransformerAnnotation readTransformer = (EclipseLinkReadTransformerAnnotation) resourceField.getAnnotation(EclipseLink.READ_TRANSFORMER);
+		ReadTransformerAnnotation readTransformer = (ReadTransformerAnnotation) resourceField.getAnnotation(EclipseLink.READ_TRANSFORMER);
 		assertEquals("Foo", readTransformer.getTransformerClass());
 	}
 
@@ -92,7 +92,7 @@ public class ReadTransformerAnnotationTests extends EclipseLinkJavaResourceModel
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkReadTransformerAnnotation readTransformer = (EclipseLinkReadTransformerAnnotation) resourceField.getAnnotation(EclipseLink.READ_TRANSFORMER);
+		ReadTransformerAnnotation readTransformer = (ReadTransformerAnnotation) resourceField.getAnnotation(EclipseLink.READ_TRANSFORMER);
 		assertEquals("Foo", readTransformer.getTransformerClass());
 		
 		readTransformer.setTransformerClass("Bar");
@@ -106,7 +106,7 @@ public class ReadTransformerAnnotationTests extends EclipseLinkJavaResourceModel
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkReadTransformerAnnotation readTransformer = (EclipseLinkReadTransformerAnnotation) resourceField.getAnnotation(EclipseLink.READ_TRANSFORMER);
+		ReadTransformerAnnotation readTransformer = (ReadTransformerAnnotation) resourceField.getAnnotation(EclipseLink.READ_TRANSFORMER);
 		assertEquals("Foo", readTransformer.getTransformerClass());
 		
 		readTransformer.setTransformerClass(null);
@@ -121,7 +121,7 @@ public class ReadTransformerAnnotationTests extends EclipseLinkJavaResourceModel
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkReadTransformerAnnotation readTransformer = (EclipseLinkReadTransformerAnnotation) resourceField.getAnnotation(EclipseLink.READ_TRANSFORMER);
+		ReadTransformerAnnotation readTransformer = (ReadTransformerAnnotation) resourceField.getAnnotation(EclipseLink.READ_TRANSFORMER);
 		assertEquals("transformerMethod", readTransformer.getMethod());
 	}
 
@@ -130,7 +130,7 @@ public class ReadTransformerAnnotationTests extends EclipseLinkJavaResourceModel
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkReadTransformerAnnotation readTransformer = (EclipseLinkReadTransformerAnnotation) resourceField.getAnnotation(EclipseLink.READ_TRANSFORMER);
+		ReadTransformerAnnotation readTransformer = (ReadTransformerAnnotation) resourceField.getAnnotation(EclipseLink.READ_TRANSFORMER);
 		assertEquals("transformerMethod", readTransformer.getMethod());
 		
 		readTransformer.setMethod("foo");
@@ -144,7 +144,7 @@ public class ReadTransformerAnnotationTests extends EclipseLinkJavaResourceModel
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkReadTransformerAnnotation readTransformer = (EclipseLinkReadTransformerAnnotation) resourceField.getAnnotation(EclipseLink.READ_TRANSFORMER);
+		ReadTransformerAnnotation readTransformer = (ReadTransformerAnnotation) resourceField.getAnnotation(EclipseLink.READ_TRANSFORMER);
 		assertEquals("transformerMethod", readTransformer.getMethod());
 		
 		readTransformer.setMethod(null);

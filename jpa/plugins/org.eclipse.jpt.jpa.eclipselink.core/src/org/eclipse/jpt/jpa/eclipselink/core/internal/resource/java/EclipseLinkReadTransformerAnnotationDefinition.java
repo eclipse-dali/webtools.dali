@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.BinaryEclipseLinkReadTransformerAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.SourceEclipseLinkReadTransformerAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkReadTransformerAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ReadTransformerAnnotation;
 
 /**
  * org.eclipse.persistence.annotations.ReadTransformer
@@ -54,6 +54,6 @@ public class EclipseLinkReadTransformerAnnotationDefinition
 	}
 
 	public String getAnnotationName() {
-		return EclipseLinkReadTransformerAnnotation.ANNOTATION_NAME;
+		return ReadTransformerAnnotation.ANNOTATION_NAME;
 	}
 }

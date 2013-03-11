@@ -14,14 +14,14 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkReadTransformerAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ReadTransformerAnnotation;
 
 /**
  * org.eclipse.persistence.annotations.ReadTransformer
  */
 public final class SourceEclipseLinkReadTransformerAnnotation
 	extends SourceEclipseLinkTransformerAnnotation
-	implements EclipseLinkReadTransformerAnnotation
+	implements ReadTransformerAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 

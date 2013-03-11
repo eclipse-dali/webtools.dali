@@ -12,14 +12,14 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkReadTransformerAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ReadTransformerAnnotation;
 
 /**
  * org.eclipse.persistence.annotations.ReadTransformer
  */
 public final class BinaryEclipseLinkReadTransformerAnnotation
 	extends BinaryEclipseLinkTransformerAnnotation
-	implements EclipseLinkReadTransformerAnnotation
+	implements ReadTransformerAnnotation
 {
 
 	public BinaryEclipseLinkReadTransformerAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
