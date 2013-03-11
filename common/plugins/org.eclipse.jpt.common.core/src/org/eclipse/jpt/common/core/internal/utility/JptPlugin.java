@@ -1763,7 +1763,7 @@ public abstract class JptPlugin
 		return DEBUG_TRACE_ENTRY_CLASS;
 	}
 	/**
-	 * Value: <code>{@value}</code>
+	 * Value: <code>JptPlugin.class</code>
 	 */
 	protected static final Class<?> DEBUG_TRACE_ENTRY_CLASS = JptPlugin.class;
 
