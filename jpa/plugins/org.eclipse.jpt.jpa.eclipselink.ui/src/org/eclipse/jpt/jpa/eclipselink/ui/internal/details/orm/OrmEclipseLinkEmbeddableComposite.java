@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEmbeddable;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmEmbeddable;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkConvertersComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkEmbeddableAdvancedComposite;
@@ -28,10 +28,10 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
 public class OrmEclipseLinkEmbeddableComposite
-	extends AbstractOrmEmbeddableComposite<OrmEclipseLinkEmbeddable>
+	extends AbstractOrmEmbeddableComposite<EclipseLinkOrmEmbeddable>
 {
 	public OrmEclipseLinkEmbeddableComposite(
-			PropertyValueModel<? extends OrmEclipseLinkEmbeddable> embeddableModel,
+			PropertyValueModel<? extends EclipseLinkOrmEmbeddable> embeddableModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
@@ -65,7 +65,7 @@ public class OrmEclipseLinkEmbeddableComposite
 	}
 
 	private PropertyValueModel<EclipseLinkOrmConverterContainer> buildConverterContainerModel() {
-		return new PropertyAspectAdapter<OrmEclipseLinkEmbeddable, EclipseLinkOrmConverterContainer>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<EclipseLinkOrmEmbeddable, EclipseLinkOrmConverterContainer>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkOrmConverterContainer buildValue_() {
 				return this.subject.getConverterContainer();

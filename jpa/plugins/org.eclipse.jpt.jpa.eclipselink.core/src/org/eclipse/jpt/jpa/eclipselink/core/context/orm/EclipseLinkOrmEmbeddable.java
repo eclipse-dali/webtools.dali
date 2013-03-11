@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEmbeddable;
  * @version 2.1
  * @since 2.1
  */
-public interface OrmEclipseLinkEmbeddable
+public interface EclipseLinkOrmEmbeddable
 	extends OrmEmbeddable, EclipseLinkEmbeddable, EclipseLinkOrmTypeMapping
 {
 	XmlEmbeddable getXmlTypeMapping();
