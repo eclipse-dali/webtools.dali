@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaBasicMappingDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkArrayAnnotation2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ArrayAnnotation2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConvertAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
@@ -49,7 +49,7 @@ public class EclipseLinkJavaArrayMappingDefinition2_3
 	}
 
 	public String getAnnotationName() {
-		return EclipseLinkArrayAnnotation2_3.ANNOTATION_NAME;
+		return ArrayAnnotation2_3.ANNOTATION_NAME;
 	}
 
 	public boolean isSpecified(JavaSpecifiedPersistentAttribute persistentAttribute) {

@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
  * @version 3.2
  * @since 3.2
  */
-public interface EclipseLinkArrayAnnotation2_3
+public interface ArrayAnnotation2_3
 	extends Annotation
 {
 	String ANNOTATION_NAME = EclipseLink.ARRAY;

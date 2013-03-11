@@ -12,14 +12,14 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkArrayAnnotation2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ArrayAnnotation2_3;
 
 /**
  * org.eclipse.persistence.annotations.Array
  */
 public final class BinaryEclipseLinkArrayAnnotation
 	extends BinaryAnnotation
-	implements EclipseLinkArrayAnnotation2_3
+	implements ArrayAnnotation2_3
 {
 	public BinaryEclipseLinkArrayAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);

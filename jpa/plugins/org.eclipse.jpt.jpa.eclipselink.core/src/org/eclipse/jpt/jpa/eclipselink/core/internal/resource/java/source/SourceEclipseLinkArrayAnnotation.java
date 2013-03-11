@@ -14,14 +14,14 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotat
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkArrayAnnotation2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ArrayAnnotation2_3;
 
 /**
  * org.eclipse.persistence.annotations.Array
  */
 public final class SourceEclipseLinkArrayAnnotation
 	extends SourceAnnotation
-	implements EclipseLinkArrayAnnotation2_3
+	implements ArrayAnnotation2_3
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 

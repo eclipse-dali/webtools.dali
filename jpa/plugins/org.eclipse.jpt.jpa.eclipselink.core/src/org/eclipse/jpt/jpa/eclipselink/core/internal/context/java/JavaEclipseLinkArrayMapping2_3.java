@@ -40,12 +40,12 @@ import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkArrayMapping2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkArrayAnnotation2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ArrayAnnotation2_3;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class JavaEclipseLinkArrayMapping2_3
-	extends AbstractJavaAttributeMapping<EclipseLinkArrayAnnotation2_3>
+	extends AbstractJavaAttributeMapping<ArrayAnnotation2_3>
 	implements 
 		EclipseLinkArrayMapping2_3,
 		EclipseLinkJavaConvertibleMapping, 
@@ -254,7 +254,7 @@ public class JavaEclipseLinkArrayMapping2_3
 
 	@Override
 	protected String getAnnotationName() {
-		return EclipseLinkArrayAnnotation2_3.ANNOTATION_NAME;
+		return ArrayAnnotation2_3.ANNOTATION_NAME;
 	}
 
 	@Override
