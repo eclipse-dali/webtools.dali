@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.OneToMany2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.OneToManyAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
 /**
@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.resource.java.JPA;
  */
 public final class BinaryOneToManyAnnotation
 	extends BinaryRelationshipMappingAnnotation
-	implements OneToMany2_0Annotation
+	implements OneToManyAnnotation2_0
 {
 	private String mappedBy;
 

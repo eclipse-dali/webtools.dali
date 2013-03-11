@@ -48,7 +48,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClassAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumnAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumeratedAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporalAnnotation2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.OneToMany2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.OneToManyAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.MapKeyAnnotation;
@@ -376,7 +376,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		OneToMany2_0Annotation oneToMany = (OneToMany2_0Annotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
+		OneToManyAnnotation2_0 oneToMany = (OneToManyAnnotation2_0) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		oneToMany.setOrphanRemoval(Boolean.FALSE);
 		getJpaProject().synchronizeContextModel();
 		
@@ -407,7 +407,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		OneToMany2_0Annotation oneToMany = (OneToMany2_0Annotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
+		OneToManyAnnotation2_0 oneToMany = (OneToManyAnnotation2_0) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		
 		assertEquals(Boolean.TRUE, oneToMany.getOrphanRemoval());
 		
@@ -428,7 +428,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		OneToMany2_0Annotation oneToMany = (OneToMany2_0Annotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
+		OneToManyAnnotation2_0 oneToMany = (OneToManyAnnotation2_0) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		
 		assertEquals(Boolean.TRUE, oneToMany.getOrphanRemoval());
 		
@@ -453,7 +453,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		OneToMany2_0Annotation oneToMany = (OneToMany2_0Annotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
+		OneToManyAnnotation2_0 oneToMany = (OneToManyAnnotation2_0) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		oneToMany.setOrphanRemoval(Boolean.FALSE);
 		getJpaProject().synchronizeContextModel();
 

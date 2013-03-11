@@ -60,7 +60,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumnAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumeratedAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumnAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporalAnnotation2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.OneToMany2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.OneToManyAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.BasicAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.EmbeddedAnnotation;
@@ -759,7 +759,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		assertNull(mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 		
 		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
-		OneToMany2_0Annotation oneToMany = (OneToMany2_0Annotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
+		OneToManyAnnotation2_0 oneToMany = (OneToManyAnnotation2_0) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		oneToMany.setOrphanRemoval(Boolean.FALSE);
 		getJpaProject().synchronizeContextModel();
 		
@@ -789,7 +789,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		mappingsOrphanRemoval.setSpecifiedOrphanRemoval(Boolean.TRUE);
 		
 		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
-		OneToMany2_0Annotation oneToMany = (OneToMany2_0Annotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
+		OneToManyAnnotation2_0 oneToMany = (OneToManyAnnotation2_0) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		
 		assertEquals(Boolean.TRUE, oneToMany.getOrphanRemoval());
 		
@@ -809,7 +809,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		mappingsOrphanRemoval.setSpecifiedOrphanRemoval(Boolean.TRUE);
 		
 		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
-		OneToMany2_0Annotation oneToMany = (OneToMany2_0Annotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
+		OneToManyAnnotation2_0 oneToMany = (OneToManyAnnotation2_0) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		
 		assertEquals(Boolean.TRUE, oneToMany.getOrphanRemoval());
 		
@@ -833,7 +833,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		assertNull(mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 
 		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
-		OneToMany2_0Annotation oneToMany = (OneToMany2_0Annotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
+		OneToManyAnnotation2_0 oneToMany = (OneToManyAnnotation2_0) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		oneToMany.setOrphanRemoval(Boolean.FALSE);
 		getJpaProject().synchronizeContextModel();
 

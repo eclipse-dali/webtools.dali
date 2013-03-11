@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.resource.java.OneToManyAnnotation;
  * @version 2.3
  * @since 2.3
  */
-public interface OneToMany2_0Annotation
+public interface OneToManyAnnotation2_0
 	extends OneToManyAnnotation, OwningRelationshipMapping2_0Annotation, RelationshipMapping2_0Annotation
 {
 	// combine various interfaces

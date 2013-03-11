@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.OneToMany2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.OneToManyAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.FetchType;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.OneToManyAnnotation;
@@ -342,7 +342,7 @@ public class OneToMany2_0AnnotationTests extends JavaResourceModel2_0TestCase {
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		OneToMany2_0Annotation oneToMany = (OneToMany2_0Annotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
+		OneToManyAnnotation2_0 oneToMany = (OneToManyAnnotation2_0) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		assertFalse(oneToMany.isCascadeDetach());
 	
 		oneToMany.setCascadeDetach(true);
