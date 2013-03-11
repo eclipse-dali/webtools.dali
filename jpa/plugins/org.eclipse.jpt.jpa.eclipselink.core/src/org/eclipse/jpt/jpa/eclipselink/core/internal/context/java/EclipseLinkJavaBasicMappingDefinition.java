@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.JavaBasicMappingDefinition
 import org.eclipse.jpt.jpa.core.resource.java.GeneratedValueAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.TableGeneratorAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConvertAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConvertAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkMutableAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
@@ -57,7 +57,7 @@ public class EclipseLinkJavaBasicMappingDefinition
 	}
 
 	private static final String[] ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES_ARRAY = new String[] {
-		EclipseLinkConvertAnnotation.ANNOTATION_NAME,
+		ConvertAnnotation.ANNOTATION_NAME,
 		EclipseLinkConverterAnnotation.ANNOTATION_NAME,
 		EclipseLinkMutableAnnotation.ANNOTATION_NAME,
 		EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME,

@@ -14,14 +14,14 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConvertAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConvertAnnotation;
 
 /**
  * <code>org.eclipse.persistence.annotations.Convert</code>
  */
 public final class SourceEclipseLinkConvertAnnotation
 	extends SourceEclipseLinkBaseConvertAnnotation
-	implements EclipseLinkConvertAnnotation
+	implements ConvertAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 

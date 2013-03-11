@@ -23,25 +23,25 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.AbstractJavaConverter
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkConvertValidator;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConvertAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConvertAnnotation;
 
 public class JavaEclipseLinkConvert
 	extends AbstractJavaConverter
 	implements EclipseLinkConvert
 {
-	private final EclipseLinkConvertAnnotation convertAnnotation;
+	private final ConvertAnnotation convertAnnotation;
 
 	private String specifiedConverterName;
 	private String defaultConverterName;
 
 
-	public JavaEclipseLinkConvert(Converter.ParentAdapter<JavaAttributeMapping> parentAdapter, EclipseLinkConvertAnnotation convertAnnotation) {
+	public JavaEclipseLinkConvert(Converter.ParentAdapter<JavaAttributeMapping> parentAdapter, ConvertAnnotation convertAnnotation) {
 		super(parentAdapter);
 		this.convertAnnotation = convertAnnotation;
 		this.specifiedConverterName = convertAnnotation.getValue();
 	}
 
-	public EclipseLinkConvertAnnotation getConverterAnnotation() {
+	public ConvertAnnotation getConverterAnnotation() {
 		return this.convertAnnotation;
 	}
 
@@ -166,11 +166,11 @@ public class JavaEclipseLinkConvert
 
 		@Override
 		protected String getAnnotationName() {
-			return EclipseLinkConvertAnnotation.ANNOTATION_NAME;
+			return ConvertAnnotation.ANNOTATION_NAME;
 		}
 
 		public JavaConverter buildConverter(Annotation converterAnnotation, JavaAttributeMapping parent, JpaFactory factory) {
-			return new JavaEclipseLinkConvert(this.buildConverterParentAdapter(parent), (EclipseLinkConvertAnnotation) converterAnnotation);
+			return new JavaEclipseLinkConvert(this.buildConverterParentAdapter(parent), (ConvertAnnotation) converterAnnotation);
 		}
 		
 		@Override

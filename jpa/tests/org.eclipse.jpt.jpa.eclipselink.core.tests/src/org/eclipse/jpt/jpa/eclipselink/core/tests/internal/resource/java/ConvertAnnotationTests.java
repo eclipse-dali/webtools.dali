@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConvertAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConvertAnnotation;
 
 @SuppressWarnings("nls")
 public class ConvertAnnotationTests extends EclipseLinkJavaResourceModelTestCase {
@@ -70,7 +70,7 @@ public class ConvertAnnotationTests extends EclipseLinkJavaResourceModelTestCase
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkConvertAnnotation convert = (EclipseLinkConvertAnnotation) resourceField.getAnnotation(EclipseLink.CONVERT);
+		ConvertAnnotation convert = (ConvertAnnotation) resourceField.getAnnotation(EclipseLink.CONVERT);
 		assertEquals("myConverter", convert.getValue());
 	}
 
@@ -79,7 +79,7 @@ public class ConvertAnnotationTests extends EclipseLinkJavaResourceModelTestCase
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkConvertAnnotation convert = (EclipseLinkConvertAnnotation) resourceField.getAnnotation(EclipseLink.CONVERT);
+		ConvertAnnotation convert = (ConvertAnnotation) resourceField.getAnnotation(EclipseLink.CONVERT);
 		assertEquals("myConverter", convert.getValue());
 		
 		convert.setValue("Bar");
@@ -93,7 +93,7 @@ public class ConvertAnnotationTests extends EclipseLinkJavaResourceModelTestCase
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkConvertAnnotation convert = (EclipseLinkConvertAnnotation) resourceField.getAnnotation(EclipseLink.CONVERT);
+		ConvertAnnotation convert = (ConvertAnnotation) resourceField.getAnnotation(EclipseLink.CONVERT);
 		assertEquals("myConverter", convert.getValue());
 		
 		convert.setValue(null);

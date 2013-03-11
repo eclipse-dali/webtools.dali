@@ -22,7 +22,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.resource.java;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkConvertAnnotation
+public interface ConvertAnnotation
 	extends BaseConvertAnnotation
 {
 	String ANNOTATION_NAME = EclipseLink.CONVERT;

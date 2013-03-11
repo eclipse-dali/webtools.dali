@@ -12,14 +12,14 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConvertAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConvertAnnotation;
 
 /**
  * <code>org.eclipse.persistence.annotations.Convert</code>
  */
 public final class BinaryEclipseLinkConvertAnnotation
 	extends BinaryEclipseLinkBaseConvertAnnotation
-	implements EclipseLinkConvertAnnotation
+	implements ConvertAnnotation
 {
 	public BinaryEclipseLinkConvertAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
