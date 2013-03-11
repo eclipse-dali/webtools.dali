@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsId2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsIdAnnotation2_0;
 
 @SuppressWarnings("nls")
 public class MapsId2_0AnnotationTests
@@ -58,7 +58,7 @@ public class MapsId2_0AnnotationTests
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		MapsId2_0Annotation annotation = (MapsId2_0Annotation) resourceField.getAnnotation(JPA2_0.MAPS_ID);
+		MapsIdAnnotation2_0 annotation = (MapsIdAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAPS_ID);
 		assertNotNull(annotation);
 	}
 	
@@ -67,7 +67,7 @@ public class MapsId2_0AnnotationTests
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		MapsId2_0Annotation annotation = (MapsId2_0Annotation) resourceField.getAnnotation(JPA2_0.MAPS_ID);
+		MapsIdAnnotation2_0 annotation = (MapsIdAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAPS_ID);
 		assertEquals("foo", annotation.getValue());
 	}
 	
@@ -76,7 +76,7 @@ public class MapsId2_0AnnotationTests
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 
-		MapsId2_0Annotation annotation = (MapsId2_0Annotation) resourceField.getAnnotation(JPA2_0.MAPS_ID);
+		MapsIdAnnotation2_0 annotation = (MapsIdAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAPS_ID);
 		annotation.setValue("foo");
 		assertSourceContains("@MapsId(\"foo\")", cu);
 		

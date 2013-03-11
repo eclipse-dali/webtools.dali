@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.MapsIdDerivedIdentityStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaDerivedIdentity2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsId2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsIdAnnotation2_0;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationArgumentMessages;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.osgi.util.NLS;
@@ -125,15 +125,15 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 	/**
 	 * Do <em>not</em> return <code>null</code>.
 	 */
-	protected MapsId2_0Annotation getAnnotation() {
-		return (MapsId2_0Annotation) this.getResourceAttribute().getNonNullAnnotation(this.getAnnotationName());
+	protected MapsIdAnnotation2_0 getAnnotation() {
+		return (MapsIdAnnotation2_0) this.getResourceAttribute().getNonNullAnnotation(this.getAnnotationName());
 	}
 
 	/**
 	 * Return <code>null</code> if the annotation is not present.
 	 */
-	protected MapsId2_0Annotation getAnnotationOrNull() {
-		return (MapsId2_0Annotation) this.getResourceAttribute().getAnnotation(this.getAnnotationName());
+	protected MapsIdAnnotation2_0 getAnnotationOrNull() {
+		return (MapsIdAnnotation2_0) this.getResourceAttribute().getAnnotation(this.getAnnotationName());
 	}
 
 	protected void addAnnotation() {
@@ -145,7 +145,7 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 	}
 
 	protected String getAnnotationName() {
-		return MapsId2_0Annotation.ANNOTATION_NAME;
+		return MapsIdAnnotation2_0.ANNOTATION_NAME;
 	}
 
 

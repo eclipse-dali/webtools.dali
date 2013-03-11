@@ -21,14 +21,14 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsId2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsIdAnnotation2_0;
 
 /**
  * <code>javax.persistence.MapsId</code>
  */
 public final class SourceMapsId2_0Annotation
 	extends SourceAnnotation
-	implements MapsId2_0Annotation
+	implements MapsIdAnnotation2_0
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 	

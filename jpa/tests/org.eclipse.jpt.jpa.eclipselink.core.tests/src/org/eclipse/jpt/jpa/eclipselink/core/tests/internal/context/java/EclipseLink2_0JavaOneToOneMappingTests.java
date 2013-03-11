@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsId2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsIdAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OneToOne2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.OneToOneAnnotation;
@@ -320,8 +320,8 @@ public class EclipseLink2_0JavaOneToOneMappingTests
 		assertNotNull(resourceField.getAnnotation(JPA2_0.MAPS_ID));
 		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
-		MapsId2_0Annotation annotation = 
-				(MapsId2_0Annotation) resourceField.getAnnotation(JPA2_0.MAPS_ID);
+		MapsIdAnnotation2_0 annotation = 
+				(MapsIdAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAPS_ID);
 		annotation.setValue("foo");
 		getJpaProject().synchronizeContextModel();
 		assertEquals("foo", annotation.getValue());
@@ -351,8 +351,8 @@ public class EclipseLink2_0JavaOneToOneMappingTests
 		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
 		contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().setSpecifiedIdAttributeName("foo");
-		MapsId2_0Annotation annotation = 
-				(MapsId2_0Annotation) resourceField.getAnnotation(JPA2_0.MAPS_ID);
+		MapsIdAnnotation2_0 annotation = 
+				(MapsIdAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAPS_ID);
 		assertNotNull(annotation);
 		assertEquals("foo", annotation.getValue());
 		assertEquals("foo", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());

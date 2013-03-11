@@ -99,7 +99,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.DerivedIdentity2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MapsIdDerivedIdentityStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.SingleRelationshipMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsId2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsIdAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.IdAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.MapKeyAnnotation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
@@ -1331,9 +1331,9 @@ public class JpaArtifactFactory {
 						String attributeName = strategy.getSpecifiedIdAttributeName();
 						if(attributeName != null && attributeName.equals(oldAt.getName())){
 							strategy.setSpecifiedIdAttributeName(newAt.getName());
-							Annotation ann = attr.getJavaPersistentAttribute().getResourceAttribute().getAnnotation(MapsId2_0Annotation.ANNOTATION_NAME);
+							Annotation ann = attr.getJavaPersistentAttribute().getResourceAttribute().getAnnotation(MapsIdAnnotation2_0.ANNOTATION_NAME);
 							if(ann != null){
-								((MapsId2_0Annotation)ann).setValue(newAt.getName());
+								((MapsIdAnnotation2_0)ann).setValue(newAt.getName());
 							}
 						}
 					}
@@ -2086,12 +2086,12 @@ public class JpaArtifactFactory {
 			addDerivedIdAnnotation(ownerJPT, inverseJPT, ownerAttr, ownerIdClassFQN,
 					inverseIdClassFQN, annotationName, isXmlDefined);
 		} else if(hasEmbeddedPk(ownerJPT)){
-			annotationName = MapsId2_0Annotation.ANNOTATION_NAME;
+			annotationName = MapsIdAnnotation2_0.ANNOTATION_NAME;
 			String ownerIdClassFQN = JPAEditorUtil.getAttributeTypeNameWithGenerics(getEmbeddedIdAttribute(ownerJPT));
 			mapsIdValue = addDerivedIdAnnotation(ownerJPT, inverseJPT, ownerAttr, ownerIdClassFQN,
 					inverseIdClassFQN, annotationName, isXmlDefined);
 		} else if(hasSimplePk(ownerJPT)){
-			annotationName = MapsId2_0Annotation.ANNOTATION_NAME;
+			annotationName = MapsIdAnnotation2_0.ANNOTATION_NAME;
 			if(!isXmlDefined) { 		
 				ownerAttr.getJavaPersistentAttribute().getResourceAttribute().addAnnotation(annotationName);
 			}
@@ -2126,8 +2126,8 @@ public class JpaArtifactFactory {
 			addFieldInCompositeKeyClass(inverseJPT, ownerAttr, ownerIdClassFQN, attributeType);
 			if(!isXmlDefined) {
 				Annotation ann = ownerAttr.getJavaPersistentAttribute().getResourceAttribute().addAnnotation(annotationName);
-				if(ann != null && ann instanceof MapsId2_0Annotation){
-					((MapsId2_0Annotation)ann).setValue(ownerAttr.getName());
+				if(ann != null && ann instanceof MapsIdAnnotation2_0){
+					((MapsIdAnnotation2_0)ann).setValue(ownerAttr.getName());
 				}
 			}
 			return ownerAttr.getName();

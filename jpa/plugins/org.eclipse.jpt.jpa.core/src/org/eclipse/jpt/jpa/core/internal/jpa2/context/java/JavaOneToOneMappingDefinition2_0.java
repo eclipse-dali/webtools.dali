@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaAttributeMappingDefinitionWrapper;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaOneToOneMappingDefinition;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.AccessAnnotation2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsId2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsIdAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.IdAnnotation;
 
 public class JavaOneToOneMappingDefinition2_0
@@ -53,7 +53,7 @@ public class JavaOneToOneMappingDefinition2_0
 	public static final String[] SUPPORTING_ANNOTATION_NAMES_ARRAY_2_0 = new String[] {
 		AccessAnnotation2_0.ANNOTATION_NAME,
 		IdAnnotation.ANNOTATION_NAME,
-		MapsId2_0Annotation.ANNOTATION_NAME
+		MapsIdAnnotation2_0.ANNOTATION_NAME
 	};
 	private static final Iterable<String> SUPPORTING_ANNOTATION_NAMES_2_0 = IterableTools.iterable(SUPPORTING_ANNOTATION_NAMES_ARRAY_2_0);
 

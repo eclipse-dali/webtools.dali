@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.binary.BinaryMapsId2_0Annotation;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source.SourceMapsId2_0Annotation;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsId2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsIdAnnotation2_0;
 
 /**
  * javax.persistence.MapsId
@@ -57,6 +57,6 @@ public class MapsId2_0AnnotationDefinition implements AnnotationDefinition
 	}
 	
 	public String getAnnotationName() {
-		return MapsId2_0Annotation.ANNOTATION_NAME;
+		return MapsIdAnnotation2_0.ANNOTATION_NAME;
 	}
 }
