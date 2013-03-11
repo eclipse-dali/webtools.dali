@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkConversionValueAnnotation
+public interface ConversionValueAnnotation
 	extends NestableAnnotation
 {
 	String ANNOTATION_NAME = EclipseLink.CONVERSION_VALUE;

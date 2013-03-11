@@ -14,14 +14,14 @@ import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotatio
 import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConversionValueAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConversionValueAnnotation;
 
 /**
  * <code>org.eclipse.persistence.annotations.ConversionValue</code>
  */
 final class BinaryEclipseLinkConversionValueAnnotation
 	extends BinaryAnnotation
-	implements EclipseLinkConversionValueAnnotation
+	implements ConversionValueAnnotation
 {
 	private String dataValue;
 	private String objectValue;

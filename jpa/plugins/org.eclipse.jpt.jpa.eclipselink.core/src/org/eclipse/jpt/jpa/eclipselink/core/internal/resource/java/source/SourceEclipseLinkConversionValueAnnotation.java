@@ -20,14 +20,14 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConversionValueAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConversionValueAnnotation;
 
 /**
  * <code>org.eclipse.persistence.annotations.ConversionValue</code>
  */
 final class SourceEclipseLinkConversionValueAnnotation
 	extends SourceAnnotation
-	implements EclipseLinkConversionValueAnnotation
+	implements ConversionValueAnnotation
 {
 	private DeclarationAnnotationElementAdapter<String> dataValueDeclarationAdapter;
 	private AnnotationElementAdapter<String> dataValueAdapter;

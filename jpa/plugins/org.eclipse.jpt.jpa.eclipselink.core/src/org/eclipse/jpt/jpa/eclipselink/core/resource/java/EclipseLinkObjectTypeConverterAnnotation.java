@@ -34,7 +34,7 @@ public interface EclipseLinkObjectTypeConverterAnnotation
 	 * Corresponds to the 'conversionValues' element of the ObjectTypeConverter annotation.
 	 * Return an empty iterator if the element does not exist in Java.
 	 */
-	ListIterable<EclipseLinkConversionValueAnnotation> getConversionValues();
+	ListIterable<ConversionValueAnnotation> getConversionValues();
 		String CONVERSION_VALUES_LIST = "conversionValues"; //$NON-NLS-1$
 	
 	/**
@@ -45,12 +45,12 @@ public interface EclipseLinkObjectTypeConverterAnnotation
 	/**
 	 * Corresponds to the 'conversionValues' element of the ObjectTypeConverter annotation.
 	 */
-	EclipseLinkConversionValueAnnotation conversionValueAt(int index);
+	ConversionValueAnnotation conversionValueAt(int index);
 	
 	/**
 	 * Corresponds to the 'conversionValues' element of the ObjectTypeConverter annotation.
 	 */
-	EclipseLinkConversionValueAnnotation addConversionValue(int index);
+	ConversionValueAnnotation addConversionValue(int index);
 	
 	/**
 	 * Corresponds to the 'conversionValues' element of the ObjectTypeConverter annotation.

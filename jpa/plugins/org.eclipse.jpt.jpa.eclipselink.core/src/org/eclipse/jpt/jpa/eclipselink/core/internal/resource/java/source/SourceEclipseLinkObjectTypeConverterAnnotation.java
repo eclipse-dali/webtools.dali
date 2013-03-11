@@ -27,7 +27,7 @@ import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConversionValueAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConversionValueAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
 
 /**
@@ -155,7 +155,7 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 
 	// ***** conversion values
 
-	public ListIterable<EclipseLinkConversionValueAnnotation> getConversionValues() {
+	public ListIterable<ConversionValueAnnotation> getConversionValues() {
 		return this.conversionValuesContainer.getNestedAnnotations();
 	}
 
@@ -163,11 +163,11 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 		return this.conversionValuesContainer.getNestedAnnotationsSize();
 	}
 
-	public EclipseLinkConversionValueAnnotation conversionValueAt(int index) {
+	public ConversionValueAnnotation conversionValueAt(int index) {
 		return this.conversionValuesContainer.getNestedAnnotation(index);
 	}
 
-	public EclipseLinkConversionValueAnnotation addConversionValue(int index) {
+	public ConversionValueAnnotation addConversionValue(int index) {
 		return this.conversionValuesContainer.addNestedAnnotation(index);
 	}
 
@@ -179,7 +179,7 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 		this.conversionValuesContainer.removeNestedAnnotation(index);
 	}
 
-	protected EclipseLinkConversionValueAnnotation buildConversionValue(int index) {
+	protected ConversionValueAnnotation buildConversionValue(int index) {
 		return SourceEclipseLinkConversionValueAnnotation.buildNestedSourceConversionValueAnnotation(
 			this, this.annotatedElement, this.buildConversionValueIndexedDeclarationAnnotationAdapter(index));
 	}
@@ -212,7 +212,7 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 	 * adapt the AnnotationContainer interface to the xml schema's xmlns
 	 */
 	class ConversionValuesAnnotationContainer 
-		extends AnnotationContainer<EclipseLinkConversionValueAnnotation>
+		extends AnnotationContainer<ConversionValueAnnotation>
 	{
 		@Override
 		protected String getNestedAnnotationsListName() {
@@ -224,10 +224,10 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 		}
 		@Override
 		protected String getNestedAnnotationName() {
-			return EclipseLinkConversionValueAnnotation.ANNOTATION_NAME;
+			return ConversionValueAnnotation.ANNOTATION_NAME;
 		}
 		@Override
-		protected EclipseLinkConversionValueAnnotation buildNestedAnnotation(int index) {
+		protected ConversionValueAnnotation buildNestedAnnotation(int index) {
 			return SourceEclipseLinkObjectTypeConverterAnnotation.this.buildConversionValue(index);
 		}
 	}

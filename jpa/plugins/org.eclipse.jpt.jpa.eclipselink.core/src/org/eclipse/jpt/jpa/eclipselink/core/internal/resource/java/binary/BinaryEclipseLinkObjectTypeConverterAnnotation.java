@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConversionValueAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConversionValueAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
 
 /**
@@ -27,7 +27,7 @@ public final class BinaryEclipseLinkObjectTypeConverterAnnotation
 	implements EclipseLinkObjectTypeConverterAnnotation
 {
 	private String defaultObjectValue;
-	private final Vector<EclipseLinkConversionValueAnnotation> conversionValues;
+	private final Vector<ConversionValueAnnotation> conversionValues;
 
 
 	public BinaryEclipseLinkObjectTypeConverterAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
@@ -93,7 +93,7 @@ public final class BinaryEclipseLinkObjectTypeConverterAnnotation
 	}
 
 	// ***** conversion values
-	public ListIterable<EclipseLinkConversionValueAnnotation> getConversionValues() {
+	public ListIterable<ConversionValueAnnotation> getConversionValues() {
 		return IterableTools.cloneLive(this.conversionValues);
 	}
 
@@ -101,11 +101,11 @@ public final class BinaryEclipseLinkObjectTypeConverterAnnotation
 		return this.conversionValues.size();
 	}
 
-	public EclipseLinkConversionValueAnnotation conversionValueAt(int index) {
+	public ConversionValueAnnotation conversionValueAt(int index) {
 		return this.conversionValues.get(index);
 	}
 
-	public EclipseLinkConversionValueAnnotation addConversionValue(int index) {
+	public ConversionValueAnnotation addConversionValue(int index) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -117,9 +117,9 @@ public final class BinaryEclipseLinkObjectTypeConverterAnnotation
 		throw new UnsupportedOperationException();
 	}
 
-	private Vector<EclipseLinkConversionValueAnnotation> buildConversionValues() {
+	private Vector<ConversionValueAnnotation> buildConversionValues() {
 		Object[] jdtConversionValues = this.getJdtMemberValues(EclipseLink.OBJECT_TYPE_CONVERTER__CONVERSION_VALUES);
-		Vector<EclipseLinkConversionValueAnnotation> result = new Vector<EclipseLinkConversionValueAnnotation>(jdtConversionValues.length);
+		Vector<ConversionValueAnnotation> result = new Vector<ConversionValueAnnotation>(jdtConversionValues.length);
 		for (Object jdtConversionValue : jdtConversionValues) {
 			result.add(new BinaryEclipseLinkConversionValueAnnotation(this, (IAnnotation) jdtConversionValue));
 		}

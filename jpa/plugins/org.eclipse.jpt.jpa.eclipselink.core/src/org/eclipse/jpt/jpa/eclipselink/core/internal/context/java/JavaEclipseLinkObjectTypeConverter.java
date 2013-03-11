@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConversionValueAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConversionValueAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -40,7 +40,7 @@ public class JavaEclipseLinkObjectTypeConverter
 	private String objectType;
 	private String fullyQualifiedObjectType;
 
-	protected final ContextListContainer<JavaEclipseLinkConversionValue, EclipseLinkConversionValueAnnotation> conversionValueContainer;
+	protected final ContextListContainer<JavaEclipseLinkConversionValue, ConversionValueAnnotation> conversionValueContainer;
 
 	private String defaultObjectValue;
 
@@ -155,7 +155,7 @@ public class JavaEclipseLinkObjectTypeConverter
 	}
 
 	public JavaEclipseLinkConversionValue addConversionValue(int index) {
-		EclipseLinkConversionValueAnnotation annotation = this.converterAnnotation.addConversionValue(index);
+		ConversionValueAnnotation annotation = this.converterAnnotation.addConversionValue(index);
 		return this.conversionValueContainer.addContextElement(index, annotation);
 	}
   
@@ -173,7 +173,7 @@ public class JavaEclipseLinkObjectTypeConverter
 		this.conversionValueContainer.moveContextElement(targetIndex, sourceIndex);
 	}
 
-	protected JavaEclipseLinkConversionValue buildConversionValue(EclipseLinkConversionValueAnnotation conversionValueAnnotation) {
+	protected JavaEclipseLinkConversionValue buildConversionValue(ConversionValueAnnotation conversionValueAnnotation) {
 		return new JavaEclipseLinkConversionValue(this, conversionValueAnnotation);
 	}
 	
@@ -181,11 +181,11 @@ public class JavaEclipseLinkObjectTypeConverter
 		this.conversionValueContainer.synchronizeWithResourceModel();
 	}
 
-	protected ListIterable<EclipseLinkConversionValueAnnotation> getConversionValueAnnotations() {
+	protected ListIterable<ConversionValueAnnotation> getConversionValueAnnotations() {
 		return this.converterAnnotation.getConversionValues();
 	}
 
-	protected ContextListContainer<JavaEclipseLinkConversionValue, EclipseLinkConversionValueAnnotation> buildConversionValueContainer() {
+	protected ContextListContainer<JavaEclipseLinkConversionValue, ConversionValueAnnotation> buildConversionValueContainer() {
 		ConversionValueContainer container = new ConversionValueContainer();
 		container.initialize();
 		return container;
@@ -195,7 +195,7 @@ public class JavaEclipseLinkObjectTypeConverter
 	 * conversion value container
 	 */
 	protected class ConversionValueContainer
-			extends ContextListContainer<JavaEclipseLinkConversionValue, EclipseLinkConversionValueAnnotation> {
+			extends ContextListContainer<JavaEclipseLinkConversionValue, ConversionValueAnnotation> {
 		
 		@Override
 		protected String getContextElementsPropertyName() {
@@ -203,17 +203,17 @@ public class JavaEclipseLinkObjectTypeConverter
 		}
 		
 		@Override
-		protected JavaEclipseLinkConversionValue buildContextElement(EclipseLinkConversionValueAnnotation resourceElement) {
+		protected JavaEclipseLinkConversionValue buildContextElement(ConversionValueAnnotation resourceElement) {
 			return JavaEclipseLinkObjectTypeConverter.this.buildConversionValue(resourceElement);
 		}
 		
 		@Override
-		protected ListIterable<EclipseLinkConversionValueAnnotation> getResourceElements() {
+		protected ListIterable<ConversionValueAnnotation> getResourceElements() {
 			return JavaEclipseLinkObjectTypeConverter.this.getConversionValueAnnotations();
 		}
 		
 		@Override
-		protected EclipseLinkConversionValueAnnotation getResourceElement(JavaEclipseLinkConversionValue contextElement) {
+		protected ConversionValueAnnotation getResourceElement(JavaEclipseLinkConversionValue contextElement) {
 			return contextElement.getConversionValueAnnotation();
 		}
 	}

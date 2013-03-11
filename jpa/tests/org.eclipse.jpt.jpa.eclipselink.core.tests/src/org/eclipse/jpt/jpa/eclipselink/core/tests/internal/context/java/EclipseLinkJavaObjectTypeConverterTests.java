@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkBasicMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConversionValueAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConversionValueAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 
@@ -345,8 +345,8 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		conversionValue.setDataValue("F");
 		conversionValue.setObjectValue("female");
 		
-		ListIterator<EclipseLinkConversionValueAnnotation> resourceConversionValues = converterAnnotation.getConversionValues().iterator();
-		EclipseLinkConversionValueAnnotation resourceConversionValue = resourceConversionValues.next();
+		ListIterator<ConversionValueAnnotation> resourceConversionValues = converterAnnotation.getConversionValues().iterator();
+		ConversionValueAnnotation resourceConversionValue = resourceConversionValues.next();
 		assertEquals("F", resourceConversionValue.getDataValue());
 		assertEquals("female", resourceConversionValue.getObjectValue());
 		
@@ -404,7 +404,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		converter.addConversionValue(1).setDataValue("M");
 		converter.addConversionValue(2).setDataValue("O");
 		
-		ListIterator<EclipseLinkConversionValueAnnotation> resourceConversionValues = converterAnnotation.getConversionValues().iterator();
+		ListIterator<ConversionValueAnnotation> resourceConversionValues = converterAnnotation.getConversionValues().iterator();
 		assertEquals(3, IteratorTools.size(resourceConversionValues));
 		
 		converter.removeConversionValue(0);
@@ -441,7 +441,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		converter.addConversionValue(1).setDataValue("M");
 		converter.addConversionValue(2).setDataValue("O");
 		
-		ListIterator<EclipseLinkConversionValueAnnotation> resourceConversionValues = converterAnnotation.getConversionValues().iterator();
+		ListIterator<ConversionValueAnnotation> resourceConversionValues = converterAnnotation.getConversionValues().iterator();
 		assertEquals(3, IteratorTools.size(resourceConversionValues));
 		
 		converter.moveConversionValue(2,0);

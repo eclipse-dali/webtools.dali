@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConversionValueAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConversionValueAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
 
 @SuppressWarnings("nls")
@@ -303,7 +303,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 		converter.addConversionValue(1);
 				
 		assertEquals(2, converter.getConversionValuesSize());
-		ListIterator<EclipseLinkConversionValueAnnotation> conversionValues = converter.getConversionValues().iterator();
+		ListIterator<ConversionValueAnnotation> conversionValues = converter.getConversionValues().iterator();
 		assertTrue(conversionValues.hasNext());
 		assertNotNull(conversionValues.next());
 		assertNotNull(conversionValues.next());
@@ -318,8 +318,8 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER);
 				
 		assertEquals(2, converter.getConversionValuesSize());
-		ListIterator<EclipseLinkConversionValueAnnotation> conversionValues = converter.getConversionValues().iterator();
-		EclipseLinkConversionValueAnnotation conversionValue = conversionValues.next();
+		ListIterator<ConversionValueAnnotation> conversionValues = converter.getConversionValues().iterator();
+		ConversionValueAnnotation conversionValue = conversionValues.next();
 		assertEquals("F", conversionValue.getDataValue());
 		assertEquals("Female", conversionValue.getObjectValue());
 		conversionValue = conversionValues.next();
@@ -357,7 +357,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER);
 		converter.addConversionValue(0).setObjectValue("FOO");
 		
-		Iterator<EclipseLinkConversionValueAnnotation> conversionValues = converter.getConversionValues().iterator();
+		Iterator<ConversionValueAnnotation> conversionValues = converter.getConversionValues().iterator();
 		assertEquals("FOO", conversionValues.next().getObjectValue());
 		assertEquals("Female", conversionValues.next().getObjectValue());
 		assertEquals("Male", conversionValues.next().getObjectValue());
