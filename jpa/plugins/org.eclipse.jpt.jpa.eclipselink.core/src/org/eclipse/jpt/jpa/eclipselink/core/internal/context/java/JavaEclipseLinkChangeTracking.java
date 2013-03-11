@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkChangeTrackingType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ChangeTrackingType;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkChangeTrackingAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ChangeTrackingAnnotation;
 
 public class JavaEclipseLinkChangeTracking
 	extends AbstractJavaContextModel<JavaTypeMapping>
@@ -53,7 +53,7 @@ public class JavaEclipseLinkChangeTracking
 
 	public void setSpecifiedType(EclipseLinkChangeTrackingType type) {
 		if (this.valuesAreDifferent(type, this.specifiedType)) {
-			EclipseLinkChangeTrackingAnnotation annotation = this.getChangeTrackingAnnotation();
+			ChangeTrackingAnnotation annotation = this.getChangeTrackingAnnotation();
 			if (type == null) {
 				if (annotation != null) {
 					this.removeChangeTrackingAnnotation();
@@ -75,7 +75,7 @@ public class JavaEclipseLinkChangeTracking
 	}
 
 	protected EclipseLinkChangeTrackingType buildSpecifiedType() {
-		EclipseLinkChangeTrackingAnnotation annotation = this.getChangeTrackingAnnotation();
+		ChangeTrackingAnnotation annotation = this.getChangeTrackingAnnotation();
 		if (annotation == null) {
 			return null;
 		}
@@ -90,12 +90,12 @@ public class JavaEclipseLinkChangeTracking
 
 	// ********** change tracking annotation **********  
 
-	protected EclipseLinkChangeTrackingAnnotation getChangeTrackingAnnotation() {
-		return (EclipseLinkChangeTrackingAnnotation) this.getJavaResourceType().getAnnotation(this.getChangeTrackingAnnotationName());
+	protected ChangeTrackingAnnotation getChangeTrackingAnnotation() {
+		return (ChangeTrackingAnnotation) this.getJavaResourceType().getAnnotation(this.getChangeTrackingAnnotationName());
 	}
 
-	protected EclipseLinkChangeTrackingAnnotation addChangeTrackingAnnotation() {
-		return (EclipseLinkChangeTrackingAnnotation) this.getJavaResourceType().addAnnotation(this.getChangeTrackingAnnotationName());
+	protected ChangeTrackingAnnotation addChangeTrackingAnnotation() {
+		return (ChangeTrackingAnnotation) this.getJavaResourceType().addAnnotation(this.getChangeTrackingAnnotationName());
 	}
 
 	protected void removeChangeTrackingAnnotation() {
@@ -103,7 +103,7 @@ public class JavaEclipseLinkChangeTracking
 	}
 
 	protected String getChangeTrackingAnnotationName() {
-		return EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME;
+		return ChangeTrackingAnnotation.ANNOTATION_NAME;
 	}
 
 
@@ -130,7 +130,7 @@ public class JavaEclipseLinkChangeTracking
 	}
 
 	protected TextRange getAnnotationTextRange() {
-		EclipseLinkChangeTrackingAnnotation annotation = this.getChangeTrackingAnnotation();
+		ChangeTrackingAnnotation annotation = this.getChangeTrackingAnnotation();
 		return (annotation == null) ? null : annotation.getTextRange();
 	}
 }

@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkReadOnly;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkChangeTrackingAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ChangeTrackingAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkCustomizerAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkReadOnlyAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
@@ -184,7 +184,7 @@ public class EclipseLinkJavaEntityTests extends EclipseLinkContextModelTestCase
 		EclipseLinkEntity entity = (EclipseLinkEntity) getJavaPersistentType().getMapping();
 		EclipseLinkChangeTracking contextChangeTracking = entity.getChangeTracking();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		EclipseLinkChangeTrackingAnnotation resourceChangeTracking = (EclipseLinkChangeTrackingAnnotation) resourceType.getAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME);
+		ChangeTrackingAnnotation resourceChangeTracking = (ChangeTrackingAnnotation) resourceType.getAnnotation(ChangeTrackingAnnotation.ANNOTATION_NAME);
 		
 		// base annotated, test context value
 		
@@ -245,7 +245,7 @@ public class EclipseLinkJavaEntityTests extends EclipseLinkContextModelTestCase
 		
 		// remove annotation, text context
 		
-		resourceType.removeAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME);
+		resourceType.removeAnnotation(ChangeTrackingAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		
 		assertNull(resourceChangeTracking.getValue());
@@ -261,7 +261,7 @@ public class EclipseLinkJavaEntityTests extends EclipseLinkContextModelTestCase
 		EclipseLinkEntity entity = (EclipseLinkEntity) getJavaPersistentType().getMapping();
 		EclipseLinkChangeTracking contextChangeTracking = entity.getChangeTracking();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		EclipseLinkChangeTrackingAnnotation resourceChangeTracking = (EclipseLinkChangeTrackingAnnotation) resourceType.getAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME);
+		ChangeTrackingAnnotation resourceChangeTracking = (ChangeTrackingAnnotation) resourceType.getAnnotation(ChangeTrackingAnnotation.ANNOTATION_NAME);
 		
 		// base annotated, test resource value
 		
@@ -300,13 +300,13 @@ public class EclipseLinkJavaEntityTests extends EclipseLinkContextModelTestCase
 		
 		contextChangeTracking.setSpecifiedType(null);
 		
-		assertNull(resourceType.getAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME));
+		assertNull(resourceType.getAnnotation(ChangeTrackingAnnotation.ANNOTATION_NAME));
 		assertNull(contextChangeTracking.getSpecifiedType());
 		
 		// change context to AUTO specifically (this time from no annotation), test resource
 		
 		contextChangeTracking.setSpecifiedType(EclipseLinkChangeTrackingType.AUTO);
-		resourceChangeTracking = (EclipseLinkChangeTrackingAnnotation) resourceType.getAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME);
+		resourceChangeTracking = (ChangeTrackingAnnotation) resourceType.getAnnotation(ChangeTrackingAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(org.eclipse.jpt.jpa.eclipselink.core.resource.java.ChangeTrackingType.AUTO, resourceChangeTracking.getValue());
 		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getSpecifiedType());

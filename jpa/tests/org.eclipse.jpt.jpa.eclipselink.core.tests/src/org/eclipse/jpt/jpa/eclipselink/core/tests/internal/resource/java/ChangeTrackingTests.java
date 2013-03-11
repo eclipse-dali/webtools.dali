@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ChangeTrackingType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkChangeTrackingAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ChangeTrackingAnnotation;
 
 @SuppressWarnings("nls")
 public class ChangeTrackingTests extends EclipseLinkJavaResourceModelTestCase {
@@ -54,7 +54,7 @@ public class ChangeTrackingTests extends EclipseLinkJavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestChangeTracking();
 		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		EclipseLinkChangeTrackingAnnotation existenceChecking = (EclipseLinkChangeTrackingAnnotation) resourceType.getAnnotation(EclipseLink.CHANGE_TRACKING);
+		ChangeTrackingAnnotation existenceChecking = (ChangeTrackingAnnotation) resourceType.getAnnotation(EclipseLink.CHANGE_TRACKING);
 		assertNotNull(existenceChecking);
 	}
 
@@ -62,7 +62,7 @@ public class ChangeTrackingTests extends EclipseLinkJavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestChangeTrackingWithValue();
 		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		EclipseLinkChangeTrackingAnnotation existenceChecking = (EclipseLinkChangeTrackingAnnotation) resourceType.getAnnotation(EclipseLink.CHANGE_TRACKING);
+		ChangeTrackingAnnotation existenceChecking = (ChangeTrackingAnnotation) resourceType.getAnnotation(EclipseLink.CHANGE_TRACKING);
 		assertEquals(ChangeTrackingType.DEFERRED, existenceChecking.getValue());
 	}
 
@@ -70,7 +70,7 @@ public class ChangeTrackingTests extends EclipseLinkJavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestChangeTrackingWithValue();
 		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		EclipseLinkChangeTrackingAnnotation existenceChecking = (EclipseLinkChangeTrackingAnnotation) resourceType.getAnnotation(EclipseLink.CHANGE_TRACKING);
+		ChangeTrackingAnnotation existenceChecking = (ChangeTrackingAnnotation) resourceType.getAnnotation(EclipseLink.CHANGE_TRACKING);
 		assertEquals(ChangeTrackingType.DEFERRED, existenceChecking.getValue());
 		
 		existenceChecking.setValue(ChangeTrackingType.ATTRIBUTE);

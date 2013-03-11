@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkChangeTrackingAnnotation
+public interface ChangeTrackingAnnotation
 	extends Annotation
 {
 	String ANNOTATION_NAME = EclipseLink.CHANGE_TRACKING;

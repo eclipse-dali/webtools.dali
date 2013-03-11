@@ -15,14 +15,14 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ChangeTrackingType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkChangeTrackingAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ChangeTrackingAnnotation;
 
 /**
  * <code>org.eclipse.persistence.annotations.ChangeTracking</code>
  */
 public final class BinaryEclipseLinkChangeTrackingAnnotation
 	extends BinaryAnnotation
-	implements EclipseLinkChangeTrackingAnnotation
+	implements ChangeTrackingAnnotation
 {
 	private ChangeTrackingType value;
 

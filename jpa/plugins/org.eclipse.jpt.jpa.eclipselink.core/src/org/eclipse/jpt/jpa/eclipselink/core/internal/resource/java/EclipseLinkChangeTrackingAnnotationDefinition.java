@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.BinaryEclipseLinkChangeTrackingAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.SourceEclipseLinkChangeTrackingAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkChangeTrackingAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ChangeTrackingAnnotation;
 
 /**
  * org.eclipse.persistence.annotations.ChangeTracking
@@ -54,6 +54,6 @@ public class EclipseLinkChangeTrackingAnnotationDefinition
 	}
 
 	public String getAnnotationName() {
-		return EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME;
+		return ChangeTrackingAnnotation.ANNOTATION_NAME;
 	}
 }
