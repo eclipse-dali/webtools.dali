@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkUuidGenerat
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaUuidGenerator
+public interface EclipseLinkJavaUuidGenerator
 	extends EclipseLinkUuidGenerator, JavaGenerator
 {
 	EclipseLinkUuidGeneratorAnnotation2_4 getGeneratorAnnotation();

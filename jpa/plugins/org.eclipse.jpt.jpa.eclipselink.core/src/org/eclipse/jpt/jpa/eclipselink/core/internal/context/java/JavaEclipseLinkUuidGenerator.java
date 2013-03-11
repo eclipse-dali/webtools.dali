@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaGenerator;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkUuidGenerator;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaUuidGenerator;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaUuidGenerator;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkUuidGeneratorAnnotation2_4;
 
@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkUuidGenerat
  */
 public class JavaEclipseLinkUuidGenerator
 	extends AbstractJavaGenerator<EclipseLinkJavaGeneratorContainer, EclipseLinkUuidGeneratorAnnotation2_4>
-	implements JavaUuidGenerator
+	implements EclipseLinkJavaUuidGenerator
 {
 	public JavaEclipseLinkUuidGenerator(EclipseLinkJavaGeneratorContainer parent, EclipseLinkUuidGeneratorAnnotation2_4 generatorAnnotation) {
 		super(parent, generatorAnnotation);

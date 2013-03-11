@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkUuidGenerator;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaUuidGenerator;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaUuidGenerator;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlUuidGenerator_2_4;
 
 /**
@@ -33,5 +33,5 @@ public interface OrmUuidGenerator
 	/**
 	 * Build up a mapping file generator from the given Java generator.
 	 */
-	void convertFrom(JavaUuidGenerator javaGenerator);
+	void convertFrom(EclipseLinkJavaUuidGenerator javaGenerator);
 }
