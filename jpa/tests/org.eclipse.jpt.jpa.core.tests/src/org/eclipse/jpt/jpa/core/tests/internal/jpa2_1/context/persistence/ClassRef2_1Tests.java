@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.java.JavaConverterType2_1;
-import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.Converter2_1Annotation;
+import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.ConverterAnnotation2_1;
 import org.eclipse.jpt.jpa.core.resource.java.EntityAnnotation;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
@@ -117,7 +117,7 @@ public class ClassRef2_1Tests extends Generic2_1ContextModelTestCase
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, classRef.getJavaManagedType().getName());
 		assertEquals(JavaPersistentType.class, classRef.getJavaManagedType().getType());
 
-		classRef.getJavaResourceType().addAnnotation(Converter2_1Annotation.ANNOTATION_NAME);
+		classRef.getJavaResourceType().addAnnotation(ConverterAnnotation2_1.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, classRef.getJavaManagedType().getName());
 		assertEquals(JavaConverterType2_1.class, classRef.getJavaManagedType().getType());

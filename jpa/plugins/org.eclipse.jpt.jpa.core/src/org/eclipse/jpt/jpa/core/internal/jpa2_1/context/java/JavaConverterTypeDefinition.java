@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition;
 import org.eclipse.jpt.jpa.core.jpa2_1.JpaFactory2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.java.JavaConverterType2_1;
-import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.Converter2_1Annotation;
+import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.ConverterAnnotation2_1;
 
 public class JavaConverterTypeDefinition implements JavaManagedTypeDefinition
 {	
@@ -43,7 +43,7 @@ public class JavaConverterTypeDefinition implements JavaManagedTypeDefinition
 	}
 
 	public Iterable<String> getAnnotationNames(JpaProject jpaProject) {
-		return IterableTools.singletonIterable(Converter2_1Annotation.ANNOTATION_NAME);
+		return IterableTools.singletonIterable(ConverterAnnotation2_1.ANNOTATION_NAME);
 	}
 
 	public JavaConverterType2_1 buildContextManagedType(JpaContextModel parent, JavaResourceType jrt, JpaFactory factory) {

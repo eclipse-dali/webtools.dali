@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.Converter2_1Annotation;
+import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.ConverterAnnotation2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.JPA2_1;
 
 /**
@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.JPA2_1;
  */
 public final class SourceConverter2_1Annotation
 	extends SourceAnnotation
-	implements Converter2_1Annotation
+	implements ConverterAnnotation2_1
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 

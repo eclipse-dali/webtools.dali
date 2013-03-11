@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * @version 3.3
  * @since 3.3
  */
-public interface Converter2_1Annotation
+public interface ConverterAnnotation2_1
 	extends Annotation
 {
 	String ANNOTATION_NAME = JPA2_1.CONVERTER;

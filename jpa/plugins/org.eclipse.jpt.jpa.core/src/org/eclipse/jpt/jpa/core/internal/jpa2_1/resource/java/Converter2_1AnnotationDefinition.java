@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.resource.java.binary.BinaryConverter2_1Annotation;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.resource.java.source.SourceConverter2_1Annotation;
-import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.Converter2_1Annotation;
+import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.ConverterAnnotation2_1;
 
 /**
  * javax.persistence.Converter
@@ -54,6 +54,6 @@ public final class Converter2_1AnnotationDefinition
 	}
 
 	public String getAnnotationName() {
-		return Converter2_1Annotation.ANNOTATION_NAME;
+		return ConverterAnnotation2_1.ANNOTATION_NAME;
 	}
 }

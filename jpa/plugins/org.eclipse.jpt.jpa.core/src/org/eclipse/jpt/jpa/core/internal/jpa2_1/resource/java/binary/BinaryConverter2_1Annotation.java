@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.Converter2_1Annotation;
+import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.ConverterAnnotation2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.JPA2_1;
 
 /**
@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.JPA2_1;
  */
 public final class BinaryConverter2_1Annotation
 	extends BinaryAnnotation
-	implements Converter2_1Annotation
+	implements ConverterAnnotation2_1
 {
 	private Boolean autoApply;
 	

@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaManagedType;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.java.JavaConverterType2_1;
-import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.Converter2_1Annotation;
+import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.ConverterAnnotation2_1;
 
 public class GenericJavaConverterType
 	extends AbstractJavaManagedType<JpaContextModel>
@@ -79,15 +79,15 @@ public class GenericJavaConverterType
 	}
 
 	protected Boolean buildSpecifiedAutoApply() {
-		Converter2_1Annotation converterAnnotation = this.getConverterAnnotation();
+		ConverterAnnotation2_1 converterAnnotation = this.getConverterAnnotation();
 		return converterAnnotation != null ? converterAnnotation.getAutoApply() : null;
 	}
 
 
 	// ********** converter annotation **********
 
-	protected Converter2_1Annotation getConverterAnnotation() {
-		return (Converter2_1Annotation) this.resourceType.getAnnotation(Converter2_1Annotation.ANNOTATION_NAME);
+	protected ConverterAnnotation2_1 getConverterAnnotation() {
+		return (ConverterAnnotation2_1) this.resourceType.getAnnotation(ConverterAnnotation2_1.ANNOTATION_NAME);
 	}
 
 
