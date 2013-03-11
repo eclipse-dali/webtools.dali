@@ -14,18 +14,18 @@ import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModel;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkReadOnly;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaNonEmbeddableTypeMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkNonEmbeddableTypeMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmNonEmbeddableTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlReadOnly;
 
 public class OrmEclipseLinkReadOnly
-	extends AbstractOrmXmlContextModel<OrmEclipseLinkNonEmbeddableTypeMapping>
+	extends AbstractOrmXmlContextModel<EclipseLinkOrmNonEmbeddableTypeMapping>
 	implements EclipseLinkReadOnly
 {
 	protected Boolean specifiedReadOnly;
 	protected boolean defaultReadOnly;
 
 
-	public OrmEclipseLinkReadOnly(OrmEclipseLinkNonEmbeddableTypeMapping parent) {
+	public OrmEclipseLinkReadOnly(EclipseLinkOrmNonEmbeddableTypeMapping parent) {
 		super(parent);
 		this.specifiedReadOnly = this.buildSpecifiedReadOnly();
 	}
@@ -89,7 +89,7 @@ public class OrmEclipseLinkReadOnly
 
 	// ********** misc **********
 
-	protected OrmEclipseLinkNonEmbeddableTypeMapping getTypeMapping() {
+	protected EclipseLinkOrmNonEmbeddableTypeMapping getTypeMapping() {
 		return this.parent;
 	}
 

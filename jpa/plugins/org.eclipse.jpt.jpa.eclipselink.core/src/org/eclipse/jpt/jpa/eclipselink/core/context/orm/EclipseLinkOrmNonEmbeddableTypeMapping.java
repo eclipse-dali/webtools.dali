@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaNonEmbed
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmEclipseLinkNonEmbeddableTypeMapping
+public interface EclipseLinkOrmNonEmbeddableTypeMapping
 	extends EclipseLinkNonEmbeddableTypeMapping, EclipseLinkOrmTypeMapping
 {
 

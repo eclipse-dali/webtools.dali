@@ -38,7 +38,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaNonEmbed
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmMultitenancy2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkNonEmbeddableTypeMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmNonEmbeddableTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.TargetDatabase;
@@ -55,7 +55,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class OrmEclipseLinkMultitenancyImpl2_3
-	extends AbstractOrmXmlContextModel<OrmEclipseLinkNonEmbeddableTypeMapping>
+	extends AbstractOrmXmlContextModel<EclipseLinkOrmNonEmbeddableTypeMapping>
 	implements EclipseLinkOrmMultitenancy2_3
 {
 	protected boolean specifiedMultitenant;
@@ -76,7 +76,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 
 	protected boolean specifiedTenantDiscriminatorColumnsAllowed;
 
-	public OrmEclipseLinkMultitenancyImpl2_3(OrmEclipseLinkNonEmbeddableTypeMapping parent) {
+	public OrmEclipseLinkMultitenancyImpl2_3(EclipseLinkOrmNonEmbeddableTypeMapping parent) {
 		super(parent);
 
 		this.specifiedMultitenant = isMultitenantElementSpecified();
@@ -605,7 +605,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 
 	// ********** misc **********
 
-	protected OrmEclipseLinkNonEmbeddableTypeMapping getTypeMapping() {
+	protected EclipseLinkOrmNonEmbeddableTypeMapping getTypeMapping() {
 		return this.parent;
 	}
 
