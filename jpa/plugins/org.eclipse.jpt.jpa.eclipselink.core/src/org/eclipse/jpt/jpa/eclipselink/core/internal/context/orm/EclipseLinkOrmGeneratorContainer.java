@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmGeneratorContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkGeneratorContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmUuidGenerator;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmUuidGenerator;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlUuidGenerator;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlGeneratorContainer2_4;
@@ -24,7 +24,7 @@ public class EclipseLinkOrmGeneratorContainer
 	extends GenericOrmGeneratorContainer
 	implements EclipseLinkGeneratorContainer
 {
-	protected OrmUuidGenerator uuidGenerator;
+	protected EclipseLinkOrmUuidGenerator uuidGenerator;
 
 
 	public EclipseLinkOrmGeneratorContainer(JpaContextModel parent, XmlGeneratorContainer2_4 xmlGeneratorContainer) {
@@ -56,16 +56,16 @@ public class EclipseLinkOrmGeneratorContainer
 
 	// ********** uuid generator **********
 
-	public OrmUuidGenerator getUuidGenerator() {
+	public EclipseLinkOrmUuidGenerator getUuidGenerator() {
 		return this.uuidGenerator;
 	}
 
-	public OrmUuidGenerator addUuidGenerator() {
+	public EclipseLinkOrmUuidGenerator addUuidGenerator() {
 		if (this.uuidGenerator != null) {
 			throw new IllegalStateException("uuid generator already exists: " + this.uuidGenerator); //$NON-NLS-1$
 		}
 		XmlUuidGenerator xmlGenerator = this.buildXmlUuidGenerator();
-		OrmUuidGenerator generator = this.buildUuidGenerator(xmlGenerator);
+		EclipseLinkOrmUuidGenerator generator = this.buildUuidGenerator(xmlGenerator);
 		this.setUuidGenerator_(generator);
 		this.getXmlGeneratorContainer().setUuidGenerator(xmlGenerator);
 		return generator;
@@ -83,7 +83,7 @@ public class EclipseLinkOrmGeneratorContainer
 		this.getXmlGeneratorContainer().setUuidGenerator(null);
 	}
 
-	protected OrmUuidGenerator buildUuidGenerator() {
+	protected EclipseLinkOrmUuidGenerator buildUuidGenerator() {
 		XmlUuidGenerator_2_4 xmlGenerator = this.getXmlUuidGenerator();
 		return (xmlGenerator == null) ? null : this.buildUuidGenerator(xmlGenerator);
 	}
@@ -92,7 +92,7 @@ public class EclipseLinkOrmGeneratorContainer
 		return this.getXmlGeneratorContainer().getUuidGenerator();
 	}
 
-	protected OrmUuidGenerator buildUuidGenerator(XmlUuidGenerator_2_4 xmlUuidGenerator) {
+	protected EclipseLinkOrmUuidGenerator buildUuidGenerator(XmlUuidGenerator_2_4 xmlUuidGenerator) {
 		return new OrmEclipseLinkUuidGenerator(this, xmlUuidGenerator);
 	}
 
@@ -111,8 +111,8 @@ public class EclipseLinkOrmGeneratorContainer
 		}
 	}
 
-	protected void setUuidGenerator_(OrmUuidGenerator uuidGenerator) {
-		OrmUuidGenerator old = this.uuidGenerator;
+	protected void setUuidGenerator_(EclipseLinkOrmUuidGenerator uuidGenerator) {
+		EclipseLinkOrmUuidGenerator old = this.uuidGenerator;
 		this.uuidGenerator = uuidGenerator;
 		this.firePropertyChanged(UUID_GENERATOR_PROPERTY, old, uuidGenerator);
 	}

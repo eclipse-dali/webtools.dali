@@ -103,12 +103,12 @@ public interface EclipseLinkEntityMappings
 	int getDefaultTenantDiscriminatorColumnsSize();
 
 
-	ListIterable<OrmUuidGenerator> getUuidGenerators();
+	ListIterable<EclipseLinkOrmUuidGenerator> getUuidGenerators();
 	int getUuidGeneratorsSize();
-	OrmUuidGenerator addUuidGenerator();
-	OrmUuidGenerator addUuidGenerator(int index);
+	EclipseLinkOrmUuidGenerator addUuidGenerator();
+	EclipseLinkOrmUuidGenerator addUuidGenerator(int index);
 	void removeUuidGenerator(int index);
-	void removeUuidGenerator(OrmUuidGenerator uuidGenerator);
+	void removeUuidGenerator(EclipseLinkOrmUuidGenerator uuidGenerator);
 	void moveUuidGenerator(int targetIndex, int sourceIndex);
 		String UUID_GENERATORS_LIST = "uuidGenerators"; //$NON-NLS-1$
 

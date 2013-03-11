@@ -38,7 +38,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMapping
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmUuidGenerator;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmUuidGenerator;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAccessMethods;
@@ -69,7 +69,7 @@ public class EclipseLinkEntityMappingsImpl
 	protected String specifiedSetMethod;
 	protected String defaultSetMethod;
 
-	protected final ContextListContainer<OrmUuidGenerator, XmlUuidGenerator_2_4> uuidGeneratorContainer;
+	protected final ContextListContainer<EclipseLinkOrmUuidGenerator, XmlUuidGenerator_2_4> uuidGeneratorContainer;
 
 	public EclipseLinkEntityMappingsImpl(OrmXml parent, XmlEntityMappings resource) {
 		super(parent, resource);
@@ -564,7 +564,7 @@ public class EclipseLinkEntityMappingsImpl
 
 	// ********** uuid generators **********
 
-	public ListIterable<OrmUuidGenerator> getUuidGenerators() {
+	public ListIterable<EclipseLinkOrmUuidGenerator> getUuidGenerators() {
 		return this.uuidGeneratorContainer.getContextElements();
 	}
 
@@ -572,13 +572,13 @@ public class EclipseLinkEntityMappingsImpl
 		return this.uuidGeneratorContainer.getContextElementsSize();
 	}
 
-	public OrmUuidGenerator addUuidGenerator() {
+	public EclipseLinkOrmUuidGenerator addUuidGenerator() {
 		return this.addUuidGenerator(this.getUuidGeneratorsSize());
 	}
 
-	public OrmUuidGenerator addUuidGenerator(int index) {
+	public EclipseLinkOrmUuidGenerator addUuidGenerator(int index) {
 		XmlUuidGenerator xmlGenerator = this.buildXmlUuidGenerator();
-		OrmUuidGenerator uuidGenerator = this.uuidGeneratorContainer.addContextElement(index, xmlGenerator);
+		EclipseLinkOrmUuidGenerator uuidGenerator = this.uuidGeneratorContainer.addContextElement(index, xmlGenerator);
 		this.getXmlEntityMappings().getUuidGenerators().add(index, xmlGenerator);
 		return uuidGenerator;
 	}
@@ -587,11 +587,11 @@ public class EclipseLinkEntityMappingsImpl
 		return EclipseLinkOrmFactory.eINSTANCE.createXmlUuidGenerator();
 	}
 
-	protected OrmUuidGenerator buildUuidGenerator(XmlUuidGenerator_2_4 xmlUuidGenerator) {
+	protected EclipseLinkOrmUuidGenerator buildUuidGenerator(XmlUuidGenerator_2_4 xmlUuidGenerator) {
 		return new OrmEclipseLinkUuidGenerator(this, xmlUuidGenerator);
 	}
 
-	public void removeUuidGenerator(OrmUuidGenerator uuidGenerator) {
+	public void removeUuidGenerator(EclipseLinkOrmUuidGenerator uuidGenerator) {
 		this.removeUuidGenerator(this.uuidGeneratorContainer.indexOfContextElement(uuidGenerator));
 	}
 
@@ -614,7 +614,7 @@ public class EclipseLinkEntityMappingsImpl
 		return IterableTools.cloneLive(this.getXmlEntityMappings().getUuidGenerators());
 	}
 
-	protected ContextListContainer<OrmUuidGenerator, XmlUuidGenerator_2_4> buildUuidGeneratorContainer() {
+	protected ContextListContainer<EclipseLinkOrmUuidGenerator, XmlUuidGenerator_2_4> buildUuidGeneratorContainer() {
 		UuidGeneratorContainer container = new UuidGeneratorContainer();
 		container.initialize();
 		return container;
@@ -624,14 +624,14 @@ public class EclipseLinkEntityMappingsImpl
 	 * sequence generator container
 	 */
 	protected class UuidGeneratorContainer
-		extends ContextListContainer<OrmUuidGenerator, XmlUuidGenerator_2_4>
+		extends ContextListContainer<EclipseLinkOrmUuidGenerator, XmlUuidGenerator_2_4>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return UUID_GENERATORS_LIST;
 		}
 		@Override
-		protected OrmUuidGenerator buildContextElement(XmlUuidGenerator_2_4 resourceElement) {
+		protected EclipseLinkOrmUuidGenerator buildContextElement(XmlUuidGenerator_2_4 resourceElement) {
 			return EclipseLinkEntityMappingsImpl.this.buildUuidGenerator(resourceElement);
 		}
 		@Override
@@ -639,7 +639,7 @@ public class EclipseLinkEntityMappingsImpl
 			return EclipseLinkEntityMappingsImpl.this.getXmlUuidGenerators();
 		}
 		@Override
-		protected XmlUuidGenerator_2_4 getResourceElement(OrmUuidGenerator contextElement) {
+		protected XmlUuidGenerator_2_4 getResourceElement(EclipseLinkOrmUuidGenerator contextElement) {
 			return contextElement.getXmlGenerator();
 		}
 	}

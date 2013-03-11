@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlUuidGenerator_2
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmUuidGenerator
+public interface EclipseLinkOrmUuidGenerator
 	extends EclipseLinkUuidGenerator, OrmGenerator
 {
 	XmlUuidGenerator_2_4 getXmlGenerator();
