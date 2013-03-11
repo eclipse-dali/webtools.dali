@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollection2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollectionAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.java.FetchType;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
@@ -84,7 +84,7 @@ public class ElementCollection2_0AnnotationTests extends JavaResourceModel2_0Tes
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		ElementCollection2_0Annotation elementCollection = (ElementCollection2_0Annotation) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
+		ElementCollectionAnnotation2_0 elementCollection = (ElementCollectionAnnotation2_0) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
 		assertNotNull(elementCollection);
 	}
 	
@@ -93,7 +93,7 @@ public class ElementCollection2_0AnnotationTests extends JavaResourceModel2_0Tes
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		ElementCollection2_0Annotation elementCollection = (ElementCollection2_0Annotation) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
+		ElementCollectionAnnotation2_0 elementCollection = (ElementCollectionAnnotation2_0) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
 		assertEquals(FetchType.EAGER, elementCollection.getFetch());
 	}
 
@@ -102,7 +102,7 @@ public class ElementCollection2_0AnnotationTests extends JavaResourceModel2_0Tes
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		ElementCollection2_0Annotation elementCollection = (ElementCollection2_0Annotation) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
+		ElementCollectionAnnotation2_0 elementCollection = (ElementCollectionAnnotation2_0) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
 		assertEquals(FetchType.EAGER, elementCollection.getFetch());
 		
 		elementCollection.setFetch(FetchType.LAZY);
@@ -116,7 +116,7 @@ public class ElementCollection2_0AnnotationTests extends JavaResourceModel2_0Tes
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		ElementCollection2_0Annotation elementCollection = (ElementCollection2_0Annotation) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
+		ElementCollectionAnnotation2_0 elementCollection = (ElementCollectionAnnotation2_0) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
 		assertEquals(FetchType.EAGER, elementCollection.getFetch());
 		
 		elementCollection.setFetch(null);
@@ -132,7 +132,7 @@ public class ElementCollection2_0AnnotationTests extends JavaResourceModel2_0Tes
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		ElementCollection2_0Annotation elementCollection = (ElementCollection2_0Annotation) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
+		ElementCollectionAnnotation2_0 elementCollection = (ElementCollectionAnnotation2_0) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
 		assertEquals(TYPE_NAME, elementCollection.getTargetClass());
 	}
 	
@@ -141,7 +141,7 @@ public class ElementCollection2_0AnnotationTests extends JavaResourceModel2_0Tes
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		ElementCollection2_0Annotation elementCollection = (ElementCollection2_0Annotation) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
+		ElementCollectionAnnotation2_0 elementCollection = (ElementCollectionAnnotation2_0) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
 		assertEquals(TYPE_NAME, elementCollection.getTargetClass());
 		
 		elementCollection.setTargetClass("Foo");
@@ -154,7 +154,7 @@ public class ElementCollection2_0AnnotationTests extends JavaResourceModel2_0Tes
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		ElementCollection2_0Annotation elementCollection = (ElementCollection2_0Annotation) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
+		ElementCollectionAnnotation2_0 elementCollection = (ElementCollectionAnnotation2_0) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
 		assertEquals(TYPE_NAME, elementCollection.getTargetClass());
 		
 		elementCollection.setTargetClass(null);
@@ -169,7 +169,7 @@ public class ElementCollection2_0AnnotationTests extends JavaResourceModel2_0Tes
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		ElementCollection2_0Annotation elementCollection = (ElementCollection2_0Annotation) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
+		ElementCollectionAnnotation2_0 elementCollection = (ElementCollectionAnnotation2_0) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, elementCollection.getFullyQualifiedTargetClassName());
 		
 		elementCollection.setTargetClass("Foo");
@@ -186,7 +186,7 @@ public class ElementCollection2_0AnnotationTests extends JavaResourceModel2_0Tes
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 
-		ElementCollection2_0Annotation elementCollection = (ElementCollection2_0Annotation) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
+		ElementCollectionAnnotation2_0 elementCollection = (ElementCollectionAnnotation2_0) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
 		assertEquals("byte", elementCollection.getTargetClass());
 	}
 
@@ -195,7 +195,7 @@ public class ElementCollection2_0AnnotationTests extends JavaResourceModel2_0Tes
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 
-		ElementCollection2_0Annotation elementCollection = (ElementCollection2_0Annotation) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
+		ElementCollectionAnnotation2_0 elementCollection = (ElementCollectionAnnotation2_0) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
 		assertEquals(null, elementCollection.getTargetClass());
 
 		elementCollection.setTargetClass("int");

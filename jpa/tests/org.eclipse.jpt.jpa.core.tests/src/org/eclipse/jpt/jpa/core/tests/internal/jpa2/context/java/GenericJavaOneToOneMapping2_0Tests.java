@@ -44,7 +44,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.AccessAnnotation2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollection2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollectionAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsId2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OneToOne2_0Annotation;
@@ -534,7 +534,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
 		assertNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(ElementCollectionAnnotation2_0.ANNOTATION_NAME));
 		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 	}

@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.AccessAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.CollectionTableAnnotation2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollection2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollectionAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
@@ -62,7 +62,7 @@ public class JavaElementCollectionMappingDefinition2_0
 	}
 
 	public String getAnnotationName() {
-		return ElementCollection2_0Annotation.ANNOTATION_NAME;
+		return ElementCollectionAnnotation2_0.ANNOTATION_NAME;
 	}
 
 	public boolean isSpecified(JavaSpecifiedPersistentAttribute persistentAttribute) {

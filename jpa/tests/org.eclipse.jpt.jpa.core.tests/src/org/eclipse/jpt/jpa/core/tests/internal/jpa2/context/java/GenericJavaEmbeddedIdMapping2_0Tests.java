@@ -33,7 +33,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaNullAttrib
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.AccessAnnotation2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollection2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollectionAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.BasicAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.EmbeddedAnnotation;
@@ -361,7 +361,7 @@ public class GenericJavaEmbeddedIdMapping2_0Tests extends Generic2_0ContextModel
 		assertTrue(persistentAttribute.getMapping() instanceof ElementCollectionMapping2_0);
 		
 		assertNull(resourceField.getAnnotation(EmbeddedIdAnnotation.ANNOTATION_NAME));
-		assertNotNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(ElementCollectionAnnotation2_0.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(AccessAnnotation2_0.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
 	}

@@ -50,7 +50,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaElementCollectionMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollection2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollectionAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
@@ -383,7 +383,7 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		assertNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(ElementCollectionAnnotation2_0.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(BasicAnnotation.ANNOTATION_NAME));
 	}
 	
@@ -400,7 +400,7 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 	
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		assertNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(ElementCollectionAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToVersionMapping() throws Exception {
@@ -417,7 +417,7 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		assertNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(ElementCollectionAnnotation2_0.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
 	}
 	
@@ -435,7 +435,7 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		assertNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(ElementCollectionAnnotation2_0.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(IdAnnotation.ANNOTATION_NAME));
 	}
 	
@@ -453,7 +453,7 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		assertNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(ElementCollectionAnnotation2_0.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
 	}
 	
@@ -471,7 +471,7 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		assertNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(ElementCollectionAnnotation2_0.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(EmbeddedIdAnnotation.ANNOTATION_NAME));
 	}
 	
@@ -489,7 +489,7 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		assertNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(ElementCollectionAnnotation2_0.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(TransientAnnotation.ANNOTATION_NAME));
 	}
 	
@@ -507,7 +507,7 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		assertNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(ElementCollectionAnnotation2_0.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
 	}
 	
@@ -525,7 +525,7 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		assertNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(ElementCollectionAnnotation2_0.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME));
 	}
 	
@@ -543,7 +543,7 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		assertNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(ElementCollectionAnnotation2_0.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
 	}
 	
@@ -556,7 +556,7 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		ElementCollection2_0Annotation elementCollectionAnnotation = (ElementCollection2_0Annotation) resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME);
+		ElementCollectionAnnotation2_0 elementCollectionAnnotation = (ElementCollectionAnnotation2_0) resourceField.getAnnotation(ElementCollectionAnnotation2_0.ANNOTATION_NAME);
 		
 		assertNull(elementCollectionMapping.getSpecifiedTargetClass());
 		assertNull(elementCollectionAnnotation.getTargetClass());
@@ -583,7 +583,7 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		ElementCollection2_0Annotation elementCollection = (ElementCollection2_0Annotation) resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME);
+		ElementCollectionAnnotation2_0 elementCollection = (ElementCollectionAnnotation2_0) resourceField.getAnnotation(ElementCollectionAnnotation2_0.ANNOTATION_NAME);
 		
 		assertNull(elementCollectionMapping.getSpecifiedTargetClass());
 		assertNull(elementCollection.getTargetClass());
@@ -749,7 +749,7 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		ElementCollection2_0Annotation elementCollection = (ElementCollection2_0Annotation) resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME);
+		ElementCollectionAnnotation2_0 elementCollection = (ElementCollectionAnnotation2_0) resourceField.getAnnotation(ElementCollectionAnnotation2_0.ANNOTATION_NAME);
 		
 		assertNull(elementCollectionMapping.getSpecifiedFetch());
 		assertNull(elementCollection.getFetch());
@@ -784,7 +784,7 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		ElementCollection2_0Annotation elementCollection = (ElementCollection2_0Annotation) resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME);
+		ElementCollectionAnnotation2_0 elementCollection = (ElementCollectionAnnotation2_0) resourceField.getAnnotation(ElementCollectionAnnotation2_0.ANNOTATION_NAME);
 		
 		assertNull(elementCollectionMapping.getSpecifiedFetch());
 		assertNull(elementCollection.getFetch());

@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.resource.java.FetchType;
  * @version 2.3
  * @since 2.3
  */
-public interface ElementCollection2_0Annotation 
+public interface ElementCollectionAnnotation2_0 
 	extends Annotation
 {
 	String ANNOTATION_NAME = JPA2_0.ELEMENT_COLLECTION;

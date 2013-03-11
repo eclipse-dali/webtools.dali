@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaConvertibleMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollection2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollectionAnnotation2_0;
 
 /**
  * Java element collection mapping
@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollection2_0Annotatio
 public interface JavaElementCollectionMapping2_0
 	extends ElementCollectionMapping2_0, JavaCollectionMapping2_0, JavaConvertibleMapping
 {
-	ElementCollection2_0Annotation getMappingAnnotation();
+	ElementCollectionAnnotation2_0 getMappingAnnotation();
 
 	JavaCollectionTable2_0 getCollectionTable();
 	

@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollection2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollectionAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.java.FetchType;
 
@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.resource.java.FetchType;
  */
 public class BinaryElementCollection2_0Annotation
 	extends BinaryAnnotation
-	implements ElementCollection2_0Annotation
+	implements ElementCollectionAnnotation2_0
 {
 	private String targetClass;
 	private FetchType fetch;

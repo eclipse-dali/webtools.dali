@@ -97,7 +97,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAttributeOverrideContainer
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollection2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollectionAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
@@ -112,7 +112,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * JPA 2.0 Frankenstein mapping
  */
 public abstract class AbstractJavaElementCollectionMapping2_0
-	extends AbstractJavaAttributeMapping<ElementCollection2_0Annotation>
+	extends AbstractJavaAttributeMapping<ElementCollectionAnnotation2_0>
 	implements JavaElementCollectionMapping2_0
 {
 	protected String specifiedTargetClass;
@@ -276,7 +276,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	protected String buildSpecifiedTargetClass() {
-		ElementCollection2_0Annotation annotation = this.getMappingAnnotation();
+		ElementCollectionAnnotation2_0 annotation = this.getMappingAnnotation();
 		return (annotation == null) ? null : annotation.getTargetClass();
 	}
 
@@ -354,7 +354,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	protected FetchType buildSpecifiedFetch() {
-		ElementCollection2_0Annotation annotation = this.getMappingAnnotation();
+		ElementCollectionAnnotation2_0 annotation = this.getMappingAnnotation();
 		return (annotation == null) ? null : FetchType.fromJavaResourceModel(annotation.getFetch());
 	}
 
@@ -1339,7 +1339,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 
 	@Override
 	protected String getAnnotationName() {
-		return ElementCollection2_0Annotation.ANNOTATION_NAME;
+		return ElementCollectionAnnotation2_0.ANNOTATION_NAME;
 	}
 
 	public Entity getEntity() {
@@ -1651,7 +1651,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	protected TextRange getAnnotationTargetClassTextRange() {
-		ElementCollection2_0Annotation annotation = this.getMappingAnnotation();
+		ElementCollectionAnnotation2_0 annotation = this.getMappingAnnotation();
 		return (annotation == null) ? null : annotation.getTargetClassTextRange();
 	}
 

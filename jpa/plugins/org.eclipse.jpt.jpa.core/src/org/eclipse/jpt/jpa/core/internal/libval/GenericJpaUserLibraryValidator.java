@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationCon
 import org.eclipse.jpt.common.core.libval.LibraryValidator;
 import org.eclipse.jpt.jpa.core.internal.libprov.JpaUserLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollection2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollectionAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2_1.JpaProject2_1;
 import org.eclipse.jpt.jpa.core.resource.java.EntityAnnotation;
 
@@ -28,7 +28,7 @@ public class GenericJpaUserLibraryValidator
 		ArrayList<String> classNames = new ArrayList<String>(2);
 		classNames.add(EntityAnnotation.ANNOTATION_NAME);
 		if (config.getProjectFacetVersion().compareTo(JpaProject2_0.FACET_VERSION) >= 0) {
-			classNames.add(ElementCollection2_0Annotation.ANNOTATION_NAME);
+			classNames.add(ElementCollectionAnnotation2_0.ANNOTATION_NAME);
 		}
 		if (config.getProjectFacetVersion().compareTo(JpaProject2_1.FACET_VERSION) >= 0) {
 			classNames.add("javax.persistence.Convert"); //$NON-NLS-1$
