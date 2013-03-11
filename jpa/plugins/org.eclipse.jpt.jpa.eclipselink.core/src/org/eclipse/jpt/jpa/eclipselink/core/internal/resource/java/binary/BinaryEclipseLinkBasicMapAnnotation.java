@@ -12,14 +12,14 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkBasicMapAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.BasicMapAnnotation;
 
 /**
  * org.eclipse.persistence.annotations.BasicMap
  */
 public final class BinaryEclipseLinkBasicMapAnnotation
 	extends BinaryAnnotation
-	implements EclipseLinkBasicMapAnnotation
+	implements BasicMapAnnotation
 {
 	public BinaryEclipseLinkBasicMapAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);

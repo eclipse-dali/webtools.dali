@@ -21,10 +21,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkBasicMapMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkBasicMapAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.BasicMapAnnotation;
 
 public class JavaEclipseLinkBasicMapMapping
-	extends AbstractJavaAttributeMapping<EclipseLinkBasicMapAnnotation>
+	extends AbstractJavaAttributeMapping<BasicMapAnnotation>
 	implements EclipseLinkBasicMapMapping, EclipseLinkJavaConvertibleMapping
 {
 
@@ -79,7 +79,7 @@ public class JavaEclipseLinkBasicMapMapping
 	
 	@Override
 	protected String getAnnotationName() {
-		return EclipseLinkBasicMapAnnotation.ANNOTATION_NAME;
+		return BasicMapAnnotation.ANNOTATION_NAME;
 	}
 
 

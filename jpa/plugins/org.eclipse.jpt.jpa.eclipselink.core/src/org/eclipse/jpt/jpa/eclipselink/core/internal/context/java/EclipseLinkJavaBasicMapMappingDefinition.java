@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaFactory;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkBasicMapAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.BasicMapAnnotation;
 
 public class EclipseLinkJavaBasicMapMappingDefinition
 	implements JavaAttributeMappingDefinition
@@ -44,7 +44,7 @@ public class EclipseLinkJavaBasicMapMappingDefinition
 	}
 
 	public String getAnnotationName() {
-		return EclipseLinkBasicMapAnnotation.ANNOTATION_NAME;
+		return BasicMapAnnotation.ANNOTATION_NAME;
 	}
 
 	public boolean isSpecified(JavaSpecifiedPersistentAttribute persistentAttribute) {
