@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOptions;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.TargetDatabase;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.TargetServer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkTargetServer;
 import org.eclipse.text.edits.ReplaceEdit;
 
 /**
@@ -78,7 +78,7 @@ public class EclipseLinkOptionsImpl
 		if (value == null) {
 			return null;
 		}
-		TargetServer standardTargetServer = this.getEnumValue(ECLIPSELINK_TARGET_SERVER, TargetServer.values());
+		EclipseLinkTargetServer standardTargetServer = this.getEnumValue(ECLIPSELINK_TARGET_SERVER, EclipseLinkTargetServer.values());
 		return (standardTargetServer == null) ? value : getPropertyStringValueOf(standardTargetServer);
 	}
 
@@ -307,7 +307,7 @@ public class EclipseLinkOptionsImpl
 	 * 
 	 * @param newTargetServer - TargetServer
 	 */
-	public void setTargetServer(TargetServer newTargetServer) {
+	public void setTargetServer(EclipseLinkTargetServer newTargetServer) {
 		if( newTargetServer == null) {
 			this.setTargetServer_((String) null);
 			return;
@@ -327,7 +327,7 @@ public class EclipseLinkOptionsImpl
 			this.setTargetServer_((String) null);
 			return;
 		}
-		TargetServer customTargetServer = TargetServer.getTargetServerFor(newTargetServer);
+		EclipseLinkTargetServer customTargetServer = EclipseLinkTargetServer.getTargetServerFor(newTargetServer);
 		if(customTargetServer == null) {	// custom TargetServer class
 			this.setTargetServer_(newTargetServer);
 		}

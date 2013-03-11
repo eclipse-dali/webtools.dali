@@ -42,7 +42,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLoggi
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOptions;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkSchemaGeneration;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.TargetDatabase;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.TargetServer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkTargetServer;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.osgi.util.NLS;
@@ -513,7 +513,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	}
 
 	private String buildTargetServerDisplayString(String targetServerName) {
-		switch (TargetServer.valueOf(targetServerName)) {
+		switch (EclipseLinkTargetServer.valueOf(targetServerName)) {
 			case jboss :
 				return JptJpaEclipseLinkUiMessages.TARGET_SERVER_COMPOSITE_JBOSS;
 			case netweaver_7_1 :
@@ -556,7 +556,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 			@Override
 			public String transform(String value) {
 				try {
-					TargetServer.valueOf(value);
+					EclipseLinkTargetServer.valueOf(value);
 					value = buildTargetServerDisplayString(value);
 				}
 				catch (Exception e) {
@@ -596,7 +596,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	}
 
 	private Iterator<String> buildTargetServers() {
-		return IteratorTools.transform(IteratorTools.iterator(TargetServer.values()), PersistenceXmlEnumValue.ENUM_NAME_TRANSFORMER);
+		return IteratorTools.transform(IteratorTools.iterator(EclipseLinkTargetServer.values()), PersistenceXmlEnumValue.ENUM_NAME_TRANSFORMER);
 	}
 
 	private CollectionValueModel<String> buildTargetServersCollectionHolder() {

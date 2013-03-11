@@ -53,11 +53,11 @@ public interface EclipseLinkOptions
 	String getDefaultTargetServer();
 	String getTargetServer();
 	void setTargetServer(String newTargetServer);
-	void setTargetServer(TargetServer newTargetServer);
+	void setTargetServer(EclipseLinkTargetServer newTargetServer);
 		static final String TARGET_SERVER_PROPERTY = "targetServer"; //$NON-NLS-1$
 		// EclipseLink key string
 		static final String ECLIPSELINK_TARGET_SERVER = "eclipselink.target-server"; //$NON-NLS-1$
-		static final String DEFAULT_TARGET_SERVER = TargetServer.none.getPropertyValue();
+		static final String DEFAULT_TARGET_SERVER = EclipseLinkTargetServer.none.getPropertyValue();
 
 	String getDefaultEventListener();
 	String getEventListener();

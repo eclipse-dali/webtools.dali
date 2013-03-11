@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOptions;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.TargetDatabase;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.TargetServer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkTargetServer;
 
 /**
  * Tests the update of model objects by the Option adapter when the
@@ -38,7 +38,7 @@ public class OptionsAdapterTests extends EclipseLinkPersistenceUnitTestCase
 	public static final String TARGET_DATABASE_TEST_VALUE_2 = "custom.targetDatabase.test";
 
 	private static final String TARGET_SERVER_KEY = EclipseLinkOptions.ECLIPSELINK_TARGET_SERVER;
-	private static final TargetServer TARGET_SERVER_TEST_VALUE = TargetServer.weblogic_9;
+	private static final EclipseLinkTargetServer TARGET_SERVER_TEST_VALUE = EclipseLinkTargetServer.weblogic_9;
 	private static final String TARGET_SERVER_TEST_VALUE_2 = "custom.targetServer.test";
 
 	public static final String INCLUDE_DESCRIPTOR_QUERIES_KEY = EclipseLinkOptions.ECLIPSELINK_SESSION_INCLUDE_DESCRIPTOR_QUERIES;
@@ -244,7 +244,7 @@ public class OptionsAdapterTests extends EclipseLinkPersistenceUnitTestCase
 
 		// test set (TargetServer) null
 		this.clearEvent();
-		this.options.setTargetServer((TargetServer) null);
+		this.options.setTargetServer((EclipseLinkTargetServer) null);
 		assertNull(this.getPersistenceUnit().getProperty(elKey));
 		this.verifyPutProperty(propertyName, null);
 		
@@ -327,7 +327,7 @@ public class OptionsAdapterTests extends EclipseLinkPersistenceUnitTestCase
 
 	private void setTargetServerProperty(Object newValue) {
 		if (newValue.getClass().isEnum())
-			this.options.setTargetServer((TargetServer) newValue);
+			this.options.setTargetServer((EclipseLinkTargetServer) newValue);
 		else
 			this.options.setTargetServer((String) newValue);
 	}

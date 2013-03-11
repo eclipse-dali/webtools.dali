@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 /**
  *  TargetServer
  */
-public enum TargetServer implements PersistenceXmlEnumValue {
+public enum EclipseLinkTargetServer implements PersistenceXmlEnumValue {
 	none("None"), //$NON-NLS-1$
 	oc4j("OC4J"), //$NON-NLS-1$
 	sunas9("SunAS9"), //$NON-NLS-1$
@@ -29,7 +29,7 @@ public enum TargetServer implements PersistenceXmlEnumValue {
 
 	private final String propertyValue;
 
-	TargetServer(String propertyValue) {
+	EclipseLinkTargetServer(String propertyValue) {
 		this.propertyValue = propertyValue;
 	}
 
@@ -43,8 +43,8 @@ public enum TargetServer implements PersistenceXmlEnumValue {
 	/**
 	 * Return the TargetServer value corresponding to the given literal.
 	 */
-	public static TargetServer getTargetServerFor(String literal) {
-		for (TargetServer targetServer : TargetServer.values()) {
+	public static EclipseLinkTargetServer getTargetServerFor(String literal) {
+		for (EclipseLinkTargetServer targetServer : EclipseLinkTargetServer.values()) {
 			if (targetServer.toString().equals(literal)) {
 				return targetServer;
 			}
