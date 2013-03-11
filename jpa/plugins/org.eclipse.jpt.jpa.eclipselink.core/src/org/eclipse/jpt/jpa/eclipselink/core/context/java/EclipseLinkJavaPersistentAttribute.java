@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.context.java;
 /**
  * EclipseLink Java persistent attribute
  */
-public interface JavaEclipseLinkPersistentAttribute
+public interface EclipseLinkJavaPersistentAttribute
 {
 
 	/**

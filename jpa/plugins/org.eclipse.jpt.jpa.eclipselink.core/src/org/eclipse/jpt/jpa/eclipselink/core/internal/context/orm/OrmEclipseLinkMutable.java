@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkPersistentAttribute;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMutable;
 
@@ -82,7 +82,7 @@ public class OrmEclipseLinkMutable
 	}
 
 	protected boolean buildDefaultMutable() {
-		JavaEclipseLinkPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
+		EclipseLinkJavaPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
 		if (javaAttribute == null) {
 			return false;
 		}
@@ -104,8 +104,8 @@ public class OrmEclipseLinkMutable
 		return (XmlMutable) this.getAttributeMapping().getXmlAttributeMapping();
 	}
 
-	protected JavaEclipseLinkPersistentAttribute getJavaPersistentAttribute() {
-		return (JavaEclipseLinkPersistentAttribute) this.getAttributeMapping().getPersistentAttribute().getJavaPersistentAttribute();
+	protected EclipseLinkJavaPersistentAttribute getJavaPersistentAttribute() {
+		return (EclipseLinkJavaPersistentAttribute) this.getAttributeMapping().getPersistentAttribute().getJavaPersistentAttribute();
 	}
 
 	@Override

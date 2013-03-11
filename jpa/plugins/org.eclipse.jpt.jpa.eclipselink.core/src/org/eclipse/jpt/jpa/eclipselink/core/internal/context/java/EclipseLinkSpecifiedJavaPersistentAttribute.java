@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.context.java.Accessor;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentAttribute;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkPersistentAttribute;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkPersistentAttributeValidator;
 
 /**
@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkPersiste
  */
 public class EclipseLinkSpecifiedJavaPersistentAttribute
 	extends AbstractJavaPersistentAttribute
-	implements JavaEclipseLinkPersistentAttribute
+	implements EclipseLinkJavaPersistentAttribute
 {
 
 	public EclipseLinkSpecifiedJavaPersistentAttribute(PersistentType parent, JavaResourceField resourceField) {

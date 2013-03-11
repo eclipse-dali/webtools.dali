@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkPersistentAttribute;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkMutableAnnotation;
 
@@ -109,7 +109,7 @@ public class JavaEclipseLinkMutable
 	}
 
 	protected boolean buildDefaultMutable() {
-		JavaEclipseLinkPersistentAttribute javaAttribute = this.getPersistentAttribute();
+		EclipseLinkJavaPersistentAttribute javaAttribute = this.getPersistentAttribute();
 		if (javaAttribute.typeIsDateOrCalendar()) {
 			Boolean puTemporalMutable = this.getPersistenceUnit().getEclipseLinkOptions().getTemporalMutable();
 			return (puTemporalMutable == null) ? false : puTemporalMutable.booleanValue();
@@ -147,8 +147,8 @@ public class JavaEclipseLinkMutable
 		return this.getAttributeMapping().getResourceAttribute();
 	}
 
-	protected JavaEclipseLinkPersistentAttribute getPersistentAttribute() {
-		return (JavaEclipseLinkPersistentAttribute) this.getAttributeMapping().getPersistentAttribute();
+	protected EclipseLinkJavaPersistentAttribute getPersistentAttribute() {
+		return (EclipseLinkJavaPersistentAttribute) this.getAttributeMapping().getPersistentAttribute();
 	}
 
 	@Override

@@ -36,13 +36,13 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaNullAttrib
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkPersistentAttribute;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.plugin.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAttributeMapping;
 
 public class EclipseLinkVirtualJavaPersistentAttribute
 	extends AbstractJavaContextModel<OrmPersistentType>
-	implements JavaSpecifiedPersistentAttribute, SpecifiedPersistentAttribute2_0, JavaEclipseLinkPersistentAttribute
+	implements JavaSpecifiedPersistentAttribute, SpecifiedPersistentAttribute2_0, EclipseLinkJavaPersistentAttribute
 {
 	private final XmlAttributeMapping xmlAttributeMapping;
 	

@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefiniti
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkPersistentAttribute;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkVariableOneToOneAnnotation;
 
@@ -61,7 +61,7 @@ public class EclipseLinkJavaVariableOneToOneMappingDefinition
 	}
 
 	public boolean isDefault(JavaSpecifiedPersistentAttribute persistentAttribute) {
-		return ((JavaEclipseLinkPersistentAttribute) persistentAttribute).typeIsValidForVariableOneToOne();
+		return ((EclipseLinkJavaPersistentAttribute) persistentAttribute).typeIsValidForVariableOneToOne();
 	}
 
 	@Override
