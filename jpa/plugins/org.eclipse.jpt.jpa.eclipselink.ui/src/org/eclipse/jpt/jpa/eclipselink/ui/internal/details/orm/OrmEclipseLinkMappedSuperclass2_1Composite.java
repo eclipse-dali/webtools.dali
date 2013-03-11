@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.QueryContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmMappedSuperclass;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.QueriesComposite;
 import org.eclipse.swt.layout.GridData;
@@ -26,10 +26,10 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
 public class OrmEclipseLinkMappedSuperclass2_1Composite
-	extends AbstractOrmEclipseLinkMappedSuperclassComposite<OrmEclipseLinkMappedSuperclass>
+	extends AbstractOrmEclipseLinkMappedSuperclassComposite<EclipseLinkOrmMappedSuperclass>
 {
 	public OrmEclipseLinkMappedSuperclass2_1Composite(
-			PropertyValueModel<? extends OrmEclipseLinkMappedSuperclass> mappedSuperclassModel, 
+			PropertyValueModel<? extends EclipseLinkOrmMappedSuperclass> mappedSuperclassModel, 
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
@@ -71,7 +71,7 @@ public class OrmEclipseLinkMappedSuperclass2_1Composite
 	}
 
 	private PropertyValueModel<QueryContainer> buildQueryContainerModel() {
-		return new PropertyAspectAdapter<OrmEclipseLinkMappedSuperclass, QueryContainer>(
+		return new PropertyAspectAdapter<EclipseLinkOrmMappedSuperclass, QueryContainer>(
 				getSubjectHolder()) {
 			@Override
 			protected QueryContainer buildValue_() {

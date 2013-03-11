@@ -35,7 +35,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkOneToManyMapping2
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkOneToOneMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVersionMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmEntity;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmMappedSuperclass;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.jpa2.details.JpaUiFactory2_0;
 import org.eclipse.swt.widgets.Composite;
@@ -53,7 +53,7 @@ public class EclipseLinkOrmXml2_0UiFactory
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new OrmEclipseLinkMappedSuperclass2_0Composite((PropertyValueModel<OrmEclipseLinkMappedSuperclass>) mappedSuperclassModel, parentComposite, widgetFactory, resourceManager);
+		return new OrmEclipseLinkMappedSuperclass2_0Composite((PropertyValueModel<EclipseLinkOrmMappedSuperclass>) mappedSuperclassModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@SuppressWarnings("unchecked")

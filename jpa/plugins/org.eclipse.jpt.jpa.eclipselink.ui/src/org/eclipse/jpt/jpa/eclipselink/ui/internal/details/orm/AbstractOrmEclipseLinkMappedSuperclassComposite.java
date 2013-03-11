@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkConvertersComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkNonEmbeddableTypeMappingAdvancedComposite;
@@ -38,7 +38,7 @@ import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
-public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite<T extends OrmEclipseLinkMappedSuperclass>
+public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite<T extends EclipseLinkOrmMappedSuperclass>
 	extends AbstractMappedSuperclassComposite<T> 
 {
 	protected AbstractOrmEclipseLinkMappedSuperclassComposite(

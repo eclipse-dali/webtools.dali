@@ -33,7 +33,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_3JpaPlatformFactory;
@@ -52,7 +52,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class OrmEclipseLinkMappedSuperclassImpl
 	extends AbstractOrmMappedSuperclass<XmlMappedSuperclass>
-	implements OrmEclipseLinkMappedSuperclass, OrmCacheableReference2_0, EclipseLinkOrmConverterContainer.Parent
+	implements EclipseLinkOrmMappedSuperclass, OrmCacheableReference2_0, EclipseLinkOrmConverterContainer.Parent
 {
 	protected final OrmEclipseLinkReadOnly readOnly;
 

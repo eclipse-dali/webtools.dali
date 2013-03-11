@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMultitenantType2_
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmEntity;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
@@ -404,7 +404,7 @@ public class EclipseLink2_3OrmMultitenancyTests
 		assertFalse(multitenancy.isMultitenant());
 		assertEquals(0, multitenancy.getTenantDiscriminatorColumnsSize());
 
-		OrmEclipseLinkMultitenancy2_3 mappedSuperclassMultitenancy = ((OrmEclipseLinkMappedSuperclass) ormPersistentType.getMapping()).getMultitenancy();
+		OrmEclipseLinkMultitenancy2_3 mappedSuperclassMultitenancy = ((EclipseLinkOrmMappedSuperclass) ormPersistentType.getMapping()).getMultitenancy();
 		mappedSuperclassMultitenancy.setSpecifiedMultitenant(true);
 		mappedSuperclassMultitenancy.addSpecifiedTenantDiscriminatorColumn().setSpecifiedName("MS_TENANT_ID");
 	

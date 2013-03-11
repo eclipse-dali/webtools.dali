@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMappedSuperclass;
  * @version 2.1
  * @since 2.1
  */
-public interface OrmEclipseLinkMappedSuperclass
+public interface EclipseLinkOrmMappedSuperclass
 	extends OrmMappedSuperclass, EclipseLinkMappedSuperclass, OrmEclipseLinkNonEmbeddableTypeMapping
 {
 	XmlMappedSuperclass getXmlTypeMapping();

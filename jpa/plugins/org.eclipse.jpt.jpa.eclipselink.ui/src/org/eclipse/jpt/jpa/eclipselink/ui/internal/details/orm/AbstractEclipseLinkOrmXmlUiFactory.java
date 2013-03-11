@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkOneToOneMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVersionMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmEmbeddable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmEntity;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmMappedSuperclass;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.AbstractOrmXmlUiFactory;
 import org.eclipse.swt.widgets.Composite;
@@ -48,7 +48,7 @@ public abstract class AbstractEclipseLinkOrmXmlUiFactory
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new OrmEclipseLinkMappedSuperclassComposite((PropertyValueModel<OrmEclipseLinkMappedSuperclass>) mappedSuperclassModel, parentComposite, widgetFactory, resourceManager);
+		return new OrmEclipseLinkMappedSuperclassComposite((PropertyValueModel<EclipseLinkOrmMappedSuperclass>) mappedSuperclassModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@SuppressWarnings("unchecked")

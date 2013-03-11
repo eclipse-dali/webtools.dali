@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLink2_1ContextModelTestCase;
@@ -66,7 +66,7 @@ public class EclipseLink2_1OrmMappedSuperclassTests
 	
 	public void testAddSequenceGenerator() throws Exception {
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
-		OrmEclipseLinkMappedSuperclass ormMappedSuperclass = (OrmEclipseLinkMappedSuperclass) ormPersistentType.getMapping();
+		EclipseLinkOrmMappedSuperclass ormMappedSuperclass = (EclipseLinkOrmMappedSuperclass) ormPersistentType.getMapping();
 		XmlMappedSuperclass mappedSuperclassResource = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
 		
 		assertNull(ormMappedSuperclass.getGeneratorContainer().getSequenceGenerator());
@@ -88,7 +88,7 @@ public class EclipseLink2_1OrmMappedSuperclassTests
 	
 	public void testRemoveSequenceGenerator() throws Exception {
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
-		OrmEclipseLinkMappedSuperclass ormMappedSuperclass = (OrmEclipseLinkMappedSuperclass) ormPersistentType.getMapping();
+		EclipseLinkOrmMappedSuperclass ormMappedSuperclass = (EclipseLinkOrmMappedSuperclass) ormPersistentType.getMapping();
 		XmlMappedSuperclass mappedSuperclassResource = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
 		
 		assertNull(ormMappedSuperclass.getGeneratorContainer().getSequenceGenerator());
@@ -114,7 +114,7 @@ public class EclipseLink2_1OrmMappedSuperclassTests
 
 	public void testUpdateSequenceGenerator() throws Exception {
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
-		OrmEclipseLinkMappedSuperclass ormMappedSuperclass = (OrmEclipseLinkMappedSuperclass) ormPersistentType.getMapping();
+		EclipseLinkOrmMappedSuperclass ormMappedSuperclass = (EclipseLinkOrmMappedSuperclass) ormPersistentType.getMapping();
 		XmlMappedSuperclass mappedSuperclassResource = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
 		
 		assertNull(ormMappedSuperclass.getGeneratorContainer().getSequenceGenerator());
@@ -138,7 +138,7 @@ public class EclipseLink2_1OrmMappedSuperclassTests
 	
 	public void testAddTableGenerator() throws Exception {
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
-		OrmEclipseLinkMappedSuperclass ormMappedSuperclass = (OrmEclipseLinkMappedSuperclass) ormPersistentType.getMapping();
+		EclipseLinkOrmMappedSuperclass ormMappedSuperclass = (EclipseLinkOrmMappedSuperclass) ormPersistentType.getMapping();
 		XmlMappedSuperclass mappedSuperclassResource = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
 		
 		assertNull(ormMappedSuperclass.getGeneratorContainer().getTableGenerator());
@@ -160,7 +160,7 @@ public class EclipseLink2_1OrmMappedSuperclassTests
 	
 	public void testRemoveTableGenerator() throws Exception {
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
-		OrmEclipseLinkMappedSuperclass ormMappedSuperclass = (OrmEclipseLinkMappedSuperclass) ormPersistentType.getMapping();
+		EclipseLinkOrmMappedSuperclass ormMappedSuperclass = (EclipseLinkOrmMappedSuperclass) ormPersistentType.getMapping();
 		XmlMappedSuperclass mappedSuperclassResource = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
 		
 		assertNull(ormMappedSuperclass.getGeneratorContainer().getTableGenerator());
@@ -186,7 +186,7 @@ public class EclipseLink2_1OrmMappedSuperclassTests
 	
 	public void testUpdateTableGenerator() throws Exception {
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
-		OrmEclipseLinkMappedSuperclass ormMappedSuperclass = (OrmEclipseLinkMappedSuperclass) ormPersistentType.getMapping();
+		EclipseLinkOrmMappedSuperclass ormMappedSuperclass = (EclipseLinkOrmMappedSuperclass) ormPersistentType.getMapping();
 		XmlMappedSuperclass mappedSuperclassResource = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
 		
 		assertNull(ormMappedSuperclass.getGeneratorContainer().getTableGenerator());
