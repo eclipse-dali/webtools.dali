@@ -17,10 +17,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVariableOneToOneMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkVariableOneToOneAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.VariableOneToOneAnnotation;
 
 public class JavaEclipseLinkVariableOneToOneMapping 
-	extends AbstractJavaAttributeMapping<EclipseLinkVariableOneToOneAnnotation>
+	extends AbstractJavaAttributeMapping<VariableOneToOneAnnotation>
 	implements EclipseLinkVariableOneToOneMapping, EclipseLinkJavaConvertibleMapping
 {
 	
@@ -75,6 +75,6 @@ public class JavaEclipseLinkVariableOneToOneMapping
 	
 	@Override
 	protected String getAnnotationName() {
-		return EclipseLinkVariableOneToOneAnnotation.ANNOTATION_NAME;
+		return VariableOneToOneAnnotation.ANNOTATION_NAME;
 	}
 }

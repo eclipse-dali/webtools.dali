@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaFactory;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkVariableOneToOneAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.VariableOneToOneAnnotation;
 
 public class EclipseLinkJavaVariableOneToOneMappingDefinition
 	implements DefaultJavaAttributeMappingDefinition
@@ -45,7 +45,7 @@ public class EclipseLinkJavaVariableOneToOneMappingDefinition
 	}
 
 	public String getAnnotationName() {
-		return EclipseLinkVariableOneToOneAnnotation.ANNOTATION_NAME;
+		return VariableOneToOneAnnotation.ANNOTATION_NAME;
 	}
 
 	public boolean isSpecified(JavaSpecifiedPersistentAttribute persistentAttribute) {

@@ -14,14 +14,14 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotat
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkVariableOneToOneAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.VariableOneToOneAnnotation;
 
 /**
  * org.eclipse.persistence.annotations.VariableOneToOne
  */
 public final class SourceEclipseLinkVariableOneToOneAnnotation
 	extends SourceAnnotation
-	implements EclipseLinkVariableOneToOneAnnotation
+	implements VariableOneToOneAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
