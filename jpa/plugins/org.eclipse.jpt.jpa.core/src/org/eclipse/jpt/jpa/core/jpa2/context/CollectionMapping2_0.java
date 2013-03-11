@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.core.context.JoinColumn;
  * @since 2.3
  */
 public interface CollectionMapping2_0
-	extends CollectionMapping, AttributeMapping2_0, ConvertibleKeyMapping2_0
+	extends CollectionMapping, ConvertibleKeyMapping2_0
 {
 	// ********** map key class **********
 	
