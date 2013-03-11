@@ -15,15 +15,15 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheCoordinationType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheIsolationType2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheType;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkCacheAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTimeOfDayAnnotation;
 
 /**
  * <code>org.eclipse.persistence.annotations.Cache</code>
  */
 public final class NullEclipseLinkCacheAnnotation
-	extends NullAnnotation<EclipseLinkCacheAnnotation>
-	implements EclipseLinkCacheAnnotation
+	extends NullAnnotation<CacheAnnotation>
+	implements CacheAnnotation
 {
 	protected NullEclipseLinkCacheAnnotation(JavaResourceAnnotatedElement parent) {
 		super(parent);

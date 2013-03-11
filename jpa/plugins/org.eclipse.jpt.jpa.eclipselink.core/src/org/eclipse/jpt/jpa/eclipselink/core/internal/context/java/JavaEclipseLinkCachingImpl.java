@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTimeOfDay;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaNonEmbeddableTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkCacheAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkExistenceCheckingAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTimeOfDayAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
@@ -64,7 +64,7 @@ public class JavaEclipseLinkCachingImpl
 	public JavaEclipseLinkCachingImpl(EclipseLinkJavaNonEmbeddableTypeMapping parent) {
 		super(parent);
 
-		EclipseLinkCacheAnnotation cacheAnnotation = this.getCacheAnnotation();
+		CacheAnnotation cacheAnnotation = this.getCacheAnnotation();
 		this.specifiedType = EclipseLinkCacheType.fromJavaResourceModel(cacheAnnotation.getType());
 		this.specifiedSize = cacheAnnotation.getSize();
 		this.specifiedShared = cacheAnnotation.getShared();
@@ -93,7 +93,7 @@ public class JavaEclipseLinkCachingImpl
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 
-		EclipseLinkCacheAnnotation cacheAnnotation = this.getCacheAnnotation();
+		CacheAnnotation cacheAnnotation = this.getCacheAnnotation();
 		this.setSpecifiedType_(EclipseLinkCacheType.fromJavaResourceModel(cacheAnnotation.getType()));
 		this.setSpecifiedSize_(cacheAnnotation.getSize());
 		this.setSpecifiedShared_(cacheAnnotation.getShared());
@@ -577,12 +577,12 @@ public class JavaEclipseLinkCachingImpl
 
 	// ********** cache annotation **********
 
-	protected EclipseLinkCacheAnnotation getCacheAnnotation() {
-		return (EclipseLinkCacheAnnotation) this.getJavaResourceType().getNonNullAnnotation(this.getCacheAnnotationName());
+	protected CacheAnnotation getCacheAnnotation() {
+		return (CacheAnnotation) this.getJavaResourceType().getNonNullAnnotation(this.getCacheAnnotationName());
 	}
 
 	protected String getCacheAnnotationName() {
-		return EclipseLinkCacheAnnotation.ANNOTATION_NAME;
+		return CacheAnnotation.ANNOTATION_NAME;
 	}
 
 

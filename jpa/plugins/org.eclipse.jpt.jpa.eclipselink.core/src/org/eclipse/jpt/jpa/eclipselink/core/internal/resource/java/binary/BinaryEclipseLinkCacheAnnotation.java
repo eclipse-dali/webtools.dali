@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheCoordinationType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheIsolationType2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkCacheAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTimeOfDayAnnotation;
 
 /**
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTimeOfDayAn
  */
 public final class BinaryEclipseLinkCacheAnnotation
 	extends BinaryAnnotation
-	implements EclipseLinkCacheAnnotation
+	implements CacheAnnotation
 {
 	private CacheType type;
 	private Integer size;

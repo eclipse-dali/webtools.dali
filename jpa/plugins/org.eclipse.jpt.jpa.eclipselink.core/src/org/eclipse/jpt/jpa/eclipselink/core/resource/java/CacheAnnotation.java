@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkCacheAnnotation
+public interface CacheAnnotation
 	extends Annotation
 {
 	String ANNOTATION_NAME = EclipseLink.CACHE;
