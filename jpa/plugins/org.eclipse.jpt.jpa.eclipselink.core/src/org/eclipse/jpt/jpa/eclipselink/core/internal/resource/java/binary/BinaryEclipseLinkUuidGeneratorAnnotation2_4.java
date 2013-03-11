@@ -14,14 +14,14 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryGeneratorAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkUuidGeneratorAnnotation2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.UuidGeneratorAnnotation2_4;
 
 /**
  * org.eclipse.persistence.annotations.UuidGenerator
  */
 public class BinaryEclipseLinkUuidGeneratorAnnotation2_4
 	extends BinaryGeneratorAnnotation
-	implements EclipseLinkUuidGeneratorAnnotation2_4
+	implements UuidGeneratorAnnotation2_4
 {
 
 

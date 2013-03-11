@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.BinaryEclipseLinkUuidGeneratorAnnotation2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.SourceEclipseLinkUuidGeneratorAnnotation2_4;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkUuidGeneratorAnnotation2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.UuidGeneratorAnnotation2_4;
 
 public class EclipseLinkUuidGenerator2_4AnnotationDefinition
 	implements AnnotationDefinition
@@ -52,6 +52,6 @@ public class EclipseLinkUuidGenerator2_4AnnotationDefinition
 	}
 
 	public String getAnnotationName() {
-		return EclipseLinkUuidGeneratorAnnotation2_4.ANNOTATION_NAME;
+		return UuidGeneratorAnnotation2_4.ANNOTATION_NAME;
 	}
 }

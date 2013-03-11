@@ -14,16 +14,16 @@ import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaGenerator;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkUuidGenerator;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaUuidGenerator;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkUuidGeneratorAnnotation2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.UuidGeneratorAnnotation2_4;
 
 /**
  * Java UUID generator
  */
 public class JavaEclipseLinkUuidGenerator
-	extends AbstractJavaGenerator<EclipseLinkJavaGeneratorContainer, EclipseLinkUuidGeneratorAnnotation2_4>
+	extends AbstractJavaGenerator<EclipseLinkJavaGeneratorContainer, UuidGeneratorAnnotation2_4>
 	implements EclipseLinkJavaUuidGenerator
 {
-	public JavaEclipseLinkUuidGenerator(EclipseLinkJavaGeneratorContainer parent, EclipseLinkUuidGeneratorAnnotation2_4 generatorAnnotation) {
+	public JavaEclipseLinkUuidGenerator(EclipseLinkJavaGeneratorContainer parent, UuidGeneratorAnnotation2_4 generatorAnnotation) {
 		super(parent, generatorAnnotation);
 	}
 

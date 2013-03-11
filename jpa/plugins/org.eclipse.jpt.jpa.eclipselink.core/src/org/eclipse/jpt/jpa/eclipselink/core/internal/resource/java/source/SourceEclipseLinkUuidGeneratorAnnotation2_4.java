@@ -17,14 +17,14 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceGeneratorAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkUuidGeneratorAnnotation2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.UuidGeneratorAnnotation2_4;
 
 /**
  * org.eclipse.persistence.annotations.UuidGenerator
  */
 public class SourceEclipseLinkUuidGeneratorAnnotation2_4
 	extends SourceGeneratorAnnotation
-	implements EclipseLinkUuidGeneratorAnnotation2_4
+	implements UuidGeneratorAnnotation2_4
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER 
 			= new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);

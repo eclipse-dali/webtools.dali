@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.context.java;
 
 import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkUuidGenerator;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkUuidGeneratorAnnotation2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.UuidGeneratorAnnotation2_4;
 
 /**
  * EclipseLink 2.4  Java Uuid generator 
@@ -25,5 +25,5 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkUuidGenerat
 public interface EclipseLinkJavaUuidGenerator
 	extends EclipseLinkUuidGenerator, JavaGenerator
 {
-	EclipseLinkUuidGeneratorAnnotation2_4 getGeneratorAnnotation();
+	UuidGeneratorAnnotation2_4 getGeneratorAnnotation();
 }

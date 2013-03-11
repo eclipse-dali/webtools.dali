@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaGeneratorContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkGeneratorContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaUuidGenerator;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkUuidGeneratorAnnotation2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.UuidGeneratorAnnotation2_4;
 
 public class EclipseLinkJavaGeneratorContainer
 	extends GenericJavaGeneratorContainer
@@ -56,41 +56,41 @@ public class EclipseLinkJavaGeneratorContainer
 		if (this.uuidGenerator != null) {
 			throw new IllegalStateException("UUID generator already exists: " + this.uuidGenerator); //$NON-NLS-1$
 		}
-		EclipseLinkUuidGeneratorAnnotation2_4 annotation = this.buildUuidGeneratorAnnotation();
+		UuidGeneratorAnnotation2_4 annotation = this.buildUuidGeneratorAnnotation();
 		EclipseLinkJavaUuidGenerator generator = this.buildUuidGenerator(annotation);
 		this.setUuidGenerator(generator);
 		return generator;
 	}
 
-	protected EclipseLinkUuidGeneratorAnnotation2_4 buildUuidGeneratorAnnotation() {
-		return (EclipseLinkUuidGeneratorAnnotation2_4) this.parent.getResourceAnnotatedElement().addAnnotation(EclipseLinkUuidGeneratorAnnotation2_4.ANNOTATION_NAME);
+	protected UuidGeneratorAnnotation2_4 buildUuidGeneratorAnnotation() {
+		return (UuidGeneratorAnnotation2_4) this.parent.getResourceAnnotatedElement().addAnnotation(UuidGeneratorAnnotation2_4.ANNOTATION_NAME);
 	}
 
 	public void removeUuidGenerator() {
 		if (this.uuidGenerator == null) {
 			throw new IllegalStateException("UUID generator does not exist"); //$NON-NLS-1$
 		}
-		this.parent.getResourceAnnotatedElement().removeAnnotation(EclipseLinkUuidGeneratorAnnotation2_4.ANNOTATION_NAME);
+		this.parent.getResourceAnnotatedElement().removeAnnotation(UuidGeneratorAnnotation2_4.ANNOTATION_NAME);
 		this.setUuidGenerator(null);
 	}
 
 	protected EclipseLinkJavaUuidGenerator buildUuidGenerator() {
-		EclipseLinkUuidGeneratorAnnotation2_4 annotation = this.getUuidGeneratorAnnotation();
+		UuidGeneratorAnnotation2_4 annotation = this.getUuidGeneratorAnnotation();
 		return (annotation == null) ? null : this.buildUuidGenerator(annotation);
 	}
 
-	protected EclipseLinkUuidGeneratorAnnotation2_4 getUuidGeneratorAnnotation() {
-		return (EclipseLinkUuidGeneratorAnnotation2_4) this.parent.getResourceAnnotatedElement().getAnnotation(EclipseLinkUuidGeneratorAnnotation2_4.ANNOTATION_NAME);
+	protected UuidGeneratorAnnotation2_4 getUuidGeneratorAnnotation() {
+		return (UuidGeneratorAnnotation2_4) this.parent.getResourceAnnotatedElement().getAnnotation(UuidGeneratorAnnotation2_4.ANNOTATION_NAME);
 	}
 
-	protected EclipseLinkJavaUuidGenerator buildUuidGenerator(EclipseLinkUuidGeneratorAnnotation2_4 uuidGeneratorAnnotation) {
+	protected EclipseLinkJavaUuidGenerator buildUuidGenerator(UuidGeneratorAnnotation2_4 uuidGeneratorAnnotation) {
 		return this.parent.supportsGenerators() ?
 				new JavaEclipseLinkUuidGenerator(this, uuidGeneratorAnnotation) :
 				null;
 	}
 
 	protected void syncUuidGenerator() {
-		EclipseLinkUuidGeneratorAnnotation2_4 annotation = this.getUuidGeneratorAnnotation();
+		UuidGeneratorAnnotation2_4 annotation = this.getUuidGeneratorAnnotation();
 		if (annotation == null) {
 			if (this.uuidGenerator != null) {
 				this.setUuidGenerator(null);

@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.resource.java.GeneratorAnnotation;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface EclipseLinkUuidGeneratorAnnotation2_4
+public interface UuidGeneratorAnnotation2_4
 	extends GeneratorAnnotation //TODO don't extend GeneratorAnnotation
 {
 	String ANNOTATION_NAME = EclipseLink.UUID_GENERATOR;
