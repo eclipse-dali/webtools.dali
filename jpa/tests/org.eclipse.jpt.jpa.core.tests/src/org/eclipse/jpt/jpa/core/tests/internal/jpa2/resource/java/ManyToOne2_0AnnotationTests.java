@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.ManyToOne2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.ManyToOneAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.FetchType;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.ManyToOneAnnotation;
@@ -333,7 +333,7 @@ public class ManyToOne2_0AnnotationTests extends JavaResourceModel2_0TestCase {
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		ManyToOne2_0Annotation manyToOne = (ManyToOne2_0Annotation) resourceField.getAnnotation(JPA.MANY_TO_ONE);
+		ManyToOneAnnotation2_0 manyToOne = (ManyToOneAnnotation2_0) resourceField.getAnnotation(JPA.MANY_TO_ONE);
 		assertFalse(manyToOne.isCascadeDetach());
 	
 		manyToOne.setCascadeDetach(true);

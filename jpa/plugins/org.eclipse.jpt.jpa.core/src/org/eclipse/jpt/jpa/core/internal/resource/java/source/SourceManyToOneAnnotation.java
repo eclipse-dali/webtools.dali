@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.ManyToOne2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.ManyToOneAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
 /**
@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.resource.java.JPA;
  */
 public final class SourceManyToOneAnnotation
 	extends SourceRelationshipMappingAnnotation
-	implements ManyToOne2_0Annotation
+	implements ManyToOneAnnotation2_0
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
