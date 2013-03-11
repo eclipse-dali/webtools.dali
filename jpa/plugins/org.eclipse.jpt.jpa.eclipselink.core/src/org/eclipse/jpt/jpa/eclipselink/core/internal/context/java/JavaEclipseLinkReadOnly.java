@@ -14,17 +14,17 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkReadOnly;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkNonEmbeddableTypeMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaNonEmbeddableTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkReadOnlyAnnotation;
 
 public class JavaEclipseLinkReadOnly
-	extends AbstractJavaContextModel<JavaEclipseLinkNonEmbeddableTypeMapping>
+	extends AbstractJavaContextModel<EclipseLinkJavaNonEmbeddableTypeMapping>
 	implements EclipseLinkReadOnly
 {
 	protected Boolean specifiedReadOnly;  // TRUE or null
 
 
-	public JavaEclipseLinkReadOnly(JavaEclipseLinkNonEmbeddableTypeMapping parent) {
+	public JavaEclipseLinkReadOnly(EclipseLinkJavaNonEmbeddableTypeMapping parent) {
 		super(parent);
 		this.specifiedReadOnly = this.buildSpecifiedReadOnly();
 	}
@@ -104,7 +104,7 @@ public class JavaEclipseLinkReadOnly
 	// ********** misc **********
 
 
-	protected JavaEclipseLinkNonEmbeddableTypeMapping getTypeMapping() {
+	protected EclipseLinkJavaNonEmbeddableTypeMapping getTypeMapping() {
 		return this.parent;
 	}
 

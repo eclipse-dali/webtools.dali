@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkNonEmbeddableTypeMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkNonEmbeddableTypeMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaNonEmbeddableTypeMapping;
 
 /**
  * EclipseLink <code>orm.xml</code> non-embeddable type mapping
@@ -26,9 +26,9 @@ public interface OrmEclipseLinkNonEmbeddableTypeMapping
 	extends EclipseLinkNonEmbeddableTypeMapping, EclipseLinkOrmTypeMapping
 {
 
-	JavaEclipseLinkNonEmbeddableTypeMapping getJavaTypeMapping();
+	EclipseLinkJavaNonEmbeddableTypeMapping getJavaTypeMapping();
 
-	JavaEclipseLinkNonEmbeddableTypeMapping getJavaTypeMappingForDefaults();
+	EclipseLinkJavaNonEmbeddableTypeMapping getJavaTypeMappingForDefaults();
 
 	OrmEclipseLinkMultitenancy2_3 getMultitenancy();
 

@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMappedSuperclass;
  * @since 2.1
  */
 public interface EclipseLinkJavaMappedSuperclass
-	extends JavaMappedSuperclass, EclipseLinkMappedSuperclass, JavaEclipseLinkNonEmbeddableTypeMapping
+	extends JavaMappedSuperclass, EclipseLinkMappedSuperclass, EclipseLinkJavaNonEmbeddableTypeMapping
 {
 	// combine various interfaces
 }

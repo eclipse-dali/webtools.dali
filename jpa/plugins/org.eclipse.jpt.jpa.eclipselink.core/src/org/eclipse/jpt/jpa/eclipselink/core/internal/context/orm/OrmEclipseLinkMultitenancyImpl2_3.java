@@ -34,7 +34,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTenantDiscriminat
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVirtualTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaMultitenancy2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkNonEmbeddableTypeMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaNonEmbeddableTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMultitenancy2_3;
@@ -622,12 +622,12 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 		return (EclipseLinkPersistenceUnit) super.getPersistenceUnit();
 	}
 
-	protected JavaEclipseLinkNonEmbeddableTypeMapping getJavaTypeMappingForDefaults() {
+	protected EclipseLinkJavaNonEmbeddableTypeMapping getJavaTypeMappingForDefaults() {
 		return this.getTypeMapping().getJavaTypeMappingForDefaults();
 	}
 
 	protected EclipseLinkJavaMultitenancy2_3 getJavaMultitenancyPolicyForDefaults() {
-		JavaEclipseLinkNonEmbeddableTypeMapping javaTypeMapping = this.getJavaTypeMappingForDefaults();
+		EclipseLinkJavaNonEmbeddableTypeMapping javaTypeMapping = this.getJavaTypeMappingForDefaults();
 		return (javaTypeMapping == null) ? null : javaTypeMapping.getMultitenancy();
 	}
 

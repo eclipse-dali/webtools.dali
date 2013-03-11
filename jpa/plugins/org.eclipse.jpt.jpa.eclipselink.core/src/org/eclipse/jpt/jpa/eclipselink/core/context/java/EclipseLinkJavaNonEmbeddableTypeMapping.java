@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkNonEmbeddableType
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaEclipseLinkNonEmbeddableTypeMapping
+public interface EclipseLinkJavaNonEmbeddableTypeMapping
 	extends EclipseLinkNonEmbeddableTypeMapping, EclipseLinkJavaTypeMapping
 {
 	EclipseLinkJavaCaching getCaching();

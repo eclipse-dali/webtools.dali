@@ -18,15 +18,15 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTenantDiscriminat
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVirtualTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaMultitenancy2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkNonEmbeddableTypeMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaNonEmbeddableTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaSpecifiedTenantDiscriminatorColumn2_3;
 
 public class NullJavaEclipseLinkMultitenancy2_3
-	extends AbstractJavaContextModel<JavaEclipseLinkNonEmbeddableTypeMapping>
+	extends AbstractJavaContextModel<EclipseLinkJavaNonEmbeddableTypeMapping>
 	implements EclipseLinkJavaMultitenancy2_3
 {
 
-	public NullJavaEclipseLinkMultitenancy2_3(JavaEclipseLinkNonEmbeddableTypeMapping parent) {
+	public NullJavaEclipseLinkMultitenancy2_3(EclipseLinkJavaNonEmbeddableTypeMapping parent) {
 		super(parent);
 	}
 

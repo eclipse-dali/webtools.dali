@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModel;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkReadOnly;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkNonEmbeddableTypeMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaNonEmbeddableTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkNonEmbeddableTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlReadOnly;
 
@@ -101,12 +101,12 @@ public class OrmEclipseLinkReadOnly
 		return (XmlReadOnly) this.getXmlTypeMapping();
 	}
 
-	protected JavaEclipseLinkNonEmbeddableTypeMapping getJavaTypeMappingForDefaults() {
+	protected EclipseLinkJavaNonEmbeddableTypeMapping getJavaTypeMappingForDefaults() {
 		return this.getTypeMapping().getJavaTypeMappingForDefaults();
 	}
 
 	protected EclipseLinkReadOnly getJavaReadOnlyForDefaults() {
-		JavaEclipseLinkNonEmbeddableTypeMapping javaTypeMapping = this.getJavaTypeMappingForDefaults();
+		EclipseLinkJavaNonEmbeddableTypeMapping javaTypeMapping = this.getJavaTypeMappingForDefaults();
 		return (javaTypeMapping == null) ? null : javaTypeMapping.getReadOnly();
 	}
 

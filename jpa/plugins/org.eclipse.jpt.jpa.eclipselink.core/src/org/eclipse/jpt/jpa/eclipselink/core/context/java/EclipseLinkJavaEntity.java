@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkEntity;
  * @since 2.1
  */
 public interface EclipseLinkJavaEntity
-	extends JavaEntity, EclipseLinkEntity, JavaEclipseLinkNonEmbeddableTypeMapping
+	extends JavaEntity, EclipseLinkEntity, EclipseLinkJavaNonEmbeddableTypeMapping
 {
 	// combine various interfaces
 }

@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkExistenceType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTimeOfDay;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaCaching;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkNonEmbeddableTypeMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaNonEmbeddableTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkCacheAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkExistenceCheckingAnnotation;
@@ -38,7 +38,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class JavaEclipseLinkCachingImpl
-	extends AbstractJavaContextModel<JavaEclipseLinkNonEmbeddableTypeMapping>
+	extends AbstractJavaContextModel<EclipseLinkJavaNonEmbeddableTypeMapping>
 	implements EclipseLinkJavaCaching, JavaCacheableReference2_0
 {
 	protected EclipseLinkCacheType specifiedType;
@@ -61,7 +61,7 @@ public class JavaEclipseLinkCachingImpl
 
 	protected EclipseLinkCacheIsolationType2_2 specifiedIsolation;
 
-	public JavaEclipseLinkCachingImpl(JavaEclipseLinkNonEmbeddableTypeMapping parent) {
+	public JavaEclipseLinkCachingImpl(EclipseLinkJavaNonEmbeddableTypeMapping parent) {
 		super(parent);
 
 		EclipseLinkCacheAnnotation cacheAnnotation = this.getCacheAnnotation();
@@ -607,7 +607,7 @@ public class JavaEclipseLinkCachingImpl
 
 	// ********** misc **********
 
-	protected JavaEclipseLinkNonEmbeddableTypeMapping getTypeMapping() {
+	protected EclipseLinkJavaNonEmbeddableTypeMapping getTypeMapping() {
 		return this.parent;
 	}
 

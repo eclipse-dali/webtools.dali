@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkExistenceType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTimeOfDay;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaCaching;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkNonEmbeddableTypeMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaNonEmbeddableTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkNonEmbeddableTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
@@ -776,12 +776,12 @@ public class OrmEclipseLinkCachingImpl
 		return (XmlCacheHolder) this.getXmlTypeMapping();
 	}
 
-	protected JavaEclipseLinkNonEmbeddableTypeMapping getJavaTypeMappingForDefaults() {
+	protected EclipseLinkJavaNonEmbeddableTypeMapping getJavaTypeMappingForDefaults() {
 		return this.getTypeMapping().getJavaTypeMappingForDefaults();
 	}
 
 	protected EclipseLinkJavaCaching getJavaCachingForDefaults() {
-		JavaEclipseLinkNonEmbeddableTypeMapping javaTypeMapping = this.getJavaTypeMappingForDefaults();
+		EclipseLinkJavaNonEmbeddableTypeMapping javaTypeMapping = this.getJavaTypeMappingForDefaults();
 		return (javaTypeMapping == null) ? null : javaTypeMapping.getCaching();
 	}
 
