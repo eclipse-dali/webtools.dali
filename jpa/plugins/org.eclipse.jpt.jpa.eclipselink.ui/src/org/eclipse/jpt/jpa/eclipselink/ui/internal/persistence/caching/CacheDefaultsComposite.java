@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CacheType;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
@@ -71,8 +71,8 @@ public class CacheDefaultsComposite<T extends EclipseLinkCaching> extends Pane<T
 		sharedCacheCheckBox.getCheckBox().setLayoutData(gridData);
 	}
 
-	protected EnumFormComboViewer<EclipseLinkCaching, CacheType> buildDefaultCacheTypeCombo(Composite container) {
-		return new EnumFormComboViewer<EclipseLinkCaching, CacheType>(this, container) {
+	protected EnumFormComboViewer<EclipseLinkCaching, EclipseLinkCacheType> buildDefaultCacheTypeCombo(Composite container) {
+		return new EnumFormComboViewer<EclipseLinkCaching, EclipseLinkCacheType>(this, container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
@@ -80,8 +80,8 @@ public class CacheDefaultsComposite<T extends EclipseLinkCaching> extends Pane<T
 			}
 
 			@Override
-			protected CacheType[] getChoices() {
-				return CacheType.values();
+			protected EclipseLinkCacheType[] getChoices() {
+				return EclipseLinkCacheType.values();
 			}
 			
 			@Override
@@ -90,12 +90,12 @@ public class CacheDefaultsComposite<T extends EclipseLinkCaching> extends Pane<T
 			}
 
 			@Override
-			protected CacheType getDefaultValue() {
+			protected EclipseLinkCacheType getDefaultValue() {
 				return getSubject().getDefaultCacheTypeDefault();
 			}
 
 			@Override
-			protected String displayString(CacheType value) {
+			protected String displayString(EclipseLinkCacheType value) {
 				switch (value) {
 					case full :
 						return JptJpaEclipseLinkUiMessages.CACHE_TYPE_COMPOSITE_FULL;
@@ -116,12 +116,12 @@ public class CacheDefaultsComposite<T extends EclipseLinkCaching> extends Pane<T
 			}
 
 			@Override
-			protected CacheType getValue() {
+			protected EclipseLinkCacheType getValue() {
 				return getSubject().getCacheTypeDefault();
 			}
 
 			@Override
-			protected void setValue(CacheType value) {
+			protected void setValue(EclipseLinkCacheType value) {
 				getSubject().setCacheTypeDefault(value);
 			}
 

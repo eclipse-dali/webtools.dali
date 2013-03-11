@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CacheType;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCachingEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkFlushClearCache;
 
@@ -29,7 +29,7 @@ public class EclipseLinkCaching
 	implements org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCaching
 {
 	// ********** EclipseLink properties **********
-	private CacheType cacheTypeDefault;
+	private EclipseLinkCacheType cacheTypeDefault;
 	private Integer cacheSizeDefault;
 	private Boolean sharedCacheDefault;
 	private EclipseLinkFlushClearCache flushClearCache;
@@ -49,7 +49,7 @@ public class EclipseLinkCaching
 	protected void initializeProperties() {
 		this.entities = new ArrayList<EclipseLinkCachingEntity>();
 		this.cacheTypeDefault = 
-			this.getEnumValue(ECLIPSELINK_CACHE_TYPE_DEFAULT, CacheType.values());
+			this.getEnumValue(ECLIPSELINK_CACHE_TYPE_DEFAULT, EclipseLinkCacheType.values());
 		this.cacheSizeDefault = 
 			this.getIntegerValue(ECLIPSELINK_CACHE_SIZE_DEFAULT);
 		this.sharedCacheDefault = 
@@ -220,12 +220,12 @@ public class EclipseLinkCaching
 	}
 
 	// ********** CacheType **********
-	public CacheType getCacheTypeOf(String entityName) {
+	public EclipseLinkCacheType getCacheTypeOf(String entityName) {
 		EclipseLinkCachingEntity entity = this.getEntityNamed(entityName);
 		return (entity == null) ? null : entity.getCacheType();
 	}
 
-	public void setCacheTypeOf(String entityName, CacheType newCacheType) {
+	public void setCacheTypeOf(String entityName, EclipseLinkCacheType newCacheType) {
 		EclipseLinkCachingEntity old = this.setEntityCacheTypeOf(entityName, newCacheType);
 		this.putEnumValue(ECLIPSELINK_CACHE_TYPE, entityName, newCacheType, false);
 		this.firePropertyChanged(CACHE_TYPE_PROPERTY, old, this.getEntityNamed(entityName));
@@ -239,7 +239,7 @@ public class EclipseLinkCaching
 		}
 	}
 	
-	public CacheType getDefaultCacheType() {
+	public EclipseLinkCacheType getDefaultCacheType() {
 		return (this.cacheTypeDefault == null) ? DEFAULT_CACHE_TYPE : this.cacheTypeDefault;
 	}
 
@@ -292,25 +292,25 @@ public class EclipseLinkCaching
 	}
 
 	// ********** CacheTypeDefault **********
-	public CacheType getCacheTypeDefault() {
+	public EclipseLinkCacheType getCacheTypeDefault() {
 		return this.cacheTypeDefault;
 	}
 
-	public void setCacheTypeDefault(CacheType newCacheTypeDefault) {
-		CacheType old = this.cacheTypeDefault;
+	public void setCacheTypeDefault(EclipseLinkCacheType newCacheTypeDefault) {
+		EclipseLinkCacheType old = this.cacheTypeDefault;
 		this.cacheTypeDefault = newCacheTypeDefault;
 		this.putProperty(CACHE_TYPE_DEFAULT_PROPERTY, newCacheTypeDefault);
 		this.firePropertyChanged(CACHE_TYPE_DEFAULT_PROPERTY, old, newCacheTypeDefault);
 	}
 
 	private void cacheTypeDefaultChanged(String stringValue) {
-		CacheType newValue = getEnumValueOf(stringValue, CacheType.values());
-		CacheType old = this.cacheTypeDefault;
+		EclipseLinkCacheType newValue = getEnumValueOf(stringValue, EclipseLinkCacheType.values());
+		EclipseLinkCacheType old = this.cacheTypeDefault;
 		this.cacheTypeDefault = newValue;
 		this.firePropertyChanged(CACHE_TYPE_DEFAULT_PROPERTY, old, newValue);
 	}
 
-	public CacheType getDefaultCacheTypeDefault() {
+	public EclipseLinkCacheType getDefaultCacheTypeDefault() {
 		return DEFAULT_CACHE_TYPE_DEFAULT;
 	}
 
@@ -394,14 +394,14 @@ public class EclipseLinkCaching
 				//this is a property that is currently being added, we don't need to deal with it until the value is set
 				 return null;
 			 }
-		CacheType newValue = getEnumValueOf(stringValue, CacheType.values());
+		EclipseLinkCacheType newValue = getEnumValueOf(stringValue, EclipseLinkCacheType.values());
 		return this.setEntityCacheTypeOf(entityName, newValue);
 	}
 
 	/**
 	 * Returns the old Entity
 	 */
-	private EclipseLinkCachingEntity setEntityCacheTypeOf(String entityName, CacheType cacheType) {
+	private EclipseLinkCachingEntity setEntityCacheTypeOf(String entityName, EclipseLinkCacheType cacheType) {
 		EclipseLinkCachingEntity entity = (this.entityExists(entityName)) ?
 						this.getEntityNamed(entityName) :
 						this.addEntity(entityName);
@@ -411,7 +411,7 @@ public class EclipseLinkCaching
 	/**
 	 * Returns the old Entity
 	 */
-	private EclipseLinkCachingEntity setEntityCacheTypeOf(EclipseLinkCachingEntity entity, CacheType cacheType) {
+	private EclipseLinkCachingEntity setEntityCacheTypeOf(EclipseLinkCachingEntity entity, EclipseLinkCacheType cacheType) {
 		if(entity == null) {
 			throw new IllegalArgumentException();
 		}

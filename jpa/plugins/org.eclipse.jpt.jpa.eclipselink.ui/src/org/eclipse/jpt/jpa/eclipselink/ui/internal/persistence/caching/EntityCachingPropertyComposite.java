@@ -27,7 +27,7 @@ import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CacheType;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCachingEntity;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
@@ -83,7 +83,7 @@ public class EntityCachingPropertyComposite extends Pane<EclipseLinkCachingEntit
 		sharedCacheCheckBox.getCheckBox().setLayoutData(gridData);
 	}
 
-	private class CacheTypeComboViewer extends EnumFormComboViewer<EclipseLinkCachingEntity, CacheType> {
+	private class CacheTypeComboViewer extends EnumFormComboViewer<EclipseLinkCachingEntity, EclipseLinkCacheType> {
 
 		private CacheTypeComboViewer(Composite parent) {
 			super(EntityCachingPropertyComposite.this, parent);
@@ -104,11 +104,11 @@ public class EntityCachingPropertyComposite extends Pane<EclipseLinkCachingEntit
 			};
 		}
 
-		private PropertyValueModel<CacheType> buildDefaultCacheTypeHolder() {
-			return new PropertyAspectAdapter<EclipseLinkCaching, CacheType>(buildCachingHolder(), EclipseLinkCaching.CACHE_TYPE_DEFAULT_PROPERTY) {
+		private PropertyValueModel<EclipseLinkCacheType> buildDefaultCacheTypeHolder() {
+			return new PropertyAspectAdapter<EclipseLinkCaching, EclipseLinkCacheType>(buildCachingHolder(), EclipseLinkCaching.CACHE_TYPE_DEFAULT_PROPERTY) {
 				@Override
-				protected CacheType buildValue_() {
-					CacheType cacheType = subject.getCacheTypeDefault();
+				protected EclipseLinkCacheType buildValue_() {
+					EclipseLinkCacheType cacheType = subject.getCacheTypeDefault();
 					if (cacheType == null) {
 						cacheType = subject.getDefaultCacheTypeDefault();
 					}
@@ -134,17 +134,17 @@ public class EntityCachingPropertyComposite extends Pane<EclipseLinkCachingEntit
 		}
 
 		@Override
-		protected CacheType[] getChoices() {
-			return CacheType.values();
+		protected EclipseLinkCacheType[] getChoices() {
+			return EclipseLinkCacheType.values();
 		}
 
 		@Override
-		protected CacheType getDefaultValue() {
+		protected EclipseLinkCacheType getDefaultValue() {
 			return getSubjectParent().getDefaultCacheType();
 		}
 
 		@Override
-		protected String displayString(CacheType value) {
+		protected String displayString(EclipseLinkCacheType value) {
 			switch (value) {
 				case full :
 					return JptJpaEclipseLinkUiMessages.CACHE_TYPE_COMPOSITE_FULL;
@@ -171,7 +171,7 @@ public class EntityCachingPropertyComposite extends Pane<EclipseLinkCachingEntit
 		}
 
 		@Override
-		protected CacheType getValue() {
+		protected EclipseLinkCacheType getValue() {
 			return getSubjectParent().getCacheTypeOf(getSubjectName());
 		}
 
@@ -179,7 +179,7 @@ public class EntityCachingPropertyComposite extends Pane<EclipseLinkCachingEntit
 		protected void initialize() {
 			super.initialize();
 
-			PropertyValueModel<CacheType> defaultCacheTypeHolder =
+			PropertyValueModel<EclipseLinkCacheType> defaultCacheTypeHolder =
 				buildDefaultCacheTypeHolder();
 
 			defaultCacheTypeHolder.addPropertyChangeListener(
@@ -189,7 +189,7 @@ public class EntityCachingPropertyComposite extends Pane<EclipseLinkCachingEntit
 		}
 
 		@Override
-		protected void setValue(CacheType value) {
+		protected void setValue(EclipseLinkCacheType value) {
 			getSubjectParent().setCacheTypeOf(getSubjectName(), value);
 		}
 

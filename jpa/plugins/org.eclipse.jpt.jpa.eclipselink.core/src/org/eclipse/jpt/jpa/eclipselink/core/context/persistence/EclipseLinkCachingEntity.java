@@ -28,7 +28,7 @@ public class EclipseLinkCachingEntity extends AbstractModel implements Cloneable
 	public static final String SHARED_CACHE_PROPERTY = EclipseLinkCaching.SHARED_CACHE_PROPERTY;
 
 	// ********** EclipseLink properties **********
-	private CacheType cacheType;
+	private EclipseLinkCacheType cacheType;
 	private Integer cacheSize;
 	private Boolean cacheIsShared;
 
@@ -107,12 +107,12 @@ public class EclipseLinkCachingEntity extends AbstractModel implements Cloneable
 	}
 
 	// ********** cacheType **********
-	public CacheType getCacheType() {
+	public EclipseLinkCacheType getCacheType() {
 		return this.cacheType;
 	}
 
-	public void setCacheType(CacheType cacheType) {
-		CacheType old = this.cacheType;
+	public void setCacheType(EclipseLinkCacheType cacheType) {
+		EclipseLinkCacheType old = this.cacheType;
 		this.cacheType = cacheType;
 		this.firePropertyChanged(CACHE_TYPE_PROPERTY, old, cacheType);
 	}

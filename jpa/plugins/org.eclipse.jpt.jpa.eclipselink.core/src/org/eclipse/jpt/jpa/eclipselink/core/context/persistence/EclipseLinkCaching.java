@@ -17,13 +17,13 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
  */
 public interface EclipseLinkCaching extends PersistenceUnitProperties
 {
-	CacheType getDefaultCacheTypeDefault();
-	CacheType getCacheTypeDefault();
-	void setCacheTypeDefault(CacheType cacheTypeDefault);
+	EclipseLinkCacheType getDefaultCacheTypeDefault();
+	EclipseLinkCacheType getCacheTypeDefault();
+	void setCacheTypeDefault(EclipseLinkCacheType cacheTypeDefault);
 		static final String CACHE_TYPE_DEFAULT_PROPERTY = "cacheTypeDefault"; //$NON-NLS-1$
 		// EclipseLink key string
 		static final String ECLIPSELINK_CACHE_TYPE_DEFAULT = "eclipselink.cache.type.default"; //$NON-NLS-1$
-		static final CacheType DEFAULT_CACHE_TYPE_DEFAULT = CacheType.soft_weak;
+		static final EclipseLinkCacheType DEFAULT_CACHE_TYPE_DEFAULT = EclipseLinkCacheType.soft_weak;
 
 	Integer getDefaultCacheSizeDefault();
 	Integer getCacheSizeDefault();
@@ -42,13 +42,13 @@ public interface EclipseLinkCaching extends PersistenceUnitProperties
 		static final Boolean DEFAULT_SHARED_CACHE_DEFAULT = Boolean.TRUE;
 
 
-	CacheType getDefaultCacheType();
-	CacheType getCacheTypeOf(String entityName);
-	void setCacheTypeOf(String entityName, CacheType cacheType);
+	EclipseLinkCacheType getDefaultCacheType();
+	EclipseLinkCacheType getCacheTypeOf(String entityName);
+	void setCacheTypeOf(String entityName, EclipseLinkCacheType cacheType);
 		static final String CACHE_TYPE_PROPERTY = "cacheType"; //$NON-NLS-1$
 		// EclipseLink key string
 		static final String ECLIPSELINK_CACHE_TYPE = "eclipselink.cache.type."; //$NON-NLS-1$
-		static final CacheType DEFAULT_CACHE_TYPE = CacheType.soft_weak;
+		static final EclipseLinkCacheType DEFAULT_CACHE_TYPE = EclipseLinkCacheType.soft_weak;
 
 	Integer getDefaultCacheSize();
 	Integer getCacheSizeOf(String entityName);

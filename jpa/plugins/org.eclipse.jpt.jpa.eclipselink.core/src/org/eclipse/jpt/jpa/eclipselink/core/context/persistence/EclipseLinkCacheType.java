@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 /**
  *  CacheType
  */
-public enum CacheType implements PersistenceXmlEnumValue {
+public enum EclipseLinkCacheType implements PersistenceXmlEnumValue {
 	soft_weak("SoftWeak"),  //$NON-NLS-1$
 	hard_weak("HardWeak"),  //$NON-NLS-1$
 	weak("Weak"), //$NON-NLS-1$
@@ -24,7 +24,7 @@ public enum CacheType implements PersistenceXmlEnumValue {
 
 	private final String propertyValue;
 
-	CacheType(String propertyValue) {
+	EclipseLinkCacheType(String propertyValue) {
 		this.propertyValue = propertyValue;
 	}
 
