@@ -12,13 +12,13 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence;
 import java.util.Map;
 
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.GeneralProperties;
 
 /**
  *  EclipseLinkGeneralProperties
  */
-public class EclipseLinkGeneralProperties extends EclipseLinkPersistenceUnitProperties
-	implements GeneralProperties
+public class EclipseLinkGeneralProperties
+	extends EclipseLinkPersistenceUnitProperties
+	implements org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkGeneralProperties
 {
 	// ********** EclipseLink properties **********
 	private Boolean excludeEclipselinkOrm;

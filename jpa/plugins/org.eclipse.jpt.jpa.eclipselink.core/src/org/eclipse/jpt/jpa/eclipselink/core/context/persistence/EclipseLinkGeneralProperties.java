@@ -14,7 +14,8 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 /**
  *  GeneralProperties
  */
-public interface GeneralProperties extends PersistenceUnitProperties
+public interface EclipseLinkGeneralProperties
+	extends PersistenceUnitProperties
 {
 
 	Boolean getDefaultExcludeEclipselinkOrm();

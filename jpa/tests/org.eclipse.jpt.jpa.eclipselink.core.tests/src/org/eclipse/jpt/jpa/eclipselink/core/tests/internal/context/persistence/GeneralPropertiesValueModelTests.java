@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.GeneralProperties;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkGeneralProperties;
 
 /**
  * GeneralPropertyValueModelTests
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.GeneralPropertie
 @SuppressWarnings("nls")
 public class GeneralPropertiesValueModelTests extends EclipseLinkPersistenceUnitTestCase
 {
-	private GeneralProperties generalProperty;
+	private EclipseLinkGeneralProperties generalProperty;
 
 	private ModifiablePropertyValueModel<Boolean> excludeEclipselinkOrmHolder;
 	private PropertyChangeListener excludeEclipselinkOrmListener;
@@ -41,7 +41,7 @@ public class GeneralPropertiesValueModelTests extends EclipseLinkPersistenceUnit
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.generalProperty = this.subject.getGeneralProperties(); // Subject
-		PropertyValueModel<GeneralProperties> generalPropertyHolder = new SimplePropertyValueModel<GeneralProperties>(this.generalProperty);
+		PropertyValueModel<EclipseLinkGeneralProperties> generalPropertyHolder = new SimplePropertyValueModel<EclipseLinkGeneralProperties>(this.generalProperty);
 		
 		this.excludeEclipselinkOrmHolder = this.buildExcludeEclipselinkOrmAA(generalPropertyHolder);
 		this.excludeEclipselinkOrmListener = this.buildExcludeEclipselinkOrmChangeListener();
@@ -52,13 +52,13 @@ public class GeneralPropertiesValueModelTests extends EclipseLinkPersistenceUnit
 	public void testHasListeners() {
 		AbstractModel subjectGeneralProperty = (AbstractModel) this.generalProperty; // Subject
 		
-		PropertyAspectAdapter<GeneralProperties, Boolean> excludeEclipselinkOrmAA = 
-			(PropertyAspectAdapter<GeneralProperties, Boolean>) this.excludeEclipselinkOrmHolder;
+		PropertyAspectAdapter<EclipseLinkGeneralProperties, Boolean> excludeEclipselinkOrmAA = 
+			(PropertyAspectAdapter<EclipseLinkGeneralProperties, Boolean>) this.excludeEclipselinkOrmHolder;
 		assertTrue(excludeEclipselinkOrmAA.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
-		assertTrue(subjectGeneralProperty.hasAnyPropertyChangeListeners(GeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY));
+		assertTrue(subjectGeneralProperty.hasAnyPropertyChangeListeners(EclipseLinkGeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY));
 		
 		excludeEclipselinkOrmAA.removePropertyChangeListener(PropertyValueModel.VALUE, this.excludeEclipselinkOrmListener);
-		assertFalse(subjectGeneralProperty.hasAnyPropertyChangeListeners(GeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY));
+		assertFalse(subjectGeneralProperty.hasAnyPropertyChangeListeners(EclipseLinkGeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY));
 		assertFalse(excludeEclipselinkOrmAA.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 	}
 
@@ -68,7 +68,7 @@ public class GeneralPropertiesValueModelTests extends EclipseLinkPersistenceUnit
 	@Override
 	protected void populatePu() {
 		this.persistenceUnitSetProperty(
-			GeneralProperties.ECLIPSELINK_EXCLUDE_ECLIPSELINK_ORM, 
+			EclipseLinkGeneralProperties.ECLIPSELINK_EXCLUDE_ECLIPSELINK_ORM, 
 			EXCLUDE_ECLIPSELINK_ORM_TEST_VALUE);
 		return;
 	}
@@ -79,8 +79,8 @@ public class GeneralPropertiesValueModelTests extends EclipseLinkPersistenceUnit
 	}
 
 	// ****** ExcludeEclipselinkOrm *******
-	private ModifiablePropertyValueModel<Boolean> buildExcludeEclipselinkOrmAA(PropertyValueModel<GeneralProperties> subjectHolder) {
-		return new PropertyAspectAdapter<GeneralProperties, Boolean>(subjectHolder, GeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY) {
+	private ModifiablePropertyValueModel<Boolean> buildExcludeEclipselinkOrmAA(PropertyValueModel<EclipseLinkGeneralProperties> subjectHolder) {
+		return new PropertyAspectAdapter<EclipseLinkGeneralProperties, Boolean>(subjectHolder, EclipseLinkGeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getExcludeEclipselinkOrm();
@@ -105,7 +105,7 @@ public class GeneralPropertiesValueModelTests extends EclipseLinkPersistenceUnit
 	public void testValue() {
 		// ****** ExcludeEclipselinkOrm ******* 
 		this.verifyExcludeEclipselinkOrmAAValue(EXCLUDE_ECLIPSELINK_ORM_TEST_VALUE);
-		assertEquals(GeneralProperties.DEFAULT_EXCLUDE_ECLIPSELINK_ORM, this.generalProperty.getDefaultExcludeEclipselinkOrm());
+		assertEquals(EclipseLinkGeneralProperties.DEFAULT_EXCLUDE_ECLIPSELINK_ORM, this.generalProperty.getDefaultExcludeEclipselinkOrm());
 	}
 
 	public void testSetValue() throws Exception {
@@ -129,7 +129,7 @@ public class GeneralPropertiesValueModelTests extends EclipseLinkPersistenceUnit
 		this.verifyExcludeEclipselinkOrmAAValue(null);
 		assertNotNull(this.excludeEclipselinkOrmEvent);
 		// testing PU properties
-		this.verifyPuHasNotProperty(GeneralProperties.ECLIPSELINK_EXCLUDE_ECLIPSELINK_ORM, notDeleted);
+		this.verifyPuHasNotProperty(EclipseLinkGeneralProperties.ECLIPSELINK_EXCLUDE_ECLIPSELINK_ORM, notDeleted);
 	}
 
 	// ****** convenience methods *******
@@ -145,7 +145,7 @@ public class GeneralPropertiesValueModelTests extends EclipseLinkPersistenceUnit
 			testValue, 
 			this.generalProperty.getExcludeEclipselinkOrm(), 
 			this.excludeEclipselinkOrmHolder, 
-			GeneralProperties.ECLIPSELINK_EXCLUDE_ECLIPSELINK_ORM);
+			EclipseLinkGeneralProperties.ECLIPSELINK_EXCLUDE_ECLIPSELINK_ORM);
 	}
 
 	// ********** get/set property **********

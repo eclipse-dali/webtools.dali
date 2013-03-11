@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.GeneralProperties;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkGeneralProperties;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitMappingFilesComposite;
@@ -45,19 +45,19 @@ public class EclipseLinkPersistenceUnitMappingFilesComposite
 		);
 	}
 	
-	protected PropertyValueModel<GeneralProperties> buildGeneralPropertiesHolder() {
-		return new TransformationPropertyValueModel<PersistenceUnit, GeneralProperties>(getSubjectHolder()) {
+	protected PropertyValueModel<EclipseLinkGeneralProperties> buildGeneralPropertiesHolder() {
+		return new TransformationPropertyValueModel<PersistenceUnit, EclipseLinkGeneralProperties>(getSubjectHolder()) {
 			@Override
-			protected GeneralProperties transform_(PersistenceUnit persistenceUnit) {
+			protected EclipseLinkGeneralProperties transform_(PersistenceUnit persistenceUnit) {
 				return ((EclipseLinkPersistenceUnit) persistenceUnit).getGeneralProperties();
 			}
 		};
 	}
 	
 	private ModifiablePropertyValueModel<Boolean> buildExcludeEclipselinkOrmHolder() {
-		return new PropertyAspectAdapter<GeneralProperties, Boolean>(
+		return new PropertyAspectAdapter<EclipseLinkGeneralProperties, Boolean>(
 			buildGeneralPropertiesHolder(),
-			GeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY)
+			EclipseLinkGeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -85,9 +85,9 @@ public class EclipseLinkPersistenceUnitMappingFilesComposite
 	}	
 	
 	private PropertyValueModel<Boolean> buildDefaultExcludeEclipselinkOrmHolder() {
-		return new PropertyAspectAdapter<GeneralProperties, Boolean>(
+		return new PropertyAspectAdapter<EclipseLinkGeneralProperties, Boolean>(
 			buildGeneralPropertiesHolder(),
-			GeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY)
+			EclipseLinkGeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {

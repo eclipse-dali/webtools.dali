@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.persistence;
 
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.GeneralProperties;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkGeneralProperties;
 
 /**
  *  GeneralAdapterTests
@@ -19,9 +19,9 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.GeneralPropertie
 @SuppressWarnings("nls")
 public class GeneralPropertiesAdapterTests extends EclipseLinkPersistenceUnitTestCase
 {
-	private GeneralProperties generalProperties;
+	private EclipseLinkGeneralProperties generalProperties;
 
-	public static final String EXCLUDE_ECLIPSELINK_ORM_KEY = GeneralProperties.ECLIPSELINK_EXCLUDE_ECLIPSELINK_ORM;
+	public static final String EXCLUDE_ECLIPSELINK_ORM_KEY = EclipseLinkGeneralProperties.ECLIPSELINK_EXCLUDE_ECLIPSELINK_ORM;
 	public static final Boolean EXCLUDE_ECLIPSELINK_ORM_TEST_VALUE = false;
 	public static final Boolean EXCLUDE_ECLIPSELINK_ORM_TEST_VALUE_2 = ! EXCLUDE_ECLIPSELINK_ORM_TEST_VALUE;
 
@@ -36,7 +36,7 @@ public class GeneralPropertiesAdapterTests extends EclipseLinkPersistenceUnitTes
 		this.generalProperties = this.subject.getGeneralProperties();
 		PropertyChangeListener propertyChangeListener = this.buildPropertyChangeListener();
 		
-		this.generalProperties.addPropertyChangeListener(GeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY, propertyChangeListener);
+		this.generalProperties.addPropertyChangeListener(EclipseLinkGeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY, propertyChangeListener);
 
 		this.clearEvent();
 	}
@@ -82,7 +82,7 @@ public class GeneralPropertiesAdapterTests extends EclipseLinkPersistenceUnitTes
 	@Override
 	protected Object getProperty(String propertyName) throws NoSuchFieldException {
 		Object modelValue = null;
-		if (propertyName.equals(GeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY))
+		if (propertyName.equals(EclipseLinkGeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY))
 			modelValue = this.generalProperties.getExcludeEclipselinkOrm();
 		else
 			this.throwMissingDefinition("getProperty", propertyName);
@@ -91,7 +91,7 @@ public class GeneralPropertiesAdapterTests extends EclipseLinkPersistenceUnitTes
 
 	@Override
 	protected void setProperty(String propertyName, Object newValue) throws Exception {
-		if (propertyName.equals(GeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY))
+		if (propertyName.equals(EclipseLinkGeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY))
 			this.generalProperties.setExcludeEclipselinkOrm((Boolean) newValue);
 		else
 			this.throwMissingDefinition("setProperty", propertyName);

@@ -111,7 +111,7 @@ public class EclipseLinkPersistenceUnit
 	protected final MappingFileRef potentialImpliedEclipseLinkMappingFileRef;
 
 
-	private/*final*/ GeneralProperties generalProperties;
+	private/*final*/ EclipseLinkGeneralProperties generalProperties;
 	private Customization customization;
 	private Caching caching;
 	private EclipseLinkLogging logging;
@@ -166,7 +166,7 @@ public class EclipseLinkPersistenceUnit
 
 	// ********** properties **********
 
-	public GeneralProperties getGeneralProperties() {
+	public EclipseLinkGeneralProperties getGeneralProperties() {
 		return this.generalProperties;
 	}
 
@@ -223,7 +223,7 @@ public class EclipseLinkPersistenceUnit
 				this.eclipseLinkOptions1_0;
 	}
 
-	protected GeneralProperties buildEclipseLinkGeneralProperties() {
+	protected EclipseLinkGeneralProperties buildEclipseLinkGeneralProperties() {
 		return new EclipseLinkGeneralProperties(this);
 	}
 
