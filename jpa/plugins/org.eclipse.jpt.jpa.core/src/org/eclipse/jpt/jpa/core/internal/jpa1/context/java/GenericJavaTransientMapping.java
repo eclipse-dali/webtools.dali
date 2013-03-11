@@ -13,7 +13,7 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaAttributeMapping;
-import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
+import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField2_0;
 import org.eclipse.jpt.jpa.core.resource.java.TransientAnnotation;
 
 /**
@@ -40,7 +40,7 @@ public class GenericJavaTransientMapping
 	// ********** metamodel **********  
 
 	@Override
-	public MetamodelField getMetamodelField() {
+	public MetamodelField2_0 getMetamodelField() {
 		return null;
 	}
 }

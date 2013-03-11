@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTransientMapping;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmAttributeMapping;
-import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
+import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.Attributes;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTransient;
 
@@ -52,7 +52,7 @@ public class GenericOrmTransientMapping
 	// ********** metamodel **********
 
 	@Override
-	public MetamodelField getMetamodelField() {
+	public MetamodelField2_0 getMetamodelField() {
 		return null;
 	}
 }

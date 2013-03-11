@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaCascade;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
+import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.RelationshipMapping2_0;
 import org.eclipse.jpt.jpa.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
@@ -301,7 +301,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 
 	@Override
 	public String getMetamodelTypeName() {
-		return (this.fullyQualifiedTargetEntity != null) ? this.fullyQualifiedTargetEntity : MetamodelField.DEFAULT_TYPE_NAME;
+		return (this.fullyQualifiedTargetEntity != null) ? this.fullyQualifiedTargetEntity : MetamodelField2_0.DEFAULT_TYPE_NAME;
 	}
 
 

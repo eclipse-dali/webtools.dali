@@ -33,7 +33,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaAttributeMappi
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.NamedColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.NullJavaConverter;
-import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
+import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
@@ -242,7 +242,7 @@ public class JavaEclipseLinkArrayMapping2_3
 	public String getMetamodelTypeName() {
 		//TODO should get this from targetClass, also need metamodel support for OrmEclipseLinkArrayMapping2_3 bug 385638
 		String targetTypeName = this.getPersistentAttribute().getMultiReferenceTargetTypeName();
-		return (targetTypeName != null) ? targetTypeName : MetamodelField.DEFAULT_TYPE_NAME;
+		return (targetTypeName != null) ? targetTypeName : MetamodelField2_0.DEFAULT_TYPE_NAME;
 	}
 
 

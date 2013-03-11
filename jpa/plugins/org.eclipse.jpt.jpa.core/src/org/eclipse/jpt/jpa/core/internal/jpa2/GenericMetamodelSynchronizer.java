@@ -33,7 +33,7 @@ import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2.JpaMetamodelSynchronizer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
+import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.GeneratedAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
@@ -358,13 +358,13 @@ public class GenericMetamodelSynchronizer
 	}
 
 	protected void printAttributeMappingOn(AttributeMapping attributeMapping, BodySourceWriter pw) {
-		MetamodelField field = ((AttributeMapping2_0) attributeMapping).getMetamodelField();
+		MetamodelField2_0 field = ((AttributeMapping2_0) attributeMapping).getMetamodelField();
 		if (field != null) {
 			this.printFieldOn(field, pw);
 		}
 	}
 
-	protected void printFieldOn(MetamodelField field, BodySourceWriter pw) {
+	protected void printFieldOn(MetamodelField2_0 field, BodySourceWriter pw) {
 		for (String modifier : field.getModifiers()) {
 			pw.print(modifier);
 			pw.print(' ');

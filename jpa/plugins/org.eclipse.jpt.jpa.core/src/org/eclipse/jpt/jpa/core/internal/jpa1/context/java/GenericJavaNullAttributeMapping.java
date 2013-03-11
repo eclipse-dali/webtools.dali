@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaAttributeMapping;
-import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
+import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField2_0;
 
 /**
  * null mapping used when an attribute's default mapping cannot be determined
@@ -43,7 +43,7 @@ public class GenericJavaNullAttributeMapping
 	// ********** metamodel **********  
 
 	@Override
-	public MetamodelField getMetamodelField() {
+	public MetamodelField2_0 getMetamodelField() {
 		return null;
 	}
 }

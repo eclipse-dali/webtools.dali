@@ -32,7 +32,7 @@ public interface AttributeMapping2_0
 	 * Return <code>null</code> if the mapping is not to be part of the
 	 * Canonical Metamodel.
 	 */
-	MetamodelField getMetamodelField();
+	MetamodelField2_0 getMetamodelField();
 
 	/**
 	 * Return the name of the mapping's type as used in the Canonical Metamodel.

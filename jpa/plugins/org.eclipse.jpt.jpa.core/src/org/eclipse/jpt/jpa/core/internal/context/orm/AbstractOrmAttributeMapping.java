@@ -50,7 +50,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.SimpleMetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
+import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
@@ -396,13 +396,13 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 
 	// ********** metamodel **********
 
-	public MetamodelField getMetamodelField() {
+	public MetamodelField2_0 getMetamodelField() {
 		// if we don't have a name we can't build a metamodel field...
 		String metamodelFieldName = this.getMetamodelFieldName();
 		if(metamodelFieldName == null) {
 			return null;
 		}
-		MetamodelField result = null;
+		MetamodelField2_0 result = null;
 		try {
 			result = new SimpleMetamodelField(
 				this.getMetamodelFieldModifiers(),

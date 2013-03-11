@@ -33,7 +33,7 @@ import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaNullAttributeMapping;
-import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
+import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkPersistentAttribute;
@@ -267,7 +267,7 @@ public class EclipseLinkVirtualJavaPersistentAttribute
 	public String getMetamodelTypeName() {
 		String typeName = this.getTypeName();
 		if (typeName == null) {
-			return MetamodelField.DEFAULT_TYPE_NAME;
+			return MetamodelField2_0.DEFAULT_TYPE_NAME;
 		}
 		if (ClassNameTools.isPrimitive(typeName)) {
 			return ClassNameTools.primitiveWrapperClassName(typeName);  // ???

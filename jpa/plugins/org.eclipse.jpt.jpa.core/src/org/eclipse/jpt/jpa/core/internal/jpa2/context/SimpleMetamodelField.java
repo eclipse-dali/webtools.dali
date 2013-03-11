@@ -10,13 +10,13 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.context;
 
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
+import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField2_0;
 
 /**
  * Straightforward implementation.
  */
 public class SimpleMetamodelField
-	implements MetamodelField
+	implements MetamodelField2_0
 {
 	protected final Iterable<String> modifiers;
 	protected final String typeName;
@@ -74,10 +74,10 @@ public class SimpleMetamodelField
 
 	@Override
 	public boolean equals(Object o) {
-		if ( ! (o instanceof MetamodelField)) {
+		if ( ! (o instanceof MetamodelField2_0)) {
 			return false;
 		}
-		MetamodelField other = (MetamodelField) o;
+		MetamodelField2_0 other = (MetamodelField2_0) o;
 		return IterableTools.elementsAreEqual(this.getModifiers(), other.getModifiers()) &&
 					this.getTypeName().equals(other.getTypeName()) &&
 					IterableTools.elementsAreEqual(this.getTypeArgumentNames(), other.getTypeArgumentNames()) &&

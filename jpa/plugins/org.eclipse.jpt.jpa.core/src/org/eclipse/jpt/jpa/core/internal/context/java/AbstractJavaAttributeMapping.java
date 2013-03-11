@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.SimpleMetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
+import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
@@ -241,7 +241,7 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 
 	// ********** metamodel **********
 
-	public MetamodelField getMetamodelField() {
+	public MetamodelField2_0 getMetamodelField() {
 		return new SimpleMetamodelField(
 				this.getMetamodelFieldModifiers(),
 				this.getMetamodelFieldTypeName(),

@@ -54,7 +54,7 @@ import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
+import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField2_0;
 import org.eclipse.jpt.jpa.db.Table;
 
 /**
@@ -410,15 +410,15 @@ public final class MappingTools {
 		String mapKey = mapping.getMapKey();
 		if ((mapKey == null) || (targetType == null)) {
 			String mapKeyClass = mapping.getFullyQualifiedMapKeyClass();
-			return mapKeyClass != null ? mapKeyClass : MetamodelField.DEFAULT_TYPE_NAME;
+			return mapKeyClass != null ? mapKeyClass : MetamodelField2_0.DEFAULT_TYPE_NAME;
 		}
 		PersistentAttribute mapKeyAttribute = targetType.resolveAttribute(mapKey);
 		if (mapKeyAttribute == null) {
-			return MetamodelField.DEFAULT_TYPE_NAME;
+			return MetamodelField2_0.DEFAULT_TYPE_NAME;
 		}
 		AttributeMapping2_0 mapKeyMapping = (AttributeMapping2_0) mapKeyAttribute.getMapping();
 		if (mapKeyMapping == null) {
-			return MetamodelField.DEFAULT_TYPE_NAME;
+			return MetamodelField2_0.DEFAULT_TYPE_NAME;
 		}
 		return mapKeyMapping.getMetamodelTypeName();
 	}

@@ -89,7 +89,7 @@ import org.eclipse.jpt.jpa.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ManyToOneRelationship2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
+import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAssociationOverrideContainer2_0;
@@ -1419,7 +1419,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 
 	@Override
 	public String getMetamodelTypeName() {
-		return (this.fullyQualifiedTargetClass != null) ? this.fullyQualifiedTargetClass : MetamodelField.DEFAULT_TYPE_NAME;
+		return (this.fullyQualifiedTargetClass != null) ? this.fullyQualifiedTargetClass : MetamodelField2_0.DEFAULT_TYPE_NAME;
 	}
 
 	@Override

@@ -40,7 +40,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentType;
-import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
+import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAccessHolder;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
@@ -551,7 +551,7 @@ public abstract class AbstractOrmPersistentAttribute
 		SpecifiedPersistentAttribute2_0 javaAttribute = (SpecifiedPersistentAttribute2_0) this.javaPersistentAttribute;
 		return (javaAttribute != null) ?
 				javaAttribute.getMetamodelTypeName() :
-				MetamodelField.DEFAULT_TYPE_NAME;
+				MetamodelField2_0.DEFAULT_TYPE_NAME;
 	}
 
 	protected JavaSpecifiedPersistentAttribute.JpaContainerDefinition getJpaContainerDefinition() {

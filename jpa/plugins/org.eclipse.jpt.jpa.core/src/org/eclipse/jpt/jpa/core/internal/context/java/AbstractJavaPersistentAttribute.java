@@ -39,7 +39,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
-import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
+import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
@@ -689,7 +689,7 @@ public abstract class AbstractJavaPersistentAttribute
 	public String getMetamodelTypeName() {
 		String typeName = this.getTypeName();
 		if (typeName == null) {
-			return MetamodelField.DEFAULT_TYPE_NAME;
+			return MetamodelField2_0.DEFAULT_TYPE_NAME;
 		}
 		if (ClassNameTools.isPrimitive(typeName)) {
 			return ClassNameTools.primitiveWrapperClassName(typeName);  // ???
