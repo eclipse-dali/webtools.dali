@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomization;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.osgi.util.NLS;
@@ -33,7 +33,7 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 
-public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Customization>
+public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends EclipseLinkCustomization>
 	extends Pane<T>
 {
 	public EclipseLinkPersistenceUnitCustomizationEditorPage(
@@ -156,7 +156,7 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Customi
 	//********* validation only ***********
 
 	private ModifiablePropertyValueModel<Boolean> buildValidationOnlyModel() {
-		return new PropertyAspectAdapter<Customization, Boolean>(getSubjectHolder(), Customization.VALIDATION_ONLY_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(getSubjectHolder(), EclipseLinkCustomization.VALIDATION_ONLY_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getValidationOnly();
@@ -183,9 +183,9 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Customi
 	}
 
 	private PropertyValueModel<Boolean> buildDefaultValidationOnlyModel() {
-		return new PropertyAspectAdapter<Customization, Boolean>(
+		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(
 			getSubjectHolder(),
-			Customization.VALIDATION_ONLY_PROPERTY)
+			EclipseLinkCustomization.VALIDATION_ONLY_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -201,7 +201,7 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Customi
 	//********* validate schema ***********
 
 	private ModifiablePropertyValueModel<Boolean> buildValidateSchemaModel() {
-		return new PropertyAspectAdapter<Customization, Boolean>(getSubjectHolder(), Customization.VALIDATE_SCHEMA_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(getSubjectHolder(), EclipseLinkCustomization.VALIDATE_SCHEMA_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getValidateSchema();
@@ -228,9 +228,9 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Customi
 	}
 
 	private PropertyValueModel<Boolean> buildDefaultValidateSchemaModel() {
-		return new PropertyAspectAdapter<Customization, Boolean>(
+		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(
 			getSubjectHolder(),
-			Customization.VALIDATE_SCHEMA_PROPERTY)
+			EclipseLinkCustomization.VALIDATE_SCHEMA_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -246,7 +246,7 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Customi
 	//********* throw exceptions ***********
 
 	private ModifiablePropertyValueModel<Boolean> buildThrowExceptionsHolder() {
-		return new PropertyAspectAdapter<Customization, Boolean>(getSubjectHolder(), Customization.THROW_EXCEPTIONS_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(getSubjectHolder(), EclipseLinkCustomization.THROW_EXCEPTIONS_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getThrowExceptions();
@@ -272,9 +272,9 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Customi
 	}
 
 	private PropertyValueModel<Boolean> buildDefaultThrowExceptionsModel() {
-		return new PropertyAspectAdapter<Customization, Boolean>(
+		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(
 			getSubjectHolder(),
-			Customization.THROW_EXCEPTIONS_PROPERTY)
+			EclipseLinkCustomization.THROW_EXCEPTIONS_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -289,14 +289,14 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Customi
 
 	//********* exception handler ***********
 
-	private ClassChooserPane<Customization> initializeExceptionHandlerClassChooser(Composite container, Hyperlink hyperlink) {
+	private ClassChooserPane<EclipseLinkCustomization> initializeExceptionHandlerClassChooser(Composite container, Hyperlink hyperlink) {
 
-		return new ClassChooserPane<Customization>(this, container, hyperlink) {
+		return new ClassChooserPane<EclipseLinkCustomization>(this, container, hyperlink) {
 
 			@Override
 			protected ModifiablePropertyValueModel<String> buildTextHolder() {
-				return new PropertyAspectAdapter<Customization, String>(
-							this.getSubjectHolder(), Customization.EXCEPTION_HANDLER_PROPERTY) {
+				return new PropertyAspectAdapter<EclipseLinkCustomization, String>(
+							this.getSubjectHolder(), EclipseLinkCustomization.EXCEPTION_HANDLER_PROPERTY) {
 					@Override
 					protected String buildValue_() {
 						return this.subject.getExceptionHandler();
@@ -330,7 +330,7 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Customi
 
 			@Override
 			protected String getSuperInterfaceName() {
-				return Customization.ECLIPSELINK_EXCEPTION_HANDLER_CLASS_NAME;
+				return EclipseLinkCustomization.ECLIPSELINK_EXCEPTION_HANDLER_CLASS_NAME;
 			}
 		};
 	}

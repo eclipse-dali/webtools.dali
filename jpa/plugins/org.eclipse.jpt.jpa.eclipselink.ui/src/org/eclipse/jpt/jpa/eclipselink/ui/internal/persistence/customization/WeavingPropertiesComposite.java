@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkWeaving;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
@@ -29,9 +29,9 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  WeavingPropertiesComposite
  */
-public class WeavingPropertiesComposite extends Pane<Customization>
+public class WeavingPropertiesComposite extends Pane<EclipseLinkCustomization>
 {
-	public WeavingPropertiesComposite(Pane<? extends Customization> subjectHolder,
+	public WeavingPropertiesComposite(Pane<? extends EclipseLinkCustomization> subjectHolder,
 	                                       Composite container) {
 
 		super(subjectHolder, container);
@@ -111,12 +111,12 @@ public class WeavingPropertiesComposite extends Pane<Customization>
 
 	// ********* weaving **********
 
-	private EnumFormComboViewer<Customization, EclipseLinkWeaving> addWeavingCombo(Composite container) {
-		return new EnumFormComboViewer<Customization, EclipseLinkWeaving>(this, container) {
+	private EnumFormComboViewer<EclipseLinkCustomization, EclipseLinkWeaving> addWeavingCombo(Composite container) {
+		return new EnumFormComboViewer<EclipseLinkCustomization, EclipseLinkWeaving>(this, container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(Customization.WEAVING_PROPERTY);
+				propertyNames.add(EclipseLinkCustomization.WEAVING_PROPERTY);
 			}
 
 			@Override
@@ -164,7 +164,7 @@ public class WeavingPropertiesComposite extends Pane<Customization>
 	// ********* weaving lazy **********
 	
 	private ModifiablePropertyValueModel<Boolean> buildWeavingLazyHolder() {
-		return new PropertyAspectAdapter<Customization, Boolean>(getSubjectHolder(), Customization.WEAVING_LAZY_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(getSubjectHolder(), EclipseLinkCustomization.WEAVING_LAZY_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getWeavingLazy();
@@ -191,9 +191,9 @@ public class WeavingPropertiesComposite extends Pane<Customization>
 	}
 	
 	private PropertyValueModel<Boolean> buildDefaultWeavingLazyHolder() {
-		return new PropertyAspectAdapter<Customization, Boolean>(
+		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(
 			getSubjectHolder(),
-			Customization.WEAVING_LAZY_PROPERTY)
+			EclipseLinkCustomization.WEAVING_LAZY_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -209,7 +209,7 @@ public class WeavingPropertiesComposite extends Pane<Customization>
 	// ********* weaving fetch groups **********
 
 	private ModifiablePropertyValueModel<Boolean> buildWeavingFetchGroupsHolder() {
-		return new PropertyAspectAdapter<Customization, Boolean>(getSubjectHolder(), Customization.WEAVING_FETCH_GROUPS_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(getSubjectHolder(), EclipseLinkCustomization.WEAVING_FETCH_GROUPS_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getWeavingFetchGroups();
@@ -236,9 +236,9 @@ public class WeavingPropertiesComposite extends Pane<Customization>
 	}
 	
 	private PropertyValueModel<Boolean> buildDefaultWeavingFetchGroupsHolder() {
-		return new PropertyAspectAdapter<Customization, Boolean>(
+		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(
 			getSubjectHolder(),
-			Customization.WEAVING_FETCH_GROUPS_PROPERTY)
+			EclipseLinkCustomization.WEAVING_FETCH_GROUPS_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -254,7 +254,7 @@ public class WeavingPropertiesComposite extends Pane<Customization>
 	// ********* weaving internal **********
 	
 	private ModifiablePropertyValueModel<Boolean> buildWeavingInternalHolder() {
-		return new PropertyAspectAdapter<Customization, Boolean>(getSubjectHolder(), Customization.WEAVING_INTERNAL_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(getSubjectHolder(), EclipseLinkCustomization.WEAVING_INTERNAL_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getWeavingInternal();
@@ -282,9 +282,9 @@ public class WeavingPropertiesComposite extends Pane<Customization>
 	
 	
 	private PropertyValueModel<Boolean> buildDefaultWeavingInternalHolder() {
-		return new PropertyAspectAdapter<Customization, Boolean>(
+		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(
 			getSubjectHolder(),
-			Customization.WEAVING_INTERNAL_PROPERTY)
+			EclipseLinkCustomization.WEAVING_INTERNAL_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -300,7 +300,7 @@ public class WeavingPropertiesComposite extends Pane<Customization>
 	// ********* weaving eager **********
 	
 	private ModifiablePropertyValueModel<Boolean> buildWeavingEagerHolder() {
-		return new PropertyAspectAdapter<Customization, Boolean>(getSubjectHolder(), Customization.WEAVING_EAGER_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(getSubjectHolder(), EclipseLinkCustomization.WEAVING_EAGER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getWeavingEager();
@@ -327,9 +327,9 @@ public class WeavingPropertiesComposite extends Pane<Customization>
 	}
 	
 	private PropertyValueModel<Boolean> buildDefaultWeavingEagerHolder() {
-		return new PropertyAspectAdapter<Customization, Boolean>(
+		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(
 			getSubjectHolder(),
-			Customization.WEAVING_EAGER_PROPERTY)
+			EclipseLinkCustomization.WEAVING_EAGER_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -345,7 +345,7 @@ public class WeavingPropertiesComposite extends Pane<Customization>
 	// ********* weaving change tracking **********
 	
 	private ModifiablePropertyValueModel<Boolean> buildWeavingChangeTrackingHolder() {
-		return new PropertyAspectAdapter<Customization, Boolean>(getSubjectHolder(), Customization.WEAVING_CHANGE_TRACKING_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(getSubjectHolder(), EclipseLinkCustomization.WEAVING_CHANGE_TRACKING_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getWeavingChangeTracking();
@@ -372,9 +372,9 @@ public class WeavingPropertiesComposite extends Pane<Customization>
 	}
 	
 	private PropertyValueModel<Boolean> buildDefaultWeavingChangeTrackingHolder() {
-		return new PropertyAspectAdapter<Customization, Boolean>(
+		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(
 			getSubjectHolder(),
-			Customization.WEAVING_CHANGE_TRACKING_PROPERTY)
+			EclipseLinkCustomization.WEAVING_CHANGE_TRACKING_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {

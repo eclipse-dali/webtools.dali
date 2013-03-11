@@ -23,9 +23,9 @@ public class EclipseLinkCustomizationEntity
 	implements Cloneable, Serializable
 {
 	private String name;
-	private Customization parent;
+	private EclipseLinkCustomization parent;
 
-	public static final String DESCRIPTOR_CUSTOMIZER_PROPERTY = Customization.DESCRIPTOR_CUSTOMIZER_PROPERTY;
+	public static final String DESCRIPTOR_CUSTOMIZER_PROPERTY = EclipseLinkCustomization.DESCRIPTOR_CUSTOMIZER_PROPERTY;
 
 	// ********** EclipseLink properties **********
 	private String descriptorCustomizer;
@@ -33,7 +33,7 @@ public class EclipseLinkCustomizationEntity
 	private static final long serialVersionUID = 1L;
 
 	// ********** constructors **********
-	public EclipseLinkCustomizationEntity(Customization parent, String name) {
+	public EclipseLinkCustomizationEntity(EclipseLinkCustomization parent, String name) {
 		this(parent);
 		if(StringTools.isBlank(name)) {
 			throw new IllegalArgumentException();
@@ -41,7 +41,7 @@ public class EclipseLinkCustomizationEntity
 		this.name = name;
 	}
 
-	private EclipseLinkCustomizationEntity(Customization parent) {
+	private EclipseLinkCustomizationEntity(EclipseLinkCustomization parent) {
 		this.parent = parent;
 	}
 	
@@ -81,7 +81,7 @@ public class EclipseLinkCustomizationEntity
 		return ! StringTools.isBlank(this.name);
 	}
 
-	public Customization getParent() {
+	public EclipseLinkCustomization getParent() {
 		return this.parent;
 	}
 

@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
@@ -61,20 +61,20 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPageDefinition
 
 	@Override
 	protected void buildEditorPageContent(Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager, PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
-		new EclipseLinkPersistenceUnitCustomizationEditorPage<Customization>(buildCustomizationModel(persistenceUnitModel), parentComposite, widgetFactory, resourceManager);
+		new EclipseLinkPersistenceUnitCustomizationEditorPage<EclipseLinkCustomization>(buildCustomizationModel(persistenceUnitModel), parentComposite, widgetFactory, resourceManager);
 	}
 
-	public static PropertyValueModel<Customization> buildCustomizationModel(PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
-		return new TransformationPropertyValueModel<PersistenceUnit, Customization>(persistenceUnitModel, CUSTOMIZATION_TRANSFORMER);
+	public static PropertyValueModel<EclipseLinkCustomization> buildCustomizationModel(PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
+		return new TransformationPropertyValueModel<PersistenceUnit, EclipseLinkCustomization>(persistenceUnitModel, CUSTOMIZATION_TRANSFORMER);
 	}
 
-	public static final Transformer<PersistenceUnit, Customization> CUSTOMIZATION_TRANSFORMER = new CustomizationTransformer();
+	public static final Transformer<PersistenceUnit, EclipseLinkCustomization> CUSTOMIZATION_TRANSFORMER = new CustomizationTransformer();
 
 	public static class CustomizationTransformer
-		extends AbstractTransformer<PersistenceUnit, Customization>
+		extends AbstractTransformer<PersistenceUnit, EclipseLinkCustomization>
 	{
 		@Override
-		protected Customization transform_(PersistenceUnit persistenceUnit) {
+		protected EclipseLinkCustomization transform_(PersistenceUnit persistenceUnit) {
 			return ((EclipseLinkPersistenceUnit) persistenceUnit).getCustomization();
 		}
 	}

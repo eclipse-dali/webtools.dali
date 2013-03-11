@@ -30,7 +30,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkProfiler;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.osgi.util.NLS;
@@ -41,7 +41,7 @@ import com.ibm.icu.text.Collator;
 /**
  *  ProfilerComposite
  */
-public class ProfilerClassChooser extends ClassChooserComboPane<Customization>
+public class ProfilerClassChooser extends ClassChooserComboPane<EclipseLinkCustomization>
 {
 
 	/**
@@ -51,7 +51,7 @@ public class ProfilerClassChooser extends ClassChooserComboPane<Customization>
 	 * @param parent The parent container
 	 */
 	public ProfilerClassChooser(
-								Pane<? extends Customization> parentPane,
+								Pane<? extends EclipseLinkCustomization> parentPane,
 	                           Composite parent,
 	                           Hyperlink hyperlink) {
 
@@ -70,7 +70,7 @@ public class ProfilerClassChooser extends ClassChooserComboPane<Customization>
 
     @Override
 	protected ModifiablePropertyValueModel<String> buildTextHolder() {
-		return new PropertyAspectAdapter<Customization, String>(this.getSubjectHolder(), Customization.PROFILER_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkCustomization, String>(this.getSubjectHolder(), EclipseLinkCustomization.PROFILER_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 
@@ -93,7 +93,7 @@ public class ProfilerClassChooser extends ClassChooserComboPane<Customization>
     }
 
 	private PropertyValueModel<String> buildDefaultProfilerHolder() {
-		return new PropertyAspectAdapter<Customization, String>(this.getSubjectHolder(), Customization.DEFAULT_PROFILER) {
+		return new PropertyAspectAdapter<EclipseLinkCustomization, String>(this.getSubjectHolder(), EclipseLinkCustomization.DEFAULT_PROFILER) {
 			@Override
 			protected String buildValue_() {
 				return ProfilerClassChooser.this.getDefaultValue(this.subject);
@@ -177,7 +177,7 @@ public class ProfilerClassChooser extends ClassChooserComboPane<Customization>
 		);
 	}
 
-	private String getDefaultValue(Customization subject) {
+	private String getDefaultValue(EclipseLinkCustomization subject) {
 		String defaultValue = subject.getDefaultProfiler();
 
 		if (defaultValue != null) {
@@ -196,6 +196,6 @@ public class ProfilerClassChooser extends ClassChooserComboPane<Customization>
 
 	@Override
 	protected String getSuperInterfaceName() {
-		return Customization.ECLIPSELINK_SESSION_PROFILER_CLASS_NAME;
+		return EclipseLinkCustomization.ECLIPSELINK_SESSION_PROFILER_CLASS_NAME;
 	}
 }

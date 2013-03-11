@@ -112,7 +112,7 @@ public class EclipseLinkPersistenceUnit
 
 
 	private/*final*/ EclipseLinkGeneralProperties generalProperties;
-	private Customization customization;
+	private EclipseLinkCustomization customization;
 	private Caching caching;
 	private EclipseLinkLogging logging;
 	private EclipseLinkSchemaGeneration eclipseLinkSchemaGeneration;
@@ -180,7 +180,7 @@ public class EclipseLinkPersistenceUnit
 		return (EclipseLinkOptions2_0) super.getOptions();
 	}
 
-	public Customization getCustomization() {
+	public EclipseLinkCustomization getCustomization() {
 		return this.customization;
 	}
 
@@ -227,7 +227,7 @@ public class EclipseLinkPersistenceUnit
 		return new EclipseLinkGeneralProperties(this);
 	}
 
-	protected Customization buildEclipseLinkCustomization() {
+	protected EclipseLinkCustomization buildEclipseLinkCustomization() {
 		return new EclipseLinkCustomization(this);
 	}
 
@@ -753,7 +753,7 @@ public class EclipseLinkPersistenceUnit
 					)
 			);
 		} else if (!JDTTools.typeIsSubType(
-				javaProject, handlerProperty.getValue(), Customization.ECLIPSELINK_EXCEPTION_HANDLER_CLASS_NAME)
+				javaProject, handlerProperty.getValue(), EclipseLinkCustomization.ECLIPSELINK_EXCEPTION_HANDLER_CLASS_NAME)
 		) {
 			messages.add(
 					this.buildValidationMessage(
@@ -772,7 +772,7 @@ public class EclipseLinkPersistenceUnit
 			return;
 		}
 
-		if (ArrayTools.contains(Customization.RESERVED_PROFILER_NAMES, profilerProperty.getValue())) {
+		if (ArrayTools.contains(EclipseLinkCustomization.RESERVED_PROFILER_NAMES, profilerProperty.getValue())) {
 			return;
 		}
 
@@ -803,7 +803,7 @@ public class EclipseLinkPersistenceUnit
 					)
 			);
 		} else if (!JDTTools.typeIsSubType(
-				javaProject, profilerProperty.getValue(), Customization.ECLIPSELINK_SESSION_PROFILER_CLASS_NAME)
+				javaProject, profilerProperty.getValue(), EclipseLinkCustomization.ECLIPSELINK_SESSION_PROFILER_CLASS_NAME)
 		) {
 			messages.add(
 					this.buildValidationMessage(
@@ -849,7 +849,7 @@ public class EclipseLinkPersistenceUnit
 							)
 					);
 				} else if (!JDTTools.typeIsSubType(
-						javaProject, property.getValue(), Customization.ECLIPSELINK_SESSION_CUSTOMIZER_CLASS_NAME)
+						javaProject, property.getValue(), EclipseLinkCustomization.ECLIPSELINK_SESSION_CUSTOMIZER_CLASS_NAME)
 				) {
 					messages.add(
 							this.buildValidationMessage(
@@ -919,7 +919,7 @@ public class EclipseLinkPersistenceUnit
 	 * Returns Descriptor Customizer Properties.
 	 */
 	private Iterable<Property> getDescriptorCustomizerProperties() {
-		return this.getEntityPropertiesWithPrefix(Customization.ECLIPSELINK_DESCRIPTOR_CUSTOMIZER);
+		return this.getEntityPropertiesWithPrefix(EclipseLinkCustomization.ECLIPSELINK_DESCRIPTOR_CUSTOMIZER);
 	}
 
 	/**
@@ -954,18 +954,18 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	private Property getExceptionHandlerProperty() {
-		return this.getProperty(Customization.ECLIPSELINK_EXCEPTION_HANDLER);
+		return this.getProperty(EclipseLinkCustomization.ECLIPSELINK_EXCEPTION_HANDLER);
 	}
 
 	private Property getPerformanceProfilerProperty() {
-		return this.getProperty(Customization.ECLIPSELINK_PROFILER);
+		return this.getProperty(EclipseLinkCustomization.ECLIPSELINK_PROFILER);
 	}
 
 	/**
 	 * Returns all Session Customizer Properties.
 	 */
 	private Iterable<Property> getSessionCustomizerProperties() {
-		return this.getPropertiesWithNamePrefix(Customization.ECLIPSELINK_SESSION_CUSTOMIZER);
+		return this.getPropertiesWithNamePrefix(EclipseLinkCustomization.ECLIPSELINK_SESSION_CUSTOMIZER);
 	}
 
 	/**

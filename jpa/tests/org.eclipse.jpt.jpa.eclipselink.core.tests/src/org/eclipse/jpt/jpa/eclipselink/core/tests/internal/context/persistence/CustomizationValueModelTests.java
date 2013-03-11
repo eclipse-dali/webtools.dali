@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomizationEntity;
 
 /**
@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCusto
 @SuppressWarnings("nls")
 public class CustomizationValueModelTests extends EclipseLinkPersistenceUnitTestCase
 {
-	private Customization customization;
+	private EclipseLinkCustomization customization;
 
 	private ModifiablePropertyValueModel<Boolean> throwExceptionsHolder;
 	private PropertyChangeListener throwExceptionsListener;
@@ -44,7 +44,7 @@ public class CustomizationValueModelTests extends EclipseLinkPersistenceUnitTest
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.customization = this.subject.getCustomization(); // Subject
-		PropertyValueModel<Customization> customizationHolder = new SimplePropertyValueModel<Customization>(this.customization);
+		PropertyValueModel<EclipseLinkCustomization> customizationHolder = new SimplePropertyValueModel<EclipseLinkCustomization>(this.customization);
 		
 		this.throwExceptionsHolder = this.buildThrowExceptionsAA(customizationHolder);
 		this.throwExceptionsListener = this.buildThrowExceptionsChangeListener();
@@ -55,13 +55,13 @@ public class CustomizationValueModelTests extends EclipseLinkPersistenceUnitTest
 	public void testHasListeners() {
 		AbstractModel subjectCustomization = (AbstractModel) this.customization; // Subject
 		
-		PropertyAspectAdapter<Customization, Boolean> throwExceptionsAA = 
-			(PropertyAspectAdapter<Customization, Boolean>) this.throwExceptionsHolder;
+		PropertyAspectAdapter<EclipseLinkCustomization, Boolean> throwExceptionsAA = 
+			(PropertyAspectAdapter<EclipseLinkCustomization, Boolean>) this.throwExceptionsHolder;
 		assertTrue(throwExceptionsAA.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
-		assertTrue(subjectCustomization.hasAnyPropertyChangeListeners(Customization.THROW_EXCEPTIONS_PROPERTY));
+		assertTrue(subjectCustomization.hasAnyPropertyChangeListeners(EclipseLinkCustomization.THROW_EXCEPTIONS_PROPERTY));
 		
 		throwExceptionsAA.removePropertyChangeListener(PropertyValueModel.VALUE, this.throwExceptionsListener);
-		assertFalse(subjectCustomization.hasAnyPropertyChangeListeners(Customization.THROW_EXCEPTIONS_PROPERTY));
+		assertFalse(subjectCustomization.hasAnyPropertyChangeListeners(EclipseLinkCustomization.THROW_EXCEPTIONS_PROPERTY));
 		assertFalse(throwExceptionsAA.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 	}
 
@@ -71,7 +71,7 @@ public class CustomizationValueModelTests extends EclipseLinkPersistenceUnitTest
 	@Override
 	protected void populatePu() {
 		this.persistenceUnitSetProperty(
-			Customization.ECLIPSELINK_THROW_EXCEPTIONS, 
+			EclipseLinkCustomization.ECLIPSELINK_THROW_EXCEPTIONS, 
 			THROW_EXCEPTIONS_TEST_VALUE);
 		return;
 	}
@@ -82,8 +82,8 @@ public class CustomizationValueModelTests extends EclipseLinkPersistenceUnitTest
 	}
 
 	// ****** ThrowExceptions *******
-	private ModifiablePropertyValueModel<Boolean> buildThrowExceptionsAA(PropertyValueModel<Customization> subjectHolder) {
-		return new PropertyAspectAdapter<Customization, Boolean>(subjectHolder, Customization.THROW_EXCEPTIONS_PROPERTY) {
+	private ModifiablePropertyValueModel<Boolean> buildThrowExceptionsAA(PropertyValueModel<EclipseLinkCustomization> subjectHolder) {
+		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(subjectHolder, EclipseLinkCustomization.THROW_EXCEPTIONS_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getThrowExceptions();
@@ -148,7 +148,7 @@ public class CustomizationValueModelTests extends EclipseLinkPersistenceUnitTest
 	public void testValue() {
 		// ****** ThrowExceptions ******* 
 		this.verifyThrowExceptionsAAValue(THROW_EXCEPTIONS_TEST_VALUE);
-		assertEquals(Customization.DEFAULT_THROW_EXCEPTIONS, this.customization.getDefaultThrowExceptions());
+		assertEquals(EclipseLinkCustomization.DEFAULT_THROW_EXCEPTIONS, this.customization.getDefaultThrowExceptions());
 	}
 
 	public void testSetValue() throws Exception {
@@ -172,7 +172,7 @@ public class CustomizationValueModelTests extends EclipseLinkPersistenceUnitTest
 		this.verifyThrowExceptionsAAValue(null);
 		assertNotNull(this.throwExceptionsEvent);
 		// testing PU properties
-		this.verifyPuHasNotProperty(Customization.ECLIPSELINK_THROW_EXCEPTIONS, notDeleted);
+		this.verifyPuHasNotProperty(EclipseLinkCustomization.ECLIPSELINK_THROW_EXCEPTIONS, notDeleted);
 	}
 
 	// ****** convenience methods *******
@@ -188,7 +188,7 @@ public class CustomizationValueModelTests extends EclipseLinkPersistenceUnitTest
 			testValue, 
 			this.customization.getThrowExceptions(), 
 			this.throwExceptionsHolder, 
-			Customization.ECLIPSELINK_THROW_EXCEPTIONS);
+			EclipseLinkCustomization.ECLIPSELINK_THROW_EXCEPTIONS);
 	}
 
 	// ********** get/set property **********

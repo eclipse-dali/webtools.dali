@@ -12,15 +12,15 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.v2_0.persistence;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomization;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.customization.EclipseLinkPersistenceUnitCustomizationEditorPage;
 import org.eclipse.swt.widgets.Composite;
 
 public class EclipseLinkPersistenceUnitCustomization2_0EditorPage
-	extends EclipseLinkPersistenceUnitCustomizationEditorPage<Customization>
+	extends EclipseLinkPersistenceUnitCustomizationEditorPage<EclipseLinkCustomization>
 {
 	public EclipseLinkPersistenceUnitCustomization2_0EditorPage(
-		PropertyValueModel<Customization> subjectModel,
+		PropertyValueModel<EclipseLinkCustomization> subjectModel,
 			Composite parentComposite,
             WidgetFactory widgetFactory,
             ResourceManager resourceManager) {

@@ -31,7 +31,7 @@ import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomization;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.swt.widgets.Composite;
@@ -42,7 +42,7 @@ import org.eclipse.ui.progress.IProgressService;
 /**
  *  SessionCustomizersComposite
  */
-public class SessionCustomizersComposite extends Pane<Customization>
+public class SessionCustomizersComposite extends Pane<EclipseLinkCustomization>
 {
 	/**
 	 * Creates a new <code>SessionCustomizerComposite</code>.
@@ -50,7 +50,7 @@ public class SessionCustomizersComposite extends Pane<Customization>
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public SessionCustomizersComposite(Pane<? extends Customization> parentPane,
+	public SessionCustomizersComposite(Pane<? extends EclipseLinkCustomization> parentPane,
                            Composite parent) {
 
 		super(parentPane, parent);
@@ -106,7 +106,7 @@ public class SessionCustomizersComposite extends Pane<Customization>
 	}
 
 	private ListValueModel<String> buildListHolder() {
-		return new ListAspectAdapter<Customization, String>(getSubjectHolder(), Customization.SESSION_CUSTOMIZER_LIST) {
+		return new ListAspectAdapter<EclipseLinkCustomization, String>(getSubjectHolder(), EclipseLinkCustomization.SESSION_CUSTOMIZER_LIST) {
 			@Override
 			protected ListIterable<String> getListIterable() {
 				return subject.getSessionCustomizers();
@@ -172,7 +172,7 @@ public class SessionCustomizersComposite extends Pane<Customization>
 	@Override
 	protected void initializeLayout(Composite container) {
 		// List pane
-		new AddRemoveListPane<Customization, String>(
+		new AddRemoveListPane<EclipseLinkCustomization, String>(
 			this,
 			container,
 			buildAdapter(),

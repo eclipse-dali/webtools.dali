@@ -37,7 +37,7 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConnection;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkDdlGenerationType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLoggingLevel;
@@ -225,7 +225,7 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 	
 	protected void buildCustomizationProperties(Properties properties) {
 		this.putProperty(properties,
-			Customization.ECLIPSELINK_THROW_EXCEPTIONS,
+			EclipseLinkCustomization.ECLIPSELINK_THROW_EXCEPTIONS,
 			TRUE);
 	}
 	

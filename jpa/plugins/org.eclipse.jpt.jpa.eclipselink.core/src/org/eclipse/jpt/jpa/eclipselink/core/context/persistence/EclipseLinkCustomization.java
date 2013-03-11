@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 /**
  *  Customization
  */
-public interface Customization extends PersistenceUnitProperties
+public interface EclipseLinkCustomization extends PersistenceUnitProperties
 {
 	Boolean getDefaultThrowExceptions();
 	Boolean getThrowExceptions();

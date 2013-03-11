@@ -21,11 +21,10 @@ import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomizationEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkProfiler;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkWeaving;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkCustomization;
 
 /**
  * Tests the update of model objects by the Customization adapter when the
@@ -34,62 +33,62 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.Eclipse
 @SuppressWarnings("nls")
 public class EclipseLinkCustomizationTests extends EclipseLinkPersistenceUnitTestCase
 {
-	private Customization customization;
+	private EclipseLinkCustomization customization;
 	private ListEvent entitiesEvent;
 	private ListEvent sessionCustomizersEvent;
 
 	public static final String ENTITY_TEST = "Employee";
 	public static final String ENTITY_TEST_2 = "Address";
 
-	public static final String THROW_EXCEPTIONS_KEY = Customization.ECLIPSELINK_THROW_EXCEPTIONS;
+	public static final String THROW_EXCEPTIONS_KEY = EclipseLinkCustomization.ECLIPSELINK_THROW_EXCEPTIONS;
 	public static final Boolean THROW_EXCEPTIONS_TEST_VALUE = false;
 	public static final Boolean THROW_EXCEPTIONS_TEST_VALUE_2 = ! THROW_EXCEPTIONS_TEST_VALUE;
 
-	public static final String WEAVING_LAZY_KEY = Customization.ECLIPSELINK_WEAVING_LAZY;
+	public static final String WEAVING_LAZY_KEY = EclipseLinkCustomization.ECLIPSELINK_WEAVING_LAZY;
 	public static final Boolean WEAVING_LAZY_TEST_VALUE = false;
 	public static final Boolean WEAVING_LAZY_TEST_VALUE_2 = ! WEAVING_LAZY_TEST_VALUE;
 
-	public static final String WEAVING_CHANGE_TRACKING_KEY = Customization.ECLIPSELINK_WEAVING_CHANGE_TRACKING;
+	public static final String WEAVING_CHANGE_TRACKING_KEY = EclipseLinkCustomization.ECLIPSELINK_WEAVING_CHANGE_TRACKING;
 	public static final Boolean WEAVING_CHANGE_TRACKING_TEST_VALUE = false;
 	public static final Boolean WEAVING_CHANGE_TRACKING_TEST_VALUE_2 = ! WEAVING_CHANGE_TRACKING_TEST_VALUE;
 
-	public static final String WEAVING_FETCH_GROUPS_KEY = Customization.ECLIPSELINK_WEAVING_FETCH_GROUPS;
+	public static final String WEAVING_FETCH_GROUPS_KEY = EclipseLinkCustomization.ECLIPSELINK_WEAVING_FETCH_GROUPS;
 	public static final Boolean WEAVING_FETCH_GROUPS_TEST_VALUE = false;
 	public static final Boolean WEAVING_FETCH_GROUPS_TEST_VALUE_2 = ! WEAVING_FETCH_GROUPS_TEST_VALUE;
 
-	public static final String WEAVING_INTERNAL_KEY = Customization.ECLIPSELINK_WEAVING_INTERNAL;
+	public static final String WEAVING_INTERNAL_KEY = EclipseLinkCustomization.ECLIPSELINK_WEAVING_INTERNAL;
 	public static final Boolean WEAVING_INTERNAL_TEST_VALUE = false;
 	public static final Boolean WEAVING_INTERNAL_TEST_VALUE_2 = ! WEAVING_INTERNAL_TEST_VALUE;
 
-	public static final String WEAVING_EAGER_KEY = Customization.ECLIPSELINK_WEAVING_EAGER;
+	public static final String WEAVING_EAGER_KEY = EclipseLinkCustomization.ECLIPSELINK_WEAVING_EAGER;
 	public static final Boolean WEAVING_EAGER_TEST_VALUE = true;
 	public static final Boolean WEAVING_EAGER_TEST_VALUE_2 = ! WEAVING_EAGER_TEST_VALUE;
 
-	public static final String VALIDATION_ONLY_KEY = Customization.ECLIPSELINK_VALIDATION_ONLY;
+	public static final String VALIDATION_ONLY_KEY = EclipseLinkCustomization.ECLIPSELINK_VALIDATION_ONLY;
 	public static final Boolean VALIDATION_ONLY_TEST_VALUE = false;
 	public static final Boolean VALIDATION_ONLY_TEST_VALUE_2 = ! VALIDATION_ONLY_TEST_VALUE;
 
-	public static final String VALIDATE_SCHEMA_KEY = Customization.ECLIPSELINK_VALIDATE_SCHEMA;
+	public static final String VALIDATE_SCHEMA_KEY = EclipseLinkCustomization.ECLIPSELINK_VALIDATE_SCHEMA;
 	public static final Boolean VALIDATE_SCHEMA_TEST_VALUE = true;
 	public static final Boolean VALIDATE_SCHEMA_TEST_VALUE_2 = ! VALIDATE_SCHEMA_TEST_VALUE;
 
-	private static final String SESSION_CUSTOMIZER_KEY = Customization.ECLIPSELINK_SESSION_CUSTOMIZER;
+	private static final String SESSION_CUSTOMIZER_KEY = EclipseLinkCustomization.ECLIPSELINK_SESSION_CUSTOMIZER;
 	private static final String SESSION_CUSTOMIZER_TEST_VALUE = "java.lang.String";
 	private static final String SESSION_CUSTOMIZER_TEST_VALUE_2 = "java.lang.Boolean";
 
-	public static final String WEAVING_KEY = Customization.ECLIPSELINK_WEAVING;
+	public static final String WEAVING_KEY = EclipseLinkCustomization.ECLIPSELINK_WEAVING;
 	public static final EclipseLinkWeaving WEAVING_TEST_VALUE = EclipseLinkWeaving.false_;
 	public static final EclipseLinkWeaving WEAVING_TEST_VALUE_2 = EclipseLinkWeaving.static_;
 
-	public static final String CUSTOMIZER_KEY = Customization.ECLIPSELINK_DESCRIPTOR_CUSTOMIZER + ENTITY_TEST;
+	public static final String CUSTOMIZER_KEY = EclipseLinkCustomization.ECLIPSELINK_DESCRIPTOR_CUSTOMIZER + ENTITY_TEST;
 	public static final String CUSTOMIZER_TEST_VALUE = "acme.sessions.DescriptorCustomizer";
 	public static final String CUSTOMIZER_TEST_VALUE_2 = "acme.sessions.Customizer";
 
-	private static final String PROFILER_KEY = Customization.ECLIPSELINK_PROFILER;
+	private static final String PROFILER_KEY = EclipseLinkCustomization.ECLIPSELINK_PROFILER;
 	private static final EclipseLinkProfiler PROFILER_TEST_VALUE = EclipseLinkProfiler.query_monitor;
 	private static final String PROFILER_TEST_VALUE_2 = "custom.profiler.test";
 	
-	public static final String EXCEPTION_HANDLER_KEY = Customization.ECLIPSELINK_EXCEPTION_HANDLER;
+	public static final String EXCEPTION_HANDLER_KEY = EclipseLinkCustomization.ECLIPSELINK_EXCEPTION_HANDLER;
 	public static final String EXCEPTION_HANDLER_TEST_VALUE = "acme.CustomSessionEventListener";
 	public static final String EXCEPTION_HANDLER_TEST_VALUE_2 = "oracle.sessions.CustomSessionEventListener";
 
@@ -105,25 +104,25 @@ public class EclipseLinkCustomizationTests extends EclipseLinkPersistenceUnitTes
 		this.customization = this.subject.getCustomization();
 		PropertyChangeListener propertyChangeListener = this.buildPropertyChangeListener();
 		
-		this.customization.addPropertyChangeListener(Customization.THROW_EXCEPTIONS_PROPERTY, propertyChangeListener);
-		this.customization.addPropertyChangeListener(Customization.WEAVING_LAZY_PROPERTY, propertyChangeListener);
-		this.customization.addPropertyChangeListener(Customization.WEAVING_CHANGE_TRACKING_PROPERTY, propertyChangeListener);
-		this.customization.addPropertyChangeListener(Customization.WEAVING_FETCH_GROUPS_PROPERTY, propertyChangeListener);
-		this.customization.addPropertyChangeListener(Customization.WEAVING_INTERNAL_PROPERTY, propertyChangeListener);
-		this.customization.addPropertyChangeListener(Customization.WEAVING_EAGER_PROPERTY, propertyChangeListener);
-		this.customization.addPropertyChangeListener(Customization.WEAVING_PROPERTY, propertyChangeListener);
-		this.customization.addPropertyChangeListener(Customization.VALIDATION_ONLY_PROPERTY, propertyChangeListener);
-		this.customization.addPropertyChangeListener(Customization.VALIDATE_SCHEMA_PROPERTY, propertyChangeListener);
+		this.customization.addPropertyChangeListener(EclipseLinkCustomization.THROW_EXCEPTIONS_PROPERTY, propertyChangeListener);
+		this.customization.addPropertyChangeListener(EclipseLinkCustomization.WEAVING_LAZY_PROPERTY, propertyChangeListener);
+		this.customization.addPropertyChangeListener(EclipseLinkCustomization.WEAVING_CHANGE_TRACKING_PROPERTY, propertyChangeListener);
+		this.customization.addPropertyChangeListener(EclipseLinkCustomization.WEAVING_FETCH_GROUPS_PROPERTY, propertyChangeListener);
+		this.customization.addPropertyChangeListener(EclipseLinkCustomization.WEAVING_INTERNAL_PROPERTY, propertyChangeListener);
+		this.customization.addPropertyChangeListener(EclipseLinkCustomization.WEAVING_EAGER_PROPERTY, propertyChangeListener);
+		this.customization.addPropertyChangeListener(EclipseLinkCustomization.WEAVING_PROPERTY, propertyChangeListener);
+		this.customization.addPropertyChangeListener(EclipseLinkCustomization.VALIDATION_ONLY_PROPERTY, propertyChangeListener);
+		this.customization.addPropertyChangeListener(EclipseLinkCustomization.VALIDATE_SCHEMA_PROPERTY, propertyChangeListener);
 		this.customization.addPropertyChangeListener(EclipseLinkCustomizationEntity.DESCRIPTOR_CUSTOMIZER_PROPERTY, propertyChangeListener);
-		this.customization.addPropertyChangeListener(Customization.SESSION_CUSTOMIZER_PROPERTY, propertyChangeListener);
-		this.customization.addPropertyChangeListener(Customization.PROFILER_PROPERTY, propertyChangeListener);
-		this.customization.addPropertyChangeListener(Customization.EXCEPTION_HANDLER_PROPERTY, propertyChangeListener);
+		this.customization.addPropertyChangeListener(EclipseLinkCustomization.SESSION_CUSTOMIZER_PROPERTY, propertyChangeListener);
+		this.customization.addPropertyChangeListener(EclipseLinkCustomization.PROFILER_PROPERTY, propertyChangeListener);
+		this.customization.addPropertyChangeListener(EclipseLinkCustomization.EXCEPTION_HANDLER_PROPERTY, propertyChangeListener);
 
 		ListChangeListener sessionCustomizersChangeListener = this.buildSessionCustomizersChangeListener();
-		this.customization.addListChangeListener(Customization.SESSION_CUSTOMIZER_LIST, sessionCustomizersChangeListener);
+		this.customization.addListChangeListener(EclipseLinkCustomization.SESSION_CUSTOMIZER_LIST, sessionCustomizersChangeListener);
 		
 		ListChangeListener entitiesChangeListener = this.buildEntitiesChangeListener();
-		this.customization.addListChangeListener(Customization.ENTITIES_LIST, entitiesChangeListener);
+		this.customization.addListChangeListener(EclipseLinkCustomization.ENTITIES_LIST, entitiesChangeListener);
 		this.clearEvent();
 	}
 
@@ -247,29 +246,29 @@ public class EclipseLinkCustomizationTests extends EclipseLinkPersistenceUnitTes
 	// ********** get/set property **********
 	@Override
 	protected void setProperty(String propertyName, Object newValue) throws Exception {
-		if (propertyName.equals(Customization.THROW_EXCEPTIONS_PROPERTY))
+		if (propertyName.equals(EclipseLinkCustomization.THROW_EXCEPTIONS_PROPERTY))
 			this.customization.setThrowExceptions((Boolean) newValue);
-		else if (propertyName.equals(Customization.WEAVING_LAZY_PROPERTY))
+		else if (propertyName.equals(EclipseLinkCustomization.WEAVING_LAZY_PROPERTY))
 			this.customization.setWeavingLazy((Boolean) newValue);
-		else if (propertyName.equals(Customization.WEAVING_CHANGE_TRACKING_PROPERTY))
+		else if (propertyName.equals(EclipseLinkCustomization.WEAVING_CHANGE_TRACKING_PROPERTY))
 			this.customization.setWeavingChangeTracking((Boolean) newValue);
-		else if (propertyName.equals(Customization.WEAVING_FETCH_GROUPS_PROPERTY))
+		else if (propertyName.equals(EclipseLinkCustomization.WEAVING_FETCH_GROUPS_PROPERTY))
 			this.customization.setWeavingFetchGroups((Boolean) newValue);
-		else if (propertyName.equals(Customization.WEAVING_INTERNAL_PROPERTY))
+		else if (propertyName.equals(EclipseLinkCustomization.WEAVING_INTERNAL_PROPERTY))
 			this.customization.setWeavingInternal((Boolean) newValue);
-		else if (propertyName.equals(Customization.WEAVING_EAGER_PROPERTY))
+		else if (propertyName.equals(EclipseLinkCustomization.WEAVING_EAGER_PROPERTY))
 			this.customization.setWeavingEager((Boolean) newValue);
-		else if (propertyName.equals(Customization.VALIDATION_ONLY_PROPERTY))
+		else if (propertyName.equals(EclipseLinkCustomization.VALIDATION_ONLY_PROPERTY))
 			this.customization.setValidationOnly((Boolean) newValue);
-		else if (propertyName.equals(Customization.VALIDATE_SCHEMA_PROPERTY))
+		else if (propertyName.equals(EclipseLinkCustomization.VALIDATE_SCHEMA_PROPERTY))
 			this.customization.setValidateSchema((Boolean) newValue);
-		else if (propertyName.equals(Customization.EXCEPTION_HANDLER_PROPERTY))
+		else if (propertyName.equals(EclipseLinkCustomization.EXCEPTION_HANDLER_PROPERTY))
 			this.customization.setExceptionHandler((String) newValue);
-		else if (propertyName.equals(Customization.SESSION_CUSTOMIZER_PROPERTY))
+		else if (propertyName.equals(EclipseLinkCustomization.SESSION_CUSTOMIZER_PROPERTY))
 			this.customization.addSessionCustomizer((String) newValue);
-		else if (propertyName.equals(Customization.WEAVING_PROPERTY))
+		else if (propertyName.equals(EclipseLinkCustomization.WEAVING_PROPERTY))
 			this.customization.setWeaving((EclipseLinkWeaving) newValue);
-		else if (propertyName.equals(Customization.PROFILER_PROPERTY)) {
+		else if (propertyName.equals(EclipseLinkCustomization.PROFILER_PROPERTY)) {
 			if (newValue.getClass().isEnum())
 				this.customization.setProfiler((EclipseLinkProfiler) newValue);
 			else
@@ -282,29 +281,29 @@ public class EclipseLinkCustomizationTests extends EclipseLinkPersistenceUnitTes
 	@Override
 	protected Object getProperty(String propertyName) throws NoSuchFieldException {
 		Object modelValue = null;
-		if (propertyName.equals(Customization.THROW_EXCEPTIONS_PROPERTY))
+		if (propertyName.equals(EclipseLinkCustomization.THROW_EXCEPTIONS_PROPERTY))
 			modelValue = this.customization.getThrowExceptions();
-		else if (propertyName.equals(Customization.WEAVING_PROPERTY))
+		else if (propertyName.equals(EclipseLinkCustomization.WEAVING_PROPERTY))
 			modelValue = this.customization.getWeaving();
-		else if (propertyName.equals(Customization.WEAVING_LAZY_PROPERTY))
+		else if (propertyName.equals(EclipseLinkCustomization.WEAVING_LAZY_PROPERTY))
 			modelValue = this.customization.getWeavingLazy();
-		else if (propertyName.equals(Customization.WEAVING_CHANGE_TRACKING_PROPERTY))
+		else if (propertyName.equals(EclipseLinkCustomization.WEAVING_CHANGE_TRACKING_PROPERTY))
 			modelValue = this.customization.getWeavingChangeTracking();
-		else if (propertyName.equals(Customization.WEAVING_FETCH_GROUPS_PROPERTY))
+		else if (propertyName.equals(EclipseLinkCustomization.WEAVING_FETCH_GROUPS_PROPERTY))
 			modelValue = this.customization.getWeavingFetchGroups();
-		else if (propertyName.equals(Customization.WEAVING_INTERNAL_PROPERTY))
+		else if (propertyName.equals(EclipseLinkCustomization.WEAVING_INTERNAL_PROPERTY))
 			modelValue = this.customization.getWeavingInternal();
-		else if (propertyName.equals(Customization.WEAVING_EAGER_PROPERTY))
+		else if (propertyName.equals(EclipseLinkCustomization.WEAVING_EAGER_PROPERTY))
 			modelValue = this.customization.getWeavingEager();
-		else if (propertyName.equals(Customization.VALIDATION_ONLY_PROPERTY))
+		else if (propertyName.equals(EclipseLinkCustomization.VALIDATION_ONLY_PROPERTY))
 			modelValue = this.customization.getValidationOnly();
-		else if (propertyName.equals(Customization.VALIDATE_SCHEMA_PROPERTY))
+		else if (propertyName.equals(EclipseLinkCustomization.VALIDATE_SCHEMA_PROPERTY))
 			modelValue = this.customization.getValidateSchema();
-		else if (propertyName.equals(Customization.EXCEPTION_HANDLER_PROPERTY))
+		else if (propertyName.equals(EclipseLinkCustomization.EXCEPTION_HANDLER_PROPERTY))
 			modelValue = this.customization.getExceptionHandler();
-		else if (propertyName.equals(Customization.PROFILER_PROPERTY))
+		else if (propertyName.equals(EclipseLinkCustomization.PROFILER_PROPERTY))
 			modelValue = this.customization.getProfiler();
-		else if (propertyName.equals(Customization.SESSION_CUSTOMIZER_PROPERTY)) {
+		else if (propertyName.equals(EclipseLinkCustomization.SESSION_CUSTOMIZER_PROPERTY)) {
 			ListIterator<String> iterator = this.customization.getSessionCustomizers().iterator();
 			if(iterator.hasNext()) {
 				modelValue = iterator.next();
@@ -320,7 +319,7 @@ public class EclipseLinkCustomizationTests extends EclipseLinkPersistenceUnitTes
 	@Override
 	protected void verifyPutProperty(String propertyName, Object expectedValue) throws Exception {
 		Object expectedValue_ = expectedValue;
-		if (propertyName.equals(Customization.PROFILER_PROPERTY)) {
+		if (propertyName.equals(EclipseLinkCustomization.PROFILER_PROPERTY)) {
 			
 			expectedValue_ = (expectedValue != null && expectedValue.getClass().isEnum()) ?
 				this.getPropertyStringValueOf(PROFILER_TEST_VALUE) : // model is storing EclipseLinkStringValue
@@ -343,7 +342,7 @@ public class EclipseLinkCustomizationTests extends EclipseLinkPersistenceUnitTes
 		// verify event received
 		assertNotNull("No Event Fired.", this.entitiesEvent);
 		// verify event for the expected property
-		assertEquals("Wrong Event.", this.entitiesEvent.getListName(), Customization.ENTITIES_LIST);
+		assertEquals("Wrong Event.", this.entitiesEvent.getListName(), EclipseLinkCustomization.ENTITIES_LIST);
 		
 		// remove
 		this.clearEvent();
@@ -352,7 +351,7 @@ public class EclipseLinkCustomizationTests extends EclipseLinkPersistenceUnitTes
 		// verify event received
 		assertNotNull("No Event Fired.", this.entitiesEvent);
 		// verify event for the expected property
-		assertEquals("Wrong Event.", this.entitiesEvent.getListName(), Customization.ENTITIES_LIST);
+		assertEquals("Wrong Event.", this.entitiesEvent.getListName(), EclipseLinkCustomization.ENTITIES_LIST);
 	}
 
 	// ********** sessionCustomizers list **********
@@ -364,7 +363,7 @@ public class EclipseLinkCustomizationTests extends EclipseLinkPersistenceUnitTes
 		// verify event received
 		assertNotNull("No Event Fired.", this.sessionCustomizersEvent);
 		// verify event for the expected property
-		assertEquals("Wrong Event.", this.sessionCustomizersEvent.getListName(), Customization.SESSION_CUSTOMIZER_LIST);
+		assertEquals("Wrong Event.", this.sessionCustomizersEvent.getListName(), EclipseLinkCustomization.SESSION_CUSTOMIZER_LIST);
 		
 		// remove
 		this.clearEvent();
@@ -373,7 +372,7 @@ public class EclipseLinkCustomizationTests extends EclipseLinkPersistenceUnitTes
 		// verify event received
 		assertNotNull("No Event Fired.", this.sessionCustomizersEvent);
 		// verify event for the expected property
-		assertEquals("Wrong Event.", this.sessionCustomizersEvent.getListName(), Customization.SESSION_CUSTOMIZER_LIST);
+		assertEquals("Wrong Event.", this.sessionCustomizersEvent.getListName(), EclipseLinkCustomization.SESSION_CUSTOMIZER_LIST);
 	}
 
 	// ********** ThrowExceptions tests **********
@@ -490,7 +489,7 @@ public class EclipseLinkCustomizationTests extends EclipseLinkPersistenceUnitTes
 			SESSION_CUSTOMIZER_KEY,
 			SESSION_CUSTOMIZER_TEST_VALUE);
 		this.verifySetSessionCustomizationProperty(
-			Customization.SESSION_CUSTOMIZER_PROPERTY,
+			EclipseLinkCustomization.SESSION_CUSTOMIZER_PROPERTY,
 			SESSION_CUSTOMIZER_KEY,
 			SESSION_CUSTOMIZER_TEST_VALUE,
 			SESSION_CUSTOMIZER_TEST_VALUE_2);
@@ -498,7 +497,7 @@ public class EclipseLinkCustomizationTests extends EclipseLinkPersistenceUnitTes
 
 	public void testAddRemoveSessionCustomizer() throws Exception {
 		this.verifyAddRemoveSessionCustomizationProperty(
-			Customization.SESSION_CUSTOMIZER_PROPERTY,
+			EclipseLinkCustomization.SESSION_CUSTOMIZER_PROPERTY,
 			SESSION_CUSTOMIZER_KEY,
 			SESSION_CUSTOMIZER_TEST_VALUE,
 			SESSION_CUSTOMIZER_TEST_VALUE_2);

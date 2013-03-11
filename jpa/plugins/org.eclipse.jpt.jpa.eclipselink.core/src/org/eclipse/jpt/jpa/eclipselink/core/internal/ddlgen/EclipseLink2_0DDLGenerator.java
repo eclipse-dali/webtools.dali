@@ -14,7 +14,7 @@ import java.util.Properties;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.Connection2_0;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOutputMode;
 
 /**
@@ -53,7 +53,7 @@ public class EclipseLink2_0DDLGenerator extends AbstractEclipseLinkDDLGenerator
 		super.buildCustomizationProperties(properties);
 		
 		this.putProperty(properties,
-			Customization.ECLIPSELINK_WEAVING,
+			EclipseLinkCustomization.ECLIPSELINK_WEAVING,
 			FALSE);
 	}
 

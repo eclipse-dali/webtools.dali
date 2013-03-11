@@ -21,7 +21,6 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomizationEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkProfiler;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkWeaving;
@@ -30,8 +29,9 @@ import org.eclipse.text.edits.ReplaceEdit;
 /**
  *  EclipseLinkCustomization
  */
-public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperties
-	implements Customization
+public class EclipseLinkCustomization
+	extends EclipseLinkPersistenceUnitProperties
+	implements org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomization
 {
 	// ********** EclipseLink properties **********
 	private Boolean throwExceptions;

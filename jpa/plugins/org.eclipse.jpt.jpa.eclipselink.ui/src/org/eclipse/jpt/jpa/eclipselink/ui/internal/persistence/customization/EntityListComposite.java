@@ -36,7 +36,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomizationEntity;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
@@ -50,12 +50,12 @@ import org.eclipse.ui.progress.IProgressService;
 /**
  *  EntityListComposite
  */
-public class EntityListComposite extends Pane<Customization>
+public class EntityListComposite extends Pane<EclipseLinkCustomization>
 {
 	private ModifiableCollectionValueModel<EclipseLinkCustomizationEntity> selectedEntitiesModel;
 	private PropertyValueModel<EclipseLinkCustomizationEntity> selectedEntityModel;
 
-	public EntityListComposite(Pane<? extends Customization> parentComposite, Composite parent) {
+	public EntityListComposite(Pane<? extends EclipseLinkCustomization> parentComposite, Composite parent) {
 
 		super(parentComposite, parent);
 	}
@@ -94,7 +94,7 @@ public class EntityListComposite extends Pane<Customization>
 	@Override
 	protected void initializeLayout(Composite container) {
 		// Entities add/remove list pane
-		new AddRemoveListPane<Customization, EclipseLinkCustomizationEntity>(
+		new AddRemoveListPane<EclipseLinkCustomization, EclipseLinkCustomizationEntity>(
 			this,
 			container,
 			this.buildEntitiesAdapter(),
@@ -201,8 +201,8 @@ public class EntityListComposite extends Pane<Customization>
 	}
 
 	private ListValueModel<EclipseLinkCustomizationEntity> buildEntitiesListHolder() {
-		return new ListAspectAdapter<Customization, EclipseLinkCustomizationEntity>(
-				this.getSubjectHolder(), Customization.ENTITIES_LIST) {
+		return new ListAspectAdapter<EclipseLinkCustomization, EclipseLinkCustomizationEntity>(
+				this.getSubjectHolder(), EclipseLinkCustomization.ENTITIES_LIST) {
 			@Override
 			protected ListIterable<EclipseLinkCustomizationEntity> getListIterable() {
 				return this.subject.getEntities();
@@ -271,7 +271,7 @@ public class EntityListComposite extends Pane<Customization>
 				return this.getSubjectHolder().getValue().getName();
 			}
 			
-			private Customization getSubjectParent() {
+			private EclipseLinkCustomization getSubjectParent() {
 				return this.getSubjectHolder().getValue().getParent();
 			}
 		};
