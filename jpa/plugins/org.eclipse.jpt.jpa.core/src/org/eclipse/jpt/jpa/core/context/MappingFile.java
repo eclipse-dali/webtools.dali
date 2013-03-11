@@ -15,7 +15,6 @@ import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.orm.MappingFileDefinition;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
-import org.eclipse.jpt.jpa.core.context.persistence.PersistentTypeContainer;
 
 /**
  * JPA mapping file (typically <code>orm.xml</code>).

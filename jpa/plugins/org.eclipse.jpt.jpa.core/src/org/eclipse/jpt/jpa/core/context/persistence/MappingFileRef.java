@@ -17,6 +17,7 @@ import org.eclipse.jpt.jpa.core.context.DeleteTypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitMetadata;
+import org.eclipse.jpt.jpa.core.context.PersistentTypeContainer;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlMappingFileRef;

@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.context.java;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.persistence.PersistentTypeContainer;
+import org.eclipse.jpt.jpa.core.context.PersistentTypeContainer;
 
 /**
  * A JAR file identified by a <code>persistence.xml</code> <code>jar-file</code> element.

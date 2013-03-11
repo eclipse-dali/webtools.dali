@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,13 +7,13 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.context.persistence;
+package org.eclipse.jpt.jpa.core.context;
 
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
-import org.eclipse.jpt.jpa.core.context.ManagedType;
 
 /**
- * Interface used by persistence unit to gather up managed types.
+ * Interface used by persistence unit to gather up persistent types.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -22,13 +22,14 @@ import org.eclipse.jpt.jpa.core.context.ManagedType;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
  * @version 3.3
- * @since 3.3
+ * @since 2.3
  */
-public interface ManagedTypeContainer {
-
+public interface PersistentTypeContainer
+	extends ManagedTypeContainer
+{
 	/**
-	 * Return the container's managed types. The returned list may contain
-	 * multiple managed types for the same Java class; e.g.<ul>
+	 * Return the container's persistent types. The returned list may contain
+	 * multiple persistent types for the same Java class; e.g.<ul>
 	 * <li>the same type is specified in both the <code>persistence.xml</code> and
 	 *     <code>orm.xml</code> files
 	 * <Li>the same type is specified multiple times in the same
@@ -38,12 +39,22 @@ public interface ManagedTypeContainer {
 	 *     <code>persistence.xml</code> file and/or an <code>orm.xml</code> file
 	 * </ul>
 	 */
-	Iterable<? extends ManagedType> getManagedTypes();
+	Iterable<? extends PersistentType> getPersistentTypes();
+
+	Transformer<PersistentTypeContainer, Iterable<? extends PersistentType>> TRANSFORMER = new PersistentTypesTransformer();
+	class PersistentTypesTransformer
+		extends TransformerAdapter<PersistentTypeContainer, Iterable<? extends PersistentType>>
+	{
+		@Override
+		public Iterable<? extends PersistentType> transform(PersistentTypeContainer container) {
+			return container.getPersistentTypes();
+		}
+	}
 
 	/**
-	 * Return the managed type with the specified name.
-	 * Return <code>null</code> if the managed type is not found.
-	 * If the persistent unit has more than one managed type with the
+	 * Return the persistent type with the specified name.
+	 * Return <code>null</code> if the persistent type is not found.
+	 * If the persistent unit has more than one persistent type with the
 	 * specified name, return the first one found, using the following
 	 * search order:<ul>
 	 * <li>mapping files
@@ -51,17 +62,5 @@ public interface ManagedTypeContainer {
 	 * <li>jar files
 	 * </ul>
 	 */
-	ManagedType getManagedType(String typeName);
-
-
-	Transformer<ManagedTypeContainer, Iterable<? extends ManagedType>> TRANSFORMER =
-		new Transformer<ManagedTypeContainer, Iterable<? extends ManagedType>>() {
-			public Iterable<? extends ManagedType> transform(ManagedTypeContainer container) {
-				return container.getManagedTypes();
-			}
-			@Override
-			public String toString() {
-				return "ManagedTypeContainer.TRANSFORMER"; //$NON-NLS-1$
-			}
-		};
+	PersistentType getPersistentType(String typeName);
 }

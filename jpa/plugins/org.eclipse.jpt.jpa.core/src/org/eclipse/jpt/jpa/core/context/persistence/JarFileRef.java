@@ -13,6 +13,7 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
+import org.eclipse.jpt.jpa.core.context.PersistentTypeContainer;
 import org.eclipse.jpt.jpa.core.context.java.JarFile;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJarFileRef;
 import org.eclipse.text.edits.ReplaceEdit;
