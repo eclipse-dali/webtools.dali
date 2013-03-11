@@ -46,14 +46,14 @@ public final class EclipseLinkJpaPreferences {
 	}
 
 	/**
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.context.persistence.LoggingLevel#getPropertyValue()
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLoggingLevel#getPropertyValue()
 	 */
 	public static String getStaticWeavingLogLevel(IProject project, String defaultValue) {
 		return getPlugin().getPreference(project, STATIC_WEAVING_LOG_LEVEL, defaultValue);
 	}
 
 	/**
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.context.persistence.LoggingLevel#getPropertyValue()
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLoggingLevel#getPropertyValue()
 	 */
 	public static void setStaticWeavingLogLevel(IProject project, String logLevel) {
 		getPlugin().setPreference(project, STATIC_WEAVING_LOG_LEVEL, logLevel);

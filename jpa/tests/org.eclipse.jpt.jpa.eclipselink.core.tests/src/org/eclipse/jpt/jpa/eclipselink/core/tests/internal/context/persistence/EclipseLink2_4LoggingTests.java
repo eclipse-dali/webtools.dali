@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging2_4;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.LoggingLevel;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLoggingLevel;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_4JpaPlatformFactory;
 
 public class EclipseLink2_4LoggingTests
@@ -22,74 +22,74 @@ public class EclipseLink2_4LoggingTests
 	private EclipseLinkLogging2_0 logging;
 
 	public static final String SQL_LOGGING_KEY = EclipseLinkLogging2_0.ECLIPSELINK_SQL_CATEGORY_LOGGING_LEVEL;
-	public static final LoggingLevel SQL_LOGGING_TEST_VALUE = LoggingLevel.off;
-	public static final LoggingLevel SQL_LOGGING_TEST_VALUE_2 = LoggingLevel.severe;
+	public static final EclipseLinkLoggingLevel SQL_LOGGING_TEST_VALUE = EclipseLinkLoggingLevel.off;
+	public static final EclipseLinkLoggingLevel SQL_LOGGING_TEST_VALUE_2 = EclipseLinkLoggingLevel.severe;
 
 	public static final String TRANSACTION_LOGGING_KEY = EclipseLinkLogging2_0.ECLIPSELINK_TRANSACTION_CATEGORY_LOGGING_LEVEL;
-	public static final LoggingLevel TRANSACTION_LOGGING_TEST_VALUE = LoggingLevel.warning;
-	public static final LoggingLevel TRANSACTION_LOGGING_TEST_VALUE_2 = LoggingLevel.info;
+	public static final EclipseLinkLoggingLevel TRANSACTION_LOGGING_TEST_VALUE = EclipseLinkLoggingLevel.warning;
+	public static final EclipseLinkLoggingLevel TRANSACTION_LOGGING_TEST_VALUE_2 = EclipseLinkLoggingLevel.info;
 
 	public static final String EVENT_LOGGING_KEY = EclipseLinkLogging2_0.ECLIPSELINK_EVENT_CATEGORY_LOGGING_LEVEL;
-	public static final LoggingLevel EVENT_LOGGING_TEST_VALUE = LoggingLevel.config;
-	public static final LoggingLevel EVENT_LOGGING_TEST_VALUE_2 = LoggingLevel.fine;
+	public static final EclipseLinkLoggingLevel EVENT_LOGGING_TEST_VALUE = EclipseLinkLoggingLevel.config;
+	public static final EclipseLinkLoggingLevel EVENT_LOGGING_TEST_VALUE_2 = EclipseLinkLoggingLevel.fine;
 
 	public static final String CONNECTION_LOGGING_KEY = EclipseLinkLogging2_0.ECLIPSELINK_CONNECTION_CATEGORY_LOGGING_LEVEL;
-	public static final LoggingLevel CONNECTION_LOGGING_TEST_VALUE = LoggingLevel.finer;
-	public static final LoggingLevel CONNECTION_LOGGING_TEST_VALUE_2 = LoggingLevel.finest;
+	public static final EclipseLinkLoggingLevel CONNECTION_LOGGING_TEST_VALUE = EclipseLinkLoggingLevel.finer;
+	public static final EclipseLinkLoggingLevel CONNECTION_LOGGING_TEST_VALUE_2 = EclipseLinkLoggingLevel.finest;
 
 	public static final String QUERY_LOGGING_KEY = EclipseLinkLogging2_0.ECLIPSELINK_QUERY_CATEGORY_LOGGING_LEVEL;
-	public static final LoggingLevel QUERY_LOGGING_TEST_VALUE = LoggingLevel.all;
-	public static final LoggingLevel QUERY_LOGGING_TEST_VALUE_2 = LoggingLevel.off;
+	public static final EclipseLinkLoggingLevel QUERY_LOGGING_TEST_VALUE = EclipseLinkLoggingLevel.all;
+	public static final EclipseLinkLoggingLevel QUERY_LOGGING_TEST_VALUE_2 = EclipseLinkLoggingLevel.off;
 
 	public static final String CACHE_LOGGING_KEY = EclipseLinkLogging2_0.ECLIPSELINK_CACHE_CATEGORY_LOGGING_LEVEL;
-	public static final LoggingLevel CACHE_LOGGING_TEST_VALUE = LoggingLevel.severe;
-	public static final LoggingLevel CACHE_LOGGING_TEST_VALUE_2 = LoggingLevel.warning;
+	public static final EclipseLinkLoggingLevel CACHE_LOGGING_TEST_VALUE = EclipseLinkLoggingLevel.severe;
+	public static final EclipseLinkLoggingLevel CACHE_LOGGING_TEST_VALUE_2 = EclipseLinkLoggingLevel.warning;
 
 	public static final String PROPAGATION_LOGGING_KEY = EclipseLinkLogging2_0.ECLIPSELINK_PROPAGATION_CATEGORY_LOGGING_LEVEL;
-	public static final LoggingLevel PROPAGATION_LOGGING_TEST_VALUE = LoggingLevel.info;
-	public static final LoggingLevel PROPAGATION_LOGGING_TEST_VALUE_2 = LoggingLevel.config;
+	public static final EclipseLinkLoggingLevel PROPAGATION_LOGGING_TEST_VALUE = EclipseLinkLoggingLevel.info;
+	public static final EclipseLinkLoggingLevel PROPAGATION_LOGGING_TEST_VALUE_2 = EclipseLinkLoggingLevel.config;
 
 	public static final String SEQUENCING_LOGGING_KEY = EclipseLinkLogging2_0.ECLIPSELINK_SEQUENCING_CATEGORY_LOGGING_LEVEL;
-	public static final LoggingLevel SEQUENCING_LOGGING_TEST_VALUE = LoggingLevel.fine;
-	public static final LoggingLevel SEQUENCING_LOGGING_TEST_VALUE_2 = LoggingLevel.finer;
+	public static final EclipseLinkLoggingLevel SEQUENCING_LOGGING_TEST_VALUE = EclipseLinkLoggingLevel.fine;
+	public static final EclipseLinkLoggingLevel SEQUENCING_LOGGING_TEST_VALUE_2 = EclipseLinkLoggingLevel.finer;
 
 	public static final String EJB_LOGGING_KEY = EclipseLinkLogging2_0.ECLIPSELINK_EJB_CATEGORY_LOGGING_LEVEL;
-	public static final LoggingLevel EJB_LOGGING_TEST_VALUE = LoggingLevel.finest;
-	public static final LoggingLevel EJB_LOGGING_TEST_VALUE_2 = LoggingLevel.all;
+	public static final EclipseLinkLoggingLevel EJB_LOGGING_TEST_VALUE = EclipseLinkLoggingLevel.finest;
+	public static final EclipseLinkLoggingLevel EJB_LOGGING_TEST_VALUE_2 = EclipseLinkLoggingLevel.all;
 
 	public static final String DMS_LOGGING_KEY = EclipseLinkLogging2_0.ECLIPSELINK_DMS_CATEGORY_LOGGING_LEVEL;
-	public static final LoggingLevel DMS_LOGGING_TEST_VALUE = LoggingLevel.off;
-	public static final LoggingLevel DMS_LOGGING_TEST_VALUE_2 = LoggingLevel.severe;
+	public static final EclipseLinkLoggingLevel DMS_LOGGING_TEST_VALUE = EclipseLinkLoggingLevel.off;
+	public static final EclipseLinkLoggingLevel DMS_LOGGING_TEST_VALUE_2 = EclipseLinkLoggingLevel.severe;
 
 	public static final String WEAVER_LOGGING_KEY = EclipseLinkLogging2_0.ECLIPSELINK_WEAVER_CATEGORY_LOGGING_LEVEL;
-	public static final LoggingLevel WEAVER_LOGGING_TEST_VALUE = LoggingLevel.finer;
-	public static final LoggingLevel WEAVER_LOGGING_TEST_VALUE_2 = LoggingLevel.finest;
+	public static final EclipseLinkLoggingLevel WEAVER_LOGGING_TEST_VALUE = EclipseLinkLoggingLevel.finer;
+	public static final EclipseLinkLoggingLevel WEAVER_LOGGING_TEST_VALUE_2 = EclipseLinkLoggingLevel.finest;
 
 	public static final String PROPERTIES_LOGGING_KEY = EclipseLinkLogging2_0.ECLIPSELINK_PROPERTIES_CATEGORY_LOGGING_LEVEL;
-	public static final LoggingLevel PROPERTIES_LOGGING_TEST_VALUE = LoggingLevel.all;
-	public static final LoggingLevel PROPERTIES_LOGGING_TEST_VALUE_2 = LoggingLevel.off;
+	public static final EclipseLinkLoggingLevel PROPERTIES_LOGGING_TEST_VALUE = EclipseLinkLoggingLevel.all;
+	public static final EclipseLinkLoggingLevel PROPERTIES_LOGGING_TEST_VALUE_2 = EclipseLinkLoggingLevel.off;
 
 	public static final String SERVER_LOGGING_KEY = EclipseLinkLogging2_0.ECLIPSELINK_SERVER_CATEGORY_LOGGING_LEVEL;
-	public static final LoggingLevel SERVER_LOGGING_TEST_VALUE = LoggingLevel.severe;
-	public static final LoggingLevel SERVER_LOGGING_TEST_VALUE_2 = LoggingLevel.warning;
+	public static final EclipseLinkLoggingLevel SERVER_LOGGING_TEST_VALUE = EclipseLinkLoggingLevel.severe;
+	public static final EclipseLinkLoggingLevel SERVER_LOGGING_TEST_VALUE_2 = EclipseLinkLoggingLevel.warning;
 
 	// logging categories introduced by EclipseLink 2.4
 	
 	public static final String METADATA_LOGGING_KEY = EclipseLinkLogging2_4.ECLIPSELINK_METADATA_CATEGORY_LOGGING_LEVEL;
-	public static final LoggingLevel METADATA_LOGGING_TEST_VALUE = LoggingLevel.warning;
-	public static final LoggingLevel METADATA_LOGGING_TEST_VALUE_2 = LoggingLevel.info;
+	public static final EclipseLinkLoggingLevel METADATA_LOGGING_TEST_VALUE = EclipseLinkLoggingLevel.warning;
+	public static final EclipseLinkLoggingLevel METADATA_LOGGING_TEST_VALUE_2 = EclipseLinkLoggingLevel.info;
 
 	public static final String METAMODEL_LOGGING_KEY = EclipseLinkLogging2_4.ECLIPSELINK_METAMODEL_CATEGORY_LOGGING_LEVEL;
-	public static final LoggingLevel METAMODEL_LOGGING_TEST_VALUE = LoggingLevel.config;
-	public static final LoggingLevel METAMODEL_LOGGING_TEST_VALUE_2 = LoggingLevel.fine;
+	public static final EclipseLinkLoggingLevel METAMODEL_LOGGING_TEST_VALUE = EclipseLinkLoggingLevel.config;
+	public static final EclipseLinkLoggingLevel METAMODEL_LOGGING_TEST_VALUE_2 = EclipseLinkLoggingLevel.fine;
 
 	public static final String JPA_LOGGING_KEY = EclipseLinkLogging2_4.ECLIPSELINK_JPA_CATEGORY_LOGGING_LEVEL;
-	public static final LoggingLevel JPA_LOGGING_TEST_VALUE = LoggingLevel.all;
-	public static final LoggingLevel JPA_LOGGING_TEST_VALUE_2 = LoggingLevel.off;
+	public static final EclipseLinkLoggingLevel JPA_LOGGING_TEST_VALUE = EclipseLinkLoggingLevel.all;
+	public static final EclipseLinkLoggingLevel JPA_LOGGING_TEST_VALUE_2 = EclipseLinkLoggingLevel.off;
 
 	public static final String DDL_LOGGING_KEY = EclipseLinkLogging2_4.ECLIPSELINK_DDL_CATEGORY_LOGGING_LEVEL;
-	public static final LoggingLevel DDL_LOGGING_TEST_VALUE = LoggingLevel.severe;
-	public static final LoggingLevel DDL_LOGGING_TEST_VALUE_2 = LoggingLevel.warning;
+	public static final EclipseLinkLoggingLevel DDL_LOGGING_TEST_VALUE = EclipseLinkLoggingLevel.severe;
+	public static final EclipseLinkLoggingLevel DDL_LOGGING_TEST_VALUE_2 = EclipseLinkLoggingLevel.warning;
 
 	// ********** constructors **********
 	public EclipseLink2_4LoggingTests(String name) {
@@ -176,7 +176,7 @@ public class EclipseLink2_4LoggingTests
 	@Override
 	protected void setProperty(String propertyName, Object newValue) throws Exception {
 
-		this.logging.setLevel(propertyName, (LoggingLevel) newValue);
+		this.logging.setLevel(propertyName, (EclipseLinkLoggingLevel) newValue);
 	}
 	
 	// ********** Sql Level tests **********

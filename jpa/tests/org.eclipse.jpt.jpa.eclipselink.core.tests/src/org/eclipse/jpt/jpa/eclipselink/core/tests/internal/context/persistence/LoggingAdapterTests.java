@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logger;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.LoggingLevel;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLoggingLevel;
 
 /**
  * Tests the update of model objects by the Logging adapter when the
@@ -26,8 +26,8 @@ public class LoggingAdapterTests extends EclipseLinkPersistenceUnitTestCase
 	private EclipseLinkLogging logging;
 
 	public static final String LEVEL_KEY = EclipseLinkLogging.ECLIPSELINK_LEVEL;
-	public static final LoggingLevel LEVEL_TEST_VALUE = LoggingLevel.fine;
-	public static final LoggingLevel LEVEL_TEST_VALUE_2 = LoggingLevel.finest;
+	public static final EclipseLinkLoggingLevel LEVEL_TEST_VALUE = EclipseLinkLoggingLevel.fine;
+	public static final EclipseLinkLoggingLevel LEVEL_TEST_VALUE_2 = EclipseLinkLoggingLevel.finest;
 
 	public static final String TIMESTAMP_KEY = EclipseLinkLogging.ECLIPSELINK_TIMESTAMP;
 	public static final Boolean TIMESTAMP_TEST_VALUE = false;
@@ -277,7 +277,7 @@ public class LoggingAdapterTests extends EclipseLinkPersistenceUnitTestCase
 	@Override
 	protected void setProperty(String propertyName, Object newValue) throws Exception {
 		if (propertyName.equals(EclipseLinkLogging.LEVEL_PROPERTY))
-			this.logging.setLevel((LoggingLevel) newValue);
+			this.logging.setLevel((EclipseLinkLoggingLevel) newValue);
 		else if (propertyName.equals(EclipseLinkLogging.TIMESTAMP_PROPERTY))
 			this.logging.setTimestamp((Boolean) newValue);
 		else if (propertyName.equals(EclipseLinkLogging.THREAD_PROPERTY))

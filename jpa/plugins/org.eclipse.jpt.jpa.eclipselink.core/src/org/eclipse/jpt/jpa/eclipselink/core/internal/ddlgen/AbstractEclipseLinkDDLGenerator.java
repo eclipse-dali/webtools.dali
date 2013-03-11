@@ -40,7 +40,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConne
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.DdlGenerationType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.LoggingLevel;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLoggingLevel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOutputMode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkSchemaGeneration;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_1JpaPlatformFactory;
@@ -208,7 +208,7 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 	private void buildLoggingProperties(Properties properties) {
 		this.putProperty(properties,
 			EclipseLinkLogging.ECLIPSELINK_LEVEL,
-			LoggingLevel.fine);
+			EclipseLinkLoggingLevel.fine);
 		this.putProperty(properties,
 			EclipseLinkLogging.ECLIPSELINK_TIMESTAMP,
 			FALSE);

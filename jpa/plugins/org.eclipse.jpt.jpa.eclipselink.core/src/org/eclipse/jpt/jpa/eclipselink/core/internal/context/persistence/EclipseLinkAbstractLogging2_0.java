@@ -14,7 +14,7 @@ import java.util.Map;
 
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging2_0;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.LoggingLevel;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLoggingLevel;
 
 public abstract class EclipseLinkAbstractLogging2_0
 	extends EclipseLinkLoggingImpl
@@ -28,11 +28,11 @@ public abstract class EclipseLinkAbstractLogging2_0
 	 * 		key = Category property id
 	 * 		value = value
 	 */
-	private Map<String, LoggingLevel> categoryValues;
+	private Map<String, EclipseLinkLoggingLevel> categoryValues;
 
 	private Boolean connection;
 	
-	private LoggingLevel categoriesDefaultValue;
+	private EclipseLinkLoggingLevel categoriesDefaultValue;
 	
 	// ********** constructors **********
 	public EclipseLinkAbstractLogging2_0(PersistenceUnit2_0 parent) {
@@ -51,7 +51,7 @@ public abstract class EclipseLinkAbstractLogging2_0
 			this.getBooleanValue(ECLIPSELINK_CONNECTION);
 		
 		this.categoriesDefaultValue = 
-			this.getEnumValue(ECLIPSELINK_LEVEL, LoggingLevel.values());
+			this.getEnumValue(ECLIPSELINK_LEVEL, EclipseLinkLoggingLevel.values());
 		this.initializeCategory(SQL_CATEGORY_LOGGING_PROPERTY);
 		this.initializeCategory(TRANSACTION_CATEGORY_LOGGING_PROPERTY);
 		this.initializeCategory(EVENT_CATEGORY_LOGGING_PROPERTY);
@@ -73,7 +73,7 @@ public abstract class EclipseLinkAbstractLogging2_0
 	protected void initialize() {
 		super.initialize();
 
-		this.categoryValues = new HashMap<String, LoggingLevel>();
+		this.categoryValues = new HashMap<String, EclipseLinkLoggingLevel>();
 	}
 
 	/**
@@ -84,7 +84,7 @@ public abstract class EclipseLinkAbstractLogging2_0
 	 */
 	protected void initializeCategory(String categoryId) {
 		String puKey = this.persistenceUnitKeyOf(categoryId);
-		LoggingLevel puValue = this.getEnumValue(puKey, LoggingLevel.values());
+		EclipseLinkLoggingLevel puValue = this.getEnumValue(puKey, EclipseLinkLoggingLevel.values());
 
 		this.categoryValues.put(categoryId, puValue);
 	}
@@ -284,13 +284,13 @@ public abstract class EclipseLinkAbstractLogging2_0
 	
 	// ********** Category Levels **********
 	
-	public LoggingLevel getLevel(String category) {
+	public EclipseLinkLoggingLevel getLevel(String category) {
 
 		return this.categoryValues.get(category);
 	}
 
-	public void setLevel(String category, LoggingLevel newLevel) {
-		LoggingLevel old = this.getLevel(category);
+	public void setLevel(String category, EclipseLinkLoggingLevel newLevel) {
+		EclipseLinkLoggingLevel old = this.getLevel(category);
 		this.categoryValues.put(category, newLevel);
 		this.putProperty(category, newLevel);
 		this.firePropertyChanged(category, old, newLevel);
@@ -302,24 +302,24 @@ public abstract class EclipseLinkAbstractLogging2_0
 	}
 
 	private void categoryLoggingChanged(String category, String stringValue) {
-		LoggingLevel enumValue = getEnumValueOf(stringValue, LoggingLevel.values());
-		LoggingLevel old = this.getLevel(category);
+		EclipseLinkLoggingLevel enumValue = getEnumValueOf(stringValue, EclipseLinkLoggingLevel.values());
+		EclipseLinkLoggingLevel old = this.getLevel(category);
 		this.categoryValues.put(category, enumValue);
 		this.firePropertyChanged(category, old, enumValue);
 	}
 
-	public LoggingLevel getCategoriesDefaultLevel() {
+	public EclipseLinkLoggingLevel getCategoriesDefaultLevel() {
 		return (this.categoriesDefaultValue == null) ? super.getDefaultLevel() : this.categoriesDefaultValue;
 	}
 
 	@Override
-	public void setLevel(LoggingLevel level) {
+	public void setLevel(EclipseLinkLoggingLevel level) {
 		super.setLevel(level);
 		this.setDefaultLevel(level);
 	}
 
-	public void setDefaultLevel(LoggingLevel level) {
-		LoggingLevel old = this.categoriesDefaultValue;
+	public void setDefaultLevel(EclipseLinkLoggingLevel level) {
+		EclipseLinkLoggingLevel old = this.categoriesDefaultValue;
 		this.categoriesDefaultValue = level;
 		this.firePropertyChanged(CATEGORIES_DEFAULT_LOGGING_PROPERTY, old, level);
 	}

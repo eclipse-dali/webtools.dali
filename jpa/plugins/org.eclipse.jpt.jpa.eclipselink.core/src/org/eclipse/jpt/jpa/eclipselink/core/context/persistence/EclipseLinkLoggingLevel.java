@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 /**
  *  LoggingLevel
  */
-public enum LoggingLevel implements PersistenceXmlEnumValue {
+public enum EclipseLinkLoggingLevel implements PersistenceXmlEnumValue {
 	off("OFF"),  //$NON-NLS-1$
 	severe("SEVERE"),  //$NON-NLS-1$
 	warning("WARNING"),  //$NON-NLS-1$
@@ -30,7 +30,7 @@ public enum LoggingLevel implements PersistenceXmlEnumValue {
 	 */
 	private final String propertyValue;
 
-	LoggingLevel(String propertyValue) {
+	EclipseLinkLoggingLevel(String propertyValue) {
 		this.propertyValue = propertyValue;
 	}
 

@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging2_4;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.LoggingLevel;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLoggingLevel;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -93,8 +93,8 @@ public class EclipseLinkLogging2_4Composite
 	private static final String DEFAULT_PROPERTY = EclipseLinkLogging2_0.CATEGORIES_DEFAULT_LOGGING_PROPERTY;
 	
 	@Override
-	protected EnumFormComboViewer<EclipseLinkLogging2_0, LoggingLevel> addLoggingLevelCombo(Composite container, final String category) {
-		return new EnumFormComboViewer<EclipseLinkLogging2_0, LoggingLevel>(this, container) {
+	protected EnumFormComboViewer<EclipseLinkLogging2_0, EclipseLinkLoggingLevel> addLoggingLevelCombo(Composite container, final String category) {
+		return new EnumFormComboViewer<EclipseLinkLogging2_0, EclipseLinkLoggingLevel>(this, container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
@@ -119,8 +119,8 @@ public class EclipseLinkLogging2_4Composite
 			}
 
 			@Override
-			protected LoggingLevel[] getChoices() {
-				return LoggingLevel.values();
+			protected EclipseLinkLoggingLevel[] getChoices() {
+				return EclipseLinkLoggingLevel.values();
 			}
 
 			@Override
@@ -129,12 +129,12 @@ public class EclipseLinkLogging2_4Composite
 			}
 
 			@Override
-			protected LoggingLevel getDefaultValue() {
+			protected EclipseLinkLoggingLevel getDefaultValue() {
 				return this.getSubject().getCategoriesDefaultLevel();
 			}
 
 			@Override
-			protected String displayString(LoggingLevel value) {
+			protected String displayString(EclipseLinkLoggingLevel value) {
 				switch (value) {
 					case all :
 						return JptJpaEclipseLinkUiMessages.ECLIPSELINK_CATEGORY_LOGGING_LEVEL_COMPOSITE_ALL;
@@ -160,12 +160,12 @@ public class EclipseLinkLogging2_4Composite
 			}
 
 			@Override
-			protected LoggingLevel getValue() {
+			protected EclipseLinkLoggingLevel getValue() {
 				return this.getSubject().getLevel(category);
 			}
 
 			@Override
-			protected void setValue(LoggingLevel value) {
+			protected void setValue(EclipseLinkLoggingLevel value) {
 				this.getSubject().setLevel(category, value);
 			}
 

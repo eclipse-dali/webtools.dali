@@ -25,10 +25,10 @@ public interface EclipseLinkLogging2_0
 		static final String ECLIPSELINK_CONNECTION = "eclipselink.logging.connection"; //$NON-NLS-1$
 		static final Boolean DEFAULT_CONNECTION = Boolean.TRUE;
 		
-	LoggingLevel getCategoriesDefaultLevel();
-	LoggingLevel getLevel(String category);
-	void setLevel(String category, LoggingLevel level);
-	void setDefaultLevel(LoggingLevel level);
+	EclipseLinkLoggingLevel getCategoriesDefaultLevel();
+	EclipseLinkLoggingLevel getLevel(String category);
+	void setLevel(String category, EclipseLinkLoggingLevel level);
+	void setDefaultLevel(EclipseLinkLoggingLevel level);
 	static final String CATEGORIES_DEFAULT_LOGGING_PROPERTY = "categoriesDefaultLoggingLevel"; //$NON-NLS-1$
 
 		static final String SQL_CATEGORY_LOGGING_PROPERTY = "sqlLoggingLevel"; //$NON-NLS-1$

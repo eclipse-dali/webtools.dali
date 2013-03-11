@@ -17,13 +17,13 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 public interface EclipseLinkLogging
 	extends PersistenceUnitProperties
 {
-	LoggingLevel getDefaultLevel();
-	LoggingLevel getLevel();
-	void setLevel(LoggingLevel level);
+	EclipseLinkLoggingLevel getDefaultLevel();
+	EclipseLinkLoggingLevel getLevel();
+	void setLevel(EclipseLinkLoggingLevel level);
 		static final String LEVEL_PROPERTY = "level"; //$NON-NLS-1$
 		// EclipseLink key string
 		static final String ECLIPSELINK_LEVEL = "eclipselink.logging.level"; //$NON-NLS-1$
-		static final LoggingLevel DEFAULT_LEVEL = LoggingLevel.info;
+		static final EclipseLinkLoggingLevel DEFAULT_LEVEL = EclipseLinkLoggingLevel.info;
 	
 	Boolean getDefaultTimestamp();
 	Boolean getTimestamp();

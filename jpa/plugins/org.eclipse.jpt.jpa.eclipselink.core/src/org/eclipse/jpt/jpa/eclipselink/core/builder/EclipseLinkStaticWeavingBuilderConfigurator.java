@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkJpaPreferences;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.LoggingLevel;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLoggingLevel;
 
 /**
  *  Configures and coordinates StaticWeaving builder behavior for the project.
@@ -162,9 +162,9 @@ public class EclipseLinkStaticWeavingBuilderConfigurator
 		return Level.SEVERE.getName();
 	}
 	
-	public LoggingLevel[] getLogLevelValues() {
+	public EclipseLinkLoggingLevel[] getLogLevelValues() {
 		
-		return LoggingLevel.values();
+		return EclipseLinkLoggingLevel.values();
 	}
 
 	//  setting and removing preferences

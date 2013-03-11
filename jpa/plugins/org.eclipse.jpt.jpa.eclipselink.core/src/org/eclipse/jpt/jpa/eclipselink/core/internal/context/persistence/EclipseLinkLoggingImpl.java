@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logger;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.LoggingLevel;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLoggingLevel;
 import org.eclipse.text.edits.ReplaceEdit;
 
 /**
@@ -28,7 +28,7 @@ public class EclipseLinkLoggingImpl
 	implements EclipseLinkLogging
 {
 	// ********** EclipseLink properties **********
-	private LoggingLevel level;
+	private EclipseLinkLoggingLevel level;
 	private Boolean timestamp;
 	private Boolean thread;
 	private Boolean session;
@@ -49,7 +49,7 @@ public class EclipseLinkLoggingImpl
 	protected void initializeProperties() {
 		// TOREVIEW - handle incorrect String in persistence.xml
 		this.level = 
-			this.getEnumValue(ECLIPSELINK_LEVEL, LoggingLevel.values());
+			this.getEnumValue(ECLIPSELINK_LEVEL, EclipseLinkLoggingLevel.values());
 		this.timestamp = 
 			this.getBooleanValue(ECLIPSELINK_TIMESTAMP);
 		this.thread = 
@@ -159,25 +159,25 @@ public class EclipseLinkLoggingImpl
 
 	// ********** LoggingLevel **********
 	
-	public LoggingLevel getLevel() {
+	public EclipseLinkLoggingLevel getLevel() {
 		return this.level;
 	}
 	
-	public void setLevel(LoggingLevel newLevel) {
-		LoggingLevel old = this.level;
+	public void setLevel(EclipseLinkLoggingLevel newLevel) {
+		EclipseLinkLoggingLevel old = this.level;
 		this.level = newLevel;
 		this.putProperty(LEVEL_PROPERTY, newLevel);
 		this.firePropertyChanged(LEVEL_PROPERTY, old, newLevel);
 	}
 
 	private void levelChanged(String stringValue) {
-		LoggingLevel newValue = getEnumValueOf(stringValue, LoggingLevel.values());
-		LoggingLevel old = this.level;
+		EclipseLinkLoggingLevel newValue = getEnumValueOf(stringValue, EclipseLinkLoggingLevel.values());
+		EclipseLinkLoggingLevel old = this.level;
 		this.level = newValue;
 		this.firePropertyChanged(LEVEL_PROPERTY, old, newValue);
 	}
 	
-	public LoggingLevel getDefaultLevel() {
+	public EclipseLinkLoggingLevel getDefaultLevel() {
 		return DEFAULT_LEVEL;
 	}
 
