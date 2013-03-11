@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.resource.java.FetchType;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkTransformationAnnotation
+public interface TransformationAnnotation
 	extends Annotation
 {
 	String ANNOTATION_NAME = EclipseLink.TRANSFORMATION;

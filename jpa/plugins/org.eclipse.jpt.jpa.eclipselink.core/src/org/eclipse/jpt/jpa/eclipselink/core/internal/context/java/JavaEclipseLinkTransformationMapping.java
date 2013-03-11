@@ -17,10 +17,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTransformationMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTransformationAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TransformationAnnotation;
 
 public class JavaEclipseLinkTransformationMapping 
-	extends AbstractJavaAttributeMapping<EclipseLinkTransformationAnnotation> 
+	extends AbstractJavaAttributeMapping<TransformationAnnotation> 
 	implements EclipseLinkTransformationMapping, EclipseLinkJavaConvertibleMapping
 {
 	
@@ -75,6 +75,6 @@ public class JavaEclipseLinkTransformationMapping
 	
 	@Override
 	protected String getAnnotationName() {
-		return EclipseLinkTransformationAnnotation.ANNOTATION_NAME;
+		return TransformationAnnotation.ANNOTATION_NAME;
 	}
 }

@@ -13,14 +13,14 @@ import org.eclipse.jpt.common.core.internal.resource.java.NullAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.java.FetchType;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTransformationAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TransformationAnnotation;
 
 /**
  * <code>org.eclipse.persistence.annotations.Transformation</code>
  */
 public final class NullEclipseLinkTransformationAnnotation
-	extends NullAnnotation<EclipseLinkTransformationAnnotation>
-	implements EclipseLinkTransformationAnnotation
+	extends NullAnnotation<TransformationAnnotation>
+	implements TransformationAnnotation
 {	
 	protected NullEclipseLinkTransformationAnnotation(JavaResourceAnnotatedElement parent) {
 		super(parent);

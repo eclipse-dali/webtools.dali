@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.resource.java.FetchType;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTransformationAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TransformationAnnotation;
 
 @SuppressWarnings("nls")
 public class TransformationAnnotationTests extends EclipseLinkJavaResourceModelTestCase {
@@ -86,7 +86,7 @@ public class TransformationAnnotationTests extends EclipseLinkJavaResourceModelT
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkTransformationAnnotation transformation = (EclipseLinkTransformationAnnotation) resourceField.getAnnotation(EclipseLink.TRANSFORMATION);
+		TransformationAnnotation transformation = (TransformationAnnotation) resourceField.getAnnotation(EclipseLink.TRANSFORMATION);
 		assertEquals(Boolean.TRUE, transformation.getOptional());
 	}
 
@@ -95,7 +95,7 @@ public class TransformationAnnotationTests extends EclipseLinkJavaResourceModelT
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkTransformationAnnotation transformation = (EclipseLinkTransformationAnnotation) resourceField.getAnnotation(EclipseLink.TRANSFORMATION);
+		TransformationAnnotation transformation = (TransformationAnnotation) resourceField.getAnnotation(EclipseLink.TRANSFORMATION);
 		assertEquals(Boolean.TRUE, transformation.getOptional());
 		
 		transformation.setOptional(Boolean.FALSE);
@@ -109,7 +109,7 @@ public class TransformationAnnotationTests extends EclipseLinkJavaResourceModelT
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkTransformationAnnotation transformation = (EclipseLinkTransformationAnnotation) resourceField.getAnnotation(EclipseLink.TRANSFORMATION);
+		TransformationAnnotation transformation = (TransformationAnnotation) resourceField.getAnnotation(EclipseLink.TRANSFORMATION);
 		assertEquals(Boolean.TRUE, transformation.getOptional());
 		
 		transformation.setOptional(null);
@@ -124,7 +124,7 @@ public class TransformationAnnotationTests extends EclipseLinkJavaResourceModelT
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkTransformationAnnotation transformation = (EclipseLinkTransformationAnnotation) resourceField.getAnnotation(EclipseLink.TRANSFORMATION);
+		TransformationAnnotation transformation = (TransformationAnnotation) resourceField.getAnnotation(EclipseLink.TRANSFORMATION);
 		assertEquals(FetchType.EAGER, transformation.getFetch());
 	}
 
@@ -133,7 +133,7 @@ public class TransformationAnnotationTests extends EclipseLinkJavaResourceModelT
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkTransformationAnnotation transformation = (EclipseLinkTransformationAnnotation) resourceField.getAnnotation(EclipseLink.TRANSFORMATION);
+		TransformationAnnotation transformation = (TransformationAnnotation) resourceField.getAnnotation(EclipseLink.TRANSFORMATION);
 		assertEquals(FetchType.EAGER, transformation.getFetch());
 		
 		transformation.setFetch(FetchType.LAZY);
@@ -147,7 +147,7 @@ public class TransformationAnnotationTests extends EclipseLinkJavaResourceModelT
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkTransformationAnnotation transformation = (EclipseLinkTransformationAnnotation) resourceField.getAnnotation(EclipseLink.TRANSFORMATION);
+		TransformationAnnotation transformation = (TransformationAnnotation) resourceField.getAnnotation(EclipseLink.TRANSFORMATION);
 		assertEquals(FetchType.EAGER, transformation.getFetch());
 		
 		transformation.setFetch(null);

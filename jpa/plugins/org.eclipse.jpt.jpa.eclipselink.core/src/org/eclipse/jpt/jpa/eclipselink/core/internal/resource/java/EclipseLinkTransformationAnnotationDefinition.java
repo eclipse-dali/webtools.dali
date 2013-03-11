@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.BinaryEclipseLinkTransformationAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.SourceEclipseLinkTransformationAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTransformationAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TransformationAnnotation;
 
 /**
  * org.eclipse.persistence.annotations.Transformation
@@ -54,6 +54,6 @@ public class EclipseLinkTransformationAnnotationDefinition
 	}
 
 	public String getAnnotationName() {
-		return EclipseLinkTransformationAnnotation.ANNOTATION_NAME;
+		return TransformationAnnotation.ANNOTATION_NAME;
 	}
 }

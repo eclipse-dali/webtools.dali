@@ -15,14 +15,14 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.java.FetchType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTransformationAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TransformationAnnotation;
 
 /**
  * <code>org.eclipse.persistence.annotations.Transformation</code>
  */
 public class BinaryEclipseLinkTransformationAnnotation
 	extends BinaryAnnotation
-	implements EclipseLinkTransformationAnnotation
+	implements TransformationAnnotation
 {
 	private FetchType fetch;
 	private Boolean optional;

@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaFactory;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTransformationAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TransformationAnnotation;
 
 public class EclipseLinkJavaTransformationMappingDefinition
 	implements JavaAttributeMappingDefinition
@@ -44,7 +44,7 @@ public class EclipseLinkJavaTransformationMappingDefinition
 	}
 
 	public String getAnnotationName() {
-		return EclipseLinkTransformationAnnotation.ANNOTATION_NAME;
+		return TransformationAnnotation.ANNOTATION_NAME;
 	}
 
 	public boolean isSpecified(JavaSpecifiedPersistentAttribute persistentAttribute) {
