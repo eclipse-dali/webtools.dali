@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import java.util.List;
-import org.eclipse.jpt.common.core.resource.xml.EmfTools;
+import org.eclipse.jpt.common.core.resource.xml.EFactoryTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
@@ -273,7 +273,7 @@ public class GenericOrmQueryContainer
 	}
 
 	protected XmlNamedStoredProcedureQuery buildXmlNamedStoredProcedureQuery() {
-		return EmfTools.create(
+		return EFactoryTools.create(
 			this.getResourceModelFactory(), 
 			OrmPackage.eINSTANCE.getXmlNamedStoredProcedureQuery(), 
 			XmlNamedStoredProcedureQuery.class);

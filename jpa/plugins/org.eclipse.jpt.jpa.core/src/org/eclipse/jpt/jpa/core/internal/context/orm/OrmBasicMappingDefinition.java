@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.emf.ecore.EFactory;
-import org.eclipse.jpt.common.core.resource.xml.EmfTools;
+import org.eclipse.jpt.common.core.resource.xml.EFactoryTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBasicMapping;
@@ -49,7 +49,7 @@ public class OrmBasicMappingDefinition
 	}
 	
 	public XmlAttributeMapping buildResourceMapping(EFactory factory) {
-		return EmfTools.create(
+		return EFactoryTools.create(
 				factory, 
 				OrmPackage.eINSTANCE.getXmlBasic(), 
 				XmlBasic.class);

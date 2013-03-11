@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.As
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.core.resource.xml.EmfTools;
+import org.eclipse.jpt.common.core.resource.xml.EFactoryTools;
 import org.eclipse.jpt.common.core.utility.BodySourceWriter;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
@@ -469,7 +469,7 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	protected Attributes buildXmlAttributes() {
-		return EmfTools.create(this.getResourceModelFactory(), OrmPackage.eINSTANCE.getAttributes(), Attributes.class);
+		return EFactoryTools.create(this.getResourceModelFactory(), OrmPackage.eINSTANCE.getAttributes(), Attributes.class);
 	}
 
 	protected void removeXmlAttributesIfUnset() {

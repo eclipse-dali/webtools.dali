@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
-import org.eclipse.jpt.common.core.resource.xml.EmfTools;
+import org.eclipse.jpt.common.core.resource.xml.EFactoryTools;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.AbstractOrmPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkPersistenceUnitDefaults;
@@ -36,7 +36,7 @@ public class OrmEclipseLinkPersistenceUnitMetadata
 
 	@Override
 	protected XmlPersistenceUnitMetadata buildXmlPersistenceUnitMetadata_() {
-		return EmfTools.create(
+		return EFactoryTools.create(
 				this.getResourceModelFactory(),
 				EclipseLinkOrmPackage.eINSTANCE.getXmlPersistenceUnitMetadata(),
 				XmlPersistenceUnitMetadata.class

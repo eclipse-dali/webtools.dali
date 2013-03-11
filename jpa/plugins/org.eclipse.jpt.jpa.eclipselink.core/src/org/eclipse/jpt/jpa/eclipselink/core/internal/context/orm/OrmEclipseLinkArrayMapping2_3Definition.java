@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import org.eclipse.emf.ecore.EFactory;
-import org.eclipse.jpt.common.core.resource.xml.EmfTools;
+import org.eclipse.jpt.common.core.resource.xml.EFactoryTools;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
@@ -49,7 +49,7 @@ public class OrmEclipseLinkArrayMapping2_3Definition
 	}
 
 	public XmlAttributeMapping buildResourceMapping(EFactory factory) {
-		return EmfTools.create(
+		return EFactoryTools.create(
 				factory, 
 				EclipseLinkOrmPackage.eINSTANCE.getXmlArray(), 
 				XmlArray.class);

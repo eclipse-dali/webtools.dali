@@ -26,7 +26,7 @@ import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.common.core.resource.xml.EmfTools;
+import org.eclipse.jpt.common.core.resource.xml.EFactoryTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -1137,7 +1137,7 @@ public abstract class AbstractEntityMappings
 	}
 
 	protected XmlConverter buildXmlConverter() {
-		return EmfTools.create(
+		return EFactoryTools.create(
 			this.getResourceModelFactory(), 
 			OrmPackage.eINSTANCE.getXmlConverter(), 
 			XmlConverter.class);
