@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * @version 3.1
  * @since 2.3
  */
-public interface EclipseLinkClassExtractorAnnotation2_1
+public interface ClassExtractorAnnotation2_1
 	extends Annotation
 {
 	String ANNOTATION_NAME = EclipseLink.CLASS_EXTRACTOR;

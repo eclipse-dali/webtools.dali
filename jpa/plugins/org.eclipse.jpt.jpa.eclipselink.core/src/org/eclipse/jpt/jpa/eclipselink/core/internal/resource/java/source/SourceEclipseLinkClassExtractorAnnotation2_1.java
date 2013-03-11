@@ -23,14 +23,14 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkClassExtractorAnnotation2_1;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ClassExtractorAnnotation2_1;
 
 /**
  * org.eclipse.persistence.annotations.ClassExtractor
  */
 public final class SourceEclipseLinkClassExtractorAnnotation2_1
 	extends SourceAnnotation
-	implements EclipseLinkClassExtractorAnnotation2_1
+	implements ClassExtractorAnnotation2_1
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 

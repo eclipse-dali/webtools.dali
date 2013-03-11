@@ -40,7 +40,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_3JpaPlatformFa
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkEntityPrimaryKeyValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkTypeMappingValidator;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkClassExtractorAnnotation2_1;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ClassExtractorAnnotation2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -266,10 +266,10 @@ public class OrmEclipseLinkEntityImpl
 		return this.getXmlTypeMapping().getClassExtractor();
 	}
 
-	protected EclipseLinkClassExtractorAnnotation2_1 getClassExtractorAnnotation() {
+	protected ClassExtractorAnnotation2_1 getClassExtractorAnnotation() {
 		if (this.getJavaTypeMappingForDefaults() != null) {
 			JavaResourceType jrpt = this.getJavaPersistentType().getJavaResourceType();
-			return (EclipseLinkClassExtractorAnnotation2_1) jrpt.getAnnotation(EclipseLinkClassExtractorAnnotation2_1.ANNOTATION_NAME);
+			return (ClassExtractorAnnotation2_1) jrpt.getAnnotation(ClassExtractorAnnotation2_1.ANNOTATION_NAME);
 		}
 		return null;
 	}

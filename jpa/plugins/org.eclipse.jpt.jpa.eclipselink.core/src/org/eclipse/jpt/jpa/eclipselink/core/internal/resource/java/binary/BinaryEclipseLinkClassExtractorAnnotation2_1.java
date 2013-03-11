@@ -14,14 +14,14 @@ import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotatio
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkClassExtractorAnnotation2_1;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ClassExtractorAnnotation2_1;
 
 /**
  * org.eclipse.persistence.annotations.ClassExtractor
  */
 public final class BinaryEclipseLinkClassExtractorAnnotation2_1
 	extends BinaryAnnotation
-	implements EclipseLinkClassExtractorAnnotation2_1 
+	implements ClassExtractorAnnotation2_1 
 {
 	private String value;
 

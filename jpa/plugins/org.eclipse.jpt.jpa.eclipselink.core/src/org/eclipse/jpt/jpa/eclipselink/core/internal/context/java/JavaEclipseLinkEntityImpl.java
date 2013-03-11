@@ -34,7 +34,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFacto
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkEntityPrimaryKeyValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkTypeMappingValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkClassExtractorAnnotation2_1;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ClassExtractorAnnotation2_1;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -206,8 +206,8 @@ public class JavaEclipseLinkEntityImpl
 		return this.getClassExtractorAnnotation() != null;
 	}
 
-	protected EclipseLinkClassExtractorAnnotation2_1 getClassExtractorAnnotation() {
-		return (EclipseLinkClassExtractorAnnotation2_1) this.getJavaResourceType().getAnnotation(EclipseLinkClassExtractorAnnotation2_1.ANNOTATION_NAME);
+	protected ClassExtractorAnnotation2_1 getClassExtractorAnnotation() {
+		return (ClassExtractorAnnotation2_1) this.getJavaResourceType().getAnnotation(ClassExtractorAnnotation2_1.ANNOTATION_NAME);
 	}
 
 

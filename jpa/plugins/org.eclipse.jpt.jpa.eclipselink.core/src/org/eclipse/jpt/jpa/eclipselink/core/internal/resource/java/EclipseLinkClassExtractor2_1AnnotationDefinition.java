@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.BinaryEclipseLinkClassExtractorAnnotation2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.SourceEclipseLinkClassExtractorAnnotation2_1;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkClassExtractorAnnotation2_1;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ClassExtractorAnnotation2_1;
 
 /**
  * org.eclipse.persistence.annotations.ClassExtractor
@@ -54,6 +54,6 @@ public class EclipseLinkClassExtractor2_1AnnotationDefinition
 	}
 
 	public String getAnnotationName() {
-		return EclipseLinkClassExtractorAnnotation2_1.ANNOTATION_NAME;
+		return ClassExtractorAnnotation2_1.ANNOTATION_NAME;
 	}
 }
