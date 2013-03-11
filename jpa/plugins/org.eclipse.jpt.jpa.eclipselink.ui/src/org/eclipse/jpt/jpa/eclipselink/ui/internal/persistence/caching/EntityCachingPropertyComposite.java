@@ -29,7 +29,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CachingEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCachingEntity;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.osgi.util.NLS;
@@ -40,7 +40,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class EntityCachingPropertyComposite extends Pane<CachingEntity> {
+public class EntityCachingPropertyComposite extends Pane<EclipseLinkCachingEntity> {
 
 	/**
 	 * Creates a new <code>EntityCachingPropertyComposite</code>.
@@ -50,7 +50,7 @@ public class EntityCachingPropertyComposite extends Pane<CachingEntity> {
 	 * @param parent The parent container
 	 */
 	public EntityCachingPropertyComposite(Pane<? extends Caching> parentComposite,
-	                                      PropertyValueModel<CachingEntity> subjectHolder,
+	                                      PropertyValueModel<EclipseLinkCachingEntity> subjectHolder,
 	                                      PropertyValueModel<Boolean> enabledModel,
 	                                      Composite parent) {
 
@@ -83,7 +83,7 @@ public class EntityCachingPropertyComposite extends Pane<CachingEntity> {
 		sharedCacheCheckBox.getCheckBox().setLayoutData(gridData);
 	}
 
-	private class CacheTypeComboViewer extends EnumFormComboViewer<CachingEntity, CacheType> {
+	private class CacheTypeComboViewer extends EnumFormComboViewer<EclipseLinkCachingEntity, CacheType> {
 
 		private CacheTypeComboViewer(Composite parent) {
 			super(EntityCachingPropertyComposite.this, parent);
@@ -92,13 +92,13 @@ public class EntityCachingPropertyComposite extends Pane<CachingEntity> {
 		@Override
 		protected void addPropertyNames(Collection<String> propertyNames) {
 			super.addPropertyNames(propertyNames);
-			propertyNames.add(CachingEntity.CACHE_TYPE_PROPERTY);
+			propertyNames.add(EclipseLinkCachingEntity.CACHE_TYPE_PROPERTY);
 		}
 
 		private PropertyValueModel<Caching> buildCachingHolder() {
-			return new TransformationPropertyValueModel<CachingEntity, Caching>(getSubjectHolder()) {
+			return new TransformationPropertyValueModel<EclipseLinkCachingEntity, Caching>(getSubjectHolder()) {
 				@Override
-				protected Caching transform_(CachingEntity value) {
+				protected Caching transform_(EclipseLinkCachingEntity value) {
 					return value.getParent();
 				}
 			};
@@ -213,7 +213,7 @@ public class EntityCachingPropertyComposite extends Pane<CachingEntity> {
 	}
 
 	private void addCacheSizeCombo(Composite container) {
-		new IntegerCombo<CachingEntity>(this, container) {	
+		new IntegerCombo<EclipseLinkCachingEntity>(this, container) {	
 			@Override
 			protected String getHelpId() {
 				return EclipseLinkHelpContextIds.PERSISTENCE_CACHING;
@@ -234,7 +234,7 @@ public class EntityCachingPropertyComposite extends Pane<CachingEntity> {
 
 			@Override
 			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<CachingEntity, Integer>(getSubjectHolder(), CachingEntity.CACHE_SIZE_PROPERTY) {
+				return new PropertyAspectAdapter<EclipseLinkCachingEntity, Integer>(getSubjectHolder(), EclipseLinkCachingEntity.CACHE_SIZE_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						return getSubjectParent().getCacheSizeOf(getSubjectName());
@@ -250,17 +250,17 @@ public class EntityCachingPropertyComposite extends Pane<CachingEntity> {
 	}
 
 	private PropertyValueModel<Caching> buildCachingHolder() {
-		return new TransformationPropertyValueModel<CachingEntity, Caching>(this.getSubjectHolder()) {
+		return new TransformationPropertyValueModel<EclipseLinkCachingEntity, Caching>(this.getSubjectHolder()) {
 			@Override
-			protected Caching transform_(CachingEntity value) {
+			protected Caching transform_(EclipseLinkCachingEntity value) {
 				return value.getParent();
 			}
 		};
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildSharedCacheHolder() {
-		return new PropertyAspectAdapter<CachingEntity, Boolean>(
-					getSubjectHolder(), CachingEntity.SHARED_CACHE_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkCachingEntity, Boolean>(
+					getSubjectHolder(), EclipseLinkCachingEntity.SHARED_CACHE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return getSubjectParent().getSharedCacheOf(getSubjectName());

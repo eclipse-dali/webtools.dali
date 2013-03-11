@@ -32,7 +32,7 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CachingEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCachingEntity;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
@@ -46,8 +46,8 @@ import org.eclipse.ui.progress.IProgressService;
  */
 public class EntityListComposite<T extends Caching> extends Pane<T>
 {
-	private ModifiableCollectionValueModel<CachingEntity> selectedEntitiesModel;
-	private PropertyValueModel<CachingEntity> selectedEntityModel;
+	private ModifiableCollectionValueModel<EclipseLinkCachingEntity> selectedEntitiesModel;
+	private PropertyValueModel<EclipseLinkCachingEntity> selectedEntityModel;
 	
 	public EntityListComposite(Pane<T> parentComposite, Composite parent) {
 
@@ -61,14 +61,14 @@ public class EntityListComposite<T extends Caching> extends Pane<T>
 		this.selectedEntityModel = this.buildSelectedEntityModel(this.selectedEntitiesModel);
 	}
 
-	private ModifiableCollectionValueModel<CachingEntity> buildSelectedEntitiesModel() {
-		return new SimpleCollectionValueModel<CachingEntity>();
+	private ModifiableCollectionValueModel<EclipseLinkCachingEntity> buildSelectedEntitiesModel() {
+		return new SimpleCollectionValueModel<EclipseLinkCachingEntity>();
 	}
 
-	private PropertyValueModel<CachingEntity> buildSelectedEntityModel(CollectionValueModel<CachingEntity> selectedEntitiesModel) {
-		return new CollectionPropertyValueModelAdapter<CachingEntity, CachingEntity>(selectedEntitiesModel) {
+	private PropertyValueModel<EclipseLinkCachingEntity> buildSelectedEntityModel(CollectionValueModel<EclipseLinkCachingEntity> selectedEntitiesModel) {
+		return new CollectionPropertyValueModelAdapter<EclipseLinkCachingEntity, EclipseLinkCachingEntity>(selectedEntitiesModel) {
 			@Override
-			protected CachingEntity buildValue() {
+			protected EclipseLinkCachingEntity buildValue() {
 				if (this.collectionModel.size() == 1) {
 					return this.collectionModel.iterator().next();
 				}
@@ -89,7 +89,7 @@ public class EntityListComposite<T extends Caching> extends Pane<T>
 	protected void initializeLayout(Composite container) {
 
 		// Entities add/remove list pane
-		new AddRemoveListPane<Caching, CachingEntity>(
+		new AddRemoveListPane<Caching, EclipseLinkCachingEntity>(
 			this,
 			container,
 			this.buildEntitiesAdapter(),
@@ -108,28 +108,28 @@ public class EntityListComposite<T extends Caching> extends Pane<T>
 		);
 	}
 	
-	private AddRemoveListPane.Adapter<CachingEntity> buildEntitiesAdapter() {
-		return new AddRemoveListPane.AbstractAdapter<CachingEntity>() {
+	private AddRemoveListPane.Adapter<EclipseLinkCachingEntity> buildEntitiesAdapter() {
+		return new AddRemoveListPane.AbstractAdapter<EclipseLinkCachingEntity>() {
 
-			public CachingEntity addNewItem() {
+			public EclipseLinkCachingEntity addNewItem() {
 				return EntityListComposite.this.addEntity();
 			}
 
 			@Override
-			public PropertyValueModel<Boolean> buildRemoveButtonEnabledModel(CollectionValueModel<CachingEntity> selectedItemsModel) {
+			public PropertyValueModel<Boolean> buildRemoveButtonEnabledModel(CollectionValueModel<EclipseLinkCachingEntity> selectedItemsModel) {
 				//enable the remove button only when 1 item is selected, same as the optional button
 				return this.buildSingleSelectedItemEnabledModel(selectedItemsModel);
 			}
 
-			public void removeSelectedItems(CollectionValueModel<CachingEntity> selectedItemsModel) {
+			public void removeSelectedItems(CollectionValueModel<EclipseLinkCachingEntity> selectedItemsModel) {
 				//assume only 1 item since remove button is disabled otherwise
-				CachingEntity cachingEntity = selectedItemsModel.iterator().next();
+				EclipseLinkCachingEntity cachingEntity = selectedItemsModel.iterator().next();
 				getSubject().removeEntity(cachingEntity.getName());
 			}
 		};
 	}
 	
-	private CachingEntity addEntity() {
+	private EclipseLinkCachingEntity addEntity() {
 
 		IType type = this.chooseEntity();
 
@@ -190,17 +190,17 @@ public class EntityListComposite<T extends Caching> extends Pane<T>
 		return new LabelProvider() {
 			@Override
 			public String getText(Object element) {
-				CachingEntity entityCaching = (CachingEntity) element;
+				EclipseLinkCachingEntity entityCaching = (EclipseLinkCachingEntity) element;
 				return entityCaching.getName();
 			}
 		};
 	}
 
-	private ListValueModel<CachingEntity> buildEntitiesListHolder() {
-		return new ListAspectAdapter<Caching, CachingEntity>(
+	private ListValueModel<EclipseLinkCachingEntity> buildEntitiesListHolder() {
+		return new ListAspectAdapter<Caching, EclipseLinkCachingEntity>(
 					this.getSubjectHolder(), Caching.ENTITIES_LIST) {
 			@Override
-			protected ListIterable<CachingEntity> getListIterable() {
+			protected ListIterable<EclipseLinkCachingEntity> getListIterable() {
 				return this.subject.getEntities();
 			}
 			@Override
@@ -210,10 +210,10 @@ public class EntityListComposite<T extends Caching> extends Pane<T>
 		};
 	}
 
-	private PropertyValueModel<Boolean> buildPaneEnablerModel(PropertyValueModel<CachingEntity> entityHolder) {
-		return new TransformationPropertyValueModel<CachingEntity, Boolean>(entityHolder) {
+	private PropertyValueModel<Boolean> buildPaneEnablerModel(PropertyValueModel<EclipseLinkCachingEntity> entityHolder) {
+		return new TransformationPropertyValueModel<EclipseLinkCachingEntity, Boolean>(entityHolder) {
 			@Override
-			protected Boolean transform_(CachingEntity value) {
+			protected Boolean transform_(EclipseLinkCachingEntity value) {
 				return Boolean.valueOf(value.entityNameIsValid());
 			}
 		};

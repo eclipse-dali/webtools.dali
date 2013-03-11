@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CachingEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCachingEntity;
 
 /**
  * CachingValueModelTests
@@ -242,39 +242,39 @@ public class CachingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 	/** ****** Basic Entity's Properties Tests ******* */
 
 	public void testClone() {
-		CachingEntity entity = this.buildEntity("TestEntity", CacheType.full, 100, true);
+		EclipseLinkCachingEntity entity = this.buildEntity("TestEntity", CacheType.full, 100, true);
 
 		this.verifyClone(entity, entity.clone());
 	}
 	
 	public void testEquals() {
-		CachingEntity entity1 = this.buildEntity("TestEntityA", CacheType.full, 100, true);
-		CachingEntity entity2 = this.buildEntity("TestEntityB", CacheType.full, 100, true);
+		EclipseLinkCachingEntity entity1 = this.buildEntity("TestEntityA", CacheType.full, 100, true);
+		EclipseLinkCachingEntity entity2 = this.buildEntity("TestEntityB", CacheType.full, 100, true);
 		assertEquals(entity1, entity2);
-		CachingEntity entity3 = this.buildEntity("TestEntityC", CacheType.full, 100, true);
+		EclipseLinkCachingEntity entity3 = this.buildEntity("TestEntityC", CacheType.full, 100, true);
 		assertEquals(entity1, entity3);
 		assertEquals(entity2, entity3);
 	}
 	
 	public void testIsEmpty() {
-		CachingEntity entity = this.buildEntity("TestEntity");
+		EclipseLinkCachingEntity entity = this.buildEntity("TestEntity");
 		assertTrue(entity.isEmpty());
 		this.caching.setCacheSizeOf(entity.getName(), 100);
 		assertFalse(entity.isEmpty());
 	}
 
-	private void verifyClone(CachingEntity original, CachingEntity clone) {
+	private void verifyClone(EclipseLinkCachingEntity original, EclipseLinkCachingEntity clone) {
 		assertNotSame(original, clone);
 		assertEquals(original, original);
 		assertEquals(original, clone);
 	}
 
-	private CachingEntity buildEntity(String name) {
+	private EclipseLinkCachingEntity buildEntity(String name) {
 		return this.caching.addEntity(name);
 	}
 
-	private CachingEntity buildEntity(String name, CacheType cacheType, Integer size, Boolean isShared) {
-		CachingEntity entity = this.caching.addEntity(name);
+	private EclipseLinkCachingEntity buildEntity(String name, CacheType cacheType, Integer size, Boolean isShared) {
+		EclipseLinkCachingEntity entity = this.caching.addEntity(name);
 		this.caching.setCacheTypeOf(entity.getName(), cacheType);
 		this.caching.setCacheSizeOf(entity.getName(), size);
 		this.caching.setSharedCacheOf(entity.getName(), isShared);

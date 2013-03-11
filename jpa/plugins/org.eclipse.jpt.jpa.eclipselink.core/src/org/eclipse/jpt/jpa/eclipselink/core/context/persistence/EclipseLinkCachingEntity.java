@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 /**
  *  Entity
  */
-public class CachingEntity extends AbstractModel implements Cloneable, Serializable
+public class EclipseLinkCachingEntity extends AbstractModel implements Cloneable, Serializable
 {
 	private String name;
 	private Caching parent;
@@ -35,29 +35,25 @@ public class CachingEntity extends AbstractModel implements Cloneable, Serializa
 	private static final long serialVersionUID = 1L;
 
 	// ********** constructors **********
-	public CachingEntity(Caching parent, String name) {
+	public EclipseLinkCachingEntity(Caching parent, String name) {
 		this(parent);
-		this.initialize(name);
-	}
-	
-	private CachingEntity(Caching parent) {
-		this.parent = parent;
-	}
-	
-	private void initialize(String name) {
 		if(StringTools.isBlank(name)) {
 			throw new IllegalArgumentException();
 		}
 		this.name = name;
 	}
+	
+	private EclipseLinkCachingEntity(Caching parent) {
+		this.parent = parent;
+	}
 
 	// ********** behaviors **********
 	@Override
 	public boolean equals(Object o) {
-		if ( ! (o instanceof CachingEntity)) {
+		if ( ! (o instanceof EclipseLinkCachingEntity)) {
 			return false;
 		}
-		CachingEntity other = (CachingEntity) o;
+		EclipseLinkCachingEntity other = (EclipseLinkCachingEntity) o;
 		return (
 			(this.cacheType == null ?
 				other.cacheType == null : this.cacheType.equals(other.cacheType)) &&
@@ -73,9 +69,9 @@ public class CachingEntity extends AbstractModel implements Cloneable, Serializa
 	}
 	
 	 @Override
-	 public CachingEntity clone() {
+	 public EclipseLinkCachingEntity clone() {
 		 try {
-			 return (CachingEntity)super.clone();
+			 return (EclipseLinkCachingEntity)super.clone();
 		 }
 		 catch (CloneNotSupportedException ex) {
 			 throw new InternalError();
@@ -100,12 +96,12 @@ public class CachingEntity extends AbstractModel implements Cloneable, Serializa
 	public String getName() {
 		return this.name;
 	}
-	public static final Transformer<CachingEntity, String> NAME_TRANSFORMER = new NameTransformer();
+	public static final Transformer<EclipseLinkCachingEntity, String> NAME_TRANSFORMER = new NameTransformer();
 	public static class NameTransformer
-		extends TransformerAdapter<CachingEntity, String>
+		extends TransformerAdapter<EclipseLinkCachingEntity, String>
 	{
 		@Override
-		public String transform(CachingEntity entity) {
+		public String transform(EclipseLinkCachingEntity entity) {
 			return entity.getName();
 		}
 	}

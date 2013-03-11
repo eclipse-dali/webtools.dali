@@ -76,11 +76,11 @@ public interface Caching extends PersistenceUnitProperties
 
 	void removeDefaultCachingProperties();
 
-	ListIterable<CachingEntity> getEntities();
+	ListIterable<EclipseLinkCachingEntity> getEntities();
 	Iterable<String> getEntityNames();
 	int getEntitiesSize();
 	boolean entityExists(String entity);
-	CachingEntity addEntity(String entity);
+	EclipseLinkCachingEntity addEntity(String entity);
 	void removeEntity(String entity);
 		String ENTITIES_LIST = "entities"; //$NON-NLS-1$
 
