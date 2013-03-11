@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.resource.persistence.v2_0.XmlPersistenceUnitCach
  * @version 2.3
  * @since 2.3
  */
-public enum SharedCacheMode 
+public enum SharedCacheMode2_0 
 {
 	ALL,
 	NONE,
@@ -35,7 +35,7 @@ public enum SharedCacheMode
 	UNSPECIFIED; 
 	
 
-	public static SharedCacheMode fromXmlResourceModel(XmlPersistenceUnitCachingType_2_0 sharedCacheMode) {
+	public static SharedCacheMode2_0 fromXmlResourceModel(XmlPersistenceUnitCachingType_2_0 sharedCacheMode) {
 		if (sharedCacheMode == null) {
 			return null;
 		}
@@ -55,7 +55,7 @@ public enum SharedCacheMode
 		}
 	}
 	
-	public static XmlPersistenceUnitCachingType_2_0 toXmlResourceModel(SharedCacheMode sharedCacheMode) {
+	public static XmlPersistenceUnitCachingType_2_0 toXmlResourceModel(SharedCacheMode2_0 sharedCacheMode) {
 		if (sharedCacheMode == null) {
 			return null;
 		}

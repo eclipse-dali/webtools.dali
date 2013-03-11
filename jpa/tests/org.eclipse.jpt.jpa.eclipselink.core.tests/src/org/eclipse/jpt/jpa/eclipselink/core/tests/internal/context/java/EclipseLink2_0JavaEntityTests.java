@@ -42,7 +42,7 @@ import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CacheableReference2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode;
+import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.Cacheable2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
@@ -1732,22 +1732,22 @@ public class EclipseLink2_0JavaEntityTests extends EclipseLink2_0ContextModelTes
 		
 		Cacheable2_0 cacheable = ((CacheableReference2_0) getJavaEntity()).getCacheable();
 		PersistenceUnit2_0 persistenceUnit = getPersistenceUnit();
-		assertEquals(SharedCacheMode.DISABLE_SELECTIVE, persistenceUnit.getSharedCacheMode());
+		assertEquals(SharedCacheMode2_0.DISABLE_SELECTIVE, persistenceUnit.getSharedCacheMode());
 		assertEquals(true, cacheable.isDefaultCacheable());
 		
-		persistenceUnit.setSpecifiedSharedCacheMode(SharedCacheMode.ALL);
+		persistenceUnit.setSpecifiedSharedCacheMode(SharedCacheMode2_0.ALL);
 		assertEquals(true, cacheable.isDefaultCacheable());
 		
-		persistenceUnit.setSpecifiedSharedCacheMode(SharedCacheMode.NONE);
+		persistenceUnit.setSpecifiedSharedCacheMode(SharedCacheMode2_0.NONE);
 		assertEquals(false, cacheable.isDefaultCacheable());
 
-		persistenceUnit.setSpecifiedSharedCacheMode(SharedCacheMode.ENABLE_SELECTIVE);
+		persistenceUnit.setSpecifiedSharedCacheMode(SharedCacheMode2_0.ENABLE_SELECTIVE);
 		assertEquals(false, cacheable.isDefaultCacheable());
 
-		persistenceUnit.setSpecifiedSharedCacheMode(SharedCacheMode.DISABLE_SELECTIVE);
+		persistenceUnit.setSpecifiedSharedCacheMode(SharedCacheMode2_0.DISABLE_SELECTIVE);
 		assertEquals(true, cacheable.isDefaultCacheable());
 		
-		persistenceUnit.setSpecifiedSharedCacheMode(SharedCacheMode.UNSPECIFIED);
+		persistenceUnit.setSpecifiedSharedCacheMode(SharedCacheMode2_0.UNSPECIFIED);
 		assertEquals(true, cacheable.isDefaultCacheable());
 	}
 	
@@ -1763,7 +1763,7 @@ public class EclipseLink2_0JavaEntityTests extends EclipseLink2_0ContextModelTes
 		assertEquals(true, cacheable.isDefaultCacheable());
 
 		PersistenceUnit2_0 persistenceUnit2_0 = getPersistenceUnit();
-		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode.NONE);
+		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode2_0.NONE);
 		assertEquals(false, subCacheable.isDefaultCacheable());
 		assertEquals(false, cacheable.isDefaultCacheable());
 
@@ -1773,7 +1773,7 @@ public class EclipseLink2_0JavaEntityTests extends EclipseLink2_0ContextModelTes
 		assertEquals(false, subCacheable.isDefaultCacheable());
 		assertEquals(true, cacheable.isDefaultCacheable());
 		
-		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode.DISABLE_SELECTIVE);
+		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode2_0.DISABLE_SELECTIVE);
 		assertEquals(false, subCacheable.isDefaultCacheable());
 		assertEquals(true, cacheable.isDefaultCacheable());
 				
@@ -1781,7 +1781,7 @@ public class EclipseLink2_0JavaEntityTests extends EclipseLink2_0ContextModelTes
 		assertEquals(false, subCacheable.isDefaultCacheable());
 		assertEquals(true, cacheable.isDefaultCacheable());
 		
-		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode.ENABLE_SELECTIVE);
+		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode2_0.ENABLE_SELECTIVE);
 		assertEquals(false, subCacheable.isDefaultCacheable());
 		assertEquals(false, cacheable.isDefaultCacheable());
 		
@@ -1790,7 +1790,7 @@ public class EclipseLink2_0JavaEntityTests extends EclipseLink2_0ContextModelTes
 		assertEquals(false, cacheable.isDefaultCacheable());
 		
 		
-		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode.NONE);
+		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode2_0.NONE);
 		assertEquals(true, subCacheable.isDefaultCacheable());
 		assertEquals(false, cacheable.isDefaultCacheable());
 	}

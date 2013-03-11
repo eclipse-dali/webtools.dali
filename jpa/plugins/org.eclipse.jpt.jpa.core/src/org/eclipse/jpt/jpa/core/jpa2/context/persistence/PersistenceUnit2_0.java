@@ -13,7 +13,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.jpa2.JpaMetamodelSynchronizer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.Connection2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.Options2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode;
+import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.ValidationMode;
 
 /**
@@ -37,7 +37,7 @@ public interface PersistenceUnit2_0
 	 * Return the persistence unit's shared cache mode,
 	 * whether specified or defaulted.
 	 */
-	SharedCacheMode getSharedCacheMode();
+	SharedCacheMode2_0 getSharedCacheMode();
 
 	/**
 	 * String constant associated with changes to the persistence unit's 
@@ -48,12 +48,12 @@ public interface PersistenceUnit2_0
 	/** 
 	 * Return the persistence unit's specified shared cache mode.
 	 */
-	SharedCacheMode getSpecifiedSharedCacheMode();
+	SharedCacheMode2_0 getSpecifiedSharedCacheMode();
 
 	/** 
 	 * Set the persistence unit's specified shared cache mode.
 	 */
-	void setSpecifiedSharedCacheMode(SharedCacheMode sharedCacheMode);
+	void setSpecifiedSharedCacheMode(SharedCacheMode2_0 sharedCacheMode);
 
 	/**
 	 * String constant associated with changes to the persistence unit's 
@@ -64,7 +64,7 @@ public interface PersistenceUnit2_0
 	/** 
 	 * Return the persistence unit's default shared cache mode.
 	 */
-	SharedCacheMode getDefaultSharedCacheMode();
+	SharedCacheMode2_0 getDefaultSharedCacheMode();
 
 	boolean calculateDefaultCacheable();
 

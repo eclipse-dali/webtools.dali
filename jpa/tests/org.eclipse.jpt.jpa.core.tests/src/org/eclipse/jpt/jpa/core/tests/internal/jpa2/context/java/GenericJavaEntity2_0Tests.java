@@ -47,7 +47,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.LockModeType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.NamedQuery2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSpecifiedOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode;
+import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.AssociationOverride2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.Cacheable2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
@@ -1983,19 +1983,19 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		
 		Cacheable2_0 cacheable = ((CacheableReference2_0) getJavaEntity()).getCacheable();
 		PersistenceUnit2_0 persistenceUnit2_0 = (PersistenceUnit2_0) getPersistenceUnit();
-		assertEquals(SharedCacheMode.UNSPECIFIED, persistenceUnit2_0.getSharedCacheMode());
+		assertEquals(SharedCacheMode2_0.UNSPECIFIED, persistenceUnit2_0.getSharedCacheMode());
 		assertEquals(false, cacheable.isDefaultCacheable());
 		
-		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode.ALL);
+		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode2_0.ALL);
 		assertEquals(true, cacheable.isDefaultCacheable());
 		
-		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode.NONE);
+		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode2_0.NONE);
 		assertEquals(false, cacheable.isDefaultCacheable());
 
-		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode.ENABLE_SELECTIVE);
+		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode2_0.ENABLE_SELECTIVE);
 		assertEquals(false, cacheable.isDefaultCacheable());
 
-		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode.DISABLE_SELECTIVE);
+		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode2_0.DISABLE_SELECTIVE);
 		assertEquals(true, cacheable.isDefaultCacheable());
 	}
 	
@@ -2012,7 +2012,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertEquals(false, cacheable.isDefaultCacheable());
 		
 		PersistenceUnit2_0 persistenceUnit2_0 = (PersistenceUnit2_0) getPersistenceUnit();
-		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode.DISABLE_SELECTIVE);
+		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode2_0.DISABLE_SELECTIVE);
 		assertEquals(true, subCacheable.isDefaultCacheable());
 		assertEquals(true, cacheable.isDefaultCacheable());
 				
@@ -2020,7 +2020,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertEquals(false, subCacheable.isDefaultCacheable());
 		assertEquals(true, cacheable.isDefaultCacheable());
 		
-		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode.ENABLE_SELECTIVE);
+		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode2_0.ENABLE_SELECTIVE);
 		assertEquals(false, subCacheable.isDefaultCacheable());
 		assertEquals(false, cacheable.isDefaultCacheable());
 		

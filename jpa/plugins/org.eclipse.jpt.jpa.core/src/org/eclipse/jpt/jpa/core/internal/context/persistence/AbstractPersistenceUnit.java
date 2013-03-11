@@ -98,7 +98,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.Connection2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.Options2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode;
+import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.ValidationMode;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.PersistenceUnit2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen.SchemaGeneration2_1;
@@ -199,8 +199,8 @@ public abstract class AbstractPersistenceUnit
 	protected Connection2_0 connection;
 	protected Options2_0 options;
 
-	protected SharedCacheMode specifiedSharedCacheMode;
-	protected SharedCacheMode defaultSharedCacheMode;
+	protected SharedCacheMode2_0 specifiedSharedCacheMode;
+	protected SharedCacheMode2_0 defaultSharedCacheMode;
 
 	protected ValidationMode specifiedValidationMode;
 	protected ValidationMode defaultValidationMode = DEFAULT_VALIDATION_MODE;
@@ -1448,37 +1448,37 @@ public abstract class AbstractPersistenceUnit
 
 	// ********** shared cache mode **********
 
-	public SharedCacheMode getSharedCacheMode() {
+	public SharedCacheMode2_0 getSharedCacheMode() {
 		return (this.specifiedSharedCacheMode != null) ? this.specifiedSharedCacheMode : this.defaultSharedCacheMode;
 	}
 
-	public SharedCacheMode getSpecifiedSharedCacheMode() {
+	public SharedCacheMode2_0 getSpecifiedSharedCacheMode() {
 		return this.specifiedSharedCacheMode;
 	}
 
-	public void setSpecifiedSharedCacheMode(SharedCacheMode specifiedSharedCacheMode) {
+	public void setSpecifiedSharedCacheMode(SharedCacheMode2_0 specifiedSharedCacheMode) {
 		this.setSpecifiedSharedCacheMode_(specifiedSharedCacheMode);
-		this.xmlPersistenceUnit.setSharedCacheMode(SharedCacheMode.toXmlResourceModel(specifiedSharedCacheMode));
+		this.xmlPersistenceUnit.setSharedCacheMode(SharedCacheMode2_0.toXmlResourceModel(specifiedSharedCacheMode));
 	}
 
-	protected void setSpecifiedSharedCacheMode_(SharedCacheMode sharedCacheMode) {
-		SharedCacheMode old = this.specifiedSharedCacheMode;
+	protected void setSpecifiedSharedCacheMode_(SharedCacheMode2_0 sharedCacheMode) {
+		SharedCacheMode2_0 old = this.specifiedSharedCacheMode;
 		this.specifiedSharedCacheMode = sharedCacheMode;
 		this.firePropertyChanged(SPECIFIED_SHARED_CACHE_MODE_PROPERTY, old, sharedCacheMode);
 	}
 
-	public SharedCacheMode getDefaultSharedCacheMode() {
+	public SharedCacheMode2_0 getDefaultSharedCacheMode() {
 		return this.defaultSharedCacheMode;
 	}
 
-	protected void setDefaultSharedCacheMode(SharedCacheMode defaultSharedCacheMode) {
-		SharedCacheMode old = this.defaultSharedCacheMode;
+	protected void setDefaultSharedCacheMode(SharedCacheMode2_0 defaultSharedCacheMode) {
+		SharedCacheMode2_0 old = this.defaultSharedCacheMode;
 		this.defaultSharedCacheMode = defaultSharedCacheMode;
 		this.firePropertyChanged(DEFAULT_SHARED_CACHE_MODE_PROPERTY, old, defaultSharedCacheMode);
 	}
 
 	public boolean calculateDefaultCacheable() {
-		SharedCacheMode sharedCacheMode = this.getSharedCacheMode();
+		SharedCacheMode2_0 sharedCacheMode = this.getSharedCacheMode();
 		if (sharedCacheMode == null) {
 			return false;  // this can happen during initial update...
 		}
@@ -1495,12 +1495,12 @@ public abstract class AbstractPersistenceUnit
 		}
 	}
 
-	protected SharedCacheMode buildSpecifiedSharedCacheMode() {
-		return SharedCacheMode.fromXmlResourceModel(this.xmlPersistenceUnit.getSharedCacheMode());
+	protected SharedCacheMode2_0 buildSpecifiedSharedCacheMode() {
+		return SharedCacheMode2_0.fromXmlResourceModel(this.xmlPersistenceUnit.getSharedCacheMode());
 	}
 
-	protected SharedCacheMode buildDefaultSharedCacheMode() {
-		return SharedCacheMode.UNSPECIFIED;
+	protected SharedCacheMode2_0 buildDefaultSharedCacheMode() {
+		return SharedCacheMode2_0.UNSPECIFIED;
 	}
 
 	// ********** validation mode **********

@@ -56,7 +56,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.VirtualOrmXmlRef;
-import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode;
+import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode2_0;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkJpaProject;
@@ -527,22 +527,22 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	@Override
-	public void setSpecifiedSharedCacheMode(SharedCacheMode specifiedSharedCacheMode) {
+	public void setSpecifiedSharedCacheMode(SharedCacheMode2_0 specifiedSharedCacheMode) {
 		super.setSpecifiedSharedCacheMode(specifiedSharedCacheMode);
 
-		if(specifiedSharedCacheMode == SharedCacheMode.NONE) {
+		if(specifiedSharedCacheMode == SharedCacheMode2_0.NONE) {
 			this.caching.removeDefaultCachingProperties();
 		}
 	}
 
 	@Override
-	protected SharedCacheMode buildDefaultSharedCacheMode() {
-		return SharedCacheMode.DISABLE_SELECTIVE;
+	protected SharedCacheMode2_0 buildDefaultSharedCacheMode() {
+		return SharedCacheMode2_0.DISABLE_SELECTIVE;
 	}
 
 	@Override
 	public boolean calculateDefaultCacheable() {
-		SharedCacheMode sharedCacheMode = this.getSharedCacheMode();
+		SharedCacheMode2_0 sharedCacheMode = this.getSharedCacheMode();
 		if (sharedCacheMode == null) {
 			return true;
 		}
@@ -667,7 +667,7 @@ public class EclipseLinkPersistenceUnit
 
 	protected void validateDefaultCachingProperty(Property cachingProperty, List<IMessage> messages) {
 
-		if(this.getSharedCacheMode() == SharedCacheMode.NONE) {
+		if(this.getSharedCacheMode() == SharedCacheMode2_0.NONE) {
 			if(cachingProperty != null) {
 				messages.add(
 					this.buildValidationMessage(

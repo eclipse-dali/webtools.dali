@@ -40,7 +40,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.Options2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode;
+import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.ValidationMode;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.jpa2.persistence.JptJpaUiPersistenceMessages2_0;
@@ -433,8 +433,8 @@ public class PersistenceUnit2_0OptionsEditorPage
 
 	//********* shared cache mode ***********
 
-	private EnumFormComboViewer<PersistenceUnit2_0, SharedCacheMode> addSharedCacheModeCombo(Composite parent, PropertyValueModel<? extends PersistenceUnit2_0> subjectHolder) {
-		return new EnumFormComboViewer<PersistenceUnit2_0, SharedCacheMode>(this, subjectHolder, parent) {
+	private EnumFormComboViewer<PersistenceUnit2_0, SharedCacheMode2_0> addSharedCacheModeCombo(Composite parent, PropertyValueModel<? extends PersistenceUnit2_0> subjectHolder) {
+		return new EnumFormComboViewer<PersistenceUnit2_0, SharedCacheMode2_0>(this, subjectHolder, parent) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
@@ -442,8 +442,8 @@ public class PersistenceUnit2_0OptionsEditorPage
 			}
 
 			@Override
-			protected SharedCacheMode[] getChoices() {
-				return SharedCacheMode.values();
+			protected SharedCacheMode2_0[] getChoices() {
+				return SharedCacheMode2_0.values();
 			}
 
 			@Override
@@ -452,12 +452,12 @@ public class PersistenceUnit2_0OptionsEditorPage
 			}
 
 			@Override
-			protected SharedCacheMode getDefaultValue() {
+			protected SharedCacheMode2_0 getDefaultValue() {
 				return this.getSubject().getDefaultSharedCacheMode();
 			}
 
 			@Override
-			protected String displayString(SharedCacheMode value) {
+			protected String displayString(SharedCacheMode2_0 value) {
 				switch (value) {
 					case ALL :
 						return JptJpaUiPersistenceMessages2_0.SHARED_CACHE_MODE_COMPOSITE_ALL;
@@ -475,12 +475,12 @@ public class PersistenceUnit2_0OptionsEditorPage
 			}
 
 			@Override
-			protected SharedCacheMode getValue() {
+			protected SharedCacheMode2_0 getValue() {
 				return this.getSubject().getSpecifiedSharedCacheMode();
 			}
 
 			@Override
-			protected void setValue(SharedCacheMode value) {
+			protected void setValue(SharedCacheMode2_0 value) {
 				this.getSubject().setSpecifiedSharedCacheMode(value);
 			}
 		};
