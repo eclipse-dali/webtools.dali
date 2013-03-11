@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkJoinFetchAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkStructConverterAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTypeConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TypeConverterAnnotation;
 
 public class EclipseLinkJavaElementCollectionMappingDefinition2_0
 	extends JavaAttributeMappingDefinitionWrapper
@@ -57,7 +57,7 @@ public class EclipseLinkJavaElementCollectionMappingDefinition2_0
 		EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME,
 		EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME,
 		EclipseLinkStructConverterAnnotation.ANNOTATION_NAME,
-		EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME
+		TypeConverterAnnotation.ANNOTATION_NAME
 	};
 	private static final Iterable<String> ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES = IterableTools.iterable(ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES_ARRAY);
 

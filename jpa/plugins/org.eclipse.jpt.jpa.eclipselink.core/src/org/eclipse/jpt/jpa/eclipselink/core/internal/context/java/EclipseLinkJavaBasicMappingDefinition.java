@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkMutableAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkStructConverterAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTypeConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TypeConverterAnnotation;
 
 public class EclipseLinkJavaBasicMappingDefinition
 	extends DefaultJavaAttributeMappingDefinitionWrapper
@@ -62,7 +62,7 @@ public class EclipseLinkJavaBasicMappingDefinition
 		EclipseLinkMutableAnnotation.ANNOTATION_NAME,
 		EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME,
 		EclipseLinkStructConverterAnnotation.ANNOTATION_NAME,
-		EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME,
+		TypeConverterAnnotation.ANNOTATION_NAME,
 		GeneratedValueAnnotation.ANNOTATION_NAME,
 		TableGeneratorAnnotation.ANNOTATION_NAME,
 		SequenceGeneratorAnnotation.ANNOTATION_NAME

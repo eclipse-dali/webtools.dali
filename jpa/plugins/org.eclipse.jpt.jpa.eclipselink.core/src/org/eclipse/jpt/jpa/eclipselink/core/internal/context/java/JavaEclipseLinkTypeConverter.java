@@ -14,13 +14,13 @@ import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTypeConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TypeConverterAnnotation;
 
 /**
  * <code>org.eclipse.persistence.annotations.TypeConverter</code>
  */
 public class JavaEclipseLinkTypeConverter
-	extends JavaEclipseLinkConverter<EclipseLinkTypeConverterAnnotation>
+	extends JavaEclipseLinkConverter<TypeConverterAnnotation>
 	implements EclipseLinkTypeConverter
 {
 	private String dataType;
@@ -30,7 +30,7 @@ public class JavaEclipseLinkTypeConverter
 	private String fullyQualifiedObjectType;
 
 
-	public JavaEclipseLinkTypeConverter(EclipseLinkJavaConverterContainer parent, EclipseLinkTypeConverterAnnotation converterAnnotation) {
+	public JavaEclipseLinkTypeConverter(EclipseLinkJavaConverterContainer parent, TypeConverterAnnotation converterAnnotation) {
 		super(parent, converterAnnotation);
 		this.dataType = this.converterAnnotation.getDataType();
 		this.objectType = this.converterAnnotation.getObjectType();

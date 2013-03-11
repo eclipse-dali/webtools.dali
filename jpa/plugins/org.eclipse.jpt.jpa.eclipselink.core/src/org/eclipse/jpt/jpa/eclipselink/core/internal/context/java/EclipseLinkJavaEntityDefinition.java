@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ExistenceCheckingAnnot
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkReadOnlyAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkStructConverterAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTypeConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TypeConverterAnnotation;
 
 public class EclipseLinkJavaEntityDefinition
 	extends JavaTypeMappingDefinitionWrapper
@@ -65,7 +65,7 @@ public class EclipseLinkJavaEntityDefinition
 		EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME,
 		EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME,
 		EclipseLinkStructConverterAnnotation.ANNOTATION_NAME,
-		EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME,
+		TypeConverterAnnotation.ANNOTATION_NAME,
 	};
 	// 'public' because EclipseLink MappedSuperclass also supports these annotations
 	public static final Iterable<String> ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES = IterableTools.iterable(ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES_ARRAY);

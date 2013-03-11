@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CustomizerAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkStructConverterAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTypeConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TypeConverterAnnotation;
 
 public class EclipseLinkJavaEmbeddableDefinition
 	extends JavaTypeMappingDefinitionWrapper
@@ -59,7 +59,7 @@ public class EclipseLinkJavaEmbeddableDefinition
 		CustomizerAnnotation.ANNOTATION_NAME,
 		EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME,
 		EclipseLinkStructConverterAnnotation.ANNOTATION_NAME,
-		EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME,
+		TypeConverterAnnotation.ANNOTATION_NAME,
 	};
 	public static final Iterable<String> ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES = IterableTools.iterable(ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES_ARRAY);
 

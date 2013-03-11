@@ -18,14 +18,14 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTypeConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TypeConverterAnnotation;
 
 /**
  * <code>org.eclipse.persistence.annotations.TypeConverter</code>
  */
 public final class SourceEclipseLinkTypeConverterAnnotation
 	extends SourceEclipseLinkBaseTypeConverterAnnotation
-	implements EclipseLinkTypeConverterAnnotation
+	implements TypeConverterAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 	private static final DeclarationAnnotationAdapter CONTAINER_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(EclipseLink.TYPE_CONVERTERS);
