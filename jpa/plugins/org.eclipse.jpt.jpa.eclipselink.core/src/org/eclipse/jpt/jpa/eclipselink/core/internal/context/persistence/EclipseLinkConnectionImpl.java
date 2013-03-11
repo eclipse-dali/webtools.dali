@@ -14,7 +14,7 @@ import java.util.Map;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.BatchWriting;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConnection;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.ExclusiveConnectionMode;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkExclusiveConnectionMode;
 
 /**
  * EclipseLink 1.0 connection
@@ -39,7 +39,7 @@ public class EclipseLinkConnectionImpl
 	private Integer readConnectionsMax;
 	private Integer writeConnectionsMin;
 	private Integer writeConnectionsMax;
-	private ExclusiveConnectionMode exclusiveConnectionMode;
+	private EclipseLinkExclusiveConnectionMode exclusiveConnectionMode;
 	private Boolean lazyConnection;
 	
 
@@ -77,7 +77,7 @@ public class EclipseLinkConnectionImpl
 		this.writeConnectionsMax = 
 			this.getIntegerValue(ECLIPSELINK_WRITE_CONNECTIONS_MAX);
 		this.exclusiveConnectionMode = 
-			this.getEnumValue(ECLIPSELINK_EXCLUSIVE_CONNECTION_MODE, ExclusiveConnectionMode.values());
+			this.getEnumValue(ECLIPSELINK_EXCLUSIVE_CONNECTION_MODE, EclipseLinkExclusiveConnectionMode.values());
 		this.lazyConnection = 
 			this.getBooleanValue(ECLIPSELINK_LAZY_CONNECTION);
 	}
@@ -624,27 +624,27 @@ public class EclipseLinkConnectionImpl
 
 	// ********** ExclusiveConnectionMode **********
 	
-	public ExclusiveConnectionMode getExclusiveConnectionMode() {
+	public EclipseLinkExclusiveConnectionMode getExclusiveConnectionMode() {
 		return this.exclusiveConnectionMode;
 	}
 	
-	public void setExclusiveConnectionMode(ExclusiveConnectionMode newExclusiveConnectionMode) {
+	public void setExclusiveConnectionMode(EclipseLinkExclusiveConnectionMode newExclusiveConnectionMode) {
 		this.preSetProperty();
 		
-		ExclusiveConnectionMode old = this.exclusiveConnectionMode;
+		EclipseLinkExclusiveConnectionMode old = this.exclusiveConnectionMode;
 		this.exclusiveConnectionMode = newExclusiveConnectionMode;
 		this.putProperty(EXCLUSIVE_CONNECTION_MODE_PROPERTY, newExclusiveConnectionMode);
 		this.firePropertyChanged(EXCLUSIVE_CONNECTION_MODE_PROPERTY, old, newExclusiveConnectionMode);
 	}
 
 	private void exclusiveConnectionModeChanged(String stringValue) {
-		ExclusiveConnectionMode newValue = getEnumValueOf(stringValue, ExclusiveConnectionMode.values());
-		ExclusiveConnectionMode old = this.exclusiveConnectionMode;
+		EclipseLinkExclusiveConnectionMode newValue = getEnumValueOf(stringValue, EclipseLinkExclusiveConnectionMode.values());
+		EclipseLinkExclusiveConnectionMode old = this.exclusiveConnectionMode;
 		this.exclusiveConnectionMode = newValue;
 		this.firePropertyChanged(EXCLUSIVE_CONNECTION_MODE_PROPERTY, old, newValue);
 	}
 	
-	public ExclusiveConnectionMode getDefaultExclusiveConnectionMode() {
+	public EclipseLinkExclusiveConnectionMode getDefaultExclusiveConnectionMode() {
 		return DEFAULT_EXCLUSIVE_CONNECTION_MODE;
 	}
 

@@ -14,14 +14,14 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 /**
  *  ExclusiveConnectionMode
  */
-public enum ExclusiveConnectionMode implements PersistenceXmlEnumValue {
+public enum EclipseLinkExclusiveConnectionMode implements PersistenceXmlEnumValue {
 	always("Always"), //$NON-NLS-1$
 	isolated("Isolated"), //$NON-NLS-1$
 	transactional("Transactional"); //$NON-NLS-1$
 
 	private final String propertyValue;
 
-	ExclusiveConnectionMode(String propertyValue) {
+	EclipseLinkExclusiveConnectionMode(String propertyValue) {
 		this.propertyValue = propertyValue;
 	}
 

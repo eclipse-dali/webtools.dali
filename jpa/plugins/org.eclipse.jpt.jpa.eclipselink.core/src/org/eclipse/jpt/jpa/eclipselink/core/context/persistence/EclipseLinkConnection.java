@@ -129,13 +129,13 @@ public interface EclipseLinkConnection
 		static final String ECLIPSELINK_WRITE_CONNECTIONS_MAX = "eclipselink.jdbc.write-connections.max"; //$NON-NLS-1$
 		static final Integer DEFAULT_WRITE_CONNECTIONS_MAX = Integer.valueOf(10);
 
-	ExclusiveConnectionMode getDefaultExclusiveConnectionMode();
-	ExclusiveConnectionMode getExclusiveConnectionMode();
-	void setExclusiveConnectionMode(ExclusiveConnectionMode newExclusiveConnectionMode);
+	EclipseLinkExclusiveConnectionMode getDefaultExclusiveConnectionMode();
+	EclipseLinkExclusiveConnectionMode getExclusiveConnectionMode();
+	void setExclusiveConnectionMode(EclipseLinkExclusiveConnectionMode newExclusiveConnectionMode);
 		static final String EXCLUSIVE_CONNECTION_MODE_PROPERTY = "exclusiveConnectionMode"; //$NON-NLS-1$
 		// EclipseLink key string
 		static final String ECLIPSELINK_EXCLUSIVE_CONNECTION_MODE = "eclipselink.jdbc.exclusive-connection.mode"; //$NON-NLS-1$
-		static final ExclusiveConnectionMode DEFAULT_EXCLUSIVE_CONNECTION_MODE = ExclusiveConnectionMode.transactional;
+		static final EclipseLinkExclusiveConnectionMode DEFAULT_EXCLUSIVE_CONNECTION_MODE = EclipseLinkExclusiveConnectionMode.transactional;
 
 	Boolean getDefaultLazyConnection();
 	Boolean getLazyConnection();

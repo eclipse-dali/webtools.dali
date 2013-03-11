@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConnection;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.ExclusiveConnectionMode;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkExclusiveConnectionMode;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.osgi.util.NLS;
@@ -68,8 +68,8 @@ public class JdbcExclusiveConnectionsPropertiesComposite<T extends EclipseLinkCo
 
 	}
 
-	private EnumFormComboViewer<EclipseLinkConnection, ExclusiveConnectionMode> addExclusiveConnectionModeCombo(Composite container) {
-		return new EnumFormComboViewer<EclipseLinkConnection, ExclusiveConnectionMode>(this, container) {
+	private EnumFormComboViewer<EclipseLinkConnection, EclipseLinkExclusiveConnectionMode> addExclusiveConnectionModeCombo(Composite container) {
+		return new EnumFormComboViewer<EclipseLinkConnection, EclipseLinkExclusiveConnectionMode>(this, container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
@@ -77,17 +77,17 @@ public class JdbcExclusiveConnectionsPropertiesComposite<T extends EclipseLinkCo
 			}
 
 			@Override
-			protected ExclusiveConnectionMode[] getChoices() {
-				return ExclusiveConnectionMode.values();
+			protected EclipseLinkExclusiveConnectionMode[] getChoices() {
+				return EclipseLinkExclusiveConnectionMode.values();
 			}
 
 			@Override
-			protected ExclusiveConnectionMode getDefaultValue() {
+			protected EclipseLinkExclusiveConnectionMode getDefaultValue() {
 				return this.getSubject().getDefaultExclusiveConnectionMode();
 			}
 
 			@Override
-			protected String displayString(ExclusiveConnectionMode value) {
+			protected String displayString(EclipseLinkExclusiveConnectionMode value) {
 				switch (value) {
 					case always :
 						return JptJpaEclipseLinkUiMessages.JDBC_EXCLUSIVE_CONNECTION_MODE_COMPOSITE_ALWAYS;
@@ -101,12 +101,12 @@ public class JdbcExclusiveConnectionsPropertiesComposite<T extends EclipseLinkCo
 			}
 
 			@Override
-			protected ExclusiveConnectionMode getValue() {
+			protected EclipseLinkExclusiveConnectionMode getValue() {
 				return this.getSubject().getExclusiveConnectionMode();
 			}
 
 			@Override
-			protected void setValue(ExclusiveConnectionMode value) {
+			protected void setValue(EclipseLinkExclusiveConnectionMode value) {
 				this.getSubject().setExclusiveConnectionMode(value);
 			}
 			@Override

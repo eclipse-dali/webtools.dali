@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.BatchWriting;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConnection;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.ExclusiveConnectionMode;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkExclusiveConnectionMode;
 
 /**
  *  ConnectionAdapterTests
@@ -90,8 +90,8 @@ public class EclipseLinkConnectionTests extends EclipseLinkPersistenceUnitTestCa
 	public static final Integer WRITE_CONNECTIONS_MAX_TEST_VALUE_2 = 200;
 
 	public static final String EXCLUSIVE_CONNECTION_MODE_KEY = EclipseLinkConnection.ECLIPSELINK_EXCLUSIVE_CONNECTION_MODE;
-	public static final ExclusiveConnectionMode EXCLUSIVE_CONNECTION_MODE_TEST_VALUE = ExclusiveConnectionMode.always;
-	public static final ExclusiveConnectionMode EXCLUSIVE_CONNECTION_MODE_TEST_VALUE_2 = ExclusiveConnectionMode.isolated;
+	public static final EclipseLinkExclusiveConnectionMode EXCLUSIVE_CONNECTION_MODE_TEST_VALUE = EclipseLinkExclusiveConnectionMode.always;
+	public static final EclipseLinkExclusiveConnectionMode EXCLUSIVE_CONNECTION_MODE_TEST_VALUE_2 = EclipseLinkExclusiveConnectionMode.isolated;
 	
 	public static final String LAZY_CONNECTION_KEY = EclipseLinkConnection.ECLIPSELINK_LAZY_CONNECTION;
 	public static final Boolean LAZY_CONNECTION_TEST_VALUE = false;
@@ -204,7 +204,7 @@ public class EclipseLinkConnectionTests extends EclipseLinkPersistenceUnitTestCa
 		else if (propertyName.equals(EclipseLinkConnection.WRITE_CONNECTIONS_MAX_PROPERTY))
 			this.connection.setWriteConnectionsMax((Integer) newValue);
 		else if (propertyName.equals(EclipseLinkConnection.EXCLUSIVE_CONNECTION_MODE_PROPERTY))
-			this.connection.setExclusiveConnectionMode((ExclusiveConnectionMode) newValue);
+			this.connection.setExclusiveConnectionMode((EclipseLinkExclusiveConnectionMode) newValue);
 		else if (propertyName.equals(EclipseLinkConnection.LAZY_CONNECTION_PROPERTY))
 			this.connection.setLazyConnection((Boolean) newValue);
 		else
