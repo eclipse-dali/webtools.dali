@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CustomizationEntity;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Profiler;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkProfiler;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkWeaving;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkCustomization;
 
@@ -86,7 +86,7 @@ public class EclipseLinkCustomizationTests extends EclipseLinkPersistenceUnitTes
 	public static final String CUSTOMIZER_TEST_VALUE_2 = "acme.sessions.Customizer";
 
 	private static final String PROFILER_KEY = Customization.ECLIPSELINK_PROFILER;
-	private static final Profiler PROFILER_TEST_VALUE = Profiler.query_monitor;
+	private static final EclipseLinkProfiler PROFILER_TEST_VALUE = EclipseLinkProfiler.query_monitor;
 	private static final String PROFILER_TEST_VALUE_2 = "custom.profiler.test";
 	
 	public static final String EXCEPTION_HANDLER_KEY = Customization.ECLIPSELINK_EXCEPTION_HANDLER;
@@ -271,7 +271,7 @@ public class EclipseLinkCustomizationTests extends EclipseLinkPersistenceUnitTes
 			this.customization.setWeaving((EclipseLinkWeaving) newValue);
 		else if (propertyName.equals(Customization.PROFILER_PROPERTY)) {
 			if (newValue.getClass().isEnum())
-				this.customization.setProfiler((Profiler) newValue);
+				this.customization.setProfiler((EclipseLinkProfiler) newValue);
 			else
 				this.customization.setProfiler((String) newValue);
 		}
@@ -641,7 +641,7 @@ public class EclipseLinkCustomizationTests extends EclipseLinkPersistenceUnitTes
 
 		// test set (Profiler) null
 		this.clearEvent();
-		this.customization.setProfiler((Profiler) null);
+		this.customization.setProfiler((EclipseLinkProfiler) null);
 		assertNull(this.getPersistenceUnit().getProperty(elKey));
 		this.verifyPutProperty(propertyName, null);
 		

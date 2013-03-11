@@ -31,7 +31,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Profiler;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkProfiler;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
@@ -60,7 +60,7 @@ public class ProfilerClassChooser extends ClassChooserComboPane<Customization>
 
 	@Override
 	protected String getClassName() {
-		return Profiler.getProfilerClassName(this.getSubject().getProfiler());
+		return EclipseLinkProfiler.getProfilerClassName(this.getSubject().getProfiler());
 	}
    
 	@Override
@@ -109,7 +109,7 @@ public class ProfilerClassChooser extends ClassChooserComboPane<Customization>
 
 	private String buildDisplayString(String profilerName) {
 
-		switch (Profiler.valueOf(profilerName)) {
+		switch (EclipseLinkProfiler.valueOf(profilerName)) {
 			case no_profiler: {
 				return JptJpaEclipseLinkUiMessages.PROFILER_COMPOSITE_NO_PROFILER;
 			}
@@ -141,7 +141,7 @@ public class ProfilerClassChooser extends ClassChooserComboPane<Customization>
 			@Override
 			public String transform(String value) {
 				try {
-					Profiler.valueOf(value);
+					EclipseLinkProfiler.valueOf(value);
 					value = buildDisplayString(value);
 				}
 				catch (Exception e) {
@@ -161,7 +161,7 @@ public class ProfilerClassChooser extends ClassChooserComboPane<Customization>
 	}
 
 	private Iterator<String> buildProfilers() {
-		return IteratorTools.transform(IteratorTools.iterator(Profiler.values()), PersistenceXmlEnumValue.ENUM_NAME_TRANSFORMER);
+		return IteratorTools.transform(IteratorTools.iterator(EclipseLinkProfiler.values()), PersistenceXmlEnumValue.ENUM_NAME_TRANSFORMER);
 	}
 
 	private CollectionValueModel<String> buildProfilersCollectionHolder() {

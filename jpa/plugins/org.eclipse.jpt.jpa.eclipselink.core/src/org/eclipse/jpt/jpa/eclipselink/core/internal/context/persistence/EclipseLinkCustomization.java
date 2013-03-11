@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CustomizationEntity;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Profiler;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkProfiler;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkWeaving;
 import org.eclipse.text.edits.ReplaceEdit;
 
@@ -118,7 +118,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		if (value == null) {
 			return null;	// no property found
 		}
-		Profiler standardProfiler = this.getEnumValue(ECLIPSELINK_PROFILER, Profiler.values());
+		EclipseLinkProfiler standardProfiler = this.getEnumValue(ECLIPSELINK_PROFILER, EclipseLinkProfiler.values());
 		return (standardProfiler == null) ? value : getPropertyStringValueOf(standardProfiler);
 	}
 
@@ -663,7 +663,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	 * 
 	 * @param newProfiler - Profiler
 	 */
-	public void setProfiler(Profiler newProfiler) {
+	public void setProfiler(EclipseLinkProfiler newProfiler) {
 		if( newProfiler == null) {
 			this.setProfiler_((String) null);
 			return;
@@ -683,7 +683,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 			this.setProfiler_((String) null);
 			return;
 		}
-		Profiler p = Profiler.getProfilerFor(newProfiler);
+		EclipseLinkProfiler p = EclipseLinkProfiler.getProfilerFor(newProfiler);
 		if(p == null) {	// custom profiler class
 			this.setProfiler_(newProfiler);
 		}

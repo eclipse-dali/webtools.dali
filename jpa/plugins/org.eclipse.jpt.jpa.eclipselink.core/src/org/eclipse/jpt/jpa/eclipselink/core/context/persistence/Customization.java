@@ -103,12 +103,12 @@ public interface Customization extends PersistenceUnitProperties
 	String getDefaultProfiler();
 	String getProfiler();
 	void setProfiler(String newProfiler);
-	void setProfiler(Profiler newProfiler);
+	void setProfiler(EclipseLinkProfiler newProfiler);
 		static final String PROFILER_PROPERTY = "profiler"; //$NON-NLS-1$
 		// EclipseLink key string
 		static final String ECLIPSELINK_PROFILER = "eclipselink.profiler"; //$NON-NLS-1$
-		static final String DEFAULT_PROFILER = Profiler.no_profiler.getPropertyValue();
-		static final String[] RESERVED_PROFILER_NAMES = {Profiler.no_profiler.getPropertyValue(), Profiler.performance_profiler.getPropertyValue(), Profiler.query_monitor.getPropertyValue()};
+		static final String DEFAULT_PROFILER = EclipseLinkProfiler.no_profiler.getPropertyValue();
+		static final String[] RESERVED_PROFILER_NAMES = {EclipseLinkProfiler.no_profiler.getPropertyValue(), EclipseLinkProfiler.performance_profiler.getPropertyValue(), EclipseLinkProfiler.query_monitor.getPropertyValue()};
 		String ECLIPSELINK_SESSION_PROFILER_CLASS_NAME = "org.eclipse.persistence.sessions.SessionProfiler"; //$NON-NLS-1$
 		
 	Boolean getDefaultValidationOnly();

@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 /**
  *  Profiler
  */
-public enum Profiler implements PersistenceXmlEnumValue {
+public enum EclipseLinkProfiler implements PersistenceXmlEnumValue {
 
 	performance_profiler("PerformanceProfiler", "org.eclipse.persistence.tools.profiler.PerformanceProfiler"),  //$NON-NLS-1$ //$NON-NLS-2$
 	query_monitor("QueryMonitor", "org.eclipse.persistence.tools.profiler.QueryMonitor"), //$NON-NLS-1$ //$NON-NLS-2$
@@ -30,7 +30,7 @@ public enum Profiler implements PersistenceXmlEnumValue {
 	 */
 	private final String className;
 
-	Profiler(String propertyValue, String className) {
+	EclipseLinkProfiler(String propertyValue, String className) {
 		this.propertyValue = propertyValue;
 		this.className = className;
 	}
@@ -46,8 +46,8 @@ public enum Profiler implements PersistenceXmlEnumValue {
 		return this.className;
 	}
 
-	public static Profiler fromPropertyValue(String propertyValue) {
-		for (Profiler profiler : Profiler.values()) {
+	public static EclipseLinkProfiler fromPropertyValue(String propertyValue) {
+		for (EclipseLinkProfiler profiler : EclipseLinkProfiler.values()) {
 			if (profiler.getPropertyValue().equals(propertyValue)) {
 				return profiler;
 			}
@@ -58,8 +58,8 @@ public enum Profiler implements PersistenceXmlEnumValue {
 	/**
 	 * Return the Profiler value corresponding to the given literal.
 	 */
-	public static Profiler getProfilerFor(String literal) {
-		for( Profiler profiler : Profiler.values()) {
+	public static EclipseLinkProfiler getProfilerFor(String literal) {
+		for( EclipseLinkProfiler profiler : EclipseLinkProfiler.values()) {
 			if(profiler.toString().equals(literal)) {
 				return profiler;
 			}
@@ -68,7 +68,7 @@ public enum Profiler implements PersistenceXmlEnumValue {
 	}
 
 	public static String getProfilerClassName(String profilerValue) {
-		Profiler profiler = fromPropertyValue(profilerValue);
+		EclipseLinkProfiler profiler = fromPropertyValue(profilerValue);
 		return (profiler == null) ? profilerValue : profiler.getClassName();
 	}
 }
