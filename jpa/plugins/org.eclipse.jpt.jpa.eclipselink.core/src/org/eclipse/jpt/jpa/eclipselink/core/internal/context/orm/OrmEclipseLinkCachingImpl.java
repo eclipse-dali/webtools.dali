@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkExistenceType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTimeOfDay;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkCaching;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkNonEmbeddableTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkNonEmbeddableTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
@@ -127,7 +127,7 @@ public class OrmEclipseLinkCachingImpl
 		super.update();
 
 		boolean xmlCacheNotSpecified = (this.getXmlCache() == null);
-		JavaEclipseLinkCaching javaCaching = this.getJavaCachingForDefaults();
+		EclipseLinkJavaCaching javaCaching = this.getJavaCachingForDefaults();
 		boolean javaCacheSpecified = (javaCaching != null);
 		boolean useJavaValue = (xmlCacheNotSpecified && javaCacheSpecified);
 
@@ -780,7 +780,7 @@ public class OrmEclipseLinkCachingImpl
 		return this.getTypeMapping().getJavaTypeMappingForDefaults();
 	}
 
-	protected JavaEclipseLinkCaching getJavaCachingForDefaults() {
+	protected EclipseLinkJavaCaching getJavaCachingForDefaults() {
 		JavaEclipseLinkNonEmbeddableTypeMapping javaTypeMapping = this.getJavaTypeMappingForDefaults();
 		return (javaTypeMapping == null) ? null : javaTypeMapping.getCaching();
 	}

@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkNonEmbeddableType
 public interface JavaEclipseLinkNonEmbeddableTypeMapping
 	extends EclipseLinkNonEmbeddableTypeMapping, EclipseLinkJavaTypeMapping
 {
-	JavaEclipseLinkCaching getCaching();
+	EclipseLinkJavaCaching getCaching();
 
 	JavaEclipseLinkMultitenancy2_3 getMultitenancy();
 

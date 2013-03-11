@@ -13,7 +13,7 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkCaching;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
@@ -74,10 +74,10 @@ public abstract class AbstractJavaEclipseLinkEntityComposite<T extends JavaEclip
 		return new JavaEclipseLinkCachingComposite(this, buildCachingModel(), container).getControl();
 	}
 	
-	protected PropertyAspectAdapter<T, JavaEclipseLinkCaching> buildCachingModel() {
-		return new PropertyAspectAdapter<T, JavaEclipseLinkCaching>(getSubjectHolder()) {
+	protected PropertyAspectAdapter<T, EclipseLinkJavaCaching> buildCachingModel() {
+		return new PropertyAspectAdapter<T, EclipseLinkJavaCaching>(getSubjectHolder()) {
 			@Override
-			protected JavaEclipseLinkCaching buildValue_() {
+			protected EclipseLinkJavaCaching buildValue_() {
 				return this.subject.getCaching();
 			}
 		};

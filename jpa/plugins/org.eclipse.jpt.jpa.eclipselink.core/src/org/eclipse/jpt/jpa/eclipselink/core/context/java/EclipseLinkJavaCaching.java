@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCaching;
  * @version 3.3
  * @since 2.1
  */
-public interface JavaEclipseLinkCaching
+public interface EclipseLinkJavaCaching
 	extends EclipseLinkCaching
 {
 	/**

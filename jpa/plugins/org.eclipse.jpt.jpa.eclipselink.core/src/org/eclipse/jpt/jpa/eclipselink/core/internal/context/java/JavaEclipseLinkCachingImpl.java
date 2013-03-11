@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCacheIsolationTyp
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkExistenceType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTimeOfDay;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkCaching;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkNonEmbeddableTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkCacheAnnotation;
@@ -39,7 +39,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class JavaEclipseLinkCachingImpl
 	extends AbstractJavaContextModel<JavaEclipseLinkNonEmbeddableTypeMapping>
-	implements JavaEclipseLinkCaching, JavaCacheableReference2_0
+	implements EclipseLinkJavaCaching, JavaCacheableReference2_0
 {
 	protected EclipseLinkCacheType specifiedType;
 	protected Integer specifiedSize;

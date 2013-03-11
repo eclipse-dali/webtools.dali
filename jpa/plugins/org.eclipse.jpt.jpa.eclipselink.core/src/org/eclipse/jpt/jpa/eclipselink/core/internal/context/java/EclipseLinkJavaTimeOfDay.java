@@ -12,11 +12,11 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTimeOfDay;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkCaching;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTimeOfDayAnnotation;
 
 public class EclipseLinkJavaTimeOfDay
-	extends AbstractJavaContextModel<JavaEclipseLinkCaching>
+	extends AbstractJavaContextModel<EclipseLinkJavaCaching>
 	implements EclipseLinkTimeOfDay
 {
 	protected final EclipseLinkTimeOfDayAnnotation todAnnotation;
@@ -27,7 +27,7 @@ public class EclipseLinkJavaTimeOfDay
 	protected Integer millisecond;
 
 
-	public EclipseLinkJavaTimeOfDay(JavaEclipseLinkCaching parent, EclipseLinkTimeOfDayAnnotation todAnnotation) {
+	public EclipseLinkJavaTimeOfDay(EclipseLinkJavaCaching parent, EclipseLinkTimeOfDayAnnotation todAnnotation) {
 		super(parent);
 		this.todAnnotation = todAnnotation;
 		this.hour = todAnnotation.getHour();
@@ -123,7 +123,7 @@ public class EclipseLinkJavaTimeOfDay
 
 	// ********** misc **********
 
-	public JavaEclipseLinkCaching getCaching() {
+	public EclipseLinkJavaCaching getCaching() {
 		return this.parent;
 	}
 

@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConvert
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkStructConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTimeOfDay;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkCaching;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEntity;
@@ -574,7 +574,7 @@ public class EclipseLinkOrmEntityTests
 	public void testUpdateCacheType() throws Exception {
 		createTestEntityForCaching();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		JavaEclipseLinkCaching javaContextCaching = ((JavaEclipseLinkEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
+		EclipseLinkJavaCaching javaContextCaching = ((JavaEclipseLinkEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
 		OrmEclipseLinkEntity ormContextEntity = (OrmEclipseLinkEntity) ormPersistentType.getMapping();
 		EclipseLinkCaching ormContextCaching = ormContextEntity.getCaching();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
@@ -684,7 +684,7 @@ public class EclipseLinkOrmEntityTests
 	public void testUpdateCacheCoordinationType() throws Exception {
 		createTestEntityForCaching();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		JavaEclipseLinkCaching javaContextCaching = ((JavaEclipseLinkEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
+		EclipseLinkJavaCaching javaContextCaching = ((JavaEclipseLinkEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
 		OrmEclipseLinkEntity ormContextEntity = (OrmEclipseLinkEntity) ormPersistentType.getMapping();
 		EclipseLinkCaching ormContextCaching = ormContextEntity.getCaching();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
@@ -795,7 +795,7 @@ public class EclipseLinkOrmEntityTests
 	public void testUpdateCacheSize() throws Exception {
 		createTestEntityForCaching();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		JavaEclipseLinkCaching javaContextCaching = ((JavaEclipseLinkEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
+		EclipseLinkJavaCaching javaContextCaching = ((JavaEclipseLinkEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
 		OrmEclipseLinkEntity ormContextEntity = (OrmEclipseLinkEntity) ormPersistentType.getMapping();
 		EclipseLinkCaching ormContextCaching = ormContextEntity.getCaching();
 		XmlEntity xmlEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
@@ -905,7 +905,7 @@ public class EclipseLinkOrmEntityTests
 	public void testUpdateCacheAlwaysRefresh() throws Exception {
 		createTestEntityForCaching();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		JavaEclipseLinkCaching javaContextCaching = ((JavaEclipseLinkEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
+		EclipseLinkJavaCaching javaContextCaching = ((JavaEclipseLinkEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
 		OrmEclipseLinkEntity ormContextEntity = (OrmEclipseLinkEntity) ormPersistentType.getMapping();
 		EclipseLinkCaching ormContextCaching = ormContextEntity.getCaching();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
@@ -1031,7 +1031,7 @@ public class EclipseLinkOrmEntityTests
 	public void testUpdateCacheRefreshOnlyIfNewer() throws Exception {
 		createTestEntityForCaching();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		JavaEclipseLinkCaching javaContextCaching = ((JavaEclipseLinkEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
+		EclipseLinkJavaCaching javaContextCaching = ((JavaEclipseLinkEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
 		OrmEclipseLinkEntity ormContextEntity = (OrmEclipseLinkEntity) ormPersistentType.getMapping();
 		EclipseLinkCaching ormContextCaching = ormContextEntity.getCaching();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
@@ -1157,7 +1157,7 @@ public class EclipseLinkOrmEntityTests
 	public void testUpdateCacheDisableHits() throws Exception {
 		createTestEntityForCaching();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		JavaEclipseLinkCaching javaContextCaching = ((JavaEclipseLinkEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
+		EclipseLinkJavaCaching javaContextCaching = ((JavaEclipseLinkEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
 		OrmEclipseLinkEntity ormContextEntity = (OrmEclipseLinkEntity) ormPersistentType.getMapping();
 		EclipseLinkCaching ormContextCaching = ormContextEntity.getCaching();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
@@ -1283,7 +1283,7 @@ public class EclipseLinkOrmEntityTests
 	public void testUpdateCacheShared() throws Exception {
 		createTestEntityForCaching();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		JavaEclipseLinkCaching javaContextCaching = ((JavaEclipseLinkEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
+		EclipseLinkJavaCaching javaContextCaching = ((JavaEclipseLinkEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
 		OrmEclipseLinkEntity ormContextEntity = (OrmEclipseLinkEntity) ormPersistentType.getMapping();
 		EclipseLinkCaching ormContextCaching = ormContextEntity.getCaching();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
@@ -1448,7 +1448,7 @@ public class EclipseLinkOrmEntityTests
 	public void testUpdateExistenceChecking() throws Exception {
 		createTestEntityForCaching();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		JavaEclipseLinkCaching javaContextCaching = ((JavaEclipseLinkEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
+		EclipseLinkJavaCaching javaContextCaching = ((JavaEclipseLinkEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
 		OrmEclipseLinkEntity ormContextEntity = (OrmEclipseLinkEntity) ormPersistentType.getMapping();
 		EclipseLinkCaching ormContextCaching = ormContextEntity.getCaching();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
@@ -1538,7 +1538,7 @@ public class EclipseLinkOrmEntityTests
 	public void testUpdateCacheExpiry() throws Exception {
 		createTestEntityForCaching();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		JavaEclipseLinkCaching javaContextCaching = ((JavaEclipseLinkEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
+		EclipseLinkJavaCaching javaContextCaching = ((JavaEclipseLinkEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
 		OrmEclipseLinkEntity ormContextEntity = (OrmEclipseLinkEntity) ormPersistentType.getMapping();
 		EclipseLinkCaching ormContextCaching = ormContextEntity.getCaching();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
@@ -1634,7 +1634,7 @@ public class EclipseLinkOrmEntityTests
 	public void testUpdateCacheExpiryTimeOfDay() throws Exception {
 		createTestEntityForCaching();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		JavaEclipseLinkCaching javaContextCaching = ((JavaEclipseLinkEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
+		EclipseLinkJavaCaching javaContextCaching = ((JavaEclipseLinkEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
 		OrmEclipseLinkEntity ormContextEntity = (OrmEclipseLinkEntity) ormPersistentType.getMapping();
 		EclipseLinkCaching ormContextCaching = ormContextEntity.getCaching();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);

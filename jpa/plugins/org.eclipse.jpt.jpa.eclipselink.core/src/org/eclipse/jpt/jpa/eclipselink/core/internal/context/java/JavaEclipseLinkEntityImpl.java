@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkReadOnly;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkCaching;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMultitenancy2_3;
@@ -46,7 +46,7 @@ public class JavaEclipseLinkEntityImpl
 	extends AbstractJavaEntity
 	implements JavaEclipseLinkEntity, EclipseLinkJavaConverterContainer.Parent
 {
-	protected final JavaEclipseLinkCaching caching;
+	protected final EclipseLinkJavaCaching caching;
 
 	protected final JavaEclipseLinkReadOnly readOnly;
 
@@ -96,11 +96,11 @@ public class JavaEclipseLinkEntityImpl
 
 	// ********** caching **********
 
-	public JavaEclipseLinkCaching getCaching() {
+	public EclipseLinkJavaCaching getCaching() {
 		return this.caching;
 	}
 
-	protected JavaEclipseLinkCaching buildCaching() {
+	protected EclipseLinkJavaCaching buildCaching() {
 		return new JavaEclipseLinkCachingImpl(this);
 	}
 

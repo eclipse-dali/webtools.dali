@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkCaching;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaCaching;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkCacheSizeCombo;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkCacheTypeComboViewer;
@@ -50,11 +50,11 @@ import org.eclipse.swt.widgets.Composite;
  * @version 3.0
  * @since 3.0
  */
-public class JavaEclipseLinkCaching2_0Composite extends EclipseLinkCaching2_0Composite<JavaEclipseLinkCaching>
+public class JavaEclipseLinkCaching2_0Composite extends EclipseLinkCaching2_0Composite<EclipseLinkJavaCaching>
 {
 
 	public JavaEclipseLinkCaching2_0Composite(Pane<?> parentPane,
-        PropertyValueModel<JavaEclipseLinkCaching> subjectHolder,
+        PropertyValueModel<EclipseLinkJavaCaching> subjectHolder,
         Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
@@ -71,7 +71,7 @@ public class JavaEclipseLinkCaching2_0Composite extends EclipseLinkCaching2_0Com
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildExistenceCheckingHolder() {
-		return new PropertyAspectAdapter<JavaEclipseLinkCaching, Boolean>(getSubjectHolder(), JavaEclipseLinkCaching.EXISTENCE_CHECKING_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkJavaCaching, Boolean>(getSubjectHolder(), EclipseLinkJavaCaching.EXISTENCE_CHECKING_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isExistenceChecking());
