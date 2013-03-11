@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.resource.java.DiscriminatorColumnAnnotation;
  * @version 3.1
  * @since 3.1
  */
-public interface EclipseLinkTenantDiscriminatorColumnAnnotation2_3
+public interface TenantDiscriminatorColumnAnnotation2_3
 	extends DiscriminatorColumnAnnotation, NestableAnnotation
 {
 	String ANNOTATION_NAME = EclipseLink.TENANT_DISCRIMINATOR_COLUMN;

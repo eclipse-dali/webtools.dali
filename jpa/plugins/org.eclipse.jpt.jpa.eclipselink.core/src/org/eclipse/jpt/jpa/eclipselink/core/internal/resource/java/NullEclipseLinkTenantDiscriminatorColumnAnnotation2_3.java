@@ -12,21 +12,21 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.resource.java.NullBaseDiscriminatorColumnAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTenantDiscriminatorColumnAnnotation2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TenantDiscriminatorColumnAnnotation2_3;
 
 /**
  * <code>org.eclipse.persistence.annotations.TenantDiscriminatorColumn</code>
  */
 public final class NullEclipseLinkTenantDiscriminatorColumnAnnotation2_3
-	extends NullBaseDiscriminatorColumnAnnotation<EclipseLinkTenantDiscriminatorColumnAnnotation2_3>
-	implements EclipseLinkTenantDiscriminatorColumnAnnotation2_3
+	extends NullBaseDiscriminatorColumnAnnotation<TenantDiscriminatorColumnAnnotation2_3>
+	implements TenantDiscriminatorColumnAnnotation2_3
 {	
 	public NullEclipseLinkTenantDiscriminatorColumnAnnotation2_3(JavaResourceAnnotatedElement parent) {
 		super(parent);
 	}
 	
 	public String getAnnotationName() {
-		return EclipseLinkTenantDiscriminatorColumnAnnotation2_3.ANNOTATION_NAME;
+		return TenantDiscriminatorColumnAnnotation2_3.ANNOTATION_NAME;
 	}
 
 	// ***** context property

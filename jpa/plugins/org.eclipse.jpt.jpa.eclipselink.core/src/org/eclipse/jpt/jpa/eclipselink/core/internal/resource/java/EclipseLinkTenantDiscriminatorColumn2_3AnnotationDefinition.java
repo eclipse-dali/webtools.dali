@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.BinaryEclipseLinkTenantDiscriminatorColumnAnnotation2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.SourceEclipseLinkTenantDiscriminatorColumnAnnotation2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTenantDiscriminatorColumnAnnotation2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TenantDiscriminatorColumnAnnotation2_3;
 
 public class EclipseLinkTenantDiscriminatorColumn2_3AnnotationDefinition
 	implements NestableAnnotationDefinition
@@ -52,7 +52,7 @@ public class EclipseLinkTenantDiscriminatorColumn2_3AnnotationDefinition
 	}
 
 	public String getNestableAnnotationName() {
-		return EclipseLinkTenantDiscriminatorColumnAnnotation2_3.ANNOTATION_NAME;
+		return TenantDiscriminatorColumnAnnotation2_3.ANNOTATION_NAME;
 	}
 
 	public String getContainerAnnotationName() {

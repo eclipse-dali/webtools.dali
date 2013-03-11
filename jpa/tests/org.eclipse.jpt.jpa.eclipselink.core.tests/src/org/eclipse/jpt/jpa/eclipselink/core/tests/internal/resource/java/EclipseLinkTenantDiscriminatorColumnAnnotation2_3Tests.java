@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.resource.java.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTenantDiscriminatorColumnAnnotation2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TenantDiscriminatorColumnAnnotation2_3;
 
 @SuppressWarnings("nls")
 public class EclipseLinkTenantDiscriminatorColumnAnnotation2_3Tests extends EclipseLink2_3JavaResourceModelTestCase {
@@ -137,7 +137,7 @@ public class EclipseLinkTenantDiscriminatorColumnAnnotation2_3Tests extends Ecli
 	public void testGetName() throws Exception {
 		ICompilationUnit cu = this.createTestTenantDiscriminatorColumnWithName();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		EclipseLinkTenantDiscriminatorColumnAnnotation2_3 column = (EclipseLinkTenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
+		TenantDiscriminatorColumnAnnotation2_3 column = (TenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
 		assertNotNull(column);
 		assertEquals(COLUMN_NAME, column.getName());
 	}
@@ -145,7 +145,7 @@ public class EclipseLinkTenantDiscriminatorColumnAnnotation2_3Tests extends Ecli
 	public void testGetNull() throws Exception {
 		ICompilationUnit cu = this.createTestTenantDiscriminatorColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		EclipseLinkTenantDiscriminatorColumnAnnotation2_3 column = (EclipseLinkTenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
+		TenantDiscriminatorColumnAnnotation2_3 column = (TenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
 		assertNotNull(column);
 		assertNull(column.getName());
 		assertNull(column.getDiscriminatorType());
@@ -155,7 +155,7 @@ public class EclipseLinkTenantDiscriminatorColumnAnnotation2_3Tests extends Ecli
 	public void testSetName() throws Exception {
 		ICompilationUnit cu = this.createTestTenantDiscriminatorColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		EclipseLinkTenantDiscriminatorColumnAnnotation2_3 column = (EclipseLinkTenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
+		TenantDiscriminatorColumnAnnotation2_3 column = (TenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
 
 		assertNotNull(column);
 		assertNull(column.getName());
@@ -169,7 +169,7 @@ public class EclipseLinkTenantDiscriminatorColumnAnnotation2_3Tests extends Ecli
 	public void testSetNameNull() throws Exception {
 		ICompilationUnit cu = this.createTestTenantDiscriminatorColumnWithName();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		EclipseLinkTenantDiscriminatorColumnAnnotation2_3 column = (EclipseLinkTenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
+		TenantDiscriminatorColumnAnnotation2_3 column = (TenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
 
 		assertEquals(COLUMN_NAME, column.getName());
 		
@@ -182,14 +182,14 @@ public class EclipseLinkTenantDiscriminatorColumnAnnotation2_3Tests extends Ecli
 	public void testGetColumnDefinition() throws Exception {
 		ICompilationUnit cu = this.createTestTenantDiscriminatorColumnWithColumnDefinition();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		EclipseLinkTenantDiscriminatorColumnAnnotation2_3 column = (EclipseLinkTenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
+		TenantDiscriminatorColumnAnnotation2_3 column = (TenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
 		assertEquals(COLUMN_COLUMN_DEFINITION, column.getColumnDefinition());
 	}
 
 	public void testSetColumnDefinition() throws Exception {
 		ICompilationUnit cu = this.createTestTenantDiscriminatorColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		EclipseLinkTenantDiscriminatorColumnAnnotation2_3 column = (EclipseLinkTenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
+		TenantDiscriminatorColumnAnnotation2_3 column = (TenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
 
 		assertNotNull(column);
 		assertNull(column.getColumnDefinition());
@@ -207,7 +207,7 @@ public class EclipseLinkTenantDiscriminatorColumnAnnotation2_3Tests extends Ecli
 	public void testGetLength() throws Exception {
 		ICompilationUnit cu = this.createTestColumnWithIntElement("length");
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		EclipseLinkTenantDiscriminatorColumnAnnotation2_3 column = (EclipseLinkTenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
+		TenantDiscriminatorColumnAnnotation2_3 column = (TenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
 
 		assertEquals(Integer.valueOf(5), column.getLength());
 	}
@@ -215,7 +215,7 @@ public class EclipseLinkTenantDiscriminatorColumnAnnotation2_3Tests extends Ecli
 	public void testSetLength() throws Exception {
 		ICompilationUnit cu = this.createTestTenantDiscriminatorColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		EclipseLinkTenantDiscriminatorColumnAnnotation2_3 column = (EclipseLinkTenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
+		TenantDiscriminatorColumnAnnotation2_3 column = (TenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
 
 		assertNotNull(column);
 		assertNull(column.getLength());
@@ -232,14 +232,14 @@ public class EclipseLinkTenantDiscriminatorColumnAnnotation2_3Tests extends Ecli
 	public void testGetDiscriminatorType() throws Exception {
 		ICompilationUnit cu = this.createTestTenenatDiscriminatorColumnWithDiscriminatorType();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		EclipseLinkTenantDiscriminatorColumnAnnotation2_3 column = (EclipseLinkTenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
+		TenantDiscriminatorColumnAnnotation2_3 column = (TenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
 		assertEquals(DiscriminatorType.CHAR, column.getDiscriminatorType());
 	}
 	
 	public void testSetDiscriminatorType() throws Exception {
 		ICompilationUnit cu = this.createTestTenantDiscriminatorColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		EclipseLinkTenantDiscriminatorColumnAnnotation2_3 column = (EclipseLinkTenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
+		TenantDiscriminatorColumnAnnotation2_3 column = (TenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
 
 		assertNull(column.getDiscriminatorType());
 
@@ -255,14 +255,14 @@ public class EclipseLinkTenantDiscriminatorColumnAnnotation2_3Tests extends Ecli
 	public void testGetContextProperty() throws Exception {
 		ICompilationUnit cu = this.createTestTenantDiscriminatorColumnWithContextProperty();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		EclipseLinkTenantDiscriminatorColumnAnnotation2_3 column = (EclipseLinkTenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
+		TenantDiscriminatorColumnAnnotation2_3 column = (TenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
 		assertEquals(COLUMN_CONTEXT_PROPERTY, column.getContextProperty());
 	}
 
 	public void testSetContextProperty() throws Exception {
 		ICompilationUnit cu = this.createTestTenantDiscriminatorColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		EclipseLinkTenantDiscriminatorColumnAnnotation2_3 column = (EclipseLinkTenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
+		TenantDiscriminatorColumnAnnotation2_3 column = (TenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
 
 		assertNotNull(column);
 		assertNull(column.getContextProperty());
@@ -280,14 +280,14 @@ public class EclipseLinkTenantDiscriminatorColumnAnnotation2_3Tests extends Ecli
 	public void testGetTable() throws Exception {
 		ICompilationUnit cu = this.createTestTenantDiscriminatorColumnWithTable();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		EclipseLinkTenantDiscriminatorColumnAnnotation2_3 column = (EclipseLinkTenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
+		TenantDiscriminatorColumnAnnotation2_3 column = (TenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
 		assertEquals(COLUMN_TABLE, column.getTable());
 	}
 
 	public void testSetTable() throws Exception {
 		ICompilationUnit cu = this.createTestTenantDiscriminatorColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		EclipseLinkTenantDiscriminatorColumnAnnotation2_3 column = (EclipseLinkTenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
+		TenantDiscriminatorColumnAnnotation2_3 column = (TenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
 
 		assertNotNull(column);
 		assertNull(column.getTable());
@@ -305,7 +305,7 @@ public class EclipseLinkTenantDiscriminatorColumnAnnotation2_3Tests extends Ecli
 	public void testGetPrimaryKey() throws Exception {
 		ICompilationUnit cu = this.createTestColumnWithBooleanElement("primaryKey");
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		EclipseLinkTenantDiscriminatorColumnAnnotation2_3 column = (EclipseLinkTenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
+		TenantDiscriminatorColumnAnnotation2_3 column = (TenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
 
 		assertEquals(Boolean.TRUE, column.getPrimaryKey());
 	}
@@ -313,7 +313,7 @@ public class EclipseLinkTenantDiscriminatorColumnAnnotation2_3Tests extends Ecli
 	public void testSetPrimaryKey() throws Exception {
 		ICompilationUnit cu = this.createTestTenantDiscriminatorColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		EclipseLinkTenantDiscriminatorColumnAnnotation2_3 column = (EclipseLinkTenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
+		TenantDiscriminatorColumnAnnotation2_3 column = (TenantDiscriminatorColumnAnnotation2_3) resourceType.getAnnotation(0, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
 
 		assertNotNull(column);
 		assertNull(column.getPrimaryKey());

@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaTypeMappingDefinitionWrapper;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkMultitenantAnnotation2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTenantDiscriminatorColumnAnnotation2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TenantDiscriminatorColumnAnnotation2_3;
 
 public class EclipseLinkJavaEntityDefinition2_3
 	extends JavaTypeMappingDefinitionWrapper
@@ -51,7 +51,7 @@ public class EclipseLinkJavaEntityDefinition2_3
 
 	public static final String[] ECLIPSE_LINK2_3_SUPPORTING_ANNOTATION_NAMES_ARRAY = new String[] {
 		EclipseLinkMultitenantAnnotation2_3.ANNOTATION_NAME,
-		EclipseLinkTenantDiscriminatorColumnAnnotation2_3.ANNOTATION_NAME,
+		TenantDiscriminatorColumnAnnotation2_3.ANNOTATION_NAME,
 		EclipseLink.TENANT_DISCRIMINATOR_COLUMNS
 	};
 	public static final Iterable<String> ECLIPSE_LINK2_3_SUPPORTING_ANNOTATION_NAMES = IterableTools.iterable(ECLIPSE_LINK2_3_SUPPORTING_ANNOTATION_NAMES_ARRAY);

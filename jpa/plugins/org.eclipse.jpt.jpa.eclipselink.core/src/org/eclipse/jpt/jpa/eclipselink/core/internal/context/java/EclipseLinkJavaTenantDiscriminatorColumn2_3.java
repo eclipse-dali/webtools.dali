@@ -15,17 +15,17 @@ import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.AbstractJavaNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaSpecifiedTenantDiscriminatorColumn2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTenantDiscriminatorColumnAnnotation2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TenantDiscriminatorColumnAnnotation2_3;
 
 /**
  * Java tenant discriminator column
  */
 public class EclipseLinkJavaTenantDiscriminatorColumn2_3
-	extends AbstractJavaNamedDiscriminatorColumn<EclipseLinkTenantDiscriminatorColumn2_3.ParentAdapter, EclipseLinkTenantDiscriminatorColumnAnnotation2_3>
+	extends AbstractJavaNamedDiscriminatorColumn<EclipseLinkTenantDiscriminatorColumn2_3.ParentAdapter, TenantDiscriminatorColumnAnnotation2_3>
 	implements EclipseLinkJavaSpecifiedTenantDiscriminatorColumn2_3
 {
 	/** @see org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaNamedColumn#AbstractJavaNamedColumn(org.eclipse.jpt.jpa.core.context.NamedColumn.ParentAdapter, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
-	protected /* final */ EclipseLinkTenantDiscriminatorColumnAnnotation2_3 columnAnnotation;  // never null
+	protected /* final */ TenantDiscriminatorColumnAnnotation2_3 columnAnnotation;  // never null
 
 	protected String specifiedTableName;
 	protected String defaultTableName;
@@ -37,7 +37,7 @@ public class EclipseLinkJavaTenantDiscriminatorColumn2_3
 	protected boolean defaultPrimaryKey = DEFAULT_PRIMARY_KEY;
 
 
-	public EclipseLinkJavaTenantDiscriminatorColumn2_3(EclipseLinkTenantDiscriminatorColumn2_3.ParentAdapter parentAdapter, EclipseLinkTenantDiscriminatorColumnAnnotation2_3 columnAnnotation) {
+	public EclipseLinkJavaTenantDiscriminatorColumn2_3(EclipseLinkTenantDiscriminatorColumn2_3.ParentAdapter parentAdapter, TenantDiscriminatorColumnAnnotation2_3 columnAnnotation) {
 		super(parentAdapter, columnAnnotation);
 		this.specifiedTableName = this.buildSpecifiedTableName();
 		this.specifiedContextProperty = this.buildSpecifiedContextProperty();
@@ -66,12 +66,12 @@ public class EclipseLinkJavaTenantDiscriminatorColumn2_3
 	// ********** column annotation **********
 
 	@Override
-	public EclipseLinkTenantDiscriminatorColumnAnnotation2_3 getColumnAnnotation() {
+	public TenantDiscriminatorColumnAnnotation2_3 getColumnAnnotation() {
 		return this.columnAnnotation;
 	}
 
 	@Override
-	protected void setColumnAnnotation(EclipseLinkTenantDiscriminatorColumnAnnotation2_3 columnAnnotation) {
+	protected void setColumnAnnotation(TenantDiscriminatorColumnAnnotation2_3 columnAnnotation) {
 		this.columnAnnotation = columnAnnotation;
 	}
 

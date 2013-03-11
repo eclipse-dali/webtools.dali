@@ -14,14 +14,14 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryBaseDiscriminatorColumnAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTenantDiscriminatorColumnAnnotation2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TenantDiscriminatorColumnAnnotation2_3;
 
 /**
  * <code>org.eclipse.persistence.annotations.TenantDiscriminatorColumn</code>
  */
 public final class BinaryEclipseLinkTenantDiscriminatorColumnAnnotation2_3
 	extends BinaryBaseDiscriminatorColumnAnnotation
-	implements EclipseLinkTenantDiscriminatorColumnAnnotation2_3
+	implements TenantDiscriminatorColumnAnnotation2_3
 {
 	private String contextProperty;
 	private String table;
@@ -35,7 +35,7 @@ public final class BinaryEclipseLinkTenantDiscriminatorColumnAnnotation2_3
 	}
 
 	public String getAnnotationName() {
-		return EclipseLinkTenantDiscriminatorColumnAnnotation2_3.ANNOTATION_NAME;
+		return TenantDiscriminatorColumnAnnotation2_3.ANNOTATION_NAME;
 	}
 
 	@Override

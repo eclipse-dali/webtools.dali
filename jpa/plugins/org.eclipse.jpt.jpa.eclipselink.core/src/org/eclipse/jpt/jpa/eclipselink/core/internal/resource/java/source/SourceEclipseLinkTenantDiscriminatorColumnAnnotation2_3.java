@@ -26,16 +26,16 @@ import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceBaseDiscriminatorColumnAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTenantDiscriminatorColumnAnnotation2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TenantDiscriminatorColumnAnnotation2_3;
 
 /**
  * <code>org.eclipse.persistence.annotations.TenantDiscriminatorColumn</code>
  */
 public final class SourceEclipseLinkTenantDiscriminatorColumnAnnotation2_3
 	extends SourceBaseDiscriminatorColumnAnnotation
-	implements EclipseLinkTenantDiscriminatorColumnAnnotation2_3
+	implements TenantDiscriminatorColumnAnnotation2_3
 {
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(EclipseLinkTenantDiscriminatorColumnAnnotation2_3.ANNOTATION_NAME);
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(TenantDiscriminatorColumnAnnotation2_3.ANNOTATION_NAME);
 	private static final DeclarationAnnotationAdapter CONTAINER_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(EclipseLink.TENANT_DISCRIMINATOR_COLUMNS);
 
 	private DeclarationAnnotationElementAdapter<String> contextPropertyDeclarationAdapter;
@@ -129,7 +129,7 @@ public final class SourceEclipseLinkTenantDiscriminatorColumnAnnotation2_3
 	}
 
 	public String getAnnotationName() {
-		return EclipseLinkTenantDiscriminatorColumnAnnotation2_3.ANNOTATION_NAME;
+		return TenantDiscriminatorColumnAnnotation2_3.ANNOTATION_NAME;
 	}
 
 
@@ -302,7 +302,7 @@ public final class SourceEclipseLinkTenantDiscriminatorColumnAnnotation2_3
 				DECLARATION_ANNOTATION_ADAPTER,
 				CONTAINER_DECLARATION_ANNOTATION_ADAPTER,
 				index,
-				EclipseLinkTenantDiscriminatorColumnAnnotation2_3.ANNOTATION_NAME);
+				TenantDiscriminatorColumnAnnotation2_3.ANNOTATION_NAME);
 		return idaa;
 	}
 }
