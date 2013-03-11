@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaQuery;
 import org.eclipse.jpt.jpa.core.jpa2.context.LockModeType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.NamedQuery2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaNamedQuery2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.NamedQuery2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.NamedQueryAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.java.NamedQueryAnnotation;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
@@ -92,7 +92,7 @@ public class GenericJavaNamedQuery
 	}
 
 	public void setSpecifiedLockMode(LockModeType2_0 lockMode) {
-		((NamedQuery2_0Annotation) this.queryAnnotation).setLockMode(LockModeType2_0.toJavaResourceModel(lockMode));
+		((NamedQueryAnnotation2_0) this.queryAnnotation).setLockMode(LockModeType2_0.toJavaResourceModel(lockMode));
 		this.setSpecifiedLockMode_(lockMode);
 	}
 
@@ -104,7 +104,7 @@ public class GenericJavaNamedQuery
 
 	protected LockModeType2_0 buildSpecifiedLockMode() {
 		if (isJpa2_0Compatible()) {
-			return LockModeType2_0.fromJavaResourceModel(((NamedQuery2_0Annotation) this.queryAnnotation).getLockMode());
+			return LockModeType2_0.fromJavaResourceModel(((NamedQueryAnnotation2_0) this.queryAnnotation).getLockMode());
 		}
 		return null;
 	}

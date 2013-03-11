@@ -22,14 +22,14 @@ import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapt
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceNamedQueryAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.LockModeType_2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.NamedQuery2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.NamedQueryAnnotation2_0;
 
 /**
  * <code>javax.persistence.NamedQuery</code>
  */
 public final class SourceNamedQuery2_0Annotation
 	extends SourceNamedQueryAnnotation
-	implements NamedQuery2_0Annotation
+	implements NamedQueryAnnotation2_0
 {
 	private DeclarationAnnotationElementAdapter<String> lockModeDeclarationAdapter;
 	private AnnotationElementAdapter<String> lockModeAdapter;

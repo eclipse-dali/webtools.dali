@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.java.NamedQueryAnnotation;
  * @version 2.3
  * @since 2.3
  */
-public interface NamedQuery2_0Annotation
+public interface NamedQueryAnnotation2_0
 	extends NamedQueryAnnotation
 {
 	// ********** lock mode **********

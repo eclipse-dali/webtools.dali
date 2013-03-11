@@ -15,14 +15,14 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryNamedQueryAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.LockModeType_2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.NamedQuery2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.NamedQueryAnnotation2_0;
 
 /**
  *  BinaryNamedQuery2_0Annotation
  */
 public final class BinaryNamedQuery2_0Annotation
 	extends BinaryNamedQueryAnnotation
-	implements NamedQuery2_0Annotation
+	implements NamedQueryAnnotation2_0
 {
 	private LockModeType_2_0 lockMode;
 
