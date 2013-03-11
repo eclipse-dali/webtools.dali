@@ -33,7 +33,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceQueryAnnotation;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceQueryHintAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.JPA2_1;
-import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.NamedStoredProcedureQuery2_1Annotation;
+import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.NamedStoredProcedureQueryAnnotation2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameter2_1Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.QueryHintAnnotation;
 
@@ -42,7 +42,7 @@ import org.eclipse.jpt.jpa.core.resource.java.QueryHintAnnotation;
  */
 public final class SourceNamedStoredProcedureQuery2_1Annotation
 	extends SourceQueryAnnotation
-	implements NamedStoredProcedureQuery2_1Annotation
+	implements NamedStoredProcedureQueryAnnotation2_1
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 	private static final DeclarationAnnotationAdapter CONTAINER_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA2_1.NAMED_STORED_PROCEDURE_QUERIES);

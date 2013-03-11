@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.jpa2_1.ParameterMode2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.QueryContainer2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.StoredProcedureParameter2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.JPA2_1;
-import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.NamedStoredProcedureQuery2_1Annotation;
+import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.NamedStoredProcedureQueryAnnotation2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.ParameterMode_2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameter2_1Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
@@ -60,7 +60,7 @@ public class GenericJavaStoredProcedureParameter2_1Tests
 		StoredProcedureParameter2_1 parameter = ((QueryContainer2_1)entity.getQueryContainer()).getNamedStoredProcedureQueries().iterator().next().getParameters().iterator().next();
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		NamedStoredProcedureQuery2_1Annotation queryAnnotation = ((NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME));
+		NamedStoredProcedureQueryAnnotation2_1 queryAnnotation = ((NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME));
 		StoredProcedureParameter2_1Annotation parameterAnnotation = queryAnnotation.getParameters().iterator().next();
 		
 		assertNull(parameterAnnotation.getName());
@@ -86,7 +86,7 @@ public class GenericJavaStoredProcedureParameter2_1Tests
 		StoredProcedureParameter2_1 parameter = ((QueryContainer2_1)entity.getQueryContainer()).getNamedStoredProcedureQueries().iterator().next().getParameters().iterator().next();
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		NamedStoredProcedureQuery2_1Annotation queryAnnotation = ((NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME));
+		NamedStoredProcedureQueryAnnotation2_1 queryAnnotation = ((NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME));
 		StoredProcedureParameter2_1Annotation parameterAnnotation = queryAnnotation.getParameters().iterator().next();
 		
 		assertNull(parameterAnnotation.getName());
@@ -113,7 +113,7 @@ public class GenericJavaStoredProcedureParameter2_1Tests
 		StoredProcedureParameter2_1 parameter = ((QueryContainer2_1)entity.getQueryContainer()).getNamedStoredProcedureQueries().iterator().next().getParameters().iterator().next();
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		NamedStoredProcedureQuery2_1Annotation queryAnnotation = ((NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME));
+		NamedStoredProcedureQueryAnnotation2_1 queryAnnotation = ((NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME));
 		StoredProcedureParameter2_1Annotation parameterAnnotation = queryAnnotation.getParameters().iterator().next();
 		
 		assertNull(parameterAnnotation.getMode());
@@ -143,7 +143,7 @@ public class GenericJavaStoredProcedureParameter2_1Tests
 		StoredProcedureParameter2_1 parameter = ((QueryContainer2_1)entity.getQueryContainer()).getNamedStoredProcedureQueries().iterator().next().getParameters().iterator().next();
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		NamedStoredProcedureQuery2_1Annotation queryAnnotation = ((NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME));
+		NamedStoredProcedureQueryAnnotation2_1 queryAnnotation = ((NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME));
 		StoredProcedureParameter2_1Annotation parameterAnnotation = queryAnnotation.getParameters().iterator().next();
 		
 		assertNull(parameterAnnotation.getMode());
@@ -173,7 +173,7 @@ public class GenericJavaStoredProcedureParameter2_1Tests
 		StoredProcedureParameter2_1 parameter = ((QueryContainer2_1)entity.getQueryContainer()).getNamedStoredProcedureQueries().iterator().next().getParameters().iterator().next();
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		NamedStoredProcedureQuery2_1Annotation queryAnnotation = ((NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME));
+		NamedStoredProcedureQueryAnnotation2_1 queryAnnotation = ((NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME));
 		StoredProcedureParameter2_1Annotation parameterAnnotation = queryAnnotation.getParameters().iterator().next();
 		
 		assertNull(parameterAnnotation.getTypeName());
@@ -199,7 +199,7 @@ public class GenericJavaStoredProcedureParameter2_1Tests
 		StoredProcedureParameter2_1 parameter = ((QueryContainer2_1)entity.getQueryContainer()).getNamedStoredProcedureQueries().iterator().next().getParameters().iterator().next();
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		NamedStoredProcedureQuery2_1Annotation queryAnnotation = ((NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME));
+		NamedStoredProcedureQueryAnnotation2_1 queryAnnotation = ((NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME));
 		StoredProcedureParameter2_1Annotation parameterAnnotation = queryAnnotation.getParameters().iterator().next();
 		
 		assertNull(parameterAnnotation.getTypeName());

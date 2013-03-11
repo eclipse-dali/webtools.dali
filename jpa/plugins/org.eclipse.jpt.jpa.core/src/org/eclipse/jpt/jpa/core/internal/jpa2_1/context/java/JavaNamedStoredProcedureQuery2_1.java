@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.NamedStoredProcedureQuery2_1;
-import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.NamedStoredProcedureQuery2_1Annotation;
+import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.NamedStoredProcedureQueryAnnotation2_1;
 
 /**
  * Java named stored procedure query
@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.NamedStoredProcedureQuery2_
 public interface JavaNamedStoredProcedureQuery2_1
 	extends NamedStoredProcedureQuery2_1, JavaQuery
 {
-	NamedStoredProcedureQuery2_1Annotation getQueryAnnotation();
+	NamedStoredProcedureQueryAnnotation2_1 getQueryAnnotation();
 
 	// *********** parameters ************
 	

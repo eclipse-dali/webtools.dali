@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.JPA2_1;
-import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.NamedStoredProcedureQuery2_1Annotation;
+import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.NamedStoredProcedureQueryAnnotation2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameter2_1Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.QueryHintAnnotation;
@@ -137,7 +137,7 @@ public class NamedStoredProcedureQueries2_1AnnotationTests
 		ICompilationUnit cu = this.createTestNamedStoredProcedureQueries();
 		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		NamedStoredProcedureQuery2_1Annotation namedQuery = (NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
+		NamedStoredProcedureQueryAnnotation2_1 namedQuery = (NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
 		assertNotNull(namedQuery);
 	}
 
@@ -147,7 +147,7 @@ public class NamedStoredProcedureQueries2_1AnnotationTests
 		ICompilationUnit cu = this.createTestNamedStoredProcedureQueryWithName();
 		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		NamedStoredProcedureQuery2_1Annotation namedQuery = (NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
+		NamedStoredProcedureQueryAnnotation2_1 namedQuery = (NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
 		assertEquals(QUERY_NAME, namedQuery.getName());
 	}
 
@@ -155,7 +155,7 @@ public class NamedStoredProcedureQueries2_1AnnotationTests
 		ICompilationUnit cu = this.createTestNamedStoredProcedureQueryWithName();
 		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		NamedStoredProcedureQuery2_1Annotation namedQuery = (NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
+		NamedStoredProcedureQueryAnnotation2_1 namedQuery = (NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
 		assertEquals(QUERY_NAME, namedQuery.getName());
 		
 		namedQuery.setName("foo");
@@ -175,7 +175,7 @@ public class NamedStoredProcedureQueries2_1AnnotationTests
 		ICompilationUnit cu = this.createTestNamedStoredProcedureQueryWithProcedureName();
 		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		NamedStoredProcedureQuery2_1Annotation namedQuery = (NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
+		NamedStoredProcedureQueryAnnotation2_1 namedQuery = (NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
 		assertEquals(QUERY_PROCEDURE_NAME, namedQuery.getProcedureName());
 	}
 
@@ -183,7 +183,7 @@ public class NamedStoredProcedureQueries2_1AnnotationTests
 		ICompilationUnit cu = this.createTestNamedStoredProcedureQueryWithProcedureName();
 		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		NamedStoredProcedureQuery2_1Annotation namedQuery = (NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
+		NamedStoredProcedureQueryAnnotation2_1 namedQuery = (NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
 		assertEquals(QUERY_PROCEDURE_NAME, namedQuery.getProcedureName());
 		
 		namedQuery.setProcedureName("foo");
@@ -203,7 +203,7 @@ public class NamedStoredProcedureQueries2_1AnnotationTests
 		ICompilationUnit cu = this.createTestNamedStoredProcedureQueries();
 		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		NamedStoredProcedureQuery2_1Annotation namedQuery = (NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
+		NamedStoredProcedureQueryAnnotation2_1 namedQuery = (NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
 		
 		assertEquals(0, namedQuery.getParametersSize());
 	}
@@ -212,7 +212,7 @@ public class NamedStoredProcedureQueries2_1AnnotationTests
 		ICompilationUnit cu = this.createTestNamedStoredProcedureQueryWithParameters();
 		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		NamedStoredProcedureQuery2_1Annotation namedQuery = (NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
+		NamedStoredProcedureQueryAnnotation2_1 namedQuery = (NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
 		
 		assertEquals(2, namedQuery.getParametersSize());
 		
@@ -227,7 +227,7 @@ public class NamedStoredProcedureQueries2_1AnnotationTests
 		ICompilationUnit cu = this.createTestNamedStoredProcedureQueries();
 		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		NamedStoredProcedureQuery2_1Annotation namedQuery = (NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
+		NamedStoredProcedureQueryAnnotation2_1 namedQuery = (NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
 		
 		assertEquals(0, namedQuery.getResultClassesSize());
 	}
@@ -236,7 +236,7 @@ public class NamedStoredProcedureQueries2_1AnnotationTests
 		ICompilationUnit cu = this.createTestNamedStoredProcedureQueryWithResultClasses();
 		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		NamedStoredProcedureQuery2_1Annotation namedQuery = (NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
+		NamedStoredProcedureQueryAnnotation2_1 namedQuery = (NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
 		
 		assertEquals(2, namedQuery.getResultClassesSize());
 		
@@ -252,7 +252,7 @@ public class NamedStoredProcedureQueries2_1AnnotationTests
 		ICompilationUnit cu = this.createTestNamedStoredProcedureQueries();
 		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		NamedStoredProcedureQuery2_1Annotation namedQuery = (NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
+		NamedStoredProcedureQueryAnnotation2_1 namedQuery = (NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
 		
 		assertEquals(0, namedQuery.getResultSetMappingsSize());
 	}
@@ -261,7 +261,7 @@ public class NamedStoredProcedureQueries2_1AnnotationTests
 		ICompilationUnit cu = this.createTestNamedStoredProcedureQueryWithResultSetMappings();
 		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		NamedStoredProcedureQuery2_1Annotation namedQuery = (NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
+		NamedStoredProcedureQueryAnnotation2_1 namedQuery = (NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
 		
 		assertEquals(2, namedQuery.getResultSetMappingsSize());
 		
@@ -277,7 +277,7 @@ public class NamedStoredProcedureQueries2_1AnnotationTests
 		ICompilationUnit cu = this.createTestNamedStoredProcedureQueries();
 		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		NamedStoredProcedureQuery2_1Annotation namedQuery = (NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
+		NamedStoredProcedureQueryAnnotation2_1 namedQuery = (NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
 		
 		assertEquals(0, namedQuery.getHintsSize());
 	}
@@ -286,7 +286,7 @@ public class NamedStoredProcedureQueries2_1AnnotationTests
 		ICompilationUnit cu = this.createTestNamedStoredProcedureQueryWithHints();
 		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		NamedStoredProcedureQuery2_1Annotation namedQuery = (NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
+		NamedStoredProcedureQueryAnnotation2_1 namedQuery = (NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
 		
 		assertEquals(2, namedQuery.getHintsSize());
 		
@@ -304,7 +304,7 @@ public class NamedStoredProcedureQueries2_1AnnotationTests
 		String expected1 = "@NamedStoredProcedureQueries({";
 		String expected2 = "@NamedStoredProcedureQuery(name = \"foo\", hints = @QueryHint(name = \"BAR\", value = \"FOO\")),";
 		String expected3 = "@NamedStoredProcedureQuery(name = \"BAR\") })";
-		NamedStoredProcedureQuery2_1Annotation namedQuery = (NamedStoredProcedureQuery2_1Annotation) resourceType.addAnnotation(1, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
+		NamedStoredProcedureQueryAnnotation2_1 namedQuery = (NamedStoredProcedureQueryAnnotation2_1) resourceType.addAnnotation(1, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
 		namedQuery.setName("BAR");
 		assertSourceContains(expected1, cu);
 		assertSourceContains(expected2, cu);
@@ -323,7 +323,7 @@ public class NamedStoredProcedureQueries2_1AnnotationTests
 		String expected1 = "@NamedStoredProcedureQueries({";
 		String expected2 = "@NamedStoredProcedureQuery(name = \"foo\", hints = @QueryHint(name = \"BAR\", value = \"FOO\")),";
 		String expected3 = "@NamedStoredProcedureQuery(name = \"BAR\") })";
-		NamedStoredProcedureQuery2_1Annotation namedQuery = (NamedStoredProcedureQuery2_1Annotation) resourceType.addAnnotation(1, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
+		NamedStoredProcedureQueryAnnotation2_1 namedQuery = (NamedStoredProcedureQueryAnnotation2_1) resourceType.addAnnotation(1, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
 		namedQuery.setName("BAR");
 		assertSourceContains(expected1, cu);
 		assertSourceContains(expected2, cu);
@@ -331,16 +331,16 @@ public class NamedStoredProcedureQueries2_1AnnotationTests
 		
 		expected2 = "@NamedStoredProcedureQuery(name = \"BAZ\"),";
 		expected3 = "@NamedStoredProcedureQuery(name = \"foo\", hints = @QueryHint(name = \"BAR\", value = \"FOO\")), @NamedStoredProcedureQuery(name = \"BAR\") })";
-		namedQuery = (NamedStoredProcedureQuery2_1Annotation) resourceType.addAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
+		namedQuery = (NamedStoredProcedureQueryAnnotation2_1) resourceType.addAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
 		namedQuery.setName("BAZ");
 		assertSourceContains(expected1, cu);
 		assertSourceContains(expected2, cu);
 		assertSourceContains(expected3, cu);
 
 		Iterator<NestableAnnotation> namedQueries = resourceType.getAnnotations(JPA2_1.NAMED_STORED_PROCEDURE_QUERY).iterator();
-		assertEquals("BAZ", ((NamedStoredProcedureQuery2_1Annotation) namedQueries.next()).getName());
-		assertEquals("foo", ((NamedStoredProcedureQuery2_1Annotation) namedQueries.next()).getName());
-		assertEquals("BAR", ((NamedStoredProcedureQuery2_1Annotation) namedQueries.next()).getName());
+		assertEquals("BAZ", ((NamedStoredProcedureQueryAnnotation2_1) namedQueries.next()).getName());
+		assertEquals("foo", ((NamedStoredProcedureQueryAnnotation2_1) namedQueries.next()).getName());
+		assertEquals("BAR", ((NamedStoredProcedureQueryAnnotation2_1) namedQueries.next()).getName());
 
 		assertNull(resourceType.getAnnotation(JPA2_1.NAMED_STORED_PROCEDURE_QUERY));
 		assertNotNull(resourceType.getContainerAnnotation(JPA2_1.NAMED_STORED_PROCEDURE_QUERIES));
@@ -355,7 +355,7 @@ public class NamedStoredProcedureQueries2_1AnnotationTests
 		String expected1 = "@NamedStoredProcedureQueries({";
 		String expected2 = "@NamedStoredProcedureQuery(name = \"foo\", hints = @QueryHint(name = \"BAR\", value = \"FOO\")),";
 		String expected3 = "@NamedStoredProcedureQuery(name = \"BAR\") })";
-		NamedStoredProcedureQuery2_1Annotation namedQuery = (NamedStoredProcedureQuery2_1Annotation) resourceType.addAnnotation(1, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
+		NamedStoredProcedureQueryAnnotation2_1 namedQuery = (NamedStoredProcedureQueryAnnotation2_1) resourceType.addAnnotation(1, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
 		namedQuery.setName("BAR");
 		assertSourceContains(expected1, cu);
 		assertSourceContains(expected2, cu);

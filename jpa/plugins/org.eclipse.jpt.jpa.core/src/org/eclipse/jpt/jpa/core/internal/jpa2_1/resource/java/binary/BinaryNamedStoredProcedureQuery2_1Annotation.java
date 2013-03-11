@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryQueryAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.JPA2_1;
-import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.NamedStoredProcedureQuery2_1Annotation;
+import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.NamedStoredProcedureQueryAnnotation2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameter2_1Annotation;
 
 /**
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameter2_1
  */
 public final class BinaryNamedStoredProcedureQuery2_1Annotation
 	extends BinaryQueryAnnotation
-	implements NamedStoredProcedureQuery2_1Annotation
+	implements NamedStoredProcedureQueryAnnotation2_1
 {
 	private String procedureName;
 	private final Vector<StoredProcedureParameter2_1Annotation> parameters;

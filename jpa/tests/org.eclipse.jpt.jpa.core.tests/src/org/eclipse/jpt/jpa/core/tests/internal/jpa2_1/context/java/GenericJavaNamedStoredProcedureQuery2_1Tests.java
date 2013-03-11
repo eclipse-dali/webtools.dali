@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.jpa2_1.context.NamedStoredProcedureQuery2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.QueryContainer2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.StoredProcedureParameter2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.JPA2_1;
-import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.NamedStoredProcedureQuery2_1Annotation;
+import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.NamedStoredProcedureQueryAnnotation2_1;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.tests.internal.jpa2_1.context.Generic2_1ContextModelTestCase;
 
@@ -62,7 +62,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1Tests
 		NamedStoredProcedureQuery2_1 procedureQuery = ((QueryContainer2_1) entity.getQueryContainer()).getNamedStoredProcedureQueries().iterator().next();
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		NamedStoredProcedureQuery2_1Annotation procedureQueryAnnotation = ((NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME));
+		NamedStoredProcedureQueryAnnotation2_1 procedureQueryAnnotation = ((NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME));
 
 		assertEquals(QUERY_NAME, procedureQueryAnnotation.getName());
 		assertEquals(QUERY_NAME, procedureQuery.getName());
@@ -87,7 +87,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1Tests
 		NamedStoredProcedureQuery2_1 procedureQuery = ((QueryContainer2_1) entity.getQueryContainer()).getNamedStoredProcedureQueries().iterator().next();
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		NamedStoredProcedureQuery2_1Annotation procedureQueryAnnotation = ((NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME));
+		NamedStoredProcedureQueryAnnotation2_1 procedureQueryAnnotation = ((NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME));
 
 		assertEquals(QUERY_NAME, procedureQueryAnnotation.getName());
 		assertEquals(QUERY_NAME, procedureQuery.getName());
@@ -113,7 +113,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1Tests
 		NamedStoredProcedureQuery2_1 procedureQuery = ((QueryContainer2_1) entity.getQueryContainer()).getNamedStoredProcedureQueries().iterator().next();
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		NamedStoredProcedureQuery2_1Annotation procedureQueryAnnotation = ((NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME));
+		NamedStoredProcedureQueryAnnotation2_1 procedureQueryAnnotation = ((NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME));
 
 		assertEquals(PROCEDURE_NAME, procedureQueryAnnotation.getProcedureName());
 		assertEquals(PROCEDURE_NAME, procedureQuery.getProcedureName());
@@ -138,7 +138,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1Tests
 		NamedStoredProcedureQuery2_1 procedureQuery = ((QueryContainer2_1) entity.getQueryContainer()).getNamedStoredProcedureQueries().iterator().next();
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		NamedStoredProcedureQuery2_1Annotation procedureQueryAnnotation = ((NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME));
+		NamedStoredProcedureQueryAnnotation2_1 procedureQueryAnnotation = ((NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME));
 
 		assertEquals(PROCEDURE_NAME, procedureQueryAnnotation.getProcedureName());
 		assertEquals(PROCEDURE_NAME, procedureQuery.getProcedureName());
@@ -164,7 +164,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1Tests
 		NamedStoredProcedureQuery2_1 procedureQuery = ((QueryContainer2_1) entity.getQueryContainer()).getNamedStoredProcedureQueries().iterator().next();
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		NamedStoredProcedureQuery2_1Annotation procedureQueryAnnotation = ((NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME));	
+		NamedStoredProcedureQueryAnnotation2_1 procedureQueryAnnotation = ((NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME));	
 		
 		StoredProcedureParameter2_1 parameter1 = procedureQuery.addParameter(0);
 		parameter1.setName("FOO");
@@ -202,7 +202,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1Tests
 		NamedStoredProcedureQuery2_1 procedureQuery = ((QueryContainer2_1) entity.getQueryContainer()).getNamedStoredProcedureQueries().iterator().next();
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		NamedStoredProcedureQuery2_1Annotation procedureQueryAnnotation = ((NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME));	
+		NamedStoredProcedureQueryAnnotation2_1 procedureQueryAnnotation = ((NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME));	
 
 		procedureQuery.addParameter(0).setName("FOO");
 		procedureQuery.addParameter(1).setName("BAR");
@@ -230,7 +230,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1Tests
 		NamedStoredProcedureQuery2_1 procedureQuery = ((QueryContainer2_1) entity.getQueryContainer()).getNamedStoredProcedureQueries().iterator().next();
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		NamedStoredProcedureQuery2_1Annotation procedureQueryAnnotation = ((NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME));	
+		NamedStoredProcedureQueryAnnotation2_1 procedureQueryAnnotation = ((NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME));	
 
 		procedureQuery.addParameter(0).setName("FOO");
 		procedureQuery.addParameter(1).setName("BAR");
@@ -268,7 +268,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1Tests
 		NamedStoredProcedureQuery2_1 procedureQuery = ((QueryContainer2_1) entity.getQueryContainer()).getNamedStoredProcedureQueries().iterator().next();
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		NamedStoredProcedureQuery2_1Annotation procedureQueryAnnotation = ((NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME));	
+		NamedStoredProcedureQueryAnnotation2_1 procedureQueryAnnotation = ((NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME));	
 		
 		procedureQueryAnnotation.addParameter(0).setName("FOO");
 		procedureQueryAnnotation.addParameter(1).setName("BAR");
@@ -323,7 +323,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1Tests
 		assertEquals(0, procedureQuery.getParametersSize());
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		NamedStoredProcedureQuery2_1Annotation procedureQueryAnnotation = ((NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME));	
+		NamedStoredProcedureQueryAnnotation2_1 procedureQueryAnnotation = ((NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME));	
 
 		procedureQueryAnnotation.addParameter(0);
 		getJpaProject().synchronizeContextModel();
@@ -348,7 +348,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1Tests
 		NamedStoredProcedureQuery2_1 procedureQuery = ((QueryContainer2_1) entity.getQueryContainer()).getNamedStoredProcedureQueries().iterator().next();
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		NamedStoredProcedureQuery2_1Annotation procedureQueryAnnotation = ((NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME));		
+		NamedStoredProcedureQueryAnnotation2_1 procedureQueryAnnotation = ((NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME));		
 		
 		procedureQuery.addResultClass("Employee");
 		assertEquals("Employee", procedureQueryAnnotation.resultClassAt(0));
@@ -375,7 +375,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1Tests
 		NamedStoredProcedureQuery2_1 procedureQuery = ((QueryContainer2_1) entity.getQueryContainer()).getNamedStoredProcedureQueries().iterator().next();
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		NamedStoredProcedureQuery2_1Annotation procedureQueryAnnotation = ((NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME));		
+		NamedStoredProcedureQueryAnnotation2_1 procedureQueryAnnotation = ((NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME));		
 
 		procedureQuery.addResultClass("Employee");
 		procedureQuery.addResultClass("Address");
@@ -403,7 +403,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1Tests
 		NamedStoredProcedureQuery2_1 procedureQuery = ((QueryContainer2_1) entity.getQueryContainer()).getNamedStoredProcedureQueries().iterator().next();
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		NamedStoredProcedureQuery2_1Annotation procedureQueryAnnotation = ((NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME));		
+		NamedStoredProcedureQueryAnnotation2_1 procedureQueryAnnotation = ((NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME));		
 
 		procedureQuery.addResultClass("Employee");
 		procedureQuery.addResultClass("Address");
@@ -439,7 +439,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1Tests
 		NamedStoredProcedureQuery2_1 procedureQuery = ((QueryContainer2_1) entity.getQueryContainer()).getNamedStoredProcedureQueries().iterator().next();
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		NamedStoredProcedureQuery2_1Annotation procedureQueryAnnotation = ((NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME));		
+		NamedStoredProcedureQueryAnnotation2_1 procedureQueryAnnotation = ((NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME));		
 
 		procedureQuery.addResultClass("Employee");
 		procedureQuery.addResultClass("Address");
@@ -495,7 +495,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1Tests
 		assertEquals(0, procedureQuery.getResultClassesSize());
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		NamedStoredProcedureQuery2_1Annotation procedureQueryAnnotation = ((NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME));
+		NamedStoredProcedureQueryAnnotation2_1 procedureQueryAnnotation = ((NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME));
 		
 		procedureQueryAnnotation.addResultClass("Employee");
 		getJpaProject().synchronizeContextModel();
@@ -520,7 +520,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1Tests
 		NamedStoredProcedureQuery2_1 procedureQuery = ((QueryContainer2_1) entity.getQueryContainer()).getNamedStoredProcedureQueries().iterator().next();
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		NamedStoredProcedureQuery2_1Annotation procedureQueryAnnotation = ((NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME));		
+		NamedStoredProcedureQueryAnnotation2_1 procedureQueryAnnotation = ((NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME));		
 		
 		procedureQuery.addResultSetMapping("Employee");
 		assertEquals("Employee", procedureQueryAnnotation.resultSetMappingAt(0));
@@ -547,7 +547,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1Tests
 		NamedStoredProcedureQuery2_1 procedureQuery = ((QueryContainer2_1) entity.getQueryContainer()).getNamedStoredProcedureQueries().iterator().next();
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		NamedStoredProcedureQuery2_1Annotation procedureQueryAnnotation = ((NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME));		
+		NamedStoredProcedureQueryAnnotation2_1 procedureQueryAnnotation = ((NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME));		
 
 		procedureQuery.addResultSetMapping("Employee");
 		procedureQuery.addResultSetMapping("Address");
@@ -575,7 +575,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1Tests
 		NamedStoredProcedureQuery2_1 procedureQuery = ((QueryContainer2_1) entity.getQueryContainer()).getNamedStoredProcedureQueries().iterator().next();
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		NamedStoredProcedureQuery2_1Annotation procedureQueryAnnotation = ((NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME));		
+		NamedStoredProcedureQueryAnnotation2_1 procedureQueryAnnotation = ((NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME));		
 
 		procedureQuery.addResultSetMapping("Employee");
 		procedureQuery.addResultSetMapping("Address");
@@ -611,7 +611,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1Tests
 		NamedStoredProcedureQuery2_1 procedureQuery = ((QueryContainer2_1) entity.getQueryContainer()).getNamedStoredProcedureQueries().iterator().next();
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		NamedStoredProcedureQuery2_1Annotation procedureQueryAnnotation = ((NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME));		
+		NamedStoredProcedureQueryAnnotation2_1 procedureQueryAnnotation = ((NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME));		
 
 		procedureQuery.addResultSetMapping("Employee");
 		procedureQuery.addResultSetMapping("Address");
@@ -667,7 +667,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1Tests
 		assertEquals(0, procedureQuery.getResultSetMappingsSize());
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		NamedStoredProcedureQuery2_1Annotation procedureQueryAnnotation = ((NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME));
+		NamedStoredProcedureQueryAnnotation2_1 procedureQueryAnnotation = ((NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME));
 		
 		procedureQueryAnnotation.addResultSetMapping("Employee");
 		getJpaProject().synchronizeContextModel();
@@ -692,7 +692,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1Tests
 		NamedStoredProcedureQuery2_1 procedureQuery = ((QueryContainer2_1) entity.getQueryContainer()).getNamedStoredProcedureQueries().iterator().next();
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		NamedStoredProcedureQuery2_1Annotation procedureQueryAnnotation = ((NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME));	
+		NamedStoredProcedureQueryAnnotation2_1 procedureQueryAnnotation = ((NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME));	
 		
 		QueryHint queryHint = procedureQuery.addHint(0);
 		queryHint.setName("FOO");
@@ -730,7 +730,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1Tests
 		NamedStoredProcedureQuery2_1 procedureQuery = ((QueryContainer2_1) entity.getQueryContainer()).getNamedStoredProcedureQueries().iterator().next();
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		NamedStoredProcedureQuery2_1Annotation procedureQueryAnnotation = ((NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME));		
+		NamedStoredProcedureQueryAnnotation2_1 procedureQueryAnnotation = ((NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME));		
 
 		procedureQuery.addHint(0).setName("FOO");
 		procedureQuery.addHint(1).setName("BAR");
@@ -758,7 +758,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1Tests
 		NamedStoredProcedureQuery2_1 procedureQuery = ((QueryContainer2_1) entity.getQueryContainer()).getNamedStoredProcedureQueries().iterator().next();
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		NamedStoredProcedureQuery2_1Annotation procedureQueryAnnotation = ((NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME));		
+		NamedStoredProcedureQueryAnnotation2_1 procedureQueryAnnotation = ((NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME));		
 
 		procedureQuery.addHint(0).setName("FOO");
 		procedureQuery.addHint(1).setName("BAR");
@@ -795,7 +795,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1Tests
 		NamedStoredProcedureQuery2_1 procedureQuery = ((QueryContainer2_1) entity.getQueryContainer()).getNamedStoredProcedureQueries().iterator().next();
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		NamedStoredProcedureQuery2_1Annotation procedureQueryAnnotation = ((NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME));		
+		NamedStoredProcedureQueryAnnotation2_1 procedureQueryAnnotation = ((NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME));		
 		
 		procedureQueryAnnotation.addHint(0).setName("FOO");
 		procedureQueryAnnotation.addHint(1).setName("BAR");
@@ -850,7 +850,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1Tests
 		assertEquals(0, procedureQuery.getHintsSize());
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		NamedStoredProcedureQuery2_1Annotation procedureQueryAnnotation = ((NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, NamedStoredProcedureQuery2_1Annotation.ANNOTATION_NAME));
+		NamedStoredProcedureQueryAnnotation2_1 procedureQueryAnnotation = ((NamedStoredProcedureQueryAnnotation2_1) resourceType.getAnnotation(0, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME));
 		
 		procedureQueryAnnotation.addHint(0);
 		getJpaProject().synchronizeContextModel();

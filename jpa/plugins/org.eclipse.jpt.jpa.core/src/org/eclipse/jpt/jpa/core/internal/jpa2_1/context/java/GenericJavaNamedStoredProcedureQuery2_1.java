@@ -21,14 +21,14 @@ import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaQuery;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.OrmQueryContainer2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.NamedStoredProcedureQuery2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.StoredProcedureParameter2_1;
-import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.NamedStoredProcedureQuery2_1Annotation;
+import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.NamedStoredProcedureQueryAnnotation2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameter2_1Annotation;
 
 /**
  * <code>orm.xml</code> named stored procedure query
  */
 public class GenericJavaNamedStoredProcedureQuery2_1
-	extends AbstractJavaQuery<JavaQueryContainer2_1, NamedStoredProcedureQuery2_1Annotation>
+	extends AbstractJavaQuery<JavaQueryContainer2_1, NamedStoredProcedureQueryAnnotation2_1>
 	implements JavaNamedStoredProcedureQuery2_1
 {
 	protected String procedureName;
@@ -40,7 +40,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1
 	protected final Vector<String> resultSetMappings = new Vector<String>();
 
 
-	public GenericJavaNamedStoredProcedureQuery2_1(JavaQueryContainer2_1 parent, NamedStoredProcedureQuery2_1Annotation queryAnnotation) {
+	public GenericJavaNamedStoredProcedureQuery2_1(JavaQueryContainer2_1 parent, NamedStoredProcedureQueryAnnotation2_1 queryAnnotation) {
 		super(parent, queryAnnotation);
 		this.procedureName = queryAnnotation.getProcedureName();
 		this.parameterContainer = this.buildParameterContainer();

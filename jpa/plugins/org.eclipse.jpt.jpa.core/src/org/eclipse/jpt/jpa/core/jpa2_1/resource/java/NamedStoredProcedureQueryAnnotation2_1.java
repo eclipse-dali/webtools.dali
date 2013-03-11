@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.resource.java.QueryAnnotation;
  * @version 3.3
  * @since 3.3
  */
-public interface NamedStoredProcedureQuery2_1Annotation
+public interface NamedStoredProcedureQueryAnnotation2_1
 	extends QueryAnnotation
 {
 	String ANNOTATION_NAME = JPA2_1.NAMED_STORED_PROCEDURE_QUERY;
