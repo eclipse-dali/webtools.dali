@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 /**
  * Logger
  */
-public enum Logger implements PersistenceXmlEnumValue {
+public enum EclipseLinkLogger implements PersistenceXmlEnumValue {
 	default_logger("DefaultLogger", "org.eclipse.persistence.logging.DefaultSessionLog"),  //$NON-NLS-1$ //$NON-NLS-2$
 	java_logger("JavaLogger", "org.eclipse.persistence.logging.JavaLog"),  //$NON-NLS-1$ //$NON-NLS-2$
 	server_logger("ServerLogger", "org.eclipse.persistence.platform.server.ServerLog"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -23,7 +23,7 @@ public enum Logger implements PersistenceXmlEnumValue {
 
 	private final String className;
 
-	Logger(String propertyValue, String className) {
+	EclipseLinkLogger(String propertyValue, String className) {
 		this.propertyValue = propertyValue;
 		this.className = className;
 	}
@@ -39,9 +39,9 @@ public enum Logger implements PersistenceXmlEnumValue {
 	/**
 	 * Return the Logger value corresponding to the given literal.
 	 */
-	public static Logger getLoggerFor(String literal) {
+	public static EclipseLinkLogger getLoggerFor(String literal) {
 		
-		for( Logger logger : Logger.values()) {
+		for( EclipseLinkLogger logger : EclipseLinkLogger.values()) {
 			if(logger.toString().equals(literal)) {
 				return logger;
 			}
@@ -50,7 +50,7 @@ public enum Logger implements PersistenceXmlEnumValue {
 	}
 
 	public static String getLoggerClassName(String loggerValue) {
-		for (Logger logger : values()) {
+		for (EclipseLinkLogger logger : values()) {
 			if (logger.getPropertyValue() == loggerValue) {
 				return logger.getClassName();
 			}

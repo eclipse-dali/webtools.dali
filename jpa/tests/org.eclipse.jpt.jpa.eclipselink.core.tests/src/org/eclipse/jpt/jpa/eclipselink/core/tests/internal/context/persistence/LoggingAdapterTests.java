@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.persistence;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logger;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogger;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLoggingLevel;
 
@@ -50,7 +50,7 @@ public class LoggingAdapterTests extends EclipseLinkPersistenceUnitTestCase
 	private static final String LOG_FILE_LOCATION_TEST_VALUE_2 = "C:/tmp";
 
 	private static final String LOGGER_KEY = EclipseLinkLogging.ECLIPSELINK_LOGGER;
-	private static final Logger LOGGER_TEST_VALUE = Logger.java_logger;
+	private static final EclipseLinkLogger LOGGER_TEST_VALUE = EclipseLinkLogger.java_logger;
 	private static final String LOGGER_TEST_VALUE_2 = "custom.logger.test";
 	
 	public LoggingAdapterTests(String name) {
@@ -256,7 +256,7 @@ public class LoggingAdapterTests extends EclipseLinkPersistenceUnitTestCase
 
 		// test set (Logger) null
 		this.clearEvent();
-		this.logging.setLogger((Logger) null);
+		this.logging.setLogger((EclipseLinkLogger) null);
 		assertNull(this.getPersistenceUnit().getProperty(elKey));
 		this.verifyPutProperty(propertyName, null);
 		
@@ -290,7 +290,7 @@ public class LoggingAdapterTests extends EclipseLinkPersistenceUnitTestCase
 			this.logging.setLogFileLocation((String) newValue);
 		else if (propertyName.equals(EclipseLinkLogging.LOGGER_PROPERTY)) {
 			if (newValue.getClass().isEnum())
-				this.logging.setLogger((Logger) newValue);
+				this.logging.setLogger((EclipseLinkLogger) newValue);
 			else
 				this.logging.setLogger((String) newValue);
 		}

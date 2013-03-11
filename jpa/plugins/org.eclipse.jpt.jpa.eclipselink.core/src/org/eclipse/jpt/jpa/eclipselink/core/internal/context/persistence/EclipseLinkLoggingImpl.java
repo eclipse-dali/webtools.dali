@@ -15,7 +15,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logger;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogger;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLoggingLevel;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -73,7 +73,7 @@ public class EclipseLinkLoggingImpl
 		if (value == null) {
 			return null;	// no property found
 		}
-		Logger standardLogger = this.getEnumValue(ECLIPSELINK_LOGGER, Logger.values());
+		EclipseLinkLogger standardLogger = this.getEnumValue(ECLIPSELINK_LOGGER, EclipseLinkLogger.values());
 		return (standardLogger == null) ? value : getPropertyStringValueOf(standardLogger);
 	}
 
@@ -316,7 +316,7 @@ public class EclipseLinkLoggingImpl
 	 * 
 	 * @param newLogger - Logger
 	 */
-	public void setLogger(Logger newLogger) {
+	public void setLogger(EclipseLinkLogger newLogger) {
 		if( newLogger == null) {
 			this.setLogger_((String) null);
 			return;
@@ -336,7 +336,7 @@ public class EclipseLinkLoggingImpl
 			this.setLogger_(null);
 			return;
 		}
-		Logger l = Logger.getLoggerFor(newLogger);
+		EclipseLinkLogger l = EclipseLinkLogger.getLoggerFor(newLogger);
 		if(l == null) {	// custom Logger class
 			this.setLogger_(newLogger);
 		}

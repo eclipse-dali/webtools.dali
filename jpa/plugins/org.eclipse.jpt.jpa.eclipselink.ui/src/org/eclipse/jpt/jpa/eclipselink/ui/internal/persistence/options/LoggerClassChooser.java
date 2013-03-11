@@ -30,7 +30,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logger;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogger;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.osgi.util.NLS;
@@ -59,9 +59,9 @@ public class LoggerClassChooser extends ClassChooserComboPane<EclipseLinkLogging
 	@Override
 	protected String getClassName() {
 		if (this.getSubject().getLogger() == null) {
-			return Logger.default_logger.getClassName();
+			return EclipseLinkLogger.default_logger.getClassName();
 		}
-		return Logger.getLoggerClassName(this.getSubject().getLogger());
+		return EclipseLinkLogger.getLoggerClassName(this.getSubject().getLogger());
 	}
     
 	@Override
@@ -115,7 +115,7 @@ public class LoggerClassChooser extends ClassChooserComboPane<EclipseLinkLogging
 
 	private String buildDisplayString(String loggerName) {
 
-		switch (Logger.valueOf(loggerName)) {
+		switch (EclipseLinkLogger.valueOf(loggerName)) {
 			case default_logger: {
 				return JptJpaEclipseLinkUiMessages.LOGGER_COMPOSITE_DEFAULT_LOGGER;
 			}
@@ -147,7 +147,7 @@ public class LoggerClassChooser extends ClassChooserComboPane<EclipseLinkLogging
 			@Override
 			public String transform(String value) {
 				try {
-					Logger.valueOf(value);
+					EclipseLinkLogger.valueOf(value);
 					value = buildDisplayString(value);
 				}
 				catch (Exception e) {
@@ -167,7 +167,7 @@ public class LoggerClassChooser extends ClassChooserComboPane<EclipseLinkLogging
 	}
 
 	private Iterator<String> buildLoggers() {
-		return IteratorTools.transform(IteratorTools.iterator(Logger.values()), PersistenceXmlEnumValue.ENUM_NAME_TRANSFORMER);
+		return IteratorTools.transform(IteratorTools.iterator(EclipseLinkLogger.values()), PersistenceXmlEnumValue.ENUM_NAME_TRANSFORMER);
 	}
 
 	private CollectionValueModel<String> buildLoggersCollectionHolder() {

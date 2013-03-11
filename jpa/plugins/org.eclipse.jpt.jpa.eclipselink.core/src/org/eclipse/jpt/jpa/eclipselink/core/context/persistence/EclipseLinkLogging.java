@@ -68,11 +68,11 @@ public interface EclipseLinkLogging
 	String getDefaultLogger();
 	String getLogger();
 	void setLogger(String newLogger);
-	void setLogger(Logger newLogger);
+	void setLogger(EclipseLinkLogger newLogger);
 		static final String LOGGER_PROPERTY = "logger"; //$NON-NLS-1$
 		// EclipseLink key string
 		static final String ECLIPSELINK_LOGGER = "eclipselink.logging.logger"; //$NON-NLS-1$
-		static final String DEFAULT_LOGGER = Logger.default_logger.getPropertyValue();
-		static final String[] RESERVED_LOGGER_NAMES = {Logger.default_logger.getPropertyValue(), Logger.java_logger.getPropertyValue(), Logger.server_logger.getPropertyValue()};
+		static final String DEFAULT_LOGGER = EclipseLinkLogger.default_logger.getPropertyValue();
+		static final String[] RESERVED_LOGGER_NAMES = {EclipseLinkLogger.default_logger.getPropertyValue(), EclipseLinkLogger.java_logger.getPropertyValue(), EclipseLinkLogger.server_logger.getPropertyValue()};
 		String ECLIPSELINK_LOGGER_CLASS_NAME = "org.eclipse.persistence.logging.SessionLog"; //$NON-NLS-1$
 }
