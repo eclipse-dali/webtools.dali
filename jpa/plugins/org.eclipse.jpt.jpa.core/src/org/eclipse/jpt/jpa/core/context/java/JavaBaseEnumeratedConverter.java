@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.Converter;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumerated2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumeratedAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.EnumeratedAnnotation;
 
 /**
@@ -78,11 +78,11 @@ public interface JavaBaseEnumeratedConverter
 
 		@Override
 		protected String getAnnotationName() {
-			return MapKeyEnumerated2_0Annotation.ANNOTATION_NAME;
+			return MapKeyEnumeratedAnnotation2_0.ANNOTATION_NAME;
 		}
 
 		public JavaConverter buildConverter(Annotation converterAnnotation, JavaAttributeMapping parent, JpaFactory factory) {
-			return factory.buildJavaBaseEnumeratedConverter(this.buildConverterParentAdapter(parent), (MapKeyEnumerated2_0Annotation) converterAnnotation);
+			return factory.buildJavaBaseEnumeratedConverter(this.buildConverterParentAdapter(parent), (MapKeyEnumeratedAnnotation2_0) converterAnnotation);
 		}
 	}
 }

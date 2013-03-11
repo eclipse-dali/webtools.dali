@@ -43,7 +43,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClassAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumnAnnotation2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumerated2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumeratedAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporal2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
@@ -1316,7 +1316,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		MapKeyEnumerated2_0Annotation enumerated = (MapKeyEnumerated2_0Annotation) resourceField.getAnnotation(MapKeyEnumerated2_0Annotation.ANNOTATION_NAME);
+		MapKeyEnumeratedAnnotation2_0 enumerated = (MapKeyEnumeratedAnnotation2_0) resourceField.getAnnotation(MapKeyEnumeratedAnnotation2_0.ANNOTATION_NAME);
 		
 		assertNotNull(enumerated);
 		assertEquals(null, enumerated.getValue());
@@ -1325,11 +1325,11 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		assertEquals(org.eclipse.jpt.jpa.core.resource.java.EnumType.STRING, enumerated.getValue());
 		
 		((BaseEnumeratedConverter) manyToManyMapping.getMapKeyConverter()).setSpecifiedEnumType(null);
-		assertNotNull(resourceField.getAnnotation(MapKeyEnumerated2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(MapKeyEnumeratedAnnotation2_0.ANNOTATION_NAME));
 		assertNull(enumerated.getValue());
 		
 		manyToManyMapping.setMapKeyConverter(null);
-		assertNull(resourceField.getAnnotation(MapKeyEnumerated2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(MapKeyEnumeratedAnnotation2_0.ANNOTATION_NAME));
 	}
 	
 	public void testGetSpecifiedMapKeyEnumeratedUpdatesFromResourceModelChange() throws Exception {
@@ -1344,7 +1344,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		MapKeyEnumerated2_0Annotation enumerated = (MapKeyEnumerated2_0Annotation) resourceField.addAnnotation(MapKeyEnumerated2_0Annotation.ANNOTATION_NAME);
+		MapKeyEnumeratedAnnotation2_0 enumerated = (MapKeyEnumeratedAnnotation2_0) resourceField.addAnnotation(MapKeyEnumeratedAnnotation2_0.ANNOTATION_NAME);
 		enumerated.setValue(org.eclipse.jpt.jpa.core.resource.java.EnumType.STRING);
 		getJpaProject().synchronizeContextModel();
 		
@@ -1352,7 +1352,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		
 		enumerated.setValue(null);
 		getJpaProject().synchronizeContextModel();
-		assertNotNull(resourceField.getAnnotation(MapKeyEnumerated2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(MapKeyEnumeratedAnnotation2_0.ANNOTATION_NAME));
 		assertNull(((BaseEnumeratedConverter) manyToManyMapping.getMapKeyConverter()).getSpecifiedEnumType());
 		assertFalse(manyToManyMapping.isDefault());
 		assertSame(manyToManyMapping, persistentAttribute.getMapping());

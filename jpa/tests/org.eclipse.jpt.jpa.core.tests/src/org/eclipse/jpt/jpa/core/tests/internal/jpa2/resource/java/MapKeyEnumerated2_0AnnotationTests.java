@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumerated2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumeratedAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.EnumType;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
@@ -58,7 +58,7 @@ public class MapKeyEnumerated2_0AnnotationTests extends JavaResourceModel2_0Test
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		MapKeyEnumerated2_0Annotation enumerated = (MapKeyEnumerated2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_ENUMERATED);
+		MapKeyEnumeratedAnnotation2_0 enumerated = (MapKeyEnumeratedAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_ENUMERATED);
 		assertNotNull(enumerated);
 	}
 	
@@ -67,7 +67,7 @@ public class MapKeyEnumerated2_0AnnotationTests extends JavaResourceModel2_0Test
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		MapKeyEnumerated2_0Annotation enumerated = (MapKeyEnumerated2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_ENUMERATED);
+		MapKeyEnumeratedAnnotation2_0 enumerated = (MapKeyEnumeratedAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_ENUMERATED);
 		assertEquals(EnumType.ORDINAL, enumerated.getValue());
 	}
 	
@@ -76,7 +76,7 @@ public class MapKeyEnumerated2_0AnnotationTests extends JavaResourceModel2_0Test
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 
-		MapKeyEnumerated2_0Annotation enumerated = (MapKeyEnumerated2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_ENUMERATED);
+		MapKeyEnumeratedAnnotation2_0 enumerated = (MapKeyEnumeratedAnnotation2_0) resourceField.getAnnotation(JPA2_0.MAP_KEY_ENUMERATED);
 
 		enumerated.setValue(EnumType.STRING);
 		

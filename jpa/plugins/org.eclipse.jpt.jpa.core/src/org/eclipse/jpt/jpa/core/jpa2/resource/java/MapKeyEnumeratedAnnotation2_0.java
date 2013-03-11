@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.resource.java.BaseEnumeratedAnnotation;
  * @version 2.3
  * @since 2.3
  */
-public interface MapKeyEnumerated2_0Annotation
+public interface MapKeyEnumeratedAnnotation2_0
 	extends BaseEnumeratedAnnotation
 {
 	String ANNOTATION_NAME = JPA2_0.MAP_KEY_ENUMERATED;

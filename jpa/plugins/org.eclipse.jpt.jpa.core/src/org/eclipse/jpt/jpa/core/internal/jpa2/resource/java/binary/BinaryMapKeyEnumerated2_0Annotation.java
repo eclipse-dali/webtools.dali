@@ -13,21 +13,21 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryBaseEnumeratedAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumerated2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumeratedAnnotation2_0;
 
 /**
  * <code>javax.persistence.MapKeyEnumerated</code>
  */
 public final class BinaryMapKeyEnumerated2_0Annotation
 	extends BinaryBaseEnumeratedAnnotation
-	implements MapKeyEnumerated2_0Annotation
+	implements MapKeyEnumeratedAnnotation2_0
 {
 	public BinaryMapKeyEnumerated2_0Annotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {
-		return MapKeyEnumerated2_0Annotation.ANNOTATION_NAME;
+		return MapKeyEnumeratedAnnotation2_0.ANNOTATION_NAME;
 	}
 	
 	@Override

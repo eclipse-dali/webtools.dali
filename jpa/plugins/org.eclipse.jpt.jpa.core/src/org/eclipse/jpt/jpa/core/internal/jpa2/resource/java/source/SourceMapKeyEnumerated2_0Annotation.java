@@ -15,23 +15,23 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceBaseEnumeratedAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumerated2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumeratedAnnotation2_0;
 
 /**
  * <code>javax.persistence.MapKeyEnumerated</code>
  */
 public final class SourceMapKeyEnumerated2_0Annotation
 	extends SourceBaseEnumeratedAnnotation
-	implements MapKeyEnumerated2_0Annotation
+	implements MapKeyEnumeratedAnnotation2_0
 {
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(MapKeyEnumerated2_0Annotation.ANNOTATION_NAME);	
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(MapKeyEnumeratedAnnotation2_0.ANNOTATION_NAME);	
 
 	public SourceMapKeyEnumerated2_0Annotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
 		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 	}
 
 	public String getAnnotationName() {
-		return MapKeyEnumerated2_0Annotation.ANNOTATION_NAME;
+		return MapKeyEnumeratedAnnotation2_0.ANNOTATION_NAME;
 	}
 
 	@Override

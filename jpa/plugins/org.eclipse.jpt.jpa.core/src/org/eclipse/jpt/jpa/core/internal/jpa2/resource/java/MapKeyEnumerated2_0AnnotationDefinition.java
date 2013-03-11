@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.binary.BinaryMapKeyEnumerated2_0Annotation;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source.SourceMapKeyEnumerated2_0Annotation;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumerated2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumeratedAnnotation2_0;
 
 /**
  * javax.persistence.MapKeyTemporal
@@ -54,6 +54,6 @@ public final class MapKeyEnumerated2_0AnnotationDefinition
 	}
 
 	public String getAnnotationName() {
-		return MapKeyEnumerated2_0Annotation.ANNOTATION_NAME;
+		return MapKeyEnumeratedAnnotation2_0.ANNOTATION_NAME;
 	}
 }

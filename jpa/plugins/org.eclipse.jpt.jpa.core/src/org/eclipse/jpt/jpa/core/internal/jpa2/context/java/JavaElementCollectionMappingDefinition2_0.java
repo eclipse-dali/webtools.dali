@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollectionAnnotation2_
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClassAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumnAnnotation2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumerated2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumeratedAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporal2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumn2_0Annotation;
@@ -86,7 +86,7 @@ public class JavaElementCollectionMappingDefinition2_0
 		MapKeyAnnotation.ANNOTATION_NAME,
 		MapKeyClassAnnotation2_0.ANNOTATION_NAME,
 		MapKeyColumnAnnotation2_0.ANNOTATION_NAME,
-		MapKeyEnumerated2_0Annotation.ANNOTATION_NAME,
+		MapKeyEnumeratedAnnotation2_0.ANNOTATION_NAME,
 		MapKeyJoinColumn2_0Annotation.ANNOTATION_NAME,
 		JPA2_0.MAP_KEY_JOIN_COLUMNS,
 		MapKeyTemporal2_0Annotation.ANNOTATION_NAME,

@@ -11,14 +11,14 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jpa.core.internal.resource.java.NullBaseEnumeratedAnnotation;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumerated2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumeratedAnnotation2_0;
 
 /**
  * <code>javax.persistence.MapKeyEnumerated</code>
  */
 public final class NullMapKeyEnumerated2_0Annotation
-	extends NullBaseEnumeratedAnnotation<MapKeyEnumerated2_0Annotation>
-	implements MapKeyEnumerated2_0Annotation
+	extends NullBaseEnumeratedAnnotation<MapKeyEnumeratedAnnotation2_0>
+	implements MapKeyEnumeratedAnnotation2_0
 {
 	protected NullMapKeyEnumerated2_0Annotation(JavaResourceAnnotatedElement parent) {
 		super(parent);
