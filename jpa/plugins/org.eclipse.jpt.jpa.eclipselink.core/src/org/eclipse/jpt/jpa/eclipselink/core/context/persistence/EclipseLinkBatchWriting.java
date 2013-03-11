@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 /**
  *  BatchWriting
  */
-public enum BatchWriting implements PersistenceXmlEnumValue {
+public enum EclipseLinkBatchWriting implements PersistenceXmlEnumValue {
 	none("None"),  //$NON-NLS-1$
 	jdbc("JDBC"),  //$NON-NLS-1$
 	buffered("Buffered"),  //$NON-NLS-1$
@@ -22,7 +22,7 @@ public enum BatchWriting implements PersistenceXmlEnumValue {
 
 	private final String propertyValue;
 
-	BatchWriting(String propertyValue) {
+	EclipseLinkBatchWriting(String propertyValue) {
 		this.propertyValue = propertyValue;
 	}
 

@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence;
 import java.util.Map;
 
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.BatchWriting;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkBatchWriting;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConnection;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkExclusiveConnectionMode;
 
@@ -25,7 +25,7 @@ public class EclipseLinkConnectionImpl
 {
 	
 	// ********** EclipseLink properties **********
-	private BatchWriting batchWriting;
+	private EclipseLinkBatchWriting batchWriting;
 	private Boolean nativeSql;
 	private Boolean cacheStatements;
 	private Integer cacheStatementsSize;
@@ -57,7 +57,7 @@ public class EclipseLinkConnectionImpl
 		this.initializeDatabaseConnectionProperties();
 		
 		this.batchWriting = 
-			this.getEnumValue(ECLIPSELINK_BATCH_WRITING, BatchWriting.values());
+			this.getEnumValue(ECLIPSELINK_BATCH_WRITING, EclipseLinkBatchWriting.values());
 		this.nativeSql = 
 			this.getBooleanValue(ECLIPSELINK_NATIVE_SQL);
 		this.cacheStatements = 
@@ -294,27 +294,27 @@ public class EclipseLinkConnectionImpl
 
 	// ********** BatchWriting **********
 	
-	public BatchWriting getBatchWriting() {
+	public EclipseLinkBatchWriting getBatchWriting() {
 		return this.batchWriting;
 	}
 	
-	public void setBatchWriting(BatchWriting newBatchWriting) {
+	public void setBatchWriting(EclipseLinkBatchWriting newBatchWriting) {
 		this.preSetProperty();
 		
-		BatchWriting old = this.batchWriting;
+		EclipseLinkBatchWriting old = this.batchWriting;
 		this.batchWriting = newBatchWriting;
 		this.putProperty(BATCH_WRITING_PROPERTY, newBatchWriting);
 		this.firePropertyChanged(BATCH_WRITING_PROPERTY, old, newBatchWriting);
 	}
 
 	private void batchWritingChanged(String stringValue) {
-		BatchWriting newValue = getEnumValueOf(stringValue, BatchWriting.values());
-		BatchWriting old = this.batchWriting;
+		EclipseLinkBatchWriting newValue = getEnumValueOf(stringValue, EclipseLinkBatchWriting.values());
+		EclipseLinkBatchWriting old = this.batchWriting;
 		this.batchWriting = newValue;
 		this.firePropertyChanged(BATCH_WRITING_PROPERTY, old, newValue);
 	}
 	
-	public BatchWriting getDefaultBatchWriting() {
+	public EclipseLinkBatchWriting getDefaultBatchWriting() {
 		return DEFAULT_BATCH_WRITING;
 	}
 

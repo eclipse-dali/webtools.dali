@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitTransactionType;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.BatchWriting;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkBatchWriting;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConnection;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
@@ -189,8 +189,8 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 		connection.setLazyConnection(null);
 	}
 
-	private EnumFormComboViewer<EclipseLinkConnection, BatchWriting> addBatchWritingCombo(Composite container) {
-		return new EnumFormComboViewer<EclipseLinkConnection, BatchWriting>(this, container) {
+	private EnumFormComboViewer<EclipseLinkConnection, EclipseLinkBatchWriting> addBatchWritingCombo(Composite container) {
+		return new EnumFormComboViewer<EclipseLinkConnection, EclipseLinkBatchWriting>(this, container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
@@ -198,17 +198,17 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 			}
 
 			@Override
-			protected BatchWriting[] getChoices() {
-				return BatchWriting.values();
+			protected EclipseLinkBatchWriting[] getChoices() {
+				return EclipseLinkBatchWriting.values();
 			}
 
 			@Override
-			protected BatchWriting getDefaultValue() {
+			protected EclipseLinkBatchWriting getDefaultValue() {
 				return getSubject().getDefaultBatchWriting();
 			}
 
 			@Override
-			protected String displayString(BatchWriting value) {
+			protected String displayString(EclipseLinkBatchWriting value) {
 				switch (value) {
 					case buffered :
 						return JptJpaEclipseLinkUiMessages.BATCH_WRITING_COMPOSITE_BUFFERED;
@@ -224,12 +224,12 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 			}
 
 			@Override
-			protected BatchWriting getValue() {
+			protected EclipseLinkBatchWriting getValue() {
 				return getSubject().getBatchWriting();
 			}
 
 			@Override
-			protected void setValue(BatchWriting value) {
+			protected void setValue(EclipseLinkBatchWriting value) {
 				getSubject().setBatchWriting(value);
 			}
 

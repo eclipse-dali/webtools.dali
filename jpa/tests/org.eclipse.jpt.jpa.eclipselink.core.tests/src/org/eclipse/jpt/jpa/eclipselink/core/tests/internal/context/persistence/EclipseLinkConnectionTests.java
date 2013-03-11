@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.persistence;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitTransactionType;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.BatchWriting;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkBatchWriting;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConnection;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkExclusiveConnectionMode;
 
@@ -38,8 +38,8 @@ public class EclipseLinkConnectionTests extends EclipseLinkPersistenceUnitTestCa
 	public static final Boolean NATIVE_SQL_TEST_VALUE_2 = ! NATIVE_SQL_TEST_VALUE;
 
 	public static final String BATCH_WRITING_KEY = EclipseLinkConnection.ECLIPSELINK_BATCH_WRITING;
-	public static final BatchWriting BATCH_WRITING_TEST_VALUE = BatchWriting.oracle_jdbc;
-	public static final BatchWriting BATCH_WRITING_TEST_VALUE_2 = BatchWriting.buffered;
+	public static final EclipseLinkBatchWriting BATCH_WRITING_TEST_VALUE = EclipseLinkBatchWriting.oracle_jdbc;
+	public static final EclipseLinkBatchWriting BATCH_WRITING_TEST_VALUE_2 = EclipseLinkBatchWriting.buffered;
 	
 	public static final String CACHE_STATEMENTS_KEY = EclipseLinkConnection.ECLIPSELINK_CACHE_STATEMENTS;
 	public static final Boolean CACHE_STATEMENTS_TEST_VALUE = false;
@@ -178,7 +178,7 @@ public class EclipseLinkConnectionTests extends EclipseLinkPersistenceUnitTestCa
 		if (propertyName.equals(EclipseLinkConnection.NATIVE_SQL_PROPERTY))
 			this.connection.setNativeSql((Boolean) newValue);
 		else if (propertyName.equals(EclipseLinkConnection.BATCH_WRITING_PROPERTY))
-			this.connection.setBatchWriting((BatchWriting) newValue);
+			this.connection.setBatchWriting((EclipseLinkBatchWriting) newValue);
 		else if (propertyName.equals(EclipseLinkConnection.CACHE_STATEMENTS_PROPERTY))
 			this.connection.setCacheStatements((Boolean) newValue);
 		else if (propertyName.equals(EclipseLinkConnection.CACHE_STATEMENTS_SIZE_PROPERTY))

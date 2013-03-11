@@ -25,13 +25,13 @@ public interface EclipseLinkConnection
 		static final String ECLIPSELINK_NATIVE_SQL = "eclipselink.jdbc.native-sql"; //$NON-NLS-1$
 		static final Boolean DEFAULT_NATIVE_SQL = Boolean.FALSE;
 
-	BatchWriting getDefaultBatchWriting();
-	BatchWriting getBatchWriting();
-	void setBatchWriting(BatchWriting newBatchWriting);
+	EclipseLinkBatchWriting getDefaultBatchWriting();
+	EclipseLinkBatchWriting getBatchWriting();
+	void setBatchWriting(EclipseLinkBatchWriting newBatchWriting);
 		static final String BATCH_WRITING_PROPERTY = "batchWriting"; //$NON-NLS-1$
 		// EclipseLink key string
 		static final String ECLIPSELINK_BATCH_WRITING = "eclipselink.jdbc.batch-writing"; //$NON-NLS-1$
-		static final BatchWriting DEFAULT_BATCH_WRITING = BatchWriting.none;
+		static final EclipseLinkBatchWriting DEFAULT_BATCH_WRITING = EclipseLinkBatchWriting.none;
 
 	Boolean getDefaultCacheStatements();
 	Boolean getCacheStatements();
