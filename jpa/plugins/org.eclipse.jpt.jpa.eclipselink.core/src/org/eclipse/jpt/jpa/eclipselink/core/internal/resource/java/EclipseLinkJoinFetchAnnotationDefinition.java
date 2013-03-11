@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.BinaryEclipseLinkJoinFetchAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.SourceEclipseLinkJoinFetchAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkJoinFetchAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.JoinFetchAnnotation;
 
 /**
  * org.eclipse.persistence.annotations.JoinFetch
@@ -54,6 +54,6 @@ public class EclipseLinkJoinFetchAnnotationDefinition
 	}
 
 	public String getAnnotationName() {
-		return EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME;
+		return JoinFetchAnnotation.ANNOTATION_NAME;
 	}
 }

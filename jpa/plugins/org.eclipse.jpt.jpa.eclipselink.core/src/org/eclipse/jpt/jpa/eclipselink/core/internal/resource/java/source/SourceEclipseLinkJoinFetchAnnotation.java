@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkJoinFetchAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.JoinFetchAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.JoinFetchType;
 
 /**
@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.JoinFetchType;
  */
 public final class SourceEclipseLinkJoinFetchAnnotation
 	extends SourceAnnotation
-	implements EclipseLinkJoinFetchAnnotation
+	implements JoinFetchAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 

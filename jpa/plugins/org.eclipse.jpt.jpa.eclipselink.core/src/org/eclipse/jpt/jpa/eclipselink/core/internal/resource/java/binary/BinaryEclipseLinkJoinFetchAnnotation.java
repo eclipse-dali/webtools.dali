@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotatio
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkJoinFetchAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.JoinFetchAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.JoinFetchType;
 
 /**
@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.JoinFetchType;
  */
 public final class BinaryEclipseLinkJoinFetchAnnotation
 	extends BinaryAnnotation
-	implements EclipseLinkJoinFetchAnnotation
+	implements JoinFetchAnnotation
 {
 	private JoinFetchType value;
 

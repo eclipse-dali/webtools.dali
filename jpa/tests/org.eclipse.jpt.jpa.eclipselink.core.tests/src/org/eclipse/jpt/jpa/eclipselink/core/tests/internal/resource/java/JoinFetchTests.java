@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkJoinFetchAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.JoinFetchAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.JoinFetchType;
 
 @SuppressWarnings("nls")
@@ -57,7 +57,7 @@ public class JoinFetchTests extends EclipseLinkJavaResourceModelTestCase {
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 
-		EclipseLinkJoinFetchAnnotation joinFetch = (EclipseLinkJoinFetchAnnotation) resourceField.getAnnotation(EclipseLink.JOIN_FETCH);
+		JoinFetchAnnotation joinFetch = (JoinFetchAnnotation) resourceField.getAnnotation(EclipseLink.JOIN_FETCH);
 		assertNotNull(joinFetch);
 	}
 
@@ -66,7 +66,7 @@ public class JoinFetchTests extends EclipseLinkJavaResourceModelTestCase {
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkJoinFetchAnnotation joinFetch = (EclipseLinkJoinFetchAnnotation) resourceField.getAnnotation(EclipseLink.JOIN_FETCH);
+		JoinFetchAnnotation joinFetch = (JoinFetchAnnotation) resourceField.getAnnotation(EclipseLink.JOIN_FETCH);
 		assertEquals(JoinFetchType.OUTER, joinFetch.getValue());
 	}
 
@@ -75,7 +75,7 @@ public class JoinFetchTests extends EclipseLinkJavaResourceModelTestCase {
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkJoinFetchAnnotation joinFetch = (EclipseLinkJoinFetchAnnotation) resourceField.getAnnotation(EclipseLink.JOIN_FETCH);
+		JoinFetchAnnotation joinFetch = (JoinFetchAnnotation) resourceField.getAnnotation(EclipseLink.JOIN_FETCH);
 		assertEquals(JoinFetchType.OUTER, joinFetch.getValue());
 		
 		joinFetch.setValue(JoinFetchType.INNER);

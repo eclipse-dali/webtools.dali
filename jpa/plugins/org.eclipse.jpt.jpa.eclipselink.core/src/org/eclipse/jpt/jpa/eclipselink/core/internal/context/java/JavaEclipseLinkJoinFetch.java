@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetchType;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkJoinFetchAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.JoinFetchAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.JoinFetchType;
 
 public class JavaEclipseLinkJoinFetch
@@ -48,7 +48,7 @@ public class JavaEclipseLinkJoinFetch
 
 	public void setValue(EclipseLinkJoinFetchType value) {
 		if (this.valuesAreDifferent(value, this.value)) {
-			EclipseLinkJoinFetchAnnotation annotation = this.getJoinFetchAnnotation();
+			JoinFetchAnnotation annotation = this.getJoinFetchAnnotation();
 			if (value == null) {
 				if (annotation != null) {
 					this.removeJoinFetchAnnotation();
@@ -71,7 +71,7 @@ public class JavaEclipseLinkJoinFetch
 	}
 
 	private EclipseLinkJoinFetchType buildValue() {
-		EclipseLinkJoinFetchAnnotation annotation = this.getJoinFetchAnnotation();
+		JoinFetchAnnotation annotation = this.getJoinFetchAnnotation();
 		if (annotation == null) {
 			return null;
 		}
@@ -88,12 +88,12 @@ public class JavaEclipseLinkJoinFetch
 
 	// ********** join fetch annotation **********
 
-	protected EclipseLinkJoinFetchAnnotation getJoinFetchAnnotation() {
-		return (EclipseLinkJoinFetchAnnotation) this.getResourceAttribute().getAnnotation(this.getJoinFetchAnnotationName());
+	protected JoinFetchAnnotation getJoinFetchAnnotation() {
+		return (JoinFetchAnnotation) this.getResourceAttribute().getAnnotation(this.getJoinFetchAnnotationName());
 	}
 
-	protected EclipseLinkJoinFetchAnnotation addJoinFetchAnnotation() {
-		return (EclipseLinkJoinFetchAnnotation) this.getResourceAttribute().addAnnotation(this.getJoinFetchAnnotationName());
+	protected JoinFetchAnnotation addJoinFetchAnnotation() {
+		return (JoinFetchAnnotation) this.getResourceAttribute().addAnnotation(this.getJoinFetchAnnotationName());
 	}
 
 	protected void removeJoinFetchAnnotation() {
@@ -101,7 +101,7 @@ public class JavaEclipseLinkJoinFetch
 	}
 
 	protected String getJoinFetchAnnotationName() {
-		return EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME;
+		return JoinFetchAnnotation.ANNOTATION_NAME;
 	}
 
 
@@ -124,7 +124,7 @@ public class JavaEclipseLinkJoinFetch
 	}
 
 	protected TextRange getAnnotationTextRange() {
-		EclipseLinkJoinFetchAnnotation annotation = this.getJoinFetchAnnotation();
+		JoinFetchAnnotation annotation = this.getJoinFetchAnnotation();
 		return (annotation == null) ? null : annotation.getTextRange();
 	}
 }

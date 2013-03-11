@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetchType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkRelationshipMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkJoinFetchAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.JoinFetchAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 
 
@@ -62,7 +62,7 @@ public class EclipseLinkJavaManyToManyMappingTests extends EclipseLinkContextMod
 		EclipseLinkJoinFetch contextJoinFetch = manyToManyMapping.getJoinFetch();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		EclipseLinkJoinFetchAnnotation joinFetchAnnotation = (EclipseLinkJoinFetchAnnotation) resourceField.getAnnotation(EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME);
+		JoinFetchAnnotation joinFetchAnnotation = (JoinFetchAnnotation) resourceField.getAnnotation(JoinFetchAnnotation.ANNOTATION_NAME);
 		
 		// base annotated, test context value
 		
@@ -95,7 +95,7 @@ public class EclipseLinkJavaManyToManyMappingTests extends EclipseLinkContextMod
 		
 		// remove annotation, text context
 		
-		resourceField.removeAnnotation(EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME);
+		resourceField.removeAnnotation(JoinFetchAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		
 		assertNull(joinFetchAnnotation.getValue());
@@ -111,7 +111,7 @@ public class EclipseLinkJavaManyToManyMappingTests extends EclipseLinkContextMod
 		EclipseLinkJoinFetch contextJoinFetch = manyToManyMapping.getJoinFetch();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		EclipseLinkJoinFetchAnnotation joinFetchAnnotation = (EclipseLinkJoinFetchAnnotation) resourceField.getAnnotation(EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME);
+		JoinFetchAnnotation joinFetchAnnotation = (JoinFetchAnnotation) resourceField.getAnnotation(JoinFetchAnnotation.ANNOTATION_NAME);
 		
 		// base annotated, test resource value
 		
@@ -136,13 +136,13 @@ public class EclipseLinkJavaManyToManyMappingTests extends EclipseLinkContextMod
 		
 		contextJoinFetch.setValue(null);
 		
-		assertNull(resourceField.getAnnotation(EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(JoinFetchAnnotation.ANNOTATION_NAME));
 		assertNull(contextJoinFetch.getValue());
 		
 		// change context to INNER specifically (this time from no annotation), test resource
 		
 		contextJoinFetch.setValue(EclipseLinkJoinFetchType.INNER);
-		joinFetchAnnotation = (EclipseLinkJoinFetchAnnotation) resourceField.getAnnotation(EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME);
+		joinFetchAnnotation = (JoinFetchAnnotation) resourceField.getAnnotation(JoinFetchAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(org.eclipse.jpt.jpa.eclipselink.core.resource.java.JoinFetchType.INNER, joinFetchAnnotation.getValue());
 		assertEquals(EclipseLinkJoinFetchType.INNER, contextJoinFetch.getValue());

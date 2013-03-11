@@ -12,15 +12,15 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java;
 import org.eclipse.jpt.common.core.internal.resource.java.NullAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkJoinFetchAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.JoinFetchAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.JoinFetchType;
 
 /**
  * <code>org.eclipse.persistence.annotations.JoinFetch</code>
  */
 public final class NullEclipseLinkJoinFetchAnnotation
-	extends NullAnnotation<EclipseLinkJoinFetchAnnotation>
-	implements EclipseLinkJoinFetchAnnotation
+	extends NullAnnotation<JoinFetchAnnotation>
+	implements JoinFetchAnnotation
 {
 	protected NullEclipseLinkJoinFetchAnnotation(JavaResourceAnnotatedElement parent) {
 		super(parent);

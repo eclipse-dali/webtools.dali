@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkJoinFetchAnnotation
+public interface JoinFetchAnnotation
 	extends Annotation
 {
 	String ANNOTATION_NAME = EclipseLink.JOIN_FETCH;
