@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkConvertersComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkNonEmbeddableTypeMappingAdvancedComposite;
@@ -30,7 +30,7 @@ import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-public abstract class AbstractJavaEclipseLinkEntityComposite<T extends JavaEclipseLinkEntity>
+public abstract class AbstractJavaEclipseLinkEntityComposite<T extends EclipseLinkJavaEntity>
 	extends AbstractEntityComposite<T>
 {
 	protected AbstractJavaEclipseLinkEntityComposite(

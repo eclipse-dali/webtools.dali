@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.jpa.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkJpaProject;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEmbeddable;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
@@ -102,8 +102,8 @@ public abstract class EclipseLinkContextModelTestCase
 	}
 
 	@Override
-	protected JavaEclipseLinkEntity getJavaEntity() {
-		return (JavaEclipseLinkEntity) getJavaPersistentType().getMapping();
+	protected EclipseLinkJavaEntity getJavaEntity() {
+		return (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
 	}
 
 	protected EclipseLinkJavaEmbeddable getJavaEmbeddable() {

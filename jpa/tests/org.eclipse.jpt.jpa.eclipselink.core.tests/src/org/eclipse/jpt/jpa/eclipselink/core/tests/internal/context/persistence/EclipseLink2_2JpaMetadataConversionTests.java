@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConvert
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkStructConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEmbeddable;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
@@ -385,7 +385,7 @@ public class EclipseLink2_2JpaMetadataConversionTests extends EclipseLink2_2Cont
 		createTestEntityWithConverters();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaEclipseLinkEntity entity = getJavaEntity();
+		EclipseLinkJavaEntity entity = getJavaEntity();
 		addXmlMappingFileRef(org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 		EclipseLinkEntityMappings entityMappings = getEntityMappings();
 		
@@ -434,7 +434,7 @@ public class EclipseLink2_2JpaMetadataConversionTests extends EclipseLink2_2Cont
 		createTestEntityWithConverterOnConvertibleMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaEclipseLinkEntity entity = getJavaEntity();
+		EclipseLinkJavaEntity entity = getJavaEntity();
 		addXmlMappingFileRef(org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 		EclipseLinkEntityMappings entityMappings = getEntityMappings();
 		
@@ -462,7 +462,7 @@ public class EclipseLink2_2JpaMetadataConversionTests extends EclipseLink2_2Cont
 		createTestEntityWithConverterOnCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaEclipseLinkEntity entity = getJavaEntity();
+		EclipseLinkJavaEntity entity = getJavaEntity();
 		addXmlMappingFileRef(org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 		EclipseLinkEntityMappings entityMappings = getEntityMappings();
 		
@@ -496,7 +496,7 @@ public class EclipseLink2_2JpaMetadataConversionTests extends EclipseLink2_2Cont
 	
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		
-		JavaEclipseLinkEntity entity = getJavaEntity();
+		EclipseLinkJavaEntity entity = getJavaEntity();
 		EclipseLinkConvertibleMapping mapping = (EclipseLinkConvertibleMapping)entity.getAttributeMappings().iterator().next();
 		assertTrue(IterableTools.contains(persistenceUnit.getConverters(), mapping.getConverterContainer().getConverters().iterator().next()));
 				
@@ -521,7 +521,7 @@ public class EclipseLink2_2JpaMetadataConversionTests extends EclipseLink2_2Cont
 	
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		
-		JavaEclipseLinkEntity entity = getJavaEntity();
+		EclipseLinkJavaEntity entity = getJavaEntity();
 		EclipseLinkConvertibleMapping mapping = (EclipseLinkConvertibleMapping)entity.getAttributeMappings().iterator().next();
 				
 		addXmlMappingFileRef(org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
@@ -547,7 +547,7 @@ public class EclipseLink2_2JpaMetadataConversionTests extends EclipseLink2_2Cont
 	
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		
-		JavaEclipseLinkEntity entity = getJavaEntity();
+		EclipseLinkJavaEntity entity = getJavaEntity();
 		EclipseLinkConvertibleMapping mapping = (EclipseLinkConvertibleMapping)entity.getAttributeMappings().iterator().next();
 
 		addXmlMappingFileRef(org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
@@ -573,7 +573,7 @@ public class EclipseLink2_2JpaMetadataConversionTests extends EclipseLink2_2Cont
 	
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		
-		JavaEclipseLinkEntity entity = getJavaEntity();
+		EclipseLinkJavaEntity entity = getJavaEntity();
 		EclipseLinkConvertibleMapping mapping = (EclipseLinkConvertibleMapping)entity.getAttributeMappings().iterator().next();
 				
 		addXmlMappingFileRef(org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);

@@ -34,7 +34,7 @@ import org.eclipse.jpt.jpa.core.resource.java.SecondaryTableAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.TableAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.TableGeneratorAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkReadOnlyAnnotation;
@@ -70,7 +70,7 @@ public class EclipseLink2_2JavaEntityTests extends EclipseLink2_2ContextModelTes
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		JavaEclipseLinkEntity entity = (JavaEclipseLinkEntity) getJavaPersistentType().getMapping();
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
 		entity.getTable().setSpecifiedName("FOO");
 		entity.addSpecifiedSecondaryTable(0);
 		entity.addSpecifiedPrimaryKeyJoinColumn(0);
@@ -127,7 +127,7 @@ public class EclipseLink2_2JavaEntityTests extends EclipseLink2_2ContextModelTes
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		JavaEclipseLinkEntity entity = (JavaEclipseLinkEntity) getJavaPersistentType().getMapping();
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
 		entity.getTable().setSpecifiedName("FOO");
 		entity.addSpecifiedSecondaryTable(0);
 		entity.addSpecifiedPrimaryKeyJoinColumn(0);

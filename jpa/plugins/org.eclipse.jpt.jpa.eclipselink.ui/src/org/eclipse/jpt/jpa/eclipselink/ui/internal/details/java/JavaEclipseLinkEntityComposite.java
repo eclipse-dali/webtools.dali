@@ -12,14 +12,14 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.swt.widgets.Composite;
 
 public class JavaEclipseLinkEntityComposite
-	extends AbstractJavaEclipseLinkEntityComposite<JavaEclipseLinkEntity>
+	extends AbstractJavaEclipseLinkEntityComposite<EclipseLinkJavaEntity>
 {
 	public JavaEclipseLinkEntityComposite(
-			PropertyValueModel<? extends JavaEclipseLinkEntity> entityModel,
+			PropertyValueModel<? extends EclipseLinkJavaEntity> entityModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {

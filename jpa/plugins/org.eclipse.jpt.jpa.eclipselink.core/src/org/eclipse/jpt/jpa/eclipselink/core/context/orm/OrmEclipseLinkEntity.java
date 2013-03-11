@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkEntity;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntity;
 
 /**
@@ -31,7 +31,7 @@ public interface OrmEclipseLinkEntity
 {
 	XmlEntity getXmlTypeMapping();
 
-	JavaEclipseLinkEntity getJavaTypeMapping();
+	EclipseLinkJavaEntity getJavaTypeMapping();
 
-	JavaEclipseLinkEntity getJavaTypeMappingForDefaults();
+	EclipseLinkJavaEntity getJavaTypeMappingForDefaults();
 }

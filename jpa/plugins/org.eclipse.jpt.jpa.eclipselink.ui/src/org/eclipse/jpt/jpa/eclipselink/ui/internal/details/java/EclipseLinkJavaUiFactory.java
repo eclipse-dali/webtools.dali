@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkOneToManyMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkOneToOneMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVersionMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEmbeddable;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkManyToManyMappingComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkManyToOneMappingComposite;
@@ -63,7 +63,7 @@ public class EclipseLinkJavaUiFactory
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaEclipseLinkEntityComposite((PropertyValueModel<? extends JavaEclipseLinkEntity>) entityModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaEclipseLinkEntityComposite((PropertyValueModel<? extends EclipseLinkJavaEntity>) entityModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 	@SuppressWarnings("unchecked")

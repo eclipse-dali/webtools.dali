@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMultitenantType2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
@@ -600,7 +600,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 
 		OrmPersistentType persistentType = entityMappings.addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 
-		multitenancy = ((JavaEclipseLinkEntity) persistentType.getJavaPersistentType().getMapping()).getMultitenancy();
+		multitenancy = ((EclipseLinkJavaEntity) persistentType.getJavaPersistentType().getMapping()).getMultitenancy();
 
 		assertEquals(1, multitenancy.getTenantDiscriminatorColumnsSize());
 		assertEquals("EM_TENANT_ID", multitenancy.getTenantDiscriminatorColumns().iterator().next().getName());

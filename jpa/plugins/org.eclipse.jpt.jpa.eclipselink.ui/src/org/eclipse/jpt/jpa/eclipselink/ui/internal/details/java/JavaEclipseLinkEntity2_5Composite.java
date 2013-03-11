@@ -13,7 +13,7 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkMultitenancyComposite;
@@ -27,11 +27,11 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
 public class JavaEclipseLinkEntity2_5Composite
-	extends AbstractJavaEclipseLinkEntity2_xComposite<JavaEclipseLinkEntity>
+	extends AbstractJavaEclipseLinkEntity2_xComposite<EclipseLinkJavaEntity>
 {
 
 	public JavaEclipseLinkEntity2_5Composite(
-			PropertyValueModel<? extends JavaEclipseLinkEntity> entityModel,
+			PropertyValueModel<? extends EclipseLinkJavaEntity> entityModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
@@ -71,8 +71,8 @@ public class JavaEclipseLinkEntity2_5Composite
 		return new EclipseLinkMultitenancyComposite(this, this.buildMultitenancyModel(), container).getControl();
 	}
 
-	private PropertyAspectAdapter<JavaEclipseLinkEntity, JavaEclipseLinkMultitenancy2_3> buildMultitenancyModel() {
-		return new PropertyAspectAdapter<JavaEclipseLinkEntity, JavaEclipseLinkMultitenancy2_3>(getSubjectHolder()) {
+	private PropertyAspectAdapter<EclipseLinkJavaEntity, JavaEclipseLinkMultitenancy2_3> buildMultitenancyModel() {
+		return new PropertyAspectAdapter<EclipseLinkJavaEntity, JavaEclipseLinkMultitenancy2_3>(getSubjectHolder()) {
 			@Override
 			protected JavaEclipseLinkMultitenancy2_3 buildValue_() {
 				return this.subject.getMultitenancy();

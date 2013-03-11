@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.resource.java.EmbeddableAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.EntityAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.MappedSuperclassAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkJpaProject;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkBasicCollectionMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkBasicMapMapping;
@@ -91,7 +91,7 @@ public class EclipseLinkJpaFactory
 	}
 	
 	@Override
-	public JavaEclipseLinkEntity buildJavaEntity(JavaPersistentType parent, EntityAnnotation entityAnnotation) {
+	public EclipseLinkJavaEntity buildJavaEntity(JavaPersistentType parent, EntityAnnotation entityAnnotation) {
 		return new JavaEclipseLinkEntityImpl(parent, entityAnnotation);
 	}
 	
