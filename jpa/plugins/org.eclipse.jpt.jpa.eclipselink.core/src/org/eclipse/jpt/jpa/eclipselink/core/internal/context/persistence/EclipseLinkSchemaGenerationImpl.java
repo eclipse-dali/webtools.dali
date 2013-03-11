@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence;
 import java.util.Map;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.DdlGenerationType;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkDdlGenerationType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOutputMode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkSchemaGeneration;
 
@@ -23,7 +23,7 @@ public class EclipseLinkSchemaGenerationImpl
 	// ********** EclipseLink properties **********
 	
 	private EclipseLinkOutputMode outputMode;
-	private DdlGenerationType ddlGenerationType;
+	private EclipseLinkDdlGenerationType ddlGenerationType;
 	private String createFileName;
 	private String dropFileName;
 	private String applicationLocation;
@@ -42,7 +42,7 @@ public class EclipseLinkSchemaGenerationImpl
 		this.outputMode = 
 			this.getEnumValue(ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE, EclipseLinkOutputMode.values());
 		this.ddlGenerationType = 
-			this.getEnumValue(ECLIPSELINK_DDL_GENERATION_TYPE, DdlGenerationType.values());
+			this.getEnumValue(ECLIPSELINK_DDL_GENERATION_TYPE, EclipseLinkDdlGenerationType.values());
 		this.createFileName = 
 			this.getStringValue(ECLIPSELINK_CREATE_FILE_NAME);
 		this.dropFileName = 
@@ -113,25 +113,25 @@ public class EclipseLinkSchemaGenerationImpl
 	}
 
 	// ********** DdlGenerationType **********
-	public DdlGenerationType getDdlGenerationType() {
+	public EclipseLinkDdlGenerationType getDdlGenerationType() {
 		return this.ddlGenerationType;
 	}
 
-	public void setDdlGenerationType(DdlGenerationType newDdlGenType) {
-		DdlGenerationType old = this.ddlGenerationType;
+	public void setDdlGenerationType(EclipseLinkDdlGenerationType newDdlGenType) {
+		EclipseLinkDdlGenerationType old = this.ddlGenerationType;
 		this.ddlGenerationType = newDdlGenType;
 		this.putProperty(DDL_GENERATION_TYPE_PROPERTY, newDdlGenType);
 		this.firePropertyChanged(DDL_GENERATION_TYPE_PROPERTY, old, newDdlGenType);
 	}
 
 	private void ddlGenerationTypeChanged(String stringValue) {
-		DdlGenerationType newValue = getEnumValueOf(stringValue, DdlGenerationType.values());
-		DdlGenerationType old = this.ddlGenerationType;
+		EclipseLinkDdlGenerationType newValue = getEnumValueOf(stringValue, EclipseLinkDdlGenerationType.values());
+		EclipseLinkDdlGenerationType old = this.ddlGenerationType;
 		this.ddlGenerationType = newValue;
 		this.firePropertyChanged(DDL_GENERATION_TYPE_PROPERTY, old, newValue);
 	}
 
-	public DdlGenerationType getDefaultDdlGenerationType() {
+	public EclipseLinkDdlGenerationType getDefaultDdlGenerationType() {
 		return DEFAULT_SCHEMA_GENERATION_DDL_GENERATION_TYPE;
 	}
 

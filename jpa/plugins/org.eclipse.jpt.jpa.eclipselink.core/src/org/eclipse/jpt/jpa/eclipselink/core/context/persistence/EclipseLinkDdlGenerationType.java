@@ -14,14 +14,14 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 /**
  *  DdlGenerationType
  */
-public enum DdlGenerationType implements PersistenceXmlEnumValue{
+public enum EclipseLinkDdlGenerationType implements PersistenceXmlEnumValue{
 	none("none") ,  //$NON-NLS-1$
 	create_tables("create-tables"),  //$NON-NLS-1$
 	drop_and_create_tables("drop-and-create-tables"); //$NON-NLS-1$
 
 	private final String propertyValue;
 	
-	DdlGenerationType(String propertyValue) {
+	EclipseLinkDdlGenerationType(String propertyValue) {
 		this.propertyValue = propertyValue;
 	}
 

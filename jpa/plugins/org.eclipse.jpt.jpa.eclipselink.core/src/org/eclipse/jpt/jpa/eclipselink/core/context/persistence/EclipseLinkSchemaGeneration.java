@@ -18,13 +18,13 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 public interface EclipseLinkSchemaGeneration
 	extends PersistenceUnitProperties
 {
-	DdlGenerationType getDefaultDdlGenerationType();
-	DdlGenerationType getDdlGenerationType();
-	void setDdlGenerationType(DdlGenerationType ddlGenerationType);
+	EclipseLinkDdlGenerationType getDefaultDdlGenerationType();
+	EclipseLinkDdlGenerationType getDdlGenerationType();
+	void setDdlGenerationType(EclipseLinkDdlGenerationType ddlGenerationType);
 		static final String DDL_GENERATION_TYPE_PROPERTY = "ddlGenerationType";
 		// EclipseLink key string
 		static final String ECLIPSELINK_DDL_GENERATION_TYPE = "eclipselink.ddl-generation";
-		static final DdlGenerationType DEFAULT_SCHEMA_GENERATION_DDL_GENERATION_TYPE = DdlGenerationType.none;
+		static final EclipseLinkDdlGenerationType DEFAULT_SCHEMA_GENERATION_DDL_GENERATION_TYPE = EclipseLinkDdlGenerationType.none;
 
 	EclipseLinkOutputMode getDefaultOutputMode();
 	EclipseLinkOutputMode getOutputMode();

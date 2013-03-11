@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.DdlGenerationType;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkDdlGenerationType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOutputMode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkSchemaGeneration;
@@ -37,8 +37,8 @@ public class SchemaGenerationBasicAdapterTests extends EclipseLinkPersistenceUni
 	public static final EclipseLinkOutputMode OUTPUT_MODE_TEST_VALUE = EclipseLinkOutputMode.sql_script;
 	public static final EclipseLinkOutputMode OUTPUT_MODE_TEST_VALUE_2 = EclipseLinkOutputMode.database;
 	
-	public static final DdlGenerationType DDL_GENERATION_TYPE_TEST_VALUE = DdlGenerationType.drop_and_create_tables;
-	public static final DdlGenerationType DDL_GENERATION_TYPE_TEST_VALUE_2 = DdlGenerationType.none;
+	public static final EclipseLinkDdlGenerationType DDL_GENERATION_TYPE_TEST_VALUE = EclipseLinkDdlGenerationType.drop_and_create_tables;
+	public static final EclipseLinkDdlGenerationType DDL_GENERATION_TYPE_TEST_VALUE_2 = EclipseLinkDdlGenerationType.none;
 
 	public SchemaGenerationBasicAdapterTests(String name) {
 		super(name);

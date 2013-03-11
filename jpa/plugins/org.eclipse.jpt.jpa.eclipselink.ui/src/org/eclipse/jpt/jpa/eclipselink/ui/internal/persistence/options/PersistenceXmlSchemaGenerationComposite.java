@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.utility.internal.transformer.StringObjectTransform
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.DdlGenerationType;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkDdlGenerationType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOutputMode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkSchemaGeneration;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
@@ -85,8 +85,8 @@ public class PersistenceXmlSchemaGenerationComposite
 
 	//************ DDL generation type ************
 
-	private EnumFormComboViewer<EclipseLinkSchemaGeneration, DdlGenerationType> addDdlGenerationTypeCombo(Composite container) {
-		return new EnumFormComboViewer<EclipseLinkSchemaGeneration, DdlGenerationType>(this, container) {
+	private EnumFormComboViewer<EclipseLinkSchemaGeneration, EclipseLinkDdlGenerationType> addDdlGenerationTypeCombo(Composite container) {
+		return new EnumFormComboViewer<EclipseLinkSchemaGeneration, EclipseLinkDdlGenerationType>(this, container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
@@ -94,17 +94,17 @@ public class PersistenceXmlSchemaGenerationComposite
 			}
 
 			@Override
-			protected DdlGenerationType[] getChoices() {
-				return DdlGenerationType.values();
+			protected EclipseLinkDdlGenerationType[] getChoices() {
+				return EclipseLinkDdlGenerationType.values();
 			}
 
 			@Override
-			protected DdlGenerationType getDefaultValue() {
+			protected EclipseLinkDdlGenerationType getDefaultValue() {
 				return this.getSubject().getDefaultDdlGenerationType();
 			}
 
 			@Override
-			protected String displayString(DdlGenerationType value) {
+			protected String displayString(EclipseLinkDdlGenerationType value) {
 				switch (value) {
 					case create_tables :
 						return JptJpaEclipseLinkUiMessages.DDL_GENERATION_TYPE_COMPOSITE_CREATE_TABLES;
@@ -118,12 +118,12 @@ public class PersistenceXmlSchemaGenerationComposite
 			}
 
 			@Override
-			protected DdlGenerationType getValue() {
+			protected EclipseLinkDdlGenerationType getValue() {
 				return this.getSubject().getDdlGenerationType();
 			}
 
 			@Override
-			protected void setValue(DdlGenerationType value) {
+			protected void setValue(EclipseLinkDdlGenerationType value) {
 				this.getSubject().setDdlGenerationType(value);
 			}
 

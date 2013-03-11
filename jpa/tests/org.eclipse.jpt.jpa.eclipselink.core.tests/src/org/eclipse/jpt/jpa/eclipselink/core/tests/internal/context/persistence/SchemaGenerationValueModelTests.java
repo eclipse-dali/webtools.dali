@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.DdlGenerationType;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkDdlGenerationType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOutputMode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkSchemaGeneration;
 
@@ -32,13 +32,13 @@ public class SchemaGenerationValueModelTests extends EclipseLinkPersistenceUnitT
 	private EclipseLinkSchemaGeneration schemaGen;
 	private PropertyValueModel<EclipseLinkSchemaGeneration> schemaGenHolder;
 
-	private ModifiablePropertyValueModel<DdlGenerationType> ddlGenerationTypeHolder;
+	private ModifiablePropertyValueModel<EclipseLinkDdlGenerationType> ddlGenerationTypeHolder;
 	private PropertyChangeEvent ddlGenerationTypeEvent;
 
 	private ModifiablePropertyValueModel<EclipseLinkOutputMode> outputModeHolder;
 	private PropertyChangeEvent outputModeEvent;
 
-	public static final DdlGenerationType DDL_GENERATION_TYPE_TEST_VALUE = DdlGenerationType.drop_and_create_tables;
+	public static final EclipseLinkDdlGenerationType DDL_GENERATION_TYPE_TEST_VALUE = EclipseLinkDdlGenerationType.drop_and_create_tables;
 	public static final EclipseLinkOutputMode OUTPUT_MODE_TEST_VALUE = EclipseLinkOutputMode.sql_script;
 
 	public SchemaGenerationValueModelTests(String name) {
@@ -83,15 +83,15 @@ public class SchemaGenerationValueModelTests extends EclipseLinkPersistenceUnitT
 	}
 
 	/** ****** DdlGenerationType ******* */
-	private ModifiablePropertyValueModel<DdlGenerationType> buildDdlGenerationTypeAA(PropertyValueModel<EclipseLinkSchemaGeneration> subjectHolder) {
-		return new PropertyAspectAdapter<EclipseLinkSchemaGeneration, DdlGenerationType>(subjectHolder, EclipseLinkSchemaGeneration.DDL_GENERATION_TYPE_PROPERTY) {
+	private ModifiablePropertyValueModel<EclipseLinkDdlGenerationType> buildDdlGenerationTypeAA(PropertyValueModel<EclipseLinkSchemaGeneration> subjectHolder) {
+		return new PropertyAspectAdapter<EclipseLinkSchemaGeneration, EclipseLinkDdlGenerationType>(subjectHolder, EclipseLinkSchemaGeneration.DDL_GENERATION_TYPE_PROPERTY) {
 			@Override
-			protected DdlGenerationType buildValue_() {
+			protected EclipseLinkDdlGenerationType buildValue_() {
 				return this.subject.getDdlGenerationType();
 			}
 
 			@Override
-			protected void setValue_(DdlGenerationType enumValue) {
+			protected void setValue_(EclipseLinkDdlGenerationType enumValue) {
 				this.subject.setDdlGenerationType(enumValue);
 			}
 		};
@@ -145,7 +145,7 @@ public class SchemaGenerationValueModelTests extends EclipseLinkPersistenceUnitT
 		/** ****** DdlGenerationType ******* */
 		this.ddlGenerationTypeEvent = null;
 		this.verifyHasListeners(this.ddlGenerationTypeHolder, PropertyValueModel.VALUE);
-		DdlGenerationType newDdlGenerationType = DdlGenerationType.create_tables;
+		EclipseLinkDdlGenerationType newDdlGenerationType = EclipseLinkDdlGenerationType.create_tables;
 		// Modify the persistenceUnit directly
 		this.subject.setProperty(
 			EclipseLinkSchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE,
@@ -196,7 +196,7 @@ public class SchemaGenerationValueModelTests extends EclipseLinkPersistenceUnitT
 	 * 2. aspect adapter value<br>
 	 * 3. persistenceUnit property value<br>
 	 */
-	protected void verifyDdlGenerationTypeAAValue(DdlGenerationType testValue) {
+	protected void verifyDdlGenerationTypeAAValue(EclipseLinkDdlGenerationType testValue) {
 		this.verifyAAValue(
 			testValue,
 			this.schemaGen.getDdlGenerationType(),

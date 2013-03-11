@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.persistence;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.DdlGenerationType;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkDdlGenerationType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOutputMode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkSchemaGeneration;
 
@@ -26,8 +26,8 @@ public class SchemaGenerationAdapterTests extends EclipseLinkPersistenceUnitTest
 	private EclipseLinkSchemaGeneration schemaGeneration;
 
 	public static final String DDL_GENERATION_TYPE_KEY = EclipseLinkSchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE;
-	public static final DdlGenerationType DDL_GENERATION_TYPE_TEST_VALUE = DdlGenerationType.drop_and_create_tables;
-	public static final DdlGenerationType DDL_GENERATION_TYPE_TEST_VALUE_2 = DdlGenerationType.none;
+	public static final EclipseLinkDdlGenerationType DDL_GENERATION_TYPE_TEST_VALUE = EclipseLinkDdlGenerationType.drop_and_create_tables;
+	public static final EclipseLinkDdlGenerationType DDL_GENERATION_TYPE_TEST_VALUE_2 = EclipseLinkDdlGenerationType.none;
 
 	public static final String OUTPUT_MODE_KEY = EclipseLinkSchemaGeneration.ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE;
 	public static final EclipseLinkOutputMode OUTPUT_MODE_TEST_VALUE = EclipseLinkOutputMode.sql_script;
@@ -217,7 +217,7 @@ public class SchemaGenerationAdapterTests extends EclipseLinkPersistenceUnitTest
 		// else if( propertyName.equals( Caching.CACHE_SIZE_PROPERTY))
 		// TODO
 		else if (propertyName.equals(EclipseLinkSchemaGeneration.DDL_GENERATION_TYPE_PROPERTY))
-			this.schemaGeneration.setDdlGenerationType((DdlGenerationType) newValue);
+			this.schemaGeneration.setDdlGenerationType((EclipseLinkDdlGenerationType) newValue);
 		else if (propertyName.equals(EclipseLinkSchemaGeneration.APPLICATION_LOCATION_PROPERTY))
 			this.schemaGeneration.setApplicationLocation((String) newValue);
 		else if (propertyName.equals(EclipseLinkSchemaGeneration.CREATE_FILE_NAME_PROPERTY))

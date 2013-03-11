@@ -38,7 +38,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConnection;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.DdlGenerationType;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkDdlGenerationType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLoggingLevel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOutputMode;
@@ -268,7 +268,7 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 		
 		this.putProperty(properties,  
 			EclipseLinkSchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE,
-			DdlGenerationType.drop_and_create_tables);
+			EclipseLinkDdlGenerationType.drop_and_create_tables);
 
 		this.putProperty(properties,  
 			EclipseLinkSchemaGeneration.ECLIPSELINK_CREATE_FILE_NAME,
