@@ -318,14 +318,14 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 		if (attributeMapping == null) {
 			// if id attribute name is not specified, use that message
 			if (this.specifiedIdAttributeName == null) {
-				messages.add(this.buildMessage(JptJpaCoreValidationMessages.MAPS_ID_VALUE_NOT_SPECIFIED, EMPTY_STRING_ARRAY));
+				messages.add(this.buildMessage(JptJpaCoreValidationMessages.MAPS_ID_VALUE_NOT_SPECIFIED));
 			} else {
-				messages.add(this.buildMessage(JptJpaCoreValidationMessages.MAPS_ID_VALUE_NOT_RESOLVED, new String[] {this.getIdAttributeName()}));
+				messages.add(this.buildMessage(JptJpaCoreValidationMessages.MAPS_ID_VALUE_NOT_RESOLVED, this.getIdAttributeName()));
 			}
 		} else {
 			// test whether attribute mapping is allowable
 			if ( ! IterableTools.contains(this.getValidAttributeMappingChoices(), attributeMapping)) {
-				messages.add(this.buildMessage(JptJpaCoreValidationMessages.MAPS_ID_VALUE_INVALID, new String[] {this.getIdAttributeName()}));
+				messages.add(this.buildMessage(JptJpaCoreValidationMessages.MAPS_ID_VALUE_INVALID, this.getIdAttributeName()));
 			}
 		}
 	}
@@ -334,7 +334,7 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 		return this.buildAttributeMappingChoices(this.getIdAttributeMappings());
 	}
 
-	protected IMessage buildMessage(ValidationMessage msg, Object[] args) {
+	protected IMessage buildMessage(ValidationMessage msg, Object... args) {
 		SpecifiedPersistentAttribute attribute = this.getPersistentAttribute();
 		String attributeDescription = attribute.isVirtual() ?
 				JptJpaCoreValidationArgumentMessages.VIRTUAL_ATTRIBUTE_DESC :

@@ -21,7 +21,6 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JDTModifiedDeclaration.Adapter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
@@ -254,12 +253,6 @@ public abstract class AbstractJpaModel<P extends JpaModel>
 
 
 	// ********** convenience stuff **********
-
-	/**
-	 * Useful for building validation messages.
-	 */
-	protected static final String[] EMPTY_STRING_ARRAY = StringTools.EMPTY_STRING_ARRAY;
-
 
 	/**
 	 * Adapter used to synchronize a context collection container with its corresponding
