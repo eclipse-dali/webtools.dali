@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.jface;
 
-import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -21,12 +21,12 @@ public class SimpleItemTreeStateProviderFactoryProvider
 	implements ItemTreeStateProviderFactoryProvider
 {
 	private final ItemTreeContentProviderFactory contentProviderFactory;
-	private final ItemExtendedLabelProviderFactory labelProviderFactory;
+	private final ItemExtendedLabelProvider.Factory labelProviderFactory;
 
 
 	public SimpleItemTreeStateProviderFactoryProvider(
 			ItemTreeContentProviderFactory contentProviderFactory,
-			ItemExtendedLabelProviderFactory labelProviderFactory
+			ItemExtendedLabelProvider.Factory labelProviderFactory
 	) {
 		super();
 		this.contentProviderFactory = contentProviderFactory;
@@ -37,7 +37,7 @@ public class SimpleItemTreeStateProviderFactoryProvider
 		return this.contentProviderFactory;
 	}
 
-	public ItemExtendedLabelProviderFactory getItemLabelProviderFactory() {
+	public ItemExtendedLabelProvider.Factory getItemLabelProviderFactory() {
 		return this.labelProviderFactory;
 	}
 

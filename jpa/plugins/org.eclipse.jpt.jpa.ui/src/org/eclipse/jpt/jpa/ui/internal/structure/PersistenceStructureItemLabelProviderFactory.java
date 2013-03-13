@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.structure;
 
 import org.eclipse.jpt.common.ui.internal.jface.StaticItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
-import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider.Factory;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.JarFileRef;
@@ -30,15 +30,15 @@ import org.eclipse.jpt.jpa.ui.internal.platform.generic.PersistenceUnitItemLabel
  * JPA Structure View.
  */
 public class PersistenceStructureItemLabelProviderFactory
-	implements ItemExtendedLabelProviderFactory
+	implements ItemExtendedLabelProvider.Factory
 {
 	// singleton
-	private static final ItemExtendedLabelProviderFactory INSTANCE = new PersistenceStructureItemLabelProviderFactory();
+	private static final ItemExtendedLabelProvider.Factory INSTANCE = new PersistenceStructureItemLabelProviderFactory();
 
 	/**
 	 * Return the singleton
 	 */
-	public static ItemExtendedLabelProviderFactory instance() {
+	public static ItemExtendedLabelProvider.Factory instance() {
 		return INSTANCE;
 	}
 

@@ -11,7 +11,7 @@ package org.eclipse.jpt.jaxb.ui.internal.jaxb21;
 
 import org.eclipse.jpt.common.ui.internal.jface.StaticItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
-import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider.Factory;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumConstant;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
@@ -23,7 +23,7 @@ import org.eclipse.jpt.jaxb.ui.JptJaxbUiMessages;
 
 
 public class GenericJaxb_2_1_NavigatorItemLabelProviderFactory
-	implements ItemExtendedLabelProviderFactory {
+	implements ItemExtendedLabelProvider.Factory {
 	
 	private static GenericJaxb_2_1_NavigatorItemLabelProviderFactory INSTANCE;
 	

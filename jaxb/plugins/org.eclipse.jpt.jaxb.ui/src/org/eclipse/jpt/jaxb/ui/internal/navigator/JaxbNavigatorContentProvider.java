@@ -22,7 +22,7 @@ import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.ui.internal.jface.NavigatorContentProvider;
-import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
@@ -75,7 +75,7 @@ public class JaxbNavigatorContentProvider
 	}
 
 	@Override
-	protected ItemExtendedLabelProviderFactory buildItemLabelProviderFactory() {
+	protected ItemExtendedLabelProvider.Factory buildItemLabelProviderFactory() {
 		return new JaxbNavigatorItemLabelProviderFactory();
 	}
 

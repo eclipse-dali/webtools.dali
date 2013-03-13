@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.ui.internal.jface;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
 import org.eclipse.jpt.common.ui.jface.TreeStateProvider;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -77,7 +77,7 @@ public abstract class NavigatorContentProvider
 	 * Return a factory that will build item label providers for the
 	 * appropriate items in the navigator.
 	 */
-	protected abstract ItemExtendedLabelProviderFactory buildItemLabelProviderFactory();
+	protected abstract ItemExtendedLabelProvider.Factory buildItemLabelProviderFactory();
 
 	public void inputChanged(Viewer commonViewer, Object oldInput, Object newInput) {
 		this.delegate.inputChanged(commonViewer, oldInput, newInput);

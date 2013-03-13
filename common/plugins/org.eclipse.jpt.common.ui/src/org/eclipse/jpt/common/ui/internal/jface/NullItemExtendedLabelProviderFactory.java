@@ -11,7 +11,6 @@ package org.eclipse.jpt.common.ui.internal.jface;
 
 import java.io.Serializable;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
-import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
@@ -20,11 +19,11 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * @see org.eclipse.jpt.common.ui.internal.jface.NullItemExtendedLabelProvider
  */
 public final class NullItemExtendedLabelProviderFactory
-	implements ItemExtendedLabelProviderFactory, Serializable
+	implements ItemExtendedLabelProvider.Factory, Serializable
 {
-	public static final ItemExtendedLabelProviderFactory INSTANCE = new NullItemExtendedLabelProviderFactory();
+	public static final ItemExtendedLabelProvider.Factory INSTANCE = new NullItemExtendedLabelProviderFactory();
 
-	public static ItemExtendedLabelProviderFactory instance() {
+	public static ItemExtendedLabelProvider.Factory instance() {
 		return INSTANCE;
 	}
 

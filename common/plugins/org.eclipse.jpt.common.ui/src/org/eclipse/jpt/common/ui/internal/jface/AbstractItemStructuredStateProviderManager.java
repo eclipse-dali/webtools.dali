@@ -17,7 +17,7 @@ import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
-import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider.Factory;
 import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemStructuredContentProvider;
 import org.eclipse.jpt.common.ui.jface.StructuredStateProvider;
@@ -51,7 +51,7 @@ public abstract class AbstractItemStructuredStateProviderManager<V extends Struc
 	/**
 	 * May be <code>null</code>.
 	 */
-	protected final ItemExtendedLabelProviderFactory itemLabelProviderFactory;
+	protected final ItemExtendedLabelProvider.Factory itemLabelProviderFactory;
 
 	protected final HashMap<Object, CP> itemContentProviders = new HashMap<Object, CP>();
 
@@ -65,7 +65,7 @@ public abstract class AbstractItemStructuredStateProviderManager<V extends Struc
 	protected volatile V viewer;
 
 
-	protected AbstractItemStructuredStateProviderManager(ItemExtendedLabelProviderFactory itemLabelProviderFactory, ResourceManager resourceManager) {
+	protected AbstractItemStructuredStateProviderManager(ItemExtendedLabelProvider.Factory itemLabelProviderFactory, ResourceManager resourceManager) {
 		super();
 		this.itemLabelProviderFactory = itemLabelProviderFactory;
 		if (resourceManager == null) {

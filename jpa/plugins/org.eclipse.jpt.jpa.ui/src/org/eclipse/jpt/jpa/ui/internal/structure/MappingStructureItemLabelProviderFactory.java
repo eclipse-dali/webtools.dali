@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.structure;
 
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
-import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider.Factory;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.ui.internal.platform.generic.PersistentTypeItemLabelP
  * attributes in a JPA Structure View.
  */
 public abstract class MappingStructureItemLabelProviderFactory
-	implements ItemExtendedLabelProviderFactory
+	implements ItemExtendedLabelProvider.Factory
 {
 	protected MappingStructureItemLabelProviderFactory() {
 		super();

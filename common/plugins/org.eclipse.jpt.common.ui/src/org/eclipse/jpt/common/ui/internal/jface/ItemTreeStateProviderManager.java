@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.ui.internal.jface;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
 import org.eclipse.jpt.common.ui.jface.TreeStateProvider;
@@ -36,7 +36,7 @@ public class ItemTreeStateProviderManager
 		this(itemContentProviderFactory, null, resourceManager);
 	}
 
-	public ItemTreeStateProviderManager(ItemTreeContentProviderFactory itemContentProviderFactory, ItemExtendedLabelProviderFactory itemLabelProviderFactory, ResourceManager resourceManager) {
+	public ItemTreeStateProviderManager(ItemTreeContentProviderFactory itemContentProviderFactory, ItemExtendedLabelProvider.Factory itemLabelProviderFactory, ResourceManager resourceManager) {
 		super(itemLabelProviderFactory, resourceManager);
 		if (itemContentProviderFactory == null) {
 			throw new NullPointerException();

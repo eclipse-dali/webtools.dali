@@ -46,4 +46,14 @@ public interface ItemExtendedLabelProvider
 		 */
 		void updateDescription(Object item);
 	}
+
+	/**
+	 * Factory interface for constructing item extended label providers.
+	 */
+	interface Factory {
+		/**
+		 * Build an extended label provider for the specified item.
+		 */
+		ItemExtendedLabelProvider buildProvider(Object item, Manager manager);
+	}
 }

@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.structure;
 
 import org.eclipse.jpt.common.ui.internal.jface.StaticItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
-import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider.Factory;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
@@ -24,12 +24,12 @@ public class OrmStructureItemLabelProviderFactory
 	extends MappingStructureItemLabelProviderFactory
 {
 	// singleton
-	private static final ItemExtendedLabelProviderFactory INSTANCE = new OrmStructureItemLabelProviderFactory();
+	private static final ItemExtendedLabelProvider.Factory INSTANCE = new OrmStructureItemLabelProviderFactory();
 
 	/**
 	 * Return the singleton
 	 */
-	public static ItemExtendedLabelProviderFactory instance() {
+	public static ItemExtendedLabelProvider.Factory instance() {
 		return INSTANCE;
 	}
 

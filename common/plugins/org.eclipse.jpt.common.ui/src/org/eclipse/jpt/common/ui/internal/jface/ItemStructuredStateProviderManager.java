@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.ui.internal.jface;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.StructuredViewer;
-import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemStructuredContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemStructuredContentProviderFactory;
 
@@ -31,7 +31,7 @@ public class ItemStructuredStateProviderManager
 		this(itemContentProviderFactory, null, resourceManager);
 	}
 
-	public ItemStructuredStateProviderManager(ItemStructuredContentProviderFactory itemContentProviderFactory, ItemExtendedLabelProviderFactory itemLabelProviderFactory, ResourceManager resourceManager) {
+	public ItemStructuredStateProviderManager(ItemStructuredContentProviderFactory itemContentProviderFactory, ItemExtendedLabelProvider.Factory itemLabelProviderFactory, ResourceManager resourceManager) {
 		super(itemLabelProviderFactory, resourceManager);
 		if (itemContentProviderFactory == null) {
 			throw new NullPointerException();

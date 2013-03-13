@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.structure;
 
-import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 
 /**
  * This factory builds item label providers for a Java source file
@@ -19,12 +19,12 @@ public class JavaStructureItemLabelProviderFactory
 	extends MappingStructureItemLabelProviderFactory
 {
 	// singleton
-	private static final ItemExtendedLabelProviderFactory INSTANCE = new JavaStructureItemLabelProviderFactory();
+	private static final ItemExtendedLabelProvider.Factory INSTANCE = new JavaStructureItemLabelProviderFactory();
 
 	/**
 	 * Return the singleton
 	 */
-	public static ItemExtendedLabelProviderFactory instance() {
+	public static ItemExtendedLabelProvider.Factory instance() {
 		return INSTANCE;
 	}
 

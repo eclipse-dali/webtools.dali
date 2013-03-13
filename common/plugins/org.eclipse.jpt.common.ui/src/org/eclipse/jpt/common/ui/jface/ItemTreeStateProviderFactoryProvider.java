@@ -30,5 +30,5 @@ public interface ItemTreeStateProviderFactoryProvider {
 	 * Return a factory to be used to create {@link ItemExtendedLabelProvider}s
 	 * for a tree view.
 	 */
-	ItemExtendedLabelProviderFactory getItemLabelProviderFactory();
+	ItemExtendedLabelProvider.Factory getItemLabelProviderFactory();
 }

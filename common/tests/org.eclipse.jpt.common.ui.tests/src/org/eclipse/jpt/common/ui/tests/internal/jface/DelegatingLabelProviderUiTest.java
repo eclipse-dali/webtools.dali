@@ -29,7 +29,7 @@ import org.eclipse.jpt.common.ui.internal.jface.AbstractItemExtendedLabelProvide
 import org.eclipse.jpt.common.ui.internal.jface.ItemTreeStateProviderManager;
 import org.eclipse.jpt.common.ui.internal.jface.StaticItemTreeContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
-import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider.Factory;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
 import org.eclipse.jpt.common.ui.jface.TreeStateProvider;
@@ -326,7 +326,7 @@ public class DelegatingLabelProviderUiTest
 
 
 	/* CU private */ static class VehicleLabelProviderFactory
-		implements ItemExtendedLabelProviderFactory
+		implements ItemExtendedLabelProvider.Factory
 	{
 		public ItemExtendedLabelProvider buildProvider(Object item, ItemExtendedLabelProvider.Manager manager) {
 			return new VehicleLabelProvider((Vehicle) item, manager);

@@ -13,14 +13,14 @@ import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
-import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider.Factory;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 import org.eclipse.jpt.jaxb.ui.platform.JaxbPlatformUi;
 
 public class JaxbNavigatorItemLabelProviderFactory
-		implements ItemExtendedLabelProviderFactory {
+		implements ItemExtendedLabelProvider.Factory {
 	
 	/**
 	 * Exactly *one* of these factories is created for each view that utilizes it.  
@@ -30,7 +30,7 @@ public class JaxbNavigatorItemLabelProviderFactory
 	 * 
 	 * Key: platform description,  Value: delegate content provider factory
 	 */
-	private final Map<JaxbPlatformConfig, ItemExtendedLabelProviderFactory> delegates = new HashMap<JaxbPlatformConfig, ItemExtendedLabelProviderFactory>();
+	private final Map<JaxbPlatformConfig, ItemExtendedLabelProvider.Factory> delegates = new HashMap<JaxbPlatformConfig, ItemExtendedLabelProvider.Factory>();
 	
 	
 	public JaxbNavigatorItemLabelProviderFactory() {
@@ -38,7 +38,7 @@ public class JaxbNavigatorItemLabelProviderFactory
 	}
 	
 	public ItemExtendedLabelProvider buildProvider(Object item, ItemExtendedLabelProvider.Manager manager) {
-		ItemExtendedLabelProviderFactory delegate = getDelegate(item);
+		ItemExtendedLabelProvider.Factory delegate = getDelegate(item);
 		if (delegate != null) {
 			return delegate.buildProvider(item, manager);
 		}
@@ -46,7 +46,7 @@ public class JaxbNavigatorItemLabelProviderFactory
 	}
 	
 	
-	private ItemExtendedLabelProviderFactory getDelegate(Object element) {
+	private ItemExtendedLabelProvider.Factory getDelegate(Object element) {
 		if (! (element instanceof IAdaptable)) {
 			return null;
 		}
@@ -63,7 +63,7 @@ public class JaxbNavigatorItemLabelProviderFactory
 			return delegates.get(jaxbPlatformConfig);
 		}
 		JaxbPlatformUi platformUi = (JaxbPlatformUi) jaxbPlatform.getAdapter(JaxbPlatformUi.class);
-		ItemExtendedLabelProviderFactory delegate = 
+		ItemExtendedLabelProvider.Factory delegate = 
 				(platformUi == null) ? null : platformUi.getNavigatorUi().getItemLabelProviderFactory();
 		delegates.put(jaxbPlatformConfig, delegate);
 		return delegate;

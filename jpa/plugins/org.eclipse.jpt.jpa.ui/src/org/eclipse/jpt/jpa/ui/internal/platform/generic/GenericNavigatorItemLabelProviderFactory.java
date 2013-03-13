@@ -13,7 +13,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.common.ui.internal.jface.StaticItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
-import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider.Factory;
 import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.context.ManagedType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -29,15 +29,15 @@ import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
  * Common Navigator.
  */
 public class GenericNavigatorItemLabelProviderFactory
-	implements ItemExtendedLabelProviderFactory
+	implements ItemExtendedLabelProvider.Factory
 {
 	// singleton
-	private static final ItemExtendedLabelProviderFactory INSTANCE = new GenericNavigatorItemLabelProviderFactory();
+	private static final ItemExtendedLabelProvider.Factory INSTANCE = new GenericNavigatorItemLabelProviderFactory();
 
 	/**
 	 * Return the singleton
 	 */
-	public static ItemExtendedLabelProviderFactory instance() {
+	public static ItemExtendedLabelProvider.Factory instance() {
 		return INSTANCE;
 	}
 
