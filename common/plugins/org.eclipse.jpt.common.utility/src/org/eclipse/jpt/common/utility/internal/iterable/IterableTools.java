@@ -920,7 +920,7 @@ public final class IterableTools {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <E> Transformer<ListIterable<E>, ListIterator<E>> listIteratorTransformer() {
-		return ListIterable.ITERATOR_TRANSFORMER;
+		return ListIterable.TRANSFORMER;
 	}
 
 	/**

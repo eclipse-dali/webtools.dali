@@ -34,7 +34,7 @@ public interface ListIterable<E>
 	ListIterator<E> iterator();
 
 	@SuppressWarnings("rawtypes")
-	Transformer ITERATOR_TRANSFORMER = new IteratorTransformer();
+	Transformer TRANSFORMER = new IteratorTransformer();
 	class IteratorTransformer<E>
 		extends TransformerAdapter<ListIterable<E>, ListIterator<E>>
 	{
