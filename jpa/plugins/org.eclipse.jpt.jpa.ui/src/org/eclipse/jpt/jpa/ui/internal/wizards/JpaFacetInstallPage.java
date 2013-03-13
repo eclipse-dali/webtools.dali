@@ -56,7 +56,6 @@ public class JpaFacetInstallPage
 		new ClasspathConfigGroup(composite);
 		new ConnectionGroup(composite);
 		new PersistentClassManagementGroup(composite);
-		new OrmXmlGroup(composite);
 	}
 	
 	@Override
@@ -73,9 +72,9 @@ public class JpaFacetInstallPage
 	{
 		private final Combo connectionCombo;
 		
-		private Link connectionLink;
+		private final Link connectionLink;
 		
-		private Link connectLink;
+		private final Link connectLink;
 		
 		private final Button addDriverLibraryButton;
 		
@@ -243,24 +242,6 @@ public class JpaFacetInstallPage
 		private void updateConnectLinkText(String text) {
 			connectLink.setText(text);
 			SWTUtil.reflow(connectLink.getParent());
-		}
-	}
-	
-	
-	protected final class OrmXmlGroup
-	{
-		private final Button createOrmXmlButton;
-
-
-		public OrmXmlGroup(Composite composite) {
-			Composite group = new Composite(composite, SWT.NONE);
-			group.setLayout(new GridLayout());
-			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, JpaHelpContextIds.DIALOG_CREATE_ORM);
-
-			createOrmXmlButton = new Button(group, SWT.CHECK);
-			createOrmXmlButton.setText(JptJpaUiMessages.JpaFacetWizardPage_createOrmXmlButton);
-			synchHelper.synchCheckbox(createOrmXmlButton, CREATE_ORM_XML, null);
 		}
 	}
 }

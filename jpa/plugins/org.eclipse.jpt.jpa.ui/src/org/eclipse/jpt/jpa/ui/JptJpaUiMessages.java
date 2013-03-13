@@ -75,7 +75,6 @@ public class JptJpaUiMessages {
 	public static String JpaFacetWizardPage_connectionLink;
 	public static String JpaFacetWizardPage_connectLink;
 	public static String JpaFacetWizardPage_connectedText;
-	public static String JpaFacetWizardPage_createOrmXmlButton;
 	public static String JpaFacetWizardPage_defaultCatalogLabel;
 	public static String JpaFacetWizardPage_defaultSchemaLabel;
 	public static String JpaFacetWizardPage_description;
