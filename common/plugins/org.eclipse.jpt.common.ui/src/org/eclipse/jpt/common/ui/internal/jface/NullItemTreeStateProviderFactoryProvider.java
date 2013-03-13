@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 /**
  * A <em>null</em> item tree state provider factory provider that returns
  * <em>null</em> factories.
- * @see org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory.Null
+ * @see org.eclipse.jpt.common.ui.internal.jface.NullItemTreeContentProviderFactory
  * @see org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory.Null
  */
 public final class NullItemTreeStateProviderFactoryProvider
@@ -36,7 +36,7 @@ public final class NullItemTreeStateProviderFactoryProvider
 	}
 
 	public ItemTreeContentProviderFactory getItemContentProviderFactory() {
-		return ItemTreeContentProviderFactory.Null.instance();
+		return NullItemTreeContentProviderFactory.instance();
 	}
 
 	public ItemExtendedLabelProviderFactory getItemLabelProviderFactory() {

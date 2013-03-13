@@ -9,9 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.jface;
 
-import java.io.Serializable;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
-
 /**
  * Factory interface for constructing item tree content providers.
  * Typically used by {@link ItemTreeContentProvider.Manager item tree content
@@ -29,35 +26,4 @@ public interface ItemTreeContentProviderFactory {
 	 * Return <code>null</code> if there is no provider for the specified item.
 	 */
 	ItemTreeContentProvider buildProvider(Object item, ItemTreeContentProvider.Manager manager);
-
-
-	/**
-	 * A <em>null</em> item tree content provider factory that returns a
-	 * <em>null</em> provider.
-	 * @see ItemTreeContentProvider.Null
-	 */
-	final class Null
-		implements ItemTreeContentProviderFactory, Serializable
-	{
-		public static final ItemTreeContentProviderFactory INSTANCE = new Null();
-		public static ItemTreeContentProviderFactory instance() {
-			return INSTANCE;
-		}
-		// ensure single instance
-		private Null() {
-			super();
-		}
-		public ItemTreeContentProvider buildProvider(Object item, org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider.Manager manager) {
-			return ItemTreeContentProvider.Null.instance();
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.singletonToString(this);
-		}
-		private static final long serialVersionUID = 1L;
-		private Object readResolve() {
-			// replace this object with the singleton
-			return INSTANCE;
-		}
-	}
 }
