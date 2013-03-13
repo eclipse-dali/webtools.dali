@@ -259,7 +259,7 @@ public class GenericJavaQueryContainer
 	}
 
 	public JavaNamedStoredProcedureQuery2_1 addNamedStoredProcedureQuery() {
-		return this.addNamedStoredProcedureQuery(this.getNamedNativeQueriesSize());
+		return this.addNamedStoredProcedureQuery(this.getNamedStoredProcedureQueriesSize());
 	}
 
 	public JavaNamedStoredProcedureQuery2_1 addNamedStoredProcedureQuery(int index) {
