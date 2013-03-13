@@ -9,9 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.jface;
 
-import java.io.Serializable;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
-
 /**
  * Implementations of this interface can be used to maintain the elements
  * of a specific input element. The implementation will monitor
@@ -63,38 +60,5 @@ public interface ItemStructuredContentProvider {
 		 * Dispose of the element's providers, if necessary.
 		 */
 		void dispose(Object element);
-	}
-
-
-	/**
-	 * A <em>null</em> item structured content provider that returns
-	 * an empty array of elements.
-	 */
-	final class Null
-		implements ItemStructuredContentProvider, Serializable
-	{
-		public static final ItemStructuredContentProvider INSTANCE = new Null();
-		public static ItemStructuredContentProvider instance() {
-			return INSTANCE;
-		}
-		// ensure single instance
-		private Null() {
-			super();
-		}
-		public Object[] getElements() {
-			return ObjectTools.EMPTY_OBJECT_ARRAY;
-		}
-		public void dispose() {
-			// NOP
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.singletonToString(this);
-		}
-		private static final long serialVersionUID = 1L;
-		private Object readResolve() {
-			// replace this object with the singleton
-			return INSTANCE;
-		}
 	}
 }
