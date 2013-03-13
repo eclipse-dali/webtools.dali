@@ -9,9 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.jface;
 
-import java.io.Serializable;
 import org.eclipse.jface.resource.ResourceManager;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.swt.graphics.Image;
 
 /**
@@ -69,41 +67,5 @@ public interface ItemLabelProvider {
 		 * Update appropriately.
 		 */
 		void updateLabel(Object item);
-	}
-
-
-	/**
-	 * A <em>null</em> item label provider that returns a <code>null</code>
-	 * image and a <code>null</code> text string.
-	 */
-	final class Null
-		implements ItemLabelProvider, Serializable
-	{
-		public static final ItemLabelProvider INSTANCE = new Null();
-		public static ItemLabelProvider instance() {
-			return INSTANCE;
-		}
-		// ensure single instance
-		private Null() {
-			super();
-		}
-		public Image getImage() {
-			return null;
-		}
-		public String getText() {
-			return null;
-		}
-		public void dispose() {
-			// NOP
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.singletonToString(this);
-		}
-		private static final long serialVersionUID = 1L;
-		private Object readResolve() {
-			// replace this object with the singleton
-			return INSTANCE;
-		}
 	}
 }
