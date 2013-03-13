@@ -27,7 +27,7 @@ import org.eclipse.swt.graphics.Image;
  * to allocate the label images. This resource manager will be disposed
  * when the label provider is disposed.
  * 
- * @parm <E> the type of the objects passed to the label provider
+ * @param <E> the type of the objects passed to the label provider
  */
 public class ResourceManagerTableLabelProvider<E>
 	extends PluggableTextTableLabelProvider<E>

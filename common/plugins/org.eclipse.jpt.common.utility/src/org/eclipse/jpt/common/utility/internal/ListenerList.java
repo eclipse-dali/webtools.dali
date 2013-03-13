@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
  * Maintain a thread-safe list of listeners that does not allow adding
  * duplicate listeners or removing non-listeners.
  * 
- * @parm <L> the type of listeners held by the list
+ * @param <L> the type of listeners held by the list
  */
 public class ListenerList<L>
 	implements Serializable

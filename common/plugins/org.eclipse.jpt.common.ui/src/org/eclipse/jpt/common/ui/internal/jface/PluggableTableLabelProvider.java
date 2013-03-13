@@ -19,7 +19,7 @@ import org.eclipse.swt.graphics.Image;
  * the value returned by the {@link #imageTransformer image transformer} for
  * the element's image.
  * 
- * @parm <E> the type of the objects passed to the label provider
+ * @param <E> the type of the objects passed to the label provider
  */
 public class PluggableTableLabelProvider<E>
 	extends PluggableTextTableLabelProvider<E>

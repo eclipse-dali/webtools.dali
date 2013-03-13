@@ -18,7 +18,7 @@ package org.eclipse.jpt.common.utility.command;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @parm <A> the type of the object passed to the command
+ * @param <A> the type of the object passed to the command
  */
 public interface ParameterizedCommand<A>
 	extends InterruptibleParameterizedCommand<A>

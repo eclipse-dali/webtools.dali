@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.utility.reference.ModifiableObjectReference;
  * value is set to <code>null</code> or a non-<code>null</code> value,
  * with optional time-outs.
  * 
- * @parm V the type of the synchronized object's value
+ * @param <V> the type of the synchronized object's value
  * @see SimpleObjectReference
  */
 public class SynchronizedObject<V>

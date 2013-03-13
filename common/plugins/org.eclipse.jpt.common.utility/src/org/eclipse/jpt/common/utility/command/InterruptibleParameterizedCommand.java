@@ -21,7 +21,7 @@ package org.eclipse.jpt.common.utility.command;
  * 
  * @see org.eclipse.jpt.common.utility.command.ParameterizedCommand
  * 
- * @parm <A> the type of the object passed to the command
+ * @param <A> the type of the object passed to the command
  */
 public interface InterruptibleParameterizedCommand<A> {
 

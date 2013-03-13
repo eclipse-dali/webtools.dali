@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * allowing a client to change a previously-supplied command's
  * behavior mid-stream.
  * 
- * @parm <T> the type of the object passed to the command
+ * @param <T> the type of the object passed to the command
  * @see #setCommand(ParameterizedCommand)
  */
 public class ParameterizedCommandWrapper<T>

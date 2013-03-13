@@ -22,7 +22,7 @@ import org.eclipse.swt.graphics.Image;
  * 
  * @see org.eclipse.jface.viewers.LabelProvider LabelProvider
  * 
- * @parm <E> the type of the objects passed to the label provider
+ * @param <E> the type of the objects passed to the label provider
  */
 public class PluggableTextTableLabelProvider<E>
 	extends BaseLabelProvider
