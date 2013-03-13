@@ -23,6 +23,7 @@ import org.eclipse.jpt.common.utility.command.ParameterizedCommand;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.command.DisabledParameterizedCommand;
 import org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
@@ -455,7 +456,7 @@ public final class IterableTools {
 	 * @see LiveCloneIterable
 	 */
 	public static <E> LiveCloneIterable<E> cloneLive(Collection<? extends E> collection) {
-		return cloneLive(collection, ParameterizedCommand.Disabled.instance());
+		return cloneLive(collection, DisabledParameterizedCommand.instance());
 	}
 
 	/**
@@ -491,7 +492,7 @@ public final class IterableTools {
 	 * @see SnapshotCloneIterable
 	 */
 	public static <E> SnapshotCloneIterable<E> cloneSnapshot(Collection<? extends E> collection) {
-		return cloneSnapshot(collection, ParameterizedCommand.Disabled.instance());
+		return cloneSnapshot(collection, DisabledParameterizedCommand.instance());
 	}
 
 	/**

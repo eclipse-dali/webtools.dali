@@ -24,6 +24,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.command.DisabledParameterizedCommand;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator.Adapter;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
@@ -519,7 +520,7 @@ public final class IteratorTools {
 	 * @see CloneIterator
 	 */
 	public static <E> CloneIterator<E> clone(Collection<? extends E> collection) {
-		return clone(collection, ParameterizedCommand.Disabled.instance());
+		return clone(collection, DisabledParameterizedCommand.instance());
 	}
 
 	/**
