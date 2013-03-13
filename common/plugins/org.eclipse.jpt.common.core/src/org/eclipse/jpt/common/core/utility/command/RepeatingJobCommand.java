@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,12 +8,6 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.common.core.utility.command;
-
-import java.io.Serializable;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * This job command will execute repeatedly the minimum
@@ -35,51 +29,15 @@ public interface RepeatingJobCommand
 {
 	/**
 	 * Start the job command, allowing it to begin executing with the next call
-	 * to {@link #execute(IProgressMonitor)}.
+	 * to {@link #execute(org.eclipse.core.runtime.IProgressMonitor)}.
 	 * @exception IllegalStateException when the command is not stopped
 	 */
 	void start();
 
 	/**
 	 * Stop the job command; ignore further calls to
-	 * {@link #execute(IProgressMonitor)}.
+	 * {@link #execute(org.eclipse.core.runtime.IProgressMonitor)}.
 	 * @exception IllegalStateException when the command executor is not started
 	 */
 	void stop() throws InterruptedException;
-
-
-	/**
-	 * Singleton implementation of the repeating job command interface that
-	 * will do nothing when executed.
-	 */
-	final class Null
-		implements RepeatingJobCommand, Serializable
-	{
-		public static final RepeatingJobCommand INSTANCE = new Null();
-		public static RepeatingJobCommand instance() {
-			return INSTANCE;
-		}
-		// ensure single instance
-		private Null() {
-			super();
-		}
-		public void start() {
-			// do nothing
-		}
-		public IStatus execute(IProgressMonitor monitor) {
-			return Status.OK_STATUS;
-		}
-		public void stop() {
-			// do nothing
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.singletonToString(this);
-		}
-		private static final long serialVersionUID = 1L;
-		private Object readResolve() {
-			// replace this object with the singleton
-			return INSTANCE;
-		}
-	}
 }
