@@ -39,6 +39,7 @@ import org.eclipse.jpt.common.core.JptCommonCoreMessages;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.core.internal.utility.ResourceChangeAdapter;
 import org.eclipse.jpt.common.core.internal.utility.command.CommandJobCommandAdapter;
+import org.eclipse.jpt.common.core.internal.utility.command.InactiveExtendedJobCommandContext;
 import org.eclipse.jpt.common.core.internal.utility.command.JobCommandAdapter;
 import org.eclipse.jpt.common.core.internal.utility.command.SimpleJobCommandExecutor;
 import org.eclipse.jpt.common.core.internal.utility.command.SingleUseQueueingExtendedJobCommandExecutor;
@@ -319,7 +320,7 @@ class InternalJpaProjectManager
 		this.getWorkspace().removeResourceChangeListener(this.resourceChangeListener);
 		ExtendedJobCommandContext oldCE = this.commandContext;
 		// if the current executor is async, commands can continue to execute after we replace it here...
-		this.commandContext = ExtendedJobCommandContext.Inactive.instance();
+		this.commandContext = InactiveExtendedJobCommandContext.instance();
 		this.clearJpaProjects(oldCE);  // synchronous
 		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "*** JPA project manager DEAD ***"); //$NON-NLS-1$
 	}

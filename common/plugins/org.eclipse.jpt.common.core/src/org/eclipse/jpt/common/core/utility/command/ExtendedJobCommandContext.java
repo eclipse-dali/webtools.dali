@@ -9,10 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.utility.command;
 
-import java.io.Serializable;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * This interface extends the normal command context to allow the client
@@ -108,118 +105,4 @@ public interface ExtendedJobCommandContext
 	 * @see #execute(JobCommand, String, ISchedulingRule)
 	 */
 	boolean waitToExecute(JobCommand command, String jobName, ISchedulingRule schedulingRule, long timeout) throws InterruptedException;
-
-
-	/**
-	 * Singleton implementation of the command executor interface
-	 * that simply executes the command without any sort of enhancement.
-	 */
-	final class Default
-		implements ExtendedJobCommandContext, Serializable
-	{
-		public static final ExtendedJobCommandContext INSTANCE = new Default();
-		public static ExtendedJobCommandContext instance() {
-			return INSTANCE;
-		}
-		// ensure single instance
-		private Default() {
-			super();
-		}
-		public void execute(JobCommand command) {
-			command.execute(new NullProgressMonitor());
-		}
-		public void execute(JobCommand command, String jobName) {
-			this.execute(command);
-		}
-		public void execute(JobCommand command, String jobName, ISchedulingRule schedulingRule) {
-			this.execute(command);
-		}
-		public void waitToExecute(JobCommand command) {
-			this.execute(command);
-		}
-		public boolean waitToExecute(JobCommand command, long timeout) {
-			this.execute(command);
-			return true;
-		}
-		public void waitToExecute(JobCommand command, String jobName) {
-			this.execute(command);
-		}
-		public boolean waitToExecute(JobCommand command, String jobName, long timeout) {
-			this.execute(command);
-			return true;
-		}
-		public void waitToExecute(JobCommand command, String jobName, ISchedulingRule schedulingRule) {
-			this.execute(command);
-		}
-		public boolean waitToExecute(JobCommand command, String jobName, ISchedulingRule schedulingRule, long timeout) {
-			this.execute(command);
-			return true;
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.singletonToString(this);
-		}
-		private static final long serialVersionUID = 1L;
-		private Object readResolve() {
-			// replace this object with the singleton
-			return INSTANCE;
-		}
-	}
-
-
-	/**
-	 * Singleton implementation of the command executor interface
-	 * that ignores any commands.
-	 */
-	final class Inactive
-		implements ExtendedJobCommandContext, Serializable
-	{
-		public static final ExtendedJobCommandContext INSTANCE = new Inactive();
-		public static ExtendedJobCommandContext instance() {
-			return INSTANCE;
-		}
-		// ensure single instance
-		private Inactive() {
-			super();
-		}
-		public void execute(JobCommand command) {
-			// do nothing
-		}
-		public void execute(JobCommand command, String jobName) {
-			// do nothing
-		}
-		public void execute(JobCommand command, String jobName, ISchedulingRule schedulingRule) {
-			// do nothing
-		}
-		public void waitToExecute(JobCommand command) {
-			// do nothing
-		}
-		public boolean waitToExecute(JobCommand command, long timeout) throws InterruptedException {
-			// do nothing
-			return true;
-		}
-		public void waitToExecute(JobCommand command, String jobName) {
-			// do nothing
-		}
-		public boolean waitToExecute(JobCommand command, String jobName, long timeout) throws InterruptedException {
-			// do nothing
-			return true;
-		}
-		public void waitToExecute(JobCommand command, String jobName, ISchedulingRule schedulingRule) {
-			// do nothing
-		}
-		public boolean waitToExecute(JobCommand command, String jobName, ISchedulingRule schedulingRule, long timeout) throws InterruptedException {
-			// do nothing
-			return true;
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.singletonToString(this);
-		}
-		private static final long serialVersionUID = 1L;
-		private Object readResolve() {
-			// replace this object with the singleton
-			return INSTANCE;
-		}
-	}
 }
