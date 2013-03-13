@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import java.util.Collection;
 import java.util.List;
+import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -19,6 +20,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
@@ -30,11 +32,10 @@ import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.IdTypeMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.PropertyAccessor;
-import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.jpa.core.jpa2.context.SingleRelationshipMapping2_0;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -678,7 +679,7 @@ public abstract class AbstractPrimaryKeyValidator
 
 	public static final Predicate<SingleRelationshipMapping2_0> TYPE_MAPPING_USES_ID_DERIVED_IDENTITY_STRATEGY = new TypeMappingUsesIdDerivedIdentityStrategy();
 	public static class TypeMappingUsesIdDerivedIdentityStrategy
-		extends Predicate.Adapter<SingleRelationshipMapping2_0>
+		extends PredicateAdapter<SingleRelationshipMapping2_0>
 	{
 		@Override
 		public boolean evaluate(SingleRelationshipMapping2_0 mapping) {
@@ -699,7 +700,7 @@ public abstract class AbstractPrimaryKeyValidator
 	
 	public static final Predicate<SingleRelationshipMapping2_0> TYPE_MAPPING_USES_MAPS_ID_DERIVED_IDENTITY_STRATEGY = new TypeMappingUsesMapsIdDerivedIdentityStrategy();
 	public static class TypeMappingUsesMapsIdDerivedIdentityStrategy
-		extends Predicate.Adapter<SingleRelationshipMapping2_0>
+		extends PredicateAdapter<SingleRelationshipMapping2_0>
 	{
 		@Override
 		public boolean evaluate(SingleRelationshipMapping2_0 mapping) {

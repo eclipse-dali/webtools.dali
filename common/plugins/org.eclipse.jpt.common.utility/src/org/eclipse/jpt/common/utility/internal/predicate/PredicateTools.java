@@ -27,14 +27,14 @@ public final class PredicateTools {
 	 * Return a predicate that will always evaluate to <code>true</code>.
 	 */
 	public static <V> Predicate<V> truePredicate() {
-		return Predicate.True.instance();
+		return TruePredicate.instance();
 	}
 
 	/**
 	 * Return a predicate that will always evaluate to <code>false</code>.
 	 */
 	public static <V> Predicate<V> falsePredicate() {
-		return Predicate.False.instance();
+		return FalsePredicate.instance();
 	}
 
 	/**
@@ -42,7 +42,7 @@ public final class PredicateTools {
 	 * <em>not</em> <code>null</code>.
 	 */
 	public static <V> Predicate<V> notNullPredicate() {
-		return Predicate.NotNull.instance();
+		return NotNullPredicate.instance();
 	}
 
 	/**
@@ -50,7 +50,7 @@ public final class PredicateTools {
 	 * <code>null</code>.
 	 */
 	public static <V> Predicate<V> nullPredicate() {
-		return Predicate.Null.instance();
+		return NullPredicate.instance();
 	}
 
 	/**
@@ -58,7 +58,7 @@ public final class PredicateTools {
 	 * evaluated.
 	 */
 	public static <V> Predicate<V> disabledPredicate() {
-		return Predicate.Disabled.instance();
+		return DisabledPredicate.instance();
 	}
 
 

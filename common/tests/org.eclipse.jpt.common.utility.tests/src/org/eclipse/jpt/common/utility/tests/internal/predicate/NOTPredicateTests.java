@@ -12,6 +12,8 @@ package org.eclipse.jpt.common.utility.tests.internal.predicate;
 import java.io.Serializable;
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.predicate.NOTPredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.NotNullPredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
@@ -37,7 +39,7 @@ public class NOTPredicateTests
 	}
 
 	static class PositivePredicate
-		extends Predicate.Adapter<Number>
+		extends PredicateAdapter<Number>
 		implements Serializable
 	{
 		private static final long serialVersionUID = 1L;
@@ -80,7 +82,7 @@ public class NOTPredicateTests
 		NOTPredicate<Number> notPredicate2 = PredicateTools.not(this.buildPositivePredicate());
 		assertEquals(this.notPredicate, notPredicate2);
 		assertEquals(this.notPredicate.hashCode(), notPredicate2.hashCode());
-		assertFalse(this.notPredicate.equals(Predicate.NotNull.instance()));
+		assertFalse(this.notPredicate.equals(NotNullPredicate.instance()));
 	}
 
 	public void testSerialization() throws Exception {

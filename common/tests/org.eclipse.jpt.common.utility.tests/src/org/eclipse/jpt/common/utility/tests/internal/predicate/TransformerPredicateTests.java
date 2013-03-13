@@ -11,10 +11,10 @@ package org.eclipse.jpt.common.utility.tests.internal.predicate;
 
 import java.io.Serializable;
 import junit.framework.TestCase;
+import org.eclipse.jpt.common.utility.internal.predicate.NotNullPredicate;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.internal.predicate.TransformerPredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
-import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -70,7 +70,7 @@ public class TransformerPredicateTests
 		TransformerPredicate<Integer> transformerPredicate2 = PredicateTools.transformerPredicate(this.transformer);
 		assertEquals(this.transformerPredicate, transformerPredicate2);
 		assertEquals(this.transformerPredicate.hashCode(), transformerPredicate2.hashCode());
-		assertFalse(this.transformerPredicate.equals(Predicate.NotNull.instance()));
+		assertFalse(this.transformerPredicate.equals(NotNullPredicate.instance()));
 	}
 
 	public void testSerialization() throws Exception {

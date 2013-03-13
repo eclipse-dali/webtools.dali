@@ -31,24 +31,25 @@ import org.eclipse.jpt.common.utility.internal.TypeDeclarationTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
+import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ColumnMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.Relationship;
+import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTable;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.AttributeOverride;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedReferenceTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
-import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0;
@@ -561,7 +562,7 @@ public final class MappingTools {
 
 	public static final Predicate<IType> TYPE_IS_INTERFACE = new TypeIsInterface();
 	public static class TypeIsInterface
-		extends Predicate.Adapter<IType>
+		extends PredicateAdapter<IType>
 	{
 		@Override
 		public boolean evaluate(IType type) {
@@ -597,7 +598,7 @@ public final class MappingTools {
 	
 	public static final Predicate<IType> TYPE_IS_CLASS = new TypeIsClass();
 	public static class TypeIsClass
-		extends Predicate.Adapter<IType>
+		extends PredicateAdapter<IType>
 	{
 		@Override
 		public boolean evaluate(IType type) {
@@ -619,7 +620,7 @@ public final class MappingTools {
 	
 	public static final Predicate<IType> TYPE_IS_ENUM = new TypeIsEnum();
 	public static class TypeIsEnum
-		extends Predicate.Adapter<IType>
+		extends PredicateAdapter<IType>
 	{
 		@Override
 		public boolean evaluate(IType type) {

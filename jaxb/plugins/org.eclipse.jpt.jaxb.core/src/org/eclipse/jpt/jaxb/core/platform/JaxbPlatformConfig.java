@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.platform;
 
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
@@ -66,7 +67,7 @@ public interface JaxbPlatformConfig {
 	boolean supportsJaxbFacetVersion(IProjectFacetVersion jaxbFacetVersion);
 
 	class SupportsJaxbFacetVersion
-		extends Predicate.Adapter<JaxbPlatformConfig>
+		extends PredicateAdapter<JaxbPlatformConfig>
 	{
 		private final IProjectFacetVersion jaxbFacetVersion;
 		public SupportsJaxbFacetVersion(IProjectFacetVersion jaxbFacetVersion) {
@@ -88,7 +89,7 @@ public interface JaxbPlatformConfig {
 
 	Predicate<JaxbPlatformConfig> IS_DEFAULT = new IsDefault();
 	class IsDefault
-		extends Predicate.Adapter<JaxbPlatformConfig>
+		extends PredicateAdapter<JaxbPlatformConfig>
 	{
 		@Override
 		public boolean evaluate(JaxbPlatformConfig config) {

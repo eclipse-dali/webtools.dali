@@ -10,8 +10,8 @@
 package org.eclipse.jpt.common.core;
 
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
-import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
@@ -43,7 +43,7 @@ public interface ContentTypeReference {
 	}
 
 	class ContentIsKindOf
-		extends Predicate.Adapter<ContentTypeReference>
+		extends PredicateAdapter<ContentTypeReference>
 	{
 		private final IContentType contentType;
 		public ContentIsKindOf(IContentType contentType) {

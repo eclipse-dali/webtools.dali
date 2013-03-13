@@ -12,6 +12,7 @@ package org.eclipse.jpt.common.core.resource.java;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 
@@ -180,7 +181,7 @@ public interface JavaResourceAnnotatedElement
 	boolean isAnnotated();
 	Predicate<JavaResourceAnnotatedElement> IS_ANNOTATED = new IsAnnotated();
 	class IsAnnotated
-		extends Predicate.Adapter<JavaResourceAnnotatedElement>
+		extends PredicateAdapter<JavaResourceAnnotatedElement>
 	{
 		@Override
 		public boolean evaluate(JavaResourceAnnotatedElement element) {
@@ -194,7 +195,7 @@ public interface JavaResourceAnnotatedElement
 	boolean isAnnotatedWithAnyOf(Iterable<String> annotationNames);
 
 	class IsAnnotatedWithAnyOf
-		extends Predicate.Adapter<JavaResourceAnnotatedElement>
+		extends PredicateAdapter<JavaResourceAnnotatedElement>
 	{
 		private final Iterable<String> annotationNames;
 		public IsAnnotatedWithAnyOf(Iterable<String> annotationNames) {
@@ -212,7 +213,7 @@ public interface JavaResourceAnnotatedElement
 	 */
 	AstNodeType getAstNodeType();
 	class AstNodeTypeEquals
-		extends Predicate.Adapter<JavaResourceAnnotatedElement>
+		extends PredicateAdapter<JavaResourceAnnotatedElement>
 	{
 		private final AstNodeType astNodeType;
 		public AstNodeTypeEquals(AstNodeType astNodeType) {

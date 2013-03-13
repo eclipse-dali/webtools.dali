@@ -11,9 +11,9 @@ package org.eclipse.jpt.common.utility.tests.internal.predicate;
 
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.predicate.FieldPredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.NotNullPredicate;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.internal.reference.SimpleBooleanReference;
-import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.reference.BooleanReference;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
@@ -57,7 +57,7 @@ public class FieldPredicateTests
 		FieldPredicate<BooleanReference> fieldPredicate2 = PredicateTools.fieldPredicate("value");
 		assertEquals(this.fieldPredicate, fieldPredicate2);
 		assertEquals(this.fieldPredicate.hashCode(), fieldPredicate2.hashCode());
-		assertFalse(this.fieldPredicate.equals(Predicate.NotNull.instance()));
+		assertFalse(this.fieldPredicate.equals(NotNullPredicate.instance()));
 	}
 
 	public void testSerialization() throws Exception {

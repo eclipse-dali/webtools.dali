@@ -20,8 +20,8 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
-import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
@@ -274,7 +274,7 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 	}
 
 	public class MappingIsIdMapping
-		extends Predicate.Adapter<AttributeMapping>
+		extends PredicateAdapter<AttributeMapping>
 	{
 		@Override
 		public boolean evaluate(AttributeMapping mapping) {

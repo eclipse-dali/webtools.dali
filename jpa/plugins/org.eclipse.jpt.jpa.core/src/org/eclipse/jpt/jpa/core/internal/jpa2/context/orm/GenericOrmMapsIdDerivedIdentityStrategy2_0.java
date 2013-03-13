@@ -16,8 +16,8 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
-import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -196,7 +196,7 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 	}
 
 	public class MappingIsIdMapping
-		extends Predicate.Adapter<AttributeMapping>
+		extends PredicateAdapter<AttributeMapping>
 	{
 		@Override
 		public boolean evaluate(AttributeMapping mapping) {

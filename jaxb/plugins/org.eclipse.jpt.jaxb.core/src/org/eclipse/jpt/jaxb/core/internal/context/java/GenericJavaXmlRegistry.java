@@ -21,8 +21,9 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.jaxb.core.JptJaxbCoreMessages;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
+import org.eclipse.jpt.jaxb.core.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
@@ -114,7 +115,7 @@ public class GenericJavaXmlRegistry
 	
 	protected static final Predicate<JavaResourceMethod> METHOD_IS_ELEMENT_FACTORY_METHOD = new MethodIsElementFactoryMethod();
 	public static class MethodIsElementFactoryMethod
-		extends Predicate.Adapter<JavaResourceMethod>
+		extends PredicateAdapter<JavaResourceMethod>
 	{
 		@Override
 		public boolean evaluate(JavaResourceMethod method) {

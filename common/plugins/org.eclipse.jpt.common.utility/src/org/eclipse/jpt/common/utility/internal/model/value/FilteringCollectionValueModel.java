@@ -14,6 +14,7 @@ import java.util.Iterator;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
+import org.eclipse.jpt.common.utility.internal.predicate.TruePredicate;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionClearEvent;
@@ -61,7 +62,7 @@ public class FilteringCollectionValueModel<E>
 	 * collection value model and a filter that simply accepts every object.
 	 */
 	public FilteringCollectionValueModel(CollectionValueModel<? extends E> collectionModel) {
-		this(collectionModel, Predicate.True.<E>instance());
+		this(collectionModel, TruePredicate.<E>instance());
 	}
 
 	/**

@@ -11,8 +11,8 @@ package org.eclipse.jpt.common.utility.tests.internal.predicate;
 
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.predicate.IdentityPredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.NotNullPredicate;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
-import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 public class IdentityPredicateTests
@@ -57,7 +57,7 @@ public class IdentityPredicateTests
 		IdentityPredicate<Integer> identityPredicate2 = PredicateTools.identityPredicate(new Integer(42));
 		assertEquals(this.identityPredicate, identityPredicate2);
 		assertEquals(this.identityPredicate.hashCode(), identityPredicate2.hashCode());
-		assertFalse(this.identityPredicate.equals(Predicate.NotNull.instance()));
+		assertFalse(this.identityPredicate.equals(NotNullPredicate.instance()));
 	}
 
 	public void testSerialization() throws Exception {

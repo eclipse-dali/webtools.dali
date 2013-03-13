@@ -23,6 +23,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
@@ -260,7 +261,7 @@ public final class JDTTools {
 	}
 
 	public static class ResourceIsOnClasspath
-		extends Predicate.Adapter<IResource>
+		extends PredicateAdapter<IResource>
 	{
 		private final IJavaProject javaProject;
 		public ResourceIsOnClasspath(IJavaProject javaProject) {
@@ -274,7 +275,7 @@ public final class JDTTools {
 	}
 
 	public static class JavaElementIsOnClasspath
-		extends Predicate.Adapter<IJavaElement>
+		extends PredicateAdapter<IJavaElement>
 	{
 		private final IJavaProject javaProject;
 		public JavaElementIsOnClasspath(IJavaProject javaProject) {

@@ -23,6 +23,7 @@ import org.eclipse.jpt.common.core.internal.utility.ConfigurationElementTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
@@ -352,7 +353,7 @@ public class InternalJaxbPlatformManager
 	}
 
 	/* CU private */ static class InternalJaxbPlatformConfigFilter
-		extends Predicate.Adapter<JaxbPlatformConfig>
+		extends PredicateAdapter<JaxbPlatformConfig>
 	{
 		private final String prefix;
 		InternalJaxbPlatformConfigFilter(String prefix) {

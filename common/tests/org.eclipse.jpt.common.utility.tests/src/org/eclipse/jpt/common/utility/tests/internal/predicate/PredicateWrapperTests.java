@@ -11,9 +11,9 @@ package org.eclipse.jpt.common.utility.tests.internal.predicate;
 
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.predicate.EqualPredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.NotNullPredicate;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateWrapper;
-import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
@@ -68,7 +68,7 @@ public class PredicateWrapperTests
 		PredicateWrapper<Integer> predicateWrapper2 = PredicateTools.wrap(this.wrappedPredicate);
 		assertEquals(this.predicateWrapper, predicateWrapper2);
 		assertEquals(this.predicateWrapper.hashCode(), predicateWrapper2.hashCode());
-		assertFalse(this.predicateWrapper.equals(Predicate.NotNull.instance()));
+		assertFalse(this.predicateWrapper.equals(NotNullPredicate.instance()));
 	}
 
 	public void testSerialization() throws Exception {

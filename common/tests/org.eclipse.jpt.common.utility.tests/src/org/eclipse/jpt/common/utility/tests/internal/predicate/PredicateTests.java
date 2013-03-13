@@ -10,8 +10,11 @@
 package org.eclipse.jpt.common.utility.tests.internal.predicate;
 
 import junit.framework.TestCase;
-
+import org.eclipse.jpt.common.utility.internal.predicate.DisabledPredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.FalsePredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
+import org.eclipse.jpt.common.utility.internal.predicate.TruePredicate;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
@@ -24,7 +27,7 @@ public class PredicateTests
 	}
 
 	public void testPredicateAdapter() {
-		Predicate<String> filter = new Predicate.Adapter<String>();
+		Predicate<String> filter = new PredicateAdapter<String>();
 		assertTrue(filter.evaluate(""));
 		assertTrue(filter.evaluate(null));
 		assertTrue(filter.evaluate("foo"));
@@ -32,41 +35,41 @@ public class PredicateTests
 	}
 
 	public void testPredicateAdapter_toString() {
-		Predicate<String> filter = new Predicate.Adapter<String>();
+		Predicate<String> filter = new PredicateAdapter<String>();
 		assertNotNull(filter.toString());
 	}
 
 	public void testTruePredicate() {
-		Predicate<String> predicate = Predicate.True.instance();
+		Predicate<String> predicate = TruePredicate.instance();
 		assertTrue(predicate.evaluate(""));
 		assertTrue(predicate.evaluate("foo"));
 		assertTrue(predicate.evaluate("bar"));
 	}
 
 	public void testTruePredicate_toString() {
-		Predicate<String> predicate = Predicate.True.instance();
+		Predicate<String> predicate = TruePredicate.instance();
 		assertNotNull(predicate.toString());
 	}
 
 	public void testTruePredicate_serialization() throws Exception {
-		Predicate<String> predicate = Predicate.True.instance();
+		Predicate<String> predicate = TruePredicate.instance();
 		assertSame(predicate, TestTools.serialize(predicate));
 	}
 
 	public void testFalsePredicate() {
-		Predicate<String> predicate = Predicate.False.instance();
+		Predicate<String> predicate = FalsePredicate.instance();
 		assertFalse(predicate.evaluate(""));
 		assertFalse(predicate.evaluate("foo"));
 		assertFalse(predicate.evaluate("bar"));
 	}
 
 	public void testFalsePredicate_toString() {
-		Predicate<String> predicate = Predicate.False.instance();
+		Predicate<String> predicate = FalsePredicate.instance();
 		assertNotNull(predicate.toString());
 	}
 
 	public void testFalsePredicate_serialization() throws Exception {
-		Predicate<String> predicate = Predicate.False.instance();
+		Predicate<String> predicate = FalsePredicate.instance();
 		assertSame(predicate, TestTools.serialize(predicate));
 	}
 
@@ -97,7 +100,7 @@ public class PredicateTests
 	}
 
 	public void testDisabledPredicate() {
-		Predicate<String> predicate = Predicate.Disabled.instance();
+		Predicate<String> predicate = DisabledPredicate.instance();
 		boolean exCaught = false;
 		try {
 			assertFalse(predicate.evaluate("foo"));
@@ -109,12 +112,12 @@ public class PredicateTests
 	}
 
 	public void testDisabledPredicate_toString() {
-		Predicate<String> predicate = Predicate.Disabled.instance();
+		Predicate<String> predicate = DisabledPredicate.instance();
 		assertNotNull(predicate.toString());
 	}
 
 	public void testDisabledPredicate_serialization() throws Exception {
-		Predicate<String> predicate = Predicate.Disabled.instance();
+		Predicate<String> predicate = DisabledPredicate.instance();
 		assertSame(predicate, TestTools.serialize(predicate));
 	}
 }

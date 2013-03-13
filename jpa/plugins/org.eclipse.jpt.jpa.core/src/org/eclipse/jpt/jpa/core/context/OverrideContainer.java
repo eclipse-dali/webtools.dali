@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jpa.core.context;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.db.Table;
 
@@ -183,7 +183,7 @@ public interface OverrideContainer
 		TypeMapping getTypeMapping();
 
 		class AttributeIsOverridable
-			extends Predicate.Adapter<String>
+			extends PredicateAdapter<String>
 		{
 			private final ParentAdapter parentAdapter;
 			public AttributeIsOverridable(ParentAdapter parentAdapter) {

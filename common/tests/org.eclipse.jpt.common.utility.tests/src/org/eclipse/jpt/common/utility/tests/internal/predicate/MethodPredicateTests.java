@@ -11,10 +11,10 @@ package org.eclipse.jpt.common.utility.tests.internal.predicate;
 
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.predicate.MethodPredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.NotNullPredicate;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.internal.reference.SimpleBooleanReference;
 import org.eclipse.jpt.common.utility.internal.transformer.BooleanStringTransformer;
-import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.reference.BooleanReference;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -68,12 +68,12 @@ public class MethodPredicateTests
 		MethodPredicate<BooleanReference> methodPredicate2 = PredicateTools.methodPredicate("getValue");
 		assertEquals(this.methodPredicate, methodPredicate2);
 		assertEquals(this.methodPredicate.hashCode(), methodPredicate2.hashCode());
-		assertFalse(this.methodPredicate.equals(Predicate.NotNull.instance()));
+		assertFalse(this.methodPredicate.equals(NotNullPredicate.instance()));
 
 		MethodPredicate<Transformer<String, Boolean>> parmMethodPredicate2 = PredicateTools.methodPredicate("transform", Object.class, "true");
 		assertEquals(this.parmMethodPredicate, parmMethodPredicate2);
 		assertEquals(this.parmMethodPredicate.hashCode(), parmMethodPredicate2.hashCode());
-		assertFalse(this.parmMethodPredicate.equals(Predicate.NotNull.instance()));
+		assertFalse(this.parmMethodPredicate.equals(NotNullPredicate.instance()));
 	}
 
 	public void testSerialization() throws Exception {

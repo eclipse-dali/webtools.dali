@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -58,7 +59,7 @@ public class ProjectTools {
 	}
 
 	public static class HasFacet
-		extends Predicate.Adapter<IProject>
+		extends PredicateAdapter<IProject>
 	{
 		private final String facetID;
 		public HasFacet(String facetID) {
@@ -86,7 +87,7 @@ public class ProjectTools {
 
 	public static final Predicate<IProject> IS_JAVA_PROJECT = new HasNature(JavaCore.NATURE_ID);
 	public static class HasNature
-		extends Predicate.Adapter<IProject>
+		extends PredicateAdapter<IProject>
 	{
 		private final String natureID;
 		public HasNature(String natureID) {

@@ -27,6 +27,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.SystemTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.XMLStringEncoder;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
@@ -223,7 +224,7 @@ public final class FileTools {
 	 */
 	public static final Predicate<File> NORMAL_FILE_FILTER = new NormalFileFilter();
 	/* CU private */ static class NormalFileFilter
-		extends Predicate.Adapter<File>
+		extends PredicateAdapter<File>
 	{
 		@Override
 		public boolean evaluate(File file) {
@@ -268,7 +269,7 @@ public final class FileTools {
 	 */
 	public static final Predicate<File> DIRECTORY_FILTER = new DirectoryFilter();
 	/* CU private */ static class DirectoryFilter
-		extends Predicate.Adapter<File>
+		extends PredicateAdapter<File>
 	{
 		@Override
 		public boolean evaluate(File file) {
@@ -896,7 +897,7 @@ public final class FileTools {
 	 * Adapt a {@link FileFilter} to the {@link Predicate} interface.
 	 */
 	public static class FileFilterFilterAdapter
-		extends Predicate.Adapter<File>
+		extends PredicateAdapter<File>
 	{
 		private final FileFilter fileFilter;
 		public FileFilterFilterAdapter(FileFilter fileFilter) {

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context;
 
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -76,7 +77,7 @@ public interface DerivedIdentity2_0
 	boolean usesIdDerivedIdentityStrategy();
 	Predicate<DerivedIdentity2_0> USES_ID_DERIVED_IDENTITY_STRATEGY = new UsesIdDerivedIdentityStrategy();
 	class UsesIdDerivedIdentityStrategy
-		extends Predicate.Adapter<DerivedIdentity2_0>
+		extends PredicateAdapter<DerivedIdentity2_0>
 	{
 		@Override
 		public boolean evaluate(DerivedIdentity2_0 identity) {
@@ -113,7 +114,7 @@ public interface DerivedIdentity2_0
 	boolean usesMapsIdDerivedIdentityStrategy();
 	Predicate<DerivedIdentity2_0> USES_MAPS_ID_DERIVED_IDENTITY_STRATEGY = new UsesMapsIdDerivedIdentityStrategy();
 	class UsesMapsIdDerivedIdentityStrategy
-		extends Predicate.Adapter<DerivedIdentity2_0>
+		extends PredicateAdapter<DerivedIdentity2_0>
 	{
 		@Override
 		public boolean evaluate(DerivedIdentity2_0 identity) {

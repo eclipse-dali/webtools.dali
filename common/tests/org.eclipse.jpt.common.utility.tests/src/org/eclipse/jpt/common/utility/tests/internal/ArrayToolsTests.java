@@ -26,8 +26,9 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.command.InterruptibleParameterizedCommandAdapter;
 import org.eclipse.jpt.common.utility.internal.command.ParameterizedCommandAdapter;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
+import org.eclipse.jpt.common.utility.internal.predicate.TruePredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
-import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 @SuppressWarnings("nls")
@@ -3019,7 +3020,7 @@ public class ArrayToolsTests
 
 	public void testFilterObjectArrayFilterTransparent() {
 		String[] a = new String[] { "zero", "one", "two", "three", "four" };
-		String[] actual = ArrayTools.filter(a, Predicate.True.<String>instance());
+		String[] actual = ArrayTools.filter(a, TruePredicate.<String>instance());
 		String[] expected = new String[] { "zero", "one", "two", "three", "four" };
 		assertEquals(Arrays.asList(expected), Arrays.asList(actual));
 		assertNotSame(expected, actual);
@@ -3029,7 +3030,7 @@ public class ArrayToolsTests
 	 * Accept any string with the specified length.
 	 */
 	public static class StringLengthFilter
-		extends Predicate.Adapter<String>
+		extends PredicateAdapter<String>
 	{
 		private final int length;
 		public StringLengthFilter(int length) {

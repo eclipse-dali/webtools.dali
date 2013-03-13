@@ -12,6 +12,7 @@ package org.eclipse.jpt.common.utility.internal;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -728,7 +729,7 @@ public final class CharArrayTools {
 	public static final Predicate<char[]> NON_BLANK_FILTER = new NonBlankFilter();
 
 	/* CU private */ static class NonBlankFilter
-		extends Predicate.Adapter<char[]>
+		extends PredicateAdapter<char[]>
 		implements Serializable
 	{
 		@Override

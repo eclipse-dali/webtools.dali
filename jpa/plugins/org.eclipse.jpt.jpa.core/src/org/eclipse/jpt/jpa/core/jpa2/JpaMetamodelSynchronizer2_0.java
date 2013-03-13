@@ -17,7 +17,7 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.predicate.Predicate;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.GeneratedAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.StaticMetamodelAnnotation2_0;
 
@@ -139,7 +139,7 @@ public interface JpaMetamodelSynchronizer2_0 {
 		}
 
 		public static class IsGeneratedMetamodelTopLevelType
-			extends Predicate.Adapter<JavaResourceAbstractType>
+			extends PredicateAdapter<JavaResourceAbstractType>
 		{
 			private final IPackageFragmentRoot sourceFolder;
 			public IsGeneratedMetamodelTopLevelType(IPackageFragmentRoot sourceFolder) {

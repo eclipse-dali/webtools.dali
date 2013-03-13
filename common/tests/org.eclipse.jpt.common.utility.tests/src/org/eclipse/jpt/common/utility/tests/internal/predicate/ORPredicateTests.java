@@ -12,7 +12,9 @@ package org.eclipse.jpt.common.utility.tests.internal.predicate;
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.BitTools;
 import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.NotNullPredicate;
 import org.eclipse.jpt.common.utility.internal.predicate.ORPredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
@@ -71,7 +73,7 @@ public class ORPredicateTests
 	}
 
 	static class EvenPredicate
-		extends Predicate.Adapter<Number>
+		extends PredicateAdapter<Number>
 	{
 		EvenPredicate() {
 			super();
@@ -148,7 +150,7 @@ public class ORPredicateTests
 		ORPredicate<Number> orPredicate2 = PredicateTools.or(this.buildMinPredicate(1), this.buildMaxPredicate(10));
 		assertEquals(this.orPredicate, orPredicate2);
 		assertEquals(this.orPredicate.hashCode(), orPredicate2.hashCode());
-		assertFalse(this.orPredicate.equals(Predicate.NotNull.instance()));
+		assertFalse(this.orPredicate.equals(NotNullPredicate.instance()));
 	}
 
 	public void testSerialization() throws Exception {

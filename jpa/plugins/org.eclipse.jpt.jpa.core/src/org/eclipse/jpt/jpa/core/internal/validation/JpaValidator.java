@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
@@ -101,7 +102,7 @@ public class JpaValidator
 
 	private static final Predicate<IMessage> NON_IGNORED_MESSAGE = new NonIgnoredMessage();
 	/* CU private */ static class NonIgnoredMessage
-		extends Predicate.Adapter<IMessage>
+		extends PredicateAdapter<IMessage>
 	{
 		@Override
 		public boolean evaluate(IMessage message) {

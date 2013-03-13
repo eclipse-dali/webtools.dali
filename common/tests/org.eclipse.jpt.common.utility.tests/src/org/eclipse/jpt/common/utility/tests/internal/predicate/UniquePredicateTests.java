@@ -11,9 +11,9 @@ package org.eclipse.jpt.common.utility.tests.internal.predicate;
 
 import java.util.Arrays;
 import junit.framework.TestCase;
+import org.eclipse.jpt.common.utility.internal.predicate.NotNullPredicate;
 import org.eclipse.jpt.common.utility.internal.predicate.UniquePredicate;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
-import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
@@ -78,7 +78,7 @@ public class UniquePredicateTests
 		UniquePredicate<String> uniquePredicate2 = PredicateTools.uniquePredicate();
 		assertEquals(this.uniquePredicate, uniquePredicate2);
 		assertEquals(this.uniquePredicate.hashCode(), uniquePredicate2.hashCode());
-		assertFalse(this.uniquePredicate.equals(Predicate.NotNull.instance()));
+		assertFalse(this.uniquePredicate.equals(NotNullPredicate.instance()));
 	}
 
 	public void testSerialization() throws Exception {

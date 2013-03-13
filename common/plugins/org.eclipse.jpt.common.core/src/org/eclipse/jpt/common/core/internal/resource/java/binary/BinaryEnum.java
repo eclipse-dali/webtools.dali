@@ -20,6 +20,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceEnumConstant;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 
@@ -109,7 +110,7 @@ final class BinaryEnum
 
 	private static final Predicate<IField> FIELD_IS_ENUM_CONSTANT = new FieldIsEnumConstant();
 	/* CU private */ static class FieldIsEnumConstant
-		extends Predicate.Adapter<IField>
+		extends PredicateAdapter<IField>
 	{
 		@Override
 		public boolean evaluate(IField field) {

@@ -20,12 +20,12 @@ import org.eclipse.jpt.common.utility.internal.model.value.ListCollectionValueMo
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationListValueModel;
+import org.eclipse.jpt.common.utility.internal.predicate.NotNullPredicate;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.java.JarFile;
@@ -118,7 +118,7 @@ public class PersistenceUnitItemContentProvider
 	protected CollectionValueModel<JavaManagedType> buildNotNullJavaManagedTypesModel() {
 		return new FilteringCollectionValueModel<JavaManagedType>(
 				this.buildJavaManagedTypesModel(),
-				Predicate.NotNull.<JavaManagedType>instance()
+				NotNullPredicate.<JavaManagedType>instance()
 			);
 	}
 

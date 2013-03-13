@@ -11,8 +11,8 @@ package org.eclipse.jpt.common.utility.tests.internal.predicate;
 
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.predicate.EqualPredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.NotNullPredicate;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
-import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
@@ -57,7 +57,7 @@ public class EqualPredicateTests
 		EqualPredicate<Integer> equalPredicate2 = PredicateTools.equalPredicate(new Integer(42));
 		assertEquals(this.equalPredicate, equalPredicate2);
 		assertEquals(this.equalPredicate.hashCode(), equalPredicate2.hashCode());
-		assertFalse(this.equalPredicate.equals(Predicate.NotNull.instance()));
+		assertFalse(this.equalPredicate.equals(NotNullPredicate.instance()));
 	}
 
 	public void testSerialization() throws Exception {

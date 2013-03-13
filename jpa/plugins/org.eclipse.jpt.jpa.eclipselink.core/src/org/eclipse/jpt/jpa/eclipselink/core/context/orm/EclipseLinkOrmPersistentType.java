@@ -9,10 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context.orm;
 
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkSpecifiedAccessMethodsContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAttributeMapping;
@@ -41,7 +42,7 @@ public interface EclipseLinkOrmPersistentType
 		String DYNAMIC_PROPERTY = "dynamic"; //$NON-NLS-1$
 	Predicate<EclipseLinkOrmPersistentType> IS_DYNAMIC = new IsDynamic();
 	class IsDynamic
-		extends Predicate.Adapter<EclipseLinkOrmPersistentType>
+		extends PredicateAdapter<EclipseLinkOrmPersistentType>
 	{
 		@Override
 		public boolean evaluate(EclipseLinkOrmPersistentType pType) {

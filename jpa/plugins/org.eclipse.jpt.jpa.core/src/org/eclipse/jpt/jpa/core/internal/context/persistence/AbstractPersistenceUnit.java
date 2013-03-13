@@ -46,6 +46,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
@@ -559,7 +560,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	public static class MappingFileRefContains
-		extends Predicate.Adapter<MappingFileRef>
+		extends PredicateAdapter<MappingFileRef>
 	{
 		private final String typeName;
 		public MappingFileRefContains(String typeName) {
@@ -965,7 +966,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	public class SpecifiesManagedType
-		extends Predicate.Adapter<JavaResourceAbstractType>
+		extends PredicateAdapter<JavaResourceAbstractType>
 	{
 		@Override
 		public boolean evaluate(JavaResourceAbstractType jrat) {

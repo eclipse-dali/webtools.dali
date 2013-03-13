@@ -23,6 +23,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.AspectChangeSupport;
 import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.node.Node;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 
@@ -646,7 +647,7 @@ public abstract class AbstractNode
 
 	public static final Predicate<Node> IS_DIRTY = new IsDirty();
 	public static class IsDirty
-		extends Predicate.Adapter<Node>
+		extends PredicateAdapter<Node>
 	{
 		@Override
 		public boolean evaluate(Node node) {

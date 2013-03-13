@@ -26,6 +26,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
@@ -680,7 +681,7 @@ public class GenericJavaClassMapping
 	
 	protected static final Predicate<XmlNamedNodeMapping> MAPPING_HAS_XML_ID = new MappingHasXmlID();
 	public static class MappingHasXmlID
-		extends Predicate.Adapter<XmlNamedNodeMapping>
+		extends PredicateAdapter<XmlNamedNodeMapping>
 	{
 		@Override
 		public boolean evaluate(XmlNamedNodeMapping mapping) {

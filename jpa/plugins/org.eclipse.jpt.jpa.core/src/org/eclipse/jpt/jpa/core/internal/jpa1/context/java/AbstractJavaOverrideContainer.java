@@ -18,8 +18,8 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.Override_;
@@ -312,7 +312,7 @@ public abstract class AbstractJavaOverrideContainer<
 	}
 
 	public class AnnotationIsRelevant
-		extends Predicate.Adapter<A>
+		extends PredicateAdapter<A>
 	{
 		@Override
 		public boolean evaluate(A annotation) {
@@ -411,7 +411,7 @@ public abstract class AbstractJavaOverrideContainer<
 	}
 
 	public class OverrideIsVirtual
-		extends Predicate.Adapter<String>
+		extends PredicateAdapter<String>
 	{
 		@Override
 		public boolean evaluate(String overrideName) {

@@ -18,8 +18,8 @@ import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.common.core.libval.LibraryValidator;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
-import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 class LibraryValidatorConfig {
@@ -112,7 +112,7 @@ class LibraryValidatorConfig {
 	// ********** enabled filter **********
 
 	static class EnabledFilter
-		extends Predicate.Adapter<LibraryValidatorConfig>
+		extends PredicateAdapter<LibraryValidatorConfig>
 	{
 		private final JptLibraryProviderInstallOperationConfig installConfig;
 		EnabledFilter(JptLibraryProviderInstallOperationConfig installConfig) {

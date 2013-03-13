@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jpa.core.context;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
-import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
@@ -47,7 +47,7 @@ public interface PersistentAttribute
 	}
 
 	class NameEquals
-		extends Predicate.Adapter<PersistentAttribute>
+		extends PredicateAdapter<PersistentAttribute>
 	{
 		private final String attributeName;
 		public NameEquals(String attributeName) {

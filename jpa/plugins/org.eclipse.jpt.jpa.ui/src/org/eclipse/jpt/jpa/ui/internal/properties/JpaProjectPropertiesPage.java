@@ -51,6 +51,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelA
 import org.eclipse.jpt.common.utility.internal.model.value.StaticCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.internal.transformer.NotBooleanTransformer;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
@@ -62,7 +63,6 @@ import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
@@ -613,7 +613,7 @@ public class JpaProjectPropertiesPage
 	}
 
 	/* CU private */ class JpaPlatformConfigFilter
-		extends Predicate.Adapter<JpaPlatform.Config>
+		extends PredicateAdapter<JpaPlatform.Config>
 	{
 		@Override
 		public boolean evaluate(JpaPlatform.Config config) {

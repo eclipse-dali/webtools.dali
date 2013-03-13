@@ -24,8 +24,8 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
-import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.db.Database;
 import org.eclipse.jpt.jpa.db.Schema;
@@ -194,7 +194,7 @@ public class DefaultContentAssistExtension implements ContentAssistExtension {
 	}
 
 	public static class ExpressionStartsWithIgnoreCase
-		extends Predicate.Adapter<String>
+		extends PredicateAdapter<String>
 	{
 		private final String prefix;
 		public ExpressionStartsWithIgnoreCase(String prefix) {

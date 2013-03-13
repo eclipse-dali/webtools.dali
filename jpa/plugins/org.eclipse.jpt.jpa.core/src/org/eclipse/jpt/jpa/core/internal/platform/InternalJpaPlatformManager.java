@@ -23,6 +23,7 @@ import org.eclipse.jpt.common.core.internal.utility.ConfigurationElementTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -344,7 +345,7 @@ public class InternalJpaPlatformManager
 	}
 
 	/* CU private */ static class FacetVersionJpaPlatformConfigFilter
-		extends Predicate.Adapter<InternalJpaPlatformConfig>
+		extends PredicateAdapter<InternalJpaPlatformConfig>
 	{
 		private final IProjectFacetVersion jpaFacetVersion;
 		FacetVersionJpaPlatformConfigFilter(IProjectFacetVersion jpaFacetVersion) {
@@ -376,7 +377,7 @@ public class InternalJpaPlatformManager
 	}
 
 	/* CU private */ static class DaliJpaPlatformConfigFilter
-		extends Predicate.Adapter<InternalJpaPlatformConfig>
+		extends PredicateAdapter<InternalJpaPlatformConfig>
 	{
 		private final String prefix;
 		DaliJpaPlatformConfigFilter(String prefix) {

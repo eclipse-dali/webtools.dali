@@ -13,6 +13,8 @@ import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.BitTools;
 import org.eclipse.jpt.common.utility.internal.predicate.ANDPredicate;
 import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.NotNullPredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
@@ -71,7 +73,7 @@ public class ANDPredicateTests
 	}
 
 	static class EvenPredicate
-		extends Predicate.Adapter<Number>
+		extends PredicateAdapter<Number>
 	{
 		@Override
 		public boolean evaluate(Number number) {
@@ -131,7 +133,7 @@ public class ANDPredicateTests
 		ANDPredicate<Number> andPredicate2 = PredicateTools.and(this.buildMinPredicate(1), this.buildMaxPredicate(10));
 		assertEquals(this.andPredicate, andPredicate2);
 		assertEquals(this.andPredicate.hashCode(), andPredicate2.hashCode());
-		assertFalse(this.andPredicate.equals(Predicate.NotNull.instance()));
+		assertFalse(this.andPredicate.equals(NotNullPredicate.instance()));
 	}
 
 	public void testSerialization() throws Exception {

@@ -27,6 +27,8 @@ import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.io.FileTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
+import org.eclipse.jpt.common.utility.internal.predicate.TruePredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 
@@ -541,7 +543,7 @@ public class Classpath
 	 * @see #classNames()
 	 */
 	public Iterable<String> getClassNames() {
-		return this.getClassNames(Predicate.True.<String>instance());
+		return this.getClassNames(TruePredicate.<String>instance());
 	}
 
 	/**
@@ -560,7 +562,7 @@ public class Classpath
 	 * to the specified collection.
 	 */
 	public void addClassNamesTo(Collection<String> classNames) {
-		this.addClassNamesTo(classNames, Predicate.True.<String>instance());
+		this.addClassNamesTo(classNames, TruePredicate.<String>instance());
 	}
 
 	/**
@@ -578,7 +580,7 @@ public class Classpath
 	 * Just a bit more performant than {@link #getClassNames()}.
 	 */
 	public Iterator<String> classNames() {
-		return this.classNames(Predicate.True.<String>instance());
+		return this.classNames(TruePredicate.<String>instance());
 	}
 
 	/**
@@ -755,7 +757,7 @@ public class Classpath
 		 * @see #classNames()
 		 */
 		public Iterable<String> getClassNames() {
-			return this.getClassNames(Predicate.True.<String>instance());
+			return this.getClassNames(TruePredicate.<String>instance());
 		}
 
 		/**
@@ -774,7 +776,7 @@ public class Classpath
 		 * to the specified collection.
 		 */
 		public void addClassNamesTo(Collection<String> classNames) {
-			this.addClassNamesTo(classNames, Predicate.True.<String>instance());
+			this.addClassNamesTo(classNames, TruePredicate.<String>instance());
 		}
 
 		/**
@@ -815,7 +817,7 @@ public class Classpath
 		}
 
 		/* class private */ class FileMightBeClassFile
-			extends Predicate.Adapter<File>
+			extends PredicateAdapter<File>
 		{
 			@Override
 			public boolean evaluate(File f) {
@@ -869,7 +871,7 @@ public class Classpath
 		 * Just a bit more performant than {@link #getClassNames()}.
 		 */
 		public Iterator<String> classNames() {
-			return this.classNames(Predicate.True.<String>instance());
+			return this.classNames(TruePredicate.<String>instance());
 		}
 
 		/**

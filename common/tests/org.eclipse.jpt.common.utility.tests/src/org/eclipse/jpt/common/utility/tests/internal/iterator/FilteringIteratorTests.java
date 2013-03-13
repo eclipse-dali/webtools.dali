@@ -16,6 +16,7 @@ import java.util.NoSuchElementException;
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.DisabledPredicate;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 
@@ -188,7 +189,7 @@ public class FilteringIteratorTests
 		boolean exCaught = false;
 		try {
 			// missing method override
-			Iterator<String> iterator = IteratorTools.filter(this.buildNestedIterator(), Predicate.Disabled.<String>instance());
+			Iterator<String> iterator = IteratorTools.filter(this.buildNestedIterator(), DisabledPredicate.<String>instance());
 			String s = iterator.next();
 			fail("invalid string: " + s);
 		} catch (UnsupportedOperationException ex) {

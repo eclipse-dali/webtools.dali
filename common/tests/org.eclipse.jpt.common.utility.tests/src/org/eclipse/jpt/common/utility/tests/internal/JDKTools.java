@@ -23,6 +23,7 @@ import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.io.NullOutputStream;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -117,7 +118,7 @@ public class JDKTools {
 
 	private static final Predicate<File> JAVA_FILE_FILTER = new JavaFileFilter();
 	/* CU private */ static class JavaFileFilter
-		extends Predicate.Adapter<File>
+		extends PredicateAdapter<File>
 	{
 		@Override
 		public boolean evaluate(File file) {

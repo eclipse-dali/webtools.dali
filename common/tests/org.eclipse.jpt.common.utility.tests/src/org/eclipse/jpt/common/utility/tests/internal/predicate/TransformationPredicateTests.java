@@ -11,10 +11,10 @@ package org.eclipse.jpt.common.utility.tests.internal.predicate;
 
 import java.io.Serializable;
 import junit.framework.TestCase;
+import org.eclipse.jpt.common.utility.internal.predicate.NotNullPredicate;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.internal.predicate.TransformationPredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
-import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -32,7 +32,7 @@ public class TransformationPredicateTests
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.predicate = PredicateTools.wrap(Predicate.NotNull.<String>instance(), Person.NAME_TRANSFORMER);
+		this.predicate = PredicateTools.wrap(NotNullPredicate.<String>instance(), Person.NAME_TRANSFORMER);
 	}
 
 	@Override
@@ -54,10 +54,10 @@ public class TransformationPredicateTests
 	}
 
 	public void testEquals() {
-		TransformationPredicate<Person, String> predicate2 = PredicateTools.wrap(Predicate.NotNull.<String>instance(), Person.NAME_TRANSFORMER);
+		TransformationPredicate<Person, String> predicate2 = PredicateTools.wrap(NotNullPredicate.<String>instance(), Person.NAME_TRANSFORMER);
 		assertEquals(this.predicate, predicate2);
 		assertEquals(this.predicate.hashCode(), predicate2.hashCode());
-		assertFalse(this.predicate.equals(Predicate.NotNull.instance()));
+		assertFalse(this.predicate.equals(NotNullPredicate.instance()));
 	}
 
 	public void testSerialization() throws Exception {

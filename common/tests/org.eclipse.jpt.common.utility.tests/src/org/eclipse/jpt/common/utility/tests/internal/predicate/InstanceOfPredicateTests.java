@@ -11,8 +11,8 @@ package org.eclipse.jpt.common.utility.tests.internal.predicate;
 
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.predicate.InstanceOfPredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.NotNullPredicate;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
-import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
@@ -71,7 +71,7 @@ public class InstanceOfPredicateTests
 		InstanceOfPredicate<Number> instanceOfPredicate2 = PredicateTools.instanceOfPredicate(Number.class);
 		assertEquals(this.instanceOfPredicate, instanceOfPredicate2);
 		assertEquals(this.instanceOfPredicate.hashCode(), instanceOfPredicate2.hashCode());
-		assertFalse(this.instanceOfPredicate.equals(Predicate.NotNull.instance()));
+		assertFalse(this.instanceOfPredicate.equals(NotNullPredicate.instance()));
 	}
 
 	public void testSerialization() throws Exception {

@@ -26,6 +26,7 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.predicate.TruePredicate;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
@@ -185,7 +186,7 @@ public class JpaJavaCompletionProposalComputer
 
 	private Predicate<String> buildPrefixFilter(char[] prefix) {
 		return (prefix == null) ?
-				Predicate.True.<String>instance() :
+				TruePredicate.<String>instance() :
 				new IgnoreCasePrefixFilter(prefix);
 	}
 

@@ -14,6 +14,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.predicate.DisabledPredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 @SuppressWarnings("nls")
@@ -61,7 +63,7 @@ public class FilteringIterableTests
 
 	public void testMissingFilter() {
 		boolean exCaught = false;
-		Iterable<String> iterable = IterableTools.filter(this.buildNestedIterable(), Predicate.Disabled.<String>instance());
+		Iterable<String> iterable = IterableTools.filter(this.buildNestedIterable(), DisabledPredicate.<String>instance());
 		try {
 			Iterator<String> iterator = iterable.iterator();
 			fail("bogus iterator: " + iterator);
@@ -80,7 +82,7 @@ public class FilteringIterableTests
 	}
 
 	/* CU private */ static class StringStartsWithPrefix
-		extends Predicate.Adapter<String>
+		extends PredicateAdapter<String>
 	{
 		@Override
 		public boolean evaluate(String s) {
@@ -93,7 +95,7 @@ public class FilteringIterableTests
 	}
 
 	/* CU private */ static class ObjectToStringStartsWithPrefix
-		extends Predicate.Adapter<Object>
+		extends PredicateAdapter<Object>
 	{
 		@Override
 		public boolean evaluate(Object o) {
