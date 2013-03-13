@@ -12,6 +12,7 @@ package org.eclipse.jpt.jaxb.core.internal.context;
 import java.util.List;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.internal.utility.EmptyTextRange;
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
@@ -106,7 +107,7 @@ public abstract class AbstractJaxbContextNode
 	
 	/* default impl */
 	public TextRange getValidationTextRange() {
-		return TextRange.Empty.instance(); //?
+		return EmptyTextRange.instance(); //?
 	}
 	
 	/**

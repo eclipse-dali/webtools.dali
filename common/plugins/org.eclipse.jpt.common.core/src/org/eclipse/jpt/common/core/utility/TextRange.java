@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,9 +8,6 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.common.core.utility;
-
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * A text range defines the offset into, length of, and line of a piece
@@ -24,6 +21,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
  * <p>
  * This interface is not intended to be implemented by clients.
  * 
+ * @see org.eclipse.wst.validation.internal.provisional.core.IMessage
  * @version 2.0
  * @since 2.0
  */
@@ -72,32 +70,4 @@ public interface TextRange {
 	 * contract.
 	 */
 	int hashCode();
-
-
-	/**
-	 * Empty implementation of text range.
-	 */
-	final class Empty extends AbstractTextRange {
-		public static final TextRange INSTANCE = new Empty();
-		public static TextRange instance() {
-			return INSTANCE;
-		}
-		// ensure single instance
-		private Empty() {
-			super();
-		}
-		public int getLineNumber() {
-			return IMessage.LINENO_UNSET;
-		}
-		public int getOffset() {
-			return IMessage.OFFSET_UNSET;
-		}
-		public int getLength() {
-			return IMessage.OFFSET_UNSET;
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.singletonToString(this);
-		}
-	}
 }

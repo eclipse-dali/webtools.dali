@@ -31,7 +31,7 @@ public final class ValidationMessageTools {
 	 * @see #buildValidationMessage(IResource, TextRange, ValidationMessage, Object[])
 	 */
 	public static IMessage buildValidationMessage(IResource target, ValidationMessage message, Object... args) {
-		return buildValidationMessage(target, TextRange.Empty.instance(), message, args);
+		return buildValidationMessage(target, EmptyTextRange.instance(), message, args);
 	}
 
 	/**

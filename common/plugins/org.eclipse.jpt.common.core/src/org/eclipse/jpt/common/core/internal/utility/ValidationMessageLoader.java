@@ -426,7 +426,7 @@ public class ValidationMessageLoader {
 			message.setMarkerId(this.markerType);
 
 			if (textRange == null) {
-				textRange = TextRange.Empty.instance();
+				textRange = EmptyTextRange.instance();
 				// log the exception but allow the message to still be used
 				logError(new NullPointerException(), "Null text range for message ID: {0}", this.id); //$NON-NLS-1$
 			}

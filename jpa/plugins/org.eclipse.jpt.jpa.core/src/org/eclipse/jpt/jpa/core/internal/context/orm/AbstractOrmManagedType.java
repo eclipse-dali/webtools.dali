@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.internal.utility.EmptyTextRange;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -222,7 +223,7 @@ public abstract class AbstractOrmManagedType<P extends EntityMappings>
 		//with the code adding the type mapping to xml; the IDOMNode might not
 		//be set when this is called. Brian's batch update changes in 3.2 should
 		//fix this problem.  bug 358745
-		return (textRange != null) ? textRange : TextRange.Empty.instance();
+		return (textRange != null) ? textRange : EmptyTextRange.instance();
 	}
 
 	public TextRange getFullTextRange() {

@@ -17,6 +17,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.internal.utility.EmptyTextRange;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -345,6 +346,6 @@ public class GenericOrmXml
 
 	public TextRange getValidationTextRange() {
 		// since this is the entire file, point to the top of the file
-		return TextRange.Empty.instance();
+		return EmptyTextRange.instance();
 	}
 }

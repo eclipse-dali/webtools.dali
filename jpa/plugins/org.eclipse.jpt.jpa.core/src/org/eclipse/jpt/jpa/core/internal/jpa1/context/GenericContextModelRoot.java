@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.internal.utility.EmptyTextRange;
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
@@ -230,7 +231,7 @@ public class GenericContextModelRoot
 	// ********** validation **********
 
 	public TextRange getValidationTextRange() {
-		return TextRange.Empty.instance(); //?
+		return EmptyTextRange.instance(); //?
 	}
 
 	@Override

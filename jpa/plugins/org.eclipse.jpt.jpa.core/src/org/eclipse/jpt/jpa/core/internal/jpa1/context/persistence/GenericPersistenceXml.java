@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.internal.utility.EmptyTextRange;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.JpaFile;
@@ -244,6 +245,6 @@ public class GenericPersistenceXml
 
 	public TextRange getValidationTextRange() {
 		// since this is the entire file, point to the top of the file
-		return TextRange.Empty.instance();
+		return EmptyTextRange.instance();
 	}
 }

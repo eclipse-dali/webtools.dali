@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import org.eclipse.jpt.common.core.internal.utility.EmptyTextRange;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -241,7 +242,7 @@ public class ELJaxbContextRootImpl
 	
 	@Override
 	public TextRange getValidationTextRange() {
-		return TextRange.Empty.instance(); //?
+		return EmptyTextRange.instance(); //?
 	}
 	
 	@Override
