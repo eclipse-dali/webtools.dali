@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.iterator.TransformationIterator;
+import org.eclipse.jpt.common.utility.internal.transformer.DisabledTransformer;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 @SuppressWarnings("nls")
@@ -217,7 +218,7 @@ public class TransformationIteratorTests
 
 	public void testInvalidTransformationIterator() {
 		// missing method override
-		Iterator<Integer> iterator = new TransformationIterator<String, Integer>(this.buildCollection().iterator(), Transformer.Disabled.<String, Integer>instance());
+		Iterator<Integer> iterator = new TransformationIterator<String, Integer>(this.buildCollection().iterator(), DisabledTransformer.<String, Integer>instance());
 		boolean exCaught = false;
 		try {
 			Integer integer = iterator.next();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.jface;
 
+import org.eclipse.jpt.common.utility.internal.transformer.NullTransformer;
 import org.eclipse.jpt.common.utility.internal.transformer.StringObjectTransformer;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.swt.graphics.Image;
@@ -35,7 +36,7 @@ public class PluggableLabelProvider<E>
 	 * @see org.eclipse.jface.viewers.LabelProvider LabelProvider
 	 */
 	public PluggableLabelProvider() {
-		this(Transformer.Null.<E, Image>instance(), StringObjectTransformer.<E>instance());
+		this(NullTransformer.<E, Image>instance(), StringObjectTransformer.<E>instance());
 	}
 
 	/**
@@ -45,7 +46,7 @@ public class PluggableLabelProvider<E>
 	 * @see #setImageTransformer(Transformer)
 	 */
 	public PluggableLabelProvider(Transformer<E, String> textTransformer) {
-		this(Transformer.Null.<E, Image>instance(), textTransformer);
+		this(NullTransformer.<E, Image>instance(), textTransformer);
 	}
 
 	/**

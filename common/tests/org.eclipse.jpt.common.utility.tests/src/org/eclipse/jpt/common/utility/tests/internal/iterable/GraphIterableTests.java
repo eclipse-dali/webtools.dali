@@ -14,6 +14,7 @@ import java.util.Collection;
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.transformer.DisabledTransformer;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -61,7 +62,7 @@ public class GraphIterableTests
 	public void testMissingMisterRogers() {
 		boolean exCaught = false;
 		try {
-			for (GraphNode gn : IterableTools.graphIterable(this.buildGraphRoot(), Transformer.Disabled.<GraphNode, Iterable<? extends GraphNode>>instance())) {
+			for (GraphNode gn : IterableTools.graphIterable(this.buildGraphRoot(), DisabledTransformer.<GraphNode, Iterable<? extends GraphNode>>instance())) {
 				assertTrue(this.nodes.contains(gn));
 			}
 			fail();

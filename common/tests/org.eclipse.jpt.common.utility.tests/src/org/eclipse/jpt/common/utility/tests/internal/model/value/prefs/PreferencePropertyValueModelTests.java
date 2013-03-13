@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,6 +17,7 @@ import java.util.prefs.Preferences;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.prefs.PreferencePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.NonTransformer;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
@@ -390,7 +391,7 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 					preferencesModel,
 					key,
 					defaultValue,
-					Transformer.Non.<String>instance()
+					NonTransformer.<String>instance()
 				);
 		}
 

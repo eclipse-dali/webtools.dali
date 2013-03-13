@@ -16,6 +16,7 @@ import java.util.NoSuchElementException;
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
+import org.eclipse.jpt.common.utility.internal.transformer.DisabledTransformer;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -79,7 +80,7 @@ public class GraphIteratorTests
 		boolean exCaught = false;
 		try {
 			// missing method override
-			Iterator<GraphNode> iterator = IteratorTools.graphIterator(this.buildGraphRoot(), Transformer.Disabled.<GraphNode, Iterator<? extends GraphNode>>instance());
+			Iterator<GraphNode> iterator = IteratorTools.graphIterator(this.buildGraphRoot(), DisabledTransformer.<GraphNode, Iterator<? extends GraphNode>>instance());
 			GraphNode gn = iterator.next();
 			fail("invalid graph node: " + gn);
 		} catch (UnsupportedOperationException ex) {

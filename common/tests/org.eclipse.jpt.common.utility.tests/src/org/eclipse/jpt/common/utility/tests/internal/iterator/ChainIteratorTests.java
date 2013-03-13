@@ -17,6 +17,7 @@ import java.util.Vector;
 import junit.framework.TestCase;
 
 import org.eclipse.jpt.common.utility.internal.iterator.ChainIterator;
+import org.eclipse.jpt.common.utility.internal.transformer.DisabledTransformer;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 @SuppressWarnings("nls")
@@ -92,7 +93,7 @@ public class ChainIteratorTests
 
 	public void testInvalidChainIterator() {
 		// missing method override
-		Iterator<Class<?>> iterator = new ChainIterator<Class<?>>(Vector.class, Transformer.Disabled.<Class<?>, Class<?>>instance());
+		Iterator<Class<?>> iterator = new ChainIterator<Class<?>>(Vector.class, DisabledTransformer.<Class<?>, Class<?>>instance());
 		boolean exCaught = false;
 		try {
 			Class<?> c = iterator.next();
