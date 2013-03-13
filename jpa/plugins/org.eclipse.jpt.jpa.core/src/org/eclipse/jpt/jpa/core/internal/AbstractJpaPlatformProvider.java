@@ -224,7 +224,7 @@ public abstract class AbstractJpaPlatformProvider
 
 	protected void validateResourceDefinitions(ArrayList<JpaResourceDefinition> definitions) {
 		String message = "Duplicate resource definitions listed for resource type ''{0}'': {1}"; //$NON-NLS-1$
-		this.validate(definitions, JptResourceTypeReference.RESOURCE_TYPE_TRANSFORMER, message);
+		this.validate(definitions, JptResourceTypeReference.TRANSFORMER, message);
 	}
 
 
