@@ -9,12 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.utility.command;
 
-import java.io.Serializable;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.jobs.ISchedulingRule;
-import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.CommandContext;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * Combine the job command context and command context interfaces.
@@ -28,80 +23,5 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 public interface CombinedCommandContext
 	extends JobCommandContext, CommandContext
 {
-	/**
-	 * Singleton implementation of the command executor interface
-	 * that simply executes the command without any sort of enhancement.
-	 */
-	final class Default
-		implements CombinedCommandContext, Serializable
-	{
-		public static final CombinedCommandContext INSTANCE = new Default();
-		public static CombinedCommandContext instance() {
-			return INSTANCE;
-		}
-		// ensure single instance
-		private Default() {
-			super();
-		}
-		public void execute(Command command) {
-			command.execute();
-		}
-		public void execute(JobCommand command) {
-			command.execute(new NullProgressMonitor());
-		}
-		public void execute(JobCommand command, String jobName) {
-			this.execute(command);
-		}
-		public void execute(JobCommand command, String jobName, ISchedulingRule schedulingRule) {
-			this.execute(command);
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.singletonToString(this);
-		}
-		private static final long serialVersionUID = 1L;
-		private Object readResolve() {
-			// replace this object with the singleton
-			return INSTANCE;
-		}
-	}
-
-
-	/**
-	 * Singleton implementation of the command executor interface
-	 * that ignores any commands.
-	 */
-	final class Inactive
-		implements CombinedCommandContext, Serializable
-	{
-		public static final CombinedCommandContext INSTANCE = new Inactive();
-		public static CombinedCommandContext instance() {
-			return INSTANCE;
-		}
-		// ensure single instance
-		private Inactive() {
-			super();
-		}
-		public void execute(Command command) {
-			// do nothing
-		}
-		public void execute(JobCommand command) {
-			// do nothing
-		}
-		public void execute(JobCommand command, String jobName) {
-			// do nothing
-		}
-		public void execute(JobCommand command, String jobName, ISchedulingRule schedulingRule) {
-			// do nothing
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.singletonToString(this);
-		}
-		private static final long serialVersionUID = 1L;
-		private Object readResolve() {
-			// replace this object with the singleton
-			return INSTANCE;
-		}
-	}
+	// combine interfaces
 }
