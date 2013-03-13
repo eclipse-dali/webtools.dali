@@ -32,7 +32,7 @@ public interface ContentTypeReference {
 	 */
 	IContentType getContentType();
 
-	Transformer<ContentTypeReference, IContentType> CONTENT_TYPE_TRANSFORMER = new ContentTypeTransformer();
+	Transformer<ContentTypeReference, IContentType> TRANSFORMER = new ContentTypeTransformer();
 	class ContentTypeTransformer
 		extends TransformerAdapter<ContentTypeReference, IContentType>
 	{

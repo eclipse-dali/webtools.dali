@@ -77,7 +77,7 @@ public abstract class AbstractJpaPlatformProvider
 
 	protected void validateMostRecentSupportedResourceTypes(ArrayList<JptResourceType> resourceTypes) {
 		String message = "Duplicate resource types listed as most recent for content type ''{0}'': {1}"; //$NON-NLS-1$
-		this.validate(resourceTypes, ContentTypeReference.CONTENT_TYPE_TRANSFORMER, message);
+		this.validate(resourceTypes, ContentTypeReference.TRANSFORMER, message);
 	}
 
 
@@ -101,7 +101,7 @@ public abstract class AbstractJpaPlatformProvider
 
 	protected void validateResourceModelProviders(ArrayList<JpaResourceModelProvider> providers) {
 		String message = "Duplicate resource model providers listed for content type ''{0}'': {1}"; //$NON-NLS-1$
-		this.validate(providers, ContentTypeReference.CONTENT_TYPE_TRANSFORMER, message);
+		this.validate(providers, ContentTypeReference.TRANSFORMER, message);
 	}
 
 
