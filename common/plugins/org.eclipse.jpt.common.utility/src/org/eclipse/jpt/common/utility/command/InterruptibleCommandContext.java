@@ -9,9 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.command;
 
-import java.io.Serializable;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
-
 /**
  * This interface allows clients to control an interruptible command's context.
  * This is useful when the server provides the command but the client provides
@@ -32,34 +29,4 @@ public interface InterruptibleCommandContext {
 	 * Execute the specified command.
 	 */
 	void execute(InterruptibleCommand command) throws InterruptedException;
-
-
-	/**
-	 * Singleton implementation of the interruptible command executor interface
-	 * that simply executes the command without any sort of enhancement.
-	 */
-	final class Default
-		implements InterruptibleCommandContext, Serializable
-	{
-		public static final InterruptibleCommandContext INSTANCE = new Default();
-		public static InterruptibleCommandContext instance() {
-			return INSTANCE;
-		}
-		// ensure single instance
-		private Default() {
-			super();
-		}
-		public void execute(InterruptibleCommand command) throws InterruptedException {
-			command.execute();
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.singletonToString(this);
-		}
-		private static final long serialVersionUID = 1L;
-		private Object readResolve() {
-			// replace this object with the singleton
-			return INSTANCE;
-		}
-	}
 }
