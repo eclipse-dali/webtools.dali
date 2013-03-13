@@ -41,6 +41,7 @@ import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
 import org.eclipse.jpt.jaxb.core.context.XmlNamedNodeMapping;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClassMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.java.JavaType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
@@ -481,7 +482,7 @@ public class GenericJavaClassMapping
 	
 	// ***** attributes *****
 	
-	public Iterable<JaxbPersistentAttribute> getAttributes() {
+	public Iterable<JavaPersistentAttribute> getAttributes() {
 		return this.attributesContainer.getAttributes();
 	}
 	

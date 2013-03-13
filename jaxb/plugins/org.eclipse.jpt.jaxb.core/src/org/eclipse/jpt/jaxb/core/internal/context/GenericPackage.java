@@ -89,7 +89,7 @@ public class GenericPackage
 	}
 	
 	protected JaxbPackageInfo buildPackageInfo(JavaResourcePackage resourcePackage) {
-		return getFactory().buildJavaPackageInfo(this, resourcePackage);
+		return getFactory().buildPackageInfo(this, resourcePackage);
 	}
 	
 	public boolean isEmpty() {

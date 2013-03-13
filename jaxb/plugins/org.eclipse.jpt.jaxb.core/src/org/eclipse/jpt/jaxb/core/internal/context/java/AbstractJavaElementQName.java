@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2013  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -16,9 +16,9 @@ import org.eclipse.jpt.jaxb.core.context.AbstractQName;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.xsd.XsdElementDeclaration;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
 import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
@@ -39,7 +39,7 @@ public abstract class AbstractJavaElementQName
 		return JptJaxbCoreMessages.XML_ELEMENT_DESC;
 	}
 	
-	protected abstract JaxbPersistentAttribute getPersistentAttribute();
+	protected abstract JavaPersistentAttribute getPersistentAttribute();
 	
 	protected JaxbClassMapping getClassMapping() {
 		return getPersistentAttribute().getClassMapping();

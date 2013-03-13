@@ -9,10 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -25,7 +21,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 3.3
  * @since 3.0
  */
 public interface JaxbPersistentAttribute
@@ -34,31 +30,30 @@ public interface JaxbPersistentAttribute
 	JaxbClassMapping getClassMapping();
 	
 	
-	// ***** declaring class/ inheritance *****
-	
-	/**
-	 * Return the resource type where the source of the attribute is declared.
-	 * This may not be where the attribute is fully defined, as it may be inherited
-	 */
-	JavaResourceType getDeclaringJavaResourceType();
+	// ***** inheritance *****
 	
 	/**
 	 * Return true if the source of the attribute is defined in a superclass
 	 */
 	boolean isInherited();
 	
+	/**
+	 * Return the name of the type where the source of the attribute is declared.
+	 * This may not be where the attribute is fully defined, as it may be inherited
+	 */
+	TypeName getDeclaringTypeName();
+	
 	
 	// ***** name *****
 	
 	/**
-	 * Return the name of the attribute. This will not change, a
-	 * new JaxbPersistentAttribute will be built if the name changes.
+	 * Return the name of the attribute.
 	 */
 	String getName();
+	
 	Transformer<JaxbPersistentAttribute, String> NAME_TRANSFORMER = new NameTransformer();
 	class NameTransformer
-		extends TransformerAdapter<JaxbPersistentAttribute, String>
-	{
+			extends TransformerAdapter<JaxbPersistentAttribute, String> {
 		@Override
 		public String transform(JaxbPersistentAttribute attribute) {
 			return attribute.getName();
@@ -66,9 +61,7 @@ public interface JaxbPersistentAttribute
 	}
 	
 	
-	// ***** resource attribute *****
-	
-	JavaResourceAttribute getJavaResourceAttribute();
+	// *****  attribute type information *****
 	
 	/**
 	 * Return the type name of the java attribute, or the item type name of a collection or array.
@@ -88,12 +81,10 @@ public interface JaxbPersistentAttribute
 	 */
 	boolean isJavaResourceAttributeTypeSubTypeOf(String typeName);
 	
-	boolean isFor(JavaResourceField resourceField);
-	
-	boolean isFor(JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter);
-	
 	
 	// ********** mapping **********
+	
+	String MAPPING_PROPERTY = "mapping"; //$NON-NLS-1$
 	
 	/**
 	 * Return the attribute's mapping. This is never <code>null</code>
@@ -101,11 +92,10 @@ public interface JaxbPersistentAttribute
 	 * Set the mapping via {@link #setMappingKey(String)}.
 	 */
 	JaxbAttributeMapping getMapping();
-		String MAPPING_PROPERTY = "mapping"; //$NON-NLS-1$
+	
 	Transformer<JaxbPersistentAttribute, JaxbAttributeMapping> MAPPING_TRANSFORMER = new MappingTransformer();
 	class MappingTransformer
-		extends TransformerAdapter<JaxbPersistentAttribute, JaxbAttributeMapping>
-	{
+			extends TransformerAdapter<JaxbPersistentAttribute, JaxbAttributeMapping> {
 		@Override
 		public JaxbAttributeMapping transform(JaxbPersistentAttribute attribute) {
 			return attribute.getMapping();
@@ -124,13 +114,4 @@ public interface JaxbPersistentAttribute
 	 * Return the new mapping (which may be a <em>null</em> mapping).
 	 */
 	JaxbAttributeMapping setMappingKey(String key);
-	
-	/**
-	 * Return the key for the attribute's default mapping.
-	 * This can be <code>null</code> (e.g. for <em>specified</em>
-	 * <code>orm.xml</code> attributes).
-	 * @see JaxbAttributeMapping#isDefault()
-	 */
-	String getDefaultMappingKey();
-		String DEFAULT_MAPPING_KEY_PROPERTY = "defaultMappingKey"; //$NON-NLS-1$
 }

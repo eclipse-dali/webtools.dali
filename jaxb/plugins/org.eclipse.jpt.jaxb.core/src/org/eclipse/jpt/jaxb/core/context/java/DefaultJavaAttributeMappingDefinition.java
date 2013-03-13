@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,10 +8,6 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context.java;
-
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-
-
 
 /**
  * Map a string key to an attribute mapping and its corresponding
@@ -23,15 +19,15 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 3.3
  * @since 3.0
  */
-public interface DefaultJavaAttributeMappingDefinition extends JavaAttributeMappingDefinition
-{
-
+public interface DefaultJavaAttributeMappingDefinition
+		extends JavaAttributeMappingDefinition {
+	
 	/**
-	 * Return whether this mapping provider should be used for the given {@link JaxbPersistentAttribute} 
+	 * Return whether this mapping provider should be used for the given {@link JavaPersistentAttribute} 
 	 * in the default (ignoring all mapping annotations) case.
 	 */
-	boolean isDefault(JaxbPersistentAttribute persistentAttribute);
+	boolean isDefault(JavaPersistentAttribute persistentAttribute);
 }

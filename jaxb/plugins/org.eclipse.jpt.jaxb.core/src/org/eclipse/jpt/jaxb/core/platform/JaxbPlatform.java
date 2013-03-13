@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010, 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2010, 2013  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -16,9 +16,9 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.JaxbFile;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
 
 /**
  * Provisional API: This class is part of an interim API that is still
@@ -27,12 +27,11 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 3.3
  * @since 3.0
  */
 public interface JaxbPlatform
-	extends IAdaptable
-{
+		extends IAdaptable {
 	
 	JaxbPlatformConfig getConfig();
 	
@@ -89,7 +88,7 @@ public interface JaxbPlatform
 	 * @param attribute The persistent attribute to analyze
 	 * @return The mapping definition describing the annotated state of the attribute
 	 */
-	JavaAttributeMappingDefinition getSpecifiedJavaAttributeMappingDefinition(JaxbPersistentAttribute attribute);
+	JavaAttributeMappingDefinition getSpecifiedJavaAttributeMappingDefinition(JavaPersistentAttribute attribute);
 
 	/**
 	 * Return a {@link JavaAttributeMappingDefinition} for the given mapping key.

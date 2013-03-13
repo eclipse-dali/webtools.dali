@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,11 +12,11 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlAttachmentRef;
 import org.eclipse.jpt.jaxb.core.context.XmlID;
 import org.eclipse.jpt.jaxb.core.context.XmlIDREF;
 import org.eclipse.jpt.jaxb.core.context.XmlNamedNodeMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JaxbBasicSchemaComponentAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAttachmentRefAnnotation;
@@ -36,7 +36,7 @@ public abstract class AbstractJavaXmlNamedNodeMapping<A extends JaxbBasicSchemaC
 	protected XmlAttachmentRef xmlAttachmentRef;
 	
 	
-	public AbstractJavaXmlNamedNodeMapping(JaxbPersistentAttribute parent) {
+	public AbstractJavaXmlNamedNodeMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		initializeXmlID();
 		initializeXmlIDREF();

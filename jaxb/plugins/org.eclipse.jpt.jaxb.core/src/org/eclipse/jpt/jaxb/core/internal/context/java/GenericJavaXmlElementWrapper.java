@@ -15,14 +15,14 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.context.AbstractQName;
-import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.JaxbQName;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
+import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
 import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
@@ -45,7 +45,7 @@ public class GenericJavaXmlElementWrapper
 	protected Boolean specifiedNillable;
 	
 	
-	public GenericJavaXmlElementWrapper(JaxbAttributeMapping parent, Context context) {
+	public GenericJavaXmlElementWrapper(JavaAttributeMapping parent, Context context) {
 		super(parent);
 		this.context = context;
 		this.qName = buildQName();
@@ -58,16 +58,11 @@ public class GenericJavaXmlElementWrapper
 		return new XmlElementQName(this);
 	}
 	
-	@Override
-	public JaxbAttributeMapping getParent() {
-		return (JaxbAttributeMapping) super.getParent();
+	protected JavaAttributeMapping getAttributeMapping() {
+		return (JavaAttributeMapping) getParent();
 	}
 	
-	protected JaxbAttributeMapping getAttributeMapping() {
-		return getParent();
-	}
-	
-	protected JaxbPersistentAttribute getPersistentAttribute() {
+	protected JavaPersistentAttribute getPersistentAttribute() {
 		return getAttributeMapping().getPersistentAttribute();
 	}
 	

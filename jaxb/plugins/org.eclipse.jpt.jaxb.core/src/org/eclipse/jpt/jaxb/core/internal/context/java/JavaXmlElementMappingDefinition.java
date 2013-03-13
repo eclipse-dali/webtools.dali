@@ -12,9 +12,9 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
-import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.java.DefaultJavaAttributeMappingDefinition;
+import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 
 
@@ -67,7 +67,7 @@ public class JavaXmlElementMappingDefinition
 		return IterableTools.listIterable(SUPPORTING_ANNOTATION_NAMES);
 	}
 	
-	public JaxbAttributeMapping buildMapping(JaxbPersistentAttribute parent, JaxbFactory factory) {
+	public JavaAttributeMapping buildMapping(JavaPersistentAttribute parent, JaxbFactory factory) {
 		return factory.buildJavaXmlElementMapping(parent);
 	}
 	
@@ -89,7 +89,7 @@ public class JavaXmlElementMappingDefinition
 	 *      	)
 	 * </ul>
 	 */
-	public boolean isDefault(JaxbPersistentAttribute persistentAttribute) {
+	public boolean isDefault(JavaPersistentAttribute persistentAttribute) {
 		return true;
 	}
 }

@@ -11,8 +11,8 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.core.context.XmlValueMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.java.JavaXmlValueMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlValueAnnotation;
 import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
@@ -22,9 +22,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaXmlValueMapping
 		extends AbstractJavaXmlNodeMapping<XmlValueAnnotation>
-		implements XmlValueMapping {
+		implements JavaXmlValueMapping {
 	
-	public GenericJavaXmlValueMapping(JaxbPersistentAttribute parent) {
+	public GenericJavaXmlValueMapping(JavaPersistentAttribute parent) {
 		super(parent);
 	}
 	

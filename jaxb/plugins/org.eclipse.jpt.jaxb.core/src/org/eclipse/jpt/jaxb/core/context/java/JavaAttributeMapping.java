@@ -9,7 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context.java;
 
-import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -21,12 +22,26 @@ import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
  * @version 3.3
  * @since 3.3
  */
-public interface JavaClassMapping
-		extends JavaTypeMapping, JaxbClassMapping {
+public interface JavaAttributeMapping
+		extends JaxbAttributeMapping {
 	
 	// ***** overrides *****
 	
-	JavaClass getJavaType();
+	public JavaPersistentAttribute getPersistentAttribute();
 	
-	public Iterable<JavaPersistentAttribute> getAttributes();
+	
+	// ***** java resource model *****
+	
+	JavaResourceAttribute getJavaResourceAttribute();
+	
+	
+	// ***** default *****
+	
+	String DEFAULT_PROPERTY = "default"; //$NON-NLS-1$
+	
+	/**
+	 * Return whether the mapping is its attribute's <em>default</em> mapping
+	 * (as opposed to its <em>specified</em> mapping).
+	 */
+	boolean isDefault();
 }

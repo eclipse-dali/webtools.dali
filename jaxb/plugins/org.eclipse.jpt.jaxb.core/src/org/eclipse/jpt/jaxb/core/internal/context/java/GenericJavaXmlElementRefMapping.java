@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2013  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -13,12 +13,12 @@ import java.util.List;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
-import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRef;
-import org.eclipse.jpt.jaxb.core.context.XmlElementRefMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.context.XmlMixed;
+import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.java.JavaXmlElementRefMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
@@ -29,7 +29,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaXmlElementRefMapping
 		extends AbstractJavaAdaptableAttributeMapping<XmlElementRefAnnotation>
-		implements XmlElementRefMapping {
+		implements JavaXmlElementRefMapping {
 	
 	protected final XmlElementRef xmlElementRef;
 	
@@ -38,7 +38,7 @@ public class GenericJavaXmlElementRefMapping
 	protected XmlMixed xmlMixed;
 	
 	
-	public GenericJavaXmlElementRefMapping(JaxbPersistentAttribute parent) {
+	public GenericJavaXmlElementRefMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.xmlElementRef = buildXmlElementRef();
 		initializeXmlElementWrapper();			
@@ -275,7 +275,7 @@ public class GenericJavaXmlElementRefMapping
 			return GenericJavaXmlElementRefMapping.this.getAnnotation();
 		}
 		
-		public JaxbAttributeMapping getAttributeMapping() {
+		public JavaAttributeMapping getAttributeMapping() {
 			return GenericJavaXmlElementRefMapping.this;
 		}
 		

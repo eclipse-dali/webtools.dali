@@ -12,8 +12,8 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 import java.util.List;
 import java.util.Map;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.core.context.XmlAnyAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.java.JavaXmlAnyAttributeMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAnyAttributeAnnotation;
 import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
@@ -22,9 +22,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaXmlAnyAttributeMapping
 		extends AbstractJavaAdaptableAttributeMapping<XmlAnyAttributeAnnotation>
-		implements XmlAnyAttributeMapping {
+		implements JavaXmlAnyAttributeMapping {
 	
-	public GenericJavaXmlAnyAttributeMapping(JaxbPersistentAttribute parent) {
+	public GenericJavaXmlAnyAttributeMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		initializeXmlJavaTypeAdapter();
 	}

@@ -10,9 +10,9 @@
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
+import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -22,17 +22,17 @@ public class GenericJavaAttributeXmlJavaTypeAdapter
 	extends AbstractJavaXmlJavaTypeAdapter
 {
 
-	public GenericJavaAttributeXmlJavaTypeAdapter(JaxbAttributeMapping parent, XmlJavaTypeAdapterAnnotation resource) {
+	public GenericJavaAttributeXmlJavaTypeAdapter(JavaAttributeMapping parent, XmlJavaTypeAdapterAnnotation resource) {
 		super(parent, resource);
 	}
 
-	@Override
-	public JaxbAttributeMapping getParent() {
-		return (JaxbAttributeMapping) super.getParent();
+	
+	protected JavaAttributeMapping getAttributeMapping() {
+		return (JavaAttributeMapping) super.getParent();
 	}
 
-	protected JaxbPersistentAttribute getPersistentAttribute() {
-		return getParent().getPersistentAttribute();
+	protected JavaPersistentAttribute getPersistentAttribute() {
+		return getAttributeMapping().getPersistentAttribute();
 	}
 
 	// ********** type **********

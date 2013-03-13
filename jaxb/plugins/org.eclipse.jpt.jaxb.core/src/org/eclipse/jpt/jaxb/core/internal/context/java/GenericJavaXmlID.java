@@ -11,9 +11,9 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlID;
 import org.eclipse.jpt.jaxb.core.context.XmlNamedNodeMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlIDAnnotation;
 import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
 import org.eclipse.jpt.jaxb.core.xsd.XsdFeature;
@@ -39,8 +39,8 @@ public class GenericJavaXmlID
 		return (XmlNamedNodeMapping) getParent();
 	}
 	
-	protected JaxbPersistentAttribute getPersistentAttribute() {
-		return getMapping().getPersistentAttribute();
+	protected JavaPersistentAttribute getPersistentAttribute() {
+		return (JavaPersistentAttribute) getMapping().getPersistentAttribute();
 	}
 
 

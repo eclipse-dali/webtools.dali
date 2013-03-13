@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2013  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -15,14 +15,14 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
-import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRef;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRefs;
-import org.eclipse.jpt.jaxb.core.context.XmlElementRefsMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.context.XmlMixed;
+import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.java.JavaXmlElementRefsMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefsAnnotation;
@@ -34,7 +34,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaXmlElementRefsMapping
 		extends AbstractJavaAdaptableAttributeMapping<XmlElementRefsAnnotation>
-		implements XmlElementRefsMapping {
+		implements JavaXmlElementRefsMapping {
 	
 	protected final XmlElementRefs xmlElementRefs;
 	
@@ -43,7 +43,7 @@ public class GenericJavaXmlElementRefsMapping
 	protected XmlMixed xmlMixed;
 	
 	
-	public GenericJavaXmlElementRefsMapping(JaxbPersistentAttribute parent) {
+	public GenericJavaXmlElementRefsMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.xmlElementRefs = buildXmlElementRefs();
 		initializeXmlElementWrapper();
@@ -326,7 +326,7 @@ public class GenericJavaXmlElementRefsMapping
 			return this.annotation;
 		}
 		
-		public JaxbAttributeMapping getAttributeMapping() {
+		public JavaAttributeMapping getAttributeMapping() {
 			return GenericJavaXmlElementRefsMapping.this;
 		}
 		

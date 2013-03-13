@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ *  Copyright (c) 2010, 2013 Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -23,9 +23,9 @@ import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.JaxbFile;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbResourceModelProvider;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
@@ -109,7 +109,7 @@ public final class JaxbPlatformImpl
 	// ********** Java attribute mappings **********
 
 	public JavaAttributeMappingDefinition getSpecifiedJavaAttributeMappingDefinition(
-			JaxbPersistentAttribute attribute) {
+			JavaPersistentAttribute attribute) {
 		for (JavaAttributeMappingDefinition definition : getSpecifiedJavaAttributeMappingDefinitions()) {
 			if (definition.isSpecified(attribute)) {
 				return definition;

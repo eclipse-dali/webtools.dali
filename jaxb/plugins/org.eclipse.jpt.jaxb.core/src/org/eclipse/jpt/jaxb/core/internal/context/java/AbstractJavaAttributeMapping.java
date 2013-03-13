@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,23 +14,23 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
-import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
+import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
 
 public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 		extends AbstractJavaContextNode
-		implements JaxbAttributeMapping {
+		implements JavaAttributeMapping {
 	
 	protected boolean default_;
 
-	protected AbstractJavaAttributeMapping(JaxbPersistentAttribute parent) {
+	protected AbstractJavaAttributeMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.default_ = this.buildDefault();
 	}
@@ -108,8 +108,8 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 	
 	// ********** misc **********
 	
-	public JaxbPersistentAttribute getPersistentAttribute() {
-		return (JaxbPersistentAttribute) super.getParent();
+	public JavaPersistentAttribute getPersistentAttribute() {
+		return (JavaPersistentAttribute) super.getParent();
 	}
 	
 	protected JaxbPackage getJaxbPackage() {

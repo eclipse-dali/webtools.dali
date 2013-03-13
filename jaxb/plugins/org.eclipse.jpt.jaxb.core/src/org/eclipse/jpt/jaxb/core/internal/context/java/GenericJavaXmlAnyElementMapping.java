@@ -17,14 +17,14 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
-import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.core.context.XmlAnyElementMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRef;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRefs;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.context.XmlMixed;
+import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.java.JavaXmlAnyElementMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAnyElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefAnnotation;
@@ -37,7 +37,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaXmlAnyElementMapping
 		extends AbstractJavaAdaptableAttributeMapping<XmlAnyElementAnnotation>
-		implements XmlAnyElementMapping {
+		implements JavaXmlAnyElementMapping {
 	
 	protected Boolean specifiedLax;
 	
@@ -50,7 +50,7 @@ public class GenericJavaXmlAnyElementMapping
 	protected XmlMixed xmlMixed;
 	
 	
-	public GenericJavaXmlAnyElementMapping(JaxbPersistentAttribute parent) {
+	public GenericJavaXmlAnyElementMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.specifiedLax = buildSpecifiedLax();
 		this.specifiedValue = getResourceValueString();
@@ -505,7 +505,7 @@ public class GenericJavaXmlAnyElementMapping
 			return this.annotation;
 		}
 		
-		public JaxbAttributeMapping getAttributeMapping() {
+		public JavaAttributeMapping getAttributeMapping() {
 			return GenericJavaXmlAnyElementMapping.this;
 		}
 		

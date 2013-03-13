@@ -14,9 +14,9 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlNodeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlListAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
@@ -39,7 +39,7 @@ public abstract class AbstractJavaXmlNodeMapping<A extends Annotation>
 	protected boolean defaultXmlList;
 	
 	
-	public AbstractJavaXmlNodeMapping(JaxbPersistentAttribute parent) {
+	public AbstractJavaXmlNodeMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		initializeXmlSchemaType();
 		initializeXmlList();

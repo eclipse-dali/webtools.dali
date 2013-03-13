@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,12 +15,12 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
-import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlElement;
-import org.eclipse.jpt.jaxb.core.context.XmlElementMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
+import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.java.JavaXmlElementMapping;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlIDREF.ValidatableReference;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
@@ -33,14 +33,14 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaXmlElementMapping
 		extends AbstractJavaXmlNamedNodeMapping<XmlElementAnnotation>
-		implements XmlElementMapping {
+		implements JavaXmlElementMapping {
 	
 	protected final XmlElement xmlElement;
 	
 	protected XmlElementWrapper xmlElementWrapper;
 	
 	
-	public GenericJavaXmlElementMapping(JaxbPersistentAttribute parent) {
+	public GenericJavaXmlElementMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.xmlElement = buildXmlElement();
 		initializeXmlElementWrapper();			
@@ -245,7 +245,7 @@ public class GenericJavaXmlElementMapping
 					: GenericJavaXmlElementMapping.this.getAnnotation();
 		}
 		
-		public JaxbAttributeMapping getAttributeMapping() {
+		public JavaAttributeMapping getAttributeMapping() {
 			return GenericJavaXmlElementMapping.this;
 		}
 		

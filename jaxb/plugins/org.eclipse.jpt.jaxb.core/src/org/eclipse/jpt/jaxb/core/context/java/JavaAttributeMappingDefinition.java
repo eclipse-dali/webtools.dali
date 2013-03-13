@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,9 +10,6 @@
 package org.eclipse.jpt.jaxb.core.context.java;
 
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
-import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-
 
 /**
  * Map a string key to an attribute mapping and its corresponding
@@ -24,11 +21,11 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 3.3
  * @since 3.0
  */
-public interface JavaAttributeMappingDefinition 
-{
+public interface JavaAttributeMappingDefinition  {
+	
 	/**
 	 * Return the attribute mapping's key.
 	 */
@@ -44,7 +41,7 @@ public interface JavaAttributeMappingDefinition
 	 * factory for creation so extenders can simply override the appropriate
 	 * creation method instead of building a provider for the same key.
 	 */
-	JaxbAttributeMapping buildMapping(JaxbPersistentAttribute attribute, JaxbFactory factory);
+	JavaAttributeMapping buildMapping(JavaPersistentAttribute attribute, JaxbFactory factory);
 
 	/**
 	 * Return all fully qualified annotation names that are supported with this mapping type.
@@ -56,5 +53,5 @@ public interface JavaAttributeMappingDefinition
 	 * Return whether this mapping provider should be used for the given {@link PersistentAttribute} 
 	 * in the specified (observing all mapping annotations) case.
 	 */
-	boolean isSpecified(JaxbPersistentAttribute persistentAttribute);
+	boolean isSpecified(JavaPersistentAttribute persistentAttribute);
 }

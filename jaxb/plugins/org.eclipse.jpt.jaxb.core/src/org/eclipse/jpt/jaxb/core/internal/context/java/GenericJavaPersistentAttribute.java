@@ -22,38 +22,41 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.context.Accessor;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.TypeName;
 import org.eclipse.jpt.jaxb.core.context.java.DefaultJavaAttributeMappingDefinition;
+import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
+import org.eclipse.jpt.jaxb.core.context.java.JavaClassMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaPersistentAttribute
 		extends AbstractJavaContextNode
-		implements JaxbPersistentAttribute {
+		implements JavaPersistentAttribute {
 	
 	protected final Accessor accessor;
 	
-	protected JaxbAttributeMapping mapping;  // never null
+	protected JavaAttributeMapping mapping;  // never null
 	
 	protected String defaultMappingKey;
 	
 	
 	
-	public static JaxbPersistentAttribute buildPersistentProperty(
-		JaxbClassMapping parent,
-		JavaResourceMethod resourceGetter,
-		JavaResourceMethod resourceSetter) {
-		return new GenericJavaPersistentAttribute(
-				parent, new PropertyAccessor(parent, resourceGetter, resourceSetter));
+	public static JavaPersistentAttribute buildPersistentProperty(
+			JaxbClassMapping parent,
+			JavaResourceMethod resourceGetter,
+			JavaResourceMethod resourceSetter) {
+			return new GenericJavaPersistentAttribute(
+					parent, new PropertyAccessor(parent, resourceGetter, resourceSetter));
 	}
 
-	public static JaxbPersistentAttribute buildPersistentField(
-		JaxbClassMapping parent,
-		JavaResourceField resourceField) {
-		return new GenericJavaPersistentAttribute(
-				parent, new FieldAccessor(parent, resourceField));
+	public static JavaPersistentAttribute buildPersistentField(
+			JaxbClassMapping parent,
+			JavaResourceField resourceField) {
+			return new GenericJavaPersistentAttribute(
+					parent, new FieldAccessor(parent, resourceField));
 	}
 	
 	
@@ -64,8 +67,8 @@ public class GenericJavaPersistentAttribute
 		this.mapping = this.buildMapping();
 	}
 
-	public JaxbClassMapping getClassMapping() {
-		return (JaxbClassMapping) super.getParent();
+	public JavaClassMapping getClassMapping() {
+		return (JavaClassMapping) super.getParent();
 	}
 	
 	
@@ -86,12 +89,16 @@ public class GenericJavaPersistentAttribute
 	
 	// ***** declaring class/ inheritance *****
 	
+	public TypeName getDeclaringTypeName() {
+		return new JavaTypeName(getDeclaringJavaResourceType());
+	}
+	
 	public JavaResourceType getDeclaringJavaResourceType() {
 		return this.accessor.getJavaResourceAttribute().getResourceType();
 	}
 	
 	public boolean isInherited() {
-		return ObjectTools.notEquals(getDeclaringJavaResourceType().getTypeBinding().getQualifiedName(), getClassMapping().getTypeName().getFullyQualifiedName());
+		return ObjectTools.notEquals(getDeclaringTypeName(), getClassMapping().getTypeName());
 	}
 	
 	
@@ -130,7 +137,7 @@ public class GenericJavaPersistentAttribute
 	
 	// ********** mapping **********
 
-	public JaxbAttributeMapping getMapping() {
+	public JavaAttributeMapping getMapping() {
 		return this.mapping;
 	}
 
@@ -138,7 +145,7 @@ public class GenericJavaPersistentAttribute
 	 * Clients do not set the mapping directly.
 	 * @see #setMappingKey(String)
 	 */
-	protected void setMapping(JaxbAttributeMapping mapping) {
+	protected void setMapping(JavaAttributeMapping mapping) {
 		JaxbAttributeMapping old = this.mapping;
 		this.mapping = mapping;
 		this.firePropertyChanged(MAPPING_PROPERTY, old, mapping);
@@ -237,11 +244,11 @@ public class GenericJavaPersistentAttribute
 		this.getJavaResourceAttribute().setPrimaryAnnotation(primaryAnnotationName, supportingAnnotationNames);
 	}
 
-	protected JaxbAttributeMapping buildMapping(JavaAttributeMappingDefinition definition) {
+	protected JavaAttributeMapping buildMapping(JavaAttributeMappingDefinition definition) {
 		return (definition == null) ? this.buildNullMapping() : this.buildMapping_(definition);
 	}
 
-	protected JaxbAttributeMapping buildNullMapping() {
+	protected JavaAttributeMapping buildNullMapping() {
 		return this.getFactory().buildJavaNullAttributeMapping(this);
 	}
 
@@ -260,7 +267,7 @@ public class GenericJavaPersistentAttribute
 	 * <em>default</em> mapping is by {@link #setMappingKey(String) setting the
 	 * mapping key} to <code>null</code>.
 	 */
-	protected JaxbAttributeMapping buildMapping_(JavaAttributeMappingDefinition definition) {
+	protected JavaAttributeMapping buildMapping_(JavaAttributeMappingDefinition definition) {
 		// 'mapping' is null during construction
 		if ((this.mapping != null) && this.mapping.isDefault() && ObjectTools.equals(this.mapping.getKey(), definition.getKey())) {
 			this.mapping.synchronizeWithResourceModel();  // the mapping instance hasn't changed, but some resource differences may have resulted
@@ -273,7 +280,7 @@ public class GenericJavaPersistentAttribute
 	 * We only look for a <em>specified</em> mapping here.
 	 * We look for a default mapping during <em>update</em>.
 	 */
-	protected JaxbAttributeMapping buildMapping() {
+	protected JavaAttributeMapping buildMapping() {
 		return this.buildMapping(this.getSpecifiedMappingDefinition());
 	}
 

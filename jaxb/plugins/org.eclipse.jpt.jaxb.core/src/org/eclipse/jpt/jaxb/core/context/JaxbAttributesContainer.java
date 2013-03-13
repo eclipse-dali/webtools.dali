@@ -24,23 +24,23 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * @version 3.3
  * @since 3.0
  */
-public interface JaxbAttributesContainer
+public interface JaxbAttributesContainer<A extends JaxbPersistentAttribute>
 		extends JaxbContextNode {
 	
 	// ***** attributes *****
 	
-	Iterable<JaxbPersistentAttribute> getAttributes();
-	Transformer<JaxbAttributesContainer, Iterable<JaxbPersistentAttribute>> ATTRIBUTES_TRANSFORMER = new AttributesTransformer();
+	Iterable<A> getAttributes();
+	
+	int getAttributesSize();
+	
+	Transformer<JaxbAttributesContainer, Iterable<? extends JaxbPersistentAttribute>> ATTRIBUTES_TRANSFORMER = new AttributesTransformer();
 	class AttributesTransformer
-		extends TransformerAdapter<JaxbAttributesContainer, Iterable<JaxbPersistentAttribute>>
-	{
+			extends TransformerAdapter<JaxbAttributesContainer, Iterable<? extends JaxbPersistentAttribute>> {
 		@Override
-		public Iterable<JaxbPersistentAttribute> transform(JaxbAttributesContainer container) {
+		public Iterable<? extends JaxbPersistentAttribute> transform(JaxbAttributesContainer container) {
 			return container.getAttributes();
 		}
 	}
-	
-	int getAttributesSize();
 	
 	
 	interface Context {

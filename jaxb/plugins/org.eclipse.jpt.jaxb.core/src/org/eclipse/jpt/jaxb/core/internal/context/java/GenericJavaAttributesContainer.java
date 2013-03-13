@@ -28,25 +28,26 @@ import org.eclipse.jpt.jaxb.core.context.JaxbAttributesContainer;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaAttributesContainer
 		extends AbstractJavaContextNode
-		implements JaxbAttributesContainer {
-
+		implements JaxbAttributesContainer<JavaPersistentAttribute> {
+	
 	protected JavaResourceType javaResourceType;
-
+	
 	protected JaxbAttributesContainer.Context owner;
-
-	protected final Vector<JaxbPersistentAttribute> attributes = new Vector<JaxbPersistentAttribute>();
-
+	
+	protected final Vector<JavaPersistentAttribute> attributes = new Vector<JavaPersistentAttribute>();
+	
 	public GenericJavaAttributesContainer(
 			JaxbClassMapping parent, JaxbAttributesContainer.Context owner, JavaResourceType resourceType) {
 		super(parent);
 		this.javaResourceType = resourceType;
 		this.owner = owner;
-		this.initializeAttributes();
+		initializeAttributes();
 	}
 	
 	
@@ -57,59 +58,60 @@ public class GenericJavaAttributesContainer
 	public boolean isFor(JavaResourceType javaResourceType) {
 		return this.javaResourceType == javaResourceType;
 	}
-
-
+	
+	
 	// ********** synchronize/update **********
-
+	
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		this.synchronizeNodesWithResourceModel(this.getAttributes());
 	}
-
+	
 	@Override
 	public void update() {
 		super.update();
 		this.updateAttributes();
 	}
-
+	
+	
 	// ********** access type **********
-
+	
 	protected XmlAccessType getAccessType() {
 		return this.owner.getAccessType();
 	}
-
+	
 
 	// ********** attributes **********
-
-	public Iterable<JaxbPersistentAttribute> getAttributes() {
+	
+	public Iterable<JavaPersistentAttribute> getAttributes() {
 		return IterableTools.cloneLive(this.attributes);
 	}
-
+	
 	public int getAttributesSize() {
 		return this.attributes.size();
 	}
-
-	protected void addAttribute(JaxbPersistentAttribute attribute) {
+	
+	protected void addAttribute(JavaPersistentAttribute attribute) {
 		if (this.attributes.add(attribute)) {
 			this.owner.attributeAdded(attribute);
 		}
 	}
-
-	protected void removeAttribute(JaxbPersistentAttribute attribute) {
+	
+	protected void removeAttribute(JavaPersistentAttribute attribute) {
 		if (this.attributes.remove(attribute)) {
 			this.owner.attributeRemoved(attribute);
 		}
 	}
-
-	protected JaxbPersistentAttribute buildField(JavaResourceField resourceField) {
+	
+	protected JavaPersistentAttribute buildField(JavaResourceField resourceField) {
 		return getFactory().buildJavaPersistentField(getClassMapping(), resourceField);
 	}
-
-	protected JaxbPersistentAttribute buildProperty(JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
+	
+	protected JavaPersistentAttribute buildProperty(JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
 		return getFactory().buildJavaPersistentProperty(getClassMapping(), resourceGetter, resourceSetter);
 	}
-
+	
 	protected void initializeAttributes() {
 		if (getClassMapping().isXmlTransient()) {
 			return;
@@ -127,7 +129,7 @@ public class GenericJavaAttributesContainer
 			this.intializeNoneAccessAttributes();
 		}
 	}
-
+	
 	/**
 	 * Initialize the attributes for XmlAccessType.PUBLIC_MEMBER
 	 * 1. all public, non-static, non-transient fields (transient modifier, @XmlTransient is brought to the context model)
@@ -149,7 +151,7 @@ public class GenericJavaAttributesContainer
 		}
 		this.initializeRemainingResourceMethodAttributes(resourceMethods);
 	}
-
+	
 	/**
 	 * Initialize the attributes for XmlAccessType.FIELD
 	 * 1. all non-transient fields
@@ -159,7 +161,7 @@ public class GenericJavaAttributesContainer
 		this.initializeFieldAttributes(this.buildNonTransientNonStaticResourceFieldsFilter());
 		this.initializeAnnotatedPropertyAttributes();
 	}
-
+	
 	/**
 	 * Initialize the attributes for XmlAccessType.PROPERTY
 	 * 1. all getter/setter javabeans pairs
@@ -168,7 +170,7 @@ public class GenericJavaAttributesContainer
 	 */
 	private void intializePropertyAccessAttributes() {
 		this.initializeFieldAttributes(ANNOTATED_RESOURCE_FIELDS_FILTER);
-
+		
 		Collection<JavaResourceMethod> resourceMethods = CollectionTools.collection(this.getResourceMethods());
 		//iterate through all resource methods searching for persistable getters
 		for (JavaResourceMethod getterMethod : this.getResourceMethods(this.buildPersistablePropertyGetterMethodsFilter())) {
@@ -181,7 +183,7 @@ public class GenericJavaAttributesContainer
 		}
 		this.initializeRemainingResourceMethodAttributes(resourceMethods);
 	}
-
+	
 	/**
 	 * Initialize the attributes for XmlAccessType.NONE
 	 * 1. all annotated fields
@@ -191,13 +193,13 @@ public class GenericJavaAttributesContainer
 		this.initializeFieldAttributes(ANNOTATED_RESOURCE_FIELDS_FILTER);
 		this.initializeAnnotatedPropertyAttributes();
 	}
-
+	
 	private void initializeFieldAttributes(Predicate<JavaResourceField> filter) {
 		for (JavaResourceField resourceField : this.getResourceFields(filter)) {
 			this.attributes.add(this.buildField(resourceField));
 		}
 	}
-
+	
 	private void initializeRemainingResourceMethodAttributes(Collection<JavaResourceMethod> resourceMethods) {
 		//iterate through remaining resource methods and search for those that are annotated.
 		//all getter methods will already be used.
@@ -208,7 +210,7 @@ public class GenericJavaAttributesContainer
 			}
 		}
 	}
-
+	
 	private static boolean methodsArePersistableProperties(JavaResourceMethod getterMethod, JavaResourceMethod setterMethod) {
 		if (setterMethod != null) {
 			return true;
@@ -223,7 +225,7 @@ public class GenericJavaAttributesContainer
 		}
 		return false;
 	}
-
+	
 	private static boolean methodsArePersistablePublicMemberAccess(JavaResourceMethod getterMethod, JavaResourceMethod setterMethod) {
 		if (getterMethod.isPublic()) {
 			if (setterMethod != null) {
@@ -245,7 +247,7 @@ public class GenericJavaAttributesContainer
 		}
 		return false;
 	}
-
+	
 	private void initializeAnnotatedPropertyAttributes() {
 		Collection<JavaResourceMethod> resourceMethods = CollectionTools.collection(this.getResourceMethods());
 		//iterate through all resource methods searching for persistable getters
@@ -259,11 +261,11 @@ public class GenericJavaAttributesContainer
 		}
 		this.initializeRemainingResourceMethodAttributes(resourceMethods);
 	}
-
+	
 	protected Iterable<JavaResourceField> getResourceFields() {
 		return this.javaResourceType.getFields();
 	}
-
+	
 	protected Iterable<JavaResourceMethod> getResourceMethods() {
 		return this.javaResourceType.getMethods();
 	}
@@ -297,11 +299,11 @@ public class GenericJavaAttributesContainer
 			}
 		};
 	}
-
+	
 	protected static boolean memberIsPublicNonTransientNonStatic(JavaResourceMember resourceMember) {
 		return resourceMember.isPublic() && memberIsNonTransientNonStatic(resourceMember);
 	}
-
+	
 	protected static boolean memberIsNonTransientNonStatic(JavaResourceMember resourceMember) {
 		return !resourceMember.isTransient() && !resourceMember.isStatic();
 	}
@@ -312,7 +314,7 @@ public class GenericJavaAttributesContainer
 				return resourceField.isAnnotated();
 			}
 		};
-
+	
 	/**
 	 * The attributes are synchronized during the <em>update</em> because
 	 * the list of resource attributes is determined by the access type
@@ -320,7 +322,7 @@ public class GenericJavaAttributesContainer
 	 */
 	protected void updateAttributes() {
 		if (getClassMapping().isXmlTransient()) {
-			for (JaxbPersistentAttribute contextAttribute : getAttributes()) {
+			for (JavaPersistentAttribute contextAttribute : getAttributes()) {
 				this.removeAttribute(contextAttribute);
 			}
 			return;
@@ -338,7 +340,7 @@ public class GenericJavaAttributesContainer
 			this.syncNoneAccessAttributes();
 		}
 	}
-
+	
 	/**
 	 * Sync the attributes for XmlAccessType.PUBLIC_MEMBER
 	 * 1. all public, non-static, non-transient fields (transient modifier, @XmlTransient is brought to the context model)
@@ -347,18 +349,18 @@ public class GenericJavaAttributesContainer
 	 * 4. all annotated methods (some will have a matching getter/setter, some will be standalone)
 	 */
 	private void syncPublicMemberAccessAttributes() {
-		HashSet<JaxbPersistentAttribute> contextAttributes = CollectionTools.set(this.getAttributes());
-
+		HashSet<JavaPersistentAttribute> contextAttributes = CollectionTools.set(this.getAttributes());
+		
 		this.syncFieldAttributes(contextAttributes, PUBLIC_MEMBER_ACCESS_TYPE_RESOURCE_FIELDS_FILTER);
-
+		
 		Collection<JavaResourceMethod> resourceMethods = CollectionTools.collection(this.getResourceMethods());
 		//iterate through all persistable resource method getters
 		for (JavaResourceMethod getterMethod : this.getResourceMethods(this.buildPersistablePropertyGetterMethodsFilter())) {
 			JavaResourceMethod setterMethod = getValidSiblingSetMethod(getterMethod, resourceMethods);
 			if (methodsArePersistablePublicMemberAccess(getterMethod, setterMethod)) {
 				boolean match = false;
-				for (Iterator<JaxbPersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext();) {
-					JaxbPersistentAttribute contextAttribute = stream.next();
+				for (Iterator<JavaPersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext();) {
+					JavaPersistentAttribute contextAttribute = stream.next();
 					if (contextAttribute.isFor(getterMethod, setterMethod)) {
 						match = true;
 						contextAttribute.update();
@@ -375,19 +377,19 @@ public class GenericJavaAttributesContainer
 		}
 		this.syncRemainingResourceMethods(contextAttributes, resourceMethods);
 	}
-
+	
 	/**
 	 * Initialize the attributes for XmlAccessType.FIELD
 	 * 1. all non-transient fields
 	 * 2. all annotated methods getters/setters
 	 */
 	private void syncFieldAccessAttributes() {
-		HashSet<JaxbPersistentAttribute> contextAttributes = CollectionTools.set(this.getAttributes());
-
+		HashSet<JavaPersistentAttribute> contextAttributes = CollectionTools.set(this.getAttributes());
+		
 		this.syncFieldAttributes(contextAttributes, this.buildNonTransientNonStaticResourceFieldsFilter());
 		this.syncAnnotatedPropertyAttributes(contextAttributes);
 	}
-
+	
 	/**
 	 * Initialize the attributes for XmlAccessType.PROPERTY
 	 * 1. all getter/setter javabeans pairs
@@ -395,18 +397,18 @@ public class GenericJavaAttributesContainer
 	 * 3. all annotated methods getters/setters that don't have a matching pair
 	 */
 	private void syncPropertyAccessAttributes() {
-		HashSet<JaxbPersistentAttribute> contextAttributes = CollectionTools.set(this.getAttributes());
-
+		HashSet<JavaPersistentAttribute> contextAttributes = CollectionTools.set(this.getAttributes());
+		
 		this.syncFieldAttributes(contextAttributes, ANNOTATED_RESOURCE_FIELDS_FILTER);
-
+		
 		Collection<JavaResourceMethod> resourceMethods = CollectionTools.collection(this.getResourceMethods());
 		//iterate through all resource methods searching for persistable getters
 		for (JavaResourceMethod getterMethod : this.getResourceMethods(this.buildPersistablePropertyGetterMethodsFilter())) {
 			JavaResourceMethod setterMethod = getValidSiblingSetMethod(getterMethod, resourceMethods);
 			if (methodsArePersistableProperties(getterMethod, setterMethod)) {
 				boolean match = false;
-				for (Iterator<JaxbPersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext();) {
-					JaxbPersistentAttribute contextAttribute = stream.next();
+				for (Iterator<JavaPersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext();) {
+					JavaPersistentAttribute contextAttribute = stream.next();
 					if (contextAttribute.isFor(getterMethod, setterMethod)) {
 						match = true;
 						contextAttribute.update();
@@ -423,28 +425,28 @@ public class GenericJavaAttributesContainer
 		}
 		this.syncRemainingResourceMethods(contextAttributes, resourceMethods);
 	}
-
+	
 	/**
 	 * Initialize the attributes for XmlAccessType.NONE
 	 * 1. all annotated fields
 	 * 2. all annotated methods getters/setters (some will have a matching getter/setter, some will be standalone)
 	 */
 	private void syncNoneAccessAttributes() {
-		HashSet<JaxbPersistentAttribute> contextAttributes = CollectionTools.set(this.getAttributes());
-
+		HashSet<JavaPersistentAttribute> contextAttributes = CollectionTools.set(this.getAttributes());
+		
 		this.syncFieldAttributes(contextAttributes, ANNOTATED_RESOURCE_FIELDS_FILTER);
 		this.syncAnnotatedPropertyAttributes(contextAttributes);
 	}
-
-	private void syncAnnotatedPropertyAttributes(HashSet<JaxbPersistentAttribute> contextAttributes) {
+	
+	private void syncAnnotatedPropertyAttributes(HashSet<JavaPersistentAttribute> contextAttributes) {
 		Collection<JavaResourceMethod> resourceMethods = CollectionTools.collection(this.getResourceMethods());
 		//iterate through all resource methods searching for persistable getters
 		for (JavaResourceMethod getterMethod : this.getResourceMethods(buildPersistablePropertyGetterMethodsFilter())) {
 			JavaResourceMethod setterMethod = getValidSiblingSetMethod(getterMethod, resourceMethods);
 			if (getterMethod.isAnnotated() || (setterMethod != null && setterMethod.isAnnotated())) {
 				boolean match = false;
-				for (Iterator<JaxbPersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext();) {
-					JaxbPersistentAttribute contextAttribute = stream.next();
+				for (Iterator<JavaPersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext();) {
+					JavaPersistentAttribute contextAttribute = stream.next();
 					if (contextAttribute.isFor(getterMethod, setterMethod)) {
 						match = true;
 						contextAttribute.update();
@@ -462,11 +464,11 @@ public class GenericJavaAttributesContainer
 		this.syncRemainingResourceMethods(contextAttributes, resourceMethods);
 	}
 
-	private void syncFieldAttributes(HashSet<JaxbPersistentAttribute> contextAttributes, Predicate<JavaResourceField> filter) {
+	private void syncFieldAttributes(HashSet<JavaPersistentAttribute> contextAttributes, Predicate<JavaResourceField> filter) {
 		for (JavaResourceField resourceField : this.getResourceFields(filter)) {
 			boolean match = false;
-			for (Iterator<JaxbPersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext(); ) {
-				JaxbPersistentAttribute contextAttribute = stream.next();
+			for (Iterator<JavaPersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext(); ) {
+				JavaPersistentAttribute contextAttribute = stream.next();
 				if (contextAttribute.isFor(resourceField)) {
 					match = true;
 					contextAttribute.update();
@@ -482,16 +484,16 @@ public class GenericJavaAttributesContainer
 			}
 		}
 	}
-
-	private void syncRemainingResourceMethods(HashSet<JaxbPersistentAttribute> contextAttributes, Collection<JavaResourceMethod> resourceMethods) {
+	
+	private void syncRemainingResourceMethods(HashSet<JavaPersistentAttribute> contextAttributes, Collection<JavaResourceMethod> resourceMethods) {
 		//iterate through remaining resource methods and search for those that are annotated.
 		//all getter methods will already be used.
 		for (JavaResourceMethod resourceMethod : resourceMethods) {
 			if (resourceMethod.isAnnotated()) {
 				boolean match = false;
 				//annotated setter(or other random method) with no corresponding getter, bring into context model for validation purposes
-				for (Iterator<JaxbPersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext();) {
-					JaxbPersistentAttribute contextAttribute = stream.next();
+				for (Iterator<JavaPersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext();) {
+					JavaPersistentAttribute contextAttribute = stream.next();
 					if (contextAttribute.isFor(null, resourceMethod)) {
 						match = true;
 						contextAttribute.update();
@@ -504,13 +506,13 @@ public class GenericJavaAttributesContainer
 				}
 			}
 		}
-
+		
 		// remove any leftover context attributes
-		for (JaxbPersistentAttribute contextAttribute : contextAttributes) {
+		for (JavaPersistentAttribute contextAttribute : contextAttributes) {
 			this.removeAttribute(contextAttribute);
 		}
 	}
-
+	
 	/**
 	 * Return whether the specified method is a "getter" method that
 	 * represents a property that may be "persisted".
@@ -522,7 +524,7 @@ public class GenericJavaAttributesContainer
 		if (resourceMethod.isConstructor()) {
 			return false;
 		}
-
+		
 		String returnTypeName = resourceMethod.getTypeBinding().getQualifiedName();
 		if (returnTypeName == null) {
 			return false;  // DOM method bindings can have a null name
@@ -533,9 +535,9 @@ public class GenericJavaAttributesContainer
 		if (methodHasParameters(resourceMethod)) {
 			return false;
 		}
-
+		
 		boolean booleanGetter = methodIsBooleanGetter(resourceMethod);
-
+		
 		// if the type has both methods:
 		//     boolean isProperty()
 		//     boolean getProperty()
@@ -547,7 +549,7 @@ public class GenericJavaAttributesContainer
 		}
 		return true;
 	}
-
+	
 	private static boolean methodIsBooleanGetter(JavaResourceMethod resourceMethod) {
 		String returnTypeName = resourceMethod.getTypeBinding().getQualifiedName();
 		String name = resourceMethod.getMethodName();
@@ -566,7 +568,7 @@ public class GenericJavaAttributesContainer
 		}
 		return booleanGetter;
 	}
-
+	
 	/**
 	 * Return whether the method's modifiers prevent it
 	 * from being a getter or setter for a "persistent" property.
@@ -578,11 +580,11 @@ public class GenericJavaAttributesContainer
 		}
 		return false;
 	}
-
+	
 	private static boolean methodHasParameters(JavaResourceMethod resourceMethod) {
 		return resourceMethod.getParametersSize() != 0;
 	}
-
+	
 	/**
 	 * Return whether the method has a sibling "is" method for the specified
 	 * property and that method is valid for a "persistable" property.
@@ -600,7 +602,7 @@ public class GenericJavaAttributesContainer
 		}
 		return false;
 	}
-
+	
 	/**
 	 * Return whether the method has a sibling "set" method
 	 * and that method is valid for a "persistable" property.
@@ -617,7 +619,7 @@ public class GenericJavaAttributesContainer
 		}
 		return null;
 	}
-
+	
 	/**
 	 * Return whether the specified method is a valid sibling with the
 	 * specified return type.
@@ -638,9 +640,10 @@ public class GenericJavaAttributesContainer
 		}
 		return rtName.equals(returnTypeName);
 	}
-
+	
+	
 	// ********** validation **********
-
+	
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
@@ -648,7 +651,7 @@ public class GenericJavaAttributesContainer
 			attribute.validate(messages, reporter);
 		}
 	}
-
+	
 	@Override
 	public TextRange getValidationTextRange() {
 		return getClassMapping().getValidationTextRange();

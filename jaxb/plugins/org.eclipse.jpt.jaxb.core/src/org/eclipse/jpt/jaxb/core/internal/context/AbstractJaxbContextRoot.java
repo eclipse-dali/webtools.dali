@@ -480,11 +480,11 @@ public abstract class AbstractJaxbContextRoot
 	
 	
 	protected JavaClass buildJaxbClass(JavaResourceType resourceType) {
-		return this.getFactory().buildJaxbClass(this, resourceType);
+		return this.getFactory().buildJavaClass(this, resourceType);
 	}
 	
 	protected JavaEnum buildJaxbEnum(JavaResourceEnum resourceEnum) {
-		return this.getFactory().buildJaxbEnum(this, resourceEnum);
+		return this.getFactory().buildJavaEnum(this, resourceEnum);
 	}
 	
 	public Iterable<XmlRegistry> getXmlRegistries(JaxbPackage jaxbPackage) {

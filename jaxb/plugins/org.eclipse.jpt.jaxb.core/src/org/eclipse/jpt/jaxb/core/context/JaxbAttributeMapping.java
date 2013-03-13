@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
@@ -32,22 +31,9 @@ public interface JaxbAttributeMapping
 	
 	String getKey();
 	
-	JavaResourceAttribute getJavaResourceAttribute();
-	
 	JaxbPersistentAttribute getPersistentAttribute();
 	
 	JaxbClassMapping getClassMapping();
-	
-	
-	// ***** default *****
-	
-	String DEFAULT_PROPERTY = "default"; //$NON-NLS-1$
-	
-	/**
-	 * Return whether the mapping is its attribute's <em>default</em> mapping
-	 * (as opposed to its <em>specified</em> mapping).
-	 */
-	boolean isDefault();
 	
 	
 	// ***** misc *****

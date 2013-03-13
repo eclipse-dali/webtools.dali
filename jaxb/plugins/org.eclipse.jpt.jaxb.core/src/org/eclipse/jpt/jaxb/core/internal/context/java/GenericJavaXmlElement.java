@@ -21,13 +21,14 @@ import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.JaxbQName;
 import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlAdaptableMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElement;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
+import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
 import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
@@ -98,7 +99,7 @@ public class GenericJavaXmlElement
 		return getContext().getAttributeMapping();
 	}
 	
-	protected JaxbPersistentAttribute getPersistentAttribute() {
+	protected JavaPersistentAttribute getPersistentAttribute() {
 		return getContext().getAttributeMapping().getPersistentAttribute();
 	}
 	
@@ -377,7 +378,8 @@ public class GenericJavaXmlElement
 					// verify that type actually exists before validating
 					&& JDTTools.findType(getJaxbProject().getJavaProject(), fqType) != null) {
 				String attributeBaseType = getAttributeMapping().getValueTypeName();
-				if (! JDTTools.typeIsSubType(getJaxbProject().getJavaProject(), fqType, attributeBaseType)) {
+				if (! StringTools.isBlank(attributeBaseType)   // can be null if there is a setter with no getter
+						&& ! JDTTools.typeIsSubType(getJaxbProject().getJavaProject(), fqType, attributeBaseType)) {
 					messages.add(
 							this.buildValidationMessage(
 									getTypeTextRange(),
@@ -440,7 +442,7 @@ public class GenericJavaXmlElement
 		
 		
 		@Override
-		protected JaxbPersistentAttribute getPersistentAttribute() {
+		protected JavaPersistentAttribute getPersistentAttribute() {
 			return GenericJavaXmlElement.this.getPersistentAttribute();
 		}
 		
@@ -463,7 +465,7 @@ public class GenericJavaXmlElement
 	
 	public interface Context {
 		
-		JaxbAttributeMapping getAttributeMapping();
+		JavaAttributeMapping getAttributeMapping();
 		
 		XmlElementAnnotation getAnnotation(boolean createIfNull);
 		

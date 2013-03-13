@@ -13,8 +13,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.jaxbindex.JaxbIndexResource;
-import org.eclipse.jpt.jaxb.core.resource.jaxbindex.JaxbIndexResource.ClassNamesTransformer;
 import org.eclipse.jpt.jaxb.core.xsd.XsdElementDeclaration;
 
 /**

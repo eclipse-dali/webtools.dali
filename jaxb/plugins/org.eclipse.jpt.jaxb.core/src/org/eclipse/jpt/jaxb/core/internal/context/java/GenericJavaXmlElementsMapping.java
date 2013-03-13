@@ -21,13 +21,14 @@ import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
-import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlElement;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.context.XmlElementsMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlIDREF;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
+import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.java.JavaXmlElementsMapping;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlIDREF.ValidatableReference;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
@@ -42,7 +43,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaXmlElementsMapping
 		extends AbstractJavaAdaptableAttributeMapping<XmlElementsAnnotation> 
-		implements XmlElementsMapping {
+		implements JavaXmlElementsMapping {
 	
 	protected final ContextListContainer<XmlElement, XmlElementAnnotation> xmlElementContainer;
 	
@@ -51,7 +52,7 @@ public class GenericJavaXmlElementsMapping
 	protected XmlIDREF xmlIDREF;
 	
 	
-	public GenericJavaXmlElementsMapping(JaxbPersistentAttribute parent) {
+	public GenericJavaXmlElementsMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.xmlElementContainer = buildXmlElementContainer();
 		initializeXmlElementWrapper();
@@ -414,7 +415,7 @@ public class GenericJavaXmlElementsMapping
 			return annotation;
 		}
 		
-		public JaxbAttributeMapping getAttributeMapping() {
+		public JavaAttributeMapping getAttributeMapping() {
 			return GenericJavaXmlElementsMapping.this;
 		}
 		

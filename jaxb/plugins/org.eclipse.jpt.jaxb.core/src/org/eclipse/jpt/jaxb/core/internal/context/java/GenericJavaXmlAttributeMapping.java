@@ -19,10 +19,10 @@ import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.AbstractQName;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.JaxbQName;
-import org.eclipse.jpt.jaxb.core.context.XmlAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.java.JavaXmlAttributeMapping;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlIDREF.ValidatableReference;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
@@ -39,14 +39,14 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaXmlAttributeMapping
 		extends AbstractJavaXmlNamedNodeMapping<XmlAttributeAnnotation>
-		implements XmlAttributeMapping {
+		implements JavaXmlAttributeMapping {
 	
 	protected final JaxbQName qName;
 	
 	protected Boolean specifiedRequired;
 	
 	
-	public GenericJavaXmlAttributeMapping(JaxbPersistentAttribute parent) {
+	public GenericJavaXmlAttributeMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.qName = buildQName();
 		this.specifiedRequired = buildSpecifiedRequired();

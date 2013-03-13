@@ -17,18 +17,18 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
-import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
-import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.JaxbQName;
 import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRef;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
+import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaClassMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefAnnotation;
@@ -81,11 +81,11 @@ public class GenericJavaXmlElementRef
 		return this.context;
 	}
 	
-	protected JaxbPersistentAttribute getPersistentAttribute() {
+	protected JavaPersistentAttribute getPersistentAttribute() {
 		return getContext().getAttributeMapping().getPersistentAttribute();
 	}
 	
-	protected JaxbClassMapping getClassMapping() {
+	protected JavaClassMapping getClassMapping() {
 		return getPersistentAttribute().getClassMapping();
 	}
 	
@@ -281,7 +281,7 @@ public class GenericJavaXmlElementRef
 		
 		
 		@Override
-		protected JaxbPersistentAttribute getPersistentAttribute() {
+		protected JavaPersistentAttribute getPersistentAttribute() {
 			return GenericJavaXmlElementRef.this.getPersistentAttribute();
 		}
 		
@@ -386,7 +386,7 @@ public class GenericJavaXmlElementRef
 	
 	public interface Context {
 		
-		JaxbAttributeMapping getAttributeMapping();
+		JavaAttributeMapping getAttributeMapping();
 		
 		XmlElementRefAnnotation getAnnotation();
 		

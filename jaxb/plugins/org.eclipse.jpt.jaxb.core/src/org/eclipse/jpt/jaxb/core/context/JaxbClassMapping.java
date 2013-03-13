@@ -13,7 +13,16 @@ import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
-
+/**
+ * Provisional API: This interface is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @version 3.3
+ * @since 3.3
+ */
 public interface JaxbClassMapping
 		extends JaxbTypeMapping, XmlAccessTypeHolder, XmlAccessOrderHolder {
 	
@@ -83,21 +92,27 @@ public interface JaxbClassMapping
 	
 	// ***** attributes *****
 	
+	/** string associated with changes to the "attributes" collection */
+	String ATTRIBUTES_COLLECTION = "attributes"; //$NON-NLS-1$
+	
 	/**
 	 * Return the attributes defined on this class (not its superclass)
 	 */
-	Iterable<JaxbPersistentAttribute> getAttributes();
+	Iterable<? extends JaxbPersistentAttribute> getAttributes();
 	
 	int getAttributesSize();
 	
-	Transformer<JaxbClassMapping, Iterable<JaxbPersistentAttribute>> ATTRIBUTES_TRANSFORMER = new AttributesTransformer();
+	Transformer<JaxbClassMapping, Iterable<? extends JaxbPersistentAttribute>> ATTRIBUTES_TRANSFORMER = new AttributesTransformer();
 	class AttributesTransformer
-			extends AbstractTransformer<JaxbClassMapping, Iterable<JaxbPersistentAttribute>> {
+			extends AbstractTransformer<JaxbClassMapping, Iterable<? extends JaxbPersistentAttribute>> {
 		@Override
-		protected Iterable<JaxbPersistentAttribute> transform_(JaxbClassMapping mapping) {
+		protected Iterable<? extends JaxbPersistentAttribute> transform_(JaxbClassMapping mapping) {
 			return mapping.getAttributes();
 		}
 	}
+	
+	/** string associated with changes to the "included attributes" collection */
+	String INCLUDED_ATTRIBUTES_COLLECTION = "includedAttributes"; //$NON-NLS-1$
 	
 	/**
 	 * <i>Included</i> attributes come from any direct superclasses that are mapped as @XmlTransient.
