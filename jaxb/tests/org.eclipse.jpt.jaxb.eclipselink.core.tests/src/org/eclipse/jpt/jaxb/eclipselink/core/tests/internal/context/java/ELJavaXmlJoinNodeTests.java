@@ -20,9 +20,9 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClassMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlJoinNode;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlJoinNodesMapping;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlJoinNode;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlJoinNodesMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_2.ELJaxb_2_2_PlatformDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
@@ -69,7 +69,7 @@ public class ELJavaXmlJoinNodeTests
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		ELXmlJoinNodesMapping mapping = (ELXmlJoinNodesMapping) persistentAttribute.getMapping();
+		ELJavaXmlJoinNodesMapping mapping = (ELJavaXmlJoinNodesMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
 		ELXmlJoinNode xmlJoinNode = IterableTools.get(mapping.getXmlJoinNodes(), 0);
 		XmlJoinNodeAnnotation annotation = (XmlJoinNodeAnnotation) resourceAttribute.getAnnotation(0, ELJaxb.XML_JOIN_NODE);
@@ -144,8 +144,8 @@ public class ELJavaXmlJoinNodeTests
 		
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
-		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		ELXmlJoinNodesMapping mapping = (ELXmlJoinNodesMapping) persistentAttribute.getMapping();
+		JavaPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
+		ELJavaXmlJoinNodesMapping mapping = (ELJavaXmlJoinNodesMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
 		ELXmlJoinNode xmlJoinNode = IterableTools.get(mapping.getXmlJoinNodes(), 0);
 		XmlJoinNodeAnnotation annotation = (XmlJoinNodeAnnotation) resourceAttribute.getAnnotation(0, ELJaxb.XML_JOIN_NODE);

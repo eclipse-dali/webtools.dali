@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlElementWrapper;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -19,7 +19,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public class ELJavaXmlElementWrapper
 		extends GenericJavaXmlElementWrapper {
 	
-	public ELJavaXmlElementWrapper(JaxbAttributeMapping parent, Context context) {
+	public ELJavaXmlElementWrapper(JavaAttributeMapping parent, Context context) {
 		super(parent, context);
 	}
 	

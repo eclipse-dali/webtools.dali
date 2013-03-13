@@ -22,14 +22,14 @@ import org.eclipse.jpt.common.utility.internal.iterable.SubListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.internal.context.java.AbstractJavaAttributeMapping;
 import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbMappingKeys;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELClassMapping;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlElementsMapping;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlJoinNode;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlJoinNodesMapping;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELClassMapping;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlElementsMapping;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlJoinNode;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlJoinNodesMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlJoinNodeAnnotation;
 import org.eclipse.jpt.jaxb.eclipselink.core.validation.JptJaxbEclipseLinkCoreValidationMessages;
@@ -44,7 +44,7 @@ public class ELJavaXmlJoinNodesMapping
 	protected final ContextListContainer<ELJavaXmlJoinNode, XmlJoinNodeAnnotation> xmlJoinNodeContainer;
 	
 	
-	public ELJavaXmlJoinNodesMapping(JaxbPersistentAttribute parent) {
+	public ELJavaXmlJoinNodesMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.xmlJoinNodeContainer = buildXmlJoinNodeContainer();
 	}

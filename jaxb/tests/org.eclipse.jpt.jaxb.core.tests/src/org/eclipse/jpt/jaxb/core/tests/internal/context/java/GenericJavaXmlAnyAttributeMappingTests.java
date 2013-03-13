@@ -19,11 +19,11 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.core.context.XmlAnyAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElementMapping;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClassMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaXmlAnyAttributeMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
 
@@ -59,7 +59,7 @@ public class GenericJavaXmlAnyAttributeMappingTests extends JaxbContextModelTest
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlAnyAttributeMapping attributeMapping = (XmlAnyAttributeMapping) persistentAttribute.getMapping();
+		JavaXmlAnyAttributeMapping attributeMapping = (JavaXmlAnyAttributeMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = attributeMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		assertNotNull(attributeMapping);
@@ -72,7 +72,7 @@ public class GenericJavaXmlAnyAttributeMappingTests extends JaxbContextModelTest
 		assertNotNull(resourceAttribute.getAnnotation(JAXB.XML_ATTRIBUTE));
 
 		persistentAttribute.setMappingKey(MappingKeys.XML_ANY_ATTRIBUTE_ATTRIBUTE_MAPPING_KEY);
-		attributeMapping = (XmlAnyAttributeMapping) persistentAttribute.getMapping();
+		attributeMapping = (JavaXmlAnyAttributeMapping) persistentAttribute.getMapping();
 		assertNotNull(attributeMapping);
 		assertNotNull(resourceAttribute.getAnnotation(JAXB.XML_ANY_ATTRIBUTE));
 		assertNull(resourceAttribute.getAnnotation(JAXB.XML_ATTRIBUTE));
@@ -85,7 +85,7 @@ public class GenericJavaXmlAnyAttributeMappingTests extends JaxbContextModelTest
 		assertNotNull(resourceAttribute.getAnnotation(JAXB.XML_ELEMENT));
 
 		persistentAttribute.setMappingKey(MappingKeys.XML_ANY_ATTRIBUTE_ATTRIBUTE_MAPPING_KEY);
-		attributeMapping = (XmlAnyAttributeMapping) persistentAttribute.getMapping();
+		attributeMapping = (JavaXmlAnyAttributeMapping) persistentAttribute.getMapping();
 		assertNotNull(attributeMapping);
 		assertNotNull(resourceAttribute.getAnnotation(JAXB.XML_ANY_ATTRIBUTE));
 		assertNull(resourceAttribute.getAnnotation(JAXB.XML_ELEMENT));
@@ -97,7 +97,7 @@ public class GenericJavaXmlAnyAttributeMappingTests extends JaxbContextModelTest
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlAnyAttributeMapping attributeMapping = (XmlAnyAttributeMapping) persistentAttribute.getMapping();
+		JavaXmlAnyAttributeMapping attributeMapping = (JavaXmlAnyAttributeMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = attributeMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		assertNull(attributeMapping.getXmlJavaTypeAdapter());
@@ -120,7 +120,7 @@ public class GenericJavaXmlAnyAttributeMappingTests extends JaxbContextModelTest
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlAnyAttributeMapping attributeMapping = (XmlAnyAttributeMapping) persistentAttribute.getMapping();
+		JavaXmlAnyAttributeMapping attributeMapping = (JavaXmlAnyAttributeMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = attributeMapping.getPersistentAttribute().getJavaResourceAttribute();
 		
 		assertNull(attributeMapping.getXmlJavaTypeAdapter());

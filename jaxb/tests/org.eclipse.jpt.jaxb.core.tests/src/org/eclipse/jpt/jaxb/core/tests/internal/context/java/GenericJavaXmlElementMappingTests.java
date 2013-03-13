@@ -26,9 +26,10 @@ import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElement;
-import org.eclipse.jpt.jaxb.core.context.XmlElementMapping;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClassMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.java.JavaXmlElementMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAttachmentRefAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
@@ -105,7 +106,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaXmlElementMapping xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		XmlElement xmlElement = xmlElementMapping.getXmlElement();
 		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 		
@@ -132,7 +133,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaXmlElementMapping xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		XmlElement xmlElement = xmlElementMapping.getXmlElement();
 		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 		
@@ -164,7 +165,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaXmlElementMapping xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		XmlElement xmlElement = xmlElementMapping.getXmlElement();
 		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
@@ -187,7 +188,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaXmlElementMapping xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		XmlElement xmlElement = xmlElementMapping.getXmlElement();
 		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
@@ -219,7 +220,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaXmlElementMapping xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		XmlElement xmlElement = xmlElementMapping.getXmlElement();
 		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
@@ -248,7 +249,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaXmlElementMapping xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		XmlElement xmlElement = xmlElementMapping.getXmlElement();
 		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
@@ -286,7 +287,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaXmlElementMapping xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		XmlElement xmlElement = xmlElementMapping.getXmlElement();
 		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
@@ -315,7 +316,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaXmlElementMapping xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		XmlElement xmlElement = xmlElementMapping.getXmlElement();
 		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
@@ -353,8 +354,8 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		
 		// string
-		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
+		JavaXmlElementMapping xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		XmlElement xmlElement = xmlElementMapping.getXmlElement();
 		JavaResourceAttribute resourceAttribute = persistentAttribute.getJavaResourceAttribute();
 		
@@ -371,7 +372,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		
 		// string list
 		persistentAttribute = IterableTools.get(classMapping.getAttributes(), 1);
-		xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		xmlElement = xmlElementMapping.getXmlElement();
 		resourceAttribute = persistentAttribute.getJavaResourceAttribute();
 		
@@ -388,7 +389,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		
 		// string array
 		persistentAttribute = IterableTools.get(classMapping.getAttributes(), 2);
-		xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		xmlElement = xmlElementMapping.getXmlElement();
 		resourceAttribute = persistentAttribute.getJavaResourceAttribute();
 		
@@ -410,7 +411,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaXmlElementMapping xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		XmlElement xmlElement = xmlElementMapping.getXmlElement();
 		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
@@ -433,7 +434,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaXmlElementMapping xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		XmlElement xmlElement = xmlElementMapping.getXmlElement();
 		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
@@ -464,7 +465,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaXmlElementMapping xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		XmlElement xmlElement = xmlElementMapping.getXmlElement();
 		
 		assertNull(xmlElement.getSpecifiedType());
@@ -485,7 +486,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaXmlElementMapping xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		XmlElement xmlElement = xmlElementMapping.getXmlElement();
 		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 		
@@ -520,7 +521,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaXmlElementMapping xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		assertNotNull(xmlElementMapping);
@@ -534,7 +535,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 
 
 		persistentAttribute.setMappingKey(MappingKeys.XML_ELEMENT_ATTRIBUTE_MAPPING_KEY);
-		xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		assertNotNull(xmlElementMapping);
 		assertNotNull(resourceAttribute.getAnnotation(JAXB.XML_ELEMENT));
 		assertNull(resourceAttribute.getAnnotation(JAXB.XML_ATTRIBUTE));
@@ -546,7 +547,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaXmlElementMapping xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 		
 		assertNull(xmlElementMapping.getXmlJavaTypeAdapter());
@@ -569,7 +570,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaXmlElementMapping xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		assertNull(xmlElementMapping.getXmlJavaTypeAdapter());
@@ -603,7 +604,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaXmlElementMapping xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 		
 		assertNull(xmlElementMapping.getXmlSchemaType());
@@ -626,7 +627,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaXmlElementMapping xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 		
 		
@@ -681,7 +682,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaXmlElementMapping xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		XmlElementWrapperAnnotation xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_WRAPPER);
@@ -703,7 +704,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaXmlElementMapping xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		XmlElementWrapperAnnotation xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_WRAPPER);
@@ -739,7 +740,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaXmlElementMapping xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 		
 		assertFalse(xmlElementMapping.isXmlList());
@@ -768,7 +769,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaXmlElementMapping xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 		
 		assertFalse(xmlElementMapping.isXmlList());
@@ -797,7 +798,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaXmlElementMapping xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 		
 		assertFalse(xmlElementMapping.isXmlList());
@@ -837,7 +838,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaXmlElementMapping xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 		
 		assertFalse(xmlElementMapping.isXmlList());
@@ -877,7 +878,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaXmlElementMapping xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		XmlIDAnnotation xmlIDAnnotation = (XmlIDAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ID);
@@ -899,7 +900,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaXmlElementMapping xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		XmlIDAnnotation xmlIDAnnotation = (XmlIDAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ID);
@@ -935,7 +936,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaXmlElementMapping xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		XmlIDREFAnnotation xmlIDREFAnnotation = (XmlIDREFAnnotation) resourceAttribute.getAnnotation(JAXB.XML_IDREF);
@@ -959,7 +960,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaXmlElementMapping xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		XmlIDREFAnnotation xmlIDREFAnnotation = (XmlIDREFAnnotation) resourceAttribute.getAnnotation(JAXB.XML_IDREF);
@@ -995,7 +996,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaXmlElementMapping xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		XmlAttachmentRefAnnotation xmlAttachmentRefAnnotation = (XmlAttachmentRefAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ATTACHMENT_REF);
@@ -1017,7 +1018,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
-		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaXmlElementMapping xmlElementMapping = (JavaXmlElementMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		XmlAttachmentRefAnnotation xmlAttachmentRefAnnotation = (XmlAttachmentRefAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ATTACHMENT_REF);

@@ -144,8 +144,6 @@ public class OxmFactory extends EFactoryImpl
 				return createEXmlNsFormFromString(eDataType, initialValue);
 			case OxmPackage.EXML_VIRTUAL_ACCESS_METHODS_SCHEMA:
 				return createEXmlVirtualAccessMethodsSchemaFromString(eDataType, initialValue);
-			case OxmPackage.EPROP_ORDER:
-				return createEPropOrderFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -171,8 +169,6 @@ public class OxmFactory extends EFactoryImpl
 				return convertEXmlNsFormToString(eDataType, instanceValue);
 			case OxmPackage.EXML_VIRTUAL_ACCESS_METHODS_SCHEMA:
 				return convertEXmlVirtualAccessMethodsSchemaToString(eDataType, instanceValue);
-			case OxmPackage.EPROP_ORDER:
-				return convertEPropOrderToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -693,41 +689,6 @@ public class OxmFactory extends EFactoryImpl
 	public String convertEXmlVirtualAccessMethodsSchemaToString(EDataType eDataType, Object instanceValue)
 	{
 		return instanceValue == null ? null : instanceValue.toString();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public List<String> createEPropOrderFromString(EDataType eDataType, String initialValue)
-	{
-		if (initialValue == null) return null;
-		List<String> result = new ArrayList<String>();
-		for (String item : split(initialValue))
-		{
-			result.add((String)XMLTypeFactory.eINSTANCE.createFromString(XMLTypePackage.Literals.STRING, item));
-		}
-		return result;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertEPropOrderToString(EDataType eDataType, Object instanceValue)
-	{
-		if (instanceValue == null) return null;
-		List<?> list = (List<?>)instanceValue;
-		if (list.isEmpty()) return "";
-		StringBuffer result = new StringBuffer();
-		for (Object item : list)
-		{
-			result.append(XMLTypeFactory.eINSTANCE.convertToString(XMLTypePackage.Literals.STRING, item));
-			result.append(' ');
-		}
-		return result.substring(0, result.length() - 1);
 	}
 
 	/**

@@ -1647,6 +1647,8 @@ public class EXmlAttribute extends EJavaAttribute implements EAccessibleJavaAttr
 		
 		private static Translator[] buildTranslatorChildren() {
 			return new Translator[] {
+				buildJavaAttributeTranslator(),
+				buildXmlAccessorTypeTranslator(),
 				new EAbstractXmlNullPolicy.AbstractXmlNullPolicyTranslator()
 			};
 		}

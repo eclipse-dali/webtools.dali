@@ -14,11 +14,9 @@ package org.eclipse.jpt.jaxb.ui.internal.filters;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IStorage;
-
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
-
-import org.eclipse.jdt.core.IJavaElement;
 
 
 /**

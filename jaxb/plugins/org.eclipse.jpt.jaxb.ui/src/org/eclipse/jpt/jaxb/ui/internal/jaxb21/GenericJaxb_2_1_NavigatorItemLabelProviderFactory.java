@@ -15,9 +15,9 @@ import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumConstant;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
 import org.eclipse.jpt.jaxb.core.context.java.JavaEnum;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiImages;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiMessages;
 
@@ -55,8 +55,8 @@ public class GenericJaxb_2_1_NavigatorItemLabelProviderFactory
 		else if (item instanceof JavaEnum) {
 			return new JavaEnumItemLabelProvider((JavaEnum) item, manager);
 		}
-		else if (item instanceof JaxbPersistentAttribute) {
-			return new JaxbPersistentAttributeItemLabelProvider((JaxbPersistentAttribute) item, manager);
+		else if (item instanceof JavaPersistentAttribute) {
+			return new JavaPersistentAttributeItemLabelProvider((JavaPersistentAttribute) item, manager);
 		}
 		else if (item instanceof JaxbEnumConstant) {
 			return this.buildJaxbEnumConstantProvider((JaxbEnumConstant) item, manager);

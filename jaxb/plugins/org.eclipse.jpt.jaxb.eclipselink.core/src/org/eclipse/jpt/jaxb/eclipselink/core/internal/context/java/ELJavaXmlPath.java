@@ -20,7 +20,7 @@ import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.internal.context.java.AbstractJavaContextNode;
 import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlPath;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlPath;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.xpath.java.XPath;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.xpath.java.XPathFactory;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlPathAnnotation;

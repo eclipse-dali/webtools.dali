@@ -38,6 +38,8 @@ public class XPath {
 	
 	public static String DELIM = "/";
 	
+	public static char DELIM_CHAR = '/';
+	
 	public static String ATT_PREFIX = "@";
 	
 	public static String TEXT = "text()";
@@ -95,9 +97,31 @@ public class XPath {
 	}
 	
 	protected void parse(String xpath) {
-		for (String segment : xpath.split(DELIM, -1)) {
-			this.steps.add(createStep(segment));
+		int nextDelim = findNextDelim(xpath);
+		while (nextDelim >= 0) {
+			this.steps.add(createStep(xpath.substring(0, nextDelim)));
+			xpath = xpath.substring(nextDelim + 1);
+			nextDelim = findNextDelim(xpath);
 		}
+		// add a final step for the remainder
+		this.steps.add(createStep(xpath));
+	}
+	
+	protected int findNextDelim(String xpath) {
+		boolean foundOpenBracket = false;
+		for (int i = 0; i < xpath.length(); i ++ ) {
+			char currentChar = xpath.charAt(i);
+			if (currentChar == DELIM_CHAR && ! foundOpenBracket) {
+				return i;
+			}
+			else if (currentChar == OPEN_BRACKET) {
+				foundOpenBracket = true;
+			}
+			else if (currentChar == CLOSE_BRACKET) {
+				foundOpenBracket = false;
+			}
+		}
+		return -1;
 	}
 	
 	protected Step createStep(String stepValue) {

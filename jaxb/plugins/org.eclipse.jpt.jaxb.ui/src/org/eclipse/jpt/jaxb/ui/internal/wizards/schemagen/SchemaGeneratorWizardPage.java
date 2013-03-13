@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.ui.internal.wizards.schemagen;
 
 import java.util.Iterator;
-
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IJavaProject;

@@ -1993,6 +1993,8 @@ public class EXmlElement extends EJavaAttribute implements EAccessibleJavaAttrib
 		
 		private static Translator[] buildTranslatorChildren() {
 			return new Translator[] {
+				buildJavaAttributeTranslator(),
+				buildXmlAccessorTypeTranslator()
 			};
 		}
 		

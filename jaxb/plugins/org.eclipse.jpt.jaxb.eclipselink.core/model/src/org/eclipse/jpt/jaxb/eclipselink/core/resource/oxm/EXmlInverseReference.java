@@ -577,6 +577,8 @@ public class EXmlInverseReference extends EJavaAttribute implements EAccessibleJ
 		
 		private static Translator[] buildTranslatorChildren() {
 			return new Translator[] {
+				buildJavaAttributeTranslator(),
+				buildXmlAccessorTypeTranslator()
 			};
 		}
 		

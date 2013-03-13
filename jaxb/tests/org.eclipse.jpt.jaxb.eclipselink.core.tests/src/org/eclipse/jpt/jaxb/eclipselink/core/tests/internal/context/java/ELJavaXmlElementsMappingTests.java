@@ -23,8 +23,8 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClassMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlElementsMapping;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlPath;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlPath;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlElementsMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlPathAnnotation;
 import org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.context.ELJaxbContextModelTestCase;
@@ -81,7 +81,7 @@ public class ELJavaXmlElementsMappingTests
 		createTypeWithXmlElements();
 		JavaClass javaClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = javaClass.getMapping();
-		ELXmlElementsMapping mapping = (ELXmlElementsMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
+		ELJavaXmlElementsMapping mapping = (ELJavaXmlElementsMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
 		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
 		
 		Iterable<ELXmlPath> xmlPaths = mapping.getXmlPaths();
@@ -139,7 +139,7 @@ public class ELJavaXmlElementsMappingTests
 		createTypeWithXmlElements();
 		JavaClass javaClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = javaClass.getMapping();
-		ELXmlElementsMapping mapping = (ELXmlElementsMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
+		ELJavaXmlElementsMapping mapping = (ELJavaXmlElementsMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
 		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
 		
 		assertEquals(0, resourceAttribute.getAnnotationsSize(ELJaxb.XML_PATH));

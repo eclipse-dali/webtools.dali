@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2012  Oracle. All rights reserved.
+ *  Copyright (c) 2012, 2013  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -14,16 +14,16 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRef;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRefs;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlAnyElementMapping;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlElementRefs;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlAnyElementMapping;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlPath;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlAnyElementMapping;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlPath;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlPathAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -37,7 +37,7 @@ public class ELJavaXmlAnyElementMapping
 	protected ELJavaXmlPath xmlPath;
 	
 	
-	public ELJavaXmlAnyElementMapping(JaxbPersistentAttribute parent) {
+	public ELJavaXmlAnyElementMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		initXmlPath();
 	}

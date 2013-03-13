@@ -11,8 +11,8 @@ package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
 import java.util.StringTokenizer;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.java.DefaultJavaAttributeMappingDefinition;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.internal.context.java.JavaXmlAttributeMappingDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlPathAnnotation;
@@ -54,7 +54,7 @@ public class ELJavaXmlAttributeMappingDefinition
 				IterableTools.iterable(SUPPORTING_ANNOTATION_NAMES));
 	}
 	
-	public boolean isDefault(JaxbPersistentAttribute persistentAttribute) {
+	public boolean isDefault(JavaPersistentAttribute persistentAttribute) {
 		// test whether annotated with @XmlPath, and if so, if last segment starts with "@"
 		// (presence of "@" elsewhere may be a node select clause)
 		XmlPathAnnotation xmlPathAnnotation = null;

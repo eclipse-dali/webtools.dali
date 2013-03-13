@@ -644,6 +644,8 @@ public class EXmlAnyAttribute extends EJavaAttribute implements EAccessibleJavaA
 		
 		private static Translator[] buildTranslatorChildren() {
 			return new Translator[] {
+				buildJavaAttributeTranslator(),
+				buildXmlAccessorTypeTranslator()
 			};
 		}
 		

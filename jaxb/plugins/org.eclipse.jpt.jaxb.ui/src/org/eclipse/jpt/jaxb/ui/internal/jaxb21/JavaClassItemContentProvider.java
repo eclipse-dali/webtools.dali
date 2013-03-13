@@ -19,6 +19,7 @@ import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClassMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
 
 
 public class JavaClassItemContentProvider
@@ -50,12 +51,12 @@ public class JavaClassItemContentProvider
 		};
 	}
 	
-	protected CollectionValueModel<JaxbPersistentAttribute> buildAttributesModel(
+	protected CollectionValueModel<JavaPersistentAttribute> buildAttributesModel(
 			PropertyValueModel<JavaClassMapping> mappingModel) {
-		return new CollectionAspectAdapter<JavaClassMapping, JaxbPersistentAttribute>(
+		return new CollectionAspectAdapter<JavaClassMapping, JavaPersistentAttribute>(
 				mappingModel, JavaClassMapping.ATTRIBUTES_COLLECTION) {
 			@Override
-			protected Iterable<JaxbPersistentAttribute> getIterable() {
+			protected Iterable<JavaPersistentAttribute> getIterable() {
 				return this.subject.getAttributes();
 			}
 		};

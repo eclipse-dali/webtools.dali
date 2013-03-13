@@ -12,7 +12,6 @@ package org.eclipse.jpt.jaxb.ui.internal;
 import java.util.List;
 import java.util.Vector;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jdt.core.IJavaProject;

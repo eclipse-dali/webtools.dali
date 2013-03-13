@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2012  Oracle. All rights reserved.
+ *  Copyright (c) 2012, 2013  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -13,10 +13,10 @@ import java.util.List;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlAnyAttributeMapping;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlAnyAttributeMapping;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlPath;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlAnyAttributeMapping;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlPath;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlPathAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -30,7 +30,7 @@ public class ELJavaXmlAnyAttributeMapping
 	protected ELJavaXmlPath xmlPath;
 	
 	
-	public ELJavaXmlAnyAttributeMapping(JaxbPersistentAttribute parent) {
+	public ELJavaXmlAnyAttributeMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		initXmlPath();
 	}

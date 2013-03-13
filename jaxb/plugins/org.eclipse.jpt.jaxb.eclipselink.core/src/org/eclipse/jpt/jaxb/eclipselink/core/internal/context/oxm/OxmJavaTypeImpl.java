@@ -13,16 +13,19 @@ import java.util.List;
 import java.util.Vector;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.TypeDeclarationTools;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributesContainer;
-import org.eclipse.jpt.jaxb.core.context.JaxbAttributesContainer.Context;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.TypeKind;
@@ -32,14 +35,14 @@ import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
 import org.eclipse.jpt.jaxb.core.context.java.JavaType;
 import org.eclipse.jpt.jaxb.core.internal.context.ContextContainerTools;
+import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaAttributesContainer;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaJaxbClass;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmAttributeMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaAttribute;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaType;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlBindings;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaAttribute;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType;
-import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlElement;
-import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.Oxm;
 import org.eclipse.jpt.jaxb.eclipselink.core.validation.JptJaxbEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -71,19 +74,24 @@ public class OxmJavaTypeImpl
 	protected final Vector<OxmJavaAttribute> specifiedAttributes;
 	protected final SpecifiedAttributeContainerAdapter specifiedAttributeContainerAdapter;
 	
+	protected final static String DEFAULT_ATTRIBUTES_COLLECTION = "defaultAttributes"; //$NON-NLS-1$
+	protected final JaxbAttributesContainer defaultAttributesContainer;
+	
 	
 	public OxmJavaTypeImpl(OxmXmlBindings parent, EJavaType eJavaType) {
 		super(parent, eJavaType);
 		
 		this.specifiedAttributes = new Vector<OxmJavaAttribute>();
 		this.specifiedAttributeContainerAdapter = new SpecifiedAttributeContainerAdapter();
+		this.defaultAttributesContainer = 
+				new DefaultAttributesContainer(this, new DefaultAttributesContainerContext());
 		
 		initSpecifiedName();
 		initSuperTypeName();
 		initSpecifiedAccessOrder();
 		initDefaultAccessOrder();
 		initAccessType();
-		initSpecifiedAttributes();
+		initAttributes();
 	}
 	
 	
@@ -124,7 +132,7 @@ public class OxmJavaTypeImpl
 		syncSuperTypeName();
 		syncSpecifiedAccessOrder();
 		syncAccessType();
-		ContextContainerTools.synchronizeWithResourceModel(this.specifiedAttributeContainerAdapter);
+		syncAttributes();
 	}
 	
 	@Override
@@ -134,7 +142,7 @@ public class OxmJavaTypeImpl
 		updateSuperclass();
 		updateDefaultAccessOrder();
 		updateAccessType();
-		ContextContainerTools.update(this.specifiedAttributeContainerAdapter);
+		updateAttributes();
 	}
 	
 	
@@ -483,11 +491,12 @@ public class OxmJavaTypeImpl
 	// ***** prop order *****
 	
 	public ListIterable<String> getPropOrder() {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO
+		return EmptyListIterable.instance();
 	}
+	
 	public int getPropOrderSize() {
-		// TODO Auto-generated method stub
+		// TODO
 		return 0;
 	}
 	
@@ -498,64 +507,65 @@ public class OxmJavaTypeImpl
 	
 	public void addProp(int index, String prop) {
 		// TODO Auto-generated method stub
-		
 	}
 	
 	public void removeProp(int index) {
 		// TODO Auto-generated method stub
-		
 	}
 	
 	public void removeProp(String prop) {
 		// TODO Auto-generated method stub
-		
 	}
 	
 	public void moveProp(int targetIndex, int sourceIndex) {
 		// TODO Auto-generated method stub
-		
 	}
 	
 	
 	// ***** attributes *****
 	
 	public Iterable<JaxbPersistentAttribute> getAttributes() {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO 
+		return EmptyIterable.instance();
 	}
 	
 	public int getAttributesSize() {
-		// TODO Auto-generated method stub
+		// TODO 
 		return 0;
 	}
 	
 	public Iterable<JaxbPersistentAttribute> getIncludedAttributes() {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO
+		return EmptyIterable.instance();
 	}
 	
 	public int getIncludedAttributesSize() {
-		// TODO Auto-generated method stub
+		// TODO
 		return 0;
 	}
 	
 	public Iterable<JaxbPersistentAttribute> getAllLocallyDefinedAttributes() {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO
+		return EmptyIterable.instance();
 	}
 	
 	public Iterable<JaxbPersistentAttribute> getInheritedAttributes() {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO 
+		return EmptyIterable.instance();
 	}
 	
-	public JaxbAttributesContainer buildIncludedAttributesContainer(JaxbClassMapping parent, Context context) {
-		// TODO Auto-generated method stub
-		return null;
+	public JaxbAttributesContainer buildIncludedAttributesContainer(
+			JaxbClassMapping parent, JaxbAttributesContainer.Context context) {
+		return new OxmAttributesContainer(parent);
 	}
 	
 	
-	// ***** specified java attributes *****
+	// ***** attributes *****
+	
+	protected Iterable<JaxbAttributeMapping> getDefaultAttributes() {
+		return this.defaultAttributesContainer.getAttributes();
+	}
+	
 	
 	public ListIterable<OxmJavaAttribute> getSpecifiedAttributes() {
 		return IterableTools.cloneLive(this.specifiedAttributes);
@@ -578,25 +588,36 @@ public class OxmJavaTypeImpl
 		moveItemInList(index, attribute, this.specifiedAttributes, SPECIFIED_ATTRIBUTES_LIST);
 	}
 	
-	protected void initSpecifiedAttributes() {
+	protected void initAttributes() {
 		for (EJavaAttribute eJavaAttribute : getETypeMapping().getJavaAttributes()) {
 			this.specifiedAttributes.add(buildSpecifiedAttribute(eJavaAttribute));
 		}
 	}
 	
+	protected void syncAttributes() {
+		ContextContainerTools.synchronizeWithResourceModel(this.specifiedAttributeContainerAdapter);
+	}
+	
+	protected void updateAttributes() {
+		ContextContainerTools.update(this.specifiedAttributeContainerAdapter);
+	}
+	
 	protected OxmJavaAttribute buildSpecifiedAttribute(EJavaAttribute resourceAttribute) {
-		// If this gets weighty or duplicated, we can move it
-		String elementName = resourceAttribute.getElementName();
-		if (ObjectTools.equals(Oxm.XML_ELEMENT, elementName)) {
-			return new OxmXmlElementImpl(this, (EXmlElement) resourceAttribute);
-		}
-		
-		// ?
-		return null;
+		return new OxmJavaAttributeImpl(this, resourceAttribute);
 	}
 	
 	
+	// ***** default attributes *****
+	
+	
+	
+	
 	// ***** misc *****
+	
+	public void attributeMappingChanged(OxmJavaAttribute attribute, OxmAttributeMapping oldMapping, OxmAttributeMapping newMapping) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	public JaxbAttributeMapping getXmlIdMapping() {
 		// TODO Auto-generated method stub
@@ -675,6 +696,61 @@ public class OxmJavaTypeImpl
 		
 		public void moveContextElement(int index, OxmJavaAttribute element) {
 			OxmJavaTypeImpl.this.moveSpecifiedAttribute_(index, element);
+		}
+	}
+	
+	
+	protected class DefaultAttributesContainer
+			extends GenericJavaAttributesContainer {
+		
+		protected DefaultAttributesContainer(OxmJavaTypeImpl parent, Context context) {
+			super(parent, context, null);
+		}
+		
+		
+		@Override
+		public boolean isFor(JavaResourceType javaResourceType) {
+			if (this.javaResourceType == null) {
+				return false;
+			}
+			return super.isFor(javaResourceType);
+		}
+		
+		@Override
+		protected Iterable<JavaResourceField> getResourceFields() {
+			if (this.javaResourceType == null) {
+				return EmptyIterable.instance();
+			}
+			return super.getResourceFields();
+		}
+		
+		@Override
+		protected Iterable<JavaResourceMethod> getResourceMethods() {
+			if (this.javaResourceType == null) {
+				return EmptyIterable.instance();
+			}
+			return super.getResourceMethods();
+		}
+		
+		protected void setJavaResourceType(JavaResourceType javaResourceType) {
+			this.javaResourceType = javaResourceType;
+		}
+	}
+	
+	
+	protected class DefaultAttributesContainerContext
+			implements JaxbAttributesContainer.Context {
+		
+		public XmlAccessType getAccessType() {
+			return OxmJavaTypeImpl.this.getAccessType();
+		}
+		
+		public void attributeAdded(JaxbPersistentAttribute attribute) {
+			OxmJavaTypeImpl.this.fireItemAdded(DEFAULT_ATTRIBUTES_COLLECTION, attribute);
+		}
+		
+		public void attributeRemoved(JaxbPersistentAttribute attribute) {
+			OxmJavaTypeImpl.this.fireItemRemoved(DEFAULT_ATTRIBUTES_COLLECTION, attribute);
 		}
 	}
 }

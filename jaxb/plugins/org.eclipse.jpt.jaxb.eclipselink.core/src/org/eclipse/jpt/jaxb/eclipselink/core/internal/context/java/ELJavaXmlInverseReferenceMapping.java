@@ -18,9 +18,10 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.internal.context.java.AbstractJavaAttributeMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbMappingKeys;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlInverseReferenceMapping;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlInverseReferenceMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlInverseReferenceAnnotation;
 import org.eclipse.jpt.jaxb.eclipselink.core.validation.JptJaxbEclipseLinkCoreValidationMessages;
@@ -35,7 +36,7 @@ public class ELJavaXmlInverseReferenceMapping
 	protected String mappedBy;
 	
 	
-	public ELJavaXmlInverseReferenceMapping(JaxbPersistentAttribute parent) {
+	public ELJavaXmlInverseReferenceMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.mappedBy = getResourceMappedBy();
 	}

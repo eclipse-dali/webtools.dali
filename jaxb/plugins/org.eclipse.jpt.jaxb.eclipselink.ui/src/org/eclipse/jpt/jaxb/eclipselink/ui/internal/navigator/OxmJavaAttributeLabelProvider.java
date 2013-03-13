@@ -13,9 +13,9 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.common.ui.internal.jface.AbstractItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaAttribute;
+import org.eclipse.jpt.jaxb.eclipselink.ui.internal.ELJaxbMappingImageHelper;
 
 public class OxmJavaAttributeLabelProvider
 		extends AbstractItemExtendedLabelProvider<OxmJavaAttribute> {
@@ -27,8 +27,16 @@ public class OxmJavaAttributeLabelProvider
 	
 	@Override
 	protected PropertyValueModel<ImageDescriptor> buildImageDescriptorModel() {
-		// null for now
-		return new StaticPropertyValueModel(null);
+		return new PropertyAspectAdapter<OxmJavaAttribute, ImageDescriptor>(OxmJavaAttribute.MAPPING_PROPERTY, this.item) {
+			@Override
+			protected ImageDescriptor buildValue_() {
+				return OxmJavaAttributeLabelProvider.this.buildImageDescriptor(this.subject.getMappingKey());
+			}
+		};
+	}
+
+	protected ImageDescriptor buildImageDescriptor(String mappingKey) {
+		return ELJaxbMappingImageHelper.imageDescriptorForAttributeMapping(mappingKey);
 	}
 	
 	@Override

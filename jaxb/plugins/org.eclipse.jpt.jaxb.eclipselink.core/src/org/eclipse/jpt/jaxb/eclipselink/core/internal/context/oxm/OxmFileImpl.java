@@ -19,6 +19,7 @@ import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbContextRoot;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbPackage;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmFile;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmFileDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlBindings;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings;
 import org.eclipse.jpt.jaxb.eclipselink.core.validation.JptJaxbEclipseLinkCoreValidationMessages;
@@ -28,6 +29,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public class OxmFileImpl 
 		extends AbstractJaxbContextNode
 		implements OxmFile {
+	
+	protected OxmFileDefinition definition;
 	
 	// never null
 	protected JptXmlResource oxmResource;
@@ -50,6 +53,7 @@ public class OxmFileImpl
 	
 	public OxmFileImpl(ELJaxbContextRoot parent, JptXmlResource oxmResource) {
 		super(parent);
+		this.definition = new OxmFileDefinitionImpl();
 		this.oxmResource = oxmResource;
 		this.resourceType = oxmResource.getResourceType();
 		this.xmlBindings = buildXmlBindings();
@@ -64,6 +68,10 @@ public class OxmFileImpl
 	@Override
 	public IResource getResource() {
 		return this.oxmResource.getFile();
+	}
+	
+	public OxmFileDefinition getDefinition() {
+		return this.definition;
 	}
 	
 	public JptXmlResource getOxmResource() {

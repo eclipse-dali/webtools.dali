@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2012  Oracle. All rights reserved.
+ *  Copyright (c) 2012, 2013  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -14,13 +14,13 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlID;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlAttributeMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlIDAnnotation;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlAttributeMapping;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlKey;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlPath;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlAttributeMapping;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlKey;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlPath;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.xpath.java.XPath;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlKeyAnnotation;
@@ -38,7 +38,7 @@ public class ELJavaXmlAttributeMapping
 	protected ELJavaXmlKey xmlKey;
 	
 	
-	public ELJavaXmlAttributeMapping(JaxbPersistentAttribute parent) {
+	public ELJavaXmlAttributeMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		initXmlPath();
 		initXmlKey();

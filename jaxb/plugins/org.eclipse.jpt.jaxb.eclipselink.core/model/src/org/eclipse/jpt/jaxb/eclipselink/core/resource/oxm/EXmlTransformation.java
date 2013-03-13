@@ -543,6 +543,8 @@ public class EXmlTransformation extends EJavaAttribute implements EAccessibleJav
 		
 		private static Translator[] buildTranslatorChildren() {
 			return new Translator[] {
+				buildJavaAttributeTranslator(),
+				buildXmlAccessorTypeTranslator()
 			};
 		}
 		

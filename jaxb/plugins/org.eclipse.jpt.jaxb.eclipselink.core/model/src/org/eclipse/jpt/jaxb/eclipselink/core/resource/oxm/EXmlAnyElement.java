@@ -1021,6 +1021,8 @@ public class EXmlAnyElement extends EJavaAttribute implements EAccessibleJavaAtt
 		
 		private static Translator[] buildTranslatorChildren() {
 			return new Translator[] {
+				buildJavaAttributeTranslator(),
+				buildXmlAccessorTypeTranslator()
 			};
 		}
 		

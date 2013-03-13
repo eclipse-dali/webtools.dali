@@ -22,9 +22,9 @@ import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.internal.context.java.AbstractJavaContextNode;
 import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELClassMapping;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlJoinNode;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlJoinNodesMapping;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELClassMapping;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlJoinNode;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlJoinNodesMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.xpath.java.XPath;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.xpath.java.XPathFactory;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlJoinNodeAnnotation;
@@ -236,7 +236,7 @@ public class ELJavaXmlJoinNode
 							ELJavaXmlJoinNode.this,
 							getReferencedXmlPathTextRange(),
 							JptJaxbEclipseLinkCoreValidationMessages.XML_JOIN_NODE__REFERENCED_XML_PATH_NOT_IN_REFERENCED_CLASS_KEYS,
-							referencedClassMapping.getJavaType().getTypeName().getFullyQualifiedName(),
+							referencedClassMapping.getTypeName().getFullyQualifiedName(),
 							this.referencedXmlPath));
 		}
 		

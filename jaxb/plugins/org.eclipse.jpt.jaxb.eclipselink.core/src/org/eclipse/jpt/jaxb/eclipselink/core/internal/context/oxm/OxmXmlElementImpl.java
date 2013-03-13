@@ -9,15 +9,26 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.oxm;
 
-import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaType;
+import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbMappingKeys;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaAttribute;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlElement;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlElement;
 
 public class OxmXmlElementImpl
-		extends AbstractOxmJavaAttribute<EXmlElement>
+		extends AbstractOxmAttributeMapping<EXmlElement>
 		implements OxmXmlElement {
 	
-	public OxmXmlElementImpl(OxmJavaType parent, EXmlElement eJavaAttribute) {
+	public OxmXmlElementImpl(OxmJavaAttribute parent, EXmlElement eJavaAttribute) {
 		super(parent, eJavaAttribute);
+	}
+	
+	
+	public String getKey() {
+		return ELJaxbMappingKeys.XML_ELEMENT_ATTRIBUTE_MAPPING_KEY;
+	}
+	
+	@Override
+	public boolean isParticleMapping() {
+		return true;
 	}
 }

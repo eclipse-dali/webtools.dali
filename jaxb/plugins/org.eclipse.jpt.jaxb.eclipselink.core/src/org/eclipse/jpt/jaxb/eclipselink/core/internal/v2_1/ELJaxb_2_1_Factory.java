@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2013  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -16,18 +16,18 @@ import org.eclipse.jpt.jaxb.core.JaxbProject.Config;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.core.context.XmlAnyAttributeMapping;
-import org.eclipse.jpt.jaxb.core.context.XmlAnyElementMapping;
-import org.eclipse.jpt.jaxb.core.context.XmlAttributeMapping;
-import org.eclipse.jpt.jaxb.core.context.XmlElementMapping;
-import org.eclipse.jpt.jaxb.core.context.XmlElementRefMapping;
-import org.eclipse.jpt.jaxb.core.context.XmlElementRefsMapping;
-import org.eclipse.jpt.jaxb.core.context.XmlElementsMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
-import org.eclipse.jpt.jaxb.core.context.XmlValueMapping;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClassMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.java.JavaXmlAnyAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaXmlAnyElementMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaXmlAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaXmlElementMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaXmlElementRefMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaXmlElementRefsMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaXmlElementsMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaXmlValueMapping;
 import org.eclipse.jpt.jaxb.core.internal.AbstractJaxbFactory;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbContextRoot;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.ELJaxbProjectImpl;
@@ -103,42 +103,42 @@ public class ELJaxb_2_1_Factory
 	}
 	
 	@Override
-	public XmlAnyAttributeMapping buildJavaXmlAnyAttributeMapping(JaxbPersistentAttribute parent) {
+	public JavaXmlAnyAttributeMapping buildJavaXmlAnyAttributeMapping(JavaPersistentAttribute parent) {
 		return new ELJavaXmlAnyAttributeMapping(parent);
 	}
 	
 	@Override
-	public XmlAnyElementMapping buildJavaXmlAnyElementMapping(JaxbPersistentAttribute parent) {
+	public JavaXmlAnyElementMapping buildJavaXmlAnyElementMapping(JavaPersistentAttribute parent) {
 		return new ELJavaXmlAnyElementMapping(parent);
 	}
 	
 	@Override
-	public XmlAttributeMapping buildJavaXmlAttributeMapping(JaxbPersistentAttribute parent) {
+	public JavaXmlAttributeMapping buildJavaXmlAttributeMapping(JavaPersistentAttribute parent) {
 		return new ELJavaXmlAttributeMapping(parent);
 	}
 	
 	@Override
-	public XmlElementMapping buildJavaXmlElementMapping(JaxbPersistentAttribute parent) {
+	public JavaXmlElementMapping buildJavaXmlElementMapping(JavaPersistentAttribute parent) {
 		return new ELJavaXmlElementMapping(parent);
 	}
 	
 	@Override
-	public XmlElementRefMapping buildJavaXmlElementRefMapping(JaxbPersistentAttribute parent) {
+	public JavaXmlElementRefMapping buildJavaXmlElementRefMapping(JavaPersistentAttribute parent) {
 		return new ELJavaXmlElementRefMapping(parent);
 	}
 	
 	@Override
-	public XmlElementRefsMapping buildJavaXmlElementRefsMapping(JaxbPersistentAttribute parent) {
+	public JavaXmlElementRefsMapping buildJavaXmlElementRefsMapping(JavaPersistentAttribute parent) {
 		return new ELJavaXmlElementRefsMapping(parent);
 	}
 	
 	@Override
-	public XmlElementsMapping buildJavaXmlElementsMapping(JaxbPersistentAttribute parent) {
+	public JavaXmlElementsMapping buildJavaXmlElementsMapping(JavaPersistentAttribute parent) {
 		return new ELJavaXmlElementsMapping(parent);
 	}
 	
 	@Override
-	public XmlValueMapping buildJavaXmlValueMapping(JaxbPersistentAttribute parent) {
+	public JavaXmlValueMapping buildJavaXmlValueMapping(JavaPersistentAttribute parent) {
 		return new ELJavaXmlValueMapping(parent);
 	}
 }

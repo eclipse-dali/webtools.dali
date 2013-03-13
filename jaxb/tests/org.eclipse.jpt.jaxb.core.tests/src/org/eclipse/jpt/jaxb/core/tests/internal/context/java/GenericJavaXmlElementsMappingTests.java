@@ -20,9 +20,9 @@ import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jaxb.core.context.XmlElement;
-import org.eclipse.jpt.jaxb.core.context.XmlElementsMapping;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClassMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaXmlElementsMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
@@ -87,7 +87,7 @@ public class GenericJavaXmlElementsMappingTests
 		createTypeWithXmlElements();
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
-		XmlElementsMapping mapping = (XmlElementsMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
+		JavaXmlElementsMapping mapping = (JavaXmlElementsMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
 		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
 		
 		Iterable<XmlElement> xmlElements = mapping.getXmlElements();
@@ -148,7 +148,7 @@ public class GenericJavaXmlElementsMappingTests
 		createTypeWithXmlElements();
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
-		XmlElementsMapping mapping = (XmlElementsMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
+		JavaXmlElementsMapping mapping = (JavaXmlElementsMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
 		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
 		XmlElementsAnnotation xmlElementsAnnotation = (XmlElementsAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENTS);
 		
@@ -191,7 +191,7 @@ public class GenericJavaXmlElementsMappingTests
 		createTypeWithXmlElements();
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
-		XmlElementsMapping mapping = (XmlElementsMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
+		JavaXmlElementsMapping mapping = (JavaXmlElementsMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
 		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
 		
 		assertNull(mapping.getXmlJavaTypeAdapter());
@@ -212,7 +212,7 @@ public class GenericJavaXmlElementsMappingTests
 		createTypeWithXmlElements();
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
-		XmlElementsMapping mapping = (XmlElementsMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
+		JavaXmlElementsMapping mapping = (JavaXmlElementsMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
 		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
 		
 		assertNull(mapping.getXmlJavaTypeAdapter());
@@ -244,7 +244,7 @@ public class GenericJavaXmlElementsMappingTests
 		createTypeWithXmlElements();
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
-		XmlElementsMapping mapping = (XmlElementsMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
+		JavaXmlElementsMapping mapping = (JavaXmlElementsMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
 		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
 		
 		XmlElementWrapperAnnotation xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_WRAPPER);
@@ -269,7 +269,7 @@ public class GenericJavaXmlElementsMappingTests
 		createTypeWithXmlElements();
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
-		XmlElementsMapping mapping = (XmlElementsMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
+		JavaXmlElementsMapping mapping = (JavaXmlElementsMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
 		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
 		
 		XmlElementWrapperAnnotation xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_WRAPPER);
@@ -305,7 +305,7 @@ public class GenericJavaXmlElementsMappingTests
 		createTypeWithXmlElements();
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
-		XmlElementsMapping mapping = (XmlElementsMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
+		JavaXmlElementsMapping mapping = (JavaXmlElementsMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
 		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
 		
 		XmlIDREFAnnotation xmlIDREFAnnotation = (XmlIDREFAnnotation) resourceAttribute.getAnnotation(JAXB.XML_IDREF);
@@ -330,7 +330,7 @@ public class GenericJavaXmlElementsMappingTests
 		createTypeWithXmlElements();
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
-		XmlElementsMapping mapping = (XmlElementsMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
+		JavaXmlElementsMapping mapping = (JavaXmlElementsMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
 		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
 		
 		XmlIDREFAnnotation xmlIDREFAnnotation = (XmlIDREFAnnotation) resourceAttribute.getAnnotation(JAXB.XML_IDREF);

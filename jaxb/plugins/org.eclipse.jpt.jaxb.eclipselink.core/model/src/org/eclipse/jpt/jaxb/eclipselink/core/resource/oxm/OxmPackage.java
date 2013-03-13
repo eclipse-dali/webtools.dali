@@ -9,18 +9,14 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm;
 
-import java.util.List;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.emf.ecore.xml.type.XMLTypePackage;
 import org.eclipse.jpt.common.core.resource.xml.CommonPackage;
-import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.util.OxmValidator;
 
 /**
  * <!-- begin-user-doc -->
@@ -1103,6 +1099,15 @@ public class OxmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int EXML_BINDINGS__VERSION = CommonPackage.EROOT_OBJECT_IMPL__VERSION;
+
+	/**
+	 * The feature id for the '<em><b>Namespace</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int EXML_BINDINGS__NAMESPACE = CommonPackage.EROOT_OBJECT_IMPL__NAMESPACE;
 
 	/**
 	 * The feature id for the '<em><b>Schema Location</b></em>' attribute.
@@ -3012,16 +3017,6 @@ public class OxmPackage extends EPackageImpl
 	public static final int EXML_VIRTUAL_ACCESS_METHODS_SCHEMA = 51;
 
 	/**
-	 * The meta object id for the '<em>EProp Order</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see java.util.List
-	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEPropOrder()
-	 * @generated
-	 */
-	public static final int EPROP_ORDER = 52;
-
-	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlSeeAlso <em>EXml See Also</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3756,13 +3751,6 @@ public class OxmPackage extends EPackageImpl
 	private EEnum eXmlVirtualAccessMethodsSchemaEEnum = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EDataType ePropOrderEDataType = null;
-
-	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
 	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
 	 * package URI value.
@@ -3819,17 +3807,6 @@ public class OxmPackage extends EPackageImpl
 
 		// Initialize created meta-data
 		theOxmPackage.initializePackageContents();
-
-		// Register package validator
-		EValidator.Registry.INSTANCE.put
-			(theOxmPackage, 
-			 new EValidator.Descriptor()
-			 {
-				 public EValidator getEValidator()
-				 {
-					 return OxmValidator.INSTANCE;
-				 }
-			 });
 
 		// Mark meta-data to indicate it can't be changed
 		theOxmPackage.freeze();
@@ -6905,22 +6882,6 @@ public class OxmPackage extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for data type '{@link java.util.List <em>EProp Order</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>EProp Order</em>'.
-	 * @see java.util.List
-	 * @model instanceClass="java.util.List"
-	 *        extendedMetaData="itemType='http://www.eclipse.org/emf/2003/XMLType#string'"
-	 * @generated
-	 */
-	public EDataType getEPropOrder()
-	{
-		return ePropOrderEDataType;
-	}
-
-
-	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlSeeAlso <em>EXml See Also</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -7240,9 +7201,6 @@ public class OxmPackage extends EPackageImpl
 		eXmlMarshalNullRepresentationEEnum = createEEnum(EXML_MARSHAL_NULL_REPRESENTATION);
 		eXmlNsFormEEnum = createEEnum(EXML_NS_FORM);
 		eXmlVirtualAccessMethodsSchemaEEnum = createEEnum(EXML_VIRTUAL_ACCESS_METHODS_SCHEMA);
-
-		// Create data types
-		ePropOrderEDataType = createEDataType(EPROP_ORDER);
 	}
 
 	/**
@@ -7588,7 +7546,7 @@ public class OxmPackage extends EPackageImpl
 		initEAttribute(getEXmlType_Namespace(), ecorePackage.getEString(), "namespace", null, 0, 1, EXmlType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getEXmlType_FactoryClass(), ecorePackage.getEString(), "factoryClass", null, 0, 1, EXmlType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getEXmlType_FactoryMethod(), ecorePackage.getEString(), "factoryMethod", null, 0, 1, EXmlType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getEXmlType_PropOrder(), this.getEPropOrder(), "propOrder", null, 0, 1, EXmlType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEXmlType_PropOrder(), ecorePackage.getEString(), "propOrder", null, 0, 1, EXmlType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(eXmlValueEClass, EXmlValue.class, "EXmlValue", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getEXmlValue_Cdata(), ecorePackage.getEBoolean(), "cdata", null, 0, 1, EXmlValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -7627,33 +7585,8 @@ public class OxmPackage extends EPackageImpl
 		addEEnumLiteral(eXmlVirtualAccessMethodsSchemaEEnum, EXmlVirtualAccessMethodsSchema.NODES);
 		addEEnumLiteral(eXmlVirtualAccessMethodsSchemaEEnum, EXmlVirtualAccessMethodsSchema.ANY);
 
-		// Initialize data types
-		initEDataType(ePropOrderEDataType, List.class, "EPropOrder", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
-
 		// Create resource
 		createResource(eNS_URI);
-
-		// Create annotations
-		// http:///org/eclipse/emf/ecore/util/ExtendedMetaData
-		createExtendedMetaDataAnnotations();
-	}
-
-	/**
-	 * Initializes the annotations for <b>http:///org/eclipse/emf/ecore/util/ExtendedMetaData</b>.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void createExtendedMetaDataAnnotations()
-	{
-		String source = "http:///org/eclipse/emf/ecore/util/ExtendedMetaData";		
-		addAnnotation
-		  (ePropOrderEDataType, 
-		   source, 
-		   new String[] 
-		   {
-			 "itemType", "http://www.eclipse.org/emf/2003/XMLType#string"
-		   });
 	}
 
 	/**
@@ -9443,16 +9376,6 @@ public class OxmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EEnum EXML_VIRTUAL_ACCESS_METHODS_SCHEMA = eINSTANCE.getEXmlVirtualAccessMethodsSchema();
-
-		/**
-		 * The meta object literal for the '<em>EProp Order</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see java.util.List
-		 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEPropOrder()
-		 * @generated
-		 */
-		public static final EDataType EPROP_ORDER = eINSTANCE.getEPropOrder();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlSeeAlso <em>EXml See Also</em>}' class.

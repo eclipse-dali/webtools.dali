@@ -21,6 +21,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jaxb.core.context.XmlAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
+import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClassMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
@@ -61,7 +62,7 @@ public class GenericJavaAttributeXmlJavaTypeAdapterTests extends JaxbContextMode
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		XmlAttributeMapping attributeMapping = (XmlAttributeMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
 		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = attributeMapping.getXmlJavaTypeAdapter();
-		JavaResourceAttribute resourceAttribute = attributeMapping.getJavaResourceAttribute();
+		JavaResourceAttribute resourceAttribute = ((JavaAttributeMapping) attributeMapping).getJavaResourceAttribute();
 		
 		assertNull(contextXmlJavaTypeAdapter.getValue());
 
@@ -84,7 +85,7 @@ public class GenericJavaAttributeXmlJavaTypeAdapterTests extends JaxbContextMode
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		XmlAttributeMapping attributeMapping = (XmlAttributeMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
 		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = attributeMapping.getXmlJavaTypeAdapter();
-		JavaResourceAttribute resourceAttribute = attributeMapping.getJavaResourceAttribute();
+		JavaResourceAttribute resourceAttribute = ((JavaAttributeMapping) attributeMapping).getJavaResourceAttribute();
 		
 		assertNull(contextXmlJavaTypeAdapter.getValue());
 
@@ -112,7 +113,7 @@ public class GenericJavaAttributeXmlJavaTypeAdapterTests extends JaxbContextMode
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		XmlAttributeMapping attributeMapping = (XmlAttributeMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
 		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = attributeMapping.getXmlJavaTypeAdapter();
-		JavaResourceAttribute resourceAttribute = attributeMapping.getJavaResourceAttribute();
+		JavaResourceAttribute resourceAttribute = ((JavaAttributeMapping) attributeMapping).getJavaResourceAttribute();
 		
 		assertEquals("int", contextXmlJavaTypeAdapter.getType());
 		assertNull(contextXmlJavaTypeAdapter.getSpecifiedType());
@@ -139,7 +140,7 @@ public class GenericJavaAttributeXmlJavaTypeAdapterTests extends JaxbContextMode
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		XmlAttributeMapping attributeMapping = (XmlAttributeMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
 		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = attributeMapping.getXmlJavaTypeAdapter();
-		JavaResourceAttribute resourceAttribute = attributeMapping.getJavaResourceAttribute();
+		JavaResourceAttribute resourceAttribute = ((JavaAttributeMapping) attributeMapping).getJavaResourceAttribute();
 		
 		assertEquals("int", contextXmlJavaTypeAdapter.getType());
 		assertNull(contextXmlJavaTypeAdapter.getSpecifiedType());

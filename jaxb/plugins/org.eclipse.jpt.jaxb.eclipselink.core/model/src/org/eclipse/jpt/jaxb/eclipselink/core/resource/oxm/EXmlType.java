@@ -123,7 +123,7 @@ public class EXmlType extends EBaseObjectImpl implements EBaseObject
 	 * @generated
 	 * @ordered
 	 */
-	protected static final List<String> PROP_ORDER_EDEFAULT = null;
+	protected static final String PROP_ORDER_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getPropOrder() <em>Prop Order</em>}' attribute.
@@ -133,7 +133,7 @@ public class EXmlType extends EBaseObjectImpl implements EBaseObject
 	 * @generated
 	 * @ordered
 	 */
-	protected List<String> propOrder = PROP_ORDER_EDEFAULT;
+	protected String propOrder = PROP_ORDER_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -305,12 +305,12 @@ public class EXmlType extends EBaseObjectImpl implements EBaseObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Prop Order</em>' attribute.
-	 * @see #setPropOrder(List)
+	 * @see #setPropOrder(String)
 	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlType_PropOrder()
-	 * @model dataType="org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EPropOrder" many="false"
+	 * @model
 	 * @generated
 	 */
-	public List<String> getPropOrder()
+	public String getPropOrder()
 	{
 		return propOrder;
 	}
@@ -323,9 +323,9 @@ public class EXmlType extends EBaseObjectImpl implements EBaseObject
 	 * @see #getPropOrder()
 	 * @generated
 	 */
-	public void setPropOrder(List<String> newPropOrder)
+	public void setPropOrder(String newPropOrder)
 	{
-		List<String> oldPropOrder = propOrder;
+		String oldPropOrder = propOrder;
 		propOrder = newPropOrder;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, OxmPackage.EXML_TYPE__PROP_ORDER, oldPropOrder, propOrder));
@@ -379,7 +379,7 @@ public class EXmlType extends EBaseObjectImpl implements EBaseObject
 				setFactoryMethod((String)newValue);
 				return;
 			case OxmPackage.EXML_TYPE__PROP_ORDER:
-				setPropOrder((List<String>)newValue);
+				setPropOrder((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

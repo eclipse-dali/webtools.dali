@@ -26,6 +26,8 @@ import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbPackage;
 public interface OxmFile 
 		extends JaxbContextNode {
 	
+	OxmFileDefinition getDefinition();
+	
 	JptXmlResource getOxmResource();
 	
 	String getPackageName();

@@ -23,8 +23,8 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClassMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlJoinNode;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlJoinNodesMapping;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlJoinNode;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlJoinNodesMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_2.ELJaxb_2_2_PlatformDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlJoinNodeAnnotation;
@@ -88,7 +88,7 @@ public class ELJavaXmlJoinNodesMappingTests
 		createTypeWithXmlJoinNodes();
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
-		ELXmlJoinNodesMapping mapping = (ELXmlJoinNodesMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
+		ELJavaXmlJoinNodesMapping mapping = (ELJavaXmlJoinNodesMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
 		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
 		
 		Iterable<ELXmlJoinNode> xmlJoinNodes = mapping.getXmlJoinNodes();
@@ -150,7 +150,7 @@ public class ELJavaXmlJoinNodesMappingTests
 		createTypeWithXmlJoinNodes();
 		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaClassMapping classMapping = jaxbClass.getMapping();
-		ELXmlJoinNodesMapping mapping = (ELXmlJoinNodesMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
+		ELJavaXmlJoinNodesMapping mapping = (ELJavaXmlJoinNodesMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
 		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
 		
 		assertEquals(0, resourceAttribute.getAnnotationsSize(ELJaxb.XML_JOIN_NODE));

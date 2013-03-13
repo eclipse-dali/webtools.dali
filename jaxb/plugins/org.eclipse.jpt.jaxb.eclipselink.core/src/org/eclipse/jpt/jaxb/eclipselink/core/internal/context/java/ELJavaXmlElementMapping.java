@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2012  Oracle. All rights reserved.
+ *  Copyright (c) 2012, 2013  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -14,17 +14,17 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlElement;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.context.XmlID;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlElementMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlIDAnnotation;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlCDATA;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlElementMapping;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlKey;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlPath;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlCDATA;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlElementMapping;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlKey;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlPath;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.xpath.java.XPath;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlCDATAAnnotation;
@@ -45,7 +45,7 @@ public class ELJavaXmlElementMapping
 	protected ELJavaXmlCDATA xmlCDATA;
 	
 	
-	public ELJavaXmlElementMapping(JaxbPersistentAttribute parent) {
+	public ELJavaXmlElementMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		initXmlPath();
 		initXmlKey();

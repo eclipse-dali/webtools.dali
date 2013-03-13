@@ -11,9 +11,9 @@ package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
-import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.internal.context.java.AbstractJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbMappingKeys;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
@@ -54,7 +54,7 @@ public class ELJavaXmlJoinNodesMappingDefinition
 	}
 	
 	@Override
-	public boolean isSpecified(JaxbPersistentAttribute persistentAttribute) {
+	public boolean isSpecified(JavaPersistentAttribute persistentAttribute) {
 		return persistentAttribute.getJavaResourceAttribute().getContainerAnnotation(getAnnotationName()) != null
 				|| ! IterableTools.isEmpty(persistentAttribute.getJavaResourceAttribute().getAnnotations(ELJaxb.XML_JOIN_NODE));
 	}
@@ -63,7 +63,7 @@ public class ELJavaXmlJoinNodesMappingDefinition
 		return IterableTools.listIterable(SUPPORTING_ANNOTATION_NAMES);
 	}
 	
-	public JaxbAttributeMapping buildMapping(JaxbPersistentAttribute parent, JaxbFactory factory) {
+	public JavaAttributeMapping buildMapping(JavaPersistentAttribute parent, JaxbFactory factory) {
 		return new ELJavaXmlJoinNodesMapping(parent);
 	}
 }

@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.eclipselink.ui.internal.navigator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jpt.common.ui.internal.jface.StaticItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmFile;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaAttribute;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaType;
@@ -40,8 +40,8 @@ public class ELJaxbNavigatorItemLabelProviderFactory
 	@Override
 	public ItemExtendedLabelProvider buildProvider(Object item, ItemExtendedLabelProvider.Manager manager) {
 		
-		if (item instanceof JaxbPersistentAttribute) {
-			return new ELJaxbPersistentAttributeLabelProvider((JaxbPersistentAttribute) item, manager);
+		if (item instanceof JavaPersistentAttribute) {
+			return new ELJaxbJavaPersistentAttributeLabelProvider((JavaPersistentAttribute) item, manager);
 		}
 		else if (item instanceof OxmFile) {
 			return buildOxmFileLabelProvider((OxmFile) item, manager);

@@ -36,7 +36,6 @@
       <genEnumLiterals ecoreEnumLiteral="oxm.ecore#//EXmlVirtualAccessMethodsSchema/NODES"/>
       <genEnumLiterals ecoreEnumLiteral="oxm.ecore#//EXmlVirtualAccessMethodsSchema/ANY"/>
     </genEnums>
-    <genDataTypes ecoreDataType="oxm.ecore#//EPropOrder"/>
     <genClasses image="false" ecoreClass="oxm.ecore#//EAbstractTypeMapping">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EAbstractTypeMapping/xmlTransient"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EAbstractTypeMapping/xmlType"/>

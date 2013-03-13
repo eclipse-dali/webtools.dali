@@ -64,11 +64,6 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="xmlProperties" upperBound="-1"
         eType="#//EXmlProperty" containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EDataType" name="EPropOrder" instanceClassName="java.util.List">
-    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
-      <details key="itemType" value="http://www.eclipse.org/emf/2003/XMLType#string"/>
-    </eAnnotations>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EReadWriteJavaAttribute" abstract="true"
       interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="readOnly" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -314,7 +309,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="namespace" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="factoryClass" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="factoryMethod" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="propOrder" eType="#//EPropOrder"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="propOrder" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EXmlValue" eSuperTypes="#//EJavaAttribute #//EAccessibleJavaAttribute #//EAdaptableJavaAttribute #//EContainerJavaAttribute #//EReadWriteJavaAttribute #//ETypedJavaAttribute #//EPropertyHolder">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="cdata" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>

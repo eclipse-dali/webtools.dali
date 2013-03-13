@@ -399,6 +399,8 @@ public class EXmlJoinNodes extends EJavaAttribute implements EContainerJavaAttri
 		
 		private static Translator[] buildTranslatorChildren() {
 			return new Translator[] {
+				buildJavaAttributeTranslator(),
+				buildXmlAccessorTypeTranslator()
 			};
 		}
 		

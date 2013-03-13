@@ -95,4 +95,12 @@ public interface OxmJavaType
 	ListIterable<OxmJavaAttribute> getSpecifiedAttributes();
 	
 	int getSpecifiedAttributesSize();
+	
+	
+	// ***** misc *****
+	
+	void attributeMappingChanged(
+			OxmJavaAttribute attribute, 
+			OxmAttributeMapping oldMapping, 
+			OxmAttributeMapping newMapping);
 }

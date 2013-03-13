@@ -225,6 +225,9 @@ public class ELJaxbContextRootImpl
 	
 	@Override
 	public JaxbTypeMapping getTypeMapping(String typeName) {
+		if (typeName == null) {
+			return null;
+		}
 		OxmTypeMapping oxmTypeMapping = getOxmTypeMapping(typeName);
 		return (oxmTypeMapping != null) ? oxmTypeMapping : super.getTypeMapping(typeName);
 	}

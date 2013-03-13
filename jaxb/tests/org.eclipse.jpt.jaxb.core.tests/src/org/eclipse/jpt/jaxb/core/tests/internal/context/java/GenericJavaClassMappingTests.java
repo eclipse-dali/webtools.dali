@@ -35,12 +35,12 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.TypeKind;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClassMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.internal.context.java.PropertyAccessor;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
@@ -1207,7 +1207,7 @@ public class GenericJavaClassMappingTests
 	protected void publicFieldTest(JavaClassMapping classMapping) {
 		//public int foo; PUBLIC_MEMBER access - persistent
 		assertEquals(1, classMapping.getAttributesSize());
-		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
+		Iterator<JavaPersistentAttribute> attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 		
@@ -1281,7 +1281,7 @@ public class GenericJavaClassMappingTests
 	}
 
 	protected void publicTransientFieldTest(JavaClassMapping classMapping) {
-		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
+		Iterator<JavaPersistentAttribute> attributes = classMapping.getAttributes().iterator();
 		JavaResourceField resourceField = (JavaResourceField) attributes.next().getJavaResourceAttribute();
 
 		//public transient int foo; PUBLIC_MEMBER access - not persistent
@@ -1308,7 +1308,7 @@ public class GenericJavaClassMappingTests
 	}
 
 	protected void publicStaticFieldTest(JavaClassMapping classMapping) {
-		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
+		Iterator<JavaPersistentAttribute> attributes = classMapping.getAttributes().iterator();
 		JavaResourceField resourceField = (JavaResourceField) attributes.next().getJavaResourceAttribute();
 
 		//public static int foo; PUBLIC_MEMBER access - not persistent
@@ -1335,7 +1335,7 @@ public class GenericJavaClassMappingTests
 	}
 
 	protected void publicFinalFieldTest(JavaClassMapping classMapping) {
-		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
+		Iterator<JavaPersistentAttribute> attributes = classMapping.getAttributes().iterator();
 		JavaResourceField resourceField = (JavaResourceField) attributes.next().getJavaResourceAttribute();
 
 		//public final int foo; PUBLIC_MEMBER access - persistent
@@ -1371,7 +1371,7 @@ public class GenericJavaClassMappingTests
 	}
 
 	protected void publicStaticFinalFieldTest(JavaClassMapping classMapping) {
-		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
+		Iterator<JavaPersistentAttribute> attributes = classMapping.getAttributes().iterator();
 		JavaResourceField resourceField = (JavaResourceField) attributes.next().getJavaResourceAttribute();
 
 		//public static final int foo; PUBLIC_MEMBER access - not persistent
@@ -1398,7 +1398,7 @@ public class GenericJavaClassMappingTests
 	}
 
 	protected void privateFieldTest(JavaClassMapping classMapping) {
-		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
+		Iterator<JavaPersistentAttribute> attributes = classMapping.getAttributes().iterator();
 		JavaResourceField resourceField = (JavaResourceField) attributes.next().getJavaResourceAttribute();
 		removeModifiers(resourceField, ModifierKeyword.PUBLIC_KEYWORD);
 		addModifiers(resourceField, ModifierKeyword.PRIVATE_KEYWORD);
@@ -1475,7 +1475,7 @@ public class GenericJavaClassMappingTests
 	}
 
 	protected void privateTransientFieldTest(JavaClassMapping classMapping) {
-		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
+		Iterator<JavaPersistentAttribute> attributes = classMapping.getAttributes().iterator();
 		JavaResourceField resourceField = (JavaResourceField) attributes.next().getJavaResourceAttribute();
 		removeModifiers(resourceField, ModifierKeyword.PUBLIC_KEYWORD);
 		addModifiers(resourceField, ModifierKeyword.PRIVATE_KEYWORD, ModifierKeyword.TRANSIENT_KEYWORD);
@@ -1549,7 +1549,7 @@ public class GenericJavaClassMappingTests
 	}
 
 	protected void privateStaticFieldTest(JavaClassMapping classMapping) {
-		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
+		Iterator<JavaPersistentAttribute> attributes = classMapping.getAttributes().iterator();
 		JavaResourceField resourceField = (JavaResourceField) attributes.next().getJavaResourceAttribute();
 		removeModifiers(resourceField, ModifierKeyword.PUBLIC_KEYWORD);
 		addModifiers(resourceField, ModifierKeyword.PRIVATE_KEYWORD, ModifierKeyword.STATIC_KEYWORD);
@@ -1623,7 +1623,7 @@ public class GenericJavaClassMappingTests
 	}
 
 	protected void privateStaticFinalFieldTest(JavaClassMapping classMapping) {
-		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
+		Iterator<JavaPersistentAttribute> attributes = classMapping.getAttributes().iterator();
 		JavaResourceField resourceField = (JavaResourceField) attributes.next().getJavaResourceAttribute();
 		removeModifiers(resourceField, ModifierKeyword.PUBLIC_KEYWORD);
 		addModifiers(resourceField, ModifierKeyword.PRIVATE_KEYWORD, ModifierKeyword.STATIC_KEYWORD, ModifierKeyword.FINAL_KEYWORD);
@@ -1746,7 +1746,7 @@ public class GenericJavaClassMappingTests
 		//@XmlAttribute
 		//public int getFoo(); PROPERTY access - persistent
 		setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PROPERTY);
-		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
+		Iterator<JavaPersistentAttribute> attributes = classMapping.getAttributes().iterator();
 		assertEquals(1, classMapping.getAttributesSize());
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
@@ -1818,7 +1818,7 @@ public class GenericJavaClassMappingTests
 		//@XmlAttribute
 		//public void setFoo(int foo);; PROPERTY access - persistent
 		setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PROPERTY);
-		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
+		Iterator<JavaPersistentAttribute> attributes = classMapping.getAttributes().iterator();
 		assertEquals(1, classMapping.getAttributesSize());
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
@@ -1861,7 +1861,7 @@ public class GenericJavaClassMappingTests
 		JavaClassMapping classMapping = jaxbClass.getMapping();
 		
 		//public List<?> getFoo(); PUBLIC_MEMBER access - persistent
-		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
+		Iterator<JavaPersistentAttribute> attributes = classMapping.getAttributes().iterator();
 		assertEquals(1, classMapping.getAttributesSize());
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
@@ -1938,7 +1938,7 @@ public class GenericJavaClassMappingTests
 	protected void publicGetterSetterTest(JavaClassMapping classMapping) {
 		//public int getFoo();, public void setFoo(int); PUBLIC_MEMBER access - persistent
 		assertEquals(1, classMapping.getAttributesSize());
-		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
+		Iterator<JavaPersistentAttribute> attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
@@ -2013,7 +2013,7 @@ public class GenericJavaClassMappingTests
 	}
 
 	protected void publicStaticGetterSetterTest(JavaClassMapping classMapping) {
-		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
+		Iterator<JavaPersistentAttribute> attributes = classMapping.getAttributes().iterator();
 		PropertyAccessor propertyAccessor = (PropertyAccessor) ObjectTools.get(attributes.next(), "accessor");
 		JavaResourceMethod resourceGetter = propertyAccessor.getResourceGetterMethod();
 		JavaResourceMethod resourceSetter = propertyAccessor.getResourceSetterMethod();
@@ -2090,7 +2090,7 @@ public class GenericJavaClassMappingTests
 	}
 
 	protected void privateGetterSetterTest(JavaClassMapping classMapping) {
-		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
+		Iterator<JavaPersistentAttribute> attributes = classMapping.getAttributes().iterator();
 		PropertyAccessor propertyAccessor = (PropertyAccessor) ObjectTools.get(attributes.next(), "accessor");
 		JavaResourceMethod resourceGetter = propertyAccessor.getResourceGetterMethod();
 		JavaResourceMethod resourceSetter = propertyAccessor.getResourceSetterMethod();

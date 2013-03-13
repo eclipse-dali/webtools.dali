@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core;
 
+import org.eclipse.jpt.jaxb.core.MappingKeys;
+
 /**
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -19,7 +21,8 @@ package org.eclipse.jpt.jaxb.eclipselink.core;
  * @version 3.0
  * @since 3.0
  */
-public interface ELJaxbMappingKeys {
+public interface ELJaxbMappingKeys
+		extends MappingKeys {
 	
 	String XML_INVERSE_REFERENCE_ATTRIBUTE_MAPPING_KEY = "xml-inverse-reference";
 	String XML_JOIN_NODES_ATTRIBUTE_MAPPING_KEY = "xml-join-nodes";

@@ -904,6 +904,8 @@ public class EXmlValue extends EJavaAttribute implements EAccessibleJavaAttribut
 		
 		private static Translator[] buildTranslatorChildren() {
 			return new Translator[] {
+				buildJavaAttributeTranslator(),
+				buildXmlAccessorTypeTranslator()
 			};
 		}
 		
