@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.utility.internal.ConsumerThreadCoordinator;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.RuntimeExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.command.AsynchronousRepeatingCommandWrapper;
+import org.eclipse.jpt.common.utility.internal.command.NullRepeatingCommand;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.tests.internal.MultiThreadedTestCase;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
@@ -85,7 +86,7 @@ public class AsynchronousRepeatingCommandWrapperTests
 
 	public void testStart() throws Exception {
 		assertEquals(4, this.secondaryModel1.getDoubleCount());
-		this.primaryModel1.setSynchronizer(RepeatingCommand.Null.instance());
+		this.primaryModel1.setSynchronizer(NullRepeatingCommand.instance());
 		this.primaryModel1.setCount(7);
 		assertEquals(4, this.secondaryModel1.getDoubleCount());
 		this.primaryModel1.setSynchronizer(this.repeatingCommand1);
@@ -288,7 +289,7 @@ public class AsynchronousRepeatingCommandWrapperTests
 
 		public PrimaryModel1() {
 			super();
-			this.setSynchronizer_(RepeatingCommand.Null.instance());
+			this.setSynchronizer_(NullRepeatingCommand.instance());
 		}
 
 		public int getCount() {

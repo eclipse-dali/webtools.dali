@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,9 +8,6 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.command;
-
-import java.io.Serializable;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * This command will execute repeatedly the minimum
@@ -41,40 +38,4 @@ public interface RepeatingCommand
 	 * @exception IllegalStateException when the command executor is not started
 	 */
 	void stop() throws InterruptedException;
-
-
-	/**
-	 * Singleton implementation of the repeating command interface that will do
-	 * nothing when executed.
-	 */
-	final class Null
-		implements RepeatingCommand, Serializable
-	{
-		public static final RepeatingCommand INSTANCE = new Null();
-		public static RepeatingCommand instance() {
-			return INSTANCE;
-		}
-		// ensure single instance
-		private Null() {
-			super();
-		}
-		public void start() {
-			// do nothing
-		}
-		public void execute() {
-			// do nothing
-		}
-		public void stop() {
-			// do nothing
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.singletonToString(this);
-		}
-		private static final long serialVersionUID = 1L;
-		private Object readResolve() {
-			// replace this object with the singleton
-			return INSTANCE;
-		}
-	}
 }
