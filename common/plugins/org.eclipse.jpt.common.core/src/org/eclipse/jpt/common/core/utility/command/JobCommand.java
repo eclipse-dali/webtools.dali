@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,11 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.utility.command;
 
-import java.io.Serializable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * Simple interface for implementing the GOF Command design pattern in an
@@ -35,8 +32,8 @@ public interface JobCommand
 	 * monitor is {@link IProgressMonitor#isCanceled() "canceled"}; if it is,
 	 * the command should return a result
 	 * status of severity {@link IStatus#CANCEL}. The singleton
-	 * cancel status {@link Status#CANCEL_STATUS} can be used for
-	 * this purpose.
+	 * cancel status {@link org.eclipse.core.runtime.Status#CANCEL_STATUS}
+	 * can be used for this purpose.
 	 * <p>
 	 * Nested methods can also check the progress monitor
 	 * and, if it is "canceled", throw an
@@ -46,65 +43,4 @@ public interface JobCommand
 	 * @see org.eclipse.core.runtime.jobs.Job#run(IProgressMonitor monitor)
 	 */
 	IStatus execute(IProgressMonitor monitor);
-
-
-	/**
-	 * Singleton implementation of the job command interface that will do
-	 * nothing when executed.
-	 */
-	final class Null
-		implements JobCommand, Serializable
-	{
-		public static final JobCommand INSTANCE = new Null();
-		public static JobCommand instance() {
-			return INSTANCE;
-		}
-		// ensure single instance
-		private Null() {
-			super();
-		}
-		public IStatus execute(IProgressMonitor monitor) {
-			return Status.OK_STATUS;
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.singletonToString(this);
-		}
-		private static final long serialVersionUID = 1L;
-		private Object readResolve() {
-			// replace this object with the singleton
-			return INSTANCE;
-		}
-	}
-
-
-	/**
-	 * Singleton implementation of the job command interface that will throw an
-	 * exception when executed.
-	 */
-	final class Disabled
-		implements JobCommand, Serializable
-	{
-		public static final JobCommand INSTANCE = new Disabled();
-		public static JobCommand instance() {
-			return INSTANCE;
-		}
-		// ensure single instance
-		private Disabled() {
-			super();
-		}
-		// throw an exception
-		public IStatus execute(IProgressMonitor monitor) {
-			throw new UnsupportedOperationException();
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.singletonToString(this);
-		}
-		private static final long serialVersionUID = 1L;
-		private Object readResolve() {
-			// replace this object with the singleton
-			return INSTANCE;
-		}
-	}
 }
