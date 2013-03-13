@@ -9,10 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.utility.command;
 
-import java.io.Serializable;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * This interface allows clients to control a job command's context.
@@ -54,76 +51,4 @@ public interface JobCommandContext {
 	 * {@link org.eclipse.core.runtime.jobs.Job} for execution.
 	 */
 	void execute(JobCommand command, String jobName, ISchedulingRule schedulingRule);
-
-
-	/**
-	 * Singleton implementation of the command executor interface
-	 * that simply executes the command without any sort of enhancement.
-	 */
-	final class Default
-		implements JobCommandContext, Serializable
-	{
-		public static final JobCommandContext INSTANCE = new Default();
-		public static JobCommandContext instance() {
-			return INSTANCE;
-		}
-		// ensure single instance
-		private Default() {
-			super();
-		}
-		public void execute(JobCommand command) {
-			command.execute(new NullProgressMonitor());
-		}
-		public void execute(JobCommand command, String jobName) {
-			this.execute(command);
-		}
-		public void execute(JobCommand command, String jobName, ISchedulingRule schedulingRule) {
-			this.execute(command);
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.singletonToString(this);
-		}
-		private static final long serialVersionUID = 1L;
-		private Object readResolve() {
-			// replace this object with the singleton
-			return INSTANCE;
-		}
-	}
-
-
-	/**
-	 * Singleton implementation of the command executor interface
-	 * that ignores any commands.
-	 */
-	final class Inactive
-		implements JobCommandContext, Serializable
-	{
-		public static final JobCommandContext INSTANCE = new Inactive();
-		public static JobCommandContext instance() {
-			return INSTANCE;
-		}
-		// ensure single instance
-		private Inactive() {
-			super();
-		}
-		public void execute(JobCommand command) {
-			// do nothing
-		}
-		public void execute(JobCommand command, String jobName) {
-			// do nothing
-		}
-		public void execute(JobCommand command, String jobName, ISchedulingRule schedulingRule) {
-			// do nothing
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.singletonToString(this);
-		}
-		private static final long serialVersionUID = 1L;
-		private Object readResolve() {
-			// replace this object with the singleton
-			return INSTANCE;
-		}
-	}
 }

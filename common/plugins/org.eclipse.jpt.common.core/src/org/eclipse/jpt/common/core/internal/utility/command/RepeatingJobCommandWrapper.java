@@ -97,7 +97,7 @@ public class RepeatingJobCommandWrapper
 	 * specified exception handler.
 	 */
 	public RepeatingJobCommandWrapper(JobCommand command, ExceptionHandler exceptionHandler) {
-		this(command, JobCommandContext.Default.instance(), exceptionHandler);
+		this(command, DefaultJobCommandContext.instance(), exceptionHandler);
 	}
 
 	/**
