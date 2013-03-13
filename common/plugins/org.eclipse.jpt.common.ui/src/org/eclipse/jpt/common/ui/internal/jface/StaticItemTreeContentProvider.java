@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 /**
  * Item tree content provider that contains unchanging parent and children.
  * 
- * @see org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider.Null
+ * @see org.eclipse.jpt.common.ui.internal.jface.NullItemTreeContentProvider
  */
 public class StaticItemTreeContentProvider
 	implements ItemTreeContentProvider

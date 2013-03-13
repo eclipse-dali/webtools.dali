@@ -11,30 +11,45 @@ package org.eclipse.jpt.common.ui.internal.jface;
 
 import java.io.Serializable;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
-import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
- * A <em>null</em> item tree content provider factory that returns a
- * <em>null</em> provider.
- * @see org.eclipse.jpt.common.ui.internal.jface.NullItemTreeContentProvider
+ * A <em>null</em> item tree content provider that returns
+ * an empty array of elements, an empty array of children, and a
+ * <code>null</code> parent.
  */
-public final class NullItemTreeContentProviderFactory
-	implements ItemTreeContentProviderFactory, Serializable
+public final class NullItemTreeContentProvider
+	implements ItemTreeContentProvider, Serializable
 {
-	public static final ItemTreeContentProviderFactory INSTANCE = new NullItemTreeContentProviderFactory();
+	public static final ItemTreeContentProvider INSTANCE = new NullItemTreeContentProvider();
 
-	public static ItemTreeContentProviderFactory instance() {
+	public static ItemTreeContentProvider instance() {
 		return INSTANCE;
 	}
 
 	// ensure single instance
-	private NullItemTreeContentProviderFactory() {
+	private NullItemTreeContentProvider() {
 		super();
 	}
 
-	public ItemTreeContentProvider buildProvider(Object item, org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider.Manager manager) {
-		return NullItemTreeContentProvider.instance();
+	public Object[] getElements() {
+		return ObjectTools.EMPTY_OBJECT_ARRAY;
+	}
+
+	public Object getParent() {
+		return null;
+	}
+
+	public Object[] getChildren() {
+		return ObjectTools.EMPTY_OBJECT_ARRAY;
+	}
+
+	public boolean hasChildren() {
+		return false;
+	}
+
+	public void dispose() {
+		// NOP
 	}
 
 	@Override

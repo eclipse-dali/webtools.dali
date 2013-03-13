@@ -9,9 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.jface;
 
-import java.io.Serializable;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
-
 /**
  * Implementations of this interface can be used to maintain the content of a
  * specific tree element. The implementation will monitor the element for any
@@ -65,48 +62,5 @@ public interface ItemTreeContentProvider
 		 * Update appropriately.
 		 */
 		void updateChildren(Object element);
-	}
-
-
-	/**
-	 * A <em>null</em> item tree content provider that returns
-	 * an empty array of elements, an empty array of children, and a
-	 * <code>null</code> parent.
-	 */
-	final class Null
-		implements ItemTreeContentProvider, Serializable
-	{
-		public static final ItemTreeContentProvider INSTANCE = new Null();
-		public static ItemTreeContentProvider instance() {
-			return INSTANCE;
-		}
-		// ensure single instance
-		private Null() {
-			super();
-		}
-		public Object[] getElements() {
-			return ObjectTools.EMPTY_OBJECT_ARRAY;
-		}
-		public Object getParent() {
-			return null;
-		}
-		public Object[] getChildren() {
-			return ObjectTools.EMPTY_OBJECT_ARRAY;
-		}
-		public boolean hasChildren() {
-			return false;
-		}
-		public void dispose() {
-			// NOP
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.singletonToString(this);
-		}
-		private static final long serialVersionUID = 1L;
-		private Object readResolve() {
-			// replace this object with the singleton
-			return INSTANCE;
-		}
 	}
 }
