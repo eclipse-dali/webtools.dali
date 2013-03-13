@@ -61,4 +61,15 @@ public interface ItemStructuredContentProvider {
 		 */
 		void dispose(Object element);
 	}
+
+
+	/**
+	 * Factory interface for constructing item content providers.
+	 */
+	public interface Factory {
+		/**
+		 * Build a structured content provider for the specified item.
+		 */
+		ItemStructuredContentProvider buildProvider(Object item, Manager manager);
+	}
 }
