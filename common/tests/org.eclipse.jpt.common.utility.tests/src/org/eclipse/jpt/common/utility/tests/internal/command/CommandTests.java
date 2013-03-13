@@ -12,6 +12,8 @@ package org.eclipse.jpt.common.utility.tests.internal.command;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.CommandContext;
 import org.eclipse.jpt.common.utility.internal.command.CommandRunnable;
+import org.eclipse.jpt.common.utility.internal.command.DisabledCommand;
+import org.eclipse.jpt.common.utility.internal.command.NullCommand;
 import org.eclipse.jpt.common.utility.internal.command.RunnableCommand;
 import org.eclipse.jpt.common.utility.internal.command.ThreadLocalCommand;
 import org.eclipse.jpt.common.utility.tests.internal.MultiThreadedTestCase;
@@ -25,23 +27,23 @@ public class CommandTests
 	}
 
 	public void testNullCommand() {
-		Command command = Command.Null.instance();
+		Command command = NullCommand.instance();
 		command.execute();  // just make sure it doesn't blow up?
 	}
 
 	public void testNullCommand_toString() {
-		Command command = Command.Null.instance();
+		Command command = NullCommand.instance();
 		assertNotNull(command.toString());
 	}
 
 	public void testNullCommand_serialization() throws Exception {
-		Command command1 = Command.Null.instance();
+		Command command1 = NullCommand.instance();
 		Command command2 = TestTools.serialize(command1);
 		assertSame(command1, command2);
 	}
 
 	public void testDisabledCommand() {
-		Command command = Command.Disabled.instance();
+		Command command = DisabledCommand.instance();
 		boolean exCaught = false;
 		try {
 			command.execute();
@@ -53,12 +55,12 @@ public class CommandTests
 	}
 
 	public void testDisabledCommand_toString() {
-		Command command = Command.Disabled.instance();
+		Command command = DisabledCommand.instance();
 		assertNotNull(command.toString());
 	}
 
 	public void testDisabledCommand_serialization() throws Exception {
-		Command command1 = Command.Disabled.instance();
+		Command command1 = DisabledCommand.instance();
 		Command command2 = TestTools.serialize(command1);
 		assertSame(command1, command2);
 	}

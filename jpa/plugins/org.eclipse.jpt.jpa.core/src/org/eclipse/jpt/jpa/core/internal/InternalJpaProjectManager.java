@@ -48,6 +48,7 @@ import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandContext;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.command.CommandAdapter;
+import org.eclipse.jpt.common.utility.internal.command.NullCommand;
 import org.eclipse.jpt.common.utility.internal.command.ThreadLocalExtendedCommandExecutor;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -1132,7 +1133,7 @@ class InternalJpaProjectManager
 		SingleUseQueueingExtendedJobCommandExecutor newContext = this.buildSynchronousCommandContext();
 		this.commandContext = newContext;
 		// wait for all the outstanding commands to finish
-		oldContext.waitToExecute(Command.Null.instance());
+		oldContext.waitToExecute(NullCommand.instance());
 		// start up the new executor (it will now execute any commands that
 		// arrived while we were waiting on the outstanding commands)
 		newContext.start();

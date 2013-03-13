@@ -25,7 +25,7 @@ public class ThreadLocalCommand
 	 * The default command does nothing.
 	 */
 	public ThreadLocalCommand() {
-		this(Command.Null.instance());
+		this(NullCommand.instance());
 	}
 
 	public ThreadLocalCommand(Command defaultCommand) {

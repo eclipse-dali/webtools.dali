@@ -67,7 +67,7 @@ public class SynchronizingCommand
 	 * is {@link #release() released} by the "primary" thread (Thread A).
 	 */
 	public SynchronizingCommand() {
-		this(Command.Null.instance());
+		this(NullCommand.instance());
 	}
 
 	/**
