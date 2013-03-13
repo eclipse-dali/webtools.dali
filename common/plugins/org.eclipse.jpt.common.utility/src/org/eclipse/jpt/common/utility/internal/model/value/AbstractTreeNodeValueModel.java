@@ -42,9 +42,9 @@ import org.eclipse.jpt.common.utility.model.value.TreeNodeValueModel;
  *     override these methods to listen to the node's value if
  *     it can change in a way that should be reflected in the tree
  */
-public abstract class AbstractTreeNodeValueModel<T>
+public abstract class AbstractTreeNodeValueModel<V>
 	extends AbstractModel
-	implements TreeNodeValueModel<T>
+	implements TreeNodeValueModel<V>
 {
 
 
@@ -105,7 +105,7 @@ public abstract class AbstractTreeNodeValueModel<T>
 
 	// ********** WritablePropertyValueModel implementation **********
 	
-	public void setValue(T value) {
+	public void setValue(V value) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -113,8 +113,8 @@ public abstract class AbstractTreeNodeValueModel<T>
 	// ********** TreeNodeValueModel implementation **********
 	
 	@SuppressWarnings("unchecked")
-	public TreeNodeValueModel<T>[] path() {
-		List<TreeNodeValueModel<T>> path = ListTools.reverse(ListTools.list(this.backPath()));
+	public TreeNodeValueModel<V>[] path() {
+		List<TreeNodeValueModel<V>> path = ListTools.reverse(ListTools.list(this.backPath()));
 		return path.toArray(new TreeNodeValueModel[path.size()]);
 	}
 
@@ -123,11 +123,12 @@ public abstract class AbstractTreeNodeValueModel<T>
 	 * starting with, and including, the node
 	 * and up to, and including, the root node.
 	 */
-	protected Iterator<TreeNodeValueModel<T>> backPath() {
-		return IteratorTools.chainIterator(this, new ParentTransformer<T>());
+	@SuppressWarnings("unchecked")
+	protected Iterator<TreeNodeValueModel<V>> backPath() {
+		return IteratorTools.chainIterator(this, PARENT_TRANSFORMER);
 	}
 
-	public TreeNodeValueModel<T> child(int index) {
+	public TreeNodeValueModel<V> child(int index) {
 		return this.childrenModel().get(index);
 	}
 
@@ -135,8 +136,8 @@ public abstract class AbstractTreeNodeValueModel<T>
 		return this.childrenModel().size();
 	}
 
-	public int indexOfChild(TreeNodeValueModel<T> child) {
-		ListValueModel<TreeNodeValueModel<T>> children = this.childrenModel();
+	public int indexOfChild(TreeNodeValueModel<V> child) {
+		ListValueModel<TreeNodeValueModel<V>> children = this.childrenModel();
 		int size = children.size();
 		for (int i = 0; i < size; i++) {
 			if (children.get(i) == child) {
@@ -172,7 +173,7 @@ public abstract class AbstractTreeNodeValueModel<T>
 			return false;
 		}
 		@SuppressWarnings("unchecked")
-		AbstractTreeNodeValueModel<T> other = (AbstractTreeNodeValueModel<T>) o;
+		AbstractTreeNodeValueModel<V> other = (AbstractTreeNodeValueModel<V>) o;
 		return this.getValue().equals(other.getValue());
 	}
 

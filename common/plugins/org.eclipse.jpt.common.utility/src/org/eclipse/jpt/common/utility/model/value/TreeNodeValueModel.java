@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.utility.model.value;
 
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * Extend {@link ModifiablePropertyValueModel} to better support
@@ -29,24 +30,25 @@ import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @param <T> the type of values held by the model
+ * @param <V> the type of values held by the model
  * 
  * @see org.eclipse.jpt.common.utility.internal.model.value.AbstractTreeNodeValueModel
  */
-public interface TreeNodeValueModel<T>
-	extends ModifiablePropertyValueModel<T>
+public interface TreeNodeValueModel<V>
+	extends ModifiablePropertyValueModel<V>
 {
-
 	/**
 	 * Return the node's parent node; null if the node
 	 * is the root.
 	 */
-	TreeNodeValueModel<T> parent();
-		class ParentTransformer<T>
-			extends AbstractTransformer<TreeNodeValueModel<T>, TreeNodeValueModel<T>>
+	TreeNodeValueModel<V> parent();
+		@SuppressWarnings("rawtypes")
+		Transformer PARENT_TRANSFORMER = new ParentTransformer();
+		class ParentTransformer<V>
+			extends AbstractTransformer<TreeNodeValueModel<V>, TreeNodeValueModel<V>>
 		{
 			@Override
-			protected TreeNodeValueModel<T> transform_(TreeNodeValueModel<T> treeNodeValueModel) {
+			protected TreeNodeValueModel<V> transform_(TreeNodeValueModel<V> treeNodeValueModel) {
 				return treeNodeValueModel.parent();
 			}
 		}
@@ -54,17 +56,17 @@ public interface TreeNodeValueModel<T>
 	/**
 	 * Return the path to the node.
 	 */
-	TreeNodeValueModel<T>[] path();
+	TreeNodeValueModel<V>[] path();
 
 	/**
 	 * Return a list value model of the node's child nodes.
 	 */
-	ListValueModel<TreeNodeValueModel<T>> childrenModel();
+	ListValueModel<TreeNodeValueModel<V>> childrenModel();
 
 	/**
 	 * Return the node's child at the specified index.
 	 */
-	TreeNodeValueModel<T> child(int index);
+	TreeNodeValueModel<V> child(int index);
 
 	/**
 	 * Return the size of the node's list of children.
@@ -74,7 +76,7 @@ public interface TreeNodeValueModel<T>
 	/**
 	 * Return the index in the node's list of children of the specified child.
 	 */
-	int indexOfChild(TreeNodeValueModel<T> child);
+	int indexOfChild(TreeNodeValueModel<V> child);
 
 	/**
 	 * Return whether the node is a leaf (i.e. it has no children)
