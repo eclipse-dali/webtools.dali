@@ -55,6 +55,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
+import org.eclipse.jpt.common.utility.internal.reference.FalseBooleanReference;
 import org.eclipse.jpt.common.utility.reference.BooleanReference;
 import org.eclipse.jpt.common.utility.reference.ModifiableObjectReference;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
@@ -1127,7 +1128,7 @@ class InternalJpaProjectManager
 		}
 
 		// de-activate Java events
-		this.addJavaEventListenerFlag(BooleanReference.False.instance());
+		this.addJavaEventListenerFlag(FalseBooleanReference.instance());
 		// save the current executor
 		SimpleJobCommandExecutor oldContext = (SimpleJobCommandExecutor) this.commandContext;
 		// install a new (not-yet-started) executor
@@ -1152,7 +1153,7 @@ class InternalJpaProjectManager
 		// no need to wait on a synchronous executor...
 		this.commandContext = this.buildAsynchronousCommandContext();
 		// re-activate Java events
-		this.removeJavaEventListenerFlag(BooleanReference.False.instance());
+		this.removeJavaEventListenerFlag(FalseBooleanReference.instance());
 	}
 
 	private SimpleJobCommandExecutor buildAsynchronousCommandContext() {

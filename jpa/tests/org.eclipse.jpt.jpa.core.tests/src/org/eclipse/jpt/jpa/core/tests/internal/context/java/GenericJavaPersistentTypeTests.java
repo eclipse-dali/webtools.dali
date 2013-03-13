@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.As
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
-import org.eclipse.jpt.common.utility.reference.BooleanReference;
+import org.eclipse.jpt.common.utility.internal.reference.FalseBooleanReference;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
@@ -726,7 +726,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		//Thus we need to listen to the java events unlike in our other tests.
 		//Add this flag back at the end of the method so as not to affect other tests.
 		//See org.eclipse.jpt.jpa.core.tests.JptJpaCoreTestsPlugin#start(org.osgi.framework.BundleContext).
-		getJpaProjectManager().removeJavaEventListenerFlag(BooleanReference.False.instance());
+		getJpaProjectManager().removeJavaEventListenerFlag(FalseBooleanReference.instance());
 
 		ICompilationUnit testType = createTestEntityAnnotatedField();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
@@ -752,7 +752,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		assertEquals("name", nameAttribute2.getName());
 		assertFalse(attributes.hasNext());
 
-		getJpaProjectManager().addJavaEventListenerFlag(BooleanReference.False.instance());
+		getJpaProjectManager().addJavaEventListenerFlag(FalseBooleanReference.instance());
 	}
 
 	private JpaProjectManager getJpaProjectManager() {
