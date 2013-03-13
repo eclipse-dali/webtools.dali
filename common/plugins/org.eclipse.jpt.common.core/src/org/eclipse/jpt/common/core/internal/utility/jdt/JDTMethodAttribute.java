@@ -24,6 +24,7 @@ import org.eclipse.jpt.common.utility.MethodSignature;
 import org.eclipse.jpt.common.utility.command.CommandContext;
 import org.eclipse.jpt.common.utility.internal.NameTools;
 import org.eclipse.jpt.common.utility.internal.SimpleMethodSignature;
+import org.eclipse.jpt.common.utility.internal.command.DefaultCommandContext;
 
 /**
  * Adapt and extend a JDT method.
@@ -79,7 +80,7 @@ public class JDTMethodAttribute
 	 * constructor for testing
 	 */
 	public JDTMethodAttribute(Type declaringType, String name, String[] parameterTypeNames, int occurrence, ICompilationUnit compilationUnit) {
-		this(declaringType, new SimpleMethodSignature(name, parameterTypeNames), occurrence, compilationUnit, CommandContext.Default.instance(), DefaultAnnotationEditFormatter.instance());
+		this(declaringType, new SimpleMethodSignature(name, parameterTypeNames), occurrence, compilationUnit, DefaultCommandContext.instance(), DefaultAnnotationEditFormatter.instance());
 	}
 
 

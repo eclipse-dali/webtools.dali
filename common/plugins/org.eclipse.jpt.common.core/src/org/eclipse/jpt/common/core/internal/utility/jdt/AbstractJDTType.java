@@ -22,6 +22,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AbstractType;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.common.core.utility.jdt.Type;
 import org.eclipse.jpt.common.utility.command.CommandContext;
+import org.eclipse.jpt.common.utility.internal.command.DefaultCommandContext;
 
 /**
  * Adapt and extend a JDT abstract type.
@@ -81,7 +82,7 @@ public abstract class AbstractJDTType
 	 * constructor for testing
 	 */
 	protected AbstractJDTType(Type declaringType, String name, int occurrence, ICompilationUnit compilationUnit) {
-		super(declaringType, name, occurrence, compilationUnit, CommandContext.Default.instance(), DefaultAnnotationEditFormatter.instance());
+		super(declaringType, name, occurrence, compilationUnit, DefaultCommandContext.instance(), DefaultAnnotationEditFormatter.instance());
 	}
 
 	@Override

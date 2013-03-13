@@ -20,6 +20,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.common.core.utility.jdt.FieldAttribute;
 import org.eclipse.jpt.common.core.utility.jdt.Type;
 import org.eclipse.jpt.common.utility.command.CommandContext;
+import org.eclipse.jpt.common.utility.internal.command.DefaultCommandContext;
 
 /**
  * Adapt and extend a JDT field.
@@ -56,7 +57,7 @@ public class JDTFieldAttribute
 	 * constructor for testing
 	 */
 	public JDTFieldAttribute(Type declaringType, String name, int occurrence, ICompilationUnit compilationUnit) {
-		this(declaringType, name, occurrence, compilationUnit, CommandContext.Default.instance(), DefaultAnnotationEditFormatter.instance());
+		this(declaringType, name, occurrence, compilationUnit, DefaultCommandContext.instance(), DefaultAnnotationEditFormatter.instance());
 	}
 
 

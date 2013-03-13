@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,7 +23,7 @@ public class SafeCommandExecutor
 	 * <em>ignores</em> any and all exceptions.
 	 */
 	public SafeCommandExecutor() {
-		this(CommandContext.Default.instance());
+		this(DefaultCommandContext.instance());
 	}
 
 	/**
@@ -35,7 +35,7 @@ public class SafeCommandExecutor
 	}
 
 	public SafeCommandExecutor(ExceptionHandler exceptionHandler) {
-		this(CommandContext.Default.instance(), exceptionHandler);
+		this(DefaultCommandContext.instance(), exceptionHandler);
 	}
 
 	public SafeCommandExecutor(CommandContext commandExecutor, ExceptionHandler exceptionHandler) {

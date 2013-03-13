@@ -33,9 +33,9 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageInfoCompilat
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.core.tests.internal.utility.jdt.AnnotationTestCase;
-import org.eclipse.jpt.common.utility.command.CommandContext;
 import org.eclipse.jpt.common.utility.internal.BitTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.command.DefaultCommandContext;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 
 @SuppressWarnings("nls")
@@ -141,7 +141,7 @@ public abstract class JavaResourceModelTestCase
 						cu,
 						this.buildAndVerifyAnnotationProvider(),
 						NullAnnotationEditFormatter.instance(),
-						CommandContext.Default.instance());
+						DefaultCommandContext.instance());
 		this.javaResourceCompilationUnit = pkgCu;
 		return pkgCu.getPackage();
 	}
@@ -183,7 +183,7 @@ public abstract class JavaResourceModelTestCase
 				cu,
 				this.buildAndVerifyAnnotationProvider(),
 				NullAnnotationEditFormatter.instance(),
-				CommandContext.Default.instance()
+				DefaultCommandContext.instance()
 		);
 	}
 

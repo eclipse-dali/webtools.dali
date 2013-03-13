@@ -9,9 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.command;
 
-import java.io.Serializable;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
-
 /**
  * This interface allows clients to control a command's context.
  * This is useful when the server provides the command but the client provides
@@ -33,64 +30,4 @@ public interface CommandContext {
 	 * from clients executing on the same thread).
 	 */
 	void execute(Command command);
-
-
-	/**
-	 * Singleton implementation of the command executor interface
-	 * that simply executes the command without any sort of enhancement.
-	 */
-	final class Default
-		implements CommandContext, Serializable
-	{
-		public static final CommandContext INSTANCE = new Default();
-		public static CommandContext instance() {
-			return INSTANCE;
-		}
-		// ensure single instance
-		private Default() {
-			super();
-		}
-		public void execute(Command command) {
-			command.execute();
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.singletonToString(this);
-		}
-		private static final long serialVersionUID = 1L;
-		private Object readResolve() {
-			// replace this object with the singleton
-			return INSTANCE;
-		}
-	}
-
-
-	/**
-	 * Singleton implementation of the command executor interface
-	 * that ignores any commands.
-	 */
-	final class Inactive
-		implements CommandContext, Serializable
-	{
-		public static final CommandContext INSTANCE = new Inactive();
-		public static CommandContext instance() {
-			return INSTANCE;
-		}
-		// ensure single instance
-		private Inactive() {
-			super();
-		}
-		public void execute(Command command) {
-			// do nothing
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.singletonToString(this);
-		}
-		private static final long serialVersionUID = 1L;
-		private Object readResolve() {
-			// replace this object with the singleton
-			return INSTANCE;
-		}
-	}
 }

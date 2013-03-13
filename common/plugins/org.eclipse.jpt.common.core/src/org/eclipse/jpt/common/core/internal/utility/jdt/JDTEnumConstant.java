@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.common.core.utility.jdt.Enum;
 import org.eclipse.jpt.common.core.utility.jdt.EnumConstant;
 import org.eclipse.jpt.common.utility.command.CommandContext;
+import org.eclipse.jpt.common.utility.internal.command.DefaultCommandContext;
 
 /**
  * Adapt and extend a JDT enum constant.
@@ -52,7 +53,7 @@ public class JDTEnumConstant
 	 * constructor for testing
 	 */
 	public JDTEnumConstant(Enum declaringEnum, String name, int occurrence, ICompilationUnit compilationUnit) {
-		this(declaringEnum, name, occurrence, compilationUnit, CommandContext.Default.instance(), DefaultAnnotationEditFormatter.instance());
+		this(declaringEnum, name, occurrence, compilationUnit, DefaultCommandContext.instance(), DefaultAnnotationEditFormatter.instance());
 	}
 
 	@Override

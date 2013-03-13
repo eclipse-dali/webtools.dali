@@ -12,6 +12,7 @@ package org.eclipse.jpt.common.utility.tests.internal.command;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.CommandContext;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandContext;
+import org.eclipse.jpt.common.utility.internal.command.DefaultCommandContext;
 import org.eclipse.jpt.common.utility.internal.command.ThreadLocalExtendedCommandExecutor;
 import org.eclipse.jpt.common.utility.tests.internal.MultiThreadedTestCase;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
@@ -25,12 +26,12 @@ public class CommandExecutorTests
 	}
 
 	public void testDefaultCommandExecutor_toString() throws Exception {
-		CommandContext commandContext = CommandContext.Default.instance();
+		CommandContext commandContext = DefaultCommandContext.instance();
 		assertNotNull(commandContext.toString());
 	}
 
 	public void testDefaultCommandExecutor_serialization() throws Exception {
-		CommandContext commandContext1 = CommandContext.Default.instance();
+		CommandContext commandContext1 = DefaultCommandContext.instance();
 		CommandContext commandContext2 = TestTools.serialize(commandContext1);
 		assertSame(commandContext1, commandContext2);
 	}
@@ -38,7 +39,7 @@ public class CommandExecutorTests
 	public void testDefaultCommandContext() {
 		TestCommand testCommand = new TestCommand();
 		assertEquals(0, testCommand.count);
-		CommandContext commandContext = CommandContext.Default.instance();
+		CommandContext commandContext = DefaultCommandContext.instance();
 		commandContext.execute(testCommand);
 		assertEquals(1, testCommand.count);
 	}
