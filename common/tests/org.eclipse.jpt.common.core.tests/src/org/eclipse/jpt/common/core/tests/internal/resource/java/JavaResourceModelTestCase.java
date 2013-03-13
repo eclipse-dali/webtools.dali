@@ -17,7 +17,7 @@ import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.AnnotationProvider;
-import org.eclipse.jpt.common.core.SimpleAnnotationProvider;
+import org.eclipse.jpt.common.core.internal.SimpleAnnotationProvider;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourcePackageInfoCompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceTypeCompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.jdt.NullAnnotationEditFormatter;

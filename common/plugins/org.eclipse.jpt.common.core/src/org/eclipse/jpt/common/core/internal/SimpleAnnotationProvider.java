@@ -3,13 +3,14 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.core;
+package org.eclipse.jpt.common.core.internal;
 
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
@@ -19,24 +20,21 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 
 /**
- * Implementation of AnnotationProvider that is constructed with 
- * an array of AnnotationDefinitions and NestableAnnotationDefinitions
- * 
- * An AnnotationDefinition is needed if the annotation is only a stand-alone top-level annotation
- * A NestableAnnotationDeifnition is needed if the annotation can be either stand-alone
- * or nested within a container annotation.
- * 
- * A *Definition is not needed if the annotation is only ever nested within another annotation.
- * 
- * @see JavaResourceAnnotatedElement
- * @see AnnotationDefinition
- * @see NestableAnnotationDefinition
- * 
- * 
- * Delegate to annotation definition providers.
- * The platform factory will build an instance of this annotation provider,
+ * Annotation provider constructed with an array of annotation definitions and
+ * an array of nestable annotation definitions.
+ * <p>
+ * An annotation definition is needed if the annotation is only ever used as a
+ * stand-alone top-level annotation. A nestable annotation definition is needed
+ * if the annotation can be either stand-alone or nested within a container
+ * annotation. A definition is not needed if the annotation is only ever nested
+ * within another annotation.
+ * <p>
+ * The platform will build an instance of this annotation provider,
  * passing in the appropriate array of annotation definition providers necessary
  * to build the annotations for the platform (vendor and/or version).
+ *
+ * @see AnnotationDefinition
+ * @see NestableAnnotationDefinition
  */
 public final class SimpleAnnotationProvider
 	implements AnnotationProvider
@@ -44,19 +42,19 @@ public final class SimpleAnnotationProvider
 	private final AnnotationDefinition[] annotationDefinitions;
 
 	private final NestableAnnotationDefinition[] nestableAnnotationDefinitions;
-	
+
 	public SimpleAnnotationProvider(AnnotationDefinition[] annotationDefinitions, NestableAnnotationDefinition[] nestableAnnotationDefinitions) {
 		super();
 		this.annotationDefinitions = annotationDefinitions;
 		this.nestableAnnotationDefinitions = nestableAnnotationDefinitions;
 	}
-	
-	
-	protected Iterable<AnnotationDefinition> getAnnotationDefinitions() {
+
+
+	private Iterable<AnnotationDefinition> getAnnotationDefinitions() {
 		return IterableTools.iterable(this.annotationDefinitions);
 	}
-	
-	protected AnnotationDefinition getAnnotationDefinition(String annotationName) {
+
+	private AnnotationDefinition getAnnotationDefinition(String annotationName) {
 		for (AnnotationDefinition annotationDefinition : this.annotationDefinitions) {
 			if (annotationDefinition.getAnnotationName().equals(annotationName)) {
 				return annotationDefinition;
@@ -64,7 +62,7 @@ public final class SimpleAnnotationProvider
 		}
 		return null;
 	}
-	
+
 	public Iterable<String> getAnnotationNames() {
 		return IterableTools.transform(this.getAnnotationDefinitions(), AnnotationDefinition.ANNOTATION_NAME_TRANSFORMER);
 	}
@@ -80,7 +78,7 @@ public final class SimpleAnnotationProvider
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element, String annotationName) {
 		return this.getAnnotationDefinition(annotationName).buildAnnotation(parent, element);
 	}
-	
+
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		return this.getAnnotationDefinition(jdtAnnotation.getElementName()).buildAnnotation(parent, jdtAnnotation);
 	}
@@ -93,11 +91,11 @@ public final class SimpleAnnotationProvider
 		return this.getAnnotationDefinition(annotationName).buildNullAnnotation(parent);
 	}
 
-	protected Iterable<NestableAnnotationDefinition> getNestableAnnotationDefinitions() {
+	private Iterable<NestableAnnotationDefinition> getNestableAnnotationDefinitions() {
 		return IterableTools.iterable(this.nestableAnnotationDefinitions);
 	}
 
-	protected NestableAnnotationDefinition getNestableAnnotationDefinition(String annotationName) {
+	private NestableAnnotationDefinition getNestableAnnotationDefinition(String annotationName) {
 		for (NestableAnnotationDefinition annotationDefinition : this.nestableAnnotationDefinitions) {
 			if (annotationDefinition.getNestableAnnotationName().equals(annotationName)) {
 				return annotationDefinition;
@@ -111,19 +109,19 @@ public final class SimpleAnnotationProvider
 	}
 
 	public String getNestableAnnotationName(String containerAnnotationName) {
-		return getNestableAnnotationDefinitionForContainer(containerAnnotationName).getNestableAnnotationName();
+		return this.getNestableAnnotationDefinitionForContainer(containerAnnotationName).getNestableAnnotationName();
 	}
 
 	public String getContainerAnnotationName(String nestableAnnotationName) {
-		return getNestableAnnotationDefinition(nestableAnnotationName).getContainerAnnotationName();
+		return this.getNestableAnnotationDefinition(nestableAnnotationName).getContainerAnnotationName();
 	}
 
 	public String getNestableElementName(String nestableAnnotationName) {
-		return getNestableAnnotationDefinition(nestableAnnotationName).getElementName();		
+		return this.getNestableAnnotationDefinition(nestableAnnotationName).getElementName();
 	}
 
 	private NestableAnnotationDefinition getNestableAnnotationDefinitionForContainer(String containerAnnotationName) {
-		for (NestableAnnotationDefinition nestableAnnotationDefinition : getNestableAnnotationDefinitions()) {
+		for (NestableAnnotationDefinition nestableAnnotationDefinition : this.nestableAnnotationDefinitions) {
 			if (nestableAnnotationDefinition.getContainerAnnotationName().equals(containerAnnotationName)) {
 				return nestableAnnotationDefinition;
 			}
