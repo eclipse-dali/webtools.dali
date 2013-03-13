@@ -9,10 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.jface;
 
-import java.io.Serializable;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.swt.graphics.Image;
-
 /**
  * Implementations of this interface can be used to maintain the label (image
  * and text) and description of a specific item. The implementation will monitor
@@ -49,45 +45,5 @@ public interface ItemExtendedLabelProvider
 		 * The description for the specified item has changed. Update appropriately.
 		 */
 		void updateDescription(Object item);
-	}
-
-
-	/**
-	 * A <em>null</em> item extended label provider that returns a
-	 * <code>null</code> image, a <code>null</code> text string, and
-	 * a <code>null</code> description string.
-	 */
-	final class Null
-		implements ItemExtendedLabelProvider, Serializable
-	{
-		public static final ItemExtendedLabelProvider INSTANCE = new Null();
-		public static ItemExtendedLabelProvider instance() {
-			return INSTANCE;
-		}
-		// ensure single instance
-		private Null() {
-			super();
-		}
-		public Image getImage() {
-			return null;
-		}
-		public String getText() {
-			return null;
-		}
-		public String getDescription() {
-			return null;
-		}
-		public void dispose() {
-			// NOP
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.singletonToString(this);
-		}
-		private static final long serialVersionUID = 1L;
-		private Object readResolve() {
-			// replace this object with the singleton
-			return INSTANCE;
-		}
 	}
 }
