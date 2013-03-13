@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,6 @@ package org.eclipse.jpt.common.utility.internal.command;
 import java.util.concurrent.ThreadFactory;
 import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.command.ExtendedCommandContext;
 import org.eclipse.jpt.common.utility.command.StatefulExtendedCommandContext;
 import org.eclipse.jpt.common.utility.internal.SimpleThreadFactory;
 
@@ -46,7 +45,7 @@ public class AsynchronousExtendedCommandExecutor
 	 * specified exception handler.
 	 */
 	public AsynchronousExtendedCommandExecutor(String threadName, ExceptionHandler exceptionHandler) {
-		this(new SimpleStatefulExtendedCommandExecutor(ExtendedCommandContext.Default.instance()), SimpleThreadFactory.instance(), threadName, exceptionHandler);
+		this(new SimpleStatefulExtendedCommandExecutor(DefaultExtendedCommandContext.instance()), SimpleThreadFactory.instance(), threadName, exceptionHandler);
 	}
 
 	/**

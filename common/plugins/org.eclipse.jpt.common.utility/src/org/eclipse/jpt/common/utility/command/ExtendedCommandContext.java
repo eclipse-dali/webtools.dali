@@ -9,9 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.command;
 
-import java.io.Serializable;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
-
 /**
  * This interface extends the normal command context; it allows the client
  * to specify when a command <em>must</em> be executed synchronously.
@@ -49,78 +46,4 @@ public interface ExtendedCommandContext
 	 * @see #execute(Command)
 	 */
 	boolean waitToExecute(Command command, long timeout) throws InterruptedException;
-
-
-	/**
-	 * Singleton implementation of the command executor interface
-	 * that simply executes the command without any sort of enhancement.
-	 */
-	final class Default
-		implements ExtendedCommandContext, Serializable
-	{
-		public static final ExtendedCommandContext INSTANCE = new Default();
-		public static ExtendedCommandContext instance() {
-			return INSTANCE;
-		}
-		// ensure single instance
-		private Default() {
-			super();
-		}
-		public void execute(Command command) {
-			command.execute();
-		}
-		public void waitToExecute(Command command) {
-			command.execute();
-		}
-		public boolean waitToExecute(Command command, long timeout) {
-			command.execute();
-			return true;
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.singletonToString(this);
-		}
-		private static final long serialVersionUID = 1L;
-		private Object readResolve() {
-			// replace this object with the singleton
-			return INSTANCE;
-		}
-	}
-
-
-	/**
-	 * Singleton implementation of the command executor interface
-	 * that ignores any commands.
-	 */
-	final class Inactive
-		implements ExtendedCommandContext, Serializable
-	{
-		public static final ExtendedCommandContext INSTANCE = new Inactive();
-		public static ExtendedCommandContext instance() {
-			return INSTANCE;
-		}
-		// ensure single instance
-		private Inactive() {
-			super();
-		}
-		public void execute(Command command) {
-			// do nothing
-		}
-		public void waitToExecute(Command command) {
-			// do nothing
-		}
-		public boolean waitToExecute(Command command, long timeout) {
-			// do nothing
-			return true;
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.singletonToString(this);
-		}
-		private static final long serialVersionUID = 1L;
-		private Object readResolve() {
-			// replace this object with the singleton
-			return INSTANCE;
-		}
-	}
 }
