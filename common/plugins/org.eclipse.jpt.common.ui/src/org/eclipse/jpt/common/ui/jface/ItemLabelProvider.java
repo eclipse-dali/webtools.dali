@@ -68,4 +68,15 @@ public interface ItemLabelProvider {
 		 */
 		void updateLabel(Object item);
 	}
+
+
+	/**
+	 * Factory interface for constructing item label providers.
+	 */
+	interface Factory {
+		/**
+		 * Build a label provider for the specified item.
+		 */
+		ItemLabelProvider buildProvider(Object item, Manager manager);
+	}
 }
