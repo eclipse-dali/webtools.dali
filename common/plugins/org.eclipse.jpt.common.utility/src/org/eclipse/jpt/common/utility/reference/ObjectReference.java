@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 
 /**
- * Provide a container for holding an object that cannot be changed.
+ * Provide a container for holding an object.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -31,7 +31,7 @@ public interface ObjectReference<V> {
 	V getValue();
 
 	@SuppressWarnings("rawtypes")
-	Transformer VALUE_TRANSFORMER = new ValueTransformer();
+	Transformer TRANSFORMER = new ValueTransformer();
 	class ValueTransformer<V>
 		extends TransformerAdapter<ObjectReference<V>, V>
 	{
