@@ -23,7 +23,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.ui.internal.jface.NavigatorContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
-import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
+import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionClearEvent;
@@ -70,7 +70,7 @@ public class JaxbNavigatorContentProvider
 	}
 
 	@Override
-	protected ItemTreeContentProviderFactory buildItemContentProviderFactory() {
+	protected ItemTreeContentProvider.Factory buildItemContentProviderFactory() {
 		return new JaxbNavigatorTreeItemContentProviderFactory();
 	}
 

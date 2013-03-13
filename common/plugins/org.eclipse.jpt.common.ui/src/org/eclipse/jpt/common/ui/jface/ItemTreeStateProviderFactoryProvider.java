@@ -24,7 +24,7 @@ public interface ItemTreeStateProviderFactoryProvider {
 	 * Return a factory to be used to create {@link ItemTreeContentProvider}s
 	 * for a tree view.
 	 */
-	ItemTreeContentProviderFactory getItemContentProviderFactory();
+	ItemTreeContentProvider.Factory getItemContentProviderFactory();
 	
 	/**
 	 * Return a factory to be used to create {@link ItemExtendedLabelProvider}s

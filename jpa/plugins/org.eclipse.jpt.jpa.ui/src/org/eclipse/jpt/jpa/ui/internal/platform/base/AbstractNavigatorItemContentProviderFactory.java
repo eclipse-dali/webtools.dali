@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.ui.internal.platform.base;
 
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider.Manager;
-import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
@@ -26,7 +25,7 @@ import org.eclipse.jpt.jpa.ui.internal.structure.JpaStructureNodeItemContentProv
  * Project Explorer.
  */
 public abstract class AbstractNavigatorItemContentProviderFactory
-	implements ItemTreeContentProviderFactory
+	implements ItemTreeContentProvider.Factory
 {
 	protected AbstractNavigatorItemContentProviderFactory() {
 		super();

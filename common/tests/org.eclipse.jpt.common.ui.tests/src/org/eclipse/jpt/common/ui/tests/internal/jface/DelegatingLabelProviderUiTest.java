@@ -29,9 +29,7 @@ import org.eclipse.jpt.common.ui.internal.jface.AbstractItemExtendedLabelProvide
 import org.eclipse.jpt.common.ui.internal.jface.ItemTreeStateProviderManager;
 import org.eclipse.jpt.common.ui.internal.jface.StaticItemTreeContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
-import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider.Factory;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
-import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
 import org.eclipse.jpt.common.ui.jface.TreeStateProvider;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
@@ -308,7 +306,7 @@ public class DelegatingLabelProviderUiTest
 
 
 	/* CU private */ static class VehicleContentProviderFactory
-		implements ItemTreeContentProviderFactory
+		implements ItemTreeContentProvider.Factory
 	{
 		public ItemTreeContentProvider buildProvider(Object item, ItemTreeContentProvider.Manager manager) {
 			if (item instanceof Root) {

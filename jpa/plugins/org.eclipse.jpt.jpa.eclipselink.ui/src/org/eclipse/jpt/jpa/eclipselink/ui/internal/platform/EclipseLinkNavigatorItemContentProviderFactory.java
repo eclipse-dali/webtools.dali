@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.platform;
 
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
-import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.ui.internal.platform.base.AbstractNavigatorItemContentProviderFactory;
 
@@ -18,12 +17,12 @@ public class EclipseLinkNavigatorItemContentProviderFactory
 	extends AbstractNavigatorItemContentProviderFactory
 {
 	// singleton
-	private static final ItemTreeContentProviderFactory INSTANCE = new EclipseLinkNavigatorItemContentProviderFactory();
+	private static final ItemTreeContentProvider.Factory INSTANCE = new EclipseLinkNavigatorItemContentProviderFactory();
 
 	/**
 	 * Return the singleton
 	 */
-	public static ItemTreeContentProviderFactory instance() {
+	public static ItemTreeContentProvider.Factory instance() {
 		return INSTANCE;
 	}
 

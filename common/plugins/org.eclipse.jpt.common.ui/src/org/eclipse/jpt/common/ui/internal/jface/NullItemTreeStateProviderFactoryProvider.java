@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.ui.internal.jface;
 
 import java.io.Serializable;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
-import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
+import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * A <em>null</em> item tree state provider factory provider that returns
  * <em>null</em> factories.
  * @see org.eclipse.jpt.common.ui.internal.jface.NullItemTreeContentProviderFactory
- * @see org.eclipse.jpt.common.ui.internal.jface.NullItemExtendedLabelProvider.Factory
+ * @see org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider.Factory
  */
 public final class NullItemTreeStateProviderFactoryProvider
 	implements ItemTreeStateProviderFactoryProvider, Serializable
@@ -35,7 +35,7 @@ public final class NullItemTreeStateProviderFactoryProvider
 		super();
 	}
 
-	public ItemTreeContentProviderFactory getItemContentProviderFactory() {
+	public ItemTreeContentProvider.Factory getItemContentProviderFactory() {
 		return NullItemTreeContentProviderFactory.instance();
 	}
 

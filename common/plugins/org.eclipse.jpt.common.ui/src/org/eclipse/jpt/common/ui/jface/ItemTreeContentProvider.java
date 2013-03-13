@@ -63,4 +63,18 @@ public interface ItemTreeContentProvider
 		 */
 		void updateChildren(Object element);
 	}
+
+
+	/**
+	 * Factory interface for constructing item tree content providers.
+	 * Typically used by {@link ItemTreeContentProvider.Manager item tree content
+	 * provider managers}.
+	 */
+	interface Factory {
+		/**
+		 * Build a tree content provider for the specified item.
+		 * Return <code>null</code> if there is no provider for the specified item.
+		 */
+		ItemTreeContentProvider buildProvider(Object item, Manager manager);
+	}
 }

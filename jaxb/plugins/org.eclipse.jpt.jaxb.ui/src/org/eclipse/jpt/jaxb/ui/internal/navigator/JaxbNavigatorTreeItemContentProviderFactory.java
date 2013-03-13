@@ -12,14 +12,13 @@ package org.eclipse.jpt.jaxb.ui.internal.navigator;
 import java.util.HashMap;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
-import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 import org.eclipse.jpt.jaxb.ui.platform.JaxbPlatformUi;
 
 public class JaxbNavigatorTreeItemContentProviderFactory
-	implements ItemTreeContentProviderFactory
+	implements ItemTreeContentProvider.Factory
 {
 	/**
 	 * Exactly *one* of these factories is created for each view that utilizes it.  
@@ -29,7 +28,7 @@ public class JaxbNavigatorTreeItemContentProviderFactory
 	 * 
 	 * Key: platform id,  Value: delegate content provider factory
 	 */
-	private HashMap<JaxbPlatformConfig, ItemTreeContentProviderFactory> delegates = new HashMap<JaxbPlatformConfig, ItemTreeContentProviderFactory>();
+	private HashMap<JaxbPlatformConfig, ItemTreeContentProvider.Factory> delegates = new HashMap<JaxbPlatformConfig, ItemTreeContentProvider.Factory>();
 	
 	
 	public JaxbNavigatorTreeItemContentProviderFactory() {
@@ -37,7 +36,7 @@ public class JaxbNavigatorTreeItemContentProviderFactory
 	}
 	
 	public ItemTreeContentProvider buildProvider(Object item, ItemTreeContentProvider.Manager manager) {
-		ItemTreeContentProviderFactory delegate = getDelegate(item);
+		ItemTreeContentProvider.Factory delegate = getDelegate(item);
 		if (delegate != null) {
 			return delegate.buildProvider(item, manager);
 		}
@@ -45,7 +44,7 @@ public class JaxbNavigatorTreeItemContentProviderFactory
 	}
 	
 	
-	private ItemTreeContentProviderFactory getDelegate(Object element) {
+	private ItemTreeContentProvider.Factory getDelegate(Object element) {
 		if (! (element instanceof IAdaptable)) {
 			return null;
 		}
@@ -62,7 +61,7 @@ public class JaxbNavigatorTreeItemContentProviderFactory
 			return delegates.get(jaxbPlatformConfig);
 		}
 		JaxbPlatformUi platformUi = (JaxbPlatformUi) jaxbPlatform.getAdapter(JaxbPlatformUi.class);
-		ItemTreeContentProviderFactory delegate = 
+		ItemTreeContentProvider.Factory delegate = 
 				(platformUi == null) ? null : platformUi.getNavigatorUi().getTreeItemContentProviderFactory();
 		delegates.put(jaxbPlatformConfig, delegate);
 		return delegate;

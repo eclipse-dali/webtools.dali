@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.ui.internal.structure;
 
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider.Manager;
-import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 
@@ -20,15 +19,15 @@ import org.eclipse.jpt.jpa.core.JpaStructureNode;
  * file JPA Structure View.
  */
 public class JpaFileStructureItemContentProviderFactory
-	implements ItemTreeContentProviderFactory
+	implements ItemTreeContentProvider.Factory
 {
 	// singleton
-	private static final ItemTreeContentProviderFactory INSTANCE = new JpaFileStructureItemContentProviderFactory();
+	private static final ItemTreeContentProvider.Factory INSTANCE = new JpaFileStructureItemContentProviderFactory();
 
 	/**
 	 * Return the singleton
 	 */
-	public static ItemTreeContentProviderFactory instance() {
+	public static ItemTreeContentProvider.Factory instance() {
 		return INSTANCE;
 	}
 

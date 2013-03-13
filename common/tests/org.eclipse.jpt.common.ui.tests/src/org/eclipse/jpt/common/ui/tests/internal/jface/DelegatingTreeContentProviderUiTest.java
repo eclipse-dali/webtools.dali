@@ -27,7 +27,6 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.ui.internal.jface.AbstractItemTreeContentProvider;
 import org.eclipse.jpt.common.ui.internal.jface.ItemTreeStateProviderManager;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
-import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
@@ -286,7 +285,7 @@ public class DelegatingTreeContentProviderUiTest
 
 
 	/* CU private */ static abstract class AbstractTreeItemContentProviderFactory
-		implements ItemTreeContentProviderFactory
+		implements ItemTreeContentProvider.Factory
 	{
 		public ItemTreeContentProvider buildProvider(Object item, ItemTreeContentProvider.Manager manager) {
 			return new GenericItemTreeContentProvider((TreeNode) item, manager);

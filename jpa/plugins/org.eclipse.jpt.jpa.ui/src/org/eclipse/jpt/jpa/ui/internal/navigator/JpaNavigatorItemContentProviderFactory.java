@@ -12,13 +12,12 @@ package org.eclipse.jpt.jpa.ui.internal.navigator;
 import java.util.HashMap;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider.Manager;
-import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.JpaContextModelRootModel;
+import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 
 /**
  * This factory can be used by a item tree content provider that must provide
@@ -29,12 +28,12 @@ import org.eclipse.jpt.jpa.ui.JpaContextModelRootModel;
  * singleton....
  */
 public class JpaNavigatorItemContentProviderFactory
-	implements ItemTreeContentProviderFactory
+	implements ItemTreeContentProvider.Factory
 {
 	/**
 	 * Delegate factories, keyed by JPA platform.
 	 */
-	private HashMap<JpaPlatform, ItemTreeContentProviderFactory> delegates = new HashMap<JpaPlatform, ItemTreeContentProviderFactory>();
+	private HashMap<JpaPlatform, ItemTreeContentProvider.Factory> delegates = new HashMap<JpaPlatform, ItemTreeContentProvider.Factory>();
 
 
 	public JpaNavigatorItemContentProviderFactory() {
@@ -47,7 +46,7 @@ public class JpaNavigatorItemContentProviderFactory
 		if (item instanceof JpaContextModelRootModel) {
 			return this.buildContextModelRootModelProvider((JpaContextModelRootModel) item, manager);
 		}
-		ItemTreeContentProviderFactory delegate = this.getDelegate(item);
+		ItemTreeContentProvider.Factory delegate = this.getDelegate(item);
 		return (delegate == null) ? null : delegate.buildProvider(item, manager);
 	}
 
@@ -55,13 +54,13 @@ public class JpaNavigatorItemContentProviderFactory
 		return new JpaContextModelRootModelItemContentProvider(item, manager);
 	}
 
-	private ItemTreeContentProviderFactory getDelegate(Object element) {
+	private ItemTreeContentProvider.Factory getDelegate(Object element) {
 		return (element instanceof JpaContextModel) ? this.getDelegate((JpaContextModel) element) : null;
 	}
 
-	private synchronized ItemTreeContentProviderFactory getDelegate(JpaContextModel contextNode) {
+	private synchronized ItemTreeContentProvider.Factory getDelegate(JpaContextModel contextNode) {
 		JpaPlatform jpaPlatform = contextNode.getJpaPlatform();
-		ItemTreeContentProviderFactory delegate = this.delegates.get(jpaPlatform);
+		ItemTreeContentProvider.Factory delegate = this.delegates.get(jpaPlatform);
 		if (delegate == null) {
 			if ( ! this.delegates.containsKey(jpaPlatform)) {  // null is an allowed value
 				delegate = this.buildDelegate(jpaPlatform);
@@ -71,7 +70,7 @@ public class JpaNavigatorItemContentProviderFactory
 		return delegate;
 	}
 
-	private ItemTreeContentProviderFactory buildDelegate(JpaPlatform jpaPlatform) {
+	private ItemTreeContentProvider.Factory buildDelegate(JpaPlatform jpaPlatform) {
 		JpaPlatformUi platformUI = (JpaPlatformUi) jpaPlatform.getAdapter(JpaPlatformUi.class);
 		if (platformUI == null) {
 			return null;

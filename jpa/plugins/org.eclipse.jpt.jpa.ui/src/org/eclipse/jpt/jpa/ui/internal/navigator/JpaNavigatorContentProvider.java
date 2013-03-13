@@ -26,7 +26,7 @@ import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.core.internal.utility.ResourceChangeAdapter;
 import org.eclipse.jpt.common.ui.internal.jface.NavigatorContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
-import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
+import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.ui.JpaContextModelRootModel;
@@ -77,7 +77,7 @@ public class JpaNavigatorContentProvider
 	}
 
 	@Override
-	protected ItemTreeContentProviderFactory buildItemContentProviderFactory() {
+	protected ItemTreeContentProvider.Factory buildItemContentProviderFactory() {
 		return new JpaNavigatorItemContentProviderFactory();
 	}
 

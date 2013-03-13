@@ -11,7 +11,6 @@ package org.eclipse.jpt.common.ui.internal.jface;
 
 import java.io.Serializable;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
-import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
@@ -20,11 +19,11 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * @see org.eclipse.jpt.common.ui.internal.jface.NullItemTreeContentProvider
  */
 public final class NullItemTreeContentProviderFactory
-	implements ItemTreeContentProviderFactory, Serializable
+	implements ItemTreeContentProvider.Factory, Serializable
 {
-	public static final ItemTreeContentProviderFactory INSTANCE = new NullItemTreeContentProviderFactory();
+	public static final ItemTreeContentProvider.Factory INSTANCE = new NullItemTreeContentProviderFactory();
 
-	public static ItemTreeContentProviderFactory instance() {
+	public static ItemTreeContentProvider.Factory instance() {
 		return INSTANCE;
 	}
 

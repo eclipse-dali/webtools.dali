@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.ui.internal.jaxb21;
 
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
-import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
+import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
 import org.eclipse.jpt.jaxb.ui.navigator.JaxbNavigatorUi;
 
 
@@ -33,7 +33,7 @@ public class GenericJaxb_2_1_NavigatorUi
 	}
 	
 	
-	public ItemTreeContentProviderFactory getTreeItemContentProviderFactory() {
+	public ItemTreeContentProvider.Factory getTreeItemContentProviderFactory() {
 		return GenericJaxb_2_1_NavigatorTreeItemContentProviderFactory.instance();
 	}
 	

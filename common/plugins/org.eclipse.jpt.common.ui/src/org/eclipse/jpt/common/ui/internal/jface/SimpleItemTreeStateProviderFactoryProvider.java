@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.ui.internal.jface;
 
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
-import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
+import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
@@ -20,12 +20,12 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 public class SimpleItemTreeStateProviderFactoryProvider
 	implements ItemTreeStateProviderFactoryProvider
 {
-	private final ItemTreeContentProviderFactory contentProviderFactory;
+	private final ItemTreeContentProvider.Factory contentProviderFactory;
 	private final ItemExtendedLabelProvider.Factory labelProviderFactory;
 
 
 	public SimpleItemTreeStateProviderFactoryProvider(
-			ItemTreeContentProviderFactory contentProviderFactory,
+			ItemTreeContentProvider.Factory contentProviderFactory,
 			ItemExtendedLabelProvider.Factory labelProviderFactory
 	) {
 		super();
@@ -33,7 +33,7 @@ public class SimpleItemTreeStateProviderFactoryProvider
 		this.labelProviderFactory = labelProviderFactory;
 	}
 
-	public ItemTreeContentProviderFactory getItemContentProviderFactory() {
+	public ItemTreeContentProvider.Factory getItemContentProviderFactory() {
 		return this.contentProviderFactory;
 	}
 
