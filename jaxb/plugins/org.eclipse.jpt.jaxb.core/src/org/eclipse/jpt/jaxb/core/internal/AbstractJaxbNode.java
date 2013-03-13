@@ -415,7 +415,8 @@ public abstract class AbstractJaxbNode
 			int index = 0;
 			for (R resourceElement : resourceElements) {
 				if (this.getContextElementsSize() > index) {
-					if (this.getContextElement(index) != resourceElement) {
+					C contextElement = this.getContextElement(index);
+					if (! ObjectTools.equals(this.getResourceElement(contextElement), resourceElement)) {
 						this.addContextElement(index, resourceElement);
 					}
 				}
