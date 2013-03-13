@@ -46,6 +46,16 @@ public interface JptResourceType
 	 */
 	String getVersion();
 
+	Transformer<JptResourceType, String> VERSION_TRANSFORMER = new VersionTransformer();
+	class VersionTransformer
+		extends TransformerAdapter<JptResourceType, String>
+	{
+		@Override
+		public String transform(JptResourceType resourceType) {
+			return resourceType.getVersion();
+		}
+	}
+
 	/**
 	 * Version used when version cannot be determined or when there is no
 	 * sense of version relevant to JPA (e.g. Java). An indeterminate version
@@ -85,14 +95,4 @@ public interface JptResourceType
 	 * Return the ID of the plug-in that contributed the resource type.
 	 */
 	String getPluginId();
-
-	Transformer<JptResourceType, String> VERSION_TRANSFORMER = new VersionTransformer();
-	class VersionTransformer
-		extends TransformerAdapter<JptResourceType, String>
-	{
-		@Override
-		public String transform(JptResourceType resourceType) {
-			return resourceType.getVersion();
-		}
-	}
 }
