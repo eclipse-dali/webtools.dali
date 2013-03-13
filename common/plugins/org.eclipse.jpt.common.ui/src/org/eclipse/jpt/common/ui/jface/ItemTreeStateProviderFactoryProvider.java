@@ -9,9 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.jface;
 
-import java.io.Serializable;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
-
 /**
  * This provider supplies the factories used by a tree view to build
  * the content and labels its tree.
@@ -34,39 +31,4 @@ public interface ItemTreeStateProviderFactoryProvider {
 	 * for a tree view.
 	 */
 	ItemExtendedLabelProviderFactory getItemLabelProviderFactory();
-
-
-	/**
-	 * A <em>null</em> item tree state provider factory provider that returns
-	 * <em>null</em> factories.
-	 * @see ItemTreeContentProviderFactory.Null
-	 * @see ItemExtendedLabelProviderFactory.Null
-	 */
-	final class Null
-		implements ItemTreeStateProviderFactoryProvider, Serializable
-	{
-		public static final ItemTreeStateProviderFactoryProvider INSTANCE = new Null();
-		public static ItemTreeStateProviderFactoryProvider instance() {
-			return INSTANCE;
-		}
-		// ensure single instance
-		private Null() {
-			super();
-		}
-		public ItemTreeContentProviderFactory getItemContentProviderFactory() {
-			return ItemTreeContentProviderFactory.Null.instance();
-		}
-		public ItemExtendedLabelProviderFactory getItemLabelProviderFactory() {
-			return ItemExtendedLabelProviderFactory.Null.instance();
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.singletonToString(this);
-		}
-		private static final long serialVersionUID = 1L;
-		private Object readResolve() {
-			// replace this object with the singleton
-			return INSTANCE;
-		}
-	}
 }

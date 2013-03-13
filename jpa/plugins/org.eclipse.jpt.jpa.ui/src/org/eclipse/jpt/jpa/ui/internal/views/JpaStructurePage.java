@@ -27,6 +27,7 @@ import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jpt.common.ui.internal.jface.AbstractSelectionProvider;
 import org.eclipse.jpt.common.ui.internal.jface.ItemTreeStateProviderManager;
+import org.eclipse.jpt.common.ui.internal.jface.NullItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.common.ui.internal.jface.SelectionChangedAdapter;
 import org.eclipse.jpt.common.ui.internal.jface.SimpleMessageTreeContent;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
@@ -266,7 +267,7 @@ public class JpaStructurePage
 
 	private ItemTreeStateProviderFactoryProvider getFactoryProvider(JpaFile jpaFile) {
 		JpaPlatformUi ui = this.getPlatformUi(jpaFile);
-		return (ui != null) ? ui.getStructureViewFactoryProvider(jpaFile) : ItemTreeStateProviderFactoryProvider.Null.instance();
+		return (ui != null) ? ui.getStructureViewFactoryProvider(jpaFile) : NullItemTreeStateProviderFactoryProvider.instance();
 	}
 
 	private JpaPlatformUi getPlatformUi(JpaFile jpaFile) {
