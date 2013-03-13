@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,9 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.command;
 
-import java.io.Serializable;
 import java.util.EventListener;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * Extend the repeating command to support listeners that are notified
@@ -46,6 +44,8 @@ public interface NotifyingRepeatingCommand
 	/**
 	 * Interface implemented by listeners to be notified whenever the
 	 * command has quiesced.
+	 * @see NotifyingRepeatingCommand#addListener(Listener)
+	 * @see NotifyingRepeatingCommand#removeListener(Listener)
 	 */
 	public interface Listener
 		extends EventListener
@@ -54,49 +54,5 @@ public interface NotifyingRepeatingCommand
 		 * The specified command has quiesced.
 		 */
 		void executionQuiesced(Command command);
-	}
-
-
-	// ********** null singleton **********
-
-	/**
-	 * Singleton implementation of the notifying repeating command interface
-	 * that will do nothing when executed.
-	 */
-	final class Null
-		implements NotifyingRepeatingCommand, Serializable
-	{
-		public static final NotifyingRepeatingCommand INSTANCE = new Null();
-		public static NotifyingRepeatingCommand instance() {
-			return INSTANCE;
-		}
-		// ensure single instance
-		private Null() {
-			super();
-		}
-		public void start() {
-			// do nothing
-		}
-		public void execute() {
-			// do nothing
-		}
-		public void stop() {
-			// do nothing
-		}
-		public void addListener(Listener listener) {
-			// do nothing
-		}
-		public void removeListener(Listener listener) {
-			// do nothing
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.singletonToString(this);
-		}
-		private static final long serialVersionUID = 1L;
-		private Object readResolve() {
-			// replace this object with the singleton
-			return INSTANCE;
-		}
 	}
 }
