@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,13 +13,13 @@ import java.util.Arrays;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.node.Node;
-import org.eclipse.jpt.common.utility.node.Problem;
 
 /**
- * This class is a straightforward implementation of the {@link Problem} interface.
+ * This class is a straightforward implementation of 
+ * {@link org.eclipse.jpt.common.utility.node.Node.Problem}.
  */
-public class DefaultProblem
-	implements Problem
+public class DefaultNodeProblem
+	implements Node.Problem
 {
 	private final Node source;
 	private final String messageKey;
@@ -27,7 +27,7 @@ public class DefaultProblem
 	private final Object[] messageArguments;
 
 
-	DefaultProblem(Node source, String messageKey, int messageType, Object[] messageArguments) {
+	DefaultNodeProblem(Node source, String messageKey, int messageType, Object[] messageArguments) {
 		super();
 		if ((source == null) || (messageKey == null) || (messageArguments == null)) {
 			throw new NullPointerException();
@@ -69,10 +69,10 @@ public class DefaultProblem
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if ( ! (o instanceof Problem)) {
+		if ( ! (o instanceof Node.Problem)) {
 			return false;
 		}
-		Problem other = (Problem) o;
+		Node.Problem other = (Node.Problem) o;
 		return this.source == other.source()
 				&& this.messageKey.equals(other.messageKey())
 				&& Arrays.equals(this.messageArguments, other.messageArguments());

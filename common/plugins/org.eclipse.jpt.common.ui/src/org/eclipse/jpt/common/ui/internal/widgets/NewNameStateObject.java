@@ -16,14 +16,14 @@ import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.node.AbstractNode;
 import org.eclipse.jpt.common.utility.node.Node;
-import org.eclipse.jpt.common.utility.node.Problem;
 
 /**
  * This is the state object used by the <code>NewNameDialog</code>, which stores
  * the current name and validates it when it is modified.
  */
 @SuppressWarnings("nls")
-final class NewNameStateObject extends AbstractNode
+final class NewNameStateObject
+	extends AbstractNode
 {
 	/**
 	 * The initial input or <code>null</code> if no initial value can be

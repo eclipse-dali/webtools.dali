@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.node.PluggableValidator;
 import org.eclipse.jpt.common.utility.model.Model;
 
@@ -32,9 +31,9 @@ import org.eclipse.jpt.common.utility.model.Model;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface Node extends Model {
-
-
+public interface Node
+	extends Model
+{
 	// ********** containment hierarchy (parent/children) **********
 
 	/**
@@ -321,6 +320,46 @@ public interface Node extends Model {
 
 
 	/**
+	 * Define an interface describing the problems associated with a {@link Node}.
+	 */
+	public interface Problem {
+		/**
+		 * Return the node most closely associated with the problem.
+		 */
+		Node source();
+
+		/**
+		 * Return a key that can be used to uniquely identify the problem's message.
+		 */
+		String messageKey();
+
+		/**
+		 * Return the arguments associate with the problem's message.
+		 */
+		Object[] messageArguments();
+
+		/**
+		 * Return the type of the identified problem's message
+		 */
+		int messageType();
+
+		/**
+		 * Return whether the problem is equal to the specified object.
+		 * It is equal if the specified object is a implementation of the
+		 * Problem interface and its source, message key, and message
+		 * arguments are all equal to this problem's.
+		 */
+		boolean equals(Object o);
+
+		/**
+		 * Return the problem's hash code, which should calculated as an
+		 * XOR of the source's hash code and the message key's hash code.
+		 */
+		int hashCode();
+	}
+
+
+	/**
 	 * A validator will validate a node as appropriate.
 	 * Typically the validation will<ul>
 	 * <li>occur whenever a node has changed
@@ -351,47 +390,8 @@ public interface Node extends Model {
 		void resume();
 	}
 
-
-	// ********** helper implementations **********
-
-	/**
-	 * Straightforward implementation of the {@link Reference} interface
-	 * defined above.
-	 */
-	public class SimpleReference
-		implements Reference
-	{
-		private Node source;
-		private Node target;
-		public SimpleReference(Node source, Node target) {
-			super();
-			if (source == null || target == null) {
-				throw new NullPointerException();
-			}
-			this.source = source;
-			this.target = target;
-		}
-		public Node source() {
-			return this.source;
-		}
-		public Node target() {
-			return this.target;
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.toString(this, this.source + " => " + this.target); //$NON-NLS-1$
-		}
-	}
-
-
 	/**
 	 * This validator does nothing to validate the node.
 	 */
-	Validator NULL_VALIDATOR =
-		new PluggableValidator(PluggableValidator.Delegate.Null.instance()) {
-			@Override
-			public String toString() {
-				return "Node.NULL_VALIDATOR"; //$NON-NLS-1$
-			}
-		};
+	Validator NULL_VALIDATOR = new PluggableValidator(PluggableValidator.Delegate.Null.instance());
 }

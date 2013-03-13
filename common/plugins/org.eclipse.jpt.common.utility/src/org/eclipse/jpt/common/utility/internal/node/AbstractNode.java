@@ -24,7 +24,6 @@ import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.AspectChangeSupport;
 import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.common.utility.node.Node;
-import org.eclipse.jpt.common.utility.node.Problem;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
@@ -713,7 +712,7 @@ public abstract class AbstractNode
 	}
 
 	protected final Problem buildProblem(String messageKey, int messageType, Object... messageArguments) {
-		return new DefaultProblem(this, messageKey, messageType, messageArguments);
+		return new DefaultNodeProblem(this, messageKey, messageType, messageArguments);
 	}
 
 	protected final Problem buildProblem(String messageKey, int messageType) {

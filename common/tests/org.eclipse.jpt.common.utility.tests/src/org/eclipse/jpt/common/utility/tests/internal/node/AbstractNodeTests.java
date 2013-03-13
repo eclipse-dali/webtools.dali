@@ -18,7 +18,6 @@ import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.node.AbstractNode;
 import org.eclipse.jpt.common.utility.node.Node;
-import org.eclipse.jpt.common.utility.node.Problem;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
@@ -243,7 +242,7 @@ public class AbstractNodeTests
 		assertEquals(0, parent.problemsSize());
 		assertTrue(parent.branchProblems().hasNext());
 		assertEquals(1, node.problemsSize());
-		Problem problem1 = node.problems().next();
+		Node.Problem problem1 = node.problems().next();
 
 		// now create another problem that should remove the old problem
 		node.setName("STILL BOGUS");
@@ -254,7 +253,7 @@ public class AbstractNodeTests
 		assertEquals(0, parent.problemsSize());
 		assertTrue(parent.branchProblems().hasNext());
 		assertEquals(1, node.problemsSize());
-		Problem problem2 = node.problems().next();
+		Node.Problem problem2 = node.problems().next();
 		assertFalse(problem1 == problem2);
 		problem1 = problem2;
 
