@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,12 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.utility.command;
 
-import java.io.Serializable;
 import java.util.EventListener;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * Extend the repeating job command to support listeners that are notified
@@ -49,6 +44,8 @@ public interface NotifyingRepeatingJobCommand
 	/**
 	 * Interface implemented by listeners to be notified whenever the
 	 * job command has quiesced.
+	 * @see NotifyingRepeatingJobCommand#addListener(Listener)
+	 * @see NotifyingRepeatingJobCommand#removeListener(Listener)
 	 */
 	public interface Listener
 		extends EventListener
@@ -57,49 +54,5 @@ public interface NotifyingRepeatingJobCommand
 		 * The specified job command has quiesced.
 		 */
 		void executionQuiesced(JobCommand command);
-	}
-
-
-	// ********** null singleton **********
-
-	/**
-	 * Singleton implementation of the notifying repeating command interface that
-	 * will do nothing when executed.
-	 */
-	final class Null
-		implements NotifyingRepeatingJobCommand, Serializable
-	{
-		public static final NotifyingRepeatingJobCommand INSTANCE = new Null();
-		public static NotifyingRepeatingJobCommand instance() {
-			return INSTANCE;
-		}
-		// ensure single instance
-		private Null() {
-			super();
-		}
-		public void start() {
-			// do nothing
-		}
-		public IStatus execute(IProgressMonitor monitor) {
-			return Status.OK_STATUS;
-		}
-		public void stop() {
-			// do nothing
-		}
-		public void addListener(Listener listener) {
-			// do nothing
-		}
-		public void removeListener(Listener listener) {
-			// do nothing
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.singletonToString(this);
-		}
-		private static final long serialVersionUID = 1L;
-		private Object readResolve() {
-			// replace this object with the singleton
-			return INSTANCE;
-		}
 	}
 }
