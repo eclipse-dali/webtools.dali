@@ -36,7 +36,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
@@ -52,7 +51,6 @@ import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetDataModelProperties;
-import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProperties;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
@@ -93,9 +91,10 @@ public class JPACreateFactory {
 
 	protected IDataModel buildJpaConfigDataModel() {
 		IDataModel dataModel = DataModelFactory.createDataModel(new JpaFacetInstallDataModelProvider());		
-		dataModel.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, "1.0");
+		dataModel.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, "2.0");
 		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM, null /*GenericPlatform.VERSION_1_0.getId()*/);
-		dataModel.setProperty(JpaFacetInstallDataModelProperties.CREATE_ORM_XML, Boolean.TRUE);
+		dataModel.setProperty(JpaFacetDataModelProperties.LIBRARY_PROVIDER_DELEGATE, null);
+//		dataModel.setProperty(JpaFacetInstallDataModelProperties.CREATE_ORM_XML, Boolean.TRUE);
 		return dataModel;
 	}
 	
@@ -588,8 +587,7 @@ public class JPACreateFactory {
 		}
 		if (javaPersistentType == null)
 			throw new RuntimeException("The entity could not be created");
-		ICompilationUnit compilationUnit = JavaCore.createCompilationUnitFrom(entity);
-		JpaArtifactFactory.instance().makeNewAttribute(null, javaPersistentType, compilationUnit, attName, attType, attActName, attType, null, null, isCollection);
+		JpaArtifactFactory.instance().makeNewAttribute(javaPersistentType, attName, attType, attActName, attType, null, null, isCollection);
 	}
 	
 	private IFile createFieldAnnotatedEntity(IFolder folder, String packageName, String entityName) throws IOException, CoreException {

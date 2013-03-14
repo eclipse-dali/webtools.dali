@@ -1,4 +1,4 @@
-package org.eclipse.jpt.jpadiagrameditor.swtbot.tests.ui.editor;
+package org.eclipse.jpt.jpadiagrameditor.swtbot.tests.conditions;
 
 import java.util.ArrayList;
 import java.util.List;

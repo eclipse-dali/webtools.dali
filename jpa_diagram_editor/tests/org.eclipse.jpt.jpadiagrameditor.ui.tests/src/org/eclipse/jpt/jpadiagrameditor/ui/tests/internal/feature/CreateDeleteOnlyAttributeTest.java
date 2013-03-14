@@ -100,7 +100,7 @@ public class CreateDeleteOnlyAttributeTest {
 		jpt.removeListChangeListener(JavaPersistentType.ATTRIBUTES_LIST, lsnr);
 		lsnr = new EntityAttributesChangeTestListener(2, 0);
 		jpt.addListChangeListener(JavaPersistentType.ATTRIBUTES_LIST, lsnr);
-		JpaArtifactFactory.instance().makeNewAttribute(featureProvider, jpt, null, "aaa", "java.lang.String", "aaa", "java.lang.String", null, null, false);
+		JpaArtifactFactory.instance().makeNewAttribute(jpt, "aaa", "java.lang.String", "aaa", "java.lang.String", null, null, false);
 		assertFalse(lsnr.waitForEvents());
 		assertEquals(1, lsnr.incrementCounter);
 		assertEquals(0, lsnr.decrementCounter);		
@@ -117,7 +117,7 @@ public class CreateDeleteOnlyAttributeTest {
 		jpt.removeListChangeListener(JavaPersistentType.ATTRIBUTES_LIST, lsnr);
 		lsnr = new EntityAttributesChangeTestListener(2, 0);
 		jpt.addListChangeListener(JavaPersistentType.ATTRIBUTES_LIST, lsnr);
-		JpaArtifactFactory.instance().makeNewAttribute(featureProvider, jpt, null, "aaa", "java.lang.String", "aaa", "java.lang.String", null, null, false);
+		JpaArtifactFactory.instance().makeNewAttribute(jpt, "aaa", "java.lang.String", "aaa", "java.lang.String", null, null, false);
 		assertFalse(lsnr.waitForEvents());
 		assertEquals(1, lsnr.incrementCounter);
 		assertEquals(0, lsnr.decrementCounter);		
@@ -140,7 +140,7 @@ public class CreateDeleteOnlyAttributeTest {
 		EntityAttributesChangeTestListener lsnr = new EntityAttributesChangeTestListener(1, 1);
 		jpt.addListChangeListener(JavaPersistentType.ATTRIBUTES_LIST, lsnr);
 		deleteAttribute("id");
-		JpaArtifactFactory.instance().makeNewAttribute(featureProvider, jpt, null, "aaa", "java.lang.String", "aaa", "java.lang.String", null, null, false);
+		JpaArtifactFactory.instance().makeNewAttribute(jpt, "aaa", "java.lang.String", "aaa", "java.lang.String", null, null, false);
 		assertTrue(lsnr.waitForEvents());
 		jpt.removeListChangeListener(JavaPersistentType.ATTRIBUTES_LIST, lsnr);
 		lsnr = new EntityAttributesChangeTestListener(0, 2);

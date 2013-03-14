@@ -59,12 +59,12 @@ public class OneToOneBiDirRelation extends OneToOneRelation implements IBidirect
 	}
 
 	private void createRelation(IJPAEditorFeatureProvider fp, PersistentType embeddingEntity, boolean isDerivedIdFeature) {
-		ownerAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, owner, inverse, false, null);
+		ownerAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(owner, inverse, false, null);
 		
 		if(JpaArtifactFactory.instance().isEmbeddable(owner)){
-			inverseAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, inverse, embeddingEntity, false, null);
+			inverseAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(inverse, embeddingEntity, false, null);
 		} else {
-			inverseAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, inverse, owner, false, null);
+			inverseAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(inverse, owner, false, null);
 		}
 
 		JpaArtifactFactory.instance().addOneToOneBidirectionalRelation(fp, owner, ownerAnnotatedAttribute, inverse, inverseAnnotatedAttribute);		

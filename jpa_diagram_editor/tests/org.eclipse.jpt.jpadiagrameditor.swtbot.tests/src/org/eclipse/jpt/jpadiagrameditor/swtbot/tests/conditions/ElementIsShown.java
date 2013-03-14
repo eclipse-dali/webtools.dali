@@ -1,4 +1,4 @@
-package org.eclipse.jpt.jpadiagrameditor.swtbot.tests.ui.editor;
+package org.eclipse.jpt.jpadiagrameditor.swtbot.tests.conditions;
 
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;

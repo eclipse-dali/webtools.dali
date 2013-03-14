@@ -19,6 +19,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -28,7 +29,6 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -36,8 +36,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
@@ -55,6 +55,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProperties;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProvider;
+import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.utils.Utils;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
@@ -74,7 +75,7 @@ public class JPACreateFactory {
 	private IProject project; 
 	private IJavaProject javaProject;
 	//private IPackageFragmentRoot sourceFolder;
-	JpaProject jpaProject;
+//	JpaProject jpaProject;
 	
 	public static synchronized JPACreateFactory instance() {
 		if (factory == null)
@@ -90,14 +91,6 @@ public class JPACreateFactory {
 		p.create(null);
 		p.open(null);
 		return p;
-	}
-
-	protected IDataModel buildJpaConfigDataModel() {
-		IDataModel dataModel = DataModelFactory.createDataModel(new JpaFacetInstallDataModelProvider());		
-		dataModel.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, "1.0");
-		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM, null /*GenericPlatform.VERSION_1_0.getId()*/);
-		dataModel.setProperty(JpaFacetInstallDataModelProperties.CREATE_ORM_XML, Boolean.TRUE);
-		return dataModel;
 	}
 	
 	public JpaProject createJPAProject(String projectName) throws CoreException {
@@ -117,13 +110,9 @@ public class JPACreateFactory {
 		}
 		installFacet(facetedProject, "jst.utility", "1.0");
 		installFacet(facetedProject, "jpt.jpa", jpaFacetVersion, jpaConfig);
-		addJar(javaProject, jpaJarName());
-		if (eclipseLinkJarName() != null) {
-			addJar(javaProject, eclipseLinkJarName());
-		}
-		project.refreshLocal(IResource.DEPTH_INFINITE, null);
-		jpaProject = this.getJpaProject(project);
+		addPersistenceJarIntoProject(javaProject);
 		int cnt = 0;
+		JpaProject jpaProject = null;
 		while ((jpaProject == null) && (cnt < 1000)){
 			try {
 				Thread.sleep(500);
@@ -137,8 +126,18 @@ public class JPACreateFactory {
 //		jpaProject.setUpdater(new SynchronousJpaProjectUpdater(jpaProject));
 		return jpaProject;
 	}
+
+	public void addPersistenceJarIntoProject(IJavaProject javaProject) throws JavaModelException,
+			CoreException {
+		addJar(javaProject, jpaJarName());
+		if (eclipseLinkJarName() != null) {
+			addJar(javaProject, eclipseLinkJarName());
+		}
+//		project.refreshLocal(IResource.DEPTH_INFINITE, null);
+//		jpaProject = this.getJpaProject(project);
+	}
 	
-	private JpaProject getJpaProject(IProject p) {
+	public JpaProject getJpaProject(IProject p) {
 		return (JpaProject) p.getAdapter(JpaProject.class);
 	}
 
@@ -582,8 +581,7 @@ public class JPACreateFactory {
 		}
 		if (javaPersistentType == null)
 			throw new RuntimeException("The entity could not be created");
-		ICompilationUnit compilationUnit = JavaCore.createCompilationUnitFrom(entity);
-		JpaArtifactFactory.instance().makeNewAttribute(null, javaPersistentType, compilationUnit, attName, attType, attActName, attType, null, null, isCollection);
+		JpaArtifactFactory.instance().makeNewAttribute(javaPersistentType, attName, attType, attActName, attType, null, null, isCollection);
 	}
 	
 	private IFile createFieldAnnotatedEntity(IFolder folder, String packageName, String entityName) throws IOException, CoreException {
@@ -630,5 +628,225 @@ public class JPACreateFactory {
 		return createFieldAnnotatedEntity(folder, packageName , entityName);
 	}
 	
+	/**
+	 * Wait all build and refresh jobs to complete by joining them.
+	 */
+	public static void joinBuildAndRerfreshJobs() {
+		ArrayList<Job> jobs = new ArrayList<Job>();
+		Job[] jobsArray;
+		jobsArray = Job.getJobManager().find(ResourcesPlugin.FAMILY_AUTO_BUILD);
+		jobs.addAll(Arrays.asList(jobsArray));
+		jobsArray = Job.getJobManager().find(ResourcesPlugin.FAMILY_AUTO_REFRESH);
+		jobs.addAll(Arrays.asList(jobsArray));
+		jobsArray = Job.getJobManager().find(ResourcesPlugin.FAMILY_MANUAL_BUILD);
+		jobs.addAll(Arrays.asList(jobsArray));
+		jobsArray = Job.getJobManager().find(ResourcesPlugin.FAMILY_MANUAL_REFRESH);
+		jobs.addAll(Arrays.asList(jobsArray));
+		Utils.printlnFormatted("Waiting for " + jobs.size() + " Jobs to finish...");
+		for (int i = 0; i < jobs.size(); i++) {
+			Job job = jobs.get(i);
+			int jobState = job.getState();
+			if ((jobState == Job.RUNNING) || (jobState == Job.WAITING)) {
+				try {
+					job.join();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 	
+	/**
+	 * Wait all build and refresh jobs to complete or until 30 seconds timeout
+	 * pass.
+	 */
+	public static void waitBuildAndRerfreshJobs() {
+		Utils.printlnFormatted("Entered into joinBuildAndRerfreshJobs.");
+		ArrayList<Job> jobs = new ArrayList<Job>();
+		Job[] jobsArray;
+		int timeout = SIDE_JOBS_COMPLETE_TIMEOUT;
+
+		while (timeout > 0) {
+			jobs.clear();
+			jobsArray = Job.getJobManager().find(ResourcesPlugin.FAMILY_AUTO_BUILD);
+			jobs.addAll(Arrays.asList(jobsArray));
+			jobsArray = Job.getJobManager().find(ResourcesPlugin.FAMILY_AUTO_REFRESH);
+			jobs.addAll(Arrays.asList(jobsArray));
+			jobsArray = Job.getJobManager().find(ResourcesPlugin.FAMILY_MANUAL_BUILD);
+			jobs.addAll(Arrays.asList(jobsArray));
+			jobsArray = Job.getJobManager().find(ResourcesPlugin.FAMILY_MANUAL_REFRESH);
+			jobs.addAll(Arrays.asList(jobsArray));
+			if (jobs.size() == 0) {
+				return;
+			}
+			Utils.printlnFormatted("Waiting for " + jobs.size() + " Jobs to finish...");
+			for (Job job : jobsArray) {
+				Utils.printlnFormatted("Waiting for job: " + job.getName() + ", which is " + jobStateToString(job));
+			}
+			timeout -= 1000;
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+			}
+
+		}
+	}
+	
+	private static String jobStateToString(Job job) {
+		int state = job.getState();
+		switch (state) {
+			case Job.NONE:
+				return "NONE";
+			case Job.RUNNING:
+				return "RUNNING";
+			case Job.SLEEPING:
+				return "SLEEPING";
+			case Job.WAITING:
+				return "SLEEPING";
+		}
+		return "UNKNOWN";
+	}
+
+	
+	
+	/**
+	 * Waits a certain time for any non system job to complete and if there is
+	 * still jobs after the certain periord,<br/>
+	 * removes all of them so the test will have a clean environment
+	 * 
+	 * @return flag
+	 * @throws InterruptedException
+	 */
+	public static boolean waitNonSystemJobs() throws InterruptedException {
+		Utils.printlnFormatted("Entered into waitNonSystemJobs.");
+		return waitNonSystemJobs(SIDE_JOBS_COMPLETE_TIMEOUT, true);
+	}
+
+	/**
+	 * Waits a certain time for any non system job to complete and if there is still jobs after the certain periord,<br/>
+	 * removes all of them so the test will have a clean environment
+	 * 
+	 * @param timeout
+	 *            time after which the jobs will be canceled.
+	 * @return
+	 * @throws InterruptedException
+	 */
+	public static boolean waitNonSystemJobs(int timeout) throws InterruptedException {
+		return waitNonSystemJobs(timeout, true);
+	}
+
+	/**
+	 * Waits a certain time for any non system job to complete and if there is
+	 * still jobs after the certain periord,<br/>
+	 * removes all of them so the test will have a clean environment
+	 * 
+	 * @param timeout
+	 *            time after which the jobs will be canceled.
+	 * @param cancelWaitForBrowser
+	 *            will cancel rightaway the wait for browser jobs
+	 * @return
+	 * @throws InterruptedException
+	 */
+	public static boolean waitNonSystemJobs(int timeout, boolean cancelWaitForBrowser) throws InterruptedException {
+		Job[] find = null;
+		int count = 0;
+
+		while (timeout > 0) {
+			count = 0;
+			find = Job.getJobManager().find(null);
+			for (Job job : find) {
+				if (!job.isSystem()) {
+					count++;
+					if (!DUMPER_JOB_NAME.equals(job.getName())) {
+						Utils.printlnFormatted("Waiting for job: " + job.getName() + ", which is " + jobStateToString(job));
+					}
+				}
+			}
+			if (DEBUG && (count == 1)) {
+				return true;
+			} else if (!DEBUG && (count == 0)) {
+				return true;
+			}
+			timeout -= 1000;
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+			}
+
+		}
+		Utils.println("Cancelling any running job...");
+
+		find = Job.getJobManager().find(null);
+		for (Job job : find) {
+			if (!job.isSystem() && !DUMPER_JOB_NAME.equals(job.getName())) {
+				printTrace(job);
+				cancelJob(job);
+			}
+		}
+
+		find = Job.getJobManager().find(null);
+		count = 0;
+		for (Job job : find) {
+			if (!job.isSystem()) {
+				count++;
+			}
+		}
+		if (count == 0) {
+			Utils.printlnFormatted("All jobs removed");
+			return true;
+		}
+
+		Utils.printlnFormatted("There are still unremoved job. This may cause the test to block.");
+		return false;
+	}
+	
+	/**
+	 * Cancels all running system jobs.
+	 * 
+	 * @return true if no jobs are running at the end.
+	 * @throws InterruptedException
+	 */
+	public static boolean cancelAllNonSystemJobs() throws InterruptedException {
+		waitNonSystemJobs(0);
+		return waitNonSystemJobs();
+	}
+
+	private static void printTrace(Job job) {
+		Thread thread = job.getThread();
+		if (thread == null) {
+			Utils.println("Null Thread ....");
+			return;
+		}
+		StackTraceElement[] stackTrace = thread.getStackTrace();
+		if (stackTrace != null) {
+			for (StackTraceElement traceElement : stackTrace) {
+				if (traceElement != null) {
+					Utils.println("\tat " + traceElement.toString());
+				}
+			}
+		}
+	}
+
+	/**
+	 * Will call cancel job and produce a log
+	 * 
+	 * @param job
+	 */
+	private static void cancelJob(Job job) {
+		Utils.printlnFormatted("* [" + job.getName() + "]...");
+		job.cancel();
+		Utils.printlnFormatted("* [" + job.getName() + "]...cancelled.");
+	}
+
+	
+	// used to decide whether to print Job Manager's state
+		private static boolean DEBUG = false;
+
+		// seconds
+		private static final String DUMPER_JOB_NAME = "Dumper 1";
+		
+		private static final int SIDE_JOBS_COMPLETE_TIMEOUT = 30 * 1000; // 30
+
+
 }

@@ -76,10 +76,11 @@ public class EmbedSingleObjectFeature extends AbstractCreateConnectionFeature {
 		PersistentType embeddingEntity = getPersistentType(context.getSourceAnchor());
 		PersistentType embeddable = getPersistentType(context.getTargetAnchor());
 
-		PersistentAttribute embeddedAttribute = JPAEditorUtil.addAnnotatedAttribute(getFeatureProvider(), embeddingEntity, embeddable, false, null);
-		embeddedAttribute.getJavaPersistentAttribute().setMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
-		JpaArtifactFactory.instance().addOrmPersistentAttribute(embeddingEntity, embeddedAttribute, MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
-		
+		PersistentAttribute embeddedAttribute = JPAEditorUtil.addAnnotatedAttribute(embeddingEntity, embeddable, false, null);
+		PersistentAttribute ormAttr = JpaArtifactFactory.instance().addOrmPersistentAttribute(embeddingEntity, embeddedAttribute, MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
+		if(ormAttr == null || ormAttr.isVirtual()){
+			embeddedAttribute.getJavaPersistentAttribute().setMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
+		}
 		HasReferanceRelation rel = new HasSingleReferenceRelation(embeddingEntity, embeddable);
 		rel.setEmbeddedAnnotatedAttribute(embeddedAttribute);
 		

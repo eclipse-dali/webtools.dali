@@ -60,14 +60,14 @@ public class ManyToOneBiDirRelation  extends ManyToOneRelation implements IBidir
 	}
 
 	private void createRelation(IJPAEditorFeatureProvider fp, PersistentType embeddingEntity, boolean isDerivedIdFeature) {
-		ownerAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, owner, inverse, false, null);
+		ownerAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(owner, inverse, false, null);
 			
 		boolean isMap = JPADiagramPropertyPage.isMapType(owner.getJpaProject().getProject());
 		String mapKeyType = getMapKeyType(isMap, owner, embeddingEntity);
 		if(JpaArtifactFactory.instance().isEmbeddable(owner)){
-			inverseAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, inverse, embeddingEntity, true, mapKeyType);
+			inverseAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(inverse, embeddingEntity, true, mapKeyType);
 		} else {
-			inverseAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, inverse, owner, true, mapKeyType);
+			inverseAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(inverse, owner, true, mapKeyType);
 		}
 		JpaArtifactFactory.instance().addManyToOneBidirectionalRelation(fp, owner, ownerAnnotatedAttribute, inverse, inverseAnnotatedAttribute, isMap);		
 		if(isDerivedIdFeature){

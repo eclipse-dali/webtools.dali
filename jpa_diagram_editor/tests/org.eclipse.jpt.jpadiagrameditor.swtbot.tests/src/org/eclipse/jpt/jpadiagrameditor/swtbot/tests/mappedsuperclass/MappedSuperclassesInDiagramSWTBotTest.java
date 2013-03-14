@@ -1,26 +1,19 @@
-package org.eclipse.jpt.jpadiagrameditor.swtbot.tests.ui.editor;
+package org.eclipse.jpt.jpadiagrameditor.swtbot.tests.mappedsuperclass;
 
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.ui.internal.parts.DiagramEditPart;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
-import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.JPACreateFactory;
-import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.Utils;
+import org.eclipse.jpt.jpa.core.MappingKeys;
+import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.conditions.ElementIsShown;
+import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.AbstractSwtBotEditorTest;
+import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.utils.Utils;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
-import org.eclipse.swtbot.eclipse.gef.finder.SWTBotGefTestCase;
-import org.eclipse.swtbot.eclipse.gef.finder.SWTGefBot;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
-import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
-import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
-import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -28,45 +21,13 @@ import org.junit.runner.RunWith;
 
 @RunWith(SWTBotJunit4ClassRunner.class)
 @SuppressWarnings("restriction")
-public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
+public class MappedSuperclassesInDiagramSWTBotTest extends AbstractSwtBotEditorTest {
 
-	protected static String TEST_PROJECT;
-	protected static JPACreateFactory factory = JPACreateFactory.instance();
-	protected static JpaProject jpaProject;
-
-	protected static SWTGefBot bot = new SWTGefBot();
-	protected static SWTWorkbenchBot workbenchBot = new SWTWorkbenchBot();
-	protected static EditorProxy editorProxy = new EditorProxy(workbenchBot,
-			bot);
-
-	protected static SWTBotGefEditor jpaDiagramEditor;
+	protected static String TEST_PROJECT = "Test_" + System.currentTimeMillis();
 
 	@BeforeClass
 	public static void beforeClass() throws Exception {
-
-		SWTBotPreferences.TIMEOUT = 1000;
-		try {
-			bot.viewByTitle("Welcome").close();
-		} catch (Exception e) {
-			// ignore
-		} finally {
-			SWTBotPreferences.TIMEOUT = 5000;
-		}
-		workbenchBot.perspectiveByLabel("JPA").activate();
-
-		TEST_PROJECT = "Test_" + System.currentTimeMillis();
-
-		factory = JPACreateFactory.instance();
-		jpaProject = factory.createJPA20Project(TEST_PROJECT);
-		assertNotNull(jpaProject);
-		
-		workbenchBot.closeAllEditors();
-
-		jpaDiagramEditor = editorProxy.openDiagramOnJPAProjectNode(
-				TEST_PROJECT, true);
-		editorProxy.setJpaDiagramEditor(jpaDiagramEditor);
-
-		Thread.sleep(2000);
+		createJPa20Project(TEST_PROJECT);
 	}
 
 	/**
@@ -87,7 +48,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		jpaDiagramEditor.save();
 		assertFalse("Editor must not be dirty!", jpaDiagramEditor.isDirty());
 
-		editorProxy.deleteDiagramElements();
+		editorProxy.deleteDiagramElements(false);
 		jpaDiagramEditor.save();
 
 		Utils.sayTestFinished("testAddMappedSuperclass");
@@ -107,7 +68,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		SWTBotGefEditPart mappedSuperclass = editorProxy
 				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 
-		editorProxy.deleteJPTViaButton(mappedSuperclass);
+		editorProxy.deleteJPTViaButton(mappedSuperclass, true);
 
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 		jpaDiagramEditor.save();
@@ -137,38 +98,6 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		Utils.sayTestFinished("testRemoveEntityViaContextMenu");
 	}
 
-	/**
-	 * Adds a new attribute to the mapped superclass using the entity's context
-	 * button "Create Attribute"
-	 */
-	@Test
-	public void testAddAttribute() {
-		Utils.sayTestStarted("testAddAttribute");
-
-		assertTrue("The diagram must be empty.", jpaDiagramEditor
-				.mainEditPart().children().isEmpty());
-
-		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, jpaProject);
-
-		assertFalse(
-				"\"Other Attributes\" section must not be visible!",
-				editorProxy
-						.isSectionVisible(
-								JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
-								mappedSuperclass));
-
-		String attributeName = editorProxy.getUniqueAttrName(mappedSuperclass);
-		editorProxy.addAttributeToJPT(mappedSuperclass, attributeName);
-		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
-
-		mappedSuperclass.click();
-		editorProxy.deleteDiagramElements();
-		jpaDiagramEditor.save();
-
-		Utils.sayTestFinished("testAddAttribute");
-	}
-
 	@Test
 	public void testAddElementCollectionAttributeToMappedSuperclass() {
 		Utils.sayTestStarted("testAddElementCollectionAttributeToMappedSuperclass");
@@ -187,11 +116,13 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 								mappedSuperclass));
 
 		String attributeName = editorProxy.getUniqueAttrName(mappedSuperclass);
-		editorProxy.addElementCollectionAttributeToJPT(mappedSuperclass, attributeName);
+		SWTBotGefEditPart attribute = editorProxy.addElementCollectionAttributeToJPT(mappedSuperclass, attributeName);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
+		
+		editorProxy.removeAttributeViaButton(mappedSuperclass, attribute, attributeName, false);
 
 		mappedSuperclass.click();
-		editorProxy.deleteDiagramElements();
+		editorProxy.deleteDiagramElements(false);
 		jpaDiagramEditor.save();
 
 		Utils.sayTestFinished("testAddElementCollectionAttributeToMappedSuperclass");
@@ -201,7 +132,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	 * Removes the attribute using the "Delete Attribute" context button.
 	 */
 	@Test
-	public void testRemoveAttributeViaContextButton() {
+	public void testAddRemoveAttributeViaContextButton() {
 		Utils.sayTestStarted("testRemoveAttributeViaContextButton");
 
 		assertTrue("The diagram must be empty.", jpaDiagramEditor
@@ -211,10 +142,13 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 
 		String attributeName = editorProxy.getUniqueAttrName(mappedSuperclass);
-		editorProxy.removeAttributeViaButton(mappedSuperclass, attributeName);
+		SWTBotGefEditPart attribute = editorProxy.addAttributeToJPT(mappedSuperclass, attributeName, false);
+		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
+
+		editorProxy.removeAttributeViaButton(mappedSuperclass, attribute, attributeName, false);
 
 		mappedSuperclass.click();
-		editorProxy.deleteDiagramElements();
+		editorProxy.deleteDiagramElements(false);
 		jpaDiagramEditor.save();
 
 		Utils.sayTestFinished("testRemoveAttributeViaContextButton");
@@ -224,7 +158,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	 * Removes the attribute using the "Delete" context menu.
 	 */
 	@Test
-	public void testRemoveAttributeViaMenu() {
+	public void testAddRemoveAttributeViaMenu() {
 		Utils.sayTestStarted("testRemoveAttributeViaMenu");
 
 		assertTrue("The diagram must be empty.", jpaDiagramEditor
@@ -234,10 +168,13 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 
 		String attributeName = editorProxy.getUniqueAttrName(mappedSuperclass);
-		editorProxy.removeAttributeViaMenu(mappedSuperclass, attributeName);
+		SWTBotGefEditPart attribute = editorProxy.addAttributeToJPT(mappedSuperclass, attributeName, false);
+		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
+
+		editorProxy.removeAttributeViaMenu(mappedSuperclass, attribute, attributeName);
 
 		mappedSuperclass.click();
-		editorProxy.deleteDiagramElements();
+		editorProxy.deleteDiagramElements(false);
 		jpaDiagramEditor.save();
 
 		Utils.sayTestFinished("testRemoveAttributeViaMenu");
@@ -261,7 +198,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
-		editorProxy.deleteDiagramElements();
+		editorProxy.deleteDiagramElements(false);
 		jpaDiagramEditor.save();
 
 		Utils.sayTestFinished("testDirectEditingAttribute");
@@ -298,7 +235,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
-		editorProxy.deleteDiagramElements();
+		editorProxy.deleteDiagramElements(false);
 		jpaDiagramEditor.save();
 
 		Utils.sayTestFinished("testDirectEditingEntity");
@@ -328,7 +265,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				"MpdSuprcls1.java", activeEditor.getTitle());
 		activeEditor.close();
 
-		editorProxy.deleteDiagramElements();
+		editorProxy.deleteDiagramElements(false);
 		jpaDiagramEditor.save();
 
 		Utils.sayTestFinished("testDoubleClickOnEntity");
@@ -356,7 +293,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 
 		String attributeName = editorProxy.getUniqueAttrName(mappedSuperclass);
 		SWTBotGefEditPart attribute = editorProxy.addAttributeToJPT(
-				mappedSuperclass, attributeName);
+				mappedSuperclass, attributeName, false);
 		assertNotNull("The attribute must not be renamed!", attribute);
 
 		final IFeatureProvider fp = ((DiagramEditPart) jpaDiagramEditor
@@ -408,7 +345,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 
 		assertTrue("Editor must be dirty!", jpaDiagramEditor.isDirty());
 		mappedSuperclass.click();
-		editorProxy.deleteDiagramElements();
+		editorProxy.deleteDiagramElements(false);
 		jpaDiagramEditor.save();
 
 		Utils.sayTestFinished("testChangeAttributeType");
@@ -458,7 +395,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				jpaDiagramEditor.getEditPart(oldMappedSuperclassName));
 
 		mappedSuperclass.click();
-		editorProxy.deleteDiagramElements();
+		editorProxy.deleteDiagramElements(false);
 		jpaDiagramEditor.save();
 
 		Utils.sayTestFinished("testRenameEntityViaMenu");
@@ -505,7 +442,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("Entity must be changed!", newEntityPackage.equals("org"));
 
 		mappedSuperclass.click();
-		editorProxy.deleteDiagramElements();
+		editorProxy.deleteDiagramElements(false);
 		jpaDiagramEditor.save();
 
 		Utils.sayTestFinished("testMoveEntityViaMenu");
@@ -525,11 +462,11 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 
 		String attributeName = editorProxy.getUniqueAttrName(mappedSuperclass);
-		editorProxy.addAttributeToJPT(mappedSuperclass, attributeName);
+		editorProxy.addAttributeToJPT(mappedSuperclass, attributeName, false);
 
 		editorProxy.collapseExpandJPTViaButton(mappedSuperclass);
 
-		editorProxy.deleteDiagramElements();
+		editorProxy.deleteDiagramElements(false);
 		jpaDiagramEditor.save();
 
 		Utils.sayTestFinished("testCollapseExapandEntityViaContextButton");
@@ -549,11 +486,11 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 
 		String attributeName = editorProxy.getUniqueAttrName(mappedSuperclass);
-		editorProxy.addAttributeToJPT(mappedSuperclass, attributeName);
+		editorProxy.addAttributeToJPT(mappedSuperclass, attributeName, false);
 
 		editorProxy.collapseExpandJPTViaMenu(mappedSuperclass);
 
-		editorProxy.deleteDiagramElements();
+		editorProxy.deleteDiagramElements(false);
 		jpaDiagramEditor.save();
 
 		Utils.sayTestFinished("testCollapseExapandEntityViaMenu");
@@ -564,6 +501,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	 * "Discard Changes" context menu. Assert that the newly added attribute is
 	 * removed and the mapped superclass does not contain unsaved changes.
 	 */
+	@Ignore
 	@Test
 	public void testDiscardChanges() {
 		Utils.sayTestStarted("testDiscardChanges");
@@ -577,7 +515,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		String attributeName = editorProxy.getUniqueAttrName(mappedSuperclass);
 		editorProxy.discardChanges(mappedSuperclass, attributeName);
 
-		editorProxy.deleteDiagramElements();
+		editorProxy.deleteDiagramElements(false);
 		jpaDiagramEditor.save();
 
 		Utils.sayTestFinished("testDiscardChanges");
@@ -591,6 +529,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	 * Entities" context menu and assert that the newly added attribute is
 	 * removed and the mapped superclass does not contain unsaved changes.
 	 */
+	@Ignore
 	@Test
 	public void testRemoveAndDiscardChangesViaMenu() {
 		Utils.sayTestStarted("testRemoveAndDiscardChangesViaMenu");
@@ -606,7 +545,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				attributeName);
 
 		mappedSuperclass.click();
-		editorProxy.deleteDiagramElements();
+		editorProxy.deleteDiagramElements(false);
 		jpaDiagramEditor.save();
 
 		Utils.sayTestFinished("testRemoveAndDiscardChangesViaMenu");
@@ -634,7 +573,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.removeAndSaveChangesViaMenu(mappedSuperclass, attributeName);
 
 		mappedSuperclass.click();
-		editorProxy.deleteDiagramElements();
+		editorProxy.deleteDiagramElements(false);
 		jpaDiagramEditor.save();
 
 		Utils.sayTestFinished("testRemoveAndSaveChangesViaMenu");
@@ -658,7 +597,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		String attributeName = editorProxy.getUniqueAttrName(mappedSuperclass);
 		editorProxy.saveOnlyJPT(mappedSuperclass, attributeName);
 
-		editorProxy.deleteDiagramElements();
+		editorProxy.deleteDiagramElements(false);
 		jpaDiagramEditor.save();
 
 		Utils.sayTestFinished("testSaveOnlyEntity");
@@ -679,10 +618,10 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 		
 		editorProxy.createInheritedEntity(mappedSuperclass, jpaProject,
-				JptJpaUiDetailsMessages.MappedSuperclassUiProvider_linkLabel,
+				MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY,
 				true, false);
 
-		editorProxy.deleteDiagramElements();
+		editorProxy.deleteDiagramElements(false);
 
 		jpaDiagramEditor.save();
 
@@ -720,10 +659,10 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.waitASecond();
 
 		editorProxy.testCreateAndDeleteIsARelation(superclass, subclassName,
-				JptJpaUiDetailsMessages.MappedSuperclassUiProvider_linkLabel,
+				MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY,
 				true, superclassName, subclass, false);
 
-		editorProxy.deleteDiagramElements();
+		editorProxy.deleteDiagramElements(false);
 
 		jpaDiagramEditor.save();
 
@@ -765,7 +704,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.waitASecond();
 
 		editorProxy.testIsARelationProperties(superclass, subclassName,
-				JptJpaUiDetailsMessages.MappedSuperclassUiProvider_linkLabel,
+				MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY,
 				true, superclassName, subclass, false);
 
 		SWTBotGefEditPart secondSuperclass = editorProxy.addEntityToDiagram(
@@ -783,367 +722,11 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("There is no connection created.", secondSuperclass
 				.sourceConnections().isEmpty());
 
-		editorProxy.deleteDiagramElements();
+		editorProxy.deleteDiagramElements(false);
 
 		jpaDiagramEditor.save();
 
 		Utils.sayTestFinished("testNoIsARelationIsCreated");
-	}
-
-	/**
-	 * Tests that the creation of a one-to-one unidirectional relationship from
-	 * mapped superclass to entity is possible.
-	 */
-	@Test
-	public void testOneToOneUniDirRelFromMappedSuperclass() {
-		Utils.sayTestStarted("testOneToOneUniDirRelFromMappedSuperclass");
-
-		assertTrue("The diagram must be empty.", jpaDiagramEditor
-				.mainEditPart().children().isEmpty());
-
-		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, jpaProject);
-
-		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				jpaProject);
-
-		// create One-to-One unidirectional relation from the mapped superclass
-		// to entity
-
-		editorProxy
-				.testUniDirRelation(
-						JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName,
-						mappedSuperclass,
-						entity,
-						IRelation.RelType.ONE_TO_ONE,
-						JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
-
-		editorProxy.deleteDiagramElements();
-
-		jpaDiagramEditor.save();
-
-		Utils.sayTestFinished("testOneToOneUniDirRelFromMappedSuperclass");
-	}
-
-	/**
-	 * Tests that the creation of a one-to-many unidirectional relationship from
-	 * mapped superclass to entity is possible.
-	 */
-	@Test
-	public void testOneToManyUniDirRelFromMappedSuperclass() {
-		Utils.sayTestStarted("testOneToManyUniDirRelFromMappedSuperclass");
-
-		assertTrue("The diagram must be empty.", jpaDiagramEditor
-				.mainEditPart().children().isEmpty());
-
-		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, jpaProject);
-
-		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				jpaProject);
-
-		// create One-to-many unidirectional relation from the mapped superclass
-		// to entity1
-
-		editorProxy
-				.testUniDirRelation(
-						JPAEditorMessages.CreateOneToManyUniDirRelationFeature_oneToManyUniDirFeatureName,
-						mappedSuperclass,
-						entity,
-						IRelation.RelType.ONE_TO_MANY,
-						JptJpaUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, false);
-
-		editorProxy.deleteDiagramElements();
-
-		jpaDiagramEditor.save();
-
-		Utils.sayTestFinished("testOneToManyUniDirRelFromMappedSuperclass");
-	}
-
-	/**
-	 * Tests that the creation of a many-to-one unidirectional relationship from
-	 * mapped superclass to entity is possible.
-	 */
-	@Test
-	public void testManyToOneUniDirRelFromMappedSuperclass() {
-		Utils.sayTestStarted("testManyToOneUniDirRelFromMappedSuperclass");
-
-		assertTrue("The diagram must be empty.", jpaDiagramEditor
-				.mainEditPart().children().isEmpty());
-
-		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, jpaProject);
-
-		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				jpaProject);
-
-		// create Many-to-One unidirectional relation from the mapped superclass
-		// to entity1
-
-		editorProxy
-				.testUniDirRelation(
-						JPAEditorMessages.CreateManyToOneUniDirRelationFeature_manyToOneUniDirFeatureName,
-						mappedSuperclass,
-						entity,
-						IRelation.RelType.MANY_TO_ONE,
-						JptJpaUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true);
-
-		editorProxy.deleteDiagramElements();
-
-		jpaDiagramEditor.save();
-
-		Utils.sayTestFinished("testManyToOneUniDirRelFromMappedSuperclass");
-	}
-
-	/**
-	 * Tests that the creation of a many-to-many unidirectional relationship
-	 * from mapped superclass to entity is possible.
-	 */
-	@Test
-	public void testManyToManyUniDirRelFromMappedSuperclass() {
-		Utils.sayTestStarted("testManyToManyUniDirRelFromMappedSuperclass");
-
-		assertTrue("The diagram must be empty.", jpaDiagramEditor
-				.mainEditPart().children().isEmpty());
-
-		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, jpaProject);
-
-		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				jpaProject);
-
-		// create Many-to-Many unidirectional relation from the mapped
-		// superclass
-		// to entity1
-
-		editorProxy
-				.testUniDirRelation(
-						JPAEditorMessages.CreateManyToManyUniDirRelationFeature_manyToManyUniDirFeatureName,
-						mappedSuperclass,
-						entity,
-						IRelation.RelType.MANY_TO_MANY,
-						JptJpaUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
-
-		editorProxy.deleteDiagramElements();
-
-		jpaDiagramEditor.save();
-
-		Utils.sayTestFinished("testManyToManyUniDirRelFromMappedSuperclass");
-	}
-
-	/**
-	 * Test no one-to-one unidirectional or bidirectional relationship from
-	 * entity to mapped superclass is created.
-	 */
-	@Test
-	public void testOneToOneRelationFromEntityToMappedSuperclass() {
-		Utils.sayTestStarted("testOneToOneRelationFromEntityToMappedSuperclass");
-
-		assertTrue("The diagram must be empty.", jpaDiagramEditor
-				.mainEditPart().children().isEmpty());
-
-		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, jpaProject);
-
-		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				jpaProject);
-
-		editorProxy
-				.testNoConnectionIsCreated(
-						JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName,
-						2, entity, mappedSuperclass);
-
-		editorProxy
-				.testNoConnectionIsCreated(
-						JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureName,
-						3, entity, mappedSuperclass);
-
-		editorProxy.deleteDiagramElements();
-		jpaDiagramEditor.save();
-
-		Utils.sayTestFinished("testOneToOneRelationFromEntityToMappedSuperclass");
-	}
-
-	/**
-	 * Test no one-to-one bidirectional relationship from mapped superclass to
-	 * entity is created.
-	 */
-	@Test
-	public void testOneToOneBiDirRelationFromMappedSuperclassToEntity() {
-		Utils.sayTestStarted("testOneToOneBiDirRelationFromMappedSuperclassToEntity");
-
-		assertTrue("The diagram must be empty.", jpaDiagramEditor
-				.mainEditPart().children().isEmpty());
-
-		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, jpaProject);
-
-		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				jpaProject);
-
-		editorProxy
-				.testNoConnectionIsCreated(
-						JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureName,
-						3, mappedSuperclass, entity);
-
-		editorProxy.deleteDiagramElements();
-		jpaDiagramEditor.save();
-
-		Utils.sayTestFinished("testOneToOneBiDirRelationFromMappedSuperclassToEntity");
-	}
-
-	/**
-	 * Test no one-to-many unidirectional relationship from entity to mapped
-	 * superclass is created.
-	 */
-	@Test
-	public void testOneToManyUniDirRelationFromEntityToMappedSuperclass() {
-		Utils.sayTestStarted("testOneToManyUniDirRelationFromEntityToMappedSuperclass");
-
-		assertTrue("The diagram must be empty.", jpaDiagramEditor
-				.mainEditPart().children().isEmpty());
-
-		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, jpaProject);
-
-		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				jpaProject);
-
-		editorProxy
-				.testNoConnectionIsCreated(
-						JPAEditorMessages.CreateOneToManyUniDirRelationFeature_oneToManyUniDirFeatureName,
-						0, entity, mappedSuperclass);
-
-		editorProxy.deleteDiagramElements();
-		jpaDiagramEditor.save();
-
-		Utils.sayTestFinished("testOneToManyUniDirRelationFromEntityToMappedSuperclass");
-	}
-
-	/**
-	 * Test no many-to-one unidirectional or bidirectional relationship from
-	 * entity to mapped superclass is created.
-	 */
-	@Test
-	public void testManyToOneRelationFromEntityToMappedSuperclass() {
-		Utils.sayTestStarted("testManyToOneRelationFromEntityToMappedSuperclass");
-
-		assertTrue("The diagram must be empty.", jpaDiagramEditor
-				.mainEditPart().children().isEmpty());
-		
-		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, jpaProject);
-
-		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				jpaProject);
-
-		editorProxy
-				.testNoConnectionIsCreated(
-						JPAEditorMessages.CreateManyToOneUniDirRelationFeature_manyToOneUniDirFeatureName,
-						2, entity, mappedSuperclass);
-
-		editorProxy
-				.testNoConnectionIsCreated(
-						JPAEditorMessages.CreateManyToOneBiDirRelationFeature_manyToOneBiDirFeatureName,
-						3, entity, mappedSuperclass);
-
-		editorProxy.deleteDiagramElements();
-		jpaDiagramEditor.save();
-
-		Utils.sayTestFinished("testManyToOneRelationFromEntityToMappedSuperclass");
-	}
-
-	/**
-	 * Test no many-to-one bidirectional relationship from mapped superclass to
-	 * entity is created.
-	 */
-	@Test
-	public void testManyToOneBiDirRelationFromMappedSuperclassToEntity() {
-		Utils.sayTestStarted("testManyToOneBiDirRelationFromMappedSuperclassToEntity");
-
-		assertTrue("The diagram must be empty.", jpaDiagramEditor
-				.mainEditPart().children().isEmpty());
-		
-		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, jpaProject);
-
-		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				jpaProject);
-
-		editorProxy
-				.testNoConnectionIsCreated(
-						JPAEditorMessages.CreateManyToOneBiDirRelationFeature_manyToOneBiDirFeatureName,
-						3, mappedSuperclass, entity);
-
-		editorProxy.deleteDiagramElements();
-		jpaDiagramEditor.save();
-
-		Utils.sayTestFinished("testManyToOneBiDirRelationFromMappedSuperclassToEntity");
-	}
-
-	/**
-	 * Test no many-to-many unidirectional or bidirectional relationship from
-	 * entity to mapped superclass is created.
-	 */
-	@Test
-	public void testManyToManyUniDirRelationFromEntityToEmbeddable() {
-		Utils.sayTestStarted("testManyToManyUniDirRelationFromEntityToEmbeddable");
-
-		assertTrue("The diagram must be empty.", jpaDiagramEditor
-				.mainEditPart().children().isEmpty());
-
-		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, jpaProject);
-		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				jpaProject);
-
-		editorProxy
-				.testNoConnectionIsCreated(
-						JPAEditorMessages.CreateManyToManyUniDirRelationFeature_manyToManyUniDirFeatureName,
-						0, entity, mappedSuperclass);
-
-		editorProxy
-				.testNoConnectionIsCreated(
-						JPAEditorMessages.CreateManyToManyBiDirRelationFeature_manyToManyBiDirFeatureName,
-						1, entity, mappedSuperclass);
-
-		editorProxy.deleteDiagramElements();
-		jpaDiagramEditor.save();
-
-		Utils.sayTestFinished("testManyToManyUniDirRelationFromEntityToEmbeddable");
-	}
-
-	/**
-	 * Test no many-to-many bidirectional relationship from mapped superclass to
-	 * entity is created.
-	 */
-	@Test
-	public void testManyToManyBiDirRelationFromMappedSuperclassToEntity() {
-		Utils.sayTestStarted("testManyToManyBiDirRelationFromMappedSuperclassToEntity");
-
-		assertTrue("The diagram must be empty.", jpaDiagramEditor
-				.mainEditPart().children().isEmpty());
-		
-		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, jpaProject);
-
-		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				jpaProject);
-
-		editorProxy
-				.testNoConnectionIsCreated(
-						JPAEditorMessages.CreateManyToManyBiDirRelationFeature_manyToManyBiDirFeatureName,
-						1, mappedSuperclass, entity);
-
-		editorProxy.deleteDiagramElements();
-		jpaDiagramEditor.saveAndClose();
-
-		Utils.sayTestFinished("testManyToManyBiDirRelationFromMappedSuperclassToEntity");
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		editorProxy.deleteResources(jpaProject);
 	}
 
 }

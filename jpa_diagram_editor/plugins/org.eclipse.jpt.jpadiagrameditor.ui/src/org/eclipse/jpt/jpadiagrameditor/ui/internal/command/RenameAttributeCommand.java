@@ -23,8 +23,10 @@ import java.util.List;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.ui.refactoring.RenameSupport;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
@@ -36,7 +38,6 @@ import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 import org.eclipse.swt.widgets.Shell;
@@ -45,43 +46,34 @@ import org.eclipse.ui.IWorkbenchWindow;
 public class RenameAttributeCommand implements Command {
 	
 	private PersistentType jpt;
-	private ICompilationUnit jptCompilationUnit;
 	private String oldName;
 	private String newName;
-	private IJPAEditorFeatureProvider fp;
 	
 	
-	public RenameAttributeCommand(ICompilationUnit jptCompilationUnit, PersistentType jpt, String oldName,
-			String newName, IJPAEditorFeatureProvider fp){
+	public RenameAttributeCommand(PersistentType jpt, String oldName,
+			String newName){
 		
 		super();
 		this.jpt = jpt;
-		this.jptCompilationUnit = jptCompilationUnit;
 		this.oldName = oldName;
-		this.newName = newName;
-		this.fp = fp;
-		
+		this.newName = newName;		
 	}
 
 	public void execute() {
-		if(jptCompilationUnit == null) {
-			jptCompilationUnit = fp.getCompilationUnit(jpt);
-		}
-		try {
-			boolean isMethodAnnotated = false;
-			if(jpt!= null){
-				renameAttribute(jpt, oldName, newName);			
-				isMethodAnnotated = JpaArtifactFactory.instance().isMethodAnnotated(jpt);
-			}
-			renameAttribute(jptCompilationUnit, oldName, newName, fp, isMethodAnnotated);
+		try {			
+			renameAttribute(jpt, oldName, newName);			
+			boolean isMethodAnnotated = JpaArtifactFactory.instance().isMethodAnnotated(jpt);
+				
+			ICompilationUnit jptCompilationUnit = JPAEditorUtil.getCompilationUnit(jpt);
+			renameAttribute(jptCompilationUnit, oldName, newName, isMethodAnnotated);
 			
-			if(jpt != null) {
-				jpt.getJpaProject().getContextModelRoot().synchronizeWithResourceModel();
-				JavaResourceType jrt = jpt.getJavaResourceType();
-				jrt.getJavaResourceCompilationUnit().synchronizeWithJavaSource();
-				jpt.update();
-			}
-		} catch (InterruptedException e) {
+			
+			jpt.getJpaProject().getContextModelRoot().synchronizeWithResourceModel();
+			JavaResourceType jrt = jpt.getJavaResourceType();
+			jrt.getJavaResourceCompilationUnit().synchronizeWithJavaSource();
+			jpt.update();
+
+		} catch (Exception e) {
 			JPADiagramEditorPlugin.logError("Cannot rename attribute", e); //$NON-NLS-1$
 		}
 	}
@@ -90,7 +82,6 @@ public class RenameAttributeCommand implements Command {
 		MappingFileRef mapFileRef = JpaArtifactFactory.instance().getOrmXmlByForPersistentType(jpt);
 		if(mapFileRef != null) {
 			EntityMappings root = (EntityMappings) mapFileRef.getMappingFile().getRoot();
-//			XmlEntityMappings xmlEntities  = root.getXmlEntityMappings();
 			Iterator<OrmManagedType> managedTypesIter = root.getManagedTypes().iterator();
 			while(managedTypesIter.hasNext()) {
 				XmlTypeMapping xmlType = (XmlTypeMapping) managedTypesIter.next().getXmlManagedType();
@@ -103,24 +94,14 @@ public class RenameAttributeCommand implements Command {
 					}
 				}
 			}
-			
-//			 List<XmlTypeMapping> typeMappings = xmlEntities.getTypeMappings();
-//			for(XmlTypeMapping xmlType : typeMappings){
-//				if(xmlType.getAttributes() == null)
-//					return;
-//				List<XmlAttributeMapping> attributeMappings  = xmlType.getAttributes().getAttributeMappings();
-//				for(XmlAttributeMapping attr : attributeMappings){
-//					if(attr.getName().equals(oldName)){
-//						attr.setName(newName);
-//					}
-//				}
-//			}
 		}
 	}
 	
 	private void renameAttribute(ICompilationUnit cu, String oldName,
-			String newName, IJPAEditorFeatureProvider fp, boolean isMethodAnnotated) throws InterruptedException {
-		IType javaType = cu.findPrimaryType();
+			String newName, boolean isMethodAnnotated) throws Exception {
+		
+		IJavaProject jp = JavaCore.create(jpt.getJpaProject().getProject());
+		IType javaType = jp.findType(jpt.getName());
 		if (javaType == null)
 			return;
 		IField attributeField = null;

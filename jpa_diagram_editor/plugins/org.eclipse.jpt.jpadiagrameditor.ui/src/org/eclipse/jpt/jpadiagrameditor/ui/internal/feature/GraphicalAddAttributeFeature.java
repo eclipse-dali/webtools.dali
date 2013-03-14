@@ -63,9 +63,9 @@ public class GraphicalAddAttributeFeature extends AbstractAddShapeFeature {
 						.getNewObject();
 				String txt = JPAEditorUtil.getText(newAttr);
 				AttributeMapping attributeMapping = JpaArtifactFactory.instance().getAttributeMapping(newAttr);
-				if(!attributeMapping.getKey().equals(newAttr.getJavaPersistentAttribute().getMappingKey())){
-//					newAttr.getJavaPersistentAttribute().setMappingKey(attributeMapping.getKey());
-				}
+//				if(!attributeMapping.getKey().equals(newAttr.getJavaPersistentAttribute().getMappingKey())){
+////					newAttr.getJavaPersistentAttribute().setMappingKey(attributeMapping.getKey());
+//				}
 				ContainerShape textShape = null;
 				ContainerShape primaryShape = GraphicsUpdater
 						.getPrimaryShape(entityShape);

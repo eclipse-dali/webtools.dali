@@ -110,8 +110,7 @@ public class CreateRelationAttributesTest {
 			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		}
 		PersistentAttribute attr = JpaArtifactFactory.instance().
-				addAttribute(featureProvider, t1, t2, null, "add", "add", false, 
-						createCompilationUnitFrom(customerFile));
+				addAttribute(t1, t2, null, "add", "add", false);
 		jpaProject.getProject().build(IncrementalProjectBuilder.CLEAN_BUILD, new NullProgressMonitor());
 		PersistenceUnit pu = jpaProject.getContextModelRoot().getPersistenceXml().getRoot().getPersistenceUnits().iterator().next();
 		t1 = pu.getPersistentType("abc.Customer");
@@ -152,8 +151,7 @@ public class CreateRelationAttributesTest {
 		}
 
 		PersistentAttribute attr = JpaArtifactFactory.instance().
-			addAttribute(featureProvider, t1, t2, null, "address", "address", false, 						
-					createCompilationUnitFrom((IFile)t1.getResource()));		
+			addAttribute(t1, t2, null, "address", "address", false);		
 		assertNotNull(attr);
 			
 		JpaArtifactFactory.instance().addOneToOneUnidirectionalRelation(featureProvider, t1, attr);
@@ -202,13 +200,11 @@ public class CreateRelationAttributesTest {
 		}
 
 		PersistentAttribute attr = JpaArtifactFactory.instance().
-			addAttribute( featureProvider, t1, t2, null, "creditCard", "creditCard", false,
-					createCompilationUnitFrom((IFile)t1.getResource()));		
+			addAttribute(t1, t2, null, "creditCard", "creditCard", false);		
 		assertNotNull(attr);
 
 		PersistentAttribute attr2 = JpaArtifactFactory.instance().
-			addAttribute(featureProvider, t2, t1, null, "customer", "customer", false, 
-					createCompilationUnitFrom((IFile)t2.getResource()));		
+			addAttribute(t2, t1, null, "customer", "customer", false);		
 		assertNotNull(attr2);
 		
 		JpaArtifactFactory.instance().addOneToOneBidirectionalRelation(featureProvider, t1, attr, t2, attr2);
@@ -273,8 +269,7 @@ public class CreateRelationAttributesTest {
 			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, phoneType.getTypeBinding().getQualifiedName());
 		}
 
-		PersistentAttribute attr = JpaArtifactFactory.instance().addAttribute(featureProvider, t1, t2, null, "phones", "phones", true, 
-				createCompilationUnitFrom((IFile)t1.getResource()));		
+		PersistentAttribute attr = JpaArtifactFactory.instance().addAttribute(t1, t2, null, "phones", "phones", true);		
 		assertNotNull(attr);
 			
 		JpaArtifactFactory.instance().addOneToManyUnidirectionalRelation(featureProvider, t1, attr, false);
@@ -327,13 +322,11 @@ public class CreateRelationAttributesTest {
 		}
 
 		PersistentAttribute singleSideAttribute = JpaArtifactFactory.instance().
-			addAttribute(featureProvider, singleSidePersistentType, manySidePersistentType, null, "reservations", "reservations", true, 
-				createCompilationUnitFrom((IFile)singleSidePersistentType.getResource()));		
+			addAttribute(singleSidePersistentType, manySidePersistentType, null, "reservations", "reservations", true);		
 		assertNotNull(singleSideAttribute);
 
 		PersistentAttribute manySideAttribute = JpaArtifactFactory.instance().
-			addAttribute(featureProvider, manySidePersistentType, singleSidePersistentType, null, "cruise", "cruise", false, 
-				createCompilationUnitFrom((IFile)manySidePersistentType.getResource()));		
+			addAttribute(manySidePersistentType, singleSidePersistentType, null, "cruise", "cruise", false);		
 		assertNotNull(manySideAttribute);
 		
 		JpaArtifactFactory.instance().addOneToManyBidirectionalRelation(featureProvider, singleSidePersistentType, singleSideAttribute, manySidePersistentType, manySideAttribute, false);
@@ -418,8 +411,7 @@ public class CreateRelationAttributesTest {
 		}
 
 		PersistentAttribute mappedAttribute = JpaArtifactFactory.instance().
-			addAttribute(featureProvider, manySidePersistentType, singleSidePersistentType, null, "ship", "ship", true, 
-					createCompilationUnitFrom((IFile)manySidePersistentType.getResource()));		
+			addAttribute(manySidePersistentType, singleSidePersistentType, null, "ship", "ship", true);		
 		assertNotNull(mappedAttribute);
 			
 		JpaArtifactFactory.instance().addManyToOneUnidirectionalRelation(featureProvider, manySidePersistentType, mappedAttribute);
@@ -483,12 +475,10 @@ public class CreateRelationAttributesTest {
 		}
 
 		PersistentAttribute ownerSideAttribute = JpaArtifactFactory.instance().
-			addAttribute(featureProvider, ownerSidePersistentType,  inverseSidePersistentType, null, "customers", "customers", true,
-					createCompilationUnitFrom((IFile)ownerSidePersistentType.getResource()));		
+			addAttribute(ownerSidePersistentType,  inverseSidePersistentType, null, "customers", "customers", true);		
 		assertNotNull(ownerSideAttribute);
 
-		PersistentAttribute inverseSideAttributes = JpaArtifactFactory.instance().addAttribute(featureProvider, inverseSidePersistentType, ownerSidePersistentType, null, "reservations", "reservations", true, 
-				createCompilationUnitFrom((IFile)inverseSidePersistentType.getResource()));		
+		PersistentAttribute inverseSideAttributes = JpaArtifactFactory.instance().addAttribute(inverseSidePersistentType, ownerSidePersistentType, null, "reservations", "reservations", true);		
 		assertNotNull(inverseSideAttributes);
 		
 		JpaArtifactFactory.instance().addManyToManyBidirectionalRelation(featureProvider, ownerSidePersistentType, ownerSideAttribute, inverseSidePersistentType, inverseSideAttributes, false);
@@ -552,8 +542,7 @@ public class CreateRelationAttributesTest {
 		}
 
 		PersistentAttribute annotatedSideAttribute = JpaArtifactFactory.instance().
-			addAttribute(featureProvider, annotatedPersistentType, referencedPersistentType, null, "cabins", "cabins", true,
-					createCompilationUnitFrom((IFile)annotatedPersistentType.getResource()));		
+			addAttribute(annotatedPersistentType, referencedPersistentType, null, "cabins", "cabins", true);		
 		assertNotNull(annotatedSideAttribute);
 		
 		JpaArtifactFactory.instance().addManyToManyUnidirectionalRelation(featureProvider, annotatedPersistentType, annotatedSideAttribute, false);

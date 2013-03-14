@@ -24,14 +24,14 @@ import java.util.Properties;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.propertypage.JPADiagramPropertyPage;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
@@ -45,7 +45,6 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
  */
 public class AddAttributeCommand implements Command {
 
-	private IJPAEditorFeatureProvider fp;
 	private PersistentType jpt;
 	private String attributeType;
 	private String mapKeyType;
@@ -54,27 +53,23 @@ public class AddAttributeCommand implements Command {
 	private String[] attrTypes;
 	private List<String> annotations;
 	private boolean isCollection;
-	private ICompilationUnit cu;
 
 	/**
 	 * Constructor for the create new attribute command.
 	 * 
-	 * @param fp
 	 * @param jpt
 	 * @param attributeType
 	 * @param mapKeyType
 	 * @param attributeName
 	 * @param actName
 	 * @param isCollection
-	 * @param cu
 	 */
-	public AddAttributeCommand(IJPAEditorFeatureProvider fp,
+	public AddAttributeCommand(
 			PersistentType jpt, String attributeType, String mapKeyType,
 			String attributeName, String actName, String[] attrTypes,
 			List<String> annotations,
-			boolean isCollection, ICompilationUnit cu) {
+			boolean isCollection) {
 		super();
-		this.fp = fp;
 		this.jpt = jpt;
 		this.attributeType = attributeType;
 		this.mapKeyType = mapKeyType;
@@ -83,22 +78,18 @@ public class AddAttributeCommand implements Command {
 		this.attrTypes = attrTypes;
 		this.annotations = annotations;
 		this.isCollection = isCollection;
-		this.cu = cu;
 	}
 
 	/**
 	 * Creates a new attribute.
 	 */
 	public void execute() {
-		IType type = null;
 		try {
-//			if(jpt != null){
-//				cu = JPAEditorUtil.getCompilationUnit(jpt);
-//			}
+			IJavaProject jp = JavaCore.create(jpt.getJpaProject().getProject());
+			IType type = jp.findType(jpt.getName());
+			ICompilationUnit cu = type.getCompilationUnit();
 			JPAEditorUtil.createImport(cu, attributeType);
 			attributeType = JPAEditorUtil.returnSimpleName(attributeType);
-			type = cu.findPrimaryType();
-
 			if ((attrTypes != null) && (attrTypes.length > 0)) {
 				JPAEditorUtil.createImports(cu, attrTypes);
 			}
@@ -112,15 +103,12 @@ public class AddAttributeCommand implements Command {
 				}
 			}
 			
-			createAttribute(fp, jpt, attributeType, mapKeyType, attributeName,
+			createAttribute(jpt, attributeType, mapKeyType, attributeName,
 					actName, cu, type, isCollection, attrTypes, contents);
 
-			if(jpt != null) {
-				jpt.getJpaProject().getContextModelRoot().synchronizeWithResourceModel();
-				JavaResourceType jrt = jpt.getJavaResourceType();
-				jrt.getJavaResourceCompilationUnit().synchronizeWithJavaSource();
-				jpt.update();
-			}
+			jpt.getJavaResourceType().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
+			jpt.synchronizeWithResourceModel();
+			jpt.update();
 
 		} catch (JavaModelException e) {
 			JPADiagramEditorPlugin
@@ -132,7 +120,6 @@ public class AddAttributeCommand implements Command {
 	/**
 	 * Creates an attribute the persistent type.
 	 * 
-	 * @param fp
 	 * @param jpt
 	 * @param attrTypeName
 	 * @param mapKeyType
@@ -143,13 +130,12 @@ public class AddAttributeCommand implements Command {
 	 * @param isCollection
 	 * @throws JavaModelException
 	 */
-	private void createAttribute(IJPAEditorFeatureProvider fp,
-			PersistentType jpt, String attrTypeName, String mapKeyType,
+	private void createAttribute(PersistentType jpt, String attrTypeName, String mapKeyType,
 			String attrName, String actName, ICompilationUnit cu, IType type,
 			boolean isCollection, String[] attrTypeElementNames, String annotationContents) throws JavaModelException {
 
 			if (isCollection) {
-				createAttributeOfCollectiontype(fp, jpt, attrTypeName,
+				createAttributeOfCollectiontype(jpt, attrTypeName,
 						mapKeyType, attrName, actName, cu, type);
 			} else {
 				createSimpleAttribute(attrTypeName, attrName, actName,
@@ -182,7 +168,7 @@ public class AddAttributeCommand implements Command {
 		} else {
 			contents = attrFieldContent;
 		}
-		
+
 		type.createField(contents, null, false, new NullProgressMonitor());
 		
 		type.createMethod(
@@ -197,7 +183,6 @@ public class AddAttributeCommand implements Command {
 	 * Creates a new attribute of a collection type, depending on the specified
 	 * collection type in the Preference/Properties page.
 	 * 
-	 * @param fp
 	 * @param jpt
 	 * @param attributeType
 	 * @param mapKeyType
@@ -207,12 +192,12 @@ public class AddAttributeCommand implements Command {
 	 * @param type
 	 * @throws JavaModelException
 	 */
-	private void createAttributeOfCollectiontype(IJPAEditorFeatureProvider fp,
+	private void createAttributeOfCollectiontype(
 			PersistentType jpt, String attributeType, String mapKeyType,
 			String attributeName, String actName, ICompilationUnit cu,
 			IType type) throws JavaModelException {
 		IProject project = jpt.getJpaProject().getProject();
-		Properties props = fp.loadProperties(project);
+		Properties props = loadProperties(project);
 		if (JPADiagramPropertyPage.isCollectionType(project, props)) {
 			createAttributeByCollectionMethodType(attributeType, null,
 					attributeName, actName, cu, type,
@@ -410,6 +395,10 @@ public class AddAttributeCommand implements Command {
 				+ " = param;\n" + //$NON-NLS-1$ 
 				"    }\n"; //$NON-NLS-1$
 		return contents;
+	}
+	
+	private Properties loadProperties(IProject project) {
+		return JPADiagramPropertyPage.loadProperties(project);
 	}
 
 }

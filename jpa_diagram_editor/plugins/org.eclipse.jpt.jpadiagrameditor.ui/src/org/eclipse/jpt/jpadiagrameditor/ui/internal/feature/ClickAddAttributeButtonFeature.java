@@ -58,7 +58,7 @@ public class ClickAddAttributeButtonFeature extends AbstractCreateFeature {
 		PersistentAttribute newAttr = jpt.resolveAttribute(newAttrName);
 
 		getFeatureProvider().addAddIgnore((PersistentType) newAttr.getParent(), newAttr.getName());
-		JpaArtifactFactory.instance().addOrmPersistentAttribute(jpt, newAttr, newAttr.getMappingKey());
+		JpaArtifactFactory.instance().addOrmPersistentAttribute(jpt, newAttr, null);
 		addGraphicalRepresentation(context, newAttr);
         getFeatureProvider().getDirectEditingInfo().setActive(true);
         

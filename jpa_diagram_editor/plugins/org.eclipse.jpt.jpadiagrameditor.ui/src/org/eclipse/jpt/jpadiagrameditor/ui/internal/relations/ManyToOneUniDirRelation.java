@@ -43,7 +43,7 @@ public class ManyToOneUniDirRelation extends ManyToOneRelation implements IUnidi
 	}
 
 	private void createRelation(IJPAEditorFeatureProvider fp, boolean isDerivedIdFeature) {		
-		ownerAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, owner, inverse, false, null);
+		ownerAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(owner, inverse, false, null);
 		JpaArtifactFactory.instance().addManyToOneUnidirectionalRelation(fp, owner, ownerAnnotatedAttribute);
 		if(isDerivedIdFeature){
 			JpaArtifactFactory.instance().calculateDerivedIdAttribute(owner, inverse, ownerAnnotatedAttribute);

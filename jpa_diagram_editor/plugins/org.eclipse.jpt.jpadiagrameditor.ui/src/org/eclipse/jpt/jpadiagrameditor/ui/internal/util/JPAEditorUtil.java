@@ -90,7 +90,6 @@ import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.TransientMapping;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.jpa2.context.DerivedIdentity2_0;
@@ -978,7 +977,8 @@ public class JPAEditorUtil {
 	
 	static public void formatCode(ICompilationUnit cu, IWorkbenchSite ws) {
 		FormatAllAction action = new FormatAllAction(ws);
-		action.run(new StructuredSelection(cu));
+		if(cu != null)
+			action.run(new StructuredSelection(cu));
 	}
 	
 	static public String generateUniquePersistentObjectName(JpaProject jpaProject, String pack, String objectTypeName, IJPAEditorFeatureProvider fp){
@@ -1156,10 +1156,8 @@ public class JPAEditorUtil {
 	}
 		
 	public static ICompilationUnit getCompilationUnit(PersistentType jpt) {
-		if (jpt instanceof OrmPersistentType){
-			jpt = ((OrmPersistentType)jpt).getJavaPersistentType();
-		}
-		return getCompilationUnit((IFile) jpt.getResource());
+		ICompilationUnit unit = jpt.getJavaResourceType().getJavaResourceCompilationUnit().getCompilationUnit();		
+		return unit;
 	}		
 	
 	public static ICompilationUnit getCompilationUnit(IFile file) {
@@ -1414,7 +1412,7 @@ public class JPAEditorUtil {
 		return h1.equals(h2);
 	}
 
-	public static PersistentAttribute addAnnotatedAttribute(IJPAEditorFeatureProvider fp, PersistentType referencingJPT, 
+	public static PersistentAttribute addAnnotatedAttribute(PersistentType referencingJPT, 
 			PersistentType referencedJPT, boolean isCollection, String mapKeyType){
 		
 		String name = returnSimpleName(referencedJPT.getName());
@@ -1430,11 +1428,9 @@ public class JPAEditorUtil {
 		nameWithNonCapitalLetter = produceUniqueAttributeName(referencingJPT, nameWithNonCapitalLetter);
 		actNameWithNonCapitalLetter = produceUniqueAttributeName(referencingJPT, actNameWithNonCapitalLetter);
 
-		ICompilationUnit referencingCU = JPAEditorUtil.getCompilationUnit(referencingJPT);
-		return JpaArtifactFactory.instance().addAttribute(fp, referencingJPT, referencedJPT, mapKeyType,
+		return JpaArtifactFactory.instance().addAttribute(referencingJPT, referencedJPT, mapKeyType,
 																			 nameWithNonCapitalLetter, 
-																			 actNameWithNonCapitalLetter, isCollection, 
-																			 referencingCU);
+																			 actNameWithNonCapitalLetter, isCollection);
 	}
 	
 }

@@ -20,12 +20,12 @@ import java.util.Locale;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.graphiti.ui.editor.IDiagramContainerUI;
-import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
@@ -39,34 +39,61 @@ public class DeleteAttributeCommand implements Command {
 	private PersistentType jpt;
 	private String attributeName;
 	private IJPAEditorFeatureProvider fp;
-	private ICompilationUnit unit;
 	
-	public DeleteAttributeCommand(ICompilationUnit unit, PersistentType jpt, String attributeName,
+	public DeleteAttributeCommand(PersistentType jpt, String attributeName,
 							IJPAEditorFeatureProvider fp) {
 		super();
 		this.jpt = jpt;
-		this.unit = unit;
 		this.attributeName = attributeName;
 		this.fp = fp;		
 	}
 
 	public void execute() {
-		boolean isMethodAnnotated = false;
-		if(jpt != null) {
-			
-			JpaArtifactFactory.instance().removeOrmPersistentAttribute(jpt, attributeName);
-			
-			unit = fp.getCompilationUnit(jpt);		
-			isMethodAnnotated = JpaArtifactFactory.instance()
-				.isMethodAnnotated(jpt);
-		}
-			
-		IType javaType = unit.findPrimaryType();
+		JpaArtifactFactory.instance().removeOrmPersistentAttribute(jpt, attributeName);
 
+		try {
+		IJavaProject jp = JavaCore.create(jpt.getJpaProject().getProject());
+		IType javaType = jp.findType(jpt.getName());
+		
 		String attrNameWithCapitalLetter = attributeName.substring(0, 1)
 				.toUpperCase(Locale.ENGLISH) + attributeName.substring(1);
 			
+		IMethod getAttributeMethod = findGetterMethod(javaType,
+				attrNameWithCapitalLetter);
+		
+		String typeSignature = getReturnedType(getAttributeMethod);
+
+		deleteGetterMethod(typeSignature, getAttributeMethod);
+		deleteField(javaType);
+		deleteSetterMethod(javaType, attrNameWithCapitalLetter,
+					typeSignature);
+
+		IWorkbenchSite ws = ((IDiagramContainerUI) fp.getDiagramTypeProvider().getDiagramBehavior().getDiagramContainer()).getSite();
+		JPAEditorUtil.organizeImports(javaType.getCompilationUnit(), ws);
+
+		jpt.getJavaResourceType().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
+		jpt.synchronizeWithResourceModel();
+		jpt.update();
+		
+		} catch (JavaModelException e) {
+			JPADiagramEditorPlugin
+					.logError(
+							"Cannnot delete attribute with name " + attributeName, e); //$NON-NLS-1$				
+		}
+
+	}
+
+	private String getReturnedType(IMethod getAttributeMethod)
+			throws JavaModelException {
 		String typeSignature = null;
+		if ((getAttributeMethod != null) && getAttributeMethod.exists()) {
+			typeSignature = getAttributeMethod.getReturnType();
+		}
+		return typeSignature;
+	}
+
+	private IMethod findGetterMethod(IType javaType,
+			String attrNameWithCapitalLetter) {
 		String getterPrefix = "get"; 			//$NON-NLS-1$
 		String methodName = getterPrefix + attrNameWithCapitalLetter;
 		IMethod getAttributeMethod = javaType.getMethod(methodName,
@@ -76,78 +103,34 @@ public class DeleteAttributeCommand implements Command {
 		}
 		methodName = getterPrefix + attrNameWithCapitalLetter; 	//$NON-NLS-1$
 		getAttributeMethod = javaType.getMethod(methodName, new String[0]);
-		try {
-			if ((getAttributeMethod != null) && getAttributeMethod.exists())
-				typeSignature = getAttributeMethod.getReturnType();
-		} catch (JavaModelException e1) {
-			JPADiagramEditorPlugin.logError("Cannot obtain the type of the getter with name " + methodName + "()", e1); 	//$NON-NLS-1$	//$NON-NLS-2$
-		}
-			
-		if (typeSignature == null)
-		 	methodName = null;		
-			
-		if (isMethodAnnotated) {
-			try {
-				IField attributeField = javaType.getField(attributeName);
-					
-				if ((attributeField != null) && !attributeField.exists())
-					attributeField = javaType.getField(JPAEditorUtil.revertFirstLetterCase(attributeName));
-				if ((attributeField != null) && attributeField.exists()) 
-					attributeField.delete(true, new NullProgressMonitor());
-			} catch (JavaModelException e) {
-				JPADiagramEditorPlugin.logError("Cannot remove the attribute field with name " + attributeName, e); 	//$NON-NLS-1$	
-			} 
-			try {
-				methodName = getterPrefix + attrNameWithCapitalLetter; //$NON-NLS-1$
-				if (getAttributeMethod != null) {
-					typeSignature = getAttributeMethod.getReturnType();
-					if (getAttributeMethod.exists())
-						getAttributeMethod.delete(true, new NullProgressMonitor());
-				}
-			} catch (JavaModelException e) {
-				JPADiagramEditorPlugin.logError("Cannot remove the attribute getter with name " + methodName + "()", e); 	//$NON-NLS-1$	 //$NON-NLS-2$
-			} 	
-		} else {
-			try {
-				methodName = getterPrefix + attrNameWithCapitalLetter; //$NON-NLS-1$
-				if (getAttributeMethod.exists()) {
-					typeSignature = getAttributeMethod.getReturnType();
-					getAttributeMethod.delete(true, new NullProgressMonitor());
-				}
-			} catch (JavaModelException e) {
-				JPADiagramEditorPlugin.logError("Cannot remove the attribute getter with name " + methodName + "()", e); 	//$NON-NLS-1$	 //$NON-NLS-2$
-			} 	
-			try {
-				IField attributeField = javaType.getField(this.attributeName);
-				if (attributeField != null)
-					if (!attributeField.exists())
-						attributeField = javaType.getField(JPAEditorUtil.revertFirstLetterCase(attributeName));			
-				if ((attributeField != null) && attributeField.exists())
-					attributeField.delete(true, new NullProgressMonitor());
-			} catch (JavaModelException e) {
-				JPADiagramEditorPlugin.logError("Cannot remove the attribute field with name " + attributeName, e); 	//$NON-NLS-1$	
-			} 			
-		}
-		try {
-			methodName = "set" + attrNameWithCapitalLetter; //$NON-NLS-1$
-			if(typeSignature != null) {
-				IMethod setAttributeMethod = javaType.getMethod(methodName,
-						new String[] { typeSignature });
-				if ((setAttributeMethod != null) && setAttributeMethod.exists())
-					setAttributeMethod.delete(true, new NullProgressMonitor());
-			}
-		} catch (Exception e) {
-			JPADiagramEditorPlugin.logError("Cannot remove the attribute setter with name " + methodName + "(...)", e); //$NON-NLS-1$ //$NON-NLS-2$	
-		}
+		return getAttributeMethod;
+	}
 
-		IWorkbenchSite ws = ((IDiagramContainerUI)fp.getDiagramTypeProvider().getDiagramBehavior().getDiagramContainer()).getSite();
-		JPAEditorUtil.organizeImports(unit, ws);
-			
-		if(jpt != null) {
-			jpt.getJpaProject().getContextModelRoot().synchronizeWithResourceModel();
-			JavaResourceType jrt = jpt.getJavaResourceType();
-			jrt.getJavaResourceCompilationUnit().synchronizeWithJavaSource();
-			jpt.update();
+	private void deleteSetterMethod(IType javaType,
+			String attrNameWithCapitalLetter, String typeSignature)
+			throws JavaModelException {
+		String methodName = "set" + attrNameWithCapitalLetter; //$NON-NLS-1$
+		if(typeSignature != null) {
+			IMethod setAttributeMethod = javaType.getMethod(methodName,
+					new String[] { typeSignature });
+			if ((setAttributeMethod != null) && setAttributeMethod.exists())
+				setAttributeMethod.delete(true, new NullProgressMonitor());
+		}
+	}
+
+	private void deleteGetterMethod(String typeSignature, IMethod getAttributeMethod) throws JavaModelException {
+		if (getAttributeMethod != null && getAttributeMethod.exists()) {
+			getAttributeMethod.delete(true, new NullProgressMonitor());
+		}
+	}
+
+	private void deleteField(IType javaType) throws JavaModelException {
+		IField attributeField = javaType.getField(attributeName);
+		if (attributeField != null) {
+			if (!attributeField.exists()) {
+				attributeField = javaType.getField(JPAEditorUtil.revertFirstLetterCase(attributeName));
+			}
+			attributeField.delete(true, new NullProgressMonitor());
 		}
 	}
 	

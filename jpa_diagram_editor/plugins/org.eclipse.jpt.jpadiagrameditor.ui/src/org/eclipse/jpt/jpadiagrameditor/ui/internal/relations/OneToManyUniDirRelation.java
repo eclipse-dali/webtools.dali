@@ -46,7 +46,7 @@ public class OneToManyUniDirRelation extends OneToManyRelation implements IUnidi
 	private void createRelation(IJPAEditorFeatureProvider fp) {
 		boolean isMap = JPADiagramPropertyPage.isMapType(owner.getJpaProject().getProject());
 		String mapKeyType = getMapKeyType(isMap, inverse);
-		ownerAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, owner, inverse, true, mapKeyType);
+		ownerAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(owner, inverse, true, mapKeyType);
 		
 		JpaArtifactFactory.instance().addOneToManyUnidirectionalRelation(fp, owner, ownerAnnotatedAttribute, isMap);
 	} 

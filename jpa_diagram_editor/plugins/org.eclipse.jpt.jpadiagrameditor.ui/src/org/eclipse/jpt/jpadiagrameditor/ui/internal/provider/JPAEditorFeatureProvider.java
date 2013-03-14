@@ -789,11 +789,10 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
 		for (ClassRef classRef : unit.getClassRefs()) {
 			if (classRef.getJavaPersistentType() != null) { // null if
 				final PersistentType jpt = classRef.getJavaPersistentType();
-				PictogramElement pe = getPictogramElementForBusinessObject(jpt);
+				final PictogramElement pe = getPictogramElementForBusinessObject(jpt);
 				if(pe == null)
 					continue;
-				final GraphicsAlgorithm algo = pe.getGraphicsAlgorithm();
-				TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(algo);
+				TransactionalEditingDomain ted =  TransactionUtil.getEditingDomain(pe);
 				
 				JPAEditorConstants.DIAGRAM_OBJECT_TYPE dot = JpaArtifactFactory.instance().determineDiagramObjectType(jpt);
 				String renderingStyle = JpaArtifactFactory.instance().getRenderingStyle(dot);
@@ -806,11 +805,14 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
 
 					@Override
 					protected void doExecute() {
-						gaService.setRenderingStyle(algo, gradientColoredArea);
+						GraphicsAlgorithm algo = pe.getGraphicsAlgorithm();
+//						gaService.setRenderingStyle(algo, gradientColoredArea);
 						algo.setForeground(gaService.manageColor(d, foreground));
+						gaService.setRenderingStyle(algo, gradientColoredArea);
+
 					}
 				});
-			}
+							}
 		}
 	}
 }

@@ -17,13 +17,16 @@
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.command;
 
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.ui.refactoring.RenameSupport;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 
@@ -31,17 +34,15 @@ public class RenameEntityCommand implements Command {
 	
 	private PersistentType jpt;
 	private String newEntityName;
-	private IJPAEditorFeatureProvider fp;
 	
-	public RenameEntityCommand(PersistentType jpt, String newEntityName, IJPAEditorFeatureProvider fp){
+	public RenameEntityCommand(PersistentType jpt, String newEntityName){
 		super();
 		this.jpt = jpt;
 		this.newEntityName = newEntityName;
-		this.fp = fp;
 	}
 
 	public void execute() {
-		renameEntityClass(fp.getCompilationUnit(jpt), newEntityName);
+		renameEntityClass(JPAEditorUtil.getCompilationUnit(jpt), newEntityName);
 		jpt.getJpaProject().getContextModelRoot().synchronizeWithResourceModel();
 		JavaResourceType jrt = jpt.getJavaResourceType();
 		jrt.getJavaResourceCompilationUnit().synchronizeWithJavaSource();
@@ -49,8 +50,15 @@ public class RenameEntityCommand implements Command {
 	}
 	
 	private void renameEntityClass(ICompilationUnit cu, String newName) {
-		IType javaType = cu.findPrimaryType();
-		renameType(javaType, newName);
+		IJavaProject jp = JavaCore.create(jpt.getJpaProject().getProject());
+		try {
+			IType javaType = jp.findType(jpt.getName());
+			renameType(javaType, newName);
+
+		} catch (JavaModelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	private void renameType(IType type, String newName) {

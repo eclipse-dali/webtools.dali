@@ -73,8 +73,8 @@ public class RefactorAttributeTypeFeature extends AbstractCustomFeature {
 		JpaArtifactFactory.instance().deleteAttribute((PersistentType) jpa.getParent(), jpa.getName(),
 				getFeatureProvider());
 
-		PersistentAttribute newAt = JpaArtifactFactory.instance().makeNewAttribute(getFeatureProvider(), (PersistentType) jpa.getParent(),
-				null, jpa.getName(), newTypeName, jpa.getName(), newTypeName, attributeTypeTypeNames, annotations, false);
+		PersistentAttribute newAt = JpaArtifactFactory.instance().makeNewAttribute((PersistentType) jpa.getParent(),
+				jpa.getName(), newTypeName, jpa.getName(), newTypeName, attributeTypeTypeNames, annotations, false);
 		
 		getFeatureProvider().replaceAttribute(jpa, newAt);
 		

@@ -57,9 +57,11 @@ public class ClickAddElementCollectionButtonFeature extends AbstractCreateFeatur
 		String newAttrName = JpaArtifactFactory.instance().createNewAttribute(jpt, true, getFeatureProvider());
 
 		PersistentAttribute newAttr = jpt.resolveAttribute(newAttrName);
-		newAttr.getJavaPersistentAttribute().setMappingKey(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
-		JpaArtifactFactory.instance().addOrmPersistentAttribute(jpt, newAttr, MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
-		
+//		newAttr.getJavaPersistentAttribute().setMappingKey(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
+		PersistentAttribute ormAttr = JpaArtifactFactory.instance().addOrmPersistentAttribute(jpt, newAttr, MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
+		if(ormAttr == null || ormAttr.isVirtual()){
+			newAttr.getJavaPersistentAttribute().setMappingKey(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
+		}
 		getFeatureProvider().addAddIgnore((PersistentType) newAttr.getParent(), newAttr.getName());
 		addGraphicalRepresentation(context, newAttr);
         getFeatureProvider().getDirectEditingInfo().setActive(true);

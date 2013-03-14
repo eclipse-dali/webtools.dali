@@ -1,4 +1,4 @@
-package org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal;
+package org.eclipse.jpt.jpadiagrameditor.swtbot.tests.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

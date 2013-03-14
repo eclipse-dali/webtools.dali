@@ -337,10 +337,10 @@ public class JPADiagramEditor extends DiagramEditor implements JpaEditorManager{
 						.getBusinessObjectForPictogramElement(
 								(PictogramElement) m);
 				if ((bo == null) || (!(bo instanceof JpaStructureNode))){
-					if(jpaSelectionModel == null)
-						return;
-					jpaSelectionModel.setValue(null);
-					setFileModel(null);
+					if(jpaSelectionModel != null) {
+						jpaSelectionModel.setValue(null);
+						setFileModel(null);
+					}
 					return;
 				}
 				JpaStructureNode jpaStructureNode = (JpaStructureNode) bo;

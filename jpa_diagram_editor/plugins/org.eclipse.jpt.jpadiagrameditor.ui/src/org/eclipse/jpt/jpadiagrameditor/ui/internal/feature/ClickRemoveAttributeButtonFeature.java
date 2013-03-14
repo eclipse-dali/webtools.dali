@@ -28,13 +28,13 @@ import org.eclipse.graphiti.internal.features.context.impl.base.PictogramElement
 import org.eclipse.graphiti.mm.algorithms.Text;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.ui.features.DefaultDeleteFeature;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandContext;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.jpa2.context.DerivedIdentity2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.SingleRelationshipMapping2_0;
@@ -253,10 +253,10 @@ public class ClickRemoveAttributeButtonFeature extends DefaultDeleteFeature {
 	private void deleteFieldFromIdClassCompositePK(String attrName,
 			PersistentType jpt) {
 		JpaArtifactFactory jpaFactory = JpaArtifactFactory.instance();
-		String idClassFQN = jpaFactory.getIdType(jpt);
-		if(idClassFQN != null && isDeleteAttributeAllowed(jpt, idClassFQN)){
-			IType type = jpaFactory.getType(jpt.getJpaProject().getJavaProject(), idClassFQN);
-			Command deleteAttributeCommand = new DeleteAttributeCommand(type.getCompilationUnit(), null, attrName, getFeatureProvider());
+		JavaPersistentType idClassJPT = jpaFactory.getIdClassJPT(jpt);
+		if(idClassJPT != null && isDeleteAttributeAllowed(jpt, idClassJPT.getName())){
+
+			Command deleteAttributeCommand = new DeleteAttributeCommand(idClassJPT, attrName, getFeatureProvider());
 			try {
 				getJpaProjectManager().execute(deleteAttributeCommand, SynchronousUiCommandContext.instance());
 			} catch (InterruptedException e) {

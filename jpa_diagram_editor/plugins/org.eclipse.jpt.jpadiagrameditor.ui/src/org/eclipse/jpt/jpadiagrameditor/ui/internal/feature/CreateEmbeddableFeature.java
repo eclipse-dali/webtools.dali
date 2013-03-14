@@ -97,6 +97,7 @@ public class CreateEmbeddableFeature extends AbstractCreateFeature {
 		PersistentType jpt = JpaArtifactFactory.instance().getJPT(
 				embeddableName, pu);
 
+		
 		if (jpt != null) {
 			if(JPADiagramPropertyPage.doesSupportOrmXml(targetProject)) {
 				JpaArtifactFactory.instance().addPersistentTypeToORMXml(jpaProject, embeddableName, MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
@@ -114,7 +115,10 @@ public class CreateEmbeddableFeature extends AbstractCreateFeature {
 									+ " could not be created", new Exception()); //$NON-NLS-1$	 
 		}
 
-		return new Object[] {};
+		IWorkbenchSite ws = ((IDiagramContainerUI) getDiagramBehavior().getDiagramContainer()).getSite();
+		ICompilationUnit cu = JPAEditorUtil.getCompilationUnit(jpt);
+		getFeatureProvider().getJPAEditorUtil().formatCode(cu, ws);
+		return new Object[] { jpt };
 	}
 
 	@Override

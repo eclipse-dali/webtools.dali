@@ -50,6 +50,7 @@ public class GraphicalRemoveAttributeFeature extends AbstractCustomFeature {
 		TransactionalEditingDomain ted =  TransactionUtil.getEditingDomain(pe);
 		if (ted == null)
 			return;
+	
 		ted.getCommandStack().execute(new RecordingCommand(ted) {
 			@Override
 			protected void doExecute() {

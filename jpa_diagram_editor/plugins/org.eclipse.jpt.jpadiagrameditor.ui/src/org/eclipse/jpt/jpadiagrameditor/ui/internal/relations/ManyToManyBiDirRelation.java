@@ -70,14 +70,14 @@ public class ManyToManyBiDirRelation extends ManyToManyRelation implements IBidi
 		
 		boolean isMap = JPADiagramPropertyPage.isMapType(owner.getJpaProject().getProject());
 		String mapKeyType = getMapKeyType(isMap, inverse, embeddingEntity);
-		ownerAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, owner, inverse, true, mapKeyType);
+		ownerAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(owner, inverse, true, mapKeyType);
 		
 		mapKeyType = getMapKeyType(isMap, owner, embeddingEntity);
 		if(JpaArtifactFactory.instance().isEmbeddable(owner)){
-			inverseAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, inverse, embeddingEntity, true, mapKeyType);
+			inverseAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(inverse, embeddingEntity, true, mapKeyType);
 
 		} else {
-			inverseAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, inverse, owner, true, mapKeyType);
+			inverseAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(inverse, owner, true, mapKeyType);
 		}
 		JpaArtifactFactory.instance().addManyToManyBidirectionalRelation(fp, owner, ownerAnnotatedAttribute, inverse, inverseAnnotatedAttribute, isMap);		
 	} 	

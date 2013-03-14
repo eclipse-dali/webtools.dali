@@ -390,8 +390,8 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 				}
 			}
 			
-			ICompilationUnit cu = getCompilationUnit(jpt);
-			JPAEditorUtil.discardWorkingCopyOnce(cu);
+//			ICompilationUnit cu = getCompilationUnit(jpt);
+//			JPAEditorUtil.discardWorkingCopyOnce(cu);
 		} else if (o instanceof AbstractRelation) {
 			AbstractRelation rel = (AbstractRelation) o;
 			attribToRel.remove(produceOwnerKeyForRel(rel));

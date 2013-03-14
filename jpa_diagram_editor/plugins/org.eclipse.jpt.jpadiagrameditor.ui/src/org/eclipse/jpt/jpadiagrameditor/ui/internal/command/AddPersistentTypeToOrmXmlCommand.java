@@ -53,6 +53,8 @@ public class AddPersistentTypeToOrmXmlCommand implements Command {
 	    	MappingFileRef mapFile = iter.next();
 	    	if(mapFile.getFileName().equals(ormFileName)){
 	    		OrmXml ormXml = (OrmXml) mapFile.getMappingFile();
+	    		if(ormXml == null || ormXml.getRoot() == null)
+	    			return;
 	    		OrmPersistentType type = ormXml.getRoot().addPersistentType(mapping, persistentTypeName);
 	    	    for(PersistentAttribute pa : type.getDefaultAttributes()){
 	    	    	type.addAttributeToXml(type.getAttributeNamed(pa.getName()));

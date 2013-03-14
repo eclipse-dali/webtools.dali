@@ -175,6 +175,11 @@ public class CreateJPAEntityFeature extends AbstractCreateFeature {
 		if (jpt != null) {
 			if(JPADiagramPropertyPage.doesSupportOrmXml(targetProject)) {
 				JpaArtifactFactory.instance().addPersistentTypeToORMXml(jpaProject, entityName, MappingKeys.ENTITY_TYPE_MAPPING_KEY);
+				try {
+					jpt.getResource().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+				} catch (CoreException e1) {
+					JPADiagramEditorPlugin.logError("Cannot refresh the project", e1);  //$NON-NLS-1$		 
+				}
 			}
 //			jpt = pu.getPersistentType(entityName);
 			

@@ -87,10 +87,11 @@ public class EmbedCollectionOfObjectsFeature extends AbstractCreateConnectionFea
 			mapKeyType = JPAEditorConstants.STRING_TYPE;
 		}
 
-		PersistentAttribute embeddedAttribute = JPAEditorUtil.addAnnotatedAttribute(getFeatureProvider(), embeddingEntity, embeddable, true, mapKeyType);
-		embeddedAttribute.getJavaPersistentAttribute().setMappingKey(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
-		JpaArtifactFactory.instance().addOrmPersistentAttribute(embeddingEntity, embeddedAttribute, MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
-		
+		PersistentAttribute embeddedAttribute = JPAEditorUtil.addAnnotatedAttribute(embeddingEntity, embeddable, true, mapKeyType);
+		PersistentAttribute ormAttr = JpaArtifactFactory.instance().addOrmPersistentAttribute(embeddingEntity, embeddedAttribute, MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
+		if(ormAttr == null || ormAttr.isVirtual()){
+			embeddedAttribute.getJavaPersistentAttribute().setMappingKey(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
+		}
 		HasReferanceRelation rel = new HasCollectionReferenceRelation(embeddingEntity, embeddable);
 		rel.setEmbeddedAnnotatedAttribute(embeddedAttribute);
 

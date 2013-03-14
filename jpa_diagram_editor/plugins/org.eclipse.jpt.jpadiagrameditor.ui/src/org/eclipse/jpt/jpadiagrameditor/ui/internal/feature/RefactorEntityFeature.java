@@ -152,7 +152,7 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 		jpt.getJpaProject().addCollectionChangeListener(JpaProject.JPA_FILES_COLLECTION, lsnr);
 		ShowBusy showBusy = new ShowBusy(s);
 		JPASolver.ignoreEvents = true;
-		JpaArtifactFactory.instance().renameEntityClass(jpt, newName, getFeatureProvider());		
+		JpaArtifactFactory.instance().renameEntityClass(jpt, newName);		
 		BusyIndicator.showWhile(Display.getCurrent(), showBusy);
 		jpt.getJpaProject().removeCollectionChangeListener(JpaProject.JPA_FILES_COLLECTION, lsnr);
 		JPASolver.ignoreEvents = false;		

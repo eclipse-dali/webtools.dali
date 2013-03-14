@@ -141,32 +141,6 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 			ICompilationUnit cu = ((SourceType)newObj).getCompilationUnit();
 			jpt = JPAEditorUtil.getJPType(cu);
 		}
-		
-//		MappingFileRef fileRef = JpaArtifactFactory.instance().getOrmXmlByForPersistentType(jpt);
-//		if(fileRef != null) {
-//			if(fileRef.getPersistentType(jpt.getName()) != null){
-//				jpt = fileRef.getPersistentType(jpt.getName());
-//			}
-//		}
-		
-	
-		//TODO this is wrong, should not need to do any of these updates or syncs.
-		//should be changing the dali model synchronously so that all the syncs/updates are completed
-		//take a look at the JpaProjectManager.execute(Command, ExtendedCommandContext)
-//		JavaResourceType jrt = null;
-//		if(jpt instanceof JavaPersistentType) {
-//			jrt = ((JavaPersistentType)jpt).getJavaResourceType();
-//		} else if (jpt instanceof OrmPersistentType){
-//			jrt = ((OrmPersistentType)jpt).getJavaPersistentType().getJavaResourceType();
-//		}
-//		
-//		if(jrt != null) {
-//			jrt.getJavaResourceCompilationUnit().synchronizeWithJavaSource();
-//		}
-//		
-		jpt.update();
-		jpt.synchronizeWithResourceModel();
-		
 		final Diagram targetDiagram = (Diagram) context.getTargetContainer();
 		final Wrp wrp = new Wrp();
 		createEntity(context, fp, targetDiagram, wrp, jpt);
@@ -433,7 +407,7 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 		headerRect.setX(JPAEditorConstants.HEADER_TEXT_RECT_X);
 
 		String headerTextString = JPAEditorUtil.getText(addedWrapper);
-		ICompilationUnit cu = getFeatureProvider().getCompilationUnit(addedWrapper);
+		ICompilationUnit cu = JPAEditorUtil.getCompilationUnit(addedWrapper);
 		JPAEditorUtil.becomeWorkingCopy(cu);
 		headerTextString = JPAEditorUtil.returnSimpleName(headerTextString); 
 		try {
