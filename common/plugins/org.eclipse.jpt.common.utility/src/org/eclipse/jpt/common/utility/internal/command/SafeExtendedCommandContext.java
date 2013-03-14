@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.command.ExtendedCommandContext;
 /**
  * @see AbstractSafeCommandContext
  */
-public class SafeExtendedCommandExecutor
+public class SafeExtendedCommandContext
 	extends AbstractSafeCommandContext<ExtendedCommandContext>
 	implements ExtendedCommandContext
 {
@@ -24,7 +24,7 @@ public class SafeExtendedCommandExecutor
 	 * <strong>NB:</strong> The default exception handler simply
 	 * <em>ignores</em> any and all exceptions.
 	 */
-	public SafeExtendedCommandExecutor() {
+	public SafeExtendedCommandContext() {
 		this(DefaultExtendedCommandContext.instance());
 	}
 
@@ -32,16 +32,16 @@ public class SafeExtendedCommandExecutor
 	 * <strong>NB:</strong> The default exception handler simply
 	 * <em>ignores</em> any and all exceptions.
 	 */
-	public SafeExtendedCommandExecutor(ExtendedCommandContext commandExecutor) {
-		super(commandExecutor);
+	public SafeExtendedCommandContext(ExtendedCommandContext commandContext) {
+		super(commandContext);
 	}
 
-	public SafeExtendedCommandExecutor(ExceptionHandler exceptionHandler) {
+	public SafeExtendedCommandContext(ExceptionHandler exceptionHandler) {
 		this(DefaultExtendedCommandContext.instance(), exceptionHandler);
 	}
 
-	public SafeExtendedCommandExecutor(ExtendedCommandContext commandExecutor, ExceptionHandler exceptionHandler) {
-		super(commandExecutor, exceptionHandler);
+	public SafeExtendedCommandContext(ExtendedCommandContext commandContext, ExceptionHandler exceptionHandler) {
+		super(commandContext, exceptionHandler);
 	}
 
 	public void waitToExecute(Command command) throws InterruptedException {
