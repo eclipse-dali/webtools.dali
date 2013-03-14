@@ -17,52 +17,52 @@ import org.eclipse.jpt.common.utility.internal.SimpleThreadFactory;
 /**
  * @see AbstractAsynchronousCommandContext
  */
-public class AsynchronousCommandExecutor
+public class AsynchronousCommandContext
 	extends AbstractAsynchronousCommandContext<StatefulCommandContext>
 {
 	/**
-	 * Construct an asynchronous command executor.
+	 * Construct an asynchronous command context.
 	 * Use simple JDK thread(s) for the command execution thread(s).
 	 * Allow the command execution thread(s) to be assigned JDK-generated names.
 	 * Any exceptions thrown by the consumer will be handled by the
 	 * specified exception handler.
 	 */
-	public AsynchronousCommandExecutor(ExceptionHandler exceptionHandler) {
+	public AsynchronousCommandContext(ExceptionHandler exceptionHandler) {
 		this(null, exceptionHandler);
 	}
 
 	/**
-	 * Construct an asynchronous command executor.
+	 * Construct an asynchronous command context.
 	 * Use simple JDK thread(s) for the command execution thread(s).
 	 * Assign the command execution thread(s) the specified name.
 	 * Any exceptions thrown by the consumer will be handled by the
 	 * specified exception handler.
 	 */
-	public AsynchronousCommandExecutor(String threadName, ExceptionHandler exceptionHandler) {
+	public AsynchronousCommandContext(String threadName, ExceptionHandler exceptionHandler) {
 		this(new SimpleStatefulCommandExecutor(DefaultCommandContext.instance()), SimpleThreadFactory.instance(), threadName, exceptionHandler);
 	}
 
 	/**
-	 * Construct an asynchronous command executor.
-	 * Delegate command execution to the specified command executor.
+	 * Construct an asynchronous command context.
+	 * Delegate command execution to the specified command context.
 	 * Use the specified thread factory to construct the command execution
 	 * thread(s) and assign them the specified name.
 	 * Any exceptions thrown by a command will be handled by the
 	 * specified exception handler.
 	 */
-	public AsynchronousCommandExecutor(StatefulCommandContext commandExecutor, ThreadFactory threadFactory, String threadName, ExceptionHandler exceptionHandler) {
-		super(commandExecutor, threadFactory, threadName, exceptionHandler);
+	public AsynchronousCommandContext(StatefulCommandContext commandContext, ThreadFactory threadFactory, String threadName, ExceptionHandler exceptionHandler) {
+		super(commandContext, threadFactory, threadName, exceptionHandler);
 	}
 
 	/**
-	 * Construct an asynchronous command executor.
-	 * Delegate command execution to the specified command executor.
+	 * Construct an asynchronous command context.
+	 * Delegate command execution to the specified command context.
 	 * Use the specified thread factory to construct the command execution
 	 * thread(s) and assign them the specified name.
 	 * Any exceptions thrown by a command will be handled by the
 	 * specified exception handler.
 	 */
-	public AsynchronousCommandExecutor(Config config) {
+	public AsynchronousCommandContext(Config config) {
 		super(config);
 	}
 
@@ -70,7 +70,7 @@ public class AsynchronousCommandExecutor
 	// ********** config **********
 
 	/**
-	 * Config useful for instantiating an {@link AsynchronousCommandExecutor}.
+	 * Config useful for instantiating an {@link AsynchronousCommandContext}.
 	 */
 	public interface Config
 		extends AbstractAsynchronousCommandContext.Config<StatefulCommandContext>
@@ -79,7 +79,7 @@ public class AsynchronousCommandExecutor
 	}
 
 	/**
-	 * Config useful for instantiating an {@link AsynchronousCommandExecutor}.
+	 * Config useful for instantiating an {@link AsynchronousCommandContext}.
 	 */
 	public static class SimpleConfig
 		extends AbstractAsynchronousCommandContext.SimpleConfig<StatefulCommandContext>
@@ -88,8 +88,8 @@ public class AsynchronousCommandExecutor
 		public SimpleConfig() {
 			super();
 		}
-		public SimpleConfig(StatefulCommandContext commandExecutor, ThreadFactory threadFactory, String threadName, ExceptionHandler exceptionHandler) {
-			super(commandExecutor, threadFactory, threadName, exceptionHandler);
+		public SimpleConfig(StatefulCommandContext commandContext, ThreadFactory threadFactory, String threadName, ExceptionHandler exceptionHandler) {
+			super(commandContext, threadFactory, threadName, exceptionHandler);
 		}
 		@Override
 		protected StatefulCommandContext buildDefaultCommandContext() {
