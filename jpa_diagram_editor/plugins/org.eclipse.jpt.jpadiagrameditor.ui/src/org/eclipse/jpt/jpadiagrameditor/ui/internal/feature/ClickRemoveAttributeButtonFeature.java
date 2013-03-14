@@ -29,7 +29,7 @@ import org.eclipse.graphiti.mm.algorithms.Text;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.ui.features.DefaultDeleteFeature;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandExecutor;
+import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandContext;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -258,7 +258,7 @@ public class ClickRemoveAttributeButtonFeature extends DefaultDeleteFeature {
 			IType type = jpaFactory.getType(jpt.getJpaProject().getJavaProject(), idClassFQN);
 			Command deleteAttributeCommand = new DeleteAttributeCommand(type.getCompilationUnit(), null, attrName, getFeatureProvider());
 			try {
-				getJpaProjectManager().execute(deleteAttributeCommand, SynchronousUiCommandExecutor.instance());
+				getJpaProjectManager().execute(deleteAttributeCommand, SynchronousUiCommandContext.instance());
 			} catch (InterruptedException e) {
 				JPADiagramEditorPlugin.logError("Cannot delete attribute with name " + attrName, e); //$NON-NLS-1$		
 			}

@@ -26,7 +26,7 @@ import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
-import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandExecutor;
+import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandContext;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -173,7 +173,7 @@ public class SynchronizeClassesHandler extends AbstractHandler
 			JpaProjectManager mgr = this.getJpaProjectManager();
 			try {
 				if (mgr != null) {
-					mgr.execute(syncCommand, SynchronousUiCommandExecutor.instance());
+					mgr.execute(syncCommand, SynchronousUiCommandContext.instance());
 				}
 			} catch (InterruptedException ex) {
 				Thread.currentThread().interrupt();  // skip save?

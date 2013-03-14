@@ -47,7 +47,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
-import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandExecutor;
+import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandContext;
 import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
@@ -737,7 +737,7 @@ public class JpaMakePersistentWizardPage
 			}
 			Command addToOrmXmlCommand = new AddToOrmXmlCommand(this.getEntityMappings(),this.selectedTypeConfigs, monitor);
 			try {
-				jpaProjectManager.execute(addToOrmXmlCommand, SynchronousUiCommandExecutor.instance());
+				jpaProjectManager.execute(addToOrmXmlCommand, SynchronousUiCommandContext.instance());
 			} catch (InterruptedException ex) {
 				Thread.currentThread().interrupt();  // skip save?
 				throw new RuntimeException(ex);
@@ -867,7 +867,7 @@ public class JpaMakePersistentWizardPage
 			}
 			Command annotateInJavaCommand = new AnnotateInJavaCommand(persistenceUnit, this.selectedTypeConfigs, this.listInPersistenceXml, monitor);
 			try {
-				jpaProjectManager.execute(annotateInJavaCommand, SynchronousUiCommandExecutor.instance());
+				jpaProjectManager.execute(annotateInJavaCommand, SynchronousUiCommandContext.instance());
 			} catch (InterruptedException ex) {
 				Thread.currentThread().interrupt();  // skip save?
 				throw new RuntimeException(ex);

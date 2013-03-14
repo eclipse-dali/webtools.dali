@@ -57,7 +57,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandExecutor;
+import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandContext;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -779,7 +779,7 @@ public class JpaArtifactFactory {
 		
 		Command createNewAttributeCommand = new AddAttributeCommand(fp, jpt, attrTypeName, mapKeyType, attrName, actName, attrTypes, annotations, isCollection, cu);
 		try {
-			getJpaProjectManager().execute(createNewAttributeCommand, SynchronousUiCommandExecutor.instance());
+			getJpaProjectManager().execute(createNewAttributeCommand, SynchronousUiCommandContext.instance());
 		} catch (InterruptedException e) {
 			JPADiagramEditorPlugin.logError("Cannot create a new attribute with name " + attrName, e); //$NON-NLS-1$		
 		}
@@ -828,7 +828,7 @@ public class JpaArtifactFactory {
 		synchronized (jpt) {
 			Command deleteAttributeCommand = new DeleteAttributeCommand(null, jpt, attributeName, fp);
 			try {
-				getJpaProjectManager().execute(deleteAttributeCommand, SynchronousUiCommandExecutor.instance());
+				getJpaProjectManager().execute(deleteAttributeCommand, SynchronousUiCommandContext.instance());
 			} catch (InterruptedException e) {
 				JPADiagramEditorPlugin.logError("Cannot delete attribute with name " + attributeName, e); //$NON-NLS-1$		
 			}
@@ -1204,7 +1204,7 @@ public class JpaArtifactFactory {
 		
 		Command renameEntityCommand = new RenameEntityCommand(jpt, newEntityName, fp);
 		try {
-			getJpaProjectManager().execute(renameEntityCommand, SynchronousUiCommandExecutor.instance());
+			getJpaProjectManager().execute(renameEntityCommand, SynchronousUiCommandContext.instance());
 		} catch (InterruptedException e) {
 			JPADiagramEditorPlugin.logError("Cannot rename entity " + jpt.getName(), e); //$NON-NLS-1$		
 		}
@@ -1241,7 +1241,7 @@ public class JpaArtifactFactory {
 		String attributeTypeName = getRelTypeName(oldAt);
 
 		Command renameAttributeCommand = new RenameAttributeCommand(null, jpt, oldName, newName, fp);
-		getJpaProjectManager().execute(renameAttributeCommand, SynchronousUiCommandExecutor.instance());
+		getJpaProjectManager().execute(renameAttributeCommand, SynchronousUiCommandContext.instance());
 			
 		PersistentAttribute newAt = jpt.getAttributeNamed(newName);
 		if (newAt == null) {
@@ -1301,7 +1301,7 @@ public class JpaArtifactFactory {
 		
 		if (inverseAttributeName != null) {
 			Command changeMappedByValueCommand = new SetMappedByNewValueCommand(fp, pu, inverseJPT.getName(), inverseAttributeName, newAt.getName(), oldAt);
-			getJpaProjectManager().execute(changeMappedByValueCommand, SynchronousUiCommandExecutor.instance());		
+			getJpaProjectManager().execute(changeMappedByValueCommand, SynchronousUiCommandContext.instance());		
 		}
 		if (rel != null) {
 			updateRelation(jpt, fp, rel);
@@ -1311,7 +1311,7 @@ public class JpaArtifactFactory {
 				IType type = getType(javaProject, idClassFQN);
 				if(type != null && type.getField(oldAt.getName()).exists()){
 					Command renameAttributeCommand = new RenameAttributeCommand(type.getCompilationUnit(), null, oldAt.getName(), newAt.getName(), fp);
-					getJpaProjectManager().execute(renameAttributeCommand, SynchronousUiCommandExecutor.instance());
+					getJpaProjectManager().execute(renameAttributeCommand, SynchronousUiCommandContext.instance());
 				}
 			}
 		}
@@ -2038,7 +2038,7 @@ public class JpaArtifactFactory {
 	
 		Command createNewAttributeCommand = new CreateEntityTypeHierarchy(superclass, subclass, build);
 		try {
-			getJpaProjectManager().execute(createNewAttributeCommand, SynchronousUiCommandExecutor.instance());
+			getJpaProjectManager().execute(createNewAttributeCommand, SynchronousUiCommandContext.instance());
 		} catch (InterruptedException e) {
 			JPADiagramEditorPlugin.logError("Cannot create hierarchy of entity type " + subclass.getName(), e); //$NON-NLS-1$		
 		}
@@ -2172,7 +2172,7 @@ public class JpaArtifactFactory {
 			Command createNewAttributeCommand = new AddAttributeCommand(null, jpt, attributeTypeName, null, ownerAttr.getName(),
 					ownerAttr.getName(), null, null, false, unit);
 			try {
-				getJpaProjectManager().execute(createNewAttributeCommand, SynchronousUiCommandExecutor.instance());
+				getJpaProjectManager().execute(createNewAttributeCommand, SynchronousUiCommandContext.instance());
 			} catch (InterruptedException e) {
 				JPADiagramEditorPlugin.logError("Cannot create a new attribute with name " + ownerAttr.getName(), e); //$NON-NLS-1$		
 			}
@@ -2186,7 +2186,7 @@ public class JpaArtifactFactory {
 	public void addPersistentTypeToORMXml(JpaProject jpaProject, String entityName, String mapping){
 		Command renameAttributeCommand = new AddPersistentTypeToOrmXmlCommand(jpaProject, mapping, entityName);
 		try {
-			getJpaProjectManager().execute(renameAttributeCommand, SynchronousUiCommandExecutor.instance());
+			getJpaProjectManager().execute(renameAttributeCommand, SynchronousUiCommandContext.instance());
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

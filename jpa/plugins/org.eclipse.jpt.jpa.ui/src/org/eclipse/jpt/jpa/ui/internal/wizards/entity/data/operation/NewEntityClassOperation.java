@@ -45,7 +45,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
-import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandExecutor;
+import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandContext;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -424,7 +424,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 		protected void run() throws InterruptedException {
 			JpaProjectManager jpaProjectManager = this.getJpaProjectManager();
 			if (jpaProjectManager != null) {
-				jpaProjectManager.execute(this.command, SynchronousUiCommandExecutor.instance());
+				jpaProjectManager.execute(this.command, SynchronousUiCommandContext.instance());
 			}
 		}
 

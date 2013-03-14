@@ -35,7 +35,7 @@ import org.eclipse.jpt.common.core.internal.utility.WorkspaceRunnableAdapter;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
-import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandExecutor;
+import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandContext;
 import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -465,7 +465,7 @@ public abstract class JavaMetadataConversionWizardPage
 			}
 			Command conversionCommand = new ConversionCommand(this.conversionCommandStrategy, this.entityMappings, monitor);
 			try {
-				jpaProjectManager.execute(conversionCommand, SynchronousUiCommandExecutor.instance());
+				jpaProjectManager.execute(conversionCommand, SynchronousUiCommandContext.instance());
 			} catch (InterruptedException ex) {
 				Thread.currentThread().interrupt();
 				throw new OperationCanceledException();
