@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,22 +13,22 @@ import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.CommandContext;
 
 /**
- * This command executor allows the client to
- * specify a different command executor for each thread.
+ * This command context allows the client to
+ * specify a different command context for each thread.
  */
-public abstract class AbstractThreadLocalCommandExecutor<E extends CommandContext>
+public abstract class AbstractThreadLocalCommandContext<E extends CommandContext>
 	implements CommandContext
 {
 	protected final ThreadLocal<E> threadLocal;
-	protected final E defaultCommandExecutor;
+	protected final E defaultCommandContext;
 
 
-	protected AbstractThreadLocalCommandExecutor(E defaultCommandExecutor) {
+	protected AbstractThreadLocalCommandContext(E defaultCommandContext) {
 		super();
-		if (defaultCommandExecutor == null) {
+		if (defaultCommandContext == null) {
 			throw new NullPointerException();
 		}
-		this.defaultCommandExecutor = defaultCommandExecutor;
+		this.defaultCommandContext = defaultCommandContext;
 		this.threadLocal = this.buildThreadLocal();
 	}
 
@@ -37,19 +37,19 @@ public abstract class AbstractThreadLocalCommandExecutor<E extends CommandContex
 	}
 
 	public void execute(Command command) {
-		this.getThreadLocalCommandExecutor().execute(command);
+		this.getThreadLocalCommandContext().execute(command);
 	}
 
-	protected E getThreadLocalCommandExecutor() {
-		E ce = this.threadLocal.get();
-		return (ce != null) ? ce : this.defaultCommandExecutor;
+	protected E getThreadLocalCommandContext() {
+		E context = this.threadLocal.get();
+		return (context != null) ? context : this.defaultCommandContext;
 	}
 
 	/**
 	 * Set the current thread's command executor to the specified value.
 	 */
-	public void set(E commandExecutor) {
-		this.threadLocal.set(commandExecutor);
+	public void set(E commandContext) {
+		this.threadLocal.set(commandContext);
 	}
 
 	/**
@@ -58,6 +58,6 @@ public abstract class AbstractThreadLocalCommandExecutor<E extends CommandContex
 	 */
 	@Override
 	public String toString() {
-		return '[' + this.getThreadLocalCommandExecutor().toString() + ']';
+		return '[' + this.getThreadLocalCommandContext().toString() + ']';
 	}
 }

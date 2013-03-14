@@ -13,10 +13,10 @@ import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandContext;
 
 /**
- * @see AbstractThreadLocalCommandExecutor
+ * @see AbstractThreadLocalCommandContext
  */
 public class ThreadLocalExtendedCommandExecutor
-	extends AbstractThreadLocalCommandExecutor<ExtendedCommandContext>
+	extends AbstractThreadLocalCommandContext<ExtendedCommandContext>
 	implements ExtendedCommandContext
 {
 	/**
@@ -31,10 +31,10 @@ public class ThreadLocalExtendedCommandExecutor
 	}
 
 	public void waitToExecute(Command command) throws InterruptedException {
-		this.getThreadLocalCommandExecutor().waitToExecute(command);
+		this.getThreadLocalCommandContext().waitToExecute(command);
 	}
 
 	public boolean waitToExecute(Command command, long timeout) throws InterruptedException {
-		return this.getThreadLocalCommandExecutor().waitToExecute(command, timeout);
+		return this.getThreadLocalCommandContext().waitToExecute(command, timeout);
 	}
 }

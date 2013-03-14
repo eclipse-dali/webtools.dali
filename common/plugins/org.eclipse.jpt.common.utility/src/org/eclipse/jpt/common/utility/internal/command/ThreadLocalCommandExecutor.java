@@ -12,10 +12,10 @@ package org.eclipse.jpt.common.utility.internal.command;
 import org.eclipse.jpt.common.utility.command.CommandContext;
 
 /**
- * @see AbstractThreadLocalCommandExecutor
+ * @see AbstractThreadLocalCommandContext
  */
 public class ThreadLocalCommandExecutor
-	extends AbstractThreadLocalCommandExecutor<CommandContext>
+	extends AbstractThreadLocalCommandContext<CommandContext>
 {
 	/**
 	 * The default command executor simply executes commands directly.
