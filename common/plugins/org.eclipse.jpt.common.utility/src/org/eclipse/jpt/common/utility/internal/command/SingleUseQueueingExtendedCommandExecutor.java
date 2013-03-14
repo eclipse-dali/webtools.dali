@@ -22,10 +22,10 @@ import org.eclipse.jpt.common.utility.command.StatefulExtendedCommandContext;
  * the current thread <em>indefinitely</em> if the command executor is
  * {@link #stop() stopped}.
  * 
- * @see AbstractSingleUseQueueingCommandExecutor
+ * @see AbstractSingleUseQueueingCommandContext
  */
 public class SingleUseQueueingExtendedCommandExecutor
-	extends AbstractSingleUseQueueingCommandExecutor<StatefulExtendedCommandContext>
+	extends AbstractSingleUseQueueingCommandContext<StatefulExtendedCommandContext>
 	implements StatefulExtendedCommandContext
 {
 	public SingleUseQueueingExtendedCommandExecutor() {
@@ -47,7 +47,7 @@ public class SingleUseQueueingExtendedCommandExecutor
 
 		try {
 			syncCommand.waitForExecution();
-			this.commandExecutor.waitToExecute(command);
+			this.commandContext.waitToExecute(command);
 		} finally {
 			syncCommand.release();
 		}
@@ -68,7 +68,7 @@ public class SingleUseQueueingExtendedCommandExecutor
 			if (syncCommand.waitForExecution(timeout)) {
 				// adjust the time
 				timeout = stop - System.currentTimeMillis();
-				return (timeout > 0) && this.commandExecutor.waitToExecute(command, timeout);
+				return (timeout > 0) && this.commandContext.waitToExecute(command, timeout);
 			}
 			return false;
 		} finally {

@@ -15,22 +15,22 @@ import org.eclipse.jpt.common.core.utility.command.JobCommand;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.StatefulCommandContext;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.command.AbstractSingleUseQueueingCommandExecutor;
+import org.eclipse.jpt.common.utility.internal.command.AbstractSingleUseQueueingCommandContext;
 
 /**
  * This job command context wraps and extends an
- * {@link AbstractSingleUseQueueingCommandExecutor},
+ * {@link AbstractSingleUseQueueingCommandContext},
  * adding support for executing {@link JobCommand}s.
  * <p>
  * <strong>NB:</strong> This context <em>ignores</em> any
  * {@link ISchedulingRule scheduling rules}.
  */
-public abstract class AbstractSingleUseQueueingJobCommandContext<E1 extends AbstractSingleUseQueueingCommandExecutor<E2>, E2 extends StatefulCommandContext>
+public abstract class AbstractSingleUseQueueingJobCommandContext<E1 extends AbstractSingleUseQueueingCommandContext<E2>, E2 extends StatefulCommandContext>
 	implements CombinedCommandContext, StatefulCommandContext
 {
 	/**
 	 * Since the {@link JobCommand}s are simply converted into {@link Command}s,
-	 * we can delegate to an {@link AbstractSingleUseQueueingCommandExecutor}.
+	 * we can delegate to an {@link AbstractSingleUseQueueingCommandContext}.
 	 */
 	protected final E1 commandExecutor;
 
@@ -41,28 +41,28 @@ public abstract class AbstractSingleUseQueueingJobCommandContext<E1 extends Abst
 	}
 
 	/**
-	 * @see AbstractSingleUseQueueingCommandExecutor#start()
+	 * @see AbstractSingleUseQueueingCommandContext#start()
 	 */
 	public void start() {
 		this.commandExecutor.start();
 	}
 
 	/**
-	 * @see AbstractSingleUseQueueingCommandExecutor#execute(Command)
+	 * @see AbstractSingleUseQueueingCommandContext#execute(Command)
 	 */
 	public void execute(Command command) {
 		this.commandExecutor.execute(command);
 	}
 
 	/**
-	 * @see AbstractSingleUseQueueingCommandExecutor#execute(Command)
+	 * @see AbstractSingleUseQueueingCommandContext#execute(Command)
 	 */
 	public void execute(JobCommand command) {
 		this.commandExecutor.execute(new JobCommandCommandAdapter(command));
 	}
 
 	/**
-	 * @see AbstractSingleUseQueueingCommandExecutor#execute(Command)
+	 * @see AbstractSingleUseQueueingCommandContext#execute(Command)
 	 */
 	public void execute(JobCommand command, String jobName) {
 		// ignore 'jobName'
@@ -70,7 +70,7 @@ public abstract class AbstractSingleUseQueueingJobCommandContext<E1 extends Abst
 	}
 
 	/**
-	 * @see AbstractSingleUseQueueingCommandExecutor#execute(Command)
+	 * @see AbstractSingleUseQueueingCommandContext#execute(Command)
 	 */
 	public void execute(JobCommand command, String jobName, ISchedulingRule rule) {
 		// ignore 'jobName' and 'rule'
@@ -78,21 +78,21 @@ public abstract class AbstractSingleUseQueueingJobCommandContext<E1 extends Abst
 	}
 
 	/**
-	 * @see AbstractSingleUseQueueingCommandExecutor#suspend()
+	 * @see AbstractSingleUseQueueingCommandContext#suspend()
 	 */
 	public void suspend() {
 		this.commandExecutor.suspend();
 	}
 
 	/**
-	 * @see AbstractSingleUseQueueingCommandExecutor#resume()
+	 * @see AbstractSingleUseQueueingCommandContext#resume()
 	 */
 	public void resume() {
 		this.commandExecutor.resume();
 	}
 
 	/**
-	 * @see AbstractSingleUseQueueingCommandExecutor#stop()
+	 * @see AbstractSingleUseQueueingCommandContext#stop()
 	 */
 	public void stop() throws InterruptedException {
 		this.commandExecutor.stop();
