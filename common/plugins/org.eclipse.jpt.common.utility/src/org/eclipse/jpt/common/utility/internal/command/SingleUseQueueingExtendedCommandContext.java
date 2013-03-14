@@ -33,7 +33,7 @@ public class SingleUseQueueingExtendedCommandContext
 	}
 
 	public SingleUseQueueingExtendedCommandContext(ExtendedCommandContext commandContext) {
-		this(new SimpleStatefulExtendedCommandExecutor(commandContext));
+		this(new SimpleStatefulExtendedCommandContext(commandContext));
 	}
 
 	public SingleUseQueueingExtendedCommandContext(StatefulExtendedCommandContext commandContext) {

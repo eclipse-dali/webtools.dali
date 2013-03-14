@@ -39,7 +39,7 @@ import org.eclipse.jpt.common.utility.command.StatefulCommandContext;
 import org.eclipse.jpt.common.utility.internal.ExceptionHandlerAdapter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.command.AsynchronousExtendedCommandContext;
-import org.eclipse.jpt.common.utility.internal.command.SimpleStatefulExtendedCommandExecutor;
+import org.eclipse.jpt.common.utility.internal.command.SimpleStatefulExtendedCommandContext;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.reference.SynchronizedBoolean;
@@ -757,7 +757,7 @@ public class InternalJaxbProjectManager
 
 	private void handleEventsSynchronously_() throws InterruptedException {
 		this.eventHandler.stop();
-		this.eventHandler = new SimpleStatefulExtendedCommandExecutor();
+		this.eventHandler = new SimpleStatefulExtendedCommandContext();
 		this.eventHandler.start();
 	}
 

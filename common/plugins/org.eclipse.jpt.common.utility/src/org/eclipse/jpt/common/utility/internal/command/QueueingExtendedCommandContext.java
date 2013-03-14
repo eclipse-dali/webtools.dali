@@ -29,7 +29,7 @@ public class QueueingExtendedCommandContext
 	}
 
 	public QueueingExtendedCommandContext(ExtendedCommandContext commandContext) {
-		this(new SimpleStatefulExtendedCommandExecutor(commandContext));
+		this(new SimpleStatefulExtendedCommandContext(commandContext));
 	}
 
 	public QueueingExtendedCommandContext(StatefulExtendedCommandContext commandContext) {

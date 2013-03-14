@@ -45,7 +45,7 @@ public class AsynchronousExtendedCommandContext
 	 * specified exception handler.
 	 */
 	public AsynchronousExtendedCommandContext(String threadName, ExceptionHandler exceptionHandler) {
-		this(new SimpleStatefulExtendedCommandExecutor(DefaultExtendedCommandContext.instance()), SimpleThreadFactory.instance(), threadName, exceptionHandler);
+		this(new SimpleStatefulExtendedCommandContext(DefaultExtendedCommandContext.instance()), SimpleThreadFactory.instance(), threadName, exceptionHandler);
 	}
 
 	/**
@@ -146,7 +146,7 @@ public class AsynchronousExtendedCommandContext
 		}
 		@Override
 		protected StatefulExtendedCommandContext buildDefaultCommandContext() {
-			return new SimpleStatefulExtendedCommandExecutor();
+			return new SimpleStatefulExtendedCommandContext();
 		}
 	}
 }

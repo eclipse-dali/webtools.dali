@@ -15,28 +15,28 @@ import org.eclipse.jpt.common.utility.command.StatefulExtendedCommandContext;
 
 /**
  * Straightforward implementation of {@link StatefulExtendedCommandContext}
- * that executes commands immediately by default. This executor can
+ * that executes commands immediately by default. This context can
  * also be used to adapt simple
- * {@link org.eclipse.jpt.common.utility.command.CommandContext CommandExecutor}s
+ * {@link org.eclipse.jpt.common.utility.command.CommandContext command contexts}
  * to the
  * {@link StatefulExtendedCommandContext} interface, providing support for
  * lifecycle state. Any calls to {@link #waitToExecute(Command)} suspend the
- * calling thread until the command executor is {@link #start() started}.
+ * calling thread until the command context is {@link #start() started}.
  */
-public class SimpleStatefulExtendedCommandExecutor
+public class SimpleStatefulExtendedCommandContext
 	extends AbstractStatefulCommandContext<ExtendedCommandContext>
 	implements StatefulExtendedCommandContext
 {
-	public SimpleStatefulExtendedCommandExecutor() {
+	public SimpleStatefulExtendedCommandContext() {
 		this(DefaultExtendedCommandContext.instance());
 	}
 
-	public SimpleStatefulExtendedCommandExecutor(ExtendedCommandContext commandExecutor) {
-		super(commandExecutor);
+	public SimpleStatefulExtendedCommandContext(ExtendedCommandContext commandContext) {
+		super(commandContext);
 	}
 
 	/**
-	 * Suspend the current thread until the command executor is
+	 * Suspend the current thread until the command context is
 	 * {@link #start() started}.
 	 */
 	public void waitToExecute(Command command) throws InterruptedException {
@@ -45,7 +45,7 @@ public class SimpleStatefulExtendedCommandExecutor
 	}
 
 	/**
-	 * Suspend the current thread until the command executor is
+	 * Suspend the current thread until the command context is
 	 * {@link #start() started}.
 	 */
 	public boolean waitToExecute(Command command, long timeout) throws InterruptedException {
