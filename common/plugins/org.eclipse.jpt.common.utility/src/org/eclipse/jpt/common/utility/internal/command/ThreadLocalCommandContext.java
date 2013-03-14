@@ -14,17 +14,17 @@ import org.eclipse.jpt.common.utility.command.CommandContext;
 /**
  * @see AbstractThreadLocalCommandContext
  */
-public class ThreadLocalCommandExecutor
+public class ThreadLocalCommandContext
 	extends AbstractThreadLocalCommandContext<CommandContext>
 {
 	/**
-	 * The default command executor simply executes commands directly.
+	 * The default command context simply executes commands directly.
 	 */
-	public ThreadLocalCommandExecutor() {
+	public ThreadLocalCommandContext() {
 		this(DefaultCommandContext.instance());
 	}
 
-	public ThreadLocalCommandExecutor(CommandContext defaultCommandExecutor) {
-		super(defaultCommandExecutor);
+	public ThreadLocalCommandContext(CommandContext defaultCommandContext) {
+		super(defaultCommandContext);
 	}
 }
