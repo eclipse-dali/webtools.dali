@@ -13,10 +13,10 @@ import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.command.CommandContext;
 
 /**
- * @see AbstractSafeCommandExecutor
+ * @see AbstractSafeCommandContext
  */
 public class SafeCommandExecutor
-	extends AbstractSafeCommandExecutor<CommandContext>
+	extends AbstractSafeCommandContext<CommandContext>
 {
 	/**
 	 * <strong>NB:</strong> The default exception handler simply

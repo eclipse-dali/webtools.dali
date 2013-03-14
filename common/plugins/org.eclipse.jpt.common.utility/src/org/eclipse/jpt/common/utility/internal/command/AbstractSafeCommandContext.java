@@ -16,13 +16,13 @@ import org.eclipse.jpt.common.utility.internal.NullExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
- * This command executor wraps another command executor and uses an exception
+ * This command context wraps another command context and uses an exception
  * handler to handle any exceptions thrown by an executing command.
  */
-public abstract class AbstractSafeCommandExecutor<E extends CommandContext>
+public abstract class AbstractSafeCommandContext<E extends CommandContext>
 	implements CommandContext
 {
-	protected final E commandExecutor;
+	protected final E commandContext;
 	protected final ExceptionHandler exceptionHandler;
 
 
@@ -30,22 +30,22 @@ public abstract class AbstractSafeCommandExecutor<E extends CommandContext>
 	 * <strong>NB:</strong> The default exception handler simply
 	 * <em>ignores</em> any and all exceptions.
 	 */
-	protected AbstractSafeCommandExecutor(E commandExecutor) {
-		this(commandExecutor, NullExceptionHandler.instance());
+	protected AbstractSafeCommandContext(E commandContext) {
+		this(commandContext, NullExceptionHandler.instance());
 	}
 
-	protected AbstractSafeCommandExecutor(E commandExecutor, ExceptionHandler exceptionHandler) {
+	protected AbstractSafeCommandContext(E commandContext, ExceptionHandler exceptionHandler) {
 		super();
-		if ((commandExecutor == null) || (exceptionHandler == null)) {
+		if ((commandContext == null) || (exceptionHandler == null)) {
 			throw new NullPointerException();
 		}
-		this.commandExecutor = commandExecutor;
+		this.commandContext = commandContext;
 		this.exceptionHandler = exceptionHandler;
 	}
 
 	public void execute(Command command) {
 		try {
-			this.commandExecutor.execute(command);
+			this.commandContext.execute(command);
 		} catch (Throwable ex) {
 			this.exceptionHandler.handleException(ex);
 		}
@@ -53,6 +53,6 @@ public abstract class AbstractSafeCommandExecutor<E extends CommandContext>
 
 	@Override
 	public String toString() {
-		return ObjectTools.toString(this, this.commandExecutor);
+		return ObjectTools.toString(this, this.commandContext);
 	}
 }
