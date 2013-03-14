@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.internal.command.SingleUseQueueingCommandE
  * adding support for executing {@link JobCommand}s.
  */
 public class SingleUseQueueingJobCommandExecutor
-	extends AbstractSingleUseQueueingJobCommandExecutor<SingleUseQueueingCommandExecutor, StatefulCommandContext>
+	extends AbstractSingleUseQueueingJobCommandContext<SingleUseQueueingCommandExecutor, StatefulCommandContext>
 {
 	public SingleUseQueueingJobCommandExecutor() {
 		this(new SingleUseQueueingCommandExecutor());

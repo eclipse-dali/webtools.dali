@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,14 +18,14 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.command.AbstractSingleUseQueueingCommandExecutor;
 
 /**
- * This job command executor wraps and extends an
+ * This job command context wraps and extends an
  * {@link AbstractSingleUseQueueingCommandExecutor},
  * adding support for executing {@link JobCommand}s.
  * <p>
- * <strong>NB:</strong> This executor <em>ignores</em> any
+ * <strong>NB:</strong> This context <em>ignores</em> any
  * {@link ISchedulingRule scheduling rules}.
  */
-public abstract class AbstractSingleUseQueueingJobCommandExecutor<E1 extends AbstractSingleUseQueueingCommandExecutor<E2>, E2 extends StatefulCommandContext>
+public abstract class AbstractSingleUseQueueingJobCommandContext<E1 extends AbstractSingleUseQueueingCommandExecutor<E2>, E2 extends StatefulCommandContext>
 	implements CombinedCommandContext, StatefulCommandContext
 {
 	/**
@@ -35,7 +35,7 @@ public abstract class AbstractSingleUseQueueingJobCommandExecutor<E1 extends Abs
 	protected final E1 commandExecutor;
 
 
-	protected AbstractSingleUseQueueingJobCommandExecutor(E1 commandExecutor) {
+	protected AbstractSingleUseQueueingJobCommandContext(E1 commandExecutor) {
 		super();
 		this.commandExecutor = commandExecutor;
 	}
