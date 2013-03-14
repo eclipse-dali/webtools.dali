@@ -15,14 +15,14 @@ import org.eclipse.jpt.common.utility.command.CommandContext;
 /**
  * @see AbstractSafeCommandContext
  */
-public class SafeCommandExecutor
+public class SafeCommandContext
 	extends AbstractSafeCommandContext<CommandContext>
 {
 	/**
 	 * <strong>NB:</strong> The default exception handler simply
 	 * <em>ignores</em> any and all exceptions.
 	 */
-	public SafeCommandExecutor() {
+	public SafeCommandContext() {
 		this(DefaultCommandContext.instance());
 	}
 
@@ -30,15 +30,15 @@ public class SafeCommandExecutor
 	 * <strong>NB:</strong> The default exception handler simply
 	 * <em>ignores</em> any and all exceptions.
 	 */
-	public SafeCommandExecutor(CommandContext commandExecutor) {
-		super(commandExecutor);
+	public SafeCommandContext(CommandContext commandContext) {
+		super(commandContext);
 	}
 
-	public SafeCommandExecutor(ExceptionHandler exceptionHandler) {
+	public SafeCommandContext(ExceptionHandler exceptionHandler) {
 		this(DefaultCommandContext.instance(), exceptionHandler);
 	}
 
-	public SafeCommandExecutor(CommandContext commandExecutor, ExceptionHandler exceptionHandler) {
-		super(commandExecutor, exceptionHandler);
+	public SafeCommandContext(CommandContext commandContext, ExceptionHandler exceptionHandler) {
+		super(commandContext, exceptionHandler);
 	}
 }
