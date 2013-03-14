@@ -25,15 +25,15 @@ public class SingleUseQueueingJobCommandContext
 		this(new SingleUseQueueingCommandContext());
 	}
 
-	public SingleUseQueueingJobCommandContext(CommandContext commandExecutor) {
-		this(new SingleUseQueueingCommandContext(commandExecutor));
+	public SingleUseQueueingJobCommandContext(CommandContext commandContext) {
+		this(new SingleUseQueueingCommandContext(commandContext));
 	}
 
-	public SingleUseQueueingJobCommandContext(StatefulCommandContext commandExecutor) {
-		this(new SingleUseQueueingCommandContext(commandExecutor));
+	public SingleUseQueueingJobCommandContext(StatefulCommandContext commandContext) {
+		this(new SingleUseQueueingCommandContext(commandContext));
 	}
 
-	public SingleUseQueueingJobCommandContext(SingleUseQueueingCommandContext commandExecutor) {
-		super(commandExecutor);
+	public SingleUseQueueingJobCommandContext(SingleUseQueueingCommandContext commandContext) {
+		super(commandContext);
 	}
 }

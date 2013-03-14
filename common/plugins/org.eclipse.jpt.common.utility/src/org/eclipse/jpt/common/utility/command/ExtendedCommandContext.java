@@ -25,7 +25,7 @@ public interface ExtendedCommandContext
 	/**
 	 * Suspend the current thread until the specified command is executed.
 	 * The command itself must be executed <em>after</em> any other commands
-	 * previously passed to the command executor (at least when passed
+	 * previously passed to the command context (at least when passed
 	 * from clients executing on the same thread).
 	 * @see #execute(Command)
 	 */
@@ -41,7 +41,7 @@ public interface ExtendedCommandContext
 	 * If the time-out is zero, wait indefinitely.
 	 * <p>
 	 * The command itself must be executed <em>after</em> any other commands
-	 * previously passed to the command executor (at least when passed
+	 * previously passed to the command context (at least when passed
 	 * from clients executing on the same thread).
 	 * @see #execute(Command)
 	 */

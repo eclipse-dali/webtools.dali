@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,7 +29,7 @@ import org.eclipse.jpt.common.utility.internal.command.RepeatingCommandState;
  * <strong>NB:</strong> The {@link IProgressMonitor progress monitor} passed to
  * the job command wrapper is <em>ignored</em>. The {@link IProgressMonitor
  * progress monitor} passed to the <em>wrapped</em> job command is determined by
- * the {@link #startCommandContext start command executor}. That same
+ * the {@link #startCommandContext start command context}. That same
  * {@link IProgressMonitor progress monitor} is passed to the <em>wrapped</em>
  * job command for every execution during an execution "cycle". It is
  * <em>not</em> reset with each execution; so several
@@ -61,7 +61,7 @@ public class RepeatingJobCommandWrapper
 	/**
 	 * The client-supplied command context that provides the context for the
 	 * {@link #startCommand start command}. By default, the start command is
-	 * executed directly; but this executor provides a hook for executing the
+	 * executed directly; but this context provides a hook for executing the
 	 * {@link #startCommand start command} asynchronously; after which,
 	 * subsequent overlapping executions are executed synchronously.
 	 */

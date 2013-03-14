@@ -677,11 +677,11 @@ public class InternalJaxbProjectManager
 
 	/**
 	 * If the event handler is executing asynchronously:<br>
-	 * Allow all the commands currently on the command executor's queue to execute.
-	 * Once they have executed, suspend the command executor and process the
+	 * Allow all the commands currently on the command context's queue to execute.
+	 * Once they have executed, suspend the command context and process the
 	 * specified command (on <em>this</em> thread, <em>not</em> the command
-	 * executor thread). Once the specified command is finished, allow the
-	 * command executor to resume processing its command queue.
+	 * context thread). Once the specified command is finished, allow the
+	 * command context to resume processing its command queue.
 	 * <p>
 	 * If the event handler is executing synchronously:<br>
 	 * All the events have already been handled synchronously, so we simply
@@ -707,7 +707,7 @@ public class InternalJaxbProjectManager
 	 * thread than the JAXB project manager:<ol>
 	 * <li>it will set the flag to <code>true</code>, allowing the JAXB project
 	 * manager to resume executing on its own thread
-	 * <li>then it will suspend its command executor until the JAXB project
+	 * <li>then it will suspend its command context until the JAXB project
 	 * manager sets the flag back to <code>false</code>.
 	 * </ol>
 	 * If this "pause" command is executing (synchronously) on the same thread
@@ -736,7 +736,7 @@ public class InternalJaxbProjectManager
 				try {
 					this.flag.waitUntilFalse();
 				} catch (InterruptedException ex) {
-					// ignore - the command executor will check for interruptions
+					// ignore - the command context will check for interruptions
 				}
 			}
 		}

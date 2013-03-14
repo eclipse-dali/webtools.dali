@@ -22,14 +22,14 @@ public interface StatefulCommandContext
 	extends CommandContext
 {
 	/**
-	 * Start the command executor.
-	 * @exception IllegalStateException when the command executor is not stopped
+	 * Start the command context.
+	 * @exception IllegalStateException when the command context is not stopped
 	 */
 	void start();
 
 	/**
-	 * Stop the command executor.
-	 * @exception IllegalStateException when the command executor is not started
+	 * Stop the command context.
+	 * @exception IllegalStateException when the command context is not started
 	 */
 	void stop() throws InterruptedException;
 }

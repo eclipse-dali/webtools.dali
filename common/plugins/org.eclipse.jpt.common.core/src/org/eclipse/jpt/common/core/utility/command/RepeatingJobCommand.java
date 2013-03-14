@@ -37,7 +37,7 @@ public interface RepeatingJobCommand
 	/**
 	 * Stop the job command; ignore further calls to
 	 * {@link #execute(org.eclipse.core.runtime.IProgressMonitor)}.
-	 * @exception IllegalStateException when the command executor is not started
+	 * @exception IllegalStateException when the command context is not started
 	 */
 	void stop() throws InterruptedException;
 }

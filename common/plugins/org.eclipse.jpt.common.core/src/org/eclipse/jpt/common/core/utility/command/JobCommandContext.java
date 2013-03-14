@@ -28,7 +28,7 @@ public interface JobCommandContext {
 	/**
 	 * Execute the specified command, synchronously or asynchronously.
 	 * Commands with the same scheduling rule must be executed in the order in
-	 * which they are passed to the command executor.
+	 * which they are passed to the command context.
 	 * The command may or may not be assigned to a
 	 * {@link org.eclipse.core.runtime.jobs.Job} for execution.
 	 */
@@ -37,7 +37,7 @@ public interface JobCommandContext {
 	/**
 	 * Execute the specified command, synchronously or asynchronously.
 	 * Commands with the same scheduling rule must be executed in the order in
-	 * which they are passed to the command executor.
+	 * which they are passed to the command context.
 	 * The command may or may not be assigned to a
 	 * {@link org.eclipse.core.runtime.jobs.Job} for execution.
 	 */
@@ -46,7 +46,7 @@ public interface JobCommandContext {
 	/**
 	 * Execute the specified command, synchronously or asynchronously.
 	 * Commands with the same scheduling rule must be executed in the order in
-	 * which they are passed to the command executor.
+	 * which they are passed to the command context.
 	 * The command may or may not be assigned to a
 	 * {@link org.eclipse.core.runtime.jobs.Job} for execution.
 	 */

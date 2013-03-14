@@ -15,10 +15,10 @@ import org.eclipse.jpt.common.utility.internal.RuntimeExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.command.AsynchronousExtendedCommandContext;
 import org.eclipse.jpt.common.utility.tests.internal.MultiThreadedTestCase;
 
-public class AsynchronousCommandExecutorTests
+public class AsynchronousCommandContextTests
 	extends MultiThreadedTestCase
 {
-	public AsynchronousCommandExecutorTests(String name) {
+	public AsynchronousCommandContextTests(String name) {
 		super(name);
 	}
 

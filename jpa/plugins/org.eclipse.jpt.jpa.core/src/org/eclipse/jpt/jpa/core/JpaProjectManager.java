@@ -91,7 +91,7 @@ public interface JpaProjectManager
 	 * project manager appropriately so all events, JPA project updates, etc.
 	 * are handled synchronously. The assumption is this method will be called
 	 * from within a job that may execute on a non-UI thread, necessitating a
-	 * command executor that will modify on the UI thread any documents that are
+	 * command context that will modify on the UI thread any documents that are
 	 * currently open in the UI.
 	 */
 	void execute(Command command, ExtendedCommandContext threadLocalModifySharedDocumentCommandContext) throws InterruptedException;

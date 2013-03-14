@@ -41,13 +41,13 @@ public class RepeatingCommandWrapper
 	private final Command startCommand;
 
 	/**
-	 * The client-supplied command executor that provides the context for the
+	 * The client-supplied command context that provides the context for the
 	 * {@link #startCommand start command}. By default, the start command is
-	 * executed directly; but this executor provides a hook for executing the
+	 * executed directly; but this context provides a hook for executing the
 	 * {@link #startCommand start command} asynchronously; after which,
 	 * subsequent overlapping executions are executed synchronously.
 	 */
-	private final CommandContext startCommandExecutor;
+	private final CommandContext startCommandContext;
 
 	/**
 	 * This handles the exceptions thrown by the <em>wrapped</em> command.
@@ -82,18 +82,18 @@ public class RepeatingCommandWrapper
 
 	/**
 	 * Construct a repeating command wrapper that executes the specified
-	 * command and uses the specified command executor to execute the wrapped
+	 * command and uses the specified command context to execute the wrapped
 	 * command whenever it is not already executing.
 	 * Any exceptions thrown by the command will be handled by the
 	 * specified exception handler.
 	 */
-	public RepeatingCommandWrapper(Command command, CommandContext startCommandExecutor, ExceptionHandler exceptionHandler) {
+	public RepeatingCommandWrapper(Command command, CommandContext startCommandContext, ExceptionHandler exceptionHandler) {
 		super();
-		if ((command == null) || (startCommandExecutor == null) || (exceptionHandler == null)) {
+		if ((command == null) || (startCommandContext == null) || (exceptionHandler == null)) {
 			throw new NullPointerException();
 		}
 		this.command = command;
-		this.startCommandExecutor = startCommandExecutor;
+		this.startCommandContext = startCommandContext;
 		this.startCommand = this.buildStartCommand();
 		this.exceptionHandler = exceptionHandler;
 		this.state = this.buildState();
@@ -133,7 +133,7 @@ public class RepeatingCommandWrapper
 	}
 
 	/* private protected */ void executeStartCommand() {
-		this.startCommandExecutor.execute(this.startCommand);
+		this.startCommandContext.execute(this.startCommand);
 	}
 
 	public void stop() throws InterruptedException {
@@ -142,7 +142,7 @@ public class RepeatingCommandWrapper
 
 	/**
 	 * The start command.
-	 * @see #startCommandExecutor
+	 * @see #startCommandContext
 	 */
 	/* CU private */ class StartCommand
 		implements Command

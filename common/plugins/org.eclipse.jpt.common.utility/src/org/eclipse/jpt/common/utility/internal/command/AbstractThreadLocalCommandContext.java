@@ -46,7 +46,7 @@ public abstract class AbstractThreadLocalCommandContext<E extends CommandContext
 	}
 
 	/**
-	 * Set the current thread's command executor to the specified value.
+	 * Set the current thread's command context to the specified value.
 	 */
 	public void set(E commandContext) {
 		this.threadLocal.set(commandContext);
@@ -54,7 +54,7 @@ public abstract class AbstractThreadLocalCommandContext<E extends CommandContext
 
 	/**
 	 * Return the string representation of the current thread's command
-	 * executor.
+	 * context.
 	 */
 	@Override
 	public String toString() {

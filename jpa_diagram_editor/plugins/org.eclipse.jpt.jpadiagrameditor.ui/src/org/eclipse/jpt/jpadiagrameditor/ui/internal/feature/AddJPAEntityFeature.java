@@ -152,7 +152,7 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 	
 		//TODO this is wrong, should not need to do any of these updates or syncs.
 		//should be changing the dali model synchronously so that all the syncs/updates are completed
-		//take a look at the JpaProjectManager.execute(Command, ExtendedCommandExecutor)
+		//take a look at the JpaProjectManager.execute(Command, ExtendedCommandContext)
 //		JavaResourceType jrt = null;
 //		if(jpt instanceof JavaPersistentType) {
 //			jrt = ((JavaPersistentType)jpt).getJavaResourceType();

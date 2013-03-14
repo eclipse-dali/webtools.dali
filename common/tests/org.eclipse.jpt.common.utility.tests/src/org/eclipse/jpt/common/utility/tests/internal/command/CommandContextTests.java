@@ -17,11 +17,11 @@ import org.eclipse.jpt.common.utility.internal.command.ThreadLocalExtendedComman
 import org.eclipse.jpt.common.utility.tests.internal.MultiThreadedTestCase;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
-public class CommandExecutorTests
+public class CommandContextTests
 	extends MultiThreadedTestCase
 {
 
-	public CommandExecutorTests(String name) {
+	public CommandContextTests(String name) {
 		super(name);
 	}
 

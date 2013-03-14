@@ -20,7 +20,7 @@ public class ThreadLocalExtendedCommandContext
 	implements ExtendedCommandContext
 {
 	/**
-	 * The default command executor simply executes commands directly.
+	 * The default command context simply executes commands directly.
 	 */
 	public ThreadLocalExtendedCommandContext() {
 		this(DefaultExtendedCommandContext.instance());

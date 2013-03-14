@@ -35,7 +35,7 @@ public class SimpleJobCommandContext
 
 
 	/**
-	 * Construct a job command executor with no default job name and no
+	 * Construct a job command context with no default job name and no
 	 * default scheduling rule.
 	 */
 	public SimpleJobCommandContext() {
@@ -43,7 +43,7 @@ public class SimpleJobCommandContext
 	}
 
 	/**
-	 * Construct a job command executor with the specified default job name and
+	 * Construct a job command context with the specified default job name and
 	 * no default scheduling rule.
 	 */
 	public SimpleJobCommandContext(String defaultJobName) {
@@ -51,7 +51,7 @@ public class SimpleJobCommandContext
 	}
 
 	/**
-	 * Construct a job command executor with the specified default job name and
+	 * Construct a job command context with the specified default job name and
 	 * default scheduling rule.
 	 */
 	public SimpleJobCommandContext(String defaultJobName, ISchedulingRule defaultJobSchedulingRule) {

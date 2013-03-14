@@ -26,7 +26,7 @@ public interface CommandContext {
 	/**
 	 * Execute the specified command, synchronously or asynchronously.
 	 * The commands themselves must be executed in the order in which
-	 * they are passed to the command executor (at least when passed
+	 * they are passed to the command context (at least when passed
 	 * from clients executing on the same thread).
 	 */
 	void execute(Command command);

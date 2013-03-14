@@ -32,33 +32,33 @@ public abstract class AbstractSingleUseQueueingJobCommandContext<E1 extends Abst
 	 * Since the {@link JobCommand}s are simply converted into {@link Command}s,
 	 * we can delegate to an {@link AbstractSingleUseQueueingCommandContext}.
 	 */
-	protected final E1 commandExecutor;
+	protected final E1 commandContext;
 
 
-	protected AbstractSingleUseQueueingJobCommandContext(E1 commandExecutor) {
+	protected AbstractSingleUseQueueingJobCommandContext(E1 commandContext) {
 		super();
-		this.commandExecutor = commandExecutor;
+		this.commandContext = commandContext;
 	}
 
 	/**
 	 * @see AbstractSingleUseQueueingCommandContext#start()
 	 */
 	public void start() {
-		this.commandExecutor.start();
+		this.commandContext.start();
 	}
 
 	/**
 	 * @see AbstractSingleUseQueueingCommandContext#execute(Command)
 	 */
 	public void execute(Command command) {
-		this.commandExecutor.execute(command);
+		this.commandContext.execute(command);
 	}
 
 	/**
 	 * @see AbstractSingleUseQueueingCommandContext#execute(Command)
 	 */
 	public void execute(JobCommand command) {
-		this.commandExecutor.execute(new JobCommandCommandAdapter(command));
+		this.commandContext.execute(new JobCommandCommandAdapter(command));
 	}
 
 	/**
@@ -66,7 +66,7 @@ public abstract class AbstractSingleUseQueueingJobCommandContext<E1 extends Abst
 	 */
 	public void execute(JobCommand command, String jobName) {
 		// ignore 'jobName'
-		this.commandExecutor.execute(new JobCommandCommandAdapter(command));
+		this.commandContext.execute(new JobCommandCommandAdapter(command));
 	}
 
 	/**
@@ -74,32 +74,32 @@ public abstract class AbstractSingleUseQueueingJobCommandContext<E1 extends Abst
 	 */
 	public void execute(JobCommand command, String jobName, ISchedulingRule rule) {
 		// ignore 'jobName' and 'rule'
-		this.commandExecutor.execute(new JobCommandCommandAdapter(command));
+		this.commandContext.execute(new JobCommandCommandAdapter(command));
 	}
 
 	/**
 	 * @see AbstractSingleUseQueueingCommandContext#suspend()
 	 */
 	public void suspend() {
-		this.commandExecutor.suspend();
+		this.commandContext.suspend();
 	}
 
 	/**
 	 * @see AbstractSingleUseQueueingCommandContext#resume()
 	 */
 	public void resume() {
-		this.commandExecutor.resume();
+		this.commandContext.resume();
 	}
 
 	/**
 	 * @see AbstractSingleUseQueueingCommandContext#stop()
 	 */
 	public void stop() throws InterruptedException {
-		this.commandExecutor.stop();
+		this.commandContext.stop();
 	}
 
 	@Override
 	public String toString() {
-		return ObjectTools.toString(this, this.commandExecutor);
+		return ObjectTools.toString(this, this.commandContext);
 	}
 }

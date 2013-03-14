@@ -27,7 +27,7 @@ public interface ExtendedJobCommandContext
 	/**
 	 * Suspend the current thread until the specified command is executed.
 	 * The command itself must be executed <em>after</em> any other commands
-	 * previously passed to the command executor. The command may or may
+	 * previously passed to the command context. The command may or may
 	 * not be assigned to a {@link org.eclipse.core.runtime.jobs.Job}
 	 * for execution.
 	 * @see #execute(JobCommand)
@@ -44,7 +44,7 @@ public interface ExtendedJobCommandContext
 	 * If the time-out is zero, wait indefinitely.
 	 * <p>
 	 * The command itself must be executed <em>after</em> any other commands
-	 * previously passed to the command executor. The command may or may
+	 * previously passed to the command context. The command may or may
 	 * not be assigned to a {@link org.eclipse.core.runtime.jobs.Job}
 	 * for execution.
 	 * @see #execute(JobCommand)
@@ -54,7 +54,7 @@ public interface ExtendedJobCommandContext
 	/**
 	 * Suspend the current thread until the specified command is executed.
 	 * The command itself must be executed <em>after</em> any other commands
-	 * previously passed to the command executor. The command may or may
+	 * previously passed to the command context. The command may or may
 	 * not be assigned to a {@link org.eclipse.core.runtime.jobs.Job}
 	 * for execution.
 	 * @see #execute(JobCommand, String)
@@ -71,7 +71,7 @@ public interface ExtendedJobCommandContext
 	 * If the time-out is zero, wait indefinitely.
 	 * <p>
 	 * The command itself must be executed <em>after</em> any other commands
-	 * previously passed to the command executor. The command may or may
+	 * previously passed to the command context. The command may or may
 	 * not be assigned to a {@link org.eclipse.core.runtime.jobs.Job}
 	 * for execution.
 	 * @see #execute(JobCommand, String)
@@ -81,7 +81,7 @@ public interface ExtendedJobCommandContext
 	/**
 	 * Suspend the current thread until the specified command is executed.
 	 * The command itself must be executed <em>after</em> any other commands
-	 * previously passed to the command executor. The command may or may
+	 * previously passed to the command context. The command may or may
 	 * not be assigned to a {@link org.eclipse.core.runtime.jobs.Job}
 	 * for execution.
 	 * @see #execute(JobCommand, String, ISchedulingRule)
@@ -99,7 +99,7 @@ public interface ExtendedJobCommandContext
 	 * If the time-out is zero, wait indefinitely.
 	 * <p>
 	 * The command itself must be executed <em>after</em> any other commands
-	 * previously passed to the command executor. The command may or may
+	 * previously passed to the command context. The command may or may
 	 * not be assigned to a {@link org.eclipse.core.runtime.jobs.Job}
 	 * for execution.
 	 * @see #execute(JobCommand, String, ISchedulingRule)

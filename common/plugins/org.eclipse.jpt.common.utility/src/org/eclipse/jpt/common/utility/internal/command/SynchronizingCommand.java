@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.internal.reference.SynchronizedBoolean;
  * <p>
  * Typically, Thread A dispatches {@Command commands} to a
  * {@link org.eclipse.jpt.common.utility.command.CommandContext command
- * executor}) that executes the {@Command commands} asynchronously on Thread B.
+ * context}) that executes the {@Command commands} asynchronously on Thread B.
  * A <em>synchronizing</em> command allows Thread A to
  * dispatch a <em>synchronizing</em> command to Thread B and suspend until
  * the {@link #command} held by the <em>synchronizing</em> command
@@ -87,7 +87,7 @@ public class SynchronizingCommand
 	/**
 	 * Typically called by a
 	 * {@link org.eclipse.jpt.common.utility.command.CommandContext command
-	 * executor} executing Thread B.
+	 * context} executing Thread B.
 	 * <p>
 	 * The "synchronizing" command has reached the front of the command queue
 	 * and is executing on Thread B.

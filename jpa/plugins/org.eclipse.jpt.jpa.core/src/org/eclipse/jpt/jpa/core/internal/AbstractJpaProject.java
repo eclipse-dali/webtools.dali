@@ -2042,7 +2042,7 @@ public abstract class AbstractJpaProject
 	}
 
 
-	// ********** job command executor **********
+	// ********** job command context **********
 
  	/**
 	 * Delegate execution to the JPA project manager, which will determine
@@ -2063,7 +2063,7 @@ public abstract class AbstractJpaProject
 			this.defaultJobName = defaultJobName;
 		}
 		/**
-		 * This should be the only method called on this executor....
+		 * This should be the only method called on this context....
 		 */
 		public void execute(JobCommand command) {
 			this.execute(command, this.defaultJobName);

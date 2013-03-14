@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.command.InterruptibleCommandContext;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
- * Singleton implementation of the interruptible command executor interface
+ * Singleton implementation of the interruptible command context interface
  * that simply executes the command without any sort of enhancement.
  */
 public final class DefaultInterruptibleCommandContext

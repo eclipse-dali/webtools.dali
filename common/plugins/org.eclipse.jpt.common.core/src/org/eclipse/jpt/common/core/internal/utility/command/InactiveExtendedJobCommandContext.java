@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.utility.command.JobCommand;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
- * Singleton implementation of the command executor interface
+ * Singleton implementation of the command context interface
  * that ignores any commands.
  */
 public final class InactiveExtendedJobCommandContext

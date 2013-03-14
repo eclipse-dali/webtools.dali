@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -51,13 +51,13 @@ public class NotifyingRepeatingCommandWrapper
 
 	/**
 	 * Construct a notifying repeating command wrapper that executes the specified
-	 * command and uses the specified command executor to execute the wrapped
+	 * command and uses the specified command context to execute the wrapped
 	 * command whenever it is not already executing.
 	 * Any exceptions thrown by the command or listener will be handled by the
 	 * specified exception handler.
 	 */
-	public NotifyingRepeatingCommandWrapper(Command command, CommandContext startCommandExecutor, ExceptionHandler exceptionHandler) {
-		super(command, startCommandExecutor, exceptionHandler);
+	public NotifyingRepeatingCommandWrapper(Command command, CommandContext startCommandContext, ExceptionHandler exceptionHandler) {
+		super(command, startCommandContext, exceptionHandler);
 	}
 
 

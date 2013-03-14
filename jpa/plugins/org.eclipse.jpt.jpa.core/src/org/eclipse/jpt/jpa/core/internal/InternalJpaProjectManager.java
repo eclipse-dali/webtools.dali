@@ -320,7 +320,7 @@ class InternalJpaProjectManager
 		JavaCore.removeElementChangedListener(this.javaElementChangeListener);
 		this.getWorkspace().removeResourceChangeListener(this.resourceChangeListener);
 		ExtendedJobCommandContext oldCE = this.commandContext;
-		// if the current executor is async, commands can continue to execute after we replace it here...
+		// if the current context is async, commands can continue to execute after we replace it here...
 		this.commandContext = InactiveExtendedJobCommandContext.instance();
 		this.clearJpaProjects(oldCE);  // synchronous
 		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "*** JPA project manager DEAD ***"); //$NON-NLS-1$
@@ -1129,14 +1129,14 @@ class InternalJpaProjectManager
 
 		// de-activate Java events
 		this.addJavaEventListenerFlag(FalseBooleanReference.instance());
-		// save the current executor
+		// save the current context
 		SimpleJobCommandContext oldContext = (SimpleJobCommandContext) this.commandContext;
-		// install a new (not-yet-started) executor
+		// install a new (not-yet-started) context
 		SingleUseQueueingExtendedJobCommandContext newContext = this.buildSynchronousCommandContext();
 		this.commandContext = newContext;
 		// wait for all the outstanding commands to finish
 		oldContext.waitToExecute(NullCommand.instance());
-		// start up the new executor (it will now execute any commands that
+		// start up the new context (it will now execute any commands that
 		// arrived while we were waiting on the outstanding commands)
 		newContext.start();
 	}
@@ -1150,7 +1150,7 @@ class InternalJpaProjectManager
 			throw new IllegalStateException();
 		}
 
-		// no need to wait on a synchronous executor...
+		// no need to wait on a synchronous context...
 		this.commandContext = this.buildAsynchronousCommandContext();
 		// re-activate Java events
 		this.removeJavaEventListenerFlag(FalseBooleanReference.instance());
