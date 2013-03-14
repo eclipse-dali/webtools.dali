@@ -181,7 +181,7 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 	// ********** attribute overrides **********
 
 	public Iterable<String> getOverridableAttributeNames() {
-		return IterableTools.children(this.getAttributeMappings(), AttributeMappingTools.ALL_OVERRIDABLE_ATTRIBUTE_MAPPING_NAMES_TRANSFORMER);
+		return IterableTools.children(this.getAttributeMappings(), AttributeMapping.ALL_OVERRIDABLE_ATTRIBUTE_MAPPING_NAMES_TRANSFORMER);
 	}
 
 	public Iterable<String> getAllOverridableAttributeNames() {

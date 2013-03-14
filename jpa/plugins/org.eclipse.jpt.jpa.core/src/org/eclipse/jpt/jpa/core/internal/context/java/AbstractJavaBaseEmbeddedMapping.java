@@ -120,7 +120,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 	}
 
 	protected Iterable<String> getEmbeddableOverridableAttributeMappingNames() {
-		return this.getQualifiedEmbeddableOverridableMappingNames(AttributeMappingTools.ALL_OVERRIDABLE_ATTRIBUTE_MAPPING_NAMES_TRANSFORMER);
+		return this.getQualifiedEmbeddableOverridableMappingNames(ALL_OVERRIDABLE_ATTRIBUTE_MAPPING_NAMES_TRANSFORMER);
 	}
 
 	@Override
