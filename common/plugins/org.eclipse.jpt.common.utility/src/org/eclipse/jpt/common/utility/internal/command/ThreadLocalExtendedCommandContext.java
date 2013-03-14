@@ -15,19 +15,19 @@ import org.eclipse.jpt.common.utility.command.ExtendedCommandContext;
 /**
  * @see AbstractThreadLocalCommandContext
  */
-public class ThreadLocalExtendedCommandExecutor
+public class ThreadLocalExtendedCommandContext
 	extends AbstractThreadLocalCommandContext<ExtendedCommandContext>
 	implements ExtendedCommandContext
 {
 	/**
 	 * The default command executor simply executes commands directly.
 	 */
-	public ThreadLocalExtendedCommandExecutor() {
+	public ThreadLocalExtendedCommandContext() {
 		this(DefaultExtendedCommandContext.instance());
 	}
 
-	public ThreadLocalExtendedCommandExecutor(ExtendedCommandContext defaultCommandExecutor) {
-		super(defaultCommandExecutor);
+	public ThreadLocalExtendedCommandContext(ExtendedCommandContext defaultCommandContext) {
+		super(defaultCommandContext);
 	}
 
 	public void waitToExecute(Command command) throws InterruptedException {

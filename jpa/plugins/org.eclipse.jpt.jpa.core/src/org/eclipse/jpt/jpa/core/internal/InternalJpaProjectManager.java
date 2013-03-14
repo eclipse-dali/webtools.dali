@@ -50,7 +50,7 @@ import org.eclipse.jpt.common.utility.command.ExtendedCommandContext;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.command.CommandAdapter;
 import org.eclipse.jpt.common.utility.internal.command.NullCommand;
-import org.eclipse.jpt.common.utility.internal.command.ThreadLocalExtendedCommandExecutor;
+import org.eclipse.jpt.common.utility.internal.command.ThreadLocalExtendedCommandContext;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
@@ -240,7 +240,7 @@ class InternalJpaProjectManager
 	/**
 	 * Support for modifying documents shared with the UI.
 	 */
-	private final ThreadLocalExtendedCommandExecutor modifySharedDocumentCommandContext = new ThreadLocalExtendedCommandExecutor();
+	private final ThreadLocalExtendedCommandContext modifySharedDocumentCommandContext = new ThreadLocalExtendedCommandContext();
 
 
 	// ********** constructor **********

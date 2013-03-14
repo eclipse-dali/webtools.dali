@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.CommandContext;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandContext;
 import org.eclipse.jpt.common.utility.internal.command.DefaultCommandContext;
-import org.eclipse.jpt.common.utility.internal.command.ThreadLocalExtendedCommandExecutor;
+import org.eclipse.jpt.common.utility.internal.command.ThreadLocalExtendedCommandContext;
 import org.eclipse.jpt.common.utility.tests.internal.MultiThreadedTestCase;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
@@ -52,12 +52,12 @@ public class CommandExecutorTests
 	}
 
 	public void testThreadLocalCommandContext_toString() throws Exception {
-		CommandContext commandContext = new ThreadLocalExtendedCommandExecutor();
+		CommandContext commandContext = new ThreadLocalExtendedCommandContext();
 		assertNotNull(commandContext.toString());
 	}
 
 	public void testThreadLocalCommandContext() throws Exception {
-		ThreadLocalExtendedCommandExecutor threadLocalCommandContext = new ThreadLocalExtendedCommandExecutor();
+		ThreadLocalExtendedCommandContext threadLocalCommandContext = new ThreadLocalExtendedCommandContext();
 		TestRunnable testRunnable1 = new TestRunnable(threadLocalCommandContext, 1);
 		Thread thread1 = this.buildThread(testRunnable1);
 		thread1.run();
@@ -100,14 +100,14 @@ public class CommandExecutorTests
 	}
 
 	static class TestRunnable implements Runnable {
-		final ThreadLocalExtendedCommandExecutor threadLocalCommandContext;
+		final ThreadLocalExtendedCommandContext threadLocalCommandContext;
 		final int executionCount;
 		final TestCommand testCommand = new TestCommand();
 		final TestCommandContext testCommandContext;
-		TestRunnable(ThreadLocalExtendedCommandExecutor threadLocalCommandContext, int executionCount) {
+		TestRunnable(ThreadLocalExtendedCommandContext threadLocalCommandContext, int executionCount) {
 			this(threadLocalCommandContext, executionCount, new TestCommandContext());
 		}
-		TestRunnable(ThreadLocalExtendedCommandExecutor threadLocalCommandContext, int executionCount, TestCommandContext testCommandContext) {
+		TestRunnable(ThreadLocalExtendedCommandContext threadLocalCommandContext, int executionCount, TestCommandContext testCommandContext) {
 			super();
 			this.threadLocalCommandContext = threadLocalCommandContext;
 			this.executionCount = executionCount;

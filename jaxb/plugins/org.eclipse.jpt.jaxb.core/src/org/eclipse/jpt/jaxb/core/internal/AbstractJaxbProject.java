@@ -54,7 +54,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceTypeCache;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandContext;
 import org.eclipse.jpt.common.utility.internal.BitTools;
-import org.eclipse.jpt.common.utility.internal.command.ThreadLocalExtendedCommandExecutor;
+import org.eclipse.jpt.common.utility.internal.command.ThreadLocalExtendedCommandContext;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
@@ -183,7 +183,7 @@ public abstract class AbstractJaxbProject
 	/**
 	 * Support for modifying documents shared with the UI.
 	 */
-	protected final ThreadLocalExtendedCommandExecutor modifySharedDocumentCommandContext;
+	protected final ThreadLocalExtendedCommandContext modifySharedDocumentCommandContext;
 
 
 	// ********** constructor/initialization **********
@@ -231,8 +231,8 @@ public abstract class AbstractJaxbProject
 		return this.project;
 	}
 
-	protected ThreadLocalExtendedCommandExecutor buildModifySharedDocumentCommandContext() {
-		return new ThreadLocalExtendedCommandExecutor();
+	protected ThreadLocalExtendedCommandContext buildModifySharedDocumentCommandContext() {
+		return new ThreadLocalExtendedCommandContext();
 	}
 
 	protected InitialResourceProxyVisitor buildInitialResourceProxyVisitor() {
