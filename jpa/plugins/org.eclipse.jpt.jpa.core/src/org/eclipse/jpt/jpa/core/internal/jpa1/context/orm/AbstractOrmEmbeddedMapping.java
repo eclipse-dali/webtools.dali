@@ -35,7 +35,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmBaseEmbeddedMapping;
@@ -118,7 +117,7 @@ public abstract class AbstractOrmEmbeddedMapping<X extends XmlEmbedded>
 	}
 
 	protected Iterable<String> getAllEmbeddableAttributeMappingNames() {
-		return this.getQualifiedEmbeddableOverridableMappingNames(AttributeMappingTools.ALL_MAPPING_NAMES_TRANSFORMER);
+		return this.getQualifiedEmbeddableOverridableMappingNames(ALL_MAPPING_NAMES_TRANSFORMER);
 	}
 
 	protected Iterable<RelationshipMapping> allOverridableAssociations() {

@@ -29,7 +29,6 @@ import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappingRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmRelationshipMapping;
-import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmCascade;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
@@ -275,7 +274,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 	}
 
 	public Iterable<String> getAllTargetEntityAttributeNames() {
-		return IterableTools.children(this.getAllTargetEntityAttributeMappings(), AttributeMappingTools.ALL_MAPPING_NAMES_TRANSFORMER);
+		return IterableTools.children(this.getAllTargetEntityAttributeMappings(), ALL_MAPPING_NAMES_TRANSFORMER);
 	}
 
 	protected Iterable<AttributeMapping> getAllTargetEntityAttributeMappings() {
@@ -285,7 +284,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 
 	// Get the name of non-transient attribute mappings
 	public Iterable<String> getTargetEntityNonTransientAttributeNames() {
-		return IterableTools.children(this.getNonTransientTargetEntityAttributeMappings(), AttributeMappingTools.ALL_MAPPING_NAMES_TRANSFORMER);
+		return IterableTools.children(this.getNonTransientTargetEntityAttributeMappings(), ALL_MAPPING_NAMES_TRANSFORMER);
 	}
 
 	protected Iterable<AttributeMapping> getNonTransientTargetEntityAttributeMappings() {

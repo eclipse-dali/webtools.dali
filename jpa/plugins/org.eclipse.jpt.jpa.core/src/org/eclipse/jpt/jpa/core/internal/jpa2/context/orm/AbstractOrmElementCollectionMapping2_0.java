@@ -1247,7 +1247,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	 * (non-transient attribute or association mappings, depending on the specified transformer).
 	 */
 	public Iterable<String> getCandidateMapKeyNames() {
-		return IterableTools.children(this.getTargetEmbeddableNonTransientAttributeMappings(), AttributeMappingTools.ALL_MAPPING_NAMES_TRANSFORMER);
+		return IterableTools.children(this.getTargetEmbeddableNonTransientAttributeMappings(), ALL_MAPPING_NAMES_TRANSFORMER);
 	}
 
 	protected Iterable<AttributeMapping> getTargetEmbeddableNonTransientAttributeMappings() {
@@ -1262,7 +1262,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected Iterable<String> getAllEmbeddableAttributeMappingNames() {
-		return this.getQualifiedEmbeddableOverridableMappingNames(AttributeMappingTools.ALL_MAPPING_NAMES_TRANSFORMER);
+		return this.getQualifiedEmbeddableOverridableMappingNames(ALL_MAPPING_NAMES_TRANSFORMER);
 	}
 
 	@Override

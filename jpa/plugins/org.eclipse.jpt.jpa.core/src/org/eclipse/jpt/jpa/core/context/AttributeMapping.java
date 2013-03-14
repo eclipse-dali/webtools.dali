@@ -182,6 +182,16 @@ public interface AttributeMapping
 	 */
 	Iterable<String> getAllMappingNames();
 
+	Transformer<AttributeMapping, Iterable<String>> ALL_MAPPING_NAMES_TRANSFORMER = new AllMappingNamesTransformer();
+	class AllMappingNamesTransformer
+		extends TransformerAdapter<AttributeMapping, Iterable<String>>
+	{
+		@Override
+		public Iterable<String> transform(AttributeMapping mapping) {
+			return mapping.getAllMappingNames();
+		}
+	}
+
 	/**
 	 * This is used to determine the virtual attribute overrides for an
 	 * embedded mapping or entity. Return the names of all the attributes
