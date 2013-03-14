@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,24 +17,24 @@ import org.eclipse.jpt.common.utility.internal.reference.SynchronizedBoolean;
 
 /**
  * Straightforward implementation of {@link StatefulCommandContext}
- * that executes commands immediately by default. This executor can
+ * that executes commands immediately by default. This context can
  * also be used to adapt simple {@link CommandContext}s to the
  * {@link StatefulCommandContext} interface, providing support for
  * lifecycle state.
  */
-public abstract class AbstractStatefulCommandExecutor<E extends CommandContext>
+public abstract class AbstractStatefulCommandContext<E extends CommandContext>
 	implements StatefulCommandContext
 {
 	protected final SynchronizedBoolean active = new SynchronizedBoolean(false);
-	protected final E commandExecutor;
+	protected final E commandContext;
 
 
-	protected AbstractStatefulCommandExecutor(E commandExecutor) {
+	protected AbstractStatefulCommandContext(E commandContext) {
 		super();
-		if (commandExecutor == null) {
+		if (commandContext == null) {
 			throw new NullPointerException();
 		}
-		this.commandExecutor = commandExecutor;
+		this.commandContext = commandContext;
 	}
 
 	public synchronized void start() {
@@ -45,11 +45,11 @@ public abstract class AbstractStatefulCommandExecutor<E extends CommandContext>
 	}
 
 	/**
-	 * If the command executor is inactive the command is simply ignored.
+	 * If the command context is inactive the command is simply ignored.
 	 */
 	public void execute(Command command) {
 		if (this.active.isTrue()) {
-			this.commandExecutor.execute(command);
+			this.commandContext.execute(command);
 		}
 	}
 
@@ -62,6 +62,6 @@ public abstract class AbstractStatefulCommandExecutor<E extends CommandContext>
 
 	@Override
 	public String toString() {
-		return ObjectTools.toString(this, this.commandExecutor);
+		return ObjectTools.toString(this, this.commandContext);
 	}
 }

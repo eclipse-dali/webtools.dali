@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.command.CommandContext;
  * lifecycle state.
  */
 public class SimpleStatefulCommandExecutor
-	extends AbstractStatefulCommandExecutor<CommandContext>
+	extends AbstractStatefulCommandContext<CommandContext>
 {
 	public SimpleStatefulCommandExecutor() {
 		this(DefaultCommandContext.instance());

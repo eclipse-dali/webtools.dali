@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.utility.command.StatefulExtendedCommandContext;
  * calling thread until the command executor is {@link #start() started}.
  */
 public class SimpleStatefulExtendedCommandExecutor
-	extends AbstractStatefulCommandExecutor<ExtendedCommandContext>
+	extends AbstractStatefulCommandContext<ExtendedCommandContext>
 	implements StatefulExtendedCommandContext
 {
 	public SimpleStatefulExtendedCommandExecutor() {
@@ -41,7 +41,7 @@ public class SimpleStatefulExtendedCommandExecutor
 	 */
 	public void waitToExecute(Command command) throws InterruptedException {
 		this.active.waitUntilTrue();
-		this.commandExecutor.waitToExecute(command);
+		this.commandContext.waitToExecute(command);
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class SimpleStatefulExtendedCommandExecutor
 		if (this.active.waitUntilTrue(timeout)) {
 			// adjust the time
 			timeout = stop - System.currentTimeMillis();
-			return (timeout > 0) && this.commandExecutor.waitToExecute(command, timeout);
+			return (timeout > 0) && this.commandContext.waitToExecute(command, timeout);
 		}
 		return false;
 	}
