@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.utility.command.ExtendedCommandContext;
  * associated with documents that are currently displayed in the UI.
  */
 public final class AsynchronousUiCommandExecutor
-	extends AbstractUiCommandExecutor
+	extends AbstractUiCommandContext
 {
 	public static final ExtendedCommandContext INSTANCE = new AsynchronousUiCommandExecutor();
 
