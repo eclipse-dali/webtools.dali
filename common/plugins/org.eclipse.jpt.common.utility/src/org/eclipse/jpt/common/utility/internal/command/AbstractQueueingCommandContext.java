@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,55 +16,55 @@ import org.eclipse.jpt.common.utility.internal.collection.LinkedQueue;
 import org.eclipse.jpt.common.utility.internal.reference.SynchronizedBoolean;
 
 /**
- * This is a command executor that queues up any commands
- * that are {@link #execute(Command) executed} while the executor is
+ * This is a command context that queues up any commands
+ * that are {@link #execute(Command) executed} while the context is
  * {@link #stop() stopped}. These commands will be
- * executed when the executor is {@link #start() started}.
+ * executed when the context is {@link #start() started}.
  */
-public abstract class AbstractQueueingCommandExecutor<E extends StatefulCommandContext>
+public abstract class AbstractQueueingCommandContext<E extends StatefulCommandContext>
 	implements StatefulCommandContext
 {
-	protected final E commandExecutor;
+	protected final E commandContext;
 	protected final SynchronizedBoolean active = new SynchronizedBoolean(false);
 	private LinkedQueue<Command> queue = new LinkedQueue<Command>();
 
 
-	protected AbstractQueueingCommandExecutor(E commandExecutor) {
+	protected AbstractQueueingCommandContext(E commandContext) {
 		super();
-		if (commandExecutor == null) {
+		if (commandContext == null) {
 			throw new NullPointerException();
 		}
-		this.commandExecutor = commandExecutor;
+		this.commandContext = commandContext;
 	}
 
 	/**
-	 * Start the command executor, executing all the commands that were
-	 * queued up while the executor was {@link #stop() stopped}.
+	 * Start the command context, executing all the commands that were
+	 * queued up while the context was {@link #stop() stopped}.
 	 */
 	public synchronized void start() {
 		if (this.active.isTrue()) {
 			throw new IllegalStateException("Not stopped."); //$NON-NLS-1$
 		}
-		this.commandExecutor.start();
+		this.commandContext.start();
 		while ( ! this.queue.isEmpty()) {
-			this.commandExecutor.execute(this.queue.dequeue());
+			this.commandContext.execute(this.queue.dequeue());
 		}
 		this.active.setTrue();
 	}
 
 	/**
-	 * If the command executor is active, execute the specified command;
-	 * otherwise, queue the command to be executed once the executor is
+	 * If the command context is active, execute the specified command;
+	 * otherwise, queue the command to be executed once the context is
 	 * {@link #start() started}.
 	 */
 	public void execute(Command command) {
 		if (this.commandIsToBeExecuted(command)) {
-			this.commandExecutor.execute(command);
+			this.commandContext.execute(command);
 		}
 	}
 
 	/**
-	 * Return whether the command executor is active and, if it is <em>in</em>active,
+	 * Return whether the command context is active and, if it is <em>in</em>active,
 	 * place the specified command in the queue for later execution.
 	 */
 	private synchronized boolean commandIsToBeExecuted(Command command) {
@@ -76,9 +76,9 @@ public abstract class AbstractQueueingCommandExecutor<E extends StatefulCommandC
 	}
 
 	/**
-	 * Stop the command executor. Any further requests to
+	 * Stop the command context. Any further requests to
 	 * {@link #execute(Command) execute} a command will result in the command
-	 * being queued up to be executed once the command executor is
+	 * being queued up to be executed once the command context is
 	 * {@link #start() restarted}.
 	 */
 	public synchronized void stop() throws InterruptedException {
@@ -86,7 +86,7 @@ public abstract class AbstractQueueingCommandExecutor<E extends StatefulCommandC
 			throw new IllegalStateException("Not started."); //$NON-NLS-1$
 		}
 		this.active.setFalse();
-		this.commandExecutor.stop();
+		this.commandContext.stop();
 	}
 
 	@Override

@@ -13,10 +13,10 @@ import org.eclipse.jpt.common.utility.command.CommandContext;
 import org.eclipse.jpt.common.utility.command.StatefulCommandContext;
 
 /**
- * @see AbstractQueueingCommandExecutor
+ * @see AbstractQueueingCommandContext
  */
 public class QueueingCommandExecutor
-	extends AbstractQueueingCommandExecutor<StatefulCommandContext>
+	extends AbstractQueueingCommandContext<StatefulCommandContext>
 {
 	public QueueingCommandExecutor() {
 		this(DefaultCommandContext.instance());

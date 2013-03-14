@@ -18,10 +18,10 @@ import org.eclipse.jpt.common.utility.command.StatefulExtendedCommandContext;
  * until the command executor is {@link #start() started} and any previously-
  * dispatched commands have executed.
  * 
- * @see AbstractQueueingCommandExecutor
+ * @see AbstractQueueingCommandContext
  */
 public class QueueingExtendedCommandExecutor
-	extends AbstractQueueingCommandExecutor<StatefulExtendedCommandContext>
+	extends AbstractQueueingCommandContext<StatefulExtendedCommandContext>
 	implements StatefulExtendedCommandContext
 {
 	public QueueingExtendedCommandExecutor() {
@@ -47,7 +47,7 @@ public class QueueingExtendedCommandExecutor
 
 		try {
 			syncCommand.waitForExecution();
-			this.commandExecutor.waitToExecute(command);
+			this.commandContext.waitToExecute(command);
 		} finally {
 			syncCommand.release();
 		}
@@ -73,7 +73,7 @@ public class QueueingExtendedCommandExecutor
 			if (syncCommand.waitForExecution(timeout)) {
 				// adjust the time
 				timeout = stop - System.currentTimeMillis();
-				return (timeout > 0) && this.commandExecutor.waitToExecute(command, timeout);
+				return (timeout > 0) && this.commandContext.waitToExecute(command, timeout);
 			}
 			return false;
 		} finally {
