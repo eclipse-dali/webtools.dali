@@ -15,62 +15,62 @@ import org.eclipse.jpt.common.core.utility.command.JobCommand;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandContext;
 import org.eclipse.jpt.common.utility.command.StatefulExtendedCommandContext;
-import org.eclipse.jpt.common.utility.internal.command.SingleUseQueueingExtendedCommandExecutor;
+import org.eclipse.jpt.common.utility.internal.command.SingleUseQueueingExtendedCommandContext;
 
 /**
- * This command context wraps and extends a {@link SingleUseQueueingExtendedCommandExecutor},
+ * This command context wraps and extends a {@link SingleUseQueueingExtendedCommandContext},
  * adding support for executing {@link JobCommand}s.
  */
 public class SingleUseQueueingExtendedJobCommandContext
-	extends AbstractSingleUseQueueingJobCommandContext<SingleUseQueueingExtendedCommandExecutor, StatefulExtendedCommandContext>
+	extends AbstractSingleUseQueueingJobCommandContext<SingleUseQueueingExtendedCommandContext, StatefulExtendedCommandContext>
 	implements CombinedExtendedCommandContext, StatefulExtendedCommandContext
 {
 	public SingleUseQueueingExtendedJobCommandContext() {
-		this(new SingleUseQueueingExtendedCommandExecutor());
+		this(new SingleUseQueueingExtendedCommandContext());
 	}
 
 	public SingleUseQueueingExtendedJobCommandContext(ExtendedCommandContext commandExecutor) {
-		this(new SingleUseQueueingExtendedCommandExecutor(commandExecutor));
+		this(new SingleUseQueueingExtendedCommandContext(commandExecutor));
 	}
 
 	public SingleUseQueueingExtendedJobCommandContext(StatefulExtendedCommandContext commandExecutor) {
-		this(new SingleUseQueueingExtendedCommandExecutor(commandExecutor));
+		this(new SingleUseQueueingExtendedCommandContext(commandExecutor));
 	}
 
-	public SingleUseQueueingExtendedJobCommandContext(SingleUseQueueingExtendedCommandExecutor commandExecutor) {
+	public SingleUseQueueingExtendedJobCommandContext(SingleUseQueueingExtendedCommandContext commandExecutor) {
 		super(commandExecutor);
 	}
 
 	/**
-	 * @see SingleUseQueueingExtendedCommandExecutor#waitToExecute(Command)
+	 * @see SingleUseQueueingExtendedCommandContext#waitToExecute(Command)
 	 */
 	public void waitToExecute(Command command) throws InterruptedException {
 		this.commandExecutor.waitToExecute(command);
 	}
 
 	/**
-	 * @see SingleUseQueueingExtendedCommandExecutor#waitToExecute(Command, long)
+	 * @see SingleUseQueueingExtendedCommandContext#waitToExecute(Command, long)
 	 */
 	public boolean waitToExecute(Command command, long timeout) throws InterruptedException {
 		return this.commandExecutor.waitToExecute(command, timeout);
 	}
 
 	/**
-	 * @see SingleUseQueueingExtendedCommandExecutor#waitToExecute(Command)
+	 * @see SingleUseQueueingExtendedCommandContext#waitToExecute(Command)
 	 */
 	public void waitToExecute(JobCommand command) throws InterruptedException {
 		this.commandExecutor.waitToExecute(new JobCommandCommandAdapter(command));
 	}
 
 	/**
-	 * @see SingleUseQueueingExtendedCommandExecutor#waitToExecute(Command, long)
+	 * @see SingleUseQueueingExtendedCommandContext#waitToExecute(Command, long)
 	 */
 	public boolean waitToExecute(JobCommand command, long timeout) throws InterruptedException {
 		return this.commandExecutor.waitToExecute(new JobCommandCommandAdapter(command), timeout);
 	}
 
 	/**
-	 * @see SingleUseQueueingExtendedCommandExecutor#waitToExecute(Command)
+	 * @see SingleUseQueueingExtendedCommandContext#waitToExecute(Command)
 	 */
 	public void waitToExecute(JobCommand command, String jobName) throws InterruptedException {
 		// ignore 'jobName'
@@ -78,7 +78,7 @@ public class SingleUseQueueingExtendedJobCommandContext
 	}
 
 	/**
-	 * @see SingleUseQueueingExtendedCommandExecutor#waitToExecute(Command, long)
+	 * @see SingleUseQueueingExtendedCommandContext#waitToExecute(Command, long)
 	 */
 	public boolean waitToExecute(JobCommand command, String jobName, long timeout) throws InterruptedException {
 		// ignore 'jobName'
@@ -86,7 +86,7 @@ public class SingleUseQueueingExtendedJobCommandContext
 	}
 
 	/**
-	 * @see SingleUseQueueingExtendedCommandExecutor#waitToExecute(Command)
+	 * @see SingleUseQueueingExtendedCommandContext#waitToExecute(Command)
 	 */
 	public void waitToExecute(JobCommand command, String jobName, ISchedulingRule rule) throws InterruptedException {
 		// ignore 'jobName' and 'rule'
@@ -94,7 +94,7 @@ public class SingleUseQueueingExtendedJobCommandContext
 	}
 
 	/**
-	 * @see SingleUseQueueingExtendedCommandExecutor#waitToExecute(Command, long)
+	 * @see SingleUseQueueingExtendedCommandContext#waitToExecute(Command, long)
 	 */
 	public boolean waitToExecute(JobCommand command, String jobName, ISchedulingRule rule, long timeout) throws InterruptedException {
 		// ignore 'jobName' and 'rule'

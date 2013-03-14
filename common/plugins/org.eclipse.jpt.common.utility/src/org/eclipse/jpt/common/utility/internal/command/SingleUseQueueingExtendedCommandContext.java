@@ -15,29 +15,29 @@ import org.eclipse.jpt.common.utility.command.StatefulExtendedCommandContext;
 
 /**
  * Calls to {@link #waitToExecute(Command)} will suspend the current thread
- * until the command executor is {@link #start() started} and any previously-
+ * until the command context is {@link #start() started} and any previously-
  * dispatched commands have executed.
  * <p>
  * <strong>NB:</strong> Calls to {@link #waitToExecute(Command)} will suspend
- * the current thread <em>indefinitely</em> if the command executor is
+ * the current thread <em>indefinitely</em> if the command context is
  * {@link #stop() stopped}.
  * 
  * @see AbstractSingleUseQueueingCommandContext
  */
-public class SingleUseQueueingExtendedCommandExecutor
+public class SingleUseQueueingExtendedCommandContext
 	extends AbstractSingleUseQueueingCommandContext<StatefulExtendedCommandContext>
 	implements StatefulExtendedCommandContext
 {
-	public SingleUseQueueingExtendedCommandExecutor() {
+	public SingleUseQueueingExtendedCommandContext() {
 		this(DefaultExtendedCommandContext.instance());
 	}
 
-	public SingleUseQueueingExtendedCommandExecutor(ExtendedCommandContext commandExecutor) {
-		this(new SimpleStatefulExtendedCommandExecutor(commandExecutor));
+	public SingleUseQueueingExtendedCommandContext(ExtendedCommandContext commandContext) {
+		this(new SimpleStatefulExtendedCommandExecutor(commandContext));
 	}
 
-	public SingleUseQueueingExtendedCommandExecutor(StatefulExtendedCommandContext commandExecutor) {
-		super(commandExecutor);
+	public SingleUseQueueingExtendedCommandContext(StatefulExtendedCommandContext commandContext) {
+		super(commandContext);
 	}
 
 	public void waitToExecute(Command command) throws InterruptedException {
