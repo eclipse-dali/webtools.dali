@@ -20,10 +20,10 @@ import org.eclipse.jpt.common.utility.internal.SimpleThreadFactory;
  * execute on the <em>current</em> thread <em>after</em> all the commands
  * already dispatched to the other thread have executed.
  * 
- * @see AbstractAsynchronousCommandExecutor
+ * @see AbstractAsynchronousCommandContext
  */
 public class AsynchronousExtendedCommandExecutor
-	extends AbstractAsynchronousCommandExecutor<StatefulExtendedCommandContext>
+	extends AbstractAsynchronousCommandContext<StatefulExtendedCommandContext>
 	implements StatefulExtendedCommandContext
 {
 	/**
@@ -85,7 +85,7 @@ public class AsynchronousExtendedCommandExecutor
 
 		try {
 			syncCommand.waitForExecution();
-			this.commandExecutor.waitToExecute(command);
+			this.commandContext.waitToExecute(command);
 		} finally {
 			syncCommand.release();
 		}
@@ -111,7 +111,7 @@ public class AsynchronousExtendedCommandExecutor
 			if (syncCommand.waitForExecution(timeout)) {
 				// adjust the time
 				timeout = stop - System.currentTimeMillis();
-				return (timeout > 0) && this.commandExecutor.waitToExecute(command, timeout);
+				return (timeout > 0) && this.commandContext.waitToExecute(command, timeout);
 			}
 			return false;
 		} finally {
@@ -126,7 +126,7 @@ public class AsynchronousExtendedCommandExecutor
 	 * Config useful for instantiating an {@link AsynchronousExtendedCommandExecutor}.
 	 */
 	public interface Config
-		extends AbstractAsynchronousCommandExecutor.Config<StatefulExtendedCommandContext>
+		extends AbstractAsynchronousCommandContext.Config<StatefulExtendedCommandContext>
 	{
 		// generic
 	}
@@ -135,7 +135,7 @@ public class AsynchronousExtendedCommandExecutor
 	 * Config useful for instantiating an {@link AsynchronousExtendedCommandExecutor}.
 	 */
 	public static class SimpleConfig
-		extends AbstractAsynchronousCommandExecutor.SimpleConfig<StatefulExtendedCommandContext>
+		extends AbstractAsynchronousCommandContext.SimpleConfig<StatefulExtendedCommandContext>
 		implements Config
 	{
 		public SimpleConfig() {
@@ -145,7 +145,7 @@ public class AsynchronousExtendedCommandExecutor
 			super(commandExecutor, threadFactory, threadName, exceptionHandler);
 		}
 		@Override
-		protected StatefulExtendedCommandContext buildDefaultCommandExecutor() {
+		protected StatefulExtendedCommandContext buildDefaultCommandContext() {
 			return new SimpleStatefulExtendedCommandExecutor();
 		}
 	}

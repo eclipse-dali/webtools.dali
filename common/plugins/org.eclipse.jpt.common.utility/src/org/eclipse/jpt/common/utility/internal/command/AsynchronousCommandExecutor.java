@@ -15,10 +15,10 @@ import org.eclipse.jpt.common.utility.command.StatefulCommandContext;
 import org.eclipse.jpt.common.utility.internal.SimpleThreadFactory;
 
 /**
- * @see AbstractAsynchronousCommandExecutor
+ * @see AbstractAsynchronousCommandContext
  */
 public class AsynchronousCommandExecutor
-	extends AbstractAsynchronousCommandExecutor<StatefulCommandContext>
+	extends AbstractAsynchronousCommandContext<StatefulCommandContext>
 {
 	/**
 	 * Construct an asynchronous command executor.
@@ -73,7 +73,7 @@ public class AsynchronousCommandExecutor
 	 * Config useful for instantiating an {@link AsynchronousCommandExecutor}.
 	 */
 	public interface Config
-		extends AbstractAsynchronousCommandExecutor.Config<StatefulCommandContext>
+		extends AbstractAsynchronousCommandContext.Config<StatefulCommandContext>
 	{
 		// generic
 	}
@@ -82,7 +82,7 @@ public class AsynchronousCommandExecutor
 	 * Config useful for instantiating an {@link AsynchronousCommandExecutor}.
 	 */
 	public static class SimpleConfig
-		extends AbstractAsynchronousCommandExecutor.SimpleConfig<StatefulCommandContext>
+		extends AbstractAsynchronousCommandContext.SimpleConfig<StatefulCommandContext>
 		implements Config
 	{
 		public SimpleConfig() {
@@ -92,7 +92,7 @@ public class AsynchronousCommandExecutor
 			super(commandExecutor, threadFactory, threadName, exceptionHandler);
 		}
 		@Override
-		protected StatefulCommandContext buildDefaultCommandExecutor() {
+		protected StatefulCommandContext buildDefaultCommandContext() {
 			return new SimpleStatefulCommandExecutor();
 		}
 	}

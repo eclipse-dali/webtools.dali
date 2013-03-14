@@ -20,22 +20,22 @@ import org.eclipse.jpt.common.utility.internal.SimpleThreadFactory;
 import org.eclipse.jpt.common.utility.internal.collection.SynchronizedQueue;
 
 /**
- * This command executor will dispatch commands to be executed in a separate
+ * This command context will dispatch commands to be executed in a separate
  * thread, allowing calls to
  * {@link org.eclipse.jpt.common.utility.command.CommandContext#execute(Command)}
  * to return immediately.
  * <p>
  * <strong>NB:</strong> If a client-supplied command throws a runtime exception
- * while it is executing, the command executor will use its
+ * while it is executing, the command context will use its
  * {@link ExceptionHandler exception handler} to handle the exception.
  */
-public abstract class AbstractAsynchronousCommandExecutor<E extends StatefulCommandContext>
+public abstract class AbstractAsynchronousCommandContext<E extends StatefulCommandContext>
 	implements StatefulCommandContext
 {
 	/**
-	 * The wrapped command executor.
+	 * The wrapped command context.
 	 */
-	protected final E commandExecutor;
+	protected final E commandContext;
 
 	/**
 	 * This command queue is shared with the command execution/consumer thread.
@@ -55,36 +55,36 @@ public abstract class AbstractAsynchronousCommandExecutor<E extends StatefulComm
 	// ********** construction **********
 
 	/**
-	 * Construct an asynchronous command executor.
-	 * Delegate command execution to the specified command executor.
+	 * Construct an asynchronous command context.
+	 * Delegate command execution to the specified command context.
 	 * Use the specified thread factory to construct the command execution
 	 * thread(s) and assign them the specified name.
 	 * Any exceptions thrown by the consumer will be handled by the
 	 * specified exception handler.
 	 */
-	protected AbstractAsynchronousCommandExecutor(Config<E> config) {
-		this(config.getCommandExecutor(), config.getThreadFactory(), config.getThreadName(), config.getExceptionHandler());
+	protected AbstractAsynchronousCommandContext(Config<E> config) {
+		this(config.getCommandContext(), config.getThreadFactory(), config.getThreadName(), config.getExceptionHandler());
 	}
 
 	/**
-	 * Construct an asynchronous command executor.
-	 * Delegate command execution to the specified command executor.
+	 * Construct an asynchronous command context.
+	 * Delegate command execution to the specified command context.
 	 * Use the specified thread factory to construct the command execution
 	 * thread(s) and assign them the specified name.
 	 * Any exceptions thrown by the consumer will be handled by the
 	 * specified exception handler.
 	 */
-	protected AbstractAsynchronousCommandExecutor(
-			E commandExecutor,
+	protected AbstractAsynchronousCommandContext(
+			E commandContext,
 			ThreadFactory threadFactory,
 			String threadName,
 			ExceptionHandler exceptionHandler
 	) {
 		super();
-		if (commandExecutor == null) {
+		if (commandContext == null) {
 			throw new NullPointerException();
 		}
-		this.commandExecutor = commandExecutor;
+		this.commandContext = commandContext;
 		this.consumerThreadCoordinator = this.buildConsumerThreadCoordinator(threadFactory, threadName, exceptionHandler);
 	}
 
@@ -97,7 +97,7 @@ public abstract class AbstractAsynchronousCommandExecutor<E extends StatefulComm
 	}
 
 
-	// ********** StatefulCommandExecutor implementation **********
+	// ********** StatefulCommandContext implementation **********
 
 	/**
 	 * Build and start the command execution/consumer thread.
@@ -106,25 +106,25 @@ public abstract class AbstractAsynchronousCommandExecutor<E extends StatefulComm
 	 * added to the queue <em>before</em> getting here, the first command will
 	 * be executed promptly (albeit, asynchronously).
 	 * The command queue will be non-empty if:<ul>
-	 * <li>{@link #execute(Command)} was called after the command executor was
+	 * <li>{@link #execute(Command)} was called after the command context was
 	 *     constructed but before {@link #start()} was called; or
 	 * <li>{@link #execute(Command)} was called after {@link #stop()} was called
-	 *     but before {@link #start()} was called (to restart the command executor); or
+	 *     but before {@link #start()} was called (to restart the command context); or
 	 * <li>{@link #stop()} was called when there were still outstanding commands
 	 *     remaining in the command queue
 	 * </ul>
 	 * 
-	 * @exception IllegalStateException if the executor has already been started
+	 * @exception IllegalStateException if the context has already been started
 	 */
 	public synchronized void start() {
-		this.commandExecutor.start();
+		this.commandContext.start();
 		this.consumerThreadCoordinator.start();
 	}
 
 	/**
 	 * Put the specified command on the command queue, to be consumed by the
-	 * command execution thread. If the executor is stopped, the command will
-	 * be queued and executed once the executor is, if ever, started.
+	 * command execution thread. If the context is stopped, the command will
+	 * be queued and executed once the context is, if ever, started.
 	 */
 	public synchronized void execute(Command command) {
 		this.commands.enqueue(command);
@@ -139,11 +139,11 @@ public abstract class AbstractAsynchronousCommandExecutor<E extends StatefulComm
 	 * Any remaining commands will be executed once the exector is, if ever,
 	 * restarted.
 	 * 
-	 * @exception IllegalStateException if the executor has not been started
+	 * @exception IllegalStateException if the context has not been started
 	 */
 	public synchronized void stop() throws InterruptedException {
 		this.consumerThreadCoordinator.stop();
-		this.commandExecutor.stop();
+		this.commandContext.stop();
 	}
 
 
@@ -154,7 +154,7 @@ public abstract class AbstractAsynchronousCommandExecutor<E extends StatefulComm
 	}
 
 	/* CU private */ void executeNextCommand() {
-		this.commandExecutor.execute(this.commands.dequeue());
+		this.commandContext.execute(this.commands.dequeue());
 	}
 
 	@Override
@@ -168,7 +168,7 @@ public abstract class AbstractAsynchronousCommandExecutor<E extends StatefulComm
 	/**
 	 * This implementation of
 	 * {@link org.eclipse.jpt.common.utility.internal.ConsumerThreadCoordinator.Consumer}
-	 * will execute the commands enqueued by the asynchronous command executor.
+	 * will execute the commands enqueued by the asynchronous command context.
 	 * It will wait until the shared command queue is non-empty to begin executing the
 	 * commands in the queue. Once a comand is executed, the thread will quiesce until
 	 * another command is placed in the command queue. If a new command is
@@ -185,14 +185,14 @@ public abstract class AbstractAsynchronousCommandExecutor<E extends StatefulComm
 		 * Wait until a command has been placed in the queue.
 		 */
 		public void waitForProducer() throws InterruptedException {
-			AbstractAsynchronousCommandExecutor.this.waitForCommand();
+			AbstractAsynchronousCommandContext.this.waitForCommand();
 		}
 
 		/**
 		 * Execute the first command in the queue.
 		 */
 		public void consume() {
-			AbstractAsynchronousCommandExecutor.this.executeNextCommand();
+			AbstractAsynchronousCommandContext.this.executeNextCommand();
 		}
 	}
 
@@ -200,49 +200,49 @@ public abstract class AbstractAsynchronousCommandExecutor<E extends StatefulComm
 	// ********** config **********
 
 	/**
-	 * Config useful for instantiating an {@link AbstractAsynchronousCommandExecutor}.
+	 * Config useful for instantiating an {@link AbstractAsynchronousCommandContext}.
 	 */
 	public interface Config<E extends StatefulCommandContext> {
-		E getCommandExecutor();
+		E getCommandContext();
 		ThreadFactory getThreadFactory();
 		String getThreadName();
 		ExceptionHandler getExceptionHandler();
 	}
 
 	/**
-	 * Config useful for instantiating an {@link AbstractAsynchronousCommandExecutor}.
+	 * Config useful for instantiating an {@link AbstractAsynchronousCommandContext}.
 	 */
 	protected abstract static class SimpleConfig<E extends StatefulCommandContext>
 		implements Config<E>
 	{
-		private volatile E commandExecutor;
+		private volatile E commandContext;
 		private volatile ThreadFactory threadFactory;
 		private volatile String threadName;
 		private volatile ExceptionHandler exceptionHandler;
 
 		protected SimpleConfig() {
 			super();
-			this.commandExecutor = this.buildDefaultCommandExecutor();
+			this.commandContext = this.buildDefaultCommandContext();
 			this.threadFactory = this.buildDefaultThreadFactory();
 			this.threadName = this.buildDefaultThreadName();
 			this.exceptionHandler = this.buildDefaultExceptionHandler();
 		}
 
-		protected SimpleConfig(E commandExecutor, ThreadFactory threadFactory, String threadName, ExceptionHandler exceptionHandler) {
+		protected SimpleConfig(E commandContext, ThreadFactory threadFactory, String threadName, ExceptionHandler exceptionHandler) {
 			super();
-			this.commandExecutor = commandExecutor;
+			this.commandContext = commandContext;
 			this.threadFactory = threadFactory;
 			this.threadName = threadName;
 			this.exceptionHandler = exceptionHandler;
 		}
 
-		public void setCommandExecutor(E commandExecutor) {
-			this.commandExecutor = commandExecutor;
+		public void setCommandContext(E commandContext) {
+			this.commandContext = commandContext;
 		}
-		public E getCommandExecutor() {
-			return this.commandExecutor;
+		public E getCommandContext() {
+			return this.commandContext;
 		}
-		protected abstract E buildDefaultCommandExecutor();
+		protected abstract E buildDefaultCommandContext();
 
 		public void setThreadFactory(ThreadFactory threadFactory) {
 			this.threadFactory = threadFactory;

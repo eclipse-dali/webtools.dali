@@ -226,7 +226,7 @@ public class AsynchronousRepeatingCommandWrapper
 	// ********** config **********
 
 	/**
-	 * Config useful for instantiating an {@link AbstractAsynchronousCommandExecutor}.
+	 * Config useful for instantiating an {@link AbstractAsynchronousCommandContext}.
 	 */
 	public interface Config {
 		Command getCommand();
@@ -236,7 +236,7 @@ public class AsynchronousRepeatingCommandWrapper
 	}
 
 	/**
-	 * Config useful for instantiating an {@link AbstractAsynchronousCommandExecutor}.
+	 * Config useful for instantiating an {@link AbstractAsynchronousCommandContext}.
 	 */
 	protected abstract static class SimpleConfig
 		implements Config
