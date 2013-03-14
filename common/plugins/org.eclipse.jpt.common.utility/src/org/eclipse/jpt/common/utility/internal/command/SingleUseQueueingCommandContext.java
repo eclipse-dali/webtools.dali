@@ -23,7 +23,7 @@ public class SingleUseQueueingCommandContext
 	}
 
 	public SingleUseQueueingCommandContext(CommandContext commandContext) {
-		this(new SimpleStatefulCommandExecutor(commandContext));
+		this(new SimpleStatefulCommandContext(commandContext));
 	}
 
 	public SingleUseQueueingCommandContext(StatefulCommandContext commandContext) {

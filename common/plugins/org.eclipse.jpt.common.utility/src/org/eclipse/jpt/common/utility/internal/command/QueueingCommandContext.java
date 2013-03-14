@@ -23,7 +23,7 @@ public class QueueingCommandContext
 	}
 
 	public QueueingCommandContext(CommandContext commandContext) {
-		this(new SimpleStatefulCommandExecutor(commandContext));
+		this(new SimpleStatefulCommandContext(commandContext));
 	}
 
 	public QueueingCommandContext(StatefulCommandContext commandContext) {

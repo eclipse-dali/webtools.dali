@@ -39,7 +39,7 @@ public class AsynchronousCommandContext
 	 * specified exception handler.
 	 */
 	public AsynchronousCommandContext(String threadName, ExceptionHandler exceptionHandler) {
-		this(new SimpleStatefulCommandExecutor(DefaultCommandContext.instance()), SimpleThreadFactory.instance(), threadName, exceptionHandler);
+		this(new SimpleStatefulCommandContext(DefaultCommandContext.instance()), SimpleThreadFactory.instance(), threadName, exceptionHandler);
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class AsynchronousCommandContext
 		}
 		@Override
 		protected StatefulCommandContext buildDefaultCommandContext() {
-			return new SimpleStatefulCommandExecutor();
+			return new SimpleStatefulCommandContext();
 		}
 	}
 }

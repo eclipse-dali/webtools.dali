@@ -13,19 +13,19 @@ import org.eclipse.jpt.common.utility.command.CommandContext;
 
 /**
  * Straightforward implementation of {@link org.eclipse.jpt.common.utility.command.StatefulCommandContext}
- * that executes commands immediately by default. This executor can
+ * that executes commands immediately by default. This context can
  * also be used to adapt simple {@link CommandContext}s to the
  * {@link org.eclipse.jpt.common.utility.command.StatefulCommandContext} interface, providing support for
  * lifecycle state.
  */
-public class SimpleStatefulCommandExecutor
+public class SimpleStatefulCommandContext
 	extends AbstractStatefulCommandContext<CommandContext>
 {
-	public SimpleStatefulCommandExecutor() {
+	public SimpleStatefulCommandContext() {
 		this(DefaultCommandContext.instance());
 	}
 
-	public SimpleStatefulCommandExecutor(CommandContext commandExecutor) {
-		super(commandExecutor);
+	public SimpleStatefulCommandContext(CommandContext commandContext) {
+		super(commandContext);
 	}
 }
