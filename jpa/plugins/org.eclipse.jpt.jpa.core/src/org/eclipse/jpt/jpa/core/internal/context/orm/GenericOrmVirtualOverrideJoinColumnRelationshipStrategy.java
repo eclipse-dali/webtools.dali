@@ -16,8 +16,8 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
+import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
@@ -76,11 +76,11 @@ public class GenericOrmVirtualOverrideJoinColumnRelationshipStrategy
 	// ********** specified join columns **********
 
 	public ListIterable<VirtualJoinColumn> getSpecifiedJoinColumns() {
-		return this.specifiedJoinColumnContainer.getContextElements();
+		return this.specifiedJoinColumnContainer;
 	}
 
 	public int getSpecifiedJoinColumnsSize() {
-		return this.specifiedJoinColumnContainer.getContextElementsSize();
+		return this.specifiedJoinColumnContainer.size();
 	}
 
 	public boolean hasSpecifiedJoinColumns() {
@@ -88,7 +88,7 @@ public class GenericOrmVirtualOverrideJoinColumnRelationshipStrategy
 	}
 
 	public VirtualJoinColumn getSpecifiedJoinColumn(int index) {
-		return this.specifiedJoinColumnContainer.getContextElement(index);
+		return this.specifiedJoinColumnContainer.get(index);
 	}
 
 	protected void updateSpecifiedJoinColumns() {
@@ -103,29 +103,22 @@ public class GenericOrmVirtualOverrideJoinColumnRelationshipStrategy
 	}
 
 	protected ContextListContainer<VirtualJoinColumn, JoinColumn> buildSpecifiedJoinColumnContainer() {
-		return new SpecifiedJoinColumnContainer();
+		return this.buildVirtualContextListContainer(SPECIFIED_JOIN_COLUMNS_LIST, new SpecifiedJoinColumnContainerAdapter());
 	}
 
 	/**
-	 * specified join column container
+	 * specified join column container adapter
 	 */
-	protected class SpecifiedJoinColumnContainer
-		extends ContextListContainer<VirtualJoinColumn, JoinColumn>
+	public class SpecifiedJoinColumnContainerAdapter
+		extends AbstractContainerAdapter<VirtualJoinColumn, JoinColumn>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return SPECIFIED_JOIN_COLUMNS_LIST;
-		}
-		@Override
-		protected VirtualJoinColumn buildContextElement(JoinColumn resourceElement) {
+		public VirtualJoinColumn buildContextElement(JoinColumn resourceElement) {
 			return GenericOrmVirtualOverrideJoinColumnRelationshipStrategy.this.buildJoinColumn(resourceElement);
 		}
-		@Override
-		protected ListIterable<JoinColumn> getResourceElements() {
+		public ListIterable<JoinColumn> getResourceElements() {
 			return GenericOrmVirtualOverrideJoinColumnRelationshipStrategy.this.getOverriddenSpecifiedJoinColumns();
 		}
-		@Override
-		protected JoinColumn getResourceElement(VirtualJoinColumn contextElement) {
+		public JoinColumn extractResourceElement(VirtualJoinColumn contextElement) {
 			return contextElement.getOverriddenColumn();
 		}
 	}

@@ -20,8 +20,8 @@ import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedTable;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlTable;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
@@ -271,15 +271,15 @@ public abstract class AbstractOrmTable<P extends JpaContextModel, PA extends Tab
 	// ********** unique constraints **********
 
 	public ListIterable<OrmSpecifiedUniqueConstraint> getUniqueConstraints() {
-		return this.uniqueConstraintContainer.getContextElements();
+		return this.uniqueConstraintContainer;
 	}
 
 	public int getUniqueConstraintsSize() {
-		return this.uniqueConstraintContainer.getContextElementsSize();
+		return this.uniqueConstraintContainer.size();
 	}
 
 	public OrmSpecifiedUniqueConstraint getUniqueConstraint(int index) {
-		return this.uniqueConstraintContainer.getContextElement(index);
+		return this.uniqueConstraintContainer.get(index);
 	}
 
 	public OrmSpecifiedUniqueConstraint addUniqueConstraint() {
@@ -299,17 +299,17 @@ public abstract class AbstractOrmTable<P extends JpaContextModel, PA extends Tab
 	}
 
 	public void removeUniqueConstraint(SpecifiedUniqueConstraint uniqueConstraint) {
-		this.removeUniqueConstraint(this.uniqueConstraintContainer.indexOfContextElement((OrmSpecifiedUniqueConstraint) uniqueConstraint));
+		this.removeUniqueConstraint(this.uniqueConstraintContainer.indexOf((OrmSpecifiedUniqueConstraint) uniqueConstraint));
 	}
 
 	public void removeUniqueConstraint(int index) {
-		this.uniqueConstraintContainer.removeContextElement(index);
+		this.uniqueConstraintContainer.remove(index);
 		this.getXmlTable().getUniqueConstraints().remove(index);
 		this.removeXmlTableIfUnset();
 	}
 
 	public void moveUniqueConstraint(int targetIndex, int sourceIndex) {
-		this.uniqueConstraintContainer.moveContextElement(targetIndex, sourceIndex);
+		this.uniqueConstraintContainer.move(targetIndex, sourceIndex);
 		this.getXmlTable().getUniqueConstraints().move(targetIndex, sourceIndex);
 	}
 
@@ -329,31 +329,22 @@ public abstract class AbstractOrmTable<P extends JpaContextModel, PA extends Tab
 	}
 
 	protected ContextListContainer<OrmSpecifiedUniqueConstraint, XmlUniqueConstraint> buildUniqueConstraintContainer() {
-		UniqueConstraintContainer container = new UniqueConstraintContainer();
-		container.initialize();
-		return container;
+		return this.buildSpecifiedContextListContainer(UNIQUE_CONSTRAINTS_LIST, new UniqueConstraintContainerAdapter());
 	}
 
 	/**
-	 * unique constraint container
+	 * unique constraint container adapter
 	 */
-	protected class UniqueConstraintContainer
-		extends ContextListContainer<OrmSpecifiedUniqueConstraint, XmlUniqueConstraint>
+	public class UniqueConstraintContainerAdapter
+		extends AbstractContainerAdapter<OrmSpecifiedUniqueConstraint, XmlUniqueConstraint>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return UNIQUE_CONSTRAINTS_LIST;
-		}
-		@Override
-		protected OrmSpecifiedUniqueConstraint buildContextElement(XmlUniqueConstraint resourceElement) {
+		public OrmSpecifiedUniqueConstraint buildContextElement(XmlUniqueConstraint resourceElement) {
 			return AbstractOrmTable.this.buildUniqueConstraint(resourceElement);
 		}
-		@Override
-		protected ListIterable<XmlUniqueConstraint> getResourceElements() {
+		public ListIterable<XmlUniqueConstraint> getResourceElements() {
 			return AbstractOrmTable.this.getXmlUniqueConstraints();
 		}
-		@Override
-		protected XmlUniqueConstraint getResourceElement(OrmSpecifiedUniqueConstraint contextElement) {
+		public XmlUniqueConstraint extractResourceElement(OrmSpecifiedUniqueConstraint contextElement) {
 			return contextElement.getXmlUniqueConstraint();
 		}
 	}

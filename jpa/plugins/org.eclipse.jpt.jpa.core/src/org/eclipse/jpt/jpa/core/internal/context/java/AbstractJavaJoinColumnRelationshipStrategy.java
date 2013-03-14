@@ -10,19 +10,18 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
-
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationship;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.jpa.db.Table;
@@ -76,11 +75,11 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy<P extends JavaJ
 	// ********** specified join columns **********
 
 	public ListIterable<JavaSpecifiedJoinColumn> getSpecifiedJoinColumns() {
-		return this.specifiedJoinColumnContainer.getContextElements();
+		return this.specifiedJoinColumnContainer;
 	}
 
 	public int getSpecifiedJoinColumnsSize() {
-		return this.specifiedJoinColumnContainer.getContextElementsSize();
+		return this.specifiedJoinColumnContainer.size();
 	}
 
 	public boolean hasSpecifiedJoinColumns() {
@@ -88,7 +87,7 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy<P extends JavaJ
 	}
 
 	public JavaSpecifiedJoinColumn getSpecifiedJoinColumn(int index) {
-		return this.specifiedJoinColumnContainer.getContextElement(index);
+		return this.specifiedJoinColumnContainer.get(index);
 	}
 
 	public JavaSpecifiedJoinColumn addSpecifiedJoinColumn() {
@@ -101,17 +100,17 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy<P extends JavaJ
 	}
 
 	public void removeSpecifiedJoinColumn(SpecifiedJoinColumn joinColumn) {
-		this.removeSpecifiedJoinColumn(this.specifiedJoinColumnContainer.indexOfContextElement((JavaSpecifiedJoinColumn) joinColumn));
+		this.removeSpecifiedJoinColumn(this.specifiedJoinColumnContainer.indexOf((JavaSpecifiedJoinColumn) joinColumn));
 	}
 
 	public void removeSpecifiedJoinColumn(int index) {
 		this.removeJoinColumnAnnotation(index);
-		this.specifiedJoinColumnContainer.removeContextElement(index);
+		this.specifiedJoinColumnContainer.remove(index);
 	}
 
 	public void moveSpecifiedJoinColumn(int targetIndex, int sourceIndex) {
 		this.moveJoinColumnAnnotation(targetIndex, sourceIndex);
-		this.specifiedJoinColumnContainer.moveContextElement(targetIndex, sourceIndex);
+		this.specifiedJoinColumnContainer.move(targetIndex, sourceIndex);
 	}
 
 	//default join column will get set in the update
@@ -132,7 +131,7 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy<P extends JavaJ
 		for (int index = getSpecifiedJoinColumnsSize(); --index >= 0; ) {
 			this.removeJoinColumnAnnotation(index);
 		}
-		this.specifiedJoinColumnContainer.clearContextList();
+		this.specifiedJoinColumnContainer.clear();
 	}
 
 	protected void syncSpecifiedJoinColumns() {
@@ -140,31 +139,22 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy<P extends JavaJ
 	}
 
 	protected ContextListContainer<JavaSpecifiedJoinColumn, JoinColumnAnnotation> buildSpecifiedJoinColumnContainer() {
-		SpecifiedJoinColumnContainer container = new SpecifiedJoinColumnContainer();
-		container.initialize();
-		return container;
+		return this.buildSpecifiedContextListContainer(SPECIFIED_JOIN_COLUMNS_LIST, new SpecifiedJoinColumnContainerAdapter());
 	}
 
 	/**
-	 * specified join column container
+	 * specified join column container adapter
 	 */
-	protected class SpecifiedJoinColumnContainer
-		extends ContextListContainer<JavaSpecifiedJoinColumn, JoinColumnAnnotation>
+	public class SpecifiedJoinColumnContainerAdapter
+		extends AbstractContainerAdapter<JavaSpecifiedJoinColumn, JoinColumnAnnotation>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return SPECIFIED_JOIN_COLUMNS_LIST;
-		}
-		@Override
-		protected JavaSpecifiedJoinColumn buildContextElement(JoinColumnAnnotation resourceElement) {
+		public JavaSpecifiedJoinColumn buildContextElement(JoinColumnAnnotation resourceElement) {
 			return AbstractJavaJoinColumnRelationshipStrategy.this.buildJoinColumn(resourceElement);
 		}
-		@Override
-		protected ListIterable<JoinColumnAnnotation> getResourceElements() {
+		public ListIterable<JoinColumnAnnotation> getResourceElements() {
 			return AbstractJavaJoinColumnRelationshipStrategy.this.getJoinColumnAnnotations();
 		}
-		@Override
-		protected JoinColumnAnnotation getResourceElement(JavaSpecifiedJoinColumn contextElement) {
+		public JoinColumnAnnotation extractResourceElement(JavaSpecifiedJoinColumn contextElement) {
 			return (JoinColumnAnnotation) contextElement.getColumnAnnotation();
 		}
 	}

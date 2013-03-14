@@ -14,10 +14,10 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReferenceTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedReferenceTable;
@@ -83,11 +83,11 @@ public abstract class GenericOrmReferenceTable<P extends JpaContextModel, PA ext
 	// ********** specified join columns **********
 
 	public ListIterable<OrmSpecifiedJoinColumn> getSpecifiedJoinColumns() {
-		return this.specifiedJoinColumnContainer.getContextElements();
+		return this.specifiedJoinColumnContainer;
 	}
 
 	public int getSpecifiedJoinColumnsSize() {
-		return this.specifiedJoinColumnContainer.getContextElementsSize();
+		return this.specifiedJoinColumnContainer.size();
 	}
 
 	public boolean hasSpecifiedJoinColumns() {
@@ -95,7 +95,7 @@ public abstract class GenericOrmReferenceTable<P extends JpaContextModel, PA ext
 	}
 
 	public OrmSpecifiedJoinColumn getSpecifiedJoinColumn(int index) {
-		return this.specifiedJoinColumnContainer.getContextElement(index);
+		return this.specifiedJoinColumnContainer.get(index);
 	}
 
 	public OrmSpecifiedJoinColumn addSpecifiedJoinColumn() {
@@ -115,22 +115,22 @@ public abstract class GenericOrmReferenceTable<P extends JpaContextModel, PA ext
 	}
 
 	public void removeSpecifiedJoinColumn(SpecifiedJoinColumn joinColumn) {
-		this.removeSpecifiedJoinColumn(this.specifiedJoinColumnContainer.indexOfContextElement((OrmSpecifiedJoinColumn) joinColumn));
+		this.removeSpecifiedJoinColumn(this.specifiedJoinColumnContainer.indexOf((OrmSpecifiedJoinColumn) joinColumn));
 	}
 
 	public void removeSpecifiedJoinColumn(int index) {
-		this.specifiedJoinColumnContainer.removeContextElement(index);
+		this.specifiedJoinColumnContainer.remove(index);
 		this.getXmlTable().getJoinColumns().remove(index);
 		this.removeXmlTableIfUnset();
 	}
 
 	public void moveSpecifiedJoinColumn(int targetIndex, int sourceIndex) {
-		this.specifiedJoinColumnContainer.moveContextElement(targetIndex, sourceIndex);
+		this.specifiedJoinColumnContainer.move(targetIndex, sourceIndex);
 		this.getXmlTable().getJoinColumns().move(targetIndex, sourceIndex);
 	}
 
 	public void clearSpecifiedJoinColumns() {
-		this.specifiedJoinColumnContainer.clearContextList();
+		this.specifiedJoinColumnContainer.clear();
 		this.getXmlTable().getJoinColumns().clear();
 	}
 
@@ -147,31 +147,22 @@ public abstract class GenericOrmReferenceTable<P extends JpaContextModel, PA ext
 	}
 
 	protected ContextListContainer<OrmSpecifiedJoinColumn, XmlJoinColumn> buildSpecifiedJoinColumnContainer() {
-		SpecifiedJoinColumnContainer container =  new SpecifiedJoinColumnContainer();
-		container.initialize();
-		return container;
+		return this.buildSpecifiedContextListContainer(SPECIFIED_JOIN_COLUMNS_LIST, new SpecifiedJoinColumnContainerAdapter());
 	}
 
 	/**
-	 * specified join column container
+	 * specified join column container adapter
 	 */
-	protected class SpecifiedJoinColumnContainer
-		extends ContextListContainer<OrmSpecifiedJoinColumn, XmlJoinColumn>
+	public class SpecifiedJoinColumnContainerAdapter
+		extends AbstractContainerAdapter<OrmSpecifiedJoinColumn, XmlJoinColumn>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return SPECIFIED_JOIN_COLUMNS_LIST;
-		}
-		@Override
-		protected OrmSpecifiedJoinColumn buildContextElement(XmlJoinColumn resourceElement) {
+		public OrmSpecifiedJoinColumn buildContextElement(XmlJoinColumn resourceElement) {
 			return GenericOrmReferenceTable.this.buildJoinColumn(resourceElement);
 		}
-		@Override
-		protected ListIterable<XmlJoinColumn> getResourceElements() {
+		public ListIterable<XmlJoinColumn> getResourceElements() {
 			return GenericOrmReferenceTable.this.getXmlJoinColumns();
 		}
-		@Override
-		protected XmlJoinColumn getResourceElement(OrmSpecifiedJoinColumn contextElement) {
+		public XmlJoinColumn extractResourceElement(OrmSpecifiedJoinColumn contextElement) {
 			return contextElement.getXmlColumn();
 		}
 	}

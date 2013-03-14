@@ -15,13 +15,13 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedSecondaryTable;
@@ -126,7 +126,7 @@ public class GenericOrmSecondaryTable
 	// ********** specified primary key join columns **********
 
 	public ListIterable<OrmSpecifiedPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns() {
-		return this.specifiedPrimaryKeyJoinColumnContainer.getContextElements();
+		return this.specifiedPrimaryKeyJoinColumnContainer;
 	}
 
 	public OrmSpecifiedPrimaryKeyJoinColumn getSpecifiedPrimaryKeyJoinColumn(int index) {
@@ -134,7 +134,7 @@ public class GenericOrmSecondaryTable
 	}
 
 	public int getSpecifiedPrimaryKeyJoinColumnsSize() {
-		return this.specifiedPrimaryKeyJoinColumnContainer.getContextElementsSize();
+		return this.specifiedPrimaryKeyJoinColumnContainer.size();
 	}
 
 	protected boolean hasSpecifiedPrimaryKeyJoinColumns() {
@@ -157,11 +157,11 @@ public class GenericOrmSecondaryTable
 	}
 
 	public void removeSpecifiedPrimaryKeyJoinColumn(SpecifiedPrimaryKeyJoinColumn joinColumn) {
-		this.removeSpecifiedPrimaryKeyJoinColumn(this.specifiedPrimaryKeyJoinColumnContainer.indexOfContextElement((OrmSpecifiedPrimaryKeyJoinColumn) joinColumn));
+		this.removeSpecifiedPrimaryKeyJoinColumn(this.specifiedPrimaryKeyJoinColumnContainer.indexOf((OrmSpecifiedPrimaryKeyJoinColumn) joinColumn));
 	}
 
 	public void removeSpecifiedPrimaryKeyJoinColumn(int index) {
-		this.specifiedPrimaryKeyJoinColumnContainer.removeContextElement(index);
+		this.specifiedPrimaryKeyJoinColumnContainer.remove(index);
 		this.xmlSecondaryTable.getPrimaryKeyJoinColumns().remove(index);
 	}
 
@@ -180,12 +180,12 @@ public class GenericOrmSecondaryTable
 	}
 
 	public void clearSpecifiedPrimaryKeyJoinColumns() {
-		this.specifiedPrimaryKeyJoinColumnContainer.clearContextList();
+		this.specifiedPrimaryKeyJoinColumnContainer.clear();
 		this.xmlSecondaryTable.getPrimaryKeyJoinColumns().clear();
 	}
 
 	public void moveSpecifiedPrimaryKeyJoinColumn(int targetIndex, int sourceIndex) {
-		this.specifiedPrimaryKeyJoinColumnContainer.moveContextElement(targetIndex, sourceIndex);
+		this.specifiedPrimaryKeyJoinColumnContainer.move(targetIndex, sourceIndex);
 		this.xmlSecondaryTable.getPrimaryKeyJoinColumns().move(targetIndex, sourceIndex);
 	}
 
@@ -199,31 +199,22 @@ public class GenericOrmSecondaryTable
 	}
 
 	protected ContextListContainer<OrmSpecifiedPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> buildSpecifiedPrimaryKeyJoinColumnContainer() {
-		SpecifiedPrimaryKeyJoinColumnContainer container = new SpecifiedPrimaryKeyJoinColumnContainer();
-		container.initialize();
-		return container;
+		return this.buildSpecifiedContextListContainer(SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, new SpecifiedPrimaryKeyJoinColumnContainerAdapter());
 	}
 
 	/**
-	 * specified primary key join column container
+	 * specified primary key join column container adapter
 	 */
-	protected class SpecifiedPrimaryKeyJoinColumnContainer
-		extends ContextListContainer<OrmSpecifiedPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn>
+	public class SpecifiedPrimaryKeyJoinColumnContainerAdapter
+		extends AbstractContainerAdapter<OrmSpecifiedPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST;
-		}
-		@Override
-		protected OrmSpecifiedPrimaryKeyJoinColumn buildContextElement(XmlPrimaryKeyJoinColumn resourceElement) {
+		public OrmSpecifiedPrimaryKeyJoinColumn buildContextElement(XmlPrimaryKeyJoinColumn resourceElement) {
 			return GenericOrmSecondaryTable.this.buildPrimaryKeyJoinColumn(resourceElement);
 		}
-		@Override
-		protected ListIterable<XmlPrimaryKeyJoinColumn> getResourceElements() {
+		public ListIterable<XmlPrimaryKeyJoinColumn> getResourceElements() {
 			return GenericOrmSecondaryTable.this.getXmlPrimaryKeyJoinColumns();
 		}
-		@Override
-		protected XmlPrimaryKeyJoinColumn getResourceElement(OrmSpecifiedPrimaryKeyJoinColumn contextElement) {
+		public XmlPrimaryKeyJoinColumn extractResourceElement(OrmSpecifiedPrimaryKeyJoinColumn contextElement) {
 			return contextElement.getXmlColumn();
 		}
 	}

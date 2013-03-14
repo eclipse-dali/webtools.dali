@@ -90,11 +90,11 @@ public class GenericJavaNamedStoredProcedureQuery2_1
 	// ************ parameters ***********
 
 	public ListIterable<JavaStoredProcedureParameter2_1> getParameters() {
-		return this.parameterContainer.getContextElements();
+		return this.parameterContainer;
 	}
 
 	public int getParametersSize() {
-		return this.parameterContainer.getContextElementsSize();
+		return this.parameterContainer.size();
 	}
 	
 	public JavaStoredProcedureParameter2_1 addParameter() {
@@ -107,17 +107,17 @@ public class GenericJavaNamedStoredProcedureQuery2_1
 	}
 
 	public void removeParameter(StoredProcedureParameter2_1 parameter) {
-		this.removeParameter(this.parameterContainer.indexOfContextElement((JavaStoredProcedureParameter2_1) parameter));
+		this.removeParameter(this.parameterContainer.indexOf((JavaStoredProcedureParameter2_1) parameter));
 	}
 
 	public void removeParameter(int index) {
 		this.queryAnnotation.removeParameter(index);
-		this.parameterContainer.removeContextElement(index);
+		this.parameterContainer.remove(index);
 	}
 
 	public void moveParameter(int targetIndex, int sourceIndex) {
 		this.queryAnnotation.moveParameter(targetIndex, sourceIndex);
-		this.parameterContainer.moveContextElement(targetIndex, sourceIndex);
+		this.parameterContainer.move(targetIndex, sourceIndex);
 	}
 
 	public JavaStoredProcedureParameter2_1 getParameter(int index) {
@@ -137,31 +137,22 @@ public class GenericJavaNamedStoredProcedureQuery2_1
 	}
 
 	protected ContextListContainer<JavaStoredProcedureParameter2_1, StoredProcedureParameterAnnotation2_1> buildParameterContainer() {
-		ParameterContainer container = new ParameterContainer();
-		container.initialize();
-		return container;
+		return this.buildSpecifiedContextListContainer(PARAMETERS_LIST, new ParameterContainerAdapter());
 	}
 
 	/**
-	 * stored procedure parameter container
+	 * parameter container adapter
 	 */
-	protected class ParameterContainer
-		extends ContextListContainer<JavaStoredProcedureParameter2_1, StoredProcedureParameterAnnotation2_1>
+	public class ParameterContainerAdapter
+		extends AbstractContainerAdapter<JavaStoredProcedureParameter2_1, StoredProcedureParameterAnnotation2_1>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return PARAMETERS_LIST;
-		}
-		@Override
-		protected JavaStoredProcedureParameter2_1 buildContextElement(StoredProcedureParameterAnnotation2_1 resourceElement) {
+		public JavaStoredProcedureParameter2_1 buildContextElement(StoredProcedureParameterAnnotation2_1 resourceElement) {
 			return GenericJavaNamedStoredProcedureQuery2_1.this.buildParameter(resourceElement);
 		}
-		@Override
-		protected ListIterable<StoredProcedureParameterAnnotation2_1> getResourceElements() {
+		public ListIterable<StoredProcedureParameterAnnotation2_1> getResourceElements() {
 			return GenericJavaNamedStoredProcedureQuery2_1.this.getParameterAnnotations();
 		}
-		@Override
-		protected StoredProcedureParameterAnnotation2_1 getResourceElement(JavaStoredProcedureParameter2_1 contextElement) {
+		public StoredProcedureParameterAnnotation2_1 extractResourceElement(JavaStoredProcedureParameter2_1 contextElement) {
 			return contextElement.getStoredProcedureParameter2_1Annotation();
 		}
 	}

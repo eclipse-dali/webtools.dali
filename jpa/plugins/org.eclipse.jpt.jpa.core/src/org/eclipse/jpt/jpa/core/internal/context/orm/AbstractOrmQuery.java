@@ -91,11 +91,11 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	// ********** hints **********
 
 	public ListIterable<OrmQueryHint> getHints() {
-		return this.hintContainer.getContextElements();
+		return this.hintContainer;
 	}
 
 	public int getHintsSize() {
-		return this.hintContainer.getContextElementsSize();
+		return this.hintContainer.size();
 	}
 
 	public OrmQueryHint addHint() {
@@ -114,16 +114,16 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	}
 
 	public void removeHint(QueryHint hint) {
-		this.removeHint(this.hintContainer.indexOfContextElement((OrmQueryHint) hint));
+		this.removeHint(this.hintContainer.indexOf((OrmQueryHint) hint));
 	}
 
 	public void removeHint(int index) {
-		this.hintContainer.removeContextElement(index);
+		this.hintContainer.remove(index);
 		this.xmlQuery.getHints().remove(index);
 	}
 
 	public void moveHint(int targetIndex, int sourceIndex) {
-		this.hintContainer.moveContextElement(targetIndex, sourceIndex);
+		this.hintContainer.move(targetIndex, sourceIndex);
 		this.xmlQuery.getHints().move(targetIndex, sourceIndex);
 	}
 
@@ -145,31 +145,22 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	}
 
 	protected ContextListContainer<OrmQueryHint, XmlQueryHint> buildHintContainer() {
-		HintContainer container = new HintContainer();
-		container.initialize();
-		return container;
+		return this.buildSpecifiedContextListContainer(HINTS_LIST, new HintContainerAdapter());
 	}
 
 	/**
-	 * query hint container
+	 * hint container adapter
 	 */
-	protected class HintContainer
-		extends ContextListContainer<OrmQueryHint, XmlQueryHint>
+	public class HintContainerAdapter
+		extends AbstractContainerAdapter<OrmQueryHint, XmlQueryHint>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return HINTS_LIST;
-		}
-		@Override
-		protected OrmQueryHint buildContextElement(XmlQueryHint resourceElement) {
+		public OrmQueryHint buildContextElement(XmlQueryHint resourceElement) {
 			return AbstractOrmQuery.this.buildHint(resourceElement);
 		}
-		@Override
-		protected ListIterable<XmlQueryHint> getResourceElements() {
+		public ListIterable<XmlQueryHint> getResourceElements() {
 			return AbstractOrmQuery.this.getXmlHints();
 		}
-		@Override
-		protected XmlQueryHint getResourceElement(OrmQueryHint contextElement) {
+		public XmlQueryHint extractResourceElement(OrmQueryHint contextElement) {
 			return contextElement.getXmlQueryHint();
 		}
 	}

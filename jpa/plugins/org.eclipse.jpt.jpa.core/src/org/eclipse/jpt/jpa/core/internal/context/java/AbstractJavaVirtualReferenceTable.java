@@ -14,10 +14,10 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReferenceTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualReferenceTable;
@@ -65,11 +65,11 @@ public abstract class AbstractJavaVirtualReferenceTable<P extends JpaContextMode
 	// ********** specified join columns **********
 
 	public ListIterable<VirtualJoinColumn> getSpecifiedJoinColumns() {
-		return this.specifiedJoinColumnContainer.getContextElements();
+		return this.specifiedJoinColumnContainer;
 	}
 
 	public int getSpecifiedJoinColumnsSize() {
-		return this.specifiedJoinColumnContainer.getContextElementsSize();
+		return this.specifiedJoinColumnContainer.size();
 	}
 
 	public boolean hasSpecifiedJoinColumns() {
@@ -77,7 +77,7 @@ public abstract class AbstractJavaVirtualReferenceTable<P extends JpaContextMode
 	}
 
 	public VirtualJoinColumn getSpecifiedJoinColumn(int index) {
-		return this.specifiedJoinColumnContainer.getContextElement(index);
+		return this.specifiedJoinColumnContainer.get(index);
 	}
 
 	protected void updateSpecifiedJoinColumns() {
@@ -89,7 +89,7 @@ public abstract class AbstractJavaVirtualReferenceTable<P extends JpaContextMode
 	}
 
 	protected void moveSpecifiedJoinColumn(int index, VirtualJoinColumn joinColumn) {
-		this.specifiedJoinColumnContainer.moveContextElement(index, joinColumn);
+		this.specifiedJoinColumnContainer.move(index, joinColumn);
 	}
 
 	protected VirtualJoinColumn addSpecifiedJoinColumn(int index, SpecifiedJoinColumn joinColumn) {
@@ -97,33 +97,26 @@ public abstract class AbstractJavaVirtualReferenceTable<P extends JpaContextMode
 	}
 
 	protected void removeSpecifiedJoinColumn(VirtualJoinColumn joinColumn) {
-		this.specifiedJoinColumnContainer.removeContextElement(joinColumn);
+		this.specifiedJoinColumnContainer.remove(joinColumn);
 	}
 
 	protected ContextListContainer<VirtualJoinColumn, JoinColumn> buildSpecifiedJoinColumnContainer() {
-		return new SpecifiedJoinColumnContainer();
+		return this.buildVirtualContextListContainer(SPECIFIED_JOIN_COLUMNS_LIST, new SpecifiedJoinColumnContainerAdapter());
 	}
 
 	/**
-	 * specified join column container
+	 * specified join column container adapter
 	 */
-	protected class SpecifiedJoinColumnContainer
-		extends ContextListContainer<VirtualJoinColumn, JoinColumn>
+	public class SpecifiedJoinColumnContainerAdapter
+		extends AbstractContainerAdapter<VirtualJoinColumn, JoinColumn>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return SPECIFIED_JOIN_COLUMNS_LIST;
-		}
-		@Override
-		protected VirtualJoinColumn buildContextElement(JoinColumn resourceElement) {
+		public VirtualJoinColumn buildContextElement(JoinColumn resourceElement) {
 			return AbstractJavaVirtualReferenceTable.this.buildJoinColumn(resourceElement);
 		}
-		@Override
-		protected ListIterable<JoinColumn> getResourceElements() {
+		public ListIterable<JoinColumn> getResourceElements() {
 			return AbstractJavaVirtualReferenceTable.this.getOverriddenJoinColumns();
 		}
-		@Override
-		protected JoinColumn getResourceElement(VirtualJoinColumn contextElement) {
+		public JoinColumn extractResourceElement(VirtualJoinColumn contextElement) {
 			return contextElement.getOverriddenColumn();
 		}
 	}

@@ -79,11 +79,11 @@ public class GenericJavaVirtualJoinTable
 	// ********** inverse specified join columns **********
 
 	public ListIterable<VirtualJoinColumn> getSpecifiedInverseJoinColumns() {
-		return this.specifiedInverseJoinColumnContainer.getContextElements();
+		return this.specifiedInverseJoinColumnContainer;
 	}
 
 	public int getSpecifiedInverseJoinColumnsSize() {
-		return this.specifiedInverseJoinColumnContainer.getContextElementsSize();
+		return this.specifiedInverseJoinColumnContainer.size();
 	}
 
 	public boolean hasSpecifiedInverseJoinColumns() {
@@ -91,7 +91,7 @@ public class GenericJavaVirtualJoinTable
 	}
 
 	public VirtualJoinColumn getSpecifiedInverseJoinColumn(int index) {
-		return this.specifiedInverseJoinColumnContainer.getContextElement(index);
+		return this.specifiedInverseJoinColumnContainer.get(index);
 	}
 
 	protected void updateSpecifiedInverseJoinColumns() {
@@ -103,7 +103,7 @@ public class GenericJavaVirtualJoinTable
 	}
 
 	protected void moveSpecifiedInverseJoinColumn(int index, VirtualJoinColumn joinColumn) {
-		this.specifiedInverseJoinColumnContainer.moveContextElement(index, joinColumn);
+		this.specifiedInverseJoinColumnContainer.move(index, joinColumn);
 	}
 
 	protected VirtualJoinColumn addSpecifiedInverseJoinColumn(int index, JoinColumn joinColumn) {
@@ -111,33 +111,26 @@ public class GenericJavaVirtualJoinTable
 	}
 
 	protected void removeSpecifiedInverseJoinColumn(VirtualJoinColumn joinColumn) {
-		this.specifiedInverseJoinColumnContainer.removeContextElement(joinColumn);
+		this.specifiedInverseJoinColumnContainer.remove(joinColumn);
 	}
 
 	protected ContextListContainer<VirtualJoinColumn, JoinColumn> buildSpecifiedInverseJoinColumnContainer() {
-		return new SpecifiedInverseJoinColumnContainer();
+		return this.buildVirtualContextListContainer(SPECIFIED_INVERSE_JOIN_COLUMNS_LIST, new SpecifiedInverseJoinColumnContainerAdapter());
 	}
 
 	/**
-	 * specified join column container
+	 * specified inverse join column container adapter
 	 */
-	public class SpecifiedInverseJoinColumnContainer
-		extends ContextListContainer<VirtualJoinColumn, JoinColumn>
+	public class SpecifiedInverseJoinColumnContainerAdapter
+		extends AbstractContainerAdapter<VirtualJoinColumn, JoinColumn>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return SPECIFIED_INVERSE_JOIN_COLUMNS_LIST;
-		}
-		@Override
-		protected VirtualJoinColumn buildContextElement(JoinColumn resourceElement) {
+		public VirtualJoinColumn buildContextElement(JoinColumn resourceElement) {
 			return GenericJavaVirtualJoinTable.this.buildInverseJoinColumn(resourceElement);
 		}
-		@Override
-		protected ListIterable<JoinColumn> getResourceElements() {
+		public ListIterable<JoinColumn> getResourceElements() {
 			return GenericJavaVirtualJoinTable.this.getOverriddenInverseJoinColumns();
 		}
-		@Override
-		protected JoinColumn getResourceElement(VirtualJoinColumn contextElement) {
+		public JoinColumn extractResourceElement(VirtualJoinColumn contextElement) {
 			return contextElement.getOverriddenColumn();
 		}
 	}

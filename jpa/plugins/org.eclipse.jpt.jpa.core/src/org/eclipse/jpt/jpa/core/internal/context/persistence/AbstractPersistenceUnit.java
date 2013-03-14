@@ -571,11 +571,11 @@ public abstract class AbstractPersistenceUnit
 	// ********** specified mapping file refs **********
 
 	public ListIterable<MappingFileRef> getSpecifiedMappingFileRefs() {
-		return this.specifiedMappingFileRefContainer.getContextElements();
+		return this.specifiedMappingFileRefContainer;
 	}
 
 	public int getSpecifiedMappingFileRefsSize() {
-		return this.specifiedMappingFileRefContainer.getContextElementsSize();
+		return this.specifiedMappingFileRefContainer.size();
 	}
 
 	public MappingFileRef addSpecifiedMappingFileRef(String fileName) {
@@ -600,7 +600,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	public void removeSpecifiedMappingFileRef(MappingFileRef mappingFileRef) {
-		this.removeSpecifiedMappingFileRef(this.specifiedMappingFileRefContainer.indexOfContextElement(mappingFileRef));
+		this.removeSpecifiedMappingFileRef(this.specifiedMappingFileRefContainer.indexOf(mappingFileRef));
 	}
 
 	public void removeSpecifiedMappingFileRef(int index) {
@@ -609,7 +609,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected void removeSpecifiedMappingFileRef_(int index) {
-		this.specifiedMappingFileRefContainer.removeContextElement(index);
+		this.specifiedMappingFileRefContainer.remove(index);
 	}
 
 	protected void syncSpecifiedMappingFileRefs() {
@@ -622,36 +622,59 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected ContextListContainer<MappingFileRef, XmlMappingFileRef> buildSpecifiedMappingFileRefContainer() {
-		SpecifiedMappingFileRefContainer container = new SpecifiedMappingFileRefContainer();
-		container.initialize();
-		return container;
+		return new SpecifiedMappingFileRefContainer(SPECIFIED_MAPPING_FILE_REFS_LIST, new SpecifiedMappingFileRefContainerAdapter());
+		// return this.buildSpecifiedContextListContainer(SPECIFIED_MAPPING_FILE_REFS_LIST, new SpecifiedMappingFileRefContainerAdapter());
 	}
 
 	/**
-	 * specified mapping file ref container
+	 * specified mapping file ref container adapter
 	 */
-	protected class SpecifiedMappingFileRefContainer
-		extends ContextListContainer<MappingFileRef, XmlMappingFileRef>
+	public class SpecifiedMappingFileRefContainerAdapter
+		extends AbstractContainerAdapter<MappingFileRef, XmlMappingFileRef>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return SPECIFIED_MAPPING_FILE_REFS_LIST;
-		}
-		@Override
-		protected MappingFileRef buildContextElement(XmlMappingFileRef resourceElement) {
+		public MappingFileRef buildContextElement(XmlMappingFileRef resourceElement) {
 			return AbstractPersistenceUnit.this.buildSpecifiedMappingFileRef(resourceElement);
 		}
-		@Override
-		protected ListIterable<XmlMappingFileRef> getResourceElements() {
+		public ListIterable<XmlMappingFileRef> getResourceElements() {
 			return AbstractPersistenceUnit.this.getXmlMappingFileRefs();
 		}
-		@Override
-		protected XmlMappingFileRef getResourceElement(MappingFileRef contextElement) {
+		public XmlMappingFileRef extractResourceElement(MappingFileRef contextElement) {
 			return contextElement.getXmlMappingFileRef();
 		}
+	}
+
+	// TODO - remove once we remove need for dispose...
+	public class SpecifiedMappingFileRefContainer
+		extends SpecifiedContextListContainer<MappingFileRef, XmlMappingFileRef>
+	{
+		public SpecifiedMappingFileRefContainer(String aspectName, Container.Adapter<MappingFileRef, XmlMappingFileRef> adapter) {
+			super(aspectName, adapter);
+		}
 		@Override
-		protected void disposeElement(MappingFileRef element) {
+		public void clear() {
+			Object[] temp = this.elements.toArray();
+			super.clear();
+			for (Object element : temp) {
+				((MappingFileRef) element).dispose();
+			}
+		}
+		@Override
+		public MappingFileRef remove(int index) {
+			MappingFileRef element = super.remove(index);
 			element.dispose();
+			return element;
+		}
+		@Override
+		public void remove(MappingFileRef element) {
+			super.remove(element);
+			element.dispose();
+		}
+		@Override
+		public void removeAll(Iterable<MappingFileRef> contextElements) {
+			super.removeAll(contextElements);
+			for (MappingFileRef element : contextElements) {
+				element.dispose();
+			}
 		}
 	}
 
@@ -716,11 +739,11 @@ public abstract class AbstractPersistenceUnit
 	// ********** JAR file refs **********
 
 	public ListIterable<JarFileRef> getJarFileRefs() {
-		return this.jarFileRefContainer.getContextElements();
+		return this.jarFileRefContainer;
 	}
 
 	public int getJarFileRefsSize() {
-		return this.jarFileRefContainer.getContextElementsSize();
+		return this.jarFileRefContainer.size();
 	}
 
 	public JarFileRef addJarFileRef(String fileName) {
@@ -745,7 +768,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	public void removeJarFileRef(JarFileRef jarFileRef) {
-		this.removeJarFileRef(this.jarFileRefContainer.indexOfContextElement(jarFileRef));
+		this.removeJarFileRef(this.jarFileRefContainer.indexOf(jarFileRef));
 	}
 
 	public void removeJarFileRef(int index) {
@@ -754,7 +777,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected void removeJarFileRef_(int index) {
-		this.jarFileRefContainer.removeContextElement(index);
+		this.jarFileRefContainer.remove(index);
 	}
 
 	protected void syncJarFileRefs() {
@@ -767,31 +790,22 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected ContextListContainer<JarFileRef, XmlJarFileRef> buildJarFileRefContainer() {
-		JarFileRefContainer container = new JarFileRefContainer();
-		container.initialize();
-		return container;
+		return this.buildSpecifiedContextListContainer(JAR_FILE_REFS_LIST, new JarFileRefContainerAdapter());
 	}
 
 	/**
-	 * JAR file ref container
+	 * JAR file ref container adapter
 	 */
-	protected class JarFileRefContainer
-		extends ContextListContainer<JarFileRef, XmlJarFileRef>
+	public class JarFileRefContainerAdapter
+		extends AbstractContainerAdapter<JarFileRef, XmlJarFileRef>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return JAR_FILE_REFS_LIST;
-		}
-		@Override
-		protected JarFileRef buildContextElement(XmlJarFileRef resourceElement) {
+		public JarFileRef buildContextElement(XmlJarFileRef resourceElement) {
 			return AbstractPersistenceUnit.this.buildJarFileRef(resourceElement);
 		}
-		@Override
-		protected ListIterable<XmlJarFileRef> getResourceElements() {
+		public ListIterable<XmlJarFileRef> getResourceElements() {
 			return AbstractPersistenceUnit.this.getXmlJarFileRefs();
 		}
-		@Override
-		protected XmlJarFileRef getResourceElement(JarFileRef contextElement) {
+		public XmlJarFileRef extractResourceElement(JarFileRef contextElement) {
 			return contextElement.getXmlJarFileRef();
 		}
 	}
@@ -814,11 +828,11 @@ public abstract class AbstractPersistenceUnit
 	// ********** specified class refs **********
 
 	public ListIterable<ClassRef> getSpecifiedClassRefs() {
-		return this.specifiedClassRefContainer.getContextElements();
+		return this.specifiedClassRefContainer;
 	}
 
 	public int getSpecifiedClassRefsSize() {
-		return this.specifiedClassRefContainer.getContextElementsSize();
+		return this.specifiedClassRefContainer.size();
 	}
 
 	public ClassRef addSpecifiedClassRef(String className) {
@@ -857,7 +871,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	public void removeSpecifiedClassRef(ClassRef classRef) {
-		this.removeSpecifiedClassRef(this.specifiedClassRefContainer.indexOfContextElement(classRef));
+		this.removeSpecifiedClassRef(this.specifiedClassRefContainer.indexOf(classRef));
 	}
 
 	public void removeSpecifiedClassRef(int index) {
@@ -866,7 +880,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected void removeSpecifiedClassRef_(int index) {
-		this.specifiedClassRefContainer.removeContextElement(index);
+		this.specifiedClassRefContainer.remove(index);
 	}
 
 	public void removeSpecifiedClassRefs(Iterable<ClassRef> classRefs) {
@@ -888,31 +902,22 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected ContextListContainer<ClassRef, XmlJavaClassRef> buildSpecifiedClassRefContainer() {
-		SpecifiedClassRefContainer container = new SpecifiedClassRefContainer();
-		container.initialize();
-		return container;
+		return this.buildSpecifiedContextListContainer(SPECIFIED_CLASS_REFS_LIST, new SpecifiedClassRefContainerAdapter());
 	}
 
 	/**
-	 * specified class ref container
+	 * specified class ref container adapter
 	 */
-	protected class SpecifiedClassRefContainer
-		extends ContextListContainer<ClassRef, XmlJavaClassRef>
+	public class SpecifiedClassRefContainerAdapter
+		extends AbstractContainerAdapter<ClassRef, XmlJavaClassRef>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return SPECIFIED_CLASS_REFS_LIST;
-		}
-		@Override
-		protected ClassRef buildContextElement(XmlJavaClassRef resourceElement) {
+		public ClassRef buildContextElement(XmlJavaClassRef resourceElement) {
 			return AbstractPersistenceUnit.this.buildClassRef(resourceElement);
 		}
-		@Override
-		protected ListIterable<XmlJavaClassRef> getResourceElements() {
+		public ListIterable<XmlJavaClassRef> getResourceElements() {
 			return AbstractPersistenceUnit.this.getXmlClassRefs();
 		}
-		@Override
-		protected XmlJavaClassRef getResourceElement(ClassRef contextElement) {
+		public XmlJavaClassRef extractResourceElement(ClassRef contextElement) {
 			return contextElement.getXmlClassRef();
 		}
 	}
@@ -921,11 +926,11 @@ public abstract class AbstractPersistenceUnit
 	// ********** virtual class refs **********
 
 	public Iterable<ClassRef> getImpliedClassRefs() {
-		return this.impliedClassRefContainer.getContextElements();
+		return this.impliedClassRefContainer;
 	}
 
 	public int getImpliedClassRefsSize() {
-		return this.impliedClassRefContainer.getContextElementsSize();
+		return this.impliedClassRefContainer.size();
 	}
 
 	protected ClassRef buildClassRef(JavaResourceAbstractType jrat) {
@@ -961,11 +966,11 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected ContextCollectionContainer<ClassRef, JavaResourceAbstractType> buildImpliedClassRefContainer() {
-		return new ImpliedClassRefContainer();
+		return this.buildVirtualContextCollectionContainer(IMPLIED_CLASS_REFS_COLLECTION, new ImpliedClassRefContainerAdapter());
 	}
 
 	/**
-	 * Virtual class ref container adapter.
+	 * default class ref container adapter
 	 * <p>
 	 * <strong>NB:</strong> The context class ref is matched with a java resource type.
 	 * <p>
@@ -987,23 +992,16 @@ public abstract class AbstractPersistenceUnit
 	 * setting whether the persistence unit excludes unlisted classes); o the
 	 * collection must also be synchronized during <em>update</em>.
 	 */
-	protected class ImpliedClassRefContainer
-		extends ContextCollectionContainer<ClassRef, JavaResourceAbstractType>
+	public class ImpliedClassRefContainerAdapter
+		extends AbstractContainerAdapter<ClassRef, JavaResourceAbstractType>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return IMPLIED_CLASS_REFS_COLLECTION;
-		}
-		@Override
-		protected ClassRef buildContextElement(JavaResourceAbstractType resourceElement) {
+		public ClassRef buildContextElement(JavaResourceAbstractType resourceElement) {
 			return AbstractPersistenceUnit.this.buildClassRef(resourceElement);
 		}
-		@Override
-		protected Iterable<JavaResourceAbstractType> getResourceElements() {
+		public Iterable<JavaResourceAbstractType> getResourceElements() {
 			return AbstractPersistenceUnit.this.getImpliedClassResourceTypes();
 		}
-		@Override
-		protected JavaResourceAbstractType getResourceElement(ClassRef contextElement) {
+		public JavaResourceAbstractType extractResourceElement(ClassRef contextElement) {
 			return contextElement.getJavaResourceType();
 		}
 	}
@@ -1038,11 +1036,11 @@ public abstract class AbstractPersistenceUnit
 	// ********** properties **********
 
 	public ListIterable<Property> getProperties() {
-		return this.propertyContainer.getContextElements();
+		return this.propertyContainer;
 	}
 
 	public int getPropertiesSize() {
-		return this.propertyContainer.getContextElementsSize();
+		return this.propertyContainer.size();
 	}
 
 	public Property getProperty(String propertyName) {
@@ -1138,7 +1136,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	public void removeProperty(Property property) {
-		this.removeProperty(this.propertyContainer.indexOfContextElement(property));
+		this.removeProperty(this.propertyContainer.indexOf(property));
 	}
 
 	public void removeProperty(String propertyName) {
@@ -1168,7 +1166,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected void removeProperty(int index) {
-		Property removedProperty = this.propertyContainer.removeContextElement(index);
+		Property removedProperty = this.propertyContainer.remove(index);
 		this.xmlPersistenceUnit.getProperties().getProperties().remove(index);
 
 		if (this.xmlPersistenceUnit.getProperties().getProperties().isEmpty()) {
@@ -1254,55 +1252,81 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected void removeProperty_(Property property) {
-		this.propertyContainer.removeContextElement(property);
+		this.propertyContainer.remove(property);
 		if (property.getName() != null) {
 			this.propertyRemoved(property.getName());
 		}
 	}
 
 	protected ContextListContainer<Property, XmlProperty> buildPropertyContainer() {
-		PropertyContainer container = new PropertyContainer();
-		container.initialize();
-		return container;
+		return new PropertyContainer(PROPERTIES_LIST, new PropertyContainerAdapter());
+		// return this.buildSpecifiedContextListContainer(PROPERTIES_LIST, new PropertyContainerAdapter());
 	}
 
 	/**
-	 * property container
+	 * property container adapter
 	 */
-	protected class PropertyContainer
-		extends ContextListContainer<Property, XmlProperty>
+	public class PropertyContainerAdapter
+		extends AbstractContainerAdapter<Property, XmlProperty>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return PROPERTIES_LIST;
-		}
-		@Override
-		protected Property buildContextElement(XmlProperty resourceElement) {
+		public Property buildContextElement(XmlProperty resourceElement) {
 			return AbstractPersistenceUnit.this.buildProperty(resourceElement);
 		}
-		@Override
-		protected ListIterable<XmlProperty> getResourceElements() {
+		public ListIterable<XmlProperty> getResourceElements() {
 			return AbstractPersistenceUnit.this.getXmlProperties();
 		}
-		@Override
-		protected XmlProperty getResourceElement(Property contextElement) {
+		public XmlProperty extractResourceElement(Property contextElement) {
 			return contextElement.getXmlProperty();
 		}
-		@Override
-		protected Property addContextElement_(int index, Property contextElement) {
-			super.addContextElement_(index, contextElement);
-			if (contextElement.getName() != null) {
-				propertyAdded(contextElement.getName(), contextElement.getValue());
-			}
-			return contextElement;
+	}
+
+	public class PropertyContainer
+		extends SpecifiedContextListContainer<Property, XmlProperty>
+	{
+		public PropertyContainer(String aspectName, Container.Adapter<Property, XmlProperty> adapter) {
+			super(aspectName, adapter);
 		}
 		@Override
-		protected void disposeElement(Property contextElement) {
-			if (contextElement.getName() != null) {
-				propertyRemoved(contextElement.getName());
+		protected Property add(int index, Property element) {
+			super.add(index, element);
+			if (element.getName() != null) {
+				propertyAdded(element.getName(), element.getValue());
+			}
+			return element;
+		}
+		@Override
+		public void clear() {
+			Object[] temp = this.elements.toArray();
+			super.clear();
+			for (Object element : temp) {
+				this.dispose((Property) element);
+			}
+		}
+		@Override
+		public Property remove(int index) {
+			Property element = super.remove(index);
+			this.dispose(element);
+			return element;
+		}
+		@Override
+		public void remove(Property element) {
+			super.remove(element);
+			this.dispose(element);
+		}
+		@Override
+		public void removeAll(Iterable<Property> contextElements) {
+			super.removeAll(contextElements);
+			for (Property element : contextElements) {
+				this.dispose(element);
+			}
+		}
+		protected void dispose(Property element) {
+			if (element.getName() != null) {
+				propertyRemoved(element.getName());
 			}
 		}
 	}
+
 
 	// ********** mapping file (orm.xml) persistence unit metadata & defaults **********
 

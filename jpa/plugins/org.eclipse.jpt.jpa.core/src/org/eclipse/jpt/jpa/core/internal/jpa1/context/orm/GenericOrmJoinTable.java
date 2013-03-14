@@ -18,14 +18,14 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
-import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
-import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinTable;
@@ -117,11 +117,11 @@ public class GenericOrmJoinTable
 	// ********** specified inverse join columns **********
 
 	public ListIterable<OrmSpecifiedJoinColumn> getSpecifiedInverseJoinColumns() {
-		return this.specifiedInverseJoinColumnContainer.getContextElements();
+		return this.specifiedInverseJoinColumnContainer;
 	}
 
 	public int getSpecifiedInverseJoinColumnsSize() {
-		return this.specifiedInverseJoinColumnContainer.getContextElementsSize();
+		return this.specifiedInverseJoinColumnContainer.size();
 	}
 
 	public boolean hasSpecifiedInverseJoinColumns() {
@@ -129,7 +129,7 @@ public class GenericOrmJoinTable
 	}
 
 	public OrmSpecifiedJoinColumn getSpecifiedInverseJoinColumn(int index) {
-		return this.specifiedInverseJoinColumnContainer.getContextElement(index);
+		return this.specifiedInverseJoinColumnContainer.get(index);
 	}
 
 	public OrmSpecifiedJoinColumn addSpecifiedInverseJoinColumn() {
@@ -145,22 +145,22 @@ public class GenericOrmJoinTable
 	}
 
 	public void removeSpecifiedInverseJoinColumn(SpecifiedJoinColumn joinColumn) {
-		this.removeSpecifiedInverseJoinColumn(this.specifiedInverseJoinColumnContainer.indexOfContextElement((OrmSpecifiedJoinColumn) joinColumn));
+		this.removeSpecifiedInverseJoinColumn(this.specifiedInverseJoinColumnContainer.indexOf((OrmSpecifiedJoinColumn) joinColumn));
 	}
 
 	public void removeSpecifiedInverseJoinColumn(int index) {
-		this.specifiedInverseJoinColumnContainer.removeContextElement(index);
+		this.specifiedInverseJoinColumnContainer.remove(index);
 		this.getXmlTable().getInverseJoinColumns().remove(index);
 		this.removeXmlTableIfUnset();
 	}
 
 	public void moveSpecifiedInverseJoinColumn(int targetIndex, int sourceIndex) {
-		this.specifiedInverseJoinColumnContainer.moveContextElement(targetIndex, sourceIndex);
+		this.specifiedInverseJoinColumnContainer.move(targetIndex, sourceIndex);
 		this.getXmlTable().getInverseJoinColumns().move(targetIndex, sourceIndex);
 	}
 
 	public void clearSpecifiedInverseJoinColumns() {
-		this.specifiedInverseJoinColumnContainer.clearContextList();
+		this.specifiedInverseJoinColumnContainer.clear();
 		this.getXmlTable().getInverseJoinColumns().clear();
 	}
 
@@ -177,31 +177,22 @@ public class GenericOrmJoinTable
 	}
 
 	protected ContextListContainer<OrmSpecifiedJoinColumn, XmlJoinColumn> buildSpecifiedInverseJoinColumnContainer() {
-		SpecifiedInverseJoinColumnContainer container = new SpecifiedInverseJoinColumnContainer();
-		container.initialize();
-		return container;
+		return this.buildSpecifiedContextListContainer(SPECIFIED_INVERSE_JOIN_COLUMNS_LIST, new SpecifiedInverseJoinColumnContainerAdapter());
 	}
 
 	/**
-	 * specified inverse join column container
+	 * specified inverse join column container adapter
 	 */
-	protected class SpecifiedInverseJoinColumnContainer
-		extends ContextListContainer<OrmSpecifiedJoinColumn, XmlJoinColumn>
+	public class SpecifiedInverseJoinColumnContainerAdapter
+		extends AbstractContainerAdapter<OrmSpecifiedJoinColumn, XmlJoinColumn>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return SPECIFIED_INVERSE_JOIN_COLUMNS_LIST;
-		}
-		@Override
-		protected OrmSpecifiedJoinColumn buildContextElement(XmlJoinColumn resourceElement) {
+		public OrmSpecifiedJoinColumn buildContextElement(XmlJoinColumn resourceElement) {
 			return GenericOrmJoinTable.this.buildInverseJoinColumn(resourceElement);
 		}
-		@Override
-		protected ListIterable<XmlJoinColumn> getResourceElements() {
+		public ListIterable<XmlJoinColumn> getResourceElements() {
 			return GenericOrmJoinTable.this.getXmlInverseJoinColumns();
 		}
-		@Override
-		protected XmlJoinColumn getResourceElement(OrmSpecifiedJoinColumn contextElement) {
+		public XmlJoinColumn extractResourceElement(OrmSpecifiedJoinColumn contextElement) {
 			return contextElement.getXmlColumn();
 		}
 	}

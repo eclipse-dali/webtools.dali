@@ -1045,11 +1045,11 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	// ********** specified map key join columns **********
 
 	public ListIterable<OrmSpecifiedJoinColumn> getSpecifiedMapKeyJoinColumns() {
-		return this.specifiedMapKeyJoinColumnContainer.getContextElements();
+		return this.specifiedMapKeyJoinColumnContainer;
 	}
 
 	public int getSpecifiedMapKeyJoinColumnsSize() {
-		return this.specifiedMapKeyJoinColumnContainer.getContextElementsSize();
+		return this.specifiedMapKeyJoinColumnContainer.size();
 	}
 
 	public boolean hasSpecifiedMapKeyJoinColumns() {
@@ -1057,7 +1057,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	public OrmSpecifiedJoinColumn getSpecifiedMapKeyJoinColumn(int index) {
-		return this.specifiedMapKeyJoinColumnContainer.getContextElement(index);
+		return this.specifiedMapKeyJoinColumnContainer.get(index);
 	}
 
 	public OrmSpecifiedJoinColumn addSpecifiedMapKeyJoinColumn() {
@@ -1076,16 +1076,16 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	public void removeSpecifiedMapKeyJoinColumn(SpecifiedJoinColumn joinColumn) {
-		this.removeSpecifiedMapKeyJoinColumn(this.specifiedMapKeyJoinColumnContainer.indexOfContextElement((OrmSpecifiedJoinColumn) joinColumn));
+		this.removeSpecifiedMapKeyJoinColumn(this.specifiedMapKeyJoinColumnContainer.indexOf((OrmSpecifiedJoinColumn) joinColumn));
 	}
 
 	public void removeSpecifiedMapKeyJoinColumn(int index) {
-		this.specifiedMapKeyJoinColumnContainer.removeContextElement(index);
+		this.specifiedMapKeyJoinColumnContainer.remove(index);
 		this.getXmlAttributeMapping().getMapKeyJoinColumns().remove(index);
 	}
 
 	public void moveSpecifiedMapKeyJoinColumn(int targetIndex, int sourceIndex) {
-		this.specifiedMapKeyJoinColumnContainer.moveContextElement(targetIndex, sourceIndex);
+		this.specifiedMapKeyJoinColumnContainer.move(targetIndex, sourceIndex);
 		this.getXmlAttributeMapping().getMapKeyJoinColumns().move(targetIndex, sourceIndex);
 	}
 
@@ -1099,31 +1099,22 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected ContextListContainer<OrmSpecifiedJoinColumn, XmlJoinColumn> buildSpecifiedMapKeyJoinColumnContainer() {
-		SpecifiedMapKeyJoinColumnContainer container = new SpecifiedMapKeyJoinColumnContainer();
-		container.initialize();
-		return container;
+		return this.buildSpecifiedContextListContainer(SPECIFIED_MAP_KEY_JOIN_COLUMNS_LIST, new SpecifiedMapKeyJoinColumnContainerAdapter());
 	}
 
 	/**
-	 * specified join column container
+	 * specified map key join column container adapter
 	 */
-	public class SpecifiedMapKeyJoinColumnContainer
-		extends ContextListContainer<OrmSpecifiedJoinColumn, XmlJoinColumn>
+	public class SpecifiedMapKeyJoinColumnContainerAdapter
+		extends AbstractContainerAdapter<OrmSpecifiedJoinColumn, XmlJoinColumn>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return SPECIFIED_MAP_KEY_JOIN_COLUMNS_LIST;
-		}
-		@Override
-		protected OrmSpecifiedJoinColumn buildContextElement(XmlJoinColumn resourceElement) {
+		public OrmSpecifiedJoinColumn buildContextElement(XmlJoinColumn resourceElement) {
 			return AbstractOrmElementCollectionMapping2_0.this.buildMapKeyJoinColumn(resourceElement);
 		}
-		@Override
-		protected ListIterable<XmlJoinColumn> getResourceElements() {
+		public ListIterable<XmlJoinColumn> getResourceElements() {
 			return AbstractOrmElementCollectionMapping2_0.this.getXmlMapKeyJoinColumns();
 		}
-		@Override
-		protected XmlJoinColumn getResourceElement(OrmSpecifiedJoinColumn contextElement) {
+		public XmlJoinColumn extractResourceElement(OrmSpecifiedJoinColumn contextElement) {
 			return contextElement.getXmlColumn();
 		}
 	}

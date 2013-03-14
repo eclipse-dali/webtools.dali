@@ -89,11 +89,11 @@ public abstract class AbstractJavaQuery<P extends JavaQueryContainer, A extends 
 	// ********** hints **********
 
 	public ListIterable<JavaQueryHint> getHints() {
-		return this.hintContainer.getContextElements();
+		return this.hintContainer;
 	}
 
 	public int getHintsSize() {
-		return this.hintContainer.getContextElementsSize();
+		return this.hintContainer.size();
 	}
 
 	public JavaQueryHint addHint() {
@@ -106,17 +106,17 @@ public abstract class AbstractJavaQuery<P extends JavaQueryContainer, A extends 
 	}
 
 	public void removeHint(QueryHint hint) {
-		this.removeHint(this.hintContainer.indexOfContextElement((JavaQueryHint) hint));
+		this.removeHint(this.hintContainer.indexOf((JavaQueryHint) hint));
 	}
 
 	public void removeHint(int index) {
 		this.queryAnnotation.removeHint(index);
-		this.hintContainer.removeContextElement(index);
+		this.hintContainer.remove(index);
 	}
 
 	public void moveHint(int targetIndex, int sourceIndex) {
 		this.queryAnnotation.moveHint(targetIndex, sourceIndex);
-		this.hintContainer.moveContextElement(targetIndex, sourceIndex);
+		this.hintContainer.move(targetIndex, sourceIndex);
 	}
 
 	public JavaQueryHint getHint(int index) {
@@ -136,31 +136,22 @@ public abstract class AbstractJavaQuery<P extends JavaQueryContainer, A extends 
 	}
 
 	protected ContextListContainer<JavaQueryHint, QueryHintAnnotation> buildHintContainer() {
-		HintContainer container = new HintContainer();
-		container.initialize();
-		return container;
+		return this.buildSpecifiedContextListContainer(HINTS_LIST, new HintContainerAdapter());
 	}
 
 	/**
-	 * query hint container
+	 * hint container adapter
 	 */
-	protected class HintContainer
-		extends ContextListContainer<JavaQueryHint, QueryHintAnnotation>
+	public class HintContainerAdapter
+		extends AbstractContainerAdapter<JavaQueryHint, QueryHintAnnotation>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return HINTS_LIST;
-		}
-		@Override
-		protected JavaQueryHint buildContextElement(QueryHintAnnotation resourceElement) {
+		public JavaQueryHint buildContextElement(QueryHintAnnotation resourceElement) {
 			return AbstractJavaQuery.this.buildHint(resourceElement);
 		}
-		@Override
-		protected ListIterable<QueryHintAnnotation> getResourceElements() {
+		public ListIterable<QueryHintAnnotation> getResourceElements() {
 			return AbstractJavaQuery.this.getHintAnnotations();
 		}
-		@Override
-		protected QueryHintAnnotation getResourceElement(JavaQueryHint contextElement) {
+		public QueryHintAnnotation extractResourceElement(JavaQueryHint contextElement) {
 			return contextElement.getQueryHintAnnotation();
 		}
 	}

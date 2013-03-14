@@ -947,11 +947,11 @@ public abstract class AbstractEntityMappings
 	// ********** sequence generators **********
 
 	public ListIterable<OrmSequenceGenerator> getSequenceGenerators() {
-		return this.sequenceGeneratorContainer.getContextElements();
+		return this.sequenceGeneratorContainer;
 	}
 
 	public int getSequenceGeneratorsSize() {
-		return this.sequenceGeneratorContainer.getContextElementsSize();
+		return this.sequenceGeneratorContainer.size();
 	}
 
 	public OrmSequenceGenerator addSequenceGenerator() {
@@ -974,16 +974,16 @@ public abstract class AbstractEntityMappings
 	}
 
 	public void removeSequenceGenerator(OrmSequenceGenerator sequenceGenerator) {
-		this.removeSequenceGenerator(this.sequenceGeneratorContainer.indexOfContextElement(sequenceGenerator));
+		this.removeSequenceGenerator(this.sequenceGeneratorContainer.indexOf(sequenceGenerator));
 	}
 
 	public void removeSequenceGenerator(int index) {
-		this.sequenceGeneratorContainer.removeContextElement(index);
+		this.sequenceGeneratorContainer.remove(index);
 		this.xmlEntityMappings.getSequenceGenerators().remove(index);
 	}
 
 	public void moveSequenceGenerator(int targetIndex, int sourceIndex) {
-		this.sequenceGeneratorContainer.moveContextElement(targetIndex, sourceIndex);
+		this.sequenceGeneratorContainer.move(targetIndex, sourceIndex);
 		this.xmlEntityMappings.getSequenceGenerators().move(targetIndex, sourceIndex);
 	}
 
@@ -997,31 +997,22 @@ public abstract class AbstractEntityMappings
 	}
 
 	protected ContextListContainer<OrmSequenceGenerator, XmlSequenceGenerator> buildSequenceGeneratorContainer() {
-		SequenceGeneratorContainer container = new SequenceGeneratorContainer();
-		container.initialize();
-		return container;
+		return this.buildSpecifiedContextListContainer(SEQUENCE_GENERATORS_LIST, new SequenceGeneratorContainerAdapter());
 	}
 
 	/**
-	 * sequence generator container
+	 * sequence generator container adapter
 	 */
-	protected class SequenceGeneratorContainer
-		extends ContextListContainer<OrmSequenceGenerator, XmlSequenceGenerator>
+	public class SequenceGeneratorContainerAdapter
+		extends AbstractContainerAdapter<OrmSequenceGenerator, XmlSequenceGenerator>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return SEQUENCE_GENERATORS_LIST;
-		}
-		@Override
-		protected OrmSequenceGenerator buildContextElement(XmlSequenceGenerator resourceElement) {
+		public OrmSequenceGenerator buildContextElement(XmlSequenceGenerator resourceElement) {
 			return AbstractEntityMappings.this.buildSequenceGenerator(resourceElement);
 		}
-		@Override
-		protected ListIterable<XmlSequenceGenerator> getResourceElements() {
+		public ListIterable<XmlSequenceGenerator> getResourceElements() {
 			return AbstractEntityMappings.this.getXmlSequenceGenerators();
 		}
-		@Override
-		protected XmlSequenceGenerator getResourceElement(OrmSequenceGenerator contextElement) {
+		public XmlSequenceGenerator extractResourceElement(OrmSequenceGenerator contextElement) {
 			return contextElement.getXmlGenerator();
 		}
 	}
@@ -1030,11 +1021,11 @@ public abstract class AbstractEntityMappings
 	// ********** table generators **********
 
 	public ListIterable<OrmTableGenerator> getTableGenerators() {
-		return this.tableGeneratorContainer.getContextElements();
+		return this.tableGeneratorContainer;
 	}
 
 	public int getTableGeneratorsSize() {
-		return this.tableGeneratorContainer.getContextElementsSize();
+		return this.tableGeneratorContainer.size();
 	}
 
 	public OrmTableGenerator addTableGenerator() {
@@ -1057,16 +1048,16 @@ public abstract class AbstractEntityMappings
 	}
 
 	public void removeTableGenerator(OrmTableGenerator tableGenerator) {
-		this.removeTableGenerator(this.tableGeneratorContainer.indexOfContextElement(tableGenerator));
+		this.removeTableGenerator(this.tableGeneratorContainer.indexOf(tableGenerator));
 	}
 
 	public void removeTableGenerator(int index) {
-		this.tableGeneratorContainer.removeContextElement(index);
+		this.tableGeneratorContainer.remove(index);
 		this.xmlEntityMappings.getTableGenerators().remove(index);
 	}
 
 	public void moveTableGenerator(int targetIndex, int sourceIndex) {
-		this.tableGeneratorContainer.moveContextElement(targetIndex, sourceIndex);
+		this.tableGeneratorContainer.move(targetIndex, sourceIndex);
 		this.xmlEntityMappings.getTableGenerators().move(targetIndex, sourceIndex);
 	}
 
@@ -1080,31 +1071,22 @@ public abstract class AbstractEntityMappings
 	}
 
 	protected ContextListContainer<OrmTableGenerator, XmlTableGenerator> buildTableGeneratorContainer() {
-		TableGeneratorContainer container = new TableGeneratorContainer();
-		container.initialize();
-		return container;
+		return this.buildSpecifiedContextListContainer(TABLE_GENERATORS_LIST, new TableGeneratorContainerAdapter());
 	}
 
 	/**
-	 * table generator container
+	 * table generator container adapter
 	 */
-	protected class TableGeneratorContainer
-		extends ContextListContainer<OrmTableGenerator, XmlTableGenerator>
+	public class TableGeneratorContainerAdapter
+		extends AbstractContainerAdapter<OrmTableGenerator, XmlTableGenerator>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return TABLE_GENERATORS_LIST;
-		}
-		@Override
-		protected OrmTableGenerator buildContextElement(XmlTableGenerator resourceElement) {
+		public OrmTableGenerator buildContextElement(XmlTableGenerator resourceElement) {
 			return AbstractEntityMappings.this.buildTableGenerator(resourceElement);
 		}
-		@Override
-		protected ListIterable<XmlTableGenerator> getResourceElements() {
+		public ListIterable<XmlTableGenerator> getResourceElements() {
 			return AbstractEntityMappings.this.getXmlTableGenerators();
 		}
-		@Override
-		protected XmlTableGenerator getResourceElement(OrmTableGenerator contextElement) {
+		public XmlTableGenerator extractResourceElement(OrmTableGenerator contextElement) {
 			return contextElement.getXmlGenerator();
 		}
 	}

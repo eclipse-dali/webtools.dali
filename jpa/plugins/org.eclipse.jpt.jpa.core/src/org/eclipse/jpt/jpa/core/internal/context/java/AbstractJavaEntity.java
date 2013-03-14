@@ -412,11 +412,11 @@ public abstract class AbstractJavaEntity
 	// ********** specified secondary tables **********
 
 	public ListIterable<JavaSpecifiedSecondaryTable> getSpecifiedSecondaryTables() {
-		return this.specifiedSecondaryTableContainer.getContextElements();
+		return this.specifiedSecondaryTableContainer;
 	}
 
 	public int getSpecifiedSecondaryTablesSize() {
-		return this.specifiedSecondaryTableContainer.getContextElementsSize();
+		return this.specifiedSecondaryTableContainer.size();
 	}
 
 	public JavaSpecifiedSecondaryTable addSpecifiedSecondaryTable() {
@@ -433,17 +433,17 @@ public abstract class AbstractJavaEntity
 	}
 
 	public void removeSpecifiedSecondaryTable(SpecifiedSecondaryTable secondaryTable) {
-		this.removeSpecifiedSecondaryTable(this.specifiedSecondaryTableContainer.indexOfContextElement((JavaSpecifiedSecondaryTable) secondaryTable));
+		this.removeSpecifiedSecondaryTable(this.specifiedSecondaryTableContainer.indexOf((JavaSpecifiedSecondaryTable) secondaryTable));
 	}
 
 	public void removeSpecifiedSecondaryTable(int index) {
 		this.getJavaResourceType().removeAnnotation(index, SecondaryTableAnnotation.ANNOTATION_NAME);
-		this.specifiedSecondaryTableContainer.removeContextElement(index);
+		this.specifiedSecondaryTableContainer.remove(index);
 	}
 
 	public void moveSpecifiedSecondaryTable(int targetIndex, int sourceIndex) {
 		this.getResourceAnnotatedElement().moveAnnotation(targetIndex, sourceIndex, SecondaryTableAnnotation.ANNOTATION_NAME);
-		this.specifiedSecondaryTableContainer.moveContextElement(targetIndex, sourceIndex);
+		this.specifiedSecondaryTableContainer.move(targetIndex, sourceIndex);
 	}
 
 	protected JavaSpecifiedSecondaryTable buildSecondaryTable(SecondaryTableAnnotation secondaryTableAnnotation) {
@@ -467,31 +467,22 @@ public abstract class AbstractJavaEntity
 	}
 
 	protected ContextListContainer<JavaSpecifiedSecondaryTable, SecondaryTableAnnotation> buildSpecifiedSecondaryTableContainer() {
-		SpecifiedSecondaryTableContainer container = new SpecifiedSecondaryTableContainer();
-		container.initialize();
-		return container;
+		return this.buildSpecifiedContextListContainer(SPECIFIED_SECONDARY_TABLES_LIST, new SpecifiedSecondaryTableContainerAdapter());
 	}
 
 	/**
-	 * specified secondary table container
+	 * specified secondary table container adapter
 	 */
-	public class SpecifiedSecondaryTableContainer
-		extends ContextListContainer<JavaSpecifiedSecondaryTable, SecondaryTableAnnotation>
+	public class SpecifiedSecondaryTableContainerAdapter
+		extends AbstractContainerAdapter<JavaSpecifiedSecondaryTable, SecondaryTableAnnotation>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return SPECIFIED_SECONDARY_TABLES_LIST;
-		}
-		@Override
-		protected JavaSpecifiedSecondaryTable buildContextElement(SecondaryTableAnnotation resourceElement) {
+		public JavaSpecifiedSecondaryTable buildContextElement(SecondaryTableAnnotation resourceElement) {
 			return AbstractJavaEntity.this.buildSecondaryTable(resourceElement);
 		}
-		@Override
-		protected ListIterable<SecondaryTableAnnotation> getResourceElements() {
+		public ListIterable<SecondaryTableAnnotation> getResourceElements() {
 			return AbstractJavaEntity.this.getSecondaryTableAnnotations();
 		}
-		@Override
-		protected SecondaryTableAnnotation getResourceElement(JavaSpecifiedSecondaryTable contextElement) {
+		public SecondaryTableAnnotation extractResourceElement(JavaSpecifiedSecondaryTable contextElement) {
 			return contextElement.getTableAnnotation();
 		}
 	}
@@ -515,7 +506,7 @@ public abstract class AbstractJavaEntity
 	// ********** specified primary key join columns **********
 
 	public ListIterable<JavaSpecifiedPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns() {
-		return this.specifiedPrimaryKeyJoinColumnContainer.getContextElements();
+		return this.specifiedPrimaryKeyJoinColumnContainer;
 	}
 
 	public SpecifiedPrimaryKeyJoinColumn getSpecifiedPrimaryKeyJoinColumn(int index) {
@@ -523,7 +514,7 @@ public abstract class AbstractJavaEntity
 	}
 
 	public int getSpecifiedPrimaryKeyJoinColumnsSize() {
-		return this.specifiedPrimaryKeyJoinColumnContainer.getContextElementsSize();
+		return this.specifiedPrimaryKeyJoinColumnContainer.size();
 	}
 
 	protected boolean hasSpecifiedPrimaryKeyJoinColumns() {
@@ -544,7 +535,7 @@ public abstract class AbstractJavaEntity
 	}
 
 	public void removeSpecifiedPrimaryKeyJoinColumn(SpecifiedPrimaryKeyJoinColumn joinColumn) {
-		this.removeSpecifiedPrimaryKeyJoinColumn(this.specifiedPrimaryKeyJoinColumnContainer.indexOfContextElement((JavaSpecifiedPrimaryKeyJoinColumn) joinColumn));
+		this.removeSpecifiedPrimaryKeyJoinColumn(this.specifiedPrimaryKeyJoinColumnContainer.indexOf((JavaSpecifiedPrimaryKeyJoinColumn) joinColumn));
 	}
 
 	public void convertDefaultPrimaryKeyJoinColumnsToSpecified() {
@@ -564,17 +555,17 @@ public abstract class AbstractJavaEntity
 		for (int index = this.getSpecifiedPrimaryKeyJoinColumnsSize(); --index >= 0; ) {
 			this.getJavaResourceType().removeAnnotation(index, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME);
 		}
-		this.specifiedPrimaryKeyJoinColumnContainer.clearContextList();
+		this.specifiedPrimaryKeyJoinColumnContainer.clear();
 	}
 
 	public void removeSpecifiedPrimaryKeyJoinColumn(int index) {
 		this.getJavaResourceType().removeAnnotation(index, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME);
-		this.specifiedPrimaryKeyJoinColumnContainer.removeContextElement(index);
+		this.specifiedPrimaryKeyJoinColumnContainer.remove(index);
 	}
 
 	public void moveSpecifiedPrimaryKeyJoinColumn(int targetIndex, int sourceIndex) {
 		this.getJavaResourceType().moveAnnotation(targetIndex, sourceIndex, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME);
-		this.specifiedPrimaryKeyJoinColumnContainer.moveContextElement(targetIndex, sourceIndex);
+		this.specifiedPrimaryKeyJoinColumnContainer.move(targetIndex, sourceIndex);
 	}
 
 	protected void syncSpecifiedPrimaryKeyJoinColumns() {
@@ -602,31 +593,22 @@ public abstract class AbstractJavaEntity
 	}
 
 	protected ContextListContainer<JavaSpecifiedPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation> buildSpecifiedPrimaryKeyJoinColumnContainer() {
-		SpecifiedPrimaryKeyJoinColumnContainer container = new SpecifiedPrimaryKeyJoinColumnContainer();
-		container.initialize();
-		return container;
+		return this.buildSpecifiedContextListContainer(SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, new SpecifiedPrimaryKeyJoinColumnContainerAdapter());
 	}
 
 	/**
-	 * specified primary key join column container
+	 * specified primary key join column container adapter
 	 */
-	public class SpecifiedPrimaryKeyJoinColumnContainer
-		extends ContextListContainer<JavaSpecifiedPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation>
+	public class SpecifiedPrimaryKeyJoinColumnContainerAdapter
+		extends AbstractContainerAdapter<JavaSpecifiedPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST;
-		}
-		@Override
-		protected JavaSpecifiedPrimaryKeyJoinColumn buildContextElement(PrimaryKeyJoinColumnAnnotation resourceElement) {
+		public JavaSpecifiedPrimaryKeyJoinColumn buildContextElement(PrimaryKeyJoinColumnAnnotation resourceElement) {
 			return AbstractJavaEntity.this.buildSpecifiedPrimaryKeyJoinColumn(resourceElement);
 		}
-		@Override
-		protected ListIterable<PrimaryKeyJoinColumnAnnotation> getResourceElements() {
+		public ListIterable<PrimaryKeyJoinColumnAnnotation> getResourceElements() {
 			return AbstractJavaEntity.this.getPrimaryKeyJoinColumnAnnotations();
 		}
-		@Override
-		protected PrimaryKeyJoinColumnAnnotation getResourceElement(JavaSpecifiedPrimaryKeyJoinColumn contextElement) {
+		public PrimaryKeyJoinColumnAnnotation extractResourceElement(JavaSpecifiedPrimaryKeyJoinColumn contextElement) {
 			return contextElement.getColumnAnnotation();
 		}
 	}

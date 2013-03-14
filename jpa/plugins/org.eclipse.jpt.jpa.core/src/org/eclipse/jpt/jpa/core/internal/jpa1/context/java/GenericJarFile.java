@@ -95,11 +95,11 @@ public class GenericJarFile
 	}
 
 	public Iterable<JavaManagedType> getJavaManagedTypes() {
-		return this.javaManagedTypeContainer.getContextElements();
+		return this.javaManagedTypeContainer;
 	}
 
 	public int getJavaManagedTypesSize() {
-		return this.javaManagedTypeContainer.getContextElementsSize();
+		return this.javaManagedTypeContainer.size();
 	}
 
 	protected void syncJavaManagedTypes() {
@@ -111,7 +111,7 @@ public class GenericJarFile
 	}
 
 	protected void removeJavaManagedType(JavaManagedType javaManagedType) {
-		this.javaManagedTypeContainer.removeContextElement(javaManagedType);
+		this.javaManagedTypeContainer.remove(javaManagedType);
 	}
 
 	//only accept types, enums aren't valid for JPA
@@ -154,31 +154,22 @@ public class GenericJarFile
 	}
 
 	protected ContextCollectionContainer<JavaManagedType, JavaResourceType> buildJavaManagedTypeContainer() {
-		JavaManagedTypeContainer container = new JavaManagedTypeContainer();
-		container.initialize();
-		return container;
+		return this.buildSpecifiedContextCollectionContainer(JAVA_MANAGED_TYPES_COLLECTION, new JavaManagedTypeContainerAdapter());
 	}
 
 	/**
-	 * Java managed type container
+	 * Java managed type container adapter
 	 */
-	protected class JavaManagedTypeContainer
-		extends ContextCollectionContainer<JavaManagedType, JavaResourceType>
+	public class JavaManagedTypeContainerAdapter
+		extends AbstractContainerAdapter<JavaManagedType, JavaResourceType>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return JAVA_MANAGED_TYPES_COLLECTION;
-		}
-		@Override
-		protected JavaManagedType buildContextElement(JavaResourceType resourceElement) {
+		public JavaManagedType buildContextElement(JavaResourceType resourceElement) {
 			return GenericJarFile.this.buildJavaManagedType(resourceElement);
 		}
-		@Override
-		protected Iterable<JavaResourceType> getResourceElements() {
+		public Iterable<JavaResourceType> getResourceElements() {
 			return GenericJarFile.this.getJavaResourceTypes();
 		}
-		@Override
-		protected JavaResourceType getResourceElement(JavaManagedType contextElement) {
+		public JavaResourceType extractResourceElement(JavaManagedType contextElement) {
 			return contextElement.getJavaResourceType();
 		}
 	}

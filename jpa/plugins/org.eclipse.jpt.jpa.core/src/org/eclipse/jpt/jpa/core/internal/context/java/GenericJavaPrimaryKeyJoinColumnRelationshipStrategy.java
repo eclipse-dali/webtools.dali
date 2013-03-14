@@ -15,23 +15,23 @@ import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.SubListIterableWrapper;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumnRelationship;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.OneToOnePrimaryKeyJoinColumnValidator;
-import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedMappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OverrideRelationship2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedMappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.resource.java.PrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationArgumentMessages;
 import org.eclipse.jpt.jpa.db.Table;
@@ -71,11 +71,11 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 	// ********** primary key join columns **********
 
 	public ListIterable<JavaSpecifiedPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns() {
-		return this.primaryKeyJoinColumnContainer.getContextElements();
+		return this.primaryKeyJoinColumnContainer;
 	}
 
 	public int getPrimaryKeyJoinColumnsSize() {
-		return this.primaryKeyJoinColumnContainer.getContextElementsSize();
+		return this.primaryKeyJoinColumnContainer.size();
 	}
 
 	public boolean hasPrimaryKeyJoinColumns() {
@@ -83,7 +83,7 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 	}
 
 	public JavaSpecifiedPrimaryKeyJoinColumn getPrimaryKeyJoinColumn(int index) {
-		return this.primaryKeyJoinColumnContainer.getContextElement(index);
+		return this.primaryKeyJoinColumnContainer.get(index);
 	}
 
 	public JavaSpecifiedPrimaryKeyJoinColumn addPrimaryKeyJoinColumn() {
@@ -96,17 +96,17 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 	}
 
 	public void removePrimaryKeyJoinColumn(SpecifiedPrimaryKeyJoinColumn joinColumn) {
-		this.removePrimaryKeyJoinColumn(this.primaryKeyJoinColumnContainer.indexOfContextElement((JavaSpecifiedPrimaryKeyJoinColumn) joinColumn));
+		this.removePrimaryKeyJoinColumn(this.primaryKeyJoinColumnContainer.indexOf((JavaSpecifiedPrimaryKeyJoinColumn) joinColumn));
 	}
 
 	public void removePrimaryKeyJoinColumn(int index) {
 		this.removePrimaryKeyJoinColumnAnnotation(index);
-		this.primaryKeyJoinColumnContainer.removeContextElement(index);
+		this.primaryKeyJoinColumnContainer.remove(index);
 	}
 
 	public void movePrimaryKeyJoinColumn(int targetIndex, int sourceIndex) {
 		this.movePrimaryKeyJoinColumnAnnotation(targetIndex, sourceIndex);
-		this.primaryKeyJoinColumnContainer.moveContextElement(targetIndex, sourceIndex);
+		this.primaryKeyJoinColumnContainer.move(targetIndex, sourceIndex);
 	}
 
 	protected void syncPrimaryKeyJoinColumns() {
@@ -114,31 +114,22 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 	}
 
 	protected ContextListContainer<JavaSpecifiedPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation> buildPrimaryKeyJoinColumnContainer() {
-		PrimaryKeyJoinColumnContainer container = new PrimaryKeyJoinColumnContainer();
-		container.initialize();
-		return container;
+		return this.buildSpecifiedContextListContainer(PRIMARY_KEY_JOIN_COLUMNS_LIST, new PrimaryKeyJoinColumnContainerAdapter());
 	}
 
 	/**
-	 *  primary key join column container
+	 * primary key join column container adapter
 	 */
-	protected class PrimaryKeyJoinColumnContainer
-		extends ContextListContainer<JavaSpecifiedPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation>
+	public class PrimaryKeyJoinColumnContainerAdapter
+		extends AbstractContainerAdapter<JavaSpecifiedPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return PRIMARY_KEY_JOIN_COLUMNS_LIST;
-		}
-		@Override
-		protected JavaSpecifiedPrimaryKeyJoinColumn buildContextElement(PrimaryKeyJoinColumnAnnotation resourceElement) {
+		public JavaSpecifiedPrimaryKeyJoinColumn buildContextElement(PrimaryKeyJoinColumnAnnotation resourceElement) {
 			return GenericJavaPrimaryKeyJoinColumnRelationshipStrategy.this.buildPrimaryKeyJoinColumn(resourceElement);
 		}
-		@Override
-		protected ListIterable<PrimaryKeyJoinColumnAnnotation> getResourceElements() {
+		public ListIterable<PrimaryKeyJoinColumnAnnotation> getResourceElements() {
 			return GenericJavaPrimaryKeyJoinColumnRelationshipStrategy.this.getPrimaryKeyJoinColumnAnnotations();
 		}
-		@Override
-		protected PrimaryKeyJoinColumnAnnotation getResourceElement(JavaSpecifiedPrimaryKeyJoinColumn contextElement) {
+		public PrimaryKeyJoinColumnAnnotation extractResourceElement(JavaSpecifiedPrimaryKeyJoinColumn contextElement) {
 			return contextElement.getColumnAnnotation();
 		}
 	}

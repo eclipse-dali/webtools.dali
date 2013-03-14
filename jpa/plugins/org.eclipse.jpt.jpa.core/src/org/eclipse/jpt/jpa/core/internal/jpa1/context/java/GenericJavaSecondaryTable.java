@@ -112,7 +112,7 @@ public class GenericJavaSecondaryTable
 
 
 	public ListIterable<JavaSpecifiedPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns() {
-		return this.specifiedPrimaryKeyJoinColumnContainer.getContextElements();
+		return this.specifiedPrimaryKeyJoinColumnContainer;
 	}
 
 	public JavaSpecifiedPrimaryKeyJoinColumn getSpecifiedPrimaryKeyJoinColumn(int index) {
@@ -120,7 +120,7 @@ public class GenericJavaSecondaryTable
 	}
 
 	public int getSpecifiedPrimaryKeyJoinColumnsSize() {
-		return this.specifiedPrimaryKeyJoinColumnContainer.getContextElementsSize();
+		return this.specifiedPrimaryKeyJoinColumnContainer.size();
 	}
 
 	protected boolean hasSpecifiedPrimaryKeyJoinColumns() {
@@ -137,13 +137,13 @@ public class GenericJavaSecondaryTable
 	}
 
 	public void removeSpecifiedPrimaryKeyJoinColumn(SpecifiedPrimaryKeyJoinColumn joinColumn) {
-		this.removeSpecifiedPrimaryKeyJoinColumn(this.specifiedPrimaryKeyJoinColumnContainer.indexOfContextElement((JavaSpecifiedPrimaryKeyJoinColumn) joinColumn));
+		this.removeSpecifiedPrimaryKeyJoinColumn(this.specifiedPrimaryKeyJoinColumnContainer.indexOf((JavaSpecifiedPrimaryKeyJoinColumn) joinColumn));
 	}
 
 	public void removeSpecifiedPrimaryKeyJoinColumn(int index) {
 		this.tableAnnotation.removePkJoinColumn(index);
 		this.removeTableAnnotationIfUnset();
-		this.specifiedPrimaryKeyJoinColumnContainer.removeContextElement(index);
+		this.specifiedPrimaryKeyJoinColumnContainer.remove(index);
 	}
 
 	//default PK join column will get set in the update
@@ -165,12 +165,12 @@ public class GenericJavaSecondaryTable
 			this.tableAnnotation.removePkJoinColumn(index);
 		}
 		this.removeTableAnnotationIfUnset();
-		this.specifiedPrimaryKeyJoinColumnContainer.clearContextList();
+		this.specifiedPrimaryKeyJoinColumnContainer.clear();
 	}
 
 	public void moveSpecifiedPrimaryKeyJoinColumn(int targetIndex, int sourceIndex) {
 		this.tableAnnotation.movePkJoinColumn(targetIndex, sourceIndex);
-		this.specifiedPrimaryKeyJoinColumnContainer.moveContextElement(targetIndex, sourceIndex);
+		this.specifiedPrimaryKeyJoinColumnContainer.move(targetIndex, sourceIndex);
 	}
 
 	protected void syncSpecifiedPrimaryKeyJoinColumns() {
@@ -181,26 +181,23 @@ public class GenericJavaSecondaryTable
 		return this.tableAnnotation.getPkJoinColumns();
 	}
 
+	protected ContextListContainer<JavaSpecifiedPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation> buildSpecifiedPrimaryKeyJoinColumnContainer() {
+		return this.buildSpecifiedContextListContainer(SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, new SpecifiedPrimaryKeyJoinColumnContainerAdapter());
+	}
+
 	/**
-	 * specified primary key join column container
+	 * specified primary key join column container adapter
 	 */
-	public class SpecifiedPrimaryKeyJoinColumnContainer
-		extends ContextListContainer<JavaSpecifiedPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation>
+	public class SpecifiedPrimaryKeyJoinColumnContainerAdapter
+		extends AbstractContainerAdapter<JavaSpecifiedPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST;
-		}
-		@Override
-		protected JavaSpecifiedPrimaryKeyJoinColumn buildContextElement(PrimaryKeyJoinColumnAnnotation resourceElement) {
+		public JavaSpecifiedPrimaryKeyJoinColumn buildContextElement(PrimaryKeyJoinColumnAnnotation resourceElement) {
 			return GenericJavaSecondaryTable.this.buildPrimaryKeyJoinColumn(resourceElement);
 		}
-		@Override
-		protected ListIterable<PrimaryKeyJoinColumnAnnotation> getResourceElements() {
+		public ListIterable<PrimaryKeyJoinColumnAnnotation> getResourceElements() {
 			return GenericJavaSecondaryTable.this.getPrimaryKeyJoinColumnAnnotations();
 		}
-		@Override
-		protected PrimaryKeyJoinColumnAnnotation getResourceElement(JavaSpecifiedPrimaryKeyJoinColumn contextElement) {
+		public PrimaryKeyJoinColumnAnnotation extractResourceElement(JavaSpecifiedPrimaryKeyJoinColumn contextElement) {
 			return contextElement.getColumnAnnotation();
 		}
 	}
@@ -209,11 +206,6 @@ public class GenericJavaSecondaryTable
 		return new PrimaryKeyJoinColumnParentAdapter();
 	}
 
-	protected ContextListContainer<JavaSpecifiedPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation> buildSpecifiedPrimaryKeyJoinColumnContainer() {
-		SpecifiedPrimaryKeyJoinColumnContainer container = new SpecifiedPrimaryKeyJoinColumnContainer();
-		container.initialize();
-		return container;
-	}
 
 	// ********** default primary key join column **********
 

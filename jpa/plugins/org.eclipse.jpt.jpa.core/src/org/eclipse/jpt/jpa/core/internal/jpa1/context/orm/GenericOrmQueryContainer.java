@@ -89,11 +89,11 @@ public class GenericOrmQueryContainer
 	// ********** named queries **********
 
 	public ListIterable<OrmNamedQuery> getNamedQueries() {
-		return this.namedQueryContainer.getContextElements();
+		return this.namedQueryContainer;
 	}
 
 	public int getNamedQueriesSize() {
-		return this.namedQueryContainer.getContextElementsSize();
+		return this.namedQueryContainer.size();
 	}
 
 	public OrmNamedQuery addNamedQuery() {
@@ -112,16 +112,16 @@ public class GenericOrmQueryContainer
 	}
 
 	public void removeNamedQuery(NamedQuery namedQuery) {
-		this.removeNamedQuery(this.namedQueryContainer.indexOfContextElement((OrmNamedQuery) namedQuery));
+		this.removeNamedQuery(this.namedQueryContainer.indexOf((OrmNamedQuery) namedQuery));
 	}
 
 	public void removeNamedQuery(int index) {
-		this.namedQueryContainer.removeContextElement(index);
+		this.namedQueryContainer.remove(index);
 		this.xmlQueryContainer.getNamedQueries().remove(index);
 	}
 
 	public void moveNamedQuery(int targetIndex, int sourceIndex) {
-		this.namedQueryContainer.moveContextElement(targetIndex, sourceIndex);
+		this.namedQueryContainer.move(targetIndex, sourceIndex);
 		this.xmlQueryContainer.getNamedQueries().move(targetIndex, sourceIndex);
 	}
 
@@ -139,31 +139,22 @@ public class GenericOrmQueryContainer
 	}
 
 	protected ContextListContainer<OrmNamedQuery, XmlNamedQuery> buildNamedQueryContainer() {
-		NamedQueryContainer container = new NamedQueryContainer();
-		container.initialize();
-		return container;
+		return this.buildSpecifiedContextListContainer(NAMED_QUERIES_LIST, new NamedQueryContainerAdapter());
 	}
 
 	/**
-	 * named query container
+	 * named query container adapter
 	 */
-	protected class NamedQueryContainer
-		extends ContextListContainer<OrmNamedQuery, XmlNamedQuery>
+	public class NamedQueryContainerAdapter
+		extends AbstractContainerAdapter<OrmNamedQuery, XmlNamedQuery>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return NAMED_QUERIES_LIST;
-		}
-		@Override
-		protected OrmNamedQuery buildContextElement(XmlNamedQuery resourceElement) {
+		public OrmNamedQuery buildContextElement(XmlNamedQuery resourceElement) {
 			return GenericOrmQueryContainer.this.buildNamedQuery(resourceElement);
 		}
-		@Override
-		protected ListIterable<XmlNamedQuery> getResourceElements() {
+		public ListIterable<XmlNamedQuery> getResourceElements() {
 			return GenericOrmQueryContainer.this.getXmlNamedQueries();
 		}
-		@Override
-		protected XmlNamedQuery getResourceElement(OrmNamedQuery contextElement) {
+		public XmlNamedQuery extractResourceElement(OrmNamedQuery contextElement) {
 			return contextElement.getXmlQuery();
 		}
 	}
@@ -171,11 +162,11 @@ public class GenericOrmQueryContainer
 	// ********** named native queries **********
 
 	public ListIterable<OrmNamedNativeQuery> getNamedNativeQueries() {
-		return this.namedNativeQueryContainer.getContextElements();
+		return this.namedNativeQueryContainer;
 	}
 
 	public int getNamedNativeQueriesSize() {
-		return this.namedNativeQueryContainer.getContextElementsSize();
+		return this.namedNativeQueryContainer.size();
 	}
 
 	public OrmNamedNativeQuery addNamedNativeQuery() {
@@ -194,16 +185,16 @@ public class GenericOrmQueryContainer
 	}
 
 	public void removeNamedNativeQuery(NamedNativeQuery namedNativeQuery) {
-		this.removeNamedNativeQuery(this.namedNativeQueryContainer.indexOfContextElement((OrmNamedNativeQuery) namedNativeQuery));
+		this.removeNamedNativeQuery(this.namedNativeQueryContainer.indexOf((OrmNamedNativeQuery) namedNativeQuery));
 	}
 
 	public void removeNamedNativeQuery(int index) {
-		this.namedNativeQueryContainer.removeContextElement(index);
+		this.namedNativeQueryContainer.remove(index);
 		this.xmlQueryContainer.getNamedNativeQueries().remove(index);
 	}
 
 	public void moveNamedNativeQuery(int targetIndex, int sourceIndex) {
-		this.namedNativeQueryContainer.moveContextElement(targetIndex, sourceIndex);
+		this.namedNativeQueryContainer.move(targetIndex, sourceIndex);
 		this.xmlQueryContainer.getNamedNativeQueries().move(targetIndex, sourceIndex);
 	}
 
@@ -221,31 +212,22 @@ public class GenericOrmQueryContainer
 	}
 
 	protected ContextListContainer<OrmNamedNativeQuery, XmlNamedNativeQuery> buildNamedNativeQueryContainer() {
-		NamedNativeQueryContainer container = new NamedNativeQueryContainer();
-		container.initialize();
-		return container;
+		return this.buildSpecifiedContextListContainer(NAMED_NATIVE_QUERIES_LIST, new NamedNativeQueryContainerAdapter());
 	}
 
 	/**
-	 * named query container
+	 * named native query container adapter
 	 */
-	protected class NamedNativeQueryContainer
-		extends ContextListContainer<OrmNamedNativeQuery, XmlNamedNativeQuery>
+	public class NamedNativeQueryContainerAdapter
+		extends AbstractContainerAdapter<OrmNamedNativeQuery, XmlNamedNativeQuery>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return NAMED_NATIVE_QUERIES_LIST;
-		}
-		@Override
-		protected OrmNamedNativeQuery buildContextElement(XmlNamedNativeQuery resourceElement) {
+		public OrmNamedNativeQuery buildContextElement(XmlNamedNativeQuery resourceElement) {
 			return GenericOrmQueryContainer.this.buildNamedNativeQuery(resourceElement);
 		}
-		@Override
-		protected ListIterable<XmlNamedNativeQuery> getResourceElements() {
+		public ListIterable<XmlNamedNativeQuery> getResourceElements() {
 			return GenericOrmQueryContainer.this.getXmlNamedNativeQueries();
 		}
-		@Override
-		protected XmlNamedNativeQuery getResourceElement(OrmNamedNativeQuery contextElement) {
+		public XmlNamedNativeQuery extractResourceElement(OrmNamedNativeQuery contextElement) {
 			return contextElement.getXmlQuery();
 		}
 	}
@@ -254,11 +236,11 @@ public class GenericOrmQueryContainer
 	// ********** named stored procedure queries **********
 
 	public ListIterable<OrmNamedStoredProcedureQuery2_1> getNamedStoredProcedureQueries() {
-		return this.namedStoredProcedureQueryContainer.getContextElements();
+		return this.namedStoredProcedureQueryContainer;
 	}
 
 	public int getNamedStoredProcedureQueriesSize() {
-		return this.namedStoredProcedureQueryContainer.getContextElementsSize();
+		return this.namedStoredProcedureQueryContainer.size();
 	}
 
 	public OrmNamedStoredProcedureQuery2_1 addNamedStoredProcedureQuery() {
@@ -280,16 +262,16 @@ public class GenericOrmQueryContainer
 	}
 
 	public void removeNamedStoredProcedureQuery(NamedStoredProcedureQuery2_1 namedQuery) {
-		this.removeNamedStoredProcedureQuery(this.namedStoredProcedureQueryContainer.indexOfContextElement((OrmNamedStoredProcedureQuery2_1) namedQuery));
+		this.removeNamedStoredProcedureQuery(this.namedStoredProcedureQueryContainer.indexOf((OrmNamedStoredProcedureQuery2_1) namedQuery));
 	}
 
 	public void removeNamedStoredProcedureQuery(int index) {
-		this.namedStoredProcedureQueryContainer.removeContextElement(index);
+		this.namedStoredProcedureQueryContainer.remove(index);
 		this.xmlQueryContainer.getNamedStoredProcedureQueries().remove(index);
 	}
 
 	public void moveNamedStoredProcedureQuery(int targetIndex, int sourceIndex) {
-		this.namedStoredProcedureQueryContainer.moveContextElement(targetIndex, sourceIndex);
+		this.namedStoredProcedureQueryContainer.move(targetIndex, sourceIndex);
 		this.xmlQueryContainer.getNamedStoredProcedureQueries().move(targetIndex, sourceIndex);
 	}
 
@@ -309,31 +291,22 @@ public class GenericOrmQueryContainer
 	}
 
 	protected ContextListContainer<OrmNamedStoredProcedureQuery2_1, XmlNamedStoredProcedureQuery> buildNamedStoredProcedureQueryContainer() {
-		NamedStoredProcedureQueryContainer container = new NamedStoredProcedureQueryContainer();
-		container.initialize();
-		return container;
+		return this.buildSpecifiedContextListContainer(NAMED_STORED_PROCEDURE_QUERIES_LIST, new NamedStoredProcedureQueryContainerAdapter());
 	}
 
 	/**
-	 * named query container
+	 * named stored procedure query container adapter
 	 */
-	protected class NamedStoredProcedureQueryContainer
-		extends ContextListContainer<OrmNamedStoredProcedureQuery2_1, XmlNamedStoredProcedureQuery>
+	public class NamedStoredProcedureQueryContainerAdapter
+		extends AbstractContainerAdapter<OrmNamedStoredProcedureQuery2_1, XmlNamedStoredProcedureQuery>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return NAMED_STORED_PROCEDURE_QUERIES_LIST;
-		}
-		@Override
-		protected OrmNamedStoredProcedureQuery2_1 buildContextElement(XmlNamedStoredProcedureQuery resourceElement) {
+		public OrmNamedStoredProcedureQuery2_1 buildContextElement(XmlNamedStoredProcedureQuery resourceElement) {
 			return GenericOrmQueryContainer.this.buildNamedStoredProcedureQuery(resourceElement);
 		}
-		@Override
-		protected ListIterable<XmlNamedStoredProcedureQuery> getResourceElements() {
+		public ListIterable<XmlNamedStoredProcedureQuery> getResourceElements() {
 			return GenericOrmQueryContainer.this.getXmlNamedStoredProcedureQueries();
 		}
-		@Override
-		protected XmlNamedStoredProcedureQuery getResourceElement(OrmNamedStoredProcedureQuery2_1 contextElement) {
+		public XmlNamedStoredProcedureQuery extractResourceElement(OrmNamedStoredProcedureQuery2_1 contextElement) {
 			return contextElement.getXmlQuery();
 		}
 	}

@@ -139,11 +139,11 @@ public class EclipseLinkJavaObjectTypeConverter
 	// ********** conversion values **********
 
 	public ListIterable<EclipseLinkJavaConversionValue> getConversionValues() {
-		return this.conversionValueContainer.getContextElements();
+		return this.conversionValueContainer;
 	}
 
 	public int getConversionValuesSize() {
-		return this.conversionValueContainer.getContextElementsSize();
+		return this.conversionValueContainer.size();
 	}
 
 	public EclipseLinkConversionValue getConversionValue(int index) {
@@ -160,17 +160,17 @@ public class EclipseLinkJavaObjectTypeConverter
 	}
   
 	public void removeConversionValue(EclipseLinkConversionValue conversionValue) {
-		this.removeConversionValue(this.conversionValueContainer.indexOfContextElement((EclipseLinkJavaConversionValue) conversionValue));
+		this.removeConversionValue(this.conversionValueContainer.indexOf((EclipseLinkJavaConversionValue) conversionValue));
 	}
 
 	public void removeConversionValue(int index) {
 		this.converterAnnotation.removeConversionValue(index);
-		this.conversionValueContainer.removeContextElement(index);
+		this.conversionValueContainer.remove(index);
 	}
 
 	public void moveConversionValue(int targetIndex, int sourceIndex) {
 		this.converterAnnotation.moveConversionValue(targetIndex, sourceIndex);
-		this.conversionValueContainer.moveContextElement(targetIndex, sourceIndex);
+		this.conversionValueContainer.move(targetIndex, sourceIndex);
 	}
 
 	protected EclipseLinkJavaConversionValue buildConversionValue(ConversionValueAnnotation conversionValueAnnotation) {
@@ -186,34 +186,22 @@ public class EclipseLinkJavaObjectTypeConverter
 	}
 
 	protected ContextListContainer<EclipseLinkJavaConversionValue, ConversionValueAnnotation> buildConversionValueContainer() {
-		ConversionValueContainer container = new ConversionValueContainer();
-		container.initialize();
-		return container;
+		return this.buildSpecifiedContextListContainer(CONVERSION_VALUES_LIST, new ConversionValueContainerAdapter());
 	}
 
 	/**
-	 * conversion value container
+	 * conversion value container adapter
 	 */
-	protected class ConversionValueContainer
-			extends ContextListContainer<EclipseLinkJavaConversionValue, ConversionValueAnnotation> {
-		
-		@Override
-		protected String getContextElementsPropertyName() {
-			return CONVERSION_VALUES_LIST;
-		}
-		
-		@Override
-		protected EclipseLinkJavaConversionValue buildContextElement(ConversionValueAnnotation resourceElement) {
+	public class ConversionValueContainerAdapter
+		extends AbstractContainerAdapter<EclipseLinkJavaConversionValue, ConversionValueAnnotation>
+	{
+		public EclipseLinkJavaConversionValue buildContextElement(ConversionValueAnnotation resourceElement) {
 			return EclipseLinkJavaObjectTypeConverter.this.buildConversionValue(resourceElement);
 		}
-		
-		@Override
-		protected ListIterable<ConversionValueAnnotation> getResourceElements() {
+		public ListIterable<ConversionValueAnnotation> getResourceElements() {
 			return EclipseLinkJavaObjectTypeConverter.this.getConversionValueAnnotations();
 		}
-		
-		@Override
-		protected ConversionValueAnnotation getResourceElement(EclipseLinkJavaConversionValue contextElement) {
+		public ConversionValueAnnotation extractResourceElement(EclipseLinkJavaConversionValue contextElement) {
 			return contextElement.getConversionValueAnnotation();
 		}
 	}

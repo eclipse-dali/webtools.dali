@@ -84,11 +84,11 @@ public class GenericJavaQueryContainer
 
 
 	public ListIterable<JavaNamedQuery> getNamedQueries() {
-		return this.namedQueryContainer.getContextElements();
+		return this.namedQueryContainer;
 	}
 
 	public int getNamedQueriesSize() {
-		return this.namedQueryContainer.getContextElementsSize();
+		return this.namedQueryContainer.size();
 	}
 
 	public JavaNamedQuery addNamedQuery() {
@@ -105,17 +105,17 @@ public class GenericJavaQueryContainer
 	}
 
 	public void removeNamedQuery(NamedQuery namedQuery) {
-		this.removeNamedQuery(this.namedQueryContainer.indexOfContextElement((JavaNamedQuery) namedQuery));
+		this.removeNamedQuery(this.namedQueryContainer.indexOf((JavaNamedQuery) namedQuery));
 	}
 
 	public void removeNamedQuery(int index) {
 		this.parent.getResourceAnnotatedElement().removeAnnotation(index, NamedQueryAnnotation.ANNOTATION_NAME);
-		this.namedQueryContainer.removeContextElement(index);
+		this.namedQueryContainer.remove(index);
 	}
 
 	public void moveNamedQuery(int targetIndex, int sourceIndex) {
 		this.parent.getResourceAnnotatedElement().moveAnnotation(targetIndex, sourceIndex, NamedQueryAnnotation.ANNOTATION_NAME);
-		this.namedQueryContainer.moveContextElement(targetIndex, sourceIndex);
+		this.namedQueryContainer.move(targetIndex, sourceIndex);
 	}
 
 	protected JavaNamedQuery buildNamedQuery(NamedQueryAnnotation namedQueryAnnotation) {
@@ -135,31 +135,22 @@ public class GenericJavaQueryContainer
 	}
 
 	protected ContextListContainer<JavaNamedQuery, NamedQueryAnnotation> buildNamedQueryContainer() {
-		NamedQueryContainer container = new NamedQueryContainer();
-		container.initialize();
-		return container;
+		return this.buildSpecifiedContextListContainer(NAMED_QUERIES_LIST, new NamedQueryContainerAdapter());
 	}
 
 	/**
-	 * named query container
+	 * named query container adapter
 	 */
-	protected class NamedQueryContainer
-		extends ContextListContainer<JavaNamedQuery, NamedQueryAnnotation>
+	public class NamedQueryContainerAdapter
+		extends AbstractContainerAdapter<JavaNamedQuery, NamedQueryAnnotation>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return NAMED_QUERIES_LIST;
-		}
-		@Override
-		protected JavaNamedQuery buildContextElement(NamedQueryAnnotation resourceElement) {
+		public JavaNamedQuery buildContextElement(NamedQueryAnnotation resourceElement) {
 			return GenericJavaQueryContainer.this.buildNamedQuery(resourceElement);
 		}
-		@Override
-		protected ListIterable<NamedQueryAnnotation> getResourceElements() {
+		public ListIterable<NamedQueryAnnotation> getResourceElements() {
 			return GenericJavaQueryContainer.this.getNamedQueryAnnotations();
 		}
-		@Override
-		protected NamedQueryAnnotation getResourceElement(JavaNamedQuery contextElement) {
+		public NamedQueryAnnotation extractResourceElement(JavaNamedQuery contextElement) {
 			return contextElement.getQueryAnnotation();
 		}
 	}
@@ -168,11 +159,11 @@ public class GenericJavaQueryContainer
 	// ********** named native queries **********
 
 	public ListIterable<JavaNamedNativeQuery> getNamedNativeQueries() {
-		return this.namedNativeQueryContainer.getContextElements();
+		return this.namedNativeQueryContainer;
 	}
 
 	public int getNamedNativeQueriesSize() {
-		return this.namedNativeQueryContainer.getContextElementsSize();
+		return this.namedNativeQueryContainer.size();
 	}
 
 	public JavaNamedNativeQuery addNamedNativeQuery() {
@@ -189,17 +180,17 @@ public class GenericJavaQueryContainer
 	}
 
 	public void removeNamedNativeQuery(NamedNativeQuery namedNativeQuery) {
-		this.removeNamedNativeQuery(this.namedNativeQueryContainer.indexOfContextElement((JavaNamedNativeQuery) namedNativeQuery));
+		this.removeNamedNativeQuery(this.namedNativeQueryContainer.indexOf((JavaNamedNativeQuery) namedNativeQuery));
 	}
 
 	public void removeNamedNativeQuery(int index) {
 		this.parent.getResourceAnnotatedElement().removeAnnotation(index, NamedNativeQueryAnnotation.ANNOTATION_NAME);
-		this.namedNativeQueryContainer.removeContextElement(index);
+		this.namedNativeQueryContainer.remove(index);
 	}
 
 	public void moveNamedNativeQuery(int targetIndex, int sourceIndex) {
 		this.parent.getResourceAnnotatedElement().moveAnnotation(targetIndex, sourceIndex, NamedNativeQueryAnnotation.ANNOTATION_NAME);
-		this.namedNativeQueryContainer.moveContextElement(targetIndex, sourceIndex);
+		this.namedNativeQueryContainer.move(targetIndex, sourceIndex);
 	}
 
 	protected JavaNamedNativeQuery buildNamedNativeQuery(NamedNativeQueryAnnotation namedNativeQueryAnnotation) {
@@ -219,31 +210,22 @@ public class GenericJavaQueryContainer
 	}
 
 	protected ContextListContainer<JavaNamedNativeQuery, NamedNativeQueryAnnotation> buildNamedNativeQueryContainer() {
-		NamedNativeQueryContainer container = new NamedNativeQueryContainer();
-		container.initialize();
-		return container;
+		return this.buildSpecifiedContextListContainer(NAMED_NATIVE_QUERIES_LIST, new NamedNativeQueryContainerAdapter());
 	}
 
 	/**
-	 * named query container
+	 * named native query container adapter
 	 */
-	protected class NamedNativeQueryContainer
-		extends ContextListContainer<JavaNamedNativeQuery, NamedNativeQueryAnnotation>
+	public class NamedNativeQueryContainerAdapter
+		extends AbstractContainerAdapter<JavaNamedNativeQuery, NamedNativeQueryAnnotation>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return NAMED_NATIVE_QUERIES_LIST;
-		}
-		@Override
-		protected JavaNamedNativeQuery buildContextElement(NamedNativeQueryAnnotation resourceElement) {
+		public JavaNamedNativeQuery buildContextElement(NamedNativeQueryAnnotation resourceElement) {
 			return GenericJavaQueryContainer.this.buildNamedNativeQuery(resourceElement);
 		}
-		@Override
-		protected ListIterable<NamedNativeQueryAnnotation> getResourceElements() {
+		public ListIterable<NamedNativeQueryAnnotation> getResourceElements() {
 			return GenericJavaQueryContainer.this.getNamedNativeQueryAnnotations();
 		}
-		@Override
-		protected NamedNativeQueryAnnotation getResourceElement(JavaNamedNativeQuery contextElement) {
+		public NamedNativeQueryAnnotation extractResourceElement(JavaNamedNativeQuery contextElement) {
 			return contextElement.getQueryAnnotation();
 		}
 	}
@@ -251,11 +233,11 @@ public class GenericJavaQueryContainer
 	// ********** named stored procedure queries **********
 
 	public ListIterable<JavaNamedStoredProcedureQuery2_1> getNamedStoredProcedureQueries() {
-		return this.namedStoredProcedureQueryContainer.getContextElements();
+		return this.namedStoredProcedureQueryContainer;
 	}
 
 	public int getNamedStoredProcedureQueriesSize() {
-		return this.namedStoredProcedureQueryContainer.getContextElementsSize();
+		return this.namedStoredProcedureQueryContainer.size();
 	}
 
 	public JavaNamedStoredProcedureQuery2_1 addNamedStoredProcedureQuery() {
@@ -272,17 +254,17 @@ public class GenericJavaQueryContainer
 	}
 
 	public void removeNamedStoredProcedureQuery(NamedStoredProcedureQuery2_1 namedStoredProcedureQuery) {
-		this.removeNamedStoredProcedureQuery(this.namedStoredProcedureQueryContainer.indexOfContextElement((JavaNamedStoredProcedureQuery2_1) namedStoredProcedureQuery));
+		this.removeNamedStoredProcedureQuery(this.namedStoredProcedureQueryContainer.indexOf((JavaNamedStoredProcedureQuery2_1) namedStoredProcedureQuery));
 	}
 
 	public void removeNamedStoredProcedureQuery(int index) {
 		this.parent.getResourceAnnotatedElement().removeAnnotation(index, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME);
-		this.namedStoredProcedureQueryContainer.removeContextElement(index);
+		this.namedStoredProcedureQueryContainer.remove(index);
 	}
 
 	public void moveNamedStoredProcedureQuery(int targetIndex, int sourceIndex) {
 		this.parent.getResourceAnnotatedElement().moveAnnotation(targetIndex, sourceIndex, NamedStoredProcedureQueryAnnotation2_1.ANNOTATION_NAME);
-		this.namedStoredProcedureQueryContainer.moveContextElement(targetIndex, sourceIndex);
+		this.namedStoredProcedureQueryContainer.move(targetIndex, sourceIndex);
 	}
 
 	protected JavaNamedStoredProcedureQuery2_1 buildNamedStoredProcedureQuery(NamedStoredProcedureQueryAnnotation2_1 namedStoredProcedureQueryAnnotation) {
@@ -302,31 +284,22 @@ public class GenericJavaQueryContainer
 	}
 
 	protected ContextListContainer<JavaNamedStoredProcedureQuery2_1, NamedStoredProcedureQueryAnnotation2_1> buildNamedStoredProcedureQueryContainer() {
-		NamedStoredProcedureQueryContainer container = new NamedStoredProcedureQueryContainer();
-		container.initialize();
-		return container;
+		return this.buildSpecifiedContextListContainer(NAMED_STORED_PROCEDURE_QUERIES_LIST, new NamedStoredProcedureQueryContainerAdapter());
 	}
 
 	/**
-	 * named query container
+	 * named stored procedure query container adapter
 	 */
-	protected class NamedStoredProcedureQueryContainer
-		extends ContextListContainer<JavaNamedStoredProcedureQuery2_1, NamedStoredProcedureQueryAnnotation2_1>
+	public class NamedStoredProcedureQueryContainerAdapter
+		extends AbstractContainerAdapter<JavaNamedStoredProcedureQuery2_1, NamedStoredProcedureQueryAnnotation2_1>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return NAMED_STORED_PROCEDURE_QUERIES_LIST;
-		}
-		@Override
-		protected JavaNamedStoredProcedureQuery2_1 buildContextElement(NamedStoredProcedureQueryAnnotation2_1 resourceElement) {
+		public JavaNamedStoredProcedureQuery2_1 buildContextElement(NamedStoredProcedureQueryAnnotation2_1 resourceElement) {
 			return GenericJavaQueryContainer.this.buildNamedStoredProcedureQuery(resourceElement);
 		}
-		@Override
-		protected ListIterable<NamedStoredProcedureQueryAnnotation2_1> getResourceElements() {
+		public ListIterable<NamedStoredProcedureQueryAnnotation2_1> getResourceElements() {
 			return GenericJavaQueryContainer.this.getNamedStoredProcedureQueryAnnotations();
 		}
-		@Override
-		protected NamedStoredProcedureQueryAnnotation2_1 getResourceElement(JavaNamedStoredProcedureQuery2_1 contextElement) {
+		public NamedStoredProcedureQueryAnnotation2_1 extractResourceElement(JavaNamedStoredProcedureQuery2_1 contextElement) {
 			return contextElement.getQueryAnnotation();
 		}
 	}

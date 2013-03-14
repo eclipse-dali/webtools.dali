@@ -88,11 +88,11 @@ public class GenericOrmNamedStoredProcedureQuery2_1
 	// ********** parameters **********
 
 	public ListIterable<OrmStoredProcedureParameter2_1> getParameters() {
-		return this.parameterContainer.getContextElements();
+		return this.parameterContainer;
 	}
 
 	public int getParametersSize() {
-		return this.parameterContainer.getContextElementsSize();
+		return this.parameterContainer.size();
 	}
 
 	public OrmStoredProcedureParameter2_1 addParameter() {
@@ -111,16 +111,16 @@ public class GenericOrmNamedStoredProcedureQuery2_1
 	}
 
 	public void removeParameter(StoredProcedureParameter2_1 parameter) {
-		this.removeParameter(this.parameterContainer.indexOfContextElement((OrmStoredProcedureParameter2_1) parameter));
+		this.removeParameter(this.parameterContainer.indexOf((OrmStoredProcedureParameter2_1) parameter));
 	}
 
 	public void removeParameter(int index) {
-		this.parameterContainer.removeContextElement(index);
+		this.parameterContainer.remove(index);
 		this.xmlQuery.getParameters().remove(index);
 	}
 
 	public void moveParameter(int targetIndex, int sourceIndex) {
-		this.parameterContainer.moveContextElement(targetIndex, sourceIndex);
+		this.parameterContainer.move(targetIndex, sourceIndex);
 		this.xmlQuery.getParameters().move(targetIndex, sourceIndex);
 	}
 
@@ -144,31 +144,22 @@ public class GenericOrmNamedStoredProcedureQuery2_1
 	}
 
 	protected ContextListContainer<OrmStoredProcedureParameter2_1, XmlStoredProcedureParameter> buildParameterContainer() {
-		ParameterContainer container = new ParameterContainer();
-		container.initialize();
-		return container;
+		return this.buildSpecifiedContextListContainer(PARAMETERS_LIST, new ParameterContainerAdapter());
 	}
 
 	/**
-	 * parameter container
+	 * parameter container adapter
 	 */
-	protected class ParameterContainer
-		extends ContextListContainer<OrmStoredProcedureParameter2_1, XmlStoredProcedureParameter>
+	public class ParameterContainerAdapter
+		extends AbstractContainerAdapter<OrmStoredProcedureParameter2_1, XmlStoredProcedureParameter>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return PARAMETERS_LIST;
-		}
-		@Override
-		protected OrmStoredProcedureParameter2_1 buildContextElement(XmlStoredProcedureParameter resourceElement) {
+		public OrmStoredProcedureParameter2_1 buildContextElement(XmlStoredProcedureParameter resourceElement) {
 			return GenericOrmNamedStoredProcedureQuery2_1.this.buildParameter(resourceElement);
 		}
-		@Override
-		protected ListIterable<XmlStoredProcedureParameter> getResourceElements() {
+		public ListIterable<XmlStoredProcedureParameter> getResourceElements() {
 			return GenericOrmNamedStoredProcedureQuery2_1.this.getXmlParameters();
 		}
-		@Override
-		protected XmlStoredProcedureParameter getResourceElement(OrmStoredProcedureParameter2_1 contextElement) {
+		public XmlStoredProcedureParameter extractResourceElement(OrmStoredProcedureParameter2_1 contextElement) {
 			return contextElement.getXmlStoredProcedureParameter();
 		}
 	}

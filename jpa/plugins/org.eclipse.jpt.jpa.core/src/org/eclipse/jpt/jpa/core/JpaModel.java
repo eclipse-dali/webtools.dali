@@ -55,6 +55,9 @@ public interface JpaModel
 	 * Fire a state change event. Implied by this behavior is that any change
 	 * to any JPA model in a JPA project will trigger the JPA project to fire a
 	 * state change event.
+	 * <p>
+	 * The intent is for this method to be called by the JPA model's children
+	 * whenever their state has changed.
 	 * 
 	 * @see Model#addStateChangeListener(org.eclipse.jpt.common.utility.model.listener.StateChangeListener)
 	 * @see org.eclipse.jpt.common.utility.model.event.StateChangeEvent

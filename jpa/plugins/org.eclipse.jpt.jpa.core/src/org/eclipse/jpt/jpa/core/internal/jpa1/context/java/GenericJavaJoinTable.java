@@ -17,14 +17,14 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
-import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
-import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTable;
@@ -113,11 +113,11 @@ public class GenericJavaJoinTable
 	// ********** specified inverse join columns **********
 
 	public ListIterable<JavaSpecifiedJoinColumn> getSpecifiedInverseJoinColumns() {
-		return this.specifiedInverseJoinColumnContainer.getContextElements();
+		return this.specifiedInverseJoinColumnContainer;
 	}
 
 	public int getSpecifiedInverseJoinColumnsSize() {
-		return this.specifiedInverseJoinColumnContainer.getContextElementsSize();
+		return this.specifiedInverseJoinColumnContainer.size();
 	}
 
 	public boolean hasSpecifiedInverseJoinColumns() {
@@ -125,7 +125,7 @@ public class GenericJavaJoinTable
 	}
 
 	public JavaSpecifiedJoinColumn getSpecifiedInverseJoinColumn(int index) {
-		return this.specifiedInverseJoinColumnContainer.getContextElement(index);
+		return this.specifiedInverseJoinColumnContainer.get(index);
 	}
 
 	public JavaSpecifiedJoinColumn addSpecifiedInverseJoinColumn() {
@@ -138,18 +138,18 @@ public class GenericJavaJoinTable
 	}
 
 	public void removeSpecifiedInverseJoinColumn(SpecifiedJoinColumn joinColumn) {
-		this.removeSpecifiedInverseJoinColumn(this.specifiedInverseJoinColumnContainer.indexOfContextElement((JavaSpecifiedJoinColumn) joinColumn));
+		this.removeSpecifiedInverseJoinColumn(this.specifiedInverseJoinColumnContainer.indexOf((JavaSpecifiedJoinColumn) joinColumn));
 	}
 
 	public void removeSpecifiedInverseJoinColumn(int index) {
 		this.getTableAnnotation().removeInverseJoinColumn(index);
 		this.removeTableAnnotationIfUnset();
-		this.specifiedInverseJoinColumnContainer.removeContextElement(index);
+		this.specifiedInverseJoinColumnContainer.remove(index);
 	}
 
 	public void moveSpecifiedInverseJoinColumn(int targetIndex, int sourceIndex) {
 		this.getTableAnnotation().moveInverseJoinColumn(targetIndex, sourceIndex);
-		this.specifiedInverseJoinColumnContainer.moveContextElement(targetIndex, sourceIndex);
+		this.specifiedInverseJoinColumnContainer.move(targetIndex, sourceIndex);
 	}
 
 	public void clearSpecifiedInverseJoinColumns() {
@@ -158,7 +158,7 @@ public class GenericJavaJoinTable
 			this.getTableAnnotation().removeInverseJoinColumn(index);
 		}
 		this.removeTableAnnotationIfUnset();
-		this.specifiedInverseJoinColumnContainer.clearContextList();
+		this.specifiedInverseJoinColumnContainer.clear();
 	}
 
 	protected void syncSpecifiedInverseJoinColumns() {
@@ -169,26 +169,23 @@ public class GenericJavaJoinTable
 		return this.getTableAnnotation().getInverseJoinColumns();
 	}
 
+	protected ContextListContainer<JavaSpecifiedJoinColumn, JoinColumnAnnotation> buildSpecifiedInverseJoinColumnContainer() {
+		return this.buildSpecifiedContextListContainer(SPECIFIED_INVERSE_JOIN_COLUMNS_LIST, new SpecifiedInverseJoinColumnContainerAdapter());
+	}
+
 	/**
-	 * inverse join column container
+	 * specified inverse join column container adapter
 	 */
-	public class SpecifiedInverseJoinColumnContainer
-		extends ContextListContainer<JavaSpecifiedJoinColumn, JoinColumnAnnotation>
+	public class SpecifiedInverseJoinColumnContainerAdapter
+		extends AbstractContainerAdapter<JavaSpecifiedJoinColumn, JoinColumnAnnotation>
 	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return SPECIFIED_INVERSE_JOIN_COLUMNS_LIST;
-		}
-		@Override
-		protected JavaSpecifiedJoinColumn buildContextElement(JoinColumnAnnotation resourceElement) {
+		public JavaSpecifiedJoinColumn buildContextElement(JoinColumnAnnotation resourceElement) {
 			return GenericJavaJoinTable.this.buildInverseJoinColumn(resourceElement);
 		}
-		@Override
-		protected ListIterable<JoinColumnAnnotation> getResourceElements() {
+		public ListIterable<JoinColumnAnnotation> getResourceElements() {
 			return GenericJavaJoinTable.this.getInverseJoinColumnAnnotations();
 		}
-		@Override
-		protected JoinColumnAnnotation getResourceElement(JavaSpecifiedJoinColumn contextElement) {
+		public JoinColumnAnnotation extractResourceElement(JavaSpecifiedJoinColumn contextElement) {
 			return (JoinColumnAnnotation) contextElement.getColumnAnnotation();
 		}
 	}
@@ -197,11 +194,6 @@ public class GenericJavaJoinTable
 		return new InverseJoinColumnParentAdapter();
 	}
 
-	protected ContextListContainer<JavaSpecifiedJoinColumn, JoinColumnAnnotation> buildSpecifiedInverseJoinColumnContainer() {
-		SpecifiedInverseJoinColumnContainer container = new SpecifiedInverseJoinColumnContainer();
-		container.initialize();
-		return container;
-	}
 
 	// ********** default inverse join column **********
 

@@ -177,11 +177,11 @@ public class EclipseLinkOrmObjectTypeConverter
 	// ********** conversion values **********
 
 	public ListIterable<EclipseLinkOrmConversionValue> getConversionValues() {
-		return this.conversionValueContainer.getContextElements();
+		return this.conversionValueContainer;
 	}
 
 	public int getConversionValuesSize() {
-		return this.conversionValueContainer.getContextElementsSize();
+		return this.conversionValueContainer.size();
 	}
 
 	public EclipseLinkConversionValue getConversionValue(int index) {
@@ -204,16 +204,16 @@ public class EclipseLinkOrmObjectTypeConverter
 	}
 
 	public void removeConversionValue(EclipseLinkConversionValue conversionValue) {
-		this.removeConversionValue(this.conversionValueContainer.indexOfContextElement((EclipseLinkOrmConversionValue) conversionValue));
+		this.removeConversionValue(this.conversionValueContainer.indexOf((EclipseLinkOrmConversionValue) conversionValue));
 	}
 
 	public void removeConversionValue(int index) {
-		this.conversionValueContainer.removeContextElement(index);
+		this.conversionValueContainer.remove(index);
 		this.xmlConverter.getConversionValues().remove(index);
 	}
 
 	public void moveConversionValue(int targetIndex, int sourceIndex) {
-		this.conversionValueContainer.moveContextElement(targetIndex, sourceIndex);
+		this.conversionValueContainer.move(targetIndex, sourceIndex);
 		this.xmlConverter.getConversionValues().move(targetIndex, sourceIndex);
 	}
 
@@ -232,34 +232,22 @@ public class EclipseLinkOrmObjectTypeConverter
 	}
 
 	protected ContextListContainer<EclipseLinkOrmConversionValue, XmlConversionValue> buildConversionValueContainer() {
-		ConversionValueContainer container = new ConversionValueContainer();
-		container.initialize();
-		return container;
+		return this.buildSpecifiedContextListContainer(CONVERSION_VALUES_LIST, new ConversionValueContainerAdapter());
 	}
 
 	/**
-	 * conversion value container
+	 * conversion value container adapter
 	 */
-	protected class ConversionValueContainer
-			extends ContextListContainer<EclipseLinkOrmConversionValue, XmlConversionValue> {
-		
-		@Override
-		protected String getContextElementsPropertyName() {
-			return CONVERSION_VALUES_LIST;
-		}
-		
-		@Override
-		protected EclipseLinkOrmConversionValue buildContextElement(XmlConversionValue resourceElement) {
+	public class ConversionValueContainerAdapter
+		extends AbstractContainerAdapter<EclipseLinkOrmConversionValue, XmlConversionValue>
+	{
+		public EclipseLinkOrmConversionValue buildContextElement(XmlConversionValue resourceElement) {
 			return EclipseLinkOrmObjectTypeConverter.this.buildConversionValue(resourceElement);
 		}
-		
-		@Override
-		protected ListIterable<XmlConversionValue> getResourceElements() {
+		public ListIterable<XmlConversionValue> getResourceElements() {
 			return EclipseLinkOrmObjectTypeConverter.this.getXmlConversionValues();
 		}
-		
-		@Override
-		protected XmlConversionValue getResourceElement(EclipseLinkOrmConversionValue contextElement) {
+		public XmlConversionValue extractResourceElement(EclipseLinkOrmConversionValue contextElement) {
 			return contextElement.getXmlConversionValue();
 		}
 	}
