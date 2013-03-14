@@ -19,13 +19,4 @@ import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 public final class AttributeMappingTools {
 
 
-	public static final Transformer<AttributeMapping, Iterable<String>> ALL_OVERRIDABLE_ASSOCIATION_MAPPING_NAMES_TRANSFORMER = new AllOverridableAssociationMappingNamesTransformer();
-	public static class AllOverridableAssociationMappingNamesTransformer
-		extends TransformerAdapter<AttributeMapping, Iterable<String>>
-	{
-		@Override
-		public Iterable<String> transform(AttributeMapping mapping) {
-			return mapping.getAllOverridableAssociationMappingNames();
-		}
-	}
 }

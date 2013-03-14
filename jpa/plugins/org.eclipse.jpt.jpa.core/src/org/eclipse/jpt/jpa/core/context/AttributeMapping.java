@@ -223,6 +223,16 @@ public interface AttributeMapping
 	 */
 	Iterable<String> getAllOverridableAssociationMappingNames();
 
+	Transformer<AttributeMapping, Iterable<String>> ALL_OVERRIDABLE_ASSOCIATION_MAPPING_NAMES_TRANSFORMER = new AllOverridableAssociationMappingNamesTransformer();
+	class AllOverridableAssociationMappingNamesTransformer
+		extends TransformerAdapter<AttributeMapping, Iterable<String>>
+	{
+		@Override
+		public Iterable<String> transform(AttributeMapping mapping) {
+			return mapping.getAllOverridableAssociationMappingNames();
+		}
+	}
+
 	/**
 	 * Return the mapping itself if its name matches the specified name.
 	 * <p>
