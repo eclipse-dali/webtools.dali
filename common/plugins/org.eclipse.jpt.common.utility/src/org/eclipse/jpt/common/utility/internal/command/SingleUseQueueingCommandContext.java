@@ -15,18 +15,18 @@ import org.eclipse.jpt.common.utility.command.StatefulCommandContext;
 /**
  * @see AbstractSingleUseQueueingCommandContext
  */
-public class SingleUseQueueingCommandExecutor
+public class SingleUseQueueingCommandContext
 	extends AbstractSingleUseQueueingCommandContext<StatefulCommandContext>
 {
-	public SingleUseQueueingCommandExecutor() {
+	public SingleUseQueueingCommandContext() {
 		this(DefaultExtendedCommandContext.instance());
 	}
 
-	public SingleUseQueueingCommandExecutor(CommandContext commandExecutor) {
-		this(new SimpleStatefulCommandExecutor(commandExecutor));
+	public SingleUseQueueingCommandContext(CommandContext commandContext) {
+		this(new SimpleStatefulCommandExecutor(commandContext));
 	}
 
-	public SingleUseQueueingCommandExecutor(StatefulCommandContext commandExecutor) {
-		super(commandExecutor);
+	public SingleUseQueueingCommandContext(StatefulCommandContext commandContext) {
+		super(commandContext);
 	}
 }

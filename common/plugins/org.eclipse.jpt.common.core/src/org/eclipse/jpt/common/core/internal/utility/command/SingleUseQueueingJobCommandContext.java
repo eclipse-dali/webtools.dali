@@ -12,28 +12,28 @@ package org.eclipse.jpt.common.core.internal.utility.command;
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
 import org.eclipse.jpt.common.utility.command.CommandContext;
 import org.eclipse.jpt.common.utility.command.StatefulCommandContext;
-import org.eclipse.jpt.common.utility.internal.command.SingleUseQueueingCommandExecutor;
+import org.eclipse.jpt.common.utility.internal.command.SingleUseQueueingCommandContext;
 
 /**
- * This command context wraps and extends a {@link SingleUseQueueingCommandExecutor},
+ * This command context wraps and extends a {@link SingleUseQueueingCommandContext},
  * adding support for executing {@link JobCommand}s.
  */
 public class SingleUseQueueingJobCommandContext
-	extends AbstractSingleUseQueueingJobCommandContext<SingleUseQueueingCommandExecutor, StatefulCommandContext>
+	extends AbstractSingleUseQueueingJobCommandContext<SingleUseQueueingCommandContext, StatefulCommandContext>
 {
 	public SingleUseQueueingJobCommandContext() {
-		this(new SingleUseQueueingCommandExecutor());
+		this(new SingleUseQueueingCommandContext());
 	}
 
 	public SingleUseQueueingJobCommandContext(CommandContext commandExecutor) {
-		this(new SingleUseQueueingCommandExecutor(commandExecutor));
+		this(new SingleUseQueueingCommandContext(commandExecutor));
 	}
 
 	public SingleUseQueueingJobCommandContext(StatefulCommandContext commandExecutor) {
-		this(new SingleUseQueueingCommandExecutor(commandExecutor));
+		this(new SingleUseQueueingCommandContext(commandExecutor));
 	}
 
-	public SingleUseQueueingJobCommandContext(SingleUseQueueingCommandExecutor commandExecutor) {
+	public SingleUseQueueingJobCommandContext(SingleUseQueueingCommandContext commandExecutor) {
 		super(commandExecutor);
 	}
 }
