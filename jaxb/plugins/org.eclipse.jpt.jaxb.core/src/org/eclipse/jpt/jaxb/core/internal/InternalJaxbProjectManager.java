@@ -38,7 +38,7 @@ import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.StatefulCommandContext;
 import org.eclipse.jpt.common.utility.internal.ExceptionHandlerAdapter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.command.AsynchronousExtendedCommandExecutor;
+import org.eclipse.jpt.common.utility.internal.command.AsynchronousExtendedCommandContext;
 import org.eclipse.jpt.common.utility.internal.command.SimpleStatefulExtendedCommandExecutor;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
@@ -156,7 +156,7 @@ public class InternalJaxbProjectManager
 	 * handled (i.e. synchronously or asynchronously).
 	 */
 	private volatile StatefulCommandContext eventHandler =
-			new AsynchronousExtendedCommandExecutor(
+			new AsynchronousExtendedCommandContext(
 					JptCommonCoreMessages.DALI_EVENT_HANDLER_THREAD_NAME,
 					new LocalExceptionHandler()
 				);

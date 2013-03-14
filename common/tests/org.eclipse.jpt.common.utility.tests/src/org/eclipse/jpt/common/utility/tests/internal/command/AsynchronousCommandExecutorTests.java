@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.utility.tests.internal.command;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.StatefulCommandContext;
 import org.eclipse.jpt.common.utility.internal.RuntimeExceptionHandler;
-import org.eclipse.jpt.common.utility.internal.command.AsynchronousExtendedCommandExecutor;
+import org.eclipse.jpt.common.utility.internal.command.AsynchronousExtendedCommandContext;
 import org.eclipse.jpt.common.utility.tests.internal.MultiThreadedTestCase;
 
 public class AsynchronousCommandExecutorTests
@@ -24,10 +24,10 @@ public class AsynchronousCommandExecutorTests
 
 	public void testExecution() throws Exception {
 		TestCommand command = new TestCommand();
-		AsynchronousExtendedCommandExecutor.SimpleConfig config = new AsynchronousExtendedCommandExecutor.SimpleConfig();
+		AsynchronousExtendedCommandContext.SimpleConfig config = new AsynchronousExtendedCommandContext.SimpleConfig();
 		config.setThreadFactory(this.buildThreadFactory());
 		config.setExceptionHandler(RuntimeExceptionHandler.instance());
-		StatefulCommandContext commandContext = new AsynchronousExtendedCommandExecutor(config);
+		StatefulCommandContext commandContext = new AsynchronousExtendedCommandContext(config);
 		commandContext.start();
 		commandContext.execute(command);
 		commandContext.execute(command);
