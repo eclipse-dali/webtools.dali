@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,13 +21,13 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.reference.SynchronizedBoolean;
 
 /**
- * A command executor that schedules a {@link org.eclipse.core.runtime.jobs.Job
+ * A command context that schedules a {@link org.eclipse.core.runtime.jobs.Job
  * job} to [asynchronously] execute each {@link JobCommand job command} or
  * {@link Command command}.
  * Synchronous command executions are coordinated with the job via a
- * {@link LocalJobChangeListener job listener}.
+ * {@link JobChangeListener job listener}.
  */
-public class SimpleJobCommandExecutor
+public class SimpleJobCommandContext
 	implements CombinedExtendedCommandContext
 {
 	private final String defaultJobName;
@@ -38,7 +38,7 @@ public class SimpleJobCommandExecutor
 	 * Construct a job command executor with no default job name and no
 	 * default scheduling rule.
 	 */
-	public SimpleJobCommandExecutor() {
+	public SimpleJobCommandContext() {
 		this(null);
 	}
 
@@ -46,7 +46,7 @@ public class SimpleJobCommandExecutor
 	 * Construct a job command executor with the specified default job name and
 	 * no default scheduling rule.
 	 */
-	public SimpleJobCommandExecutor(String defaultJobName) {
+	public SimpleJobCommandContext(String defaultJobName) {
 		this(defaultJobName, null);
 	}
 
@@ -54,7 +54,7 @@ public class SimpleJobCommandExecutor
 	 * Construct a job command executor with the specified default job name and
 	 * default scheduling rule.
 	 */
-	public SimpleJobCommandExecutor(String defaultJobName, ISchedulingRule defaultJobSchedulingRule) {
+	public SimpleJobCommandContext(String defaultJobName, ISchedulingRule defaultJobSchedulingRule) {
 		super();
 		this.defaultJobName = defaultJobName;
 		this.defaultJobSchedulingRule = defaultJobSchedulingRule;
@@ -159,7 +159,7 @@ public class SimpleJobCommandExecutor
 		}
 
 		Job job = new JobCommandJob(jobName, command);
-		LocalJobChangeListener listener = new LocalJobChangeListener();
+		JobChangeListener listener = new JobChangeListener();
 		job.addJobChangeListener(listener);
 		job.setRule(rule);
 		job.schedule();
@@ -192,7 +192,7 @@ public class SimpleJobCommandExecutor
 	 * This job listener notifies any interested threads when the
 	 * {@link Job job} is done.
 	 */
-	/* CU private */ class LocalJobChangeListener
+	/* CU private */ class JobChangeListener
 		extends JobChangeAdapter
 	{
 		private final SynchronizedBoolean done = new SynchronizedBoolean(false);

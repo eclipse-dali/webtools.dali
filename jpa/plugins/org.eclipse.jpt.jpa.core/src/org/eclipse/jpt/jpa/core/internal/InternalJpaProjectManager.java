@@ -41,7 +41,7 @@ import org.eclipse.jpt.common.core.internal.utility.ResourceChangeAdapter;
 import org.eclipse.jpt.common.core.internal.utility.command.CommandJobCommandAdapter;
 import org.eclipse.jpt.common.core.internal.utility.command.InactiveExtendedJobCommandContext;
 import org.eclipse.jpt.common.core.internal.utility.command.JobCommandAdapter;
-import org.eclipse.jpt.common.core.internal.utility.command.SimpleJobCommandExecutor;
+import org.eclipse.jpt.common.core.internal.utility.command.SimpleJobCommandContext;
 import org.eclipse.jpt.common.core.internal.utility.command.SingleUseQueueingExtendedJobCommandContext;
 import org.eclipse.jpt.common.core.utility.command.ExtendedJobCommandContext;
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
@@ -1123,14 +1123,14 @@ class InternalJpaProjectManager
 	 * @see #executeCommandsAsynchronously()
 	 */
 	private synchronized void executeCommandsSynchronously() throws InterruptedException {
-		if ( ! (this.commandContext instanceof SimpleJobCommandExecutor)) {
+		if ( ! (this.commandContext instanceof SimpleJobCommandContext)) {
 			throw new IllegalStateException();
 		}
 
 		// de-activate Java events
 		this.addJavaEventListenerFlag(FalseBooleanReference.instance());
 		// save the current executor
-		SimpleJobCommandExecutor oldContext = (SimpleJobCommandExecutor) this.commandContext;
+		SimpleJobCommandContext oldContext = (SimpleJobCommandContext) this.commandContext;
 		// install a new (not-yet-started) executor
 		SingleUseQueueingExtendedJobCommandContext newContext = this.buildSynchronousCommandContext();
 		this.commandContext = newContext;
@@ -1156,8 +1156,8 @@ class InternalJpaProjectManager
 		this.removeJavaEventListenerFlag(FalseBooleanReference.instance());
 	}
 
-	private SimpleJobCommandExecutor buildAsynchronousCommandContext() {
-		return new SimpleJobCommandExecutor(JptCommonCoreMessages.DALI_JOB_NAME);
+	private SimpleJobCommandContext buildAsynchronousCommandContext() {
+		return new SimpleJobCommandContext(JptCommonCoreMessages.DALI_JOB_NAME);
 	}
 
 
