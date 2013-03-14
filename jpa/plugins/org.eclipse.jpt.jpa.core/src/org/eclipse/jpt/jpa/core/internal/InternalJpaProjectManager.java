@@ -42,7 +42,7 @@ import org.eclipse.jpt.common.core.internal.utility.command.CommandJobCommandAda
 import org.eclipse.jpt.common.core.internal.utility.command.InactiveExtendedJobCommandContext;
 import org.eclipse.jpt.common.core.internal.utility.command.JobCommandAdapter;
 import org.eclipse.jpt.common.core.internal.utility.command.SimpleJobCommandExecutor;
-import org.eclipse.jpt.common.core.internal.utility.command.SingleUseQueueingExtendedJobCommandExecutor;
+import org.eclipse.jpt.common.core.internal.utility.command.SingleUseQueueingExtendedJobCommandContext;
 import org.eclipse.jpt.common.core.utility.command.ExtendedJobCommandContext;
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
 import org.eclipse.jpt.common.utility.command.Command;
@@ -1132,7 +1132,7 @@ class InternalJpaProjectManager
 		// save the current executor
 		SimpleJobCommandExecutor oldContext = (SimpleJobCommandExecutor) this.commandContext;
 		// install a new (not-yet-started) executor
-		SingleUseQueueingExtendedJobCommandExecutor newContext = this.buildSynchronousCommandContext();
+		SingleUseQueueingExtendedJobCommandContext newContext = this.buildSynchronousCommandContext();
 		this.commandContext = newContext;
 		// wait for all the outstanding commands to finish
 		oldContext.waitToExecute(NullCommand.instance());
@@ -1141,12 +1141,12 @@ class InternalJpaProjectManager
 		newContext.start();
 	}
 
-	private SingleUseQueueingExtendedJobCommandExecutor buildSynchronousCommandContext() {
-		return new SingleUseQueueingExtendedJobCommandExecutor();
+	private SingleUseQueueingExtendedJobCommandContext buildSynchronousCommandContext() {
+		return new SingleUseQueueingExtendedJobCommandContext();
 	}
 
 	private synchronized void executeCommandsAsynchronously() {
-		if ( ! (this.commandContext instanceof SingleUseQueueingExtendedJobCommandExecutor)) {
+		if ( ! (this.commandContext instanceof SingleUseQueueingExtendedJobCommandContext)) {
 			throw new IllegalStateException();
 		}
 

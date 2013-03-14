@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,26 +18,26 @@ import org.eclipse.jpt.common.utility.command.StatefulExtendedCommandContext;
 import org.eclipse.jpt.common.utility.internal.command.SingleUseQueueingExtendedCommandExecutor;
 
 /**
- * This command executor wraps and extends a {@link SingleUseQueueingExtendedCommandExecutor},
+ * This command context wraps and extends a {@link SingleUseQueueingExtendedCommandExecutor},
  * adding support for executing {@link JobCommand}s.
  */
-public class SingleUseQueueingExtendedJobCommandExecutor
+public class SingleUseQueueingExtendedJobCommandContext
 	extends AbstractSingleUseQueueingJobCommandContext<SingleUseQueueingExtendedCommandExecutor, StatefulExtendedCommandContext>
 	implements CombinedExtendedCommandContext, StatefulExtendedCommandContext
 {
-	public SingleUseQueueingExtendedJobCommandExecutor() {
+	public SingleUseQueueingExtendedJobCommandContext() {
 		this(new SingleUseQueueingExtendedCommandExecutor());
 	}
 
-	public SingleUseQueueingExtendedJobCommandExecutor(ExtendedCommandContext commandExecutor) {
+	public SingleUseQueueingExtendedJobCommandContext(ExtendedCommandContext commandExecutor) {
 		this(new SingleUseQueueingExtendedCommandExecutor(commandExecutor));
 	}
 
-	public SingleUseQueueingExtendedJobCommandExecutor(StatefulExtendedCommandContext commandExecutor) {
+	public SingleUseQueueingExtendedJobCommandContext(StatefulExtendedCommandContext commandExecutor) {
 		this(new SingleUseQueueingExtendedCommandExecutor(commandExecutor));
 	}
 
-	public SingleUseQueueingExtendedJobCommandExecutor(SingleUseQueueingExtendedCommandExecutor commandExecutor) {
+	public SingleUseQueueingExtendedJobCommandContext(SingleUseQueueingExtendedCommandExecutor commandExecutor) {
 		super(commandExecutor);
 	}
 
