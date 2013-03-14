@@ -15,18 +15,18 @@ import org.eclipse.jpt.common.utility.command.StatefulCommandContext;
 /**
  * @see AbstractQueueingCommandContext
  */
-public class QueueingCommandExecutor
+public class QueueingCommandContext
 	extends AbstractQueueingCommandContext<StatefulCommandContext>
 {
-	public QueueingCommandExecutor() {
+	public QueueingCommandContext() {
 		this(DefaultCommandContext.instance());
 	}
 
-	public QueueingCommandExecutor(CommandContext commandExecutor) {
-		this(new SimpleStatefulCommandExecutor(commandExecutor));
+	public QueueingCommandContext(CommandContext commandContext) {
+		this(new SimpleStatefulCommandExecutor(commandContext));
 	}
 
-	public QueueingCommandExecutor(StatefulCommandContext commandExecutor) {
-		super(commandExecutor);
+	public QueueingCommandContext(StatefulCommandContext commandContext) {
+		super(commandContext);
 	}
 }
