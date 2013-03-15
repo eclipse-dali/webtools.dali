@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
+import java.util.Map;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -196,7 +197,9 @@ public class GenericJavaXmlElementWrapper
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		
-		if (! getPersistentAttribute().isJavaResourceAttributeCollectionType()) {
+		if (! getPersistentAttribute().isJavaResourceAttributeCollectionType()
+				// bug 403489
+				&& ! getPersistentAttribute().isJavaResourceAttributeTypeSubTypeOf(Map.class.getName())) {
 			messages.add(
 				this.buildValidationMessage(
 					getValidationTextRange(),
@@ -256,7 +259,8 @@ public class GenericJavaXmlElementWrapper
 		
 		@Override
 		protected String buildDefaultName() {
-			return "";
+			// bug 403496
+			return getPersistentAttribute().getJavaResourceAttribute().getName();
 		}
 		
 		@Override
