@@ -248,6 +248,11 @@ public class ELJavaClassMapping
 	
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
+		// only validate if this class mapping is not mapped in an oxm file
+		if (getContextRoot().getTypeMapping(getTypeName().getFullyQualifiedName()) != this) {
+			return;
+		}
+		
 		super.validate(messages, reporter);
 		
 		if (this.xmlDiscriminatorNode != null) {
