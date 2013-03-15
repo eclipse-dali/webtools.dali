@@ -433,6 +433,11 @@ public class XPath {
 		protected void validate(
 				Context context, XsdTypeDefinition previousType, List<IMessage> messages) {
 			
+			if (previousType == null) {
+				// nothing to evaluate against
+				return;
+			}
+			
 			String namespace = resolveNamespace(context);
 			
 			if (namespace == null) {
@@ -444,7 +449,7 @@ public class XPath {
 								this.nsPrefix));
 			}
 			
-			XsdTypeDefinition nextType = (previousType == null) ? null : validateLocalName(context, previousType, namespace, messages);
+			XsdTypeDefinition nextType = validateLocalName(context, previousType, namespace, messages);
 			if (nextType != null) {
 				Step nextStep = getNextStep();
 				if (nextStep != null) {
