@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,6 +17,7 @@ import java.util.Comparator;
  * If the specified comparator is <code>null</code>,
  * the natural ordering of the objects will be used (i.e. assume the elements
  * implement the {@link Comparable} interface.
+ * @param <E> the type of elements to be compared
  */
 public class ReverseComparator<E>
 	implements Comparator<E>, Serializable

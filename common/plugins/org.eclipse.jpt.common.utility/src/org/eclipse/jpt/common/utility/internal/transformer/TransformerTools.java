@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.transformer;
 
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
 import org.eclipse.jpt.common.utility.ExceptionHandler;
@@ -532,6 +533,34 @@ public final class TransformerTools {
 	 */
 	public static <I, O> Transformer<I, O> staticOutputTransformer(O output) {
 		return new StaticOutputTransformer<I, O>(output);
+	}
+
+	/**
+	 * Return a comparator will transform the elements to be compared and
+	 * compare the resulting outputs (i.e. assume the outputs
+	 * implement the {@link Comparable} interface).
+	 * @param <E> the type of elements to be compared
+	 * @param <O> the type of the result of transforming the elements and the type
+	 *   of the elements to be compared by the wrapped comaparator, if present
+	 * @see TransformationComparator
+	 */
+	public static <E, O> Comparator<E> comparator(Transformer<? super E, ? extends O> transformer) {
+		return new TransformationComparator<E, O>(transformer, null);
+	}
+
+	/**
+	 * Return a comparator will transform the elements to be compared and pass the
+	 * resulting outputs to a specified transformer.
+	 * If the specified comparator is <code>null</code>,
+	 * the natural ordering of the outputs will be used (i.e. assume the outputs
+	 * implement the {@link Comparable} interface).
+	 * @param <E> the type of elements to be compared
+	 * @param <O> the type of the result of transforming the elements and the type
+	 *   of the elements to be compared by the wrapped comaparator, if present
+	 * @see TransformationComparator
+	 */
+	public static <E, O> Comparator<E> comparator(Transformer<? super E, ? extends O> transformer, Comparator<O> comparator) {
+		return new TransformationComparator<E, O>(transformer, comparator);
 	}
 
 
