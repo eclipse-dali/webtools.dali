@@ -15,7 +15,7 @@ import java.util.LinkedList;
 import org.eclipse.jpt.common.utility.collection.Queue;
 
 /**
- * Linked list implementation of the {@link Queue} interface.
+ * Linked list FIFO implementation of the {@link Queue} interface.
  * @param <E> the type of elements maintained by the queue
  * @see LinkedList
  */

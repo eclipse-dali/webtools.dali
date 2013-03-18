@@ -15,8 +15,11 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.Vector;
+import org.eclipse.jpt.common.utility.collection.Queue;
+import org.eclipse.jpt.common.utility.collection.Stack;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -413,14 +416,14 @@ public final class CollectionTools {
 	// ********** queue factory methods **********
 
 	/**
-	 * Return a queue corresponding to the specified iterable.
+	 * Return a FIFO queue corresponding to the specified iterable.
 	 */
 	public static <E> ArrayQueue<E> queue(Iterable<? extends E> iterable) {
 		return queue(iterable.iterator());
 	}
 
 	/**
-	 * Return a queue corresponding to the specified iterable.
+	 * Return a FIFO queue corresponding to the specified iterable.
 	 * The specified iterable size is a performance hint.
 	 */
 	public static <E> ArrayQueue<E> queue(Iterable<? extends E> iterable, int iterableSize) {
@@ -428,14 +431,14 @@ public final class CollectionTools {
 	}
 
 	/**
-	 * Return a queue corresponding to the specified iterator.
+	 * Return a FIFO queue corresponding to the specified iterator.
 	 */
 	public static <E> ArrayQueue<E> queue(Iterator<? extends E> iterator) {
 		return queue(iterator, new ArrayQueue<E>());
 	}
 
 	/**
-	 * Return a queue corresponding to the specified iterator.
+	 * Return a FIFO queue corresponding to the specified iterator.
 	 * The specified iterator size is a performance hint.
 	 */
 	public static <E> ArrayQueue<E> queue(Iterator<? extends E> iterator, int iteratorSize) {
@@ -450,7 +453,7 @@ public final class CollectionTools {
 	}
 
 	/**
-	 * Return a queue corresponding to the specified array.
+	 * Return a FIFO queue corresponding to the specified array.
 	 */
 	public static <E> ArrayQueue<E> queue(E... array) {
 		int len = array.length;
@@ -459,6 +462,47 @@ public final class CollectionTools {
 			queue.enqueue(item);
 		}
 		return queue;
+	}
+
+	/**
+	 * Return a LIFO queue.
+	 */
+	public static <E> StackQueue<E> stackQueue() {
+		return queue(new ArrayStack<E>());
+	}
+
+	/**
+	 * Adapt the specified stack to the {@link Queue} interface,
+	 * implementing a LIFO queue.
+	 */
+	public static <E> StackQueue<E> queue(Stack<E> stack) {
+		return new StackQueue<E>(stack);
+	}
+
+	/**
+	 * Return a priority queue that returns its elements in
+	 * {@linkplain Comparable natural order}.
+	 */
+	public static <E> PriorityQueue<E> priorityQueue() {
+		return priorityQueue((Comparator<? super E>) null);
+	}
+
+	/**
+	 * Return a priority queue whose elements are returned in
+	 * the order determined by the specified comparator.
+	 * If the specified comparator is <code>null</code>, the elements will be
+	 * returned in {@linkplain Comparable natural order}.
+	 */
+	public static <E> PriorityQueue<E> priorityQueue(Comparator<? super E> comparator) {
+		return priorityQueue(new TreeSet<E>(comparator));
+	}
+
+	/**
+	 * Adapt the specified sorted set to the {@link Queue} interface,
+	 * implementing a priority queue.
+	 */
+	public static <E> PriorityQueue<E> priorityQueue(SortedSet<E> elements) {
+		return new PriorityQueue<E>(elements);
 	}
 
 

@@ -16,7 +16,7 @@ import java.util.NoSuchElementException;
 import org.eclipse.jpt.common.utility.collection.Queue;
 
 /**
- * Resizable-array implementation of the {@link Queue} interface.
+ * Resizable-array FIFO implementation of the {@link Queue} interface.
  * @param <E> the type of elements maintained by the queue
  * @see java.util.ArrayList
  */
