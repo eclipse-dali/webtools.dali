@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,14 +7,13 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility;
+package org.eclipse.jpt.common.utility.internal;
 
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * Straightforward definition of an object pairing.
- * The key is immutable.
+ * The left and right values are immutable.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -22,24 +21,24 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @param <K> the type of the association's key
- * @param <V> the type of the association's value
- * @see org.eclipse.jpt.common.utility.internal.Pair
+ * @param <L> the type of the pair's left value
+ * @param <R> the type of the pair's right value
+ * @see org.eclipse.jpt.common.utility.Association
  */
-public interface Association<K, V> {
+public interface Pair<L, R> {
 
 	/**
-	 * Return the association's key.
+	 * Return the pair's left value.
 	 */
-	K getKey();
+	L getLeft();
 
 	@SuppressWarnings("rawtypes")
-	Transformer KEY_TRANSFORMER = new KeyTransformer();
-	class KeyTransformer<K, V>
-		implements Transformer<Association<K, V>, K>
+	Transformer LEFT_TRANSFORMER = new LeftTransformer();
+	class LeftTransformer<L, R>
+		implements Transformer<Pair<L, R>, L>
 	{
-		public K transform(Association<K, V> association) {
-			return association.getKey();
+		public L transform(Pair<L, R> pair) {
+			return pair.getLeft();
 		}
 		@Override
 		public String toString() {
@@ -48,17 +47,17 @@ public interface Association<K, V> {
 	}
 
 	/**
-	 * Return the association's value.
+	 * Return the pair's right value.
 	 */
-	V getValue();
+	R getRight();
 
 	@SuppressWarnings("rawtypes")
-	Transformer VALUE_TRANSFORMER = new ValueTransformer();
-	class ValueTransformer<K, V>
-		implements Transformer<Association<K, V>, V>
+	Transformer RIGHT_TRANSFORMER = new RightTransformer();
+	class RightTransformer<L, R>
+		implements Transformer<Pair<L, R>, R>
 	{
-		public V transform(Association<K, V> association) {
-			return association.getValue();
+		public R transform(Pair<L, R> pair) {
+			return pair.getRight();
 		}
 		@Override
 		public String toString() {
@@ -67,20 +66,14 @@ public interface Association<K, V> {
 	}
 
 	/**
-	 * Set the association's value.
-	 * Return the previous value.
-	 */
-	V setValue(V value);
-
-	/**
-	 * Return true if the associations' keys and values
+	 * Return true if the pairs' left and right values
 	 * are equal.
 	 */
 	boolean equals(Object o);
 
 	/**
-	 * Return a hash code based on the association's
-	 * key and value.
+	 * Return a hash code based on the pair's
+	 * left and right values.
 	 */
 	int hashCode();
 }
