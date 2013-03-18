@@ -16,6 +16,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.collection.Queue;
 import org.eclipse.jpt.common.utility.collection.Stack;
 import org.eclipse.jpt.common.utility.command.InterruptibleParameterizedCommand;
@@ -195,9 +196,30 @@ public final class IterableTools {
 
 	/**
 	 * Execute the specified command for each element in the specified iterable.
+	 * If the command throws an exception for an element, the exception will be
+	 * handled by the specified exception handler and processing of the
+	 * remaining elements will continue.
+	 */
+	public static <E> void execute(Iterable<? extends E> iterable, ParameterizedCommand<E> command, ExceptionHandler exceptionHandler) {
+		IteratorTools.execute(iterable.iterator(), command, exceptionHandler);
+	}
+
+	/**
+	 * Execute the specified command for each element in the specified iterable.
 	 */
 	public static <E> void execute(Iterable<? extends E> iterable, InterruptibleParameterizedCommand<E> command) throws InterruptedException {
 		IteratorTools.execute(iterable.iterator(), command);
+	}
+
+	/**
+	 * Execute the specified command for each element in the specified iterable.
+	 * If the command throws an exception (other than an
+	 * {@link InterruptedException}) for an element, the exception will be
+	 * handled by the specified exception handler and processing of the
+	 * remaining elements will continue.
+	 */
+	public static <E> void execute(Iterable<? extends E> iterable, InterruptibleParameterizedCommand<E> command, ExceptionHandler exceptionHandler) throws InterruptedException {
+		IteratorTools.execute(iterable.iterator(), command, exceptionHandler);
 	}
 
 	/**

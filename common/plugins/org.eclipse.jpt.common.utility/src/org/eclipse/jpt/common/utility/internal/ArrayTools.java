@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Random;
+import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.command.InterruptibleParameterizedCommand;
 import org.eclipse.jpt.common.utility.command.ParameterizedCommand;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
@@ -2899,10 +2900,45 @@ public final class ArrayTools {
 
 	/**
 	 * Execute the specified command for each element in the specified array.
+	 * If the command throws an exception for an element, the exception will be
+	 * handled by the specified exception handler and processing of the
+	 * remaining elements will continue.
+	 */
+	public static <E> void execute(E[] array, ParameterizedCommand<E> command, ExceptionHandler exceptionHandler) {
+		for (E e : array) {
+			try {
+				command.execute(e);
+			} catch (Throwable ex) {
+				exceptionHandler.handleException(ex);
+			}
+		}
+	}
+
+	/**
+	 * Execute the specified command for each element in the specified array.
 	 */
 	public static <E> void execute(E[] array, InterruptibleParameterizedCommand<E> command) throws InterruptedException {
 		for (E e : array) {
 			command.execute(e);
+		}
+	}
+
+	/**
+	 * Execute the specified command for each element in the specified array.
+	 * If the command throws an exception (other than an
+	 * {@link InterruptedException}) for an element, the exception will be
+	 * handled by the specified exception handler and processing of the
+	 * remaining elements will continue.
+	 */
+	public static <E> void execute(E[] array, InterruptibleParameterizedCommand<E> command, ExceptionHandler exceptionHandler) throws InterruptedException {
+		for (E e : array) {
+			try {
+				command.execute(e);
+			} catch (InterruptedException ex) {
+				throw ex;
+			} catch (Throwable ex) {
+				exceptionHandler.handleException(ex);
+			}
 		}
 	}
 

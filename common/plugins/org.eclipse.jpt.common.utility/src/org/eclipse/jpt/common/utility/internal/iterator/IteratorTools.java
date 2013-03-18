@@ -16,6 +16,7 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.collection.Queue;
 import org.eclipse.jpt.common.utility.collection.Stack;
 import org.eclipse.jpt.common.utility.command.InterruptibleParameterizedCommand;
@@ -210,10 +211,45 @@ public final class IteratorTools {
 
 	/**
 	 * Execute the specified command for each element in the specified iterator.
+	 * If the command throws an exception for an element, the exception will be
+	 * handled by the specified exception handler and processing of the
+	 * remaining elements will continue.
+	 */
+	public static <E> void execute(Iterator<? extends E> iterator, ParameterizedCommand<E> command, ExceptionHandler exceptionHandler) {
+		while (iterator.hasNext()) {
+			try {
+				command.execute(iterator.next());
+			} catch (Throwable ex) {
+				exceptionHandler.handleException(ex);
+			}
+		}
+	}
+
+	/**
+	 * Execute the specified command for each element in the specified iterator.
 	 */
 	public static <E> void execute(Iterator<? extends E> iterator, InterruptibleParameterizedCommand<E> command) throws InterruptedException {
 		while (iterator.hasNext()) {
 			command.execute(iterator.next());
+		}
+	}
+
+	/**
+	 * Execute the specified command for each element in the specified iterator.
+	 * If the command throws an exception (other than an
+	 * {@link InterruptedException}) for an element, the exception will be
+	 * handled by the specified exception handler and processing of the
+	 * remaining elements will continue.
+	 */
+	public static <E> void execute(Iterator<? extends E> iterator, InterruptibleParameterizedCommand<E> command, ExceptionHandler exceptionHandler) throws InterruptedException {
+		while (iterator.hasNext()) {
+			try {
+				command.execute(iterator.next());
+			} catch (InterruptedException ex) {
+				throw ex;
+			} catch (Throwable ex) {
+				exceptionHandler.handleException(ex);
+			}
 		}
 	}
 
