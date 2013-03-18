@@ -27,6 +27,7 @@ import org.eclipse.graphiti.features.IDirectEditingInfo;
 import org.eclipse.graphiti.features.context.IAddContext;
 import org.eclipse.graphiti.features.context.ICreateContext;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
+import org.eclipse.graphiti.platform.IDiagramBehavior;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -95,15 +96,19 @@ public class ClickAddFeatureTest {
 		
 		IDiagramTypeProvider diagramTypeProvider = EasyMock.createMock(IDiagramTypeProvider.class);
 		expect(featureProvider.getDiagramTypeProvider()).andStubReturn(diagramTypeProvider);
+		IDiagramBehavior db = EasyMock.createMock(IDiagramBehavior.class);
 		IEditor ed = EasyMock.createMock(IEditor.class);
-		expect(diagramTypeProvider.getDiagramEditor()).andStubReturn(ed);
+		
+		expect(diagramTypeProvider.getDiagramBehavior()).andStubReturn(db);
+		expect(db.getDiagramContainer()).andStubReturn(ed);
+
 		IWorkbenchPartSite ws = EasyMock.createMock(IWorkbenchPartSite.class);
 		expect(ed.getSite()).andStubReturn(ws);
 		ut.formatCode((ICompilationUnit)EasyMock.anyObject(), (IWorkbenchPartSite)EasyMock.anyObject());
 		
 		featureProvider.addAddIgnore(jpt, "attribute1");
 		
-		replay(featureProvider, cs, context, dei, diagramTypeProvider, ed, ws, ut);
+		replay(featureProvider, cs, context, dei, diagramTypeProvider, ed, ws, ut, db);
 	}
 	
 	@Test

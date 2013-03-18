@@ -17,16 +17,16 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal.provider;
 
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.ui.actions.ActionRegistry;
-import org.eclipse.graphiti.dt.IDiagramTypeProvider;
 import org.eclipse.graphiti.ui.editor.DiagramEditorContextMenuProvider;
+import org.eclipse.graphiti.ui.platform.IConfigurationProvider;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.swt.graphics.Point;
 
 public class JPAEditorContextMenuProvider extends DiagramEditorContextMenuProvider {
 	public JPAEditorContextMenuProvider(EditPartViewer viewer, 
 										ActionRegistry registry, 
-										IDiagramTypeProvider diagramTypeProvider) {
-		super(viewer, registry, diagramTypeProvider);
+										IConfigurationProvider configurationProvider) {
+		super(viewer, registry, configurationProvider);
 	}
 		
 

@@ -230,7 +230,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 				public void run() {
 					if(featureProvider != null)
 						try {
-							featureProvider.getDiagramTypeProvider().getDiagramEditor().refresh();
+							featureProvider.getDiagramTypeProvider().getDiagramBehavior().refresh();
 						} catch (Exception e) {
 							// ignore
 						}

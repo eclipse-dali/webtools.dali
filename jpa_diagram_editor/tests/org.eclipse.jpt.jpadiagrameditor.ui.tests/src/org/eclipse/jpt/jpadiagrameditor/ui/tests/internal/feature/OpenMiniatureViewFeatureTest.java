@@ -22,7 +22,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.easymock.EasyMock;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.graphiti.features.context.IAddContext;
+import org.eclipse.graphiti.features.context.ICustomContext;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -56,7 +56,7 @@ public class OpenMiniatureViewFeatureTest {
 	@Test
 	public void testExecute() {
 		OpenMiniatureViewFeature ft = new OpenMiniatureViewFeature(featureProvider);
-		IAddContext ctx = EasyMock.createMock(IAddContext.class);
+		ICustomContext ctx = EasyMock.createMock(ICustomContext.class);
 		ft.execute(ctx);
 	}
 

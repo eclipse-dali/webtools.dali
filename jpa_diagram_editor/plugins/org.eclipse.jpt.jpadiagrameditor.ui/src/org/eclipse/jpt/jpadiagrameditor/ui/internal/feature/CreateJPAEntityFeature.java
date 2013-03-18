@@ -29,6 +29,7 @@ import org.eclipse.graphiti.features.context.ICreateContext;
 import org.eclipse.graphiti.features.impl.AbstractCreateFeature;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.Shape;
+import org.eclipse.graphiti.ui.editor.IDiagramContainerUI;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.dialogs.ErrorDialog;
@@ -47,7 +48,6 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorImageProvi
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchSite;
 
 
@@ -179,7 +179,7 @@ public class CreateJPAEntityFeature extends AbstractCreateFeature {
 //			jpt = pu.getPersistentType(entityName);
 			
 			addGraphicalRepresentation(context, jpt);
-	        IWorkbenchSite ws = ((IEditorPart)getDiagramEditor()).getSite();
+	        IWorkbenchSite ws = ((IDiagramContainerUI)getFeatureProvider().getDiagramTypeProvider().getDiagramBehavior().getDiagramContainer()).getSite();
 	        ICompilationUnit cu = getFeatureProvider().getCompilationUnit(jpt);
 	        getFeatureProvider().getJPAEditorUtil().formatCode(cu, ws);			
 			return new Object[] { jpt };

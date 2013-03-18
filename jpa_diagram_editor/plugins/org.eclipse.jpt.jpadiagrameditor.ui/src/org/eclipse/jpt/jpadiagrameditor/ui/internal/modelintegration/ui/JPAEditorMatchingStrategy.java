@@ -110,7 +110,7 @@ public class JPAEditorMatchingStrategy implements IEditorMatchingStrategy {
 								return false;
 							PictogramElement pe = featureProvider.getPictogramElementForBusinessObject(inputJptType);
 							if (pe != null) {
-								diagramProvider.getDiagramEditor().setPictogramElementForSelection(pe);
+								diagramProvider.getDiagramBehavior().getDiagramContainer().setPictogramElementForSelection(pe);
 								return true;
 							}
 							

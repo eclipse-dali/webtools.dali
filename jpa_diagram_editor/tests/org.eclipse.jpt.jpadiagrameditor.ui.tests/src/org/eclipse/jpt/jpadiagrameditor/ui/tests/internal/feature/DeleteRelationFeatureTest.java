@@ -24,6 +24,7 @@ import org.eclipse.graphiti.dt.IDiagramTypeProvider;
 import org.eclipse.graphiti.features.context.IDeleteContext;
 import org.eclipse.graphiti.features.context.IRemoveContext;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
+import org.eclipse.graphiti.ui.editor.IDiagramBehaviorUI;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.DeleteRelationFeature;
@@ -58,16 +59,17 @@ public class DeleteRelationFeatureTest {
 		expect(featureProvider.getCompilationUnit(jpt2)).andStubReturn(cu2);
 		
 		IWorkbenchPartSite ws = EasyMock.createMock(IWorkbenchPartSite.class);
-		
+		IDiagramBehaviorUI db = EasyMock.createMock(IDiagramBehaviorUI.class);
 		IDiagramTypeProvider p = EasyMock.createMock(IDiagramTypeProvider.class);
 		IEditor e = EasyMock.createMock(IEditor.class);
 		expect(featureProvider.getDiagramTypeProvider()).andStubReturn(p);
-		expect(p.getDiagramEditor()).andStubReturn(e);
+		expect(p.getDiagramBehavior()).andStubReturn(db);
+		expect(db.getDiagramContainer()).andStubReturn(e);
 		expect(e.getSite()).andStubReturn(ws);
 		ut.organizeImports(cu1, ws);
 		ut.organizeImports(cu2, ws);
 		
-		replay(featureProvider, ctx, ut, rel, jpt1, jpt2, cu1, cu2, pe, p, e, ws);
+		replay(featureProvider, ctx, ut, rel, jpt1, jpt2, cu1, cu2, pe, p, e, ws, db);
 		
 		DeleteRelationFeature feature = new DeleteRelationFeature(featureProvider);		
 		feature.postDelete(ctx);

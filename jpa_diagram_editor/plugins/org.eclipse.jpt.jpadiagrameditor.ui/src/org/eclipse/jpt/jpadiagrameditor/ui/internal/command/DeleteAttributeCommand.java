@@ -19,6 +19,7 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal.command;
 import java.util.Locale;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.graphiti.ui.editor.IDiagramContainerUI;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IMethod;
@@ -31,7 +32,6 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchSite;
 
 public class DeleteAttributeCommand implements Command {
@@ -140,7 +140,7 @@ public class DeleteAttributeCommand implements Command {
 			JPADiagramEditorPlugin.logError("Cannot remove the attribute setter with name " + methodName + "(...)", e); //$NON-NLS-1$ //$NON-NLS-2$	
 		}
 
-		IWorkbenchSite ws = ((IEditorPart) fp.getDiagramTypeProvider().getDiagramEditor()).getSite();
+		IWorkbenchSite ws = ((IDiagramContainerUI)fp.getDiagramTypeProvider().getDiagramBehavior().getDiagramContainer()).getSite();
 		JPAEditorUtil.organizeImports(unit, ws);
 			
 		if(jpt != null) {

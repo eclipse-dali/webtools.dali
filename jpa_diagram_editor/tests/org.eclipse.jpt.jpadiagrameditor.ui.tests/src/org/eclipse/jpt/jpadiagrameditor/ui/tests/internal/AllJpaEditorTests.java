@@ -18,13 +18,18 @@ package org.eclipse.jpt.jpadiagrameditor.ui.tests.internal;
 import java.io.File;
 import java.util.NoSuchElementException;
 
+import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.editor.CreateDiagramTest;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.editor.EditorTest;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.feature.AddAttributeFeatureTest;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.feature.AddJPAEntityFeatureTest;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.feature.AddRelationFeatureTest;
+import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.feature.ClickAddFeatureTest;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.feature.DeleteRelationFeatureTest;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.feature.DirectEditAttributeFeatureTest;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.feature.LayoutEntityFeatureTest;
+import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.feature.OpenMiniatureViewFeatureTest;
+import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.feature.SaveEntityFeatureTest;
+import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.modelintegration.ui.ModelIntegrationTest;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.modelintegration.util.ModelIntegrationUtilTest;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.preferences.JPAEditorPreferenceInitializerTest;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.preferences.JPAEditorPreferencesPageTest;
@@ -46,25 +51,25 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses( {
-//				CreateDiagramTest.class,
+				CreateDiagramTest.class,
 				JPAEditorPreferenceInitializerTest.class,
 	 			JPAEditorPreferencesPageTest.class,
 	 			AddJPAEntityFeatureTest.class,
-//				ClickAddFeatureTest.class,
+				ClickAddFeatureTest.class,
 //				CreateDeleteEntity.class,
 				DirectEditAttributeFeatureTest.class,
 				EditorTest.class,	
 				JPAEditorToolBehaviorProviderTest.class,
 				JPAEditorUtilTest.class,
 				JPASolverTest.class,
-//				OpenMiniatureViewFeatureTest.class,
+				OpenMiniatureViewFeatureTest.class,
 //				RefactorAttributeTypeFeatureTest.class,
-//				SaveEntityFeatureTest.class,
+				SaveEntityFeatureTest.class,
 				AddRelationFeatureTest.class,
 				AddAttributeFeatureTest.class,
 //				CreateDeleteOnlyAttributeTest.class,
 //				JPAProjectListenerTest.class,
-//				ModelIntegrationTest.class,
+				ModelIntegrationTest.class,
 				ModelIntegrationUtilTest.class,
 				LayoutEntityFeatureTest.class,
 				DeleteRelationFeatureTest.class,

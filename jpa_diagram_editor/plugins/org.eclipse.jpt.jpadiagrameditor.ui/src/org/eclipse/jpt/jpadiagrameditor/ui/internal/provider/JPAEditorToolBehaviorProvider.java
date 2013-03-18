@@ -118,6 +118,7 @@ public class JPAEditorToolBehaviorProvider extends DefaultToolBehaviorProvider {
         this.facade = eclipseFacade;
     }
     
+    
     @Override
     public IContextButtonPadData getContextButtonPad(IPictogramElementContext context) {
         IContextButtonPadData data = super.getContextButtonPad(context);        

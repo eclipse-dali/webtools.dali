@@ -15,8 +15,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.util;
 
-import org.eclipse.graphiti.platform.IDiagramEditor;
+import org.eclipse.graphiti.ui.editor.IDiagramContainerUI;
 import org.eclipse.ui.IEditorPart;
 
-public interface IEditor extends IEditorPart, IDiagramEditor {	
+public interface IEditor extends IEditorPart, IDiagramContainerUI {	
 }

@@ -15,30 +15,20 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.ui;
 
-import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.util.Iterator;
-import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
-import org.eclipse.emf.transaction.RecordingCommand;
-import org.eclipse.emf.transaction.TransactionalEditingDomain;
-import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
-import org.eclipse.graphiti.platform.IDiagramEditor;
-import org.eclipse.graphiti.ui.editor.DiagramEditorInput;
-import org.eclipse.graphiti.ui.internal.Messages;
+import org.eclipse.graphiti.platform.IDiagramContainer;
 import org.eclipse.jdt.internal.ui.dialogs.OptionalMessageDialog;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.ErrorDialog;
-import org.eclipse.jface.dialogs.IconAndMessageDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -69,9 +59,6 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
-import org.eclipse.wst.common.project.facet.core.IFacetedProject;
-import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
-import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 
 
 @SuppressWarnings({ "unused", "restriction" })
@@ -90,7 +77,7 @@ public class OpenJpaDiagramActionDelegate implements IObjectActionDelegate {
 		}
 	}
 		
-	public static IDiagramEditor openDiagramEditor(final Diagram diagram) {
+	public static IDiagramContainer openDiagramEditor(final Diagram diagram) {
 		
 		String diagramName = diagram.getName();
 		JpaProject jpaProject = ModelIntegrationUtil.getProjectByDiagram(diagramName);
@@ -113,8 +100,8 @@ public class OpenJpaDiagramActionDelegate implements IObjectActionDelegate {
 		try {
 			final IEditorPart editorPart = IDE.openEditor(workbenchPage, diagramEditorInput, JPADiagramEditor.ID);
 			if (editorPart instanceof JPADiagramEditor) {				
-				JPADiagramEditor ret = (JPADiagramEditor) editorPart;
-				wrp.setObj(ret);
+//				final JPADiagramEditor ret = (JPADiagramEditor) editorPart;
+//				wrp.setObj(ret);
 				PlatformUI.getWorkbench().addWorkbenchListener( new IWorkbenchListener() {
 				    public boolean preShutdown( IWorkbench workbench, boolean forced ) {
 				    	ModelIntegrationUtil.deleteDiagramXMIFile(diagram);

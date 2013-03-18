@@ -41,9 +41,10 @@ import org.eclipse.graphiti.mm.pictograms.Connection;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
-import org.eclipse.graphiti.platform.IDiagramEditor;
+import org.eclipse.graphiti.platform.IDiagramBehavior;
 import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.tb.IToolBehaviorProvider;
+import org.eclipse.graphiti.ui.editor.IDiagramContainerUI;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -82,13 +83,13 @@ public class JPAEditorDiagramTypeProvider extends AbstractDiagramTypeProvider {
     }
 
     @Override
-	public void init(Diagram diagram, IDiagramEditor diagramEditor) {
-    	super.init(diagram, diagramEditor);
+	public void init(Diagram diagram, IDiagramBehavior diagramBahavior) {
+    	super.init(diagram, diagramBahavior);
     	if (getTargetJPAProject() == null)
     		closeEditor();
     	JPAEditorDiagramTypeProvider provider = ModelIntegrationUtil.getProviderByDiagram(diagram.getName());
     	if ((provider != null) && provider.isAlive()) 
-    		provider.getDiagramEditor().getSite().getWorkbenchWindow().getActivePage().closeEditor(provider.getDiagramEditor(), true);
+    		((IDiagramContainerUI)provider.getDiagramBehavior().getDiagramContainer()).getSite().getWorkbenchWindow().getActivePage().closeEditor(provider.getDiagramEditor(), true);
 	}
     
     
@@ -294,10 +295,9 @@ public class JPAEditorDiagramTypeProvider extends AbstractDiagramTypeProvider {
 		}		
 	}
 	
-	@Override
 	public JPADiagramEditor getDiagramEditor() {
-		return (JPADiagramEditor)super.getDiagramEditor();
-	}    
+		return (JPADiagramEditor)super.getDiagramBehavior().getDiagramContainer();
+	}
     
 	private JpaProject getTargetJPAProject() {
 		return ModelIntegrationUtil.getProjectByDiagram(getDiagram().getName());

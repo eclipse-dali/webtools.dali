@@ -34,6 +34,7 @@ import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
+import org.eclipse.graphiti.ui.editor.IDiagramContainerUI;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.ui.actions.SelectionDispatchAction;
@@ -62,7 +63,6 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPASolver;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchSite;
 
 
@@ -173,7 +173,7 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 								   final IJPAEditorFeatureProvider fp) {
 		BusyIndicator.showWhile(Display.getCurrent(), new Runnable() {
 			public void run() {
-				fp.getDiagramTypeProvider().getDiagramEditor().selectPictogramElements(new PictogramElement[] {});				 
+				fp.getDiagramTypeProvider().getDiagramBehavior().getDiagramContainer().selectPictogramElements(new PictogramElement[] {});				 
 
 				String newJPTName = lsnr.getNewJPTName();
 				lsnr.setOldJptName(oldJPT.getSimpleName());
@@ -212,9 +212,9 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 					}
 				}
 
-				fp.getDiagramTypeProvider().getDiagramEditor().setPictogramElementForSelection(pict);
+				fp.getDiagramTypeProvider().getDiagramBehavior().getDiagramContainer().setPictogramElementForSelection(pict);
 				
-				IWorkbenchSite ws = ((IEditorPart)fp.getDiagramTypeProvider().getDiagramEditor()).getSite();
+				IWorkbenchSite ws = ((IDiagramContainerUI)fp.getDiagramTypeProvider().getDiagramBehavior().getDiagramContainer()).getSite();
 		        ICompilationUnit cu = fp.getCompilationUnit(newJPT);
 		        fp.getJPAEditorUtil().formatCode(cu, ws);
 			}

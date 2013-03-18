@@ -20,13 +20,13 @@ import org.eclipse.graphiti.features.context.IContext;
 import org.eclipse.graphiti.features.context.ICreateContext;
 import org.eclipse.graphiti.features.impl.AbstractCreateFeature;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
+import org.eclipse.graphiti.ui.editor.IDiagramContainerUI;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchSite;
 
 
@@ -62,7 +62,7 @@ public class ClickAddAttributeButtonFeature extends AbstractCreateFeature {
 		addGraphicalRepresentation(context, newAttr);
         getFeatureProvider().getDirectEditingInfo().setActive(true);
         
-        IWorkbenchSite ws = ((IEditorPart)getDiagramEditor()).getSite();
+        IWorkbenchSite ws = ((IDiagramContainerUI)getFeatureProvider().getDiagramTypeProvider().getDiagramBehavior().getDiagramContainer()).getSite();
         ICompilationUnit cu = getFeatureProvider().getCompilationUnit(jpt);
         getFeatureProvider().getJPAEditorUtil().formatCode(cu, ws);
 

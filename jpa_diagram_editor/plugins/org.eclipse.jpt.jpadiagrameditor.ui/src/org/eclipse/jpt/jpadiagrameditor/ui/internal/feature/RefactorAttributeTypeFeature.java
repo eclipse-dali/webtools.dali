@@ -23,6 +23,7 @@ import org.eclipse.graphiti.features.context.ICustomContext;
 import org.eclipse.graphiti.features.custom.AbstractCustomFeature;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
+import org.eclipse.graphiti.ui.editor.IDiagramContainerUI;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
@@ -32,7 +33,6 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchSite;
 
 public class RefactorAttributeTypeFeature extends AbstractCustomFeature {
@@ -80,7 +80,7 @@ public class RefactorAttributeTypeFeature extends AbstractCustomFeature {
 		
 		JpaArtifactFactory.instance().addOrmPersistentAttribute((PersistentType) newAt.getParent(), newAt, mappingKey);
 		
-        IWorkbenchSite ws = ((IEditorPart)getDiagramEditor()).getSite();
+        IWorkbenchSite ws = ((IDiagramContainerUI)getFeatureProvider().getDiagramTypeProvider().getDiagramBehavior().getDiagramContainer()).getSite();
         ICompilationUnit cu = getFeatureProvider().getCompilationUnit((PersistentType) newAt.getParent());
         getFeatureProvider().getJPAEditorUtil().formatCode(cu, ws);	
         JPAEditorUtil.organizeImports(cu, ws);

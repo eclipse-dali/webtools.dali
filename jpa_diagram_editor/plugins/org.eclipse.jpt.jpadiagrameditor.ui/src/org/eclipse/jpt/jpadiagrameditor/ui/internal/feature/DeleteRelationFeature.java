@@ -19,6 +19,7 @@ import org.eclipse.graphiti.features.context.IContext;
 import org.eclipse.graphiti.features.context.IDeleteContext;
 import org.eclipse.graphiti.features.context.impl.DeleteContext;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
+import org.eclipse.graphiti.ui.editor.IDiagramContainerUI;
 import org.eclipse.graphiti.ui.features.DefaultDeleteFeature;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -35,7 +36,6 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IsARelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IJPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchSite;
 import org.eclipse.ui.PlatformUI;
 
@@ -151,7 +151,7 @@ public class DeleteRelationFeature extends DefaultDeleteFeature{
 	public void postDelete(IDeleteContext context) {
         PictogramElement pe = context.getPictogramElement();
         Object businessObjectForPictogramElement = getBusinessObjectForPictogramElement(pe);
-		IWorkbenchSite ws = ((IEditorPart) getDiagramEditor()).getSite();
+		IWorkbenchSite ws = ((IDiagramContainerUI)getFeatureProvider().getDiagramTypeProvider().getDiagramBehavior().getDiagramContainer()).getSite();
 		if (businessObjectForPictogramElement instanceof IRelation) {
 			IRelation rel = (IRelation) businessObjectForPictogramElement;
 			ICompilationUnit cu = getFeatureProvider().getCompilationUnit(rel.getOwner());

@@ -35,7 +35,7 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.graphiti.dt.IDiagramTypeProvider;
-import org.eclipse.graphiti.platform.IDiagramEditor;
+import org.eclipse.graphiti.platform.IDiagramBehavior;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -116,11 +116,11 @@ public class JPASolverTest {
 	}
 
 	private IJPAEditorFeatureProvider configureRefreshEditorProvider() {
-		IDiagramEditor editor = EasyMock.createMock(IDiagramEditor.class);
+		IDiagramBehavior editor = EasyMock.createMock(IDiagramBehavior.class);
 		editor.refresh();
 		replay(editor);
 		IDiagramTypeProvider diagramProvider = EasyMock.createMock(IDiagramTypeProvider.class);
-		expect(diagramProvider.getDiagramEditor()).andStubReturn(editor);
+		expect(diagramProvider.getDiagramBehavior()).andStubReturn(editor);
 		replay(diagramProvider);
 		IJPAEditorFeatureProvider provider = EasyMock.createMock(IJPAEditorFeatureProvider.class);
 		expect(provider.getDiagramTypeProvider()).andStubReturn(diagramProvider);

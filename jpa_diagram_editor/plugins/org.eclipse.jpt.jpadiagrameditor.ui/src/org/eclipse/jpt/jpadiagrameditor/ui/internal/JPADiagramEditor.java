@@ -30,7 +30,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
-import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.graphiti.features.IFeatureProvider;
@@ -72,7 +71,6 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.ui.JPADiagramEditorInput;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.ModelIntegrationUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorContextMenuProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorDiagramTypeProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.EntitiesCoordinatesXML;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.GraphicsUpdater;
@@ -240,12 +238,12 @@ public class JPADiagramEditor extends DiagramEditor implements JpaEditorManager{
 		}
 	}
 
-	@Override
-	protected ContextMenuProvider createContextMenuProvider() {
-		return new JPAEditorContextMenuProvider(getGraphicalViewer(),
-				getActionRegistry(),
-				getDiagramTypeProvider());
-	}
+//	@Override
+//	protected ContextMenuProvider createContextMenuProvider() {
+//		return new JPAEditorContextMenuProvider(getGraphicalViewer(),
+//				getActionRegistry(),
+//				((JPADiagramBehavior)getDiagramTypeProvider().getDiagramBehavior()).getConfigurationProvider());
+//	}
 
 	private void initWithFileEditorInput(final IEditorSite site,
 			final IFile entityFile) {
@@ -330,7 +328,7 @@ public class JPADiagramEditor extends DiagramEditor implements JpaEditorManager{
 		
 		Object o = ((IStructuredSelection) selection).getFirstElement();
 		if (o instanceof EditPart) {			
-			JpaSelectionManager selectionManager = getJpaSelectionManager(part);
+			JpaSelectionManager selectionManager = getJpaSelectionManager();
 			Object m = ((EditPart) o).getModel();
 			if (m == null)
 				return;
@@ -355,8 +353,8 @@ public class JPADiagramEditor extends DiagramEditor implements JpaEditorManager{
 		}
 	}
 
-	private JpaSelectionManager getJpaSelectionManager(IWorkbenchPart part) {
-		return jpaSelectionManagerFactory.getSelectionManager(part.getSite()
+	private JpaSelectionManager getJpaSelectionManager() {
+		return jpaSelectionManagerFactory.getSelectionManager(this.getSite()
 				.getWorkbenchWindow());
 	}
 
