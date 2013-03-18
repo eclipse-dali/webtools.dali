@@ -16,7 +16,7 @@ import java.util.Vector;
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.DisabledTransformer;
-import org.eclipse.jpt.common.utility.transformer.Transformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 
 @SuppressWarnings("nls")
 public class ChainIterableTests
@@ -54,14 +54,16 @@ public class ChainIterableTests
 	}
 
 	private Iterable<Class<?>> buildIterable() {
-		return IterableTools.chainIterable(Vector.class, this.buildTransformer());
+		return IterableTools.chainIterable(Vector.class, SUPERCLASS_TRANSFORMER);
 	}
 
-	private Transformer<Class<?>, Class<?>> buildTransformer() {
-		return new Transformer<Class<?>, Class<?>>() {
-			public Class<?> transform(Class<?> currentLink) {
-				return currentLink.getSuperclass();
-			}
-		};
+	private static final TransformerAdapter<Class<?>, Class<?>> SUPERCLASS_TRANSFORMER = new SuperclassTransformer();
+	static class SuperclassTransformer
+		extends TransformerAdapter<Class<?>, Class<?>>
+	{
+		@Override
+		public Class<?> transform(Class<?> clazz) {
+			return clazz.getSuperclass();
+		}
 	}
 }

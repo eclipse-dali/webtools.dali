@@ -14,16 +14,16 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
- * A <code>NonNullBooleanTransformer</code> will transform a possibly-null
- * {@link Boolean} to a non-null {@link Boolean}:<ul>
+ * A transformer that will transform a possibly-null {@link Boolean} input into
+ * a non-null {@link Boolean} output:<ul>
  * <li>When the original {@link Boolean} is <em>not</em> <code>null</code>,
  * the transformer will return it unchanged.
- * <li>When the original {@link Boolean} is <code>null</code>,
- * the transformer will return its client-specified "null value"
+ * <li>When the original {@link Boolean} <em>is</em> <code>null</code>,
+ * the transformer will return its client-configured "null value"
  * ({@link Boolean#TRUE} or {@link Boolean#FALSE}).
  * </ul>
  */
-public final class NonNullBooleanTransformer
+public final class BooleanTransformer
 	implements Transformer<Boolean, Boolean>, Serializable
 {
 	// not null
@@ -34,14 +34,14 @@ public final class NonNullBooleanTransformer
 	 * it is non-<code>null</code>; otherwise the {@link Transformer} will return
 	 * {@link Boolean#TRUE}.
 	 */
-	public static final Transformer<Boolean, Boolean> TRUE = new NonNullBooleanTransformer(Boolean.TRUE);
+	public static final Transformer<Boolean, Boolean> TRUE = new BooleanTransformer(Boolean.TRUE);
 
 	/**
 	 * A {@link Transformer} that will return the original {@link Boolean} when
 	 * it is non-<code>null</code>; otherwise the {@link Transformer} will return
 	 * {@link Boolean#FALSE}.
 	 */
-	public static final Transformer<Boolean, Boolean> FALSE = new NonNullBooleanTransformer(Boolean.FALSE);
+	public static final Transformer<Boolean, Boolean> FALSE = new BooleanTransformer(Boolean.FALSE);
 
 	/**
 	 * Return a transformer that will return the specified value if the original
@@ -63,7 +63,7 @@ public final class NonNullBooleanTransformer
 	/**
 	 * Ensure only 2 constant versions.
 	 */
-	private NonNullBooleanTransformer(Boolean nullValue) {
+	private BooleanTransformer(Boolean nullValue) {
 		super();
 		if (nullValue == null) {
 			throw new NullPointerException();

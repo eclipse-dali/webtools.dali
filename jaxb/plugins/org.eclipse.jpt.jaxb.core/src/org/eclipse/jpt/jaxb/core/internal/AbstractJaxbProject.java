@@ -58,7 +58,6 @@ import org.eclipse.jpt.common.utility.internal.command.ThreadLocalExtendedComman
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
-import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.JaxbFile;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.SchemaLibrary;
@@ -584,16 +583,9 @@ public abstract class AbstractJaxbProject
 		
 		if (contentType.isKindOf(JavaResourceCompilationUnit.PACKAGE_INFO_CONTENT_TYPE)) {
 			try {
-				Transformer<IPackageDeclaration, JaxbPackageInfo> transformer = new TransformerAdapter<IPackageDeclaration, JaxbPackageInfo>() {
-					@Override
-					public JaxbPackageInfo transform(IPackageDeclaration o) {
-						JaxbPackage jaxbPackage = getContextRoot().getPackage(o.getElementName());
-						return (jaxbPackage != null) ? jaxbPackage.getPackageInfo() : null;
-					}
-				};
 				return IterableTools.removeNulls(
 						IterableTools.transform(
-							IterableTools.iterable(cu.getPackageDeclarations()), transformer));
+							IterableTools.iterable(cu.getPackageDeclarations()), new PackageDeclarationTransformer()));
 			}
 			catch (JavaModelException jme) {
 				return EmptyIterable.instance();
@@ -601,15 +593,9 @@ public abstract class AbstractJaxbProject
 		}
 		else if (contentType.isKindOf(JavaResourceCompilationUnit.CONTENT_TYPE)) {
 			try {
-				Transformer<IType, JavaType> transformer = new TransformerAdapter<IType, JavaType>() {
-					@Override
-					public JavaType transform(IType o) {
-						return getContextRoot().getJavaType(o.getFullyQualifiedName('.'));
-					}
-				};
 				return IterableTools.removeNulls(
 						IterableTools.transform(
-							IterableTools.iterable(cu.getAllTypes()), transformer));
+							IterableTools.iterable(cu.getAllTypes()), new TypeTransformer()));
 			}
 			catch (JavaModelException jme) {
 				return EmptyIterable.instance();
@@ -618,7 +604,26 @@ public abstract class AbstractJaxbProject
 
 		return EmptyIterable.instance();
 	}
-	
+
+	class PackageDeclarationTransformer
+		extends TransformerAdapter<IPackageDeclaration, JaxbPackageInfo>
+	{
+		@Override
+		public JaxbPackageInfo transform(IPackageDeclaration o) {
+			JaxbPackage jaxbPackage = getContextRoot().getPackage(o.getElementName());
+			return (jaxbPackage != null) ? jaxbPackage.getPackageInfo() : null;
+		}
+	}
+
+	class TypeTransformer
+		extends TransformerAdapter<IType, JavaType>
+	{
+		@Override
+		public JavaType transform(IType o) {
+			return getContextRoot().getJavaType(o.getFullyQualifiedName('.'));
+		}
+	}
+
 	private IFile getCorrespondingResource(ICompilationUnit cu) {
 		try {
 			return (IFile) cu.getCorrespondingResource();
@@ -693,13 +698,16 @@ public abstract class AbstractJaxbProject
 	// ********** Java resource package look-up **********
 	
 	public Iterable<JavaResourcePackage> getJavaResourcePackages() {
-		Transformer<JaxbFile, JavaResourcePackage> transformer = new TransformerAdapter<JaxbFile, JavaResourcePackage>() {
-			@Override
-			public JavaResourcePackage transform(JaxbFile jaxbFile) {
-				return ((JavaResourcePackageInfoCompilationUnit) jaxbFile.getResourceModel()).getPackage();
-			}
-		};
-		return IterableTools.removeNulls(IterableTools.transform(this.getPackageInfoSourceJaxbFiles(), transformer));
+		return IterableTools.removeNulls(IterableTools.transform(this.getPackageInfoSourceJaxbFiles(), new JaxbFileTransformer()));
+	}
+
+	static class JaxbFileTransformer
+		extends TransformerAdapter<JaxbFile, JavaResourcePackage>
+	{
+		@Override
+		public JavaResourcePackage transform(JaxbFile jaxbFile) {
+			return ((JavaResourcePackageInfoCompilationUnit) jaxbFile.getResourceModel()).getPackage();
+		}
 	}
 	
 	public JavaResourcePackage getJavaResourcePackage(String packageName) {

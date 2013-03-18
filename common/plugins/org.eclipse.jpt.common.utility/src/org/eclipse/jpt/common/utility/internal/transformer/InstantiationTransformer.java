@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,34 +13,37 @@ import java.io.Serializable;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
- * A {@link NullObjectTransformer} will transform an object to a
- * {@link Boolean}:<ul>
- * <li>If the object is <code>null</code>,
- * the transformer will return {@link Boolean#TRUE}.
- * <li>If the object is <em>not</em> <code>null</code>,
- * the transformer will return {@link Boolean#FALSE}.
- * </ul>
+ * Transform a {@link Class} into an instance by calling
+ * {@link Class#newInstance()}. Checked exceptions are converted to
+ * {@link RuntimeException}s.
  * 
- * @param <I> input: the type of the object passed to the transformer
+ * @param <O> output: the type of the object returned by the transformer (and
+ *   the class, or superclass of the class, passed to the transformer)
  */
-public class NullObjectTransformer<I>
-	implements Transformer<I, Boolean>, Serializable
+public final class InstantiationTransformer<O>
+	implements Transformer<Class<? extends O>, O>, Serializable
 {
 	@SuppressWarnings("rawtypes")
-	public static final Transformer INSTANCE = new NullObjectTransformer();
+	public static final Transformer INSTANCE = new InstantiationTransformer();
 
 	@SuppressWarnings("unchecked")
-	public static <S> Transformer<S, Boolean> instance() {
+	public static <O> Transformer<Class<? extends O>, O> instance() {
 		return INSTANCE;
 	}
 
 	// ensure single instance
-	private NullObjectTransformer() {
+	private InstantiationTransformer() {
 		super();
 	}
 
-	public Boolean transform(I o) {
-		return Boolean.valueOf(o == null);
+	public O transform(Class<? extends O> input) {
+		try {
+			return input.newInstance();
+		} catch (InstantiationException ex) {
+			throw new RuntimeException(ex);
+		} catch (IllegalAccessException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override

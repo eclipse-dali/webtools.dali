@@ -30,17 +30,17 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -831,7 +831,9 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	public Iterable<PersistentType> getAncestors() {
-		return this.buildInheritanceHierarchy(this.superPersistentType);
+		return (this.superPersistentType == null) ?
+				IterableTools.<PersistentType>emptyIterable() :
+				this.buildInheritanceHierarchy(this.superPersistentType);
 	}
 
 	protected Iterable<PersistentType> buildInheritanceHierarchy(PersistentType start) {
@@ -840,20 +842,22 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	protected Iterable<JavaResourceType> getResourceInheritanceHierarchy() {
-		return ObjectTools.chain(this.resourceType, new SuperJavaResourceTypeTransformer());
+		return (this.resourceType == null) ?
+				IterableTools.<JavaResourceType>emptyIterable() :
+				ObjectTools.chain(this.resourceType, new SuperJavaResourceTypeTransformer());
 	}
 
 	/**
 	 * Transform a Java resource type into its super Java resource type.
 	 */
 	protected class SuperJavaResourceTypeTransformer
-		extends AbstractTransformer<JavaResourceType, JavaResourceType>
+		extends TransformerAdapter<JavaResourceType, JavaResourceType>
 	{
 		// keep track of visited resource types to prevent cyclical inheritance
 		private final HashSet<JavaResourceType> visitedResourceTypes = new HashSet<JavaResourceType>();
 
 		@Override
-		protected JavaResourceType transform_(JavaResourceType jrt) {
+		public JavaResourceType transform(JavaResourceType jrt) {
 			this.visitedResourceTypes.add(jrt);
 			String superclassName = jrt.getSuperclassQualifiedName();
 			if (superclassName == null) {

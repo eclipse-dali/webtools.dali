@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceTypeCache;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandContext;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition;
@@ -163,10 +163,10 @@ public interface JpaProject
 	Transformer<JpaProject, JpaContextModelRoot> CONTEXT_MODEL_ROOT_TRANSFORMER = new ContextModelRootTransformer();
 
 	class ContextModelRootTransformer
-		extends AbstractTransformer<JpaProject, JpaContextModelRoot>
+		extends TransformerAdapter<JpaProject, JpaContextModelRoot>
 	{
 		@Override
-		protected JpaContextModelRoot transform_(JpaProject jpaProject) {
+		public JpaContextModelRoot transform(JpaProject jpaProject) {
 			return jpaProject.getContextModelRoot();
 		}
 	}

@@ -18,7 +18,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
-import org.eclipse.jpt.common.utility.transformer.Transformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.jaxb.core.internal.resource.AbstractJaxbFileResourceModel;
 import org.eclipse.jpt.jaxb.core.resource.jaxbindex.JaxbIndexResource;
 
@@ -72,13 +72,14 @@ public class JaxbIndexResourceImpl
 	}
 
 	protected class PrefixTransformer
-		implements Transformer<String, String>
+		extends TransformerAdapter<String, String>
 	{
 		protected final String prefix;
 		protected PrefixTransformer(String prefix) {
 			super();
 			this.prefix = prefix;
 		}
+		@Override
 		public String transform(String string) {
 			return this.prefix + string;
 		}

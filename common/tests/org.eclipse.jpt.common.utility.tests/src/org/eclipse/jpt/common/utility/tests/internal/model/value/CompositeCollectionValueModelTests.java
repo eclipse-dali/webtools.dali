@@ -228,12 +228,16 @@ public class CompositeCollectionValueModelTests
 	}
 
 	private Transformer<Family, CollectionValueModel<Member>> buildTransformer() {
-		return new TransformerAdapter<Family, CollectionValueModel<Member>>() {
-			@Override
-			public CollectionValueModel<Member> transform(Family family) {
-				return CompositeCollectionValueModelTests.this.buildMembersAdapter(family);
-			}
-		};
+		return new FamilyTransformer();
+	}
+
+	public class FamilyTransformer
+		extends TransformerAdapter<Family, CollectionValueModel<Member>>
+	{
+		@Override
+		public CollectionValueModel<Member> transform(Family family) {
+			return CompositeCollectionValueModelTests.this.buildMembersAdapter(family);
+		}
 	}
 
 
@@ -337,11 +341,16 @@ public class CompositeCollectionValueModelTests
 		public Iterator<Member> members() {
 			return this.members.iterator();
 		}
-		public static final Transformer<Family, Iterator<Member>> MEMBERS_TRANSFORMER = new Transformer<Family, Iterator<Member>>() {
+		public static final Transformer<Family, Iterator<Member>> MEMBERS_TRANSFORMER = new MembersTransformer();
+		public static class MembersTransformer
+			extends TransformerAdapter<Family, Iterator<Member>>
+		{
+			@Override
 			public Iterator<Member> transform(Family family) {
 				return family.members();
 			}
-		};
+		}
+
 	
 		public Member addMember(String memberName) {
 			Member member = new Member(memberName);

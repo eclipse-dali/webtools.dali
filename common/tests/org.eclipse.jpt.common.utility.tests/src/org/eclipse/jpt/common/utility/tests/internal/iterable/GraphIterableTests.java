@@ -15,6 +15,7 @@ import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.DisabledTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -42,7 +43,7 @@ public class GraphIterableTests
 	}
 
 	private Iterable<GraphNode> buildGraphIterable() {
-		return IterableTools.graphIterable(this.buildGraphRoot(), this.buildTransformer());
+		return IterableTools.graphIterable(this.buildGraphRoot(), CHILDREN_TRANSFORMER);
 	}
 
 	public void testNeighbors_roots() {
@@ -52,7 +53,7 @@ public class GraphIterableTests
 	}
 
 	private Iterable<GraphNode> buildGraphIterable_roots() {
-		return IterableTools.graphIterable(new GraphNode[] { this.buildGraphRoot() }, this.buildTransformer());
+		return IterableTools.graphIterable(new GraphNode[] { this.buildGraphRoot() }, CHILDREN_TRANSFORMER);
 	}
 
 	public void testToString() {
@@ -70,14 +71,6 @@ public class GraphIterableTests
 			exCaught = true;
 		}
 		assertTrue(exCaught);
-	}
-
-	private Transformer<GraphNode, Iterable<? extends GraphNode>> buildTransformer() {
-		return new Transformer<GraphNode, Iterable<? extends GraphNode>>() {
-			public Iterable<GraphNode> transform(GraphNode node) {
-				return node.getNeighbors();
-			}
-		};
 	}
 
 	private GraphNode buildGraphRoot() {
@@ -100,6 +93,16 @@ public class GraphIterableTests
 		tnNode.setNeighbors(new GraphNode[] { vaNode, ncNode, gaNode, alNode, msNode });
 
 		return ncNode;
+	}
+
+	private static final Transformer<GraphNode, Iterable<? extends GraphNode>> CHILDREN_TRANSFORMER = new ChildrenTransformer();
+	static class ChildrenTransformer
+		extends TransformerAdapter<GraphNode, Iterable<? extends GraphNode>>
+	{
+		@Override
+		public Iterable<GraphNode> transform(GraphNode node) {
+			return node.getNeighbors();
+		}
 	}
 
 	public class GraphNode {

@@ -11,9 +11,11 @@ package org.eclipse.jpt.common.utility.tests.internal.iterable;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -33,27 +35,19 @@ public class TreeIterableTests extends TestCase {
 	}
 
 	public void testIterator1() {
-		for (TreeNode tn : ObjectTools.tree(this.buildTree(), this.buildTransformer())) {
+		for (TreeNode tn : ObjectTools.tree(this.buildTree(), CHILDREN_TRANSFORMER)) {
 			assertTrue(this.nodes.contains(tn));
 		}
 	}
 
 	public void testIterator2() {
-		for (TreeNode tn : IterableTools.treeIterable(new TreeNode[] { this.buildTree() }, this.buildTransformer())) {
+		for (TreeNode tn : IterableTools.treeIterable(new TreeNode[] { this.buildTree() }, CHILDREN_TRANSFORMER)) {
 			assertTrue(this.nodes.contains(tn));
 		}
 	}
 
 	public void testToString() {
-		assertNotNull(IterableTools.treeIterable(this.buildTree(), this.buildTransformer()).toString());
-	}
-
-	private Transformer<TreeNode, Iterable<? extends TreeNode>> buildTransformer() {
-		return new Transformer<TreeNode, Iterable<? extends TreeNode>>() {
-			public Iterable<? extends TreeNode> transform(TreeNode next) {
-				return next.getChildren();
-			}
-		};
+		assertNotNull(IterableTools.treeIterable(this.buildTree(), CHILDREN_TRANSFORMER).toString());
 	}
 
 	private TreeNode buildTree() {
@@ -114,4 +108,13 @@ public class TreeIterableTests extends TestCase {
 		}
 	}
 
+	private static Transformer<TreeNode, Iterable<? extends TreeNode>> CHILDREN_TRANSFORMER = new ChildrenTransformer();
+	protected static class ChildrenTransformer
+		extends TransformerAdapter<TreeNode, Iterable<? extends TreeNode>>
+	{
+		@Override
+		public Iterable<? extends TreeNode> transform(TreeNode node) {
+			return node.getChildren();
+		}
+	}
 }

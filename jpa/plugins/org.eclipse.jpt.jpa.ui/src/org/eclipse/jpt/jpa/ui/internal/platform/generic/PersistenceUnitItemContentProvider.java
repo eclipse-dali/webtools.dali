@@ -22,6 +22,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionVal
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationListValueModel;
 import org.eclipse.jpt.common.utility.internal.predicate.NotNullPredicate;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -125,7 +126,7 @@ public class PersistenceUnitItemContentProvider
 	protected ListValueModel<JavaManagedType> buildJavaManagedTypesModel() {
 		return new TransformationListValueModel<ClassRef, JavaManagedType>(
 				this.buildClassRefsModel(),
-				ClassRef.JAVA_MANAGED_TYPE_TRANSFORMER
+				TransformerTools.nullCheck(ClassRef.JAVA_MANAGED_TYPE_TRANSFORMER)
 			);
 	}
 
@@ -168,7 +169,7 @@ public class PersistenceUnitItemContentProvider
 	protected ListValueModel<JarFile> buildJarFilesModel() {
 		return new TransformationListValueModel<JarFileRef, JarFile>(
 				this.buildJarFileRefsModel(),
-				JarFileRef.JAR_FILE_TRANSFORMER
+				TransformerTools.nullCheck(JarFileRef.JAR_FILE_TRANSFORMER)
 			);
 	}
 

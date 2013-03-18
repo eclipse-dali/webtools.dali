@@ -27,7 +27,6 @@ import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
-import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
@@ -186,14 +185,25 @@ public class JpaMoveFolderParticipant
 		return compositeChange.getChildren().length == 0 ? null : compositeChange;
 	}
 
-	protected Iterable<ReplaceEdit> createPersistenceUnitReplaceEditsCheckClasspath(final PersistenceUnit persistenceUnit) {
-		Transformer<IFolder, Iterable<ReplaceEdit>> transformer = new TransformerAdapter<IFolder, Iterable<ReplaceEdit>>() {
-			@Override
-			public Iterable<ReplaceEdit> transform(IFolder folder) {
-				return createPersistenceUnitReplaceEdits(persistenceUnit, folder, (IContainer) getArguments(folder).getDestination());
-			}
-		};
-		return IterableTools.children(this.getOriginalFoldersOnClasspath(persistenceUnit.getJpaProject()), transformer);
+	protected Iterable<ReplaceEdit> createPersistenceUnitReplaceEditsCheckClasspath(PersistenceUnit persistenceUnit) {
+		return IterableTools.children(
+				this.getOriginalFoldersOnClasspath(persistenceUnit.getJpaProject()),
+				new PersistenceUnitReplaceEditsTransformer(persistenceUnit)
+			);
+	}
+
+	class PersistenceUnitReplaceEditsTransformer
+		extends TransformerAdapter<IFolder, Iterable<ReplaceEdit>>
+	{
+		private final PersistenceUnit persistenceUnit;
+		PersistenceUnitReplaceEditsTransformer(PersistenceUnit persistenceUnit) {
+			super();
+			this.persistenceUnit = persistenceUnit;
+		}
+		@Override
+		public Iterable<ReplaceEdit> transform(IFolder folder) {
+			return createPersistenceUnitReplaceEdits(this.persistenceUnit, folder, (IContainer) getArguments(folder).getDestination());
+		}
 	}
 
 	protected Iterable<IFolder> getOriginalFoldersOnClasspath(JpaProject jpaProject) {

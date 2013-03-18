@@ -13,16 +13,13 @@ import java.io.Serializable;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
- * A transformer that will throw an {@link UnsupportedOperationException exception}
- * if {@link #transform(Object)} is called. This is useful in situations
- * where a transformer is optional and the default transformer should
- * not be used.
+ * A transformer that will transform every input into <code>null</code>.
  */
-public final class DisabledTransformer<I, O>
+public final class NullOutputTransformer<I, O>
 	implements Transformer<I, O>, Serializable
 {
 	@SuppressWarnings("rawtypes")
-	public static final Transformer INSTANCE = new DisabledTransformer();
+	public static final Transformer INSTANCE = new NullOutputTransformer();
 
 	@SuppressWarnings("unchecked")
 	public static <I, O> Transformer<I, O> instance() {
@@ -30,15 +27,15 @@ public final class DisabledTransformer<I, O>
 	}
 
 	// ensure single instance
-	private DisabledTransformer() {
+	private NullOutputTransformer() {
 		super();
 	}
 
 	/**
-	 * Throw an {@link UnsupportedOperationException exception}.
+	 * Return <code>null</code>.
 	 */
 	public O transform(I input) {
-		throw new UnsupportedOperationException();
+		return null;
 	}
 
 	@Override

@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core.context;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -143,10 +142,10 @@ public interface PersistentType
 		String SUPER_PERSISTENT_TYPE_PROPERTY = "superPersistentType"; //$NON-NLS-1$
 	Transformer<PersistentType, PersistentType> SUPER_PERSISTENT_TYPE_TRANSFORMER = new SuperPersistentTypeTransformer();
 	class SuperPersistentTypeTransformer
-		extends AbstractTransformer<PersistentType, PersistentType>
+		extends TransformerAdapter<PersistentType, PersistentType>
 	{
 		@Override
-		protected PersistentType transform_(PersistentType persistentType) {
+		public PersistentType transform(PersistentType persistentType) {
 			return persistentType.getSuperPersistentType();
 		}
 	}
@@ -178,10 +177,10 @@ public interface PersistentType
 	PersistentType getOverriddenPersistentType();
 	Transformer<PersistentType, PersistentType> OVERRIDDEN_PERSISTENT_TYPE_TRANSFORMER = new OverriddenPersistentTypeTransformer();
 	class OverriddenPersistentTypeTransformer
-		extends AbstractTransformer<PersistentType, PersistentType>
+		extends TransformerAdapter<PersistentType, PersistentType>
 	{
 		@Override
-		protected PersistentType transform_(PersistentType persistentType) {
+		public PersistentType transform(PersistentType persistentType) {
 			return persistentType.getOverriddenPersistentType();
 		}
 	}

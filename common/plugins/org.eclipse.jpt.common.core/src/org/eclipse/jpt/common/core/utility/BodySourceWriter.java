@@ -21,6 +21,7 @@ import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.io.WriterTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.io.IndentingPrintWriter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -199,8 +200,9 @@ public class BodySourceWriter
 	protected static final Transformer<Map.Entry<String, ImportPackage>, String> IMPORT_ENTRIES_TRANSFORMER = new ImportEntriesTransformer();
 
 	protected static class ImportEntriesTransformer
-		implements Transformer<Map.Entry<String, ImportPackage>, String>
+		extends TransformerAdapter<Map.Entry<String, ImportPackage>, String>
 	{
+		@Override
 		public String transform(Entry<String, ImportPackage> importEntry) {
 			String pkg = importEntry.getValue().packageName;
 			String type = importEntry.getKey();

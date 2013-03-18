@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
@@ -26,6 +25,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValue
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -69,7 +69,8 @@ import org.eclipse.ui.part.PageBook;
  * @version 3.2
  * @since 2.1
  */
-public class EclipseLinkConvertersComposite extends Pane<EclipseLinkConverterContainer>
+public class EclipseLinkConvertersComposite
+	extends Pane<EclipseLinkConverterContainer>
 {
 	private EclipseLinkCustomConverterComposite converterComposite;
 	private EclipseLinkObjectTypeConverterComposite objectTypeConverterComposite;
@@ -234,29 +235,35 @@ public class EclipseLinkConvertersComposite extends Pane<EclipseLinkConverterCon
 		return converter;
 	}
 
-	private Transformer<EclipseLinkConverter, Control> buildPaneTransformer(final PageBook pageBook) {
-		return new Transformer<EclipseLinkConverter, Control>() {
-			public Control transform(EclipseLinkConverter converter) {
-				if (converter == null) {
-					return null;
-				}
+	private Transformer<EclipseLinkConverter, Control> buildPaneTransformer(PageBook pageBook) {
+		return new PaneTransformer(pageBook);
+	}
 
-				if (converter.getType() == EclipseLinkCustomConverter.class) {
-					return EclipseLinkConvertersComposite.this.getCustomConverterComposite(pageBook).getControl();
-				}
-				if (converter.getType() == EclipseLinkObjectTypeConverter.class) {
-					return EclipseLinkConvertersComposite.this.getObjectTypeConverterComposite(pageBook).getControl();
-				}
-				if (converter.getType() == EclipseLinkStructConverter.class) {
-					return EclipseLinkConvertersComposite.this.getStructConverterComposite(pageBook).getControl();
-				}
-				if (converter.getType() == EclipseLinkTypeConverter.class) {
-					return EclipseLinkConvertersComposite.this.getTypeConverterComposite(pageBook).getControl();
-				}
+	protected class PaneTransformer
+		extends AbstractTransformer<EclipseLinkConverter, Control>
+	{
+		private final PageBook pageBook;
 
-				return null;
+		protected PaneTransformer(PageBook pageBook) {
+			this.pageBook = pageBook;
+		}
+
+		@Override
+		public Control transform_(EclipseLinkConverter converter) {
+			if (converter.getType() == EclipseLinkCustomConverter.class) {
+				return EclipseLinkConvertersComposite.this.getCustomConverterComposite(this.pageBook).getControl();
 			}
-		};
+			if (converter.getType() == EclipseLinkObjectTypeConverter.class) {
+				return EclipseLinkConvertersComposite.this.getObjectTypeConverterComposite(this.pageBook).getControl();
+			}
+			if (converter.getType() == EclipseLinkStructConverter.class) {
+				return EclipseLinkConvertersComposite.this.getStructConverterComposite(this.pageBook).getControl();
+			}
+			if (converter.getType() == EclipseLinkTypeConverter.class) {
+				return EclipseLinkConvertersComposite.this.getTypeConverterComposite(this.pageBook).getControl();
+			}
+			return null;
+		}
 	}
 
 	private ListValueModel<EclipseLinkConverter> buildDisplayableConvertersListHolder() {

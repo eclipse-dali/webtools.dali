@@ -27,7 +27,6 @@ import org.eclipse.jpt.common.utility.internal.command.DisabledParameterizedComm
 import org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
-import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -905,12 +904,15 @@ public final class IterableTools {
 	 * corresponding {@link Iterator}.
 	 */
 	public static class IteratorTransformer<E>
-		extends TransformerAdapter<Iterable<? extends E>, Iterator<E>>
+		implements Transformer<Iterable<? extends E>, Iterator<E>>
 	{
-		@Override
 		@SuppressWarnings("unchecked")
 		public Iterator<E> transform(Iterable<? extends E> iterable) {
 			return (Iterator<E>) iterable.iterator();
+		}
+		@Override
+		public String toString() {
+			return this.getClass().getSimpleName();
 		}
 	}
 
@@ -944,11 +946,14 @@ public final class IterableTools {
 	 * <em>read-only</em> {@link ListIterator}.
 	 */
 	public static class ReadOnlyListIteratorTransformer<E>
-		extends TransformerAdapter<ListIterable<? extends E>, ListIterator<? extends E>>
+		implements Transformer<ListIterable<? extends E>, ListIterator<? extends E>>
 	{
-		@Override
 		public ListIterator<? extends E> transform(ListIterable<? extends E> iterable) {
 			return IteratorTools.readOnly(iterable.iterator());
+		}
+		@Override
+		public String toString() {
+			return this.getClass().getSimpleName();
 		}
 	}
 

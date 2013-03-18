@@ -523,12 +523,7 @@ public class XPath {
 				final String prefix, int pos) {
 			
 			if (getTextRange(context).includes(pos) || getNextStep() == null) {
-				Transformer<String, String> transformer = new TransformerAdapter<String, String>() {
-					@Override
-					public String transform(String s) {
-						return StringTools.concatenate(prefix, s);
-					}
-				};
+				Transformer<String, String> transformer = new StringPrefixer(prefix);
 				return IterableTools.transform(
 								IterableTools.transform(
 										IterableTools.concatenate(
@@ -578,6 +573,20 @@ public class XPath {
 		
 		protected TextRange getTextRange(Context context) {
 			return XPath.this.buildTextRange(context, this);
+		}
+	}
+
+	static class StringPrefixer
+		extends TransformerAdapter<String, String>
+	{
+		private final String prefix;
+		StringPrefixer(String prefix) {
+			super();
+			this.prefix = prefix;
+		}
+		@Override
+		public String transform(String s) {
+			return StringTools.concatenate(this.prefix, s);
 		}
 	}
 

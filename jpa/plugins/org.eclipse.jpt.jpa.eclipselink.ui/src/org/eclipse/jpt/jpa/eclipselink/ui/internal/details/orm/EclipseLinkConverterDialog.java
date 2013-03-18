@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.common.ui.internal.widgets.ValidatingDialog;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticListValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -127,7 +127,7 @@ public class EclipseLinkConverterDialog
 				container, 
 				buildConverterTypeListHolder(), 
 				buildConverterTypeHolder(), 
-				buildStringConverter(),
+				buildConverterTypeLabelTransformer(),
 				(String) null);
 		}
 
@@ -135,28 +135,29 @@ public class EclipseLinkConverterDialog
 			return new StaticListValueModel<Class<? extends EclipseLinkConverter>>(EclipseLinkConverter.TYPES);
 		}
 		
-		private Transformer<Class<? extends EclipseLinkConverter>, String> buildStringConverter() {
-			return new TransformerAdapter<Class<? extends EclipseLinkConverter>, String>() {
-				@Override
-				public String transform(Class<? extends EclipseLinkConverter> value) {
-					if (value == null) {
-						return null;
-					}
-					if (value == EclipseLinkCustomConverter.class) {
-						return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERTERS_COMPOSITE_CUSTOM_CONVERTER;
-					}
-					if (value == EclipseLinkObjectTypeConverter.class) {
-						return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERTERS_COMPOSITE_OBJECT_TYPE_CONVERTER;
-					}
-					if (value == EclipseLinkStructConverter.class) {
-						return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERTERS_COMPOSITE_STRUCT_CONVERTER;
-					}
-					if (value == EclipseLinkTypeConverter.class) {
-						return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERTERS_COMPOSITE_TYPE_CONVERTER;
-					}
-					return value.getSimpleName();
+		private Transformer<Class<? extends EclipseLinkConverter>, String> buildConverterTypeLabelTransformer() {
+			return new ConverterTypeLabelTransformer();
+		}
+
+		static class ConverterTypeLabelTransformer
+			extends AbstractTransformer<Class<? extends EclipseLinkConverter>, String>
+		{
+			@Override
+			public String transform_(Class<? extends EclipseLinkConverter> value) {
+				if (value == EclipseLinkCustomConverter.class) {
+					return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERTERS_COMPOSITE_CUSTOM_CONVERTER;
 				}
-			};
+				if (value == EclipseLinkObjectTypeConverter.class) {
+					return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERTERS_COMPOSITE_OBJECT_TYPE_CONVERTER;
+				}
+				if (value == EclipseLinkStructConverter.class) {
+					return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERTERS_COMPOSITE_STRUCT_CONVERTER;
+				}
+				if (value == EclipseLinkTypeConverter.class) {
+					return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERTERS_COMPOSITE_TYPE_CONVERTER;
+				}
+				return value.getSimpleName();
+			}
 		}
 		
 		private ModifiablePropertyValueModel<String> buildNameHolder() {

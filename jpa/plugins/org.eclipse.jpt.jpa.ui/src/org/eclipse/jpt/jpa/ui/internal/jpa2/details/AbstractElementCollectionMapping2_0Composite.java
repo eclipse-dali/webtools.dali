@@ -15,17 +15,18 @@ import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
-import org.eclipse.jpt.jpa.core.context.SpecifiedAccessReference;
 import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.CollectionMapping;
-import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.ConvertibleMapping;
 import org.eclipse.jpt.jpa.core.context.LobConverter;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAccessReference;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
@@ -52,7 +53,6 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 	extends Pane<T>
 	implements JpaComposite
 {
-		
 	private Control basicValueComposite;
 	
 	private Control embeddableValueComposite;
@@ -252,12 +252,23 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 		};
 	}
 
-	private Transformer<T.Type, Control> buildPaneTransformer(final Composite container) {
-		return new Transformer<T.Type, Control>() {
-			public Control transform(T.Type type) {
-				return AbstractElementCollectionMapping2_0Composite.this.transformValueType(type, container);
-			}
-		};
+	private Transformer<T.Type, Control> buildPaneTransformer(Composite container) {
+		return new PaneTransformer(container);
+	}
+
+	protected class PaneTransformer
+		extends TransformerAdapter<T.Type, Control>
+	{
+		private final Composite container;
+
+		protected PaneTransformer(Composite container) {
+			this.container = container;
+		}
+
+		@Override
+		public Control transform(T.Type type) {
+			return AbstractElementCollectionMapping2_0Composite.this.transformValueType(type, this.container);
+		}
 	}
 
 	/**

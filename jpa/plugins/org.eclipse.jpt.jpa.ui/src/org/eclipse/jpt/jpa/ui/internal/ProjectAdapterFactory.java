@@ -15,12 +15,13 @@ import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.ElementPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
+import org.eclipse.jpt.jpa.ui.JpaContextModelRootModel;
 import org.eclipse.jpt.jpa.ui.JpaProjectModel;
 import org.eclipse.jpt.jpa.ui.JpaProjectsModel;
-import org.eclipse.jpt.jpa.ui.JpaContextModelRootModel;
 
 /**
  * Factory to build Dali adapters for an {@link IProject}:<ul>
@@ -142,7 +143,7 @@ public class ProjectAdapterFactory
 		implements JpaContextModelRootModel
 	{
 		JpaContextModelRootModelAdapter(JpaProjectModel jpaProjectsModel) {
-			super(jpaProjectsModel, JpaProject.CONTEXT_MODEL_ROOT_TRANSFORMER);
+			super(jpaProjectsModel, TransformerTools.nullCheck(JpaProject.CONTEXT_MODEL_ROOT_TRANSFORMER));
 		}
 
 		public IProject getProject() {

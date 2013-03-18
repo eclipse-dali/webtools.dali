@@ -28,8 +28,8 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueMode
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.StringObjectTransformer;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -37,9 +37,9 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOptions;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkSchemaGeneration;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkTargetDatabase;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkTargetServer;
@@ -196,7 +196,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 			container,
 			this.buildDefaultSessionNameListHolder(),
 			this.buildSessionNameHolder(),
-			StringObjectTransformer.<String>instance(),
+			TransformerTools.<String>objectToStringTransformer(),
 			EclipseLinkHelpContextIds.PERSISTENCE_OPTIONS_SESSION_NAME
 		);
 		SWTUtil.attachDefaultValueHandler(sessionNameCombo);
@@ -207,7 +207,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 			container,
 			this.buildDefaultSessionsXmlFileNameListHolder(),
 			this.buildSessionsXmlFileNameHolder(),
-			StringObjectTransformer.<String>instance(),
+			TransformerTools.<String>objectToStringTransformer(),
 			EclipseLinkHelpContextIds.PERSISTENCE_OPTIONS_SESSIONS_XML);
 		SWTUtil.attachDefaultValueHandler(sessionsXmlCombo);
 
@@ -217,7 +217,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 			container,
 			this.buildTargetDatabaseListHolder(),
 			this.buildTargetDatabaseHolder(),
-			this.buildTargetDatabaseConverter(),
+			this.buildTargetDatabaseLabelTransformer(),
 			EclipseLinkHelpContextIds.PERSISTENCE_OPTIONS_TARGET_DATABASE
 		);
 		SWTUtil.attachDefaultValueHandler(targetDatabaseCombo);
@@ -382,7 +382,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 		);
 	}
 
-	private String buildTargetDatabaseDisplayString(String targetDatabaseName) {
+	String buildTargetDatabaseDisplayString(String targetDatabaseName) {
 		switch (EclipseLinkTargetDatabase.valueOf(targetDatabaseName)) {
 			case attunity :
 				return JptJpaEclipseLinkUiMessages.TARGET_DATABASE_COMPOSITE_ATTUNITY;
@@ -449,20 +449,22 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 		};
 	}
 
-	private Transformer<String, String> buildTargetDatabaseConverter() {
-		return new TransformerAdapter<String, String>() {
-			@Override
-			public String transform(String value) {
-				try {
-					EclipseLinkTargetDatabase.valueOf(value);
-					value = buildTargetDatabaseDisplayString(value);
-				}
-				catch (Exception e) {
-					// Ignore since the value is not a TargetDatabase
-				}
+	private Transformer<String, String> buildTargetDatabaseLabelTransformer() {
+		return new TargetDatabaseLabelTransformer();
+	}
+
+	class TargetDatabaseLabelTransformer
+		extends TransformerAdapter<String, String>
+	{
+		@Override
+		public String transform(String value) {
+			try {
+				return buildTargetDatabaseDisplayString(value);
+			} catch (RuntimeException ex) {
+				// value is not a target database
 				return value;
 			}
-		};
+		}
 	}
 
 	private ModifiablePropertyValueModel<String> buildTargetDatabaseHolder() {
@@ -542,7 +544,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 		);
 	}
 
-	private String buildTargetServerDisplayString(String targetServerName) {
+	String buildTargetServerDisplayString(String targetServerName) {
 		switch (EclipseLinkTargetServer.valueOf(targetServerName)) {
 			case jboss :
 				return JptJpaEclipseLinkUiMessages.TARGET_SERVER_COMPOSITE_JBOSS;
@@ -582,19 +584,21 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	}
 
 	private Transformer<String, String> buildTargetServerConverter() {
-		return new TransformerAdapter<String, String>() {
-			@Override
-			public String transform(String value) {
-				try {
-					EclipseLinkTargetServer.valueOf(value);
-					value = buildTargetServerDisplayString(value);
-				}
-				catch (Exception e) {
-					// Ignore since the value is not a TargetServer
-				}
+		return new TargetServerLabelTransformer();
+	}
+
+	class TargetServerLabelTransformer
+		extends TransformerAdapter<String, String>
+	{
+		@Override
+		public String transform(String value) {
+			try {
+				return buildTargetServerDisplayString(value);
+			} catch (RuntimeException ex) {
+				// the value is not a target server
 				return value;
 			}
-		};
+		}
 	}
 
 	private ModifiablePropertyValueModel<String> buildTargetServerHolder() {

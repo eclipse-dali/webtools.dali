@@ -79,7 +79,7 @@ public class EclipseLinkConvertCombo
 			container,
 			buildConvertNameListHolder(),
 			buildConvertNameHolder(),
-			buildNameConverter(),
+			buildConverterNameTransformer(),
 			(String) null
 		);
 		SWTUtil.attachDefaultValueHandler(this.combo);
@@ -135,46 +135,50 @@ public class EclipseLinkConvertCombo
 		};
 	}
 
-	private Transformer<String, String> buildNameConverter() {
-		return new TransformerAdapter<String, String>() {
-			@Override
-			public String transform(String value) {
+	private Transformer<String, String> buildConverterNameTransformer() {
+		return new ConverterNameTransformer();
+	}
 
-				if (getSubject() == null) {
-					return value;
-				}
+	class ConverterNameTransformer
+		extends TransformerAdapter<String, String>
+	{
+		@Override
+		public String transform(String value) {
 
-				if (value == null) {
-					value = getSubject().getDefaultConverterName();
-
-					if (value != null) {
-						value = DEFAULT_KEY + value;
-					}
-					else {
-						value = DEFAULT_KEY;
-					}
-				}
-
-				if (value.startsWith(DEFAULT_KEY)) {
-					String defaultName = value.substring(DEFAULT_KEY.length());
-
-					if (defaultName.length() > 0) {
-						value = NLS.bind(
-							JptCommonUiMessages.DEFAULT_WITH_ONE_PARAM,
-							defaultName
-						);
-					}
-					else {
-						value = NLS.bind(
-							JptCommonUiMessages.DEFAULT_WITH_ONE_PARAM,
-							EclipseLinkConvert.NO_CONVERTER
-						);
-					}
-				}
-
+			if (EclipseLinkConvertCombo.this.getSubject() == null) {
 				return value;
 			}
-		};
+
+			if (value == null) {
+				value = EclipseLinkConvertCombo.this.getSubject().getDefaultConverterName();
+
+				if (value != null) {
+					value = DEFAULT_KEY + value;
+				}
+				else {
+					value = DEFAULT_KEY;
+				}
+			}
+
+			if (value.startsWith(DEFAULT_KEY)) {
+				String defaultName = value.substring(DEFAULT_KEY.length());
+
+				if (defaultName.length() > 0) {
+					value = NLS.bind(
+						JptCommonUiMessages.DEFAULT_WITH_ONE_PARAM,
+						defaultName
+					);
+				}
+				else {
+					value = NLS.bind(
+						JptCommonUiMessages.DEFAULT_WITH_ONE_PARAM,
+						EclipseLinkConvert.NO_CONVERTER
+					);
+				}
+			}
+
+			return value;
+		}
 	}
 
 	protected ListValueModel<String> buildReservedConverterNameListHolder() {

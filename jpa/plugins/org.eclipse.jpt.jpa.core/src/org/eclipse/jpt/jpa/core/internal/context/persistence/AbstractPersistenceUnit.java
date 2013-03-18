@@ -1599,7 +1599,7 @@ public abstract class AbstractPersistenceUnit
 		return IterableTools.children(this.getAllJavaTypeMappingsUnique(), TYPE_MAPPING_JAVA_GENERATORS_TRANSFORMER);
 	}
 
-	protected static final Transformer<TypeMapping, Iterable<JavaGenerator>> TYPE_MAPPING_JAVA_GENERATORS_TRANSFORMER = TransformerTools.lateralTransformer(TypeMapping.GENERATORS_TRANSFORMER);
+	protected static final Transformer<TypeMapping, Iterable<JavaGenerator>> TYPE_MAPPING_JAVA_GENERATORS_TRANSFORMER = TransformerTools.cast(TypeMapping.GENERATORS_TRANSFORMER);
 
 	// ***** metadata conversion
 	public boolean hasConvertibleJavaGenerators() {
@@ -1681,7 +1681,7 @@ public abstract class AbstractPersistenceUnit
 		return IterableTools.children(this.getAllJavaTypeMappingsUnique(), TYPE_MAPPING_JAVA_QUERIES_TRANSFORMER);
 	}
 
-	protected static final Transformer<TypeMapping, Iterable<JavaQuery>> TYPE_MAPPING_JAVA_QUERIES_TRANSFORMER = TransformerTools.lateralTransformer(TypeMapping.QUERIES_TRANSFORMER);
+	protected static final Transformer<TypeMapping, Iterable<JavaQuery>> TYPE_MAPPING_JAVA_QUERIES_TRANSFORMER = TransformerTools.cast(TypeMapping.QUERIES_TRANSFORMER);
 
 	protected Iterable<TypeMapping> getAllJavaTypeMappingsUnique() {
 		return IterableTools.transform(this.getAllJavaPersistentTypesUnique(), PersistentType.MAPPING_TRANSFORMER);
@@ -1755,7 +1755,7 @@ public abstract class AbstractPersistenceUnit
 		return IterableTools.transform(this.getClassRefs(), CLASS_REF_MANAGED_TYPE_TRANSFORMER);
 	}
 
-	protected static final Transformer<ClassRef, ManagedType> CLASS_REF_MANAGED_TYPE_TRANSFORMER = TransformerTools.superTransformer(ClassRef.JAVA_MANAGED_TYPE_TRANSFORMER);
+	protected static final Transformer<ClassRef, ManagedType> CLASS_REF_MANAGED_TYPE_TRANSFORMER = TransformerTools.upcast(ClassRef.JAVA_MANAGED_TYPE_TRANSFORMER);
 
 	/**
 	 * We only get <em>annotated</em> types from jar files.

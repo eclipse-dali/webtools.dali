@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * <li>If the original {@link Boolean} is <code>null</code>,
  * the transformer will return <code>null</code>.
  * </ul>
- * Use a {@link NonNullBooleanTransformer} to specify a value for when a
+ * Use a {@link BooleanTransformer} to specify a value for when a
  * {@link Boolean} is <code>null</code>
  */
 public class NotBooleanTransformer

@@ -55,6 +55,7 @@ import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.internal.transformer.NotBooleanTransformer;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
@@ -686,7 +687,7 @@ public class JpaProjectPropertiesPage
 				CONNECTION_CHOICES_MODEL,
 				this.connectionModel,
 				connectionDropDown,
-				SIMPLE_STRING_CONVERTER
+				SIMPLE_STRING_TRANSFORMER
 			);
 
 		Link addConnectionLink = this.buildLink(group, JptJpaUiMessages.JpaFacetWizardPage_connectionLink);
@@ -719,13 +720,7 @@ public class JpaProjectPropertiesPage
 		SWTTools.controlEnabledState(this.jpaProjectNotNullFlagModel, group, connectionDropDown, addConnectionLink, overrideDefaultCatalogCheckBox, overrideDefaultSchemaButton);
 	}
 
-	private static final Transformer<String, String> SIMPLE_STRING_CONVERTER =
-			new TransformerAdapter<String, String>() {
-				@Override
-				public String transform(String string) {
-					return (string != null) ? string : JptJpaUiMessages.JpaFacetWizardPage_none;
-				}
-			};
+	private static final Transformer<String, String> SIMPLE_STRING_TRANSFORMER = TransformerTools.passThruTransformer(JptJpaUiMessages.JpaFacetWizardPage_none);
 
 	private PropertyChangeListener buildDisconnectedModelListener() {
 		return new SWTPropertyChangeListenerWrapper(new DisconnectedModelListener());
@@ -833,7 +828,7 @@ public class JpaProjectPropertiesPage
 				this.javaSourceFolderChoicesModel,
 				this.metamodelSourceFolderModel,
 				metamodelSourceFolderDropDown,
-				SIMPLE_STRING_CONVERTER
+				SIMPLE_STRING_TRANSFORMER
 		);
 
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(group, JpaHelpContextIds.PROPERTIES_JAVA_PERSISTENCE_METAMODEL);

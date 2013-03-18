@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.common.utility.internal.model.value.FilteringPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -71,16 +72,18 @@ public class PersistentTypeDetailsPageManager
 	}
 	
 	private Transformer<TypeMapping, Control> buildPaneTransformer() {
-		return new Transformer<TypeMapping, Control>() {
-			public Control transform(TypeMapping typeMapping) {
-				if (typeMapping == null) {
-					return null;
-				}
-				return getMappingComposite(typeMapping.getKey()).getControl();
-			}
-		};
+		return new PaneTransformer();
 	}
 	
+	protected class PaneTransformer
+		extends AbstractTransformer<TypeMapping, Control>
+	{
+		@Override
+		public Control transform_(TypeMapping typeMapping) {
+			return getMappingComposite(typeMapping.getKey()).getControl();
+		}
+	}
+
 	protected PropertyValueModel<TypeMapping> buildMappingHolder(String key) {
 		return new FilteringPropertyValueModel<TypeMapping>(
 			this.mappingHolder,

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.common.utility.internal.model.value;
 
 import java.util.Collection;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -284,7 +283,6 @@ public class CompositeBooleanPropertyValueModel
 	}
 
 	protected static final Transformer<PropertyValueModel<? extends Boolean>, Boolean> BOOLEAN_TRANSFORMER = new BooleanTransformer();
-
 	protected static class BooleanTransformer
 		implements Transformer<PropertyValueModel<? extends Boolean>, Boolean>
 	{
@@ -293,7 +291,7 @@ public class CompositeBooleanPropertyValueModel
 		}
 		@Override
 		public String toString() {
-			return ObjectTools.singletonToString(this);
+			return this.getClass().getSimpleName();
 		}
 	}
 

@@ -14,34 +14,32 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
- * Transform an object into the string returned by its {@link Object#toString()}
- * method. A <code>null</code> object is transformed into a client-configured
- * non-<code>null</code> string.
- * 
- * @param <I> input: the type of the object passed to the transformer
+ * Transform a {@link String} into an {@link Integer} if possible.
+ * Transform a <code>null</code> string into a client-configured
+ * {@link Integer}.
+ * @see Integer#valueOf(String)
  */
-public class NonNullStringObjectTransformer<I>
-	implements Transformer<I, String>, Serializable
+public class StringToIntegerTransformer
+	implements Transformer<String, Integer>, Serializable
 {
-	// not null
-	private String nullString;
+	private final Integer nullInteger;
 
 	private static final long serialVersionUID = 1L;
 
-	public NonNullStringObjectTransformer(String nullString) {
+	public StringToIntegerTransformer(Integer nullInteger) {
 		super();
-		if (nullString == null) {
-			throw new NullPointerException();
-		}
-		this.nullString = nullString;
+		this.nullInteger = nullInteger;
 	}
 
-	public String transform(I o) {
-		return (o == null) ? this.nullString : o.toString();
+	/**
+	 * @see Integer#valueOf(String)
+	 */
+	public Integer transform(String string) {
+		return (string == null) ? this.nullInteger : Integer.valueOf(string);
 	}
 
 	@Override
 	public String toString() {
-		return ObjectTools.toString(this, this.nullString);
+		return ObjectTools.toString(this, this. nullInteger);
 	}
 }

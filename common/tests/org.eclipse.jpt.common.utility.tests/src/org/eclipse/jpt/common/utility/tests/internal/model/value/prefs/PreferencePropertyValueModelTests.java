@@ -17,7 +17,7 @@ import java.util.prefs.Preferences;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.prefs.PreferencePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.NonTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
@@ -391,7 +391,7 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 					preferencesModel,
 					key,
 					defaultValue,
-					NonTransformer.<String>instance()
+					TransformerTools.<String>passThruTransformer()
 				);
 		}
 

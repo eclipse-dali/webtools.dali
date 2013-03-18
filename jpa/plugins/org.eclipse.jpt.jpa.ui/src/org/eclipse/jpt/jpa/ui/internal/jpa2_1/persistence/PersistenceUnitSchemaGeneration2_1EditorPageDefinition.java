@@ -79,7 +79,7 @@ public class PersistenceUnitSchemaGeneration2_1EditorPageDefinition
 	{
 		@Override
 		protected SchemaGeneration2_1 transform_(PersistenceUnit persistenceUnit) {
-			return (SchemaGeneration2_1) ((PersistenceUnit2_1) persistenceUnit).getSchemaGeneration();
+			return ((PersistenceUnit2_1) persistenceUnit).getSchemaGeneration();
 		}
 	}
 }

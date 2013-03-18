@@ -28,7 +28,6 @@ import org.eclipse.jpt.common.utility.internal.SystemTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
-import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.XMLStringEncoder;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -593,11 +592,14 @@ public final class FileTools {
 	
 	public static Transformer<File, File> CANONICAL_FILE_TRANSFORMER = new CanonicalFileTransformer();
 	/* CU private */ static class CanonicalFileTransformer
-		extends TransformerAdapter<File, File>
+		implements Transformer<File, File>
 	{
-		@Override
 		public File transform(File file) {
 			return canonicalFile(file);
+		}
+		@Override
+		public String toString() {
+			return this.getClass().getSimpleName();
 		}
 	}
 
@@ -610,11 +612,14 @@ public final class FileTools {
 	
 	public static Transformer<String, String> CANONICAL_FILE_NAME_TRANSFORMER = new CanonicalFileNameTransformer();
 	/* CU private */ static class CanonicalFileNameTransformer
-		extends TransformerAdapter<String, String>
+		implements Transformer<String, String>
 	{
-		@Override
 		public String transform(String fileName) {
 			return canonicalFileName(fileName);
+		}
+		@Override
+		public String toString() {
+			return this.getClass().getSimpleName();
 		}
 	}
 

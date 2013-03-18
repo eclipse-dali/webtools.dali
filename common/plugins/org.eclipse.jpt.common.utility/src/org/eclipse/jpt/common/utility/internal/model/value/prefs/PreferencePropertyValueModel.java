@@ -15,10 +15,9 @@ import java.util.prefs.PreferenceChangeListener;
 import java.util.prefs.Preferences;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.BooleanStringTransformer;
-import org.eclipse.jpt.common.utility.internal.transformer.IntegerStringTransformer;
-import org.eclipse.jpt.common.utility.internal.transformer.NonTransformer;
-import org.eclipse.jpt.common.utility.internal.transformer.StringObjectTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.StringToBooleanTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.StringToIntegerTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -95,7 +94,7 @@ public class PreferencePropertyValueModel<P>
 				preferences,
 				key,
 				defaultValue,
-				NonTransformer.<String>instance()
+				TransformerTools.<String>passThruTransformer()
 			);
 	}
 
@@ -108,7 +107,7 @@ public class PreferencePropertyValueModel<P>
 				preferencesModel,
 				key,
 				defaultValue,
-				NonTransformer.<String>instance()
+				TransformerTools.<String>passThruTransformer()
 			);
 	}
 
@@ -121,7 +120,7 @@ public class PreferencePropertyValueModel<P>
 				preferences,
 				key,
 				defaultValue ? Boolean.TRUE : Boolean.FALSE,
-				BooleanStringTransformer.instance()
+				TransformerTools.stringToBooleanTransformer()
 			);
 	}
 
@@ -134,7 +133,7 @@ public class PreferencePropertyValueModel<P>
 				preferencesModel,
 				key,
 				defaultValue ? Boolean.TRUE : Boolean.FALSE,
-				BooleanStringTransformer.instance()
+				TransformerTools.stringToBooleanTransformer()
 			);
 	}
 
@@ -147,7 +146,7 @@ public class PreferencePropertyValueModel<P>
 				preferences,
 				key,
 				Integer.valueOf(defaultValue),
-				IntegerStringTransformer.instance()
+				TransformerTools.stringToIntegerTransformer()
 			);
 	}
 
@@ -160,7 +159,7 @@ public class PreferencePropertyValueModel<P>
 				preferencesModel,
 				key,
 				Integer.valueOf(defaultValue),
-				IntegerStringTransformer.instance()
+				TransformerTools.stringToIntegerTransformer()
 			);
 	}
 
@@ -181,7 +180,7 @@ public class PreferencePropertyValueModel<P>
 			String key,
 			P defaultValue,
 			Transformer<String, P> stringTransformer) {
-		this(preferencesModel, key, defaultValue, stringTransformer, StringObjectTransformer.<P>instance());
+		this(preferencesModel, key, defaultValue, stringTransformer, TransformerTools.<P>objectToStringTransformer());
 	}
 
 	/**

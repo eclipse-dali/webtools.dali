@@ -9,32 +9,34 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.transformer;
 
-import java.util.Iterator;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
- * Wrap a transformer that converts an input object into an <em>iterable</em>
- * of objects of the same type as the input object, converting that transformer
- * into one that converts the same object into an <em>iterator</em>
- * of objects of the same type as the input object.
+ * Tranformer wrapper that checks for <code>null</code> input before forwarding
+ * the input to the wrapped transformer. If the input is <code>null</code>,
+ * the transformer will return the configured output value.
  * 
- * @param <I> input: the type of the object passed to the transformer; also the
- *   type of object returned by the output iterator
+ * @param <I> input: the type of the object passed to the transformer
+ * @param <O> output: the type of the object returned by the transformer
  */
-public class IterableTransformerWrapper<I>
-	implements Transformer<I, Iterator<? extends I>>
+public class NullCheckTransformerWrapper<I, O>
+	implements Transformer<I, O>
 {
-	private final Transformer<? super I, ? extends Iterable<? extends I>> transformer;
+	private final Transformer<? super I, ? extends O> transformer;
+	private final O nullOutput;
 
-
-	public IterableTransformerWrapper(Transformer<? super I, ? extends Iterable<? extends I>> transformer) {
+	public NullCheckTransformerWrapper(Transformer<? super I, ? extends O> transformer, O nullOutput) {
 		super();
+		if (transformer == null) {
+			throw new NullPointerException();
+		}
 		this.transformer = transformer;
+		this.nullOutput = nullOutput;
 	}
 
-	public Iterator<? extends I> transform(I input) {
-		return this.transformer.transform(input).iterator();
+	public O transform(I input) {
+		return (input == null) ? this.nullOutput : this.transformer.transform(input);
 	}
 
 	@Override

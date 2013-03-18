@@ -28,6 +28,7 @@ import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.ResourceLocator;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
@@ -181,8 +182,9 @@ public class SimpleJavaResourceLocator
 	protected static final Transformer<IPackageFragmentRoot, IContainer> ROOT_CONTAINER_TRANSFORMER = new RootContainerTransformer();
 
 	protected static class RootContainerTransformer
-		implements Transformer<IPackageFragmentRoot, IContainer>
+		extends TransformerAdapter<IPackageFragmentRoot, IContainer>
 	{
+		@Override
 		public IContainer transform(IPackageFragmentRoot pfr) {
 			try {
 				return this.transform_(pfr);

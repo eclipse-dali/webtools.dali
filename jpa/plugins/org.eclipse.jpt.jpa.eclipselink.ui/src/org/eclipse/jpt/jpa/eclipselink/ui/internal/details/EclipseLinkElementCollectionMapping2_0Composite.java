@@ -13,7 +13,7 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.NotNullObjectTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Converter;
@@ -131,10 +131,10 @@ public abstract class EclipseLinkElementCollectionMapping2_0Composite<T extends 
 		};
 	}
 	protected PropertyValueModel<EclipseLinkConvert> buildEclipseLinkConvertModel(PropertyValueModel<Converter> converterModel) {
-		return new TransformationPropertyValueModel<Converter, EclipseLinkConvert>(converterModel, EclipseLinkConvert.CONVERTER_TRANSFORMER);
+		return new TransformationPropertyValueModel<Converter, EclipseLinkConvert>(converterModel, TransformerTools.nullCheck(EclipseLinkConvert.CONVERTER_TRANSFORMER));
 	}
 
 	protected <M> PropertyValueModel<Boolean> buildNotNullModel(PropertyValueModel<M> valueModel) {
-		return new TransformationPropertyValueModel<M, Boolean>(valueModel, NotNullObjectTransformer.<M>instance());
+		return new TransformationPropertyValueModel<M, Boolean>(valueModel, TransformerTools.<M>isNotNullTransformer());
 	}
 }

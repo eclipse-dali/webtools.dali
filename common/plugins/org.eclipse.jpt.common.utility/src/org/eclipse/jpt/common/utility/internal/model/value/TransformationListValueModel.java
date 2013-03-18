@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.ListClearEvent;
@@ -305,9 +306,12 @@ public class TransformationListValueModel<E1, E2>
 	 * If the wrapped item is not null, it is transformed by a subclass
 	 * implementation of {@link TransformationListValueModel#transformItem_(Object)}.
 	 */
-	protected class DefaultTransformer implements Transformer<E1, E2> {
-		public E2 transform(E1 item) {
-			return (item == null) ? null : TransformationListValueModel.this.transformItem_(item);
+	protected class DefaultTransformer
+		extends AbstractTransformer<E1, E2>
+	{
+		@Override
+		public E2 transform_(E1 item) {
+			return TransformationListValueModel.this.transformItem_(item);
 		}
 	}
 }

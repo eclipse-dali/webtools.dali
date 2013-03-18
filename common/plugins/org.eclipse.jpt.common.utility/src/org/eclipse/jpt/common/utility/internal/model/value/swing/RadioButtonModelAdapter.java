@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.model.value.swing;
 
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.value.FilteringModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.predicate.TruePredicate;
@@ -140,6 +141,11 @@ public class RadioButtonModelAdapter
 		public Boolean transform(Object value) {
 			return (value == null) ? null : Boolean.valueOf(value.equals(this.buttonValue));
 		}
+
+		@Override
+		public String toString() {
+			return ObjectTools.toString(this, this.buttonValue);
+		}
 	}
 
 	/**
@@ -163,6 +169,11 @@ public class RadioButtonModelAdapter
 		 */
 		public Object transform (Boolean value) {
 			return (value.booleanValue()) ? this.buttonValue : null;
+		}
+
+		@Override
+		public String toString() {
+			return ObjectTools.toString(this, this.buttonValue);
 		}
 	}
 }

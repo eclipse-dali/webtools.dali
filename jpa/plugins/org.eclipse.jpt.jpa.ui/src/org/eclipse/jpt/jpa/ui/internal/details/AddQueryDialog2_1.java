@@ -41,7 +41,7 @@ public class AddQueryDialog2_1
 		return new QueryDialogPane2_1(this.getSubjectHolder(), container, this.resourceManager);
 	}
 
-	class QueryDialogPane2_1
+	static class QueryDialogPane2_1
 		extends QueryDialogPane
 	{
 		QueryDialogPane2_1(
@@ -63,21 +63,25 @@ public class AddQueryDialog2_1
 
 		@Override
 		public Transformer<String, String> buildStringConverter() {
-			return new TransformerAdapter<String, String>() {
-				@Override
-				public String transform(String value) {
-					if (value == NAMED_QUERY) {
-						return JptJpaUiDetailsMessages.AddQueryDialog_namedQuery;
-					}
-					if (value == NAMED_NATIVE_QUERY) {
-						return JptJpaUiDetailsMessages.AddQueryDialog_namedNativeQuery;
-					}
-					if (value == NAMED_STORED_PROCEDURE_QUERY) {
-						return JptJpaUiDetailsMessages2_1.AddQueryDialog_namedStoredProcedureQuery;
-					}
-					return value;
+			return new QueryTypeLabelTransformer();
+		}
+
+		static class QueryTypeLabelTransformer
+			extends TransformerAdapter<String, String>
+		{
+			@Override
+			public String transform(String value) {
+				if (value == NAMED_QUERY) {
+					return JptJpaUiDetailsMessages.AddQueryDialog_namedQuery;
 				}
-			};
+				if (value == NAMED_NATIVE_QUERY) {
+					return JptJpaUiDetailsMessages.AddQueryDialog_namedNativeQuery;
+				}
+				if (value == NAMED_STORED_PROCEDURE_QUERY) {
+					return JptJpaUiDetailsMessages2_1.AddQueryDialog_namedStoredProcedureQuery;
+				}
+				return value;
+			}
 		}
 	}
 }

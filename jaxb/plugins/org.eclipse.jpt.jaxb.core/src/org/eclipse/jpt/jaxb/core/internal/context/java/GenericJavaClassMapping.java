@@ -612,9 +612,12 @@ public class GenericJavaClassMapping
 	 * return those inherited attributes that are not included
 	 */
 	protected Iterable<JaxbPersistentAttribute> getOtherInheritedAttributes() {
-		return IterableTools.children(
-				ObjectTools.chain(getSuperclass(), JaxbClassMapping.SUPER_CLASS_TRANSFORMER),
-				JaxbClassMapping.ATTRIBUTES_TRANSFORMER);
+		return (this.superclass == null) ?
+				IterableTools.<JaxbPersistentAttribute>emptyIterable() :
+				IterableTools.children(
+					ObjectTools.chain(this.superclass, JaxbClassMapping.SUPER_CLASS_TRANSFORMER),
+					JaxbClassMapping.ATTRIBUTES_TRANSFORMER
+				);
 	}
 	
 	

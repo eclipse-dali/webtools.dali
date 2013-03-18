@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,15 +14,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationListValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.ListClearEvent;
@@ -321,21 +320,26 @@ public class TransformationListValueModelTests extends TestCase {
 	 * execute the same set of tests again, but by passing a Transformer to the adapter
 	 * (as opposed to overriding #transformItem(Object))
 	 */
-	public static class TransformerTests extends TransformationListValueModelTests {
+	public static class TransformerTests
+		extends TransformationListValueModelTests
+	{
 		public TransformerTests(String name) {
 			super(name);
 		}
+
 		@Override
 		ListValueModel<String> buildTransformedListHolder(ListValueModel<String> lvm) {
-			return new TransformationListValueModel<String, String>(lvm, this.buildTransformer());
-		}
-		private Transformer<String, String> buildTransformer() {
-			return new Transformer<String, String>() {
-				public String transform(String s) {
-					return (s == null) ? null : s.toUpperCase();
-				}
-			};
+			return new TransformationListValueModel<String, String>(lvm, UPPER_CASE_TRANSFORMER);
 		}
 	}
 	
+	static final Transformer<String, String> UPPER_CASE_TRANSFORMER = new UpperCaseTransformer();
+	static class UpperCaseTransformer
+		extends AbstractTransformer<String, String>
+	{
+		@Override
+		public String transform_(String s) {
+			return s.toUpperCase();
+		}
+	}
 }

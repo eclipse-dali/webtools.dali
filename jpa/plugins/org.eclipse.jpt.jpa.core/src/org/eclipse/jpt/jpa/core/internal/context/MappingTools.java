@@ -512,13 +512,14 @@ public final class MappingTools {
 	 * to a string.
 	 */
 	public static class QualifierTransformer
-		implements Transformer<String, String>
+		extends TransformerAdapter<String, String>
 	{
 		private final String prefix;
 		public QualifierTransformer(String qualifier) {
 			super();
 			this.prefix = (qualifier == null) ? "." : qualifier + '.'; //$NON-NLS-1$
 		}
+		@Override
 		public String transform(String s) {
 			return this.prefix + s;
 		}

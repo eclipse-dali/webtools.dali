@@ -9,35 +9,36 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.transformer;
 
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
- * A transformer that uses Java reflection to transform an object into the
- * value of one of its fields.
+ * Adapt the {@link Predicate} interface to the {@link Transformer} interface.
  * 
- * @param <I> input: the type of objects passed to the transformer
- * @param <O> output: the type of objects returned by the transformer
- * 
- * @see MethodTransformer
+ * @param <I> input: the type of the object passed to the transformer (and
+ *   forwarded to the wrapped predicate)
+ * @see Predicate
  */
-public class FieldTransformer<I, O>
-	implements Transformer<I, O>
+public class PredicateTransformer<I>
+	implements Transformer<I, Boolean>
 {
-	private final String fieldName;
+	private final Predicate<? super I> predicate;
 
-	public FieldTransformer(String fieldName) {
+
+	public PredicateTransformer(Predicate<? super I> predicate) {
 		super();
-		this.fieldName = fieldName;
+		if (predicate == null) {
+			throw new NullPointerException();
+		}
+		this.predicate = predicate;
 	}
 
-	@SuppressWarnings("unchecked")
-	public O transform(I input) {
-		return (O) ObjectTools.get(input, this.fieldName);
+	public Boolean transform(I input) {
+		return Boolean.valueOf(this.predicate.evaluate(input));
 	}
 
 	@Override
 	public String toString() {
-		return ObjectTools.toString(this, this.fieldName);
+		return super.toString();
 	}
 }

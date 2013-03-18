@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.utility.internal.transformer;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * A transformer that uses Java reflection to transform an object into the
@@ -21,7 +22,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * @see FieldTransformer
  */
 public class MethodTransformer<I, O>
-	extends TransformerAdapter<I, O>
+	implements Transformer<I, O>
 {
 	private final String methodName;
 
@@ -30,9 +31,13 @@ public class MethodTransformer<I, O>
 		this.methodName = methodName;
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
-	public O transform(I o) {
-		return (O) ObjectTools.execute(o, this.methodName);
+	public O transform(I input) {
+		return (O) ObjectTools.execute(input, this.methodName);
+	}
+
+	@Override
+	public String toString() {
+		return ObjectTools.toString(this, this.methodName);
 	}
 }

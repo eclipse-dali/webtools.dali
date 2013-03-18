@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.swt;
 
-import org.eclipse.jpt.common.utility.internal.transformer.StringObjectTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -51,7 +51,7 @@ public class ComboModelAdapter<E> extends AbstractComboModelAdapter<E> {
 			listHolder,
 			selectedItemHolder,
 			combo,
-			StringObjectTransformer.<T>instance()
+			TransformerTools.<T>objectToStringTransformer()
 		);
 	}
 

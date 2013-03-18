@@ -20,8 +20,8 @@ import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.ReadOnlyCompositeListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
-import org.eclipse.jpt.common.utility.internal.transformer.NonTransformer;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
@@ -126,7 +126,7 @@ public class CompositeListValueModel<E1, E2>
 	 * model already contains other list value models.
 	 */
 	public static <E1 extends ListValueModel<? extends E2>, E2> CompositeListValueModel<E1, E2> forModels(ListValueModel<E1> listModel) {
-		return new CompositeListValueModel<E1, E2>(listModel, NonTransformer.<E1>instance());
+		return new CompositeListValueModel<E1, E2>(listModel, TransformerTools.<E1>passThruTransformer());
 	}
 
 	/**

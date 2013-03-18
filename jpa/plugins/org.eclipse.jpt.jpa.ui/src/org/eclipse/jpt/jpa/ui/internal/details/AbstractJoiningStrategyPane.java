@@ -11,13 +11,14 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
-import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -106,13 +107,24 @@ public abstract class AbstractJoiningStrategyPane
 
 	protected abstract Control buildStrategyDetailsComposite(Composite parent);
 	
-	protected Transformer<Boolean, Control> buildPageBookTransformer(final Composite parent) {
-		return new Transformer<Boolean, Control>() {
-			public Control transform(Boolean usesStrategy) {
-				return (usesStrategy.booleanValue()) ? 
-					AbstractJoiningStrategyPane.this.getStrategyDetailsComposite(parent) :
-					null;
-			}
-		};
+	protected Transformer<Boolean, Control> buildPageBookTransformer(Composite parent) {
+		return new PageBookTransformer(parent);
+	}
+
+	protected class PageBookTransformer
+		extends TransformerAdapter<Boolean, Control>
+	{
+		private final Composite parent;
+
+		protected PageBookTransformer(Composite parent) {
+			this.parent = parent;
+		}
+
+		@Override
+		public Control transform(Boolean usesStrategy) {
+			return (usesStrategy.booleanValue()) ? 
+				AbstractJoiningStrategyPane.this.getStrategyDetailsComposite(this.parent) :
+				null;
+		}
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,34 +10,36 @@
 package org.eclipse.jpt.common.utility.internal.transformer;
 
 import java.io.Serializable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
- * Transform a {@link String} into an {@link Integer} if possible.
- * Transform a <code>null</code> string into a <code>null</code> {@link Integer}.
- * @see Integer#valueOf(String)
+ * A transformer that will clone (via reflection) the input.
  */
-public final class IntegerStringTransformer
-	extends AbstractTransformer<String, Integer>
-	implements Serializable
+public final class CloneTransformer<I extends Cloneable>
+	implements Transformer<I, I>, Serializable
 {
-	public static final Transformer<String, Integer> INSTANCE = new IntegerStringTransformer();
+	@SuppressWarnings("rawtypes")
+	public static final Transformer INSTANCE = new CloneTransformer();
 
-	public static Transformer<String, Integer> instance() {
+	@SuppressWarnings("unchecked")
+	public static <I extends Cloneable> Transformer<I, I> instance() {
 		return INSTANCE;
 	}
 
 	// ensure single instance
-	private IntegerStringTransformer() {
+	private CloneTransformer() {
 		super();
 	}
 
-	/**
-	 * @see Integer#valueOf(String)
-	 */
+	@SuppressWarnings("unchecked")
+	public I transform(I input) {
+		return (I) ObjectTools.execute(input, "clone"); //$NON-NLS-1$
+	}
+
 	@Override
-	protected Integer transform_(String string) {
-		return Integer.valueOf(string);
+	public String toString() {
+		return this.getClass().getSimpleName();
 	}
 
 	private static final long serialVersionUID = 1L;

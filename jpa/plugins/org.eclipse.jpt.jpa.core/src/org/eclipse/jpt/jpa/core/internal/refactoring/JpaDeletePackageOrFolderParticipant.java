@@ -158,17 +158,28 @@ public class JpaDeletePackageOrFolderParticipant
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
-	protected Iterable<DeleteEdit> createPersistenceXmlDeleteEdits(final PersistenceUnit persistenceUnit) {
-		Transformer<IFile, Iterable<DeleteEdit>> transformer = new TransformerAdapter<IFile, Iterable<DeleteEdit>>() {
-			@Override
-			public Iterable<DeleteEdit> transform(IFile file) {
-				return persistenceUnit.createDeleteMappingFileEdits(file);
-			}
-		};
+	protected Iterable<DeleteEdit> createPersistenceXmlDeleteEdits(PersistenceUnit persistenceUnit) {
 		return IterableTools.concatenate(
 				super.createPersistenceXmlDeleteEdits(persistenceUnit),
-				IterableTools.children(this.getMappingFilesOnClasspath(persistenceUnit.getJpaProject()), transformer)
+				IterableTools.children(
+						this.getMappingFilesOnClasspath(persistenceUnit.getJpaProject()),
+						new PersistenceUnitDeleteEditsTransformer(persistenceUnit)
+					)
 			);
+	}
+
+	class PersistenceUnitDeleteEditsTransformer
+		extends TransformerAdapter<IFile, Iterable<DeleteEdit>>
+	{
+		private final PersistenceUnit persistenceUnit;
+		PersistenceUnitDeleteEditsTransformer(PersistenceUnit persistenceUnit) {
+			super();
+			this.persistenceUnit = persistenceUnit;
+		}
+		@Override
+		public Iterable<DeleteEdit> transform(IFile file) {
+			return this.persistenceUnit.createDeleteMappingFileEdits(file);
+		}
 	}
 
 	@SuppressWarnings("unchecked")

@@ -22,6 +22,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -111,28 +112,32 @@ public class Queries2_1Composite
 	}
 
 	@Override
-	protected Transformer<Query, Control> buildPaneTransformer(final PageBook pageBook) {
-		return new Transformer<Query, Control>() {
-			public Control transform(Query query) {
-
-				if (query == null) {
-					return null;
-				}
-
-				if (query instanceof NamedNativeQuery) {
-					return Queries2_1Composite.this.getNamedNativeQueryPropertyComposite(pageBook).getControl();
-				}
-
-				if (query instanceof NamedQuery) {
-					return Queries2_1Composite.this.getNamedQueryPropertyComposite(pageBook).getControl();
-				}
-				
-				return null; // This is for UI tolerance. Full UI support should be doing as below:
-//				return Queries2_1Composite.this.getNamedStoredProcedureQueryPropertyComposite(pageBook).getControl();
-			}
-		};
+	protected Transformer<Query, Control> buildPaneTransformer(PageBook pageBook) {
+		return new PaneTransformer(pageBook);
 	}
 	
+	protected class PaneTransformer
+		extends AbstractTransformer<Query, Control>
+	{
+		private final PageBook pageBook;
+
+		protected PaneTransformer(PageBook pageBook) {
+			this.pageBook = pageBook;
+		}
+
+		@Override
+		public Control transform_(Query query) {
+			if (query instanceof NamedNativeQuery) {
+				return Queries2_1Composite.this.getNamedNativeQueryPropertyComposite(this.pageBook).getControl();
+			}
+			if (query instanceof NamedQuery) {
+				return Queries2_1Composite.this.getNamedQueryPropertyComposite(this.pageBook).getControl();
+			}
+			return null; // This is for UI tolerance. Full UI support should be doing as below:
+//				return Queries2_1Composite.this.getNamedStoredProcedureQueryPropertyComposite(pageBook).getControl();
+		}
+	}
+
 	@Override
 	protected Adapter<Query> buildQueriesAdapter() {
 

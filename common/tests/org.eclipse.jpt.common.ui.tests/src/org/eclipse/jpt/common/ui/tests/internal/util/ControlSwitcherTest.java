@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
@@ -35,8 +36,8 @@ import org.junit.Test;
 public final class ControlSwitcherTest {
 
 	private PageBook pageBook;
-	private Composite pane1;
-	private Composite pane2;
+	Composite pane1;
+	Composite pane2;
 	private Composite parent;
 
 	private Composite buildPane1() {
@@ -80,11 +81,18 @@ public final class ControlSwitcherTest {
 	}
 
 	private Transformer<Boolean, Control> buildTransformer() {
-		return new Transformer<Boolean, Control>() {
-			public Control transform(Boolean value) {
-				return (value == null) ? null : (value ? pane1 : pane2);
-			}
-		};
+		return new PaneTransformer();
+	}
+
+	protected class PaneTransformer
+		extends AbstractTransformer<Boolean, Control>
+	{
+		@Override
+		public Control transform_(Boolean value) {
+			return value.booleanValue() ?
+					ControlSwitcherTest.this.pane1 :
+					ControlSwitcherTest.this.pane2;
+		}
 	}
 
 	@Before

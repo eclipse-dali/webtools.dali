@@ -10,7 +10,9 @@
 package org.eclipse.jpt.jaxb.core.platform;
 
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 /**
@@ -47,6 +49,16 @@ public interface JaxbPlatformConfig {
 	 * Return the config's extension-supplied label.
 	 */
 	String getLabel();
+
+	Transformer<JaxbPlatformConfig, String> LABEL_TRANSFORMER = new LabelTransformer();
+	static class LabelTransformer
+		extends TransformerAdapter<JaxbPlatformConfig, String>
+	 {
+		@Override
+		public String transform(JaxbPlatformConfig config) {
+			return config.getLabel();
+		}
+	}
 
 	/**
 	 * Return the config's extension-supplied factory class name.

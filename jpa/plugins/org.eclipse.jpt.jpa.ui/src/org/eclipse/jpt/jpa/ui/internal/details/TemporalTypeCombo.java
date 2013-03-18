@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -111,12 +111,16 @@ public class TemporalTypeCombo extends Pane<BaseTemporalConverter> {
 	}
 
 	private Transformer<TemporalType, String> buildTemporalTypeConverter() {
-		return new TransformerAdapter<TemporalType, String>() {
-			@Override
-			public String transform(TemporalType value) {
-				return (value == null) ? null : displayString(value);
-			}
-		};
+		return new TemporalTypeLabelTransformer();
+	}
+
+	class TemporalTypeLabelTransformer
+		extends AbstractTransformer<TemporalType, String>
+	{
+		@Override
+		public String transform_(TemporalType temporalType) {
+			return displayString(temporalType);
+		}
 	}
 
 	String displayString(TemporalType temporalType) {

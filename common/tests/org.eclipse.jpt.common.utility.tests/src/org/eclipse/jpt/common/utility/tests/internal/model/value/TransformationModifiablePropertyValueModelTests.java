@@ -13,6 +13,7 @@ import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
@@ -39,23 +40,7 @@ public class TransformationModifiablePropertyValueModelTests
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.objectHolder = new SimplePropertyValueModel<Person>(new Person("Karen", "Peggy", null));
-		this.transformationObjectHolder = new TransformationModifiablePropertyValueModel<Person, Person>(this.objectHolder, this.buildTransformer(), this.buildReverseTransformer());
-	}
-
-	private Transformer<Person, Person> buildTransformer() {
-		return new Transformer<Person, Person>() {
-			public Person transform(Person p) {
-				return (p == null) ? null : p.getParent();
-			}
-		};
-	}
-
-	private Transformer<Person, Person> buildReverseTransformer() {
-		return new Transformer<Person, Person>() {
-			public Person transform(Person p) {
-				return (p == null) ? null : p.getChild();
-			}
-		};
+		this.transformationObjectHolder = new TransformationModifiablePropertyValueModel<Person, Person>(this.objectHolder, PARENT_TRANSFORMER, CHILD_TRANSFORMER);
 	}
 
 	@Override
@@ -254,6 +239,26 @@ public class TransformationModifiablePropertyValueModelTests
 		
 		public Person getChild() {
 			return this.child;
+		}
+	}
+
+	private static final Transformer<Person, Person> PARENT_TRANSFORMER = new ParentTransformer();
+	static class ParentTransformer
+		extends AbstractTransformer<Person, Person>
+	{
+		@Override
+		public Person transform_(Person p) {
+			return p.getParent();
+		}
+	}
+
+	private static final Transformer<Person, Person> CHILD_TRANSFORMER = new ChildTransformer();
+	static class ChildTransformer
+		extends AbstractTransformer<Person, Person>
+	{
+		@Override
+		public Person transform_(Person p) {
+			return p.getChild();
 		}
 	}
 }

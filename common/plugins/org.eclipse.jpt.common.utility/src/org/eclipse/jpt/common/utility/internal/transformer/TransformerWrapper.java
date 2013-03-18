@@ -28,14 +28,11 @@ public class TransformerWrapper<I, O>
 
 	public TransformerWrapper(Transformer<? super I, ? extends O> transformer) {
 		super();
-		if (transformer == null) {
-			throw new NullPointerException();
-		}
-		this.transformer = transformer;
+		this.setTransformer(transformer);
 	}
 
-	public O transform(I o) {
-		return this.transformer.transform(o);
+	public O transform(I input) {
+		return this.transformer.transform(input);
 	}
 
 	public void setTransformer(Transformer<? super I, ? extends O> transformer) {

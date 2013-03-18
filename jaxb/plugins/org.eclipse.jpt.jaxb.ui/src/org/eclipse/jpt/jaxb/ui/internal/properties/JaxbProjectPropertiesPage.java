@@ -27,14 +27,12 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionVal
 import org.eclipse.jpt.common.utility.internal.model.value.SetCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticCollectionValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.JaxbPreferences;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
@@ -196,7 +194,7 @@ public class JaxbProjectPropertiesPage
 				buildPlatformChoicesModel(),
 				this.platformModel,
 				platformDropDown,
-				JAXB_PLATFORM_CONFIG_LABEL_CONVERTER);
+				JaxbPlatformConfig.LABEL_TRANSFORMER);
 		
 		buildFacetsPageLink(group, JptJaxbUiMessages.JAXB_FACET_WIZARD_PAGE_FACETS_PAGE_LINK);
 	}
@@ -238,14 +236,6 @@ public class JaxbProjectPropertiesPage
 			new Comparator<JaxbPlatformConfig>() {
 				public int compare(JaxbPlatformConfig desc1, JaxbPlatformConfig desc2) {
 					return STRING_COMPARATOR.compare(desc1.getLabel(), desc2.getLabel());
-				}
-			};
-	
-	private static final Transformer<JaxbPlatformConfig, String> JAXB_PLATFORM_CONFIG_LABEL_CONVERTER =
-			new TransformerAdapter<JaxbPlatformConfig, String>() {
-				@Override
-				public String transform(JaxbPlatformConfig desc) {
-					return desc.getLabel();
 				}
 			};
 	

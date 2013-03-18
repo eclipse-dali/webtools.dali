@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,17 +22,17 @@ import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
  * flag indicating whether the node supports JPA 2.0.
  * The flag is <code>null</code> if the JPA node is <code>null</code>.
  */
-public final class Jpa2_0FlagTransformer<T extends JpaModel>
-	extends AbstractTransformer<T, Boolean>
+public final class Jpa2_0FlagTransformer<M extends JpaModel>
+	extends AbstractTransformer<M, Boolean>
 	implements Serializable
 {
 	/**
-	 * Convert the specified JPA node model into a boolean model that returns
-	 * whether the JPA node supports JPA 2.0.
+	 * Convert the specified JPA model model into a boolean model that returns
+	 * whether the JPA model supports JPA 2.0.
 	 * The flag is <code>null</code> if the JPA node is <code>null</code>.
 	 */
-	public static <T extends JpaModel> PropertyValueModel<Boolean> convertToFlagModel(PropertyValueModel<T> jpaNodeModel) {
-		return new TransformationPropertyValueModel<T, Boolean>(jpaNodeModel, Jpa2_0FlagTransformer.<T>instance());
+	public static <M extends JpaModel> PropertyValueModel<Boolean> convertToFlagModel(PropertyValueModel<M> jpaModelModel) {
+		return new TransformationPropertyValueModel<M, Boolean>(jpaModelModel, Jpa2_0FlagTransformer.<M>instance());
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -49,8 +49,8 @@ public final class Jpa2_0FlagTransformer<T extends JpaModel>
 	}
 
 	@Override
-	protected Boolean transform_(T jpaNode) {
-		return Boolean.valueOf(jpaNode.getJpaProject().getJpaPlatform().getJpaVersion().isCompatibleWithJpaVersion(JpaProject2_0.FACET_VERSION_STRING));
+	protected Boolean transform_(M jpaModel) {
+		return Boolean.valueOf(jpaModel.getJpaProject().getJpaPlatform().getJpaVersion().isCompatibleWithJpaVersion(JpaProject2_0.FACET_VERSION_STRING));
 	}
 
 	private static final long serialVersionUID = 1L;

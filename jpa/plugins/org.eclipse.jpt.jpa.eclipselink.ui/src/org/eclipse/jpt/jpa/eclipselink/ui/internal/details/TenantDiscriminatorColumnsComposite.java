@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.AbstractAdapter;
@@ -24,6 +23,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueMod
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -32,8 +32,8 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkSpecifiedTenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.osgi.util.NLS;
@@ -137,15 +137,23 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaModel>
 		new ControlSwitcher(this.selectedTenantDiscriminatorColumnModel, buildPaneTransformer(pageBook), pageBook);
 	}
 
-	private Transformer<EclipseLinkTenantDiscriminatorColumn2_3, Control> buildPaneTransformer(final PageBook pageBook) {
-		return new Transformer<EclipseLinkTenantDiscriminatorColumn2_3, Control>() {
-			public Control transform(EclipseLinkTenantDiscriminatorColumn2_3 column) {
-				if (column == null) {
-					return null;
-				}
-				return getTenantDiscriminatorColumnComposite(pageBook).getControl();
-			}
-		};
+	private Transformer<EclipseLinkTenantDiscriminatorColumn2_3, Control> buildPaneTransformer(PageBook pageBook) {
+		return new PaneTransformer(pageBook);
+	}
+
+	protected class PaneTransformer
+		extends AbstractTransformer<EclipseLinkTenantDiscriminatorColumn2_3, Control>
+	{
+		private final PageBook pageBook;
+
+		protected PaneTransformer(PageBook pageBook) {
+			this.pageBook = pageBook;
+		}
+
+		@Override
+		public Control transform_(EclipseLinkTenantDiscriminatorColumn2_3 column) {
+			return getTenantDiscriminatorColumnComposite(this.pageBook).getControl();
+		}
 	}
 
 	String buildTenantDiscriminatorColumnLabel(EclipseLinkTenantDiscriminatorColumn2_3 tenantDiscriminatorColumn) {

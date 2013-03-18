@@ -107,7 +107,7 @@ public class ProfilerClassChooser extends ClassChooserComboPane<EclipseLinkCusto
 		);
 	}
 
-	private String buildDisplayString(String profilerName) {
+	String buildDisplayString(String profilerName) {
 
 		switch (EclipseLinkProfiler.valueOf(profilerName)) {
 			case no_profiler: {
@@ -137,19 +137,21 @@ public class ProfilerClassChooser extends ClassChooserComboPane<EclipseLinkCusto
 
 	@Override
 	protected Transformer<String, String> buildClassConverter() {
-		return new TransformerAdapter<String, String>() {
-			@Override
-			public String transform(String value) {
-				try {
-					EclipseLinkProfiler.valueOf(value);
-					value = buildDisplayString(value);
-				}
-				catch (Exception e) {
-					// Ignore since the value is not a Profiler
-				}
+		return new ClassTransformer();
+	}
+
+	class ClassTransformer
+		extends TransformerAdapter<String, String>
+	{
+		@Override
+		public String transform(String value) {
+			try {
+				return buildDisplayString(value);
+			} catch (RuntimeException ex) {
+				// the value is not a Logger
 				return value;
 			}
-		};
+		}
 	}
 
 	@Override

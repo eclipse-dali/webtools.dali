@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.predicate.MethodPredicate;
 import org.eclipse.jpt.common.utility.internal.predicate.NotNullPredicate;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.internal.reference.SimpleBooleanReference;
-import org.eclipse.jpt.common.utility.internal.transformer.BooleanStringTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.reference.BooleanReference;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -51,7 +51,7 @@ public class MethodPredicateTests
 		assertTrue(this.methodPredicate.evaluate(ref));
 
 		// this will always evaluate to 'true'
-		assertTrue(this.parmMethodPredicate.evaluate(BooleanStringTransformer.instance()));
+		assertTrue(this.parmMethodPredicate.evaluate(TransformerTools.stringToBooleanTransformer()));
 	}
 
 	public void testClone() {

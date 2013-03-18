@@ -132,18 +132,22 @@ public class AddQueryDialog
 		}
 		
 		public Transformer<String, String> buildStringConverter() {
-			return new TransformerAdapter<String, String>() {
-				@Override
-				public String transform(String value) {
-					if (value == NAMED_QUERY) {
-						return JptJpaUiDetailsMessages.AddQueryDialog_namedQuery;
-					}
-					if (value == NAMED_NATIVE_QUERY) {
-						return JptJpaUiDetailsMessages.AddQueryDialog_namedNativeQuery;
-					}
-					return value;
+			return new QueryTypeLabelTransformer();
+		}
+
+		static class QueryTypeLabelTransformer
+			extends TransformerAdapter<String, String>
+		{
+			@Override
+			public String transform(String value) {
+				if (value == NAMED_QUERY) {
+					return JptJpaUiDetailsMessages.AddQueryDialog_namedQuery;
 				}
-			};
+				if (value == NAMED_NATIVE_QUERY) {
+					return JptJpaUiDetailsMessages.AddQueryDialog_namedNativeQuery;
+				}
+				return value;
+			}
 		}
 		
 		private ModifiablePropertyValueModel<String> buildNameHolder() {

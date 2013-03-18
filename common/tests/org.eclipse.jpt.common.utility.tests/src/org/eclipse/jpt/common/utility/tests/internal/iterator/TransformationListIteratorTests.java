@@ -18,6 +18,7 @@ import java.util.NoSuchElementException;
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.iterator.TransformationListIterator;
 import org.eclipse.jpt.common.utility.internal.transformer.DisabledTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 @SuppressWarnings("nls")
@@ -62,41 +63,9 @@ public class TransformationListIteratorTests
 		assertEquals(0, i);
 	}
 
-	public void testInnerHasNextAndHasPrevious() {
-		int i = 0;
-		ListIterator<Integer> stream = this.buildInnerIterator();
-
-		while (stream.hasNext()) {
-			stream.next();
-			i++;
-		}
-		assertEquals(8, i);
-
-		while (stream.hasPrevious()) {
-			stream.previous();
-			i--;
-		}
-		assertEquals(0, i);
-	}
-
 	public void testNextAndPrevious() {
 		int i = 0;
 		ListIterator<Integer> stream = this.buildIterator();
-
-		while (stream.hasNext()) {
-			assertEquals(++i, stream.next().intValue());
-		}
-
-		++i;
-
-		while (stream.hasPrevious()) {
-			assertEquals(--i, stream.previous().intValue());
-		}
-	}
-
-	public void testInnerNextAndPrevious() {
-		int i = 0;
-		ListIterator<Integer> stream = this.buildInnerIterator();
 
 		while (stream.hasNext()) {
 			assertEquals(++i, stream.next().intValue());
@@ -126,38 +95,9 @@ public class TransformationListIteratorTests
 		}
 	}
 
-	public void testInnerNextIndexAndPreviousIndex() {
-		int i = -1;
-		ListIterator<Integer> stream = this.buildInnerIterator();
-
-		while (stream.hasNext()) {
-			assertEquals(++i, stream.nextIndex());
-			stream.next();
-		}
-
-		++i;
-
-		while (stream.hasPrevious()) {
-			assertEquals(--i, stream.previousIndex());
-			stream.previous();
-		}
-	}
-
 	public void testRemove() {
 		List<String> l = this.buildList();
-		for (ListIterator<Integer> stream = this.buildInnerTransformationListIterator(l.listIterator()); stream.hasNext();) {
-			if (stream.next().intValue() == 3) {
-				stream.remove();
-			}
-		}
-		assertEquals("nothing removed", this.buildList().size() - 1, l.size());
-		assertFalse("element still in list", l.contains("333"));
-		assertTrue("wrong element removed", l.contains("22"));
-	}
-
-	public void testInnerRemove() {
-		List<String> l = this.buildList();
-		for (ListIterator<Integer> stream = this.buildTransformationListIterator(l.listIterator(), this.buildTransformer()); stream.hasNext();) {
+		for (ListIterator<Integer> stream = this.buildTransformationListIterator(l.listIterator(), STRING_LENGTH_TRANSFORMER); stream.hasNext();) {
 			if (stream.next().intValue() == 3) {
 				stream.remove();
 			}
@@ -232,19 +172,15 @@ public class TransformationListIteratorTests
 	}
 
 	private ListIterator<Integer> buildIterator() {
-		return this.buildTransformationListIterator(this.buildNestedIterator(), this.buildTransformer());
+		return this.buildTransformationListIterator(this.buildNestedIterator(), STRING_LENGTH_TRANSFORMER);
 	}
 
 	private ListIterator<Object> buildIteratorUpcast() {
-		return this.buildTransformationListIteratorUpcast(this.buildNestedIterator(), this.buildTransformerUpcast());
-	}
-
-	private ListIterator<Integer> buildInnerIterator() {
-		return this.buildInnerTransformationListIterator(this.buildNestedIterator());
+		return this.buildTransformationListIteratorUpcast(this.buildNestedIterator(), OBJECT_STRING_LENGTH_TRANSFORMER);
 	}
 
 	private ListIterator<Integer> buildUnmodifiableIterator() {
-		return this.buildTransformationListIterator(this.buildUnmodifiableNestedIterator(), this.buildTransformer());
+		return this.buildTransformationListIterator(this.buildUnmodifiableNestedIterator(), STRING_LENGTH_TRANSFORMER);
 	}
 
 	private ListIterator<Integer> buildTransformationListIterator(ListIterator<String> nestedIterator, Transformer<String, Integer> transformer) {
@@ -255,32 +191,30 @@ public class TransformationListIteratorTests
 		return new TransformationListIterator<Object, Object>(nestedIterator, transformer);
 	}
 
-	private Transformer<String, Integer> buildTransformer() {
-		// transform each string into an integer with a value of the string's length
-		return new Transformer<String, Integer>() {
-			public Integer transform(String next) {
-				return new Integer(next.length());
-			}
-		};
+	static final Transformer<String, Integer> STRING_LENGTH_TRANSFORMER = new StringLengthTransformer();
+	/**
+	 * transform each string into an integer with a value of the string's length
+	 */
+	static class StringLengthTransformer
+		extends TransformerAdapter<String, Integer>
+	{
+		@Override
+		public Integer transform(String s) {
+			return new Integer(s.length());
+		}
 	}
 
-	private Transformer<Object, Integer> buildTransformerUpcast() {
-		// transform each string into an integer with a value of the string's length
-		return new Transformer<Object, Integer>() {
-			public Integer transform(Object next) {
-				return new Integer(((String) next).length());
-			}
-		};
-	}
-
-	private ListIterator<Integer> buildInnerTransformationListIterator(ListIterator<String> nestedIterator) {
-		// transform each string into an integer with a value of the string's length
-		Transformer<String, Integer> transformer = new Transformer<String, Integer>() {
-			public Integer transform(String s) {
-				return new Integer(s.length());
-			}
-		};
-		return new TransformationListIterator<String, Integer>(nestedIterator, transformer);
+	static final Transformer<Object, Integer> OBJECT_STRING_LENGTH_TRANSFORMER = new ObjectStringLengthTransformer();
+	/**
+	 * transform each string into an integer with a value of the string's length
+	 */
+	static class ObjectStringLengthTransformer
+		extends TransformerAdapter<Object, Integer>
+	{
+		@Override
+		public Integer transform(Object input) {
+			return new Integer(((String) input).length());
+		}
 	}
 
 	private ListIterator<String> buildNestedIterator() {

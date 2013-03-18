@@ -25,24 +25,25 @@ import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValue
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ModifiablePropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
-import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
-import org.eclipse.jpt.jpa.core.context.SpecifiedOverride;
-import org.eclipse.jpt.jpa.core.context.AssociationOverride;
-import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.Override_;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.SpecifiedOverride;
 import org.eclipse.jpt.jpa.core.context.VirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.VirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.VirtualOverride;
@@ -314,13 +315,24 @@ public abstract class AbstractOverridesComposite<T extends JpaContextModel>
 	}
 	
 	private Transformer<Override_, Control> buildPaneTransformer(final PageBook pageBook) {
-		return new Transformer<Override_, Control>() {
-			public Control transform(Override_ override) {
-				return AbstractOverridesComposite.this.transformSelectedOverride(override, pageBook);
-			}
-		};
+		return new PaneTransformer(pageBook);
 	}
 	
+	protected class PaneTransformer
+		extends TransformerAdapter<Override_, Control>
+	{
+		private final PageBook pageBook;
+
+		protected PaneTransformer(PageBook pageBook) {
+			this.pageBook = pageBook;
+		}
+
+		@Override
+		public Control transform(Override_ override) {
+			return AbstractOverridesComposite.this.transformSelectedOverride(override, this.pageBook);
+		}
+	}
+
 	/**
 	 * Given the selected override, return the control that will be displayed
 	 */

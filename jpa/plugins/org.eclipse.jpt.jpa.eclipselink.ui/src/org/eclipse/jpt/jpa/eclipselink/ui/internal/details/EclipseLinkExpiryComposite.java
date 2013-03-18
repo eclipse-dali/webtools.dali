@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.transformer.StringObjectTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCaching;
@@ -225,7 +225,7 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 						container,
 						buildDefaultListHolder(),
 						buildSelectedItemStringHolder(),
-						StringObjectTransformer.<String>instance(),
+						TransformerTools.<String>objectToStringTransformer(),
 						EclipseLinkExpiryComposite.this.getTtlEnabled()
 					);
 			}		

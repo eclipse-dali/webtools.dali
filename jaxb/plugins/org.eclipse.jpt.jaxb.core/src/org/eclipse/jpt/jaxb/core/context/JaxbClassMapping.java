@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jaxb.core.context;
 
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -82,9 +83,9 @@ public interface JaxbClassMapping
 	
 	Transformer<JaxbClassMapping, JaxbClassMapping> SUPER_CLASS_TRANSFORMER = new SuperClassTransformer();
 	class SuperClassTransformer
-			extends AbstractTransformer<JaxbClassMapping, JaxbClassMapping> {
+			extends TransformerAdapter<JaxbClassMapping, JaxbClassMapping> {
 		@Override
-		protected JaxbClassMapping transform_(JaxbClassMapping mapping) {
+		public JaxbClassMapping transform(JaxbClassMapping mapping) {
 			return mapping.getSuperclass();
 		}
 	}
@@ -104,9 +105,10 @@ public interface JaxbClassMapping
 	
 	Transformer<JaxbClassMapping, Iterable<? extends JaxbPersistentAttribute>> ATTRIBUTES_TRANSFORMER = new AttributesTransformer();
 	class AttributesTransformer
-			extends AbstractTransformer<JaxbClassMapping, Iterable<? extends JaxbPersistentAttribute>> {
+		extends TransformerAdapter<JaxbClassMapping, Iterable<? extends JaxbPersistentAttribute>>
+	{
 		@Override
-		protected Iterable<? extends JaxbPersistentAttribute> transform_(JaxbClassMapping mapping) {
+		public Iterable<? extends JaxbPersistentAttribute> transform(JaxbClassMapping mapping) {
 			return mapping.getAttributes();
 		}
 	}

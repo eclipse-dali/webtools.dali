@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,14 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.transformer;
 
+import java.util.Arrays;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * This transformer will replace any of a specified set of characters with an XML
  * <em>character reference</em>: <code>'/' => "&amp;#x2f;"</code>
  * @see XMLStringDecoder
  */
-public final class XMLStringEncoder
+public class XMLStringEncoder
 	extends AbstractTransformer<String, String>
 {
 	/** The set of characters to be converted into XML character references. */
@@ -99,11 +101,16 @@ public final class XMLStringEncoder
 
 	/**
 	 * Append the specified character's XML character reference to the
-	 * specified string buffer (e.g. '/' => "&#x2f;").
+	 * specified string buffer (e.g. <code>'/' => "&amp;#x2f;"</code>).
 	 */
 	private void appendCharacterReference(StringBuilder sb, char c) {
 		sb.append("&#x"); //$NON-NLS-1$
 		sb.append(Integer.toString(c, 16));
 		sb.append(';');
+	}
+
+	@Override
+	public String toString() {
+		return ObjectTools.toString(this, Arrays.toString(this.chars));
 	}
 }

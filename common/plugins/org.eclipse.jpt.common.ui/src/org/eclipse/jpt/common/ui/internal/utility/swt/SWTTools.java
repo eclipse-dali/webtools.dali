@@ -13,7 +13,7 @@ import java.util.Arrays;
 import org.eclipse.jpt.common.utility.internal.BitTools;
 import org.eclipse.jpt.common.utility.internal.model.value.ModifiablePropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticCollectionValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.StringObjectTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
@@ -80,7 +80,7 @@ public final class SWTTools {
 	 * on the items in the model list.
 	 */
 	public static <E> void bind(ListValueModel<E> listModel, List listBox) {
-		bind(listModel, listBox, StringObjectTransformer.<E>instance());
+		bind(listModel, listBox, TransformerTools.<E>objectToStringTransformer());
 	}
 
 	/**
@@ -100,7 +100,7 @@ public final class SWTTools {
 	 * on the items in the model list.
 	 */
 	public static <E> void bind(ListValueModel<E> listModel, ModifiablePropertyValueModel<E> selectedItemModel, List listBox) {
-		bind(listModel, selectedItemModel, listBox, StringObjectTransformer.<E>instance());
+		bind(listModel, selectedItemModel, listBox, TransformerTools.<E>objectToStringTransformer());
 	}
 
 	/**
@@ -120,7 +120,7 @@ public final class SWTTools {
 	 * on the items in the model list.
 	 */
 	public static <E> void bind(ListValueModel<E> listModel, ModifiableCollectionValueModel<E> selectedItemsModel, List listBox) {
-		bind(listModel, selectedItemsModel, listBox, StringObjectTransformer.<E>instance());
+		bind(listModel, selectedItemsModel, listBox, TransformerTools.<E>objectToStringTransformer());
 	}
 
 	/**
@@ -153,7 +153,7 @@ public final class SWTTools {
 	 * on the items in the model list.
 	 */
 	public static <E> void bind(ListValueModel<E> listModel, ModifiablePropertyValueModel<E> selectedItemModel, Combo dropDownListBox) {
-		bind(listModel, selectedItemModel, dropDownListBox, StringObjectTransformer.<E>instance());
+		bind(listModel, selectedItemModel, dropDownListBox, TransformerTools.<E>objectToStringTransformer());
 	}
 
 	/**

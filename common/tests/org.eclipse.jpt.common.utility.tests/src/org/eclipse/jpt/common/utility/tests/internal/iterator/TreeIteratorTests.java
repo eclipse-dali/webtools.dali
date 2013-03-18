@@ -13,10 +13,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
 import junit.framework.TestCase;
-
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -99,11 +98,7 @@ public class TreeIteratorTests extends TestCase {
 	}
 
 	private Transformer<TreeNode, Iterator<? extends TreeNode>> buildTransformer() {
-		return new Transformer<TreeNode, Iterator<? extends TreeNode>>() {
-			public Iterator<? extends TreeNode> transform(TreeNode node) {
-				return node.children();
-			}
-		};
+		return CHILDREN_TRANSFORMER;
 	}
 
 	private TreeNode buildTree() {
@@ -164,4 +159,13 @@ public class TreeIteratorTests extends TestCase {
 		}
 	}
 
+	private static Transformer<TreeNode, Iterator<? extends TreeNode>> CHILDREN_TRANSFORMER = new ChildrenTransformer();
+	protected static class ChildrenTransformer
+		extends TransformerAdapter<TreeNode, Iterator<? extends TreeNode>>
+	{
+		@Override
+		public Iterator<? extends TreeNode> transform(TreeNode node) {
+			return node.children();
+		}
+	}
 }

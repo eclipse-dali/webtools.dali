@@ -23,7 +23,6 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
-import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
@@ -210,14 +209,25 @@ public abstract class AbstractJpaMoveJavaElementParticipant
 		}
 	}
 
-	protected Iterable<ReplaceEdit> createPersistenceUnitReplaceEditsCheckClasspath(final PersistenceUnit persistenceUnit) {
-		Transformer<IJavaElement, Iterable<ReplaceEdit>> transformer = new TransformerAdapter<IJavaElement, Iterable<ReplaceEdit>>() {
-			@Override
-			public Iterable<ReplaceEdit> transform(IJavaElement javaElement) {
-				return createPersistenceXmlReplaceEdits(persistenceUnit, javaElement, getArguments(javaElement).getDestination());
-			}
-		};
-		return IterableTools.children(this.getElementsOnClasspath(persistenceUnit.getJpaProject()), transformer);
+	protected Iterable<ReplaceEdit> createPersistenceUnitReplaceEditsCheckClasspath(PersistenceUnit persistenceUnit) {
+		return IterableTools.children(
+				this.getElementsOnClasspath(persistenceUnit.getJpaProject()),
+				new PersistenceUnitReplaceEditsTransformer(persistenceUnit)
+			);
+	}
+
+	class PersistenceUnitReplaceEditsTransformer
+		extends TransformerAdapter<IJavaElement, Iterable<ReplaceEdit>>
+	{
+		private final PersistenceUnit persistenceUnit;
+		PersistenceUnitReplaceEditsTransformer(PersistenceUnit persistenceUnit) {
+			super();
+			this.persistenceUnit = persistenceUnit;
+		}
+		@Override
+		public Iterable<ReplaceEdit> transform(IJavaElement javaElement) {
+			return createPersistenceXmlReplaceEdits(this.persistenceUnit, javaElement, getArguments(javaElement).getDestination());
+		}
 	}
 
 	protected Iterable<IJavaElement> getElementsOnClasspath(JpaProject jpaProject) {
@@ -246,14 +256,25 @@ public abstract class AbstractJpaMoveJavaElementParticipant
 	protected abstract String getPersistenceXmlChangeName();
 
 
-	private Iterable<ReplaceEdit> createMappingFileReplaceEditsCheckClasspath(final MappingFileRef mappingFileRef) {
-		Transformer<IJavaElement, Iterable<ReplaceEdit>> transformer = new TransformerAdapter<IJavaElement, Iterable<ReplaceEdit>>() {
-			@Override
-			public Iterable<ReplaceEdit> transform(IJavaElement javaElement) {
-				return createMappingFileReplaceEdits(mappingFileRef, javaElement, getArguments(javaElement).getDestination());
-			}
-		};
-		return IterableTools.children(this.getElementsOnClasspath(mappingFileRef.getJpaProject()), transformer);
+	private Iterable<ReplaceEdit> createMappingFileReplaceEditsCheckClasspath(MappingFileRef mappingFileRef) {
+		return IterableTools.children(
+				this.getElementsOnClasspath(mappingFileRef.getJpaProject()),
+				new MappingFileRefReplaceEditsTransformer(mappingFileRef)
+			);
+	}
+
+	class MappingFileRefReplaceEditsTransformer
+		extends TransformerAdapter<IJavaElement, Iterable<ReplaceEdit>>
+	{
+		private final MappingFileRef mappingFileRef;
+		MappingFileRefReplaceEditsTransformer(MappingFileRef mappingFileRef) {
+			super();
+			this.mappingFileRef = mappingFileRef;
+		}
+		@Override
+		public Iterable<ReplaceEdit> transform(IJavaElement javaElement) {
+			return createMappingFileReplaceEdits(this.mappingFileRef, javaElement, getArguments(javaElement).getDestination());
+		}
 	}
 	
 	protected abstract Iterable<ReplaceEdit> createMappingFileReplaceEdits(MappingFileRef mappingFileRef, IJavaElement javaElement, Object destination);

@@ -9,30 +9,35 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.transformer;
 
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
- * Wrap a transformer that takes an object of type <code>T1</code> and returns
- * an object of type <code>T2</code>, converting it into a transformer
- * takes an object of type <code>T1</code> and returns
- * an object of type <code>T3</code>. <em>Assume</em> the wrapped
- * transformer returns only objects of type <code>T3</code>. The result is a
- * {@link ClassCastException} if this assumption is false.
+ * Wrap a transformer that takes an object of type <code>I</code> and returns
+ * an object of type <code>X</code>, converting it into a transformer
+ * takes an object of type <code>I</code> and returns
+ * an object of type <code>O</code>.
+ * <p>
+ * This is like a {@link CastingTransformerWrapper} but with more restrictive type
+ * parameters.
  * 
  * @param <I> input: the type of the object passed to the transformer and
  *   forwarded to the wrapped transformer
- * @param <X> intermediate: the type of object returned by the wrapped
- *   transformer
  * @param <O> output: the type of object returned by the transformer - this
  *   is the same object returned by the wrapped transformer, simply
- *   cast to <code>T3</code>
+ *   cast to <code>O</code>
+ * @param <X> intermediate: the type of object returned by the wrapped
+ *   transformer
+ * 
+ * @see CastingTransformerWrapper
+ * @see UpcastingTransformerWrapper
  */
-public class LateralTransformerWrapper<I, X, O>
-	extends TransformerAdapter<I, O>
+public class UpcastingTransformerWrapper<I, O, X extends O>
+	implements Transformer<I, O>
 {
 	private final Transformer<? super I, ? extends X> transformer;
 
-	public LateralTransformerWrapper(Transformer<? super I, ? extends X> transformer) {
+	public UpcastingTransformerWrapper(Transformer<? super I, ? extends X> transformer) {
 		super();
 		if (transformer == null) {
 			throw new NullPointerException();
@@ -40,9 +45,12 @@ public class LateralTransformerWrapper<I, X, O>
 		this.transformer = transformer;
 	}
 
+	public O transform(I input) {
+		return this.transformer.transform(input);
+	}
+
 	@Override
-	@SuppressWarnings("unchecked")
-	public O transform(I o) {
-		return (O) this.transformer.transform(o);
+	public String toString() {
+		return ObjectTools.toString(this, this.transformer);
 	}
 }

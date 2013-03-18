@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,30 +9,33 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.transformer;
 
+import java.util.Map;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
+
 /**
- * Transform any object, except <code>null</code>, into a single
- * client-specified object. Any <code>null</code> object will be
- * transformed into <code>null</code>.
+ * A transformer that will map the input to an output via a client-configured
+ * map.
  * 
  * @param <I> input: the type of the object passed to the transformer
  * @param <O> output: the type of the object returned by the transformer
  */
-public class StaticTransformer<I, O>
-	extends AbstractTransformer<I, O>
+public class MapTransformer<I, O>
+	implements Transformer<I, O>
 {
-	private final O object;
+	private final Map<? super I, ? extends O> map;
 
-	public StaticTransformer() {
-		this(null);
+	public MapTransformer(Map<? super I, ? extends O> map) {
+		super();
+		this.map = map;
 	}
 
-	public StaticTransformer(O object) {
-		super();
-		this.object = object;
+	public O transform(I input) {
+		return this.map.get(input);
 	}
 
 	@Override
-	protected O transform_(I o) {
-		return this.object;
+	public String toString() {
+		return ObjectTools.toString(this, this.map);
 	}
 }

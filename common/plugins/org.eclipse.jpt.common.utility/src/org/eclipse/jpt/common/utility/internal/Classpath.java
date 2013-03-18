@@ -31,6 +31,7 @@ import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.predicate.TruePredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * <code>Classpath</code> models a Java classpath, which consists of a list of
@@ -593,16 +594,19 @@ public class Classpath
 	}
 
 	/* CU private */ static class EntryClassNamesTransformer
-		extends TransformerAdapter<Entry, Iterator<String>>
+		implements Transformer<Entry, Iterator<String>>
 	{
 		private final Predicate<String> filter;
 		EntryClassNamesTransformer(Predicate<String> filter) {
 			super();
 			this.filter = filter;
 		}
-		@Override
 		public Iterator<String> transform(Entry entry) {
 			return entry.classNames(this.filter);
+		}
+		@Override
+		public String toString() {
+			return ObjectTools.toString(this, this.filter);
 		}
 	}
 

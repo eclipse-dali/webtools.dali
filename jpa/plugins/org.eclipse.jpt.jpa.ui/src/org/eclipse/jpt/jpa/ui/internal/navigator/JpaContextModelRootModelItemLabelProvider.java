@@ -14,6 +14,7 @@ import org.eclipse.jpt.common.ui.JptCommonUiImages;
 import org.eclipse.jpt.common.ui.internal.jface.AbstractItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -70,14 +71,10 @@ public class JpaContextModelRootModelItemLabelProvider
 	protected static final Transformer<JpaContextModelRoot, String> DESCRIPTION_TRANSFORMER = new DescriptionTransformer();
 
 	protected static class DescriptionTransformer
-		extends TransformerAdapter<JpaContextModelRoot, String>
+		extends AbstractTransformer<JpaContextModelRoot, String>
 	{
 		@Override
-		public String transform(JpaContextModelRoot root) {
-			if (root == null) {
-				return null;
-			}
-
+		public String transform_(JpaContextModelRoot root) {
 			StringBuilder sb = new StringBuilder();
 			sb.append(JptJpaUiMessages.JpaContent_label);
 			sb.append(" - ");  //$NON-NLS-1$

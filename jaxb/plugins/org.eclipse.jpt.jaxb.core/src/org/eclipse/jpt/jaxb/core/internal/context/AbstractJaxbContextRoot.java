@@ -27,7 +27,6 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
-import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
@@ -243,8 +242,9 @@ public abstract class AbstractJaxbContextRoot
 	}
 	
 	protected class JavaResourceTypeNameTransformer
-			implements Transformer<JavaResourceAbstractType, String> {
-		
+		extends TransformerAdapter<JavaResourceAbstractType, String>
+	{
+		@Override
 		public String transform(JavaResourceAbstractType input) {
 			return input.getTypeBinding().getQualifiedName();
 		}

@@ -13,6 +13,7 @@ import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
@@ -38,15 +39,7 @@ public class CachingTransformationPropertyValueModelTests extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.objectHolder = new SimplePropertyValueModel<Person>(new Person("Karen", "Peggy", null));
-		this.transformationObjectHolder = new TransformationPropertyValueModel<Person, Person>(this.objectHolder, this.buildTransformer());
-	}
-
-	private Transformer<Person, Person> buildTransformer() {
-		return new Transformer<Person, Person>() {
-			public Person transform(Person p) {
-				return (p == null) ? null : p.getParent();
-			}
-		};
+		this.transformationObjectHolder = new TransformationPropertyValueModel<Person, Person>(this.objectHolder, PARENT_TRANSFORMER);
 	}
 
 	@Override
@@ -188,6 +181,17 @@ public class CachingTransformationPropertyValueModelTests extends TestCase {
 	}
 
 	
+	private static final Transformer<Person, Person> PARENT_TRANSFORMER = new ParentTransformer();
+	static class ParentTransformer
+		extends AbstractTransformer<Person, Person>
+	{
+		@Override
+		public Person transform_(Person person) {
+			return person.getParent();
+		}
+	}
+
+
 	class Person
 		extends AbstractModel
 	{

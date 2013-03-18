@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.Collection;
-
 import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -23,7 +22,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.SetCollectionValueMod
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationListValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.StringObjectTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -173,7 +172,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 			container,
 			buildSortedGeneraterNamesModel(),
 			buildGeneratorNameHolder(),
-			StringObjectTransformer.<String>instance(),
+			TransformerTools.<String>objectToStringTransformer(),
 			JpaHelpContextIds.MAPPING_GENERATED_VALUE_GENERATOR_NAME
 		);
 

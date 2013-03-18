@@ -29,6 +29,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapt
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.TableModelAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
@@ -551,11 +552,15 @@ public class TableModelAdapterTests
 			this.name = name;
 			this.firePropertyChanged(NAME_PROPERTY, old, name);
 		}
-		public static final Transformer<Person, String> NAME_TRANSFORMER = new Transformer<Person, String>() {
+		public static final Transformer<Person, String> NAME_TRANSFORMER = new NameTransformer();
+		public static class NameTransformer
+			extends TransformerAdapter<Person, String>
+		{
+			@Override
 			public String transform(Person person) {
 				return person.getName();
 			}
-		};
+		}
 	
 		public Date getBirthDate() {
 			return this.birthDate;

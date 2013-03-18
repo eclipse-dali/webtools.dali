@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 public class TransformerAdapter<I, O>
 	implements Transformer<I, O>
 {
-	public O transform(I o) {
+	public O transform(I input) {
 		return null;
 	}
 

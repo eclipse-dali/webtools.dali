@@ -15,9 +15,9 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Vector;
 import junit.framework.TestCase;
-
 import org.eclipse.jpt.common.utility.internal.iterator.ChainIterator;
 import org.eclipse.jpt.common.utility.internal.transformer.DisabledTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 @SuppressWarnings("nls")
@@ -76,19 +76,11 @@ public class ChainIteratorTests
 	}
 
 	private Iterator<Class<?>> buildIterator() {
-		return this.buildChainIterator(Vector.class, this.buildTransformer());
+		return this.buildChainIterator(Vector.class, SUPERCLASS_TRANSFORMER);
 	}
 
 	private Iterator<Class<?>> buildChainIterator(Class<?> startLink, Transformer<Class<?>, Class<?>> transformer) {
 		return new ChainIterator<Class<?>>(startLink, transformer);
-	}
-
-	private Transformer<Class<?>, Class<?>> buildTransformer() {
-		return new Transformer<Class<?>, Class<?>>() {
-			public Class<?> transform(Class<?> currentLink) {
-				return currentLink.getSuperclass();
-			}
-		};
 	}
 
 	public void testInvalidChainIterator() {
@@ -104,4 +96,13 @@ public class ChainIteratorTests
 		assertTrue("NoSuchElementException not thrown", exCaught);
 	}
 
+	private static final TransformerAdapter<Class<?>, Class<?>> SUPERCLASS_TRANSFORMER = new SuperclassTransformer();
+	static class SuperclassTransformer
+		extends TransformerAdapter<Class<?>, Class<?>>
+	{
+		@Override
+		public Class<?> transform(Class<?> clazz) {
+			return clazz.getSuperclass();
+		}
+	}
 }

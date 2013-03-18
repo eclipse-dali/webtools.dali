@@ -139,43 +139,52 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 		);
 	}
 
-	private Transformer<String, String> buildDisplayableStringConverter(final DefaultValueHandler handler) {
-		return new TransformerAdapter<String, String>() {
-			@Override
-			public String transform(String value) {
+	private Transformer<String, String> buildDisplayableStringConverter(DefaultValueHandler handler) {
+		return new DisplayableStringTransformer(handler);
+	}
 
-				if (getSubject() == null) {
-					return null;
-				}
+	class DisplayableStringTransformer
+		extends TransformerAdapter<String, String>
+	{
+		private final DefaultValueHandler handler;
+		DisplayableStringTransformer(DefaultValueHandler handler) {
+			super();
+			this.handler = handler;
+		}
+		@Override
+		public String transform(String value) {
 
-				if (value == null) {
-					value = handler.getDefaultValue();
-
-					if (value != null) {
-						value = DEFAULT_KEY + value;
-					}
-					else {
-						value = DEFAULT_KEY;
-					}
-				}
-
-				if (value.startsWith(DEFAULT_KEY)) {
-					String defaultName = value.substring(DEFAULT_KEY.length());
-
-					if (defaultName.length() > 0) {
-						value = NLS.bind(
-							JptCommonUiMessages.DEFAULT_WITH_ONE_PARAM,
-							defaultName
-						);
-					}
-					else {
-						value = JptCommonUiMessages.DEFAULT_EMPTY;
-					}
-				}
-
-				return value;
+			if (getSubject() == null) {
+				return null;
 			}
-		};
+
+			if (value == null) {
+				value = this.handler.getDefaultValue();
+
+				if (value != null) {
+					value = DEFAULT_KEY + value;
+				}
+				else {
+					value = DEFAULT_KEY;
+				}
+			}
+
+			if (value.startsWith(DEFAULT_KEY)) {
+				String defaultName = value.substring(DEFAULT_KEY.length());
+
+				if (defaultName.length() > 0) {
+					value = NLS.bind(
+						JptCommonUiMessages.DEFAULT_WITH_ONE_PARAM,
+						defaultName
+					);
+				}
+				else {
+					value = JptCommonUiMessages.DEFAULT_EMPTY;
+				}
+			}
+
+			return value;
+		}
 	}
 
 	private ModifiablePropertyValueModel<String> buildNameHolder() {

@@ -300,13 +300,16 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 	}
 
 	private Iterable<String> getMappingKeys(ArrayList<DynamicEntityField> fields) {
-		Transformer<DynamicEntityField, String> transformer = new TransformerAdapter<DynamicEntityField, String>() {
-			@Override
-			public String transform(DynamicEntityField field) {
-				return field.getMappingType().getKey();
-			}
-		};
-		return IterableTools.transform(fields, transformer);
+		return IterableTools.transform(fields, new MappingKeyFieldTransformer());
+	}
+
+	static class MappingKeyFieldTransformer
+		extends TransformerAdapter<DynamicEntityField, String>
+	{
+		@Override
+		public String transform(DynamicEntityField field) {
+			return field.getMappingType().getKey();
+		}
 	}
 
 	private boolean hasIDAndEmbeddedIDMappingDefined(Iterable<String> mappingKeys) {

@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.internal.StringBuilderTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.NullList;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.transformer.NonTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionClearEvent;
@@ -119,7 +119,7 @@ public class CompositeCollectionValueModel<E1, E2>
 	 * model already contains other collection value models.
 	 */
 	public static <E1 extends CollectionValueModel<? extends E2>, E2> CompositeCollectionValueModel<E1, E2> forModels(CollectionValueModel<E1> collectionModel) {
-		return new CompositeCollectionValueModel<E1, E2>(collectionModel, NonTransformer.<E1>instance());
+		return new CompositeCollectionValueModel<E1, E2>(collectionModel, TransformerTools.<E1>passThruTransformer());
 	}
 
 	/**

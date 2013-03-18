@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.persistence;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.DeleteTypeRefactoringParticipant;
@@ -106,10 +106,10 @@ public interface ClassRef
 	Transformer<ClassRef, JavaManagedType> JAVA_MANAGED_TYPE_TRANSFORMER = new JavaManagedTypeTransformer();
 
 	class JavaManagedTypeTransformer
-		extends AbstractTransformer<ClassRef, JavaManagedType>
+		extends TransformerAdapter<ClassRef, JavaManagedType>
 	{
 		@Override
-		protected JavaManagedType transform_(ClassRef ref) {
+		public JavaManagedType transform(ClassRef ref) {
 			return ref.getJavaManagedType();
 		}
 	}

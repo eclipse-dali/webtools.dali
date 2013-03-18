@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.ui.internal.util;
 
 import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -66,15 +67,23 @@ public final class ControlSwitcher
 		this(switchHolder, buildNullControlTransformer(control), pageBook);
 	}
 
-	private static <T> Transformer<T, Control> buildNullControlTransformer(final Control control) {
-		return new Transformer<T, Control>() {
-			public Control transform(T model) {
-				if (model == null) {
-					return null;
-				}
-				return control;
-			}
-		};
+	private static <T> Transformer<T, Control> buildNullControlTransformer(Control control) {
+		return new NullControlTransformer<T>(control);
+	}
+
+	protected static class NullControlTransformer<T>
+		extends AbstractTransformer<T, Control>
+	{
+		private final Control control;
+
+		protected NullControlTransformer(Control control) {
+			this.control = control;
+		}
+
+		@Override
+		public Control transform_(T model) {
+			return this.control;
+		}
 	}
 
 	private void initialize(PropertyValueModel<?> switchHolder,

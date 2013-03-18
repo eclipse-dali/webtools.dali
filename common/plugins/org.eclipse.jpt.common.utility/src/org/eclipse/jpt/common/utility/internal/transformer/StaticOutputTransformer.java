@@ -13,31 +13,34 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
- * Transform any object into a single client-specified
- * non-<code>null</code> object.
+ * Transform any object, except <code>null</code>, into a single
+ * client-specified object. Any <code>null</code> object will be
+ * transformed into <code>null</code>.
  * 
  * @param <I> input: the type of the object passed to the transformer
  * @param <O> output: the type of the object returned by the transformer
+ * @see NullOutputTransformer
  */
-public class NonNullStaticTransformer<I, O>
+public class StaticOutputTransformer<I, O>
 	implements Transformer<I, O>
 {
-	private final O object;
+	private final O output;
 
-	public NonNullStaticTransformer(O object) {
-		super();
-		if (object == null) {
-			throw new NullPointerException();
-		}
-		this.object = object;
+	public StaticOutputTransformer() {
+		this(null);
 	}
 
-	public O transform(I o) {
-		return this.object;
+	public StaticOutputTransformer(O output) {
+		super();
+		this.output = output;
+	}
+
+	public O transform(I input) {
+		return this.output;
 	}
 
 	@Override
 	public String toString() {
-		return ObjectTools.toString(this, this.object);
+		return ObjectTools.toString(this, this.output);
 	}
 }

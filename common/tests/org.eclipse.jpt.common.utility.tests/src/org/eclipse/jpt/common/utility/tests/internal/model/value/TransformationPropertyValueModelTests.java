@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,11 +13,12 @@ import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -39,23 +40,27 @@ public class TransformationPropertyValueModelTests
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.objectHolder = new SimplePropertyValueModel<String>("foo");
-		this.transformationObjectHolder = new TransformationModifiablePropertyValueModel<String, String>(this.objectHolder, this.buildTransformer(), this.buildReverseTransformer());
+		this.transformationObjectHolder = new TransformationModifiablePropertyValueModel<String, String>(this.objectHolder, UPPER_CASE_TRANSFORMER, LOWER_CASE_TRANSFORMER);
 	}
 
-	private Transformer<String, String> buildTransformer() {
-		return new Transformer<String, String>() {
-			public String transform(String s) {
-				return (s == null) ? null : s.toUpperCase();
-			}
-		};
+	private static final Transformer<String, String> UPPER_CASE_TRANSFORMER = new UpperCaseTransformer();
+	static class UpperCaseTransformer
+		extends AbstractTransformer<String, String>
+	{
+		@Override
+		public String transform_(String s) {
+			return s.toUpperCase();
+		}
 	}
 
-	private Transformer<String, String> buildReverseTransformer() {
-		return new Transformer<String, String>() {
-			public String transform(String s) {
-				return (s == null) ? null : s.toLowerCase();
-			}
-		};
+	private static final Transformer<String, String> LOWER_CASE_TRANSFORMER = new LowerCaseTransformer();
+	static class LowerCaseTransformer
+		extends AbstractTransformer<String, String>
+	{
+		@Override
+		public String transform_(String s) {
+			return s.toLowerCase();
+		}
 	}
 
 	@Override

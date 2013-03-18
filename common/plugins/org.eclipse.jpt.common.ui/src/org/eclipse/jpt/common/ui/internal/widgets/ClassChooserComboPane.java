@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.ui.internal.widgets;
 
 import org.eclipse.jdt.internal.ui.refactoring.contentassist.ControlContentAssistHelper;
-import org.eclipse.jpt.common.utility.internal.transformer.StringObjectTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -120,6 +120,6 @@ public abstract class ClassChooserComboPane<T extends Model> extends ClassChoose
 	protected abstract ListValueModel<String> buildClassListHolder();
 	
 	protected Transformer<String, String> buildClassConverter() {
-		return StringObjectTransformer.instance();
+		return TransformerTools.objectToStringTransformer();
 	}
 }

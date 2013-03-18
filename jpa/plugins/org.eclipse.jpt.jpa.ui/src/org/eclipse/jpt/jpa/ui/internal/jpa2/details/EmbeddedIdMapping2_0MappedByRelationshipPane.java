@@ -12,11 +12,12 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
-import org.eclipse.jpt.jpa.core.jpa2.context.EmbeddedIdMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.DerivableIdMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.EmbeddedIdMapping2_0;
 import org.eclipse.jpt.jpa.ui.jpa2.details.JptJpaUiDetailsMessages2_0;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -62,14 +63,25 @@ public class EmbeddedIdMapping2_0MappedByRelationshipPane
 		};
 	}
 
-	private Transformer<Boolean, Control> buildPaneTransformer(final Composite container) {
-		return new Transformer<Boolean, Control>() {
-			public Control transform(Boolean converter) {
-				if (converter == null || converter == Boolean.FALSE) {
-					return null;
-				}
-				return EmbeddedIdMapping2_0MappedByRelationshipPane.this.getMappedByRelationshipLabel(container); 
+	private Transformer<Boolean, Control> buildPaneTransformer(Composite container) {
+		return new PaneTransformer(container);
+	}
+
+	protected class PaneTransformer
+		extends TransformerAdapter<Boolean, Control>
+	{
+		private final Composite container;
+
+		protected PaneTransformer(Composite container) {
+			this.container = container;
+		}
+
+		@Override
+		public Control transform(Boolean converter) {
+			if (converter == null || converter == Boolean.FALSE) {
+				return null;
 			}
-		};
+			return EmbeddedIdMapping2_0MappedByRelationshipPane.this.getMappedByRelationshipLabel(this.container); 
+		}
 	}
 }

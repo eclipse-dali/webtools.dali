@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context;
 
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
@@ -76,10 +76,10 @@ public interface EclipseLinkConvert
 	 */
 	Transformer<Converter, EclipseLinkConvert> CONVERTER_TRANSFORMER = new ConverterTransformer();
 	class ConverterTransformer
-		extends AbstractTransformer<Converter, EclipseLinkConvert>
+		extends TransformerAdapter<Converter, EclipseLinkConvert>
 	{
 		@Override
-		public EclipseLinkConvert transform_(Converter converter) {
+		public EclipseLinkConvert transform(Converter converter) {
 			return (converter.getType() == EclipseLinkConvert.class) ? (EclipseLinkConvert) converter : null;
 		}
 	}

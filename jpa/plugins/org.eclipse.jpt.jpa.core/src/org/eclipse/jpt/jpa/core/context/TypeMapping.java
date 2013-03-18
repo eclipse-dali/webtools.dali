@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.db.Schema;
@@ -62,10 +62,10 @@ public interface TypeMapping
 	Iterable<Query> getQueries();
 	Transformer<TypeMapping, Iterable<Query>> QUERIES_TRANSFORMER = new QueriesTransformer();
 	class QueriesTransformer
-		extends AbstractTransformer<TypeMapping, Iterable<Query>>
+		extends TransformerAdapter<TypeMapping, Iterable<Query>>
 	{
 		@Override
-		protected Iterable<Query> transform_(TypeMapping mapping) {
+		public Iterable<Query> transform(TypeMapping mapping) {
 			return mapping.getQueries();
 		}
 	}
@@ -73,10 +73,10 @@ public interface TypeMapping
 	Iterable<Generator> getGenerators();
 	Transformer<TypeMapping, Iterable<Generator>> GENERATORS_TRANSFORMER = new GeneratorsTransformer();
 	class GeneratorsTransformer
-		extends AbstractTransformer<TypeMapping, Iterable<Generator>>
+		extends TransformerAdapter<TypeMapping, Iterable<Generator>>
 	{
 		@Override
-		protected Iterable<Generator> transform_(TypeMapping mapping) {
+		public Iterable<Generator> transform(TypeMapping mapping) {
 			return mapping.getGenerators();
 		}
 	}

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.model.value;
 
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -155,10 +156,11 @@ public class TransformationPropertyValueModel<V1, V2>
 	 * implementation of {@link TransformationPropertyValueModel#transform_(Object)}.
 	 */
 	protected class DefaultTransformer
-		implements Transformer<V1, V2>
+		extends AbstractTransformer<V1, V2>
 	{
-		public V2 transform(V1 v) {
-			return (v == null) ? null : TransformationPropertyValueModel.this.transform_(v);
+		@Override
+		public V2 transform_(V1 v) {
+			return TransformationPropertyValueModel.this.transform_(v);
 		}
 	}
 }

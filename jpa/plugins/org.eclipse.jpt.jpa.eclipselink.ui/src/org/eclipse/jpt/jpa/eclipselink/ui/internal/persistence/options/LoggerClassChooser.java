@@ -113,7 +113,7 @@ public class LoggerClassChooser extends ClassChooserComboPane<EclipseLinkLogging
 		);
 	}
 
-	private String buildDisplayString(String loggerName) {
+	String buildDisplayString(String loggerName) {
 
 		switch (EclipseLinkLogger.valueOf(loggerName)) {
 			case default_logger: {
@@ -143,19 +143,21 @@ public class LoggerClassChooser extends ClassChooserComboPane<EclipseLinkLogging
 
 	@Override
 	protected Transformer<String, String> buildClassConverter() {
-		return new TransformerAdapter<String, String>() {
-			@Override
-			public String transform(String value) {
-				try {
-					EclipseLinkLogger.valueOf(value);
-					value = buildDisplayString(value);
-				}
-				catch (Exception e) {
-					// Ignore since the value is not a Logger
-				}
+		return new ClassTransformer();
+	}
+
+	class ClassTransformer
+		extends TransformerAdapter<String, String>
+	{
+		@Override
+		public String transform(String value) {
+			try {
+				return buildDisplayString(value);
+			} catch (RuntimeException ex) {
+				// the value is not a Logger
 				return value;
 			}
-		};
+		}
 	}
 
 	@Override

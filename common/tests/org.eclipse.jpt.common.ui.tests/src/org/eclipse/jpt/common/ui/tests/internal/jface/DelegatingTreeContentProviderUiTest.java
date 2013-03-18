@@ -516,13 +516,17 @@ public class DelegatingTreeContentProviderUiTest
 		}
 
 		public Iterable<Child> getNestlessChildren() {
-			Transformer<TreeNode, Child> transformer = new TransformerAdapter<TreeNode, Child>() {
-				@Override
-				public Child transform(TreeNode node) {
-					return (node instanceof Nest) ? ((Nest) node).getChild() : (Child) node;
-				}
-			};
-			return IterableTools.transform(this.getChildren(), transformer);
+			return IterableTools.transform(this.getChildren(), CHILD_TREE_NODE_TRANSFORMER);
+		}
+
+		public static final Transformer<TreeNode, Child> CHILD_TREE_NODE_TRANSFORMER = new ChildTreeNodeTransformer();
+		public static class ChildTreeNodeTransformer
+			extends TransformerAdapter<TreeNode, Child>
+		{
+			@Override
+			public Child transform(TreeNode node) {
+				return (node instanceof Nest) ? ((Nest) node).getChild() : (Child) node;
+			}
 		}
 	}
 

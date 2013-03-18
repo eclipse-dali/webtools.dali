@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.persistence;
 
 import org.eclipse.core.resources.IFolder;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.PersistentTypeContainer;
@@ -69,10 +69,10 @@ public interface JarFileRef
 	Transformer<JarFileRef, JarFile> JAR_FILE_TRANSFORMER = new JarFileTransformer();
 
 	class JarFileTransformer
-		extends AbstractTransformer<JarFileRef, JarFile>
+		extends TransformerAdapter<JarFileRef, JarFile>
 	{
 		@Override
-		protected JarFile transform_(JarFileRef ref) {
+		public JarFile transform(JarFileRef ref) {
 			return ref.getJarFile();
 		}
 	}

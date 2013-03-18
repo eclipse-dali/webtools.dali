@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context;
 
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -96,8 +97,9 @@ public class TypeMappingTools {
 
 	public static final Transformer<TypeMapping, Iterable<AttributeMapping>> ATTRIBUTE_MAPPINGS_TRANSFORMER = new AttributeMappingsTransformer();
 	static class AttributeMappingsTransformer
-		implements Transformer<TypeMapping, Iterable<AttributeMapping>>
+		extends TransformerAdapter<TypeMapping, Iterable<AttributeMapping>>
 	{
+		@Override
 		public Iterable<AttributeMapping> transform(TypeMapping mapping) {
 			return mapping.getAttributeMappings();
 		}
@@ -108,8 +110,9 @@ public class TypeMappingTools {
 
 	public static final Transformer<TypeMapping, Iterable<Table>> ASSOCIATED_TABLES_TRANSFORMER = new AssociatedTablesTransformer();
 	static class AssociatedTablesTransformer
-		implements Transformer<TypeMapping, Iterable<Table>>
+		extends TransformerAdapter<TypeMapping, Iterable<Table>>
 	{
+		@Override
 		public Iterable<Table> transform(TypeMapping mapping) {
 			return mapping.getAssociatedTables();
 		}
@@ -120,8 +123,9 @@ public class TypeMappingTools {
 
 	public static final Transformer<TypeMapping, Iterable<String>> OVERRIDABLE_ATTRIBUTE_NAMES_TRANSFORMER = new OverridableAttributeNamesTransformer();
 	static class OverridableAttributeNamesTransformer
-		implements Transformer<TypeMapping, Iterable<String>>
+		extends TransformerAdapter<TypeMapping, Iterable<String>>
 	{
+		@Override
 		public Iterable<String> transform(TypeMapping mapping) {
 			return mapping.getOverridableAttributeNames();
 		}
@@ -132,8 +136,9 @@ public class TypeMappingTools {
 
 	public static final Transformer<TypeMapping, Iterable<String>> OVERRIDABLE_ASSOCIATION_NAMES_TRANSFORMER = new OverridableAssociationNamesTransformer();
 	static class OverridableAssociationNamesTransformer
-		implements Transformer<TypeMapping, Iterable<String>>
+		extends TransformerAdapter<TypeMapping, Iterable<String>>
 	{
+		@Override
 		public Iterable<String> transform(TypeMapping mapping) {
 			return mapping.getOverridableAssociationNames();
 		}

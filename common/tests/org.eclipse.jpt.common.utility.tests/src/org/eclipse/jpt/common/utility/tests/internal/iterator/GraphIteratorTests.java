@@ -17,8 +17,8 @@ import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.transformer.DisabledTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
-import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 @SuppressWarnings("nls")
 public class GraphIteratorTests
@@ -90,15 +90,7 @@ public class GraphIteratorTests
 	}
 
 	private Iterator<GraphNode> buildGraphIterator() {
-		return IteratorTools.graphIterator(this.buildGraphRoot(), this.buildTransformer());
-	}
-
-	private Transformer<GraphNode, Iterator<? extends GraphNode>> buildTransformer() {
-		return new Transformer<GraphNode, Iterator<? extends GraphNode>>() {
-			public Iterator<GraphNode> transform(GraphNode node) {
-				return node.neighbors();
-			}
-		};
+		return IteratorTools.graphIterator(this.buildGraphRoot(), CHILDREN_TRANSFORMER);
 	}
 
 	private GraphNode buildGraphRoot() {
@@ -121,6 +113,16 @@ public class GraphIteratorTests
 		tnNode.setNeighbors(new GraphNode[] { vaNode, ncNode, gaNode, alNode, msNode });
 
 		return ncNode;
+	}
+
+	private static final TransformerAdapter<GraphNode, Iterator<? extends GraphNode>> CHILDREN_TRANSFORMER = new ChildrenTransformer();
+	static class ChildrenTransformer
+		extends TransformerAdapter<GraphNode, Iterator<? extends GraphNode>>
+	{
+		@Override
+		public Iterator<GraphNode> transform(GraphNode node) {
+			return node.neighbors();
+		}
 	}
 
 	public class GraphNode {

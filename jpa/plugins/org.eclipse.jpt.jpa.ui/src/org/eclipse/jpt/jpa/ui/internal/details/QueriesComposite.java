@@ -27,6 +27,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValue
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -76,7 +77,8 @@ import org.eclipse.ui.part.PageBook;
  * @version 3.3
  * @since 2.0
  */
-public class QueriesComposite extends Pane<QueryContainer>
+public class QueriesComposite
+	extends Pane<QueryContainer>
 {
 	Pane<? extends NamedNativeQuery> namedNativeQueryPane; //lazy initialized to avoid unnecessary handles 
 	Pane<? extends NamedQuery> namedQueryPane; //lazy initialized to avoid unnecessary handles
@@ -240,23 +242,28 @@ public class QueriesComposite extends Pane<QueryContainer>
 		};
 	}
 
-	protected Transformer<Query, Control> buildPaneTransformer(final PageBook pageBook) {
-		return new Transformer<Query, Control>() {
-			public Control transform(Query query) {
-
-				if (query == null) {
-					return null;
-				}
-
-				if (query instanceof NamedNativeQuery) {
-					return QueriesComposite.this.getNamedNativeQueryPropertyComposite(pageBook).getControl();
-				}
-
-				return QueriesComposite.this.getNamedQueryPropertyComposite(pageBook).getControl();
-			}
-		};
+	protected Transformer<Query, Control> buildPaneTransformer(PageBook pageBook) {
+		return new PaneTransformer(pageBook);
 	}
 	
+	protected class PaneTransformer
+		extends AbstractTransformer<Query, Control>
+	{
+		private final PageBook pageBook;
+
+		protected PaneTransformer(PageBook pageBook) {
+			this.pageBook = pageBook;
+		}
+
+		@Override
+		public Control transform_(Query query) {
+			if (query instanceof NamedNativeQuery) {
+				return QueriesComposite.this.getNamedNativeQueryPropertyComposite(this.pageBook).getControl();
+			}
+			return QueriesComposite.this.getNamedQueryPropertyComposite(this.pageBook).getControl();
+		}
+	}
+
 	protected Adapter<Query> buildQueriesAdapter() {
 
 		return new AddRemoveListPane.AbstractAdapter<Query>() {
@@ -316,7 +323,7 @@ public class QueriesComposite extends Pane<QueryContainer>
 		};
 	}
 
-	protected Pane<? extends NamedQuery> getNamedQueryPropertyComposite(PageBook pageBook) {
+	public Pane<? extends NamedQuery> getNamedQueryPropertyComposite(PageBook pageBook) {
 		if (this.namedQueryPane == null) {
 			this.namedQueryPane = this.buildNamedQueryPropertyComposite(pageBook);
 		}

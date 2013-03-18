@@ -31,6 +31,16 @@ public interface DatabaseObject {
 	 */
 	String getName();
 
+	Transformer<DatabaseObject, String> NAME_TRANSFORMER = new NameTransformer();
+	class NameTransformer
+		extends TransformerAdapter<DatabaseObject, String>
+	{
+		@Override
+		public String transform(DatabaseObject dbObject) {
+			return dbObject.getName();
+		}
+	}
+
 	/**
 	 * Return the database object's <em>identifier</em>, which is the object's name
 	 * modified so it can be used in an SQL statement (e.g. if the name contains
@@ -54,6 +64,16 @@ public interface DatabaseObject {
 	 * special characters, etc.).
 	 */
 	String getIdentifier(String defaultName);
+
+	Transformer<DatabaseObject, String> IDENTIFIER_TRANSFORMER = new IdentifierTransformer();
+	class IdentifierTransformer
+		extends TransformerAdapter<DatabaseObject, String>
+	{
+		@Override
+		public String transform(DatabaseObject dbObject) {
+			return dbObject.getIdentifier();
+		}
+	}
 
 	/**
 	 * Return the database object's database.
@@ -85,26 +105,6 @@ public interface DatabaseObject {
 		@Override
 		public String toString() {
 			return ObjectTools.toString(this);
-		}
-	}
-
-	Transformer<DatabaseObject, String> NAME_TRANSFORMER = new NameTransformer();
-	class NameTransformer
-		extends TransformerAdapter<DatabaseObject, String>
-	{
-		@Override
-		public String transform(DatabaseObject dbObject) {
-			return dbObject.getName();
-		}
-	}
-
-	Transformer<DatabaseObject, String> IDENTIFIER_TRANSFORMER = new IdentifierTransformer();
-	class IdentifierTransformer
-		extends TransformerAdapter<DatabaseObject, String>
-	{
-		@Override
-		public String transform(DatabaseObject dbObject) {
-			return dbObject.getIdentifier();
 		}
 	}
 }

@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.ui.internal.widgets;
 import java.util.Arrays;
 import java.util.List;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.StringObjectTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -101,6 +101,6 @@ public abstract class FolderChooserComboPane<T extends Model> extends FolderChoo
 	 * into a string representation
 	 */
 	protected Transformer<String, String> buildStringConverter() {
-		return StringObjectTransformer.instance();
+		return TransformerTools.objectToStringTransformer();
 	}
 }

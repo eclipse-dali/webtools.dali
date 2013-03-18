@@ -23,7 +23,6 @@ import java.util.RandomAccess;
 import org.eclipse.jpt.common.utility.internal.Range;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
-import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -606,11 +605,14 @@ public final class ListTools {
 	 * {@link ListIterator}.
 	 */
 	public static class ListIteratorTransformer<E>
-		extends TransformerAdapter<List<E>, ListIterator<E>>
+		implements Transformer<List<E>, ListIterator<E>>
 	{
-		@Override
 		public ListIterator<E> transform(List<E> list) {
 			return list.listIterator();
+		}
+		@Override
+		public String toString() {
+			return this.getClass().getSimpleName();
 		}
 	}
 
@@ -635,11 +637,14 @@ public final class ListTools {
 	 * <em>read-only</em> {@link ListIterator}.
 	 */
 	public static class ReadOnlyListIteratorTransformer<E>
-		extends TransformerAdapter<List<? extends E>, ListIterator<? extends E>>
+		implements Transformer<List<? extends E>, ListIterator<? extends E>>
 	{
-		@Override
 		public ListIterator<? extends E> transform(List<? extends E> list) {
 			return IteratorTools.readOnly(list.listIterator());
+		}
+		@Override
+		public String toString() {
+			return this.getClass().getSimpleName();
 		}
 	}
 
@@ -664,11 +669,14 @@ public final class ListTools {
 	 * {@link ListIterable}.
 	 */
 	public static class ListIterableTransformer<E>
-		extends TransformerAdapter<List<E>, ListIterable<E>>
+		implements Transformer<List<E>, ListIterable<E>>
 	{
-		@Override
 		public ListIterable<E> transform(List<E> list) {
 			return IterableTools.listIterable(list);
+		}
+		@Override
+		public String toString() {
+			return this.getClass().getSimpleName();
 		}
 	}
 
@@ -693,11 +701,14 @@ public final class ListTools {
 	 * <em>read-only</em> {@link ListIterable}.
 	 */
 	public static class ReadOnlyListIterableTransformer<E>
-		extends TransformerAdapter<List<? extends E>, ListIterable<? extends E>>
+		implements Transformer<List<? extends E>, ListIterable<? extends E>>
 	{
-		@Override
 		public ListIterable<? extends E> transform(List<? extends E> list) {
 			return IterableTools.listIterable(list);
+		}
+		@Override
+		public String toString() {
+			return this.getClass().getSimpleName();
 		}
 	}
 

@@ -16,6 +16,7 @@ import junit.framework.TestCase;
 
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.transformer.DisabledTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 @SuppressWarnings("nls")
@@ -39,16 +40,7 @@ public class TransformationIterableTests
 
 	private Iterable<Integer> buildTransformationIterable(Iterable<String> nestedIterable) {
 		// transform each string into an integer with a value of the string's length
-		return new TransformationIterable<String, Integer>(nestedIterable, this.buildTransformer());
-	}
-
-	private Transformer<String, Integer> buildTransformer() {
-		// transform each string into an integer with a value of the string's length
-		return new Transformer<String, Integer>() {
-			public Integer transform(String next) {
-				return new Integer(next.length());
-			}
-		};
+		return new TransformationIterable<String, Integer>(nestedIterable, STRING_LENGTH_TRANSFORMER);
 	}
 
 	private Iterable<String> buildNestedIterable() {
@@ -82,4 +74,16 @@ public class TransformationIterableTests
 		assertTrue(exCaught);
 	}
 
+	static final Transformer<String, Integer> STRING_LENGTH_TRANSFORMER = new StringLengthTransformer();
+	/**
+	 * transform each string into an integer with a value of the string's length
+	 */
+	static class StringLengthTransformer
+		extends TransformerAdapter<String, Integer>
+	{
+		@Override
+		public Integer transform(String s) {
+			return new Integer(s.length());
+		}
+	}
 }

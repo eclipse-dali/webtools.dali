@@ -13,34 +13,35 @@ import java.io.Serializable;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
- * A {@link NotNullObjectTransformer} will transform an object to a
+ * A transformer that will transform an object to a
  * {@link Boolean}:<ul>
  * <li>If the object is <code>null</code>,
- * the transformer will return {@link Boolean#FALSE}.
- * <li>If the object is <em>not</em> <code>null</code>,
  * the transformer will return {@link Boolean#TRUE}.
+ * <li>If the object is <em>not</em> <code>null</code>,
+ * the transformer will return {@link Boolean#FALSE}.
  * </ul>
  * 
  * @param <I> input: the type of the object passed to the transformer
+ * @see IsNotNullTransformer
  */
-public class NotNullObjectTransformer<I>
+public class IsNullTransformer<I>
 	implements Transformer<I, Boolean>, Serializable
 {
 	@SuppressWarnings("rawtypes")
-	public static final Transformer INSTANCE = new NotNullObjectTransformer();
+	public static final Transformer INSTANCE = new IsNullTransformer();
 
 	@SuppressWarnings("unchecked")
-	public static <S> Transformer<S, Boolean> instance() {
+	public static <I> Transformer<I, Boolean> instance() {
 		return INSTANCE;
 	}
 
 	// ensure single instance
-	private NotNullObjectTransformer() {
+	private IsNullTransformer() {
 		super();
 	}
 
-	public Boolean transform(I o) {
-		return Boolean.valueOf(o != null);
+	public Boolean transform(I input) {
+		return Boolean.valueOf(input == null);
 	}
 
 	@Override

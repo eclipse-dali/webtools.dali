@@ -14,7 +14,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
-import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -383,16 +382,19 @@ public final class StringTools {
 	 * @see #delimit(String, char)
 	 */
 	public static class CharDelimiter
-		extends TransformerAdapter<String, String>
+		implements Transformer<String, String>
 	{
 		private final char delimiter;
 		public CharDelimiter(char delimiter) {
 			super();
 			this.delimiter = delimiter;
 		}
-		@Override
 		public String transform(String string) {
 			return delimit(string, this.delimiter);
+		}
+		@Override
+		public String toString() {
+			return ObjectTools.toString(this, this.delimiter);
 		}
 	}
 
@@ -433,7 +435,7 @@ public final class StringTools {
 	 * @see #delimit(String, String)
 	 */
 	public static class StringDelimiter
-		extends TransformerAdapter<String, String>
+		implements Transformer<String, String>
 	{
 		private final String delimiter;
 		private final int delimiterLength;
@@ -442,9 +444,12 @@ public final class StringTools {
 			this.delimiter = delimiter;
 			this.delimiterLength = delimiter.length();
 		}
-		@Override
 		public String transform(String string) {
 			return delimit(string, this.delimiter, this.delimiterLength);
+		}
+		@Override
+		public String toString() {
+			return ObjectTools.toString(this, this.delimiter);
 		}
 	}
 
@@ -748,12 +753,14 @@ public final class StringTools {
 	public static final Transformer<String, String> CAPITALIZER = new Capitalizer();
 
 	/* CU private */ static class Capitalizer
-		extends TransformerAdapter<String, String>
-		implements Serializable
+		implements Transformer<String, String>, Serializable
 	{
-		@Override
 		public String transform(String string) {
 			return capitalize(string);
+		}
+		@Override
+		public String toString() {
+			return this.getClass().getSimpleName();
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -811,12 +818,14 @@ public final class StringTools {
 	public static final Transformer<String, String> UNCAPITALIZER = new Uncapitalizer();
 
 	/* CU private */ static class Uncapitalizer
-		extends TransformerAdapter<String, String>
-		implements Serializable
+		implements Transformer<String, String>, Serializable
 	{
-		@Override
 		public String transform(String string) {
 			return uncapitalize(string);
+		}
+		@Override
+		public String toString() {
+			return this.getClass().getSimpleName();
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -869,12 +878,14 @@ public final class StringTools {
 	public static final Predicate<String> NON_BLANK_FILTER = new NonBlankFilter();
 
 	/* CU private */ static class NonBlankFilter
-		extends PredicateAdapter<String>
-		implements Serializable
+		implements Predicate<String>, Serializable
 	{
-		@Override
 		public boolean evaluate(String string) {
 			return isNotBlank(string);
+		}
+		@Override
+		public String toString() {
+			return this.getClass().getSimpleName();
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -1147,12 +1158,14 @@ public final class StringTools {
 	public static final Transformer<String, String> JAVA_STRING_LITERAL_TRANSFORMER = new JavaStringLiteralTransformer();
 
 	/* CU private */ static class JavaStringLiteralTransformer
-		extends TransformerAdapter<String, String>
-		implements Serializable
+		implements Transformer<String, String>, Serializable
 	{
-		@Override
 		public String transform(String string) {
 			return convertToJavaStringLiteral(string);
+		}
+		@Override
+		public String toString() {
+			return this.getClass().getSimpleName();
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -1181,12 +1194,14 @@ public final class StringTools {
 	public static final Transformer<String, String> JAVA_STRING_LITERAL_CONTENT_TRANSFORMER = new JavaStringLiteralContentTransformer();
 
 	/* CU private */ static class JavaStringLiteralContentTransformer
-		extends TransformerAdapter<String, String>
-		implements Serializable
+		implements Transformer<String, String>, Serializable
 	{
-		@Override
 		public String transform(String string) {
 			return convertToJavaStringLiteralContent(string);
+		}
+		@Override
+		public String toString() {
+			return this.getClass().getSimpleName();
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -1234,12 +1249,14 @@ public final class StringTools {
 	public static final Transformer<String, String> XML_ATTRIBUTE_VALUE_TRANSFORMER = new XmlAttributeValueTransformer();
 
 	/* CU private */ static class XmlAttributeValueTransformer
-		extends TransformerAdapter<String, String>
-		implements Serializable
+		implements Transformer<String, String>, Serializable
 	{
-		@Override
 		public String transform(String string) {
 			return convertToXmlAttributeValue(string);
+		}
+		@Override
+		public String toString() {
+			return this.getClass().getSimpleName();
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -1270,12 +1287,14 @@ public final class StringTools {
 	public static final Transformer<String, String> DOUBLE_QUOTED_XML_ATTRIBUTE_VALUE_TRANSFORMER = new DoubleQuotedXmlAttributeValueTransformer();
 
 	/* CU private */ static class DoubleQuotedXmlAttributeValueTransformer
-		extends TransformerAdapter<String, String>
-		implements Serializable
+		implements Transformer<String, String>, Serializable
 	{
-		@Override
 		public String transform(String string) {
 			return convertToDoubleQuotedXmlAttributeValue(string);
+		}
+		@Override
+		public String toString() {
+			return this.getClass().getSimpleName();
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -1306,12 +1325,14 @@ public final class StringTools {
 	public static final Transformer<String, String> XML_DOUBLE_QUOTED_ATTRIBUTE_VALUE_CONTENT_TRANSFORMER = new XmlDoubleQuotedAttributeValueContentTransformer();
 
 	/* CU private */ static class XmlDoubleQuotedAttributeValueContentTransformer
-		extends TransformerAdapter<String, String>
-		implements Serializable
+		implements Transformer<String, String>, Serializable
 	{
-		@Override
 		public String transform(String string) {
 			return convertToDoubleQuotedXmlAttributeValueContent(string);
+		}
+		@Override
+		public String toString() {
+			return this.getClass().getSimpleName();
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -1342,12 +1363,14 @@ public final class StringTools {
 	public static final Transformer<String, String> SINGLE_QUOTED_XML_ATTRIBUTE_VALUE_TRANSFORMER = new SingleQuotedXmlAttributeValueTransformer();
 
 	/* CU private */ static class SingleQuotedXmlAttributeValueTransformer
-		extends TransformerAdapter<String, String>
-		implements Serializable
+		implements Transformer<String, String>, Serializable
 	{
-		@Override
 		public String transform(String string) {
 			return convertToSingleQuotedXmlAttributeValue(string);
+		}
+		@Override
+		public String toString() {
+			return this.getClass().getSimpleName();
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -1378,12 +1401,14 @@ public final class StringTools {
 	public static final Transformer<String, String> XML_SINGLE_QUOTED_ATTRIBUTE_VALUE_CONTENT_TRANSFORMER = new XmlSingleQuotedAttributeValueContentTransformer();
 
 	/* CU private */ static class XmlSingleQuotedAttributeValueContentTransformer
-		extends TransformerAdapter<String, String>
-		implements Serializable
+		implements Transformer<String, String>, Serializable
 	{
-		@Override
 		public String transform(String string) {
 			return convertToSingleQuotedXmlAttributeValueContent(string);
+		}
+		@Override
+		public String toString() {
+			return this.getClass().getSimpleName();
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -1413,12 +1438,14 @@ public final class StringTools {
 	public static final Transformer<String, String> XML_ELEMENT_TEXT_TRANSFORMER = new XmlElementTextTransformer();
 
 	/* CU private */ static class XmlElementTextTransformer
-		extends TransformerAdapter<String, String>
-		implements Serializable
+		implements Transformer<String, String>, Serializable
 	{
-		@Override
 		public String transform(String string) {
 			return convertToXmlElementText(string);
+		}
+		@Override
+		public String toString() {
+			return this.getClass().getSimpleName();
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -1448,12 +1475,14 @@ public final class StringTools {
 	public static final Transformer<String, String> XML_ELEMENT_CDATA_TRANSFORMER = new XmlElementCDATATransformer();
 
 	/* CU private */ static class XmlElementCDATATransformer
-		extends TransformerAdapter<String, String>
-		implements Serializable
+		implements Transformer<String, String>, Serializable
 	{
-		@Override
 		public String transform(String string) {
 			return convertToXmlElementCDATA(string);
+		}
+		@Override
+		public String toString() {
+			return this.getClass().getSimpleName();
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -1484,12 +1513,14 @@ public final class StringTools {
 	public static final Transformer<String, String> XML_ELEMENT_CDATA_CONTENT_TRANSFORMER = new XmlElementCDATAContentTransformer();
 
 	/* CU private */ static class XmlElementCDATAContentTransformer
-		extends TransformerAdapter<String, String>
-		implements Serializable
+		implements Transformer<String, String>, Serializable
 	{
-		@Override
 		public String transform(String string) {
 			return convertToXmlElementCDATAContent(string);
+		}
+		@Override
+		public String toString() {
+			return this.getClass().getSimpleName();
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {

@@ -32,9 +32,8 @@ import org.eclipse.jpt.common.utility.internal.model.value.CompositeBooleanPrope
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.NonNullBooleanTransformer;
-import org.eclipse.jpt.common.utility.internal.transformer.NotNullObjectTransformer;
-import org.eclipse.jpt.common.utility.internal.transformer.StringObjectTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.BooleanTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
@@ -316,7 +315,7 @@ public abstract class Pane<T extends Model> {
 	 * {@link Boolean#FALSE} if the value <em>is</em> <code>null</code>.
 	 */
 	protected static PropertyValueModel<Boolean> buildNotNullModel(PropertyValueModel<?> valueModel) {
-		return new TransformationPropertyValueModel<Object, Boolean>(valueModel, NotNullObjectTransformer.instance());
+		return new TransformationPropertyValueModel<Object, Boolean>(valueModel, TransformerTools.isNotNullTransformer());
 	}
 
 	/**
@@ -354,7 +353,7 @@ public abstract class Pane<T extends Model> {
 	 * (which is typical with aspect adapters etc.).
 	 */
 	private static PropertyValueModel<Boolean> buildNonNullModel(PropertyValueModel<Boolean> booleanModel) {
-		return new TransformationPropertyValueModel<Boolean, Boolean>(booleanModel, NonNullBooleanTransformer.FALSE);
+		return new TransformationPropertyValueModel<Boolean, Boolean>(booleanModel, BooleanTransformer.FALSE);
 	}
 
 
@@ -835,7 +834,7 @@ public abstract class Pane<T extends Model> {
 			container, 
 			listHolder, 
 			selectedItemHolder, 
-			StringObjectTransformer.<V>instance(),
+			TransformerTools.<V>objectToStringTransformer(),
 			(String) null);
 	}
 	

@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 @SuppressWarnings("nls")
@@ -281,20 +282,30 @@ public class ClassToolsTests
 	}
 
 	private Iterable<String> fieldNames(Iterable<Field> fields) {
-		Transformer<Field, String> transformer = new Transformer<Field, String>() {
-			public String transform(Field field) {
-				return field.getName();
-			}
-		};
-		return new TransformationIterable<Field, String>(fields, transformer);
+		return new TransformationIterable<Field, String>(fields, FIELD_NAME_TRANSFORMER);
 	}
 
 	private Iterable<String> methodNames(Iterable<Method> methods) {
-		Transformer<Method, String> transformer = new Transformer<Method, String>() {
-			public String transform(Method method) {
-				return method.getName();
-			}
-		};
-		return new TransformationIterable<Method, String>(methods, transformer);
+		return new TransformationIterable<Method, String>(methods, METHOD_NAME_TRANSFORMER);
+	}
+
+	private static final Transformer<Field, String> FIELD_NAME_TRANSFORMER = new FieldNameTransformer();
+	static class FieldNameTransformer
+		extends TransformerAdapter<Field, String>
+	{
+		@Override
+		public String transform(Field field) {
+			return field.getName();
+		}
+	}
+
+	private static final Transformer<Method, String> METHOD_NAME_TRANSFORMER = new MethodNameTransformer();
+	static class MethodNameTransformer
+		extends TransformerAdapter<Method, String>
+	{
+		@Override
+		public String transform(Method method) {
+			return method.getName();
+		}
 	}
 }

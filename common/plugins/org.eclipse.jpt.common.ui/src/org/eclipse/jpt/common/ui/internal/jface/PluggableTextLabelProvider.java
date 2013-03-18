@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.ui.internal.jface;
 import org.eclipse.jface.viewers.BaseLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.transformer.StringObjectTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.swt.graphics.Image;
 
@@ -40,7 +40,7 @@ public class PluggableTextLabelProvider<E>
 	 * @see org.eclipse.jface.viewers.LabelProvider LabelProvider
 	 */
 	public PluggableTextLabelProvider() {
-		this(StringObjectTransformer.<E>instance());
+		this(TransformerTools.<E>objectToStringTransformer());
 	}
 
 	/**

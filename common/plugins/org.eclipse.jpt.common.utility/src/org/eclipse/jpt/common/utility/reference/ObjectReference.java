@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.reference;
 
-import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 
@@ -33,11 +33,14 @@ public interface ObjectReference<V> {
 	@SuppressWarnings("rawtypes")
 	Transformer TRANSFORMER = new ValueTransformer();
 	class ValueTransformer<V>
-		extends TransformerAdapter<ObjectReference<V>, V>
+		implements Transformer<ObjectReference<V>, V>
 	{
-		@Override
 		public V transform(ObjectReference<V> ref) {
 			return ref.getValue();
+		}
+		@Override
+		public String toString() {
+			return ObjectTools.singletonToString(this);
 		}
 	}
 

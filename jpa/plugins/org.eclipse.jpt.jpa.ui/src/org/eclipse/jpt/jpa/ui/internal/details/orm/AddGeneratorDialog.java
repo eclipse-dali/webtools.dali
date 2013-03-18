@@ -139,18 +139,22 @@ public class AddGeneratorDialog
 		}
 		
 		private Transformer<String, String> buildStringConverter() {
-			return new TransformerAdapter<String, String>() {
-				@Override
-				public String transform(String value) {
-					if (value == TABLE_GENERATOR) {
-						return JptJpaUiDetailsOrmMessages.ADD_GENERATOR_DIALOG_TABLE_GENERATOR;
-					}
-					if (value == SEQUENCE_GENERATOR) {
-						return JptJpaUiDetailsOrmMessages.ADD_GENERATOR_DIALOG_SEQUENCE_GENERATOR;
-					}
-					return value;
+			return new GeneratorTypeLabelTransformer();
+		}
+
+		static class GeneratorTypeLabelTransformer
+			extends TransformerAdapter<String, String>
+		{
+			@Override
+			public String transform(String value) {
+				if (value == TABLE_GENERATOR) {
+					return JptJpaUiDetailsOrmMessages.ADD_GENERATOR_DIALOG_TABLE_GENERATOR;
 				}
-			};
+				if (value == SEQUENCE_GENERATOR) {
+					return JptJpaUiDetailsOrmMessages.ADD_GENERATOR_DIALOG_SEQUENCE_GENERATOR;
+				}
+				return value;
+			}
 		}
 		
 		private ModifiablePropertyValueModel<String> buildNameHolder() {

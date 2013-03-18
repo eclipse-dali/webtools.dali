@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.model.value;
 
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -137,10 +138,11 @@ public class TransformationModifiablePropertyValueModel<V1, V2>
 	 * by a subclass implementation of {@link #reverseTransform_(Object)}.
 	 */
 	protected class DefaultReverseTransformer
-		implements Transformer<V2, V1>
+		extends AbstractTransformer<V2, V1>
 	{
-		public V1 transform(V2 v) {
-			return (v == null) ? null : TransformationModifiablePropertyValueModel.this.reverseTransform_(v);
+		@Override
+		public V1 transform_(V2 v) {
+			return TransformationModifiablePropertyValueModel.this.reverseTransform_(v);
 		}
 	}
 }

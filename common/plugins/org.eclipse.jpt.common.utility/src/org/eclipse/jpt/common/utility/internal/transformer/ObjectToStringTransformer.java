@@ -10,39 +10,34 @@
 package org.eclipse.jpt.common.utility.internal.transformer;
 
 import java.io.Serializable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * Transform an object into the string returned by its {@link Object#toString()}
- * method. A <code>null</code> object is transformed into <code>null</code>.
+ * method. A <code>null</code> is transformed into a client-configured
+ * non-<code>null</code> string.
  * 
  * @param <I> input: the type of the object passed to the transformer
  */
-public final class StringObjectTransformer<I>
-	extends AbstractTransformer<I, String>
-	implements Serializable
+public class ObjectToStringTransformer<I>
+	implements Transformer<I, String>, Serializable
 {
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static final Transformer<?, String> INSTANCE = new StringObjectTransformer();
+	private final String nullString;
 
-	@SuppressWarnings("unchecked")
-	public static <R> Transformer<R, String> instance() {
-		return (Transformer<R, String>) INSTANCE;
+	private static final long serialVersionUID = 1L;
+
+	public ObjectToStringTransformer(String nullString) {
+		super();
+		this.nullString = nullString;
 	}
 
-	// ensure single instance
-	private StringObjectTransformer() {
-		super();
+	public String transform(I input) {
+		return (input == null) ? this.nullString : input.toString();
 	}
 
 	@Override
-	protected String transform_(I o) {
-		return o.toString();
-	}
-
-	private static final long serialVersionUID = 1L;
-	private Object readResolve() {
-		// replace this object with the singleton
-		return INSTANCE;
+	public String toString() {
+		return ObjectTools.toString(this, this.nullString);
 	}
 }

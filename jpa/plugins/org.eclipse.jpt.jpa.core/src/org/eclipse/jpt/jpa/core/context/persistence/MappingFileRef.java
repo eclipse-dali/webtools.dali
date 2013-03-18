@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.persistence;
 
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
@@ -85,10 +85,10 @@ public interface MappingFileRef
 
 	Transformer<MappingFileRef, MappingFile> MAPPING_FILE_TRANSFORMER = new MappingFileTransformer();
 	class MappingFileTransformer
-		extends AbstractTransformer<MappingFileRef, MappingFile>
+		extends TransformerAdapter<MappingFileRef, MappingFile>
 	{
 		@Override
-		protected MappingFile transform_(MappingFileRef ref) {
+		public MappingFile transform(MappingFileRef ref) {
 			return ref.getMappingFile();
 		}
 	}
@@ -138,10 +138,10 @@ public interface MappingFileRef
 
 	Transformer<MappingFileRef, Iterable<Query>> MAPPING_FILE_QUERIES_TRANSFORMER = new MappingFileQueriesTransformer();
 	class MappingFileQueriesTransformer
-		extends AbstractTransformer<MappingFileRef, Iterable<Query>>
+		extends TransformerAdapter<MappingFileRef, Iterable<Query>>
 	{
 		@Override
-		protected Iterable<Query> transform_(MappingFileRef ref) {
+		public Iterable<Query> transform(MappingFileRef ref) {
 			return ref.getMappingFileQueries();
 		}
 	}
@@ -153,10 +153,10 @@ public interface MappingFileRef
 
 	Transformer<MappingFileRef, Iterable<Generator>> MAPPING_FILE_GENERATORS_TRANSFORMER = new MappingFileGeneratorsTransformer();
 	class MappingFileGeneratorsTransformer
-		extends AbstractTransformer<MappingFileRef, Iterable<Generator>>
+		extends TransformerAdapter<MappingFileRef, Iterable<Generator>>
 	{
 		@Override
-		protected Iterable<Generator> transform_(MappingFileRef ref) {
+		public Iterable<Generator> transform(MappingFileRef ref) {
 			return ref.getMappingFileGenerators();
 		}
 	}

@@ -250,7 +250,9 @@ public class VirtualJavaPersistentType
 	}
 
 	public Iterable<PersistentType> getAncestors() {
-		return this.buildInheritanceHierarchy(this.superPersistentType);
+		return (this.superPersistentType == null) ?
+				IterableTools.<PersistentType>emptyIterable() :
+				this.buildInheritanceHierarchy(this.superPersistentType);
 	}
 
 	protected Iterable<PersistentType> buildInheritanceHierarchy(PersistentType start) {

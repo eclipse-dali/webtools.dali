@@ -26,7 +26,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringMatcher;
-import org.eclipse.jpt.common.utility.internal.transformer.StringObjectTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
@@ -114,7 +114,7 @@ public class FilteringListPanel<T>
 	 * the objects).
 	 */
 	public FilteringListPanel(T[] completeList, T initialSelection) {
-		this(completeList, initialSelection, StringObjectTransformer.<T>instance());
+		this(completeList, initialSelection, TransformerTools.<T>objectToStringTransformer());
 	}
 
 	/**

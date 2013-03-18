@@ -126,10 +126,10 @@ public class ASTTools {
 
 	private static final Transformer<ITypeBinding, String> TYPE_BINDING_QUALIFIED_NAME_TRANSFORMER = new TypeBindingQualifiedNameTransformer();
 	/* CU private */ static class TypeBindingQualifiedNameTransformer
-		extends AbstractTransformer<ITypeBinding, String>
+		extends TransformerAdapter<ITypeBinding, String>
 	{
 		@Override
-		protected String transform_(ITypeBinding typeBinding) {
+		public String transform(ITypeBinding typeBinding) {
 			return typeBinding.getQualifiedName();
 		}
 	}
