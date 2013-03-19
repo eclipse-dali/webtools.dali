@@ -37,6 +37,7 @@ import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
+import org.eclipse.graphiti.ui.editor.DiagramBehavior;
 import org.eclipse.graphiti.ui.editor.DiagramEditor;
 import org.eclipse.graphiti.ui.internal.parts.ConnectionEditPart;
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -71,6 +72,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.ui.JPADiagramEditorInput;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.ModelIntegrationUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPADiagramBehavior;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorDiagramTypeProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.EntitiesCoordinatesXML;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.GraphicsUpdater;
@@ -137,6 +139,11 @@ public class JPADiagramEditor extends DiagramEditor implements JpaEditorManager{
 			return null;
 		
 		return super.getAdapter(type);
+	}
+	
+	@Override
+	protected DiagramBehavior createDiagramBehavior() {
+		return new JPADiagramBehavior(this);
 	}
 
 	public void saveWithoutEntities(IProgressMonitor monitor) {
@@ -237,13 +244,6 @@ public class JPADiagramEditor extends DiagramEditor implements JpaEditorManager{
 			}
 		}
 	}
-
-//	@Override
-//	protected ContextMenuProvider createContextMenuProvider() {
-//		return new JPAEditorContextMenuProvider(getGraphicalViewer(),
-//				getActionRegistry(),
-//				((JPADiagramBehavior)getDiagramTypeProvider().getDiagramBehavior()).getConfigurationProvider());
-//	}
 
 	private void initWithFileEditorInput(final IEditorSite site,
 			final IFile entityFile) {
