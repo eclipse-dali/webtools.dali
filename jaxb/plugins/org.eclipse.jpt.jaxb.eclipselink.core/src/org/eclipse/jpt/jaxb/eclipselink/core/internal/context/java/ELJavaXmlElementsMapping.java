@@ -184,10 +184,8 @@ public class ELJavaXmlElementsMapping
 	@Override
 	protected void validateDuplicateQName(XmlElement xmlElement, Bag<QName> xmlElementQNames, 
 				List<IMessage> messages) {
-		
-		if (getXmlPathsSize() == 0) { 
-			super.validateDuplicateQName(xmlElement, xmlElementQNames, messages);
-		}
+		// no-op - MOXy allows duplicate xml element names, and uses the first
+		// xml element to determine what type is instantiated on reading
 	}
 	
 	protected TextRange getXmlPathsTextRange() {
