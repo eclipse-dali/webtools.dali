@@ -157,7 +157,8 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 		}
 		
 		String builtInType = getJaxbProject().getPlatform().getDefinition().getSchemaTypeMapping(dataType);
-		if (builtInType != null) {
+		// only return built in schema type if this mapping is actually connected to a schema
+		if (builtInType != null && getJaxbPackage().getXsdSchema() != null) {
 			return XsdUtil.getSchemaForSchema().getTypeDefinition(builtInType);
 		}
 		
