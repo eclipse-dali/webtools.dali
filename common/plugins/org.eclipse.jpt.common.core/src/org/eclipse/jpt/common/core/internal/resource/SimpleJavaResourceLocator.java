@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.common.core.internal.resource;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -16,6 +18,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
@@ -55,16 +58,27 @@ public class SimpleJavaResourceLocator
 		if (javaProject.isOnClasspath(container)) {
 			return true;
 		}
-
-		IPath outputPath = javaProject.getOutputLocation();
+		
+		Set<IPath> outputPaths = new LinkedHashSet<IPath>();
+		outputPaths.add(javaProject.getOutputLocation());
+		IClasspathEntry[] entries = javaProject.getRawClasspath();
+		for (int i = 0; i < entries.length; i++) {
+			IClasspathEntry entry = entries[i];
+			if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE && entry.getOutputLocation() != null) {
+				outputPaths.add(entry.getOutputLocation());
+			}
+		}
 		IPath containerPath = container.getFullPath();
-		if (container.equals(project) && outputPath.isPrefixOf(containerPath)) {
-			return true;
+		for (IPath outputPath : outputPaths) {
+			if (container.equals(project)
+					&& outputPath.isPrefixOf(containerPath)) {
+				return true;
+			}
+			if (outputPath.isPrefixOf(containerPath)) {
+				return false;
+			}
 		}
-
-		if (outputPath.isPrefixOf(containerPath)) {
-			return false;
-		}
+		
 		for (Object resource : javaProject.getNonJavaResources()) {
 			if (resource instanceof IFolder) {
 				IFolder folder = (IFolder) resource;
