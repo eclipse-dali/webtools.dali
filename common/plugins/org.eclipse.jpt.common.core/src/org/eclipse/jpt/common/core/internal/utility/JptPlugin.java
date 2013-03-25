@@ -216,7 +216,9 @@ public abstract class JptPlugin
 	protected void removePersistentProperties_(IResource resource) throws CoreException {
 		Map<QualifiedName, String> props = resource.getPersistentProperties();
 		for (QualifiedName key : props.keySet()) {
-			resource.setPersistentProperty(key, null);
+			if (ObjectTools.equals(key.getQualifier(), getPersistentPropertyPluginID())) {
+				resource.setPersistentProperty(key, null);
+			}
 		}
 	}
 
