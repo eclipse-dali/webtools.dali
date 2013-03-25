@@ -86,6 +86,9 @@ public class PluginResourceLocator
 
 	protected IBundleProjectService getBundleProjectService() {
 		BundleContext context = JptCommonCorePlugin.instance().getBundle().getBundleContext();
+		if (context == null) {
+			return null;
+		}
 		ServiceReference<IBundleProjectService> reference = context.getServiceReference(IBundleProjectService.class);
 		if (reference == null) {
 			return null;

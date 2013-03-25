@@ -1488,7 +1488,11 @@ public abstract class JptPlugin
 		if (b == null) {
 			return null;
 		}
-		ServiceTracker<DebugOptions, DebugOptions> tracker = new ServiceTracker<DebugOptions, DebugOptions>(b.getBundleContext(), DebugOptions.class, null);
+		BundleContext bc = b.getBundleContext();
+		if (bc == null) {
+			return null;
+		}
+		ServiceTracker<DebugOptions, DebugOptions> tracker = new ServiceTracker<DebugOptions, DebugOptions>(bc, DebugOptions.class, null);
 		tracker.open();
 		return tracker;
 	}
