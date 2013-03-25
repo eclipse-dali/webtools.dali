@@ -106,7 +106,7 @@ public class ProjectTools {
 	 */
 	public static boolean hasNature(IProject project, String natureID) {
 		try {
-			return project.hasNature(natureID);
+			return project.exists() && project.isOpen() && project.hasNature(natureID);
 		} catch (CoreException ex) {
 			// problem reading the project - assume nature does not exist and return 'false'
 			JptCommonCorePlugin.instance().logError(ex);
