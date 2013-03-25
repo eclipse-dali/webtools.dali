@@ -20,7 +20,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.Vector;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.TypeTools;
 
 
 public class JDTToolsTests
@@ -35,31 +35,31 @@ public class JDTToolsTests
 		IJavaProject jProj = getJavaProject().getJavaProject();
 		
 		// same type
-		assertTrue(JDTTools.typeIsSubType(jProj, ArrayList.class.getName(), ArrayList.class.getName()));
-		assertTrue(JDTTools.typeIsSubType(jProj, List.class.getName(), List.class.getName()));
+		assertTrue(TypeTools.isSubType(ArrayList.class.getName(), ArrayList.class.getName(), jProj));
+		assertTrue(TypeTools.isSubType(List.class.getName(), List.class.getName(), jProj));
 		
 		// concrete type is subtype of interface
-		assertTrue(JDTTools.typeIsSubType(jProj, ArrayList.class.getName(), List.class.getName()));
-		assertTrue(JDTTools.typeIsSubType(jProj, TreeSet.class.getName(), Iterable.class.getName()));
+		assertTrue(TypeTools.isSubType(ArrayList.class.getName(), List.class.getName(), jProj));
+		assertTrue(TypeTools.isSubType(TreeSet.class.getName(), Iterable.class.getName(), jProj));
 		
 		// concrete type is not subtype of interface
-		assertFalse(JDTTools.typeIsSubType(jProj, ArrayList.class.getName(), Map.class.getName()));
-		assertFalse(JDTTools.typeIsSubType(jProj, TreeSet.class.getName(), Map.class.getName()));
+		assertFalse(TypeTools.isSubType(ArrayList.class.getName(), Map.class.getName(), jProj));
+		assertFalse(TypeTools.isSubType(TreeSet.class.getName(), Map.class.getName(), jProj));
 		
 		// interface is subtype of interface
-		assertTrue(JDTTools.typeIsSubType(jProj, List.class.getName(), Collection.class.getName()));
-		assertTrue(JDTTools.typeIsSubType(jProj, SortedSet.class.getName(), Iterable.class.getName()));
+		assertTrue(TypeTools.isSubType(List.class.getName(), Collection.class.getName(), jProj));
+		assertTrue(TypeTools.isSubType(SortedSet.class.getName(), Iterable.class.getName(), jProj));
 		
 		// interface is not subtype of interface
-		assertFalse(JDTTools.typeIsSubType(jProj, List.class.getName(), Map.class.getName()));
-		assertFalse(JDTTools.typeIsSubType(jProj, SortedSet.class.getName(), Map.class.getName()));
+		assertFalse(TypeTools.isSubType(List.class.getName(), Map.class.getName(), jProj));
+		assertFalse(TypeTools.isSubType(SortedSet.class.getName(), Map.class.getName(), jProj));
 		
 		// concrete type is subtype of concrete type
-		assertTrue(JDTTools.typeIsSubType(jProj, ArrayList.class.getName(), AbstractList.class.getName()));
-		assertTrue(JDTTools.typeIsSubType(jProj, LinkedList.class.getName(), AbstractCollection.class.getName()));
+		assertTrue(TypeTools.isSubType(ArrayList.class.getName(), AbstractList.class.getName(), jProj));
+		assertTrue(TypeTools.isSubType(LinkedList.class.getName(), AbstractCollection.class.getName(), jProj));
 		
 		// concrete type is not subtype of concrete type
-		assertFalse(JDTTools.typeIsSubType(jProj, ArrayList.class.getName(), Vector.class.getName()));
-		assertFalse(JDTTools.typeIsSubType(jProj, LinkedList.class.getName(), Vector.class.getName()));
+		assertFalse(TypeTools.isSubType(ArrayList.class.getName(), Vector.class.getName(), jProj));
+		assertFalse(TypeTools.isSubType(LinkedList.class.getName(), Vector.class.getName(), jProj));
 	}
 }

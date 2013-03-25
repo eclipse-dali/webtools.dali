@@ -17,7 +17,7 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jpt.common.core.AnnotationProvider;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.JavaElementTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragment;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
@@ -98,7 +98,7 @@ public final class BinaryPackageFragmentRoot
 	// ********** misc **********
 
 	private IJavaElement[] getJDTChildren() {
-		return JDTTools.getChildren(this.packageFragmentRoot);
+		return JavaElementTools.getChildren(this.packageFragmentRoot);
 	}
 
 }

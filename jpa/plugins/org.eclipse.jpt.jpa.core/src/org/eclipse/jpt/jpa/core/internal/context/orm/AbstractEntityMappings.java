@@ -23,7 +23,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.resource.xml.EFactoryTools;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
@@ -35,6 +35,7 @@ import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.JpaFile;
@@ -544,15 +545,19 @@ public abstract class AbstractEntityMappings
 	public Iterable<OrmPersistentType> getPersistentTypes() {
 		return IterableTools.downCast(IterableTools.filter(
 										this.getManagedTypes(), 
-										ORM_PERSISTENT_TYPE_FILTER));
+										TYPE_IS_ORM_PERSISTENT_TYPE));
 	}
 		
-	protected static final Predicate<OrmManagedType> ORM_PERSISTENT_TYPE_FILTER =
-		new Predicate<OrmManagedType>() {
-			public boolean evaluate(OrmManagedType mt) {
-				return  mt.getType() == OrmPersistentType.class;
-			}
-		};
+	protected static final Predicate<OrmManagedType> TYPE_IS_ORM_PERSISTENT_TYPE = new TypeIsOrmPersistentType();
+
+	public static class TypeIsOrmPersistentType
+		extends PredicateAdapter<OrmManagedType>
+	{
+		@Override
+		public boolean evaluate(OrmManagedType mt) {
+			return  mt.getType() == OrmPersistentType.class;
+		}
+	}
 
 	public OrmPersistentType getPersistentType(String typeName) {
 		ManagedType mt = this.getManagedType(typeName);
@@ -654,7 +659,7 @@ public abstract class AbstractEntityMappings
 		new TypeLookupAdapter() {
 			public Object resolveType(EntityMappings entityMappings, String className) {
 				IJavaProject javaProject = entityMappings.getJpaProject().getJavaProject();
-				return JDTTools.findType(javaProject, className);
+				return JavaProjectTools.findType(javaProject, className);
 			}
 		};
 
@@ -1110,15 +1115,19 @@ public abstract class AbstractEntityMappings
 	public Iterable<OrmConverterType2_1> getConverterTypes() {
 		return IterableTools.downCast(IterableTools.filter(
 										this.getManagedTypes(), 
-										ORM_CONVERTER_TYPE_FILTER));
+										TYPE_IS_ORM_CONVERTER_TYPE));
 	}
 
-	protected static final Predicate<OrmManagedType> ORM_CONVERTER_TYPE_FILTER =
-		new Predicate<OrmManagedType>() {
-			public boolean evaluate(OrmManagedType mt) {
-				return  mt.getType() == OrmConverterType2_1.class;
-			}
-		};
+	protected static final Predicate<OrmManagedType> TYPE_IS_ORM_CONVERTER_TYPE = new TypeIsOrmConverterType();
+
+	public static class TypeIsOrmConverterType
+		extends PredicateAdapter<OrmManagedType>
+	{
+		@Override
+		public boolean evaluate(OrmManagedType mt) {
+			return  mt.getType() == OrmConverterType2_1.class;
+		}
+	}
 
 	public OrmConverterType2_1 getConverterType(String typeName) {
 		ManagedType mt = this.getManagedType(typeName);

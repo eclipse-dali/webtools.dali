@@ -9,7 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.resource.java;
 
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
@@ -56,18 +58,63 @@ public interface JavaResourceMember
 	 */
 	boolean isFinal();
 		String FINAL_PROPERTY = "final"; //$NON-NLS-1$
+	Predicate<JavaResourceMember> IS_FINAL = new IsFinal();
+	class IsFinal
+		extends PredicateAdapter<JavaResourceMember>
+	{
+		@Override
+		public boolean evaluate(JavaResourceMember member) {
+			return member.isFinal();
+		}
+	}
 
 	boolean isTransient();
 		String TRANSIENT_PROPERTY = "transient"; //$NON-NLS-1$
+	Predicate<JavaResourceMember> IS_TRANSIENT = new IsTransient();
+	class IsTransient
+		extends PredicateAdapter<JavaResourceMember>
+	{
+		@Override
+		public boolean evaluate(JavaResourceMember member) {
+			return member.isTransient();
+		}
+	}
 
 	boolean isPublic();
 		String PUBLIC_PROPERTY = "public"; //$NON-NLS-1$
+	Predicate<JavaResourceMember> IS_PUBLIC = new IsPublic();
+	class IsPublic
+		extends PredicateAdapter<JavaResourceMember>
+	{
+		@Override
+		public boolean evaluate(JavaResourceMember member) {
+			return member.isPublic();
+		}
+	}
 
 	boolean isStatic();
 		String STATIC_PROPERTY = "static"; //$NON-NLS-1$
+	Predicate<JavaResourceMember> IS_STATIC = new IsStatic();
+	class IsStatic
+		extends PredicateAdapter<JavaResourceMember>
+	{
+		@Override
+		public boolean evaluate(JavaResourceMember member) {
+			return member.isStatic();
+		}
+	}
 
 	boolean isProtected();
 		String PROTECTED_PROPERTY = "protected"; //$NON-NLS-1$
+	Predicate<JavaResourceMember> IS_PROTECTED = new IsProtected();
+	class IsProtected
+		extends PredicateAdapter<JavaResourceMember>
+	{
+		@Override
+		public boolean evaluate(JavaResourceMember member) {
+			return member.isProtected();
+		}
+	}
 
 
 	// ********** queries **********

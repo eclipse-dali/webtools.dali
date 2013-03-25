@@ -28,7 +28,7 @@ import org.eclipse.jpt.common.utility.internal.io.FileTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
-import org.eclipse.jpt.common.utility.internal.predicate.TruePredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -544,7 +544,7 @@ public class Classpath
 	 * @see #classNames()
 	 */
 	public Iterable<String> getClassNames() {
-		return this.getClassNames(TruePredicate.<String>instance());
+		return this.getClassNames(PredicateTools.<String>true_());
 	}
 
 	/**
@@ -563,7 +563,7 @@ public class Classpath
 	 * to the specified collection.
 	 */
 	public void addClassNamesTo(Collection<String> classNames) {
-		this.addClassNamesTo(classNames, TruePredicate.<String>instance());
+		this.addClassNamesTo(classNames, PredicateTools.<String>true_());
 	}
 
 	/**
@@ -581,7 +581,7 @@ public class Classpath
 	 * Just a bit more performant than {@link #getClassNames()}.
 	 */
 	public Iterator<String> classNames() {
-		return this.classNames(TruePredicate.<String>instance());
+		return this.classNames(PredicateTools.<String>true_());
 	}
 
 	/**
@@ -761,7 +761,7 @@ public class Classpath
 		 * @see #classNames()
 		 */
 		public Iterable<String> getClassNames() {
-			return this.getClassNames(TruePredicate.<String>instance());
+			return this.getClassNames(PredicateTools.<String>true_());
 		}
 
 		/**
@@ -780,7 +780,7 @@ public class Classpath
 		 * to the specified collection.
 		 */
 		public void addClassNamesTo(Collection<String> classNames) {
-			this.addClassNamesTo(classNames, TruePredicate.<String>instance());
+			this.addClassNamesTo(classNames, PredicateTools.<String>true_());
 		}
 
 		/**
@@ -875,7 +875,7 @@ public class Classpath
 		 * Just a bit more performant than {@link #getClassNames()}.
 		 */
 		public Iterator<String> classNames() {
-			return this.classNames(TruePredicate.<String>instance());
+			return this.classNames(PredicateTools.<String>true_());
 		}
 
 		/**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -87,18 +87,22 @@ public class SimpleMetamodelField
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		for (String modifier : this.modifiers) {
-			sb.append(modifier);
-			sb.append(' ');
+		if (IterableTools.isNotEmpty(this.modifiers)) {
+			for (String modifier : this.modifiers) {
+				sb.append(modifier);
+				sb.append(' ');
+			}
 		}
 		sb.append(this.typeName);
-		sb.append('<');
-		for (String typeArgumentName : this.typeArgumentNames) {
-			sb.append(typeArgumentName);
-			sb.append(", "); //$NON-NLS-1$
+		if (IterableTools.isNotEmpty(this.typeArgumentNames)) {
+			sb.append('<');
+			for (String typeArgumentName : this.typeArgumentNames) {
+				sb.append(typeArgumentName);
+				sb.append(", "); //$NON-NLS-1$
+			}
+			sb.setLength(sb.length() - 2);  // chop off trailing comma
+			sb.append('>');
 		}
-		sb.setLength(sb.length() - 2);
-		sb.append('>');
 		sb.append(' ');
 		sb.append(this.name);
 		return sb.toString();

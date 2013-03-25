@@ -10,26 +10,26 @@
 package org.eclipse.jpt.common.utility.tests.internal.predicate;
 
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.internal.predicate.EqualPredicate;
-import org.eclipse.jpt.common.utility.internal.predicate.NotNullPredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.IsNotNull;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
-public class EqualPredicateTests
+public class EqualsTests
 	extends TestCase
 {
-	private EqualPredicate<Integer> equalPredicate;
+	private Predicate<Integer> equalPredicate;
 
 
-	public EqualPredicateTests(String name) {
+	public EqualsTests(String name) {
 		super(name);
 	}
 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.equalPredicate = PredicateTools.equalPredicate(Integer.valueOf(42));
+		this.equalPredicate = PredicateTools.isEqual(Integer.valueOf(42));
 	}
 
 	@Override
@@ -47,22 +47,10 @@ public class EqualPredicateTests
 		assertFalse(this.equalPredicate.evaluate(24));
 	}
 
-	public void testClone() {
-		EqualPredicate<Integer> equalPredicate2 = this.equalPredicate.clone();
-		assertEquals(this.equalPredicate, equalPredicate2);
-		assertNotSame(this.equalPredicate, equalPredicate2);
-	}
-
 	public void testEquals() {
-		EqualPredicate<Integer> equalPredicate2 = PredicateTools.equalPredicate(new Integer(42));
+		Predicate<Integer> equalPredicate2 = PredicateTools.isEqual(new Integer(42));
 		assertEquals(this.equalPredicate, equalPredicate2);
 		assertEquals(this.equalPredicate.hashCode(), equalPredicate2.hashCode());
-		assertFalse(this.equalPredicate.equals(NotNullPredicate.instance()));
-	}
-
-	public void testSerialization() throws Exception {
-		EqualPredicate<Integer> equalPredicate2 = TestTools.serialize(this.equalPredicate);
-		assertEquals(this.equalPredicate, equalPredicate2);
-		assertNotSame(this.equalPredicate, equalPredicate2);
+		assertFalse(this.equalPredicate.equals(IsNotNull.instance()));
 	}
 }

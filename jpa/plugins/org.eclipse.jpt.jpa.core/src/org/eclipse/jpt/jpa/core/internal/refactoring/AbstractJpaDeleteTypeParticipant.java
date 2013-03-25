@@ -23,7 +23,7 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -233,7 +233,7 @@ public abstract class AbstractJpaDeleteTypeParticipant
 
 	protected Iterable<IType> getTypesOnClasspath(JpaProject jpaProject) {
 		IJavaProject javaProject = jpaProject.getJavaProject();
-		return IterableTools.filter(this.allTypes, new JDTTools.JavaElementIsOnClasspath(javaProject));
+		return IterableTools.filter(this.allTypes, new JavaProjectTools.JavaElementIsOnClasspath(javaProject));
 	}
 
 	protected void addPersistenceXmlDeleteTypeChange(IFile persistenceXmlFile, CompositeChange compositeChange) {

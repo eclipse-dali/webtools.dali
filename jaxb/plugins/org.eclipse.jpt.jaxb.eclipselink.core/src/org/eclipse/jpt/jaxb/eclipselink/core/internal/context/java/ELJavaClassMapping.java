@@ -208,20 +208,10 @@ public class ELJavaClassMapping
 								IterableTools.transform(
 										getAllAttributes(),
 										JaxbPersistentAttribute.MAPPING_TRANSFORMER),
-								XmlNamedNodeMapping.MAPPING_IS_NAMED_NODE_MAPPING)),
-				MAPPING_HAS_KEY);
+								XmlNamedNodeMapping.IS_NAMED_NODE_MAPPING)),
+				ELXmlNamedNodeMapping.HAS_KEY);
 	}
 	
-	protected static final Predicate<ELXmlNamedNodeMapping> MAPPING_HAS_KEY = new MappingHasKey();
-	public static class MappingHasKey
-		extends PredicateAdapter<ELXmlNamedNodeMapping>
-	{
-		@Override
-		public boolean evaluate(ELXmlNamedNodeMapping mapping) {
-			return (mapping.getXmlID() != null) || (mapping.getXmlKey() != null);
-		}
-	}
-
 
 	// ***** content assist *****
 	

@@ -63,7 +63,7 @@ public class GraphIterable<E>
 			throw new NullPointerException();
 		}
 		this.roots = roots;
-		this.transformer = TransformerTools.iterableTransformerWrapper(transformer);
+		this.transformer = TransformerTools.toIterator(transformer);
 	}
 
 	public Iterator<E> iterator() {

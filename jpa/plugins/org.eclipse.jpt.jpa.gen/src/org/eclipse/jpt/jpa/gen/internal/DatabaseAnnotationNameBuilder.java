@@ -56,7 +56,7 @@ public interface DatabaseAnnotationNameBuilder {
 	 * This is called for many-to-one and many-to-many mappings when
 	 * the default join column name and/or referenced column name are/is
 	 * not applicable.
-	 * @see buildJoinColumnAnnotationName(String, ForeignKey)
+	 * @see #buildJoinColumnAnnotationName(String, ForeignKey)
 	 */
 	String buildJoinColumnAnnotationName(Column column);
 

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.core;
 
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -42,17 +42,25 @@ public interface ContentTypeReference {
 		}
 	}
 
-	class ContentIsKindOf
-		extends PredicateAdapter<ContentTypeReference>
+	class ContentTypeIsKindOf
+		extends CriterionPredicate<ContentTypeReference, IContentType>
 	{
-		private final IContentType contentType;
-		public ContentIsKindOf(IContentType contentType) {
-			super();
-			this.contentType = contentType;
+		public ContentTypeIsKindOf(IContentType contentType) {
+			super(contentType);
 		}
-		@Override
 		public boolean evaluate(ContentTypeReference ref) {
-			return ref.getContentType().isKindOf(this.contentType);
+			return ref.getContentType().isKindOf(this.criterion);
+		}
+	}
+
+	class ContentTypeIs
+		extends CriterionPredicate<ContentTypeReference, IContentType>
+	{
+		public ContentTypeIs(IContentType contentType) {
+			super(contentType);
+		}
+		public boolean evaluate(ContentTypeReference ref) {
+			return ref.getContentType().equals(this.criterion);
 		}
 	}
 }

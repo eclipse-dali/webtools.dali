@@ -119,19 +119,10 @@ public class GenericJavaXmlRegistry
 	{
 		@Override
 		public boolean evaluate(JavaResourceMethod method) {
-			return methodIsElementFactoryMethod(method);
+			return method.getAnnotation(JAXB.XML_ELEMENT_DECL) != null;
 		}
 	}
 
-	// Return methods with XmlElementDecl annotation
-	protected static boolean methodIsElementFactoryMethod(JavaResourceMethod method) {
-		return methodHasXmlElementDeclAnnotation(method);
-	}
-	
-	protected static boolean methodHasXmlElementDeclAnnotation(JavaResourceMethod method) {
-		return method.getAnnotation(JAXB.XML_ELEMENT_DECL) != null;
-	}
-	
 	protected static boolean methodReturnTypeIsJAXBElement(JavaResourceMethod method) {
 		return method.getTypeBinding().isSubTypeOf(JAXB.XML_ELEMENT);
 	}

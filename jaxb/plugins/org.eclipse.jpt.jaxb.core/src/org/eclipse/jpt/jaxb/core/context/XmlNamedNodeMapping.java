@@ -34,6 +34,16 @@ public interface XmlNamedNodeMapping
 	String XML_ID_PROPERTY = "xmlID"; //$NON-NLS-1$
 	
 	XmlID getXmlID();
+	Predicate<XmlNamedNodeMapping> HAS_XML_ID = new HasXmlID();
+	class HasXmlID
+		extends PredicateAdapter<XmlNamedNodeMapping>
+	{
+		@Override
+		public boolean evaluate(XmlNamedNodeMapping mapping) {
+			return mapping.getXmlID() != null;
+		}
+	}
+
 	
 	XmlID addXmlID();
 	
@@ -66,8 +76,8 @@ public interface XmlNamedNodeMapping
 	
 	XsdFeature getXsdFeature();
 
-	Predicate<JaxbAttributeMapping> MAPPING_IS_NAMED_NODE_MAPPING = new MappingIsNamedNodeMapping();
-	class MappingIsNamedNodeMapping
+	Predicate<JaxbAttributeMapping> IS_NAMED_NODE_MAPPING = new IsNamedNodeMapping();
+	class IsNamedNodeMapping
 		extends PredicateAdapter<JaxbAttributeMapping>
 	{
 		@Override

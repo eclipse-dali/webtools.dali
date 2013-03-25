@@ -14,7 +14,6 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.ElementPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -102,23 +101,11 @@ public class ProjectAdapterFactory
 		implements JpaProjectModel
 	{
 		JpaProjectModelAdapter(CollectionValueModel<JpaProject> jpaProjectsModel, IProject project) {
-			super(jpaProjectsModel, new Predicate(project));
+			super(jpaProjectsModel, new JpaProject.ProjectEquals(project));
 		}
 
 		public IProject getProject() {
-			return ((Predicate) this.predicate).getCriterion();
-		}
-
-		/* class private */ static class Predicate
-			extends CriterionPredicate<JpaProject, IProject>
-		{
-			private static final long serialVersionUID = 1L;
-			Predicate(IProject project) {
-				super(project);
-			}
-			public boolean evaluate(JpaProject jpaProject) {
-				return jpaProject.getProject().equals(this.criterion);
-			}
+			return ((JpaProject.ProjectEquals) this.predicate).getCriterion();
 		}
 	}
 

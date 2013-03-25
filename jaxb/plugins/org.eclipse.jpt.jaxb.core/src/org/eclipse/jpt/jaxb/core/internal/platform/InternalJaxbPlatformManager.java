@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.core.internal.utility.ConfigurationElementTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
@@ -349,20 +349,17 @@ public class InternalJaxbPlatformManager
 	}
 
 	private Predicate<JaxbPlatformConfig> buildInternalJaxbPlatformConfigFilter() {
-		return new InternalJaxbPlatformConfigFilter(this.getPluginID());
+		return new FactoryClassNameStartsWith(this.getPluginID());
 	}
 
-	/* CU private */ static class InternalJaxbPlatformConfigFilter
-		extends PredicateAdapter<JaxbPlatformConfig>
+	/* CU private */ static class FactoryClassNameStartsWith
+		extends CriterionPredicate<JaxbPlatformConfig, String>
 	{
-		private final String prefix;
-		InternalJaxbPlatformConfigFilter(String prefix) {
-			super();
-			this.prefix = prefix;
+		FactoryClassNameStartsWith(String prefix) {
+			super(prefix);
 		}
-		@Override
 		public boolean evaluate(JaxbPlatformConfig config) {
-			return config.getFactoryClassName().startsWith(this.prefix);
+			return config.getFactoryClassName().startsWith(this.criterion);
 		}
 	}
 

@@ -1911,14 +1911,12 @@ public final class StringBuilderTools {
 	 */
 	public static void append(StringBuilder sb, Object[] array) {
 		sb.append('[');
-		int max = array.length - 1;
-		if (max > -1) {
-			// stop one short of the end of the array
-			for (int i = 0; i < max; i++) {
-				sb.append(array[i]);
+		if (array.length > 0) {
+			for (Object element : array) {
+				sb.append(element);
 				sb.append(", "); //$NON-NLS-1$
 			}
-			sb.append(array[max]);
+			sb.setLength(sb.length() - 2);  // strip off extra comma
 		}
 		sb.append(']');
 	}

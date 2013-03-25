@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -336,7 +336,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 			return;
 		}
 
-		IType targetEntityJdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedTargetEntity());
+		IType targetEntityJdtType = JavaProjectTools.findType(this.getJavaProject(), this.getFullyQualifiedTargetEntity());
 		if (targetEntityJdtType == null) {
 			//java compiler will handle this case
 			return;

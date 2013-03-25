@@ -9,9 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.predicate;
 
-import java.io.Serializable;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.Set;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 
@@ -19,19 +18,21 @@ import org.eclipse.jpt.common.utility.predicate.Predicate;
  * This predicate evaluates to <code>true</code> if the variable (or its
  * {@link Object#equals(Object) equivalent}) has <em>not</em>
  * previously been evaluated by the predicate.
+ * <p>
+ * <strong>NB:</strong> Maybe it's obvious, but this predicate's behavior
+ * will change over time as variables are evaluated.
  * 
  * @param <V> the type of objects to be evaluated by the predicate
  */
 public class UniquePredicate<V>
-	implements Predicate<V>, Cloneable, Serializable
+	implements Predicate<V>
 {
-	private final HashSet<V> set = new HashSet<V>();
-
-	private static final long serialVersionUID = 1L;
+	private final Set<V> set;
 
 
-	public UniquePredicate() {
+	public UniquePredicate(Set<V> set) {
 		super();
+		this.set = set;
 	}
 
 	public boolean evaluate(V variable) {
@@ -59,30 +60,11 @@ public class UniquePredicate<V>
 		return this.set.addAll(variables);
 	}
 
-	@Override
-	public UniquePredicate<V> clone() {
-		try {
-			@SuppressWarnings("unchecked")
-			UniquePredicate<V> clone = (UniquePredicate<V>) super.clone();
-			return clone;
-		} catch (CloneNotSupportedException ex) {
-			throw new InternalError();
-		}
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if ( ! (o instanceof UniquePredicate)) {
-			return false;
-		}
-		@SuppressWarnings("unchecked")
-		UniquePredicate<V> other = (UniquePredicate<V>) o;
-		return this.set.equals(other.set);
-	}
-
-	@Override
-	public int hashCode() {
-		return this.set.hashCode();
+	/**
+	 * Return the set of previously evaluated variables.
+	 */
+	public Set<V> getSet() {
+		return this.set;
 	}
 
 	@Override

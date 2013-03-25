@@ -172,7 +172,7 @@ public class InternalLibraryValidatorManager
 	private Iterable<LibraryValidatorConfig> getLibraryValidatorConfigs(JptLibraryProviderInstallOperationConfig installConfig) {
 		return IterableTools.filter(
 				this.libraryValidatorConfigs,
-				new LibraryValidatorConfig.EnabledFilter(installConfig)
+				new LibraryValidatorConfig.IsEnabled(installConfig)
 			);
 	}
 

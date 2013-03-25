@@ -25,6 +25,7 @@ public class PassThruTransformer<I>
 {
 	private final I nullOutput;
 
+
 	public PassThruTransformer(I nullOutput) {
 		super();
 		this.nullOutput = nullOutput;

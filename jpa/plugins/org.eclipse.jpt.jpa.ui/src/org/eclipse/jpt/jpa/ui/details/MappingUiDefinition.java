@@ -13,6 +13,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -107,6 +108,17 @@ public interface MappingUiDefinition {
 	 * node.  This is almost always true.
 	 */
 	boolean isEnabledFor(JpaContextModel node);
+
+	/* CU private */ class IsEnabledFor
+		extends CriterionPredicate<MappingUiDefinition, JpaContextModel>
+	{
+		public IsEnabledFor(JpaContextModel node) {
+			super(node);
+		}
+		public boolean evaluate(MappingUiDefinition mappingUiDefinition) {
+			return mappingUiDefinition.isEnabledFor(this.criterion);
+		}
+	}
 
 
 	// ********** null composite **********

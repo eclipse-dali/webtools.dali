@@ -26,7 +26,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValue
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
-import org.eclipse.jpt.common.utility.internal.transformer.StaticOutputTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -140,7 +140,7 @@ public abstract class PersistenceUnitMappingFilesComposite
 	}
 
 	private static final Transformer<MappingFileRef, ImageDescriptor> MAPPING_FILE_REF_LABEL_IMAGE_DESCRIPTOR_TRANSFORMER =
-			new StaticOutputTransformer<MappingFileRef, ImageDescriptor>(JptJpaUiImages.MAPPING_FILE_REF);
+			TransformerTools.staticOutputTransformer(JptJpaUiImages.MAPPING_FILE_REF);
 
 	private static final Transformer<MappingFileRef, String> MAPPING_FILE_REF_LABEL_TEXT_TRANSFORMER = new MappingFileRefLabelTextTransformer();
 	/* CU private */ static class MappingFileRefLabelTextTransformer

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -167,7 +167,7 @@ public class OrmEclipseLinkVersionMapping
 			if (MappingTools.typeIsBasic(this.getJavaProject(), this.getFullyQualifiedAttributeType())) {
 				return;
 			}
-			IType jdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedAttributeType());
+			IType jdtType = JavaProjectTools.findType(this.getJavaProject(), this.getFullyQualifiedAttributeType());
 			if (jdtType == null && this.getResolvedAttributeType() == null) {
 				messages.add(
 					this.buildValidationMessage(

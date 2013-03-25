@@ -12,46 +12,41 @@ package org.eclipse.jpt.common.utility.internal.predicate;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
- * This compound predicate will evaluate to <code>true</code> if <em>any</em>
- * its wrapped predicates evaluates to <code>true</code>.
+ * This compound predicate will evaluate to <code>true</code> if <em>all</em>
+ * its wrapped predicates evaluate to <code>true</code>.
  * If there are <em>no</em> wrapped
- * predicates, this predicate will always evaluate to <code>false</code>.
+ * predicates, this predicate will always evaluate to <code>true</code>.
  * If there are wrapped predicates, this predicate will
  * exhibit "short-circuit" behavior; i.e. if any wrapped predicate evaluates
- * to <code>true</code>, no following wrapped predicates will be evaluated.
+ * to <code>false</code>, no following wrapped predicates will be evaluated.
  * 
  * @param <V> the type of objects to be evaluated by the predicate
+ * @see OR
+ * @see XOR
+ * @see NOT
  */
-public class ORPredicate<V>
+public class AND<V>
 	extends AbstractCompoundPredicate<V>
 {
-	private static final long serialVersionUID = 1L;
-
-
 	/**
-	 * Construct a predicate that will evaluate to <code>true</code> if <em>any</em>
-	 * the specified predicates evaluates to <code>true</code>.
+	 * Construct a predicate that will evaluate to <code>true</code> if <em>all</em>
+	 * the specified predicates evaluate to <code>true</code>.
 	 */
-	public ORPredicate(Predicate<? super V>... predicates) {
+	public AND(Predicate<? super V>... predicates) {
 		super(predicates);
 	}
 
 	public boolean evaluate(V variable) {
 		for (Predicate<? super V> predicate : this.predicates) {
-			if (predicate.evaluate(variable)) {
-				return true;
+			if ( ! predicate.evaluate(variable)) {
+				return false;
 			}
 		}
-		return false;
-	}
-
-	@Override
-	public ORPredicate<V> clone() {
-		return (ORPredicate<V>) super.clone();
+		return true;
 	}
 
 	@Override
 	protected String operatorString() {
-		return "OR"; //$NON-NLS-1$
+		return "AND"; //$NON-NLS-1$
 	}
 }

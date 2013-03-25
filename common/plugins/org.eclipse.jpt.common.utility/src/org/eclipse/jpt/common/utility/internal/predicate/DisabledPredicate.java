@@ -10,12 +10,13 @@
 package org.eclipse.jpt.common.utility.internal.predicate;
 
 import java.io.Serializable;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
  * Singleton predicate that throws an 
  * {@link UnsupportedOperationException exception} if evaluated.
+ * 
+ * @param <V> the type of objects (not) to be evaluated by the predicate
  */
 public final class DisabledPredicate<V>
 	implements Predicate<V>, Serializable
@@ -42,7 +43,7 @@ public final class DisabledPredicate<V>
 
 	@Override
 	public String toString() {
-		return ObjectTools.singletonToString(this);
+		return this.getClass().getSimpleName();
 	}
 
 	private static final long serialVersionUID = 1L;

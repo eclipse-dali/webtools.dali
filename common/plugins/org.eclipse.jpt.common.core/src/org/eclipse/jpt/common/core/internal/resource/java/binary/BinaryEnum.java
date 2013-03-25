@@ -115,12 +115,14 @@ final class BinaryEnum
 		@Override
 		public boolean evaluate(IField field) {
 			try {
-				return field.isEnumConstant();
-			}
-			catch (JavaModelException ex) {
+				return this.evaluate_(field);
+			} catch (JavaModelException ex) {
 				JptCommonCorePlugin.instance().logError(ex);
 				return false;
 			}
+		}
+		private boolean evaluate_(IField field) throws JavaModelException {
+			return field.isEnumConstant();
 		}
 	}
 

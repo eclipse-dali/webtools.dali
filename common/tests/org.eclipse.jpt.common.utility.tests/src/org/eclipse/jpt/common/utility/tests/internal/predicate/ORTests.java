@@ -12,20 +12,20 @@ package org.eclipse.jpt.common.utility.tests.internal.predicate;
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.BitTools;
 import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
-import org.eclipse.jpt.common.utility.internal.predicate.NotNullPredicate;
-import org.eclipse.jpt.common.utility.internal.predicate.ORPredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.IsNotNull;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
+import org.eclipse.jpt.common.utility.predicate.CompoundPredicate;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
-public class ORPredicateTests
+public class ORTests
 	extends TestCase
 {
-	private ORPredicate<Number> orPredicate;
+	private CompoundPredicate<Number> orPredicate;
 
 
-	public ORPredicateTests(String name) {
+	public ORTests(String name) {
 		super(name);
 	}
 
@@ -33,18 +33,17 @@ public class ORPredicateTests
 	@SuppressWarnings("unchecked")
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.orPredicate = PredicateTools.or(this.buildMinPredicate(1), this.buildMaxPredicate(10));
+		this.orPredicate = PredicateTools.or(this.buildMin(1), this.buildMax(10));
 	}
 
-	private Predicate<Number> buildMinPredicate(double min) {
-		return new MinPredicate(min);
+	private Predicate<Number> buildMin(double min) {
+		return new Min(min);
 	}
 
-	static class MinPredicate
+	static class Min
 		extends CriterionPredicate<Number, Number>
 	{
-		private static final long serialVersionUID = 1L;
-		MinPredicate(double min) {
+		Min(double min) {
 			super(new Double(min));
 		}
 		public boolean evaluate(Number number) {
@@ -52,32 +51,28 @@ public class ORPredicateTests
 		}
 	}
 
-	private Predicate<Number> buildMaxPredicate(double max) {
-		return new MaxPredicate(max);
+	private Predicate<Number> buildMax(double max) {
+		return new Max(max);
 	}
 
-	static class MaxPredicate
+	static class Max
 		extends CriterionPredicate<Number, Number>
 	{
-		private static final long serialVersionUID = 1L;
-		MaxPredicate(double min) {
-			super(new Double(min));
+		Max(double max) {
+			super(new Double(max));
 		}
 		public boolean evaluate(Number number) {
 			return number.doubleValue() >= this.criterion.doubleValue();
 		}
 	}
 
-	private Predicate<Number> buildEvenPredicate() {
-		return new EvenPredicate();
+	private Predicate<Number> buildIsEven() {
+		return new IsEven();
 	}
 
-	static class EvenPredicate
+	static class IsEven
 		extends PredicateAdapter<Number>
 	{
-		EvenPredicate() {
-			super();
-		}
 		@Override
 		public boolean evaluate(Number number) {
 			return BitTools.isEven(number.intValue());
@@ -102,7 +97,7 @@ public class ORPredicateTests
 
 	public void testEvaluate3() {
 		@SuppressWarnings("unchecked")
-		ORPredicate<Number> orPredicate2 = PredicateTools.or(this.orPredicate, this.buildEvenPredicate());
+		CompoundPredicate<Number> orPredicate2 = PredicateTools.or(this.orPredicate, this.buildIsEven());
 		assertFalse(orPredicate2.evaluate(new Integer(7)));
 		assertFalse(orPredicate2.evaluate(new Integer(3)));
 		assertFalse(orPredicate2.evaluate(new Integer(9)));
@@ -121,7 +116,7 @@ public class ORPredicateTests
 
 	public void testComposite() {
 		@SuppressWarnings("unchecked")
-		Predicate<Number> orPredicate2 = PredicateTools.or(this.buildMinPredicate(1), this.buildMaxPredicate(10), this.buildEvenPredicate());
+		Predicate<Number> orPredicate2 = PredicateTools.or(this.buildMin(1), this.buildMax(10), this.buildIsEven());
 		assertFalse(orPredicate2.evaluate(new Integer(7)));
 		assertFalse(orPredicate2.evaluate(new Integer(3)));
 		assertFalse(orPredicate2.evaluate(new Integer(9)));
@@ -138,25 +133,11 @@ public class ORPredicateTests
 		assertTrue(orPredicate2.evaluate(new Double(222)));
 	}
 
-	public void testClone() {
-		ORPredicate<Number> orPredicate2 = this.orPredicate.clone();
-		assertEquals(this.orPredicate.getPredicates()[0], orPredicate2.getPredicates()[0]);
-		assertEquals(this.orPredicate.getPredicates()[1], orPredicate2.getPredicates()[1]);
-		assertNotSame(this.orPredicate, orPredicate2);
-	}
-
 	public void testEquals() {
 		@SuppressWarnings("unchecked")
-		ORPredicate<Number> orPredicate2 = PredicateTools.or(this.buildMinPredicate(1), this.buildMaxPredicate(10));
+		CompoundPredicate<Number> orPredicate2 = PredicateTools.or(this.buildMin(1), this.buildMax(10));
 		assertEquals(this.orPredicate, orPredicate2);
 		assertEquals(this.orPredicate.hashCode(), orPredicate2.hashCode());
-		assertFalse(this.orPredicate.equals(NotNullPredicate.instance()));
-	}
-
-	public void testSerialization() throws Exception {
-		ORPredicate<Number> orPredicate2 = TestTools.serialize(this.orPredicate);
-		assertEquals(this.orPredicate.getPredicates()[0], orPredicate2.getPredicates()[0]);
-		assertEquals(this.orPredicate.getPredicates()[1], orPredicate2.getPredicates()[1]);
-		assertNotSame(this.orPredicate, orPredicate2);
+		assertFalse(this.orPredicate.equals(IsNotNull.instance()));
 	}
 }

@@ -26,6 +26,7 @@ public class NullCheckTransformerWrapper<I, O>
 	private final Transformer<? super I, ? extends O> transformer;
 	private final O nullOutput;
 
+
 	public NullCheckTransformerWrapper(Transformer<? super I, ? extends O> transformer, O nullOutput) {
 		super();
 		if (transformer == null) {

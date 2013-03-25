@@ -21,6 +21,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -200,15 +201,19 @@ public class GenericJarFile
 	public Iterable<JavaPersistentType> getPersistentTypes() {
 		return IterableTools.downCast(IterableTools.filter(
 										this.getManagedTypes(), 
-										JAVA_PERSISTENT_TYPE_FILTER));
+										TYPE_IS_JAVA_PERSISTENT_TYPE));
 	}
 
-	protected static final Predicate<JavaManagedType> JAVA_PERSISTENT_TYPE_FILTER =
-		new Predicate<JavaManagedType>() {
-			public boolean evaluate(JavaManagedType mt) {
-				return mt.getType() == JavaPersistentType.class;
-			}
-		};
+	protected static final Predicate<JavaManagedType> TYPE_IS_JAVA_PERSISTENT_TYPE = new TypeIsJavaPersistentType();
+
+	public static class TypeIsJavaPersistentType
+		extends PredicateAdapter<JavaManagedType>
+	{
+		@Override
+		public boolean evaluate(JavaManagedType mt) {
+			return mt.getType() == JavaPersistentType.class;
+		}
+	}
 
 
 	// ********** PersistentType.Parent implementation **********

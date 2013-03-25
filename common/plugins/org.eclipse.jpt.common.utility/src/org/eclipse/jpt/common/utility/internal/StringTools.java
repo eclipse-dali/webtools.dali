@@ -13,7 +13,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -875,9 +875,9 @@ public final class StringTools {
 	/**
 	 * @see #isNotBlank(String)
 	 */
-	public static final Predicate<String> NON_BLANK_FILTER = new NonBlankFilter();
+	public static final Predicate<String> IS_NOT_BLANK = new IsNotBlank();
 
-	/* CU private */ static class NonBlankFilter
+	/* CU private */ static class IsNotBlank
 		implements Predicate<String>, Serializable
 	{
 		public boolean evaluate(String string) {
@@ -890,7 +890,7 @@ public final class StringTools {
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
 			// replace this object with the singleton
-			return NON_BLANK_FILTER;
+			return IS_NOT_BLANK;
 		}
 	}
 
@@ -912,16 +912,13 @@ public final class StringTools {
 	}
 
 	public static class StartsWithIgnoreCase
-		extends PredicateAdapter<String>
+		extends CriterionPredicate<String, String>
 	{
-		private final String prefix;
 		public StartsWithIgnoreCase(String prefix) {
-			super();
-			this.prefix = prefix;
+			super(prefix);
 		}
-		@Override
 		public boolean evaluate(String string) {
-			return startsWithIgnoreCase(string, this.prefix);
+			return startsWithIgnoreCase(string, this.criterion);
 		}
 	}
 

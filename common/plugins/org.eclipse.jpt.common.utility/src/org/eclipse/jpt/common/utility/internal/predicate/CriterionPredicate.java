@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.predicate;
 
-import java.io.Serializable;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 
@@ -24,11 +23,9 @@ import org.eclipse.jpt.common.utility.predicate.Predicate;
  * @param <C> the type of the filter's criterion
  */
 public abstract class CriterionPredicate<V, C>
-	implements Predicate<V>, Cloneable, Serializable
+	implements Predicate<V>
 {
 	protected final C criterion;
-
-	private static final long serialVersionUID = 1L;
 
 
 	/**
@@ -52,17 +49,6 @@ public abstract class CriterionPredicate<V, C>
 	 */
 	public C getCriterion() {
 		return this.criterion;
-	}
-
-	@Override
-	public CriterionPredicate<V, C> clone() {
-		try {
-			@SuppressWarnings("unchecked")
-			CriterionPredicate<V, C> clone = (CriterionPredicate<V, C>) super.clone();
-			return clone;
-		} catch (CloneNotSupportedException ex) {
-			throw new InternalError();
-		}
 	}
 
 	@Override

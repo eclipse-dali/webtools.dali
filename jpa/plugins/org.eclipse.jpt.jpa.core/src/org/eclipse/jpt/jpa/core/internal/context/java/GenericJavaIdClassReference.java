@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.TypeTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -260,7 +260,7 @@ public class GenericJavaIdClassReference
 						);
 				}
 
-				if (!JDTTools.typeIsSubType(this.getJpaProject().getJavaProject(), jrt.getTypeBinding().getQualifiedName(), JDTTools.SERIALIZABLE_CLASS_NAME)) {
+				if (!TypeTools.isSerializable(jrt.getTypeBinding().getQualifiedName(), this.getJpaProject().getJavaProject())) {
 					messages.add(
 							this.buildValidationMessage(
 									this.getValidationTextRange(),

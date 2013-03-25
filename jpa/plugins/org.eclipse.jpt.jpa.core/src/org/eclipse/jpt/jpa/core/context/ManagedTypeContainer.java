@@ -9,8 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
+import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 
 /**
  * Interface used by persistence unit to gather up managed types.
@@ -62,4 +64,15 @@ public interface ManagedTypeContainer {
 	 * </ul>
 	 */
 	ManagedType getManagedType(String typeName);
+
+	class ContainsType
+		extends CriterionPredicate<MappingFileRef, String>
+	{
+		public ContainsType(String typeName) {
+			super(typeName);
+		}
+		public boolean evaluate(MappingFileRef mappingFileRef) {
+			return mappingFileRef.getManagedType(this.criterion) != null;
+		}
+	}
 }

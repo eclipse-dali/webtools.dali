@@ -11,7 +11,7 @@ package org.eclipse.jpt.jaxb.core.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
@@ -45,16 +45,13 @@ public interface JavaType
 	 */
 	TypeKind getKind();
 	class IsKind
-		extends PredicateAdapter<JavaType>
+		extends CriterionPredicate<JavaType, TypeKind>
 	{
-		private final TypeKind typeKind;
 		public IsKind(TypeKind typeKind) {
-			super();
-			this.typeKind = typeKind;
+			super(typeKind);
 		}
-		@Override
 		public boolean evaluate(JavaType type) {
-			return type.getKind() == this.typeKind;
+			return type.getKind() == this.criterion;
 		}
 	}
 	

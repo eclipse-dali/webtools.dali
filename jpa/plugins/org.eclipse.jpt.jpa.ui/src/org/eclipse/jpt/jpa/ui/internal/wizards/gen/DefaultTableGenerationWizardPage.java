@@ -35,7 +35,8 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizard;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
+import org.eclipse.jpt.common.core.internal.utility.PackageFragmentRootTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenTable;
@@ -175,7 +176,7 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 		srcFolder = '/' + srcFolder;
 		IJavaProject javaProject = this.jpaProject.getJavaProject();
 
-		for (IPackageFragmentRoot root : JDTTools.getJavaSourceFolders(javaProject)) {
+		for (IPackageFragmentRoot root : JavaProjectTools.getSourceFolders(javaProject)) {
 			//Save the first source root in case we don't find one that matches the saved value
 			if (packageFragmentRoot == null) {
 				packageFragmentRoot = root;
@@ -267,7 +268,7 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 						IPath path= jproject.getProject().getFullPath();
 						return (jproject.findPackageFragmentRoot(path) != null);
 					} else if (element instanceof IPackageFragmentRoot) {
-						return JDTTools.packageFragmentRootIsSourceFolder((IPackageFragmentRoot) element);
+						return PackageFragmentRootTools.isSourceFolder((IPackageFragmentRoot) element);
 					}
 					return true;
 				} catch (JavaModelException e) {
@@ -282,7 +283,7 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 			@Override
 			public boolean select(Viewer viewer, Object parent, Object element) {
 				if (element instanceof IPackageFragmentRoot) {
-					return JDTTools.packageFragmentRootIsSourceFolder((IPackageFragmentRoot) element);
+					return PackageFragmentRootTools.isSourceFolder((IPackageFragmentRoot) element);
 				}
 				return super.select(viewer, parent, element);
 			}

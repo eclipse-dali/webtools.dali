@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.common.utility.internal.model.value.FilteringPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -109,15 +110,12 @@ public abstract class PersistentAttributeDetailsPageManager<A extends Persistent
 
 	protected abstract PropertyValueModel<Boolean> getMappingCompositeEnabledModel();
 
-	private PropertyValueModel<AttributeMapping> buildMappingHolder(final String key) {
-		return new FilteringPropertyValueModel<AttributeMapping>(
-			this.mappingHolder,
-			buildMappingFilter(key)
-		);
+	private PropertyValueModel<AttributeMapping> buildMappingHolder(String key) {
+		return new FilteringPropertyValueModel<AttributeMapping>(this.mappingHolder, this.buildKeyEquals(key));
 	}
 
-	private Predicate<AttributeMapping> buildMappingFilter(String mappingKey) {
-		return new MappingFilter(mappingKey);
+	private Predicate<AttributeMapping> buildKeyEquals(String mappingKey) {
+		return new KeyEquals(mappingKey);
 	}
 
 
@@ -143,16 +141,14 @@ public abstract class PersistentAttributeDetailsPageManager<A extends Persistent
 
 	private static final String TRACE_OPTION = PersistentAttributeDetailsPageManager.class.getSimpleName();
 
-	private class MappingFilter implements Predicate<AttributeMapping> {
-		private String mappingKey;
-
-		MappingFilter(String mappingKey) {
-			super();
-			this.mappingKey = mappingKey;
+	private class KeyEquals
+		extends CriterionPredicate<AttributeMapping, String>
+	{
+		KeyEquals(String mappingKey) {
+			super(mappingKey);
 		}
-
 		public boolean evaluate(AttributeMapping mapping) {
-			return (mapping == null || this.mappingKey == null) || this.mappingKey.equals(mapping.getKey());
+			return ((mapping == null) || (this.criterion == null)) || this.criterion.equals(mapping.getKey());
 		}
 	}
 }

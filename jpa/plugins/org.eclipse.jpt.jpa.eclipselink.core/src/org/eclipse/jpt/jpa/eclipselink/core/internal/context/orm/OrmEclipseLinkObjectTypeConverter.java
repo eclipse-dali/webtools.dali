@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
@@ -499,7 +500,7 @@ public class OrmEclipseLinkObjectTypeConverter
 				MappingTools.getPrimaryBasicTypeNamesWithoutPrimitives(),
 				MappingTools.getBasicArrayTypeNames(),
 				//Add java enums to cover the case where object type is a user defined Enum
-				MappingTools.getSortedJavaEnumNames(this.getJavaProject())
+				JavaProjectTools.getSortedEnumNames(this.getJavaProject())
 				);
 	}
 	

@@ -12,7 +12,8 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.TypeTools;
+import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
@@ -118,7 +119,7 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 			return;
 		}
 
-		IType converterJdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedConverterClass()); 
+		IType converterJdtType = JavaProjectTools.findType(this.getJavaProject(), this.getFullyQualifiedConverterClass()); 
 		if (converterJdtType == null) {
 			messages.add(
 				this.buildValidationMessage(
@@ -154,7 +155,7 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 	 */
 	protected boolean typeImplementsInterface(String typeName, String interfaceName) {
 		return (typeName != null) && 
-				JDTTools.typeIsSubType(this.getJavaProject(), typeName, interfaceName);
+				TypeTools.isSubType(typeName, interfaceName, this.getJavaProject());
 	}
 
 	protected boolean converterClassImplementsInterface(String interfaceName) {

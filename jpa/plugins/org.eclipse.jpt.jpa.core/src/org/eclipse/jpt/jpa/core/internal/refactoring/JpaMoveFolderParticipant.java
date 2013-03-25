@@ -23,7 +23,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
@@ -208,7 +208,7 @@ public class JpaMoveFolderParticipant
 
 	protected Iterable<IFolder> getOriginalFoldersOnClasspath(JpaProject jpaProject) {
 		IJavaProject javaProject = jpaProject.getJavaProject();
-		return IterableTools.filter(this.originalFolders.keySet(), new JDTTools.ResourceIsOnClasspath(javaProject));
+		return IterableTools.filter(this.originalFolders.keySet(), new JavaProjectTools.ResourceIsOnClasspath(javaProject));
 	}
 
 	protected Iterable<ReplaceEdit> createPersistenceUnitReplaceEdits(PersistenceUnit persistenceUnit, IFolder folder, IContainer destination) {

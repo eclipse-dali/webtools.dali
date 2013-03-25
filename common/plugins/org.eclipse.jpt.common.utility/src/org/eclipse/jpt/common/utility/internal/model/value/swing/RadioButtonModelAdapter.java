@@ -12,9 +12,9 @@ package org.eclipse.jpt.common.utility.internal.model.value.swing;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.value.FilteringModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationModifiablePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.predicate.TruePredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
-import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
@@ -65,7 +65,7 @@ public class RadioButtonModelAdapter
 	 * value to the button value.
 	 */
 	public static ModifiablePropertyValueModel<Boolean> buildBooleanHolder(ModifiablePropertyValueModel<Object> valueHolder, Object buttonValue) {
-		ModifiablePropertyValueModel<Object> filteringPVM = new FilteringModifiablePropertyValueModel<Object>(valueHolder, TruePredicate.instance(), new SetRadioButtonFilter(buttonValue));
+		ModifiablePropertyValueModel<Object> filteringPVM = new FilteringModifiablePropertyValueModel<Object>(valueHolder, PredicateTools.true_(), new SetRadioButtonPredicate(buttonValue));
 		return new TransformationModifiablePropertyValueModel<Object, Boolean>(filteringPVM, new RadioButtonTransformer(buttonValue), new ReverseRadioButtonTransformer(buttonValue));
 	}
 
@@ -93,25 +93,22 @@ public class RadioButtonModelAdapter
 	// ********** filters **********
 
 	/**
-	 * This filter will only pass through a new value to the wrapped
+	 * This predicate will only pass through a new value to the wrapped
 	 * value model when it matches the configured button value.
 	 */
-	public static class SetRadioButtonFilter
-		implements Predicate<Object>
+	public static class SetRadioButtonPredicate
+		extends CriterionPredicate<Object, Object>
 	{
-		private Object buttonValue;
-
-		public SetRadioButtonFilter(Object buttonValue) {
-			super();
-			this.buttonValue = buttonValue;
+		public SetRadioButtonPredicate(Object buttonValue) {
+			super(buttonValue);
 		}
 
 		/**
-		 * pass through the value to the wrapped property value model
-		 * *only* when it matches our button value
+		 * Pass through the value to the wrapped property value model
+		 * <em>only</em> when it matches the button value.
 		 */
 		public boolean evaluate(Object value) {
-			return (value != null) && value.equals(this.buttonValue);
+			return (value != null) && value.equals(this.criterion);
 		}
 	}
 

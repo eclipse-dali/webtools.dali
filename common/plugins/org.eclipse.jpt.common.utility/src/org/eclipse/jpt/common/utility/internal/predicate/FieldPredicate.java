@@ -16,11 +16,15 @@ import org.eclipse.jpt.common.utility.predicate.Predicate;
 /**
  * This predicate evaluates to the (<code>boolean</code>) value one of the
  * variable's fields.
+ * <p>
+ * <strong>NB:</strong> The actual field is determined at execution time,
+ * not construction time. As a result, the transformer can be used to emulate
+ * "duck typing".
  * 
  * @param <V> the type of objects to be evaluated by the predicate
  */
 public class FieldPredicate<V>
-	implements Predicate<V>, Cloneable, Serializable
+	implements Predicate<V>, Serializable
 {
 	private final String fieldName;
 
@@ -45,17 +49,6 @@ public class FieldPredicate<V>
 
 	private Boolean evaluate_(V variable) {
 		return (Boolean) ObjectTools.get(variable, this.fieldName);
-	}
-
-	@Override
-	public FieldPredicate<V> clone() {
-		try {
-			@SuppressWarnings("unchecked")
-			FieldPredicate<V> clone = (FieldPredicate<V>) super.clone();
-			return clone;
-		} catch (CloneNotSupportedException ex) {
-			throw new InternalError();
-		}
 	}
 
 	@Override

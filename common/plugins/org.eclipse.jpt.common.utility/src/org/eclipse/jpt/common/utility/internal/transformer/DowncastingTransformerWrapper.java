@@ -39,6 +39,7 @@ public class DowncastingTransformerWrapper<I, X, O extends X>
 {
 	private final Transformer<? super I, ? extends X> transformer;
 
+
 	public DowncastingTransformerWrapper(Transformer<? super I, ? extends X> transformer) {
 		super();
 		if (transformer == null) {
@@ -47,6 +48,9 @@ public class DowncastingTransformerWrapper<I, X, O extends X>
 		this.transformer = transformer;
 	}
 
+	/**
+	 * Cast the output and hope for the best.
+	 */
 	@SuppressWarnings("unchecked")
 	public O transform(I input) {
 		return (O) this.transformer.transform(input);

@@ -11,8 +11,8 @@ package org.eclipse.jpt.jaxb.core;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.common.core.ContentTypeReference;
 import org.eclipse.jpt.common.core.JptResourceModel;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -30,32 +30,12 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * @since 3.0
  */
 public interface JaxbFile
-	extends JaxbNode
+	extends JaxbNode, ContentTypeReference
 {
 	/**
 	 * Return the JAXB file's Eclipse file.
 	 */
 	IFile getFile();
-	
-	/**JAXB
-	 * Return the JPA file's content type.
-	 */
-	IContentType getContentType();
-
-	class ContentIsKindOf
-		extends PredicateAdapter<JaxbFile>
-	{
-		private final IContentType contentType;
-		public ContentIsKindOf(IContentType contentType) {
-			super();
-			this.contentType = contentType;
-		}
-		@Override
-		public boolean evaluate(JaxbFile jaxbFile) {
-			return jaxbFile.getContentType().isKindOf(this.contentType);
-		}
-	}
-
 	
 	/**
 	 * Return the resource model corresponding to the JPA file; typically a JPA

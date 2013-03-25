@@ -24,7 +24,7 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.db.Database;
@@ -194,16 +194,13 @@ public class DefaultContentAssistExtension implements ContentAssistExtension {
 	}
 
 	public static class ExpressionStartsWithIgnoreCase
-		extends PredicateAdapter<String>
+		extends CriterionPredicate<String, String>
 	{
-		private final String prefix;
 		public ExpressionStartsWithIgnoreCase(String prefix) {
-			super();
-			this.prefix = prefix;
+			super(prefix);
 		}
-		@Override
 		public boolean evaluate(String string) {
-			return ExpressionTools.startWithIgnoreCase(string, this.prefix);
+			return ExpressionTools.startWithIgnoreCase(string, this.criterion);
 		}
 	}
 

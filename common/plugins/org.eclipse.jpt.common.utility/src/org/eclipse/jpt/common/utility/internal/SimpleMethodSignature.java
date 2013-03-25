@@ -190,13 +190,12 @@ public final class SimpleMethodSignature
 	public void appendSignatureTo(StringBuilder sb) {
 		sb.append(this.name);
 		sb.append('(');
-		JavaType[] localParameterTypes = this.parameterTypes;
-		int len = localParameterTypes.length;
-		for (int i = 0; i < len; i++) {
-			if (i != 0) {
+		if (this.parameterTypes.length > 0) {
+			for (JavaType parameterType : this.parameterTypes) {
+				parameterType.appendDeclarationTo(sb);
 				sb.append(PARAMETER_SEPARATOR);
 			}
-			localParameterTypes[i].appendDeclarationTo(sb);
+			sb.setLength(sb.length() - PARAMETER_SEPARATOR.length());  // strip off extra separator
 		}
 		sb.append(')');
 	}

@@ -22,6 +22,7 @@ package org.eclipse.jpt.common.utility.collection;
  * @param <E> the type of elements contained by the stack
  * @see org.eclipse.jpt.common.utility.internal.collection.ArrayStack
  * @see org.eclipse.jpt.common.utility.internal.collection.LinkedStack
+ * @see Queue Queue - for an interface without the semantic baggage of a stack
  */
 public interface Stack<E> {
 

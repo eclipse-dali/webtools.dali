@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.core.internal.utility.ConfigurationElementTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -337,56 +337,39 @@ public class InternalJpaPlatformManager
 	 * the specified facet version.
 	 */
 	private Iterable<InternalJpaPlatformConfig> selectJpaPlatformConfigs(Iterable<InternalJpaPlatformConfig> configs, IProjectFacetVersion jpaFacetVersion) {
-		return IterableTools.filter(configs, this.buildJpaPlatformConfigFilter(jpaFacetVersion));
+		return IterableTools.filter(configs, this.buildConfigSupportsJpaFacetVersion(jpaFacetVersion));
 	}
 
-	private Predicate<InternalJpaPlatformConfig> buildJpaPlatformConfigFilter(IProjectFacetVersion jpaFacetVersion) {
-		return new FacetVersionJpaPlatformConfigFilter(jpaFacetVersion);
-	}
-
-	/* CU private */ static class FacetVersionJpaPlatformConfigFilter
-		extends PredicateAdapter<InternalJpaPlatformConfig>
-	{
-		private final IProjectFacetVersion jpaFacetVersion;
-		FacetVersionJpaPlatformConfigFilter(IProjectFacetVersion jpaFacetVersion) {
-			super();
-			this.jpaFacetVersion = jpaFacetVersion;
-		}
-		@Override
-		public boolean evaluate(InternalJpaPlatformConfig config) {
-			return config.supportsJpaFacetVersion(this.jpaFacetVersion);
-		}
+	private Predicate<InternalJpaPlatformConfig> buildConfigSupportsJpaFacetVersion(IProjectFacetVersion jpaFacetVersion) {
+		return new InternalJpaPlatformConfig.SupportsJpaFacetVersion(jpaFacetVersion);
 	}
 
 	/**
 	 * "Default" platforms (i.e. third-party platforms flagged as "default").
 	 */
 	private Iterable<InternalJpaPlatformConfig> getDefaultJpaPlatformConfigs() {
-		return IterableTools.filter(this.getInternalJpaPlatformConfigs(), JpaPlatform.Config.DEFAULT_FILTER);
+		return IterableTools.filter(this.getInternalJpaPlatformConfigs(), JpaPlatform.Config.IS_DEFAULT);
 	}
 
 	/**
 	 * Dali-defined "generic" platforms.
 	 */
 	private Iterable<InternalJpaPlatformConfig> getDaliJpaPlatformConfigs() {
-		return IterableTools.filter(this.getInternalJpaPlatformConfigs(), this.buildDaliJpaPlatformConfigFilter());
+		return IterableTools.filter(this.getInternalJpaPlatformConfigs(), this.buildIsDaliJpaPlatformConfig());
 	}
 
-	private Predicate<InternalJpaPlatformConfig> buildDaliJpaPlatformConfigFilter() {
-		return new DaliJpaPlatformConfigFilter(this.getPluginID());
+	private Predicate<InternalJpaPlatformConfig> buildIsDaliJpaPlatformConfig() {
+		return new FactoryClassNameStartsWith(this.getPluginID());
 	}
 
-	/* CU private */ static class DaliJpaPlatformConfigFilter
-		extends PredicateAdapter<InternalJpaPlatformConfig>
+	private static class FactoryClassNameStartsWith
+		extends CriterionPredicate<InternalJpaPlatformConfig, String>
 	{
-		private final String prefix;
-		DaliJpaPlatformConfigFilter(String prefix) {
-			super();
-			this.prefix = prefix;
+		FactoryClassNameStartsWith(String prefix) {
+			super(prefix);
 		}
-		@Override
 		public boolean evaluate(InternalJpaPlatformConfig config) {
-			return config.getFactoryClassName().startsWith(this.prefix);
+			return config.getFactoryClassName().startsWith(this.criterion);
 		}
 	}
 

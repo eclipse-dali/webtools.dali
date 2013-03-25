@@ -279,11 +279,11 @@ public interface Entity
 	Iterable<Entity> getDescendants();
 		String DESCENDANTS_COLLECTION = "descendants"; //$NON-NLS-1$
 
-	class EntityIsDescendant
+	class IsDescendant
 		extends PredicateAdapter<Entity>
 	{
 		private final String rootTypeName;
-		public EntityIsDescendant(Entity entity) {
+		public IsDescendant(Entity entity) {
 			super();
 			if ( ! entity.isRootEntity()) {
 				throw new IllegalArgumentException("Entity must be root entity: " + entity); //$NON-NLS-1$

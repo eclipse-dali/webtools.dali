@@ -25,8 +25,9 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * </ul>
  * Use a {@link BooleanTransformer} to specify a value for when a
  * {@link Boolean} is <code>null</code>
+ * @see NullCheckTransformerWrapper
  */
-public class NotBooleanTransformer
+public final class NotBooleanTransformer
 	implements Transformer<Boolean, Boolean>, Serializable
 {
 	public static final Transformer<Boolean, Boolean> INSTANCE = new NotBooleanTransformer();

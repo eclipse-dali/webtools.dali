@@ -96,21 +96,6 @@ public class FilteringIteratorTests
 		}
 	}
 
-	public void testFilterHasNext() {
-		int i = 0;
-		for (Iterator<String> stream = this.buildFilterIterator(); stream.hasNext();) {
-			stream.next();
-			i++;
-		}
-		assertEquals(6, i);
-	}
-
-	public void testFilterNext() {
-		for (Iterator<String> stream = this.buildFilterIterator(); stream.hasNext();) {
-			assertTrue("bogus accept", stream.next().startsWith(PREFIX));
-		}
-	}
-
 	private Iterator<String> buildFilteredIterator(Iterator<String> nestedIterator, Predicate<String> filter) {
 		return IteratorTools.filter(nestedIterator, filter);
 	}
@@ -137,35 +122,41 @@ public class FilteringIteratorTests
 	}
 
 	private Iterator<String> buildAcceptIterator() {
-		return this.buildFilteredIterator(this.buildNestedIterator(), this.buildAcceptFilter(PREFIX));
+		return this.buildFilteredIterator(this.buildNestedIterator(), this.buildStringStartsWith(PREFIX));
 	}
 
 	private Iterator<String> buildSuperAcceptIterator() {
-		return this.buildSuperFilteredIterator(this.buildNestedIterator(), this.buildSuperAcceptFilter(PREFIX));
+		return this.buildSuperFilteredIterator(this.buildNestedIterator(), this.buildObjectStartsWith(PREFIX));
 	}
 
-	private Iterator<String> buildFilterIterator() {
-		return this.buildFilteredIterator(this.buildNestedIterator(), this.buildFilterFilter(PREFIX));
+	private Predicate<String> buildStringStartsWith(String prefix) {
+		return new StringStartsWith(prefix);
 	}
 
-	private Predicate<String> buildAcceptFilter(String prefix) {
-		return new CriterionPredicate<String, String>(prefix) {
-			private static final long serialVersionUID = 1L;
-
-			public boolean evaluate(String s) {
-				return s.startsWith(this.criterion);
-			}
-		};
+	class StringStartsWith
+		extends CriterionPredicate<String, String>
+	{
+		StringStartsWith(String criterion) {
+			super(criterion);
+		}
+		public boolean evaluate(String s) {
+			return s.startsWith(this.criterion);
+		}
 	}
 
-	private Predicate<Object> buildSuperAcceptFilter(String prefix) {
-		return new CriterionPredicate<Object, String>(prefix) {
-			private static final long serialVersionUID = 1L;
+	private Predicate<Object> buildObjectStartsWith(String prefix) {
+		return new ObjectToStringStartsWith(prefix);
+	}
 
-			public boolean evaluate(Object o) {
-				return o.toString().startsWith(this.criterion);
-			}
-		};
+	class ObjectToStringStartsWith
+		extends CriterionPredicate<Object, String>
+	{
+		ObjectToStringStartsWith(String criterion) {
+			super(criterion);
+		}
+		public boolean evaluate(Object o) {
+			return o.toString().startsWith(this.criterion);
+		}
 	}
 
 	private Iterator<String> buildRejectIterator() {
@@ -173,16 +164,7 @@ public class FilteringIteratorTests
 	}
 
 	private Predicate<String> buildRejectFilter(String prefix) {
-		return PredicateTools.not(this.buildAcceptFilter(prefix));
-	}
-
-	// use anonymous inner Filter
-	private Predicate<String> buildFilterFilter(final String prefix) {
-		return new Predicate<String>() {
-			public boolean evaluate(String s) {
-				return s.startsWith(prefix);
-			}
-		};
+		return PredicateTools.not(this.buildStringStartsWith(prefix));
 	}
 
 	public void testInvalidFilteringIterator() {

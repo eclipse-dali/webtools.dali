@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 import java.io.Serializable;
 import java.util.List;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.TypeTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -170,7 +170,7 @@ public abstract class AbstractOrmEmbeddedIdMapping<X extends XmlEmbeddedId>
 	protected void validateTargetEmbeddableImplementsSerializable(List<IMessage> messages) {
 		String targetEmbeddableClassName = this.getTargetEmbeddable().getPersistentType().getName();
 		IJavaProject javaProject = getJpaProject().getJavaProject();
-		if (!JDTTools.typeIsSubType(javaProject, targetEmbeddableClassName, Serializable.class.getName())) {
+		if (!TypeTools.isSerializable(targetEmbeddableClassName, javaProject)) {
 			messages.add(
 					this.buildValidationMessage(
 							this.getValidationTextRange(),
@@ -221,7 +221,7 @@ public abstract class AbstractOrmEmbeddedIdMapping<X extends XmlEmbeddedId>
 	protected void validateTargetEmbeddableImplementsNoArgConstructor(List<IMessage> messages) {
 		String targetEmbeddableClassName = this.getTargetEmbeddable().getPersistentType().getName();
 		IJavaProject javaProject = getJpaProject().getJavaProject();
-		if (!JDTTools.classHasPublicZeroArgConstructor(javaProject, targetEmbeddableClassName)) {
+		if (!TypeTools.hasPublicZeroArgConstructor(targetEmbeddableClassName, javaProject)) {
 			messages.add(
 					this.buildValidationMessage(
 							this.getValidationTextRange(),

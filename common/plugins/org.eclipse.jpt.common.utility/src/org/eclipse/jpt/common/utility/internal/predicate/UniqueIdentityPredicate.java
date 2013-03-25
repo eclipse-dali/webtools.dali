@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.predicate;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.IdentityHashMap;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -19,16 +18,17 @@ import org.eclipse.jpt.common.utility.predicate.Predicate;
  * This predicate evaluates to <code>true</code> if the variable (as determined
  * by identity <code>==</code>) has not previously been evaluated by the
  * predicate.
+ * <p>
+ * <strong>NB:</strong> Maybe it's obvious, but this predicate's behavior
+ * will change over time as variables are evaluated.
  * 
  * @param <V> the type of objects to be evaluated by the predicate
  */
 public class UniqueIdentityPredicate<V>
-	implements Predicate<V>, Cloneable, Serializable
+	implements Predicate<V>
 {
 	private final IdentityHashMap<V, Object> map = new IdentityHashMap<V, Object>();
 	private static final Object PRESENT = new Object();
-
-	private static final long serialVersionUID = 1L;
 
 
 	public UniqueIdentityPredicate() {
@@ -64,32 +64,6 @@ public class UniqueIdentityPredicate<V>
 			}
 		}
 		return modified;
-	}
-
-	@Override
-	public UniqueIdentityPredicate<V> clone() {
-		try {
-			@SuppressWarnings("unchecked")
-			UniqueIdentityPredicate<V> clone = (UniqueIdentityPredicate<V>) super.clone();
-			return clone;
-		} catch (CloneNotSupportedException ex) {
-			throw new InternalError();
-		}
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if ( ! (o instanceof UniqueIdentityPredicate)) {
-			return false;
-		}
-		@SuppressWarnings("unchecked")
-		UniqueIdentityPredicate<V> other = (UniqueIdentityPredicate<V>) o;
-		return this.map.equals(other.map);
-	}
-
-	@Override
-	public int hashCode() {
-		return this.map.hashCode();
 	}
 
 	@Override

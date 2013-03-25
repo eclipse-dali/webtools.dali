@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.TypeTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
@@ -120,7 +120,7 @@ public class BinaryXmlSchemaTypeAnnotation
 	}
 	
 	private String buildFullyQualifiedType(IAnnotation jdtAnnotation) {
-		return JDTTools.resolveType((IType)jdtAnnotation.getAncestor(IJavaElement.TYPE), this.type);
+		return TypeTools.resolveType((IType)jdtAnnotation.getAncestor(IJavaElement.TYPE), this.type);
 	}
 	
 }

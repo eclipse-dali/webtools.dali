@@ -153,7 +153,7 @@ public class JpaMakePersistentWizardPage
 	}
 
 	protected Iterable<TypeConfig> buildSelectedTypesIterable(Set<IType> selectedJdtTypes) {
-		return new TransformationIterable<IType, TypeConfig>(this.selectNonPersistentJdtTypes(selectedJdtTypes), new JdtTypeTransformer());
+		return new TransformationIterable<IType, TypeConfig>(this.filterNonPersistentJdtTypes(selectedJdtTypes), new JdtTypeTransformer());
 	}
 
 	/* CU private */ class JdtTypeTransformer
@@ -170,11 +170,11 @@ public class JpaMakePersistentWizardPage
 	 * Any root structure nodes means the type is already annotated, 
 	 * listed in <code>persistence.xml</code>, or listed in a mapping file.
 	 */
-	protected Iterable<IType> selectNonPersistentJdtTypes(Set<IType> selectedJdtTypes) {
-		return IterableTools.filter(selectedJdtTypes, new NonPersistentJdtTypeFilter());
+	protected Iterable<IType> filterNonPersistentJdtTypes(Set<IType> selectedJdtTypes) {
+		return IterableTools.filter(selectedJdtTypes, new JdtTypeIsNonPersistent());
 	}
 
-	/* CU private */ class NonPersistentJdtTypeFilter
+	/* CU private */ class JdtTypeIsNonPersistent
 		extends PredicateAdapter<IType>
 	{
 		@Override

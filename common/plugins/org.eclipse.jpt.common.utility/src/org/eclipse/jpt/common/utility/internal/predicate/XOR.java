@@ -17,29 +17,24 @@ import org.eclipse.jpt.common.utility.predicate.Predicate;
  * Both predicates will <em>always</em> be evaluated.
  * 
  * @param <V> the type of objects to be evaluated by the predicate
+ * @see AND
+ * @see OR
+ * @see NOT
  */
-public class XORPredicate<V>
+public class XOR<V>
 	extends AbstractCompoundPredicate<V>
 {
-	private static final long serialVersionUID = 1L;
-
-
 	/**
 	 * Construct a predicate that will evaluate to <code>true</code> if either of
 	 * the specified predicates evaluates to <code>true</code>, but <em>not</em> both.
 	 */
 	@SuppressWarnings("unchecked")
-	public XORPredicate(Predicate<? super V> predicate1, Predicate<? super V> predicate2) {
+	public XOR(Predicate<? super V> predicate1, Predicate<? super V> predicate2) {
 		super(predicate1, predicate2);
 	}
 
 	public boolean evaluate(V variable) {
 		return this.predicates[0].evaluate(variable) ^ this.predicates[1].evaluate(variable);
-	}
-
-	@Override
-	public XORPredicate<V> clone() {
-		return (XORPredicate<V>) super.clone();
 	}
 
 	@Override

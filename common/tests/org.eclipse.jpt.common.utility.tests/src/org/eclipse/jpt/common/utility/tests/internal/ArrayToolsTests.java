@@ -27,7 +27,7 @@ import org.eclipse.jpt.common.utility.internal.command.InterruptibleParameterize
 import org.eclipse.jpt.common.utility.internal.command.ParameterizedCommandAdapter;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
-import org.eclipse.jpt.common.utility.internal.predicate.TruePredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -3013,14 +3013,14 @@ public class ArrayToolsTests
 
 	public void testFilterObjectArrayFilter() {
 		String[] a = new String[] { "zero", "one", "two", "three", "four" };
-		String[] actual = ArrayTools.filter(a, new StringLengthFilter(3));
+		String[] actual = ArrayTools.filter(a, new StringLengthEquals(3));
 		String[] expected = new String[] { "one", "two" };
 		assertEquals(Arrays.asList(expected), Arrays.asList(actual));
 	}
 
 	public void testFilterObjectArrayFilterTransparent() {
 		String[] a = new String[] { "zero", "one", "two", "three", "four" };
-		String[] actual = ArrayTools.filter(a, TruePredicate.<String>instance());
+		String[] actual = ArrayTools.filter(a, PredicateTools.<String>true_());
 		String[] expected = new String[] { "zero", "one", "two", "three", "four" };
 		assertEquals(Arrays.asList(expected), Arrays.asList(actual));
 		assertNotSame(expected, actual);
@@ -3029,11 +3029,11 @@ public class ArrayToolsTests
 	/**
 	 * Accept any string with the specified length.
 	 */
-	public static class StringLengthFilter
+	public static class StringLengthEquals
 		extends PredicateAdapter<String>
 	{
 		private final int length;
-		public StringLengthFilter(int length) {
+		public StringLengthEquals(int length) {
 			super();
 			this.length = length;
 		}

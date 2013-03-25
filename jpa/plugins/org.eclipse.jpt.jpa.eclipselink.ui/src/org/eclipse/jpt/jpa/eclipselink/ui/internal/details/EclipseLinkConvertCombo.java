@@ -194,7 +194,7 @@ public class EclipseLinkConvertCombo
 	}
 
 	protected CollectionValueModel<String> buildConverterNamesModel() {
-		return new FilteringCollectionValueModel<String>(this.buildConverterNamesModel_(), StringTools.NON_BLANK_FILTER);
+		return new FilteringCollectionValueModel<String>(this.buildConverterNamesModel_(), StringTools.IS_NOT_BLANK);
 	}
 
 	protected ListValueModel<String> buildConverterNamesModel_() {

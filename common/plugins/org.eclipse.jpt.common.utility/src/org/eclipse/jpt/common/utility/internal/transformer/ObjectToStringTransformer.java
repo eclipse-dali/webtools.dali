@@ -27,6 +27,7 @@ public class ObjectToStringTransformer<I>
 
 	private static final long serialVersionUID = 1L;
 
+
 	public ObjectToStringTransformer(String nullString) {
 		super();
 		this.nullString = nullString;

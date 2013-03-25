@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.platform;
 
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPlatformFactory;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -70,6 +71,17 @@ class InternalJpaPlatformConfig
 			throw new IllegalArgumentException(version.toString());
 		}
 		return (this.jpaFacetVersion == null) || this.jpaFacetVersion.equals(version);
+	}
+
+	/* CU private */ static class SupportsJpaFacetVersion
+		extends CriterionPredicate<InternalJpaPlatformConfig, IProjectFacetVersion>
+	{
+		SupportsJpaFacetVersion(IProjectFacetVersion jpaFacetVersion) {
+			super(jpaFacetVersion);
+		}
+		public boolean evaluate(InternalJpaPlatformConfig config) {
+			return config.supportsJpaFacetVersion(this.criterion);
+		}
 	}
 
 	/**

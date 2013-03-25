@@ -23,7 +23,8 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
+import org.eclipse.jpt.common.core.internal.utility.TypeTools;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
@@ -34,7 +35,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
@@ -443,7 +444,7 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	protected Iterable<String> getNonEmptyConverterNames() {
-		return IterableTools.filter(this.getConverterNames(), StringTools.NON_BLANK_FILTER);
+		return IterableTools.filter(this.getConverterNames(), StringTools.IS_NOT_BLANK);
 	}
 
 	protected Iterable<String> getConverterNames() {
@@ -615,7 +616,7 @@ public class EclipseLinkPersistenceUnit
 		return IterableTools.downCast(
 				IterableTools.filter(
 					this.getMappingFilePersistentTypes(),
-					PredicateTools.<PersistentType>instanceOfPredicate(EclipseLinkOrmPersistentType.class)
+					PredicateTools.<PersistentType>instanceOf(EclipseLinkOrmPersistentType.class)
 				)
 			);
 	}
@@ -699,7 +700,7 @@ public class EclipseLinkPersistenceUnit
 							JptJpaEclipseLinkCoreValidationMessages.SESSION_LOGGER_CLASS_NOT_SPECIFIED
 					)
 			);
-		} else if (JDTTools.findType(javaProject, loggerProperty.getValue()) == null) {
+		} else if (JavaProjectTools.findType(javaProject, loggerProperty.getValue()) == null) {
 			messages.add(
 					this.buildValidationMessage(
 							this.getPersistenceUnit(),
@@ -708,8 +709,8 @@ public class EclipseLinkPersistenceUnit
 							loggerProperty.getValue()
 					)
 			);
-		} else if (!JDTTools.typeIsSubType(
-				javaProject, loggerProperty.getValue(), EclipseLinkLogging.ECLIPSELINK_LOGGER_CLASS_NAME)
+		} else if (!TypeTools.isSubType(
+				loggerProperty.getValue(), EclipseLinkLogging.ECLIPSELINK_LOGGER_CLASS_NAME, javaProject)
 		) {
 			messages.add(
 					this.buildValidationMessage(
@@ -735,7 +736,7 @@ public class EclipseLinkPersistenceUnit
 							JptJpaEclipseLinkCoreValidationMessages.EXCEPTION_HANDLER_CLASS_NOT_SPECIFIED
 					)
 			);
-		} else if (JDTTools.findType(javaProject, handlerProperty.getValue()) == null) {
+		} else if (JavaProjectTools.findType(javaProject, handlerProperty.getValue()) == null) {
 			messages.add(
 					this.buildValidationMessage(
 							this.getPersistenceUnit(),
@@ -744,7 +745,7 @@ public class EclipseLinkPersistenceUnit
 							handlerProperty.getValue()
 					)
 			);
-		} else if (!JDTTools.classHasPublicZeroArgConstructor(javaProject, handlerProperty.getValue())) {
+		} else if (!TypeTools.hasPublicZeroArgConstructor(handlerProperty.getValue(), javaProject)) {
 			messages.add(
 					this.buildValidationMessage(
 							this.getPersistenceUnit(),
@@ -753,8 +754,8 @@ public class EclipseLinkPersistenceUnit
 							handlerProperty.getValue()
 					)
 			);
-		} else if (!JDTTools.typeIsSubType(
-				javaProject, handlerProperty.getValue(), EclipseLinkCustomization.ECLIPSELINK_EXCEPTION_HANDLER_CLASS_NAME)
+		} else if (!TypeTools.isSubType(
+				handlerProperty.getValue(), EclipseLinkCustomization.ECLIPSELINK_EXCEPTION_HANDLER_CLASS_NAME, javaProject)
 		) {
 			messages.add(
 					this.buildValidationMessage(
@@ -785,7 +786,7 @@ public class EclipseLinkPersistenceUnit
 							JptJpaEclipseLinkCoreValidationMessages.SESSION_PROFILER_CLASS_NOT_SPECIFIED
 					)
 			);
-		} else if (JDTTools.findType(javaProject, profilerProperty.getValue()) == null) {
+		} else if (JavaProjectTools.findType(javaProject, profilerProperty.getValue()) == null) {
 			messages.add(
 					this.buildValidationMessage(
 							this.getPersistenceUnit(),
@@ -794,7 +795,7 @@ public class EclipseLinkPersistenceUnit
 							profilerProperty.getValue()
 					)
 			);
-		} else if (!JDTTools.classHasPublicZeroArgConstructor(javaProject, profilerProperty.getValue())){
+		} else if (!TypeTools.hasPublicZeroArgConstructor(profilerProperty.getValue(), javaProject)){
 			messages.add(
 					this.buildValidationMessage(
 							this.getPersistenceUnit(),
@@ -803,8 +804,8 @@ public class EclipseLinkPersistenceUnit
 							profilerProperty.getValue()
 					)
 			);
-		} else if (!JDTTools.typeIsSubType(
-				javaProject, profilerProperty.getValue(), EclipseLinkCustomization.ECLIPSELINK_SESSION_PROFILER_CLASS_NAME)
+		} else if (!TypeTools.isSubType(
+				profilerProperty.getValue(), EclipseLinkCustomization.ECLIPSELINK_SESSION_PROFILER_CLASS_NAME, javaProject)
 		) {
 			messages.add(
 					this.buildValidationMessage(
@@ -831,7 +832,7 @@ public class EclipseLinkPersistenceUnit
 									JptJpaEclipseLinkCoreValidationMessages.SESSION_CUSTOMIZER_CLASS_NOT_SPECIFIED
 							)
 					);
-				} else if (JDTTools.findType(javaProject, property.getValue()) == null) {
+				} else if (JavaProjectTools.findType(javaProject, property.getValue()) == null) {
 					messages.add(
 							this.buildValidationMessage(
 									this.getPersistenceUnit(),
@@ -840,7 +841,7 @@ public class EclipseLinkPersistenceUnit
 									property.getValue()
 							)
 					);
-				} else if (!JDTTools.classHasPublicZeroArgConstructor(javaProject, property.getValue())){
+				} else if (!TypeTools.hasPublicZeroArgConstructor(property.getValue(), javaProject)){
 					messages.add(
 							this.buildValidationMessage(
 									this.getPersistenceUnit(),
@@ -849,8 +850,8 @@ public class EclipseLinkPersistenceUnit
 									property.getValue()
 							)
 					);
-				} else if (!JDTTools.typeIsSubType(
-						javaProject, property.getValue(), EclipseLinkCustomization.ECLIPSELINK_SESSION_CUSTOMIZER_CLASS_NAME)
+				} else if (!TypeTools.isSubType(
+						property.getValue(), EclipseLinkCustomization.ECLIPSELINK_SESSION_CUSTOMIZER_CLASS_NAME, javaProject)
 				) {
 					messages.add(
 							this.buildValidationMessage(
@@ -936,17 +937,14 @@ public class EclipseLinkPersistenceUnit
 
 	private static final Predicate<Property> PROPERTY_NAME_DOES_NOT_END_WITH_DEFAULT = new PropertyNameDoesNotEndWith("default"); //$NON-NLS-1$
 	public static class PropertyNameDoesNotEndWith
-		extends PredicateAdapter<Property>
+		extends CriterionPredicate<Property, String>
 	{
-		private final String suffix;
 		public PropertyNameDoesNotEndWith(String suffix) {
-			super();
-			this.suffix = suffix;
+			super(suffix);
 		}
-		@Override
 		public boolean evaluate(Property property) {
 			String propertyName = property.getName();
-			return (propertyName == null) || ! propertyName.endsWith(this.suffix);
+			return (propertyName == null) || ! propertyName.endsWith(this.criterion);
 		}
 	}
 

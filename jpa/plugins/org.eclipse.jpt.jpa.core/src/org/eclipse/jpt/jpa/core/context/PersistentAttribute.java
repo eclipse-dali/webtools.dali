@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
@@ -47,16 +47,13 @@ public interface PersistentAttribute
 	}
 
 	class NameEquals
-		extends PredicateAdapter<PersistentAttribute>
+		extends CriterionPredicate<PersistentAttribute, String>
 	{
-		private final String attributeName;
 		public NameEquals(String attributeName) {
-			super();
-			this.attributeName = attributeName;
+			super(attributeName);
 		}
-		@Override
 		public boolean evaluate(PersistentAttribute attribute) {
-			return ObjectTools.equals(this.attributeName, attribute.getName());
+			return ObjectTools.equals(this.criterion, attribute.getName());
 		}
 	}
 

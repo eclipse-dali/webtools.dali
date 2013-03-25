@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
@@ -29,7 +29,6 @@ import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappingRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmRelationshipMapping;
-import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmCascade;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.RelationshipMapping2_0;
@@ -391,7 +390,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 			return;
 		}
 		if (this.getResolvedTargetType() == null) {
-			IType jdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedTargetEntity());
+			IType jdtType = JavaProjectTools.findType(this.getJavaProject(), this.getFullyQualifiedTargetEntity());
 			if (jdtType == null) {
 				messages.add(
 					this.buildValidationMessage(
@@ -454,6 +453,6 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 	}
 	
 	protected Iterable<String> getCandidateTargetEntityClassNames() {
-		return MappingTools.getSortedJavaClassNames(getJavaProject());
+		return JavaProjectTools.getJavaClassNames(getJavaProject());
 	}
 }

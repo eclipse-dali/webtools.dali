@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.jface;
 
-import org.eclipse.jpt.common.utility.internal.transformer.NullOutputTransformer;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.swt.graphics.Image;
@@ -36,7 +35,7 @@ public class PluggableLabelProvider<E>
 	 * @see org.eclipse.jface.viewers.LabelProvider LabelProvider
 	 */
 	public PluggableLabelProvider() {
-		this(NullOutputTransformer.<E, Image>instance(), TransformerTools.<E>objectToStringTransformer());
+		this(TransformerTools.<E, Image>nullOutputTransformer(), TransformerTools.<E>objectToStringTransformer());
 	}
 
 	/**
@@ -46,7 +45,7 @@ public class PluggableLabelProvider<E>
 	 * @see #setImageTransformer(Transformer)
 	 */
 	public PluggableLabelProvider(Transformer<E, String> textTransformer) {
-		this(NullOutputTransformer.<E, Image>instance(), textTransformer);
+		this(TransformerTools.<E, Image>nullOutputTransformer(), textTransformer);
 	}
 
 	/**

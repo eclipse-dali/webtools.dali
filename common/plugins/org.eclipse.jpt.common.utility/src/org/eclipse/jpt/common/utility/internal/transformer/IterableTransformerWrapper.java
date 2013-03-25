@@ -30,6 +30,9 @@ public class IterableTransformerWrapper<I>
 
 	public IterableTransformerWrapper(Transformer<? super I, ? extends Iterable<? extends I>> transformer) {
 		super();
+		if (transformer == null) {
+			throw new NullPointerException();
+		}
 		this.transformer = transformer;
 	}
 

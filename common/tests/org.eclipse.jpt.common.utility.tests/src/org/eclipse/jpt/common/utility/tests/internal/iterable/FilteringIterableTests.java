@@ -78,10 +78,10 @@ public class FilteringIterableTests
 	}
 
 	private Predicate<String> buildFilter() {
-		return new StringStartsWithPrefix();
+		return new StringStartsWith();
 	}
 
-	/* CU private */ static class StringStartsWithPrefix
+	/* CU private */ static class StringStartsWith
 		extends PredicateAdapter<String>
 	{
 		@Override
@@ -91,10 +91,10 @@ public class FilteringIterableTests
 	}
 
 	private Predicate<Object> buildSuperFilter() {
-		return new ObjectToStringStartsWithPrefix();
+		return new ObjectToStringStartsWith();
 	}
 
-	/* CU private */ static class ObjectToStringStartsWithPrefix
+	/* CU private */ static class ObjectToStringStartsWith
 		extends PredicateAdapter<Object>
 	{
 		@Override

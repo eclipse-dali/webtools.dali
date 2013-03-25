@@ -70,6 +70,6 @@ public abstract class AbstractTextRange
 		String start = String.valueOf(this.getOffset());
 		String end = String.valueOf(this.getEnd());
 		String line = String.valueOf(this.getLineNumber());
-		return ObjectTools.toString(this, start + ", " + end + " [" + line + ']'); //$NON-NLS-1$ //$NON-NLS-2$
+		return ObjectTools.toString(this, start + ", " + end + " [line " + line + ']'); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

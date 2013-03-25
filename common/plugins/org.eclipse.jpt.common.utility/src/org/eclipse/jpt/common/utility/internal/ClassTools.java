@@ -171,9 +171,9 @@ public final class ClassTools {
 		try {
 			return get_(javaClass, fieldName);
 		} catch (NoSuchFieldException ex) {
-			throw new RuntimeException(ex + StringTools.CR + buildFullyQualifiedFieldName(javaClass, fieldName), ex);
+			throw new RuntimeException(buildFieldExceptionMessage(ex, javaClass, fieldName), ex);
 		} catch (IllegalAccessException ex) {
-			throw new RuntimeException(ex + StringTools.CR + buildFullyQualifiedFieldName(javaClass, fieldName), ex);
+			throw new RuntimeException(buildFieldExceptionMessage(ex, javaClass, fieldName), ex);
 		}
 	}
 
@@ -196,9 +196,9 @@ public final class ClassTools {
 		try {
 			set_(javaClass, fieldName, value);
 		} catch (NoSuchFieldException ex) {
-			throw new RuntimeException(ex + StringTools.CR + buildFullyQualifiedFieldName(javaClass, fieldName), ex);
+			throw new RuntimeException(buildFieldExceptionMessage(ex, javaClass, fieldName), ex);
 		} catch (IllegalAccessException ex) {
-			throw new RuntimeException(ex + StringTools.CR + buildFullyQualifiedFieldName(javaClass, fieldName), ex);
+			throw new RuntimeException(buildFieldExceptionMessage(ex, javaClass, fieldName), ex);
 		}
 	}
 
@@ -222,7 +222,7 @@ public final class ClassTools {
 		try {
 			return field_(javaClass, fieldName);
 		} catch (NoSuchFieldException ex) {
-			throw new RuntimeException(ex + StringTools.CR + buildFullyQualifiedFieldName(javaClass, fieldName), ex);
+			throw new RuntimeException(buildFieldExceptionMessage(ex, javaClass, fieldName), ex);
 		}
 	}
 
@@ -317,11 +317,11 @@ public final class ClassTools {
 		try {
 			return execute_(javaClass, methodName, parameterTypes, arguments);
 		} catch (NoSuchMethodException ex) {
-			throw new RuntimeException(ex + StringTools.CR + buildFullyQualifiedMethodSignature(javaClass, methodName, parameterTypes), ex);
+			throw new RuntimeException(buildMethodExceptionMessage(ex, javaClass, methodName, parameterTypes), ex);
 		} catch (IllegalAccessException ex) {
-			throw new RuntimeException(ex + StringTools.CR + buildFullyQualifiedMethodSignature(javaClass, methodName, parameterTypes), ex);
+			throw new RuntimeException(buildMethodExceptionMessage(ex, javaClass, methodName, parameterTypes), ex);
 		} catch (InvocationTargetException ex) {
-			throw new RuntimeException(buildFullyQualifiedMethodSignature(javaClass, methodName, parameterTypes) + StringTools.CR + ex.getTargetException(), ex);
+			throw new RuntimeException(buildMethodExceptionMessage(ex, javaClass, methodName, parameterTypes), ex);
 		}
 	}
 
@@ -382,7 +382,7 @@ public final class ClassTools {
 		try {
 			return method_(javaClass, methodName, parameterTypes);
 		} catch (NoSuchMethodException ex) {
-			throw new RuntimeException(ex + StringTools.CR + buildFullyQualifiedMethodSignature(javaClass, methodName, parameterTypes), ex);
+			throw new RuntimeException(buildMethodExceptionMessage(ex, javaClass, methodName, parameterTypes), ex);
 		}
 	}
 
@@ -455,7 +455,7 @@ public final class ClassTools {
 		try {
 			return staticMethod_(javaClass, methodName, parameterTypes);
 		} catch (NoSuchMethodException ex) {
-			throw new RuntimeException(ex + StringTools.CR + buildFullyQualifiedMethodSignature(javaClass, methodName, parameterTypes), ex);
+			throw new RuntimeException(buildMethodExceptionMessage(ex, javaClass, methodName, parameterTypes), ex);
 		}
 	}
 
@@ -538,13 +538,13 @@ public final class ClassTools {
 		try {
 			return newInstance_(javaClass, parameterTypes, arguments);
 		} catch (InstantiationException ex) {
-			throw new RuntimeException(ex + StringTools.CR + buildFullyQualifiedConstructorSignature(javaClass, parameterTypes), ex);
+			throw new RuntimeException(buildConstructorExceptionMessage(ex, javaClass, parameterTypes), ex);
 		} catch (IllegalAccessException ex) {
-			throw new RuntimeException(ex + StringTools.CR + buildFullyQualifiedConstructorSignature(javaClass, parameterTypes), ex);
+			throw new RuntimeException(buildConstructorExceptionMessage(ex, javaClass, parameterTypes), ex);
 		} catch (InvocationTargetException ex) {
-			throw new RuntimeException(buildFullyQualifiedConstructorSignature(javaClass, parameterTypes) + StringTools.CR + ex.getTargetException(), ex);
+			throw new RuntimeException(buildConstructorExceptionMessage(ex, javaClass, parameterTypes), ex);
 		} catch (NoSuchMethodException ex) {
-			throw new RuntimeException(ex + StringTools.CR + buildFullyQualifiedConstructorSignature(javaClass, parameterTypes), ex);
+			throw new RuntimeException(buildConstructorExceptionMessage(ex, javaClass, parameterTypes), ex);
 		}
 	}
 
@@ -618,7 +618,7 @@ public final class ClassTools {
 		try {
 			return constructor_(javaClass, parameterTypes);
 		} catch (NoSuchMethodException ex) {
-			throw new RuntimeException(ex + StringTools.CR + buildFullyQualifiedConstructorSignature(javaClass, parameterTypes), ex);
+			throw new RuntimeException(buildConstructorExceptionMessage(ex, javaClass, parameterTypes), ex);
 		}
 	}
 
@@ -1066,13 +1066,38 @@ public final class ClassTools {
 	}
 
 	/**
-	 * Return a string representation of the specified field.
+	 * Build an exception message for the specified field.
+	 * @see ObjectTools#buildFieldExceptionMessage(Exception, Object, String)
 	 */
-	static String buildFullyQualifiedFieldName(Class<?> javaClass, String fieldName) {
+	static String buildFieldExceptionMessage(Exception ex, Class<?> javaClass, String fieldName) {
 		StringBuilder sb = new StringBuilder(200);
+		sb.append(ex);
+		sb.append(StringTools.CR);
 		sb.append(javaClass.getName());
 		sb.append('.');
 		sb.append(fieldName);
+		return sb.toString();
+	}
+
+	/**
+	 * Build an exception message for the specified method.
+	 */
+	private static String buildMethodExceptionMessage(Exception ex, Class<?> javaClass, String methodName, Class<?>[] parameterTypes) {
+		StringBuilder sb = new StringBuilder(200);
+		sb.append(ex);
+		sb.append(StringTools.CR);
+		appendFullyQualifiedMethodSignature(sb, javaClass, methodName, parameterTypes);
+		return sb.toString();
+	}
+
+	/**
+	 * Build an invocation target exception message for the specified method.
+	 */
+	private static String buildMethodExceptionMessage(InvocationTargetException ex, Class<?> javaClass, String methodName, Class<?>[] parameterTypes) {
+		StringBuilder sb = new StringBuilder(200);
+		appendFullyQualifiedMethodSignature(sb, javaClass, methodName, parameterTypes);
+		sb.append(StringTools.CR);
+		sb.append(ex.getTargetException());
 		return sb.toString();
 	}
 
@@ -1081,31 +1106,53 @@ public final class ClassTools {
 	 */
 	private static String buildFullyQualifiedMethodSignature(Class<?> javaClass, String methodName, Class<?>[] parameterTypes) {
 		StringBuilder sb = new StringBuilder(200);
+		appendFullyQualifiedMethodSignature(sb, javaClass, methodName, parameterTypes);
+		return sb.toString();
+	}
+
+	private static void appendFullyQualifiedMethodSignature(StringBuilder sb, Class<?> javaClass, String methodName, Class<?>[] parameterTypes) {
 		sb.append(javaClass.getName());
-		// this check allows us to use this code for constructors, where the methodName is null
+		appendMethodSignature(sb, methodName, parameterTypes);
+	}
+
+	/**
+	 * Return a string representation of the specified method.
+	 */
+	public static String buildMethodSignature(String methodName, Class<?>[] parameterTypes) {
+		StringBuilder sb = new StringBuilder(200);
+		appendMethodSignature(sb, methodName, parameterTypes);
+		return sb.toString();
+	}
+
+	private static void appendMethodSignature(StringBuilder sb, String methodName, Class<?>[] parameterTypes) {
+		// method name is null for constructors
 		if (methodName != null) {
 			sb.append('.');
 			sb.append(methodName);
 		}
 		sb.append('(');
-		int max = parameterTypes.length - 1;
-		if (max > -1) {
-			// stop one short of the end of the array
-			for (int i = 0; i < max; i++) {
-				sb.append(parameterTypes[i].getName());
+		if (parameterTypes.length > 0) {
+			for (Class<?> parameterType : parameterTypes) {
+				sb.append(parameterType.getName());
 				sb.append(", "); //$NON-NLS-1$
 			}
-			sb.append(parameterTypes[max].getName());
+			sb.setLength(sb.length() - 2);  // strip off extra comma
 		}
 		sb.append(')');
-		return sb.toString();
 	}
 
 	/**
-	 * Return a string representation of the specified constructor.
+	 * Build an exception message for the specified constructor.
 	 */
-	private static String buildFullyQualifiedConstructorSignature(Class<?> javaClass, Class<?>[] parameterTypes) {
-		return buildFullyQualifiedMethodSignature(javaClass, null, parameterTypes);
+	private static String buildConstructorExceptionMessage(Exception ex, Class<?> javaClass, Class<?>[] parameterTypes) {
+		return buildMethodExceptionMessage(ex, javaClass, null, parameterTypes);
+	}
+
+	/**
+	 * Build an invocation target exception message for the specified constructor.
+	 */
+	private static String buildConstructorExceptionMessage(InvocationTargetException ex, Class<?> javaClass, Class<?>[] parameterTypes) {
+		return buildMethodExceptionMessage(ex, javaClass, null, parameterTypes);
 	}
 
 

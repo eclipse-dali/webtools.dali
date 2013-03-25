@@ -343,7 +343,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	protected Iterable<Entity> buildDescendants() {
 		return this.isRootEntity() ?
-				IterableTools.filter(this.getPersistenceUnit().getEntities(), new Entity.EntityIsDescendant(this)) :
+				IterableTools.filter(this.getPersistenceUnit().getEntities(), new Entity.IsDescendant(this)) :
 				IterableTools.<Entity>emptyIterable();
 	}
 

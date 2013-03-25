@@ -17,21 +17,21 @@ public class JptCommonUtilityPredicateTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JptCommonUtilityPredicateTests.class.getPackage().getName());
 
-		suite.addTestSuite(ANDPredicateTests.class);
-		suite.addTestSuite(EqualPredicateTests.class);
+		suite.addTestSuite(ANDTests.class);
+		suite.addTestSuite(EqualsTests.class);
 		suite.addTestSuite(FieldPredicateTests.class);
-		suite.addTestSuite(IdentityPredicateTests.class);
-		suite.addTestSuite(InstanceOfPredicateTests.class);
+		suite.addTestSuite(IsIdenticalTests.class);
+		suite.addTestSuite(InstanceOfTests.class);
 		suite.addTestSuite(MethodPredicateTests.class);
-		suite.addTestSuite(NOTPredicateTests.class);
-		suite.addTestSuite(ORPredicateTests.class);
+		suite.addTestSuite(NOTTests.class);
+		suite.addTestSuite(ORTests.class);
 		suite.addTestSuite(PredicateTests.class);
 		suite.addTestSuite(PredicateWrapperTests.class);
 		suite.addTestSuite(TransformerPredicateTests.class);
 		suite.addTestSuite(TransformationPredicateTests.class);
 		suite.addTestSuite(UniquePredicateTests.class);
 		suite.addTestSuite(UniqueIdentityPredicateTests.class);
-		suite.addTestSuite(XORPredicateTests.class);
+		suite.addTestSuite(XORTests.class);
 
 		return suite;
 	}

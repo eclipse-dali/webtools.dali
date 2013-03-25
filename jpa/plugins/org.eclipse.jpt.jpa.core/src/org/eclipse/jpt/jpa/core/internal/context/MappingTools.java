@@ -15,26 +15,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceModel;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.TypeTools;
+import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ClassNameTools;
 import org.eclipse.jpt.common.utility.internal.TypeDeclarationTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
-import org.eclipse.jpt.common.utility.predicate.Predicate;
-import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ColumnMapping;
@@ -51,7 +43,6 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedReferenceTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
@@ -92,14 +83,14 @@ public final class MappingTools {
 		if (typeIsOtherValidBasicType(fullyQualifiedName)) {
 			return true;
 		}
-		IType type = JDTTools.findType(javaProject, fullyQualifiedName);
+		IType type = JavaProjectTools.findType(javaProject, fullyQualifiedName);
 		if (type == null) {
 			return false;
 		}
-		if (JDTTools.typeIsSerializable(javaProject, type)) {
+		if (TypeTools.isSerializable(type)) {
 			return true;
 		}
-		if (JDTTools.typeIsEnum(type)) {
+		if (TypeTools.isEnum(type)) {
 			return true;
 		}
 		return false;
@@ -504,12 +495,12 @@ public final class MappingTools {
 
 	/**
 	 * This transformer will prepend a specified qualifier, followed by a
-	 * dot ('.'), to a string. For example, if a mapping's name is
-	 * <code>"foo"</code> and one of its attribute's is named
+	 * dot (<code>'.'</code>), to a string. For example, if a mapping's name is
+	 * <code>"foo"</code> and one of its attributes is named
 	 * <code>"bar"</code>, the attribute's name will be transformed
 	 * into <code>"foo.bar"</code>. If the specified qualifier is
 	 * <code>null</code> (or an empty string), only a dot will be prepended
-	 * to a string.
+	 * to any string to be transformed.
 	 */
 	public static class QualifierTransformer
 		extends TransformerAdapter<String, String>
@@ -532,146 +523,14 @@ public final class MappingTools {
 	 */
 	public static boolean modelIsInternalSource(JpaContextModel contextModel, JavaResourceModel resourceModel) {
 		IResource resource = contextModel.getResource();
-		// 'resource' will be null if the node is "external" and binary;
-		// the resource will be in a different project if the node is "external" and source;
-		// the node will be binary if it is in a JAR in the current project
+		// 'resource' will be null if the model is "external" and binary;
+		// the resource will be in a different project if the model is "external" and source;
+		// the model will be binary if it is in a JAR in the current project
 		return (resource != null) &&
 				resource.getProject().equals(contextModel.getJpaProject().getProject()) &&
 				(resourceModel instanceof SourceModel);
 	}
 
-	/**
-	 * Returns sorted names of interfaces of the given project
-	 */
-	public static Iterable<String> getSortedJavaInterfaceNames(IJavaProject javaProject) {
-		return IterableTools.sort(getJavaInterfaceNames(javaProject));
-	}
-	
-	/**
-	 * Returns the names of interfaces of the given project
-	 */
-	public static Iterable<String> getJavaInterfaceNames(IJavaProject javaProject) {
-		return IterableTools.transform(getJavaInterfaces(javaProject), JDT_TYPE_NAME_TRANSFORMER);
-	}	
-	
-	/**
-	 * Returns all the interfaces across the given project
-	 */
-	public static Iterable<IType> getJavaInterfaces(IJavaProject javaProject) {
-		return IterableTools.filter(getJavaTypes(javaProject), TYPE_IS_INTERFACE);
-	}
-
-	public static final Predicate<IType> TYPE_IS_INTERFACE = new TypeIsInterface();
-	public static class TypeIsInterface
-		extends PredicateAdapter<IType>
-	{
-		@Override
-		public boolean evaluate(IType type) {
-			try {
-				return type.isInterface();
-			} catch (JavaModelException e) {
-				JptJpaCorePlugin.instance().logError(e);
-				return false;
-			}
-		}
-	}
-	
-	/**
-	 * Returns sorted names of classes of the given project
-	 */
-	public static Iterable<String> getSortedJavaClassNames(IJavaProject javaProject) {
-		return IterableTools.sort(getJavaClassNames(javaProject));
-	}
-	
-	/**
-	 * Returns the names of classes of the given project
-	 */
-	public static Iterable<String> getJavaClassNames(IJavaProject javaProject) {
-		return IterableTools.transform(getJavaClasses(javaProject), JDT_TYPE_NAME_TRANSFORMER);
-	}
-
-	/**
-	 * Returns all the classes across the given project
-	 */
-	public static Iterable<IType> getJavaClasses(IJavaProject javaProject) {
-		return IterableTools.filter(getJavaTypes(javaProject), TYPE_IS_CLASS);
-	}
-	
-	public static final Predicate<IType> TYPE_IS_CLASS = new TypeIsClass();
-	public static class TypeIsClass
-		extends PredicateAdapter<IType>
-	{
-		@Override
-		public boolean evaluate(IType type) {
-			try {
-				return type.isClass();
-			} catch (JavaModelException e) {
-				JptJpaCorePlugin.instance().logError(e);
-				return false;
-			}
-		}
-	}
-	
-	/**
-	 * Returns all the enums across the given project
-	 */
-	public static Iterable<IType> getJavaEnums(IJavaProject javaProject) {
-		return IterableTools.filter(getJavaTypes(javaProject), TYPE_IS_ENUM);
-	}
-	
-	public static final Predicate<IType> TYPE_IS_ENUM = new TypeIsEnum();
-	public static class TypeIsEnum
-		extends PredicateAdapter<IType>
-	{
-		@Override
-		public boolean evaluate(IType type) {
-			try {
-				return type.isEnum();
-			} catch (JavaModelException e) {
-				JptJpaCorePlugin.instance().logError(e);
-				return false;
-			}
-		}
-	}
-	
-	/**
-	 * Returns the names of enums in the given project
-	 */
-	public static Iterable<String> getJavaEnumNames(IJavaProject javaProject) {
-		return IterableTools.transform(getJavaEnums(javaProject), JDT_TYPE_NAME_TRANSFORMER);
-	}
-	
-	/**
-	 * Returns sorted names of enums in the given project
-	 */
-	public static Iterable<String> getSortedJavaEnumNames(IJavaProject javaProject) {
-		return IterableTools.sort(getJavaEnumNames(javaProject));
-	}
-	
-	/**
-	 * Returns all the types cross the given project
-	 */
-	public static Iterable<IType> getJavaTypes(IJavaProject javaProject) {
-		List<IType> typesList = new ArrayList<IType>();
-		try {
-			IPackageFragmentRoot[] pkgRoots = javaProject.getAllPackageFragmentRoots();
-			for (IPackageFragmentRoot root : pkgRoots) {
-					IJavaElement[] jElements = root.getChildren();
-					for (IJavaElement jElement : jElements) {
-						if (jElement.getElementType() == IJavaElement.PACKAGE_FRAGMENT) {
-							ICompilationUnit[] units = ((IPackageFragment) jElement).getCompilationUnits();
-							for (ICompilationUnit unit : units) {
-								CollectionTools.addAll(typesList, unit.getTypes());
-							}
-						}
-					}
-			}
-		} catch (JavaModelException e) {
-			JptJpaCorePlugin.instance().logError(e);
-		}
-		return typesList;
-	}
-	
 	/**
 	 * Returns the names of basic array types.
 	 */
@@ -724,17 +583,6 @@ public final class MappingTools {
 		List<String> names = new ArrayList<String>();
 		CollectionTools.addAll(names, COLLECTION_TYPE_NAMES);
 		return names;
-	}
-
-	public static final Transformer<IType, String> JDT_TYPE_NAME_TRANSFORMER = new JdtTypeNameTransformer();
-
-	public static class JdtTypeNameTransformer
-		extends TransformerAdapter<IType, String>
-	{
-		@Override
-		public String transform(IType type) {
-			return type.getFullyQualifiedName();
-		}
 	}
 
 

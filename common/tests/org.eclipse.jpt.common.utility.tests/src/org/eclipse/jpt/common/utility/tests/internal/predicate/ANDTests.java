@@ -11,21 +11,21 @@ package org.eclipse.jpt.common.utility.tests.internal.predicate;
 
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.BitTools;
-import org.eclipse.jpt.common.utility.internal.predicate.ANDPredicate;
 import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
-import org.eclipse.jpt.common.utility.internal.predicate.NotNullPredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.IsNotNull;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
+import org.eclipse.jpt.common.utility.predicate.CompoundPredicate;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
-public class ANDPredicateTests
+public class ANDTests
 	extends TestCase
 {
-	private ANDPredicate<Number> andPredicate;
+	private CompoundPredicate<Number> andPredicate;
 
 
-	public ANDPredicateTests(String name) {
+	public ANDTests(String name) {
 		super(name);
 	}
 
@@ -33,18 +33,17 @@ public class ANDPredicateTests
 	@SuppressWarnings("unchecked")
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.andPredicate = PredicateTools.and(this.buildMinPredicate(1), this.buildMaxPredicate(10));
+		this.andPredicate = PredicateTools.and(this.buildMin(1), this.buildMax(10));
 	}
 
-	private Predicate<Number> buildMinPredicate(double min) {
-		return new MinPredicate(min);
+	private Predicate<Number> buildMin(double min) {
+		return new Min(min);
 	}
 
-	static class MinPredicate
+	static class Min
 		extends CriterionPredicate<Number, Number>
 	{
-		private static final long serialVersionUID = 1L;
-		MinPredicate(double min) {
+		Min(double min) {
 			super(new Double(min));
 		}
 		public boolean evaluate(Number number) {
@@ -52,27 +51,26 @@ public class ANDPredicateTests
 		}
 	}
 
-	private Predicate<Number> buildMaxPredicate(double max) {
-		return new MaxPredicate(max);
+	private Predicate<Number> buildMax(double max) {
+		return new Max(max);
 	}
 
-	static class MaxPredicate
+	static class Max
 		extends CriterionPredicate<Number, Number>
 	{
-		private static final long serialVersionUID = 1L;
-		MaxPredicate(double min) {
-			super(new Double(min));
+		Max(double max) {
+			super(new Double(max));
 		}
 		public boolean evaluate(Number number) {
 			return number.doubleValue() <= this.criterion.doubleValue();
 		}
 	}
 
-	private Predicate<Number> buildEvenPredicate() {
-		return new EvenPredicate();
+	private Predicate<Number> buildIsEven() {
+		return new IsEven();
 	}
 
-	static class EvenPredicate
+	static class IsEven
 		extends PredicateAdapter<Number>
 	{
 		@Override
@@ -99,7 +97,7 @@ public class ANDPredicateTests
 
 	public void testEvaluate3() {
 		@SuppressWarnings("unchecked")
-		ANDPredicate<Number> andPredicate2 = PredicateTools.and(this.andPredicate, this.buildEvenPredicate());
+		Predicate<Number> andPredicate2 = PredicateTools.and(this.andPredicate, this.buildIsEven());
 		assertFalse(andPredicate2.evaluate(new Integer(7)));
 		assertTrue(andPredicate2.evaluate(new Integer(2)));
 		assertTrue(andPredicate2.evaluate(new Double(6.1)));
@@ -111,7 +109,7 @@ public class ANDPredicateTests
 
 	public void testComposite() {
 		@SuppressWarnings("unchecked")
-		Predicate<Number> andPredicate2 = PredicateTools.and(this.buildMinPredicate(1), this.buildMaxPredicate(10), this.buildEvenPredicate());
+		Predicate<Number> andPredicate2 = PredicateTools.and(this.buildMin(1), this.buildMax(10), this.buildIsEven());
 		assertFalse(andPredicate2.evaluate(new Integer(7)));
 		assertTrue(andPredicate2.evaluate(new Integer(2)));
 		assertTrue(andPredicate2.evaluate(new Double(6.1)));
@@ -121,26 +119,11 @@ public class ANDPredicateTests
 		assertFalse(andPredicate2.evaluate(new Double(111)));
 	}
 
-	public void testClone() {
-		ANDPredicate<Number> andPredicate2 = this.andPredicate.clone();
-		assertEquals(this.andPredicate.getPredicates()[0], andPredicate2.getPredicates()[0]);
-		assertEquals(this.andPredicate.getPredicates()[1], andPredicate2.getPredicates()[1]);
-		assertNotSame(this.andPredicate, andPredicate2);
-	}
-
 	public void testEquals() {
 		@SuppressWarnings("unchecked")
-		ANDPredicate<Number> andPredicate2 = PredicateTools.and(this.buildMinPredicate(1), this.buildMaxPredicate(10));
+		Predicate<Number> andPredicate2 = PredicateTools.and(this.buildMin(1), this.buildMax(10));
 		assertEquals(this.andPredicate, andPredicate2);
 		assertEquals(this.andPredicate.hashCode(), andPredicate2.hashCode());
-		assertFalse(this.andPredicate.equals(NotNullPredicate.instance()));
-	}
-
-	public void testSerialization() throws Exception {
-		@SuppressWarnings("cast")
-		ANDPredicate<Number> andPredicate2 = (ANDPredicate<Number>) TestTools.serialize(this.andPredicate);
-		assertEquals(this.andPredicate.getPredicates()[0], andPredicate2.getPredicates()[0]);
-		assertEquals(this.andPredicate.getPredicates()[1], andPredicate2.getPredicates()[1]);
-		assertNotSame(this.andPredicate, andPredicate2);
+		assertFalse(this.andPredicate.equals(IsNotNull.instance()));
 	}
 }

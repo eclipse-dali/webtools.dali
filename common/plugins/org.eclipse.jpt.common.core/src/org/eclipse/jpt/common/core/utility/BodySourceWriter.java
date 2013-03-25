@@ -21,6 +21,7 @@ import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.io.WriterTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.io.IndentingPrintWriter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
@@ -244,16 +245,17 @@ public class BodySourceWriter
 	 * strip off any non-required imports (e.g. "java.lang.Object')
 	 */
 	protected Iterable<Map.Entry<String, ImportPackage>> getRequiredImportEntries() {
-		return IterableTools.filter(this.imports.entrySet(), this.buildRequiredImportEntriesFilter());
+		return IterableTools.filter(this.imports.entrySet(), this.buildImportEntryIsRequired());
 	}
 
-	protected Predicate<Map.Entry<String, ImportPackage>> buildRequiredImportEntriesFilter() {
-		return new RequiredImportEntriesFilter();
+	protected Predicate<Map.Entry<String, ImportPackage>> buildImportEntryIsRequired() {
+		return new ImportEntryIsRequired();
 	}
 
-	protected class RequiredImportEntriesFilter
-		implements Predicate<Map.Entry<String, ImportPackage>>
+	protected class ImportEntryIsRequired
+		extends PredicateAdapter<Map.Entry<String, ImportPackage>>
 	{
+		@Override
 		public boolean evaluate(Map.Entry<String, ImportPackage> importEntry) {
 			return this.packageMustBeImported(importEntry.getValue());
 		}

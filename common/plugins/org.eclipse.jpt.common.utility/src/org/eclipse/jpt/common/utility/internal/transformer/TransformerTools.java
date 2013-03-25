@@ -13,7 +13,10 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
 import org.eclipse.jpt.common.utility.ExceptionHandler;
+import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.DefaultExceptionHandler;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -64,7 +67,7 @@ public final class TransformerTools {
 		return OBJECT_TO_STRING_TRANSFORMER;
 	}
 	@SuppressWarnings("rawtypes")
-	private static final Transformer OBJECT_TO_STRING_TRANSFORMER = new ObjectToStringTransformer(null);
+	private static final Transformer OBJECT_TO_STRING_TRANSFORMER = objectToStringTransformer(null);
 
 
 	// ********** boolean **********
@@ -214,10 +217,24 @@ public final class TransformerTools {
 	}
 
 	/**
+	 * Return a transformer that will replace any of the XML "predefined
+	 * entities" with an XML <em>character reference</em>:
+	 * <code>'&' => "&amp;#x26;"</code>
+	 * @see #xmlStringDecoder()
+	 * @see #xmlStringEncoder(char[])
+	 * @see XMLStringEncoder
+	 */
+	public static Transformer<String, String> xmlStringEncoder() {
+		return xmlStringEncoder(XML_PREDEFINED_ENTITIES);
+	}
+	public static final char[] XML_PREDEFINED_ENTITIES = new char[] {'"', '&', '\'', '<', '>'};
+
+	/**
 	 * Return a transformer that will replace any of the specified set of
 	 * characters with an XML <em>character reference</em>:
 	 * <code>'/' => "&amp;#x2f;"</code>
 	 * @see #xmlStringDecoder()
+	 * @see #xmlStringEncoder()
 	 * @see XMLStringEncoder
 	 */
 	public static Transformer<String, String> xmlStringEncoder(char[] chars) {
@@ -236,7 +253,7 @@ public final class TransformerTools {
 	 *   type of object returned by the output iterator
 	 * @see IterableTransformerWrapper
 	 */
-	public static <I> Transformer<I, Iterator<? extends I>> iterableTransformerWrapper(Transformer<? super I, ? extends Iterable<? extends I>> transformer) {
+	public static <I> Transformer<I, Iterator<? extends I>> toIterator(Transformer<? super I, ? extends Iterable<? extends I>> transformer) {
 		return new IterableTransformerWrapper<I>(transformer);
 	}
 
@@ -345,8 +362,8 @@ public final class TransformerTools {
 	 * @see SafeTransformer
 	 * @see DefaultExceptionHandler
 	 */
-	public static <I, O> Transformer<I, O> protect(Transformer<? super I, ? extends O> transformer) {
-		return protect(transformer, DefaultExceptionHandler.instance(), null);
+	public static <I, O> Transformer<I, O> safe(Transformer<? super I, ? extends O> transformer) {
+		return safe(transformer, DefaultExceptionHandler.instance(), null);
 	}
 
 	/**
@@ -360,8 +377,8 @@ public final class TransformerTools {
 	 * @see SafeTransformer
 	 * @see DefaultExceptionHandler
 	 */
-	public static <I, O> Transformer<I, O> protect(Transformer<? super I, ? extends O> transformer, O exceptionOutput) {
-		return protect(transformer, DefaultExceptionHandler.instance(), exceptionOutput);
+	public static <I, O> Transformer<I, O> safe(Transformer<? super I, ? extends O> transformer, O exceptionOutput) {
+		return safe(transformer, DefaultExceptionHandler.instance(), exceptionOutput);
 	}
 
 	/**
@@ -373,8 +390,8 @@ public final class TransformerTools {
 	 * @param <O> output: the type of the object returned by the transformer
 	 * @see SafeTransformer
 	 */
-	public static <I, O> Transformer<I, O> protect(Transformer<? super I, ? extends O> transformer, ExceptionHandler exceptionHandler) {
-		return protect(transformer, exceptionHandler, null);
+	public static <I, O> Transformer<I, O> safe(Transformer<? super I, ? extends O> transformer, ExceptionHandler exceptionHandler) {
+		return safe(transformer, exceptionHandler, null);
 	}
 
 	/**
@@ -386,7 +403,7 @@ public final class TransformerTools {
 	 * @param <O> output: the type of the object returned by the transformer
 	 * @see SafeTransformer
 	 */
-	public static <I, O> Transformer<I, O> protect(Transformer<? super I, ? extends O> transformer, ExceptionHandler exceptionHandler, O exceptionOutput) {
+	public static <I, O> Transformer<I, O> safe(Transformer<? super I, ? extends O> transformer, ExceptionHandler exceptionHandler, O exceptionOutput) {
 		return new SafeTransformer<I, O>(transformer, exceptionHandler, exceptionOutput);
 	}
 
@@ -400,6 +417,7 @@ public final class TransformerTools {
 	 * output.
 	 * 
 	 * @param <I> input: the type of the object passed to the transformer
+	 *   (and returned by the transformer)
 	 * @see PassThruTransformer
 	 * @see #passThruTransformer()
 	 */
@@ -411,6 +429,7 @@ public final class TransformerTools {
 	 * Return a transformer that will perform no transformation at all;
 	 * it will simply return the input untransformed.
 	 * @param <I> input: the type of the object passed to the transformer
+	 *   (and returned by the transformer)
 	 * @see PassThruTransformer
 	 * @see #passThruTransformer(Object)
 	 */
@@ -418,8 +437,8 @@ public final class TransformerTools {
 	public static <I> Transformer<I, I> passThruTransformer() {
 		return PASS_THRU_TRANSFORMER;
 	}
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private static final Transformer PASS_THRU_TRANSFORMER = new PassThruTransformer(null);
+	@SuppressWarnings("rawtypes")
+	private static final Transformer PASS_THRU_TRANSFORMER = passThruTransformer(null);
 
 
 	// ********** reflection **********
@@ -427,6 +446,7 @@ public final class TransformerTools {
 	/**
 	 * Return a transformer that clones its input.
 	 * @param <I> input: the type of the object passed to the transformer
+	 *   (and returned by the transformer)
 	 * @see CloneTransformer
 	 */
 	public static <I extends Cloneable> Transformer<I, I> cloneTransformer() {
@@ -449,11 +469,15 @@ public final class TransformerTools {
 	/**
 	 * Return a transformer that uses Java reflection to transform an object
 	 * into the value of its field with the specified name.
+	 * <p>
+	 * <strong>NB:</strong> The actual field is determined at execution time,
+	 * not construction time. As a result, the transformer can be used to emulate
+	 * "duck typing".
 	 * @param <I> input: the type of the object passed to the transformer
 	 * @param <O> output: the type of the object returned by the transformer
 	 * @see FieldTransformer
 	 */
-	public static <I, O> Transformer<I, O> fieldTransformer(String fieldName) {
+	public static <I, O> Transformer<I, O> get(String fieldName) {
 		return new FieldTransformer<I, O>(fieldName);
 	}
 
@@ -461,16 +485,66 @@ public final class TransformerTools {
 	 * Return a transformer that uses Java reflection to transform an object
 	 * into the value returned by its zero-argument method with the specified
 	 * name.
+	 * <p>
+	 * <strong>NB:</strong> The actual method is determined at execution time,
+	 * not construction time. As a result, the transformer can be used to emulate
+	 * "duck typing".
 	 * @param <I> input: the type of the object passed to the transformer
 	 * @param <O> output: the type of the object returned by the transformer
 	 * @see MethodTransformer
 	 */
-	public static <I, O> Transformer<I, O> methodTransformer(String methodName) {
-		return new MethodTransformer<I, O>(methodName);
+	public static <I, O> Transformer<I, O> execute(String methodName) {
+		return execute(methodName, ClassTools.EMPTY_ARRAY, ObjectTools.EMPTY_OBJECT_ARRAY);
+	}
+
+	/**
+	 * Return a transformer that uses Java reflection to transform an object
+	 * into the value returned by its single-argument method with the specified
+	 * name, parameter type, and argument.
+	 * <p>
+	 * <strong>NB:</strong> The actual method is determined at execution time,
+	 * not construction time. As a result, the transformer can be used to emulate
+	 * "duck typing".
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 * @see MethodTransformer
+	 */
+	public static <I, O> Transformer<I, O> execute(String methodName, Class<?> parameterType, Object argument) {
+		return execute(methodName, new Class<?>[] { parameterType }, new Object[] { argument });
+	}
+
+	/**
+	 * Return a transformer that uses Java reflection to transform an object
+	 * into the value returned by its method with the specified
+	 * name, parameter types, and arguments.
+	 * <p>
+	 * <strong>NB:</strong> The actual method is determined at execution time,
+	 * not construction time. As a result, the transformer can be used to emulate
+	 * "duck typing".
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 * @see MethodTransformer
+	 */
+	public static <I, O> Transformer<I, O> execute(String methodName, Class<?>[] parameterTypes, Object[] arguments) {
+		return new MethodTransformer<I, O>(methodName, parameterTypes, arguments);
 	}
 
 
-	// ********** misc **********
+	// ********** chain **********
+
+	/**
+	 * @see #chain(Transformer[])
+	 */
+	public static <I, O> Transformer<I, O> chain(@SuppressWarnings("rawtypes") Iterable<Transformer> transformers) {
+		return chain(transformers.iterator());
+	}
+
+	/**
+	 * @see #chain(Transformer[])
+	 */
+	public static <I, O> Transformer<I, O> chain(@SuppressWarnings("rawtypes") Iterator<Transformer> transformers) {
+		return chain(IteratorTools.toArray(transformers, EMPTY_ARRAY));
+	}
 
 	/**
 	 * Chain the specified transformers. Pass the chain's input to the first
@@ -489,51 +563,8 @@ public final class TransformerTools {
 		return new TransformerChain<I, O>(transformers);
 	}
 
-	/**
-	 * Return a transformer that will throw an {@link UnsupportedOperationException exception}
-	 * if {@link Transformer#transform(Object)} is called. This is useful in
-	 * situations where a transformer is optional and the default transformer
-	 * should not be used.
-	 * @param <I> input: the type of the object passed to the transformer
-	 * @param <O> output: the type of the object returned by the transformer
-	 * @see DisabledTransformer
-	 */
-	public static <I, O> Transformer<I, O> disabledTransformer() {
-		return DisabledTransformer.instance();
-	}
 
-	/**
-	 * Return a transformer that will transform an input into its value
-	 * in the specified map.
-	 * @param <I> input: the type of the object passed to the transformer
-	 * @param <O> output: the type of the object returned by the transformer
-	 * @see MapTransformer
-	 */
-	public static <I, O> Transformer<I, O> mapTransformer(Map<? super I, ? extends O> map) {
-		return new MapTransformer<I, O>(map);
-	}
-
-	/**
-	 * Return a transformer that will transform every input into <code>null</code>.
-	 * @param <I> input: the type of the object passed to the transformer
-	 * @param <O> output: the type of the object returned by the transformer
-	 * @see NullOutputTransformer
-	 */
-	public static <I, O> Transformer<I, O> nullOutputTransformer() {
-		return NullOutputTransformer.instance();
-	}
-
-	/**
-	 * Return a transformer that will transform any object into the specified
-	 * output.
-	 * @param <I> input: the type of the object passed to the transformer
-	 * @param <O> output: the type of the object returned by the transformer
-	 * @see StaticOutputTransformer
-	 * @see #nullOutputTransformer()
-	 */
-	public static <I, O> Transformer<I, O> staticOutputTransformer(O output) {
-		return new StaticOutputTransformer<I, O>(output);
-	}
+	// ********** comparator **********
 
 	/**
 	 * Return a comparator will transform the elements to be compared and
@@ -562,6 +593,72 @@ public final class TransformerTools {
 	public static <E, O> Comparator<E> comparator(Transformer<? super E, ? extends O> transformer, Comparator<O> comparator) {
 		return new TransformationComparator<E, O>(transformer, comparator);
 	}
+
+
+	// ********** disabled **********
+
+	/**
+	 * Return a transformer that will throw an {@link UnsupportedOperationException exception}
+	 * if {@link Transformer#transform(Object)} is called. This is useful in
+	 * situations where a transformer is optional and the default transformer
+	 * should not be used.
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 * @see DisabledTransformer
+	 */
+	public static <I, O> Transformer<I, O> disabledTransformer() {
+		return DisabledTransformer.instance();
+	}
+
+
+	// ********** map **********
+
+	/**
+	 * Return a transformer that will transform an input into its value
+	 * in the specified map.
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 * @see MapTransformer
+	 */
+	public static <I, O> Transformer<I, O> mapTransformer(Map<? super I, ? extends O> map) {
+		return new MapTransformer<I, O>(map);
+	}
+
+
+	// ********** static output **********
+
+	/**
+	 * Return a transformer that will transform every input into <code>null</code>.
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 * @see NullOutputTransformer
+	 */
+	public static <I, O> Transformer<I, O> nullOutputTransformer() {
+		return NullOutputTransformer.instance();
+	}
+
+	/**
+	 * Return a transformer that will transform any object into the specified
+	 * output.
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 * @see StaticOutputTransformer
+	 * @see #nullOutputTransformer()
+	 */
+	public static <I, O> Transformer<I, O> staticOutputTransformer(O output) {
+		return new StaticOutputTransformer<I, O>(output);
+	}
+
+
+	// ********** empty array **********
+
+	@SuppressWarnings("unchecked")
+	public static <I, O> Transformer<I, O>[] emptyArray() {
+		return EMPTY_ARRAY;
+	}
+
+	@SuppressWarnings("rawtypes")
+	public static final Transformer[] EMPTY_ARRAY = new Transformer[0];
 
 
 	// ********** constructor **********

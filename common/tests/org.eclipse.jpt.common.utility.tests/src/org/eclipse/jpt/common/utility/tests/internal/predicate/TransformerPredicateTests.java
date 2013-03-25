@@ -11,10 +11,10 @@ package org.eclipse.jpt.common.utility.tests.internal.predicate;
 
 import java.io.Serializable;
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.internal.predicate.NotNullPredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.IsNotNull;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
-import org.eclipse.jpt.common.utility.internal.predicate.TransformerPredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -23,7 +23,7 @@ public class TransformerPredicateTests
 	extends TestCase
 {
 	private Transformer<Integer, Boolean> transformer;
-	private TransformerPredicate<Integer> transformerPredicate;
+	private Predicate<Integer> transformerPredicate;
 
 
 	public TransformerPredicateTests(String name) {
@@ -60,21 +60,15 @@ public class TransformerPredicateTests
 		assertFalse(this.transformerPredicate.evaluate(null));
 	}
 
-	public void testClone() {
-		TransformerPredicate<Integer> transformerPredicate2 = this.transformerPredicate.clone();
-		assertEquals(this.transformerPredicate, transformerPredicate2);
-		assertNotSame(this.transformerPredicate, transformerPredicate2);
-	}
-
 	public void testEquals() {
-		TransformerPredicate<Integer> transformerPredicate2 = PredicateTools.transformerPredicate(this.transformer);
+		Predicate<Integer> transformerPredicate2 = PredicateTools.transformerPredicate(this.transformer);
 		assertEquals(this.transformerPredicate, transformerPredicate2);
 		assertEquals(this.transformerPredicate.hashCode(), transformerPredicate2.hashCode());
-		assertFalse(this.transformerPredicate.equals(NotNullPredicate.instance()));
+		assertFalse(this.transformerPredicate.equals(IsNotNull.instance()));
 	}
 
 	public void testSerialization() throws Exception {
-		TransformerPredicate<Integer> transformerPredicate2 = TestTools.serialize(this.transformerPredicate);
+		Predicate<Integer> transformerPredicate2 = TestTools.serialize(this.transformerPredicate);
 		assertEquals(this.transformerPredicate, transformerPredicate2);
 		assertNotSame(this.transformerPredicate, transformerPredicate2);
 	}

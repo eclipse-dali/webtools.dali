@@ -12,38 +12,37 @@ package org.eclipse.jpt.common.utility.tests.internal.predicate;
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.BitTools;
 import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
-import org.eclipse.jpt.common.utility.internal.predicate.NotNullPredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.IsNotNull;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
-import org.eclipse.jpt.common.utility.internal.predicate.XORPredicate;
+import org.eclipse.jpt.common.utility.predicate.CompoundPredicate;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
-public class XORPredicateTests
+public class XORTests
 	extends TestCase
 {
-	private XORPredicate<Number> xorPredicate;
+	private CompoundPredicate<Number> xorPredicate;
 
 
-	public XORPredicateTests(String name) {
+	public XORTests(String name) {
 		super(name);
 	}
 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.xorPredicate = PredicateTools.xor(this.buildMinPredicate(1), this.buildMaxPredicate(10));
+		this.xorPredicate = PredicateTools.xor(this.buildMin(1), this.buildMax(10));
 	}
 
-	private Predicate<Number> buildMinPredicate(double min) {
-		return new MinPredicate(min);
+	private Predicate<Number> buildMin(double min) {
+		return new Min(min);
 	}
 
-	static class MinPredicate
+	static class Min
 		extends CriterionPredicate<Number, Number>
 	{
-		private static final long serialVersionUID = 1L;
-		MinPredicate(double min) {
+		Min(double min) {
 			super(new Double(min));
 		}
 		public boolean evaluate(Number number) {
@@ -51,27 +50,26 @@ public class XORPredicateTests
 		}
 	}
 
-	private Predicate<Number> buildMaxPredicate(double max) {
-		return new MaxPredicate(max);
+	private Predicate<Number> buildMax(double max) {
+		return new Max(max);
 	}
 
-	static class MaxPredicate
+	static class Max
 		extends CriterionPredicate<Number, Number>
 	{
-		private static final long serialVersionUID = 1L;
-		MaxPredicate(double min) {
-			super(new Double(min));
+		Max(double max) {
+			super(new Double(max));
 		}
 		public boolean evaluate(Number number) {
 			return number.doubleValue() >= this.criterion.doubleValue();
 		}
 	}
 
-	private Predicate<Number> buildEvenPredicate() {
-		return new EvenPredicate();
+	private Predicate<Number> buildIsEven() {
+		return new IsEven();
 	}
 
-	static class EvenPredicate
+	static class IsEven
 		extends PredicateAdapter<Number>
 	{
 		@Override
@@ -97,7 +95,7 @@ public class XORPredicateTests
 	}
 
 	public void testPredicateing3() {
-		XORPredicate<Number> xorPredicate2 = PredicateTools.xor(this.xorPredicate, this.buildEvenPredicate());
+		CompoundPredicate<Number> xorPredicate2 = PredicateTools.xor(this.xorPredicate, this.buildIsEven());
 		assertFalse(xorPredicate2.evaluate(new Integer(7)));
 		assertFalse(xorPredicate2.evaluate(new Integer(3)));
 		assertFalse(xorPredicate2.evaluate(new Integer(9)));
@@ -114,24 +112,10 @@ public class XORPredicateTests
 		assertFalse(xorPredicate2.evaluate(new Double(222)));
 	}
 
-	public void testClone() {
-		XORPredicate<Number> xorPredicate2 = this.xorPredicate.clone();
-		assertEquals(this.xorPredicate.getPredicates()[0], xorPredicate2.getPredicates()[0]);
-		assertEquals(this.xorPredicate.getPredicates()[1], xorPredicate2.getPredicates()[1]);
-		assertNotSame(this.xorPredicate, xorPredicate2);
-	}
-
 	public void testEquals() {
-		XORPredicate<Number> xorPredicate2 = PredicateTools.xor(this.buildMinPredicate(1), this.buildMaxPredicate(10));
+		CompoundPredicate<Number> xorPredicate2 = PredicateTools.xor(this.buildMin(1), this.buildMax(10));
 		assertEquals(this.xorPredicate, xorPredicate2);
 		assertEquals(this.xorPredicate.hashCode(), xorPredicate2.hashCode());
-		assertFalse(this.xorPredicate.equals(NotNullPredicate.instance()));
-	}
-
-	public void testSerialization() throws Exception {
-		XORPredicate<Number> xorPredicate2 = TestTools.serialize(this.xorPredicate);
-		assertEquals(this.xorPredicate.getPredicates()[0], xorPredicate2.getPredicates()[0]);
-		assertEquals(this.xorPredicate.getPredicates()[1], xorPredicate2.getPredicates()[1]);
-		assertNotSame(this.xorPredicate, xorPredicate2);
+		assertFalse(this.xorPredicate.equals(IsNotNull.instance()));
 	}
 }

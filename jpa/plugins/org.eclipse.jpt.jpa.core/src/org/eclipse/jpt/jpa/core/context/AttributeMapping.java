@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.context;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
@@ -66,16 +67,13 @@ public interface AttributeMapping
 	String getKey();
 
 	class KeyEquals
-		extends PredicateAdapter<AttributeMapping>
+		extends CriterionPredicate<AttributeMapping, String>
 	{
-		private final String mappingKey;
 		public KeyEquals(String mappingKey) {
-			super();
-			this.mappingKey = mappingKey;
+			super(mappingKey);
 		}
-		@Override
 		public boolean evaluate(AttributeMapping mapping) {
-			return ObjectTools.equals(mapping.getKey(), this.mappingKey);
+			return ObjectTools.equals(mapping.getKey(), this.criterion);
 		}
 	}
 

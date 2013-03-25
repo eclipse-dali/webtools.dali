@@ -14,7 +14,7 @@ import java.util.List;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -1593,7 +1593,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		//If a persistent type exists, but no underlying java class, then 
 		//you will get validation on that persistent type instead of here
 		if (this.getResolvedTargetType() == null) {
-			IType jdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedTargetClass());
+			IType jdtType = JavaProjectTools.findType(this.getJavaProject(), this.getFullyQualifiedTargetClass());
 			if (jdtType == null) {
 				messages.add(
 					this.buildValidationMessage(
@@ -1642,7 +1642,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		}
 
 		if (this.getResolvedMapKeyType() == null) {
-			IType mapKeyJdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedMapKeyClass());
+			IType mapKeyJdtType = JavaProjectTools.findType(this.getJavaProject(), this.getFullyQualifiedMapKeyClass());
 			if (mapKeyJdtType == null) {
 				messages.add(
 					this.buildValidationMessage(
@@ -1779,7 +1779,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	@SuppressWarnings("unchecked")
 	protected Iterable<String> getCandidateClassNames() {
 		return IterableTools.concatenate(
-				MappingTools.getSortedJavaClassNames(getJavaProject()),
+				JavaProjectTools.getJavaClassNames(getJavaProject()),
 				MappingTools.getPrimaryBasicTypeNames()
 			);
 	}

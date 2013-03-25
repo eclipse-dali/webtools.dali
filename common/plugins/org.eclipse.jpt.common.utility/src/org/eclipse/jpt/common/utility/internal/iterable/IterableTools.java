@@ -247,11 +247,19 @@ public final class IterableTools {
 	}
 
 	/**
-	 * Return whether the specified iterable is empty
-	 * (Shortcuts the iterator rather than calculating the entire size)
+	 * Return whether the specified iterable is empty.
+	 * (Shortcut the iterator rather than calculating the entire size.)
 	 */
 	public static boolean isEmpty(Iterable<?> iterable) {
 		return IteratorTools.isEmpty(iterable.iterator());
+	}
+
+	/**
+	 * Return whether the specified iterable is <em>not</em> empty.
+	 * (Shortcut the iterator rather than calculating the entire size.)
+	 */
+	public static boolean isNotEmpty(Iterable<?> iterable) {
+		return IteratorTools.isNotEmpty(iterable.iterator());
 	}
 
 	/**
@@ -713,7 +721,7 @@ public final class IterableTools {
 	 * @see FilteringIterable
 	 */
 	public static <E> FilteringIterable<E> removeNulls(Iterable<? extends E> iterable) {
-		return filter(iterable, PredicateTools.notNullPredicate());
+		return filter(iterable, PredicateTools.isNotNull());
 	}
 
 	/**

@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.common.core.ContentTypeReference;
 import org.eclipse.jpt.common.core.JptCommonCoreMessages;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.JptResourceTypeManager;
@@ -218,7 +219,7 @@ public class InternalJptResourceTypeManager
 	}
 
 	public Iterable<JptResourceType> getResourceTypes(IContentType contentType) {
-		return IterableTools.filter(this.getResourceTypes(), new InternalJptResourceType.ContentTypeFilter(contentType));
+		return IterableTools.filter(this.getResourceTypes(), new ContentTypeReference.ContentTypeIs(contentType));
 	}
 
 	private boolean containsResourceType(String id) {

@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -291,7 +292,7 @@ public class OrmEclipseLinkTypeConverter
 	@SuppressWarnings("unchecked")
 	protected Iterable<String> getCandidateTypeNames() {
 		return IterableTools.concatenate(
-				MappingTools.getSortedJavaClassNames(getJavaProject()),
+				JavaProjectTools.getJavaClassNames(getJavaProject()),
 				MappingTools.getPrimaryBasicTypeNames(),
 				MappingTools.getCollectionTypeNames(),
 				IterableTools.sort(this.getPersistenceUnit().getEclipseLinkDynamicPersistentTypeNames())

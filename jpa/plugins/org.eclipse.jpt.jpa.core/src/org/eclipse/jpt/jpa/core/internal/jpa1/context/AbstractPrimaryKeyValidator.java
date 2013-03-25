@@ -646,7 +646,7 @@ public abstract class AbstractPrimaryKeyValidator
 	// **************** derived id mappings ***********************************
 	
 	protected Iterable<SingleRelationshipMapping2_0> getDerivedIdMappings(TypeMapping typeMapping) {
-		return IterableTools.filter(this.getAllSingleRelationshipMappings(typeMapping), TYPE_MAPPING_USES_ID_DERIVED_IDENTITY_STRATEGY);
+		return IterableTools.filter(this.getAllSingleRelationshipMappings(typeMapping), SingleRelationshipMapping2_0.TYPE_MAPPING_USES_ID_DERIVED_IDENTITY_STRATEGY);
 	}
 	
 	protected Iterable<SingleRelationshipMapping2_0> getAllSingleRelationshipMappings(TypeMapping typeMapping) {
@@ -662,7 +662,7 @@ public abstract class AbstractPrimaryKeyValidator
 	}
 
 	protected Iterable<SingleRelationshipMapping2_0> getDerivedIdMappingsDefinedLocally(TypeMapping typeMapping) {
-		return IterableTools.filter(this.getSingleRelationshipMappings(typeMapping), TYPE_MAPPING_USES_ID_DERIVED_IDENTITY_STRATEGY);
+		return IterableTools.filter(this.getSingleRelationshipMappings(typeMapping), SingleRelationshipMapping2_0.TYPE_MAPPING_USES_ID_DERIVED_IDENTITY_STRATEGY);
 	}
 	
 	protected Iterable<SingleRelationshipMapping2_0> getSingleRelationshipMappings(TypeMapping typeMapping) {
@@ -677,37 +677,17 @@ public abstract class AbstractPrimaryKeyValidator
 				);
 	}
 
-	public static final Predicate<SingleRelationshipMapping2_0> TYPE_MAPPING_USES_ID_DERIVED_IDENTITY_STRATEGY = new TypeMappingUsesIdDerivedIdentityStrategy();
-	public static class TypeMappingUsesIdDerivedIdentityStrategy
-		extends PredicateAdapter<SingleRelationshipMapping2_0>
-	{
-		@Override
-		public boolean evaluate(SingleRelationshipMapping2_0 mapping) {
-			return mapping.getDerivedIdentity().usesIdDerivedIdentityStrategy();
-		}
-	}
-
 	
 	// **************** maps id mappings **************************************
 	
 	protected Iterable<SingleRelationshipMapping2_0> getMapsIdMappings(TypeMapping typeMapping) {
-		return IterableTools.filter(this.getAllSingleRelationshipMappings(typeMapping), TYPE_MAPPING_USES_ID_DERIVED_IDENTITY_STRATEGY);
+		return IterableTools.filter(this.getAllSingleRelationshipMappings(typeMapping), SingleRelationshipMapping2_0.TYPE_MAPPING_USES_ID_DERIVED_IDENTITY_STRATEGY);
 	}
 	
 	protected Iterable<SingleRelationshipMapping2_0> getMapsIdMappingsDefinedLocally(TypeMapping typeMapping) {
-		return IterableTools.filter(this.getSingleRelationshipMappings(typeMapping), TYPE_MAPPING_USES_ID_DERIVED_IDENTITY_STRATEGY);
+		return IterableTools.filter(this.getSingleRelationshipMappings(typeMapping), SingleRelationshipMapping2_0.TYPE_MAPPING_USES_ID_DERIVED_IDENTITY_STRATEGY);
 	}
 	
-	public static final Predicate<SingleRelationshipMapping2_0> TYPE_MAPPING_USES_MAPS_ID_DERIVED_IDENTITY_STRATEGY = new TypeMappingUsesMapsIdDerivedIdentityStrategy();
-	public static class TypeMappingUsesMapsIdDerivedIdentityStrategy
-		extends PredicateAdapter<SingleRelationshipMapping2_0>
-	{
-		@Override
-		public boolean evaluate(SingleRelationshipMapping2_0 mapping) {
-			return mapping.getDerivedIdentity().usesMapsIdDerivedIdentityStrategy();
-		}
-	}
-
 	
 	// **************** misc **************************************************
 	

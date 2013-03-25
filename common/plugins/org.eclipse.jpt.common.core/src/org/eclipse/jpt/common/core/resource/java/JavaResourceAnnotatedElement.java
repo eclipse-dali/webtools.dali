@@ -12,6 +12,7 @@ package org.eclipse.jpt.common.core.resource.java;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
@@ -195,16 +196,13 @@ public interface JavaResourceAnnotatedElement
 	boolean isAnnotatedWithAnyOf(Iterable<String> annotationNames);
 
 	class IsAnnotatedWithAnyOf
-		extends PredicateAdapter<JavaResourceAnnotatedElement>
+		extends CriterionPredicate<JavaResourceAnnotatedElement, Iterable<String>>
 	{
-		private final Iterable<String> annotationNames;
 		public IsAnnotatedWithAnyOf(Iterable<String> annotationNames) {
-			super();
-			this.annotationNames = annotationNames;
+			super(annotationNames);
 		}
-		@Override
 		public boolean evaluate(JavaResourceAnnotatedElement element) {
-			return element.isAnnotatedWithAnyOf(this.annotationNames);
+			return element.isAnnotatedWithAnyOf(this.criterion);
 		}
 	}
 
@@ -213,16 +211,13 @@ public interface JavaResourceAnnotatedElement
 	 */
 	AstNodeType getAstNodeType();
 	class AstNodeTypeEquals
-		extends PredicateAdapter<JavaResourceAnnotatedElement>
+		extends CriterionPredicate<JavaResourceAnnotatedElement, AstNodeType>
 	{
-		private final AstNodeType astNodeType;
 		public AstNodeTypeEquals(AstNodeType astNodeType) {
-			super();
-			this.astNodeType = astNodeType;
+			super(astNodeType);
 		}
-		@Override
 		public boolean evaluate(JavaResourceAnnotatedElement element) {
-			return element.getAstNodeType() == this.astNodeType;
+			return element.getAstNodeType() == this.criterion;
 		}
 	}
 	

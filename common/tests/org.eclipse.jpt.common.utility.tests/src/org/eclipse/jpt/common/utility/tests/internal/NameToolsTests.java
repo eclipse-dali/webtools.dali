@@ -224,4 +224,21 @@ public class NameToolsTests
 		assertFalse(NameTools.isLegalJavaIdentifier("foo@bar"));
 		assertTrue(NameTools.isLegalJavaIdentifier("_foo"));
 	}
+
+	public void testConvertGetterOrSetterMethodNameToPropertyName() {
+		assertEquals("foo", NameTools.convertGetterOrSetterMethodNameToPropertyName("getFoo"));
+		assertEquals("foo", NameTools.convertGetterOrSetterMethodNameToPropertyName("setFoo"));
+		assertEquals("foo", NameTools.convertGetterOrSetterMethodNameToPropertyName("isFoo"));
+
+		assertEquals("foo", NameTools.convertGetterOrSetterMethodNameToPropertyName("getfoo"));
+		assertEquals("foo", NameTools.convertGetterOrSetterMethodNameToPropertyName("setfoo"));
+		assertEquals("foo", NameTools.convertGetterOrSetterMethodNameToPropertyName("isfoo"));
+
+		assertEquals("foo", NameTools.convertGetterOrSetterMethodNameToPropertyName("foo"));
+		assertEquals("Foo", NameTools.convertGetterOrSetterMethodNameToPropertyName("Foo"));
+
+		assertEquals("get", NameTools.convertGetterOrSetterMethodNameToPropertyName("get"));
+		assertEquals("set", NameTools.convertGetterOrSetterMethodNameToPropertyName("set"));
+		assertEquals("is", NameTools.convertGetterOrSetterMethodNameToPropertyName("is"));
+	}
 }

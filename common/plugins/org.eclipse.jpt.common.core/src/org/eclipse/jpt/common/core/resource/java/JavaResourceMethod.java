@@ -9,11 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.resource.java;
 
+import java.lang.reflect.Modifier;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jpt.common.utility.MethodSignature;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * Java source code or binary method
@@ -76,4 +80,108 @@ public interface JavaResourceMethod
 	 * Synchronize the [source] method with the specified AST MethodDeclaration.
 	 */
 	void synchronizeWith(MethodDeclaration methodDeclaration);
+
+	/**
+	 * Return whether the method is a standard property "getter" method.
+	 */
+	Predicate<JavaResourceMethod> IS_PROPERTY_GETTER = new IsPropertyGetter();
+	@SuppressWarnings("nls")
+	class IsPropertyGetter
+		extends PredicateAdapter<JavaResourceMethod>
+	{
+		@Override
+		public boolean evaluate(JavaResourceMethod method) {
+			String methodName = method.getMethodName();
+			if ((methodName.length() <= 3) && ! methodName.startsWith("is")) {
+				return false;
+			}
+			String returnType = this.getInstanceMethodReturnType(method);
+			if (returnType == null) {
+				return false;
+			}
+			if (method.getParametersSize() != 0) {
+				return false;
+			}
+
+			if (methodName.startsWith("is")) {
+				return returnType.equals("boolean");  // first-priority boolean getter
+			}
+			if ( ! methodName.startsWith("get")) {
+				return false;
+			}
+			if ( ! returnType.equals("boolean")) {
+				return true;  // simple non-boolean getter
+			}
+			// if the type has both methods:
+			//     boolean isProperty() {...}
+			//     boolean getProperty() {...}
+			// then #isProperty() takes precedence and we ignore #getProperty();
+			// but only having 'getProperty()' is OK too (see the JavaBeans spec 1.01)
+			String isMethodName = "is" + methodName.substring(3);
+			for (JavaResourceMethod sibling : method.getResourceType().getMethods()) {
+				if (sibling.getMethodName().equals(isMethodName) && (sibling.getParametersSize() == 0)) {
+					// 'isProperty()' exists - if its return type is boolean, 'getProperty()' is *not* a getter
+					return ObjectTools.notEquals(this.getInstanceMethodReturnType(sibling), "boolean");
+				}
+			}
+			return true;  // 'isProperty()' does not exist
+		}
+
+		private String getInstanceMethodReturnType(JavaResourceMethod method) {
+			if (Modifier.isStatic(method.getModifiers())) {
+				return null;
+			}
+			if (method.isConstructor()) {
+				return null;
+			}
+			String returnType = method.getTypeBinding().getQualifiedName();
+			if (returnType == null) {
+				return null;  // DOM method bindings can have a null name...
+			}
+			if (returnType.equals("void")) {
+				return null;
+			}
+			return returnType;
+		}
+	}
+
+	/**
+	 * Transform a "get"/"is" method into its corresponding "set" method,
+	 * if present.
+	 */
+	Transformer<JavaResourceMethod, JavaResourceMethod> SET_METHOD_TRANSFORMER = new SetMethodTransformer();
+	@SuppressWarnings("nls")
+	class SetMethodTransformer
+		extends TransformerAdapter<JavaResourceMethod, JavaResourceMethod>
+	{
+		@Override
+		public JavaResourceMethod transform(JavaResourceMethod getMethod) {
+			String getMethodName = getMethod.getMethodName();
+			String setMethodName = "set" + getMethodName.substring(this.calculateNameIndex(getMethodName)); //$NON-NLS-1$
+			String propertyTypeName = getMethod.getTypeBinding().getQualifiedName();
+			for (JavaResourceMethod sibling : getMethod.getResourceType().getMethods()) {
+				if (sibling.getMethodName().equals(setMethodName) && (sibling.getParametersSize() == 1) && sibling.getParameterTypeName(0).equals(propertyTypeName)) {
+					return this.methodIsValidGetterSibling(sibling) ? sibling : null;
+				}
+			}
+			return null;
+		}
+
+		private int calculateNameIndex(String getMethodName) {
+			int len = getMethodName.length();
+			if (getMethodName.startsWith("get") && (len > 3)) {
+				return 3;
+			}
+			if (getMethodName.startsWith("is") && (len > 2)) {
+				return 2;
+			}
+			throw new IllegalArgumentException(getMethodName);
+		}
+
+		private boolean methodIsValidGetterSibling(JavaResourceMethod method) {
+			return ! method.isConstructor() &&
+					! Modifier.isStatic(method.getModifiers()) &&
+					ObjectTools.equals(method.getTypeBinding().getQualifiedName(), "void"); //$NON-NLS-1$
+		}
+	}
 }

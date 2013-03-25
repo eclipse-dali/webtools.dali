@@ -96,7 +96,7 @@ public class XsdSchema
 	
 	protected Iterable<XSDSimpleTypeDefinition> getXSDSimpleTypeDefinitions(String namespace) {
 		return IterableTools.downCast(
-			IterableTools.filter(getXSDTypeDefinitions(namespace), PredicateTools.<XSDTypeDefinition>instanceOfPredicate(XSDSimpleTypeDefinition.class)));
+			IterableTools.filter(getXSDTypeDefinitions(namespace), PredicateTools.<XSDTypeDefinition>instanceOf(XSDSimpleTypeDefinition.class)));
 	}
 	
 	public Iterable<XsdElementDeclaration> getElementDeclarations() {

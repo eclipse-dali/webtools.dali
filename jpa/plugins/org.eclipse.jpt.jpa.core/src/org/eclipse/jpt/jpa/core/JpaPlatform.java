@@ -287,6 +287,15 @@ public interface JpaPlatform
 		 * supported JPA facet versions}.
 		 */
 		boolean isDefault();
+		Predicate<Config> IS_DEFAULT = new IsDefault();
+		class IsDefault
+			extends PredicateAdapter<Config>
+		{
+			@Override
+			public boolean evaluate(Config config) {
+				return config.isDefault();
+			}
+		}
 
 		/**
 		 * Return config's group config.
@@ -303,16 +312,6 @@ public interface JpaPlatform
 		 * Build and return the config's JPA platform.
 		 */
 		JpaPlatform getJpaPlatform();
-
-		Predicate<Config> DEFAULT_FILTER = new DefaultFilter();
-		/* CU private */ static class DefaultFilter
-			extends PredicateAdapter<Config>
-		{
-			@Override
-			public boolean evaluate(Config config) {
-				return config.isDefault();
-			}
-		}
 	}
 
 

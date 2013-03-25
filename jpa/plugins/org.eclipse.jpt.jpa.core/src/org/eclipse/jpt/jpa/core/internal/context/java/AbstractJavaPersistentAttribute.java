@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.List;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.TypeTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
@@ -538,7 +538,7 @@ public abstract class AbstractJavaPersistentAttribute
 		if (this.getResourceAttribute().getTypeBinding().isEnum()) {
 			return true;
 		}
-		if (this.getResourceAttribute().getTypeBinding().isSubTypeOf(JDTTools.SERIALIZABLE_CLASS_NAME)) {
+		if (this.getResourceAttribute().getTypeBinding().isSubTypeOf(TypeTools.SERIALIZABLE_NAME)) {
 			return true;
 		}
 		return false;

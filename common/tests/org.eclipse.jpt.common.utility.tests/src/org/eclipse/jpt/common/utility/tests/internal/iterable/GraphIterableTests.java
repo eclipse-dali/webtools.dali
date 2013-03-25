@@ -60,7 +60,7 @@ public class GraphIterableTests
 		assertNotNull(this.buildGraphIterable().toString());
 	}
 
-	public void testMissingMisterRogers() {
+	public void testBogusTransformer() {
 		boolean exCaught = false;
 		try {
 			for (GraphNode gn : IterableTools.graphIterable(this.buildGraphRoot(), DisabledTransformer.<GraphNode, Iterable<? extends GraphNode>>instance())) {

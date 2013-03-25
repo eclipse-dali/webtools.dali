@@ -14,7 +14,7 @@ import java.util.List;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -873,7 +873,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	@SuppressWarnings("unchecked")
 	protected Iterable<String> getCandidateMapKeyClassNames() {
 		return IterableTools.concatenate(
-				MappingTools.getSortedJavaClassNames(getJavaProject()),
+				JavaProjectTools.getJavaClassNames(getJavaProject()),
 				MappingTools.getPrimaryBasicTypeNames()
 				);
 	}
@@ -1044,7 +1044,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		}
 
 		if (this.getResolvedMapKeyType() == null) {
-			IType mapKeyJdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedMapKeyClass());
+			IType mapKeyJdtType = JavaProjectTools.findType(this.getJavaProject(), this.getFullyQualifiedMapKeyClass());
 			if (mapKeyJdtType == null) {
 				messages.add(
 					this.buildValidationMessage(

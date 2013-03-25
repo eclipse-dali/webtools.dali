@@ -53,7 +53,6 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationModifia
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
-import org.eclipse.jpt.common.utility.internal.transformer.NotBooleanTransformer;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.Model;
@@ -362,7 +361,7 @@ public class JpaProjectPropertiesPage
 	 * The opposite of the "discover annotated classes" flag.
 	 */
 	private ModifiablePropertyValueModel<Boolean> buildListAnnotatedClassesModel() {
-		return new TransformationModifiablePropertyValueModel<Boolean, Boolean>(this.discoverAnnotatedClassesModel, NotBooleanTransformer.instance(), NotBooleanTransformer.instance());
+		return new TransformationModifiablePropertyValueModel<Boolean, Boolean>(this.discoverAnnotatedClassesModel, TransformerTools.notBooleanTransformer(), TransformerTools.notBooleanTransformer());
 	}
 
 	// ***** JPA 2.0 project flag
@@ -608,12 +607,12 @@ public class JpaProjectPropertiesPage
 		return new StaticCollectionValueModel<JpaPlatform.Config>(
 				IterableTools.filter(
 					getJpaPlatformConfigs(),
-					new JpaPlatformConfigFilter()
+					new JpaPlatformConfigIsEnabled()
 				)
 			);
 	}
 
-	/* CU private */ class JpaPlatformConfigFilter
+	/* CU private */ class JpaPlatformConfigIsEnabled
 		extends PredicateAdapter<JpaPlatform.Config>
 	{
 		@Override

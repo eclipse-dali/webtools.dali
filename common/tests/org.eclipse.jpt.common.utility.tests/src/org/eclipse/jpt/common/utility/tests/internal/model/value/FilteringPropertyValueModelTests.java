@@ -13,11 +13,12 @@ import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.FilteringModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
@@ -37,23 +38,24 @@ public class FilteringPropertyValueModelTests extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.objectHolder = new SimplePropertyValueModel<String>("foo");
-		this.filteredObjectHolder = new FilteringModifiablePropertyValueModel<String>(this.objectHolder, this.buildFilter(), this.buildSetFilter());
+		this.filteredObjectHolder = new FilteringModifiablePropertyValueModel<String>(this.objectHolder, this.buildGetFilter(), this.buildSetFilter());
 	}
 
-	private Predicate<String> buildFilter() {
-		return new Predicate<String>() {
-			public boolean evaluate(String s) {
-				return (s != null) && s.startsWith("b");
-			}
-		};
+	private Predicate<String> buildGetFilter() {
+		return new StringStartsWithB();
 	}
 
 	private Predicate<String> buildSetFilter() {
-		return new Predicate<String>() {
-			public boolean evaluate(String s) {
-				return (s != null) && s.startsWith("b");
-			}
-		};
+		return new StringStartsWithB();
+	}
+
+	class StringStartsWithB
+		extends PredicateAdapter<String>
+	{
+		@Override
+		public boolean evaluate(String s) {
+			return (s != null) && s.startsWith("b");
+		}
 	}
 
 	@Override

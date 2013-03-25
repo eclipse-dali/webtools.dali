@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.common.core.libval.LibraryValidator;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -109,19 +109,16 @@ class LibraryValidatorConfig {
 	}
 
 
-	// ********** enabled filter **********
+	// ********** is enabled predicate **********
 
-	static class EnabledFilter
-		extends PredicateAdapter<LibraryValidatorConfig>
+	static class IsEnabled
+		extends CriterionPredicate<LibraryValidatorConfig, JptLibraryProviderInstallOperationConfig>
 	{
-		private final JptLibraryProviderInstallOperationConfig installConfig;
-		EnabledFilter(JptLibraryProviderInstallOperationConfig installConfig) {
-			super();
-			this.installConfig = installConfig;
+		IsEnabled(JptLibraryProviderInstallOperationConfig installConfig) {
+			super(installConfig);
 		}
-		@Override
 		public boolean evaluate(LibraryValidatorConfig config) {
-			return config.isEnabled(this.installConfig);
+			return config.isEnabled(this.criterion);
 		}
 	}
 

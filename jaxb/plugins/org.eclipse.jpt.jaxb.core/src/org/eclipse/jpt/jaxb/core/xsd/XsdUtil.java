@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
@@ -62,16 +62,13 @@ public class XsdUtil {
 	}
 	
 	public static class NamespaceEquals
-		extends PredicateAdapter<XSDNamedComponent>
+		extends CriterionPredicate<XSDNamedComponent, String>
 	{
-		private final String namespace;
 		public NamespaceEquals(String namespace) {
-			super();
-			this.namespace = namespace;
+			super(namespace);
 		}
-		@Override
 		public boolean evaluate(XSDNamedComponent component) {
-			return namespaceEquals(component, this.namespace);
+			return namespaceEquals(component, this.criterion);
 		}
 	}
 	

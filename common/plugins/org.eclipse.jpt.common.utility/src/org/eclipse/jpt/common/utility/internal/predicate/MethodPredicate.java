@@ -11,17 +11,22 @@ package org.eclipse.jpt.common.utility.internal.predicate;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
  * This predicate evaluates to the (<code>boolean</code>) value one of the
  * variable's methods.
+ * <p>
+ * <strong>NB:</strong> The actual method is determined at execution time,
+ * not construction time. As a result, the transformer can be used to emulate
+ * "duck typing".
  * 
  * @param <V> the type of objects to be evaluated by the predicate
  */
 public class MethodPredicate<V>
-	implements Predicate<V>, Cloneable, Serializable
+	implements Predicate<V>, Serializable
 {
 	private final String methodName;
 	private final Class<?>[] parameterTypes;
@@ -53,17 +58,6 @@ public class MethodPredicate<V>
 	}
 
 	@Override
-	public MethodPredicate<V> clone() {
-		try {
-			@SuppressWarnings("unchecked")
-			MethodPredicate<V> clone = (MethodPredicate<V>) super.clone();
-			return clone;
-		} catch (CloneNotSupportedException ex) {
-			throw new InternalError();
-		}
-	}
-
-	@Override
 	public boolean equals(Object o) {
 		if ( ! (o instanceof MethodPredicate<?>)) {
 			return false;
@@ -81,6 +75,6 @@ public class MethodPredicate<V>
 
 	@Override
 	public String toString() {
-		return ObjectTools.toString(this, this.methodName);
+		return ObjectTools.toString(this, ClassTools.buildMethodSignature(this.methodName, this.parameterTypes));
 	}
 }

@@ -11,10 +11,10 @@ package org.eclipse.jpt.common.utility.tests.internal.predicate;
 
 import java.io.Serializable;
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.internal.predicate.NotNullPredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.IsNotNull;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
-import org.eclipse.jpt.common.utility.internal.predicate.TransformationPredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 public class TransformationPredicateTests
 	extends TestCase
 {
-	private TransformationPredicate<Person, String> predicate;
+	private Predicate<Person> predicate;
 
 
 	public TransformationPredicateTests(String name) {
@@ -32,7 +32,7 @@ public class TransformationPredicateTests
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.predicate = PredicateTools.wrap(NotNullPredicate.<String>instance(), Person.NAME_TRANSFORMER);
+		this.predicate = PredicateTools.wrap(IsNotNull.<String>instance(), Person.NAME_TRANSFORMER);
 	}
 
 	@Override
@@ -47,21 +47,15 @@ public class TransformationPredicateTests
 		assertFalse(this.predicate.evaluate(new Person(null)));
 	}
 
-	public void testClone() {
-		TransformationPredicate<Person, String> predicate2 = this.predicate.clone();
-		assertEquals(this.predicate, predicate2);
-		assertNotSame(this.predicate, predicate2);
-	}
-
 	public void testEquals() {
-		TransformationPredicate<Person, String> predicate2 = PredicateTools.wrap(NotNullPredicate.<String>instance(), Person.NAME_TRANSFORMER);
+		Predicate<Person> predicate2 = PredicateTools.wrap(IsNotNull.<String>instance(), Person.NAME_TRANSFORMER);
 		assertEquals(this.predicate, predicate2);
 		assertEquals(this.predicate.hashCode(), predicate2.hashCode());
-		assertFalse(this.predicate.equals(NotNullPredicate.instance()));
+		assertFalse(this.predicate.equals(IsNotNull.instance()));
 	}
 
 	public void testSerialization() throws Exception {
-		TransformationPredicate<Person, String> predicate2 = TestTools.serialize(this.predicate);
+		Predicate<Person> predicate2 = TestTools.serialize(this.predicate);
 		assertEquals(this.predicate, predicate2);
 		assertNotSame(this.predicate, predicate2);
 	}

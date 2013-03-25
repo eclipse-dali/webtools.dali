@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.ResourceLocator;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -188,19 +188,16 @@ class ResourceLocatorConfig
 	}
 
 
-	// ********** enabled filter **********
+	// ********** is enabled predicate **********
 
-	static class EnabledFilter
-		extends PredicateAdapter<ResourceLocatorConfig>
+	static class IsEnabled
+		extends CriterionPredicate<ResourceLocatorConfig, IProject>
 	{
-		private final IProject project;
-		EnabledFilter(IProject project) {
-			super();
-			this.project = project;
+		IsEnabled(IProject project) {
+			super(project);
 		}
-		@Override
 		public boolean evaluate(ResourceLocatorConfig config) {
-			return config.isEnabled(this.project);
+			return config.isEnabled(this.criterion);
 		}
 	}
 

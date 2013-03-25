@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  *   passed to its transformer)
  */
 public class TransformerPredicate<V>
-	implements Predicate<V>, Cloneable, Serializable
+	implements Predicate<V>, Serializable
 {
 	protected final Transformer<? super V, Boolean> transformer;
 	protected final boolean nullValue;
@@ -48,17 +48,6 @@ public class TransformerPredicate<V>
 
 	private Boolean evaluate_(V variable) {
 		return this.transformer.transform(variable);
-	}
-
-	@Override
-	public TransformerPredicate<V> clone() {
-		try {
-			@SuppressWarnings("unchecked")
-			TransformerPredicate<V> clone = (TransformerPredicate<V>) super.clone();
-			return clone;
-		} catch (CloneNotSupportedException ex) {
-			throw new InternalError();
-		}
 	}
 
 	@Override

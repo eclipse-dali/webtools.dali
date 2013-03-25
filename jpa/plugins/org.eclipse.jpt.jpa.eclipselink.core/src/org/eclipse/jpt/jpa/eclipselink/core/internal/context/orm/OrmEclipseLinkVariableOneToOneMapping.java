@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
+import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmAttributeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVariableOneToOneMapping;
@@ -65,6 +65,6 @@ public class OrmEclipseLinkVariableOneToOneMapping
 	}
 	
 	protected Iterable<String> getCandidateTargetInterfaceNames() {
-		return MappingTools.getSortedJavaInterfaceNames(getJavaProject());
+		return JavaProjectTools.getSortedInterfaceNames(getJavaProject());
 	}
 }

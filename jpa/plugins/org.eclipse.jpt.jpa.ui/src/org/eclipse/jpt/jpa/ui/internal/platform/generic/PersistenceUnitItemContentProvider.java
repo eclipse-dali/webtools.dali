@@ -20,7 +20,6 @@ import org.eclipse.jpt.common.utility.internal.model.value.ListCollectionValueMo
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationListValueModel;
-import org.eclipse.jpt.common.utility.internal.predicate.NotNullPredicate;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
@@ -72,7 +71,7 @@ public class PersistenceUnitItemContentProvider
 	protected CollectionValueModel<MappingFile> buildNotNullSpecifiedMappingFilesModel() {
 		return new FilteringCollectionValueModel<MappingFile>(
 				this.buildSpecifiedMappingFilesModel(),
-				PredicateTools.<MappingFile>notNullPredicate()
+				PredicateTools.<MappingFile>isNotNull()
 			);
 	}
 
@@ -119,7 +118,7 @@ public class PersistenceUnitItemContentProvider
 	protected CollectionValueModel<JavaManagedType> buildNotNullJavaManagedTypesModel() {
 		return new FilteringCollectionValueModel<JavaManagedType>(
 				this.buildJavaManagedTypesModel(),
-				NotNullPredicate.<JavaManagedType>instance()
+				PredicateTools.<JavaManagedType>isNotNull()
 			);
 	}
 
@@ -162,7 +161,7 @@ public class PersistenceUnitItemContentProvider
 	protected CollectionValueModel<JarFile> buildNotNullJarFilesModel() {
 		return new FilteringCollectionValueModel<JarFile>(
 				this.buildJarFilesModel(),
-				PredicateTools.<JarFile>notNullPredicate()
+				PredicateTools.<JarFile>isNotNull()
 			);
 	}
 

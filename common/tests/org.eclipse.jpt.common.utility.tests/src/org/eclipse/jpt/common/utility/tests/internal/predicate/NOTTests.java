@@ -11,34 +11,34 @@ package org.eclipse.jpt.common.utility.tests.internal.predicate;
 
 import java.io.Serializable;
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.internal.predicate.NOTPredicate;
-import org.eclipse.jpt.common.utility.internal.predicate.NotNullPredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.IsNotNull;
+import org.eclipse.jpt.common.utility.internal.predicate.NOT;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
-public class NOTPredicateTests
+public class NOTTests
 	extends TestCase
 {
-	private NOTPredicate<Number> notPredicate;
+	private NOT<Number> notPredicate;
 
 
-	public NOTPredicateTests(String name) {
+	public NOTTests(String name) {
 		super(name);
 	}
 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.notPredicate = PredicateTools.not(this.buildPositivePredicate());
+		this.notPredicate = new NOT<Number>(this.buildIsPositive());
 	}
 
-	private Predicate<Number> buildPositivePredicate() {
-		return new PositivePredicate();
+	private Predicate<Number> buildIsPositive() {
+		return new IsPositive();
 	}
 
-	static class PositivePredicate
+	static class IsPositive
 		extends PredicateAdapter<Number>
 		implements Serializable
 	{
@@ -72,21 +72,15 @@ public class NOTPredicateTests
 		assertFalse(this.notPredicate.evaluate(new Double(111)));
 	}
 
-	public void testClone() {
-		NOTPredicate<Number> notPredicate2 = this.notPredicate.clone();
-		assertEquals(this.notPredicate.getPredicate(), notPredicate2.getPredicate());
-		assertNotSame(this.notPredicate, notPredicate2);
-	}
-
 	public void testEquals() {
-		NOTPredicate<Number> notPredicate2 = PredicateTools.not(this.buildPositivePredicate());
+		Predicate<Number> notPredicate2 = PredicateTools.not(this.buildIsPositive());
 		assertEquals(this.notPredicate, notPredicate2);
 		assertEquals(this.notPredicate.hashCode(), notPredicate2.hashCode());
-		assertFalse(this.notPredicate.equals(NotNullPredicate.instance()));
+		assertFalse(this.notPredicate.equals(IsNotNull.instance()));
 	}
 
 	public void testSerialization() throws Exception {
-		NOTPredicate<Number> notPredicate2 = TestTools.serialize(this.notPredicate);
+		NOT<Number> notPredicate2 = TestTools.serialize(this.notPredicate);
 		assertEquals(this.notPredicate.getPredicate(), notPredicate2.getPredicate());
 		assertNotSame(this.notPredicate, notPredicate2);
 	}

@@ -49,6 +49,8 @@ import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.JptResourceModelListener;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryTypeCache;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceTypeCompilationUnit;
+import org.eclipse.jpt.common.core.internal.utility.PackageFragmentRootTools;
+import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.internal.utility.command.NotifyingRepeatingJobCommandWrapper;
 import org.eclipse.jpt.common.core.internal.utility.command.RepeatingJobCommandWrapper;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
@@ -71,7 +73,6 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
-import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaFile;
@@ -84,9 +85,8 @@ import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
-import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
-import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2.JpaMetamodelSynchronizer2_0;
+import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.JpaContextModelRoot2_0;
 import org.eclipse.jpt.jpa.core.jpa2_1.JpaProject2_1;
 import org.eclipse.jpt.jpa.core.libprov.JpaLibraryProviderInstallOperationConfig;
@@ -542,7 +542,7 @@ public abstract class AbstractJpaProject
 	protected Iterable<JpaFile> getJpaFiles(final IContentType contentType) {
 		return IterableTools.filter(
 				this.getJpaFiles(),
-				new ContentTypeReference.ContentIsKindOf(contentType)
+				new ContentTypeReference.ContentTypeIsKindOf(contentType)
 			);
 	}
 
@@ -861,7 +861,7 @@ public abstract class AbstractJpaProject
 		return IterableTools.concatenate(
 				IterableTools.transform(
 					this.getJpaPlatform().getJavaManagedTypeDefinitions(), 
-					new JavaManagedTypeDefinition.AnnotationNameTransformer(this.getJpaProject())));		
+					new JavaManagedTypeDefinition.AnnotationNamesTransformer(this.getJpaProject())));		
 	}
 
 	/**
@@ -1179,23 +1179,9 @@ public abstract class AbstractJpaProject
 	protected Iterable<IPackageFragmentRoot> getJavaSourceFolders() throws JavaModelException {
 		return IterableTools.filter(
 				this.getPackageFragmentRoots(),
-				SOURCE_PACKAGE_FRAGMENT_ROOT_FILTER
+				PackageFragmentRootTools.IS_SOURCE_FOLDER
 			);
 	}
-
-	protected static final Predicate<IPackageFragmentRoot> SOURCE_PACKAGE_FRAGMENT_ROOT_FILTER =
-		new Predicate<IPackageFragmentRoot>() {
-			public boolean evaluate(IPackageFragmentRoot pfr) {
-				try {
-					return this.accept_(pfr);
-				} catch (JavaModelException ex) {
-					return false;
-				}
-			}
-			private boolean accept_(IPackageFragmentRoot pfr) throws JavaModelException {
-				return pfr.exists() && (pfr.getKind() == IPackageFragmentRoot.K_SOURCE);
-			}
-		};
 
 	protected Iterable<IPackageFragmentRoot> getPackageFragmentRoots() throws JavaModelException {
 		return IterableTools.iterable(this.getJavaProject().getPackageFragmentRoots());

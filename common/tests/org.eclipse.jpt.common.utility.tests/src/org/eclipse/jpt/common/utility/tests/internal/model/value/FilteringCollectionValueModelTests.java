@@ -12,13 +12,12 @@ package org.eclipse.jpt.common.utility.tests.internal.model.value;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
-
 import junit.framework.TestCase;
-
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.FilteringCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionClearEvent;
@@ -62,11 +61,16 @@ public class FilteringCollectionValueModelTests extends TestCase {
 	}
 
 	private Predicate<String> buildFilter() {
-		return new Predicate<String>() {
-			public boolean evaluate(String s) {
-				return s.startsWith("b");
-			}
-		};
+		return new StringStartsWithB();
+	}
+
+	class StringStartsWithB
+		extends PredicateAdapter<String>
+	{
+		@Override
+		public boolean evaluate(String s) {
+			return s.startsWith("b");
+		}
 	}
 
 	@Override
@@ -327,15 +331,22 @@ public class FilteringCollectionValueModelTests extends TestCase {
 	}
 
 	private Predicate<TestItem> buildFilter2() {
-		return new Predicate<TestItem>() {
-			public boolean evaluate(TestItem ti) {
-				return ti.name.startsWith("b");
-			}
-		};
+		return new NameStartsWithB();
+	}
+
+
+	class NameStartsWithB
+		extends PredicateAdapter<TestItem>
+	{
+		@Override
+		public boolean evaluate(TestItem ti) {
+			return ti.name.startsWith("b");
+		}
 	}
 
 
 	// ********** TestItem inner class **********
+
 
 	private class TestItem {
 		String name;

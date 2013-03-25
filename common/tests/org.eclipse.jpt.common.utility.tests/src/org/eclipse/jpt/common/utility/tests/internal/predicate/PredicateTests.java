@@ -11,10 +11,9 @@ package org.eclipse.jpt.common.utility.tests.internal.predicate;
 
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.predicate.DisabledPredicate;
-import org.eclipse.jpt.common.utility.internal.predicate.FalsePredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.False;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
-import org.eclipse.jpt.common.utility.internal.predicate.TruePredicate;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
@@ -40,41 +39,41 @@ public class PredicateTests
 	}
 
 	public void testTruePredicate() {
-		Predicate<String> predicate = TruePredicate.instance();
+		Predicate<String> predicate = PredicateTools.true_();
 		assertTrue(predicate.evaluate(""));
 		assertTrue(predicate.evaluate("foo"));
 		assertTrue(predicate.evaluate("bar"));
 	}
 
 	public void testTruePredicate_toString() {
-		Predicate<String> predicate = TruePredicate.instance();
+		Predicate<String> predicate = PredicateTools.true_();
 		assertNotNull(predicate.toString());
 	}
 
 	public void testTruePredicate_serialization() throws Exception {
-		Predicate<String> predicate = TruePredicate.instance();
+		Predicate<String> predicate = PredicateTools.true_();
 		assertSame(predicate, TestTools.serialize(predicate));
 	}
 
 	public void testFalsePredicate() {
-		Predicate<String> predicate = FalsePredicate.instance();
+		Predicate<String> predicate = False.instance();
 		assertFalse(predicate.evaluate(""));
 		assertFalse(predicate.evaluate("foo"));
 		assertFalse(predicate.evaluate("bar"));
 	}
 
 	public void testFalsePredicate_toString() {
-		Predicate<String> predicate = FalsePredicate.instance();
+		Predicate<String> predicate = False.instance();
 		assertNotNull(predicate.toString());
 	}
 
 	public void testFalsePredicate_serialization() throws Exception {
-		Predicate<String> predicate = FalsePredicate.instance();
+		Predicate<String> predicate = False.instance();
 		assertSame(predicate, TestTools.serialize(predicate));
 	}
 
 	public void testNotNullPredicate() {
-		Predicate<String> filter = PredicateTools.notNullPredicate();
+		Predicate<String> filter = PredicateTools.isNotNull();
 		assertTrue(filter.evaluate(""));
 		assertFalse(filter.evaluate(null));
 		assertTrue(filter.evaluate("foo"));
@@ -82,12 +81,12 @@ public class PredicateTests
 	}
 
 	public void testNotNullPredicate_toString() {
-		Predicate<String> filter = PredicateTools.notNullPredicate();
+		Predicate<String> filter = PredicateTools.isNotNull();
 		assertNotNull(filter.toString());
 	}
 
 	public void testNullPredicate() {
-		Predicate<String> filter = PredicateTools.nullPredicate();
+		Predicate<String> filter = PredicateTools.isNull();
 		assertFalse(filter.evaluate(""));
 		assertTrue(filter.evaluate(null));
 		assertFalse(filter.evaluate("foo"));
@@ -95,7 +94,7 @@ public class PredicateTests
 	}
 
 	public void testNullPredicate_toString() {
-		Predicate<String> filter = PredicateTools.nullPredicate();
+		Predicate<String> filter = PredicateTools.isNull();
 		assertNotNull(filter.toString());
 	}
 

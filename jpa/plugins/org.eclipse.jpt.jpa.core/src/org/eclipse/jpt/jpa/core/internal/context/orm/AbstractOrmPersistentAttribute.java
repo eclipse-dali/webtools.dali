@@ -28,18 +28,17 @@ import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.CollectionMapping;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentType;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAccessHolder;
@@ -248,7 +247,7 @@ public abstract class AbstractOrmPersistentAttribute
 		}
 		else if (this.getAccess() == AccessType.PROPERTY) {
 			JavaResourceMethod javaResourceGetter = this.getJavaResourceGetter(javaResourceType);
-			JavaResourceMethod javaResourceSetter = (javaResourceGetter == null) ? null : AbstractJavaPersistentType.getValidSiblingSetMethod(javaResourceGetter, javaResourceType.getMethods());
+			JavaResourceMethod javaResourceSetter = (javaResourceGetter == null) ? null : JavaResourceMethod.SET_METHOD_TRANSFORMER.transform(javaResourceGetter);
 			if ((javaResourceGetter == null) && (javaResourceSetter == null)) {
 				// nothing in the resource inheritance hierarchy matches our name *and* access type
 				this.cachedJavaPersistentAttribute = null;
@@ -325,23 +324,12 @@ public abstract class AbstractOrmPersistentAttribute
 		return this.getJavaResourceGetter(superclass);
 	}
 
-	protected Iterable<JavaResourceMethod> getResourceMethods(final JavaResourceType javaResourceType, Predicate<JavaResourceMethod> filter) {
-		return IterableTools.filter(javaResourceType.getMethods(), filter);
-	}
-
-	protected Predicate<JavaResourceMethod> buildPersistablePropertyGetterMethodsFilter(final JavaResourceType javaResourceType) {
-		return new Predicate<JavaResourceMethod>() {
-			public boolean evaluate(JavaResourceMethod resourceMethod) {
-				return AbstractJavaPersistentType.methodIsPersistablePropertyGetter(resourceMethod, javaResourceType.getMethods());
-			}
-		};
-	}
-
-	/**
-	 * Return the resource attributes with compatible access types.
-	 */
 	protected Iterable<JavaResourceMethod> getJavaResourceGetters(JavaResourceType javaResourceType) {
-		return this.getResourceMethods(javaResourceType, this.buildPersistablePropertyGetterMethodsFilter(javaResourceType));
+		return this.filterJavaResourceMethods(javaResourceType, JavaResourceMethod.IS_PROPERTY_GETTER);
+	}
+
+	protected Iterable<JavaResourceMethod> filterJavaResourceMethods(JavaResourceType javaResourceType, Predicate<JavaResourceMethod> predicate) {
+		return IterableTools.filter(javaResourceType.getMethods(), predicate);
 	}
 
 	protected JavaSpecifiedPersistentAttribute buildJavaPersistentField(JavaResourceField javaResourceField) {

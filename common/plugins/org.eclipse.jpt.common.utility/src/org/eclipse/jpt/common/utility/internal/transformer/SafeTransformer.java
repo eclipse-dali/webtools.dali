@@ -29,6 +29,7 @@ public class SafeTransformer<I, O>
 	private final ExceptionHandler exceptionHandler;
 	private final O exceptionOutput;
 
+
 	public SafeTransformer(Transformer<? super I, ? extends O> transformer, ExceptionHandler exceptionHandler, O exceptionOutput) {
 		super();
 		if ((transformer == null) || (exceptionHandler == null)) {

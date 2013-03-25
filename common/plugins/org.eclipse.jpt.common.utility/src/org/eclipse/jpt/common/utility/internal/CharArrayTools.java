@@ -734,9 +734,9 @@ public final class CharArrayTools {
 	/**
 	 * @see #isNotBlank(char[])
 	 */
-	public static final Predicate<char[]> NON_BLANK_FILTER = new NonBlankFilter();
+	public static final Predicate<char[]> IS_NOT_BLANK = new IsNotBlank();
 
-	/* CU private */ static class NonBlankFilter
+	/* CU private */ static class IsNotBlank
 		implements Predicate<char[]>, Serializable
 	{
 		public boolean evaluate(char[] string) {
@@ -749,7 +749,7 @@ public final class CharArrayTools {
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
 			// replace this object with the singleton
-			return NON_BLANK_FILTER;
+			return IS_NOT_BLANK;
 		}
 	}
 

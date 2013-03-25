@@ -15,6 +15,10 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * A transformer that will clone (via reflection) the input.
+ * @param <I> input: the type of the object passed to the transformer
+ *   (and returned by the transformer)
+ * @see Cloneable
+ * @see Object#clone()
  */
 public final class CloneTransformer<I extends Cloneable>
 	implements Transformer<I, I>, Serializable
@@ -32,6 +36,9 @@ public final class CloneTransformer<I extends Cloneable>
 		super();
 	}
 
+	/**
+	 * Clone the input via reflection.
+	 */
 	@SuppressWarnings("unchecked")
 	public I transform(I input) {
 		return (I) ObjectTools.execute(input, "clone"); //$NON-NLS-1$

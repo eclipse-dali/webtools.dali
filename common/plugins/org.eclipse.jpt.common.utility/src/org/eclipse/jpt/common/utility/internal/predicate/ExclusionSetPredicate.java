@@ -9,31 +9,22 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.predicate;
 
+import java.util.Set;
+
 /**
- * This predicate will return <code>true</code> for any object that is
- * non-<code>null</code> and an instance of the specified class.
+ * A predicate that will return whether the variable is <em>not</em> in a
+ * client-configured set.
  * 
  * @param <V> the type of objects to be evaluated by the predicate
  */
-public class InstanceOfPredicate<V>
-	extends CriterionPredicate<V, Class<? extends V>>
+public class ExclusionSetPredicate<V>
+	extends CriterionPredicate<V, Set<? super V>>
 {
-	private static final long serialVersionUID = 1L;
-
-
-	public InstanceOfPredicate(Class<? extends V> clazz) {
-		super(clazz);
-		if (clazz == null) {
-			throw new NullPointerException();
-		}
+	public ExclusionSetPredicate(Set<? super V> set) {
+		super(set);
 	}
 
 	public boolean evaluate(V variable) {
-		return this.criterion.isInstance(variable);
-	}
-
-	@Override
-	public InstanceOfPredicate<V> clone() {
-		return (InstanceOfPredicate<V>) super.clone();
+		return ! this.criterion.contains(variable);
 	}
 }

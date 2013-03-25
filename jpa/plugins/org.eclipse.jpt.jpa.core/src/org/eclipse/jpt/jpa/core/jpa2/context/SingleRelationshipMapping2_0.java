@@ -9,7 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context;
 
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.SingleRelationshipMapping;
 
@@ -36,6 +38,26 @@ public interface SingleRelationshipMapping2_0
 		@Override
 		public DerivedIdentity2_0 transform(SingleRelationshipMapping2_0 mapping) {
 			return mapping.getDerivedIdentity();
+		}
+	}
+
+	Predicate<SingleRelationshipMapping2_0> TYPE_MAPPING_USES_ID_DERIVED_IDENTITY_STRATEGY = new TypeMappingUsesIdDerivedIdentityStrategy();
+	class TypeMappingUsesIdDerivedIdentityStrategy
+		extends PredicateAdapter<SingleRelationshipMapping2_0>
+	{
+		@Override
+		public boolean evaluate(SingleRelationshipMapping2_0 mapping) {
+			return mapping.getDerivedIdentity().usesIdDerivedIdentityStrategy();
+		}
+	}
+
+	Predicate<SingleRelationshipMapping2_0> TYPE_MAPPING_USES_MAPS_ID_DERIVED_IDENTITY_STRATEGY = new TypeMappingUsesMapsIdDerivedIdentityStrategy();
+	class TypeMappingUsesMapsIdDerivedIdentityStrategy
+		extends PredicateAdapter<SingleRelationshipMapping2_0>
+	{
+		@Override
+		public boolean evaluate(SingleRelationshipMapping2_0 mapping) {
+			return mapping.getDerivedIdentity().usesMapsIdDerivedIdentityStrategy();
 		}
 	}
 }

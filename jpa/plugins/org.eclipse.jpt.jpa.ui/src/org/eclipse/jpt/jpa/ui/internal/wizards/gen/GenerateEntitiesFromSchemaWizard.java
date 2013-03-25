@@ -32,7 +32,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.ui.internal.dialogs.OptionalMessageDialog;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -189,7 +189,7 @@ public class GenerateEntitiesFromSchemaWizard
 		if ( this.selection!=null && this.selection.getFirstElement() instanceof IPackageFragment ) {
 			IPackageFragment packageFrag = (IPackageFragment)this.selection.getFirstElement();
 			newDefaultTable.setPackage( packageFrag.getElementName() );
-			for (IPackageFragmentRoot root : JDTTools.getJavaSourceFolders(this.jpaProject.getJavaProject())) {
+			for (IPackageFragmentRoot root : JavaProjectTools.getSourceFolders(this.jpaProject.getJavaProject())) {
 				String srcFolder = root.getPath().toPortableString();
 				if( packageFrag.getPath().toPortableString().startsWith( srcFolder +'/' )) {
 					newDefaultTable.setSourceFolder(srcFolder.substring(1));

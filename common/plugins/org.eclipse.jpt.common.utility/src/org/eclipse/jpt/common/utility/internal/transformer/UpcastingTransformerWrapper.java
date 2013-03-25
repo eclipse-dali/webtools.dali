@@ -45,6 +45,10 @@ public class UpcastingTransformerWrapper<I, O, X extends O>
 		this.transformer = transformer;
 	}
 
+	/**
+	 * No need for casting as the type is guaranteed by the generic type
+	 * argument.
+	 */
 	public O transform(I input) {
 		return this.transformer.transform(input);
 	}

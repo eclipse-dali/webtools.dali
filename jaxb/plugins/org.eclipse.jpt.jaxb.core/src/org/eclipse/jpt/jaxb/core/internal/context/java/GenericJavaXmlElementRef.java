@@ -10,7 +10,8 @@
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.TypeTools;
+import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -248,9 +249,9 @@ public class GenericJavaXmlElementRef
 		}
 		else if (! StringTools.isBlank(this.specifiedType)
 				// verify that type actually exists before validating
-				&& JDTTools.findType(getJaxbProject().getJavaProject(), fqType) != null) {
+				&& JavaProjectTools.findType(getJaxbProject().getJavaProject(), fqType) != null) {
 			String attributeValueType = getContext().getAttributeMapping().getValueTypeName();
-			if (! JDTTools.typeIsSubType(getJaxbProject().getJavaProject(), fqType, attributeValueType)) {
+			if (! TypeTools.isSubType(fqType, attributeValueType, getJaxbProject().getJavaProject())) {
 				messages.add(
 						this.buildValidationMessage(
 								getTypeTextRange(),

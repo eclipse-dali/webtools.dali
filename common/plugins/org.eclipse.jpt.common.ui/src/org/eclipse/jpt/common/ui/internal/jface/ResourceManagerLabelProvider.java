@@ -13,7 +13,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.jface.resource.ResourceManager;
-import org.eclipse.jpt.common.utility.internal.transformer.NullOutputTransformer;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.swt.graphics.Image;
@@ -55,7 +54,7 @@ public class ResourceManagerLabelProvider<E>
 	 * @see #setTextTransformer(Transformer)
 	 */
 	public ResourceManagerLabelProvider(ResourceManager resourceManager) {
-		this(NullOutputTransformer.<E, ImageDescriptor>instance(), resourceManager);
+		this(TransformerTools.<E, ImageDescriptor>nullOutputTransformer(), resourceManager);
 	}
 
 	/**

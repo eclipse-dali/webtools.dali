@@ -24,6 +24,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
@@ -450,16 +451,13 @@ public abstract class AbstractJaxbContextRoot
 	}
 
 	public static class JavaTypeIsInPackage
-		extends PredicateAdapter<JavaType>
+		extends CriterionPredicate<JavaType, String>
 	{
-		private final JaxbPackage jaxbPackage;
 		public JavaTypeIsInPackage(JaxbPackage jaxbPackage) {
-			super();
-			this.jaxbPackage = jaxbPackage;
+			super(jaxbPackage.getName());
 		}
-		@Override
 		public boolean evaluate(JavaType javaType) {
-			return javaType.getTypeName().getPackageName().equals(this.jaxbPackage.getName());
+			return javaType.getTypeName().getPackageName().equals(this.criterion);
 		}
 	}
 	

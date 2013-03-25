@@ -29,7 +29,7 @@ import org.eclipse.jdt.ui.wizards.NewClassWizardPage;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.common.ui.internal.plugin.JptCommonUiPlugin;
@@ -245,7 +245,7 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 		if (className == null) {
 			return null;
 		}
-		return JDTTools.findType(this.getJavaProject(), className);
+		return JavaProjectTools.findType(this.getJavaProject(), className);
 	}
 	
 	protected void createType() {
@@ -405,7 +405,7 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	}
 
 	protected IPackageFragmentRoot getFirstJavaSourceFolder() {
-		Iterator<IPackageFragmentRoot> i = JDTTools.getJavaSourceFolders(getJavaProject()).iterator();
+		Iterator<IPackageFragmentRoot> i = JavaProjectTools.getSourceFolders(getJavaProject()).iterator();
 		return i.hasNext() ? i.next() : null;
 	}
 

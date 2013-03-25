@@ -17,18 +17,18 @@ package org.eclipse.jpt.common.utility.internal.predicate;
  * <code>null</code>.
  * 
  * @param <V> the type of objects to be evaluated by the predicate
+ * @see Equals
+ * @see IsNotNull
+ * @see IsNull
  */
-public class IdentityPredicate<V>
+public class IsIdentical<V>
 	extends CriterionPredicate<V, V>
 {
-	private static final long serialVersionUID = 1L;
-
-
 	/**
 	 * Construct a predicate that will evaluate to <code>true</code> if the
 	 * variable is <code>null</code>.
 	 */
-	public IdentityPredicate() {
+	public IsIdentical() {
 		this(null);
 	}
 
@@ -37,16 +37,11 @@ public class IdentityPredicate<V>
 	 * variable is identical to (<code>==</code>) the
 	 * specified criterion.
 	 */
-	public IdentityPredicate(V criterion) {
+	public IsIdentical(V criterion) {
 		super(criterion);
 	}
 
 	public boolean evaluate(V variable) {
 		return variable == this.criterion;
-	}
-
-	@Override
-	public IdentityPredicate<V> clone() {
-		return (IdentityPredicate<V>) super.clone();
 	}
 }

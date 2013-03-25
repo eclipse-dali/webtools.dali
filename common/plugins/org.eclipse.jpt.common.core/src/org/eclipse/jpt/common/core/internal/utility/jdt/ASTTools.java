@@ -38,8 +38,8 @@ import org.eclipse.jpt.common.utility.internal.SimpleJavaType;
 import org.eclipse.jpt.common.utility.internal.SimpleMethodSignature;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
@@ -121,7 +121,7 @@ public class ASTTools {
 	 * The results may include <code>null</code>s.
 	 */
 	public static Iterable<String> resolveFullyQualifiedNames(Expression expression) {
-		return IterableTools.transform(resolveTypeBindings(expression), TYPE_BINDING_QUALIFIED_NAME_TRANSFORMER);
+		return IterableTools.transform(resolveTypeBindings(expression), NULL_CHECK_TYPE_BINDING_QUALIFIED_NAME_TRANSFORMER);
 	}
 
 	private static final Transformer<ITypeBinding, String> TYPE_BINDING_QUALIFIED_NAME_TRANSFORMER = new TypeBindingQualifiedNameTransformer();
@@ -133,6 +133,7 @@ public class ASTTools {
 			return typeBinding.getQualifiedName();
 		}
 	}
+	private static final Transformer<ITypeBinding, String> NULL_CHECK_TYPE_BINDING_QUALIFIED_NAME_TRANSFORMER = TransformerTools.nullCheck(TYPE_BINDING_QUALIFIED_NAME_TRANSFORMER);
 
 	/**
 	 * If the specified expression is a type literal, return the corresponding

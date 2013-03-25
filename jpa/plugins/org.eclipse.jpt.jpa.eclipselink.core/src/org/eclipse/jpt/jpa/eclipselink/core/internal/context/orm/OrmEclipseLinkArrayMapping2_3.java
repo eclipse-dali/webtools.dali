@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
@@ -393,7 +394,7 @@ public class OrmEclipseLinkArrayMapping2_3
 	@SuppressWarnings("unchecked")
 	protected Iterable<String> getCandidateTargetClassNames() {
 		return IterableTools.concatenate(
-				MappingTools.getSortedJavaClassNames(getJavaProject()),
+				JavaProjectTools.getJavaClassNames(getJavaProject()),
 				MappingTools.getPrimaryBasicTypeNames(),
 				IterableTools.sort(((EclipseLinkPersistenceUnit) this.getPersistenceUnit()).getEclipseLinkDynamicPersistentTypeNames())
 				);

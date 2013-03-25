@@ -29,6 +29,7 @@ public final class BooleanTransformer
 	// not null
 	private final Boolean nullValue;
 
+
 	/**
 	 * A {@link Transformer} that will return the original {@link Boolean} when
 	 * it is non-<code>null</code>; otherwise the {@link Transformer} will return

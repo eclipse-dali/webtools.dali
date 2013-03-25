@@ -10,7 +10,8 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.TypeTools;
+import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -83,7 +84,7 @@ public abstract class JavaEclipseLinkConverterClassConverter<A extends NamedConv
 	 */
 	protected boolean typeExists(String typeName) {
 		return (typeName != null) && 
-				(JDTTools.findType(this.getJavaProject(), typeName) != null);
+				(JavaProjectTools.findType(this.getJavaProject(), typeName) != null);
 	}
 
 	/**
@@ -91,7 +92,7 @@ public abstract class JavaEclipseLinkConverterClassConverter<A extends NamedConv
 	 */
 	protected boolean typeImplementsInterface(String typeName, String interfaceName) {
 		return (typeName != null) && 
-				JDTTools.typeIsSubType(this.getJavaProject(), typeName, interfaceName);
+				TypeTools.isSubType(typeName, interfaceName, this.getJavaProject());
 	}
 
 

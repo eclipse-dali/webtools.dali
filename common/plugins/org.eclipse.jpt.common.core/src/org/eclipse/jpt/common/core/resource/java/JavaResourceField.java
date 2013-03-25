@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,10 +11,12 @@ package org.eclipse.jpt.common.core.resource.java;
 
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
  * Java source code or binary field
- * 
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -25,8 +27,8 @@ import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
  * @since 3.0
  */
 public interface JavaResourceField
-		extends JavaResourceAttribute {
-	
+	extends JavaResourceAttribute
+{
 	/**
 	 * The [source] field must be sychronized with both the ASTFieldDeclaration and the
 	 * VariableDeclarationFragment.
@@ -43,4 +45,31 @@ public interface JavaResourceField
 	 * in the workspace.
 	 */
 	void resolveTypes(FieldDeclaration fieldDeclaration, VariableDeclarationFragment variableDeclaration);
+
+	/**
+	 * Field is (annotated) or (non-static and non-transient);
+	 */
+	@SuppressWarnings("unchecked")
+	Predicate<JavaResourceField> IS_RELEVANT_FOR_FIELD_ACCESS = 
+			PredicateTools.or(
+				IS_ANNOTATED,
+				PredicateTools.and(
+						PredicateTools.not(IS_TRANSIENT),
+						PredicateTools.not(IS_STATIC)
+				)
+			);
+
+	/**
+	 * Field is (annotated) or (public and non-static and non-transient);
+	 */
+	@SuppressWarnings("unchecked")
+	Predicate<JavaResourceField> IS_RELEVANT_FOR_PUBLIC_MEMBER_ACCESS = 
+			PredicateTools.or(
+				IS_ANNOTATED,
+				PredicateTools.and(
+						IS_PUBLIC,
+						PredicateTools.not(IS_TRANSIENT),
+						PredicateTools.not(IS_STATIC)
+				)
+			);
 }

@@ -27,9 +27,9 @@ import org.eclipse.jpt.common.utility.internal.ReverseComparator;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.EmptyBag;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
-import org.eclipse.jpt.common.utility.internal.predicate.TruePredicate;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.tests.internal.ArrayToolsTests;
 
 @SuppressWarnings("nls")
@@ -349,14 +349,14 @@ public class CollectionToolsTests
 
 	public void testFilterCollectionFilter() {
 		Collection<String> c = CollectionTools.collection(new String[] { "zero", "one", "two", "three", "four" });
-		Collection<String> actual = CollectionTools.filter(c, new ArrayToolsTests.StringLengthFilter(3));
+		Collection<String> actual = CollectionTools.filter(c, new ArrayToolsTests.StringLengthEquals(3));
 		Collection<String> expected = CollectionTools.collection(new String[] { "one", "two" });
 		assertEquals(expected, actual);
 	}
 
 	public void testFilterCollectionFilterTransparent() {
 		Collection<String> c = CollectionTools.collection(new String[] { "zero", "one", "two", "three", "four" });
-		Collection<String> actual = CollectionTools.filter(c, TruePredicate.<String>instance());
+		Collection<String> actual = CollectionTools.filter(c, PredicateTools.<String>true_());
 		Collection<String> expected = CollectionTools.collection(new String[] { "zero", "one", "two", "three", "four" });
 		assertEquals(expected, actual);
 		assertNotSame(expected, actual);

@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.io.Serializable;
 import java.util.List;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.TypeTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -137,7 +137,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 	protected void validateTargetEmbeddableImplementsZeroArgConstructor(List<IMessage> messages, IReporter reporter) {
 		if (this.getTargetEmbeddable() != null) {
 			String targetEmbeddableClassName = this.getTargetEmbeddable().getPersistentType().getName();
-			if (!JDTTools.classHasPublicZeroArgConstructor(this.getJavaProject(), targetEmbeddableClassName)){
+			if (!TypeTools.hasPublicZeroArgConstructor(targetEmbeddableClassName, this.getJavaProject())){
 				if (this.getPersistentAttribute().isVirtual()) {
 					messages.add(
 							this.buildValidationMessage(
@@ -210,7 +210,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 	protected void validateTargetEmbeddableImplementsSerializable(List<IMessage> messages, IReporter reporter) {
 		if (this.getTargetEmbeddable() != null) {
 			String targetEmbeddableClassName = this.getTargetEmbeddable().getPersistentType().getName();
-			if (!JDTTools.typeIsSubType(this.getJavaProject(), targetEmbeddableClassName, Serializable.class.getName())) {
+			if (!TypeTools.isSerializable(targetEmbeddableClassName, this.getJavaProject())) {
 				if (this.getPersistentAttribute().isVirtual()) {
 					messages.add(
 							this.buildValidationMessage(

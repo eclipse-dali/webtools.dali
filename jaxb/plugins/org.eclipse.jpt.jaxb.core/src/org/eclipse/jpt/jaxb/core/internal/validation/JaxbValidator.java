@@ -100,11 +100,11 @@ public class JaxbValidator
 	 * specified in the preferences).
 	 */
 	private Iterable<IMessage> buildNonIgnoredValidationMessages(IReporter reporter, IProject project) {
-		return IterableTools.filter(this.buildValidationMessages(reporter, project), NON_IGNORED_MESSAGE);
+		return IterableTools.filter(this.buildValidationMessages(reporter, project), MESSAGE_IS_NOT_IGNORED);
 	}
 
-	private static final Predicate<IMessage> NON_IGNORED_MESSAGE = new NonIgnoredMessage();
-	/* CU private */ static class NonIgnoredMessage
+	private static final Predicate<IMessage> MESSAGE_IS_NOT_IGNORED = new MessageIsNotIgnored();
+	/* CU private */ static class MessageIsNotIgnored
 		extends PredicateAdapter<IMessage>
 	{
 		@Override

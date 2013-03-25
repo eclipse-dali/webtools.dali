@@ -302,7 +302,7 @@ public abstract class AbstractJavaEntity
 
 	protected Iterable<Entity> buildDescendants() {
 		return this.isRootEntity() ?
-				IterableTools.filter(this.getPersistenceUnit().getEntities(), new Entity.EntityIsDescendant(this)) :
+				IterableTools.filter(this.getPersistenceUnit().getEntities(), new Entity.IsDescendant(this)) :
 				IterableTools.<Entity>emptyIterable();
 	}
 

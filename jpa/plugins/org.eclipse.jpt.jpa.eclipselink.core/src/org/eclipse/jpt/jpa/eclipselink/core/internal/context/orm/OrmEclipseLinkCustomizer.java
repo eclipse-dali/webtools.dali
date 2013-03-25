@@ -12,14 +12,14 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.TypeTools;
+import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
-import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModel;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlClassReference;
@@ -262,7 +262,7 @@ public class OrmEclipseLinkCustomizer
 			return;
 		}
 
-		IType customizerJdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedCustomizerClass());
+		IType customizerJdtType = JavaProjectTools.findType(this.getJavaProject(), this.getFullyQualifiedCustomizerClass());
 		if (customizerJdtType == null) {
 			messages.add(
 					this.buildValidationMessage(
@@ -273,7 +273,7 @@ public class OrmEclipseLinkCustomizer
 			);
 			return;
 		}
-		if (!JDTTools.typeHasPublicZeroArgConstructor(customizerJdtType)) {
+		if (!TypeTools.hasPublicZeroArgConstructor(customizerJdtType)) {
 			messages.add(
 					this.buildValidationMessage(
 							this.getValidationTextRange(),
@@ -282,7 +282,7 @@ public class OrmEclipseLinkCustomizer
 					)
 			);
 		}
-		if (!JDTTools.typeIsSubType(this.getJavaProject(), customizerJdtType, ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME)) {
+		if (!TypeTools.isSubType(customizerJdtType, ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME)) {
 			messages.add(
 					this.buildValidationMessage(
 							this.getValidationTextRange(),
@@ -318,7 +318,7 @@ public class OrmEclipseLinkCustomizer
 	}
 
 	protected Iterable<String> getCandidateClassNames() {
-		return MappingTools.getSortedJavaClassNames(this.getJavaProject());
+		return JavaProjectTools.getJavaClassNames(this.getJavaProject());
 	}
 
 	protected boolean customizerClassTouches(int pos) {

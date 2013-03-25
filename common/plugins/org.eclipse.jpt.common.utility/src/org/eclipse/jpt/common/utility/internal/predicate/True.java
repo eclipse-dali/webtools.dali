@@ -10,18 +10,20 @@
 package org.eclipse.jpt.common.utility.internal.predicate;
 
 import java.io.Serializable;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
  * Singleton predicate that always evaluates to
  * <code>true</code>.
+ * 
+ * @param <V> the type of objects to be evaluated by the predicate
+ * @see False
  */
-public final class TruePredicate<V>
+public final class True<V>
 	implements Predicate<V>, Serializable
 {
 	@SuppressWarnings("rawtypes")
-	public static final Predicate INSTANCE = new TruePredicate();
+	public static final Predicate INSTANCE = new True();
 
 	@SuppressWarnings("unchecked")
 	public static <V> Predicate<V> instance() {
@@ -29,7 +31,7 @@ public final class TruePredicate<V>
 	}
 
 	// ensure single instance
-	private TruePredicate() {
+	private True() {
 		super();
 	}
 
@@ -42,7 +44,7 @@ public final class TruePredicate<V>
 
 	@Override
 	public String toString() {
-		return ObjectTools.singletonToString(this);
+		return this.getClass().getSimpleName();
 	}
 
 	private static final long serialVersionUID = 1L;

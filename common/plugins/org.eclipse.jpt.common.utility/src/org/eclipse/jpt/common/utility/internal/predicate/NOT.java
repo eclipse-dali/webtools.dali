@@ -18,9 +18,12 @@ import org.eclipse.jpt.common.utility.predicate.Predicate;
  * wrapped predicate.
  * 
  * @param <V> the type of objects to be evaluated by the predicate
+ * @see AND
+ * @see OR
+ * @see XOR
  */
-public class NOTPredicate<V>
-	implements Predicate<V>, Cloneable, Serializable
+public class NOT<V>
+	implements Predicate<V>, Serializable
 {
 	protected final Predicate<? super V> predicate;
 
@@ -31,7 +34,7 @@ public class NOTPredicate<V>
 	 * Construct a predicate that will return the NOT of the value returned
 	 * by the specified predicate.
 	 */
-	public NOTPredicate(Predicate<? super V> predicate) {
+	public NOT(Predicate<? super V> predicate) {
 		super();
 		if (predicate == null) {
 			throw new NullPointerException();
@@ -48,23 +51,12 @@ public class NOTPredicate<V>
 	}
 
 	@Override
-	public NOTPredicate<V> clone() {
-		try {
-			@SuppressWarnings("unchecked")
-			NOTPredicate<V> clone = (NOTPredicate<V>) super.clone();
-			return clone;
-		} catch (CloneNotSupportedException ex) {
-			throw new InternalError();
-		}
-	}
-
-	@Override
 	public boolean equals(Object o) {
-		if ( ! (o instanceof NOTPredicate)) {
+		if ( ! (o instanceof NOT)) {
 			return false;
 		}
 		@SuppressWarnings("unchecked")
-		NOTPredicate<V> other = (NOTPredicate<V>) o;
+		NOT<V> other = (NOT<V>) o;
 		return this.predicate.equals(other.predicate);
 	}
 

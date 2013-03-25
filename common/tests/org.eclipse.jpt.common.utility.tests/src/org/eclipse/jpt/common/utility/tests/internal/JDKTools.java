@@ -113,11 +113,11 @@ public class JDKTools {
 	 * <code>".java"</code>.
 	 */
 	private static Iterable<File> filterJavaFiles(Iterable<File> files) {
-		return IterableTools.filter(files, JAVA_FILE_FILTER);
+		return IterableTools.filter(files, FILE_IS_JAVA_FILE);
 	}
 
-	private static final Predicate<File> JAVA_FILE_FILTER = new JavaFileFilter();
-	/* CU private */ static class JavaFileFilter
+	private static final Predicate<File> FILE_IS_JAVA_FILE = new FileIsJavaFile();
+	/* CU private */ static class FileIsJavaFile
 		extends PredicateAdapter<File>
 	{
 		@Override

@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.common.utility.internal.model.value.FilteringPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
@@ -74,7 +75,18 @@ public class PersistentTypeDetailsPageManager
 	private Transformer<TypeMapping, Control> buildPaneTransformer() {
 		return new PaneTransformer();
 	}
-	
+
+	class KeyEquals
+		extends CriterionPredicate<TypeMapping, String>
+	{
+		private KeyEquals(String key) {
+			super(key);
+		}
+		public boolean evaluate(TypeMapping mapping) {
+			return ((mapping == null) || (this.criterion == null)) || this.criterion.equals(mapping.getKey());
+		}
+	}
+
 	protected class PaneTransformer
 		extends AbstractTransformer<TypeMapping, Control>
 	{
@@ -101,11 +113,7 @@ public class PersistentTypeDetailsPageManager
 	}
 
 	private Predicate<TypeMapping> buildMappingFilter(final String key) {
-		return new Predicate<TypeMapping>() {
-			public boolean evaluate(TypeMapping mapping) {
-				return (mapping == null || key == null) || key.equals(mapping.getKey());
-			}
-		};
+		return new KeyEquals(key);
 	}
 
 	

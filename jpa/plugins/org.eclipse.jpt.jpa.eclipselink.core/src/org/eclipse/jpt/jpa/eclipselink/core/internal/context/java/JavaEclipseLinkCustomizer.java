@@ -11,7 +11,8 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.TypeTools;
+import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
@@ -162,11 +163,11 @@ public class JavaEclipseLinkCustomizer
 		}
 		//if the type cannot be resolved there is no need to perform the following validation,
 		//JDT will note the error in the source
-		IType customizerJdtType =  JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedCustomizerClass());
+		IType customizerJdtType =  JavaProjectTools.findType(this.getJavaProject(), this.getFullyQualifiedCustomizerClass());
 		if (customizerJdtType == null) {
 			return;
 		}
-		if (!JDTTools.typeHasPublicZeroArgConstructor(customizerJdtType)) {
+		if (!TypeTools.hasPublicZeroArgConstructor(customizerJdtType)) {
 			messages.add(
 					this.buildValidationMessage(
 							this.getCustomizerClassTextRange(),
@@ -195,7 +196,7 @@ public class JavaEclipseLinkCustomizer
 	 */
 	protected boolean typeImplementsInterface(String typeName, String interfaceName) {
 		return (typeName != null) && 
-				JDTTools.typeIsSubType(this.getJavaProject(), typeName, interfaceName);
+				TypeTools.isSubType(typeName, interfaceName, this.getJavaProject());
 	}
 
 	protected TextRange getCustomizerClassTextRange() {

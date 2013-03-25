@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.context.persistence;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -541,30 +541,24 @@ public interface PersistenceUnit
 		String getName();
 		void setName(String name);
 		class NameEquals
-			extends PredicateAdapter<Property>
+			extends CriterionPredicate<Property, String>
 		{
-			private final String propertyName;
 			public NameEquals(String propertyName) {
-				super();
-				this.propertyName = propertyName;
+				super(propertyName);
 			}
-			@Override
 			public boolean evaluate(Property property) {
-				return ObjectTools.equals(this.propertyName, property.getName());
+				return ObjectTools.equals(this.criterion, property.getName());
 			}
 		}
 		class NameStartsWith
-			extends PredicateAdapter<Property>
+			extends CriterionPredicate<Property, String>
 		{
-			private final String prefix;
 			public NameStartsWith(String prefix) {
-				super();
-				this.prefix = prefix;
+				super(prefix);
 			}
-			@Override
 			public boolean evaluate(Property property) {
 				String propertyName = property.getName();
-				return (propertyName != null) && propertyName.startsWith(this.prefix);
+				return (propertyName != null) && propertyName.startsWith(this.criterion);
 			}
 		}
 

@@ -349,13 +349,15 @@ public final class NameTools {
 	 * Convert the specified method name to a property name.
 	 * @see Introspector#decapitalize(String)
 	 */
+	@SuppressWarnings("nls")
 	public static String convertGetterOrSetterMethodNameToPropertyName(String methodName) {
 		int beginIndex = 0;
-		if (methodName.startsWith("get")) { //$NON-NLS-1$
+		int len = methodName.length();
+		if (methodName.startsWith("get") && (len > 3)) {
 			beginIndex = 3;
-		} else if (methodName.startsWith("set")) { //$NON-NLS-1$
+		} else if (methodName.startsWith("set") && (len > 3)) {
 			beginIndex = 3;
-		} else if (methodName.startsWith("is")) { //$NON-NLS-1$
+		} else if (methodName.startsWith("is") && (len > 2)) {
 			beginIndex = 2;
 		} else {
 			return methodName;  // return method name unchanged?

@@ -27,7 +27,8 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.JavaElementTools;
+import org.eclipse.jpt.common.core.internal.utility.PackageFragmentRootTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
@@ -116,8 +117,8 @@ public class JpaDeletePackageOrFolderParticipant
 	}
 
 	protected void addPackageFragmentRoot(IPackageFragmentRoot root) {
-		if (JDTTools.packageFragmentRootIsSourceFolder(root)) {
-			for (IJavaElement child : JDTTools.getChildren(root)) {
+		if (PackageFragmentRootTools.isSourceFolder(root)) {
+			for (IJavaElement child : JavaElementTools.getChildren(root)) {
 				this.addPackageFragment((IPackageFragment) child);
 			}
 		}
@@ -191,15 +192,15 @@ public class JpaDeletePackageOrFolderParticipant
 					getPossibleMappingFilesInFolders(),
 					getPossibleMappingFilesInPackageFragments()
 				),
-				new MappingFileIsOnClasspath(javaProject, jpaPlatform));
+				new FileIsMappingFileOnClasspath(javaProject, jpaPlatform));
 	}
 
-	public static class MappingFileIsOnClasspath
+	public static class FileIsMappingFileOnClasspath
 		extends PredicateAdapter<IFile>
 	{
 		private final IJavaProject javaProject;
 		private final JpaPlatform jpaPlatform;
-		public MappingFileIsOnClasspath(IJavaProject javaProject, JpaPlatform jpaPlatform) {
+		public FileIsMappingFileOnClasspath(IJavaProject javaProject, JpaPlatform jpaPlatform) {
 			super();
 			this.javaProject = javaProject;
 			this.jpaPlatform = jpaPlatform;

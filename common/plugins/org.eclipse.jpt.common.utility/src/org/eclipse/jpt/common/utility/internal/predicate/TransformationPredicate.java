@@ -20,10 +20,11 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * 
  * @param <I> the type of objects to be evaluated by the predicate (i.e.
  *   passed to its transformer before being forwarded to the wrapped predicate)
- * @param <O> the type of objects to be evaluated by the wrapped predicate
+ * @param <O> the type of objects output by the transformer and to be evaluated
+ *   by the wrapped predicate
  */
 public class TransformationPredicate<I, O>
-	implements Predicate<I>, Cloneable, Serializable
+	implements Predicate<I>, Serializable
 {
 	protected final Predicate<? super O> predicate;
 	protected final Transformer<? super I, O> transformer;
@@ -50,17 +51,6 @@ public class TransformationPredicate<I, O>
 
 	public Transformer<? super I, O> getTransformer() {
 		return this.transformer;
-	}
-
-	@Override
-	public TransformationPredicate<I, O> clone() {
-		try {
-			@SuppressWarnings("unchecked")
-			TransformationPredicate<I, O> clone = (TransformationPredicate<I, O>) super.clone();
-			return clone;
-		} catch (CloneNotSupportedException ex) {
-			throw new InternalError();
-		}
 	}
 
 	@Override

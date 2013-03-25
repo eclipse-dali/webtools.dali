@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.utility.internal.transformer;
 
 import java.io.Serializable;
+import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
@@ -19,6 +20,8 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * 
  * @param <O> output: the type of the object returned by the transformer (and
  *   the class, or superclass of the class, passed to the transformer)
+ * 
+ * @see Class#newInstance()
  */
 public final class InstantiationTransformer<O>
 	implements Transformer<Class<? extends O>, O>, Serializable
@@ -37,13 +40,7 @@ public final class InstantiationTransformer<O>
 	}
 
 	public O transform(Class<? extends O> input) {
-		try {
-			return input.newInstance();
-		} catch (InstantiationException ex) {
-			throw new RuntimeException(ex);
-		} catch (IllegalAccessException ex) {
-			throw new RuntimeException(ex);
-		}
+		return ClassTools.newInstance(input);
 	}
 
 	@Override

@@ -36,6 +36,7 @@ public class CastingTransformerWrapper<I, X, O>
 {
 	private final Transformer<? super I, ? extends X> transformer;
 
+
 	public CastingTransformerWrapper(Transformer<? super I, ? extends X> transformer) {
 		super();
 		if (transformer == null) {
@@ -44,6 +45,9 @@ public class CastingTransformerWrapper<I, X, O>
 		this.transformer = transformer;
 	}
 
+	/**
+	 * Cast the output and hope for the best.
+	 */
 	@SuppressWarnings("unchecked")
 	public O transform(I input) {
 		return (O) this.transformer.transform(input);

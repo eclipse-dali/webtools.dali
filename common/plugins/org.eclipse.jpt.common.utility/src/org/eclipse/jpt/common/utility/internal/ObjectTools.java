@@ -244,30 +244,6 @@ public final class ObjectTools {
 	}
 
 	/**
-	 * @see #toString(Object, Object)
-	 */
-	public static String toString(Object object, String additionalInfo) {
-		StringBuilder sb = new StringBuilder();
-		StringBuilderTools.appendHashCodeToString(sb, object);
-		sb.append('(');
-		sb.append(additionalInfo);
-		sb.append(')');
-		return sb.toString();
-	}
-
-	/**
-	 * @see #toString(Object, Object)
-	 */
-	public static String toString(Object object, StringBuffer additionalInfo) {
-		StringBuilder sb = new StringBuilder();
-		StringBuilderTools.appendHashCodeToString(sb, object);
-		sb.append('(');
-		sb.append(additionalInfo);
-		sb.append(')');
-		return sb.toString();
-	}
-
-	/**
 	 * Build a "Dali standard" {@link Object#toString() toString()} result for
 	 * the specified object:<pre>
 	 *     ClassName[00-F3-EE-42]
@@ -304,9 +280,9 @@ public final class ObjectTools {
 		try {
 			return get_(object, fieldName);
 		} catch (NoSuchFieldException ex) {
-			throw new RuntimeException(ex + StringTools.CR + buildFullyQualifiedFieldName(object, fieldName), ex);
+			throw new RuntimeException(buildFieldExceptionMessage(ex, object, fieldName), ex);
 		} catch (IllegalAccessException ex) {
-			throw new RuntimeException(ex + StringTools.CR + buildFullyQualifiedFieldName(object, fieldName), ex);
+			throw new RuntimeException(buildFieldExceptionMessage(ex, object, fieldName), ex);
 		}
 	}
 
@@ -329,9 +305,9 @@ public final class ObjectTools {
 		try {
 			set_(object, fieldName, value);
 		} catch (NoSuchFieldException ex) {
-			throw new RuntimeException(ex + StringTools.CR + buildFullyQualifiedFieldName(object, fieldName), ex);
+			throw new RuntimeException(buildFieldExceptionMessage(ex, object, fieldName), ex);
 		} catch (IllegalAccessException ex) {
-			throw new RuntimeException(ex + StringTools.CR + buildFullyQualifiedFieldName(object, fieldName), ex);
+			throw new RuntimeException(buildFieldExceptionMessage(ex, object, fieldName), ex);
 		}
 	}
 
@@ -351,7 +327,7 @@ public final class ObjectTools {
 		try {
 			return field_(object, fieldName);
 		} catch (NoSuchFieldException ex) {
-			throw new RuntimeException(ex + StringTools.CR + buildFullyQualifiedFieldName(object, fieldName), ex);
+			throw new RuntimeException(buildFieldExceptionMessage(ex, object, fieldName), ex);
 		}
 	}
 
@@ -367,8 +343,8 @@ public final class ObjectTools {
 	/**
 	 * Return a string representation of the specified field.
 	 */
-	private static String buildFullyQualifiedFieldName(Object object, String fieldName) {
-		return ClassTools.buildFullyQualifiedFieldName(object.getClass(), fieldName);
+	private static String buildFieldExceptionMessage(Exception ex, Object object, String fieldName) {
+		return ClassTools.buildFieldExceptionMessage(ex, object.getClass(), fieldName);
 	}
 
 

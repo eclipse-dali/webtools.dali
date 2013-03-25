@@ -24,6 +24,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceTypeCache;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandContext;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
@@ -149,6 +150,16 @@ public interface JpaProject
 	 * Return the Eclipse project associated with the JPA project.
 	 */
 	IProject getProject();
+	class ProjectEquals
+		extends CriterionPredicate<JpaProject, IProject>
+	{
+		public ProjectEquals(IProject project) {
+			super(project);
+		}
+		public boolean evaluate(JpaProject jpaProject) {
+			return jpaProject.getProject().equals(this.criterion);
+		}
+	}
 
 	/**
 	 * Return the Java project associated with the JPA project.

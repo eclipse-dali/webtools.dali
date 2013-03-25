@@ -18,15 +18,21 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * map.
  * 
  * @param <I> input: the type of the object passed to the transformer
+ *   (i.e. the type of the map's keys)
  * @param <O> output: the type of the object returned by the transformer
+ *   (i.e. the type of the map's values)
  */
 public class MapTransformer<I, O>
 	implements Transformer<I, O>
 {
 	private final Map<? super I, ? extends O> map;
 
+
 	public MapTransformer(Map<? super I, ? extends O> map) {
 		super();
+		if (map == null) {
+			throw new NullPointerException();
+		}
 		this.map = map;
 	}
 

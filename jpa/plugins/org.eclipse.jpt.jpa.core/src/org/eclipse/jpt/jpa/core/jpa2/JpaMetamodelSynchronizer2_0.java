@@ -9,15 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2;
 
-import java.io.Serializable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.GeneratedAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.StaticMetamodelAnnotation2_0;
 
@@ -75,49 +72,6 @@ public interface JpaMetamodelSynchronizer2_0 {
 	void disposeMetamodel();
 
 
-	/**
-	 * Singleton implementation of the metamodel synchronizer interface that
-	 * does nothing. (Not sure we need this....)
-	 */
-	final class Null
-		implements JpaMetamodelSynchronizer2_0, Serializable
-	{
-		public static final JpaMetamodelSynchronizer2_0 INSTANCE = new Null();
-
-		public static JpaMetamodelSynchronizer2_0 instance() {
-			return INSTANCE;
-		}
-
-		// ensure single instance
-		private Null() {
-			super();
-		}
-
-		public void initializeMetamodel() {
-			// do nothing
-		}
-
-		public IStatus synchronizeMetamodel(IProgressMonitor monitor) {
-			return Status.OK_STATUS;
-		}
-
-		public void disposeMetamodel() {
-			// do nothing
-		}
-
-		@Override
-		public String toString() {
-			return ObjectTools.singletonToString(this);
-		}
-
-		private static final long serialVersionUID = 1L;
-		private Object readResolve() {
-			// replace this object with the singleton
-			return INSTANCE;
-		}
-	}
-
-
 	// TODO
 	final class MetamodelTools {
 
@@ -139,16 +93,13 @@ public interface JpaMetamodelSynchronizer2_0 {
 		}
 
 		public static class IsGeneratedMetamodelTopLevelType
-			extends PredicateAdapter<JavaResourceAbstractType>
+			extends CriterionPredicate<JavaResourceAbstractType, IPackageFragmentRoot>
 		{
-			private final IPackageFragmentRoot sourceFolder;
 			public IsGeneratedMetamodelTopLevelType(IPackageFragmentRoot sourceFolder) {
-				super();
-				this.sourceFolder = sourceFolder;
+				super(sourceFolder);
 			}
-			@Override
 			public boolean evaluate(JavaResourceAbstractType jrat) {
-				return isGeneratedMetamodelTopLevelType(jrat, this.sourceFolder);
+				return isGeneratedMetamodelTopLevelType(jrat, this.criterion);
 			}
 		}
 

@@ -10,10 +10,10 @@
 package org.eclipse.jpt.common.utility.tests.internal.predicate;
 
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.internal.predicate.FieldPredicate;
-import org.eclipse.jpt.common.utility.internal.predicate.NotNullPredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.IsNotNull;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.internal.reference.SimpleBooleanReference;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.reference.BooleanReference;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 public class FieldPredicateTests
 	extends TestCase
 {
-	private FieldPredicate<BooleanReference> fieldPredicate;
+	private Predicate<BooleanReference> fieldPredicate;
 
 
 	public FieldPredicateTests(String name) {
@@ -31,7 +31,7 @@ public class FieldPredicateTests
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.fieldPredicate = PredicateTools.fieldPredicate("value");
+		this.fieldPredicate = PredicateTools.get("value");
 	}
 
 	@Override
@@ -47,21 +47,15 @@ public class FieldPredicateTests
 		assertTrue(this.fieldPredicate.evaluate(ref));
 	}
 
-	public void testClone() {
-		FieldPredicate<BooleanReference> fieldPredicate2 = this.fieldPredicate.clone();
-		assertEquals(this.fieldPredicate, fieldPredicate2);
-		assertNotSame(this.fieldPredicate, fieldPredicate2);
-	}
-
 	public void testEquals() {
-		FieldPredicate<BooleanReference> fieldPredicate2 = PredicateTools.fieldPredicate("value");
+		Predicate<BooleanReference> fieldPredicate2 = PredicateTools.get("value");
 		assertEquals(this.fieldPredicate, fieldPredicate2);
 		assertEquals(this.fieldPredicate.hashCode(), fieldPredicate2.hashCode());
-		assertFalse(this.fieldPredicate.equals(NotNullPredicate.instance()));
+		assertFalse(this.fieldPredicate.equals(IsNotNull.instance()));
 	}
 
 	public void testSerialization() throws Exception {
-		FieldPredicate<BooleanReference> fieldPredicate2 = TestTools.serialize(this.fieldPredicate);
+		Predicate<BooleanReference> fieldPredicate2 = TestTools.serialize(this.fieldPredicate);
 		assertEquals(this.fieldPredicate, fieldPredicate2);
 		assertNotSame(this.fieldPredicate, fieldPredicate2);
 	}

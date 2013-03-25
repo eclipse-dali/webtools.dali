@@ -27,6 +27,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.SystemTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.XMLStringEncoder;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
@@ -215,14 +216,14 @@ public final class FileTools {
 	 * @see File#isFile()
 	 */
 	public static Iterable<File> getFiles(File directory) {
-		return IterableTools.filter(IterableTools.iterable(directory.listFiles()), NORMAL_FILE_FILTER);
+		return IterableTools.filter(IterableTools.iterable(directory.listFiles()), IS_NORMAL_FILE);
 	}
 
 	/**
 	 * @see File#isFile()
 	 */
-	public static final Predicate<File> NORMAL_FILE_FILTER = new NormalFileFilter();
-	/* CU private */ static class NormalFileFilter
+	public static final Predicate<File> IS_NORMAL_FILE = new IsNormalFile();
+	/* CU private */ static class IsNormalFile
 		extends PredicateAdapter<File>
 	{
 		@Override
@@ -260,14 +261,14 @@ public final class FileTools {
 	 * @see File#isDirectory()
 	 */
 	public static Iterable<File> getDirectories(File directory) {
-		return IterableTools.filter(IterableTools.iterable(directory.listFiles()), DIRECTORY_FILTER);
+		return IterableTools.filter(IterableTools.iterable(directory.listFiles()), IS_DIRECTORY);
 	}
 	
 	/**
 	 * @see File#isDirectory()
 	 */
-	public static final Predicate<File> DIRECTORY_FILTER = new DirectoryFilter();
-	/* CU private */ static class DirectoryFilter
+	public static final Predicate<File> IS_DIRECTORY = new IsDirectory();
+	/* CU private */ static class IsDirectory
 		extends PredicateAdapter<File>
 	{
 		@Override
@@ -888,30 +889,27 @@ public final class FileTools {
 	 * Return only the files that fit the specified filter.
 	 */
 	public static Iterable<File> filter(Iterable<File> files, FileFilter fileFilter) {
-		return IterableTools.filter(files, new FileFilterFilterAdapter(fileFilter));
+		return IterableTools.filter(files, new FileFilterPredicateAdapter(fileFilter));
 	}
 
 	/**
 	 * Return only the files that fit the specified filter.
 	 */
 	public static Iterator<File> filter(Iterator<File> files, FileFilter fileFilter) {
-		return IteratorTools.filter(files, new FileFilterFilterAdapter(fileFilter));
+		return IteratorTools.filter(files, new FileFilterPredicateAdapter(fileFilter));
 	}
 
 	/**
 	 * Adapt a {@link FileFilter} to the {@link Predicate} interface.
 	 */
-	public static class FileFilterFilterAdapter
-		extends PredicateAdapter<File>
+	public static class FileFilterPredicateAdapter
+		extends CriterionPredicate<File, FileFilter>
 	{
-		private final FileFilter fileFilter;
-		public FileFilterFilterAdapter(FileFilter fileFilter) {
-			super();
-			this.fileFilter = fileFilter;
+		public FileFilterPredicateAdapter(FileFilter fileFilter) {
+			super(fileFilter);
 		}
-		@Override
 		public boolean evaluate(File file) {
-			return this.fileFilter.accept(file);
+			return this.criterion.accept(file);
 		}
 	}
 

@@ -15,7 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.TypeTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.collection.Bag;
@@ -641,9 +641,8 @@ public class GenericJavaClassMapping
 			if (jaxbType.getMapping() != null 
 					&& ! jaxbType.getMapping().isXmlTransient() 
 					&& jaxbType.getMapping().getXmlRootElement() != null
-					&& JDTTools.typeIsSubType(
-							getJaxbProject().getJavaProject(),
-							jaxbType.getTypeName().getFullyQualifiedName(), getJavaType().getTypeName().getFullyQualifiedName())) {
+					&& TypeTools.isSubType(
+							jaxbType.getTypeName().getFullyQualifiedName(), getJavaType().getTypeName().getFullyQualifiedName(), getJaxbProject().getJavaProject())) {
 				return true;
 			}
 		}
@@ -677,21 +676,11 @@ public class GenericJavaClassMapping
 										IterableTools.transform(
 												getAllAttributes(),
 												JaxbPersistentAttribute.MAPPING_TRANSFORMER),
-										XmlNamedNodeMapping.MAPPING_IS_NAMED_NODE_MAPPING)),
-						MAPPING_HAS_XML_ID).iterator();
+										XmlNamedNodeMapping.IS_NAMED_NODE_MAPPING)),
+						XmlNamedNodeMapping.HAS_XML_ID).iterator();
 		return allXmlIdMappings.hasNext() ? allXmlIdMappings.next() : null;
 	}
 	
-	protected static final Predicate<XmlNamedNodeMapping> MAPPING_HAS_XML_ID = new MappingHasXmlID();
-	public static class MappingHasXmlID
-		extends PredicateAdapter<XmlNamedNodeMapping>
-	{
-		@Override
-		public boolean evaluate(XmlNamedNodeMapping mapping) {
-			return mapping.getXmlID() != null;
-		}
-	}
-
 	protected Iterable<? extends JaxbAttributeMapping> getAttributeMappings() {
 		return IterableTools.transform(getAttributes(), JaxbPersistentAttribute.MAPPING_TRANSFORMER);
 	}

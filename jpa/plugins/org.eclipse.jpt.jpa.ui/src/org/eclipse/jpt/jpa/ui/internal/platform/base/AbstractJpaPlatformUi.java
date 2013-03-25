@@ -20,13 +20,11 @@ import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -112,7 +110,7 @@ public abstract class AbstractJpaPlatformUi
 	}
 
 	public Iterable<MappingUiDefinition> getTypeMappingUiDefinitions(PersistentType persistentType) {
-		return IterableTools.filter(this.getTypeMappingUiDefinitions(persistentType.getResourceType()), new UiDefinitionFilter(persistentType));
+		return IterableTools.filter(this.getTypeMappingUiDefinitions(persistentType.getResourceType()), new MappingUiDefinition.IsEnabledFor(persistentType));
 	}
 
 	public Iterable<MappingUiDefinition> getTypeMappingUiDefinitions(JptResourceType resourceType) {
@@ -135,7 +133,7 @@ public abstract class AbstractJpaPlatformUi
 	}
 
 	public Iterable<MappingUiDefinition> getAttributeMappingUiDefinitions(PersistentAttribute persistentAttribute) {
-		return IterableTools.filter(this.getAttributeMappingUiDefinitions(persistentAttribute.getResourceType()), new UiDefinitionFilter(persistentAttribute));
+		return IterableTools.filter(this.getAttributeMappingUiDefinitions(persistentAttribute.getResourceType()), new MappingUiDefinition.IsEnabledFor(persistentAttribute));
 	}
 
 	public Iterable<MappingUiDefinition> getAttributeMappingUiDefinitions(JptResourceType resourceType) {
@@ -150,21 +148,6 @@ public abstract class AbstractJpaPlatformUi
 		return this.getMappingResourceUiDefinition(resourceType).getDefaultAttributeMappingUiDefinition(mappingKey);
 	}
 
-
-	/* CU private */ class UiDefinitionFilter
-		extends PredicateAdapter<MappingUiDefinition>
-	{
-		private final JpaContextModel node;
-		
-		public UiDefinitionFilter(JpaContextModel node) {
-			super();
-			this.node =  node;
-		}
-		@Override
-		public boolean evaluate(MappingUiDefinition mappingUiDefinition) {
-			return mappingUiDefinition.isEnabledFor(this.node);
-		}
-	}
 
 	// ********** resource ui definitions **********
 

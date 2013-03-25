@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.utility.internal.transformer;
 
 import java.util.Arrays;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -33,7 +34,7 @@ public class TransformerChain<I, O>
 
 	public TransformerChain(@SuppressWarnings("rawtypes") Transformer[] transformers) {
 		super();
-		if (transformers == null) {
+		if ((transformers == null) || ArrayTools.contains(transformers, null)) {
 			throw new NullPointerException();
 		}
 		this.transformers = transformers;

@@ -196,7 +196,7 @@ public class InternalResourceLocatorManager
 	private Iterable<ResourceLocatorConfig> getResourceLocatorConfigs(IProject project) {
 		return IterableTools.filter(
 				this.resourceLocatorConfigs,
-				new ResourceLocatorConfig.EnabledFilter(project)
+				new ResourceLocatorConfig.IsEnabled(project)
 			);
 	}
 

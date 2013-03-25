@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.db.Table;
@@ -183,16 +183,13 @@ public interface OverrideContainer
 		TypeMapping getTypeMapping();
 
 		class AttributeIsOverridable
-			extends PredicateAdapter<String>
+			extends CriterionPredicate<String, ParentAdapter>
 		{
-			private final ParentAdapter parentAdapter;
 			public AttributeIsOverridable(ParentAdapter parentAdapter) {
-				super();
-				this.parentAdapter = parentAdapter;
+				super(parentAdapter);
 			}
-			@Override
 			public boolean evaluate(String attributeName) {
-				return ! this.parentAdapter.getTypeMapping().attributeIsDerivedId(attributeName);
+				return ! this.criterion.getTypeMapping().attributeIsDerivedId(attributeName);
 			}
 		}
 

@@ -14,6 +14,12 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * A transformer that will transform every input into <code>null</code>.
+ * 
+ * @param <I> input: the type of the object passed to the transformer
+ * @param <O> output: the type of the object returned by the transformer
+ * 
+ * @see AbstractTransformer
+ * @see TransformerAdapter
  */
 public final class NullOutputTransformer<I, O>
 	implements Transformer<I, O>, Serializable

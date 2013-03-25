@@ -26,7 +26,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
@@ -152,7 +152,7 @@ public class EntityClassWizardPage
 					if (selection[0] instanceof IProject) {
 						IProject project = (IProject) selection[0];
 						IJavaProject javaProject = JavaCore.create(project);
-						for (IPackageFragmentRoot root : JDTTools.getJavaSourceFolders(javaProject)) {
+						for (IPackageFragmentRoot root : JavaProjectTools.getSourceFolders(javaProject)) {
 							if (project.equals(root.getResource())) {
 								return WTPCommonPlugin.OK_STATUS;
 							}
@@ -182,7 +182,7 @@ public class EntityClassWizardPage
 					// only show source folders
 					IProject project = ProjectUtilities.getProject(projectName);
 					IJavaProject javaProject = JavaCore.create(project);
-					for (IPackageFragmentRoot root : JDTTools.getJavaSourceFolders(javaProject)) {
+					for (IPackageFragmentRoot root : JavaProjectTools.getSourceFolders(javaProject)) {
 						if (folder.equals(root.getResource()))
 							return true;
 					}

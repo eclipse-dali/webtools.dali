@@ -34,7 +34,7 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jpt.common.core.internal.gen.AbstractJptGenerator;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.utility.internal.io.FileTools;
 import org.eclipse.jpt.jaxb.core.JptJaxbCoreMessages;
 
@@ -186,7 +186,7 @@ public class SchemaGenerator extends AbstractJptGenerator
 	 * Returns null if no "jaxb.properties" file is found.
 	 */
 	private IFile getJaxbPropertiesFile() {
-		return getJaxbPropertiesFileFromPackageRoots(JDTTools.getJavaSourceFolders(this.getJavaProject()));
+		return getJaxbPropertiesFileFromPackageRoots(JavaProjectTools.getSourceFolders(this.getJavaProject()));
 	}
 	
 	private IFile getJaxbPropertiesFileFromPackageRoots(Iterable<IPackageFragmentRoot> packageFragmentRoots){
@@ -289,7 +289,7 @@ public class SchemaGenerator extends AbstractJptGenerator
 		String packageName = sourceClassName.substring(0, sourceClassName.lastIndexOf('.'));
 		
 		//Find the existing package fragment where we want to generate
-		for (IPackageFragmentRoot pfr : JDTTools.getJavaSourceFolders(this.getJavaProject())) {
+		for (IPackageFragmentRoot pfr : JavaProjectTools.getSourceFolders(this.getJavaProject())) {
 			//use the package of the first source class as the package for generation
 			IPackageFragment packageFragment = pfr.getPackageFragment(packageName);
 			if (packageFragment.exists()){
@@ -305,7 +305,7 @@ public class SchemaGenerator extends AbstractJptGenerator
 	}
 	
 	private IPackageFragmentRoot getFirstJavaSourceFolder() {
-		Iterator<IPackageFragmentRoot> i = JDTTools.getJavaSourceFolders(this.getJavaProject()).iterator();
+		Iterator<IPackageFragmentRoot> i = JavaProjectTools.getSourceFolders(this.getJavaProject()).iterator();
 		return i.hasNext() ? i.next() : null;
 	}
 	

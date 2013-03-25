@@ -13,7 +13,8 @@ import java.util.Collection;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.TypeTools;
+import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
@@ -201,8 +202,8 @@ public class EclipseLinkVirtualJavaPersistentAttribute
 		if (typeName == null) {
 			return false;
 		}
-		return JDTTools.typeIsSubType(this.getJavaProject(), typeName, DATE_TYPE_NAME)
-			|| JDTTools.typeIsSubType(this.getJavaProject(), typeName, CALENDAR_TYPE_NAME);
+		return TypeTools.isSubType(typeName, DATE_TYPE_NAME, this.getJavaProject())
+			|| TypeTools.isSubType(typeName, CALENDAR_TYPE_NAME, this.getJavaProject());
 	}
 
 	public boolean typeIsSerializable() {
@@ -210,7 +211,7 @@ public class EclipseLinkVirtualJavaPersistentAttribute
 		if (typeName == null) {
 			return false;
 		}
-		return JDTTools.typeIsSubType(this.getJavaProject(), typeName, JDTTools.SERIALIZABLE_CLASS_NAME);
+		return TypeTools.isSerializable(typeName, this.getJavaProject());
 	}
 
 	public boolean typeIsValidForVariableOneToOne() {
@@ -218,7 +219,7 @@ public class EclipseLinkVirtualJavaPersistentAttribute
 		if (typeName == null) {
 			return false;
 		}
-		IType type = JDTTools.findType(getJavaProject(), typeName);
+		IType type = JavaProjectTools.findType(getJavaProject(), typeName);
 		try {
 			return type != null &&
 					type.isInterface() &&
@@ -305,7 +306,7 @@ public class EclipseLinkVirtualJavaPersistentAttribute
 				}
 			}
 			for (JpaContainerDefinition definition : this.getJpaContainerDefinitions()) {
-				if (JDTTools.typeIsSubType(this.getJavaProject(), typeName, definition.getTypeName())) {
+				if (TypeTools.isSubType(typeName, definition.getTypeName(), this.getJavaProject())) {
 					return definition;
 				}
 			}

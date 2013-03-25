@@ -10,18 +10,20 @@
 package org.eclipse.jpt.common.utility.internal.predicate;
 
 import java.io.Serializable;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
- * Singleton predicate that evaluates whether an object is
- * <em>not</em> <code>null</code>.
+ * Singleton predicate that always evaluates to
+ * <code>false</code>.
+ * 
+ * @param <V> the type of objects to be evaluated by the predicate
+ * @see True
  */
-public final class NotNullPredicate<V>
+public final class False<V>
 	implements Predicate<V>, Serializable
 {
 	@SuppressWarnings("rawtypes")
-	public static final Predicate INSTANCE = new NotNullPredicate();
+	public static final Predicate INSTANCE = new False();
 
 	@SuppressWarnings("unchecked")
 	public static <V> Predicate<V> instance() {
@@ -29,20 +31,20 @@ public final class NotNullPredicate<V>
 	}
 
 	// ensure single instance
-	private NotNullPredicate() {
+	private False() {
 		super();
 	}
 
 	/**
-	 * Return whether the variable is <em>not</em> <code>null</code>.
+	 * Return <code>true</code>.
 	 */
 	public boolean evaluate(V variable) {
-		return variable != null;
+		return false;
 	}
 
 	@Override
 	public String toString() {
-		return ObjectTools.singletonToString(this);
+		return this.getClass().getSimpleName();
 	}
 
 	private static final long serialVersionUID = 1L;

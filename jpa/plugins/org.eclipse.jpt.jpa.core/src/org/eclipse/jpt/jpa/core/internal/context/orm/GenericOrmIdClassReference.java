@@ -12,7 +12,8 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.TypeTools;
+import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -27,7 +28,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmIdClassReference;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdTypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlIdClassContainer;
@@ -348,7 +348,7 @@ public class GenericOrmIdClassReference
 				);
 				return;
 			} 
-			IType idClassJdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedIdClassName());
+			IType idClassJdtType = JavaProjectTools.findType(this.getJavaProject(), this.getFullyQualifiedIdClassName());
 			if (idClassJdtType == null) {
 				messages.add(
 						this.buildValidationMessage(
@@ -373,7 +373,7 @@ public class GenericOrmIdClassReference
 					);
 				}
 
-				if (!JDTTools.typeIsSubType(this.getJavaProject(), jrt.getTypeBinding().getQualifiedName(), JDTTools.SERIALIZABLE_CLASS_NAME)) {
+				if (!TypeTools.isSerializable(jrt.getTypeBinding().getQualifiedName(), this.getJavaProject())) {
 					messages.add(
 							this.buildValidationMessage(
 									this.getValidationTextRange(),
@@ -436,7 +436,7 @@ public class GenericOrmIdClassReference
 	}
 	
 	protected Iterable<String> getCandidateIdClassNames() {
-		return MappingTools.getSortedJavaClassNames(this.getJavaProject());
+		return JavaProjectTools.getJavaClassNames(this.getJavaProject());
 	}
 
 	protected boolean idCLassNameTouches(int pos) {

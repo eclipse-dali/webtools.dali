@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.predicate;
 
-import java.io.Serializable;
 import java.util.Arrays;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringBuilderTools;
@@ -23,11 +22,9 @@ import org.eclipse.jpt.common.utility.predicate.Predicate;
  * @param <V> the type of objects to be evaluated by the predicate
  */
 public abstract class AbstractCompoundPredicate<V>
-	implements CompoundPredicate<V>, Cloneable, Serializable
+	implements CompoundPredicate<V>
 {
 	protected Predicate<? super V>[] predicates;
-
-	private static final long serialVersionUID = 1L;
 
 
 	/**
@@ -46,17 +43,6 @@ public abstract class AbstractCompoundPredicate<V>
 	 */
 	public Predicate<? super V>[] getPredicates() {
 		return this.predicates;
-	}
-
-	@Override
-	public AbstractCompoundPredicate<V> clone() {
-		try {
-			@SuppressWarnings("unchecked")
-			AbstractCompoundPredicate<V> clone = (AbstractCompoundPredicate<V>) super.clone();
-			return clone;
-		} catch (CloneNotSupportedException ex) {
-			throw new InternalError();
-		}
 	}
 
 	@Override
@@ -79,13 +65,13 @@ public abstract class AbstractCompoundPredicate<V>
 		StringBuilder sb = new StringBuilder();
 		StringBuilderTools.appendHashCodeToString(sb, this);
 		sb.append('(');
-		for (Predicate<? super V> predicate : this.predicates) {
-			sb.append(predicate);
-			sb.append(' ');
-			sb.append(this.operatorString());
-			sb.append(' ');
-		}
 		if (this.predicates.length > 0) {
+			for (Predicate<? super V> predicate : this.predicates) {
+				sb.append(predicate);
+				sb.append(' ');
+				sb.append(this.operatorString());
+				sb.append(' ');
+			}
 			sb.setLength(sb.length() - this.operatorString().length() - 2);
 		}
 		sb.append(')');

@@ -115,23 +115,11 @@ public class FileAdapterFactory
 		implements JpaFileModel
 	{
 		JpaFileModelAdapter(CollectionValueModel<JpaFile> jpaFilesModel, IFile file) {
-			super(jpaFilesModel, new Predicate(file));
+			super(jpaFilesModel, new JpaFile.FileEquals(file));
 		}
 
 		public IFile getFile() {
-			return ((Predicate) this.predicate).getCriterion();
-		}
-
-		/* class private */ static class Predicate
-			extends CriterionPredicate<JpaFile, IFile>
-		{
-			private static final long serialVersionUID = 1L;
-			Predicate(IFile file) {
-				super(file);
-			}
-			public boolean evaluate(JpaFile jpaFile) {
-				return jpaFile.getFile().equals(this.criterion);
-			}
+			return ((JpaFile.FileEquals) this.predicate).getCriterion();
 		}
 	}
 }

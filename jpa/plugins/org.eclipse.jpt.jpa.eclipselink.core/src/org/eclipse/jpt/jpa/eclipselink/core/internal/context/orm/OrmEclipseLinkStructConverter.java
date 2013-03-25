@@ -10,10 +10,10 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkStructConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkStructConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStructConverter;
@@ -101,7 +101,7 @@ public class OrmEclipseLinkStructConverter
 	}
 
 	protected Iterable<String> getCandidateClassNames() {
-		return MappingTools.getSortedJavaClassNames(this.getJavaProject());
+		return JavaProjectTools.getJavaClassNames(this.getJavaProject());
 	}
 
 	protected boolean converterClassNameTouches(int pos) {

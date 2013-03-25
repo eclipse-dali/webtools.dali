@@ -36,6 +36,7 @@ import org.eclipse.jdt.core.IPackageDeclaration;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.common.core.ContentTypeReference;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.JptResourceModelListener;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryTypeCache;
@@ -346,7 +347,7 @@ public abstract class AbstractJaxbProject
 	}
 
 	protected Iterable<JaxbFile> getJaxbFiles(final IContentType contentType) {
-		return IterableTools.filter(this.getJaxbFiles(), new JaxbFile.ContentIsKindOf(contentType));
+		return IterableTools.filter(this.getJaxbFiles(), new ContentTypeReference.ContentTypeIsKindOf(contentType));
 	}
 
 	@Override

@@ -26,9 +26,6 @@ public class StaticOutputTransformer<I, O>
 {
 	private final O output;
 
-	public StaticOutputTransformer() {
-		this(null);
-	}
 
 	public StaticOutputTransformer(O output) {
 		super();

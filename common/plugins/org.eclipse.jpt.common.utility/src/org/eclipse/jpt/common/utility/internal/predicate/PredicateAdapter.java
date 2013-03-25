@@ -15,6 +15,8 @@ import org.eclipse.jpt.common.utility.predicate.Predicate;
 /**
  * Convenience predicate implementation that evaluates any object to
  * <code>true</code> and provides a helpful {@link #toString()}.
+ * 
+ * @param <V> the type of objects to be evaluated by the predicate
  */
 public class PredicateAdapter<V>
 	implements Predicate<V>

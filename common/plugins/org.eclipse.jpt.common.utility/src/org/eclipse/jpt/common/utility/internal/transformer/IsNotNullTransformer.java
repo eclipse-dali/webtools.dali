@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * @param <I> input: the type of the object passed to the transformer
  * @see IsNullTransformer
  */
-public class IsNotNullTransformer<I>
+public final class IsNotNullTransformer<I>
 	implements Transformer<I, Boolean>, Serializable
 {
 	@SuppressWarnings("rawtypes")

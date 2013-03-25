@@ -15,7 +15,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -59,16 +59,13 @@ public class ProjectTools {
 	}
 
 	public static class HasFacet
-		extends PredicateAdapter<IProject>
+		extends CriterionPredicate<IProject, String>
 	{
-		private final String facetID;
 		public HasFacet(String facetID) {
-			super();
-			this.facetID = facetID;
+			super(facetID);
 		}
-		@Override
 		public boolean evaluate(IProject project) {
-			return hasFacet(project, this.facetID);
+			return hasFacet(project, this.criterion);
 		}
 	}
 
@@ -87,16 +84,13 @@ public class ProjectTools {
 
 	public static final Predicate<IProject> IS_JAVA_PROJECT = new HasNature(JavaCore.NATURE_ID);
 	public static class HasNature
-		extends PredicateAdapter<IProject>
+		extends CriterionPredicate<IProject, String>
 	{
-		private final String natureID;
 		public HasNature(String natureID) {
-			super();
-			this.natureID = natureID;
+			super(natureID);
 		}
-		@Override
 		public boolean evaluate(IProject project) {
-			return hasNature(project, this.natureID);
+			return hasNature(project, this.criterion);
 		}
 	}
 

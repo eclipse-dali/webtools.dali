@@ -10,17 +10,17 @@
 package org.eclipse.jpt.common.utility.tests.internal.predicate;
 
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.internal.predicate.EqualPredicate;
-import org.eclipse.jpt.common.utility.internal.predicate.NotNullPredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.IsNotNull;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateWrapper;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
 public class PredicateWrapperTests
 	extends TestCase
 {
-	private EqualPredicate<Integer> wrappedPredicate;
+	private Predicate<Integer> wrappedPredicate;
 	private PredicateWrapper<Integer> predicateWrapper;
 
 
@@ -31,7 +31,7 @@ public class PredicateWrapperTests
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.wrappedPredicate = PredicateTools.equalPredicate(Integer.valueOf(42));
+		this.wrappedPredicate = PredicateTools.isEqual(Integer.valueOf(42));
 		this.predicateWrapper = PredicateTools.wrap(this.wrappedPredicate);
 	}
 
@@ -49,7 +49,7 @@ public class PredicateWrapperTests
 		assertFalse(this.predicateWrapper.evaluate(null));
 		assertFalse(this.predicateWrapper.evaluate(24));
 
-		this.predicateWrapper.setPredicate(PredicateTools.equalPredicate(Integer.valueOf(13)));
+		this.predicateWrapper.setPredicate(PredicateTools.isEqual(Integer.valueOf(13)));
 		assertTrue(this.predicateWrapper.evaluate(new Integer(13)));
 		assertFalse(this.predicateWrapper.evaluate(new Integer(42)));
 		assertFalse(this.predicateWrapper.evaluate(42));
@@ -58,22 +58,10 @@ public class PredicateWrapperTests
 		assertFalse(this.predicateWrapper.evaluate(24));
 	}
 
-	public void testClone() {
-		PredicateWrapper<Integer> predicateWrapper2 = this.predicateWrapper.clone();
-		assertEquals(this.predicateWrapper, predicateWrapper2);
-		assertNotSame(this.predicateWrapper, predicateWrapper2);
-	}
-
 	public void testEquals() {
 		PredicateWrapper<Integer> predicateWrapper2 = PredicateTools.wrap(this.wrappedPredicate);
 		assertEquals(this.predicateWrapper, predicateWrapper2);
 		assertEquals(this.predicateWrapper.hashCode(), predicateWrapper2.hashCode());
-		assertFalse(this.predicateWrapper.equals(NotNullPredicate.instance()));
-	}
-
-	public void testSerialization() throws Exception {
-		PredicateWrapper<Integer> predicateWrapper2 = TestTools.serialize(this.predicateWrapper);
-		assertEquals(this.predicateWrapper, predicateWrapper2);
-		assertNotSame(this.predicateWrapper, predicateWrapper2);
+		assertFalse(this.predicateWrapper.equals(IsNotNull.instance()));
 	}
 }

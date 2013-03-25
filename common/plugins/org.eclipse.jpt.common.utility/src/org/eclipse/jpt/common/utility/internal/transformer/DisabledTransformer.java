@@ -17,6 +17,8 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * if {@link #transform(Object)} is called. This is useful in situations
  * where a transformer is optional and the default transformer should
  * not be used.
+ * @param <I> input: the type of the object passed to the transformer
+ * @param <O> output: the type of the object (never) returned by the transformer
  */
 public final class DisabledTransformer<I, O>
 	implements Transformer<I, O>, Serializable

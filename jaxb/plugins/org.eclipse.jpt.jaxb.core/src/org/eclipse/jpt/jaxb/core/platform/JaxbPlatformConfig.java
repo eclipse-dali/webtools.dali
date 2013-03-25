@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.platform;
 
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
@@ -79,16 +80,13 @@ public interface JaxbPlatformConfig {
 	boolean supportsJaxbFacetVersion(IProjectFacetVersion jaxbFacetVersion);
 
 	class SupportsJaxbFacetVersion
-		extends PredicateAdapter<JaxbPlatformConfig>
+		extends CriterionPredicate<JaxbPlatformConfig, IProjectFacetVersion>
 	{
-		private final IProjectFacetVersion jaxbFacetVersion;
 		public SupportsJaxbFacetVersion(IProjectFacetVersion jaxbFacetVersion) {
-			super();
-			this.jaxbFacetVersion = jaxbFacetVersion;
+			super(jaxbFacetVersion);
 		}
-		@Override
 		public boolean evaluate(JaxbPlatformConfig config) {
-			return config.supportsJaxbFacetVersion(this.jaxbFacetVersion);
+			return config.supportsJaxbFacetVersion(this.criterion);
 		}
 	}
 

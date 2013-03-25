@@ -19,18 +19,18 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * <code>null</code>.
  * 
  * @param <V> the type of objects to be evaluated by the predicate
+ * @see IsIdentical
+ * @see IsNotNull
+ * @see IsNull
  */
-public class EqualPredicate<V>
+public class Equals<V>
 	extends CriterionPredicate<V, V>
 {
-	private static final long serialVersionUID = 1L;
-
-
 	/**
 	 * Construct a predicate that will evaluate to <code>true</code> if the
 	 * variable is <code>null</code>.
 	 */
-	public EqualPredicate() {
+	public Equals() {
 		this(null);
 	}
 
@@ -39,16 +39,11 @@ public class EqualPredicate<V>
 	 * variable is {@link Object#equals(Object) equal to} the
 	 * specified criterion.
 	 */
-	public EqualPredicate(V criterion) {
+	public Equals(V criterion) {
 		super(criterion);
 	}
 
 	public boolean evaluate(V variable) {
 		return ObjectTools.equals(variable, this.criterion);
-	}
-
-	@Override
-	public EqualPredicate<V> clone() {
-		return (EqualPredicate<V>) super.clone();
 	}
 }

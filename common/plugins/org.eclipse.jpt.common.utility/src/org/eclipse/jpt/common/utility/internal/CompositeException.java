@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,14 +25,14 @@ public class CompositeException
 
 
 	/**
-	 * The specified exceptions list must not be empty.
+	 * Gather the specified exceptions into a single exception.
 	 */
 	public CompositeException(Collection<Throwable> exceptions) {
 		this(exceptions.toArray(new Throwable[exceptions.size()]));
 	}
 
 	/**
-	 * The specified exceptions list must not be empty.
+	 * Gather the specified exceptions into a single exception.
 	 */
 	public CompositeException(Throwable... exceptions) {
 		// provide a list of the nested exceptions and
@@ -48,14 +48,16 @@ public class CompositeException
 	private static String buildMessage(Throwable[] exceptions) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(exceptions.length);
-		sb.append(" exceptions: "); //$NON-NLS-1$
-		sb.append('[');
-		for (Throwable ex : exceptions) {
-			sb.append(ex.getClass().getSimpleName());
-			sb.append(", "); //$NON-NLS-1$
+		sb.append(" exceptions"); //$NON-NLS-1$
+		if (exceptions.length > 0) {
+			sb.append(": ["); //$NON-NLS-1$
+			for (Throwable ex : exceptions) {
+				sb.append(ex.getClass().getSimpleName());
+				sb.append(", "); //$NON-NLS-1$
+			}
+			sb.setLength(sb.length() - 2);  // chop off trailing comma
+			sb.append(']');
 		}
-		sb.setLength(sb.length() - 2);  // chop off trailing comma
-		sb.append(']');
 		return sb.toString();
 	}
 

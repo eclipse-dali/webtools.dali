@@ -21,6 +21,7 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.resource.xml.EFactoryTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
@@ -606,7 +607,7 @@ public abstract class SpecifiedOrmPersistentType
 	private void syncFieldAccessDefaultAttributes() {
 		HashSet<OrmPersistentAttribute> contextAttributes = CollectionTools.set(this.getDefaultAttributes());
 
-		this.syncFieldDefaultAttributes(contextAttributes, buildNonTransientNonStaticResourceFieldsFilter());
+		this.syncFieldDefaultAttributes(contextAttributes, this.buildResourceFieldIsRelevant());
 		if (!getMapping().isMetadataComplete()) {
 			this.syncAnnotatedPropertyDefaultAttributes(contextAttributes);
 		}
@@ -627,15 +628,15 @@ public abstract class SpecifiedOrmPersistentType
 		HashSet<OrmPersistentAttribute> contextAttributes = CollectionTools.set(this.getDefaultAttributes());
 
 		if (!getMapping().isMetadataComplete()) {
-			this.syncFieldDefaultAttributes(contextAttributes, AbstractJavaPersistentType.ANNOTATED_RESOURCE_FIELDS_FILTER);
+			this.syncFieldDefaultAttributes(contextAttributes, JavaResourceAnnotatedElement.IS_ANNOTATED);
 		}
 
 		Collection<JavaResourceMethod> resourceMethods = CollectionTools.collection(this.getJavaResourceMethods());
 		//iterate through all resource methods searching for persistable getters
-		for (JavaResourceMethod getterMethod : this.getJavaResourceMethods(this.buildPersistablePropertyGetterMethodsFilter())) {
-			JavaResourceMethod setterMethod = AbstractJavaPersistentType.getValidSiblingSetMethod(getterMethod, resourceMethods);
+		for (JavaResourceMethod getterMethod : this.getJavaResourcePropertyGetters()) {
+			JavaResourceMethod setterMethod = JavaResourceMethod.SET_METHOD_TRANSFORMER.transform(getterMethod);
 			if (javaResourcePropertyIsDefault(getterMethod, setterMethod)) {
-				if (AbstractJavaPersistentType.methodsArePersistableProperties(getterMethod, setterMethod)) {
+				if (this.methodPairIsProperty(getterMethod, setterMethod)) {
 					boolean match = false;
 					for (Iterator<OrmPersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext();) {
 						OrmPersistentAttribute contextAttribute = stream.next();
@@ -646,7 +647,7 @@ public abstract class SpecifiedOrmPersistentType
 							break;
 						}
 					}
-					if (!match) {
+					if ( ! match) {
 						this.addDefaultAttribute(getDefaultAttributesSize(), this.buildVirtualAttribute(getterMethod, setterMethod));
 					}
 				}
@@ -662,11 +663,20 @@ public abstract class SpecifiedOrmPersistentType
 		}
 	}
 
+	/**
+	 * Return whether the pair of Java methods form a "property" (sorta).
+	 * An annotated getter with no setter is still brought into the context
+	 * model (for validation purposes)....
+	 */
+	protected boolean methodPairIsProperty(JavaResourceMethod getterMethod, JavaResourceMethod setterMethod) {
+		return (setterMethod != null) || getterMethod.isAnnotated();
+	}
+
 	private void syncAnnotatedPropertyDefaultAttributes(HashSet<OrmPersistentAttribute> contextAttributes) {
 		Collection<JavaResourceMethod> resourceMethods = CollectionTools.collection(this.getJavaResourceMethods());
 		//iterate through all resource methods searching for persistable getters
-		for (JavaResourceMethod getterMethod : this.getJavaResourceMethods(buildPersistablePropertyGetterMethodsFilter())) {
-			JavaResourceMethod setterMethod = AbstractJavaPersistentType.getValidSiblingSetMethod(getterMethod, resourceMethods);
+		for (JavaResourceMethod getterMethod : this.getJavaResourcePropertyGetters()) {
+			JavaResourceMethod setterMethod = JavaResourceMethod.SET_METHOD_TRANSFORMER.transform(getterMethod);
 			if (javaResourcePropertyIsDefault(getterMethod, setterMethod)) {
 				if (getterMethod.isAnnotated() || (setterMethod != null && setterMethod.isAnnotated())) {
 					boolean match = false;
@@ -690,7 +700,7 @@ public abstract class SpecifiedOrmPersistentType
 		this.syncRemainingResourceDefaultMethods(contextAttributes, resourceMethods);
 	}
 
-	private void syncFieldDefaultAttributes(HashSet<OrmPersistentAttribute> contextAttributes, Predicate<JavaResourceField> filter) {
+	private void syncFieldDefaultAttributes(HashSet<OrmPersistentAttribute> contextAttributes, Predicate<? super JavaResourceField> filter) {
 		for (JavaResourceField resourceField : this.getDefaultJavaResourceFields(filter)) {
 			boolean match = false;
 			for (Iterator<OrmPersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext(); ) {
@@ -760,32 +770,25 @@ public abstract class SpecifiedOrmPersistentType
 		return javaResourceType.getFields();
 	}
 
-	protected Iterable<JavaResourceField> getDefaultJavaResourceFields(Predicate<JavaResourceField> filter) {
+	protected Iterable<JavaResourceField> getDefaultJavaResourceFields(Predicate<? super JavaResourceField> filter) {
 		return IterableTools.filter(getDefaultJavaResourceFields(), filter);
 	}
 
-	protected Iterable<JavaResourceMethod> getJavaResourceMethods(Predicate<JavaResourceMethod> filter) {
-		return IterableTools.filter(getJavaResourceMethods(), filter);
+	protected Iterable<JavaResourceMethod> getJavaResourcePropertyGetters() {
+		return this.filterJavaResourceMethods(JavaResourceMethod.IS_PROPERTY_GETTER);
+	}
+
+	protected Iterable<JavaResourceMethod> filterJavaResourceMethods(Predicate<JavaResourceMethod> predicate) {
+		return IterableTools.filter(this.getJavaResourceMethods(), predicate);
 	}
 
 	protected Iterable<JavaResourceMethod> getJavaResourceMethods() {
 		JavaResourceType javaResourceType = this.getJavaResourceType();
-		if (javaResourceType == null) {
-			return EmptyListIterable.instance();
-		}
-		return javaResourceType.getMethods();
+		return (javaResourceType != null) ? javaResourceType.getMethods() : IterableTools.<JavaResourceMethod>emptyListIterable();
 	}
 
-	public static Predicate<JavaResourceField> buildNonTransientNonStaticResourceFieldsFilter() {
-		return AbstractJavaPersistentType.buildNonTransientNonStaticResourceFieldsFilter();
-	}
-
-	protected Predicate<JavaResourceMethod> buildPersistablePropertyGetterMethodsFilter() {
-		return new Predicate<JavaResourceMethod>() {
-			public boolean evaluate(JavaResourceMethod resourceMethod) {
-				return AbstractJavaPersistentType.methodIsPersistablePropertyGetter(resourceMethod, getJavaResourceMethods());
-			}
-		};
+	public Predicate<JavaResourceField> buildResourceFieldIsRelevant() {
+		return JavaResourceField.IS_RELEVANT_FOR_FIELD_ACCESS;
 	}
 
 	/**

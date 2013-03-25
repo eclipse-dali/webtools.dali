@@ -9,7 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.context;
 
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.context.XmlNamedNodeMapping;
 
@@ -54,6 +57,19 @@ public interface ELXmlNamedNodeMapping
 	 */
 	void removeXmlKey();
 	
+	Predicate<ELXmlNamedNodeMapping> HAS_XML_KEY = new HasXmlKey();
+	class HasXmlKey
+		extends PredicateAdapter<ELXmlNamedNodeMapping>
+	{
+		@Override
+		public boolean evaluate(ELXmlNamedNodeMapping mapping) {
+			return mapping.getXmlKey() != null;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	Predicate<ELXmlNamedNodeMapping> HAS_KEY = PredicateTools.or(HAS_XML_KEY, HAS_XML_ID);
+
 	
 	// ***** misc *****
 	

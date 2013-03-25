@@ -28,6 +28,7 @@ public class StringToBooleanTransformer
 
 	private static final long serialVersionUID = 1L;
 
+
 	public StringToBooleanTransformer(Boolean nullBoolean) {
 		super();
 		this.nullBoolean = nullBoolean;

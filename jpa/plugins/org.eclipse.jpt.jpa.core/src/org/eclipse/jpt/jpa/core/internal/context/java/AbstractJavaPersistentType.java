@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
-import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -20,13 +19,11 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -236,7 +233,7 @@ public abstract class AbstractJavaPersistentType
 	 * </ul>
 	 */
 	protected AccessType buildDefaultAccess() {
-		AccessType accessType = buildAccess(this.resourceType);
+		AccessType accessType = this.getResourceTypeAccess();
 		if (accessType != null) {
 			return accessType;
 		}
@@ -260,6 +257,37 @@ public abstract class AbstractJavaPersistentType
 		// last ditch attempt to allow the user to annotate *something*
 		return AccessType.FIELD;
 	}
+
+	/**
+	 * Return the access type currently implied by the Java source
+	 * code or class file:<ul>
+	 * <li>if any fields are annotated =>
+	 *     {@link AccessType#FIELD FIELD}
+	 * <li>if only properties are annotated =>
+	 *     {@link AccessType#PROPERTY PROPERTY}
+	 * <li>if neither are annotated =>
+	 *     <code>null</code>
+	 * </ul>
+	 */
+	protected AccessType getResourceTypeAccess() {
+		for (JavaResourceField field : this.resourceType.getFields()) {
+			if (field.isAnnotated()) {
+				// any field is annotated => FIELD
+				return AccessType.FIELD;
+			}
+		}
+
+		for (JavaResourceMethod method : this.resourceType.getMethods()) {
+			if (method.isAnnotated()) {
+				// none of the fields are annotated and any method is annotated => PROPERTY
+				return AccessType.PROPERTY;
+			}
+		}
+
+		// nothing is annotated
+		return null;
+	}
+
 
 	// ********** mapping **********
 
@@ -442,15 +470,15 @@ public abstract class AbstractJavaPersistentType
 
 	/**
 	 * Initialize the attributes for AccessType.FIELD
-	 * 1. all non-transient, non-static fields
+	 * 1. all non-transient, non-static fields + annotated fields
 	 * 2. all annotated methods (getters/setters)
 	 */
 	private void intializeFieldAccessAttributes() {
-		this.initializeFieldAttributes(buildNonTransientNonStaticResourceFieldsFilter());
+		this.initializeFieldAttributes(JavaResourceField.IS_RELEVANT_FOR_FIELD_ACCESS);
 		this.initializeAnnotatedPropertyAttributes();
 	}
 
-	private void initializeFieldAttributes(Predicate<JavaResourceField> filter) {
+	private void initializeFieldAttributes(Predicate<? super JavaResourceField> filter) {
 		for (JavaResourceField resourceField : this.getResourceFields(filter)) {
 			this.attributes.add(this.buildField(resourceField));
 		}
@@ -463,13 +491,13 @@ public abstract class AbstractJavaPersistentType
 	 * 3. all annotated methods getters/setters that don't have a matching pair
 	 */
 	private void intializePropertyAccessAttributes() {
-		this.initializeFieldAttributes(ANNOTATED_RESOURCE_FIELDS_FILTER);
+		this.initializeFieldAttributes(JavaResourceAnnotatedElement.IS_ANNOTATED);
 
 		Collection<JavaResourceMethod> resourceMethods = CollectionTools.collection(this.getResourceMethods());
 		//iterate through all resource methods searching for persistable getters
-		for (JavaResourceMethod getterMethod : this.getResourceMethods(this.buildPersistablePropertyGetterMethodsFilter())) {
-			JavaResourceMethod setterMethod = getValidSiblingSetMethod(getterMethod, resourceMethods);
-			if (methodsArePersistableProperties(getterMethod, setterMethod)) {
+		for (JavaResourceMethod getterMethod : this.getResourcePropertyGetters()) {
+			JavaResourceMethod setterMethod = JavaResourceMethod.SET_METHOD_TRANSFORMER.transform(getterMethod);
+			if (this.includeProperty(getterMethod, setterMethod)) {
 				this.attributes.add(this.buildProperty(getterMethod, setterMethod));
 			}
 			resourceMethods.remove(getterMethod);
@@ -481,8 +509,8 @@ public abstract class AbstractJavaPersistentType
 	private void initializeAnnotatedPropertyAttributes() {
 		Collection<JavaResourceMethod> resourceMethods = CollectionTools.collection(this.getResourceMethods());
 		//iterate through all resource methods searching for persistable getters
-		for (JavaResourceMethod getterMethod : this.getResourceMethods(this.buildPersistablePropertyGetterMethodsFilter())) {
-			JavaResourceMethod setterMethod = getValidSiblingSetMethod(getterMethod, resourceMethods);
+		for (JavaResourceMethod getterMethod : this.getResourcePropertyGetters()) {
+			JavaResourceMethod setterMethod = JavaResourceMethod.SET_METHOD_TRANSFORMER.transform(getterMethod);
 			if (getterMethod.isAnnotated() || ((setterMethod != null) && setterMethod.isAnnotated())) {
 				this.attributes.add(this.buildProperty(getterMethod, setterMethod));
 			}
@@ -519,13 +547,13 @@ public abstract class AbstractJavaPersistentType
 
 	/**
 	 * Initialize the attributes for AccessType.FIELD
-	 * 1. all non-transient, non-static fields
+	 * 1. all non-transient, non-static fields + annotated fields
 	 * 2. all annotated methods(getters/setters)
 	 */
 	private void syncFieldAccessAttributes() {
 		HashSet<JavaSpecifiedPersistentAttribute> contextAttributes = CollectionTools.set(this.getAttributes());
 
-		this.syncFieldAttributes(contextAttributes, buildNonTransientNonStaticResourceFieldsFilter());
+		this.syncFieldAttributes(contextAttributes, JavaResourceField.IS_RELEVANT_FOR_FIELD_ACCESS);
 		this.syncAnnotatedPropertyAttributes(contextAttributes);
 	}
 
@@ -538,13 +566,13 @@ public abstract class AbstractJavaPersistentType
 	private void syncPropertyAccessAttributes() {
 		HashSet<JavaSpecifiedPersistentAttribute> contextAttributes = CollectionTools.set(this.getAttributes());
 
-		this.syncFieldAttributes(contextAttributes, ANNOTATED_RESOURCE_FIELDS_FILTER);
+		this.syncFieldAttributes(contextAttributes, JavaResourceAnnotatedElement.IS_ANNOTATED);
 
 		Collection<JavaResourceMethod> resourceMethods = CollectionTools.collection(this.getResourceMethods());
 		//iterate through all resource methods searching for persistable getters
-		for (JavaResourceMethod getterMethod : this.getResourceMethods(this.buildPersistablePropertyGetterMethodsFilter())) {
-			JavaResourceMethod setterMethod = getValidSiblingSetMethod(getterMethod, resourceMethods);
-			if (methodsArePersistableProperties(getterMethod, setterMethod)) {
+		for (JavaResourceMethod getterMethod : this.getResourcePropertyGetters()) {
+			JavaResourceMethod setterMethod = JavaResourceMethod.SET_METHOD_TRANSFORMER.transform(getterMethod);
+			if (this.includeProperty(getterMethod, setterMethod)) {
 				boolean match = false;
 				for (Iterator<JavaSpecifiedPersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext();) {
 					JavaSpecifiedPersistentAttribute contextAttribute = stream.next();
@@ -568,8 +596,8 @@ public abstract class AbstractJavaPersistentType
 	private void syncAnnotatedPropertyAttributes(HashSet<JavaSpecifiedPersistentAttribute> contextAttributes) {
 		Collection<JavaResourceMethod> resourceMethods = CollectionTools.collection(this.getResourceMethods());
 		//iterate through all resource methods searching for persistable getters
-		for (JavaResourceMethod getterMethod : this.getResourceMethods(this.buildPersistablePropertyGetterMethodsFilter())) {
-			JavaResourceMethod setterMethod = getValidSiblingSetMethod(getterMethod, resourceMethods);
+		for (JavaResourceMethod getterMethod : this.getResourcePropertyGetters()) {
+			JavaResourceMethod setterMethod = JavaResourceMethod.SET_METHOD_TRANSFORMER.transform(getterMethod);
 			if (getterMethod.isAnnotated() || ((setterMethod != null) && setterMethod.isAnnotated())) {
 				boolean match = false;
 				for (Iterator<JavaSpecifiedPersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext();) {
@@ -591,7 +619,7 @@ public abstract class AbstractJavaPersistentType
 		this.syncRemainingResourceMethods(contextAttributes, resourceMethods);
 	}
 
-	private void syncFieldAttributes(HashSet<JavaSpecifiedPersistentAttribute> contextAttributes, Predicate<JavaResourceField> filter) {
+	private void syncFieldAttributes(HashSet<JavaSpecifiedPersistentAttribute> contextAttributes, Predicate<? super JavaResourceField> filter) {
 		for (JavaResourceField resourceField : this.getResourceFields(filter)) {
 			boolean match = false;
 			for (Iterator<JavaSpecifiedPersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext(); ) {
@@ -649,178 +677,25 @@ public abstract class AbstractJavaPersistentType
 		return this.resourceType.getMethods();
 	}
 
-	protected Iterable<JavaResourceField> getResourceFields(Predicate<JavaResourceField> filter) {
+	protected Iterable<JavaResourceField> getResourceFields(Predicate<? super JavaResourceField> filter) {
 		return IterableTools.filter(this.getResourceFields(), filter);
 	}
 
-	protected Iterable<JavaResourceMethod> getResourceMethods(Predicate<JavaResourceMethod> filter) {
-		return IterableTools.filter(this.getResourceMethods(), filter);
+	protected Iterable<JavaResourceMethod> getResourcePropertyGetters() {
+		return this.filterResourceMethods(JavaResourceMethod.IS_PROPERTY_GETTER);
 	}
 
-	public static Predicate<JavaResourceField> buildNonTransientNonStaticResourceFieldsFilter() {
-		return new Predicate<JavaResourceField>() {
-			public boolean evaluate(JavaResourceField resourceField) {
-				return memberIsNonTransientNonStatic(resourceField) || resourceField.isAnnotated();
-			}
-		};
-	}
-
-	protected static boolean memberIsNonTransientNonStatic(JavaResourceMember resourceMember) {
-		return !resourceMember.isTransient() && !resourceMember.isStatic();
-	}
-
-	public static Predicate<JavaResourceField> ANNOTATED_RESOURCE_FIELDS_FILTER =
-		new Predicate<JavaResourceField>() {
-			public boolean evaluate(JavaResourceField resourceField) {
-				return resourceField.isAnnotated();
-			}
-		};
-
-	protected Predicate<JavaResourceMethod> buildPersistablePropertyGetterMethodsFilter() {
-		return new Predicate<JavaResourceMethod>() {
-			public boolean evaluate(JavaResourceMethod resourceMethod) {
-				return methodIsPersistablePropertyGetter(resourceMethod, AbstractJavaPersistentType.this.getResourceMethods());
-			}
-		};
+	protected Iterable<JavaResourceMethod> filterResourceMethods(Predicate<JavaResourceMethod> predicate) {
+		return IterableTools.filter(this.getResourceMethods(), predicate);
 	}
 
 	/**
-	 * Return whether the specified method is a "getter" method that
-	 * represents a property that may be "persisted".
+	 * Return whether the pair of methods form a "property" (sorta).
+	 * An annotated getter with no setter is still brought into the context
+	 * model (for validation purposes)....
 	 */
-	public static boolean methodIsPersistablePropertyGetter(JavaResourceMethod resourceMethod, Iterable<JavaResourceMethod> allMethods) {
-		if (methodHasInvalidModifiers(resourceMethod)) {
-			return false;
-		}
-		if (resourceMethod.isConstructor()) {
-			return false;
-		}
-
-		String returnTypeName = resourceMethod.getTypeBinding().getQualifiedName();
-		if (returnTypeName == null) {
-			return false;  // DOM method bindings can have a null name
-		}
-		if (returnTypeName.equals("void")) { //$NON-NLS-1$
-			return false;
-		}
-		if (methodHasParameters(resourceMethod)) {
-			return false;
-		}
-
-		boolean booleanGetter = methodIsBooleanGetter(resourceMethod);
-
-		// if the type has both methods:
-		//     boolean isProperty()
-		//     boolean getProperty()
-		// then #isProperty() takes precedence and we ignore #getProperty();
-		// but only having #getProperty() is OK too
-		// (see the JavaBeans spec 1.01)
-		if (booleanGetter && methodHasValidSiblingIsMethod(resourceMethod, allMethods)) {
-			return false;  // since the type also defines #isProperty(), ignore #getProperty()
-		}
-		return true;
-	}
-
-	private static boolean methodIsBooleanGetter(JavaResourceMethod resourceMethod) {
-		String returnTypeName = resourceMethod.getTypeBinding().getQualifiedName();
-		String name = resourceMethod.getMethodName();
-		boolean booleanGetter = false;
-		if (name.startsWith("is")) { //$NON-NLS-1$
-			if (returnTypeName.equals("boolean")) { //$NON-NLS-1$
-			} else {
-				return false;
-			}
-		} else if (name.startsWith("get")) { //$NON-NLS-1$
-			if (returnTypeName.equals("boolean")) { //$NON-NLS-1$
-				booleanGetter = true;
-			}
-		} else {
-			return false;
-		}
-		return booleanGetter;
-	}
-
-	/**
-	 * Return whether the method's modifiers prevent it
-	 * from being a getter or setter for a "persistent" property.
-	 */
-	private static boolean methodHasInvalidModifiers(JavaResourceMethod resourceMethod) {
-		int modifiers = resourceMethod.getModifiers();
-		if (Modifier.isStatic(modifiers)) {
-			return true;
-		}
-		return false;
-	}
-
-	private static boolean methodHasParameters(JavaResourceMethod resourceMethod) {
-		return resourceMethod.getParametersSize() != 0;
-	}
-
-	/**
-	 * Return whether the method has a sibling "is" method for the specified
-	 * property and that method is valid for a "persistable" property.
-	 * Pre-condition: the method is a "boolean getter" (e.g. 'public boolean getProperty()');
-	 * this prevents us from returning true when the method itself is an
-	 * "is" method.
-	 */
-	private static boolean methodHasValidSiblingIsMethod(JavaResourceMethod getMethod, Iterable<JavaResourceMethod> resourceMethods) {
-		String capitalizedAttributeName = StringTools.capitalize(getMethod.getName());
-		for (JavaResourceMethod sibling : resourceMethods) {
-			if ((sibling.getParametersSize() == 0)
-					&& sibling.getMethodName().equals("is" + capitalizedAttributeName)) { //$NON-NLS-1$
-				return methodIsValidSibling(sibling, "boolean"); //$NON-NLS-1$
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Return whether the method has a sibling "set" method
-	 * and that method is valid for a "persistable" property.
-	 */
-	public static JavaResourceMethod getValidSiblingSetMethod(JavaResourceMethod getMethod, Iterable<JavaResourceMethod> resourceMethods) {
-		String capitalizedSetAttributeName = "set" + StringTools.capitalize(getMethod.getName());//$NON-NLS-1$
-		String parameterTypeErasureName = getMethod.getTypeBinding().getQualifiedName();
-		for (JavaResourceMethod sibling : resourceMethods) {
-			if ((sibling.getParametersSize() == 1)
-				&& sibling.getMethodName().equals(capitalizedSetAttributeName)
-				&& sibling.getParameterTypeName(0).equals(parameterTypeErasureName)) {
-				return methodIsValidSibling(sibling, "void") ? sibling : null; //$NON-NLS-1$
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * Return whether the specified method is a valid sibling with the
-	 * specified return type.
-	 */
-	private static boolean methodIsValidSibling(JavaResourceMethod resourceMethod, String returnTypeName) {
-		if (resourceMethod == null) {
-			return false;
-		}
-		if (methodHasInvalidModifiers(resourceMethod)) {
-			return false;
-		}
-		if (resourceMethod.isConstructor()) {
-			return false;
-		}
-		String rtName = resourceMethod.getTypeBinding().getQualifiedName();
-		if (rtName == null) {
-			return false;  // DOM method bindings can have a null name
-		}
-		return rtName.equals(returnTypeName);
-	}
-
-	public static boolean methodsArePersistableProperties(JavaResourceMethod getterMethod, JavaResourceMethod setterMethod) {
-		if (setterMethod != null) {
-			return true;
-		}
-		else if (getterMethod.isAnnotated()) {
-			//annotated getter with no corresponding setter, bring into context model for validation purposes
-			return true;
-		}
-		return false;
+	protected boolean includeProperty(JavaResourceMethod getterMethod, JavaResourceMethod setterMethod) {
+		return (setterMethod != null) || getterMethod.isAnnotated();
 	}
 
 
@@ -846,6 +721,7 @@ public abstract class AbstractJavaPersistentType
 				IterableTools.<JavaResourceType>emptyIterable() :
 				ObjectTools.chain(this.resourceType, new SuperJavaResourceTypeTransformer());
 	}
+
 
 	/**
 	 * Transform a Java resource type into its super Java resource type.
@@ -1035,38 +911,5 @@ public abstract class AbstractJavaPersistentType
 
 	public PersistentType getOverriddenPersistentType() {
 		return null;  // Java persistent types do not override anything
-	}
-
-
-	// ********** Access type **********
-
-	/**
-	 * Return the access type currently implied by the specified Java source
-	 * code or class file:<ul>
-	 * <li>if any fields are annotated =>
-	 *     {@link AccessType#FIELD FIELD}
-	 * <li>if only properties are annotated =>
-	 *     {@link AccessType#PROPERTY PROPERTY}
-	 * <li>if neither are annotated =>
-	 *     <code>null</code>
-	 * </ul>
-	 */
-	public static AccessType buildAccess(JavaResourceType jrType) {
-		for (JavaResourceField field : jrType.getFields()) {
-			if (field.isAnnotated()) {
-				// any field is annotated => FIELD
-				return AccessType.FIELD;
-			}
-		}
-
-		for (JavaResourceMethod method : jrType.getMethods()) {
-			if (method.isAnnotated()) {
-				// none of the fields are annotated and any method is annotated => PROPERTY
-				return AccessType.PROPERTY;
-			}
-		}
-
-		// nothing is annotated
-		return null;
 	}
 }

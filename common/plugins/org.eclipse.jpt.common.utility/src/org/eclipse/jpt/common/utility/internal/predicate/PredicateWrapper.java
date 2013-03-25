@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.predicate;
 
-import java.io.Serializable;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 
@@ -22,11 +21,9 @@ import org.eclipse.jpt.common.utility.predicate.Predicate;
  * @see #setPredicate(Predicate)
  */
 public class PredicateWrapper<V>
-	implements Predicate<V>, Cloneable, Serializable
+	implements Predicate<V>
 {
 	protected volatile Predicate<? super V> predicate;
-
-	private static final long serialVersionUID = 1L;
 
 
 	public PredicateWrapper(Predicate<? super V> predicate) {
@@ -43,17 +40,6 @@ public class PredicateWrapper<V>
 			throw new NullPointerException();
 		}
 		this.predicate = predicate;
-	}
-
-	@Override
-	public PredicateWrapper<V> clone() {
-		try {
-			@SuppressWarnings("unchecked")
-			PredicateWrapper<V> clone = (PredicateWrapper<V>) super.clone();
-			return clone;
-		} catch (CloneNotSupportedException ex) {
-			throw new InternalError();
-		}
 	}
 
 	@Override

@@ -505,7 +505,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 	}
 
 	protected CollectionValueModel<String> buildGeneratorNamesModel() {
-		return new FilteringCollectionValueModel<String>(this.buildGeneratorNamesModel_(), StringTools.NON_BLANK_FILTER);
+		return new FilteringCollectionValueModel<String>(this.buildGeneratorNamesModel_(), StringTools.IS_NOT_BLANK);
 	}
 
 	protected ListValueModel<String> buildGeneratorNamesModel_() {

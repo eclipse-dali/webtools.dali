@@ -10,26 +10,26 @@
 package org.eclipse.jpt.common.utility.tests.internal.predicate;
 
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.internal.predicate.InstanceOfPredicate;
-import org.eclipse.jpt.common.utility.internal.predicate.NotNullPredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.IsNotNull;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
-public class InstanceOfPredicateTests
+public class InstanceOfTests
 	extends TestCase
 {
-	private InstanceOfPredicate<Number> instanceOfPredicate;
+	private Predicate<Number> instanceOfPredicate;
 
 
-	public InstanceOfPredicateTests(String name) {
+	public InstanceOfTests(String name) {
 		super(name);
 	}
 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.instanceOfPredicate = PredicateTools.instanceOfPredicate(Number.class);
+		this.instanceOfPredicate = PredicateTools.instanceOf(Number.class);
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class InstanceOfPredicateTests
 
 	@SuppressWarnings("boxing")
 	public void testEvaluate() {
-		InstanceOfPredicate<Object> instanceOfPredicate2 = PredicateTools.<Object>instanceOfPredicate(Integer.class);
+		Predicate<Object> instanceOfPredicate2 = PredicateTools.<Object>instanceOf(Integer.class);
 
 		assertTrue(this.instanceOfPredicate.evaluate(new Integer(42)));
 		assertTrue(instanceOfPredicate2.evaluate(new Integer(42)));
@@ -61,22 +61,10 @@ public class InstanceOfPredicateTests
 		assertFalse(instanceOfPredicate2.evaluate(24f));
 	}
 
-	public void testClone() {
-		InstanceOfPredicate<Number> instanceOfPredicate2 = this.instanceOfPredicate.clone();
-		assertEquals(this.instanceOfPredicate, instanceOfPredicate2);
-		assertNotSame(this.instanceOfPredicate, instanceOfPredicate2);
-	}
-
 	public void testEquals() {
-		InstanceOfPredicate<Number> instanceOfPredicate2 = PredicateTools.instanceOfPredicate(Number.class);
+		Predicate<Number> instanceOfPredicate2 = PredicateTools.instanceOf(Number.class);
 		assertEquals(this.instanceOfPredicate, instanceOfPredicate2);
 		assertEquals(this.instanceOfPredicate.hashCode(), instanceOfPredicate2.hashCode());
-		assertFalse(this.instanceOfPredicate.equals(NotNullPredicate.instance()));
-	}
-
-	public void testSerialization() throws Exception {
-		InstanceOfPredicate<Number> instanceOfPredicate2 = TestTools.serialize(this.instanceOfPredicate);
-		assertEquals(this.instanceOfPredicate, instanceOfPredicate2);
-		assertNotSame(this.instanceOfPredicate, instanceOfPredicate2);
+		assertFalse(this.instanceOfPredicate.equals(IsNotNull.instance()));
 	}
 }

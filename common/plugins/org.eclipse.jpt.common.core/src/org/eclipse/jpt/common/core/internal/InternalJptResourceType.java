@@ -15,7 +15,6 @@ import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.JptResourceTypeManager;
 import org.eclipse.jpt.common.utility.internal.VersionComparator;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import com.ibm.icu.text.Collator;
 
 /**
@@ -125,17 +124,5 @@ public class InternalJptResourceType
 			sb.append(this.version);
 		}
 		return sb.toString();
-	}
-
-	static class ContentTypeFilter
-		extends CriterionPredicate<JptResourceType, IContentType>
-	{
-		private static final long serialVersionUID = 1L;
-		ContentTypeFilter(IContentType contentType) {
-			super(contentType);
-		}
-		public boolean evaluate(JptResourceType resourceType) {
-			return resourceType.getContentType().equals(this.criterion);
-		}
 	}
 }

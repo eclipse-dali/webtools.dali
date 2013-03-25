@@ -15,7 +15,6 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -24,12 +23,12 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.utility.PackageFragmentRootTools;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.ResourceLocator;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
-import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
 
@@ -198,26 +197,7 @@ public class SimpleJavaResourceLocator
 	}
 
 	protected Iterable<IPackageFragmentRoot> getSourcePackageFragmentRoots(IProject project) throws JavaModelException {
-		return IterableTools.filter(this.getPackageFragmentRoots(project), SOURCE_ROOT_FILTER);
-	}
-
-	protected static final Predicate<IPackageFragmentRoot> SOURCE_ROOT_FILTER = new SourceRootFilter();
-
-	protected static class SourceRootFilter
-		implements Predicate<IPackageFragmentRoot>
-	{
-		public boolean evaluate(IPackageFragmentRoot pfr) {
-			try {
-				return this.accept_(pfr);
-			} catch (JavaModelException ex) {
-				throw new RuntimeException(ex);
-			}
-		}
-		protected boolean accept_(IPackageFragmentRoot pfr) throws JavaModelException {
-			// accept both source folders and *class* folders (xml files may exist there as well)
-			IResource resource = pfr.getUnderlyingResource();
-			return resource != null && resource.getType() == IResource.FOLDER;
-		}
+		return IterableTools.filter(this.getPackageFragmentRoots(project), PackageFragmentRootTools.IS_FOLDER);
 	}
 
 	protected Iterable<IPackageFragmentRoot> getPackageFragmentRoots(IProject project) throws JavaModelException {

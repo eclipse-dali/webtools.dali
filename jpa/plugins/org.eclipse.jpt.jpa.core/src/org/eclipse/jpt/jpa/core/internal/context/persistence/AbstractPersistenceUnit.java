@@ -556,21 +556,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	public Iterable<MappingFileRef> getMappingFileRefsContaining(String typeName) {
-		return IterableTools.filter(this.getMappingFileRefs(), new MappingFileRefContains(typeName));
-	}
-
-	public static class MappingFileRefContains
-		extends PredicateAdapter<MappingFileRef>
-	{
-		private final String typeName;
-		public MappingFileRefContains(String typeName) {
-			super();
-			this.typeName = typeName;
-		}
-		@Override
-		public boolean evaluate(MappingFileRef mappingFileRef) {
-			return mappingFileRef.getManagedType(this.typeName) != null;
-		}
+		return IterableTools.filter(this.getMappingFileRefs(), new ManagedTypeContainer.ContainsType(typeName));
 	}
 
 	protected Iterable<MappingFile> getMappingFiles() {
@@ -962,10 +948,10 @@ public abstract class AbstractPersistenceUnit
 	 * in the persistence unit or any of its mapping files.
 	 */
 	protected Iterable<JavaResourceAbstractType> getImpliedClassResourceTypes_() {
-		return IterableTools.filter(this.getJpaProject().getPotentialJavaSourceTypes(), new SpecifiesManagedType());
+		return IterableTools.filter(this.getJpaProject().getPotentialJavaSourceTypes(), new DoesNotSpecifyManagedType());
 	}
 
-	public class SpecifiesManagedType
+	public class DoesNotSpecifyManagedType
 		extends PredicateAdapter<JavaResourceAbstractType>
 	{
 		@Override
@@ -1559,7 +1545,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected Iterable<String> getNonEmptyGeneratorNames() {
-		return IterableTools.filter(this.getGeneratorNames(), StringTools.NON_BLANK_FILTER);
+		return IterableTools.filter(this.getGeneratorNames(), StringTools.IS_NOT_BLANK);
 	}
 
 	protected Iterable<String> getGeneratorNames() {
@@ -1882,15 +1868,19 @@ public abstract class AbstractPersistenceUnit
 	public Iterable<PersistentType> getPersistentTypes() {
 		return IterableTools.downCast(IterableTools.filter(
 										this.getManagedTypes(), 
-										PERSISTENT_TYPE_FILTER));
+										TYPE_IS_PERSISTENT_TYPE));
 	}
 
-	protected static final Predicate<ManagedType> PERSISTENT_TYPE_FILTER =
-		new Predicate<ManagedType>() {
-			public boolean evaluate(ManagedType mt) {
-				return mt.getType() == JavaPersistentType.class ||  mt.getType() == OrmPersistentType.class; //is this right? what about just getType() == PersistentType.class??
-			}
-		};
+	protected static final Predicate<ManagedType> TYPE_IS_PERSISTENT_TYPE = new TypeIsPersistentType();
+	public static class TypeIsPersistentType
+		extends PredicateAdapter<ManagedType>
+	{
+		@Override
+		public boolean evaluate(ManagedType mt) {
+			return PersistentType.class.isAssignableFrom(mt.getType());
+		}
+	}
+
 
 	public PersistentType getPersistentType(String typeName) {
 		ManagedType mt = this.getManagedType(typeName);
@@ -1907,19 +1897,19 @@ public abstract class AbstractPersistenceUnit
 	protected Iterable<PersistentType> getClassRefPersistentTypes() {
 		return IterableTools.downCast(IterableTools.filter(
 			this.getClassRefManagedTypes(), 
-			PERSISTENT_TYPE_FILTER));
+			TYPE_IS_PERSISTENT_TYPE));
 	}
 
 	protected Iterable<PersistentType> getJarFilePersistentTypes() {
 		return IterableTools.downCast(IterableTools.filter(
 			this.getJarFileManagedTypes(), 
-			PERSISTENT_TYPE_FILTER));
+			TYPE_IS_PERSISTENT_TYPE));
 	}
 
 	public Iterable<PersistentType> getJavaPersistentTypes() {
 		return IterableTools.downCast(IterableTools.filter(
 			this.getJavaManagedTypes(), 
-			PERSISTENT_TYPE_FILTER));
+			TYPE_IS_PERSISTENT_TYPE));
 	}
 
 
@@ -1950,7 +1940,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected Iterable<TypeMapping> filterToEntities_(Iterable<TypeMapping> typeMappings) {
-		return IterableTools.filter(typeMappings, PredicateTools.<TypeMapping>instanceOfPredicate(Entity.class));
+		return IterableTools.filter(typeMappings, PredicateTools.<TypeMapping>instanceOf(Entity.class));
 	}
 
 	// TODO bjv - this should probably *not* return Java type mappings when PU is "metadata complete"...

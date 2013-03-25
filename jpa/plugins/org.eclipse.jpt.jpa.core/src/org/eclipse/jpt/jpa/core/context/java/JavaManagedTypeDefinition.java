@@ -42,12 +42,12 @@ public interface JavaManagedTypeDefinition
 	 */
 	Iterable<String> getAnnotationNames(JpaProject jpaProject);
 
-	class AnnotationNameTransformer
+	class AnnotationNamesTransformer
 		extends TransformerAdapter<JavaManagedTypeDefinition, Iterable<String>>
 	{
 		private JpaProject jpaProject;
 
-		public AnnotationNameTransformer(JpaProject jpaProject) {
+		public AnnotationNamesTransformer(JpaProject jpaProject) {
 			super();
 			this.jpaProject = jpaProject;
 		}

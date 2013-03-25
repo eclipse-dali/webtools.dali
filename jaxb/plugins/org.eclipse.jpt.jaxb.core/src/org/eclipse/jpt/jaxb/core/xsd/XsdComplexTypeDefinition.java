@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.core.xsd;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.xsd.XSDAttributeUse;
@@ -73,16 +73,13 @@ public class XsdComplexTypeDefinition
 	}
 	
 	public static class AttributeUsesNamespace
-		extends PredicateAdapter<XSDAttributeUse>
+		extends CriterionPredicate<XSDAttributeUse, String>
 	{
-		private final String namespace;
 		public AttributeUsesNamespace(String namespace) {
-			super();
-			this.namespace = namespace;
+			super(namespace);
 		}
-		@Override
 		public boolean evaluate(XSDAttributeUse attrUse) {
-			return XsdUtil.namespaceEquals(attrUse.getAttributeDeclaration(), this.namespace);
+			return XsdUtil.namespaceEquals(attrUse.getAttributeDeclaration(), this.criterion);
 		}
 	}
 

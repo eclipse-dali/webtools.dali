@@ -18,9 +18,9 @@ import org.eclipse.jpt.common.utility.internal.model.value.ListCollectionValueMo
 import org.eclipse.jpt.common.utility.internal.model.value.ListCurator;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
-import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.TypeKind;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
@@ -62,7 +62,7 @@ public class ELJaxbPackageContentProvider
 								return this.subject.getOxmFile();
 							}
 						}),
-				PredicateTools.notNullPredicate());
+				PredicateTools.isNotNull());
 	}
 	
 	protected CollectionValueModel<JaxbContextNode> buildJavaTypeChildrenModel() {
@@ -74,25 +74,23 @@ public class ELJaxbPackageContentProvider
 						return new SuperIterableWrapper<JaxbContextNode>(
 								IterableTools.filter(
 										this.subject.getJavaTypes(ELJaxbPackageContentProvider.this.item),
-										new JavaTypeFilter(contextRoot))).iterator();
+										new IsJavaType(contextRoot))).iterator();
 					}
 				});
 	}
 	
-	protected class JavaTypeFilter
-			implements Predicate<JavaType> {
+	public static class IsJavaType
+			extends CriterionPredicate<JavaType, ELJaxbContextRoot> {
 		
-		private final ELJaxbContextRoot contextRoot;
-		
-		protected JavaTypeFilter(ELJaxbContextRoot contextRoot) {
-			this.contextRoot = contextRoot;
+		public IsJavaType(ELJaxbContextRoot contextRoot) {
+			super(contextRoot);
 		}
 		
 		public boolean evaluate(JavaType o) {
 			String typeName = o.getTypeName().getFullyQualifiedName();
 			// TODO xml-registry, xml-java-type-adapter
 			JavaTypeMapping typeMapping = o.getMapping();
-			if (typeMapping != null && contextRoot.getTypeMapping(typeName) == typeMapping) {
+			if (typeMapping != null && this.criterion.getTypeMapping(typeName) == typeMapping) {
 				return true;
 			}
 			if (o.getXmlJavaTypeAdapter() != null) {

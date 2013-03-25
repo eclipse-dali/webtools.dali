@@ -13,6 +13,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.ContentTypeReference;
 import org.eclipse.jpt.common.core.JptResourceModel;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -52,6 +53,16 @@ public interface JpaFile
 	 * Return the JPA file's Eclipse file.
 	 */
 	IFile getFile();
+	class FileEquals
+		extends CriterionPredicate<JpaFile, IFile>
+	{
+		public FileEquals(IFile file) {
+			super(file);
+		}
+		public boolean evaluate(JpaFile jpaFile) {
+			return jpaFile.getFile().equals(this.criterion);
+		}
+	}
 	
 	/**
 	 * Return the resource model corresponding to the JPA file; typically a JPA

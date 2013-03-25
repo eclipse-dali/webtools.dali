@@ -26,6 +26,7 @@ public class StringToIntegerTransformer
 
 	private static final long serialVersionUID = 1L;
 
+
 	public StringToIntegerTransformer(Integer nullInteger) {
 		super();
 		this.nullInteger = nullInteger;
