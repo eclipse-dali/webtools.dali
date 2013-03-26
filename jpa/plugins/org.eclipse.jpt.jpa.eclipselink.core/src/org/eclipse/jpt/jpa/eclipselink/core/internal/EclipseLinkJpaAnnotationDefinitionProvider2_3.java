@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkCo
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkCustomizerAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkExistenceCheckingAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkJoinFetchAnnotationDefinition;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkMultitenant2_3AnnotationDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkMultitenantAnnotationDefinition2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkMutableAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkObjectTypeConverterAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkObjectTypeConvertersAnnotationDefinition2_2;
@@ -86,7 +86,7 @@ public class EclipseLinkJpaAnnotationDefinitionProvider2_3
 		EclipseLinkCustomizerAnnotationDefinition.instance(),
 		EclipseLinkExistenceCheckingAnnotationDefinition.instance(),
 		EclipseLinkJoinFetchAnnotationDefinition.instance(),
-		EclipseLinkMultitenant2_3AnnotationDefinition.instance(),
+		EclipseLinkMultitenantAnnotationDefinition2_3.instance(),
 		EclipseLinkMutableAnnotationDefinition.instance(),
 		EclipseLinkObjectTypeConvertersAnnotationDefinition2_2.instance(),
 		EclipseLinkPrimaryKeyAnnotationDefinition.instance(),
