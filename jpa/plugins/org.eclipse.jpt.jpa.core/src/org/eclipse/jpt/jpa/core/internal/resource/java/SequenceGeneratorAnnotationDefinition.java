@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.core.internal.jpa1.resource.java.binary.BinarySequenceGeneratorAnnotation1_0;
-import org.eclipse.jpt.jpa.core.internal.jpa1.resource.java.source.SourceSequenceGenerator1_0Annotation;
+import org.eclipse.jpt.jpa.core.internal.jpa1.resource.java.source.SourceSequenceGeneratorAnnotation1_0;
 import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
 
 /**
@@ -42,7 +42,7 @@ public final class SequenceGeneratorAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return new SourceSequenceGenerator1_0Annotation(parent, annotatedElement);
+		return new SourceSequenceGeneratorAnnotation1_0(parent, annotatedElement);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
