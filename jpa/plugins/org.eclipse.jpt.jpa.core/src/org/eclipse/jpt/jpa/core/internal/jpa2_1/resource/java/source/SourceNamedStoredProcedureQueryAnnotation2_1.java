@@ -40,7 +40,7 @@ import org.eclipse.jpt.jpa.core.resource.java.QueryHintAnnotation;
 /**
  * <code>javax.persistence.NamedStoredProcedureQuery</code>
  */
-public final class SourceNamedStoredProcedureQuery2_1Annotation
+public final class SourceNamedStoredProcedureQueryAnnotation2_1
 	extends SourceQueryAnnotation
 	implements NamedStoredProcedureQueryAnnotation2_1
 {
@@ -74,21 +74,21 @@ public final class SourceNamedStoredProcedureQuery2_1Annotation
 	private final Vector<String> resultSetMappings = new Vector<String>();
 	private TextRange resultSetMappingsTextRange;
 
-	public static SourceNamedStoredProcedureQuery2_1Annotation buildSourceNamedStoredProcedureQuery2_1Annotation(
+	public static SourceNamedStoredProcedureQueryAnnotation2_1 buildSourceNamedStoredProcedureQuery2_1Annotation(
 			JavaResourceAnnotatedElement parent, 
 			AnnotatedElement element, 
 			int index)
 	{
 		IndexedDeclarationAnnotationAdapter idaa = buildNamedStoredProcedureQuery2_1DeclarationAnnotationAdapter(index);
 		IndexedAnnotationAdapter iaa = buildNamedStoredProcedureQuery2_1AnnotationAdapter(element, idaa);
-		return new SourceNamedStoredProcedureQuery2_1Annotation(
+		return new SourceNamedStoredProcedureQueryAnnotation2_1(
 			parent,
 			element,
 			idaa,
 			iaa);
 	}
 
-	private SourceNamedStoredProcedureQuery2_1Annotation(
+	private SourceNamedStoredProcedureQueryAnnotation2_1(
 			JavaResourceAnnotatedElement parent,
 			AnnotatedElement element,
 			IndexedDeclarationAnnotationAdapter daa,
@@ -192,10 +192,10 @@ public final class SourceNamedStoredProcedureQuery2_1Annotation
 		}
 	}
 
-	private void syncProcedureName(String procedureName) {
+	private void syncProcedureName(String pName) {
 		String old = this.procedureName;
-		this.procedureName = procedureName;
-		this.firePropertyChanged(PROCEDURE_NAME_PROPERTY, old, procedureName);
+		this.procedureName = pName;
+		this.firePropertyChanged(PROCEDURE_NAME_PROPERTY, old, pName);
 	}
 
 	private String buildProcedureName(Annotation astAnnotation) {
@@ -434,7 +434,7 @@ public final class SourceNamedStoredProcedureQuery2_1Annotation
 		}
 		@Override
 		protected String getElementName() {
-			return SourceNamedStoredProcedureQuery2_1Annotation.this.getParametersElementName();
+			return SourceNamedStoredProcedureQueryAnnotation2_1.this.getParametersElementName();
 		}
 		@Override
 		protected String getNestedAnnotationName() {
@@ -442,7 +442,7 @@ public final class SourceNamedStoredProcedureQuery2_1Annotation
 		}
 		@Override
 		protected StoredProcedureParameterAnnotation2_1 buildNestedAnnotation(int index) {
-			return SourceNamedStoredProcedureQuery2_1Annotation.this.buildParameter(index);
+			return SourceNamedStoredProcedureQueryAnnotation2_1.this.buildParameter(index);
 		}
 	}
 
@@ -474,5 +474,4 @@ public final class SourceNamedStoredProcedureQuery2_1Annotation
 				index,
 				ANNOTATION_NAME);
 	}
-
 }
