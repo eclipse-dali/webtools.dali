@@ -31,7 +31,7 @@ import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class OrmEclipseLinkManyToManyMapping
+public class EclipseLinkOrmManyToManyMapping
 	extends AbstractOrmManyToManyMapping<XmlManyToMany>
 	implements EclipseLinkManyToManyMapping2_0, EclipseLinkOrmConvertibleMapping
 {
@@ -40,7 +40,7 @@ public class OrmEclipseLinkManyToManyMapping
 	protected final EclipseLinkOrmConverterContainer converterContainer;
 
 
-	public OrmEclipseLinkManyToManyMapping(OrmSpecifiedPersistentAttribute parent, XmlManyToMany xmlMapping) {
+	public EclipseLinkOrmManyToManyMapping(OrmSpecifiedPersistentAttribute parent, XmlManyToMany xmlMapping) {
 		super(parent, xmlMapping);
 		this.joinFetch = new OrmEclipseLinkJoinFetch(this);
 		this.converterContainer = this.buildConverterContainer();
