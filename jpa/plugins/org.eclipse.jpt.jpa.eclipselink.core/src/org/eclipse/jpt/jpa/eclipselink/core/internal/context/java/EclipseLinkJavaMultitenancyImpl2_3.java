@@ -53,7 +53,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreVali
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class JavaEclipseLinkMultitenancyImpl2_3
+public class EclipseLinkJavaMultitenancyImpl2_3
 	extends AbstractJavaContextModel<EclipseLinkJavaNonEmbeddableTypeMapping>
 	implements EclipseLinkJavaMultitenancy2_3
 {
@@ -74,7 +74,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 
 	protected boolean specifiedTenantDiscriminatorColumnsAllowed;
 
-	public JavaEclipseLinkMultitenancyImpl2_3(EclipseLinkJavaNonEmbeddableTypeMapping parent) {
+	public EclipseLinkJavaMultitenancyImpl2_3(EclipseLinkJavaNonEmbeddableTypeMapping parent) {
 		super(parent);
 
 		MultitenantAnnotation2_3 multitenantAnnotation = this.getMultitenantAnnotation();
@@ -339,11 +339,11 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 		}
 		@Override
 		protected EclipseLinkJavaSpecifiedTenantDiscriminatorColumn2_3 buildContextElement(TenantDiscriminatorColumnAnnotation2_3 resourceElement) {
-			return JavaEclipseLinkMultitenancyImpl2_3.this.buildTenantDiscriminatorColumn(resourceElement);
+			return EclipseLinkJavaMultitenancyImpl2_3.this.buildTenantDiscriminatorColumn(resourceElement);
 		}
 		@Override
 		protected ListIterable<TenantDiscriminatorColumnAnnotation2_3> getResourceElements() {
-			return JavaEclipseLinkMultitenancyImpl2_3.this.getTenantDiscriminatorColumnAnnotations();
+			return EclipseLinkJavaMultitenancyImpl2_3.this.getTenantDiscriminatorColumnAnnotations();
 		}
 		@Override
 		protected TenantDiscriminatorColumnAnnotation2_3 getResourceElement(EclipseLinkJavaSpecifiedTenantDiscriminatorColumn2_3 contextElement) {
@@ -442,11 +442,11 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 		}
 		@Override
 		protected EclipseLinkVirtualTenantDiscriminatorColumn2_3 buildContextElement(EclipseLinkTenantDiscriminatorColumn2_3 resourceElement) {
-			return JavaEclipseLinkMultitenancyImpl2_3.this.buildVirtualTenantDiscriminatorColumn(resourceElement);
+			return EclipseLinkJavaMultitenancyImpl2_3.this.buildVirtualTenantDiscriminatorColumn(resourceElement);
 		}
 		@Override
 		protected ListIterable<EclipseLinkTenantDiscriminatorColumn2_3> getResourceElements() {
-			return JavaEclipseLinkMultitenancyImpl2_3.this.getTenantDiscriminatorColumnsForDefaults();
+			return EclipseLinkJavaMultitenancyImpl2_3.this.getTenantDiscriminatorColumnsForDefaults();
 		}
 		@Override
 		protected EclipseLinkTenantDiscriminatorColumn2_3 getResourceElement(EclipseLinkVirtualTenantDiscriminatorColumn2_3 contextElement) {
@@ -461,7 +461,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 		implements EclipseLinkTenantDiscriminatorColumn2_3.ParentAdapter
 	{
 		public JpaContextModel getColumnParent() {
-			return JavaEclipseLinkMultitenancyImpl2_3.this;
+			return EclipseLinkJavaMultitenancyImpl2_3.this;
 		}
 
 		public String getDefaultContextPropertyName() {
@@ -505,7 +505,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 		}
 
 		public TextRange getValidationTextRange() {
-			return JavaEclipseLinkMultitenancyImpl2_3.this.getValidationTextRange();
+			return EclipseLinkJavaMultitenancyImpl2_3.this.getValidationTextRange();
 		}
 	}
 

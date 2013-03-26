@@ -172,7 +172,7 @@ public class EclipseLinkJavaEntityImpl
 
 	protected EclipseLinkJavaMultitenancy2_3 buildMultitenancy() {
 		return this.isEclipseLink2_3Compatible() ?
-			new JavaEclipseLinkMultitenancyImpl2_3(this) :
+			new EclipseLinkJavaMultitenancyImpl2_3(this) :
 			new EclipseLinkNullJavaMultitenancy2_3(this);
 	}
 
