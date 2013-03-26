@@ -14,14 +14,12 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryAssociationOverrideAnnotation;
 
 /**
- * javax.persistence.AssociationOverride
+ * <code>javax.persistence.AssociationOverride</code>
  */
 public final class BinaryAssociationOverrideAnnotation1_0
 	extends BinaryAssociationOverrideAnnotation
 {
-
 	public BinaryAssociationOverrideAnnotation1_0(JavaResourceModel parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}
-	
 }

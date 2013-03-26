@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2011 Oracle. All rights reserved.
+* Copyright (c) 2009, 2013 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,14 +14,12 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryNamedQueryAnnotation;
 
 /**
- * javax.persistence.NamedQuery
+ * <code>javax.persistence.NamedQuery</code>
  */
-public final class BinaryNamedQuery1_0Annotation
+public final class BinaryNamedQueryAnnotation1_0
 	extends BinaryNamedQueryAnnotation
 {
-
-	public BinaryNamedQuery1_0Annotation(JavaResourceModel parent, IAnnotation jdtAnnotation) {
+	public BinaryNamedQueryAnnotation1_0(JavaResourceModel parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}
-	
 }
