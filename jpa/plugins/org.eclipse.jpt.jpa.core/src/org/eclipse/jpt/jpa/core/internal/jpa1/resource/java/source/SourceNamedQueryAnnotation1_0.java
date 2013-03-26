@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2011 Oracle. All rights reserved.
+* Copyright (c) 2009, 2013 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,20 +18,20 @@ import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceNamedQueryAn
 /**
  * <code>javax.persistence.NamedQuery</code>
  */
-public final class SourceNamedQuery1_0Annotation
+public final class SourceNamedQueryAnnotation1_0
 	extends SourceNamedQueryAnnotation
 {
-	public static SourceNamedQuery1_0Annotation buildSourceNamedQueryAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement, int index) {
+	public static SourceNamedQueryAnnotation1_0 buildSourceNamedQueryAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement, int index) {
 		IndexedDeclarationAnnotationAdapter idaa = buildNamedQueryDeclarationAnnotationAdapter(index);
 		IndexedAnnotationAdapter iaa = buildNamedQueryAnnotationAdapter(annotatedElement, idaa);
-		return new SourceNamedQuery1_0Annotation(
+		return new SourceNamedQueryAnnotation1_0(
 			parent,
 			annotatedElement,
 			idaa,
 			iaa);
 	}
 
-	private SourceNamedQuery1_0Annotation(
+	private SourceNamedQueryAnnotation1_0(
 			JavaResourceAnnotatedElement parent,
 			AnnotatedElement annotatedElement,
 			IndexedDeclarationAnnotationAdapter daa,
