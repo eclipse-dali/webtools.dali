@@ -124,7 +124,7 @@ public final class BinaryNamedStoredProcedureQuery2_1Annotation
 		Object[] jdtParameters = this.getJdtMemberValues(this.getParametersElementName());
 		Vector<StoredProcedureParameterAnnotation2_1> result = new Vector<StoredProcedureParameterAnnotation2_1>(jdtParameters.length);
 		for (Object jdtParameter : jdtParameters) {
-			result.add(new BinaryStoredProcedureParameter2_1Annotation(this, (IAnnotation) jdtParameter));
+			result.add(new BinaryStoredProcedureParameterAnnotation2_1(this, (IAnnotation) jdtParameter));
 		}
 		return result;
 	}

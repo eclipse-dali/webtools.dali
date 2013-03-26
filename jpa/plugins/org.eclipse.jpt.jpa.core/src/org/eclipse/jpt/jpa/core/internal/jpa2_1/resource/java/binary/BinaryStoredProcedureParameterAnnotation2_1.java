@@ -18,9 +18,9 @@ import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.ParameterMode_2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameterAnnotation2_1;
 
 /**
- * javax.persistence.StoredProcedureParameter
+ * <code>javax.persistence.StoredProcedureParameter</code>
  */
-public final class BinaryStoredProcedureParameter2_1Annotation 
+public final class BinaryStoredProcedureParameterAnnotation2_1
 	extends BinaryAnnotation
 	implements StoredProcedureParameterAnnotation2_1
 {
@@ -29,7 +29,7 @@ public final class BinaryStoredProcedureParameter2_1Annotation
 	private String type;
 
 
-	public BinaryStoredProcedureParameter2_1Annotation(JavaResourceModel parent, IAnnotation jdtAnnotation) {
+	public BinaryStoredProcedureParameterAnnotation2_1(JavaResourceModel parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.name = this.buildName();
 		this.mode = this.buildMode();
@@ -138,5 +138,4 @@ public final class BinaryStoredProcedureParameter2_1Annotation
 	public String getFullyQualifiedTypeName()  {
 		return this.type;
 	}
-
 }
