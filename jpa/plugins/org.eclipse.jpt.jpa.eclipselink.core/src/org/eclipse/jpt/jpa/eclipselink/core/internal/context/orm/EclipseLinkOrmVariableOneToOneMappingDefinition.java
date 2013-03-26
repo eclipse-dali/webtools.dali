@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,12 +20,12 @@ import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlVariableOneToOne;
 
-public class OrmEclipseLinkVariableOneToOneMappingDefinition
+public class EclipseLinkOrmVariableOneToOneMappingDefinition
 	implements OrmAttributeMappingDefinition
 {
 	// singleton
-	private static final OrmEclipseLinkVariableOneToOneMappingDefinition INSTANCE = 
-			new OrmEclipseLinkVariableOneToOneMappingDefinition();
+	private static final EclipseLinkOrmVariableOneToOneMappingDefinition INSTANCE = 
+			new EclipseLinkOrmVariableOneToOneMappingDefinition();
 	
 	
 	/**
@@ -39,7 +39,7 @@ public class OrmEclipseLinkVariableOneToOneMappingDefinition
 	/**
 	 * Enforce singleton usage
 	 */
-	private OrmEclipseLinkVariableOneToOneMappingDefinition() {
+	private EclipseLinkOrmVariableOneToOneMappingDefinition() {
 		super();
 	}
 	

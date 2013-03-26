@@ -84,7 +84,7 @@ public class EclipseLinkOrmXmlDefinition
 		OrmManyToOneMappingDefinition.instance(),
 		OrmOneToManyMappingDefinition.instance(),
 		OrmOneToOneMappingDefinition.instance(),
-		OrmEclipseLinkVariableOneToOneMappingDefinition.instance(),
+		EclipseLinkOrmVariableOneToOneMappingDefinition.instance(),
 		NullOrmAttributeMappingDefinition.instance()
 	};
 }
