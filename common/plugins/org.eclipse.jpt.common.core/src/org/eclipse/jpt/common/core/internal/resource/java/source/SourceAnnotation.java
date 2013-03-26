@@ -249,7 +249,8 @@ public abstract class SourceAnnotation
 	// ********** NestableAnnotation implementation **********
 
 	/**
-	 * Convenience implementation of method from {@link NestableAnnotation} interface
+	 * Convenience implementation of
+	 * {@link org.eclipse.jpt.common.core.resource.java.NestableAnnotation#moveAnnotation(int)}
 	 * for subclasses.
 	 */
 	public void moveAnnotation(int newIndex) {

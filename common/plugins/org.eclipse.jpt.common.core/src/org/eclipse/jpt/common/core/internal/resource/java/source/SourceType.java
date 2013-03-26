@@ -675,13 +675,13 @@ final class SourceType
 	
 	private void initInheritedFieldTypes_(ITypeBinding typeBinding) {
 		String typeName = typeBinding.getTypeDeclaration().getQualifiedName();
-		IVariableBinding[] fields = typeBinding.getDeclaredFields();
-		CounterMap counters = new CounterMap(fields.length);
-		for (IVariableBinding field : fields) {
-			String fieldName = field.getName();
+		IVariableBinding[] astFields = typeBinding.getDeclaredFields();
+		CounterMap counters = new CounterMap(astFields.length);
+		for (IVariableBinding astField : astFields) {
+			String fieldName = astField.getName();
 			int occurrence = counters.increment(fieldName);
 			if (occurrence == 1) { // only keep the first occurrence
-				this.inheritedFieldTypes.put(new AttributeKey(typeName, fieldName), new JavaResourceTypeBinding(field.getType()));
+				this.inheritedFieldTypes.put(new AttributeKey(typeName, fieldName), new JavaResourceTypeBinding(astField.getType()));
 			}
 		}
 	}
@@ -703,14 +703,14 @@ final class SourceType
 	
 	private void syncInheritedFieldTypes_(ITypeBinding typeBinding, Map<AttributeKey, JavaResourceTypeBinding> removedTypes) {
 		String typeName = typeBinding.getTypeDeclaration().getQualifiedName();
-		IVariableBinding[] fields = typeBinding.getDeclaredFields();
-		CounterMap counters = new CounterMap(fields.length);
-		for (IVariableBinding field : fields) {
-			String fieldName = field.getName();
+		IVariableBinding[] astFields = typeBinding.getDeclaredFields();
+		CounterMap counters = new CounterMap(astFields.length);
+		for (IVariableBinding astField : astFields) {
+			String fieldName = astField.getName();
 			int occurrence = counters.increment(fieldName);
 			if (occurrence == 1) { // only keep the first occurrence
 				AttributeKey key = new AttributeKey(typeName, fieldName);
-				this.inheritedFieldTypes.put(key, new JavaResourceTypeBinding(field.getType()));
+				this.inheritedFieldTypes.put(key, new JavaResourceTypeBinding(astField.getType()));
 				removedTypes.remove(key);
 			}
 		}
@@ -735,14 +735,14 @@ final class SourceType
 		// and in general, we are only really interested in types of "get" methods,
 		// which have no parameters
 		String typeName = typeBinding.getTypeDeclaration().getQualifiedName();
-		IMethodBinding[] methods = typeBinding.getDeclaredMethods();
-		CounterMap counters = new CounterMap(methods.length);
-		for (IMethodBinding method : methods) {
-			if (method.getParameterTypes().length == 0) {
-				String methodName = method.getName();
+		IMethodBinding[] astMethods = typeBinding.getDeclaredMethods();
+		CounterMap counters = new CounterMap(astMethods.length);
+		for (IMethodBinding astMethod : astMethods) {
+			if (astMethod.getParameterTypes().length == 0) {
+				String methodName = astMethod.getName();
 				int occurrence = counters.increment(methodName);
 				if (occurrence == 1) { // only keep the first occurrence
-					this.inheritedMethodTypes.put(new AttributeKey(typeName, methodName), new JavaResourceTypeBinding(method.getReturnType()));
+					this.inheritedMethodTypes.put(new AttributeKey(typeName, methodName), new JavaResourceTypeBinding(astMethod.getReturnType()));
 				}
 			}
 		}
@@ -769,14 +769,14 @@ final class SourceType
 		// and in general, we are only really interested in types of "get" methods,
 		// which have no parameters
 		String typeName = typeBinding.getTypeDeclaration().getQualifiedName();
-		IMethodBinding[] methods = typeBinding.getDeclaredMethods();
-		CounterMap counters = new CounterMap(methods.length);
-		for (IMethodBinding method : methods) {
-			String methodName = method.getName();
+		IMethodBinding[] astMethods = typeBinding.getDeclaredMethods();
+		CounterMap counters = new CounterMap(astMethods.length);
+		for (IMethodBinding astMethod : astMethods) {
+			String methodName = astMethod.getName();
 			int occurrence = counters.increment(methodName);
 			if (occurrence == 1) { // only keep the first occurrence
 				AttributeKey key = new AttributeKey(typeName, methodName);
-				this.inheritedMethodTypes.put(key, new JavaResourceTypeBinding(method.getReturnType()));
+				this.inheritedMethodTypes.put(key, new JavaResourceTypeBinding(astMethod.getReturnType()));
 				removedTypes.remove(key);
 			}
 		}

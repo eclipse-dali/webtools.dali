@@ -625,7 +625,7 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 
 		@Override
 		public String toString() {
-			return ObjectTools.toString(this, node);
+			return ObjectTools.toString(this, this.node);
 		}
 	}
 
@@ -635,7 +635,6 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 	/**
 	 * Use this interface to make static references to the annotation container.
 	 * Sort of a hack....
-	 * @see AnnotationContainerNestedAnnotationsTransformer
 	 * @see TopLevelAnnotationContainerTransformer
 	 */
 	private interface CombinationAnnotationContainer_ {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,9 +24,9 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
  * binary field
  */
 final class BinaryField
-		extends BinaryAttribute
-		implements JavaResourceField {
-	
+	extends BinaryAttribute
+	implements JavaResourceField
+{
 	BinaryField(JavaResourceType parent, IField field) {
 		this(parent,new FieldAdapter(field));
 	}
@@ -55,23 +55,22 @@ final class BinaryField
 	 * IField adapter
 	 */
 	static class FieldAdapter
-			implements AttributeAdapter {
-		
-		final IField field;
-		
+		implements AttributeAdapter
+	{
+		private final IField field;
 		/* cached, but only during initialization */
 		private final ITypeBinding typeBinding;
 		
 		FieldAdapter(IField field) {
 			super();
 			this.field = field;
-			this.typeBinding = createTypeBinding(field);
+			this.typeBinding = this.buildTypeBinding();
 		}
 		
-		protected ITypeBinding createTypeBinding(IField field) {
-			//ASTTools.createBinding(field) can return null in certain cases, such as for the $assertionsDisabled field in Integer
-			IVariableBinding binding = (IVariableBinding)ASTTools.createBinding(field);
-			return binding != null ? binding.getType() : null;
+		protected ITypeBinding buildTypeBinding() {
+			IVariableBinding binding = (IVariableBinding) ASTTools.createBinding(this.field);
+			// the binding can be null in certain cases (e.g. java.lang.Integer.$assertionsDisabled)
+			return (binding == null) ? null : binding.getType();
 		}
 		
 		public IField getElement() {

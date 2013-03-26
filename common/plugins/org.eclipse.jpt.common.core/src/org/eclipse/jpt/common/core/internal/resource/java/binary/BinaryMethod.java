@@ -34,9 +34,9 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * binary method
  */
 final class BinaryMethod
-		extends BinaryAttribute
-		implements JavaResourceMethod {
-	
+	extends BinaryAttribute
+	implements JavaResourceMethod
+{
 	private boolean constructor;
 	
 	private final Vector<String> parameterTypeNames = new Vector<String>();
@@ -153,24 +153,20 @@ final class BinaryMethod
 	 * IMethod adapter
 	 */
 	static class MethodAdapter
-			implements AttributeAdapter {
-		
-		final IMethod method;
-		
-		static final IMethod[] EMPTY_METHOD_ARRAY = new IMethod[0];
-		
+		implements AttributeAdapter
+	{
+		private final IMethod method;
 		/* cached, but only during initialization */
 		private final IBinding binding;
-		
 		
 		MethodAdapter(IMethod method) {
 			super();
 			this.method = method;
-			this.binding = createBinding(method);
+			this.binding = this.buildBinding();
 		}
 		
-		protected IBinding createBinding(IMethod method) {
-			return ASTTools.createBinding(method);
+		protected IBinding buildBinding() {
+			return ASTTools.createBinding(this.method);
 		}
 		
 		public IMethod getElement() {
@@ -185,23 +181,18 @@ final class BinaryMethod
 			return NameTools.convertGetterOrSetterMethodNameToPropertyName(this.method.getElementName());
 		}
 		
-		/* NB - may return null */
+		/**
+		 * <strong>NB:</strong> may return <code>null</code>
+		 */
 		public IMethodBinding getMethodBinding() {
 			// bug 381503 - if the binary method is a constructor,
 			// the jdtBinding will be a JavaResourceTypeBinding already
-			if (this.binding.getKind() == IBinding.TYPE) {
-				return null;
-			}
-			return (IMethodBinding) binding;
+			return (this.binding.getKind() == IBinding.TYPE) ? null : (IMethodBinding) this.binding;
 		}
 		
 		public ITypeBinding getTypeBinding() {
-			// bug 381503 - if the binary method is a constructor,
-			// the jdtBinding will be a JavaResourceTypeBinding already
-			if (this.binding.getKind() == IBinding.TYPE) {
-				return (ITypeBinding) binding;
-			}
-			return ((IMethodBinding) binding).getReturnType();
+			IMethodBinding methodBinding = this.getMethodBinding();
+			return (methodBinding == null) ? (ITypeBinding) this.binding : methodBinding.getReturnType();
 		}
 	}
 }

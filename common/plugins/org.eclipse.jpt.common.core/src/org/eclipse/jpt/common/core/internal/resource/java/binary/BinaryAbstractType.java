@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,12 +25,12 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
- * binary persistent type
+ * binary type
  */
 abstract class BinaryAbstractType
-		extends BinaryMember
-		implements JavaResourceAbstractType {
-	
+	extends BinaryMember
+	implements JavaResourceAbstractType
+{
 	private JavaResourceTypeBinding typeBinding;
 	
 	private String declaringTypeName;
@@ -137,22 +137,21 @@ abstract class BinaryAbstractType
 	// ********** IType adapter **********
 	
 	static class TypeAdapter
-			implements MemberAdapter {
-		
+		implements MemberAdapter
+	{
 		private final IType type;
-		
 		/* cached, but only during initialization */
 		private final ITypeBinding typeBinding;
 		
 		TypeAdapter(IType type) {
 			super();
 			this.type = type;
-			this.typeBinding = createTypeBinding(type);
+			this.typeBinding = this.buildTypeBinding();
 		}
 		
 		
-		protected ITypeBinding createTypeBinding(IType type) {
-			return (ITypeBinding) ASTTools.createBinding(type);
+		protected ITypeBinding buildTypeBinding() {
+			return (ITypeBinding) ASTTools.createBinding(this.type);
 		}
 		
 		public IType getElement() {
