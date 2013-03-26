@@ -21,16 +21,16 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
 
 /**
- * javax.persistence.CollectionTable
+ * <code>javax.persistence.CollectionTable</code>
  */
-public final class BinaryCollectionTable2_0Annotation
+public final class BinaryCollectionTableAnnotation2_0
 	extends BinaryBaseTableAnnotation
 	implements CollectionTableAnnotation2_0
 {
 	private final Vector<JoinColumnAnnotation> joinColumns;
 
 
-	public BinaryCollectionTable2_0Annotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
+	public BinaryCollectionTableAnnotation2_0(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.joinColumns = this.buildJoinColumns();
 	}
@@ -109,5 +109,4 @@ public final class BinaryCollectionTable2_0Annotation
 	private void updateJoinColumns() {
 		throw new UnsupportedOperationException();
 	}
-
 }
