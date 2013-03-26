@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,13 +19,13 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.Source
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ArrayAnnotation2_3;
 
 /**
- * org.eclipse.persistence.annotations.Array
+ * <code>org.eclipse.persistence.annotations.Array</code>
  */
-public class EclipseLinkArray2_3AnnotationDefinition
+public class EclipseLinkArrayAnnotationDefinition2_3
 	implements AnnotationDefinition
 {
 	// singleton
-	private static final AnnotationDefinition INSTANCE = new EclipseLinkArray2_3AnnotationDefinition();
+	private static final AnnotationDefinition INSTANCE = new EclipseLinkArrayAnnotationDefinition2_3();
 
 	/**
 	 * Return the singleton.
@@ -37,7 +37,7 @@ public class EclipseLinkArray2_3AnnotationDefinition
 	/**
 	 * Ensure single instance.
 	 */
-	private EclipseLinkArray2_3AnnotationDefinition() {
+	private EclipseLinkArrayAnnotationDefinition2_3() {
 		super();
 	}
 

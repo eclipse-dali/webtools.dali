@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jpa.core.JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.jpa.core.internal.AbstractJpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkArray2_3AnnotationDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkArrayAnnotationDefinition2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkBasicCollectionAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkBasicMapAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkCacheAnnotationDefinition;
@@ -75,7 +75,7 @@ public class EclipseLinkJpaAnnotationDefinitionProvider2_3
 	}
 
 	protected static final AnnotationDefinition[] ANNOTATION_DEFINITIONS = new AnnotationDefinition[] {
-		EclipseLinkArray2_3AnnotationDefinition.instance(),
+		EclipseLinkArrayAnnotationDefinition2_3.instance(),
 		EclipseLinkBasicCollectionAnnotationDefinition.instance(),
 		EclipseLinkBasicMapAnnotationDefinition.instance(),
 		EclipseLinkCacheAnnotationDefinition.instance(),
