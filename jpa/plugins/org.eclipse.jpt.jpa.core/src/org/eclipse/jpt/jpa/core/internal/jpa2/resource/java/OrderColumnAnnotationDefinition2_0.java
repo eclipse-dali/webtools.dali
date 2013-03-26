@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,13 +19,13 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source.SourceOrderCo
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumnAnnotation2_0;
 
 /**
- * javax.persistence.OrderColumn
+ * <code>javax.persistence.OrderColumn</code>
  */
-public final class OrderColumn2_0AnnotationDefinition
+public final class OrderColumnAnnotationDefinition2_0
 	implements AnnotationDefinition
 {
 	// singleton
-	private static final AnnotationDefinition INSTANCE = new OrderColumn2_0AnnotationDefinition();
+	private static final AnnotationDefinition INSTANCE = new OrderColumnAnnotationDefinition2_0();
 
 	/**
 	 * Return the singleton.
@@ -37,7 +37,7 @@ public final class OrderColumn2_0AnnotationDefinition
 	/**
 	 * Ensure single instance.
 	 */
-	private OrderColumn2_0AnnotationDefinition() {
+	private OrderColumnAnnotationDefinition2_0() {
 		super();
 	}
 

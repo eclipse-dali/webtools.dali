@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.OrderColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaOrderColumn2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.OrderColumn2_0AnnotationDefinition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.OrderColumnAnnotationDefinition2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSpecifiedOrderColumn2_0;
@@ -388,7 +388,7 @@ public class GenericJavaOrderable
 
 	protected OrderColumnAnnotation2_0 buildNullOrderColumnAnnotation() {
 		// hmmmm...
-		return (OrderColumnAnnotation2_0) OrderColumn2_0AnnotationDefinition.instance().buildNullAnnotation(this.getResourceAttribute());
+		return (OrderColumnAnnotation2_0) OrderColumnAnnotationDefinition2_0.instance().buildNullAnnotation(this.getResourceAttribute());
 	}
 
 
