@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.BinaryEclipseLinkStructConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.EclipseLinkBinaryStructConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.SourceEclipseLinkStructConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 
@@ -46,7 +46,7 @@ public class EclipseLinkStructConverterAnnotationDefinition
 	}
 
 	public NestableAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation, int index) {
-		return new BinaryEclipseLinkStructConverterAnnotation(parent, jdtAnnotation);
+		return new EclipseLinkBinaryStructConverterAnnotation(parent, jdtAnnotation);
 	}
 
 	public String getNestableAnnotationName() {
