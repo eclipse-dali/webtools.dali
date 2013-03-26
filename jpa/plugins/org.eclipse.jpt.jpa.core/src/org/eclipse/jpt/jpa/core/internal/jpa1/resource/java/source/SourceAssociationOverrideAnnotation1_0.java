@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,39 +23,39 @@ import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceAssociationO
 /**
  * <code>javax.persistence.AssociationOverride</code>
  */
-public final class SourceAssociationOverride1_0Annotation
+public final class SourceAssociationOverrideAnnotation1_0
 	extends SourceAssociationOverrideAnnotation
 {
 	
-	public static SourceAssociationOverride1_0Annotation buildSourceAssociationOverrideAnnotation(
+	public static SourceAssociationOverrideAnnotation1_0 buildSourceAssociationOverrideAnnotation(
 			JavaResourceModel parent, 
 			AnnotatedElement element) {
 
-		return new SourceAssociationOverride1_0Annotation(parent, element, DECLARATION_ANNOTATION_ADAPTER);
+		return new SourceAssociationOverrideAnnotation1_0(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 	}
 
-	public static SourceAssociationOverride1_0Annotation buildSourceAssociationOverrideAnnotation(
+	public static SourceAssociationOverrideAnnotation1_0 buildSourceAssociationOverrideAnnotation(
 			JavaResourceAnnotatedElement parent, 
 			AnnotatedElement annotatedElement, 
 			int index) {
 		IndexedDeclarationAnnotationAdapter idaa = buildAssociationOverrideDeclarationAnnotationAdapter(index);
 		IndexedAnnotationAdapter iaa = buildAssociationOverrideAnnotationAdapter(annotatedElement, idaa);
-		return new SourceAssociationOverride1_0Annotation(
+		return new SourceAssociationOverrideAnnotation1_0(
 			parent,
 			annotatedElement,
 			idaa,
 			iaa);
 	}
 
-	public static SourceAssociationOverride1_0Annotation buildNestedSourceAssociationOverrideAnnotation(
+	public static SourceAssociationOverrideAnnotation1_0 buildNestedSourceAssociationOverrideAnnotation(
 			JavaResourceModel parent, 
 			AnnotatedElement element, 
 			IndexedDeclarationAnnotationAdapter idaa) {
 		
-		return new SourceAssociationOverride1_0Annotation(parent, element, idaa);
+		return new SourceAssociationOverrideAnnotation1_0(parent, element, idaa);
 	}
 
-	private SourceAssociationOverride1_0Annotation(
+	private SourceAssociationOverrideAnnotation1_0(
 			JavaResourceModel parent, 
 			AnnotatedElement element, 
 			DeclarationAnnotationAdapter daa) {
@@ -63,7 +63,7 @@ public final class SourceAssociationOverride1_0Annotation
 		this(parent, element, daa, new ElementAnnotationAdapter(element, daa));
 	}
 
-	private SourceAssociationOverride1_0Annotation(
+	private SourceAssociationOverrideAnnotation1_0(
 			JavaResourceModel parent, 
 			AnnotatedElement element, 
 			IndexedDeclarationAnnotationAdapter idaa) {
@@ -71,7 +71,7 @@ public final class SourceAssociationOverride1_0Annotation
 		this(parent, element, idaa, new ElementIndexedAnnotationAdapter(element, idaa));
 	}
 
-	private SourceAssociationOverride1_0Annotation(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	private SourceAssociationOverrideAnnotation1_0(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, element, daa, annotationAdapter);
 	}
 }
