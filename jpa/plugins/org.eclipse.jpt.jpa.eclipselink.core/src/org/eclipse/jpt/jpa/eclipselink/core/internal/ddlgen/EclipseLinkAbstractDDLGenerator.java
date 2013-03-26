@@ -1,12 +1,12 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2012 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.ddlgen;
 
 import java.io.File;
@@ -49,7 +49,7 @@ import org.eclipse.osgi.util.ManifestElement;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
 
-public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerator
+public abstract class EclipseLinkAbstractDDLGenerator extends AbstractJptGenerator
 {
 	public static final String LAUNCH_CONFIG_NAME = "Dali EclipseLink Table Generation";   //$NON-NLS-1$
 	public static final String DDL_GEN_PACKAGE_NAME = "org.eclipse.jpt.jpa.eclipselink.core.ddlgen";   //$NON-NLS-1$
@@ -68,7 +68,7 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 
 	// ********** constructors **********
 
-	protected AbstractEclipseLinkDDLGenerator(String puName, JpaProject jpaProject, EclipseLinkOutputMode outputMode) {
+	protected EclipseLinkAbstractDDLGenerator(String puName, JpaProject jpaProject, EclipseLinkOutputMode outputMode) {
 		super(JavaCore.create(jpaProject.getProject()));
 		this.puName = puName;
 		this.jpaProject = jpaProject;
@@ -428,5 +428,4 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 	private static final String ORG_ECLIPSE_PERSISTENCE_ASM_BUNDLE = "org.eclipse.persistence.asm";	//$NON-NLS-1$
 	private static final String ORG_ECLIPSE_PERSISTENCE_ANTLR_BUNDLE = "org.eclipse.persistence.antlr";	//$NON-NLS-1$
 	private static final String ORG_ECLIPSE_PERSISTENCE_JPA_BUNDLE = "org.eclipse.persistence.jpa";	//$NON-NLS-1$
-
 }
