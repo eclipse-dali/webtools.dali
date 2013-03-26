@@ -129,7 +129,7 @@ public class EclipseLinkOrmXmlContextModelFactory
 	}
 	
 	public EclipseLinkAbstractOrmBasicCollectionMapping buildOrmEclipseLinkBasicCollectionMapping(OrmSpecifiedPersistentAttribute parent, XmlBasicCollection resourceMapping) {
-		return new OrmEclipseLinkBasicCollectionMapping(parent, resourceMapping);
+		return new EclipseLinkOrmBasicCollectionMapping(parent, resourceMapping);
 	}
 	
 	public EclipseLinkAbstractOrmBasicMapMapping buildOrmEclipseLinkBasicMapMapping(OrmSpecifiedPersistentAttribute parent, XmlBasicMap resourceMapping) {
