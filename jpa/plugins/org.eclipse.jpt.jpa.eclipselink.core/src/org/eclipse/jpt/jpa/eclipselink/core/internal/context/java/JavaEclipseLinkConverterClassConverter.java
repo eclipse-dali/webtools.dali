@@ -34,7 +34,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * </code>
  */
 public abstract class JavaEclipseLinkConverterClassConverter<A extends NamedConverterAnnotation>
-	extends JavaEclipseLinkConverter<A>
+	extends EclipseLinkJavaConverter<A>
 	implements EclipseLinkConverterClassConverter
 {
 	private String converterClass;

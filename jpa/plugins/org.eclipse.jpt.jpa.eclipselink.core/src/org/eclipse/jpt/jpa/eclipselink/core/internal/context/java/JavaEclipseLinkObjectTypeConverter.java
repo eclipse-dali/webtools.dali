@@ -31,7 +31,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>org.eclipse.persistence.annotations.ObjectTypeConverter</code>
  */
 public class JavaEclipseLinkObjectTypeConverter
-	extends JavaEclipseLinkConverter<ObjectTypeConverterAnnotation>
+	extends EclipseLinkJavaConverter<ObjectTypeConverterAnnotation>
 	implements EclipseLinkObjectTypeConverter
 {
 	private String dataType;

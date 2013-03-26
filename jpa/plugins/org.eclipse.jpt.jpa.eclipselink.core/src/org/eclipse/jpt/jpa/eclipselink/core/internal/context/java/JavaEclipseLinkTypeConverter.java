@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TypeConverterAnnotatio
  * <code>org.eclipse.persistence.annotations.TypeConverter</code>
  */
 public class JavaEclipseLinkTypeConverter
-	extends JavaEclipseLinkConverter<TypeConverterAnnotation>
+	extends EclipseLinkJavaConverter<TypeConverterAnnotation>
 	implements EclipseLinkTypeConverter
 {
 	private String dataType;

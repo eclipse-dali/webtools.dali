@@ -37,7 +37,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * </ul>
  * </code>
  */
-public abstract class JavaEclipseLinkConverter<A extends NamedConverterAnnotation>
+public abstract class EclipseLinkJavaConverter<A extends NamedConverterAnnotation>
 	extends AbstractJavaContextModel<EclipseLinkJavaConverterContainer>
 	implements EclipseLinkConverter
 {
@@ -46,7 +46,7 @@ public abstract class JavaEclipseLinkConverter<A extends NamedConverterAnnotatio
 	protected String name;
 
 
-	protected JavaEclipseLinkConverter(EclipseLinkJavaConverterContainer parent, A converterAnnotation) {
+	protected EclipseLinkJavaConverter(EclipseLinkJavaConverterContainer parent, A converterAnnotation) {
 		super(parent);
 		this.converterAnnotation = converterAnnotation;
 		this.name = converterAnnotation.getName();

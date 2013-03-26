@@ -71,7 +71,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterC
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaJpqlQueryHelper;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkCustomization;
@@ -463,8 +463,8 @@ public class EclipseLinkPersistenceUnit
 		ArrayList<EclipseLinkConverter> result = ListTools.list(this.getMappingFileConverters());
 
 		HashSet<String> mappingFileConverterNames = this.convertToNames(result);
-		HashMap<String, ArrayList<JavaEclipseLinkConverter<?>>> javaConverters = this.mapByName(this.getAllJavaConverters());
-		for (Map.Entry<String, ArrayList<JavaEclipseLinkConverter<?>>> entry : javaConverters.entrySet()) {
+		HashMap<String, ArrayList<EclipseLinkJavaConverter<?>>> javaConverters = this.mapByName(this.getAllJavaConverters());
+		for (Map.Entry<String, ArrayList<EclipseLinkJavaConverter<?>>> entry : javaConverters.entrySet()) {
 			if ( ! mappingFileConverterNames.contains(entry.getKey())) {
 				result.addAll(entry.getValue());
 			}
@@ -494,18 +494,18 @@ public class EclipseLinkPersistenceUnit
 	/**
 	 * Include "overridden" Java converters.
 	 */
-	public Iterable<JavaEclipseLinkConverter<?>> getAllJavaConverters() {
+	public Iterable<EclipseLinkJavaConverter<?>> getAllJavaConverters() {
 		return IterableTools.children(this.getAllJavaTypeMappingsUnique(), TYPE_MAPPING_CONVERTER_TRANSFORMER);
 	}
 
-	public static final Transformer<TypeMapping, Iterable<JavaEclipseLinkConverter<?>>> TYPE_MAPPING_CONVERTER_TRANSFORMER = new TypeMappingConverterTransformer();
+	public static final Transformer<TypeMapping, Iterable<EclipseLinkJavaConverter<?>>> TYPE_MAPPING_CONVERTER_TRANSFORMER = new TypeMappingConverterTransformer();
 
 	public static class TypeMappingConverterTransformer
-		extends TransformerAdapter<TypeMapping, Iterable<JavaEclipseLinkConverter<?>>>
+		extends TransformerAdapter<TypeMapping, Iterable<EclipseLinkJavaConverter<?>>>
 	{
 		@Override
-		public Iterable<JavaEclipseLinkConverter<?>> transform(TypeMapping typeMapping) {
-			return new SubIterableWrapper<EclipseLinkConverter, JavaEclipseLinkConverter<?>>(this.transform_(typeMapping));
+		public Iterable<EclipseLinkJavaConverter<?>> transform(TypeMapping typeMapping) {
+			return new SubIterableWrapper<EclipseLinkConverter, EclipseLinkJavaConverter<?>>(this.transform_(typeMapping));
 		}
 		protected Iterable<EclipseLinkConverter> transform_(TypeMapping typeMapping) {
 			// Java "null" type mappings are not EclipseLink mappings
@@ -1262,23 +1262,23 @@ public class EclipseLinkPersistenceUnit
 	 */
 	public void convertJavaConverters(EclipseLinkEntityMappings entityMappings, IProgressMonitor monitor) {
 		EclipseLinkOrmConverterContainer ormConverterContainer = entityMappings.getConverterContainer();
-		HashMap<String, ArrayList<JavaEclipseLinkConverter<?>>> convertibleJavaConverters = this.getEclipseLinkConvertibleJavaConverters();
+		HashMap<String, ArrayList<EclipseLinkJavaConverter<?>>> convertibleJavaConverters = this.getEclipseLinkConvertibleJavaConverters();
 		int work = this.calculateCumulativeSize(convertibleJavaConverters.values());
 		SubMonitor sm = SubMonitor.convert(monitor, JptJpaCoreMessages.JAVA_METADATA_CONVERSION_IN_PROGRESS, work);
-		for (Map.Entry<String, ArrayList<JavaEclipseLinkConverter<?>>> entry : convertibleJavaConverters.entrySet()) {
+		for (Map.Entry<String, ArrayList<EclipseLinkJavaConverter<?>>> entry : convertibleJavaConverters.entrySet()) {
 			this.convertJavaConvertersWithSameName(ormConverterContainer, entry, sm.newChild(entry.getValue().size()));
 		}
 		sm.setTaskName(JptJpaCoreMessages.JAVA_METADATA_CONVERSION_COMPLETE);
 	}
 
-	protected void convertJavaConvertersWithSameName(EclipseLinkOrmConverterContainer ormConverterContainer, Map.Entry<String, ArrayList<JavaEclipseLinkConverter<?>>> entry, SubMonitor monitor) {
+	protected void convertJavaConvertersWithSameName(EclipseLinkOrmConverterContainer ormConverterContainer, Map.Entry<String, ArrayList<EclipseLinkJavaConverter<?>>> entry, SubMonitor monitor) {
 		if (monitor.isCanceled()) {
 			throw new OperationCanceledException(JptJpaCoreMessages.JAVA_METADATA_CONVERSION_CANCELED);
 		}
 		monitor.setTaskName(NLS.bind(JptJpaEclipseLinkCoreMessages.JAVA_METADATA_CONVERSION_CONVERT_CONVERTER, entry.getKey()));
 
-		ArrayList<JavaEclipseLinkConverter<?>> javaConvertersWithSameName = entry.getValue();
-		JavaEclipseLinkConverter<?> first = javaConvertersWithSameName.get(0);
+		ArrayList<EclipseLinkJavaConverter<?>> javaConvertersWithSameName = entry.getValue();
+		EclipseLinkJavaConverter<?> first = javaConvertersWithSameName.get(0);
 		first.convertTo(ormConverterContainer);
 		first.delete();  // delete any converted generators
 		monitor.worked(1);
@@ -1292,7 +1292,7 @@ public class EclipseLinkPersistenceUnit
 	/**
 	 * @see #extractEclipseLinkConvertibleJavaModels(Iterable, Iterable)
 	 */
-	protected HashMap<String, ArrayList<JavaEclipseLinkConverter<?>>> getEclipseLinkConvertibleJavaConverters() {
+	protected HashMap<String, ArrayList<EclipseLinkJavaConverter<?>>> getEclipseLinkConvertibleJavaConverters() {
 		return this.extractEclipseLinkConvertibleJavaModels(this.getAllJavaConverters(), this.getMappingFileConverters());
 	}
 

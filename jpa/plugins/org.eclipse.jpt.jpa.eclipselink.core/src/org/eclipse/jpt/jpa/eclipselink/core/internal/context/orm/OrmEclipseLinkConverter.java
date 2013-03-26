@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -141,7 +141,7 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 
 	// ********** metadata conversion **********
 
-	public void convertFrom(JavaEclipseLinkConverter<?> javaConverter) {
+	public void convertFrom(EclipseLinkJavaConverter<?> javaConverter) {
 		this.setName(javaConverter.getName());
 	}
 }
