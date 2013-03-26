@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TransformationAnnotati
 /**
  * <code>org.eclipse.persistence.annotations.Transformation</code>
  */
-public class BinaryEclipseLinkTransformationAnnotation
+public class EclipseLinkBinaryTransformationAnnotation
 	extends BinaryAnnotation
 	implements TransformationAnnotation
 {
@@ -28,7 +28,7 @@ public class BinaryEclipseLinkTransformationAnnotation
 	private Boolean optional;
 
 
-	public BinaryEclipseLinkTransformationAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
+	public EclipseLinkBinaryTransformationAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.fetch = this.buildFetch();
 		this.optional = this.buildOptional();
