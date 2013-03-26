@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.internal.AbstractJpaAnnotationDefinitionProvider
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.Access2_0AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.AssociationOverride2_0AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.Cacheable2_0AnnotationDefinition;
-import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.CollectionTable2_0AnnotationDefinition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.CollectionTableAnnotationDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.ElementCollectionAnnotationDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.GeneratedAnnotationDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.MapKeyClassAnnotationDefinition2_0;
@@ -107,7 +107,7 @@ public class GenericJpaAnnotationDefinitionProvider2_1
 		Access2_0AnnotationDefinition.instance(),
 		BasicAnnotationDefinition.instance(),
 		Cacheable2_0AnnotationDefinition.instance(),
-		CollectionTable2_0AnnotationDefinition.instance(),
+		CollectionTableAnnotationDefinition2_0.instance(),
 		ColumnAnnotationDefinition.instance(),
 		ConverterAnnotationDefinition2_1.instance(),
 		DiscriminatorColumnAnnotationDefinition.instance(),
