@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,9 +25,9 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.StaticMetamodelAnnotation2_0;
 
 /**
- * javax.persistence.metamodel.StaticMetamodel
+ * <code>javax.persistence.metamodel.StaticMetamodel</code>
  */
-public final class SourceStaticMetamodelAnnotation
+public final class SourceStaticMetamodelAnnotation2_0
 	extends SourceAnnotation
 	implements StaticMetamodelAnnotation2_0
 {
@@ -45,7 +45,7 @@ public final class SourceStaticMetamodelAnnotation
 	private boolean fqClassNameStale = true;
 
 
-	public SourceStaticMetamodelAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
+	public SourceStaticMetamodelAnnotation2_0(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
 		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 		this.valueAdapter = new AnnotatedElementAnnotationElementAdapter<String>(element, VALUE_ADAPTER);
 	}
@@ -133,5 +133,4 @@ public final class SourceStaticMetamodelAnnotation
 	private static DeclarationAnnotationElementAdapter<String> buildValueAdapter() {
 		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, JPA2_0.STATIC_METAMODEL__VALUE, SimpleTypeStringExpressionConverter.instance());
 	}
-
 }
