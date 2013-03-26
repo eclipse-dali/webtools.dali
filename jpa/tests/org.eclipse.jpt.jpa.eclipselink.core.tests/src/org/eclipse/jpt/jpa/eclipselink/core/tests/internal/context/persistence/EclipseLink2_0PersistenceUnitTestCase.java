@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.tests.internal.context.persistence.PersistenceUnitTestCase;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_0JpaPlatformFactory;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_0;
 
 /**
  *  EclipseLink2_0PersistenceUnitTestCase
@@ -46,7 +46,7 @@ public abstract class EclipseLink2_0PersistenceUnitTestCase
 
 	@Override
 	protected String getJpaPlatformID() {
-		return EclipseLink2_0JpaPlatformFactory.ID;
+		return EclipseLinkJpaPlatformFactory2_0.ID;
 	}
 
 	@Override

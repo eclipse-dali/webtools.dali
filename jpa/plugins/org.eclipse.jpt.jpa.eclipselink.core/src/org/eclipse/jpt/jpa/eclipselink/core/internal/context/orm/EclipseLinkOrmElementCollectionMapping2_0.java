@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConvertibl
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_0JpaPlatformFactory;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlElementCollection;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -83,7 +83,7 @@ public class EclipseLinkOrmElementCollectionMapping2_0
 	// ********** join fetch **********
 
 	public EclipseLinkJoinFetch getJoinFetch() {
-		if (getJpaPlatformVersion().getVersion().equals(EclipseLink2_0JpaPlatformFactory.VERSION)) {
+		if (getJpaPlatformVersion().getVersion().equals(EclipseLinkJpaPlatformFactory2_0.VERSION)) {
 			throw new UnsupportedOperationException("join-fetch not supported in EclipseLink 2.0 platform"); //$NON-NLS-1$
 		}
 		return this.joinFetch;

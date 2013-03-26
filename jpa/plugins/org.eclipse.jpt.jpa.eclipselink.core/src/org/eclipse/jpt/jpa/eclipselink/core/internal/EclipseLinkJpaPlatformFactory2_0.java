@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFacto
 import org.eclipse.persistence.jpa.jpql.parser.EclipseLinkJPQLGrammar2_0;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
-public class EclipseLink2_0JpaPlatformFactory
+public class EclipseLinkJpaPlatformFactory2_0
 	implements JpaPlatformFactory
 {
 	/**
@@ -38,7 +38,7 @@ public class EclipseLink2_0JpaPlatformFactory
 	/**
 	 * zero-argument constructor
 	 */
-	public EclipseLink2_0JpaPlatformFactory() {
+	public EclipseLinkJpaPlatformFactory2_0() {
 		super();
 	}
 
