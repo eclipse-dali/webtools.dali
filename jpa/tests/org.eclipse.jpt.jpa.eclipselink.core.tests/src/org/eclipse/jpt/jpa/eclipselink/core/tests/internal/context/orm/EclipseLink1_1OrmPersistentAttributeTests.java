@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkIdMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkOneToOneMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmOneToOneMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLink1_1ContextModelTestCase;
 
 @SuppressWarnings("nls")
@@ -155,7 +155,7 @@ public class EclipseLink1_1OrmPersistentAttributeTests
 		OrmSpecifiedPersistentAttribute specifiedOrmPersistentAttribute = ormPersistentType.getSpecifiedAttributes().iterator().next();
 		assertEquals("address", specifiedOrmPersistentAttribute.getName());
 		assertFalse(specifiedOrmPersistentAttribute.isVirtual());
-		assertTrue(specifiedOrmPersistentAttribute.getMapping() instanceof OrmEclipseLinkOneToOneMapping);
+		assertTrue(specifiedOrmPersistentAttribute.getMapping() instanceof EclipseLinkOrmOneToOneMapping);
 		
 		
 		ormPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();

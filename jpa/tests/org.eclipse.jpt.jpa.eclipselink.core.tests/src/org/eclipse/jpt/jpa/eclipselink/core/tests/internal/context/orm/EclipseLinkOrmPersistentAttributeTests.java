@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkIdMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkOneToOneMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmOneToOneMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 
 @SuppressWarnings("nls")
@@ -149,7 +149,7 @@ public class EclipseLinkOrmPersistentAttributeTests
 		assertEquals("address", specifiedOrmPersistentAttribute.getName());
 		assertFalse(specifiedOrmPersistentAttribute.isVirtual());
 		assertEquals(specifiedOrmPersistentAttribute.getMappingKey(), MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-		assertTrue(specifiedOrmPersistentAttribute.getMapping() instanceof OrmEclipseLinkOneToOneMapping);
+		assertTrue(specifiedOrmPersistentAttribute.getMapping() instanceof EclipseLinkOrmOneToOneMapping);
 		
 		ormPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
 		ormPersistentAttribute.addToXml(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);

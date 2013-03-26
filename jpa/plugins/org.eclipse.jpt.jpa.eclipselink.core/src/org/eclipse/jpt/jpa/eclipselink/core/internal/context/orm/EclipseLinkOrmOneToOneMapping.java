@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlOneToOne;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class OrmEclipseLinkOneToOneMapping
+public class EclipseLinkOrmOneToOneMapping
 	extends AbstractOrmOneToOneMapping<XmlOneToOne>
 	implements EclipseLinkOneToOneMapping2_0
 {
@@ -30,7 +30,7 @@ public class OrmEclipseLinkOneToOneMapping
 	protected final OrmEclipseLinkJoinFetch joinFetch;
 
 
-	protected OrmEclipseLinkOneToOneMapping(OrmSpecifiedPersistentAttribute parent, XmlOneToOne xmlMapping) {
+	protected EclipseLinkOrmOneToOneMapping(OrmSpecifiedPersistentAttribute parent, XmlOneToOne xmlMapping) {
 		super(parent, xmlMapping);
 		this.privateOwned = new EclipseLinkOrmPrivateOwned(this);
 		this.joinFetch = new OrmEclipseLinkJoinFetch(this);
