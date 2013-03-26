@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.binary.BinaryGeneratedAnnotation;
+import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.binary.BinaryGeneratedAnnotation2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source.SourceGeneratedAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.GeneratedAnnotation2_0;
 
@@ -49,7 +49,7 @@ public final class GeneratedAnnotationDefinition2_0
 	}
 
 	public GeneratedAnnotation2_0 buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
-		return new BinaryGeneratedAnnotation(parent, jdtAnnotation);
+		return new BinaryGeneratedAnnotation2_0(parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {

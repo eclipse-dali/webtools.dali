@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 20133 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,9 +18,9 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.GeneratedAnnotation2_0;
 
 /**
- * javax.annotation.Generated
+ * <code>javax.annotation.Generated</code>
  */
-public final class BinaryGeneratedAnnotation
+public final class BinaryGeneratedAnnotation2_0
 	extends BinaryAnnotation
 	implements GeneratedAnnotation2_0
 {
@@ -29,7 +29,7 @@ public final class BinaryGeneratedAnnotation
 	private String comments;
 
 
-	public BinaryGeneratedAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
+	public BinaryGeneratedAnnotation2_0(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.values = this.buildValues();
 		this.date = this.buildDate();
@@ -135,5 +135,4 @@ public final class BinaryGeneratedAnnotation
 	private String buildComments() {
 		return (String) this.getJdtMemberValue(COMMENTS_ELEMENT_NAME);
 	}
-
 }
