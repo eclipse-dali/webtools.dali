@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkCa
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkChangeTrackingAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkConvertAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkConverterAnnotationDefinition;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkConverters2_2AnnotationDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkConvertersAnnotationDefinition2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkCustomizerAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkExistenceCheckingAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkJoinFetchAnnotationDefinition;
@@ -76,7 +76,7 @@ public class EclipseLinkJpaAnnotationDefinitionProvider
 		EclipseLinkCacheAnnotationDefinition.instance(),
 		EclipseLinkChangeTrackingAnnotationDefinition.instance(),
 		EclipseLinkConvertAnnotationDefinition.instance(),
-		EclipseLinkConverters2_2AnnotationDefinition.instance(), //Bug 380182 - not supported before EL 2.2, but can handle with validation
+		EclipseLinkConvertersAnnotationDefinition2_2.instance(), //Bug 380182 - not supported before EL 2.2, but can handle with validation
 		EclipseLinkCustomizerAnnotationDefinition.instance(),
 		EclipseLinkExistenceCheckingAnnotationDefinition.instance(),
 		EclipseLinkJoinFetchAnnotationDefinition.instance(),

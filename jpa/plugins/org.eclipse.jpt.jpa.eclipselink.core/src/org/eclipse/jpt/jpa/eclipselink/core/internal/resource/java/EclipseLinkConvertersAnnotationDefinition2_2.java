@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,13 +19,13 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 
 /**
- * org.eclipse.persistence.annotations.TypeConverters
+ * <code>org.eclipse.persistence.annotations.TypeConverters</code>
  */
-public final class EclipseLinkConverters2_2AnnotationDefinition
+public final class EclipseLinkConvertersAnnotationDefinition2_2
 	implements AnnotationDefinition
 {
 	// singleton
-	private static final AnnotationDefinition INSTANCE = new EclipseLinkConverters2_2AnnotationDefinition();
+	private static final AnnotationDefinition INSTANCE = new EclipseLinkConvertersAnnotationDefinition2_2();
 
 	/**
 	 * Return the singleton.
@@ -37,7 +37,7 @@ public final class EclipseLinkConverters2_2AnnotationDefinition
 	/**
 	 * Ensure single instance.
 	 */
-	private EclipseLinkConverters2_2AnnotationDefinition() {
+	private EclipseLinkConvertersAnnotationDefinition2_2() {
 		super();
 	}
 
@@ -56,5 +56,4 @@ public final class EclipseLinkConverters2_2AnnotationDefinition
 	public String getAnnotationName() {
 		return EclipseLink.CONVERTERS;
 	}
-
 }
