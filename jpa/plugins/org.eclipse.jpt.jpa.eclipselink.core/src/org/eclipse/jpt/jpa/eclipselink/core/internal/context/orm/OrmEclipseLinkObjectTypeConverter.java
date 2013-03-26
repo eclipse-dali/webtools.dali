@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaConversionValue;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkObjectTypeConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaObjectTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConversionValue;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlObjectTypeConverter;
@@ -459,7 +459,7 @@ public class OrmEclipseLinkObjectTypeConverter
 
 	// ********** metadata conversion **********
 
-	public void convertFrom(JavaEclipseLinkObjectTypeConverter javaConverter) {
+	public void convertFrom(EclipseLinkJavaObjectTypeConverter javaConverter) {
 		super.convertFrom(javaConverter);
 		this.setDataType(javaConverter.getFullyQualifiedDataType());
 		this.setObjectType(javaConverter.getFullyQualifiedObjectType());

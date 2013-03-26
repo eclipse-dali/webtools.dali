@@ -30,7 +30,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 /**
  * <code>org.eclipse.persistence.annotations.ObjectTypeConverter</code>
  */
-public class JavaEclipseLinkObjectTypeConverter
+public class EclipseLinkJavaObjectTypeConverter
 	extends EclipseLinkJavaConverter<ObjectTypeConverterAnnotation>
 	implements EclipseLinkObjectTypeConverter
 {
@@ -45,7 +45,7 @@ public class JavaEclipseLinkObjectTypeConverter
 	private String defaultObjectValue;
 
 
-	public JavaEclipseLinkObjectTypeConverter(EclipseLinkJavaConverterContainer parent, ObjectTypeConverterAnnotation converterAnnotation) {
+	public EclipseLinkJavaObjectTypeConverter(EclipseLinkJavaConverterContainer parent, ObjectTypeConverterAnnotation converterAnnotation) {
 		super(parent, converterAnnotation);
 		this.dataType = converterAnnotation.getDataType();
 		this.objectType = converterAnnotation.getObjectType();
@@ -204,12 +204,12 @@ public class JavaEclipseLinkObjectTypeConverter
 		
 		@Override
 		protected EclipseLinkJavaConversionValue buildContextElement(ConversionValueAnnotation resourceElement) {
-			return JavaEclipseLinkObjectTypeConverter.this.buildConversionValue(resourceElement);
+			return EclipseLinkJavaObjectTypeConverter.this.buildConversionValue(resourceElement);
 		}
 		
 		@Override
 		protected ListIterable<ConversionValueAnnotation> getResourceElements() {
-			return JavaEclipseLinkObjectTypeConverter.this.getConversionValueAnnotations();
+			return EclipseLinkJavaObjectTypeConverter.this.getConversionValueAnnotations();
 		}
 		
 		@Override
