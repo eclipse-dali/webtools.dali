@@ -81,7 +81,7 @@ public class GenericJpaFactory2_0
 	}
 
 	public DatabaseIdentifierAdapter buildDatabaseIdentifierAdapter(JpaDataSource dataSource) {
-		return new GenericJpaDatabaseIdentifierAdapter(dataSource);
+		return new GenericJpaDatabaseIdentifierAdapter2_0(dataSource);
 	}
 
 

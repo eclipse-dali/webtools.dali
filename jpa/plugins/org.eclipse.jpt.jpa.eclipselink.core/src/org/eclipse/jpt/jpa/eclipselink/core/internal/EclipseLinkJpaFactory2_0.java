@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaColumn;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaOrderable;
-import org.eclipse.jpt.jpa.core.internal.jpa2.GenericJpaDatabaseIdentifierAdapter;
+import org.eclipse.jpt.jpa.core.internal.jpa2.GenericJpaDatabaseIdentifierAdapter2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.GenericMetamodelSynchronizer2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaCacheable2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaCollectionTable2_0;
@@ -77,7 +77,7 @@ public class EclipseLinkJpaFactory2_0
 	}
 	
 	public DatabaseIdentifierAdapter buildDatabaseIdentifierAdapter(JpaDataSource dataSource) {
-		return new GenericJpaDatabaseIdentifierAdapter(dataSource);
+		return new GenericJpaDatabaseIdentifierAdapter2_0(dataSource);
 	}
 	
 
