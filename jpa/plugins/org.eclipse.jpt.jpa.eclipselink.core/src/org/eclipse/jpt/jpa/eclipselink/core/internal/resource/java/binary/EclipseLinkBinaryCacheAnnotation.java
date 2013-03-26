@@ -187,7 +187,7 @@ public final class EclipseLinkBinaryCacheAnnotation
 	}
 
 	private TimeOfDayAnnotation buildTimeOfDay(IAnnotation jdtTimeOfDay) {
-		return new BinaryEclipseLinkTimeOfDayAnnotation(this, jdtTimeOfDay);
+		return new EclipseLinkBinaryTimeOfDayAnnotation(this, jdtTimeOfDay);
 	}
 
 	private IAnnotation getJdtExpiryTimeOfDay() {

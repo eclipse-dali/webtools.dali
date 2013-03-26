@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TimeOfDayAnnotation;
 /**
  * <code>org.eclipse.persistence.annotations.TimeOfDay</code>
  */
-public final class BinaryEclipseLinkTimeOfDayAnnotation
+public final class EclipseLinkBinaryTimeOfDayAnnotation
 	extends BinaryAnnotation
 	implements TimeOfDayAnnotation
 {
@@ -29,7 +29,7 @@ public final class BinaryEclipseLinkTimeOfDayAnnotation
 	private Integer millisecond;
 
 
-	public BinaryEclipseLinkTimeOfDayAnnotation(JavaResourceModel parent, IAnnotation jdtAnnotation) {
+	public EclipseLinkBinaryTimeOfDayAnnotation(JavaResourceModel parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.hour = this.buildHour();
 		this.minute = this.buildMinute();
