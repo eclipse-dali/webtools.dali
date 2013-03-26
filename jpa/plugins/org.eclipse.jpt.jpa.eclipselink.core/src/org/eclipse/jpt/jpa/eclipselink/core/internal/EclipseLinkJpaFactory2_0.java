@@ -48,7 +48,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.SequenceGeneratorAnnotation2_
 import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.jpa.db.DatabaseIdentifierAdapter;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkJpaProject;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkElementCollectionMapping2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaElementCollectionMapping2_0;
 
 /**
  *  EclipseLink 2.0 factory
@@ -98,7 +98,7 @@ public class EclipseLinkJpaFactory2_0
 	}
 	
 	public JavaElementCollectionMapping2_0 buildJavaElementCollectionMapping(JavaSpecifiedPersistentAttribute parent) {
-		return new JavaEclipseLinkElementCollectionMapping2_0(parent);
+		return new EclipseLinkJavaElementCollectionMapping2_0(parent);
 	}
 	
 	public Cacheable2_0 buildJavaCacheable(JavaCacheableReference2_0 parent) {
