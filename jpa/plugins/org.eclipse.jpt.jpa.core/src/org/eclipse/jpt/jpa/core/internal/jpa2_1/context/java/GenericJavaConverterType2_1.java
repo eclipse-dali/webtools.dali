@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaManagedType;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.java.JavaConverterType2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.ConverterAnnotation2_1;
 
-public class GenericJavaConverterType
+public class GenericJavaConverterType2_1
 	extends AbstractJavaManagedType<JpaContextModel>
 	implements JavaConverterType2_1
 {
@@ -24,7 +24,7 @@ public class GenericJavaConverterType
 
 	protected Boolean specifiedAutoApply;
 
-	public GenericJavaConverterType(JpaContextModel parent, JavaResourceType resourceType) {
+	public GenericJavaConverterType2_1(JpaContextModel parent, JavaResourceType resourceType) {
 		super(parent, resourceType);
 		this.specifiedAutoApply = this.buildSpecifiedAutoApply();
 		this.autoApply = this.buildAutoApply();

@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java.GenericJavaConverterType;
+import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java.GenericJavaConverterType2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java.GenericJavaNamedStoredProcedureQuery2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java.GenericJavaStoredProcedureParameter2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java.JavaNamedStoredProcedureQuery2_1;
@@ -34,7 +34,7 @@ public class EclipseLinkJpaFactory2_5
 	}
 
 	public JavaConverterType2_1 buildJavaConverterType(JpaContextModel parent, JavaResourceType jrt) {
-		return new GenericJavaConverterType(parent, jrt);
+		return new GenericJavaConverterType2_1(parent, jrt);
 	}
 
 	public JavaNamedStoredProcedureQuery2_1 buildJavaNamedStoredProcedureQuery(JavaQueryContainer2_1 parent, NamedStoredProcedureQueryAnnotation2_1 namedStoredProcedureQueryAnnotation) {
