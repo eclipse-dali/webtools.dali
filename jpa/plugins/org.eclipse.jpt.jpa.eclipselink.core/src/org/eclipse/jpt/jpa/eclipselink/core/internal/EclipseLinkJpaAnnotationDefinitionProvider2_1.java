@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -42,13 +42,13 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkVa
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkWriteTransformerAnnotationDefinition;
 
 /**
- * Provides annotations for 2.1 EclipseLink platform
+ * Provides annotations for EclipseLink 2.1 platform
  */
-public class EclipseLink2_1JpaAnnotationDefinitionProvider
+public class EclipseLinkJpaAnnotationDefinitionProvider2_1
 	extends AbstractJpaAnnotationDefinitionProvider
 {
 	// singleton
-	private static final JpaAnnotationDefinitionProvider INSTANCE = new EclipseLink2_1JpaAnnotationDefinitionProvider();
+	private static final JpaAnnotationDefinitionProvider INSTANCE = new EclipseLinkJpaAnnotationDefinitionProvider2_1();
 
 	/**
 	 * Return the singleton
@@ -60,7 +60,7 @@ public class EclipseLink2_1JpaAnnotationDefinitionProvider
 	/**
 	 * Enforce singleton usage
 	 */
-	private EclipseLink2_1JpaAnnotationDefinitionProvider() {
+	private EclipseLinkJpaAnnotationDefinitionProvider2_1() {
 		super();
 	}
 
@@ -105,5 +105,4 @@ public class EclipseLink2_1JpaAnnotationDefinitionProvider
 		EclipseLinkStructConverterAnnotationDefinition.instance(),
 		EclipseLinkTypeConverterAnnotationDefinition.instance(),
 	};
-
 }
