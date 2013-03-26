@@ -44,7 +44,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersi
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkTargetDatabase;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.TenantDiscriminatorColumnValidator2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkTenantDiscriminatorColumnValidator2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMultitenant;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMultitenantHolder;
@@ -554,7 +554,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 		}
 
 		public JpaValidator buildColumnValidator(NamedColumn column) {
-			return new TenantDiscriminatorColumnValidator2_3((EclipseLinkTenantDiscriminatorColumn2_3) column);
+			return new EclipseLinkTenantDiscriminatorColumnValidator2_3((EclipseLinkTenantDiscriminatorColumn2_3) column);
 		}
 
 		public TextRange getValidationTextRange() {

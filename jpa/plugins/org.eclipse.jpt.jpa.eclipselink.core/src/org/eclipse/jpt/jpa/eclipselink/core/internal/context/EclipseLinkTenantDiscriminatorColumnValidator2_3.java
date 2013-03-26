@@ -18,10 +18,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTenantDiscriminat
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class TenantDiscriminatorColumnValidator2_3
+public class EclipseLinkTenantDiscriminatorColumnValidator2_3
 	extends AbstractNamedColumnValidator<EclipseLinkTenantDiscriminatorColumn2_3>
 {
-	public TenantDiscriminatorColumnValidator2_3(
+	public EclipseLinkTenantDiscriminatorColumnValidator2_3(
 			EclipseLinkTenantDiscriminatorColumn2_3 namedColumn) {
 		super(namedColumn, new EntityTableDescriptionProvider());
 	}
