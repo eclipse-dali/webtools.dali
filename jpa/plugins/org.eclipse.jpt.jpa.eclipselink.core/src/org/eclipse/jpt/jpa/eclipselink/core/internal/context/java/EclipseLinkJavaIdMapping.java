@@ -28,14 +28,14 @@ public class EclipseLinkJavaIdMapping
 		EclipseLinkIdMapping2_0,
 		EclipseLinkJavaConvertibleMapping
 {
-	protected final JavaEclipseLinkMutable mutable;
+	protected final EclipseLinkJavaMutable mutable;
 
 	protected final EclipseLinkJavaConverterContainer converterContainer;
 
 
 	public EclipseLinkJavaIdMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
-		this.mutable = new JavaEclipseLinkMutable(this);
+		this.mutable = new EclipseLinkJavaMutable(this);
 		this.converterContainer = this.buildConverterContainer();
 	}
 

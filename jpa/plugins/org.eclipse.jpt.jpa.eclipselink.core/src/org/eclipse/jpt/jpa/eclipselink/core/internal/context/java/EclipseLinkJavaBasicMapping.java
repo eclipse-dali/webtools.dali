@@ -36,7 +36,7 @@ public class EclipseLinkJavaBasicMapping
 		JavaGeneratorContainer.Parent,
 		JavaGeneratedValueMapping
 {
-	protected final JavaEclipseLinkMutable mutable;
+	protected final EclipseLinkJavaMutable mutable;
 	
 	protected final EclipseLinkJavaConverterContainer converterContainer;
 
@@ -47,7 +47,7 @@ public class EclipseLinkJavaBasicMapping
 
 	public EclipseLinkJavaBasicMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
-		this.mutable = new JavaEclipseLinkMutable(this);
+		this.mutable = new EclipseLinkJavaMutable(this);
 		this.converterContainer = this.buildConverterContainer();
 		this.generatorContainer = this.buildGeneratorContainer();
 		this.generatedValue = this.buildGeneratedValue();

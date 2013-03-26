@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaPersiste
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MutableAnnotation;
 
-public class JavaEclipseLinkMutable
+public class EclipseLinkJavaMutable
 	extends AbstractJavaContextModel<JavaAttributeMapping>
 	implements EclipseLinkMutable
 {
@@ -26,7 +26,7 @@ public class JavaEclipseLinkMutable
 	protected boolean defaultMutable;
 
 
-	public JavaEclipseLinkMutable(JavaAttributeMapping parent) {
+	public EclipseLinkJavaMutable(JavaAttributeMapping parent) {
 		super(parent);
 		this.specifiedMutable = this.buildSpecifiedMutable();
 		//build defaults during construction for performance
