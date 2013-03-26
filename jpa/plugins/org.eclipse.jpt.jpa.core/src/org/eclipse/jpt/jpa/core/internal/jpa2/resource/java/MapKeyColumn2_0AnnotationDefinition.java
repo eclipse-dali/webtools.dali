@@ -46,7 +46,7 @@ public final class MapKeyColumn2_0AnnotationDefinition
 	}
 
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
-		return new NullMapKeyColumnAnnotation(parent);
+		return new NullMapKeyColumnAnnotation2_0(parent);
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
