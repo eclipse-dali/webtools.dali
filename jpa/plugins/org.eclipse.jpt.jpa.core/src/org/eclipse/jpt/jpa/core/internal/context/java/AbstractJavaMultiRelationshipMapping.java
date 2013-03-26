@@ -64,7 +64,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.RelationshipStrategyTableD
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.NullJavaConverter;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.MapKeyJoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.NullJavaMapKeyColumn2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.NullMapKeyJoinColumnAnnotation;
+import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.NullMapKeyJoinColumnAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MultiRelationshipMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAttributeOverrideContainer2_0;
@@ -848,7 +848,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	}
 
 	protected MapKeyJoinColumnAnnotation2_0 buildNullMapKeyJoinColumnAnnotation() {
-		return new NullMapKeyJoinColumnAnnotation(this.getResourceAttribute());
+		return new NullMapKeyJoinColumnAnnotation2_0(this.getResourceAttribute());
 	}
 
 

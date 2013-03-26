@@ -84,7 +84,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.NamedColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.NullJavaConverter;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.CollectionTableValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.MapKeyJoinColumnValidator;
-import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.NullMapKeyJoinColumnAnnotation;
+import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.NullMapKeyJoinColumnAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
@@ -1209,7 +1209,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	protected MapKeyJoinColumnAnnotation2_0 buildNullMapKeyJoinColumnAnnotation() {
-		return new NullMapKeyJoinColumnAnnotation(this.getResourceAttribute());
+		return new NullMapKeyJoinColumnAnnotation2_0(this.getResourceAttribute());
 	}
 
 
