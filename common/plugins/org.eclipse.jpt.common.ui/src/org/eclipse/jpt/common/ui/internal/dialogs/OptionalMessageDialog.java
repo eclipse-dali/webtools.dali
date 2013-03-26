@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.dialogs;
 
-import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -22,6 +21,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -37,7 +37,7 @@ public abstract class OptionalMessageDialog extends MessageDialog {
 
 	public static final int NOT_SHOWN = IDialogConstants.CLIENT_ID + 1;
 
-	private final String id;
+	/* CU private */ final String id;
 
 	private final String checkBoxText;
 	
@@ -70,8 +70,9 @@ public abstract class OptionalMessageDialog extends MessageDialog {
     	checkbox.setSelection(false);
     	checkbox.setLayoutData(new GridData(GridData.FILL_BOTH));
     	checkbox.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
-				setDialogEnabled(id, !((Button)e.widget).getSelection());
+				setDialogEnabled(OptionalMessageDialog.this.id, !((Button)e.widget).getSelection());
 			}
     	});
     	return checkbox;
@@ -83,10 +84,10 @@ public abstract class OptionalMessageDialog extends MessageDialog {
 	 * @return the settings to be used
 	 */
 	private static IDialogSettings getDialogSettings() {
-		IDialogSettings settings= JavaPlugin.getDefault().getDialogSettings();
+		IDialogSettings settings= getJavaUIPlugin().getDialogSettings();
 		settings= settings.getSection(STORE_ID);
 		if (settings == null)
-			settings= JavaPlugin.getDefault().getDialogSettings().addNewSection(STORE_ID);
+			settings= getJavaUIPlugin().getDialogSettings().addNewSection(STORE_ID);
 		return settings;
 	}
 
@@ -110,7 +111,12 @@ public abstract class OptionalMessageDialog extends MessageDialog {
 	 * Clears all remembered information about hidden dialogs
 	 */
 	public static void clearAllRememberedStates() {
-		IDialogSettings settings= JavaPlugin.getDefault().getDialogSettings();
+		IDialogSettings settings= getJavaUIPlugin().getDialogSettings();
 		settings.addNewSection(STORE_ID);
+	}
+
+	@SuppressWarnings("restriction")
+	private static AbstractUIPlugin getJavaUIPlugin() {
+		return org.eclipse.jdt.internal.ui.JavaPlugin.getDefault();
 	}
 }
