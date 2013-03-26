@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.MapKeyTemporal2_0Ann
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.MapsId2_0AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.NamedQuery2_0AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.OrderColumn2_0AnnotationDefinition;
-import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.SequenceGenerator2_0AnnotationDefinition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.SequenceGeneratorAnnotationDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.StaticMetamodelAnnotationDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.resource.java.ConverterAnnotationDefinition2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.resource.java.NamedStoredProcedureQueriesAnnotationDefinition2_1;
@@ -145,7 +145,7 @@ public class GenericJpaAnnotationDefinitionProvider2_1
 		OrderColumn2_0AnnotationDefinition.instance(),
 		PrimaryKeyJoinColumnsAnnotationDefinition.instance(),
 		SecondaryTablesAnnotationDefinition.instance(),
-		SequenceGenerator2_0AnnotationDefinition.instance(),
+		SequenceGeneratorAnnotationDefinition2_0.instance(),
 		StaticMetamodelAnnotationDefinition2_0.instance(),
 		TableAnnotationDefinition.instance(),
 		TableGeneratorAnnotationDefinition.instance(),
