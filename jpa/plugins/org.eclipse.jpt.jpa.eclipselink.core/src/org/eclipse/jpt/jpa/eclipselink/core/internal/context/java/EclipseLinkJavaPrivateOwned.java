@@ -16,14 +16,14 @@ import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkPrivateOwned;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.PrivateOwnedAnnotation;
 
-public class JavaEclipseLinkPrivateOwned
+public class EclipseLinkJavaPrivateOwned
 	extends AbstractJavaContextModel<JavaAttributeMapping>
 	implements EclipseLinkPrivateOwned
 {
 	protected boolean privateOwned;
 
 
-	public JavaEclipseLinkPrivateOwned(JavaAttributeMapping parent) {
+	public EclipseLinkJavaPrivateOwned(JavaAttributeMapping parent) {
 		super(parent);
 		this.privateOwned = this.buildPrivateOwned();
 	}

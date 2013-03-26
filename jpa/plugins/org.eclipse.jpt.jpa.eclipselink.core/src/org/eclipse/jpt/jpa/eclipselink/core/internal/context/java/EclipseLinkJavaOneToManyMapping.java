@@ -29,7 +29,7 @@ public class EclipseLinkJavaOneToManyMapping
 {
 	protected final EclipseLinkJavaJoinFetch joinFetch;
 
-	protected final JavaEclipseLinkPrivateOwned privateOwned;
+	protected final EclipseLinkJavaPrivateOwned privateOwned;
 	
 	protected final EclipseLinkJavaConverterContainer converterContainer;
 
@@ -37,7 +37,7 @@ public class EclipseLinkJavaOneToManyMapping
 	public EclipseLinkJavaOneToManyMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 		this.joinFetch = new EclipseLinkJavaJoinFetch(this);
-		this.privateOwned = new JavaEclipseLinkPrivateOwned(this);
+		this.privateOwned = new EclipseLinkJavaPrivateOwned(this);
 		this.converterContainer = this.buildConverterContainer();
 	}
 
