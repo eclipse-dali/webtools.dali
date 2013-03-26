@@ -19,14 +19,14 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkChangeTrackingTyp
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ChangeTrackingType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ChangeTrackingAnnotation;
 
-public class JavaEclipseLinkChangeTracking
+public class EclipseLinkJavaChangeTracking
 	extends AbstractJavaContextModel<JavaTypeMapping>
 	implements EclipseLinkChangeTracking
 {
 	protected EclipseLinkChangeTrackingType specifiedType;
 
 
-	public JavaEclipseLinkChangeTracking(JavaTypeMapping parent) {
+	public EclipseLinkJavaChangeTracking(JavaTypeMapping parent) {
 		super(parent);
 		this.specifiedType = this.buildSpecifiedType();
 	}

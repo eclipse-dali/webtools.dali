@@ -37,7 +37,7 @@ public class JavaEclipseLinkEmbeddableImpl
 {
 	protected final EclipseLinkJavaConverterContainer converterContainer;
 
-	protected final JavaEclipseLinkChangeTracking changeTracking;
+	protected final EclipseLinkJavaChangeTracking changeTracking;
 
 	protected final JavaEclipseLinkCustomizer customizer;
 
@@ -102,8 +102,8 @@ public class JavaEclipseLinkEmbeddableImpl
 		return this.changeTracking;
 	}
 
-	protected JavaEclipseLinkChangeTracking buildChangeTracking() {
-		return new JavaEclipseLinkChangeTracking(this);
+	protected EclipseLinkJavaChangeTracking buildChangeTracking() {
+		return new EclipseLinkJavaChangeTracking(this);
 	}
 
 

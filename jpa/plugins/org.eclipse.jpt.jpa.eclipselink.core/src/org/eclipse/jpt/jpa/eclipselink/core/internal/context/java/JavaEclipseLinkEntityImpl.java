@@ -52,7 +52,7 @@ public class JavaEclipseLinkEntityImpl
 
 	protected final EclipseLinkJavaConverterContainer converterContainer;
 
-	protected final JavaEclipseLinkChangeTracking changeTracking;
+	protected final EclipseLinkJavaChangeTracking changeTracking;
 
 	protected final JavaEclipseLinkCustomizer customizer;
 
@@ -149,8 +149,8 @@ public class JavaEclipseLinkEntityImpl
 		return this.changeTracking;
 	}
 
-	protected JavaEclipseLinkChangeTracking buildChangeTracking() {
-		return new JavaEclipseLinkChangeTracking(this);
+	protected EclipseLinkJavaChangeTracking buildChangeTracking() {
+		return new EclipseLinkJavaChangeTracking(this);
 	}
 
 
