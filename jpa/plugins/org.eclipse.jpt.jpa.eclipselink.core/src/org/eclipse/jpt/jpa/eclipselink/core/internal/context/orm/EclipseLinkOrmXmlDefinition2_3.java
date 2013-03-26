@@ -75,7 +75,7 @@ public class EclipseLinkOrmXmlDefinition2_3
 	 */
 	protected static final OrmAttributeMappingDefinition[] ECLIPSELINK_2_3_ATTRIBUTE_MAPPING_DEFINITIONS = new OrmAttributeMappingDefinition[] {
 		OrmTransientMappingDefinition.instance(),
-		OrmEclipseLinkBasicCollectionMappingDefinition.instance(),
+		EclipseLinkOrmBasicCollectionMappingDefinition.instance(),
 		EclipseLinkOrmBasicMapMappingDefinition.instance(),
 		OrmEclipseLinkArrayMapping2_3Definition.instance(),
 		OrmElementCollectionMappingDefinition2_0.instance(),

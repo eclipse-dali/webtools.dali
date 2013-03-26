@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,12 +20,12 @@ import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasicCollection;
 
-public class OrmEclipseLinkBasicCollectionMappingDefinition
+public class EclipseLinkOrmBasicCollectionMappingDefinition
 	implements OrmAttributeMappingDefinition
 {
 	// singleton
-	private static final OrmEclipseLinkBasicCollectionMappingDefinition INSTANCE = 
-			new OrmEclipseLinkBasicCollectionMappingDefinition();
+	private static final EclipseLinkOrmBasicCollectionMappingDefinition INSTANCE = 
+			new EclipseLinkOrmBasicCollectionMappingDefinition();
 	
 	
 	/**
@@ -39,7 +39,7 @@ public class OrmEclipseLinkBasicCollectionMappingDefinition
 	/**
 	 * Enforce singleton usage
 	 */
-	private OrmEclipseLinkBasicCollectionMappingDefinition() {
+	private EclipseLinkOrmBasicCollectionMappingDefinition() {
 		super();
 	}
 	
