@@ -110,7 +110,7 @@ public class EclipseLinkOrmXmlContextModelFactory
 	
 	@Override
 	public OrmManyToOneMapping buildOrmManyToOneMapping(OrmSpecifiedPersistentAttribute parent, org.eclipse.jpt.jpa.core.resource.orm.XmlManyToOne resourceMapping) {
-		return new OrmEclipseLinkManyToOneMapping(parent, (XmlManyToOne) resourceMapping);
+		return new EclipseLinkOrmManyToOneMapping(parent, (XmlManyToOne) resourceMapping);
 	}
 	
 	@Override

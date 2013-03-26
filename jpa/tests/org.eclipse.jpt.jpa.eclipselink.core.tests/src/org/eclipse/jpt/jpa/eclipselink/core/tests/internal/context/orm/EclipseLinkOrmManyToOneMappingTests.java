@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetchMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetchType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkOneToOneMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkRelationshipMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkManyToOneMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmManyToOneMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlJoinFetchType;
@@ -313,7 +313,7 @@ public class EclipseLinkOrmManyToOneMappingTests
 
 		OrmPersistentAttribute ormPersistentAttribute = virtualPersistentAttribute.addToXml(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 
-		OrmEclipseLinkManyToOneMapping ormManyToOneMapping = (OrmEclipseLinkManyToOneMapping) ormPersistentAttribute.getMapping();	
+		EclipseLinkOrmManyToOneMapping ormManyToOneMapping = (EclipseLinkOrmManyToOneMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("address", ormManyToOneMapping.getName());
 		assertEquals(FetchType.EAGER, ormManyToOneMapping.getDefaultFetch());
 		assertEquals(true, ormManyToOneMapping.isDefaultOptional());

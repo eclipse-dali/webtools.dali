@@ -20,14 +20,14 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlManyToOne;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class OrmEclipseLinkManyToOneMapping
+public class EclipseLinkOrmManyToOneMapping
 	extends AbstractOrmManyToOneMapping<XmlManyToOne>
 	implements EclipseLinkManyToOneMapping2_0
 {
 	protected final OrmEclipseLinkJoinFetch joinFetch;
 
 
-	protected OrmEclipseLinkManyToOneMapping(OrmSpecifiedPersistentAttribute parent, XmlManyToOne xmlMapping) {
+	protected EclipseLinkOrmManyToOneMapping(OrmSpecifiedPersistentAttribute parent, XmlManyToOne xmlMapping) {
 		super(parent, xmlMapping);
 		this.joinFetch = new OrmEclipseLinkJoinFetch(this);
 	}
