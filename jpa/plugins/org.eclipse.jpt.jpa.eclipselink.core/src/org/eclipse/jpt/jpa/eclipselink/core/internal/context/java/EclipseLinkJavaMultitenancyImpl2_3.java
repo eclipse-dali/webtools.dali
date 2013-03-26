@@ -46,7 +46,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkTarge
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkTenantDiscriminatorColumnValidator2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.NullEclipseLinkTenantDiscriminatorColumnAnnotation2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkNullTenantDiscriminatorColumnAnnotation2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MultitenantAnnotation2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TenantDiscriminatorColumnAnnotation2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
@@ -310,7 +310,7 @@ public class EclipseLinkJavaMultitenancyImpl2_3
 	}
 
 	protected TenantDiscriminatorColumnAnnotation2_3 buildNullTenantDiscriminatorColumnAnnotation() {
-		return new NullEclipseLinkTenantDiscriminatorColumnAnnotation2_3(this.getJavaResourceType());
+		return new EclipseLinkNullTenantDiscriminatorColumnAnnotation2_3(this.getJavaResourceType());
 	}
 
 	protected void syncSpecifiedTenantDiscriminatorColumns() {

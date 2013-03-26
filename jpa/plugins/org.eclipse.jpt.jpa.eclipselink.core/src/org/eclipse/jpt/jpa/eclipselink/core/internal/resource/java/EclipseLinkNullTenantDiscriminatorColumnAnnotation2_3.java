@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,11 +17,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TenantDiscriminatorCol
 /**
  * <code>org.eclipse.persistence.annotations.TenantDiscriminatorColumn</code>
  */
-public final class NullEclipseLinkTenantDiscriminatorColumnAnnotation2_3
+public final class EclipseLinkNullTenantDiscriminatorColumnAnnotation2_3
 	extends NullBaseDiscriminatorColumnAnnotation<TenantDiscriminatorColumnAnnotation2_3>
 	implements TenantDiscriminatorColumnAnnotation2_3
 {	
-	public NullEclipseLinkTenantDiscriminatorColumnAnnotation2_3(JavaResourceAnnotatedElement parent) {
+	public EclipseLinkNullTenantDiscriminatorColumnAnnotation2_3(JavaResourceAnnotatedElement parent) {
 		super(parent);
 	}
 	
