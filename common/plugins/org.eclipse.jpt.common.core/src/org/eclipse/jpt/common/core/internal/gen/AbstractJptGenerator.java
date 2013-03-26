@@ -50,7 +50,7 @@ public abstract class AbstractJptGenerator implements JptGenerator
 
 	private IVMInstall jre;
 	private ILaunchConfigurationWorkingCopy launchConfig;
-	private ILaunch launch;
+	/* CU private */ ILaunch launch;
 	
 	private final IJavaProject javaProject;
 	private final String projectLocation;
@@ -139,7 +139,7 @@ public abstract class AbstractJptGenerator implements JptGenerator
 		this.getLaunchManager().addLaunchListener(this.buildLaunchListener());
 	}
 	
-	private void removeLaunchListener(ILaunchesListener2 listener) {
+	/* CU private */ void removeLaunchListener(ILaunchesListener2 listener) {
 
 		this.getLaunchManager().removeLaunchListener(listener);
 	}
@@ -164,11 +164,11 @@ public abstract class AbstractJptGenerator implements JptGenerator
 		}	
 	}
 	
-	private void generationSuccessful() {
+	/* CU private */ void generationSuccessful() {
 		this.postGenerate(true);
 	}
 	
-	private void generationFailed() {
+	/* CU private */ void generationFailed() {
 		this.postGenerate(false);
 	}
 
@@ -176,12 +176,11 @@ public abstract class AbstractJptGenerator implements JptGenerator
 		return new ILaunchesListener2() {
 			
 			public void launchesTerminated(ILaunch[] launches) {
-				for(int i = 0; i < launches.length; i++) {
-					ILaunch launch = launches[i];
-					if (launch.equals(AbstractJptGenerator.this.getLaunch())) {
+				for (ILaunch terminatedLaunch : launches) {
+					if (terminatedLaunch.equals(AbstractJptGenerator.this.getLaunch())) {
 						try {
-							if(launch.isTerminated()) {
-								if(this.generationIsSuccessful(launch)) {
+							if(terminatedLaunch.isTerminated()) {
+								if(this.generationIsSuccessful(terminatedLaunch.getProcesses())) {
 									AbstractJptGenerator.this.generationSuccessful();
 								}
 								else {
@@ -198,9 +197,9 @@ public abstract class AbstractJptGenerator implements JptGenerator
 				}
 			}
 
-			private boolean generationIsSuccessful(ILaunch launch) {
+			private boolean generationIsSuccessful(IProcess[] processes) {
 				int exitValue = -1;
-				for (IProcess process : launch.getProcesses()) {
+				for (IProcess process : processes) {
 					try {
 						exitValue = process.getExitValue();
 						break;
