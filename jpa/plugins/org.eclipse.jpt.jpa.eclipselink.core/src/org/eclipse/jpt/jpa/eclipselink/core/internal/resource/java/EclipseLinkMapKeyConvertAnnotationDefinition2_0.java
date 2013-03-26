@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,13 +19,13 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.Source
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MapKeyConvertAnnotation2_0;
 
 /**
- * org.eclipse.persistence.annotations.MapKeyConvert
+ * <code>org.eclipse.persistence.annotations.MapKeyConvert</code>
  */
-public class EclipseLinkMapKeyConvert2_0AnnotationDefinition
+public class EclipseLinkMapKeyConvertAnnotationDefinition2_0
 	implements AnnotationDefinition
 {
 	// singleton
-	private static final AnnotationDefinition INSTANCE = new EclipseLinkMapKeyConvert2_0AnnotationDefinition();
+	private static final AnnotationDefinition INSTANCE = new EclipseLinkMapKeyConvertAnnotationDefinition2_0();
 
 	/**
 	 * Return the singleton.
@@ -37,7 +37,7 @@ public class EclipseLinkMapKeyConvert2_0AnnotationDefinition
 	/**
 	 * Ensure single instance.
 	 */
-	private EclipseLinkMapKeyConvert2_0AnnotationDefinition() {
+	private EclipseLinkMapKeyConvertAnnotationDefinition2_0() {
 		super();
 	}
 
