@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.SequenceGeneratorAnnotation2_
  * JPA 2.0
  * <code>javax.persistence.SequenceGenerator</code>
  */
-public final class SourceSequenceGenerator2_0Annotation
+public final class SourceSequenceGeneratorAnnotation2_0
 	extends SourceSequenceGeneratorAnnotation
 	implements SequenceGeneratorAnnotation2_0
 {
@@ -39,7 +39,7 @@ public final class SourceSequenceGenerator2_0Annotation
 
 
 	// ********** constructor **********
-	public SourceSequenceGenerator2_0Annotation(JavaResourceModel parent, AnnotatedElement element) {
+	public SourceSequenceGeneratorAnnotation2_0(JavaResourceModel parent, AnnotatedElement element) {
 		super(parent, element);
 		this.catalogAdapter = this.buildAdapter(CATALOG_ADAPTER);
 		this.schemaAdapter = this.buildAdapter(SCHEMA_ADAPTER);
