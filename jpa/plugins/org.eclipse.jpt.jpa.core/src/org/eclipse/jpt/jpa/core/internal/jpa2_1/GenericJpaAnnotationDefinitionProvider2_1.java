@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jpa.core.JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.jpa.core.internal.AbstractJpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.Access2_0AnnotationDefinition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.AccessAnnotationDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.AssociationOverrideAnnotationDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.CacheableAnnotationDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.CollectionTableAnnotationDefinition2_0;
@@ -104,7 +104,7 @@ public class GenericJpaAnnotationDefinitionProvider2_1
 	protected static final AnnotationDefinition[] ANNOTATION_DEFINITIONS = new AnnotationDefinition[] {
 		AttributeOverridesAnnotationDefinition.instance(),
 		AssociationOverridesAnnotationDefinition.instance(),
-		Access2_0AnnotationDefinition.instance(),
+		AccessAnnotationDefinition2_0.instance(),
 		BasicAnnotationDefinition.instance(),
 		CacheableAnnotationDefinition2_0.instance(),
 		CollectionTableAnnotationDefinition2_0.instance(),

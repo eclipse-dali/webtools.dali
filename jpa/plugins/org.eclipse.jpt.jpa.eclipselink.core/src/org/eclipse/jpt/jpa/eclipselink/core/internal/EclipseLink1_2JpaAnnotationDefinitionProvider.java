@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.jpa.core.JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.jpa.core.internal.AbstractJpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.Access2_0AnnotationDefinition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.AccessAnnotationDefinition2_0;
 
 /**
  * Provides annotations for 1.2 EclipseLink platform
@@ -42,7 +42,7 @@ public class EclipseLink1_2JpaAnnotationDefinitionProvider
 
 	@Override
 	protected void addAnnotationDefinitionsTo(ArrayList<AnnotationDefinition> definitions) {
-		definitions.add(Access2_0AnnotationDefinition.instance());
+		definitions.add(AccessAnnotationDefinition2_0.instance());
 	}
 
 	@Override
