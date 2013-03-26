@@ -85,7 +85,7 @@ public class EclipseLinkJavaGeneratorContainer
 
 	protected EclipseLinkJavaUuidGenerator buildUuidGenerator(UuidGeneratorAnnotation2_4 uuidGeneratorAnnotation) {
 		return this.parent.supportsGenerators() ?
-				new JavaEclipseLinkUuidGenerator(this, uuidGeneratorAnnotation) :
+				new EclipseLinkJavaUuidGeneratorImpl(this, uuidGeneratorAnnotation) :
 				null;
 	}
 
