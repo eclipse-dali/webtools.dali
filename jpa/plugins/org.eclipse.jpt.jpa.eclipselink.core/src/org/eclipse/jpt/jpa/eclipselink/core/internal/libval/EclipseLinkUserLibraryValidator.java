@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.libval.LibraryValidator;
 import org.eclipse.jpt.common.eclipselink.core.internal.libval.EclipseLinkLibraryValidatorTools;
 import org.eclipse.jpt.jpa.core.internal.libprov.JpaUserLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink1_1JpaPlatformFactory;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink1_2JpaPlatformFactory;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory1_2;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_2;
@@ -57,7 +57,7 @@ public class EclipseLinkUserLibraryValidator
 		HashMap<String, VersionRange> versionRanges = new HashMap<String, VersionRange>();
 		versionRanges.put(EclipseLinkJpaPlatformFactory.ID, new VersionRange("[1.0, 3.0)"));
 		versionRanges.put(EclipseLink1_1JpaPlatformFactory.ID, new VersionRange("[1.1, 3.0)"));
-		versionRanges.put(EclipseLink1_2JpaPlatformFactory.ID, new VersionRange("[1.2, 3.0)"));
+		versionRanges.put(EclipseLinkJpaPlatformFactory1_2.ID, new VersionRange("[1.2, 3.0)"));
 		versionRanges.put(EclipseLinkJpaPlatformFactory2_0.ID, new VersionRange("[2.0, 3.0)"));
 		versionRanges.put(EclipseLinkJpaPlatformFactory2_1.ID, new VersionRange("[2.1, 3.0)"));
 		versionRanges.put(EclipseLinkJpaPlatformFactory2_2.ID, new VersionRange("[2.2, 3.0)"));

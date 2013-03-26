@@ -110,7 +110,7 @@ public class EclipseLinkJpaPlatformFactory
 		 * Return whether the platform is compatible with the specified EclipseLink version.
 		 * @see EclipseLinkJpaPlatformFactory#VERSION
 		 * @see EclipseLink1_1JpaPlatformFactory#VERSION
-		 * @see EclipseLink1_2JpaPlatformFactory#VERSION
+		 * @see EclipseLinkJpaPlatformFactory1_2#VERSION
 		 * @see EclipseLinkJpaPlatformFactory2_0#VERSION
 		 * @see EclipseLinkJpaPlatformFactory2_1#VERSION
 		 * @see EclipseLinkJpaPlatformFactory2_2#VERSION
