@@ -49,7 +49,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 //TODO canonical metamodel generation, need to override getMetamodelTypeName() and use the target-class element
-public class OrmEclipseLinkArrayMapping2_3
+public class EclipseLinkOrmArrayMapping2_3
 	extends AbstractOrmAttributeMapping<XmlArray>
 	implements EclipseLinkArrayMapping2_3, EclipseLinkOrmConvertibleMapping, OrmColumnMapping
 {
@@ -70,7 +70,7 @@ public class OrmEclipseLinkArrayMapping2_3
 	protected final EclipseLinkOrmConverterContainer converterContainer;
 
 
-	public OrmEclipseLinkArrayMapping2_3(OrmSpecifiedPersistentAttribute parent, XmlArray xmlMapping) {
+	public EclipseLinkOrmArrayMapping2_3(OrmSpecifiedPersistentAttribute parent, XmlArray xmlMapping) {
 		super(parent, xmlMapping);
 		this.column = this.buildColumn();
 		this.converterContainer = this.buildConverterContainer();

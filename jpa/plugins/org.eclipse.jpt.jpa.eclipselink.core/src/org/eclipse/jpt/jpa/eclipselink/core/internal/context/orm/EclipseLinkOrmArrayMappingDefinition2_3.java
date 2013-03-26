@@ -59,7 +59,7 @@ public class EclipseLinkOrmArrayMappingDefinition2_3
 			OrmSpecifiedPersistentAttribute parent, 
 			XmlAttributeMapping resourceMapping, 
 			OrmXmlContextModelFactory factory) {
-		return new OrmEclipseLinkArrayMapping2_3(parent, (XmlArray) resourceMapping);
+		return new EclipseLinkOrmArrayMapping2_3(parent, (XmlArray) resourceMapping);
 	}
 	
 	public boolean isSingleRelationshipMapping() {

@@ -16,8 +16,8 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStructure;
 public class EclipseLinkOrmXmlContextModelFactory2_3
 	extends EclipseLinkOrmXmlContextModelFactory2_0
 {
-	public OrmEclipseLinkArrayMapping2_3 buildOrmEclipseLinkArrayMapping(OrmSpecifiedPersistentAttribute parent, XmlArray resourceMapping) {
-		return new OrmEclipseLinkArrayMapping2_3(parent, resourceMapping);
+	public EclipseLinkOrmArrayMapping2_3 buildOrmEclipseLinkArrayMapping(OrmSpecifiedPersistentAttribute parent, XmlArray resourceMapping) {
+		return new EclipseLinkOrmArrayMapping2_3(parent, resourceMapping);
 	}
 
 	public EclipseLinkOrmStructureMapping2_3 buildOrmEclipseLinkStructureMapping(OrmSpecifiedPersistentAttribute parent, XmlStructure resourceMapping) {
