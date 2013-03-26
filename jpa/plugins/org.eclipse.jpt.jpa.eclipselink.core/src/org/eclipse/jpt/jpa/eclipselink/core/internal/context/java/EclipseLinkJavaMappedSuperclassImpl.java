@@ -13,7 +13,6 @@ import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.Generator;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
@@ -31,8 +30,8 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaMultitenancy2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkMappedSuperclassPrimaryKeyValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkMappedSuperclassValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
@@ -43,7 +42,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * EclipseLink
  * Java mapped superclass
  */
-public class JavaEclipseLinkMappedSuperclassImpl
+public class EclipseLinkJavaMappedSuperclassImpl
 	extends AbstractJavaMappedSuperclass
 	implements 
 		EclipseLinkJavaMappedSuperclass, 
@@ -65,7 +64,7 @@ public class JavaEclipseLinkMappedSuperclassImpl
 
 	protected final JavaGeneratorContainer generatorContainer;
 
-	public JavaEclipseLinkMappedSuperclassImpl(JavaPersistentType parent, MappedSuperclassAnnotation mappingAnnotation) {
+	public EclipseLinkJavaMappedSuperclassImpl(JavaPersistentType parent, MappedSuperclassAnnotation mappingAnnotation) {
 		super(parent, mappingAnnotation);
 		this.caching = this.buildCaching();
 		this.readOnly = this.buildReadOnly();

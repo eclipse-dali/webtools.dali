@@ -39,7 +39,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJav
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaIdMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaManyToManyMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaManyToOneMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkMappedSuperclassImpl;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaMappedSuperclassImpl;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkOneToManyMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkOneToOneMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkSpecifiedJavaPersistentAttribute;
@@ -102,7 +102,7 @@ public class EclipseLinkJpaFactory
 	
 	@Override
 	public EclipseLinkJavaMappedSuperclass buildJavaMappedSuperclass(JavaPersistentType parent, MappedSuperclassAnnotation mappedSuperclassAnnotation) {
-		return new JavaEclipseLinkMappedSuperclassImpl(parent, mappedSuperclassAnnotation);
+		return new EclipseLinkJavaMappedSuperclassImpl(parent, mappedSuperclassAnnotation);
 	}
 	
 	@Override
