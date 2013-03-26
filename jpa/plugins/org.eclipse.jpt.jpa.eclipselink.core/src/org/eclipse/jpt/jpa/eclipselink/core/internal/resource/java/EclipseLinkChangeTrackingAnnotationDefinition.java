@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.BinaryEclipseLinkChangeTrackingAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.EclipseLinkBinaryChangeTrackingAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.SourceEclipseLinkChangeTrackingAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ChangeTrackingAnnotation;
 
@@ -50,7 +50,7 @@ public class EclipseLinkChangeTrackingAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
-		return new BinaryEclipseLinkChangeTrackingAnnotation(parent, jdtAnnotation);
+		return new EclipseLinkBinaryChangeTrackingAnnotation(parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {
