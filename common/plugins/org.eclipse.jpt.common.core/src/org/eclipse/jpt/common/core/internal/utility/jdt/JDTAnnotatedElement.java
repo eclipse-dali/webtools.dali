@@ -129,6 +129,7 @@ public abstract class JDTAnnotatedElement
 
 		ITextFileBuffer buffer = FileBuffers.getTextFileBufferManager().getTextFileBuffer(this.compilationUnit.getResource().getFullPath(), LocationKind.NORMALIZE);
 		boolean sharedDocument = (buffer != null);  // documents are typically shared when they are already open in an editor
+		@SuppressWarnings("null")  // erroneous compiler warning - 'buffer' will NOT be null
 		IDocument doc = sharedDocument ?
 				buffer.getDocument() :
 				new Document(this.compilationUnit.getBuffer().getContents());
