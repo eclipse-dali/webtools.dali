@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,25 +18,25 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source.SourceStaticM
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.StaticMetamodelAnnotation2_0;
 
 /**
- * javax.persistence.metamodel.StaticMetamodel
+ * <code>javax.persistence.metamodel.StaticMetamodel</code>
  */
-public final class StaticMetamodelAnnotationDefinition
+public final class StaticMetamodelAnnotationDefinition2_0
 	implements AnnotationDefinition
 {
 	// singleton
-	private static final StaticMetamodelAnnotationDefinition INSTANCE = new StaticMetamodelAnnotationDefinition();
+	private static final StaticMetamodelAnnotationDefinition2_0 INSTANCE = new StaticMetamodelAnnotationDefinition2_0();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static StaticMetamodelAnnotationDefinition instance() {
+	public static StaticMetamodelAnnotationDefinition2_0 instance() {
 		return INSTANCE;
 	}
 
 	/**
 	 * Ensure single instance.
 	 */
-	private StaticMetamodelAnnotationDefinition() {
+	private StaticMetamodelAnnotationDefinition2_0() {
 		super();
 	}
 
