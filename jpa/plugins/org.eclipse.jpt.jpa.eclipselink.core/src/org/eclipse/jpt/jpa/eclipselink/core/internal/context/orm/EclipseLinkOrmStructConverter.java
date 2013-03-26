@@ -20,11 +20,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStructConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.text.edits.ReplaceEdit;
 
-public class OrmEclipseLinkStructConverter
+public class EclipseLinkOrmStructConverter
 	extends OrmEclipseLinkConverterClassConverter<XmlStructConverter>
 	implements EclipseLinkStructConverter
 {
-	public OrmEclipseLinkStructConverter(JpaContextModel parent, XmlStructConverter xmlConverter) {
+	public EclipseLinkOrmStructConverter(JpaContextModel parent, XmlStructConverter xmlConverter) {
 		super(parent, xmlConverter);
 	}
 

@@ -41,7 +41,7 @@ public abstract class EclipseLinkAbstractOrmConverterContainer
 
 	protected final ContextListContainer<OrmEclipseLinkCustomConverter, XmlConverter> customConverterContainer;
 	protected final ContextListContainer<OrmEclipseLinkObjectTypeConverter, XmlObjectTypeConverter> objectTypeConverterContainer;
-	protected final ContextListContainer<OrmEclipseLinkStructConverter, XmlStructConverter> structConverterContainer;
+	protected final ContextListContainer<EclipseLinkOrmStructConverter, XmlStructConverter> structConverterContainer;
 	protected final ContextListContainer<EclipseLinkOrmTypeConverter, XmlTypeConverter> typeConverterContainer;
 
 
@@ -252,7 +252,7 @@ public abstract class EclipseLinkAbstractOrmConverterContainer
 
 	// ********** struct converters **********
 
-	public ListIterable<OrmEclipseLinkStructConverter> getStructConverters() {
+	public ListIterable<EclipseLinkOrmStructConverter> getStructConverters() {
 		return this.structConverterContainer.getContextElements();
 	}
 
@@ -260,13 +260,13 @@ public abstract class EclipseLinkAbstractOrmConverterContainer
 		return this.structConverterContainer.getContextElementsSize();
 	}
 
-	public OrmEclipseLinkStructConverter addStructConverter(String name) {
+	public EclipseLinkOrmStructConverter addStructConverter(String name) {
 		return this.addStructConverter(name, this.getStructConvertersSize());
 	}
 
-	public OrmEclipseLinkStructConverter addStructConverter(String name, int index) {
+	public EclipseLinkOrmStructConverter addStructConverter(String name, int index) {
 		XmlStructConverter xmlConverter = this.buildXmlStructConverter(name);
-		OrmEclipseLinkStructConverter converter = this.structConverterContainer.addContextElement(index, xmlConverter);
+		EclipseLinkOrmStructConverter converter = this.structConverterContainer.addContextElement(index, xmlConverter);
 		this.xmlConverterContainer.getStructConverters().add(index, xmlConverter);
 		return converter;
 	}
@@ -278,7 +278,7 @@ public abstract class EclipseLinkAbstractOrmConverterContainer
 	}
 
 	public void removeStructConverter(EclipseLinkStructConverter converter) {
-		this.removeStructConverter(this.structConverterContainer.indexOfContextElement((OrmEclipseLinkStructConverter) converter));
+		this.removeStructConverter(this.structConverterContainer.indexOfContextElement((EclipseLinkOrmStructConverter) converter));
 	}
 
 	public void removeStructConverter(int index) {
@@ -291,8 +291,8 @@ public abstract class EclipseLinkAbstractOrmConverterContainer
 		this.xmlConverterContainer.getStructConverters().move(targetIndex, sourceIndex);
 	}
 
-	protected OrmEclipseLinkStructConverter buildStructConverter(XmlStructConverter xmlConverter) {
-		return new OrmEclipseLinkStructConverter(this, xmlConverter);
+	protected EclipseLinkOrmStructConverter buildStructConverter(XmlStructConverter xmlConverter) {
+		return new EclipseLinkOrmStructConverter(this, xmlConverter);
 	}
 
 	protected void syncStructConverters() {
@@ -304,7 +304,7 @@ public abstract class EclipseLinkAbstractOrmConverterContainer
 		return IterableTools.cloneLive(this.xmlConverterContainer.getStructConverters());
 	}
 
-	protected ContextListContainer<OrmEclipseLinkStructConverter, XmlStructConverter> buildStructConverterContainer() {
+	protected ContextListContainer<EclipseLinkOrmStructConverter, XmlStructConverter> buildStructConverterContainer() {
 		StructConverterContainer container = new StructConverterContainer();
 		container.initialize();
 		return container;
@@ -314,14 +314,14 @@ public abstract class EclipseLinkAbstractOrmConverterContainer
 	 * struct converter container
 	 */
 	protected class StructConverterContainer
-		extends ContextListContainer<OrmEclipseLinkStructConverter, XmlStructConverter>
+		extends ContextListContainer<EclipseLinkOrmStructConverter, XmlStructConverter>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return STRUCT_CONVERTERS_LIST;
 		}
 		@Override
-		protected OrmEclipseLinkStructConverter buildContextElement(XmlStructConverter resourceElement) {
+		protected EclipseLinkOrmStructConverter buildContextElement(XmlStructConverter resourceElement) {
 			return EclipseLinkAbstractOrmConverterContainer.this.buildStructConverter(resourceElement);
 		}
 		@Override
@@ -329,7 +329,7 @@ public abstract class EclipseLinkAbstractOrmConverterContainer
 			return EclipseLinkAbstractOrmConverterContainer.this.getXmlStructConverters();
 		}
 		@Override
-		protected XmlStructConverter getResourceElement(OrmEclipseLinkStructConverter contextElement) {
+		protected XmlStructConverter getResourceElement(EclipseLinkOrmStructConverter contextElement) {
 			return contextElement.getXmlConverter();
 		}
 	}
@@ -554,7 +554,7 @@ public abstract class EclipseLinkAbstractOrmConverterContainer
 				return result;
 			}
 		}
-		for (OrmEclipseLinkStructConverter converter : this.structConverterContainer.getContextElements()) {
+		for (EclipseLinkOrmStructConverter converter : this.structConverterContainer.getContextElements()) {
 			result = converter.getCompletionProposals(pos);
 			if (result != null) {
 				return result;

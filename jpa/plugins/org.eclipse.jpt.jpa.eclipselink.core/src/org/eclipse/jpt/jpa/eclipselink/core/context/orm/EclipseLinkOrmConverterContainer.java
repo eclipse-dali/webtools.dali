@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkObjectTypeConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkStructConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmStructConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmTypeConverter;
 
 /**
@@ -41,9 +41,9 @@ public interface EclipseLinkOrmConverterContainer
 	OrmEclipseLinkObjectTypeConverter addObjectTypeConverter(String name, int index);
 	OrmEclipseLinkObjectTypeConverter addObjectTypeConverter(String name);
 	
-	ListIterable<OrmEclipseLinkStructConverter> getStructConverters();
-	OrmEclipseLinkStructConverter addStructConverter(String name, int index);
-	OrmEclipseLinkStructConverter addStructConverter(String name);
+	ListIterable<EclipseLinkOrmStructConverter> getStructConverters();
+	EclipseLinkOrmStructConverter addStructConverter(String name, int index);
+	EclipseLinkOrmStructConverter addStructConverter(String name);
 
 	ListIterable<EclipseLinkOrmTypeConverter> getTypeConverters();
 	EclipseLinkOrmTypeConverter addTypeConverter(String name, int index);
