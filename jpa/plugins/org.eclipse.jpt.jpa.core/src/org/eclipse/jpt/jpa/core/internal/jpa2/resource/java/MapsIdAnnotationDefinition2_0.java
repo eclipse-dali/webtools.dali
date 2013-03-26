@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.binary.BinaryMapsId2_0Annotation;
+import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.binary.BinaryMapsIdAnnotation2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source.SourceMapsId2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsIdAnnotation2_0;
 
@@ -53,7 +53,7 @@ public class MapsIdAnnotationDefinition2_0
 	}
 	
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
-		return new BinaryMapsId2_0Annotation(parent, jdtAnnotation);
+		return new BinaryMapsIdAnnotation2_0(parent, jdtAnnotation);
 	}
 	
 	public String getAnnotationName() {
