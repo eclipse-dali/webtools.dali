@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumnAnnotation2_0
 /**
  * <code>javax.persistence.MapKeyJoinColumn</code>
  */
-public final class SourceMapKeyJoinColumn2_0Annotation
+public final class SourceMapKeyJoinColumnAnnotation2_0
 	extends SourceBaseJoinColumnAnnotation
 	implements MapKeyJoinColumnAnnotation2_0
 {
@@ -35,43 +35,43 @@ public final class SourceMapKeyJoinColumn2_0Annotation
 	private static final DeclarationAnnotationAdapter CONTAINER_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA2_0.MAP_KEY_JOIN_COLUMNS);
 
 	
-	public static SourceMapKeyJoinColumn2_0Annotation buildSourceMapKeyJoinColumnAnnotation(
+	public static SourceMapKeyJoinColumnAnnotation2_0 buildSourceMapKeyJoinColumnAnnotation(
 			JavaResourceModel parent, 
 			AnnotatedElement element) {
 		
-		return new SourceMapKeyJoinColumn2_0Annotation(parent, element, DECLARATION_ANNOTATION_ADAPTER);
+		return new SourceMapKeyJoinColumnAnnotation2_0(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 	}
 
-	public static SourceMapKeyJoinColumn2_0Annotation buildSourceMapKeyJoinColumnAnnotation(
+	public static SourceMapKeyJoinColumnAnnotation2_0 buildSourceMapKeyJoinColumnAnnotation(
 			JavaResourceAnnotatedElement parent, 
 			AnnotatedElement annotatedElement, 
 			int index) {
 		IndexedDeclarationAnnotationAdapter idaa = buildMapKeyJoinColumnDeclarationAnnotationAdapter(index);
 		IndexedAnnotationAdapter iaa = buildMapKeyJoinColumnAnnotationAdapter(annotatedElement, idaa);
-		return new SourceMapKeyJoinColumn2_0Annotation(
+		return new SourceMapKeyJoinColumnAnnotation2_0(
 			parent,
 			annotatedElement,
 			idaa,
 			iaa);
 	}
 	
-	public static SourceMapKeyJoinColumn2_0Annotation buildNestedSourceMapKeyJoinColumnAnnotation(
+	public static SourceMapKeyJoinColumnAnnotation2_0 buildNestedSourceMapKeyJoinColumnAnnotation(
 			JavaResourceModel parent, 
 			AnnotatedElement element, 
 			IndexedDeclarationAnnotationAdapter idaa) {
 		
-		return new SourceMapKeyJoinColumn2_0Annotation(parent, element, idaa);
+		return new SourceMapKeyJoinColumnAnnotation2_0(parent, element, idaa);
 	}
 
-	private SourceMapKeyJoinColumn2_0Annotation(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
+	private SourceMapKeyJoinColumnAnnotation2_0(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
 		this(parent, element, daa, new ElementAnnotationAdapter(element, daa));
 	}
 
-	private SourceMapKeyJoinColumn2_0Annotation(JavaResourceModel parent, AnnotatedElement element, IndexedDeclarationAnnotationAdapter idaa) {
+	private SourceMapKeyJoinColumnAnnotation2_0(JavaResourceModel parent, AnnotatedElement element, IndexedDeclarationAnnotationAdapter idaa) {
 		this(parent, element, idaa, new ElementIndexedAnnotationAdapter(element, idaa));
 	}
 
-	private SourceMapKeyJoinColumn2_0Annotation(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	private SourceMapKeyJoinColumnAnnotation2_0(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, element, daa, annotationAdapter);
 	}
 
