@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumnAnnotation2_0;
 /**
  * <code>javax.persistence.OrderColumn</code>
  */
-public final class SourceOrderColumn2_0Annotation
+public final class SourceOrderColumnAnnotation2_0
 	extends SourceNamedColumnAnnotation
 	implements OrderColumnAnnotation2_0
 {
@@ -46,7 +46,7 @@ public final class SourceOrderColumn2_0Annotation
 	private TextRange updatableTextRange;
 
 
-	public SourceOrderColumn2_0Annotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
+	public SourceOrderColumnAnnotation2_0(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
 		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 		this.nullableDeclarationAdapter = this.buildNullableDeclarationAdapter();
 		this.nullableAdapter = this.buildNullableAdapter();
