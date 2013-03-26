@@ -51,7 +51,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * EclipseLink
  * <code>orm.xml</code> entity type mapping
  */
-public class OrmEclipseLinkEntityImpl
+public class EclipseLinkOrmEntityImpl
 	extends AbstractOrmEntity<XmlEntity>
 	implements EclipseLinkOrmEntity, EclipseLinkOrmConverterContainer.Parent
 {
@@ -68,7 +68,7 @@ public class OrmEclipseLinkEntityImpl
 	protected final EclipseLinkOrmMultitenancy2_3 multitenancy;
 
 
-	public OrmEclipseLinkEntityImpl(OrmPersistentType parent, XmlEntity xmlEntity) {
+	public EclipseLinkOrmEntityImpl(OrmPersistentType parent, XmlEntity xmlEntity) {
 		super(parent, xmlEntity);
 		this.caching = this.buildCaching();
 		this.readOnly = this.buildReadOnly();
