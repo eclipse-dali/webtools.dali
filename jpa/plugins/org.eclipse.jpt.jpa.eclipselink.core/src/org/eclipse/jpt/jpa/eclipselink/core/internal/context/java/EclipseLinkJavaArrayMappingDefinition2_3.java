@@ -70,7 +70,7 @@ public class EclipseLinkJavaArrayMappingDefinition2_3
 	private static final Iterable<String> ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES = IterableTools.iterable(ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES_ARRAY);
 
 	public JavaAttributeMapping buildMapping(JavaSpecifiedPersistentAttribute persistentAttribute, JpaFactory factory) {
-		return new JavaEclipseLinkArrayMapping2_3(persistentAttribute);
+		return new EclipseLinkJavaArrayMapping2_3(persistentAttribute);
 	}
 
 	@SuppressWarnings("unchecked")

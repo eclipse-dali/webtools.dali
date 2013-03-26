@@ -44,7 +44,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ArrayAnnotation2_3;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class JavaEclipseLinkArrayMapping2_3
+public class EclipseLinkJavaArrayMapping2_3
 	extends AbstractJavaAttributeMapping<ArrayAnnotation2_3>
 	implements 
 		EclipseLinkArrayMapping2_3,
@@ -68,7 +68,7 @@ public class JavaEclipseLinkArrayMapping2_3
 
 	protected final EclipseLinkJavaConverterContainer converterContainer;
 
-	public JavaEclipseLinkArrayMapping2_3(JavaSpecifiedPersistentAttribute parent) {
+	public EclipseLinkJavaArrayMapping2_3(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 		this.column = this.buildColumn();
 		this.converter = this.buildConverter();
