@@ -46,7 +46,7 @@ public final class MapKeyTemporal2_0AnnotationDefinition
 	}
 
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
-		return new NullMapKeyTemporal2_0Annotation(parent);
+		return new NullMapKeyTemporalAnnotation2_0(parent);
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
