@@ -48,7 +48,7 @@ public class EclipseLink2_0JpaPlatformFactory
 			buildJpaVersion(config.getJpaFacetVersion()),
 			new EclipseLinkJpaFactory2_0(),
 			this.buildAnnotationProvider(),
-			EclipseLink2_0JpaPlatformProvider.instance(),
+			EclipseLinkJpaPlatformProvider2_0.instance(),
 			this.buildJpaVariation(),
 			EclipseLinkJPQLGrammar2_0.instance());
 	}

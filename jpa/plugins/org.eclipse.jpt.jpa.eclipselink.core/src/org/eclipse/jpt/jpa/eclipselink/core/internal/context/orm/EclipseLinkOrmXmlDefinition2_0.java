@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.internal.context.orm.OrmOneToOneMappingDefinitio
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmTransientMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmVersionMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.OrmElementCollectionMappingDefinition2_0;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_0JpaPlatformProvider;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformProvider2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
 
@@ -69,7 +69,7 @@ public class EclipseLinkOrmXmlDefinition2_0
 
 	/**
 	 * Order should not matter here; but we'll use the same order as for Java.
-	 * @see EclipseLink2_0JpaPlatformProvider
+	 * @see EclipseLinkJpaPlatformProvider2_0
 	 */
 	protected static final OrmAttributeMappingDefinition[] ECLIPSELINK_2_0_ATTRIBUTE_MAPPING_DEFINITIONS = new OrmAttributeMappingDefinition[] {
 		OrmTransientMappingDefinition.instance(),

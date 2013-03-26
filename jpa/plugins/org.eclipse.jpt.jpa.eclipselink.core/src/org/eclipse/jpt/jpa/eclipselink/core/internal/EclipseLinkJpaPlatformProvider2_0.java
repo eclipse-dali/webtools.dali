@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -56,11 +56,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.Eclipse
 /**
  * EclipseLink 2.0 platform config
  */
-public class EclipseLink2_0JpaPlatformProvider
+public class EclipseLinkJpaPlatformProvider2_0
 	extends AbstractJpaPlatformProvider
 {
 	// singleton
-	private static final JpaPlatformProvider INSTANCE = new EclipseLink2_0JpaPlatformProvider();
+	private static final JpaPlatformProvider INSTANCE = new EclipseLinkJpaPlatformProvider2_0();
 
 	/**
 	 * Return the singleton
@@ -72,7 +72,7 @@ public class EclipseLink2_0JpaPlatformProvider
 	/**
 	 * Enforce singleton usage
 	 */
-	protected EclipseLink2_0JpaPlatformProvider() {
+	protected EclipseLinkJpaPlatformProvider2_0() {
 		super();
 	}
 
