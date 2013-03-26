@@ -35,7 +35,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJav
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMapMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaEmbeddableImpl;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkEntityImpl;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaEntityImpl;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkIdMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkManyToManyMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkManyToOneMapping;
@@ -92,7 +92,7 @@ public class EclipseLinkJpaFactory
 	
 	@Override
 	public EclipseLinkJavaEntity buildJavaEntity(JavaPersistentType parent, EntityAnnotation entityAnnotation) {
-		return new JavaEclipseLinkEntityImpl(parent, entityAnnotation);
+		return new EclipseLinkJavaEntityImpl(parent, entityAnnotation);
 	}
 	
 	@Override

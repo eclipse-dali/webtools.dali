@@ -13,7 +13,6 @@ import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaEntity;
@@ -29,12 +28,12 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaMultitenancy2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkEntityPrimaryKeyValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkTypeMappingValidator;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ClassExtractorAnnotation2_1;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -42,7 +41,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * EclipseLink
  * Java entity
  */
-public class JavaEclipseLinkEntityImpl
+public class EclipseLinkJavaEntityImpl
 	extends AbstractJavaEntity
 	implements EclipseLinkJavaEntity, EclipseLinkJavaConverterContainer.Parent
 {
@@ -58,7 +57,7 @@ public class JavaEclipseLinkEntityImpl
 
 	protected final EclipseLinkJavaMultitenancy2_3 multitenancy;
 
-	public JavaEclipseLinkEntityImpl(JavaPersistentType parent, EntityAnnotation mappingAnnotation) {
+	public EclipseLinkJavaEntityImpl(JavaPersistentType parent, EntityAnnotation mappingAnnotation) {
 		super(parent, mappingAnnotation);
 		this.caching = this.buildCaching();
 		this.readOnly = this.buildReadOnly();
