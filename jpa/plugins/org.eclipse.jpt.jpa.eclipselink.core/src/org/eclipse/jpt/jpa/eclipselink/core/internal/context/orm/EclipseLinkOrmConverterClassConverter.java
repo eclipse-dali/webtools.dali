@@ -29,7 +29,7 @@ import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedConverter>
+public abstract class EclipseLinkOrmConverterClassConverter<X extends XmlNamedConverter>
 	extends OrmEclipseLinkConverter<X>
 	implements EclipseLinkConverterClassConverter
 {
@@ -37,7 +37,7 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 	private String fullyQualifiedConverterClass;
 
 
-	public OrmEclipseLinkConverterClassConverter(JpaContextModel parent, X xmlConverter) {
+	public EclipseLinkOrmConverterClassConverter(JpaContextModel parent, X xmlConverter) {
 		super(parent, xmlConverter);
 		this.converterClass = this.getXmlConverterClass();
 	}

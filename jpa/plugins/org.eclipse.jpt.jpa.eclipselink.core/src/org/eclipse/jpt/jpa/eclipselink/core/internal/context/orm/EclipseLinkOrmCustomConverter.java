@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreVali
 import org.eclipse.text.edits.ReplaceEdit;
 
 public class EclipseLinkOrmCustomConverter
-	extends OrmEclipseLinkConverterClassConverter<XmlConverter>
+	extends EclipseLinkOrmConverterClassConverter<XmlConverter>
 	implements EclipseLinkCustomConverter
 {
 	public EclipseLinkOrmCustomConverter(JpaContextModel parent, XmlConverter xmlConverter) {
