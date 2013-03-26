@@ -165,7 +165,7 @@
 		<jpaPlatform
 	        id="eclipselink2_2"
 	        label="%ECLIPSELINK2_2_x_PLATFORM"
-	        factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_2JpaPlatformFactory"
+	        factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_2"
 	        group="eclipselink"
 			jpaFacetVersion="2.0"/>
 		

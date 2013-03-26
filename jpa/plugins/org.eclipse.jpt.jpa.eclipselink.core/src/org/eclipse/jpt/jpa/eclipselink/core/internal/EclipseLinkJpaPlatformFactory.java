@@ -113,7 +113,7 @@ public class EclipseLinkJpaPlatformFactory
 		 * @see EclipseLink1_2JpaPlatformFactory#VERSION
 		 * @see EclipseLink2_0JpaPlatformFactory#VERSION
 		 * @see EclipseLink2_1JpaPlatformFactory#VERSION
-		 * @see EclipseLink2_2JpaPlatformFactory#VERSION
+		 * @see EclipseLinkJpaPlatformFactory2_2#VERSION
 		 * @see EclipseLinkJpaPlatformFactory2_3#VERSION
 		 * @see EclipseLinkJpaPlatformFactory2_4#VERSION
 		 * @see EclipseLinkJpaPlatformFactory2_5#VERSION
