@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkTypeConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeConverter;
 import org.eclipse.text.edits.ReplaceEdit;
 
@@ -258,7 +258,7 @@ public class OrmEclipseLinkTypeConverter
 
 	// ********** metadata conversion **********
 
-	public void convertFrom(JavaEclipseLinkTypeConverter javaConverter) {
+	public void convertFrom(EclipseLinkJavaTypeConverter javaConverter) {
 		super.convertFrom(javaConverter);
 		this.setDataType(javaConverter.getFullyQualifiedDataType());
 		this.setObjectType(javaConverter.getFullyQualifiedObjectType());

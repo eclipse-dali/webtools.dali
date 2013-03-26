@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContaine
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaObjectTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaStructConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkTypeConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaTypeConverter;
 
 /**
  * EclipseLink Java converter container
@@ -42,8 +42,8 @@ public interface EclipseLinkJavaConverterContainer
 	ListIterable<EclipseLinkJavaStructConverter> getStructConverters();
 	EclipseLinkJavaStructConverter addStructConverter(String name, int index);
 
-	ListIterable<JavaEclipseLinkTypeConverter> getTypeConverters();
-	JavaEclipseLinkTypeConverter addTypeConverter(String name, int index);
+	ListIterable<EclipseLinkJavaTypeConverter> getTypeConverters();
+	EclipseLinkJavaTypeConverter addTypeConverter(String name, int index);
 
 	/**
 	 * Parent

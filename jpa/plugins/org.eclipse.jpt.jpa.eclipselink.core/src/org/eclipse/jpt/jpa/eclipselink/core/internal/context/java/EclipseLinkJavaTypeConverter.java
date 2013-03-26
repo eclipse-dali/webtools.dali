@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TypeConverterAnnotatio
 /**
  * <code>org.eclipse.persistence.annotations.TypeConverter</code>
  */
-public class JavaEclipseLinkTypeConverter
+public class EclipseLinkJavaTypeConverter
 	extends EclipseLinkJavaConverter<TypeConverterAnnotation>
 	implements EclipseLinkTypeConverter
 {
@@ -30,7 +30,7 @@ public class JavaEclipseLinkTypeConverter
 	private String fullyQualifiedObjectType;
 
 
-	public JavaEclipseLinkTypeConverter(EclipseLinkJavaConverterContainer parent, TypeConverterAnnotation converterAnnotation) {
+	public EclipseLinkJavaTypeConverter(EclipseLinkJavaConverterContainer parent, TypeConverterAnnotation converterAnnotation) {
 		super(parent, converterAnnotation);
 		this.dataType = this.converterAnnotation.getDataType();
 		this.objectType = this.converterAnnotation.getObjectType();
