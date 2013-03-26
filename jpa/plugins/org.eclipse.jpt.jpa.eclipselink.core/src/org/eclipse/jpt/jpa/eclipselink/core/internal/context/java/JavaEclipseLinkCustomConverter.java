@@ -23,7 +23,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
  * <code>org.eclipse.persistence.annotations.Converter</code>
  */
 public class JavaEclipseLinkCustomConverter
-	extends JavaEclipseLinkConverterClassConverter<ConverterAnnotation>
+	extends EclipseLinkJavaConverterClassConverter<ConverterAnnotation>
 	implements EclipseLinkCustomConverter
 {
 	private String fullyQualifiedConverterClass;

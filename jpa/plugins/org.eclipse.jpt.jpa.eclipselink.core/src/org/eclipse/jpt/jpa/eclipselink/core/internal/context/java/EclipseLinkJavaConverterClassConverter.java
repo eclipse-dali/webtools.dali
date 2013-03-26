@@ -10,13 +10,12 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jpt.common.core.internal.utility.TypeTools;
 import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
+import org.eclipse.jpt.common.core.internal.utility.TypeTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterClassConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
@@ -33,14 +32,14 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * </ul>
  * </code>
  */
-public abstract class JavaEclipseLinkConverterClassConverter<A extends NamedConverterAnnotation>
+public abstract class EclipseLinkJavaConverterClassConverter<A extends NamedConverterAnnotation>
 	extends EclipseLinkJavaConverter<A>
 	implements EclipseLinkConverterClassConverter
 {
 	private String converterClass;
 
 
-	public JavaEclipseLinkConverterClassConverter(EclipseLinkJavaConverterContainer parent, A converterAnnotation, String converterClass) {
+	public EclipseLinkJavaConverterClassConverter(EclipseLinkJavaConverterContainer parent, A converterAnnotation, String converterClass) {
 		super(parent, converterAnnotation);
 		this.converterClass = converterClass;
 	}
