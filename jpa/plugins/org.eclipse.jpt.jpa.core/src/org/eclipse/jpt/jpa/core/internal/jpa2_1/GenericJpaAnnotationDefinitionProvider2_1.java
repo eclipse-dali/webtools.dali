@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.NamedQuery2_0Annotat
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.OrderColumn2_0AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.SequenceGenerator2_0AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.StaticMetamodelAnnotationDefinition;
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.resource.java.Converter2_1AnnotationDefinition;
+import org.eclipse.jpt.jpa.core.internal.jpa2_1.resource.java.ConverterAnnotationDefinition2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.resource.java.NamedStoredProcedureQueries2_1AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.resource.java.NamedStoredProcedureQuery2_1AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.resource.java.AssociationOverridesAnnotationDefinition;
@@ -109,7 +109,7 @@ public class GenericJpaAnnotationDefinitionProvider2_1
 		Cacheable2_0AnnotationDefinition.instance(),
 		CollectionTable2_0AnnotationDefinition.instance(),
 		ColumnAnnotationDefinition.instance(),
-		Converter2_1AnnotationDefinition.instance(),
+		ConverterAnnotationDefinition2_1.instance(),
 		DiscriminatorColumnAnnotationDefinition.instance(),
 		DiscriminatorValueAnnotationDefinition.instance(),
 		ElementCollection2_0AnnotationDefinition.instance(),
