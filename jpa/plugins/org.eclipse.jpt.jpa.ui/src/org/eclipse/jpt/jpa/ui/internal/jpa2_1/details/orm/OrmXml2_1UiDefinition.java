@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm;
+package org.eclipse.jpt.jpa.ui.internal.jpa2_1.details.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.JptResourceType;
@@ -32,8 +32,6 @@ import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmPersistentAttributeDetails
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmPersistentTypeDetailsProvider;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmXmlUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.ElementCollectionMapping2_0UiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.jpa2_1.details.orm.EntityMappings2_1DetailsProvider;
-import org.eclipse.jpt.jpa.ui.internal.jpa2_1.details.orm.GenericOrmXml2_1UiFactory;
 
 public class OrmXml2_1UiDefinition
 	extends AbstractOrmXmlResourceUiDefinition
