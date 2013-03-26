@@ -60,7 +60,7 @@ public class EclipseLinkJpaPlatformFactory2_0
 	protected AnnotationProvider buildAnnotationProvider() {
 		return new JpaAnnotationProvider(
 			GenericJpaAnnotationDefinitionProvider2_0.instance(),
-			EclipseLink2_0JpaAnnotationDefinitionProvider.instance());
+			EclipseLinkJpaAnnotationDefinitionProvider2_0.instance());
 	}
 
 	protected JpaPlatformVariation buildJpaVariation() {
