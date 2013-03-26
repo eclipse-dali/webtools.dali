@@ -46,7 +46,7 @@ public final class OrderColumnAnnotationDefinition2_0
 	}
 
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
-		return new NullOrderColumn2_0Annotation(parent);
+		return new NullOrderColumnAnnotation2_0(parent);
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
