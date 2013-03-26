@@ -40,7 +40,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJav
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaManyToManyMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaManyToOneMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaMappedSuperclassImpl;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkOneToManyMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaOneToManyMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkOneToOneMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkSpecifiedJavaPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkTransformationMapping;
@@ -112,7 +112,7 @@ public class EclipseLinkJpaFactory
 	
 	@Override
 	public JavaOneToManyMapping buildJavaOneToManyMapping(JavaSpecifiedPersistentAttribute parent) {
-		return new JavaEclipseLinkOneToManyMapping(parent);
+		return new EclipseLinkJavaOneToManyMapping(parent);
 	}
 	
 	@Override

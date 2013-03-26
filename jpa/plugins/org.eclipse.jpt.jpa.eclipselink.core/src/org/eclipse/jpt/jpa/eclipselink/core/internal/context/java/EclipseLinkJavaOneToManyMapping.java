@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,20 +11,19 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappingRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaOneToManyMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkOneToManyMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkPrivateOwned;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaOneToManyRelationship2_0;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class JavaEclipseLinkOneToManyMapping
+public class EclipseLinkJavaOneToManyMapping
 	extends AbstractJavaOneToManyMapping
 	implements EclipseLinkOneToManyMapping2_0, EclipseLinkJavaConvertibleMapping
 {
@@ -35,7 +34,7 @@ public class JavaEclipseLinkOneToManyMapping
 	protected final EclipseLinkJavaConverterContainer converterContainer;
 
 
-	public JavaEclipseLinkOneToManyMapping(JavaSpecifiedPersistentAttribute parent) {
+	public EclipseLinkJavaOneToManyMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 		this.joinFetch = new EclipseLinkJavaJoinFetch(this);
 		this.privateOwned = new JavaEclipseLinkPrivateOwned(this);
