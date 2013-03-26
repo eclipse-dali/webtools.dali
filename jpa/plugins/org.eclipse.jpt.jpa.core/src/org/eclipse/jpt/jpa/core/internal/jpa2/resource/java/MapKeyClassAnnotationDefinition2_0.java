@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,13 +19,13 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source.SourceMapKeyC
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClassAnnotation2_0;
 
 /**
- * javax.persistence.MapKeyClass
+ * <code>javax.persistence.MapKeyClass</code>
  */
-public final class MapKeyClass2_0AnnotationDefinition
+public final class MapKeyClassAnnotationDefinition2_0
 	implements AnnotationDefinition
 {
 	// singleton
-	private static final AnnotationDefinition INSTANCE = new MapKeyClass2_0AnnotationDefinition();
+	private static final AnnotationDefinition INSTANCE = new MapKeyClassAnnotationDefinition2_0();
 
 	/**
 	 * Return the singleton.
@@ -37,7 +37,7 @@ public final class MapKeyClass2_0AnnotationDefinition
 	/**
 	 * Ensure single instance.
 	 */
-	private MapKeyClass2_0AnnotationDefinition() {
+	private MapKeyClassAnnotationDefinition2_0() {
 		super();
 	}
 
