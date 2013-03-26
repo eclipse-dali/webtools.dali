@@ -95,7 +95,7 @@ public class EclipseLinkOrmXmlContextModelFactory
 
 	@Override
 	public OrmEmbeddedMapping buildOrmEmbeddedMapping(OrmSpecifiedPersistentAttribute parent,  org.eclipse.jpt.jpa.core.resource.orm.XmlEmbedded resourceMapping) {
-		return new OrmEclipseLinkEmbeddedMapping(parent, (XmlEmbedded) resourceMapping);
+		return new EclipseLinkOrmEmbeddedMapping(parent, (XmlEmbedded) resourceMapping);
 	}
 
 	@Override
