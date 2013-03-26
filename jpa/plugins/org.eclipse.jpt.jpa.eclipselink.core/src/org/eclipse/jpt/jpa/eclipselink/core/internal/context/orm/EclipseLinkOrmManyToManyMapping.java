@@ -35,14 +35,14 @@ public class EclipseLinkOrmManyToManyMapping
 	extends AbstractOrmManyToManyMapping<XmlManyToMany>
 	implements EclipseLinkManyToManyMapping2_0, EclipseLinkOrmConvertibleMapping
 {
-	protected final OrmEclipseLinkJoinFetch joinFetch;
+	protected final EclipseLinkOrmJoinFetch joinFetch;
 	
 	protected final EclipseLinkOrmConverterContainer converterContainer;
 
 
 	public EclipseLinkOrmManyToManyMapping(OrmSpecifiedPersistentAttribute parent, XmlManyToMany xmlMapping) {
 		super(parent, xmlMapping);
-		this.joinFetch = new OrmEclipseLinkJoinFetch(this);
+		this.joinFetch = new EclipseLinkOrmJoinFetch(this);
 		this.converterContainer = this.buildConverterContainer();
 	}
 

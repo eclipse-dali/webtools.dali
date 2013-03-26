@@ -24,12 +24,12 @@ public class EclipseLinkOrmManyToOneMapping
 	extends AbstractOrmManyToOneMapping<XmlManyToOne>
 	implements EclipseLinkManyToOneMapping2_0
 {
-	protected final OrmEclipseLinkJoinFetch joinFetch;
+	protected final EclipseLinkOrmJoinFetch joinFetch;
 
 
 	protected EclipseLinkOrmManyToOneMapping(OrmSpecifiedPersistentAttribute parent, XmlManyToOne xmlMapping) {
 		super(parent, xmlMapping);
-		this.joinFetch = new OrmEclipseLinkJoinFetch(this);
+		this.joinFetch = new EclipseLinkOrmJoinFetch(this);
 	}
 
 

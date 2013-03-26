@@ -17,14 +17,14 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetchType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlJoinFetch;
 
-public class OrmEclipseLinkJoinFetch
+public class EclipseLinkOrmJoinFetch
 	extends AbstractOrmXmlContextModel<OrmAttributeMapping>
 	implements EclipseLinkJoinFetch
 {
 	protected EclipseLinkJoinFetchType value;
 
 
-	public OrmEclipseLinkJoinFetch(OrmAttributeMapping parent) {
+	public EclipseLinkOrmJoinFetch(OrmAttributeMapping parent) {
 		super(parent);
 		this.value = this.buildValue();
 	}

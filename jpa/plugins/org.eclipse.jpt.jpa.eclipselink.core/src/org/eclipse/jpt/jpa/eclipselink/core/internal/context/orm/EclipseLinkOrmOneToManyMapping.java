@@ -40,7 +40,7 @@ public class EclipseLinkOrmOneToManyMapping
 {
 	protected final EclipseLinkOrmPrivateOwned privateOwned;
 
-	protected final OrmEclipseLinkJoinFetch joinFetch;
+	protected final EclipseLinkOrmJoinFetch joinFetch;
 	
 	protected final EclipseLinkOrmConverterContainer converterContainer;
 
@@ -48,7 +48,7 @@ public class EclipseLinkOrmOneToManyMapping
 	public EclipseLinkOrmOneToManyMapping(OrmSpecifiedPersistentAttribute parent, XmlOneToMany xmlMapping) {
 		super(parent, xmlMapping);
 		this.privateOwned = new EclipseLinkOrmPrivateOwned(this);
-		this.joinFetch = new OrmEclipseLinkJoinFetch(this);
+		this.joinFetch = new EclipseLinkOrmJoinFetch(this);
 		this.converterContainer = this.buildConverterContainer();
 	}
 

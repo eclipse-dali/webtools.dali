@@ -38,14 +38,14 @@ public class EclipseLinkOrmElementCollectionMapping2_0
 	extends AbstractOrmElementCollectionMapping2_0<XmlElementCollection>
 	implements EclipseLinkElementCollectionMapping2_0, EclipseLinkOrmConvertibleMapping
 {
-	protected final OrmEclipseLinkJoinFetch joinFetch;
+	protected final EclipseLinkOrmJoinFetch joinFetch;
 	
 	protected final EclipseLinkOrmConverterContainer converterContainer;
 
 
 	public EclipseLinkOrmElementCollectionMapping2_0(OrmSpecifiedPersistentAttribute parent, XmlElementCollection resourceMapping) {
 		super(parent, resourceMapping);
-		this.joinFetch = new OrmEclipseLinkJoinFetch(this);
+		this.joinFetch = new EclipseLinkOrmJoinFetch(this);
 		this.converterContainer = this.buildConverterContainer();
 	}
 

@@ -27,13 +27,13 @@ public class EclipseLinkOrmOneToOneMapping
 {
 	protected final EclipseLinkOrmPrivateOwned privateOwned;
 
-	protected final OrmEclipseLinkJoinFetch joinFetch;
+	protected final EclipseLinkOrmJoinFetch joinFetch;
 
 
 	protected EclipseLinkOrmOneToOneMapping(OrmSpecifiedPersistentAttribute parent, XmlOneToOne xmlMapping) {
 		super(parent, xmlMapping);
 		this.privateOwned = new EclipseLinkOrmPrivateOwned(this);
-		this.joinFetch = new OrmEclipseLinkJoinFetch(this);
+		this.joinFetch = new EclipseLinkOrmJoinFetch(this);
 	}
 
 
