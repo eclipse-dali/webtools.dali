@@ -40,8 +40,8 @@ import org.eclipse.ui.ide.IDE;
 public abstract class AbstractJptGenerateJob extends WorkspaceJob {
 	private final IJavaProject javaProject;
 
-	private final SynchronizedBoolean generationCompleted;
-	private boolean generationSuccessful;
+	/* CU private */ final SynchronizedBoolean generationCompleted;
+	/* CU private */ boolean generationSuccessful;
 
 	// ********** constructor **********
 
@@ -143,24 +143,18 @@ public abstract class AbstractJptGenerateJob extends WorkspaceJob {
 			this.generationCompleted.setFalse();
 		}
 		
-		this.postGenerate(this.generationSuccessful);
-	}
-	
-	private void postGenerate(boolean generationSuccessful) {
-		if( ! generationSuccessful) {
-			this.displayError(JptCommonUiMessages.ABSTRACT_JPT_GENERATE_JOB__GENERATION_FAILED);
-			return;
-		}
-		else {
+		if (this.generationSuccessful) {
 			this.postGenerate();
+		} else {
+			this.displayError(JptCommonUiMessages.ABSTRACT_JPT_GENERATE_JOB__GENERATION_FAILED);
 		}
 	}
 
 	private LaunchConfigListener buildLaunchListener() {
 		return new LaunchConfigListener() {
 			
-			public void launchCompleted(boolean generationSuccessful) {
-				AbstractJptGenerateJob.this.generationSuccessful = generationSuccessful;
+			public void launchCompleted(boolean genSuccessful) {
+				AbstractJptGenerateJob.this.generationSuccessful = genSuccessful;
 				AbstractJptGenerateJob.this.generationCompleted.setTrue();
 			}
 		};
@@ -178,7 +172,7 @@ public abstract class AbstractJptGenerateJob extends WorkspaceJob {
 		});
 	}
 
-	private Shell getShell() {
+	/* CU private */ Shell getShell() {
 		Display display = Display.getCurrent();
 		Shell shell = (display == null) ? null : display.getActiveShell();
 		if (shell == null && display != null) {
@@ -188,5 +182,4 @@ public abstract class AbstractJptGenerateJob extends WorkspaceJob {
 		}
 		return shell;
 	}
-	
 }
