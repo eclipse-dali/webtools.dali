@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.GenericOrmConverterType;
+import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.GenericOrmConverterType2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.GenericOrmNamedStoredProcedureQuery2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.GenericOrmStoredProcedureParameter2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.OrmNamedStoredProcedureQuery2_1;
@@ -27,7 +27,7 @@ public class EclipseLinkOrmXmlContextModelFactory2_5
 	implements OrmXmlContextModelFactory2_1
 {
 	public OrmConverterType2_1 buildOrmConverterType(EntityMappings2_1 parent, XmlConverter xmlConverter) {
-		return new GenericOrmConverterType(parent, xmlConverter);
+		return new GenericOrmConverterType2_1(parent, xmlConverter);
 	}
 
 	public OrmNamedStoredProcedureQuery2_1 buildOrmNamedStoredProcedureQuery(OrmQueryContainer2_1 parent, XmlNamedStoredProcedureQuery xmlNamedStoredProcedureQuery) {

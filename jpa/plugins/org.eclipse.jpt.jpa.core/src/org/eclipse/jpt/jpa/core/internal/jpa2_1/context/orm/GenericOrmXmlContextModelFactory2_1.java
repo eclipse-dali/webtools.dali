@@ -22,7 +22,7 @@ public class GenericOrmXmlContextModelFactory2_1
 	implements OrmXmlContextModelFactory2_1
 {
 	public OrmConverterType2_1 buildOrmConverterType(EntityMappings2_1 parent, XmlConverter xmlConverter) {
-		return new GenericOrmConverterType(parent, xmlConverter);
+		return new GenericOrmConverterType2_1(parent, xmlConverter);
 	}
 
 	public OrmNamedStoredProcedureQuery2_1 buildOrmNamedStoredProcedureQuery(OrmQueryContainer2_1 parent, XmlNamedStoredProcedureQuery xmlNamedStoredProcedureQuery) {
