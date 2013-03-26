@@ -36,7 +36,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class EclipseLinkOrmObjectTypeConverter
-	extends OrmEclipseLinkConverter<XmlObjectTypeConverter>
+	extends EclipseLinkOrmConverter<XmlObjectTypeConverter>
 	implements EclipseLinkObjectTypeConverter
 {
 	private String dataType;

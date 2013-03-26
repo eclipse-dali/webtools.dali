@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreVali
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
+public abstract class EclipseLinkOrmConverter<X extends XmlNamedConverter>
 	extends AbstractOrmXmlContextModel<JpaContextModel>
 	implements EclipseLinkConverter, TypeRefactoringParticipant
 {
@@ -36,7 +36,7 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 	protected String name;
 
 
-	protected OrmEclipseLinkConverter(JpaContextModel parent, X xmlConverter) {
+	protected EclipseLinkOrmConverter(JpaContextModel parent, X xmlConverter) {
 		super(parent);
 		this.xmlConverter = xmlConverter;
 		this.name = xmlConverter.getName();

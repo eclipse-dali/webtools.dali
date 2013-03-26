@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeConverter;
 import org.eclipse.text.edits.ReplaceEdit;
 
 public class EclipseLinkOrmTypeConverter
-	extends OrmEclipseLinkConverter<XmlTypeConverter>
+	extends EclipseLinkOrmConverter<XmlTypeConverter>
 	implements EclipseLinkTypeConverter
 {
 	private String dataType;

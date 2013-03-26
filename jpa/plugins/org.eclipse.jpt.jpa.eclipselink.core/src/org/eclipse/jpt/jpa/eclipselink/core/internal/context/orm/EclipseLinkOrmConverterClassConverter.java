@@ -30,7 +30,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class EclipseLinkOrmConverterClassConverter<X extends XmlNamedConverter>
-	extends OrmEclipseLinkConverter<X>
+	extends EclipseLinkOrmConverter<X>
 	implements EclipseLinkConverterClassConverter
 {
 	private String converterClass;
