@@ -46,7 +46,7 @@ public class EclipseLinkJoinFetchAnnotationDefinition
 	}
 
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
-		return new NullEclipseLinkJoinFetchAnnotation(parent);
+		return new EclipseLinkNullJoinFetchAnnotation(parent);
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
