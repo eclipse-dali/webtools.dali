@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.resource.java.FetchType;
 /**
  * <code>javax.persistence.ElementCollection</code>
  */
-public class BinaryElementCollection2_0Annotation
+public class BinaryElementCollectionAnnotation2_0
 	extends BinaryAnnotation
 	implements ElementCollectionAnnotation2_0
 {
@@ -28,7 +28,7 @@ public class BinaryElementCollection2_0Annotation
 	private FetchType fetch;
 
 
-	public BinaryElementCollection2_0Annotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
+	public BinaryElementCollectionAnnotation2_0(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.targetClass = this.buildTargetClass();
 		this.fetch = this.buildFetch();
