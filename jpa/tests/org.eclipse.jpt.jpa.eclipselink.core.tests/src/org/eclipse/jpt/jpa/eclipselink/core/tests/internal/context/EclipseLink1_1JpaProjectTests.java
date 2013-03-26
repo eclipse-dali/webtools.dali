@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProv
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkJpaProject;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink1_1JpaPlatformFactory;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory1_1;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.operations.EclipseLinkOrmFileCreationDataModelProvider;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
@@ -34,7 +34,7 @@ public class EclipseLink1_1JpaProjectTests
 
 	@Override
 	protected String getJpaPlatformID() {
-		return EclipseLink1_1JpaPlatformFactory.ID;
+		return EclipseLinkJpaPlatformFactory1_1.ID;
 	}
 
 	@Override

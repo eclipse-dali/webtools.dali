@@ -26,7 +26,7 @@ import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
  * All the state in the JPA platform should be "static" (i.e. unchanging once
  * it is initialized).
  */
-public class EclipseLink1_1JpaPlatformFactory
+public class EclipseLinkJpaPlatformFactory1_1
 	implements JpaPlatformFactory
 {
 	/**
@@ -42,7 +42,7 @@ public class EclipseLink1_1JpaPlatformFactory
 	/**
 	 * zero-argument constructor
 	 */
-	public EclipseLink1_1JpaPlatformFactory() {
+	public EclipseLinkJpaPlatformFactory1_1() {
 		super();
 	}
 

@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context;
 
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink1_1JpaPlatformFactory;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory1_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
 
 public abstract class EclipseLink1_1ContextModelTestCase extends EclipseLinkContextModelTestCase
@@ -22,7 +22,7 @@ public abstract class EclipseLink1_1ContextModelTestCase extends EclipseLinkCont
 
 	@Override
 	protected String getJpaPlatformID() {
-		return EclipseLink1_1JpaPlatformFactory.ID;
+		return EclipseLinkJpaPlatformFactory1_1.ID;
 	}
 
 	@Override
