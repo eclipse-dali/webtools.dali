@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.core.internal.context.orm.OrmOneToOneMappingDefinitio
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmPersistentTypeDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmTransientMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmVersionMappingDefinition;
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.Generic2_1JpaPlatformProvider;
+import org.eclipse.jpt.jpa.core.internal.jpa2_1.GenericJpaPlatformProvider2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.GenericOrmXmlContextModelFactory2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.OrmConverterTypeDefinition;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
@@ -90,7 +90,7 @@ public class GenericOrmXmlDefinition2_1
 
 	/**
 	 * Order should not matter here; but we'll use the same order as for Java.
-	 * @see Generic2_1JpaPlatformProvider
+	 * @see GenericJpaPlatformProvider2_1
 	 */
 	protected static final OrmAttributeMappingDefinition[] ATTRIBUTE_MAPPING_DEFINITIONS = new OrmAttributeMappingDefinition[] {
 		OrmTransientMappingDefinition.instance(),

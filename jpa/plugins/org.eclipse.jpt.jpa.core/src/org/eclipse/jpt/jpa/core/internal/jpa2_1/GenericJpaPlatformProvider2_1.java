@@ -53,11 +53,11 @@ import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.persistence.GenericPersi
  * All the state in the JPA platform should be "static" (i.e. unchanging once
  * it is initialized).
  */
-public class Generic2_1JpaPlatformProvider
+public class GenericJpaPlatformProvider2_1
 	extends AbstractJpaPlatformProvider
 {
 	// singleton
-	private static final JpaPlatformProvider INSTANCE = new Generic2_1JpaPlatformProvider();
+	private static final JpaPlatformProvider INSTANCE = new GenericJpaPlatformProvider2_1();
 
 	/**
 	 * Return the singleton
@@ -69,7 +69,7 @@ public class Generic2_1JpaPlatformProvider
 	/**
 	 * Enforce singleton usage
 	 */
-	private Generic2_1JpaPlatformProvider() {
+	private GenericJpaPlatformProvider2_1() {
 		super();
 	}
 
