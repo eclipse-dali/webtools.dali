@@ -12,18 +12,17 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaIdMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkIdMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class JavaEclipseLinkIdMapping
+public class EclipseLinkJavaIdMapping
 	extends AbstractJavaIdMapping
 	implements 
 		EclipseLinkIdMapping2_0,
@@ -34,7 +33,7 @@ public class JavaEclipseLinkIdMapping
 	protected final EclipseLinkJavaConverterContainer converterContainer;
 
 
-	public JavaEclipseLinkIdMapping(JavaSpecifiedPersistentAttribute parent) {
+	public EclipseLinkJavaIdMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 		this.mutable = new JavaEclipseLinkMutable(this);
 		this.converterContainer = this.buildConverterContainer();
