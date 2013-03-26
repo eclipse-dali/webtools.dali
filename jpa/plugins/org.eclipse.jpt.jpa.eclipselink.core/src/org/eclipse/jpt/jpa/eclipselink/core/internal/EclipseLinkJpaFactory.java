@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.core.resource.java.MappedSuperclassAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkJpaProject;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkBasicCollectionMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicCollectionMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkBasicMapMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkBasicMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkEmbeddableImpl;
@@ -133,8 +133,8 @@ public class EclipseLinkJpaFactory
 
 	// ********** EclipseLink-specific Java Context Model **********
 
-	public JavaEclipseLinkBasicCollectionMapping buildJavaEclipseLinkBasicCollectionMapping(JavaSpecifiedPersistentAttribute parent) {
-		return new JavaEclipseLinkBasicCollectionMapping(parent);
+	public EclipseLinkJavaBasicCollectionMapping buildJavaEclipseLinkBasicCollectionMapping(JavaSpecifiedPersistentAttribute parent) {
+		return new EclipseLinkJavaBasicCollectionMapping(parent);
 	}
 	
 	public JavaEclipseLinkBasicMapMapping buildJavaEclipseLinkBasicMapMapping(JavaSpecifiedPersistentAttribute parent) {
