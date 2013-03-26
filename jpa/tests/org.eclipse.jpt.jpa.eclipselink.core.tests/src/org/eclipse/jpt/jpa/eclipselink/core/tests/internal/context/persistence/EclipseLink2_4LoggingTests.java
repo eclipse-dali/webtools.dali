@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLoggingLevel;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_4JpaPlatformFactory;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_4;
 
 public class EclipseLink2_4LoggingTests
 	extends EclipseLink2_0PersistenceUnitTestCase
@@ -98,7 +98,7 @@ public class EclipseLink2_4LoggingTests
 
 	@Override
 	protected String getJpaPlatformID() {
-		return EclipseLink2_4JpaPlatformFactory.ID;
+		return EclipseLinkJpaPlatformFactory2_4.ID;
 	}
 	
 	// ********** behavior **********

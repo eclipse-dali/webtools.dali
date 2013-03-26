@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaModel;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_4JpaPlatformFactory;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
 
 /**
@@ -28,6 +28,6 @@ public class EclipseLink2_4ProjectFlagModel<T extends JpaModel>
 	@Override
 	protected Boolean transform_(T jpaModel) {
 		EclipseLinkJpaPlatformVersion jpaVersion = (EclipseLinkJpaPlatformVersion) jpaModel.getJpaPlatform().getJpaVersion();
-		return Boolean.valueOf(jpaVersion.isCompatibleWithEclipseLinkVersion(EclipseLink2_4JpaPlatformFactory.VERSION));
+		return Boolean.valueOf(jpaVersion.isCompatibleWithEclipseLinkVersion(EclipseLinkJpaPlatformFactory2_4.VERSION));
 	}
 }

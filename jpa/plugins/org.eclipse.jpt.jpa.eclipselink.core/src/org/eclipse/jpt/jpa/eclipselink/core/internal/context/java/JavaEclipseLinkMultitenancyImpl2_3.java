@@ -43,7 +43,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaSpecifie
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkTargetDatabase;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_4JpaPlatformFactory;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.TenantDiscriminatorColumnValidator2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.NullEclipseLinkTenantDiscriminatorColumnAnnotation2_3;
@@ -668,7 +668,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		if (getSpecifiedType() == EclipseLinkMultitenantType2_3.TABLE_PER_TENANT && ! this.getJpaPlatformVersion().isCompatibleWithEclipseLinkVersion(EclipseLink2_4JpaPlatformFactory.VERSION)) {
+		if (getSpecifiedType() == EclipseLinkMultitenantType2_3.TABLE_PER_TENANT && ! this.getJpaPlatformVersion().isCompatibleWithEclipseLinkVersion(EclipseLinkJpaPlatformFactory2_4.VERSION)) {
 			messages.add(
 				this.buildValidationMessage(
 					this.getMultitenantAnnotationTextRange(),
