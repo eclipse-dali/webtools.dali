@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,11 +16,11 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumeratedAnnotation2_0
 /**
  * <code>javax.persistence.MapKeyEnumerated</code>
  */
-public final class NullMapKeyEnumerated2_0Annotation
+public final class NullMapKeyEnumeratedAnnotation2_0
 	extends NullBaseEnumeratedAnnotation<MapKeyEnumeratedAnnotation2_0>
 	implements MapKeyEnumeratedAnnotation2_0
 {
-	protected NullMapKeyEnumerated2_0Annotation(JavaResourceAnnotatedElement parent) {
+	protected NullMapKeyEnumeratedAnnotation2_0(JavaResourceAnnotatedElement parent) {
 		super(parent);
 	}
 

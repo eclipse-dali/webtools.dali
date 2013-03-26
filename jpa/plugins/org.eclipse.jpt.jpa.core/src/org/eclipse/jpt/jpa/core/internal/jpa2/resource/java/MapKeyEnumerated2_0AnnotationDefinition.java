@@ -46,7 +46,7 @@ public final class MapKeyEnumerated2_0AnnotationDefinition
 	}
 
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
-		return new NullMapKeyEnumerated2_0Annotation(parent);
+		return new NullMapKeyEnumeratedAnnotation2_0(parent);
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
