@@ -136,8 +136,8 @@ public class EclipseLinkOrmXmlContextModelFactory
 		return new OrmEclipseLinkBasicMapMapping(parent, resourceMapping);
 	}
 	
-	public OrmEclipseLinkTransformationMapping buildOrmEclipseLinkTransformationMapping(OrmSpecifiedPersistentAttribute parent, XmlTransformation resourceMapping) {
-		return new OrmEclipseLinkTransformationMapping(parent, resourceMapping);
+	public EclipseLinkOrmTransformationMapping buildOrmEclipseLinkTransformationMapping(OrmSpecifiedPersistentAttribute parent, XmlTransformation resourceMapping) {
+		return new EclipseLinkOrmTransformationMapping(parent, resourceMapping);
 	}
 	
 	public EclipseLinkOrmVariableOneToOneMapping buildOrmEclipseLinkVariableOneToOneMapping(OrmSpecifiedPersistentAttribute parent, XmlVariableOneToOne resourceMapping) {

@@ -21,11 +21,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersi
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.Attributes;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTransformation;
 
-public class OrmEclipseLinkTransformationMapping
+public class EclipseLinkOrmTransformationMapping
 	extends AbstractOrmAttributeMapping<XmlTransformation> 
 	implements EclipseLinkTransformationMapping
 {
-	public OrmEclipseLinkTransformationMapping(OrmSpecifiedPersistentAttribute parent, XmlTransformation xmlMapping) {
+	public EclipseLinkOrmTransformationMapping(OrmSpecifiedPersistentAttribute parent, XmlTransformation xmlMapping) {
 		super(parent, xmlMapping);
 	}
 
