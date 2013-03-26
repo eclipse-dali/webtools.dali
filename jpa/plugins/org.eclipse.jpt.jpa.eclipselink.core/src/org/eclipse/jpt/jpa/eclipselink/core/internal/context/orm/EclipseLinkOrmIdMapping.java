@@ -31,7 +31,7 @@ import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class OrmEclipseLinkIdMapping
+public class EclipseLinkOrmIdMapping
 	extends AbstractOrmIdMapping<XmlId>
 	implements EclipseLinkIdMapping2_0, EclipseLinkOrmConvertibleMapping
 {
@@ -40,7 +40,7 @@ public class OrmEclipseLinkIdMapping
 	protected final EclipseLinkOrmConverterContainer converterContainer;
 	
 	
-	public OrmEclipseLinkIdMapping(OrmSpecifiedPersistentAttribute parent, XmlId xmlMapping) {
+	public EclipseLinkOrmIdMapping(OrmSpecifiedPersistentAttribute parent, XmlId xmlMapping) {
 		super(parent, xmlMapping);
 		this.mutable = new EclipseLinkOrmMutable(this);
 		this.converterContainer = this.buildConverterContainer();

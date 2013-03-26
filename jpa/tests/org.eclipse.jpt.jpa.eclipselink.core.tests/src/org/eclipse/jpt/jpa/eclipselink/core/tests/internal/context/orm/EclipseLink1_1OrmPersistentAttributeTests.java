@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkIdMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmIdMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmOneToOneMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLink1_1ContextModelTestCase;
 
@@ -168,7 +168,7 @@ public class EclipseLink1_1OrmPersistentAttributeTests
 		specifiedOrmPersistentAttribute = specifiedAttributes.next();
 		assertEquals("id", specifiedOrmPersistentAttribute.getName());
 		assertFalse(specifiedOrmPersistentAttribute.isVirtual());
-		assertTrue(specifiedOrmPersistentAttribute.getMapping() instanceof OrmEclipseLinkIdMapping);
+		assertTrue(specifiedOrmPersistentAttribute.getMapping() instanceof EclipseLinkOrmIdMapping);
 		
 		specifiedOrmPersistentAttribute = specifiedAttributes.next();
 		assertEquals("address", specifiedOrmPersistentAttribute.getName());

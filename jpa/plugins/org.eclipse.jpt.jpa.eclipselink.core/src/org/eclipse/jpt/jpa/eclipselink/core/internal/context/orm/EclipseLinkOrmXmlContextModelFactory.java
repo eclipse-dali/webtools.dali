@@ -90,7 +90,7 @@ public class EclipseLinkOrmXmlContextModelFactory
 	
 	@Override
 	public OrmIdMapping buildOrmIdMapping(OrmSpecifiedPersistentAttribute parent, org.eclipse.jpt.jpa.core.resource.orm.XmlId resourceMapping) {
-		return new OrmEclipseLinkIdMapping(parent, (XmlId) resourceMapping);
+		return new EclipseLinkOrmIdMapping(parent, (XmlId) resourceMapping);
 	}
 
 	@Override

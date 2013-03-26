@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkBasicMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkIdMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkIdMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmIdMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConvert;
@@ -84,8 +84,8 @@ public class EclipseLinkOrmIdMappingTests
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmSpecifiedPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
-		OrmEclipseLinkIdMapping contextId = 
-			(OrmEclipseLinkIdMapping) ormPersistentAttribute.getMapping();
+		EclipseLinkOrmIdMapping contextId = 
+			(EclipseLinkOrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
 			(XmlEntity)getXmlEntityMappings().getEntities().get(0);
 		XmlId resourceId = 
@@ -167,8 +167,8 @@ public class EclipseLinkOrmIdMappingTests
 			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmSpecifiedPersistentAttribute ormPersistentAttribute = 
 			ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("myDate"), MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
-		OrmEclipseLinkIdMapping contextId = 
-			(OrmEclipseLinkIdMapping) ormPersistentAttribute.getMapping();
+		EclipseLinkOrmIdMapping contextId = 
+			(EclipseLinkOrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
 			(XmlEntity)getXmlEntityMappings().getEntities().get(0);
 		XmlId resourceId = 
@@ -265,8 +265,8 @@ public class EclipseLinkOrmIdMappingTests
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmSpecifiedPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("myDate"), MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
-		OrmEclipseLinkIdMapping contextId = 
-			(OrmEclipseLinkIdMapping) ormPersistentAttribute.getMapping();
+		EclipseLinkOrmIdMapping contextId = 
+			(EclipseLinkOrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
 			(XmlEntity)getXmlEntityMappings().getEntities().get(0);
 		XmlId resourceId = 
