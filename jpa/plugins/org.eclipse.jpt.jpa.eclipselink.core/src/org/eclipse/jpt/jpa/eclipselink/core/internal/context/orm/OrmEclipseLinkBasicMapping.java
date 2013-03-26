@@ -41,7 +41,7 @@ public class OrmEclipseLinkBasicMapping
 	extends AbstractOrmBasicMapping<XmlBasic>
 	implements EclipseLinkBasicMapping, EclipseLinkOrmConvertibleMapping, OrmGeneratedValueMapping
 {
-	protected final OrmEclipseLinkMutable mutable;
+	protected final EclipseLinkOrmMutable mutable;
 	
 	protected final EclipseLinkOrmConverterContainer converterContainer;
 
@@ -51,7 +51,7 @@ public class OrmEclipseLinkBasicMapping
 
 	public OrmEclipseLinkBasicMapping(OrmSpecifiedPersistentAttribute parent, XmlBasic xmlMapping) {
 		super(parent, xmlMapping);
-		this.mutable = new OrmEclipseLinkMutable(this);
+		this.mutable = new EclipseLinkOrmMutable(this);
 		this.converterContainer = this.buildConverterContainer();
 		this.generatorContainer = this.buildGeneratorContainer();
 		this.generatedValue = this.buildGeneratedValue();

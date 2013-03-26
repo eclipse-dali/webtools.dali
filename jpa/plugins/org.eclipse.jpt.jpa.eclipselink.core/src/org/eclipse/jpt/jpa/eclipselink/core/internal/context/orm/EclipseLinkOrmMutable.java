@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaPersiste
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMutable;
 
-public class OrmEclipseLinkMutable
+public class EclipseLinkOrmMutable
 	extends AbstractOrmXmlContextModel<OrmAttributeMapping>
 	implements EclipseLinkMutable
 {
@@ -25,7 +25,7 @@ public class OrmEclipseLinkMutable
 	protected boolean defaultMutable;
 
 
-	public OrmEclipseLinkMutable(OrmAttributeMapping parent) {
+	public EclipseLinkOrmMutable(OrmAttributeMapping parent) {
 		super(parent);
 		this.specifiedMutable = this.buildSpecifiedMutable();
 	}

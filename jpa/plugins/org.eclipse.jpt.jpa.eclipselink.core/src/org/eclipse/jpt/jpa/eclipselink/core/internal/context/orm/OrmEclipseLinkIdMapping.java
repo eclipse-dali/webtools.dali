@@ -35,14 +35,14 @@ public class OrmEclipseLinkIdMapping
 	extends AbstractOrmIdMapping<XmlId>
 	implements EclipseLinkIdMapping2_0, EclipseLinkOrmConvertibleMapping
 {
-	protected final OrmEclipseLinkMutable mutable;
+	protected final EclipseLinkOrmMutable mutable;
 	
 	protected final EclipseLinkOrmConverterContainer converterContainer;
 	
 	
 	public OrmEclipseLinkIdMapping(OrmSpecifiedPersistentAttribute parent, XmlId xmlMapping) {
 		super(parent, xmlMapping);
-		this.mutable = new OrmEclipseLinkMutable(this);
+		this.mutable = new EclipseLinkOrmMutable(this);
 		this.converterContainer = this.buildConverterContainer();
 	}
 	
