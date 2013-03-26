@@ -35,7 +35,7 @@ public class EclipseLinkJavaConverterContainerImpl
 	extends AbstractJavaContextModel<EclipseLinkJavaConverterContainer.Parent>
 	implements EclipseLinkJavaConverterContainer
 {
-	protected final ContextListContainer<JavaEclipseLinkCustomConverter, ConverterAnnotation> customConverterContainer;
+	protected final ContextListContainer<EclipseLinkJavaCustomConverter, ConverterAnnotation> customConverterContainer;
 	protected final ContextListContainer<JavaEclipseLinkObjectTypeConverter, ObjectTypeConverterAnnotation> objectTypeConverterContainer;
 	protected final ContextListContainer<JavaEclipseLinkStructConverter, StructConverterAnnotation> structConverterContainer;
 	protected final ContextListContainer<JavaEclipseLinkTypeConverter, TypeConverterAnnotation> typeConverterContainer;
@@ -73,7 +73,7 @@ public class EclipseLinkJavaConverterContainerImpl
 
 	// ********** custom converters **********
 
-	public ListIterable<JavaEclipseLinkCustomConverter> getCustomConverters() {
+	public ListIterable<EclipseLinkJavaCustomConverter> getCustomConverters() {
 		return this.customConverterContainer.getContextElements();
 	}
 	
@@ -81,11 +81,11 @@ public class EclipseLinkJavaConverterContainerImpl
 		return this.customConverterContainer.getContextElementsSize();
 	}
 
-	public JavaEclipseLinkCustomConverter addCustomConverter(String name) {
+	public EclipseLinkJavaCustomConverter addCustomConverter(String name) {
 		return this.addCustomConverter(name, this.getCustomConvertersSize());
 	}
 
-	public JavaEclipseLinkCustomConverter addCustomConverter(String name, int index) {
+	public EclipseLinkJavaCustomConverter addCustomConverter(String name, int index) {
 		ConverterAnnotation annotation = this.addCustomConverterAnnotation(name, index);
 		return this.customConverterContainer.addContextElement(index, annotation);
 	}
@@ -97,7 +97,7 @@ public class EclipseLinkJavaConverterContainerImpl
 	}
 
 	public void removeCustomConverter(EclipseLinkCustomConverter customConverter) {
-		this.removeCustomConverter(this.customConverterContainer.indexOfContextElement((JavaEclipseLinkCustomConverter) customConverter));
+		this.removeCustomConverter(this.customConverterContainer.indexOfContextElement((EclipseLinkJavaCustomConverter) customConverter));
 	}
 
 	public void removeCustomConverter(int index) {
@@ -110,8 +110,8 @@ public class EclipseLinkJavaConverterContainerImpl
 		this.customConverterContainer.moveContextElement(targetIndex, sourceIndex);
 	}
 
-	protected JavaEclipseLinkCustomConverter buildCustomConverter(ConverterAnnotation converterAnnotation) {
-		return new JavaEclipseLinkCustomConverter(this, converterAnnotation);
+	protected EclipseLinkJavaCustomConverter buildCustomConverter(ConverterAnnotation converterAnnotation) {
+		return new EclipseLinkJavaCustomConverter(this, converterAnnotation);
 	}
 
 	protected void syncCustomConverters() {
@@ -128,7 +128,7 @@ public class EclipseLinkJavaConverterContainerImpl
 		return this.getJavaResourceAnnotatedElement().getAnnotations(ConverterAnnotation.ANNOTATION_NAME);
 	}
 
-	protected ContextListContainer<JavaEclipseLinkCustomConverter, ConverterAnnotation> buildCustomConverterContainer() {
+	protected ContextListContainer<EclipseLinkJavaCustomConverter, ConverterAnnotation> buildCustomConverterContainer() {
 		CustomConverterContainer container = new CustomConverterContainer();
 		container.initialize();
 		return container;
@@ -138,14 +138,14 @@ public class EclipseLinkJavaConverterContainerImpl
 	 * custom converter container
 	 */
 	protected class CustomConverterContainer
-		extends ContextListContainer<JavaEclipseLinkCustomConverter, ConverterAnnotation>
+		extends ContextListContainer<EclipseLinkJavaCustomConverter, ConverterAnnotation>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return CUSTOM_CONVERTERS_LIST;
 		}
 		@Override
-		protected JavaEclipseLinkCustomConverter buildContextElement(ConverterAnnotation resourceElement) {
+		protected EclipseLinkJavaCustomConverter buildContextElement(ConverterAnnotation resourceElement) {
 			return EclipseLinkJavaConverterContainerImpl.this.buildCustomConverter(resourceElement);
 		}
 		@Override
@@ -153,7 +153,7 @@ public class EclipseLinkJavaConverterContainerImpl
 			return EclipseLinkJavaConverterContainerImpl.this.getCustomConverterAnnotations();
 		}
 		@Override
-		protected ConverterAnnotation getResourceElement(JavaEclipseLinkCustomConverter contextElement) {
+		protected ConverterAnnotation getResourceElement(EclipseLinkJavaCustomConverter contextElement) {
 			return contextElement.getConverterAnnotation();
 		}
 	}

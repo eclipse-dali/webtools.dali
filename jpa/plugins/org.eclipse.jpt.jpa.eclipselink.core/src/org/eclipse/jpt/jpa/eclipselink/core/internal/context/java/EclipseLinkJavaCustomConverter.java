@@ -22,14 +22,14 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 /**
  * <code>org.eclipse.persistence.annotations.Converter</code>
  */
-public class JavaEclipseLinkCustomConverter
+public class EclipseLinkJavaCustomConverter
 	extends EclipseLinkJavaConverterClassConverter<ConverterAnnotation>
 	implements EclipseLinkCustomConverter
 {
 	private String fullyQualifiedConverterClass;
 
 
-	public JavaEclipseLinkCustomConverter(EclipseLinkJavaConverterContainer parent, ConverterAnnotation converterAnnotation) {
+	public EclipseLinkJavaCustomConverter(EclipseLinkJavaConverterContainer parent, ConverterAnnotation converterAnnotation) {
 		super(parent, converterAnnotation, converterAnnotation.getConverterClass());
 	}
 

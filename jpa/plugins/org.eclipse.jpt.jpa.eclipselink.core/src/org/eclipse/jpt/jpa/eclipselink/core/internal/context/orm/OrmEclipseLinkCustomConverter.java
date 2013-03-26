@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkCustomConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -81,7 +81,7 @@ public class OrmEclipseLinkCustomConverter
 
 	// ********** metadata conversion **********
 
-	public void convertFrom(JavaEclipseLinkCustomConverter javaConverter) {
+	public void convertFrom(EclipseLinkJavaCustomConverter javaConverter) {
 		super.convertFrom(javaConverter);
 		this.setConverterClass(javaConverter.getFullyQualifiedConverterClass());
 	}

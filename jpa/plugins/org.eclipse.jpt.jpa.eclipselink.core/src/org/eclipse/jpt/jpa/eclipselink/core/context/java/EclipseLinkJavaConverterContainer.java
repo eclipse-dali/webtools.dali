@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkCustomConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkStructConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkTypeConverter;
@@ -33,8 +33,8 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLin
 public interface EclipseLinkJavaConverterContainer
 	extends EclipseLinkConverterContainer
 {
-	ListIterable<JavaEclipseLinkCustomConverter> getCustomConverters();
-	JavaEclipseLinkCustomConverter addCustomConverter(String name, int index);
+	ListIterable<EclipseLinkJavaCustomConverter> getCustomConverters();
+	EclipseLinkJavaCustomConverter addCustomConverter(String name, int index);
 
 	ListIterable<JavaEclipseLinkObjectTypeConverter> getObjectTypeConverters();
 	JavaEclipseLinkObjectTypeConverter addObjectTypeConverter(String name, int index);
