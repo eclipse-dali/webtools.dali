@@ -33,7 +33,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicCollectionMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMapMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkBasicMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkEmbeddableImpl;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkEntityImpl;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkIdMapping;
@@ -82,7 +82,7 @@ public class EclipseLinkJpaFactory
 
 	@Override
 	public JavaBasicMapping buildJavaBasicMapping(JavaSpecifiedPersistentAttribute parent) {
-		return new JavaEclipseLinkBasicMapping(parent);
+		return new EclipseLinkJavaBasicMapping(parent);
 	}
 	
 	@Override

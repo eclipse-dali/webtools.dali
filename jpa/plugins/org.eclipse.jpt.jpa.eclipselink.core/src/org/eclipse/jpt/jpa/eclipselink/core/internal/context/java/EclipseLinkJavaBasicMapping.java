@@ -14,7 +14,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.Generator;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratedValue;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratedValueMapping;
@@ -24,12 +23,12 @@ import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaBasicMapping;
 import org.eclipse.jpt.jpa.core.resource.java.GeneratedValueAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkBasicMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class JavaEclipseLinkBasicMapping
+public class EclipseLinkJavaBasicMapping
 	extends AbstractJavaBasicMapping
 	implements
 		EclipseLinkBasicMapping,
@@ -46,7 +45,7 @@ public class JavaEclipseLinkBasicMapping
 	protected JavaGeneratedValue generatedValue;
 
 
-	public JavaEclipseLinkBasicMapping(JavaSpecifiedPersistentAttribute parent) {
+	public EclipseLinkJavaBasicMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 		this.mutable = new JavaEclipseLinkMutable(this);
 		this.converterContainer = this.buildConverterContainer();
