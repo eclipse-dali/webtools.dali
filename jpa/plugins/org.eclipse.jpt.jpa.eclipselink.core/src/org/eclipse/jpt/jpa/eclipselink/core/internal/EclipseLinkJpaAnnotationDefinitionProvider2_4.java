@@ -36,7 +36,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkPr
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkReadOnlyAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkReadTransformerAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkStructConverterAnnotationDefinition;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkStructConverters2_2AnnotationDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkStructConvertersAnnotationDefinition2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkStructureAnnotationDefinition2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkTenantDiscriminatorColumnAnnotationDefinition2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkTenantDiscriminatorColumnsAnnotationDefinition2_3;
@@ -94,7 +94,7 @@ public class EclipseLinkJpaAnnotationDefinitionProvider2_4
 		EclipseLinkPrivateOwnedAnnotationDefinition.instance(),
 		EclipseLinkReadOnlyAnnotationDefinition.instance(),
 		EclipseLinkReadTransformerAnnotationDefinition.instance(),
-		EclipseLinkStructConverters2_2AnnotationDefinition.instance(),
+		EclipseLinkStructConvertersAnnotationDefinition2_2.instance(),
 		EclipseLinkStructureAnnotationDefinition2_3.instance(),
 		EclipseLinkTenantDiscriminatorColumnsAnnotationDefinition2_3.instance(),
 		EclipseLinkTransformationAnnotationDefinition.instance(),
