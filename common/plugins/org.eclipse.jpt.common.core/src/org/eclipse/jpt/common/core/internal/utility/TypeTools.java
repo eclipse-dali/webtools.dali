@@ -27,12 +27,14 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  */
 public final class TypeTools {
 
+	// ********** inheritance hierarchy **********
+
 	/**
 	 * Climb the specified type's inheritance hierarchy looking for the specified interface.
 	 */
 	public static boolean isSubType(String potentialSubTypeName, String potentialSuperTypeName, IJavaProject javaProject) {
 		try {
-			return isSubType(javaProject.findType(potentialSubTypeName), javaProject.findType(potentialSuperTypeName));
+			return isSubType_(javaProject.findType(potentialSubTypeName), javaProject.findType(potentialSuperTypeName));
 		} catch (JavaModelException ex) {
 			JptCommonCorePlugin.instance().logError(ex);
 			return false;
@@ -49,10 +51,10 @@ public final class TypeTools {
 	}
 
 	private static boolean isSubType_(IType potentialSubType, String potentialSuperTypeName) throws JavaModelException {
-		return isSubType(potentialSubType, potentialSubType.getJavaProject().findType(potentialSuperTypeName));
+		return isSubType_(potentialSubType, potentialSubType.getJavaProject().findType(potentialSuperTypeName));
 	}
 
-	private static boolean isSubType(IType potentialSubType, IType potentialSuperType) throws JavaModelException {
+	private static boolean isSubType_(IType potentialSubType, IType potentialSuperType) throws JavaModelException {
 		if ((potentialSubType == null) || (potentialSuperType == null)) {
 			return false;
 		}
@@ -76,7 +78,7 @@ public final class TypeTools {
 			}
 
 			// recurse into super type
-			if (isSubType(javaProject.findType(superTypeName), potentialSuperType)) {
+			if (isSubType_(javaProject.findType(superTypeName), potentialSuperType)) {
 				return true;
 			}
 		}
@@ -137,15 +139,6 @@ public final class TypeTools {
 		}
 	}
 
-	public static boolean isEnum(IType type) {
-		try {
-			return type.isEnum();
-		} catch (JavaModelException ex) {
-			JptCommonCorePlugin.instance().logError(ex);
-			return false;
-		}
-	}
-
 	public static boolean isSerializable(IType type) {
 		return isSubType(type, SERIALIZABLE_NAME);
 	}
@@ -155,6 +148,9 @@ public final class TypeTools {
 	}
 
 	public static final String SERIALIZABLE_NAME = java.io.Serializable.class.getName();
+
+
+	// ********** public zero-arg ctor **********
 
 	public static boolean hasPublicZeroArgConstructor(String typeName, IJavaProject javaProject) {
 		if ((javaProject != null) && (typeName != null)) {
@@ -190,20 +186,8 @@ public final class TypeTools {
 		return ! ctorDefined;
 	}
 
-	public static final Predicate<IType> IS_INTERFACE = new IsInterface();
-	public static class IsInterface
-		extends PredicateAdapter<IType>
-	{
-		@Override
-		public boolean evaluate(IType type) {
-			try {
-				return type.isInterface();
-			} catch (JavaModelException e) {
-				JptCommonCorePlugin.instance().logError(e);
-				return false;
-			}
-		}
-	}
+
+	// ********** is class **********
 
 	public static final Predicate<IType> IS_CLASS = new IsClass();
 	public static class IsClass
@@ -211,14 +195,43 @@ public final class TypeTools {
 	{
 		@Override
 		public boolean evaluate(IType type) {
-			try {
-				return type.isClass();
-			} catch (JavaModelException e) {
-				JptCommonCorePlugin.instance().logError(e);
-				return false;
-			}
+			return isClass(type);
 		}
 	}
+
+	public static boolean isClass(IType type) {
+		try {
+			return type.isClass();
+		} catch (JavaModelException ex) {
+			JptCommonCorePlugin.instance().logError(ex);
+			return false;
+		}
+	}
+
+
+	// ********** is interface **********
+
+	public static final Predicate<IType> IS_INTERFACE = new IsInterface();
+	public static class IsInterface
+		extends PredicateAdapter<IType>
+	{
+		@Override
+		public boolean evaluate(IType type) {
+			return isInterface(type);
+		}
+	}
+
+	public static boolean isInterface(IType type) {
+		try {
+			return type.isInterface();
+		} catch (JavaModelException ex) {
+			JptCommonCorePlugin.instance().logError(ex);
+			return false;
+		}
+	}
+
+
+	// ********** is enum **********
 
 	public static final Predicate<IType> IS_ENUM = new IsEnum();
 	public static class IsEnum
@@ -226,14 +239,34 @@ public final class TypeTools {
 	{
 		@Override
 		public boolean evaluate(IType type) {
-			try {
-				return type.isEnum();
-			} catch (JavaModelException e) {
-				JptCommonCorePlugin.instance().logError(e);
-				return false;
-			}
+			return isEnum(type);
 		}
 	}
+
+	public static boolean isEnum(IType type) {
+		try {
+			return type.isEnum();
+		} catch (JavaModelException ex) {
+			JptCommonCorePlugin.instance().logError(ex);
+			return false;
+		}
+	}
+
+
+	// ********** name **********
+
+	public static IType[] getTypes(IType type) {
+		try {
+			return type.getTypes();
+		} catch (JavaModelException ex) {
+			JptCommonCorePlugin.instance().logError(ex);
+			return EMPTY_ARRAY;
+		}
+	}
+	public static final IType[] EMPTY_ARRAY = new IType[0];
+
+
+	// ********** name **********
 
 	public static final Transformer<IType, String> NAME_TRANSFORMER = new NameTransformer();
 	public static class NameTransformer
@@ -244,6 +277,9 @@ public final class TypeTools {
 			return type.getFullyQualifiedName();
 		}
 	}
+
+
+	// ********** disabled constructor **********
 
 	private TypeTools() {
 		throw new UnsupportedOperationException();

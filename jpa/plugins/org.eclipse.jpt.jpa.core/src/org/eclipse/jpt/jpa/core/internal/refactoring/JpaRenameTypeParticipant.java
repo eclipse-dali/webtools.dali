@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.common.core.internal.utility.TypeTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
@@ -57,16 +58,7 @@ public class JpaRenameTypeParticipant
 	}
 
 	private void addNestedTypes(IType renamedType) {
-		IType[] nestedTypes;
-		try {
-			nestedTypes = renamedType.getTypes();
-		}
-		catch (JavaModelException ex) {
-			JptJpaCorePlugin.instance().logError(ex);
-			return;
-		}
-
-		for (IType nestedType : nestedTypes) {
+		for (IType nestedType : TypeTools.getTypes(renamedType)) {
 			this.addNestedType(nestedType);
 		}
 	}

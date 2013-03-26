@@ -12,10 +12,9 @@ package org.eclipse.jpt.jpa.core.internal.refactoring;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.common.core.internal.utility.TypeTools;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.refactoring.JptJpaCoreRefactoringMessages;
 import org.eclipse.ltk.core.refactoring.participants.RefactoringArguments;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -44,16 +43,7 @@ public class JpaMoveTypeParticipant
 	}
 
 	private void addNestedTypes(IType renamedType, RefactoringArguments arguments) {
-		IType[] nestedTypes;
-		try {
-			nestedTypes = renamedType.getTypes();
-		}
-		catch (JavaModelException ex) {
-			JptJpaCorePlugin.instance().logError(ex);
-			return;
-		}
-
-		for (IType nestedType : nestedTypes) {
+		for (IType nestedType : TypeTools.getTypes(renamedType)) {
 			this.addNestedType(nestedType, arguments);
 		}
 	}
