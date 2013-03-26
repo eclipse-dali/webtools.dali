@@ -125,7 +125,7 @@ public class EclipseLinkOrmXmlContextModelFactory
 	
 	@Override
 	public OrmVersionMapping buildOrmVersionMapping(OrmSpecifiedPersistentAttribute parent, org.eclipse.jpt.jpa.core.resource.orm.XmlVersion resourceMapping) {
-		return new OrmEclipseLinkVersionMapping(parent, (XmlVersion) resourceMapping);
+		return new EclipseLinkOrmVersionMapping(parent, (XmlVersion) resourceMapping);
 	}
 	
 	public EclipseLinkAbstractOrmBasicCollectionMapping buildOrmEclipseLinkBasicCollectionMapping(OrmSpecifiedPersistentAttribute parent, XmlBasicCollection resourceMapping) {

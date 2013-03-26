@@ -34,7 +34,7 @@ import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class OrmEclipseLinkVersionMapping
+public class EclipseLinkOrmVersionMapping
 	extends AbstractOrmVersionMapping<XmlVersion>
 	implements EclipseLinkVersionMapping, EclipseLinkOrmConvertibleMapping
 {	
@@ -43,7 +43,7 @@ public class OrmEclipseLinkVersionMapping
 	protected final EclipseLinkOrmConverterContainer converterContainer;
 	
 	
-	public OrmEclipseLinkVersionMapping(OrmSpecifiedPersistentAttribute parent, XmlVersion xmlMapping) {
+	public EclipseLinkOrmVersionMapping(OrmSpecifiedPersistentAttribute parent, XmlVersion xmlMapping) {
 		super(parent, xmlMapping);
 		this.mutable = new OrmEclipseLinkMutable(this);
 		this.converterContainer = this.buildConverterContainer();
