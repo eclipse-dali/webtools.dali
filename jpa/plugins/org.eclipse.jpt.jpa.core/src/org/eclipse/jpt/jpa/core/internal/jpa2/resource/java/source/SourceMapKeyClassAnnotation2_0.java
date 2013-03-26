@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClassAnnotation2_0;
 /**
  * <code>javax.persistence.MapKeyClass</code>
  */
-public final class SourceMapKeyClass2_0Annotation
+public final class SourceMapKeyClassAnnotation2_0
 	extends SourceAnnotation
 	implements MapKeyClassAnnotation2_0
 {
@@ -47,7 +47,7 @@ public final class SourceMapKeyClass2_0Annotation
 	private boolean fqClassNameStale = true;
 
 
-	public SourceMapKeyClass2_0Annotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
+	public SourceMapKeyClassAnnotation2_0(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
 		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 		this.valueAdapter = new AnnotatedElementAnnotationElementAdapter<String>(element, VALUE_ADAPTER);
 	}
@@ -145,5 +145,4 @@ public final class SourceMapKeyClass2_0Annotation
 	protected static DeclarationAnnotationElementAdapter<String> buildValueAdapter() {
 		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, JPA2_0.MAP_KEY_CLASS__VALUE, TypeStringExpressionConverter.instance());
 	}
-
 }
