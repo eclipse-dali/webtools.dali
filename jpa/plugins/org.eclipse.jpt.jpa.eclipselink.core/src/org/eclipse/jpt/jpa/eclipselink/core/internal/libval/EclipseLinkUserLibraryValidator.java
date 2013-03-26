@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_1JpaPlatformFa
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_2JpaPlatformFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_3JpaPlatformFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_4JpaPlatformFactory;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_5JpaPlatformFactory;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_5;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory;
 import org.eclipse.osgi.service.resolver.VersionRange;
 
@@ -63,7 +63,7 @@ public class EclipseLinkUserLibraryValidator
 		versionRanges.put(EclipseLink2_2JpaPlatformFactory.ID, new VersionRange("[2.2, 3.0)"));
 		versionRanges.put(EclipseLink2_3JpaPlatformFactory.ID, new VersionRange("[2.3, 3.0)"));
 		versionRanges.put(EclipseLink2_4JpaPlatformFactory.ID, new VersionRange("[2.4, 3.0)"));
-		versionRanges.put(EclipseLink2_5JpaPlatformFactory.ID, new VersionRange("[2.5, 3.0)"));
+		versionRanges.put(EclipseLinkJpaPlatformFactory2_5.ID, new VersionRange("[2.5, 3.0)"));
 		return versionRanges;
 	}
 }
