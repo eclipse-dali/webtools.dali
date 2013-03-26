@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -76,11 +76,11 @@ import org.eclipse.jpt.jpa.core.internal.resource.java.VersionAnnotationDefiniti
  * Support for existing JPA 1.0 annotations, new JPA 2.0 annotations, and
  * augmented support for annotations changed from 1.0 to 2.0
  */
-public class Generic2_0JpaAnnotationDefinitionProvider
+public class GenericJpaAnnotationDefinitionProvider2_0
 	extends AbstractJpaAnnotationDefinitionProvider
 {
 	// singleton
-	private static final JpaAnnotationDefinitionProvider INSTANCE = new Generic2_0JpaAnnotationDefinitionProvider();
+	private static final JpaAnnotationDefinitionProvider INSTANCE = new GenericJpaAnnotationDefinitionProvider2_0();
 
 	/**
 	 * Return the singleton
@@ -93,7 +93,7 @@ public class Generic2_0JpaAnnotationDefinitionProvider
 	/**
 	 * Enforce singleton usage
 	 */
-	private Generic2_0JpaAnnotationDefinitionProvider() {
+	private GenericJpaAnnotationDefinitionProvider2_0() {
 		super();
 	}
 

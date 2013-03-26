@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.tests.internal.jpa2.resource.java;
 
 import org.eclipse.jpt.jpa.core.JpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.jpa.core.internal.jpa2.Generic2_0JpaAnnotationDefinitionProvider;
+import org.eclipse.jpt.jpa.core.internal.jpa2.GenericJpaAnnotationDefinitionProvider2_0;
 import org.eclipse.jpt.jpa.core.tests.internal.resource.java.JpaJavaResourceModelTestCase;
 
 public class JavaResourceModel2_0TestCase extends JpaJavaResourceModelTestCase
@@ -22,6 +22,6 @@ public class JavaResourceModel2_0TestCase extends JpaJavaResourceModelTestCase
 
 	@Override
 	protected JpaAnnotationDefinitionProvider annotationDefinitionProvider() {
-		return Generic2_0JpaAnnotationDefinitionProvider.instance();
+		return GenericJpaAnnotationDefinitionProvider2_0.instance();
 	}
 }
