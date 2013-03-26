@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkConversionValue;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaConversionValue;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConversionValue;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -122,7 +122,7 @@ public class OrmEclipseLinkConversionValue
 
 	// ********** validation **********
 	
-	public void convertFrom(JavaEclipseLinkConversionValue value) {
+	public void convertFrom(EclipseLinkJavaConversionValue value) {
 		this.setDataValue(value.getDataValue());
 		this.setObjectValue(value.getObjectValue());
 	}

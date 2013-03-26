@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkConversionValue;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaConversionValue;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConversionValue;
@@ -464,7 +464,7 @@ public class OrmEclipseLinkObjectTypeConverter
 		this.setDataType(javaConverter.getFullyQualifiedDataType());
 		this.setObjectType(javaConverter.getFullyQualifiedObjectType());
 		this.setDefaultObjectValue(javaConverter.getDefaultObjectValue());
-		for (JavaEclipseLinkConversionValue value : javaConverter.getConversionValues()) {
+		for (EclipseLinkJavaConversionValue value : javaConverter.getConversionValues()) {
 			this.addConversionValue().convertFrom(value);
 		}
 	}

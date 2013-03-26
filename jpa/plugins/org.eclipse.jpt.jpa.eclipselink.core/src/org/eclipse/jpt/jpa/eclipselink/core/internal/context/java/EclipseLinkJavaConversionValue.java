@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConversionValueAnnotat
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class JavaEclipseLinkConversionValue
+public class EclipseLinkJavaConversionValue
 	extends AbstractJavaContextModel<JavaEclipseLinkObjectTypeConverter>
 	implements EclipseLinkConversionValue
 {
@@ -29,7 +29,7 @@ public class JavaEclipseLinkConversionValue
 	private String objectValue;
 
 
-	public JavaEclipseLinkConversionValue(JavaEclipseLinkObjectTypeConverter parent, ConversionValueAnnotation conversionValueAnnotation) {
+	public EclipseLinkJavaConversionValue(JavaEclipseLinkObjectTypeConverter parent, ConversionValueAnnotation conversionValueAnnotation) {
 		super(parent);
 		this.conversionValueAnnotation = conversionValueAnnotation;
 		this.dataValue = conversionValueAnnotation.getDataValue();
