@@ -66,13 +66,13 @@ public interface Pair<L, R> {
 	}
 
 	/**
-	 * Return true if the pairs' left and right values
+	 * Return whether the pairs' left and right values
 	 * are equal.
 	 */
 	boolean equals(Object o);
 
 	/**
-	 * Return a hash code based on the pair's
+	 * Return a hash code that is a XOR of the hash codes of the pair's
 	 * left and right values.
 	 */
 	int hashCode();

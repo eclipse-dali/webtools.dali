@@ -12,6 +12,9 @@ package org.eclipse.jpt.common.utility.internal;
 /**
  * Implement some of the methods in {@link Pair} that can
  * be defined in terms of the other methods.
+ * 
+ * @param <L> the type of the pair's left value
+ * @param <R> the type of the pair's right value
  */
 public abstract class AbstractPair<L, R>
 	implements Pair<L, R>
@@ -63,6 +66,6 @@ public abstract class AbstractPair<L, R>
 
 	@Override
 	public synchronized String toString() {
-		return this.getLeft() + "/" + this.getRight(); //$NON-NLS-1$
+		return this.getLeft() + "|" + this.getRight(); //$NON-NLS-1$
 	}
 }
