@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.core.internal.context.orm.OrmTransientMappingDefiniti
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmVersionMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.GenericJpaPlatformProvider2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.GenericOrmXmlContextModelFactory2_1;
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.OrmConverterTypeDefinition;
+import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.OrmConverterTypeDefinition2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.JPA2_1;
@@ -80,7 +80,7 @@ public class GenericOrmXmlDefinition2_1
 
 	protected static final OrmManagedTypeDefinition[] MANAGED_TYPE_DEFINITIONS_2_1 = new OrmManagedTypeDefinition[] {
 		OrmPersistentTypeDefinition.instance(),
-		OrmConverterTypeDefinition.instance(),
+		OrmConverterTypeDefinition2_1.instance(),
 	};
 
 	@Override

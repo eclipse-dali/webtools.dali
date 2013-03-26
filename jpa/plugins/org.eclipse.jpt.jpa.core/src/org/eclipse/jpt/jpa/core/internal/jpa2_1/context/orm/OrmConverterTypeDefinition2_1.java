@@ -19,11 +19,11 @@ import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.OrmXmlContextModelFactory2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlConverter;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlManagedType;
 
-public class OrmConverterTypeDefinition
+public class OrmConverterTypeDefinition2_1
 	implements OrmManagedTypeDefinition
 {	
 	// singleton
-	private static final OrmManagedTypeDefinition INSTANCE = new OrmConverterTypeDefinition();
+	private static final OrmManagedTypeDefinition INSTANCE = new OrmConverterTypeDefinition2_1();
 
 	/**
 	 * Return the singleton.
@@ -35,7 +35,7 @@ public class OrmConverterTypeDefinition
 	/**
 	 * Enforce singleton usage
 	 */
-	private OrmConverterTypeDefinition() {
+	private OrmConverterTypeDefinition2_1() {
 		super();
 	}
 

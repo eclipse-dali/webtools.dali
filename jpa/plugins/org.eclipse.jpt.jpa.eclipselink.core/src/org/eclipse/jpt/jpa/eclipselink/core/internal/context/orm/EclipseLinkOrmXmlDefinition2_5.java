@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmManagedTypeDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmPersistentTypeDefinition;
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.OrmConverterTypeDefinition;
+import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.OrmConverterTypeDefinition2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_5.EclipseLink2_5;
 
@@ -62,7 +62,7 @@ public class EclipseLinkOrmXmlDefinition2_5
 
 	protected static final OrmManagedTypeDefinition[] MANAGED_TYPE_DEFINITIONS_2_5 = new OrmManagedTypeDefinition[] {
 		OrmPersistentTypeDefinition.instance(),
-		OrmConverterTypeDefinition.instance(),
+		OrmConverterTypeDefinition2_1.instance(),
 	};
 
 
