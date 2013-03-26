@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTableRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.internal.context.java.GenericJavaOverrideJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaOverrideJoinTableRelationshipStrategy2_0;
@@ -249,7 +249,7 @@ public class GenericJavaOverrideRelationship
 		return this.getAssociationOverride().getDefaultTableName();
 	}
 
-	public JptValidator buildColumnValidator(BaseColumn column, TableColumn.ParentAdapter parentAdapter) {
+	public JpaValidator buildColumnValidator(BaseColumn column, TableColumn.ParentAdapter parentAdapter) {
 		return this.getAssociationOverride().buildColumnValidator(column, parentAdapter);
 	}
 
@@ -300,15 +300,15 @@ public class GenericJavaOverrideRelationship
 		}
 	}
 
-	public JptValidator buildJoinTableValidator(JoinTable table) {
+	public JpaValidator buildJoinTableValidator(JoinTable table) {
 		return this.getAssociationOverride2_0().buildJoinTableValidator(table);
 	}
 
-	public JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
+	public JpaValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
 		return this.getAssociationOverride2_0().buildJoinTableJoinColumnValidator(column, parentAdapter);
 	}
 
-	public JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
+	public JpaValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
 		return this.getAssociationOverride2_0().buildJoinTableInverseJoinColumnValidator(column, parentAdapter);
 	}
 }

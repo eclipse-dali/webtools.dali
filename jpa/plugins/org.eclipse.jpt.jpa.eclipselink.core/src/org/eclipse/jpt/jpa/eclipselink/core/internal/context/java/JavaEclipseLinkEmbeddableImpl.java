@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaEmbeddable;
 import org.eclipse.jpt.jpa.core.resource.java.EmbeddableAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkChangeTracking;
@@ -149,7 +149,7 @@ public class JavaEclipseLinkEmbeddableImpl
 	}
 
 	@Override
-	protected JptValidator buildTypeMappingValidator() {
+	protected JpaValidator buildTypeMappingValidator() {
 		return new EclipseLinkTypeMappingValidator(this);
 	}
 }

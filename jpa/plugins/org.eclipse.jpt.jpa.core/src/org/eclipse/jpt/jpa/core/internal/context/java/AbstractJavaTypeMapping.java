@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.context.TypeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericTypeMappingValidator;
 import org.eclipse.jpt.jpa.db.Schema;
@@ -244,7 +244,7 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 	 * Pre-condition: the mapping's {@link #getJavaResourceType() Java resource
 	 * type} is not <code>null</code>.
 	 */
-	protected JptValidator buildTypeMappingValidator() {
+	protected JpaValidator buildTypeMappingValidator() {
 		return new GenericTypeMappingValidator(this);
 	}
 

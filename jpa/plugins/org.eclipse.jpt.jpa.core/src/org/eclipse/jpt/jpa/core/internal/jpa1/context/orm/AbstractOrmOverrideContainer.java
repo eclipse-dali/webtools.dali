@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualOverride;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModel;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlOverride;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -431,11 +431,11 @@ public abstract class AbstractOrmOverrideContainer<
 		return this.parentAdapter.getDefaultTableName();
 	}
 
-	public JptValidator buildOverrideValidator(Override_ override) {
+	public JpaValidator buildOverrideValidator(Override_ override) {
 		return this.parentAdapter.buildOverrideValidator(override, this);
 	}
 
-	public JptValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter columnParentAdapter) {
+	public JpaValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter columnParentAdapter) {
 		return this.parentAdapter.buildColumnValidator(override, column, columnParentAdapter);
 	}
 

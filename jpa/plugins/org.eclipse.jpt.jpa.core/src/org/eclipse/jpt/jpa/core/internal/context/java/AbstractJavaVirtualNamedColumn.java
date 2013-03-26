@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualNamedColumn;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -165,7 +165,7 @@ public abstract class AbstractJavaVirtualNamedColumn<PA extends NamedColumn.Pare
 		this.buildValidator().validate(messages, reporter);
 	}
 
-	protected JptValidator buildValidator() {
+	protected JpaValidator buildValidator() {
 		return this.parentAdapter.buildColumnValidator(this);
 	}
 

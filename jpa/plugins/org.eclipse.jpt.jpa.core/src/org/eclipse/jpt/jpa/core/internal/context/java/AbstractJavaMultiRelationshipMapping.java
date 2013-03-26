@@ -54,7 +54,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EmbeddableOverrideDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.MapKeyAttributeOverrideColumnValidator;
@@ -1141,7 +1141,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			return this.getRelationshipStrategy().tableNameIsInvalid(tableName);
 		}
 
-		public JptValidator buildColumnValidator(NamedColumn column) {
+		public JpaValidator buildColumnValidator(NamedColumn column) {
 			return new MapKeyColumnValidator(this.getPersistentAttribute(), (BaseColumn) column, new RelationshipStrategyTableDescriptionProvider(this.getRelationshipStrategy()));
 		}
 	}
@@ -1197,11 +1197,11 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			return MappingTools.resolveOverriddenColumn(this.getOverridableTypeMapping(), attributeName);
 		}
 
-		public JptValidator buildOverrideValidator(Override_ override, OverrideContainer container) {
+		public JpaValidator buildOverrideValidator(Override_ override, OverrideContainer container) {
 			return new MapKeyAttributeOverrideValidator(this.getPersistentAttribute(), (AttributeOverride) override, (AttributeOverrideContainer) container, new EmbeddableOverrideDescriptionProvider());
 		}
 		
-		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter parentAdapter) {
+		public JpaValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter parentAdapter) {
 			return new MapKeyAttributeOverrideColumnValidator(this.getPersistentAttribute(), (AttributeOverride) override, column, new RelationshipStrategyTableDescriptionProvider(this.getRelationshipStrategy()));
 		}
 	}
@@ -1264,7 +1264,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			return AbstractJavaMultiRelationshipMapping.this.getValidationTextRange();
 		}
 
-		public JptValidator buildColumnValidator(NamedColumn column) {
+		public JpaValidator buildColumnValidator(NamedColumn column) {
 			return new MapKeyJoinColumnValidator(
 				this.getPersistentAttribute(),
 				(JoinColumn) column,

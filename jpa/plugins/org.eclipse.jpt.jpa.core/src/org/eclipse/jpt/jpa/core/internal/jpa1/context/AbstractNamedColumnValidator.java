@@ -17,7 +17,8 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TableColumn;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
+import org.eclipse.jpt.jpa.core.internal.context.NullJpaValidator;
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Table;
@@ -25,7 +26,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractNamedColumnValidator<C extends NamedColumn>
-	implements JptValidator
+	implements JpaValidator
 {
 	/** this is <code>null</code> for columns defined on entities and secondary tables */
 	protected final PersistentAttribute persistentAttribute;
@@ -34,7 +35,7 @@ public abstract class AbstractNamedColumnValidator<C extends NamedColumn>
 
 	protected final TableDescriptionProvider tableDescriptionProvider;
 
-	protected final JptValidator tableValidator;
+	protected final JpaValidator tableValidator;
 
 
 	protected AbstractNamedColumnValidator(
@@ -64,8 +65,8 @@ public abstract class AbstractNamedColumnValidator<C extends NamedColumn>
 		this.tableValidator = this.buildTableValidator();
 	}
 
-	protected JptValidator buildTableValidator() {
-		return JptValidator.Null.instance();
+	protected JpaValidator buildTableValidator() {
+		return NullJpaValidator.instance();
 	}
 
 	public final boolean validate(List<IMessage> messages, IReporter reporter) {
@@ -158,7 +159,7 @@ public abstract class AbstractNamedColumnValidator<C extends NamedColumn>
 	 * includes both normal columns and join columns.
 	 */
 	protected class BaseColumnTableValidator
-		implements JptValidator
+		implements JpaValidator
 	{
 		protected BaseColumnTableValidator() {
 			super();

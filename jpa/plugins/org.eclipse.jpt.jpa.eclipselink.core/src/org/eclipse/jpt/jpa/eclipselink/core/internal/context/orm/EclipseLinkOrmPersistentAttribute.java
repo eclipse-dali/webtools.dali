@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkSpecifiedAccessMethodsContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
@@ -135,7 +135,7 @@ public class EclipseLinkOrmPersistentAttribute
 	}
 
 	@Override
-	protected JptValidator buildAttibuteValidator() {
+	protected JpaValidator buildAttibuteValidator() {
 		return new EclipseLinkPersistentAttributeValidator(this);
 	}
 }

@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 
 /**
  * Represents a JPA accessor (field or property).
@@ -51,5 +51,5 @@ public interface Accessor
 
 	AccessType getDefaultAccess();
 
-	JptValidator buildAttributeValidator(SpecifiedPersistentAttribute persistentAttribute);
+	JpaValidator buildAttributeValidator(SpecifiedPersistentAttribute persistentAttribute);
 }

@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedNamedColumn;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.Table;
@@ -255,7 +255,7 @@ public abstract class AbstractJavaNamedColumn<PA extends NamedColumn.ParentAdapt
 		this.buildValidator().validate(messages, reporter);
 	}
 
-	protected JptValidator buildValidator() {
+	protected JpaValidator buildValidator() {
 		return this.parentAdapter.buildColumnValidator(this);
 	}
 

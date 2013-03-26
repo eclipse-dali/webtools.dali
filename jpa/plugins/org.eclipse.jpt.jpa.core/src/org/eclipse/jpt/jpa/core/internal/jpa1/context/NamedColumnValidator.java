@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 
 public class NamedColumnValidator
@@ -33,7 +33,7 @@ public class NamedColumnValidator
 	}
 
 	@Override
-	protected JptValidator buildTableValidator() {
+	protected JpaValidator buildTableValidator() {
 		return new BaseColumnTableValidator();
 	}
 

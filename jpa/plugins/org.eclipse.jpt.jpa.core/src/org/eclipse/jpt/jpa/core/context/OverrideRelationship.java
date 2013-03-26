@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.db.Table;
 
 /**
@@ -52,7 +52,7 @@ public interface OverrideRelationship
 
 	String getDefaultTableName();
 
-	JptValidator buildColumnValidator(BaseColumn column, TableColumn.ParentAdapter parentAdapter);
+	JpaValidator buildColumnValidator(BaseColumn column, TableColumn.ParentAdapter parentAdapter);
 
 	void initializeOnSpecified(SpecifiedOverrideRelationship specifiedRelationship);
 }

@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedUniqueConstraint;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.resource.java.BaseTableAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
 import org.eclipse.jpt.jpa.db.Catalog;
@@ -477,7 +477,7 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, PA extends Ta
 		this.buildTableValidator().validate(messages, reporter);
 	}
 
-	protected JptValidator buildTableValidator() {
+	protected JpaValidator buildTableValidator() {
 		return this.parentAdapter.buildTableValidator(this);
 	}
 

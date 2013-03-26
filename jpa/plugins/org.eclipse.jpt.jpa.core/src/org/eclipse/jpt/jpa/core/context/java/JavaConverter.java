@@ -15,7 +15,8 @@ import org.eclipse.jpt.common.utility.internal.ClassNameTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.context.Converter;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
+import org.eclipse.jpt.jpa.core.internal.context.NullJpaValidator;
 
 /**
  * Java converter
@@ -166,8 +167,8 @@ public interface JavaConverter
 			public JavaAttributeMapping getConverterParent() {
 				return this.parent;
 			}
-			public JptValidator buildValidator(Converter converter) {
-				return JptValidator.Null.instance();
+			public JpaValidator buildValidator(Converter converter) {
+				return NullJpaValidator.instance();
 			}
 		}
 

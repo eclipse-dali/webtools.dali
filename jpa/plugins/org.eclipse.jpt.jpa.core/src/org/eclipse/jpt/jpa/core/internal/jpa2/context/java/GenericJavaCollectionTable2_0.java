@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.CollectionTableTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.JoinColumnValidator;
@@ -155,7 +155,7 @@ public class GenericJavaCollectionTable2_0
 			return GenericJavaCollectionTable2_0.this.getJoinColumnsSize();
 		}
 
-		public JptValidator buildColumnValidator(NamedColumn column) {
+		public JpaValidator buildColumnValidator(NamedColumn column) {
 			return new JoinColumnValidator(this.getPersistentAttribute(), (JoinColumn) column, this, new CollectionTableTableDescriptionProvider());
 		}
 	}

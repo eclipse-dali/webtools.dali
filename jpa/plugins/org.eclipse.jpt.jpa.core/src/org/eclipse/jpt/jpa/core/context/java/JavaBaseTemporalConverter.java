@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.Converter;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.JavaElementCollectionTemporalConverterValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.JavaTemporalConverterValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaMapKeyTemporalConverterValidator;
@@ -84,7 +84,7 @@ public interface JavaBaseTemporalConverter
 				super(parent);
 			}
 			@Override
-			public JptValidator buildValidator(Converter converter) {
+			public JpaValidator buildValidator(Converter converter) {
 				return new JavaTemporalConverterValidator((BaseTemporalConverter) converter);
 			}
 		}
@@ -114,7 +114,7 @@ public interface JavaBaseTemporalConverter
 				super(parent);
 			}
 			@Override
-			public JptValidator buildValidator(Converter converter) {
+			public JpaValidator buildValidator(Converter converter) {
 				return new JavaElementCollectionTemporalConverterValidator((BaseTemporalConverter) converter);
 			}
 		}
@@ -159,7 +159,7 @@ public interface JavaBaseTemporalConverter
 				super(parent);
 			}
 			@Override
-			public JptValidator buildValidator(Converter converter) {
+			public JpaValidator buildValidator(Converter converter) {
 				return new JavaMapKeyTemporalConverterValidator((BaseTemporalConverter) converter);
 			}
 		}

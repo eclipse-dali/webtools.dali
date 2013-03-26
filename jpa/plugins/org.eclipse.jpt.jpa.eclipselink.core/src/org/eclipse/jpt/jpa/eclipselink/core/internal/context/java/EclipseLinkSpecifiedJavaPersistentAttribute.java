@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.Accessor;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkPersistentAttributeValidator;
@@ -101,7 +101,7 @@ public class EclipseLinkSpecifiedJavaPersistentAttribute
 	// ********** validation **********
 
 	@Override
-	protected JptValidator buildAttributeValidator() {
+	protected JpaValidator buildAttributeValidator() {
 		return new EclipseLinkPersistentAttributeValidator(this);
 	}
 }

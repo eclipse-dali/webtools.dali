@@ -35,7 +35,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmBaseEmbeddedMapping;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AssociationOverrideInverseJoinColumnValidator;
@@ -292,23 +292,23 @@ public abstract class AbstractOrmEmbeddedMapping<X extends XmlEmbedded>
 			return AbstractOrmEmbeddedMapping.this.getValidationTextRange();
 		}
 
-		public JptValidator buildOverrideValidator(Override_ override, OverrideContainer container) {
+		public JpaValidator buildOverrideValidator(Override_ override, OverrideContainer container) {
 			return new AssociationOverrideValidator(this.getPersistentAttribute(), (AssociationOverride) override, (AssociationOverrideContainer) container, new EmbeddableOverrideDescriptionProvider());
 		}
 
-		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter parentAdapter) {
+		public JpaValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter parentAdapter) {
 			return new AssociationOverrideJoinColumnValidator(this.getPersistentAttribute(), (AssociationOverride) override, (JoinColumn) column, (JoinColumn.ParentAdapter) parentAdapter, new EntityTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
+		public JpaValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
 			return new AssociationOverrideJoinColumnValidator(this.getPersistentAttribute(), override, column, parentAdapter, new JoinTableTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
+		public JpaValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
 			return new AssociationOverrideInverseJoinColumnValidator(this.getPersistentAttribute(), override, column, parentAdapter, new JoinTableTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableValidator(AssociationOverride override, Table table) {
+		public JpaValidator buildJoinTableValidator(AssociationOverride override, Table table) {
 			return new AssociationOverrideJoinTableValidator(this.getPersistentAttribute(), override, (JoinTable) table);
 		}
 

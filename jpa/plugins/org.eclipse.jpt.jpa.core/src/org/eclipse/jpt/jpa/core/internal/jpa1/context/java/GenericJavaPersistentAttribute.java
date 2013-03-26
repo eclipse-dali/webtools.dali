@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.Accessor;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentAttribute;
 
 /**
@@ -38,7 +38,7 @@ public class GenericJavaPersistentAttribute
 	// ********** validation **********
 
 	@Override
-	protected JptValidator buildAttributeValidator() {
+	protected JpaValidator buildAttributeValidator() {
 		return getAccessor().buildAttributeValidator(this);
 	}
 }

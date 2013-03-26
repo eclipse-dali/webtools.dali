@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.context.VirtualColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAttributeOverride;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -96,7 +96,7 @@ public class GenericOrmVirtualAttributeOverride
 		return this.getContainer().resolveOverriddenColumn(this.name);
 	}
 
-	public JptValidator buildColumnValidator(NamedColumn col) {
+	public JpaValidator buildColumnValidator(NamedColumn col) {
 		return this.getContainer().buildColumnValidator(this, (BaseColumn) col, this);
 	}
 

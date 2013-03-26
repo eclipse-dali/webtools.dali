@@ -11,7 +11,8 @@ package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.LobConverter;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
+import org.eclipse.jpt.jpa.core.internal.context.NullJpaValidator;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlConvertibleMapping;
 
@@ -73,8 +74,8 @@ public interface OrmLobConverter
 			public OrmAttributeMapping getConverterParent() {
 				return this.parent;
 			}
-			public JptValidator buildValidator(Converter converter) {
-				return JptValidator.Null.instance();
+			public JpaValidator buildValidator(Converter converter) {
+				return NullJpaValidator.instance();
 			}
 		}
 	}

@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaEntity;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableReference2_0;
@@ -269,12 +269,12 @@ public class JavaEclipseLinkEntityImpl
 	}
 
 	@Override
-	protected JptValidator buildPrimaryKeyValidator() {
+	protected JpaValidator buildPrimaryKeyValidator() {
 		return new EclipseLinkEntityPrimaryKeyValidator(this);
 	}
 
 	@Override
-	protected JptValidator buildTypeMappingValidator() {
+	protected JpaValidator buildTypeMappingValidator() {
 		return new EclipseLinkTypeMappingValidator(this);
 	}
 }

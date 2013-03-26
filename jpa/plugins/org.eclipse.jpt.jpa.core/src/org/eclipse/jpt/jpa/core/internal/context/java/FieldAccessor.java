@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaElementReference;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.PersistentFieldValidator;
 
 public class FieldAccessor
@@ -59,7 +59,7 @@ public class FieldAccessor
 		return this.resourceField.isFinal();
 	}
 
-	public JptValidator buildAttributeValidator(SpecifiedPersistentAttribute persistentAttribute) {
+	public JpaValidator buildAttributeValidator(SpecifiedPersistentAttribute persistentAttribute) {
 		return new PersistentFieldValidator(persistentAttribute, this);
 	}
 

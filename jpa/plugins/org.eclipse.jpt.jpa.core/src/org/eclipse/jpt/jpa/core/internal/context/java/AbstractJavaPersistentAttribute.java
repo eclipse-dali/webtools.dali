@@ -37,7 +37,7 @@ import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefiniti
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
@@ -645,7 +645,7 @@ public abstract class AbstractJavaPersistentAttribute
 		this.buildAttributeValidator().validate(messages, reporter);
 	}
 
-	protected abstract JptValidator buildAttributeValidator();
+	protected abstract JpaValidator buildAttributeValidator();
 
 	/**
 	 * If the attribute's owning type is an <code>orm.xml</code> persistent

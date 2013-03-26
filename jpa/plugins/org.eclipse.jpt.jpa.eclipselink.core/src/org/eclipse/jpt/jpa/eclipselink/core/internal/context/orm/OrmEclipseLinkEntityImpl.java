@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmEntity;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheableReference2_0;
@@ -408,12 +408,12 @@ public class OrmEclipseLinkEntityImpl
 	}
 
 	@Override
-	protected JptValidator buildPrimaryKeyValidator() {
+	protected JpaValidator buildPrimaryKeyValidator() {
 		return new EclipseLinkEntityPrimaryKeyValidator(this);
 	}
 
 	@Override
-	protected JptValidator buildTypeMappingValidator() {
+	protected JpaValidator buildTypeMappingValidator() {
 		return new EclipseLinkTypeMappingValidator(this);
 	}
 

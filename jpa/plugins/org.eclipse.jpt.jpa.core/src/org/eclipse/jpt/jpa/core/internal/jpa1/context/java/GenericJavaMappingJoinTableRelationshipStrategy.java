@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappingJoinTableRelationship;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.InverseJoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.JoinColumnValidator;
@@ -82,15 +82,15 @@ public class GenericJavaMappingJoinTableRelationshipStrategy
 		return this.getRelationshipMapping().getPersistentAttribute();
 	}
 
-	public JptValidator buildTableValidator(Table table) {
+	public JpaValidator buildTableValidator(Table table) {
 		return new JoinTableValidator(this.getPersistentAttribute(), (SpecifiedJoinTable) table);
 	}
 
-	public JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
+	public JpaValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
 		return new JoinColumnValidator(this.getPersistentAttribute(), column, parentAdapter, new JoinTableTableDescriptionProvider());
 	}
 
-	public JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
+	public JpaValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
 		return new InverseJoinColumnValidator(this.getPersistentAttribute(), column, parentAdapter, new JoinTableTableDescriptionProvider());
 	}
 }

@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.context.TypeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericTypeMappingValidator;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
@@ -450,7 +450,7 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	 * Pre-condition: the mapping's {@link #getJavaResourceType() Java resource
 	 * type} is not <code>null</code>.
 	 */
-	protected JptValidator buildTypeMappingValidator() {
+	protected JpaValidator buildTypeMappingValidator() {
 		return new GenericTypeMappingValidator(this);
 	}
 

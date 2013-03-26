@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.db.Table;
 
 /**
@@ -111,7 +111,7 @@ public interface NamedColumn
 		 */
 		Table resolveDbTable(String tableName);
 
-		JptValidator buildColumnValidator(NamedColumn column);
+		JpaValidator buildColumnValidator(NamedColumn column);
 
 		/**
 		 * Return the column parent's text range. This can be returned by the

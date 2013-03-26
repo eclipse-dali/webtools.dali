@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTableRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.resource.java.NullJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
@@ -397,7 +397,7 @@ public class GenericJavaJoinTable
 			return GenericJavaJoinTable.this.getJoinColumnsSize();
 		}
 
-		public JptValidator buildColumnValidator(NamedColumn column) {
+		public JpaValidator buildColumnValidator(NamedColumn column) {
 			return this.getRelationshipStrategy().buildJoinTableJoinColumnValidator((JoinColumn) column, this);
 		}
 	}
@@ -429,7 +429,7 @@ public class GenericJavaJoinTable
 			return GenericJavaJoinTable.this.getInverseJoinColumnsSize();
 		}
 
-		public JptValidator buildColumnValidator(NamedColumn column) {
+		public JpaValidator buildColumnValidator(NamedColumn column) {
 			return this.getRelationshipStrategy().buildJoinTableInverseJoinColumnValidator((JoinColumn) column, this);
 		}
 	}

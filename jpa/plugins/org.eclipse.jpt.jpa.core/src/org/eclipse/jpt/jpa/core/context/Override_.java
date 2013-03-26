@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.context;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.db.Table;
 
 /**
@@ -88,5 +88,5 @@ public interface Override_
 	 */
 	TextRange getNameTextRange();
 
-	JptValidator buildColumnValidator(BaseColumn column, TableColumn.ParentAdapter parentAdapter);
+	JpaValidator buildColumnValidator(BaseColumn column, TableColumn.ParentAdapter parentAdapter);
 }

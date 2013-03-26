@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdClassReference;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericMappedSuperclassPrimaryKeyValidator;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlIdClassContainer;
@@ -209,7 +209,7 @@ public abstract class AbstractOrmMappedSuperclass<X extends XmlMappedSuperclass>
 		this.buildPrimaryKeyValidator().validate(messages, reporter);
 	}
 
-	protected JptValidator buildPrimaryKeyValidator() {
+	protected JpaValidator buildPrimaryKeyValidator() {
 		return new GenericMappedSuperclassPrimaryKeyValidator(this);
 		// TODO - JPA 2.0 validation
 	}

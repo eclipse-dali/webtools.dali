@@ -67,8 +67,9 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
+import org.eclipse.jpt.jpa.core.internal.context.NullJpaValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AssociationOverrideJoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AssociationOverrideValidator;
@@ -431,7 +432,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		public OrmElementCollectionMapping2_0 getTableParent() {
 			return AbstractOrmElementCollectionMapping2_0.this;
 		}
-		public JptValidator buildTableValidator(Table table) {
+		public JpaValidator buildTableValidator(Table table) {
 			return new CollectionTableValidator(AbstractOrmElementCollectionMapping2_0.this.getPersistentAttribute(), (CollectionTable2_0) table);
 		}
 	}
@@ -1887,7 +1888,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			return this.getMappingName();
 		}
 
-		public JptValidator buildColumnValidator(NamedColumn column) {
+		public JpaValidator buildColumnValidator(NamedColumn column) {
 			return new NamedColumnValidator(this.getPersistentAttribute(), (BaseColumn) column, new CollectionTableTableDescriptionProvider());
 		}
 	}
@@ -1921,7 +1922,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			return this.getMappingName() + "_KEY"; //$NON-NLS-1$
 		}
 
-		public JptValidator buildColumnValidator(NamedColumn column) {
+		public JpaValidator buildColumnValidator(NamedColumn column) {
 			return new MapKeyColumnValidator(this.getPersistentAttribute(), (BaseColumn) column, new CollectionTableTableDescriptionProvider());
 		}
 	}
@@ -1950,24 +1951,24 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			return MappingTools.resolveOverriddenRelationship(this.getOverridableTypeMapping(), attributeName);
 		}
 
-		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter columnParentAdapter) {
+		public JpaValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter columnParentAdapter) {
 			return new AssociationOverrideJoinColumnValidator(this.getPersistentAttribute(), (AssociationOverride) override, (JoinColumn) column, (JoinColumn.ParentAdapter) columnParentAdapter, new CollectionTableTableDescriptionProvider());
 		}
 
-		public JptValidator buildOverrideValidator(Override_ override, OverrideContainer container) {
+		public JpaValidator buildOverrideValidator(Override_ override, OverrideContainer container) {
 			return new AssociationOverrideValidator(this.getPersistentAttribute(), (AssociationOverride) override, (AssociationOverrideContainer) container, new EmbeddableOverrideDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
-			return JptValidator.Null.instance();
+		public JpaValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
+			return NullJpaValidator.instance();
 		}
 
-		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
-			return JptValidator.Null.instance();
+		public JpaValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
+			return NullJpaValidator.instance();
 		}
 
-		public JptValidator buildJoinTableValidator(AssociationOverride override, Table table) {
-			return JptValidator.Null.instance();
+		public JpaValidator buildJoinTableValidator(AssociationOverride override, Table table) {
+			return NullJpaValidator.instance();
 		}
 	}
 
@@ -1995,11 +1996,11 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			return MappingTools.resolveOverriddenColumn(this.getOverridableTypeMapping(), attributeName);
 		}
 
-		public JptValidator buildOverrideValidator(Override_ override, OverrideContainer container) {
+		public JpaValidator buildOverrideValidator(Override_ override, OverrideContainer container) {
 			return new AttributeOverrideValidator(this.getPersistentAttribute(), (AttributeOverride) override, (AttributeOverrideContainer) container, new EmbeddableOverrideDescriptionProvider());
 		}
 
-		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter columnParentAdapter) {
+		public JpaValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter columnParentAdapter) {
 			return new AttributeOverrideColumnValidator(this.getPersistentAttribute(), (AttributeOverride) override, column, new CollectionTableTableDescriptionProvider());
 		}
 	}
@@ -2028,11 +2029,11 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			return MappingTools.resolveOverriddenColumn(this.getOverridableTypeMapping(), attributeName);
 		}
 
-		public JptValidator buildOverrideValidator(Override_ override, OverrideContainer container) {
+		public JpaValidator buildOverrideValidator(Override_ override, OverrideContainer container) {
 			return new MapKeyAttributeOverrideValidator(this.getPersistentAttribute(), (AttributeOverride) override, (AttributeOverrideContainer) container, new EmbeddableOverrideDescriptionProvider());
 		}
 
-		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter columnParentAdapter) {
+		public JpaValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter columnParentAdapter) {
 			return new MapKeyAttributeOverrideColumnValidator(this.getPersistentAttribute(), (AttributeOverride) override, column, new CollectionTableTableDescriptionProvider());
 		}
 	}
@@ -2094,7 +2095,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			return AbstractOrmElementCollectionMapping2_0.this.getValidationTextRange();
 		}
 
-		public JptValidator buildColumnValidator(NamedColumn column) {
+		public JpaValidator buildColumnValidator(NamedColumn column) {
 			return new MapKeyJoinColumnValidator(
 				this.getPersistentAttribute(),
 				(JoinColumn) column,

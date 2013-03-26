@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedNamedColumn;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedColumn;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.Table;
@@ -234,7 +234,7 @@ public abstract class AbstractOrmNamedColumn<PA extends NamedColumn.ParentAdapte
 		this.buildColumnValidator().validate(messages, reporter);
 	}
 
-	protected JptValidator buildColumnValidator() {
+	protected JpaValidator buildColumnValidator() {
 		return this.parentAdapter.buildColumnValidator(this);
 	}
 

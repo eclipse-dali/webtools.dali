@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualOverride;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.resource.java.OverrideAnnotation;
 import org.eclipse.jpt.jpa.db.Table;
@@ -151,7 +151,7 @@ public abstract class AbstractJavaSpecifiedOverride<P extends JavaOverrideContai
 		return this.getContainer().getDefaultTableName();
 	}
 
-	public JptValidator buildColumnValidator(BaseColumn column, TableColumn.ParentAdapter parentAdapter) {
+	public JpaValidator buildColumnValidator(BaseColumn column, TableColumn.ParentAdapter parentAdapter) {
 		return this.getContainer().buildColumnValidator(this, column, parentAdapter);
 	}
 
@@ -207,7 +207,7 @@ public abstract class AbstractJavaSpecifiedOverride<P extends JavaOverrideContai
 		this.buildValidator().validate(messages, reporter);
 	}
 
-	protected JptValidator buildValidator() {
+	protected JpaValidator buildValidator() {
 		return this.getContainer().buildOverrideValidator(this);
 	}
 

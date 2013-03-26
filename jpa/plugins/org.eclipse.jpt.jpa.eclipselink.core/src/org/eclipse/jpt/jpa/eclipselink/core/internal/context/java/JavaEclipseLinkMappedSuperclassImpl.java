@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaMappedSuperclass;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CacheableReference2_0;
@@ -290,12 +290,12 @@ public class JavaEclipseLinkMappedSuperclassImpl
 	}
 
 	@Override
-	protected JptValidator buildPrimaryKeyValidator() {
+	protected JpaValidator buildPrimaryKeyValidator() {
 		return new EclipseLinkMappedSuperclassPrimaryKeyValidator(this);
 	}
 
 	@Override
-	protected JptValidator buildTypeMappingValidator() {
+	protected JpaValidator buildTypeMappingValidator() {
 		return new EclipseLinkMappedSuperclassValidator(this);
 	}
 }

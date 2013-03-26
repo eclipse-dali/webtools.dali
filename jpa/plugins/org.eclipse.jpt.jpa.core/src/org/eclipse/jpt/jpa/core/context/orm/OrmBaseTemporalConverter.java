@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.context.orm;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.Converter;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.OrmElementCollectionTemporalConverterValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.OrmMapKeyTemporalConverterValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.OrmTemporalConverterValidator;
@@ -127,7 +127,7 @@ public interface OrmBaseTemporalConverter
 			public ConverterParentAdapter(OrmAttributeMapping parent, XmlConvertibleMapping mapping) {
 				super(parent, mapping);
 			}
-			public JptValidator buildValidator(Converter converter) {
+			public JpaValidator buildValidator(Converter converter) {
 				return new OrmTemporalConverterValidator((BaseTemporalConverter) converter);
 			}
 		}
@@ -156,7 +156,7 @@ public interface OrmBaseTemporalConverter
 			public ConverterParentAdapter(OrmAttributeMapping parent, XmlConvertibleMapping mapping) {
 				super(parent, mapping);
 			}
-			public JptValidator buildValidator(Converter converter) {
+			public JpaValidator buildValidator(Converter converter) {
 				return new OrmElementCollectionTemporalConverterValidator((BaseTemporalConverter) converter);
 			}
 		}
@@ -212,7 +212,7 @@ public interface OrmBaseTemporalConverter
 			public TextRange getTemporalTextRange() {
 				return this.mapping.getMapKeyTemporalTextRange();
 			}
-			public JptValidator buildValidator(Converter converter) {
+			public JpaValidator buildValidator(Converter converter) {
 				return new OrmMapKeyTemporalConverterValidator((BaseTemporalConverter) converter);
 			}
 		}

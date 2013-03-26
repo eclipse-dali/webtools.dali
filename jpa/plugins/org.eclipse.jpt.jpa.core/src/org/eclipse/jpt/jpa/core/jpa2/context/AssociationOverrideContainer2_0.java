@@ -13,7 +13,7 @@ import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.Table;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 
 /**
  * JPA 2.0
@@ -29,11 +29,11 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 public interface AssociationOverrideContainer2_0
 	extends AssociationOverrideContainer
 {
-	JptValidator buildJoinTableValidator(AssociationOverride override, Table table);
+	JpaValidator buildJoinTableValidator(AssociationOverride override, Table table);
 
-	JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter parentAdapter);
+	JpaValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter parentAdapter);
 
-	JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter parentAdapter);
+	JpaValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter parentAdapter);
 
 
 	// ********** parent adapter **********
@@ -41,10 +41,10 @@ public interface AssociationOverrideContainer2_0
 	interface ParentAdapter
 		extends AssociationOverrideContainer.ParentAdapter
 	{
-		JptValidator buildJoinTableValidator(AssociationOverride override, Table table);
+		JpaValidator buildJoinTableValidator(AssociationOverride override, Table table);
 
-		JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter parentAdapter);
+		JpaValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter parentAdapter);
 
-		JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter parentAdapter);
+		JpaValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter parentAdapter);
 	}
 }

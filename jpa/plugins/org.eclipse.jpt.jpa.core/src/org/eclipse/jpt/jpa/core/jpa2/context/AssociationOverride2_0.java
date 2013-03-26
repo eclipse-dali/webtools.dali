@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.jpa2.context;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 
 /**
  * JPA 2.0
@@ -27,9 +27,9 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 public interface AssociationOverride2_0
 	extends AssociationOverride
 {
-	JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter parentAdapter);
+	JpaValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter parentAdapter);
 
-	JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter parentAdapter);
+	JpaValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter parentAdapter);
 
-	JptValidator buildJoinTableValidator(JoinTable table);
+	JpaValidator buildJoinTableValidator(JoinTable table);
 }

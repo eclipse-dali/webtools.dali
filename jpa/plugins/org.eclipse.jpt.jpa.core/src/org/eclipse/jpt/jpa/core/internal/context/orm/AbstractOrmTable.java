@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedTable;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlTable;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlUniqueConstraint;
@@ -424,7 +424,7 @@ public abstract class AbstractOrmTable<P extends JpaContextModel, PA extends Tab
 		this.buildTableValidator().validate(messages, reporter);
 	}
 
-	protected JptValidator buildTableValidator() {
+	protected JpaValidator buildTableValidator() {
 		return this.parentAdapter.buildTableValidator(this);
 	}
 

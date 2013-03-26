@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaElementReference;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.PersistentPropertyValidator;
 
 public class PropertyAccessor
@@ -90,7 +90,7 @@ public class PropertyAccessor
 		return this.getJpaFactory().buildJavaPersistentProperty(type, getterMethod, setterMethod);
 	}
 
-	public JptValidator buildAttributeValidator(SpecifiedPersistentAttribute persistentAttribute) {
+	public JpaValidator buildAttributeValidator(SpecifiedPersistentAttribute persistentAttribute) {
 		return new PersistentPropertyValidator(persistentAttribute, this);
 	}
 

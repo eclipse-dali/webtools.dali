@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.AbstractJavaConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
@@ -189,7 +189,7 @@ public class JavaEclipseLinkConvert
 			public JavaAttributeMapping getConverterParent() {
 				return this.parent;
 			}
-			public JptValidator buildValidator(Converter converter) {
+			public JpaValidator buildValidator(Converter converter) {
 				return new EclipseLinkConvertValidator((EclipseLinkConvert) converter);
 			}
 		}

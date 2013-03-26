@@ -87,7 +87,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualSecondaryTable;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.TypeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AssociationOverrideInverseJoinColumnValidator;
@@ -476,7 +476,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		public OrmEntity getTableParent() {
 			return AbstractOrmEntity.this;
 		}
-		public JptValidator buildTableValidator(Table t) {
+		public JpaValidator buildTableValidator(Table t) {
 			return new TableValidator(t);
 		}
 	}
@@ -745,7 +745,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		public OrmEntity getTableParent() {
 			return AbstractOrmEntity.this;
 		}
-		public JptValidator buildTableValidator(Table t) {
+		public JpaValidator buildTableValidator(Table t) {
 			return new SecondaryTableValidator((SecondaryTable) t);
 		}
 	}
@@ -1770,7 +1770,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		this.buildPrimaryKeyValidator().validate(messages, reporter);
 	}
 
-	protected JptValidator buildPrimaryKeyValidator() {
+	protected JpaValidator buildPrimaryKeyValidator() {
 		return new GenericEntityPrimaryKeyValidator(this);
 		// TODO - JPA 2.0 validation
 	}
@@ -2047,11 +2047,11 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			return AbstractOrmEntity.this.xmlTypeMapping.getAttributeOverrides();
 		}
 
-		public JptValidator buildOverrideValidator(Override_ override, OverrideContainer container) {
+		public JpaValidator buildOverrideValidator(Override_ override, OverrideContainer container) {
 			return new AttributeOverrideValidator((AttributeOverride) override, (AttributeOverrideContainer) container, new MappedSuperclassOverrideDescriptionProvider());
 		}
 
-		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter parentAdapter) {
+		public JpaValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter parentAdapter) {
 			return new AttributeOverrideColumnValidator((AttributeOverride) override, column, new EntityTableDescriptionProvider());
 		}
 
@@ -2091,23 +2091,23 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 					AbstractOrmEntity.this.resolveOverriddenRelationshipForAssociationOverride(attributeName);
 		}
 
-		public JptValidator buildOverrideValidator(Override_ override, OverrideContainer container) {
+		public JpaValidator buildOverrideValidator(Override_ override, OverrideContainer container) {
 			return new AssociationOverrideValidator((AssociationOverride) override, (AssociationOverrideContainer) container, new MappedSuperclassOverrideDescriptionProvider());
 		}
 
-		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter parentAdapter) {
+		public JpaValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter parentAdapter) {
 			return new AssociationOverrideJoinColumnValidator((AssociationOverride) override, (JoinColumn) column, (JoinColumn.ParentAdapter) parentAdapter, new EntityTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
+		public JpaValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
 			return new AssociationOverrideJoinColumnValidator(override, column, parentAdapter, new JoinTableTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
+		public JpaValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
 			return new AssociationOverrideInverseJoinColumnValidator(override, column, parentAdapter, new JoinTableTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableValidator(AssociationOverride override, Table t) {
+		public JpaValidator buildJoinTableValidator(AssociationOverride override, Table t) {
 			return new AssociationOverrideJoinTableValidator(override, (JoinTable) t);
 		}
 	}
@@ -2162,7 +2162,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			return (parentEntity == null) ? AbstractOrmEntity.this.getPrimaryKeyColumnName() : parentEntity.getPrimaryKeyColumnName();
 		}
 
-		public JptValidator buildColumnValidator(NamedColumn column) {
+		public JpaValidator buildColumnValidator(NamedColumn column) {
 			return new EntityPrimaryKeyJoinColumnValidator((BaseJoinColumn) column, this);
 		}
 	}
@@ -2219,7 +2219,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 					this.isTablePerClass() ? null : NamedDiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE;
 		}
 
-		public JptValidator buildColumnValidator(NamedColumn column) {
+		public JpaValidator buildColumnValidator(NamedColumn column) {
 			return new DiscriminatorColumnValidator(column);
 		}
 

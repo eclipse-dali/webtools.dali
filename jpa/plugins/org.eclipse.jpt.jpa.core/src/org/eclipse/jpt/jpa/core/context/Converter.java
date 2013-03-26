@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 
 /**
  * JPA attribute mapping converter.
@@ -43,6 +43,6 @@ public interface Converter
 	public interface ParentAdapter<M extends AttributeMapping> {
 		M getConverterParent();
 
-		JptValidator buildValidator(Converter converter);
+		JpaValidator buildValidator(Converter converter);
 	}
 }

@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -41,7 +41,7 @@ public class AttributeOverrideColumnValidator
 	}
 
 	@Override
-	protected JptValidator buildTableValidator() {
+	protected JpaValidator buildTableValidator() {
 		return new TableValidator();
 	}
 

@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.context;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.db.Table;
 
 /**
@@ -82,9 +82,9 @@ public interface OverrideContainer
 	 */
 	String getDefaultTableName();
 
-	JptValidator buildOverrideValidator(Override_ override);
+	JpaValidator buildOverrideValidator(Override_ override);
 
-	JptValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter parentAdapter);
+	JpaValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter parentAdapter);
 
 
 	// ********** overrides **********
@@ -225,8 +225,8 @@ public interface OverrideContainer
 
 		TextRange getValidationTextRange();
 
-		JptValidator buildOverrideValidator(Override_ override, OverrideContainer container);
+		JpaValidator buildOverrideValidator(Override_ override, OverrideContainer container);
 
-		JptValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter parentAdapter);
+		JpaValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter parentAdapter);
 	}
 }

@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.VirtualTable;
 import org.eclipse.jpt.jpa.core.context.VirtualUniqueConstraint;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
@@ -319,7 +319,7 @@ public abstract class AbstractOrmVirtualTable<P extends JpaContextModel, PA exte
 		this.buildTableValidator().validate(messages, reporter);
 	}
 
-	protected JptValidator buildTableValidator() {
+	protected JpaValidator buildTableValidator() {
 		return this.parentAdapter.buildTableValidator(this);
 	}
 

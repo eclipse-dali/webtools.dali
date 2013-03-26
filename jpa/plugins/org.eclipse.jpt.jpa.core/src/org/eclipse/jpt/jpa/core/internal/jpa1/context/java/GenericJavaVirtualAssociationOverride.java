@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.context.VirtualOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAssociationOverride;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaVirtualOverride;
 import org.eclipse.jpt.jpa.core.jpa2.context.AssociationOverride2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAssociationOverrideContainer2_0;
@@ -87,15 +87,15 @@ public class GenericJavaVirtualAssociationOverride
 		this.relationship.validate(messages, reporter);
 	}
 
-	public JptValidator buildJoinTableValidator(JoinTable table) {
+	public JpaValidator buildJoinTableValidator(JoinTable table) {
 		return this.getContainer2_0().buildJoinTableValidator(this, table);
 	}
 
-	public JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
+	public JpaValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
 		return this.getContainer2_0().buildJoinTableJoinColumnValidator(this, column, parentAdapter);
 	}
 
-	public JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
+	public JpaValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.ParentAdapter parentAdapter) {
 		return this.getContainer2_0().buildJoinTableInverseJoinColumnValidator(this, column, parentAdapter);
 	}
 }

@@ -38,7 +38,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAccessHolder;
@@ -518,7 +518,7 @@ public abstract class AbstractOrmPersistentAttribute
 		);
 	}
 
-	protected abstract JptValidator buildAttibuteValidator();
+	protected abstract JpaValidator buildAttibuteValidator();
 
 	public TextRange getValidationTextRange() {
 		return this.mapping.getValidationTextRange();

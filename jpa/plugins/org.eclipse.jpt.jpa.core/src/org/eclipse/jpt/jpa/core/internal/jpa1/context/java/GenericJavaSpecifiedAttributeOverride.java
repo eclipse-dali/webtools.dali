@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAttributeOverride;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaSpecifiedOverride;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.CompleteColumnAnnotation;
@@ -99,7 +99,7 @@ public class GenericJavaSpecifiedAttributeOverride
 		return this.name;
 	}
 
-	public JptValidator buildColumnValidator(NamedColumn col) {
+	public JpaValidator buildColumnValidator(NamedColumn col) {
 		return this.getContainer().buildColumnValidator(this, (BaseColumn) col, this);
 	}
 

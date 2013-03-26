@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.AbstractOrmConverter;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConvertibleMapping_2_1;
@@ -192,7 +192,7 @@ public class OrmEclipseLinkConvert
 			public OrmAttributeMapping getConverterParent() {
 				return this.parent;
 			}
-			public JptValidator buildValidator(Converter converter) {
+			public JpaValidator buildValidator(Converter converter) {
 				return new EclipseLinkConvertValidator((EclipseLinkConvert) converter);
 			}
 		}

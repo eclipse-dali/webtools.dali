@@ -14,13 +14,13 @@ import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 //AbstractTypeMappingTypeValidator might be a better name
 public abstract class AbstractTypeMappingValidator<M extends TypeMapping>
-	implements JptValidator
+	implements JpaValidator
 {
 	protected final M typeMapping;
 

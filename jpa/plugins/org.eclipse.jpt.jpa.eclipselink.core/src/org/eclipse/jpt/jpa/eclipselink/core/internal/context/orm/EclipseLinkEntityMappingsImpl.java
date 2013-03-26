@@ -26,7 +26,8 @@ import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
+import org.eclipse.jpt.jpa.core.internal.context.NullJpaValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlConverter;
 import org.eclipse.jpt.jpa.db.Table;
@@ -430,8 +431,8 @@ public class EclipseLinkEntityMappingsImpl
 		/**
 		 * no column validation can be done in the context of the persistence unit defaults
 		 */
-		public JptValidator buildColumnValidator(NamedColumn column) {
-			return JptValidator.Null.instance();
+		public JpaValidator buildColumnValidator(NamedColumn column) {
+			return NullJpaValidator.instance();
 		}
 
 		public TextRange getValidationTextRange() {
