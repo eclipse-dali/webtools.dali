@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.AssociationOverride2
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.Cacheable2_0AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.CollectionTable2_0AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.ElementCollection2_0AnnotationDefinition;
-import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.GeneratedAnnotationDefinition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.GeneratedAnnotationDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.MapKeyClassAnnotationDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.MapKeyColumnAnnotationDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.MapKeyEnumeratedAnnotationDefinition2_0;
@@ -118,7 +118,7 @@ public class GenericJpaAnnotationDefinitionProvider2_0
 		EmbeddedIdAnnotationDefinition.instance(),
 		EntityAnnotationDefinition.instance(),
 		EnumeratedAnnotationDefinition.instance(),
-		GeneratedAnnotationDefinition.instance(),
+		GeneratedAnnotationDefinition2_0.instance(),
 		GeneratedValueAnnotationDefinition.instance(),
 		IdAnnotationDefinition.instance(),
 		IdClassAnnotationDefinition.instance(),
