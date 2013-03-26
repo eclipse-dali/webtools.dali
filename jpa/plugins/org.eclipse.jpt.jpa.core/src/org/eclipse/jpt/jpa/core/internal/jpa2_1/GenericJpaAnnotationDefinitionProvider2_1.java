@@ -75,11 +75,11 @@ import org.eclipse.jpt.jpa.core.internal.resource.java.TemporalAnnotationDefinit
 import org.eclipse.jpt.jpa.core.internal.resource.java.TransientAnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.resource.java.VersionAnnotationDefinition;
 
-public class Generic2_1JpaAnnotationDefinitionProvider
+public class GenericJpaAnnotationDefinitionProvider2_1
 	extends AbstractJpaAnnotationDefinitionProvider
 {
 	// singleton
-	private static final JpaAnnotationDefinitionProvider INSTANCE = new Generic2_1JpaAnnotationDefinitionProvider();
+	private static final JpaAnnotationDefinitionProvider INSTANCE = new GenericJpaAnnotationDefinitionProvider2_1();
 
 	/**
 	 * Return the singleton
@@ -92,7 +92,7 @@ public class Generic2_1JpaAnnotationDefinitionProvider
 	/**
 	 * Enforce singleton usage
 	 */
-	private Generic2_1JpaAnnotationDefinitionProvider() {
+	private GenericJpaAnnotationDefinitionProvider2_1() {
 		super();
 	}
 

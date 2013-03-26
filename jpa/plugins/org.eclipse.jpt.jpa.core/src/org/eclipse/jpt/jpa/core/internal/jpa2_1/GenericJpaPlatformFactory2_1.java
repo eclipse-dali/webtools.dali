@@ -41,7 +41,7 @@ public class GenericJpaPlatformFactory2_1
 			config,
 			this.buildJpaVersion(config.getJpaFacetVersion()),
 			new GenericJpaFactory2_1(),
-			new JpaAnnotationProvider(Generic2_1JpaAnnotationDefinitionProvider.instance()),
+			new JpaAnnotationProvider(GenericJpaAnnotationDefinitionProvider2_1.instance()),
 			GenericJpaPlatformProvider2_1.instance(),
 			this.buildJpaPlatformVariation(),
 			JPQLGrammar2_1.instance());
