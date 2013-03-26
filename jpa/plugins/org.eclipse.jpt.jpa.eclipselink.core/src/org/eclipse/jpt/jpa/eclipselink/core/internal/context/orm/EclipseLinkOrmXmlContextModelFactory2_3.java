@@ -20,7 +20,7 @@ public class EclipseLinkOrmXmlContextModelFactory2_3
 		return new OrmEclipseLinkArrayMapping2_3(parent, resourceMapping);
 	}
 
-	public OrmEclipseLinkStructureMapping2_3 buildOrmEclipseLinkStructureMapping(OrmSpecifiedPersistentAttribute parent, XmlStructure resourceMapping) {
-		return new OrmEclipseLinkStructureMapping2_3(parent, resourceMapping);
+	public EclipseLinkOrmStructureMapping2_3 buildOrmEclipseLinkStructureMapping(OrmSpecifiedPersistentAttribute parent, XmlStructure resourceMapping) {
+		return new EclipseLinkOrmStructureMapping2_3(parent, resourceMapping);
 	}
 }

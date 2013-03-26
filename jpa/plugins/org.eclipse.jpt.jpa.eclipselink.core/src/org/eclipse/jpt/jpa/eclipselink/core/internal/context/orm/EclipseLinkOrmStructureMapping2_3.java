@@ -20,11 +20,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersi
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.Attributes;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStructure;
 
-public class OrmEclipseLinkStructureMapping2_3
+public class EclipseLinkOrmStructureMapping2_3
 	extends AbstractOrmAttributeMapping<XmlStructure> 
 	implements EclipseLinkStructureMapping2_3
 {
-	public OrmEclipseLinkStructureMapping2_3(OrmSpecifiedPersistentAttribute parent, XmlStructure xmlMapping) {
+	public EclipseLinkOrmStructureMapping2_3(OrmSpecifiedPersistentAttribute parent, XmlStructure xmlMapping) {
 		super(parent, xmlMapping);
 	}
 
