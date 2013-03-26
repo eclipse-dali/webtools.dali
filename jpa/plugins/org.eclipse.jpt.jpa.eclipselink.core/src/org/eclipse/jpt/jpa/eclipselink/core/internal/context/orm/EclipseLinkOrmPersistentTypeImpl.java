@@ -134,7 +134,7 @@ public class EclipseLinkOrmPersistentTypeImpl
 	}
 
 	protected JavaPersistentType buildVirtualJavaPersistentType() {
-		return new VirtualJavaPersistentType(this, this.getXmlTypeMapping());
+		return new EclipseLinkVirtualJavaPersistentType(this, this.getXmlTypeMapping());
 	}
 
 

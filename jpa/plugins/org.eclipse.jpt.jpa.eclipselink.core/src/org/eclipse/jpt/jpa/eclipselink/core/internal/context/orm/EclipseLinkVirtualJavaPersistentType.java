@@ -46,7 +46,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeMapping;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class VirtualJavaPersistentType
+public class EclipseLinkVirtualJavaPersistentType
 	extends AbstractJavaContextModel<EclipseLinkOrmPersistentType>
 	implements JavaPersistentType, PersistentType2_0
 {
@@ -56,7 +56,7 @@ public class VirtualJavaPersistentType
 	protected PersistentType superPersistentType;
 
 
-	public VirtualJavaPersistentType(EclipseLinkOrmPersistentType parent, XmlTypeMapping xmlTypeMapping) {
+	public EclipseLinkVirtualJavaPersistentType(EclipseLinkOrmPersistentType parent, XmlTypeMapping xmlTypeMapping) {
 		super(parent);
 		this.xmlTypeMapping = xmlTypeMapping;
 		this.mapping = new JavaNullTypeMapping(this);
@@ -365,5 +365,4 @@ public class VirtualJavaPersistentType
 	public PersistentType2_0 getMetamodelType() {
 		return this;
 	}
-
 }
