@@ -54,7 +54,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 	extends AbstractOrmMappedSuperclass<XmlMappedSuperclass>
 	implements EclipseLinkOrmMappedSuperclass, OrmCacheableReference2_0, EclipseLinkOrmConverterContainer.Parent
 {
-	protected final OrmEclipseLinkReadOnly readOnly;
+	protected final EclipseLinkOrmReadOnly readOnly;
 
 	protected final OrmEclipseLinkCustomizer customizer;
 
@@ -125,12 +125,12 @@ public class OrmEclipseLinkMappedSuperclassImpl
 
 	// ********** read only **********
 
-	public OrmEclipseLinkReadOnly getReadOnly() {
+	public EclipseLinkOrmReadOnly getReadOnly() {
 		return this.readOnly;
 	}
 
-	protected OrmEclipseLinkReadOnly buildReadOnly() {
-		return new OrmEclipseLinkReadOnly(this);
+	protected EclipseLinkOrmReadOnly buildReadOnly() {
+		return new EclipseLinkOrmReadOnly(this);
 	}
 
 

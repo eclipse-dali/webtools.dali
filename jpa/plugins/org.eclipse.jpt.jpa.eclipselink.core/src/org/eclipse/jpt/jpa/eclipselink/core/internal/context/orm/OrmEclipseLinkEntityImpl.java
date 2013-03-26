@@ -55,7 +55,7 @@ public class OrmEclipseLinkEntityImpl
 	extends AbstractOrmEntity<XmlEntity>
 	implements EclipseLinkOrmEntity, EclipseLinkOrmConverterContainer.Parent
 {
-	protected final OrmEclipseLinkReadOnly readOnly;
+	protected final EclipseLinkOrmReadOnly readOnly;
 
 	protected final OrmEclipseLinkCustomizer customizer;
 
@@ -117,12 +117,12 @@ public class OrmEclipseLinkEntityImpl
 
 	// ********** read only **********
 
-	public OrmEclipseLinkReadOnly getReadOnly() {
+	public EclipseLinkOrmReadOnly getReadOnly() {
 		return this.readOnly;
 	}
 
-	protected OrmEclipseLinkReadOnly buildReadOnly() {
-		return new OrmEclipseLinkReadOnly(this);
+	protected EclipseLinkOrmReadOnly buildReadOnly() {
+		return new EclipseLinkOrmReadOnly(this);
 	}
 
 

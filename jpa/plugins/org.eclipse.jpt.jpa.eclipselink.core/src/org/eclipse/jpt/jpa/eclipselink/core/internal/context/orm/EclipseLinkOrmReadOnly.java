@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaNonEmbed
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmNonEmbeddableTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlReadOnly;
 
-public class OrmEclipseLinkReadOnly
+public class EclipseLinkOrmReadOnly
 	extends AbstractOrmXmlContextModel<EclipseLinkOrmNonEmbeddableTypeMapping>
 	implements EclipseLinkReadOnly
 {
@@ -25,7 +25,7 @@ public class OrmEclipseLinkReadOnly
 	protected boolean defaultReadOnly;
 
 
-	public OrmEclipseLinkReadOnly(EclipseLinkOrmNonEmbeddableTypeMapping parent) {
+	public EclipseLinkOrmReadOnly(EclipseLinkOrmNonEmbeddableTypeMapping parent) {
 		super(parent);
 		this.specifiedReadOnly = this.buildSpecifiedReadOnly();
 	}
