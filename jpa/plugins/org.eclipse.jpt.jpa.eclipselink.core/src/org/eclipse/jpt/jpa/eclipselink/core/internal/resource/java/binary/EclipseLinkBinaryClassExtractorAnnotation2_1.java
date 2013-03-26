@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,16 +17,16 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ClassExtractorAnnotation2_1;
 
 /**
- * org.eclipse.persistence.annotations.ClassExtractor
+ * <code>org.eclipse.persistence.annotations.ClassExtractor</code>
  */
-public final class BinaryEclipseLinkClassExtractorAnnotation2_1
+public final class EclipseLinkBinaryClassExtractorAnnotation2_1
 	extends BinaryAnnotation
 	implements ClassExtractorAnnotation2_1 
 {
 	private String value;
 
 
-	public BinaryEclipseLinkClassExtractorAnnotation2_1(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
+	public EclipseLinkBinaryClassExtractorAnnotation2_1(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.value = this.buildValue();
 	}
