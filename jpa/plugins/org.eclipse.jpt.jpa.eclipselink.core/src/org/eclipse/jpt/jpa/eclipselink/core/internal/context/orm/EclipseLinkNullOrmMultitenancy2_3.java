@@ -21,12 +21,12 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmMultitenan
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmNonEmbeddableTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3;
 
-public class NullOrmEclipseLinkMultitenancy2_3
+public class EclipseLinkNullOrmMultitenancy2_3
 	extends AbstractOrmXmlContextModel<EclipseLinkOrmNonEmbeddableTypeMapping>
 	implements EclipseLinkOrmMultitenancy2_3
 {
 
-	public NullOrmEclipseLinkMultitenancy2_3(EclipseLinkOrmNonEmbeddableTypeMapping parent) {
+	public EclipseLinkNullOrmMultitenancy2_3(EclipseLinkOrmNonEmbeddableTypeMapping parent) {
 		super(parent);
 	}
 

@@ -188,7 +188,7 @@ public class EclipseLinkOrmEntityImpl
 	protected EclipseLinkOrmMultitenancy2_3 buildMultitenancy() {
 		return this.isEclipseLink2_3Compatible() ?
 			new EclipseLinkOrmMultitenancyImpl2_3(this) :
-			new NullOrmEclipseLinkMultitenancy2_3(this);
+			new EclipseLinkNullOrmMultitenancy2_3(this);
 	}
 
 	protected boolean isEclipseLink2_3Compatible() {
