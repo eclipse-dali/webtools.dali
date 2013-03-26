@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,12 +18,12 @@ import org.eclipse.jpt.jpa.core.resource.java.AccessType;
 /**
  * <code>javax.persistence.Access</code>
  */
-public final class NullAccess2_0Annotation
+public final class NullAccessAnnotation2_0
 	extends NullAnnotation<AccessAnnotation2_0>
 	implements AccessAnnotation2_0
 {
 
-	protected NullAccess2_0Annotation(JavaResourceAnnotatedElement parent) {
+	protected NullAccessAnnotation2_0(JavaResourceAnnotatedElement parent) {
 		super(parent);
 	}
 	

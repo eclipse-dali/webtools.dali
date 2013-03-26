@@ -46,7 +46,7 @@ public final class Access2_0AnnotationDefinition
 	}
 
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
-		return new NullAccess2_0Annotation(parent);
+		return new NullAccessAnnotation2_0(parent);
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
