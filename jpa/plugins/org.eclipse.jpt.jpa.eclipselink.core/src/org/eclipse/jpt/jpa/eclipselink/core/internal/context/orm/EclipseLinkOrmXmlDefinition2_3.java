@@ -77,7 +77,7 @@ public class EclipseLinkOrmXmlDefinition2_3
 		OrmTransientMappingDefinition.instance(),
 		EclipseLinkOrmBasicCollectionMappingDefinition.instance(),
 		EclipseLinkOrmBasicMapMappingDefinition.instance(),
-		OrmEclipseLinkArrayMapping2_3Definition.instance(),
+		EclipseLinkOrmArrayMappingDefinition2_3.instance(),
 		OrmElementCollectionMappingDefinition2_0.instance(),
 		OrmIdMappingDefinition.instance(),
 		OrmVersionMappingDefinition.instance(),

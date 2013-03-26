@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,12 +20,12 @@ import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlArray;
 
-public class OrmEclipseLinkArrayMapping2_3Definition
+public class EclipseLinkOrmArrayMappingDefinition2_3
 	implements OrmAttributeMappingDefinition
 {
 	// singleton
-	private static final OrmEclipseLinkArrayMapping2_3Definition INSTANCE = 
-			new OrmEclipseLinkArrayMapping2_3Definition();
+	private static final EclipseLinkOrmArrayMappingDefinition2_3 INSTANCE = 
+			new EclipseLinkOrmArrayMappingDefinition2_3();
 
 
 	/**
@@ -39,7 +39,7 @@ public class OrmEclipseLinkArrayMapping2_3Definition
 	/**
 	 * Enforce singleton usage
 	 */
-	private OrmEclipseLinkArrayMapping2_3Definition() {
+	private EclipseLinkOrmArrayMappingDefinition2_3() {
 		super();
 	}
 
