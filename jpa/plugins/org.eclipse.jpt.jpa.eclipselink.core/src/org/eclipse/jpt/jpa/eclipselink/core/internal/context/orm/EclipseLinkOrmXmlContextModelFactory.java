@@ -80,7 +80,7 @@ public class EclipseLinkOrmXmlContextModelFactory
 	
 	@Override
 	public OrmMappedSuperclass buildOrmMappedSuperclass(OrmPersistentType type, org.eclipse.jpt.jpa.core.resource.orm.XmlMappedSuperclass resourceMapping) {
-		return new OrmEclipseLinkMappedSuperclassImpl(type, (XmlMappedSuperclass) resourceMapping);
+		return new EclipseLinkOrmMappedSuperclassImpl(type, (XmlMappedSuperclass) resourceMapping);
 	}
 	
 	@Override

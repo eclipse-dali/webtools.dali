@@ -50,7 +50,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * EclipseLink
  * <code>orm.xml</code> mapped superclass
  */
-public class OrmEclipseLinkMappedSuperclassImpl
+public class EclipseLinkOrmMappedSuperclassImpl
 	extends AbstractOrmMappedSuperclass<XmlMappedSuperclass>
 	implements EclipseLinkOrmMappedSuperclass, OrmCacheableReference2_0, EclipseLinkOrmConverterContainer.Parent
 {
@@ -70,7 +70,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 
 	protected final OrmGeneratorContainer generatorContainer;//supported in EL 2.1 and higher
 
-	public OrmEclipseLinkMappedSuperclassImpl(OrmPersistentType parent, XmlMappedSuperclass xmlMappedSuperclass) {
+	public EclipseLinkOrmMappedSuperclassImpl(OrmPersistentType parent, XmlMappedSuperclass xmlMappedSuperclass) {
 		super(parent, xmlMappedSuperclass);
 		this.caching = this.buildCaching();
 		this.readOnly = this.buildReadOnly();
