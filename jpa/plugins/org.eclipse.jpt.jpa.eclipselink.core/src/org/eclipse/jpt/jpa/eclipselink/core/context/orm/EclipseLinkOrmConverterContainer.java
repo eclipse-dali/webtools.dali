@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContaine
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkStructConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkTypeConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmTypeConverter;
 
 /**
  * EclipseLink <code>orm.xml</code> converter container
@@ -45,9 +45,9 @@ public interface EclipseLinkOrmConverterContainer
 	OrmEclipseLinkStructConverter addStructConverter(String name, int index);
 	OrmEclipseLinkStructConverter addStructConverter(String name);
 
-	ListIterable<OrmEclipseLinkTypeConverter> getTypeConverters();
-	OrmEclipseLinkTypeConverter addTypeConverter(String name, int index);
-	OrmEclipseLinkTypeConverter addTypeConverter(String name);
+	ListIterable<EclipseLinkOrmTypeConverter> getTypeConverters();
+	EclipseLinkOrmTypeConverter addTypeConverter(String name, int index);
+	EclipseLinkOrmTypeConverter addTypeConverter(String name);
 
 
 	// ********** parent interface **********

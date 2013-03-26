@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJav
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeConverter;
 import org.eclipse.text.edits.ReplaceEdit;
 
-public class OrmEclipseLinkTypeConverter
+public class EclipseLinkOrmTypeConverter
 	extends OrmEclipseLinkConverter<XmlTypeConverter>
 	implements EclipseLinkTypeConverter
 {
@@ -34,7 +34,7 @@ public class OrmEclipseLinkTypeConverter
 	private String fullyQualifiedObjectType;
 
 
-	public OrmEclipseLinkTypeConverter(JpaContextModel parent, XmlTypeConverter xmlConverter) {
+	public EclipseLinkOrmTypeConverter(JpaContextModel parent, XmlTypeConverter xmlConverter) {
 		super(parent, xmlConverter);
 		this.dataType = xmlConverter.getDataType();
 		this.objectType = xmlConverter.getObjectType();

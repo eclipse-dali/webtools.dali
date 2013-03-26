@@ -42,7 +42,7 @@ public abstract class EclipseLinkAbstractOrmConverterContainer
 	protected final ContextListContainer<OrmEclipseLinkCustomConverter, XmlConverter> customConverterContainer;
 	protected final ContextListContainer<OrmEclipseLinkObjectTypeConverter, XmlObjectTypeConverter> objectTypeConverterContainer;
 	protected final ContextListContainer<OrmEclipseLinkStructConverter, XmlStructConverter> structConverterContainer;
-	protected final ContextListContainer<OrmEclipseLinkTypeConverter, XmlTypeConverter> typeConverterContainer;
+	protected final ContextListContainer<EclipseLinkOrmTypeConverter, XmlTypeConverter> typeConverterContainer;
 
 
 	protected EclipseLinkAbstractOrmConverterContainer(EclipseLinkOrmConverterContainer.Parent parent, XmlConverterContainer xmlConverterContainer) {
@@ -337,7 +337,7 @@ public abstract class EclipseLinkAbstractOrmConverterContainer
 
 	// ********** type converters **********
 
-	public ListIterable<OrmEclipseLinkTypeConverter> getTypeConverters() {
+	public ListIterable<EclipseLinkOrmTypeConverter> getTypeConverters() {
 		return this.typeConverterContainer.getContextElements();
 	}
 
@@ -345,13 +345,13 @@ public abstract class EclipseLinkAbstractOrmConverterContainer
 		return this.typeConverterContainer.getContextElementsSize();
 	}
 
-	public OrmEclipseLinkTypeConverter addTypeConverter(String name) {
+	public EclipseLinkOrmTypeConverter addTypeConverter(String name) {
 		return this.addTypeConverter(name, this.getTypeConvertersSize());
 	}
 
-	public OrmEclipseLinkTypeConverter addTypeConverter(String name, int index) {
+	public EclipseLinkOrmTypeConverter addTypeConverter(String name, int index) {
 		XmlTypeConverter xmlConverter = this.buildXmlTypeConverter(name);
-		OrmEclipseLinkTypeConverter converter = this.typeConverterContainer.addContextElement(index, xmlConverter);
+		EclipseLinkOrmTypeConverter converter = this.typeConverterContainer.addContextElement(index, xmlConverter);
 		this.xmlConverterContainer.getTypeConverters().add(index, xmlConverter);
 		return converter;
 	}
@@ -363,7 +363,7 @@ public abstract class EclipseLinkAbstractOrmConverterContainer
 	}
 
 	public void removeTypeConverter(EclipseLinkTypeConverter converter) {
-		this.removeTypeConverter(this.typeConverterContainer.indexOfContextElement((OrmEclipseLinkTypeConverter) converter));
+		this.removeTypeConverter(this.typeConverterContainer.indexOfContextElement((EclipseLinkOrmTypeConverter) converter));
 	}
 
 	public void removeTypeConverter(int index) {
@@ -376,8 +376,8 @@ public abstract class EclipseLinkAbstractOrmConverterContainer
 		this.xmlConverterContainer.getTypeConverters().move(targetIndex, sourceIndex);
 	}
 
-	protected OrmEclipseLinkTypeConverter buildTypeConverter(XmlTypeConverter xmlConverter) {
-		return new OrmEclipseLinkTypeConverter(this, xmlConverter);
+	protected EclipseLinkOrmTypeConverter buildTypeConverter(XmlTypeConverter xmlConverter) {
+		return new EclipseLinkOrmTypeConverter(this, xmlConverter);
 	}
 
 	protected void syncTypeConverters() {
@@ -389,7 +389,7 @@ public abstract class EclipseLinkAbstractOrmConverterContainer
 		return IterableTools.cloneLive(this.xmlConverterContainer.getTypeConverters());
 	}
 
-	protected ContextListContainer<OrmEclipseLinkTypeConverter, XmlTypeConverter> buildTypeConverterContainer() {
+	protected ContextListContainer<EclipseLinkOrmTypeConverter, XmlTypeConverter> buildTypeConverterContainer() {
 		TypeConverterContainer container = new TypeConverterContainer();
 		container.initialize();
 		return container;
@@ -399,14 +399,14 @@ public abstract class EclipseLinkAbstractOrmConverterContainer
 	 * type converter container
 	 */
 	protected class TypeConverterContainer
-		extends ContextListContainer<OrmEclipseLinkTypeConverter, XmlTypeConverter>
+		extends ContextListContainer<EclipseLinkOrmTypeConverter, XmlTypeConverter>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return TYPE_CONVERTERS_LIST;
 		}
 		@Override
-		protected OrmEclipseLinkTypeConverter buildContextElement(XmlTypeConverter resourceElement) {
+		protected EclipseLinkOrmTypeConverter buildContextElement(XmlTypeConverter resourceElement) {
 			return EclipseLinkAbstractOrmConverterContainer.this.buildTypeConverter(resourceElement);
 		}
 		@Override
@@ -414,7 +414,7 @@ public abstract class EclipseLinkAbstractOrmConverterContainer
 			return EclipseLinkAbstractOrmConverterContainer.this.getXmlTypeConverters();
 		}
 		@Override
-		protected XmlTypeConverter getResourceElement(OrmEclipseLinkTypeConverter contextElement) {
+		protected XmlTypeConverter getResourceElement(EclipseLinkOrmTypeConverter contextElement) {
 			return contextElement.getXmlConverter();
 		}
 	}
@@ -566,7 +566,7 @@ public abstract class EclipseLinkAbstractOrmConverterContainer
 				return result;
 			}
 		}
-		for (OrmEclipseLinkTypeConverter converter : this.typeConverterContainer.getContextElements()) {
+		for (EclipseLinkOrmTypeConverter converter : this.typeConverterContainer.getContextElements()) {
 			result = converter.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
