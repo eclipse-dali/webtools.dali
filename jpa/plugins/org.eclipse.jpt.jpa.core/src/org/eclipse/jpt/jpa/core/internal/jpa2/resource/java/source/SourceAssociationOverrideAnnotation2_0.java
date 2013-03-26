@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2012 Oracle. All rights reserved.
+* Copyright (c) 2009, 2013 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
 /**
  * <code>javax.persistence.AssociationOverride</code>
  */
-public final class SourceAssociationOverride2_0Annotation
+public final class SourceAssociationOverrideAnnotation2_0
 	extends SourceAssociationOverrideAnnotation
 	implements AssociationOverrideAnnotation2_0
 {
@@ -41,35 +41,35 @@ public final class SourceAssociationOverride2_0Annotation
 	private final JoinTableAnnotation nullJoinTable;
 
 	
-	public static SourceAssociationOverride2_0Annotation buildSourceAssociationOverrideAnnotation(
+	public static SourceAssociationOverrideAnnotation2_0 buildSourceAssociationOverrideAnnotation(
 			JavaResourceModel parent, 
 			AnnotatedElement element) {
 		
-		return new SourceAssociationOverride2_0Annotation(parent, element, DECLARATION_ANNOTATION_ADAPTER);
+		return new SourceAssociationOverrideAnnotation2_0(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 	}
 
-	public static SourceAssociationOverride2_0Annotation buildSourceAssociationOverrideAnnotation(
+	public static SourceAssociationOverrideAnnotation2_0 buildSourceAssociationOverrideAnnotation(
 			JavaResourceAnnotatedElement parent, 
 			AnnotatedElement annotatedElement, 
 			int index) {
 		IndexedDeclarationAnnotationAdapter idaa = buildAssociationOverrideDeclarationAnnotationAdapter(index);
 		IndexedAnnotationAdapter iaa = buildAssociationOverrideAnnotationAdapter(annotatedElement, idaa);
-		return new SourceAssociationOverride2_0Annotation(
+		return new SourceAssociationOverrideAnnotation2_0(
 			parent,
 			annotatedElement,
 			idaa,
 			iaa);
 	}
 
-	public static SourceAssociationOverride2_0Annotation buildNestedSourceAssociationOverrideAnnotation(
+	public static SourceAssociationOverrideAnnotation2_0 buildNestedSourceAssociationOverrideAnnotation(
 			JavaResourceModel parent, 
 			AnnotatedElement element, 
 			IndexedDeclarationAnnotationAdapter idaa) {
 		
-		return new SourceAssociationOverride2_0Annotation(parent, element, idaa);
+		return new SourceAssociationOverrideAnnotation2_0(parent, element, idaa);
 	}
 
-	private SourceAssociationOverride2_0Annotation(
+	private SourceAssociationOverrideAnnotation2_0(
 			JavaResourceModel parent, 
 			AnnotatedElement element, 
 			DeclarationAnnotationAdapter daa) {
@@ -77,7 +77,7 @@ public final class SourceAssociationOverride2_0Annotation
 		this(parent, element, daa, new ElementAnnotationAdapter(element, daa));
 	}
 
-	private SourceAssociationOverride2_0Annotation(
+	private SourceAssociationOverrideAnnotation2_0(
 			JavaResourceModel parent, 
 			AnnotatedElement element, 
 			IndexedDeclarationAnnotationAdapter idaa) {
@@ -85,7 +85,7 @@ public final class SourceAssociationOverride2_0Annotation
 		this(parent, element, idaa, new ElementIndexedAnnotationAdapter(element, idaa));
 	}
 
-	private SourceAssociationOverride2_0Annotation(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	private SourceAssociationOverrideAnnotation2_0(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, element, daa, annotationAdapter);
 		this.joinTableAdapter = this.buildJoinTableAdapter();
 		this.nullJoinTable = this.buildNullJoinTable();
