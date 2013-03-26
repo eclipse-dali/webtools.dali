@@ -27,13 +27,13 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOutpu
  *  Pre-req in PDE environment:
  *  	org.eclipse.jpt.jpa.eclipselink.core.ddlgen.jar in ECLIPSE_HOME/plugins
  */
-public class EclipseLink2_0DDLGenerator extends EclipseLinkAbstractDDLGenerator
+public class EclipseLinkDDLGenerator2_0 extends EclipseLinkAbstractDDLGenerator
 {
 	static final String VALIDATION_MODE_PROPERTY = "javax.persistence.validation.mode"; 	  //$NON-NLS-1$
 
 	// ********** constructors **********
 
-	public EclipseLink2_0DDLGenerator(String puName, JpaProject jpaProject, EclipseLinkOutputMode outputMode) {
+	public EclipseLinkDDLGenerator2_0(String puName, JpaProject jpaProject, EclipseLinkOutputMode outputMode) {
 		super(puName, jpaProject, outputMode);
 	}
 

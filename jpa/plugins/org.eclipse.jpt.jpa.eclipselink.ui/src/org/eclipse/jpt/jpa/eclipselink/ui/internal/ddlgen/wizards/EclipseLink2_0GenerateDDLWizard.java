@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jpt.common.core.gen.JptGenerator;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOutputMode;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.ddlgen.EclipseLink2_0DDLGenerator;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.ddlgen.EclipseLinkDDLGenerator2_0;
 import org.eclipse.wst.validation.ValidationFramework;
 
 /**
@@ -47,7 +47,7 @@ public class EclipseLink2_0GenerateDDLWizard extends GenerateDDLWizard {
 
 		@Override
 		protected JptGenerator buildGenerator() {
-			return new EclipseLink2_0DDLGenerator(this.puName, this.jpaProject, this.outputMode);
+			return new EclipseLinkDDLGenerator2_0(this.puName, this.jpaProject, this.outputMode);
 		}
 
 		@Override
