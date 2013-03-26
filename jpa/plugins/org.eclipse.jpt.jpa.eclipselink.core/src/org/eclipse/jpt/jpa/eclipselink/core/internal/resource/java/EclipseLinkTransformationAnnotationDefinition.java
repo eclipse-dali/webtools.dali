@@ -46,7 +46,7 @@ public class EclipseLinkTransformationAnnotationDefinition
 	}
 
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
-		return new NullEclipseLinkTransformationAnnotation(parent);
+		return new EclipseLinkNullTransformationAnnotation(parent);
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {

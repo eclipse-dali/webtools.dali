@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,11 +18,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TransformationAnnotati
 /**
  * <code>org.eclipse.persistence.annotations.Transformation</code>
  */
-public final class NullEclipseLinkTransformationAnnotation
+public final class EclipseLinkNullTransformationAnnotation
 	extends NullAnnotation<TransformationAnnotation>
 	implements TransformationAnnotation
 {	
-	protected NullEclipseLinkTransformationAnnotation(JavaResourceAnnotatedElement parent) {
+	protected EclipseLinkNullTransformationAnnotation(JavaResourceAnnotatedElement parent) {
 		super(parent);
 	}
 
