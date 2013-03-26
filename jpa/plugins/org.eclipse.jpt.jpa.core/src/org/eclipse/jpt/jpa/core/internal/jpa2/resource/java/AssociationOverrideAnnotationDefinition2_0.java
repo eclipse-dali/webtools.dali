@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,13 +19,13 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source.SourceAssocia
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
 /**
- * javax.persistence.AssociationOverride
+ * <code>javax.persistence.AssociationOverride</code>
  */
-public final class AssociationOverride2_0AnnotationDefinition
+public final class AssociationOverrideAnnotationDefinition2_0
 	implements NestableAnnotationDefinition
 {
 	// singleton
-	private static final NestableAnnotationDefinition INSTANCE = new AssociationOverride2_0AnnotationDefinition();
+	private static final NestableAnnotationDefinition INSTANCE = new AssociationOverrideAnnotationDefinition2_0();
 
 	/**
 	 * Return the singleton.
@@ -37,7 +37,7 @@ public final class AssociationOverride2_0AnnotationDefinition
 	/**
 	 * Ensure single instance.
 	 */
-	private AssociationOverride2_0AnnotationDefinition() {
+	private AssociationOverrideAnnotationDefinition2_0() {
 		super();
 	}
 
