@@ -121,7 +121,7 @@ public final class EclipseLinkBinaryObjectTypeConverterAnnotation
 		Object[] jdtConversionValues = this.getJdtMemberValues(EclipseLink.OBJECT_TYPE_CONVERTER__CONVERSION_VALUES);
 		Vector<ConversionValueAnnotation> result = new Vector<ConversionValueAnnotation>(jdtConversionValues.length);
 		for (Object jdtConversionValue : jdtConversionValues) {
-			result.add(new BinaryEclipseLinkConversionValueAnnotation(this, (IAnnotation) jdtConversionValue));
+			result.add(new EclipseLinkBinaryConversionValueAnnotation(this, (IAnnotation) jdtConversionValue));
 		}
 		return result;
 	}
