@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 /**
  * <code>javax.persistence.Cacheable</code>
  */
-public final class SourceCacheable2_0Annotation
+public final class SourceCacheableAnnotation2_0
 	extends SourceAnnotation
 	implements CacheableAnnotation2_0
 {
@@ -39,7 +39,7 @@ public final class SourceCacheable2_0Annotation
 	private TextRange valueTextRange;
 
 
-	public SourceCacheable2_0Annotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
+	public SourceCacheableAnnotation2_0(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
 		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 		this.valueAdapter = new AnnotatedElementAnnotationElementAdapter<Boolean>(element, VALUE_ADAPTER);
 	}
