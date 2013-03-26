@@ -43,7 +43,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLoggi
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLoggingLevel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOutputMode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkSchemaGeneration;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_1JpaPlatformFactory;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
 import org.eclipse.osgi.util.ManifestElement;
 import org.osgi.framework.Bundle;
@@ -144,7 +144,7 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 
 	protected void appendDynamicArgument(StringBuffer sb) {
 		EclipseLinkJpaPlatformVersion jpaVersion = (EclipseLinkJpaPlatformVersion) this.jpaProject.getJpaPlatform().getJpaVersion();
-		if (jpaVersion.isCompatibleWithEclipseLinkVersion(EclipseLink2_1JpaPlatformFactory.VERSION)) {
+		if (jpaVersion.isCompatibleWithEclipseLinkVersion(EclipseLinkJpaPlatformFactory2_1.VERSION)) {
 			sb.append(' ').append(DYNAMIC_PROGRAM_ARGUMENT);
 		}
 	}

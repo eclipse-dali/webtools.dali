@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.internal.libprov.JpaUserLibraryProviderInstallOp
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink1_1JpaPlatformFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink1_2JpaPlatformFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_0JpaPlatformFactory;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_1JpaPlatformFactory;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_4;
@@ -59,7 +59,7 @@ public class EclipseLinkUserLibraryValidator
 		versionRanges.put(EclipseLink1_1JpaPlatformFactory.ID, new VersionRange("[1.1, 3.0)"));
 		versionRanges.put(EclipseLink1_2JpaPlatformFactory.ID, new VersionRange("[1.2, 3.0)"));
 		versionRanges.put(EclipseLink2_0JpaPlatformFactory.ID, new VersionRange("[2.0, 3.0)"));
-		versionRanges.put(EclipseLink2_1JpaPlatformFactory.ID, new VersionRange("[2.1, 3.0)"));
+		versionRanges.put(EclipseLinkJpaPlatformFactory2_1.ID, new VersionRange("[2.1, 3.0)"));
 		versionRanges.put(EclipseLinkJpaPlatformFactory2_2.ID, new VersionRange("[2.2, 3.0)"));
 		versionRanges.put(EclipseLinkJpaPlatformFactory2_3.ID, new VersionRange("[2.3, 3.0)"));
 		versionRanges.put(EclipseLinkJpaPlatformFactory2_4.ID, new VersionRange("[2.4, 3.0)"));

@@ -74,7 +74,7 @@ public class EclipseLinkJpaPlatformFactory2_2
 			}
 			public AccessType[] getSupportedAccessTypes(JptResourceType resourceType) {
 				return resourceType.isKindOf(EclipseLinkOrmXmlDefinition2_1.instance().getResourceType()) ?
-						EclipseLink2_1JpaPlatformFactory.SUPPORTED_ACCESS_TYPES :
+						EclipseLinkJpaPlatformFactory2_1.SUPPORTED_ACCESS_TYPES :
 						GENERIC_SUPPORTED_ACCESS_TYPES;
 			}
 		};

@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.internal.libprov.JpaOsgiBundlesLibraryProviderIn
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink1_1JpaPlatformFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink1_2JpaPlatformFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_0JpaPlatformFactory;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_1JpaPlatformFactory;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_4;
@@ -51,7 +51,7 @@ public class EclipseLinkEclipseLinkBundlesLibraryValidator
 		versionRanges.put(EclipseLink1_1JpaPlatformFactory.ID, buildEclipseLink1_1BundleVersionRanges());
 		versionRanges.put(EclipseLink1_2JpaPlatformFactory.ID, buildEclipseLink1_2BundleVersionRanges());
 		versionRanges.put(EclipseLink2_0JpaPlatformFactory.ID, buildEclipseLink2_0BundleVersionRanges());
-		versionRanges.put(EclipseLink2_1JpaPlatformFactory.ID, buildEclipseLink2_1BundleVersionRanges());
+		versionRanges.put(EclipseLinkJpaPlatformFactory2_1.ID, buildEclipseLink2_1BundleVersionRanges());
 		versionRanges.put(EclipseLinkJpaPlatformFactory2_2.ID, buildEclipseLink2_2BundleVersionRanges());
 		versionRanges.put(EclipseLinkJpaPlatformFactory2_3.ID, buildEclipseLink2_3BundleVersionRanges());
 		versionRanges.put(EclipseLinkJpaPlatformFactory2_4.ID, buildEclipseLink2_4BundleVersionRanges());
