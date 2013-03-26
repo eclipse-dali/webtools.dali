@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ReadTransformerAnnotat
  * org.eclipse.persistence.annotations.ReadTransformer
  */
 public final class BinaryEclipseLinkReadTransformerAnnotation
-	extends BinaryEclipseLinkTransformerAnnotation
+	extends EclipseLinkBinaryTransformerAnnotation
 	implements ReadTransformerAnnotation
 {
 
