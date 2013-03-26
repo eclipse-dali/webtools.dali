@@ -61,7 +61,7 @@ public class EclipseLinkJavaArrayMapping2_3
 		JavaBaseEnumeratedConverter.BasicAdapter.instance(),
 		JavaBaseTemporalConverter.BasicAdapter.instance(),
 		JavaLobConverter.Adapter.instance(),
-		JavaEclipseLinkConvert.Adapter.instance()
+		EclipseLinkJavaConvert.Adapter.instance()
 	};
 
 	protected static final Iterable<JavaConverter.Adapter> CONVERTER_ADAPTERS = IterableTools.iterable(CONVERTER_ADAPTER_ARRAY);

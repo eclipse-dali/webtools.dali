@@ -92,7 +92,7 @@ public class JavaEclipseLinkVersionMapping
 	 */
 	@Override
 	protected Iterable<JavaConverter.Adapter> getConverterAdapters() {
-		return IterableTools.insert(JavaEclipseLinkConvert.Adapter.instance(), super.getConverterAdapters());
+		return IterableTools.insert(EclipseLinkJavaConvert.Adapter.instance(), super.getConverterAdapters());
 	}
 
 

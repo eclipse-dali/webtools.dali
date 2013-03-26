@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersi
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkConvertValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConvertAnnotation;
 
-public class JavaEclipseLinkConvert
+public class EclipseLinkJavaConvert
 	extends AbstractJavaConverter
 	implements EclipseLinkConvert
 {
@@ -35,7 +35,7 @@ public class JavaEclipseLinkConvert
 	private String defaultConverterName;
 
 
-	public JavaEclipseLinkConvert(Converter.ParentAdapter<JavaAttributeMapping> parentAdapter, ConvertAnnotation convertAnnotation) {
+	public EclipseLinkJavaConvert(Converter.ParentAdapter<JavaAttributeMapping> parentAdapter, ConvertAnnotation convertAnnotation) {
 		super(parentAdapter);
 		this.convertAnnotation = convertAnnotation;
 		this.specifiedConverterName = convertAnnotation.getValue();
@@ -170,7 +170,7 @@ public class JavaEclipseLinkConvert
 		}
 
 		public JavaConverter buildConverter(Annotation converterAnnotation, JavaAttributeMapping parent, JpaFactory factory) {
-			return new JavaEclipseLinkConvert(this.buildConverterParentAdapter(parent), (ConvertAnnotation) converterAnnotation);
+			return new EclipseLinkJavaConvert(this.buildConverterParentAdapter(parent), (ConvertAnnotation) converterAnnotation);
 		}
 		
 		@Override

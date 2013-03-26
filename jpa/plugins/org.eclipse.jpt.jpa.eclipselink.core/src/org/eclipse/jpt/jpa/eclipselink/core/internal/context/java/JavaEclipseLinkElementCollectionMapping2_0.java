@@ -90,7 +90,7 @@ public class JavaEclipseLinkElementCollectionMapping2_0
 	@Override
 	protected Iterable<JavaConverter.Adapter> getConverterAdapters() {
 		return IterableTools.insert(
-				JavaEclipseLinkConvert.Adapter.instance(),
+				EclipseLinkJavaConvert.Adapter.instance(),
 				super.getConverterAdapters()
 			);
 	}
