@@ -111,7 +111,7 @@ public class JavaEclipseLinkMappedSuperclassImpl
 	}
 
 	protected EclipseLinkJavaCaching buildCaching() {
-		return new JavaEclipseLinkCachingImpl(this);
+		return new EclipseLinkJavaCachingImpl(this);
 	}
 
 

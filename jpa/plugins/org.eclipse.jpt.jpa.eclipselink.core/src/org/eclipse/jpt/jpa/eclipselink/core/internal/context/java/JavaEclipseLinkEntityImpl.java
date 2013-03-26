@@ -101,7 +101,7 @@ public class JavaEclipseLinkEntityImpl
 	}
 
 	protected EclipseLinkJavaCaching buildCaching() {
-		return new JavaEclipseLinkCachingImpl(this);
+		return new EclipseLinkJavaCachingImpl(this);
 	}
 
 

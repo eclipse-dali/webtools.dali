@@ -37,7 +37,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreVali
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class JavaEclipseLinkCachingImpl
+public class EclipseLinkJavaCachingImpl
 	extends AbstractJavaContextModel<EclipseLinkJavaNonEmbeddableTypeMapping>
 	implements EclipseLinkJavaCaching, JavaCacheableReference2_0
 {
@@ -61,7 +61,7 @@ public class JavaEclipseLinkCachingImpl
 
 	protected EclipseLinkCacheIsolationType2_2 specifiedIsolation;
 
-	public JavaEclipseLinkCachingImpl(EclipseLinkJavaNonEmbeddableTypeMapping parent) {
+	public EclipseLinkJavaCachingImpl(EclipseLinkJavaNonEmbeddableTypeMapping parent) {
 		super(parent);
 
 		CacheAnnotation cacheAnnotation = this.getCacheAnnotation();
