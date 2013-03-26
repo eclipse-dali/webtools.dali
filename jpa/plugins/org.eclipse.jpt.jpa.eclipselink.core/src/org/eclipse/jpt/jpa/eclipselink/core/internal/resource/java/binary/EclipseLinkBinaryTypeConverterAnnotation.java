@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TypeConverterAnnotatio
  * <code>org.eclipse.persistence.annotations.TypeConverter</code>
  */
 public final class EclipseLinkBinaryTypeConverterAnnotation
-	extends BinaryEclipseLinkBaseTypeConverterAnnotation
+	extends EclipseLinkBinaryBaseTypeConverterAnnotation
 	implements TypeConverterAnnotation
 {
 	public EclipseLinkBinaryTypeConverterAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
