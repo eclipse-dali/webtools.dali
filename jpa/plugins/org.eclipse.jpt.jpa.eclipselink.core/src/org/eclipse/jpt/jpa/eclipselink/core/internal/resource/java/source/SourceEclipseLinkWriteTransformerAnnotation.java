@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.NullEclipseLinkWriteTransformerColumnAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkNullWriteTransformerColumnAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.WriteTransformerAnnotation;
 
@@ -137,7 +137,7 @@ public final class SourceEclipseLinkWriteTransformerAnnotation
 	}
 
 	private ColumnAnnotation buildNullColumn() {
-		return new NullEclipseLinkWriteTransformerColumnAnnotation(this);
+		return new EclipseLinkNullWriteTransformerColumnAnnotation(this);
 	}
 
 	public TextRange getColumnTextRange() {

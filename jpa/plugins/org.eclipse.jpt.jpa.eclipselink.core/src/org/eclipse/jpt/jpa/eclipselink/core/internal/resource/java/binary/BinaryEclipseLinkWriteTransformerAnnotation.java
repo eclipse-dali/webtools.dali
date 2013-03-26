@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.NullEclipseLinkWriteTransformerColumnAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkNullWriteTransformerColumnAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.WriteTransformerAnnotation;
 
@@ -88,7 +88,7 @@ public class BinaryEclipseLinkWriteTransformerAnnotation
 	}
 
 	private ColumnAnnotation buildNullColumn() {
-		return new NullEclipseLinkWriteTransformerColumnAnnotation(this);
+		return new EclipseLinkNullWriteTransformerColumnAnnotation(this);
 	}
 
 	private ColumnAnnotation buildColumn(IAnnotation jdtColumn) {
