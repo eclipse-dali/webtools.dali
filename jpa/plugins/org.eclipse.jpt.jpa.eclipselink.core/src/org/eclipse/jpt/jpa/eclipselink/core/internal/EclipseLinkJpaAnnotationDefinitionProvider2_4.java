@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkBa
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkBasicMapAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkCacheAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkChangeTrackingAnnotationDefinition;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkClassExtractor2_1AnnotationDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkClassExtractorAnnotationDefinition2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkConvertAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkConverterAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkConvertersAnnotationDefinition2_2;
@@ -81,7 +81,7 @@ public class EclipseLinkJpaAnnotationDefinitionProvider2_4
 		EclipseLinkBasicMapAnnotationDefinition.instance(),
 		EclipseLinkCacheAnnotationDefinition.instance(),
 		EclipseLinkChangeTrackingAnnotationDefinition.instance(),
-		EclipseLinkClassExtractor2_1AnnotationDefinition.instance(),
+		EclipseLinkClassExtractorAnnotationDefinition2_1.instance(),
 		EclipseLinkConvertAnnotationDefinition.instance(),
 		EclipseLinkConvertersAnnotationDefinition2_2.instance(),
 		EclipseLinkCustomizerAnnotationDefinition.instance(),

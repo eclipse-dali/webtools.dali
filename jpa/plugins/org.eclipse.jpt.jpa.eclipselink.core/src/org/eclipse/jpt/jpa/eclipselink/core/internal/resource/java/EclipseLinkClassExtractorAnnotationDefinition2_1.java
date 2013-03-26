@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,13 +19,13 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.Source
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ClassExtractorAnnotation2_1;
 
 /**
- * org.eclipse.persistence.annotations.ClassExtractor
+ * <code>org.eclipse.persistence.annotations.ClassExtractor</code>
  */
-public class EclipseLinkClassExtractor2_1AnnotationDefinition
+public class EclipseLinkClassExtractorAnnotationDefinition2_1
 	implements AnnotationDefinition
 {
 	// singleton
-	private static final AnnotationDefinition INSTANCE = new EclipseLinkClassExtractor2_1AnnotationDefinition();
+	private static final AnnotationDefinition INSTANCE = new EclipseLinkClassExtractorAnnotationDefinition2_1();
 
 	/**
 	 * Return the singleton.
@@ -37,7 +37,7 @@ public class EclipseLinkClassExtractor2_1AnnotationDefinition
 	/**
 	 * Ensure single instance.
 	 */
-	private EclipseLinkClassExtractor2_1AnnotationDefinition() {
+	private EclipseLinkClassExtractorAnnotationDefinition2_1() {
 		super();
 	}
 
