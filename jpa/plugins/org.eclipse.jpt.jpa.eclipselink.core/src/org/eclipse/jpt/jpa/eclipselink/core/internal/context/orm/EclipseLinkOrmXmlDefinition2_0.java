@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.internal.context.orm.OrmOneToManyMappingDefiniti
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmOneToOneMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmTransientMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmVersionMappingDefinition;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.OrmElementCollectionMapping2_0Definition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.OrmElementCollectionMappingDefinition2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_0JpaPlatformProvider;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
@@ -75,7 +75,7 @@ public class EclipseLinkOrmXmlDefinition2_0
 		OrmTransientMappingDefinition.instance(),
 		OrmEclipseLinkBasicCollectionMappingDefinition.instance(),
 		OrmEclipseLinkBasicMapMappingDefinition.instance(),
-		OrmElementCollectionMapping2_0Definition.instance(),
+		OrmElementCollectionMappingDefinition2_0.instance(),
 		OrmIdMappingDefinition.instance(),
 		OrmVersionMappingDefinition.instance(),
 		OrmBasicMappingDefinition.instance(),

@@ -94,7 +94,7 @@ public class GenericOrmXmlDefinition2_1
 	 */
 	protected static final OrmAttributeMappingDefinition[] ATTRIBUTE_MAPPING_DEFINITIONS = new OrmAttributeMappingDefinition[] {
 		OrmTransientMappingDefinition.instance(),
-		OrmElementCollectionMapping2_0Definition.instance(),
+		OrmElementCollectionMappingDefinition2_0.instance(),
 		OrmIdMappingDefinition.instance(),
 		OrmVersionMappingDefinition.instance(),
 		OrmBasicMappingDefinition.instance(),
