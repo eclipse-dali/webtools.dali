@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,18 +15,17 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.BasicCollectionAnnotation;
 
 /**
- * org.eclipse.persistence.annotations.BasicCollection
+ * <code>org.eclipse.persistence.annotations.BasicCollection</code>
  */
-public final class BinaryEclipseLinkBasicCollectionAnnotation
+public final class EclipseLinkBinaryBasicCollectionAnnotation
 	extends BinaryAnnotation
 	implements BasicCollectionAnnotation
 {
-	public BinaryEclipseLinkBasicCollectionAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
+	public EclipseLinkBinaryBasicCollectionAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
 	}
-
 }
