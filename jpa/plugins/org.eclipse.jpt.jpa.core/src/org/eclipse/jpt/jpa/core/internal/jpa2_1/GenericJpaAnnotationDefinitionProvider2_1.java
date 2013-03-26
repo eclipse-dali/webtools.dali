@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.CollectionTable2_0An
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.ElementCollection2_0AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.GeneratedAnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.MapKeyClass2_0AnnotationDefinition;
-import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.MapKeyColumn2_0AnnotationDefinition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.MapKeyColumnAnnotationDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.MapKeyEnumeratedAnnotationDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.MapKeyJoinColumnAnnotationDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.MapKeyJoinColumnsAnnotationDefinition2_0;
@@ -132,7 +132,7 @@ public class GenericJpaAnnotationDefinitionProvider2_1
 		MapsIdAnnotationDefinition2_0.instance(),
 		MapKeyAnnotationDefinition.instance(),
 		MapKeyClass2_0AnnotationDefinition.instance(),
-		MapKeyColumn2_0AnnotationDefinition.instance(),
+		MapKeyColumnAnnotationDefinition2_0.instance(),
 		MapKeyEnumeratedAnnotationDefinition2_0.instance(),
 		MapKeyJoinColumnsAnnotationDefinition2_0.instance(),
 		MapKeyTemporalAnnotationDefinition2_0.instance(),
