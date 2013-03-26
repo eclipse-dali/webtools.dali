@@ -49,7 +49,7 @@ public class MapsId2_0AnnotationDefinition implements AnnotationDefinition
 	}
 	
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
-		return new NullMapsId2_0Annotation(parent);
+		return new NullMapsIdAnnotation2_0(parent);
 	}
 	
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
