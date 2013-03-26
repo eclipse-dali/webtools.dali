@@ -33,7 +33,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.OrderColumn2_0Annota
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.SequenceGenerator2_0AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.StaticMetamodelAnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.resource.java.ConverterAnnotationDefinition2_1;
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.resource.java.NamedStoredProcedureQueries2_1AnnotationDefinition;
+import org.eclipse.jpt.jpa.core.internal.jpa2_1.resource.java.NamedStoredProcedureQueriesAnnotationDefinition2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.resource.java.NamedStoredProcedureQuery2_1AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.resource.java.AssociationOverridesAnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.resource.java.AttributeOverrideAnnotationDefinition;
@@ -138,7 +138,7 @@ public class GenericJpaAnnotationDefinitionProvider2_1
 		MapKeyTemporal2_0AnnotationDefinition.instance(),
 		NamedNativeQueriesAnnotationDefinition.instance(),
 		NamedQueriesAnnotationDefinition.instance(),
-		NamedStoredProcedureQueries2_1AnnotationDefinition.instance(),
+		NamedStoredProcedureQueriesAnnotationDefinition2_1.instance(),
 		OneToManyAnnotationDefinition.instance(),
 		OneToOneAnnotationDefinition.instance(),
 		OrderByAnnotationDefinition.instance(),

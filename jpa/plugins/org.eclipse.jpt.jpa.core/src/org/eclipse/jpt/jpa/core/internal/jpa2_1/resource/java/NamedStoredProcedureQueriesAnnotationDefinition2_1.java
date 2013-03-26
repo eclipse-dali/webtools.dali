@@ -19,13 +19,13 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.JPA2_1;
 
 /**
- * javax.persistence.NamedStoredProcedureQueries
+ * <code>javax.persistence.NamedStoredProcedureQueries</code>
  */
-public final class NamedStoredProcedureQueries2_1AnnotationDefinition
+public final class NamedStoredProcedureQueriesAnnotationDefinition2_1
 	implements AnnotationDefinition
 {
 	// singleton
-	private static final AnnotationDefinition INSTANCE = new NamedStoredProcedureQueries2_1AnnotationDefinition();
+	private static final AnnotationDefinition INSTANCE = new NamedStoredProcedureQueriesAnnotationDefinition2_1();
 
 	/**
 	 * Return the singleton.
@@ -37,7 +37,7 @@ public final class NamedStoredProcedureQueries2_1AnnotationDefinition
 	/**
 	 * Ensure single instance.
 	 */
-	private NamedStoredProcedureQueries2_1AnnotationDefinition() {
+	private NamedStoredProcedureQueriesAnnotationDefinition2_1() {
 		super();
 	}
 
@@ -56,5 +56,4 @@ public final class NamedStoredProcedureQueries2_1AnnotationDefinition
 	public String getAnnotationName() {
 		return JPA2_1.NAMED_STORED_PROCEDURE_QUERIES;
 	}
-
 }
