@@ -150,6 +150,8 @@ public final class DefaultAnnotationEditFormatter
 						extraEdits.addChild(new InsertEdit(offset + pos, this.buildCR(doc, offset)));
 					}
 					break;
+				default:
+					break;
 			}
 			pos++;
 		}
