@@ -1,13 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2009, 2011  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
@@ -20,12 +19,13 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source.SourceMapsId2
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsIdAnnotation2_0;
 
 /**
- * javax.persistence.MapsId
+ * <code>javax.persistence.MapsId</code>
  */
-public class MapsId2_0AnnotationDefinition implements AnnotationDefinition
+public class MapsIdAnnotationDefinition2_0
+	implements AnnotationDefinition
 {
 	// singleton
-	private static final AnnotationDefinition INSTANCE = new MapsId2_0AnnotationDefinition();
+	private static final AnnotationDefinition INSTANCE = new MapsIdAnnotationDefinition2_0();
 	
 	
 	/**
@@ -39,7 +39,7 @@ public class MapsId2_0AnnotationDefinition implements AnnotationDefinition
 	/**
 	 * Enforce singleton usage
 	 */
-	private MapsId2_0AnnotationDefinition() {
+	private MapsIdAnnotationDefinition2_0() {
 		super();
 	}
 	
