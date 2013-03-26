@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.JPA2_1;
 /**
  * <code>javax.persistence.Converter</code>
  */
-public final class SourceConverter2_1Annotation
+public final class SourceConverterAnnotation2_1
 	extends SourceAnnotation
 	implements ConverterAnnotation2_1
 {
@@ -36,7 +36,7 @@ public final class SourceConverter2_1Annotation
 	private TextRange autoApplyTextRange;
 
 
-	public SourceConverter2_1Annotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
+	public SourceConverterAnnotation2_1(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
 		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 		this.autoApplyDeclarationAdapter = this.buildAutoApplyDeclarationAdapter();
 		this.autoApplyAdapter = this.buildAutoApplyAdapter();
