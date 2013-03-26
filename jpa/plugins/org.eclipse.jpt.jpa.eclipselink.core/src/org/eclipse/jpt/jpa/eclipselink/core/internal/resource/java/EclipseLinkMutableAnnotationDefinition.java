@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.BinaryEclipseLinkMutableAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.EclipseLinkBinaryMutableAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.SourceEclipseLinkMutableAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MutableAnnotation;
 
@@ -50,7 +50,7 @@ public class EclipseLinkMutableAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
-		return new BinaryEclipseLinkMutableAnnotation(parent, jdtAnnotation);
+		return new EclipseLinkBinaryMutableAnnotation(parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {
