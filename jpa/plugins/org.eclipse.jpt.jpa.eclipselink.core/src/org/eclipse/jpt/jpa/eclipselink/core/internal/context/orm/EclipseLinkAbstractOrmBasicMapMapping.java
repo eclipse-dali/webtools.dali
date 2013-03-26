@@ -22,11 +22,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkBasicMapMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.Attributes;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasicMap;
 
-public abstract class AbstractOrmEclipseLinkBasicMapMapping
+public abstract class EclipseLinkAbstractOrmBasicMapMapping
 	extends AbstractOrmAttributeMapping<XmlBasicMap> 
 	implements EclipseLinkBasicMapMapping
 {
-	protected AbstractOrmEclipseLinkBasicMapMapping(OrmSpecifiedPersistentAttribute parent, XmlBasicMap xmlMapping) {
+	protected EclipseLinkAbstractOrmBasicMapMapping(OrmSpecifiedPersistentAttribute parent, XmlBasicMap xmlMapping) {
 		super(parent, xmlMapping);
 	}
 	

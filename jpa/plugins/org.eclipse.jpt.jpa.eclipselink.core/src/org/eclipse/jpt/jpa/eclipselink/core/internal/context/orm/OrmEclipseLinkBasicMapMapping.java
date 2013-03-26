@@ -13,7 +13,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasicMap;
 
 public class OrmEclipseLinkBasicMapMapping
-	extends AbstractOrmEclipseLinkBasicMapMapping
+	extends EclipseLinkAbstractOrmBasicMapMapping
 {
 	public OrmEclipseLinkBasicMapMapping(OrmSpecifiedPersistentAttribute parent, XmlBasicMap xmlMapping) {
 		super(parent, xmlMapping);
