@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.StructConverterAnnotat
  * <code>org.eclipse.persistence.annotations.StructConverter</code>
  */
 public final class EclipseLinkBinaryStructConverterAnnotation
-	extends BinaryEclipseLinkNamedConverterAnnotation
+	extends EclipseLinkBinaryNamedConverterAnnotation
 	implements StructConverterAnnotation
 {
 	private String converter;

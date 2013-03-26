@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConverterAnnotation;
  * <code>org.eclipse.persistence.annotations.Converter</code>
  */
 public final class BinaryEclipseLinkConverterAnnotation
-	extends BinaryEclipseLinkNamedConverterAnnotation
+	extends EclipseLinkBinaryNamedConverterAnnotation
 	implements ConverterAnnotation
 {
 	private String converterClass;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,13 +25,13 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.NamedConverterAnnotati
  * </ul>
  * </code>
  */
-abstract class BinaryEclipseLinkNamedConverterAnnotation
+abstract class EclipseLinkBinaryNamedConverterAnnotation
 	extends BinaryAnnotation
 	implements NamedConverterAnnotation
 {
 	String name;
 
-	BinaryEclipseLinkNamedConverterAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
+	EclipseLinkBinaryNamedConverterAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.name = this.buildName();
 	}
