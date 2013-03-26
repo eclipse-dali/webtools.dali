@@ -17,14 +17,14 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkReadOnly;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaNonEmbeddableTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ReadOnlyAnnotation;
 
-public class JavaEclipseLinkReadOnly
+public class EclipseLinkJavaReadOnly
 	extends AbstractJavaContextModel<EclipseLinkJavaNonEmbeddableTypeMapping>
 	implements EclipseLinkReadOnly
 {
 	protected Boolean specifiedReadOnly;  // TRUE or null
 
 
-	public JavaEclipseLinkReadOnly(EclipseLinkJavaNonEmbeddableTypeMapping parent) {
+	public EclipseLinkJavaReadOnly(EclipseLinkJavaNonEmbeddableTypeMapping parent) {
 		super(parent);
 		this.specifiedReadOnly = this.buildSpecifiedReadOnly();
 	}

@@ -52,7 +52,7 @@ public class EclipseLinkJavaMappedSuperclassImpl
 {
 	protected final EclipseLinkJavaCaching caching;
 
-	protected final JavaEclipseLinkReadOnly readOnly;
+	protected final EclipseLinkJavaReadOnly readOnly;
 
 	protected final EclipseLinkJavaConverterContainer converterContainer;
 
@@ -120,8 +120,8 @@ public class EclipseLinkJavaMappedSuperclassImpl
 		return this.readOnly;
 	}
 
-	protected JavaEclipseLinkReadOnly buildReadOnly() {
-		return new JavaEclipseLinkReadOnly(this);
+	protected EclipseLinkJavaReadOnly buildReadOnly() {
+		return new EclipseLinkJavaReadOnly(this);
 	}
 
 
