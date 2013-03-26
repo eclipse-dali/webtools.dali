@@ -43,7 +43,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkTe
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkTransformationAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkTypeConverterAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkTypeConverters2_2AnnotationDefinition;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkUuidGenerator2_4AnnotationDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkUuidGeneratorAnnotationDefinition2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkVariableOneToOneAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkWriteTransformerAnnotationDefinition;
 
@@ -99,7 +99,7 @@ public class EclipseLinkJpaAnnotationDefinitionProvider2_4
 		EclipseLinkTenantDiscriminatorColumns2_3AnnotationDefinition.instance(),
 		EclipseLinkTransformationAnnotationDefinition.instance(),
 		EclipseLinkTypeConverters2_2AnnotationDefinition.instance(),
-		EclipseLinkUuidGenerator2_4AnnotationDefinition.instance(),
+		EclipseLinkUuidGeneratorAnnotationDefinition2_4.instance(),
 		EclipseLinkVariableOneToOneAnnotationDefinition.instance(),
 		EclipseLinkWriteTransformerAnnotationDefinition.instance()
 	};
