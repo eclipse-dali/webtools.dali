@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaColumn;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaOrderable;
 import org.eclipse.jpt.jpa.core.internal.jpa2.GenericJpaDatabaseIdentifierAdapter;
-import org.eclipse.jpt.jpa.core.internal.jpa2.GenericMetamodelSynchronizer;
+import org.eclipse.jpt.jpa.core.internal.jpa2.GenericMetamodelSynchronizer2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaCacheable2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaCollectionTable2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaDerivedIdentity2_0;
@@ -73,7 +73,7 @@ public class EclipseLinkJpaFactory2_0
 	}
 	
 	public MetamodelSourceType2_0.Synchronizer buildMetamodelSynchronizer(MetamodelSourceType2_0 sourceType) {
-		return new GenericMetamodelSynchronizer(sourceType);
+		return new GenericMetamodelSynchronizer2_0(sourceType);
 	}
 	
 	public DatabaseIdentifierAdapter buildDatabaseIdentifierAdapter(JpaDataSource dataSource) {

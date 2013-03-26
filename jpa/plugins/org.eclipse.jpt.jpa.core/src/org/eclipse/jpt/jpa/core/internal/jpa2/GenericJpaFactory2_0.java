@@ -77,7 +77,7 @@ public class GenericJpaFactory2_0
 	}
 
 	public MetamodelSourceType2_0.Synchronizer buildMetamodelSynchronizer(MetamodelSourceType2_0 sourceType) {
-		return new GenericMetamodelSynchronizer(sourceType);
+		return new GenericMetamodelSynchronizer2_0(sourceType);
 	}
 
 	public DatabaseIdentifierAdapter buildDatabaseIdentifierAdapter(JpaDataSource dataSource) {

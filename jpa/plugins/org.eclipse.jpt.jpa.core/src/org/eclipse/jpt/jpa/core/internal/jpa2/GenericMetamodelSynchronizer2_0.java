@@ -47,13 +47,13 @@ import com.ibm.icu.text.SimpleDateFormat;
  * leave the file unchanged.
  */
 @SuppressWarnings("nls")
-public class GenericMetamodelSynchronizer
+public class GenericMetamodelSynchronizer2_0
 	implements MetamodelSourceType2_0.Synchronizer
 {
 	protected final MetamodelSourceType2_0 sourceType;
 
 
-	public GenericMetamodelSynchronizer(MetamodelSourceType2_0 sourceType) {
+	public GenericMetamodelSynchronizer2_0(MetamodelSourceType2_0 sourceType) {
 		super();
 		this.sourceType = sourceType;
 	}
