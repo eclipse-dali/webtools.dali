@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.NamedQueryAnnotation2_0;
 /**
  * <code>javax.persistence.NamedQuery</code>
  */
-public final class SourceNamedQuery2_0Annotation
+public final class SourceNamedQueryAnnotation2_0
 	extends SourceNamedQueryAnnotation
 	implements NamedQueryAnnotation2_0
 {
@@ -36,17 +36,17 @@ public final class SourceNamedQuery2_0Annotation
 	private LockModeType_2_0 lockMode;
 	private TextRange lockModeTextRange;
 
-	public static SourceNamedQuery2_0Annotation buildSourceNamedQueryAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement, int index) {
+	public static SourceNamedQueryAnnotation2_0 buildSourceNamedQueryAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement, int index) {
 		IndexedDeclarationAnnotationAdapter idaa = buildNamedQueryDeclarationAnnotationAdapter(index);
 		IndexedAnnotationAdapter iaa = buildNamedQueryAnnotationAdapter(annotatedElement, idaa);
-		return new SourceNamedQuery2_0Annotation(
+		return new SourceNamedQueryAnnotation2_0(
 			parent,
 			annotatedElement,
 			idaa,
 			iaa);
 	}
 
-	private SourceNamedQuery2_0Annotation(
+	private SourceNamedQueryAnnotation2_0(
 			JavaResourceAnnotatedElement parent,
 			AnnotatedElement annotatedElement,
 			IndexedDeclarationAnnotationAdapter daa,
@@ -126,5 +126,4 @@ public final class SourceNamedQuery2_0Annotation
 		return super.isUnset() &&
 				(this.lockMode == null);
 	}
-
 }

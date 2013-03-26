@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.binary.BinaryNamedQueryAnnotation2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source.SourceNamedQuery2_0Annotation;
+import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source.SourceNamedQueryAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
 /**
@@ -42,7 +42,7 @@ public class NamedQueryAnnotationDefinition2_0
 	}
 
 	public NestableAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement, int index) {
-		return SourceNamedQuery2_0Annotation.buildSourceNamedQueryAnnotation(parent, annotatedElement, index);
+		return SourceNamedQueryAnnotation2_0.buildSourceNamedQueryAnnotation(parent, annotatedElement, index);
 	}
 
 	public NestableAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation, int index) {
