@@ -44,7 +44,7 @@ public class EclipseLinkOrmEmbeddableImpl
 {
 	protected final EclipseLinkOrmConverterContainer converterContainer;
 
-	protected final OrmEclipseLinkChangeTracking changeTracking;
+	protected final EclipseLinkOrmChangeTracking changeTracking;
 
 	protected final EclipseLinkOrmCustomizer customizer;
 
@@ -113,8 +113,8 @@ public class EclipseLinkOrmEmbeddableImpl
 		return this.changeTracking;
 	}
 
-	protected OrmEclipseLinkChangeTracking buildChangeTracking() {
-		return new OrmEclipseLinkChangeTracking(this);
+	protected EclipseLinkOrmChangeTracking buildChangeTracking() {
+		return new EclipseLinkOrmChangeTracking(this);
 	}
 
 

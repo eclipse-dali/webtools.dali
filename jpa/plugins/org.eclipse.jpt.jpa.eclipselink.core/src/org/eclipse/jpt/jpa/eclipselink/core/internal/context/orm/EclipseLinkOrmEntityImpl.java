@@ -59,7 +59,7 @@ public class EclipseLinkOrmEntityImpl
 
 	protected final EclipseLinkOrmCustomizer customizer;
 
-	protected final OrmEclipseLinkChangeTracking changeTracking;
+	protected final EclipseLinkOrmChangeTracking changeTracking;
 
 	protected final EclipseLinkCaching caching;
 
@@ -163,8 +163,8 @@ public class EclipseLinkOrmEntityImpl
 		return this.changeTracking;
 	}
 
-	protected OrmEclipseLinkChangeTracking buildChangeTracking() {
-		return new OrmEclipseLinkChangeTracking(this);
+	protected EclipseLinkOrmChangeTracking buildChangeTracking() {
+		return new EclipseLinkOrmChangeTracking(this);
 	}
 
 

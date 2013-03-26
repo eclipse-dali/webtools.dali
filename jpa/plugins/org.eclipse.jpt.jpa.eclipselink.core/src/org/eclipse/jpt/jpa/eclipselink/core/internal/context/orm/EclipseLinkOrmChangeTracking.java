@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlChangeTracking;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlChangeTrackingHolder;
 
-public class OrmEclipseLinkChangeTracking
+public class EclipseLinkOrmChangeTracking
 	extends AbstractOrmXmlContextModel<EclipseLinkOrmTypeMapping>
 	implements EclipseLinkChangeTracking
 {
@@ -28,7 +28,7 @@ public class OrmEclipseLinkChangeTracking
 	protected EclipseLinkChangeTrackingType defaultType = DEFAULT_TYPE;
 
 
-	public OrmEclipseLinkChangeTracking(EclipseLinkOrmTypeMapping parent) {
+	public EclipseLinkOrmChangeTracking(EclipseLinkOrmTypeMapping parent) {
 		super(parent);
 		this.specifiedType = this.buildSpecifiedType();
 	}
