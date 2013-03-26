@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.tests.internal.jpa2.context.persistence;
 
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.internal.jpa2.Generic2_0JpaPlatformFactory;
+import org.eclipse.jpt.jpa.core.internal.jpa2.GenericJpaPlatformFactory2_0;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.tests.internal.context.persistence.PersistenceUnitTestCase;
@@ -43,7 +43,7 @@ public abstract class PersistenceUnit2_0TestCase
 
 	@Override
 	protected String getJpaPlatformID() {
-		return Generic2_0JpaPlatformFactory.ID;
+		return GenericJpaPlatformFactory2_0.ID;
 	}
 
 	@Override

@@ -24,7 +24,7 @@ import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
  * All the state in the JPA platform should be "static" (i.e. unchanging once
  * it is initialized).
  */
-public class Generic2_0JpaPlatformFactory
+public class GenericJpaPlatformFactory2_0
 	implements JpaPlatformFactory
 {
 	public static final String ID = "generic2_0"; //$NON-NLS-1$
@@ -32,7 +32,7 @@ public class Generic2_0JpaPlatformFactory
 	/**
 	 * zero-argument constructor
 	 */
-	public Generic2_0JpaPlatformFactory() {
+	public GenericJpaPlatformFactory2_0() {
 		super();
 	}
 
