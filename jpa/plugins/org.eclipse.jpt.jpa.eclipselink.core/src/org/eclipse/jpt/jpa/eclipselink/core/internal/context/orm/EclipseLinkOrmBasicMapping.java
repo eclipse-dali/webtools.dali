@@ -37,7 +37,7 @@ import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class OrmEclipseLinkBasicMapping
+public class EclipseLinkOrmBasicMapping
 	extends AbstractOrmBasicMapping<XmlBasic>
 	implements EclipseLinkBasicMapping, EclipseLinkOrmConvertibleMapping, OrmGeneratedValueMapping
 {
@@ -49,7 +49,7 @@ public class OrmEclipseLinkBasicMapping
 
 	protected OrmGeneratedValue generatedValue;//supported in EL 1.1 and higher
 
-	public OrmEclipseLinkBasicMapping(OrmSpecifiedPersistentAttribute parent, XmlBasic xmlMapping) {
+	public EclipseLinkOrmBasicMapping(OrmSpecifiedPersistentAttribute parent, XmlBasic xmlMapping) {
 		super(parent, xmlMapping);
 		this.mutable = new EclipseLinkOrmMutable(this);
 		this.converterContainer = this.buildConverterContainer();

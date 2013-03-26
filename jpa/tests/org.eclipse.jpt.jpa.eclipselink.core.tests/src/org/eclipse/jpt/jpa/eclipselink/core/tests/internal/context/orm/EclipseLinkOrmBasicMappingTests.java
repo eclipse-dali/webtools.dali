@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkBasicMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkBasicMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmBasicMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasic;
@@ -84,8 +84,8 @@ public class EclipseLinkOrmBasicMappingTests
 		OrmPersistentType ormPersistentType = 
 			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmSpecifiedPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
-		OrmEclipseLinkBasicMapping contextBasic = 
-			(OrmEclipseLinkBasicMapping) ormPersistentAttribute.getMapping();
+		EclipseLinkOrmBasicMapping contextBasic = 
+			(EclipseLinkOrmBasicMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
 			(XmlEntity)getXmlEntityMappings().getEntities().get(0);
 		XmlBasic resourceBasic = 
@@ -166,8 +166,8 @@ public class EclipseLinkOrmBasicMappingTests
 		OrmPersistentType ormPersistentType = 
 			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmSpecifiedPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("myDate"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
-		OrmEclipseLinkBasicMapping contextBasic = 
-			(OrmEclipseLinkBasicMapping) ormPersistentAttribute.getMapping();
+		EclipseLinkOrmBasicMapping contextBasic = 
+			(EclipseLinkOrmBasicMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
 			(XmlEntity)getXmlEntityMappings().getEntities().get(0);
 		XmlBasic resourceBasic = 
@@ -264,8 +264,8 @@ public class EclipseLinkOrmBasicMappingTests
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmSpecifiedPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("myDate"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
-		OrmEclipseLinkBasicMapping contextBasic = 
-			(OrmEclipseLinkBasicMapping) ormPersistentAttribute.getMapping();
+		EclipseLinkOrmBasicMapping contextBasic = 
+			(EclipseLinkOrmBasicMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
 			(XmlEntity)getXmlEntityMappings().getEntities().get(0);
 		XmlBasic resourceBasic = 

@@ -85,7 +85,7 @@ public class EclipseLinkOrmXmlContextModelFactory
 	
 	@Override
 	public OrmBasicMapping buildOrmBasicMapping(OrmSpecifiedPersistentAttribute parent, org.eclipse.jpt.jpa.core.resource.orm.XmlBasic resourceMapping) {
-		return new OrmEclipseLinkBasicMapping(parent, (XmlBasic) resourceMapping);
+		return new EclipseLinkOrmBasicMapping(parent, (XmlBasic) resourceMapping);
 	}
 	
 	@Override

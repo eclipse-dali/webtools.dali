@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkBasicMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmBasicMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasic;
@@ -59,7 +59,7 @@ public class EclipseLinkOrmConverterTests
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmSpecifiedPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
-		OrmEclipseLinkBasicMapping ormBasicMapping = (OrmEclipseLinkBasicMapping) ormPersistentAttribute.getMapping(); 
+		EclipseLinkOrmBasicMapping ormBasicMapping = (EclipseLinkOrmBasicMapping) ormPersistentAttribute.getMapping(); 
 		EclipseLinkOrmCustomConverter ormConverter = ormBasicMapping.getConverterContainer().addCustomConverter("customConverter", 0);
 		XmlConverter converterResource = (XmlConverter) ((XmlBasic) getXmlEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0)).getConverters().get(0);
 		
@@ -82,7 +82,7 @@ public class EclipseLinkOrmConverterTests
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmSpecifiedPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
-		OrmEclipseLinkBasicMapping ormBasicMapping = (OrmEclipseLinkBasicMapping) ormPersistentAttribute.getMapping(); 
+		EclipseLinkOrmBasicMapping ormBasicMapping = (EclipseLinkOrmBasicMapping) ormPersistentAttribute.getMapping(); 
 		EclipseLinkOrmCustomConverter ormConverter = ormBasicMapping.getConverterContainer().addCustomConverter("customConverter", 0);
 		XmlConverter converterResource = (XmlConverter) ((XmlBasic) getXmlEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0)).getConverters().get(0);
 		
@@ -105,7 +105,7 @@ public class EclipseLinkOrmConverterTests
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmSpecifiedPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
-		OrmEclipseLinkBasicMapping ormBasicMapping = (OrmEclipseLinkBasicMapping) ormPersistentAttribute.getMapping(); 
+		EclipseLinkOrmBasicMapping ormBasicMapping = (EclipseLinkOrmBasicMapping) ormPersistentAttribute.getMapping(); 
 		EclipseLinkOrmCustomConverter ormConverter = ormBasicMapping.getConverterContainer().addCustomConverter("customConverter", 0);
 		XmlConverter converterResource = (XmlConverter) ((XmlBasic) getXmlEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0)).getConverters().get(0);
 		
@@ -128,7 +128,7 @@ public class EclipseLinkOrmConverterTests
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmSpecifiedPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
-		OrmEclipseLinkBasicMapping ormBasicMapping = (OrmEclipseLinkBasicMapping) ormPersistentAttribute.getMapping(); 
+		EclipseLinkOrmBasicMapping ormBasicMapping = (EclipseLinkOrmBasicMapping) ormPersistentAttribute.getMapping(); 
 		EclipseLinkOrmCustomConverter ormConverter = ormBasicMapping.getConverterContainer().addCustomConverter("customConverter", 0);
 		XmlConverter converterResource = (XmlConverter) ((XmlBasic) getXmlEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0)).getConverters().get(0);
 	
