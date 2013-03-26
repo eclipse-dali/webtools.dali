@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,14 +19,14 @@ import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.JPA2_1;
 /**
  * <code>javax.persistence.Converter</code>
  */
-public final class BinaryConverter2_1Annotation
+public final class BinaryConverterAnnotation2_1
 	extends BinaryAnnotation
 	implements ConverterAnnotation2_1
 {
 	private Boolean autoApply;
 	
 
-	public BinaryConverter2_1Annotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
+	public BinaryConverterAnnotation2_1(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.autoApply = this.buildAutoApply();
 	}
