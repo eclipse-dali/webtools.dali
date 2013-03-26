@@ -46,7 +46,7 @@ public class EclipseLinkCacheAnnotationDefinition
 	}
 
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
-		return new NullEclipseLinkCacheAnnotation(parent);
+		return new EclipseLinkNullCacheAnnotation(parent);
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
