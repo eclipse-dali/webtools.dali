@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.BinaryEclipseLinkTenantDiscriminatorColumnAnnotation2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.EclipseLinkBinaryTenantDiscriminatorColumnAnnotation2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.SourceEclipseLinkTenantDiscriminatorColumnAnnotation2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TenantDiscriminatorColumnAnnotation2_3;
@@ -47,7 +47,7 @@ public class EclipseLinkTenantDiscriminatorColumnAnnotationDefinition2_3
 	}
 
 	public NestableAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation, int index) {
-		return new BinaryEclipseLinkTenantDiscriminatorColumnAnnotation2_3(parent, jdtAnnotation);
+		return new EclipseLinkBinaryTenantDiscriminatorColumnAnnotation2_3(parent, jdtAnnotation);
 	}
 
 	public String getNestableAnnotationName() {
