@@ -20,7 +20,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class OrmEclipseLinkConversionValue
-	extends AbstractOrmXmlContextModel<OrmEclipseLinkObjectTypeConverter>
+	extends AbstractOrmXmlContextModel<EclipseLinkOrmObjectTypeConverter>
 	implements EclipseLinkConversionValue
 {
 	private final XmlConversionValue xmlConversionValue;
@@ -30,7 +30,7 @@ public class OrmEclipseLinkConversionValue
 	private String objectValue;
 
 
-	public OrmEclipseLinkConversionValue(OrmEclipseLinkObjectTypeConverter parent, XmlConversionValue xmlConversionValue) {
+	public OrmEclipseLinkConversionValue(EclipseLinkOrmObjectTypeConverter parent, XmlConversionValue xmlConversionValue) {
 		super(parent);
 		this.xmlConversionValue = xmlConversionValue;
 		this.dataValue = xmlConversionValue.getDataValue();
@@ -86,7 +86,7 @@ public class OrmEclipseLinkConversionValue
 
 	// ********** misc **********
 
-	protected OrmEclipseLinkObjectTypeConverter getObjectTypeConverter() {
+	protected EclipseLinkOrmObjectTypeConverter getObjectTypeConverter() {
 		return this.parent;
 	}
 

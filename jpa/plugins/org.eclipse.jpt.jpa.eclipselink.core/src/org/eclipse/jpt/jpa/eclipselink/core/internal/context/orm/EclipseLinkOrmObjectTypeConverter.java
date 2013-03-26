@@ -35,7 +35,7 @@ import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class OrmEclipseLinkObjectTypeConverter
+public class EclipseLinkOrmObjectTypeConverter
 	extends OrmEclipseLinkConverter<XmlObjectTypeConverter>
 	implements EclipseLinkObjectTypeConverter
 {
@@ -51,7 +51,7 @@ public class OrmEclipseLinkObjectTypeConverter
 	private String defaultObjectValue;
 
 
-	public OrmEclipseLinkObjectTypeConverter(JpaContextModel parent, XmlObjectTypeConverter xmlConverter) {
+	public EclipseLinkOrmObjectTypeConverter(JpaContextModel parent, XmlObjectTypeConverter xmlConverter) {
 		super(parent, xmlConverter);
 		this.dataType = xmlConverter.getDataType();
 		this.objectType = xmlConverter.getObjectType();
@@ -250,12 +250,12 @@ public class OrmEclipseLinkObjectTypeConverter
 		
 		@Override
 		protected OrmEclipseLinkConversionValue buildContextElement(XmlConversionValue resourceElement) {
-			return OrmEclipseLinkObjectTypeConverter.this.buildConversionValue(resourceElement);
+			return EclipseLinkOrmObjectTypeConverter.this.buildConversionValue(resourceElement);
 		}
 		
 		@Override
 		protected ListIterable<XmlConversionValue> getResourceElements() {
-			return OrmEclipseLinkObjectTypeConverter.this.getXmlConversionValues();
+			return EclipseLinkOrmObjectTypeConverter.this.getXmlConversionValues();
 		}
 		
 		@Override
