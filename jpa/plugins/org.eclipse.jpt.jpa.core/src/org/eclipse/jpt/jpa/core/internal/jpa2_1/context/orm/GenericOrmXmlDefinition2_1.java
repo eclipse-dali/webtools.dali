@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
+package org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm;
 
 import java.util.ArrayList;
 import org.eclipse.emf.ecore.EFactory;
@@ -30,9 +30,8 @@ import org.eclipse.jpt.jpa.core.internal.context.orm.OrmOneToOneMappingDefinitio
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmPersistentTypeDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmTransientMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmVersionMappingDefinition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.OrmElementCollectionMappingDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.GenericJpaPlatformProvider2_1;
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.GenericOrmXmlContextModelFactory2_1;
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.OrmConverterTypeDefinition2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.JPA2_1;
