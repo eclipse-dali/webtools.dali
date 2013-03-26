@@ -72,7 +72,7 @@ public class JavaEclipseLinkVersionMapping
 	}
 
 	protected EclipseLinkJavaConverterContainer buildConverterContainer() {
-		return new JavaEclipseLinkConverterContainerImpl(this);
+		return new EclipseLinkJavaConverterContainerImpl(this);
 	}
 
 	// ********** converter container parent **********

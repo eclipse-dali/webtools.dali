@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TypeConverterAnnotatio
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class JavaEclipseLinkConverterContainerImpl
+public class EclipseLinkJavaConverterContainerImpl
 	extends AbstractJavaContextModel<EclipseLinkJavaConverterContainer.Parent>
 	implements EclipseLinkJavaConverterContainer
 {
@@ -41,7 +41,7 @@ public class JavaEclipseLinkConverterContainerImpl
 	protected final ContextListContainer<JavaEclipseLinkTypeConverter, TypeConverterAnnotation> typeConverterContainer;
 
 
-	public JavaEclipseLinkConverterContainerImpl(Parent parent) {
+	public EclipseLinkJavaConverterContainerImpl(Parent parent) {
 		super(parent);
 		this.customConverterContainer = this.buildCustomConverterContainer();
 		this.objectTypeConverterContainer = this.buildObjectTypeConverterContainer();
@@ -146,11 +146,11 @@ public class JavaEclipseLinkConverterContainerImpl
 		}
 		@Override
 		protected JavaEclipseLinkCustomConverter buildContextElement(ConverterAnnotation resourceElement) {
-			return JavaEclipseLinkConverterContainerImpl.this.buildCustomConverter(resourceElement);
+			return EclipseLinkJavaConverterContainerImpl.this.buildCustomConverter(resourceElement);
 		}
 		@Override
 		protected ListIterable<ConverterAnnotation> getResourceElements() {
-			return JavaEclipseLinkConverterContainerImpl.this.getCustomConverterAnnotations();
+			return EclipseLinkJavaConverterContainerImpl.this.getCustomConverterAnnotations();
 		}
 		@Override
 		protected ConverterAnnotation getResourceElement(JavaEclipseLinkCustomConverter contextElement) {
@@ -233,11 +233,11 @@ public class JavaEclipseLinkConverterContainerImpl
 		}
 		@Override
 		protected JavaEclipseLinkObjectTypeConverter buildContextElement(ObjectTypeConverterAnnotation resourceElement) {
-			return JavaEclipseLinkConverterContainerImpl.this.buildObjectTypeConverter(resourceElement);
+			return EclipseLinkJavaConverterContainerImpl.this.buildObjectTypeConverter(resourceElement);
 		}
 		@Override
 		protected ListIterable<ObjectTypeConverterAnnotation> getResourceElements() {
-			return JavaEclipseLinkConverterContainerImpl.this.getObjectTypeConverterAnnotations();
+			return EclipseLinkJavaConverterContainerImpl.this.getObjectTypeConverterAnnotations();
 		}
 		@Override
 		protected ObjectTypeConverterAnnotation getResourceElement(JavaEclipseLinkObjectTypeConverter contextElement) {
@@ -320,11 +320,11 @@ public class JavaEclipseLinkConverterContainerImpl
 		}
 		@Override
 		protected JavaEclipseLinkStructConverter buildContextElement(StructConverterAnnotation resourceElement) {
-			return JavaEclipseLinkConverterContainerImpl.this.buildStructConverter(resourceElement);
+			return EclipseLinkJavaConverterContainerImpl.this.buildStructConverter(resourceElement);
 		}
 		@Override
 		protected ListIterable<StructConverterAnnotation> getResourceElements() {
-			return JavaEclipseLinkConverterContainerImpl.this.getStructConverterAnnotations();
+			return EclipseLinkJavaConverterContainerImpl.this.getStructConverterAnnotations();
 		}
 		@Override
 		protected StructConverterAnnotation getResourceElement(JavaEclipseLinkStructConverter contextElement) {
@@ -408,11 +408,11 @@ public class JavaEclipseLinkConverterContainerImpl
 		}
 		@Override
 		protected JavaEclipseLinkTypeConverter buildContextElement(TypeConverterAnnotation resourceElement) {
-			return JavaEclipseLinkConverterContainerImpl.this.buildTypeConverter(resourceElement);
+			return EclipseLinkJavaConverterContainerImpl.this.buildTypeConverter(resourceElement);
 		}
 		@Override
 		protected ListIterable<TypeConverterAnnotation> getResourceElements() {
-			return JavaEclipseLinkConverterContainerImpl.this.getTypeConverterAnnotations();
+			return EclipseLinkJavaConverterContainerImpl.this.getTypeConverterAnnotations();
 		}
 		@Override
 		protected TypeConverterAnnotation getResourceElement(JavaEclipseLinkTypeConverter contextElement) {

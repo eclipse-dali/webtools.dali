@@ -123,7 +123,7 @@ public class JavaEclipseLinkEntityImpl
 	}
 
 	protected EclipseLinkJavaConverterContainer buildConverterContainer() {
-		return new JavaEclipseLinkConverterContainerImpl(this);
+		return new EclipseLinkJavaConverterContainerImpl(this);
 	}
 
 	@SuppressWarnings("unchecked")
