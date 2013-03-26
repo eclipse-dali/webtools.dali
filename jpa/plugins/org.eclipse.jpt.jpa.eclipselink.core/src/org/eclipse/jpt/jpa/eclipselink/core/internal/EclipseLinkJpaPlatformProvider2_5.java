@@ -68,11 +68,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.Eclipse
 /**
  * EclipseLink 2.5 platform config
  */
-public class EclipseLink2_5JpaPlatformProvider
+public class EclipseLinkJpaPlatformProvider2_5
 	extends AbstractJpaPlatformProvider
 {
 	// singleton
-	private static final JpaPlatformProvider INSTANCE = new EclipseLink2_5JpaPlatformProvider();
+	private static final JpaPlatformProvider INSTANCE = new EclipseLinkJpaPlatformProvider2_5();
 
 	/**
 	 * Return the singleton
@@ -84,7 +84,7 @@ public class EclipseLink2_5JpaPlatformProvider
 	/**
 	 * Enforce singleton usage
 	 */
-	private EclipseLink2_5JpaPlatformProvider() {
+	private EclipseLinkJpaPlatformProvider2_5() {
 		super();
 	}
 
