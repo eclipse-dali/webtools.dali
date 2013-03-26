@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,12 +20,12 @@ import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasicMap;
 
-public class OrmEclipseLinkBasicMapMappingDefinition
+public class EclipseLinkOrmBasicMapMappingDefinition
 	implements OrmAttributeMappingDefinition
 {
 	// singleton
-	private static final OrmEclipseLinkBasicMapMappingDefinition INSTANCE = 
-			new OrmEclipseLinkBasicMapMappingDefinition();
+	private static final EclipseLinkOrmBasicMapMappingDefinition INSTANCE = 
+			new EclipseLinkOrmBasicMapMappingDefinition();
 	
 	
 	/**
@@ -39,7 +39,7 @@ public class OrmEclipseLinkBasicMapMappingDefinition
 	/**
 	 * Ensforce singleton usage
 	 */
-	private OrmEclipseLinkBasicMapMappingDefinition() {
+	private EclipseLinkOrmBasicMapMappingDefinition() {
 		super();
 	}
 	
