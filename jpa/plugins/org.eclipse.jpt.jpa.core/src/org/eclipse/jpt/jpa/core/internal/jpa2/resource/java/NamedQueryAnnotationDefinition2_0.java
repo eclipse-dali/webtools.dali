@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2011 Oracle. All rights reserved.
+* Copyright (c) 2009, 2013 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,13 +19,13 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source.SourceNamedQu
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
 /**
- * javax.persistence.NamedQuery
+ * <code>javax.persistence.NamedQuery</code>
  */
-public class NamedQuery2_0AnnotationDefinition
+public class NamedQueryAnnotationDefinition2_0
 	implements NestableAnnotationDefinition
 {
 	// singleton
-	private static final NestableAnnotationDefinition INSTANCE = new NamedQuery2_0AnnotationDefinition();
+	private static final NestableAnnotationDefinition INSTANCE = new NamedQueryAnnotationDefinition2_0();
 
 	/**
 	 * Return the singleton.
@@ -37,7 +37,7 @@ public class NamedQuery2_0AnnotationDefinition
 	/**
 	 * Ensure single instance.
 	 */
-	private NamedQuery2_0AnnotationDefinition() {
+	private NamedQueryAnnotationDefinition2_0() {
 		super();
 	}
 
