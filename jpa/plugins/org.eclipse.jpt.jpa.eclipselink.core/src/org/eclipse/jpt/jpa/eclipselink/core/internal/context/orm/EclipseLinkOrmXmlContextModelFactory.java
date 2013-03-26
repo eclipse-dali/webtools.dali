@@ -140,8 +140,8 @@ public class EclipseLinkOrmXmlContextModelFactory
 		return new OrmEclipseLinkTransformationMapping(parent, resourceMapping);
 	}
 	
-	public OrmEclipseLinkVariableOneToOneMapping buildOrmEclipseLinkVariableOneToOneMapping(OrmSpecifiedPersistentAttribute parent, XmlVariableOneToOne resourceMapping) {
-		return new OrmEclipseLinkVariableOneToOneMapping(parent, resourceMapping);
+	public EclipseLinkOrmVariableOneToOneMapping buildOrmEclipseLinkVariableOneToOneMapping(OrmSpecifiedPersistentAttribute parent, XmlVariableOneToOne resourceMapping) {
+		return new EclipseLinkOrmVariableOneToOneMapping(parent, resourceMapping);
 	}
 
 	@Override
