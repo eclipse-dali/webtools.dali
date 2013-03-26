@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ObjectTypeConverterAnn
 /**
  * <code>org.eclipse.persistence.annotations.ObjectTypeConverter</code>
  */
-public final class BinaryEclipseLinkObjectTypeConverterAnnotation
+public final class EclipseLinkBinaryObjectTypeConverterAnnotation
 	extends BinaryEclipseLinkBaseTypeConverterAnnotation
 	implements ObjectTypeConverterAnnotation
 {
@@ -30,7 +30,7 @@ public final class BinaryEclipseLinkObjectTypeConverterAnnotation
 	private final Vector<ConversionValueAnnotation> conversionValues;
 
 
-	public BinaryEclipseLinkObjectTypeConverterAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
+	public EclipseLinkBinaryObjectTypeConverterAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.defaultObjectValue = this.buildDefaultObjectValue();
 		this.conversionValues = this.buildConversionValues();
