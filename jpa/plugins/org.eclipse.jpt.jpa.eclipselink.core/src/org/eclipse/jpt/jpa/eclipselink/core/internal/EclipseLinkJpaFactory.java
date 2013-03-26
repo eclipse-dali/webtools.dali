@@ -44,7 +44,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJav
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaOneToOneMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkSpecifiedJavaPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaTransformationMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkVariableOneToOneMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaVariableOneToOneMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkVersionMapping;
 
 public class EclipseLinkJpaFactory
@@ -145,7 +145,7 @@ public class EclipseLinkJpaFactory
 		return new EclipseLinkJavaTransformationMapping(parent);
 	}
 
-	public JavaEclipseLinkVariableOneToOneMapping buildJavaEclipseLinkVariableOneToOneMapping(JavaSpecifiedPersistentAttribute parent) {
-		return new JavaEclipseLinkVariableOneToOneMapping(parent);
+	public EclipseLinkJavaVariableOneToOneMapping buildJavaEclipseLinkVariableOneToOneMapping(JavaSpecifiedPersistentAttribute parent) {
+		return new EclipseLinkJavaVariableOneToOneMapping(parent);
 	}
 }
