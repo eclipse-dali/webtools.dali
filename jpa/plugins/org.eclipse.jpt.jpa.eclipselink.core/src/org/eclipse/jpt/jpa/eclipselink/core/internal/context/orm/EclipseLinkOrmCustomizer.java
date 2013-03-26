@@ -34,7 +34,7 @@ import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class OrmEclipseLinkCustomizer
+public class EclipseLinkOrmCustomizer
 	extends AbstractOrmXmlContextModel<EclipseLinkOrmTypeMapping>
 	implements EclipseLinkCustomizer, TypeRefactoringParticipant
 {
@@ -43,7 +43,7 @@ public class OrmEclipseLinkCustomizer
 	protected String fullyQualifiedCustomizerClass;
 
 
-	public OrmEclipseLinkCustomizer(EclipseLinkOrmTypeMapping parent) {
+	public EclipseLinkOrmCustomizer(EclipseLinkOrmTypeMapping parent) {
 		super(parent);
 		this.specifiedCustomizerClass = this.buildSpecifiedCustomizerClass();
 	}

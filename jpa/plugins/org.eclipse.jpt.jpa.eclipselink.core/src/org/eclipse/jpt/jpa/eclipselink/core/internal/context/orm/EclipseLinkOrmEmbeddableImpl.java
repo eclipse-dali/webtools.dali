@@ -46,7 +46,7 @@ public class EclipseLinkOrmEmbeddableImpl
 
 	protected final OrmEclipseLinkChangeTracking changeTracking;
 
-	protected final OrmEclipseLinkCustomizer customizer;
+	protected final EclipseLinkOrmCustomizer customizer;
 
 
 	public EclipseLinkOrmEmbeddableImpl(OrmPersistentType parent, XmlEmbeddable xmlEmbeddable) {
@@ -124,8 +124,8 @@ public class EclipseLinkOrmEmbeddableImpl
 		return this.customizer;
 	}
 
-	protected OrmEclipseLinkCustomizer buildCustomizer() {
-		return new OrmEclipseLinkCustomizer(this);
+	protected EclipseLinkOrmCustomizer buildCustomizer() {
+		return new EclipseLinkOrmCustomizer(this);
 	}
 
 

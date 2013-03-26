@@ -56,7 +56,7 @@ public class EclipseLinkOrmMappedSuperclassImpl
 {
 	protected final EclipseLinkOrmReadOnly readOnly;
 
-	protected final OrmEclipseLinkCustomizer customizer;
+	protected final EclipseLinkOrmCustomizer customizer;
 
 	protected final OrmEclipseLinkChangeTracking changeTracking;
 
@@ -182,8 +182,8 @@ public class EclipseLinkOrmMappedSuperclassImpl
 		return this.customizer;
 	}
 
-	protected OrmEclipseLinkCustomizer buildCustomizer() {
-		return new OrmEclipseLinkCustomizer(this);
+	protected EclipseLinkOrmCustomizer buildCustomizer() {
+		return new EclipseLinkOrmCustomizer(this);
 	}
 
 
