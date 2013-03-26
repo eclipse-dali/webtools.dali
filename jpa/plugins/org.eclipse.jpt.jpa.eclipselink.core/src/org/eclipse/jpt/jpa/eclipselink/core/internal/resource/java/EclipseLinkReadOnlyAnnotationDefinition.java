@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.BinaryEclipseLinkReadOnlyAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.EclipseLinkBinaryReadOnlyAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.SourceEclipseLinkReadOnlyAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ReadOnlyAnnotation;
 
@@ -50,7 +50,7 @@ public class EclipseLinkReadOnlyAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
-		return new BinaryEclipseLinkReadOnlyAnnotation(parent, jdtAnnotation);
+		return new EclipseLinkBinaryReadOnlyAnnotation(parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {
