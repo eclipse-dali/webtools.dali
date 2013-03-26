@@ -46,7 +46,7 @@ public class EclipseLinkOrmObjectTypeConverter
 	private String fullyQualifiedObjectType;
 
 
-	protected final ContextListContainer<OrmEclipseLinkConversionValue, XmlConversionValue> conversionValueContainer;
+	protected final ContextListContainer<EclipseLinkOrmConversionValue, XmlConversionValue> conversionValueContainer;
 
 	private String defaultObjectValue;
 
@@ -176,7 +176,7 @@ public class EclipseLinkOrmObjectTypeConverter
 
 	// ********** conversion values **********
 
-	public ListIterable<OrmEclipseLinkConversionValue> getConversionValues() {
+	public ListIterable<EclipseLinkOrmConversionValue> getConversionValues() {
 		return this.conversionValueContainer.getContextElements();
 	}
 
@@ -188,13 +188,13 @@ public class EclipseLinkOrmObjectTypeConverter
 		return this.conversionValueContainer.get(index);
 	}
 
-	public OrmEclipseLinkConversionValue addConversionValue() {
+	public EclipseLinkOrmConversionValue addConversionValue() {
 		return this.addConversionValue(this.getConversionValuesSize());
 	}
 
-	public OrmEclipseLinkConversionValue addConversionValue(int index) {
+	public EclipseLinkOrmConversionValue addConversionValue(int index) {
 		XmlConversionValue xmlConversionValue = this.buildXmlConversionValue();
-		OrmEclipseLinkConversionValue conversionValue = this.conversionValueContainer.addContextElement(index, xmlConversionValue);
+		EclipseLinkOrmConversionValue conversionValue = this.conversionValueContainer.addContextElement(index, xmlConversionValue);
 		this.xmlConverter.getConversionValues().add(index, xmlConversionValue);
 		return conversionValue;
 	}
@@ -204,7 +204,7 @@ public class EclipseLinkOrmObjectTypeConverter
 	}
 
 	public void removeConversionValue(EclipseLinkConversionValue conversionValue) {
-		this.removeConversionValue(this.conversionValueContainer.indexOfContextElement((OrmEclipseLinkConversionValue) conversionValue));
+		this.removeConversionValue(this.conversionValueContainer.indexOfContextElement((EclipseLinkOrmConversionValue) conversionValue));
 	}
 
 	public void removeConversionValue(int index) {
@@ -218,8 +218,8 @@ public class EclipseLinkOrmObjectTypeConverter
 	}
 
 
-	protected OrmEclipseLinkConversionValue buildConversionValue(XmlConversionValue xmlConversionValue) {
-		return new OrmEclipseLinkConversionValue(this, xmlConversionValue);
+	protected EclipseLinkOrmConversionValue buildConversionValue(XmlConversionValue xmlConversionValue) {
+		return new EclipseLinkOrmConversionValue(this, xmlConversionValue);
 	}
 
 	protected void syncConversionValues() {
@@ -231,7 +231,7 @@ public class EclipseLinkOrmObjectTypeConverter
 		return IterableTools.cloneLive(this.xmlConverter.getConversionValues());
 	}
 
-	protected ContextListContainer<OrmEclipseLinkConversionValue, XmlConversionValue> buildConversionValueContainer() {
+	protected ContextListContainer<EclipseLinkOrmConversionValue, XmlConversionValue> buildConversionValueContainer() {
 		ConversionValueContainer container = new ConversionValueContainer();
 		container.initialize();
 		return container;
@@ -241,7 +241,7 @@ public class EclipseLinkOrmObjectTypeConverter
 	 * conversion value container
 	 */
 	protected class ConversionValueContainer
-			extends ContextListContainer<OrmEclipseLinkConversionValue, XmlConversionValue> {
+			extends ContextListContainer<EclipseLinkOrmConversionValue, XmlConversionValue> {
 		
 		@Override
 		protected String getContextElementsPropertyName() {
@@ -249,7 +249,7 @@ public class EclipseLinkOrmObjectTypeConverter
 		}
 		
 		@Override
-		protected OrmEclipseLinkConversionValue buildContextElement(XmlConversionValue resourceElement) {
+		protected EclipseLinkOrmConversionValue buildContextElement(XmlConversionValue resourceElement) {
 			return EclipseLinkOrmObjectTypeConverter.this.buildConversionValue(resourceElement);
 		}
 		
@@ -259,7 +259,7 @@ public class EclipseLinkOrmObjectTypeConverter
 		}
 		
 		@Override
-		protected XmlConversionValue getResourceElement(OrmEclipseLinkConversionValue contextElement) {
+		protected XmlConversionValue getResourceElement(EclipseLinkOrmConversionValue contextElement) {
 			return contextElement.getXmlConversionValue();
 		}
 	}
@@ -393,15 +393,15 @@ public class EclipseLinkOrmObjectTypeConverter
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		this.checkForDuplicateDataValues(messages);
-		for (OrmEclipseLinkConversionValue conversionValue : this.getConversionValues()) {
+		for (EclipseLinkOrmConversionValue conversionValue : this.getConversionValues()) {
 			conversionValue.validate(messages, reporter);
 		}
 	}
 
 	protected void checkForDuplicateDataValues(List<IMessage> messages) {
-		for (ArrayList<OrmEclipseLinkConversionValue> dups : this.mapConversionValuesByDataValue().values()) {
+		for (ArrayList<EclipseLinkOrmConversionValue> dups : this.mapConversionValuesByDataValue().values()) {
 			if (dups.size() > 1) {
-				for (OrmEclipseLinkConversionValue dup : dups) {
+				for (EclipseLinkOrmConversionValue dup : dups) {
 					messages.add(
 						this.buildValidationMessage(
 							dup.getDataValueTextRange(),
@@ -414,13 +414,13 @@ public class EclipseLinkOrmObjectTypeConverter
 		}
 	}
 
-	protected HashMap<String, ArrayList<OrmEclipseLinkConversionValue>> mapConversionValuesByDataValue() {
-		HashMap<String, ArrayList<OrmEclipseLinkConversionValue>> map = new HashMap<String, ArrayList<OrmEclipseLinkConversionValue>>(this.getConversionValuesSize());
-		for (OrmEclipseLinkConversionValue conversionValue : this.getConversionValues()) {
+	protected HashMap<String, ArrayList<EclipseLinkOrmConversionValue>> mapConversionValuesByDataValue() {
+		HashMap<String, ArrayList<EclipseLinkOrmConversionValue>> map = new HashMap<String, ArrayList<EclipseLinkOrmConversionValue>>(this.getConversionValuesSize());
+		for (EclipseLinkOrmConversionValue conversionValue : this.getConversionValues()) {
 			String dataValue = conversionValue.getDataValue();
-			ArrayList<OrmEclipseLinkConversionValue> list = map.get(dataValue);
+			ArrayList<EclipseLinkOrmConversionValue> list = map.get(dataValue);
 			if (list == null) {
-				list = new ArrayList<OrmEclipseLinkConversionValue>();
+				list = new ArrayList<EclipseLinkOrmConversionValue>();
 				map.put(dataValue, list);
 			}
 			list.add(conversionValue);
@@ -443,7 +443,7 @@ public class EclipseLinkOrmObjectTypeConverter
 
 	protected boolean conversionValuesAreEquivalentTo(EclipseLinkObjectTypeConverter converter) {
 		// get fixed lists of the conversion values
-		ArrayList<OrmEclipseLinkConversionValue> conversionValues1 = ListTools.list(this.getConversionValues());
+		ArrayList<EclipseLinkOrmConversionValue> conversionValues1 = ListTools.list(this.getConversionValues());
 		ArrayList<? extends EclipseLinkConversionValue> conversionValues2 = ListTools.list(converter.getConversionValues());
 		if (conversionValues1.size() != conversionValues2.size()) {
 			return false;

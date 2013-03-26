@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConversionValue;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class OrmEclipseLinkConversionValue
+public class EclipseLinkOrmConversionValue
 	extends AbstractOrmXmlContextModel<EclipseLinkOrmObjectTypeConverter>
 	implements EclipseLinkConversionValue
 {
@@ -30,7 +30,7 @@ public class OrmEclipseLinkConversionValue
 	private String objectValue;
 
 
-	public OrmEclipseLinkConversionValue(EclipseLinkOrmObjectTypeConverter parent, XmlConversionValue xmlConversionValue) {
+	public EclipseLinkOrmConversionValue(EclipseLinkOrmObjectTypeConverter parent, XmlConversionValue xmlConversionValue) {
 		super(parent);
 		this.xmlConversionValue = xmlConversionValue;
 		this.dataValue = xmlConversionValue.getDataValue();
