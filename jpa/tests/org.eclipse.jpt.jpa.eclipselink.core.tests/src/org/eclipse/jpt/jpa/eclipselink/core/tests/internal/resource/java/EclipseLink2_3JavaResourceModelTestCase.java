@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
 import org.eclipse.jpt.jpa.core.tests.internal.resource.java.JpaJavaResourceModelTestCase;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_3JpaAnnotationDefinitionProvider;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaAnnotationDefinitionProvider2_3;
 
 public class EclipseLink2_3JavaResourceModelTestCase extends JpaJavaResourceModelTestCase
 {	
@@ -28,7 +28,7 @@ public class EclipseLink2_3JavaResourceModelTestCase extends JpaJavaResourceMode
 	protected AnnotationProvider buildAnnotationProvider() {
 		return new JpaAnnotationProvider(
 			GenericJpaAnnotationDefinitionProvider.instance(),
-			EclipseLink2_3JpaAnnotationDefinitionProvider.instance());
+			EclipseLinkJpaAnnotationDefinitionProvider2_3.instance());
 	}
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -49,11 +49,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkWr
 /**
  * Provides annotations for 2.3 EclipseLink platform
  */
-public class EclipseLink2_3JpaAnnotationDefinitionProvider
+public class EclipseLinkJpaAnnotationDefinitionProvider2_3
 	extends AbstractJpaAnnotationDefinitionProvider
 {
 	// singleton
-	private static final JpaAnnotationDefinitionProvider INSTANCE = new EclipseLink2_3JpaAnnotationDefinitionProvider();
+	private static final JpaAnnotationDefinitionProvider INSTANCE = new EclipseLinkJpaAnnotationDefinitionProvider2_3();
 
 	/**
 	 * Return the singleton
@@ -65,7 +65,7 @@ public class EclipseLink2_3JpaAnnotationDefinitionProvider
 	/**
 	 * Enforce singleton usage
 	 */
-	private EclipseLink2_3JpaAnnotationDefinitionProvider() {
+	private EclipseLinkJpaAnnotationDefinitionProvider2_3() {
 		super();
 	}
 
@@ -114,6 +114,4 @@ public class EclipseLink2_3JpaAnnotationDefinitionProvider
 		EclipseLinkTenantDiscriminatorColumn2_3AnnotationDefinition.instance(),
 		EclipseLinkTypeConverterAnnotationDefinition.instance(),
 	};
-
-
 }
