@@ -28,7 +28,7 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
-import org.eclipse.jpt.common.core.internal.resource.java.InheritedAttributeKey;
+import org.eclipse.jpt.common.core.internal.resource.java.AttributeKey;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JDTType;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JavaResourceTypeBinding;
@@ -71,9 +71,9 @@ final class SourceType
 	
 	private final Vector<JavaResourceMethod> methods;
 	
-	private final Map<InheritedAttributeKey, JavaResourceTypeBinding> inheritedFieldTypes;
+	private final Map<AttributeKey, JavaResourceTypeBinding> inheritedFieldTypes;
 	
-	private final Map<InheritedAttributeKey, JavaResourceTypeBinding> inheritedMethodTypes;
+	private final Map<AttributeKey, JavaResourceTypeBinding> inheritedMethodTypes;
 	
 
 	// ********** construction/initialization **********
@@ -120,8 +120,8 @@ final class SourceType
 		this.enums = new Vector<JavaResourceEnum>();
 		this.fields = new Vector<JavaResourceField>();
 		this.methods = new Vector<JavaResourceMethod>();
-		this.inheritedFieldTypes = new Hashtable<InheritedAttributeKey, JavaResourceTypeBinding>();
-		this.inheritedMethodTypes = new Hashtable<InheritedAttributeKey, JavaResourceTypeBinding>();
+		this.inheritedFieldTypes = new Hashtable<AttributeKey, JavaResourceTypeBinding>();
+		this.inheritedMethodTypes = new Hashtable<AttributeKey, JavaResourceTypeBinding>();
 	}
 
 	protected void initialize(TypeDeclaration typeDeclaration) {
@@ -681,27 +681,27 @@ final class SourceType
 			String fieldName = field.getName();
 			int occurrence = counters.increment(fieldName);
 			if (occurrence == 1) { // only keep the first occurrence
-				this.inheritedFieldTypes.put(new InheritedAttributeKey(typeName, fieldName), new JavaResourceTypeBinding(field.getType()));
+				this.inheritedFieldTypes.put(new AttributeKey(typeName, fieldName), new JavaResourceTypeBinding(field.getType()));
 			}
 		}
 	}
 	
 	private void syncInheritedFieldTypes(ITypeBinding typeBinding) {
 		ITypeBinding scTypeBinding = typeBinding == null ? null : typeBinding.getSuperclass();
-		Map<InheritedAttributeKey, JavaResourceTypeBinding> removedTypes = 
-				new HashMap<InheritedAttributeKey, JavaResourceTypeBinding>(this.inheritedFieldTypes);
+		Map<AttributeKey, JavaResourceTypeBinding> removedTypes = 
+				new HashMap<AttributeKey, JavaResourceTypeBinding>(this.inheritedFieldTypes);
 		while (scTypeBinding != null && scTypeBinding.isParameterizedType()) {
 			// if the superclass is not parameterized, 
 			// then this class will have no increased type information for inherited fields
 			syncInheritedFieldTypes_(scTypeBinding, removedTypes);
 			scTypeBinding = scTypeBinding.getSuperclass();
 		}
-		for (InheritedAttributeKey removedTypeKey : removedTypes.keySet()) {
+		for (AttributeKey removedTypeKey : removedTypes.keySet()) {
 			this.inheritedFieldTypes.remove(removedTypeKey);
 		}
 	}
 	
-	private void syncInheritedFieldTypes_(ITypeBinding typeBinding, Map<InheritedAttributeKey, JavaResourceTypeBinding> removedTypes) {
+	private void syncInheritedFieldTypes_(ITypeBinding typeBinding, Map<AttributeKey, JavaResourceTypeBinding> removedTypes) {
 		String typeName = typeBinding.getTypeDeclaration().getQualifiedName();
 		IVariableBinding[] fields = typeBinding.getDeclaredFields();
 		CounterMap counters = new CounterMap(fields.length);
@@ -709,7 +709,7 @@ final class SourceType
 			String fieldName = field.getName();
 			int occurrence = counters.increment(fieldName);
 			if (occurrence == 1) { // only keep the first occurrence
-				InheritedAttributeKey key = new InheritedAttributeKey(typeName, fieldName);
+				AttributeKey key = new AttributeKey(typeName, fieldName);
 				this.inheritedFieldTypes.put(key, new JavaResourceTypeBinding(field.getType()));
 				removedTypes.remove(key);
 			}
@@ -742,7 +742,7 @@ final class SourceType
 				String methodName = method.getName();
 				int occurrence = counters.increment(methodName);
 				if (occurrence == 1) { // only keep the first occurrence
-					this.inheritedMethodTypes.put(new InheritedAttributeKey(typeName, methodName), new JavaResourceTypeBinding(method.getReturnType()));
+					this.inheritedMethodTypes.put(new AttributeKey(typeName, methodName), new JavaResourceTypeBinding(method.getReturnType()));
 				}
 			}
 		}
@@ -750,20 +750,20 @@ final class SourceType
 	
 	private void syncInheritedMethodTypes(ITypeBinding typeBinding) {
 		ITypeBinding scTypeBinding = typeBinding == null ? null : typeBinding.getSuperclass();
-		Map<InheritedAttributeKey, JavaResourceTypeBinding> removedTypes = 
-				new HashMap<InheritedAttributeKey, JavaResourceTypeBinding>(this.inheritedMethodTypes);
+		Map<AttributeKey, JavaResourceTypeBinding> removedTypes = 
+				new HashMap<AttributeKey, JavaResourceTypeBinding>(this.inheritedMethodTypes);
 		while (scTypeBinding != null && scTypeBinding.isParameterizedType()) {
 			// if the superclass is not parameterized, 
 			// then this class will have no increased type information for inherited fields
 			syncInheritedMethodTypes_(scTypeBinding, removedTypes);
 			scTypeBinding = scTypeBinding.getSuperclass();
 		}
-		for (InheritedAttributeKey removedTypeKey : removedTypes.keySet()) {
+		for (AttributeKey removedTypeKey : removedTypes.keySet()) {
 			this.inheritedMethodTypes.remove(removedTypeKey);
 		}
 	}
 	
-	private void syncInheritedMethodTypes_(ITypeBinding typeBinding, Map<InheritedAttributeKey, JavaResourceTypeBinding> removedTypes) {
+	private void syncInheritedMethodTypes_(ITypeBinding typeBinding, Map<AttributeKey, JavaResourceTypeBinding> removedTypes) {
 		// we are choosing to only store types for methods with no parameters,
 		// as determining whether a method overrides another can be a bit tricky with generics,
 		// and in general, we are only really interested in types of "get" methods,
@@ -775,7 +775,7 @@ final class SourceType
 			String methodName = method.getName();
 			int occurrence = counters.increment(methodName);
 			if (occurrence == 1) { // only keep the first occurrence
-				InheritedAttributeKey key = new InheritedAttributeKey(typeName, methodName);
+				AttributeKey key = new AttributeKey(typeName, methodName);
 				this.inheritedMethodTypes.put(key, new JavaResourceTypeBinding(method.getReturnType()));
 				removedTypes.remove(key);
 			}
@@ -786,8 +786,8 @@ final class SourceType
 		if (attribute.getParent() == this) {
 			return attribute.getTypeBinding();
 		}
-		InheritedAttributeKey key = 
-				new InheritedAttributeKey(attribute.getParent().getTypeBinding().getQualifiedName(), attribute.getName());
+		AttributeKey key = 
+				new AttributeKey(attribute.getParent().getTypeBinding().getQualifiedName(), attribute.getName());
 		if (attribute.getAstNodeType() == JavaResourceAnnotatedElement.AstNodeType.FIELD) {
 			return this.inheritedFieldTypes.get(key);
 		}

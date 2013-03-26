@@ -24,7 +24,7 @@ import org.eclipse.jdt.core.dom.IVariableBinding;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
-import org.eclipse.jpt.common.core.internal.resource.java.InheritedAttributeKey;
+import org.eclipse.jpt.common.core.internal.resource.java.AttributeKey;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JavaResourceTypeBinding;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
@@ -57,11 +57,11 @@ final class BinaryType
 	
 	private final Vector<JavaResourceMethod> methods = new Vector<JavaResourceMethod>();
 	
-	private final Hashtable<InheritedAttributeKey, JavaResourceTypeBinding> inheritedFieldTypes
-			= new Hashtable<InheritedAttributeKey, JavaResourceTypeBinding>();
+	private final Hashtable<AttributeKey, JavaResourceTypeBinding> inheritedFieldTypes
+			= new Hashtable<AttributeKey, JavaResourceTypeBinding>();
 	
-	private final Hashtable<InheritedAttributeKey, JavaResourceTypeBinding> inheritedMethodTypes
-			= new Hashtable<InheritedAttributeKey, JavaResourceTypeBinding>();
+	private final Hashtable<AttributeKey, JavaResourceTypeBinding> inheritedMethodTypes
+			= new Hashtable<AttributeKey, JavaResourceTypeBinding>();
 	
 	
 	// ***** construction/initialization *****
@@ -345,8 +345,8 @@ final class BinaryType
 	
 	// ***** inherited field/method types *****
 	
-	private Map<InheritedAttributeKey, JavaResourceTypeBinding> buildInheritedFieldTypes(ITypeBinding typeBinding) {
-		Map<InheritedAttributeKey, JavaResourceTypeBinding> fieldTypes = new HashMap<InheritedAttributeKey, JavaResourceTypeBinding>();
+	private Map<AttributeKey, JavaResourceTypeBinding> buildInheritedFieldTypes(ITypeBinding typeBinding) {
+		Map<AttributeKey, JavaResourceTypeBinding> fieldTypes = new HashMap<AttributeKey, JavaResourceTypeBinding>();
 		ITypeBinding scTypeBinding = typeBinding.getSuperclass();
 		while (scTypeBinding != null && scTypeBinding.isParameterizedType()) {
 			// if the superclass is not parameterized, 
@@ -358,12 +358,12 @@ final class BinaryType
 	}
 	
 	private void buildInheritedFieldTypes_(
-			Map<InheritedAttributeKey, JavaResourceTypeBinding> fieldTypes, ITypeBinding typeBinding) {
+			Map<AttributeKey, JavaResourceTypeBinding> fieldTypes, ITypeBinding typeBinding) {
 		String typeName = typeBinding.getTypeDeclaration().getQualifiedName();
 		IVariableBinding[] typeBindingFields = typeBinding.getDeclaredFields();
 		for (IVariableBinding field : typeBindingFields) {
 			String fieldName = field.getName();
-			fieldTypes.put(new InheritedAttributeKey(typeName, fieldName), new JavaResourceTypeBinding(field.getType()));
+			fieldTypes.put(new AttributeKey(typeName, fieldName), new JavaResourceTypeBinding(field.getType()));
 		}
 	}
 	
@@ -371,8 +371,8 @@ final class BinaryType
 		throw new UnsupportedOperationException();
 	}
 	
-	private Map<InheritedAttributeKey, JavaResourceTypeBinding> buildInheritedMethodTypes(ITypeBinding typeBinding) {
-		Map<InheritedAttributeKey, JavaResourceTypeBinding> methodTypes = new HashMap<InheritedAttributeKey, JavaResourceTypeBinding>();
+	private Map<AttributeKey, JavaResourceTypeBinding> buildInheritedMethodTypes(ITypeBinding typeBinding) {
+		Map<AttributeKey, JavaResourceTypeBinding> methodTypes = new HashMap<AttributeKey, JavaResourceTypeBinding>();
 		ITypeBinding scTypeBinding = typeBinding.getSuperclass();
 		while (scTypeBinding != null && scTypeBinding.isParameterizedType()) {
 			// if the superclass is not parameterized, 
@@ -384,12 +384,12 @@ final class BinaryType
 	}
 	
 	private void buildInheritedMethodTypes_(
-			Map<InheritedAttributeKey, JavaResourceTypeBinding> methodTypes, ITypeBinding typeBinding) {
+			Map<AttributeKey, JavaResourceTypeBinding> methodTypes, ITypeBinding typeBinding) {
 		String typeName = typeBinding.getTypeDeclaration().getQualifiedName();
 		IMethodBinding[] typeBindingMethods = typeBinding.getDeclaredMethods();
 		for (IMethodBinding method : typeBindingMethods) {
 			String methodName = method.getName();
-			methodTypes.put(new InheritedAttributeKey(typeName, methodName), new JavaResourceTypeBinding(method.getReturnType()));
+			methodTypes.put(new AttributeKey(typeName, methodName), new JavaResourceTypeBinding(method.getReturnType()));
 		}
 	}
 	
@@ -401,7 +401,7 @@ final class BinaryType
 		if (attribute.getParent() == this) {
 			return attribute.getTypeBinding();
 		}
-		InheritedAttributeKey key = new InheritedAttributeKey(attribute.getParent().getTypeBinding().getQualifiedName(), attribute.getName());
+		AttributeKey key = new AttributeKey(attribute.getParent().getTypeBinding().getQualifiedName(), attribute.getName());
 		if (attribute.getAstNodeType() == JavaResourceAnnotatedElement.AstNodeType.FIELD) {
 			return this.inheritedFieldTypes.get(key);
 		}
