@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConvertAnnotation;
  * <code>org.eclipse.persistence.annotations.Convert</code>
  */
 public final class EclipseLinkBinaryConvertAnnotation
-	extends BinaryEclipseLinkBaseConvertAnnotation
+	extends EclipseLinkBinaryBaseConvertAnnotation
 	implements ConvertAnnotation
 {
 	public EclipseLinkBinaryConvertAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {

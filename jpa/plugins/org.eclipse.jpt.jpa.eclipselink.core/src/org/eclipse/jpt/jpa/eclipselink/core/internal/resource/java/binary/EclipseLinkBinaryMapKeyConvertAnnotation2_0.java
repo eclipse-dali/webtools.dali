@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MapKeyConvertAnnotatio
  * <code>org.eclipse.persistence.annotations.MapKeyConvert</code>
  */
 public final class EclipseLinkBinaryMapKeyConvertAnnotation2_0
-	extends BinaryEclipseLinkBaseConvertAnnotation
+	extends EclipseLinkBinaryBaseConvertAnnotation
 	implements MapKeyConvertAnnotation2_0
 {
 	public EclipseLinkBinaryMapKeyConvertAnnotation2_0(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
