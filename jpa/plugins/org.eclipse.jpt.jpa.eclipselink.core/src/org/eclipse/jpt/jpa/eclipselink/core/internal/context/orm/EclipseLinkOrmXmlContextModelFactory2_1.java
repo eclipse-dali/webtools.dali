@@ -17,7 +17,7 @@ public class EclipseLinkOrmXmlContextModelFactory2_1
 	extends EclipseLinkOrmXmlContextModelFactory2_0
 {
 	@Override
-	public AbstractOrmEclipseLinkBasicCollectionMapping buildOrmEclipseLinkBasicCollectionMapping(OrmSpecifiedPersistentAttribute parent, XmlBasicCollection resourceMapping) {
+	public EclipseLinkAbstractOrmBasicCollectionMapping buildOrmEclipseLinkBasicCollectionMapping(OrmSpecifiedPersistentAttribute parent, XmlBasicCollection resourceMapping) {
 		return new OrmEclipseLinkBasicCollectionMapping2_1(parent, resourceMapping);
 	}
 

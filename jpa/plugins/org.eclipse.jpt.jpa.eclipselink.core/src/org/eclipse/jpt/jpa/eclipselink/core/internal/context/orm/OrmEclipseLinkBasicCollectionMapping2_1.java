@@ -17,7 +17,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class OrmEclipseLinkBasicCollectionMapping2_1
-	extends AbstractOrmEclipseLinkBasicCollectionMapping
+	extends EclipseLinkAbstractOrmBasicCollectionMapping
 {
 	public OrmEclipseLinkBasicCollectionMapping2_1(OrmSpecifiedPersistentAttribute parent, XmlBasicCollection xmlMapping) {
 		super(parent, xmlMapping);

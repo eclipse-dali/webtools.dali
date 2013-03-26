@@ -21,11 +21,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkBasicCollectionMa
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.Attributes;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasicCollection;
 
-public abstract class AbstractOrmEclipseLinkBasicCollectionMapping
+public abstract class EclipseLinkAbstractOrmBasicCollectionMapping
 	extends AbstractOrmAttributeMapping<XmlBasicCollection> 
 	implements EclipseLinkBasicCollectionMapping
 {
-	protected AbstractOrmEclipseLinkBasicCollectionMapping(OrmSpecifiedPersistentAttribute parent, XmlBasicCollection xmlMapping) {
+	protected EclipseLinkAbstractOrmBasicCollectionMapping(OrmSpecifiedPersistentAttribute parent, XmlBasicCollection xmlMapping) {
 		super(parent, xmlMapping);
 	}
 	
