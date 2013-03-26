@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.resource.java.binary.BinaryNamedStoredProcedureQuery2_1Annotation;
+import org.eclipse.jpt.jpa.core.internal.jpa2_1.resource.java.binary.BinaryNamedStoredProcedureQueryAnnotation2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.resource.java.source.SourceNamedStoredProcedureQuery2_1Annotation;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.JPA2_1;
 
@@ -46,7 +46,7 @@ public final class NamedStoredProcedureQueryAnnotationDefinition2_1
 	}
 
 	public NestableAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation, int index) {
-		return new BinaryNamedStoredProcedureQuery2_1Annotation(parent, jdtAnnotation);
+		return new BinaryNamedStoredProcedureQueryAnnotation2_1(parent, jdtAnnotation);
 	}
 
 	public String getNestableAnnotationName() {

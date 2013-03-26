@@ -21,9 +21,9 @@ import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.NamedStoredProcedureQueryAn
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameterAnnotation2_1;
 
 /**
- * javax.persistence.NamedStoredProcedureQuery
+ * <code>javax.persistence.NamedStoredProcedureQuery</code>
  */
-public final class BinaryNamedStoredProcedureQuery2_1Annotation
+public final class BinaryNamedStoredProcedureQueryAnnotation2_1
 	extends BinaryQueryAnnotation
 	implements NamedStoredProcedureQueryAnnotation2_1
 {
@@ -33,7 +33,7 @@ public final class BinaryNamedStoredProcedureQuery2_1Annotation
 	private final Vector<String> resultSetMappings;
 
 
-	public BinaryNamedStoredProcedureQuery2_1Annotation(JavaResourceModel parent, IAnnotation jdtAnnotation) {
+	public BinaryNamedStoredProcedureQueryAnnotation2_1(JavaResourceModel parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.procedureName = this.buildProcedureName();
 		this.parameters = this.buildParameters();
@@ -163,10 +163,6 @@ public final class BinaryNamedStoredProcedureQuery2_1Annotation
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean resultClassTouches(int pos) {
-		throw new UnsupportedOperationException();
-	}
-
 	public void removeResultClass(String resultClass) {
 		throw new UnsupportedOperationException();
 	}
@@ -218,10 +214,6 @@ public final class BinaryNamedStoredProcedureQuery2_1Annotation
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean resultSetMappingTouches(int pos) {
-		throw new UnsupportedOperationException();
-	}
-
 	public void removeResultSetMapping(String resultSetMapping) {
 		throw new UnsupportedOperationException();
 	}
@@ -247,5 +239,4 @@ public final class BinaryNamedStoredProcedureQuery2_1Annotation
 	private void updateResultSetMappings() {
 		throw new UnsupportedOperationException();
 	}
-
 }
