@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetchType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkOneToManyMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkOneToManyRelationship2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkRelationshipMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkOneToManyMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmOneToManyMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlJoinFetchType;
@@ -590,7 +590,7 @@ public class EclipseLinkOrmOneToManyMappingTests
 		createTestEntityWithOneToManyMapping();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("id");
-		OrmEclipseLinkOneToManyMapping contextMapping = (OrmEclipseLinkOneToManyMapping) contextAttribute.getMapping();
+		EclipseLinkOrmOneToManyMapping contextMapping = (EclipseLinkOrmOneToManyMapping) contextAttribute.getMapping();
 		EclipseLinkOneToManyRelationship2_0 rel = contextMapping.getRelationship();
 		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getXmlTypeMapping();
 		XmlOneToMany resourceMapping = (XmlOneToMany) resourceEntity.getAttributes().getOneToManys().get(0);
@@ -631,7 +631,7 @@ public class EclipseLinkOrmOneToManyMappingTests
 		createTestEntityWithOneToManyMapping();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("id");
-		OrmEclipseLinkOneToManyMapping contextMapping = (OrmEclipseLinkOneToManyMapping) contextAttribute.getMapping();
+		EclipseLinkOrmOneToManyMapping contextMapping = (EclipseLinkOrmOneToManyMapping) contextAttribute.getMapping();
 		EclipseLinkOneToManyRelationship2_0 rel = contextMapping.getRelationship();
 		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getXmlTypeMapping();
 		XmlOneToMany resourceMapping = (XmlOneToMany) resourceEntity.getAttributes().getOneToManys().get(0);

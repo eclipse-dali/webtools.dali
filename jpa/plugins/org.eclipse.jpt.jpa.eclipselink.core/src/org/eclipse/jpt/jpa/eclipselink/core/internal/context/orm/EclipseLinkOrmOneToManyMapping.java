@@ -34,7 +34,7 @@ import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class OrmEclipseLinkOneToManyMapping
+public class EclipseLinkOrmOneToManyMapping
 	extends AbstractOrmOneToManyMapping<XmlOneToMany>
 	implements EclipseLinkOneToManyMapping2_0, EclipseLinkOrmConvertibleMapping
 {
@@ -45,7 +45,7 @@ public class OrmEclipseLinkOneToManyMapping
 	protected final EclipseLinkOrmConverterContainer converterContainer;
 
 
-	public OrmEclipseLinkOneToManyMapping(OrmSpecifiedPersistentAttribute parent, XmlOneToMany xmlMapping) {
+	public EclipseLinkOrmOneToManyMapping(OrmSpecifiedPersistentAttribute parent, XmlOneToMany xmlMapping) {
 		super(parent, xmlMapping);
 		this.privateOwned = new EclipseLinkOrmPrivateOwned(this);
 		this.joinFetch = new OrmEclipseLinkJoinFetch(this);
