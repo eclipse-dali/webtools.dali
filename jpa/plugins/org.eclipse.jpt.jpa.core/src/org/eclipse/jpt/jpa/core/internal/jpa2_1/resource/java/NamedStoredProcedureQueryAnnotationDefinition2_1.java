@@ -19,13 +19,13 @@ import org.eclipse.jpt.jpa.core.internal.jpa2_1.resource.java.source.SourceNamed
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.JPA2_1;
 
 /**
- * javax.persistence.NamedStoredProcedureQuery
+ * <code>javax.persistence.NamedStoredProcedureQuery</code>
  */
-public final class NamedStoredProcedureQuery2_1AnnotationDefinition
+public final class NamedStoredProcedureQueryAnnotationDefinition2_1
 	implements NestableAnnotationDefinition
 {
 	// singleton
-	private static final NestableAnnotationDefinition INSTANCE = new NamedStoredProcedureQuery2_1AnnotationDefinition();
+	private static final NestableAnnotationDefinition INSTANCE = new NamedStoredProcedureQueryAnnotationDefinition2_1();
 
 	/**
 	 * Return the singleton.
@@ -37,7 +37,7 @@ public final class NamedStoredProcedureQuery2_1AnnotationDefinition
 	/**
 	 * Ensure single instance.
 	 */
-	private NamedStoredProcedureQuery2_1AnnotationDefinition() {
+	private NamedStoredProcedureQueryAnnotationDefinition2_1() {
 		super();
 	}
 
