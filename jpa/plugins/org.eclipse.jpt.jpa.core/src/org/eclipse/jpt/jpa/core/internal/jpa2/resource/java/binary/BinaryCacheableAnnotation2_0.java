@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,14 +19,14 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 /**
  * <code>javax.persistence.Cacheable</code>
  */
-public final class BinaryCacheable2_0Annotation
+public final class BinaryCacheableAnnotation2_0
 	extends BinaryAnnotation
 	implements CacheableAnnotation2_0
 {
 	private Boolean value;
 
 
-	public BinaryCacheable2_0Annotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
+	public BinaryCacheableAnnotation2_0(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.value = this.buildValue();
 	}
