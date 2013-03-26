@@ -46,7 +46,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaVersionMappingDef
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXmlDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXmlDefinition2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.GenericPersistenceXmlDefinition2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java.JavaConverterTypeDefinition;
+import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java.JavaConverterTypeDefinition2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.persistence.GenericPersistenceXmlDefinition2_1;
 
 /**
@@ -118,7 +118,7 @@ public class GenericJpaPlatformProvider2_1
 
 	protected static final JavaManagedTypeDefinition[] JAVA_MANAGED_TYPE_DEFINITIONS_2_1 = new JavaManagedTypeDefinition[] {
 		JavaPersistentTypeDefinition.instance(),
-		JavaConverterTypeDefinition.instance()
+		JavaConverterTypeDefinition2_1.instance()
 	};
 
 

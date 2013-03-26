@@ -19,10 +19,11 @@ import org.eclipse.jpt.jpa.core.jpa2_1.JpaFactory2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.java.JavaConverterType2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.ConverterAnnotation2_1;
 
-public class JavaConverterTypeDefinition implements JavaManagedTypeDefinition
-{	
+public class JavaConverterTypeDefinition2_1
+	implements JavaManagedTypeDefinition
+{
 	// singleton
-	private static final JavaManagedTypeDefinition INSTANCE = new JavaConverterTypeDefinition();
+	private static final JavaManagedTypeDefinition INSTANCE = new JavaConverterTypeDefinition2_1();
 
 	/**
 	 * Return the singleton.
@@ -34,7 +35,7 @@ public class JavaConverterTypeDefinition implements JavaManagedTypeDefinition
 	/**
 	 * Enforce singleton usage
 	 */
-	private JavaConverterTypeDefinition() {
+	private JavaConverterTypeDefinition2_1() {
 		super();
 	}
 

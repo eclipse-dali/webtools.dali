@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.JavaTransientMappingDefini
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXmlDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXmlDefinition2_1;
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java.JavaConverterTypeDefinition;
+import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java.JavaConverterTypeDefinition2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.persistence.GenericPersistenceXmlDefinition2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaArrayMappingDefinition2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicCollectionMappingDefinition2_0;
@@ -163,7 +163,7 @@ public class EclipseLink2_5JpaPlatformProvider
 
 	protected static final JavaManagedTypeDefinition[] JAVA_MANAGED_TYPE_DEFINITIONS_2_5 = new JavaManagedTypeDefinition[] {
 		JavaPersistentTypeDefinition.instance(),
-		JavaConverterTypeDefinition.instance()
+		JavaConverterTypeDefinition2_1.instance()
 	};
 
 
