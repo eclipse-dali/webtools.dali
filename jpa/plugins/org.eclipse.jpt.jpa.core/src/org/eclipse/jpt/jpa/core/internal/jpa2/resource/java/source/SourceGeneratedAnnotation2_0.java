@@ -29,9 +29,9 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.GeneratedAnnotation2_0;
 
 /**
- * javax.annotation.Generated
+ * <code>javax.annotation.Generated</code>
  */
-public final class SourceGeneratedAnnotation
+public final class SourceGeneratedAnnotation2_0
 	extends SourceAnnotation
 	implements GeneratedAnnotation2_0
 {
@@ -50,7 +50,7 @@ public final class SourceGeneratedAnnotation
 	private String comments;
 
 
-	public SourceGeneratedAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
+	public SourceGeneratedAnnotation2_0(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
 		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 		this.valueAdapter = this.buildAnnotationElementAdapter(VALUE_ADAPTER);
 		this.dateAdapter = this.buildAdapter(DATE_ADAPTER);
@@ -220,5 +220,4 @@ public final class SourceGeneratedAnnotation
 	static DeclarationAnnotationElementAdapter<String> buildAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(annotationAdapter, elementName);
 	}
-
 }
