@@ -70,7 +70,7 @@ public class EclipseLinkOrmXmlContextModelFactory
 
 	@Override
 	public OrmEmbeddable buildOrmEmbeddable(OrmPersistentType type, org.eclipse.jpt.jpa.core.resource.orm.XmlEmbeddable resourceMapping) {
-		return new OrmEclipseLinkEmbeddableImpl(type, (XmlEmbeddable) resourceMapping);
+		return new EclipseLinkOrmEmbeddableImpl(type, (XmlEmbeddable) resourceMapping);
 	}
 
 	@Override

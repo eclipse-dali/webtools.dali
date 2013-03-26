@@ -38,7 +38,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * EclipseLink
  * <code>orm.xml</code> embeddable type mapping
  */
-public class OrmEclipseLinkEmbeddableImpl
+public class EclipseLinkOrmEmbeddableImpl
 	extends AbstractOrmEmbeddable<XmlEmbeddable>
 	implements EclipseLinkOrmEmbeddable, EclipseLinkOrmConverterContainer.Parent
 {
@@ -49,7 +49,7 @@ public class OrmEclipseLinkEmbeddableImpl
 	protected final OrmEclipseLinkCustomizer customizer;
 
 
-	public OrmEclipseLinkEmbeddableImpl(OrmPersistentType parent, XmlEmbeddable xmlEmbeddable) {
+	public EclipseLinkOrmEmbeddableImpl(OrmPersistentType parent, XmlEmbeddable xmlEmbeddable) {
 		super(parent, xmlEmbeddable);
 		this.converterContainer = this.buildConverterContainer();
 		this.changeTracking = this.buildChangeTracking();
