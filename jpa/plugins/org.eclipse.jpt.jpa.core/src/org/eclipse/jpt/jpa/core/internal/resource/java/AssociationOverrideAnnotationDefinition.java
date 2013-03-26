@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.jpa.core.internal.jpa1.resource.java.binary.BinaryAssociationOverride1_0Annotation;
+import org.eclipse.jpt.jpa.core.internal.jpa1.resource.java.binary.BinaryAssociationOverrideAnnotation1_0;
 import org.eclipse.jpt.jpa.core.internal.jpa1.resource.java.source.SourceAssociationOverride1_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
@@ -46,7 +46,7 @@ public final class AssociationOverrideAnnotationDefinition
 	}
 
 	public NestableAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation, int index) {
-		return new BinaryAssociationOverride1_0Annotation(parent, jdtAnnotation);
+		return new BinaryAssociationOverrideAnnotation1_0(parent, jdtAnnotation);
 	}
 
 	public String getNestableAnnotationName() {
