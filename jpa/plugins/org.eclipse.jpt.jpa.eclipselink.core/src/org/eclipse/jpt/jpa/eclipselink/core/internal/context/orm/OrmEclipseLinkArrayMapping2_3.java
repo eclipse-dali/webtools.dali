@@ -63,7 +63,7 @@ public class OrmEclipseLinkArrayMapping2_3
 		OrmBaseEnumeratedConverter.BasicAdapter.instance(),
 		OrmBaseTemporalConverter.BasicAdapter.instance(),
 		OrmLobConverter.Adapter.instance(),
-		OrmEclipseLinkConvert.Adapter.instance()
+		EclipseLinkOrmConvert.Adapter.instance()
 	};
 	protected static final Iterable<OrmConverter.Adapter> CONVERTER_ADAPTERS = IterableTools.iterable(CONVERTER_ADAPTER_ARRAY);
 

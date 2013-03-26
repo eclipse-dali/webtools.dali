@@ -26,13 +26,13 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkConvertV
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConvert;
 
-public class OrmEclipseLinkConvert
+public class EclipseLinkOrmConvert
 	extends AbstractOrmConverter<OrmConverter.ParentAdapter>
 	implements EclipseLinkConvert
 {
 	protected String specifiedConverterName;
 
-	public OrmEclipseLinkConvert(OrmConverter.ParentAdapter parentAdapter) {
+	public EclipseLinkOrmConvert(OrmConverter.ParentAdapter parentAdapter) {
 		super(parentAdapter);
 		this.specifiedConverterName = this.getXmlConvert() != null ? this.getXmlConvert().getConvert() : null;
 	}
@@ -166,7 +166,7 @@ public class OrmEclipseLinkConvert
 		public OrmConverter buildConverter(OrmAttributeMapping parent, OrmXmlContextModelFactory factory) {
 			XmlConvertibleMapping_2_1 xmlMapping = (XmlConvertibleMapping_2_1) parent.getXmlAttributeMapping();
 			XmlConvert xmlConvert = (XmlConvert) xmlMapping.getConvert();
-			return (xmlConvert == null) ? null : new OrmEclipseLinkConvert(new ConverterParentAdapter(parent));
+			return (xmlConvert == null) ? null : new EclipseLinkOrmConvert(new ConverterParentAdapter(parent));
 		}
 
 		public boolean isActive(XmlAttributeMapping xmlMapping) {
@@ -174,7 +174,7 @@ public class OrmEclipseLinkConvert
 		}
 
 		public OrmConverter buildNewConverter(OrmAttributeMapping parent, OrmXmlContextModelFactory factory) {
-			return new OrmEclipseLinkConvert(new ConverterParentAdapter(parent));
+			return new EclipseLinkOrmConvert(new ConverterParentAdapter(parent));
 		}
 
 		public void clearXmlValue(XmlAttributeMapping xmlMapping) {

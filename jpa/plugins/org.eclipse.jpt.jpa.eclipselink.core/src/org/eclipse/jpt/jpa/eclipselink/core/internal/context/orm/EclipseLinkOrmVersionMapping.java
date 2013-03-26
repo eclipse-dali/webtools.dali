@@ -108,7 +108,7 @@ public class EclipseLinkOrmVersionMapping
 	 */
 	@Override
 	protected Iterable<OrmConverter.Adapter> getConverterAdapters() {
-		return IterableTools.insert(OrmEclipseLinkConvert.Adapter.instance(), super.getConverterAdapters());
+		return IterableTools.insert(EclipseLinkOrmConvert.Adapter.instance(), super.getConverterAdapters());
 	}
 
 

@@ -203,7 +203,7 @@ public class OrmEclipseLinkBasicMapping
 	@Override
 	protected Iterable<OrmConverter.Adapter> getConverterAdapters() {
 		return IterableTools.insert(
-				OrmEclipseLinkConvert.Adapter.instance(),
+				EclipseLinkOrmConvert.Adapter.instance(),
 				super.getConverterAdapters()
 			);
 	}
