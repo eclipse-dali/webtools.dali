@@ -37,7 +37,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaMappedSu
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkCustomConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLink2_2ContextModelTestCase;
 
@@ -449,7 +449,7 @@ public class EclipseLink2_2JpaMetadataConversionTests extends EclipseLink2_2Cont
 		assertEquals(mapping.getConverterContainer().getConvertersSize(), 0);
 		
 		// test the mapping file converter have correct values
-		Collection<OrmEclipseLinkCustomConverter> customConverters = CollectionTools.collection(entityMappings.getConverterContainer().getCustomConverters());
+		Collection<EclipseLinkOrmCustomConverter> customConverters = CollectionTools.collection(entityMappings.getConverterContainer().getCustomConverters());
 		EclipseLinkCustomConverter custom1 = Generic2_0JpaMetadataConversionTests.selectModelNamed(customConverters, "custom1");
 		assertEquals("custom1", custom1.getName());
 		assertEquals("foo1", custom1.getConverterClass());

@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkCustomConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmObjectTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmStructConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmTypeConverter;
@@ -33,9 +33,9 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmT
 public interface EclipseLinkOrmConverterContainer
 	extends EclipseLinkConverterContainer, TypeRefactoringParticipant
 {
-	ListIterable<OrmEclipseLinkCustomConverter> getCustomConverters();
-	OrmEclipseLinkCustomConverter addCustomConverter(String name, int index);
-	OrmEclipseLinkCustomConverter addCustomConverter(String name);
+	ListIterable<EclipseLinkOrmCustomConverter> getCustomConverters();
+	EclipseLinkOrmCustomConverter addCustomConverter(String name, int index);
+	EclipseLinkOrmCustomConverter addCustomConverter(String name);
 
 	ListIterable<EclipseLinkOrmObjectTypeConverter> getObjectTypeConverters();
 	EclipseLinkOrmObjectTypeConverter addObjectTypeConverter(String name, int index);
