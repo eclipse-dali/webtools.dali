@@ -41,7 +41,7 @@ import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.JptResourceModelListener;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryTypeCache;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceTypeCompilationUnit;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.ContentTypeTools;
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
@@ -408,7 +408,7 @@ public abstract class AbstractJaxbProject
 	
 	/* file is .java or .jar */
 	protected boolean isJavaFile(IFile file) {
-		IContentType contentType = PlatformTools.getContentType(file);
+		IContentType contentType = ContentTypeTools.contentType(file);
 		return contentType != null 
 				&& (contentType.isKindOf(JavaResourceCompilationUnit.CONTENT_TYPE)
 					|| contentType.isKindOf(JavaResourcePackageFragmentRoot.JAR_CONTENT_TYPE));
@@ -577,7 +577,7 @@ public abstract class AbstractJaxbProject
 			return EmptyIterable.instance();
 		}
 		
-		IContentType contentType = PlatformTools.getContentType(file);
+		IContentType contentType = ContentTypeTools.contentType(file);
 		if (contentType == null) {
 			return EmptyIterable.instance();
 		}
@@ -1261,7 +1261,7 @@ public abstract class AbstractJaxbProject
 			return this.addJaxbFile(file);
 		}
 
-		if (jaxbFile.getContentType().equals(PlatformTools.getContentType(file))) {
+		if (jaxbFile.getContentType().equals(ContentTypeTools.contentType(file))) {
 			// content has not changed - ignore
 			return false;
 		}
@@ -1327,7 +1327,7 @@ public abstract class AbstractJaxbProject
 	}
 
 	protected boolean externalFileAdded(IFile file) {
-		IContentType contentType = PlatformTools.getContentType(file);
+		IContentType contentType = ContentTypeTools.contentType(file);
 		if (contentType == null) {
 			return false;
 		}
@@ -1341,7 +1341,7 @@ public abstract class AbstractJaxbProject
 	}
 
 	protected boolean externalFileRemoved(IFile file) {
-		IContentType contentType = PlatformTools.getContentType(file);
+		IContentType contentType = ContentTypeTools.contentType(file);
 		if (contentType == null) {
 			return false;
 		}

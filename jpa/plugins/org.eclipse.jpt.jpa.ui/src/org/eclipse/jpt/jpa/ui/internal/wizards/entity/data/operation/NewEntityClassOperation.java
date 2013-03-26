@@ -43,7 +43,7 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.PathTools;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandContext;
 import org.eclipse.jpt.common.utility.command.Command;
@@ -377,7 +377,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 	protected final IContainer createJavaSourceContainer() {
 		// Get the source folder name from the data model
 		String containerFullPath = model.getStringProperty(INewJavaClassDataModelProperties.SOURCE_FOLDER);
-		IContainer container = PlatformTools.getContainer(new Path(containerFullPath));
+		IContainer container = PathTools.getContainer(new Path(containerFullPath));
 		// If container does not exist, create the folder with the specified path
 		if (! container.exists()) {
 			try {

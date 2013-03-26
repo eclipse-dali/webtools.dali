@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.core.JptCommonCoreMessages;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.PathTools;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelProvider;
@@ -105,7 +105,7 @@ public abstract class AbstractJptFileCreationDataModelProvider
 
 	protected IContainer getContainer() {
 		IPath containerPath = getContainerPath();
-		return (containerPath == null) ? null : PlatformTools.getContainer(containerPath);
+		return (containerPath == null) ? null : PathTools.getContainer(containerPath);
 	}
 
 	protected IProject getProject() {

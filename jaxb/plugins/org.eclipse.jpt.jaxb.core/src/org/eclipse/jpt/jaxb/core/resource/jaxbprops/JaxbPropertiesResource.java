@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.core.resource.jaxbprops;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.ContentTypeTools;
 import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
 
 
@@ -27,7 +27,7 @@ public interface JaxbPropertiesResource
 	/**
 	 * The resource type for <code>jaxb.properties</code> files.
 	 */
-	JptResourceType RESOURCE_TYPE = PlatformTools.getResourceType(CONTENT_TYPE);
+	JptResourceType RESOURCE_TYPE = ContentTypeTools.getResourceType(CONTENT_TYPE);
 
 	String getPackageName();
 	

@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.core.JptCommonCoreMessages;
 import org.eclipse.jpt.common.core.internal.InternalJptWorkspace;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.resource.ResourceLocatorConfig.Priority;
-import org.eclipse.jpt.common.core.internal.utility.ConfigurationElementTools;
+import org.eclipse.jpt.common.core.internal.utility.ExtensionPointTools;
 import org.eclipse.jpt.common.core.resource.ResourceLocator;
 import org.eclipse.jpt.common.core.resource.ResourceLocatorManager;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -221,7 +221,7 @@ public class InternalResourceLocatorManager
 	}
 
 	private void logMissingAttribute(IConfigurationElement element, String attributeName) {
-		this.getPlugin().logError(ConfigurationElementTools.buildMissingAttributeMessage(element, attributeName));
+		this.getPlugin().logError(ExtensionPointTools.buildMissingAttributeMessage(element, attributeName));
 	}
 
 	private void logInvalidPriority(IConfigurationElement element, String priority) {

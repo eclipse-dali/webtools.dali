@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.core.resource.jaxbindex;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.ContentTypeTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
@@ -28,7 +28,7 @@ public interface JaxbIndexResource
 	/**
 	 * The resource type for <code>jaxb.index</code> files.
 	 */
-	JptResourceType RESOURCE_TYPE = PlatformTools.getResourceType(CONTENT_TYPE);
+	JptResourceType RESOURCE_TYPE = ContentTypeTools.getResourceType(CONTENT_TYPE);
 
 	String getPackageName();
 	

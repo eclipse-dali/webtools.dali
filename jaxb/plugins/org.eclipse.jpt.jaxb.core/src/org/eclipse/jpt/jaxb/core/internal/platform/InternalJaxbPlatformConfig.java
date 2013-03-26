@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.platform;
 
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.ExtensionPointTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
@@ -107,7 +107,7 @@ class InternalJaxbPlatformConfig
 	}
 
 	private JaxbPlatformDefinitionFactory buildJaxbPlatformDefinitionFactory() {
-		return PlatformTools.instantiate(this.pluginId, this.jaxbPlatformManager.getExtensionPointName(), this.factoryClassName, JaxbPlatformDefinitionFactory.class);
+		return ExtensionPointTools.instantiate(this.pluginId, this.jaxbPlatformManager.getExtensionPointName(), this.factoryClassName, JaxbPlatformDefinitionFactory.class);
 	}
 
 	@Override

@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.persistence;
 
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.ContentTypeTools;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlDefinition;
 
@@ -43,7 +43,7 @@ public abstract class AbstractPersistenceXmlDefinition
 	// ********** misc **********
 
 	protected JptResourceType getResourceType(IContentType contentType, String version) {
-		return PlatformTools.getResourceType(contentType, version);
+		return ContentTypeTools.getResourceType(contentType, version);
 	}
 
 	@Override

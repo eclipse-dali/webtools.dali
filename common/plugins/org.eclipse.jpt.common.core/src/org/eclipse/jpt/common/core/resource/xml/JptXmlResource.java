@@ -28,7 +28,7 @@ import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.JptResourceModelListener;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.ContentTypeTools;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jst.j2ee.internal.xml.J2EEXmlDtDEntityResolver;
@@ -97,7 +97,7 @@ public class JptXmlResource
 	}
 
 	protected JptResourceType getResourceType(String version) {
-		return (this.contentType == null) ? null : PlatformTools.getResourceType(this.contentType, version);
+		return (this.contentType == null) ? null : ContentTypeTools.getResourceType(this.contentType, version);
 	}
 
 

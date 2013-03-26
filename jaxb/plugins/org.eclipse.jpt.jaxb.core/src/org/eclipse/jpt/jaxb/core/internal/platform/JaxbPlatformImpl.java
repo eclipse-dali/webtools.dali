@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.internal.SimpleAnnotationProvider;
+import org.eclipse.jpt.common.core.internal.utility.ContentTypeTools;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.DefaultAnnotationEditFormatter;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
@@ -63,7 +64,7 @@ public final class JaxbPlatformImpl
 	// ********** JAXB file/resource models **********
 
 	public JaxbFile buildJaxbFile(JaxbProject jaxbProject, IFile file) {
-		IContentType contentType = PlatformTools.getContentType(file);
+		IContentType contentType = ContentTypeTools.contentType(file);
 		return (contentType == null) ? null : this.buildJaxbFile(jaxbProject, file, contentType);
 	}
 

@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.core.internal.resource.java.binary;
 import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.JptResourceModelListener;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.ContentTypeTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
@@ -69,7 +69,7 @@ abstract class RootBinaryModel
 	// ********** JptResourceModel implementation **********
 	
 	public JptResourceType getResourceType() {
-		return PlatformTools.getResourceType(JavaResourcePackageFragmentRoot.JAR_CONTENT_TYPE);
+		return ContentTypeTools.getResourceType(JavaResourcePackageFragmentRoot.JAR_CONTENT_TYPE);
 	}
 
 	public void addResourceModelListener(JptResourceModelListener listener) {

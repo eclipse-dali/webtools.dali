@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.platform;
 
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.ExtensionPointTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
@@ -126,7 +126,7 @@ class InternalJpaPlatformConfig
 	}
 
 	private JpaPlatformFactory buildJpaPlatformFactory() {
-		return PlatformTools.instantiate(this.pluginId, this.jpaPlatformManager.getExtensionPointName(), this.factoryClassName, JpaPlatformFactory.class);
+		return ExtensionPointTools.instantiate(this.pluginId, this.jpaPlatformManager.getExtensionPointName(), this.factoryClassName, JpaPlatformFactory.class);
 	}
 
 	@Override

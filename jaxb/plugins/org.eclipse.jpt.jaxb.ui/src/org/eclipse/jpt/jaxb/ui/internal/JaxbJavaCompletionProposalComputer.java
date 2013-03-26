@@ -24,6 +24,7 @@ import org.eclipse.jdt.ui.text.java.IJavaCompletionProposalComputer;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
+import org.eclipse.jpt.common.core.internal.utility.ContentTypeTools;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -102,7 +103,7 @@ public class JaxbJavaCompletionProposalComputer
 	private List<ICompletionProposal> computeCompletionProposals_(JavaContentAssistInvocationContext context) {
 		ICompilationUnit cu = context.getCompilationUnit();
 		IFile file = (cu != null) ? getCorrespondingResource(cu) : null;
-		IContentType contentType = (file != null) ? PlatformTools.getContentType(file) : null;
+		IContentType contentType = (file != null) ? ContentTypeTools.contentType(file) : null;
 		
 		if (contentType == null  || ! contentType.isKindOf(JavaResourceCompilationUnit.CONTENT_TYPE)) {
 			return Collections.emptyList();

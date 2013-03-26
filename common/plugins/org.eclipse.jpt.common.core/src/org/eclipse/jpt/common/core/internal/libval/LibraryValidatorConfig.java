@@ -14,7 +14,7 @@ import org.eclipse.core.expressions.EvaluationResult;
 import org.eclipse.core.expressions.Expression;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.ExtensionPointTools;
 import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.common.core.libval.LibraryValidator;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -100,7 +100,7 @@ class LibraryValidatorConfig {
 	}
 
 	private LibraryValidator buildLibraryValidator() {
-		return PlatformTools.instantiate(this.pluginID, this.manager.getExtensionPointName(), this.className, LibraryValidator.class);
+		return ExtensionPointTools.instantiate(this.pluginID, this.manager.getExtensionPointName(), this.className, LibraryValidator.class);
 	}
 
 	@Override

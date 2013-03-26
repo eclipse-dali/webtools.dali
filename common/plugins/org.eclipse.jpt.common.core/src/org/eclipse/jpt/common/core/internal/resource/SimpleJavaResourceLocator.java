@@ -24,7 +24,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.utility.PackageFragmentRootTools;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.PathTools;
 import org.eclipse.jpt.common.core.resource.ResourceLocator;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
@@ -165,7 +165,7 @@ public class SimpleJavaResourceLocator
 	}
 
 	protected IPath getRuntimePath_(IProject project, IPath resourcePath) throws JavaModelException {
-		IFile file = PlatformTools.getFile(resourcePath);
+		IFile file = PathTools.getFile(resourcePath);
 		for (IContainer sourceFolder : this.getSourceFolders(project)) {
 			if (sourceFolder.contains(file)) {
 				return resourcePath.makeRelativeTo(sourceFolder.getFullPath());

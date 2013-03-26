@@ -15,7 +15,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.PathTools;
 import org.eclipse.pde.core.project.IBundleProjectService;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -47,7 +47,7 @@ public class PluginResourceLocator
 	public IPath getRuntimePath(IProject project, IPath resourcePath) {
 		IContainer bundleRoot = this.getBundleRoot(project);
 		if (bundleRoot != null) {
-			IFile file = PlatformTools.getFile(resourcePath);
+			IFile file = PathTools.getFile(resourcePath);
 			if (bundleRoot.contains(file)) {
 				return resourcePath.makeRelativeTo(bundleRoot.getFullPath());
 			}

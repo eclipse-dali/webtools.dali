@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.core.JptCommonCoreMessages;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.JptResourceTypeManager;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
-import org.eclipse.jpt.common.core.internal.utility.ConfigurationElementTools;
+import org.eclipse.jpt.common.core.internal.utility.ExtensionPointTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.SimpleAssociation;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -260,7 +260,7 @@ public class InternalJptResourceTypeManager
 	}
 
 	private void logMissingAttribute(IConfigurationElement element, String attributeName) {
-		this.getPlugin().logError(ConfigurationElementTools.buildMissingAttributeMessage(element, attributeName));
+		this.getPlugin().logError(ExtensionPointTools.buildMissingAttributeMessage(element, attributeName));
 	}
 
 	private void logInvalidContentType(IConfigurationElement element, String resourceTypeID, String contentTypeID) {

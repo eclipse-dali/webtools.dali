@@ -15,7 +15,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.JptResourceTypeReference;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.ContentTypeTools;
 
 /**
  * Property tester for {@link JptResourceTypeReference}.
@@ -73,7 +73,7 @@ public class JptResourceTypeReferencePropertyTester
 	}
 
 	private boolean resourceTypeIsKindOf(JptResourceTypeReference ref, IContentType contentType, String version) {
-		JptResourceType resourceType = PlatformTools.getResourceType(contentType, version);
+		JptResourceType resourceType = ContentTypeTools.getResourceType(contentType, version);
 		return (resourceType != null) && ref.getResourceType().isKindOf(resourceType);
 	}
 }

@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 import java.util.ArrayList;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.ContentTypeTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
@@ -177,7 +177,7 @@ public abstract class AbstractOrmXmlDefinition
 	// ********** misc **********
 
 	protected JptResourceType getResourceType(IContentType contentType, String version) {
-		return PlatformTools.getResourceType(contentType, version);
+		return ContentTypeTools.getResourceType(contentType, version);
 	}
 
 	@Override

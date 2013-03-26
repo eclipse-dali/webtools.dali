@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.platform;
 
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.ExtensionPointTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUiFactory;
@@ -70,7 +70,7 @@ class JpaPlatformUiConfig {
 	}
 
 	private JpaPlatformUiFactory buildJpaPlatformUiFactory() {
-		return PlatformTools.instantiate(this.pluginID, this.manager.getExtensionPointName(), this.factoryClassName, JpaPlatformUiFactory.class);
+		return ExtensionPointTools.instantiate(this.pluginID, this.manager.getExtensionPointName(), this.factoryClassName, JpaPlatformUiFactory.class);
 	}
 
 	@Override

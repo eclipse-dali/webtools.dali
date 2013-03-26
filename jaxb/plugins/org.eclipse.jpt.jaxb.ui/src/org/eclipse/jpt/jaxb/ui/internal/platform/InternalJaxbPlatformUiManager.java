@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.jpt.common.core.JptCommonCoreMessages;
-import org.eclipse.jpt.common.core.internal.utility.ConfigurationElementTools;
+import org.eclipse.jpt.common.core.internal.utility.ExtensionPointTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
@@ -182,7 +182,7 @@ public class InternalJaxbPlatformUiManager
 	}
 
 	private void logMissingAttribute(IConfigurationElement element, String attributeName) {
-		this.getPlugin().logError(ConfigurationElementTools.buildMissingAttributeMessage(element, attributeName));
+		this.getPlugin().logError(ExtensionPointTools.buildMissingAttributeMessage(element, attributeName));
 	}
 
 

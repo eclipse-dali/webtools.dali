@@ -16,7 +16,7 @@ import org.eclipse.core.expressions.Expression;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.ExtensionPointTools;
 import org.eclipse.jpt.common.core.resource.ResourceLocator;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
@@ -107,7 +107,7 @@ class ResourceLocatorConfig
 	}
 
 	private ResourceLocator buildResourceLocator() {
-		return PlatformTools.instantiate(this.pluginID, this.manager.getExtensionPointName(), this.className, ResourceLocator.class);
+		return ExtensionPointTools.instantiate(this.pluginID, this.manager.getExtensionPointName(), this.className, ResourceLocator.class);
 	}
 
 	@Override

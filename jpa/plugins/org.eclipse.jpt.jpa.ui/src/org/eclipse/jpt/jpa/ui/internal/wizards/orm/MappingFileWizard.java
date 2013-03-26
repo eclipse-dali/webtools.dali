@@ -33,6 +33,7 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
+import org.eclipse.jpt.common.core.internal.utility.PathTools;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
@@ -319,7 +320,7 @@ public class MappingFileWizard extends Wizard
 		try {
 			IPath containerPath = (IPath) getDataModel().getProperty(CONTAINER_PATH);
 			String fileName = getDataModel().getStringProperty(FILE_NAME);
-			IContainer container = PlatformTools.getContainer(containerPath);
+			IContainer container = PathTools.getContainer(containerPath);
 			IFile file = container.getFile(new Path(fileName));
 			openEditor(file);
 		}
@@ -363,7 +364,7 @@ public class MappingFileWizard extends Wizard
 		if (dialog.open() == Window.OK) {
 			IPath containerPath = (IPath) wizard.getDataModel().getProperty(CONTAINER_PATH);
 			String fileName = wizard.getDataModel().getStringProperty(FILE_NAME);
-			IContainer container = PlatformTools.getContainer(containerPath);
+			IContainer container = PathTools.getContainer(containerPath);
 			IPath filePath = container.getFullPath().append(fileName);
 			IProject project = container.getProject();
 			ProjectResourceLocator locator = (ProjectResourceLocator) project.getAdapter(ProjectResourceLocator.class);

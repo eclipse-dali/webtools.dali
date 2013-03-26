@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.internal.utility.ContentTypeTools;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.DefaultAnnotationEditFormatter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
@@ -27,8 +28,8 @@ import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPlatformProvider;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JpaResourceModelProvider;
 import org.eclipse.jpt.jpa.core.JpaResourceDefinition;
+import org.eclipse.jpt.jpa.core.JpaResourceModelProvider;
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition;
@@ -120,7 +121,7 @@ public class GenericJpaPlatform
 	}
 
 	/**
-	 * Performance hook: {@link PlatformTools#getContentType(IFile)} gets the
+	 * Performance hook: {@link ContentTypeTools#contentType(IFile)} gets the
 	 * file contents <em>every</em> time. Many of our files are Java files and
 	 * it is possible to determine a Java file's content type from the file
 	 * name; so do that here, before using {@link PlatformTools}.
@@ -132,7 +133,7 @@ public class GenericJpaPlatform
 				return contentType;
 			}
 		}
-		return PlatformTools.getContentType(file);
+		return ContentTypeTools.contentType(file);
 	}
 
 	protected JpaFile buildJpaFile(JpaProject jpaProject, IFile file, IContentType contentType) {

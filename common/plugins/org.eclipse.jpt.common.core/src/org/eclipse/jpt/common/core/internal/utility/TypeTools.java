@@ -167,24 +167,27 @@ public final class TypeTools {
 	}
 
 	public static boolean hasPublicZeroArgConstructor(IType type) {
-		boolean hasDefinedConstructor = false;
 		try {
-			for (IMethod method : type.getMethods()) {
-				if (method.isConstructor()) {
-					if ((method.getNumberOfParameters() == 0) && (Flags.isPublic(method.getFlags()))) {
-						return true;
-					}
-					hasDefinedConstructor = true;
-				}
-			}
-			//When there's no defined constructor, the default constructor is in place.
-			if (!hasDefinedConstructor) {
-				return true;
-			}
+			return hasPublicZeroArgConstructor_(type);
 		} catch (JavaModelException ex) {
 			JptCommonCorePlugin.instance().logError(ex);
+			return false;
 		}
-		return false;
+	}
+
+	private static boolean hasPublicZeroArgConstructor_(IType type) throws JavaModelException {
+		boolean ctorDefined = false;
+		for (IMethod method : type.getMethods()) {
+			if (method.isConstructor()) {
+				if ((method.getNumberOfParameters() == 0) && (Flags.isPublic(method.getFlags()))) {
+					return true;
+				}
+				ctorDefined = true;
+			}
+		}
+		// if there are no constructors defined in the source,
+		// the compiler generates a default constructor
+		return ! ctorDefined;
 	}
 
 	public static final Predicate<IType> IS_INTERFACE = new IsInterface();

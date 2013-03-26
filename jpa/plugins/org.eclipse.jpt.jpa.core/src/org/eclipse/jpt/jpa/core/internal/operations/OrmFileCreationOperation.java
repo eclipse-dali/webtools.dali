@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.SubMonitor;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.PathTools;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResourceProvider;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -81,7 +81,7 @@ public class OrmFileCreationOperation
 		
 		IPath containerPath = (IPath) getDataModel().getProperty(CONTAINER_PATH);
 		String fileName = getDataModel().getStringProperty(FILE_NAME);
-		IContainer container = PlatformTools.getContainer(containerPath);
+		IContainer container = PathTools.getContainer(containerPath);
 		IPath filePath = container.getFullPath().append(fileName);
 		IProject project = container.getProject();
 		ProjectResourceLocator locator = (ProjectResourceLocator) project.getAdapter(ProjectResourceLocator.class);

@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.ContentTypeTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.jpa.core.JpaResourceDefinition;
 
@@ -44,7 +44,7 @@ public class JarDefinition
 	// ********** misc **********
 
 	protected JptResourceType getResourceType(IContentType contentType) {
-		return PlatformTools.getResourceType(contentType);
+		return ContentTypeTools.getResourceType(contentType);
 	}
 
 	@Override

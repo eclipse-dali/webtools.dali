@@ -15,7 +15,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.PathTools;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFile;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
@@ -40,7 +40,7 @@ public class ModuleResourceLocator
 	@Override
 	public IPath getRuntimePath(IProject project, IPath resourcePath) {
 		IVirtualFolder rootFolder = this.getRootFolder(project);
-		IFile file = PlatformTools.getFile(resourcePath);
+		IFile file = PathTools.getFile(resourcePath);
 		IVirtualFile vFile = this.getVirtualFile(rootFolder, file);
 		if (vFile != null) {
 			return vFile.getRuntimePath().makeRelative();

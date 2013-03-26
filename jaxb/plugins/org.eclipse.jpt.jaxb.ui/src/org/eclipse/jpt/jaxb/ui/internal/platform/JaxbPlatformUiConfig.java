@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.platform;
 
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.ExtensionPointTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jaxb.ui.platform.JaxbPlatformUi;
 
@@ -64,7 +64,7 @@ class JaxbPlatformUiConfig {
 	}
 
 	private JaxbPlatformUi buildJaxbPlatformUi() {
-		return PlatformTools.instantiate(this.pluginID, this.manager.getExtensionPointName(), this.className, JaxbPlatformUi.class);
+		return ExtensionPointTools.instantiate(this.pluginID, this.manager.getExtensionPointName(), this.className, JaxbPlatformUi.class);
 	}
 
 	@Override

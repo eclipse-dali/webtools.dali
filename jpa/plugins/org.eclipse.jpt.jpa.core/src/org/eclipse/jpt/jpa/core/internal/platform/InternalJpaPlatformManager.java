@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.jpt.common.core.JptCommonCoreMessages;
-import org.eclipse.jpt.common.core.internal.utility.ConfigurationElementTools;
+import org.eclipse.jpt.common.core.internal.utility.ExtensionPointTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperIterableWrapper;
@@ -395,11 +395,11 @@ public class InternalJpaPlatformManager
 	}
 
 	private void logMissingAttribute(IConfigurationElement element, String attributeName) {
-		this.getPlugin().logError(ConfigurationElementTools.buildMissingAttributeMessage(element, attributeName));
+		this.getPlugin().logError(ExtensionPointTools.buildMissingAttributeMessage(element, attributeName));
 	}
 
 	private void logInvalidValue(IConfigurationElement element, String nodeName, String invalidValue) {
-		this.getPlugin().logError(ConfigurationElementTools.buildInvalidValueMessage(element, nodeName, invalidValue));
+		this.getPlugin().logError(ExtensionPointTools.buildInvalidValueMessage(element, nodeName, invalidValue));
 	}
 
 

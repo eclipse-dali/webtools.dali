@@ -26,7 +26,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.PathTools;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResourceProvider;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -63,7 +63,7 @@ public abstract class AbstractJpaFileCreationOperation
 	
 	protected IContainer getContainer() throws ExecutionException {
 		IPath containerPath = (IPath) getDataModel().getProperty(CONTAINER_PATH);
-		IContainer container = PlatformTools.getContainer(containerPath);
+		IContainer container = PathTools.getContainer(containerPath);
 		if (container == null) {
 			throw new ExecutionException("No container path specified"); //$NON-NLS-1$
 		}

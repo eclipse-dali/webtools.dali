@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.jpt.common.core.JptCommonCoreMessages;
 import org.eclipse.jpt.common.core.internal.InternalJptWorkspace;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
-import org.eclipse.jpt.common.core.internal.utility.ConfigurationElementTools;
+import org.eclipse.jpt.common.core.internal.utility.ExtensionPointTools;
 import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.common.core.libval.LibraryValidator;
 import org.eclipse.jpt.common.core.libval.LibraryValidatorManager;
@@ -197,7 +197,7 @@ public class InternalLibraryValidatorManager
 	}
 
 	private void logMissingAttribute(IConfigurationElement element, String attributeName) {
-		this.getPlugin().logError(ConfigurationElementTools.buildMissingAttributeMessage(element, attributeName));
+		this.getPlugin().logError(ExtensionPointTools.buildMissingAttributeMessage(element, attributeName));
 	}
 
 	private void logMultipleEnablements(IConfigurationElement element) {
