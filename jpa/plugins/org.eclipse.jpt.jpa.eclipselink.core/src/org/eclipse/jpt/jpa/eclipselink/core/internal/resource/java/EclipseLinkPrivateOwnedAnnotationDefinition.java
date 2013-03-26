@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.BinaryEclipseLinkPrivateOwnedAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.EclipseLinkBinaryPrivateOwnedAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.SourceEclipseLinkPrivateOwnedAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.PrivateOwnedAnnotation;
 
@@ -50,7 +50,7 @@ public class EclipseLinkPrivateOwnedAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
-		return new BinaryEclipseLinkPrivateOwnedAnnotation(parent, jdtAnnotation);
+		return new EclipseLinkBinaryPrivateOwnedAnnotation(parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {
