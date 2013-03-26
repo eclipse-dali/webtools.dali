@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,16 +16,16 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.StaticMetamodelAnnotation2_0;
 
 /**
- * javax.persistence.metamodel.StaticMetamodel
+ * <code>javax.persistence.metamodel.StaticMetamodel</code>
  */
-public final class BinaryStaticMetamodelAnnotation
+public final class BinaryStaticMetamodelAnnotation2_0
 	extends BinaryAnnotation
 	implements StaticMetamodelAnnotation2_0
 {
 	private String value;
 
 
-	public BinaryStaticMetamodelAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
+	public BinaryStaticMetamodelAnnotation2_0(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.value = this.buildValue();
 	}
@@ -69,5 +69,4 @@ public final class BinaryStaticMetamodelAnnotation
 	public String getFullyQualifiedClassName() {
 		return this.value;
 	}
-
 }
