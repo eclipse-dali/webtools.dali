@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -53,6 +53,7 @@ public final class SWTTools {
 	 * If the boolean model is <code>null<code>, the button's 'selection' state will
 	 * be the specified default value.
 	 */
+	@SuppressWarnings("unused")
 	public static void bind(ModifiablePropertyValueModel<Boolean> booleanModel, Button button, boolean defaultValue) {
 		// the new binding will add itself as a listener to the boolean model and the button
 		new BooleanButtonModelBinding(booleanModel, button, defaultValue);
@@ -64,6 +65,7 @@ public final class SWTTools {
 	/**
 	 * Bind the specified text model to the specified text field.
 	 */
+	@SuppressWarnings("unused")
 	public static <E> void bind(ModifiablePropertyValueModel<String> textModel, Text textField) {
 		// the new binding will add itself as a listener to the text model and the text field
 		new TextFieldModelBinding(textModel, textField);
@@ -197,6 +199,7 @@ public final class SWTTools {
 	 * Use the specified string converter to convert the model items to strings
 	 * to be displayed in the list box.
 	 */
+	@SuppressWarnings("unused")
 	private static <E> void bind(ListValueModel<E> listModel, ListWidgetModelBinding.ListWidget listWidget, Transformer<E, String> transformer, ListWidgetModelBinding.SelectionBinding selectionBinding) {
 		// the new binding will add itself as a listener to the value models and the list box
 		new ListWidgetModelBinding<E>(listModel, listWidget, transformer, selectionBinding);
@@ -369,11 +372,13 @@ public final class SWTTools {
 
 	// ********** boolean state controller **********
 
+	@SuppressWarnings("unused")
 	private static void control(PropertyValueModel<Boolean> booleanModel, CollectionValueModel<? extends Control> controlsModel, boolean defaultValue, BooleanStateController.Adapter adapter) {
 		// the new controller will add itself as a listener to the value model and the controls
 		new MultiControlBooleanStateController(booleanModel, controlsModel, defaultValue, adapter);
 	}
 
+	@SuppressWarnings("unused")
 	private static void control(PropertyValueModel<Boolean> booleanModel, Control control, boolean defaultValue, BooleanStateController.Adapter adapter) {
 		// the new controller will add itself as a listener to the value model and the controls
 		new SimpleBooleanStateController(booleanModel, control, defaultValue, adapter);
@@ -407,6 +412,7 @@ public final class SWTTools {
 				}
 			};
 
+	@SuppressWarnings("unused")
 	private static void control(PropertyValueModel<Boolean> booleanModel, Section section, boolean defaultValue, BooleanStateController.Adapter adapter) {
 		// the new controller will add itself as a listener to the value model and the section
 		new SimpleBooleanStateController(booleanModel, section, defaultValue, adapter);
