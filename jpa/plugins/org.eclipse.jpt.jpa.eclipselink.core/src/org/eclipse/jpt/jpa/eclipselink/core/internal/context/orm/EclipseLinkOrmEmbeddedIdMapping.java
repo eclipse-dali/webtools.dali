@@ -26,11 +26,11 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 /**
  * <code>orm.xml</code> embedded mapping
  */
-public class OrmEclipseLinkEmbeddedIdMapping
+public class EclipseLinkOrmEmbeddedIdMapping
 	extends AbstractOrmEmbeddedIdMapping<XmlEmbeddedId>
 {
 
-	public OrmEclipseLinkEmbeddedIdMapping(OrmSpecifiedPersistentAttribute parent, XmlEmbeddedId xmlMapping) {
+	public EclipseLinkOrmEmbeddedIdMapping(OrmSpecifiedPersistentAttribute parent, XmlEmbeddedId xmlMapping) {
 		super(parent, xmlMapping);
 	}
 
