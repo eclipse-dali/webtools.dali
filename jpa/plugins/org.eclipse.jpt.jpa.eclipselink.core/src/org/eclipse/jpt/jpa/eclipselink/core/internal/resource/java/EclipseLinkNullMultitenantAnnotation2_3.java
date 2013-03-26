@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,11 +18,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MultitenantType2_3;
 /**
  * <code>org.eclipse.persistence.annotations.Multitenant</code>
  */
-public final class NullEclipseLinkMultitenantAnnotation2_3
+public final class EclipseLinkNullMultitenantAnnotation2_3
 	extends NullAnnotation<MultitenantAnnotation2_3>
 	implements MultitenantAnnotation2_3
 {
-	protected NullEclipseLinkMultitenantAnnotation2_3(JavaResourceAnnotatedElement parent) {
+	protected EclipseLinkNullMultitenantAnnotation2_3(JavaResourceAnnotatedElement parent) {
 		super(parent);
 	}
 
@@ -63,5 +63,4 @@ public final class NullEclipseLinkMultitenantAnnotation2_3
 	public TextRange getIncludeCriteriaTextRange() {
 		return null;
 	}
-
 }

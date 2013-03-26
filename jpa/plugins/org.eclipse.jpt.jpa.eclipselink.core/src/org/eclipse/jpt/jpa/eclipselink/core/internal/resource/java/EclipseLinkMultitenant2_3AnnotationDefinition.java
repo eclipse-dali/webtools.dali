@@ -48,7 +48,7 @@ public class EclipseLinkMultitenant2_3AnnotationDefinition
 	}
 	
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
-		return new NullEclipseLinkMultitenantAnnotation2_3(parent);
+		return new EclipseLinkNullMultitenantAnnotation2_3(parent);
 	}
 	
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
