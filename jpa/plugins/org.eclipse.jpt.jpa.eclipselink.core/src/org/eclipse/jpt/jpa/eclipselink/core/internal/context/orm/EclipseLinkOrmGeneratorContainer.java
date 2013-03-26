@@ -93,7 +93,7 @@ public class EclipseLinkOrmGeneratorContainer
 	}
 
 	protected EclipseLinkOrmUuidGenerator buildUuidGenerator(XmlUuidGenerator_2_4 xmlUuidGenerator) {
-		return new OrmEclipseLinkUuidGenerator(this, xmlUuidGenerator);
+		return new EclipseLinkOrmUuidGeneratorImpl(this, xmlUuidGenerator);
 	}
 
 	protected void syncUuidGenerator() {

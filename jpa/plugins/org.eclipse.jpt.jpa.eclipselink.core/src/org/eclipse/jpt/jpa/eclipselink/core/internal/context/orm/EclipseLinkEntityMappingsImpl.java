@@ -589,7 +589,7 @@ public class EclipseLinkEntityMappingsImpl
 	}
 
 	protected EclipseLinkOrmUuidGenerator buildUuidGenerator(XmlUuidGenerator_2_4 xmlUuidGenerator) {
-		return new OrmEclipseLinkUuidGenerator(this, xmlUuidGenerator);
+		return new EclipseLinkOrmUuidGeneratorImpl(this, xmlUuidGenerator);
 	}
 
 	public void removeUuidGenerator(EclipseLinkOrmUuidGenerator uuidGenerator) {
