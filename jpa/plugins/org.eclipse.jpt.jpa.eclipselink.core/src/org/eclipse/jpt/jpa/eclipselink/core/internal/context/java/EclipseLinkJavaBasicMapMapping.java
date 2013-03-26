@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,27 +10,25 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.ArrayList;
-
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkBasicMapMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.BasicMapAnnotation;
 
-public class JavaEclipseLinkBasicMapMapping
+public class EclipseLinkJavaBasicMapMapping
 	extends AbstractJavaAttributeMapping<BasicMapAnnotation>
 	implements EclipseLinkBasicMapMapping, EclipseLinkJavaConvertibleMapping
 {
 
 	protected final EclipseLinkJavaConverterContainer converterContainer;
 	
-	public JavaEclipseLinkBasicMapMapping(JavaSpecifiedPersistentAttribute parent) {
+	public EclipseLinkJavaBasicMapMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 		this.converterContainer = this.buildConverterContainer();
 	}
