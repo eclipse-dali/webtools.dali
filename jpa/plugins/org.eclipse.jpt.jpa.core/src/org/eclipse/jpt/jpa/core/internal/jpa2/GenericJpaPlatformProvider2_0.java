@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -48,11 +48,11 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.GenericPersist
  * All the state in the JPA platform should be "static" (i.e. unchanging once
  * it is initialized).
  */
-public class Generic2_0JpaPlatformProvider
+public class GenericJpaPlatformProvider2_0
 	extends AbstractJpaPlatformProvider
 {
 	// singleton
-	private static final JpaPlatformProvider INSTANCE = new Generic2_0JpaPlatformProvider();
+	private static final JpaPlatformProvider INSTANCE = new GenericJpaPlatformProvider2_0();
 
 	/**
 	 * Return the singleton
@@ -64,7 +64,7 @@ public class Generic2_0JpaPlatformProvider
 	/**
 	 * Enforce singleton usage
 	 */
-	private Generic2_0JpaPlatformProvider() {
+	private GenericJpaPlatformProvider2_0() {
 		super();
 	}
 
