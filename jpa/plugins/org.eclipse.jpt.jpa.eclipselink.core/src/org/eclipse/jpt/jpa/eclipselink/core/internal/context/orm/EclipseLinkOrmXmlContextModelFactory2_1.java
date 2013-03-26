@@ -23,6 +23,6 @@ public class EclipseLinkOrmXmlContextModelFactory2_1
 
 	@Override
 	public EclipseLinkAbstractOrmBasicMapMapping buildOrmEclipseLinkBasicMapMapping(OrmSpecifiedPersistentAttribute parent, XmlBasicMap resourceMapping) {
-		return new OrmEclipseLinkBasicMapMapping2_1(parent, resourceMapping);
+		return new EclipseLinkOrmBasicMapMapping2_1(parent, resourceMapping);
 	}
 }

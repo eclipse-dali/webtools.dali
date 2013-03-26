@@ -16,10 +16,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreVali
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class OrmEclipseLinkBasicMapMapping2_1
+public class EclipseLinkOrmBasicMapMapping2_1
 	extends EclipseLinkAbstractOrmBasicMapMapping
 {
-	public OrmEclipseLinkBasicMapMapping2_1(OrmSpecifiedPersistentAttribute parent, XmlBasicMap xmlMapping) {
+	public EclipseLinkOrmBasicMapMapping2_1(OrmSpecifiedPersistentAttribute parent, XmlBasicMap xmlMapping) {
 		super(parent, xmlMapping);
 	}
 
