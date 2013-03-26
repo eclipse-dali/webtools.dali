@@ -25,14 +25,14 @@ public class JavaEclipseLinkManyToOneMapping
 	extends AbstractJavaManyToOneMapping
 	implements EclipseLinkManyToOneMapping2_0, EclipseLinkJavaConvertibleMapping
 {
-	protected final JavaEclipseLinkJoinFetch joinFetch;
+	protected final EclipseLinkJavaJoinFetch joinFetch;
 	
 	protected final EclipseLinkJavaConverterContainer converterContainer;
 
 
 	public JavaEclipseLinkManyToOneMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
-		this.joinFetch = new JavaEclipseLinkJoinFetch(this);
+		this.joinFetch = new EclipseLinkJavaJoinFetch(this);
 		this.converterContainer = this.buildConverterContainer();
 	}
 

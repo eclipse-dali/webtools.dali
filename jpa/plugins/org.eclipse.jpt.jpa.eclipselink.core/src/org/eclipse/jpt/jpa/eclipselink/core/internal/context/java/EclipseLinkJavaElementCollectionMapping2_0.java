@@ -27,13 +27,13 @@ public class EclipseLinkJavaElementCollectionMapping2_0
 	extends AbstractJavaElementCollectionMapping2_0
 	implements EclipseLinkElementCollectionMapping2_0, EclipseLinkJavaConvertibleMapping
 {
-	protected final JavaEclipseLinkJoinFetch joinFetch;
+	protected final EclipseLinkJavaJoinFetch joinFetch;
 
 	protected final EclipseLinkJavaConverterContainer converterContainer;
 
 	public EclipseLinkJavaElementCollectionMapping2_0(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
-		this.joinFetch = new JavaEclipseLinkJoinFetch(this);
+		this.joinFetch = new EclipseLinkJavaJoinFetch(this);
 		this.converterContainer = this.buildConverterContainer();
 	}
 

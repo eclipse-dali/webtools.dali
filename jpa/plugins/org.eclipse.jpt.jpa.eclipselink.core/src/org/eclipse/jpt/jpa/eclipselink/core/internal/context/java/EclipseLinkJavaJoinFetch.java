@@ -18,14 +18,14 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetchType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.JoinFetchAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.JoinFetchType;
 
-public class JavaEclipseLinkJoinFetch
+public class EclipseLinkJavaJoinFetch
 	extends AbstractJavaContextModel<JavaAttributeMapping>
 	implements EclipseLinkJoinFetch
 {
 	protected EclipseLinkJoinFetchType value;
 
 
-	public JavaEclipseLinkJoinFetch(JavaAttributeMapping parent) {
+	public EclipseLinkJavaJoinFetch(JavaAttributeMapping parent) {
 		super(parent);
 		this.value = this.buildValue();
 	}

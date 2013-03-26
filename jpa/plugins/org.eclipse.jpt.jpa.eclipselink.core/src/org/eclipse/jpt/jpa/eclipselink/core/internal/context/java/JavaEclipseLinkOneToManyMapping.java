@@ -28,7 +28,7 @@ public class JavaEclipseLinkOneToManyMapping
 	extends AbstractJavaOneToManyMapping
 	implements EclipseLinkOneToManyMapping2_0, EclipseLinkJavaConvertibleMapping
 {
-	protected final JavaEclipseLinkJoinFetch joinFetch;
+	protected final EclipseLinkJavaJoinFetch joinFetch;
 
 	protected final JavaEclipseLinkPrivateOwned privateOwned;
 	
@@ -37,7 +37,7 @@ public class JavaEclipseLinkOneToManyMapping
 
 	public JavaEclipseLinkOneToManyMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
-		this.joinFetch = new JavaEclipseLinkJoinFetch(this);
+		this.joinFetch = new EclipseLinkJavaJoinFetch(this);
 		this.privateOwned = new JavaEclipseLinkPrivateOwned(this);
 		this.converterContainer = this.buildConverterContainer();
 	}
