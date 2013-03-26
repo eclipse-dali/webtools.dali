@@ -119,7 +119,7 @@ public class EclipseLinkOrmMappedSuperclassImpl
 	}
 
 	protected EclipseLinkCaching buildCaching() {
-		return new OrmEclipseLinkCachingImpl(this);
+		return new EclipseLinkOrmCachingImpl(this);
 	}
 
 

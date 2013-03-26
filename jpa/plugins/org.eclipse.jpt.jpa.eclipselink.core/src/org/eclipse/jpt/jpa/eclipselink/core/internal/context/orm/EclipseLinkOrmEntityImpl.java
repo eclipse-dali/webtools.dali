@@ -111,7 +111,7 @@ public class EclipseLinkOrmEntityImpl
 	}
 
 	protected EclipseLinkCaching buildCaching() {
-		return new OrmEclipseLinkCachingImpl(this);
+		return new EclipseLinkOrmCachingImpl(this);
 	}
 
 

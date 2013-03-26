@@ -37,7 +37,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlCache;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlCacheHolder;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTimeOfDay;
 
-public class OrmEclipseLinkCachingImpl
+public class EclipseLinkOrmCachingImpl
 	extends AbstractOrmXmlContextModel<EclipseLinkOrmNonEmbeddableTypeMapping>
 	implements EclipseLinkCaching, OrmCacheableReference2_0
 {
@@ -74,7 +74,7 @@ public class OrmEclipseLinkCachingImpl
 	protected EclipseLinkCacheIsolationType2_2 defaultIsolation = DEFAULT_ISOLATION;
 
 
-	public OrmEclipseLinkCachingImpl(EclipseLinkOrmNonEmbeddableTypeMapping parent) {
+	public EclipseLinkOrmCachingImpl(EclipseLinkOrmNonEmbeddableTypeMapping parent) {
 		super(parent);
 
 		this.specifiedType = this.buildSpecifiedType();
