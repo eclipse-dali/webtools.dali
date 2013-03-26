@@ -82,7 +82,7 @@ public class EclipseLinkOrmXmlDefinition2_3
 		OrmIdMappingDefinition.instance(),
 		OrmVersionMappingDefinition.instance(),
 		OrmBasicMappingDefinition.instance(),
-		OrmEclipseLinkStructureMapping2_3Definition.instance(),
+		EclipseLinkOrmStructureMappingDefinition2_3.instance(),
 		OrmEmbeddedMappingDefinition.instance(),
 		OrmEmbeddedIdMappingDefinition.instance(),
 		EclipseLinkOrmTransformationMappingDefinition.instance(),
