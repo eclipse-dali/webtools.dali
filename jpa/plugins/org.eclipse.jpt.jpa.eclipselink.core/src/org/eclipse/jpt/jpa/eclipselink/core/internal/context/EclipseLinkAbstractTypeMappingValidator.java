@@ -19,10 +19,10 @@ import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public abstract class AbstractEclipseLinkTypeMappingValidator<T extends TypeMapping>
+public abstract class EclipseLinkAbstractTypeMappingValidator<T extends TypeMapping>
 	extends AbstractTypeMappingValidator<T>
 {
-	protected AbstractEclipseLinkTypeMappingValidator(T typeMapping) {
+	protected EclipseLinkAbstractTypeMappingValidator(T typeMapping) {
 		super(typeMapping);
 	}
 

@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 
 public class EclipseLinkTypeMappingValidator
-	extends AbstractEclipseLinkTypeMappingValidator<TypeMapping>
+	extends EclipseLinkAbstractTypeMappingValidator<TypeMapping>
 {
 	public EclipseLinkTypeMappingValidator(TypeMapping typeMapping) {
 		super(typeMapping);

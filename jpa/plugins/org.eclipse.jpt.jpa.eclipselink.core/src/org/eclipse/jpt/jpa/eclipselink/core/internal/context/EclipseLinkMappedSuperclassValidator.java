@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class EclipseLinkMappedSuperclassValidator
-	extends AbstractEclipseLinkTypeMappingValidator<MappedSuperclass>
+	extends EclipseLinkAbstractTypeMappingValidator<MappedSuperclass>
 {
 	public EclipseLinkMappedSuperclassValidator(MappedSuperclass mappedSuperclass) {
 		super(mappedSuperclass);
