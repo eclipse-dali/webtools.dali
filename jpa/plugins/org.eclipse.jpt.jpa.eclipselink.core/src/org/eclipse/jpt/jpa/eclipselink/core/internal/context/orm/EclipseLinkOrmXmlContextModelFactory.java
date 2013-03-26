@@ -146,7 +146,7 @@ public class EclipseLinkOrmXmlContextModelFactory
 
 	@Override
 	public OrmPersistenceUnitDefaults buildOrmPersistenceUnitDefaults(OrmPersistenceUnitMetadata parent) {
-		return new OrmEclipseLinkPersistenceUnitDefaults(parent);
+		return new EclipseLinkOrmPersistenceUnitDefaults(parent);
 	}
 
 	@Override

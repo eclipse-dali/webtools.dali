@@ -36,7 +36,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminatorC
  * <br>
  * <code>persistence-unit-defaults</code> element
  */
-public class OrmEclipseLinkPersistenceUnitDefaults
+public class EclipseLinkOrmPersistenceUnitDefaults
 	extends AbstractOrmPersistenceUnitDefaults
 	implements EclipseLinkPersistenceUnitDefaults
 {
@@ -49,7 +49,7 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 	
 	// ********** constructor/initialization **********
 
-	public OrmEclipseLinkPersistenceUnitDefaults(OrmPersistenceUnitMetadata parent) {
+	public EclipseLinkOrmPersistenceUnitDefaults(OrmPersistenceUnitMetadata parent) {
 		super(parent);
 		this.tenantDiscriminatorColumnParentAdapter = this.buildTenantDiscriminatorColumnParentAdapter();
 		this.tenantDiscriminatorColumnContainer = this.buildTenantDiscriminatorColumnContainer();
@@ -160,11 +160,11 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 		}
 		@Override
 		protected EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3 buildContextElement(XmlTenantDiscriminatorColumn resourceElement) {
-			return OrmEclipseLinkPersistenceUnitDefaults.this.buildTenantDiscriminatorColumn(resourceElement);
+			return EclipseLinkOrmPersistenceUnitDefaults.this.buildTenantDiscriminatorColumn(resourceElement);
 		}
 		@Override
 		protected ListIterable<XmlTenantDiscriminatorColumn> getResourceElements() {
-			return OrmEclipseLinkPersistenceUnitDefaults.this.getXmlTenantDiscriminatorColumns();
+			return EclipseLinkOrmPersistenceUnitDefaults.this.getXmlTenantDiscriminatorColumns();
 		}
 		@Override
 		protected XmlTenantDiscriminatorColumn getResourceElement(EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3 contextElement) {
@@ -193,7 +193,7 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 		implements EclipseLinkTenantDiscriminatorColumn2_3.ParentAdapter
 	{
 		public JpaContextModel getColumnParent() {
-			return OrmEclipseLinkPersistenceUnitDefaults.this;
+			return EclipseLinkOrmPersistenceUnitDefaults.this;
 		}
 
 		public String getDefaultContextPropertyName() {
@@ -246,7 +246,7 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 		}
 
 		public TextRange getValidationTextRange() {
-			return OrmEclipseLinkPersistenceUnitDefaults.this.getValidationTextRange();
+			return EclipseLinkOrmPersistenceUnitDefaults.this.getValidationTextRange();
 		}
 	}
 
