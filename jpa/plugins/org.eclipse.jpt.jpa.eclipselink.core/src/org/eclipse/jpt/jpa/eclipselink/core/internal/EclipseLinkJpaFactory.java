@@ -45,7 +45,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJav
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkSpecifiedJavaPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaTransformationMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaVariableOneToOneMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkVersionMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaVersionMapping;
 
 public class EclipseLinkJpaFactory
 	extends AbstractJpaFactory
@@ -107,7 +107,7 @@ public class EclipseLinkJpaFactory
 	
 	@Override
 	public JavaVersionMapping buildJavaVersionMapping(JavaSpecifiedPersistentAttribute parent) {
-		return new JavaEclipseLinkVersionMapping(parent);
+		return new EclipseLinkJavaVersionMapping(parent);
 	}
 	
 	@Override

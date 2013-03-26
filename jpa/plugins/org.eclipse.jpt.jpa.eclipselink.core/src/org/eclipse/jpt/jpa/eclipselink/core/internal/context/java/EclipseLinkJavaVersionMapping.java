@@ -13,19 +13,18 @@ import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaVersionMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVersionMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class JavaEclipseLinkVersionMapping
+public class EclipseLinkJavaVersionMapping
 	extends AbstractJavaVersionMapping
 	implements EclipseLinkVersionMapping, EclipseLinkJavaConvertibleMapping
 {
@@ -34,7 +33,7 @@ public class JavaEclipseLinkVersionMapping
 	protected final EclipseLinkJavaConverterContainer converterContainer;
 
 
-	public JavaEclipseLinkVersionMapping(JavaSpecifiedPersistentAttribute parent) {
+	public EclipseLinkJavaVersionMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 		this.mutable = new EclipseLinkJavaMutable(this);
 		this.converterContainer = this.buildConverterContainer();
