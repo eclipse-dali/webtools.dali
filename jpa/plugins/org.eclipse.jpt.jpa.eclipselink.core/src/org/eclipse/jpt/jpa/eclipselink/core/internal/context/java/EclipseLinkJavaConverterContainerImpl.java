@@ -37,7 +37,7 @@ public class EclipseLinkJavaConverterContainerImpl
 {
 	protected final ContextListContainer<EclipseLinkJavaCustomConverter, ConverterAnnotation> customConverterContainer;
 	protected final ContextListContainer<EclipseLinkJavaObjectTypeConverter, ObjectTypeConverterAnnotation> objectTypeConverterContainer;
-	protected final ContextListContainer<JavaEclipseLinkStructConverter, StructConverterAnnotation> structConverterContainer;
+	protected final ContextListContainer<EclipseLinkJavaStructConverter, StructConverterAnnotation> structConverterContainer;
 	protected final ContextListContainer<JavaEclipseLinkTypeConverter, TypeConverterAnnotation> typeConverterContainer;
 
 
@@ -247,7 +247,7 @@ public class EclipseLinkJavaConverterContainerImpl
 
 	// ********** struct converters **********
 
-	public ListIterable<JavaEclipseLinkStructConverter> getStructConverters() {
+	public ListIterable<EclipseLinkJavaStructConverter> getStructConverters() {
 		return this.structConverterContainer.getContextElements();
 	}
 	
@@ -255,11 +255,11 @@ public class EclipseLinkJavaConverterContainerImpl
 		return this.structConverterContainer.getContextElementsSize();
 	}
 
-	public JavaEclipseLinkStructConverter addStructConverter(String name) {
+	public EclipseLinkJavaStructConverter addStructConverter(String name) {
 		return this.addStructConverter(name, this.getStructConvertersSize());
 	}
 
-	public JavaEclipseLinkStructConverter addStructConverter(String name, int index) {
+	public EclipseLinkJavaStructConverter addStructConverter(String name, int index) {
 		StructConverterAnnotation annotation = this.addStructConverterAnnotation(name, index);
 		return this.structConverterContainer.addContextElement(index, annotation);
 	}
@@ -271,7 +271,7 @@ public class EclipseLinkJavaConverterContainerImpl
 	}
 
 	public void removeStructConverter(EclipseLinkStructConverter structConverter) {
-		this.removeStructConverter(this.structConverterContainer.indexOfContextElement((JavaEclipseLinkStructConverter) structConverter));
+		this.removeStructConverter(this.structConverterContainer.indexOfContextElement((EclipseLinkJavaStructConverter) structConverter));
 	}
 
 	public void removeStructConverter(int index) {
@@ -284,8 +284,8 @@ public class EclipseLinkJavaConverterContainerImpl
 		this.structConverterContainer.moveContextElement(targetIndex, sourceIndex);
 	}
 
-	protected JavaEclipseLinkStructConverter buildStructConverter(StructConverterAnnotation converterAnnotation) {
-		return new JavaEclipseLinkStructConverter(this, converterAnnotation);
+	protected EclipseLinkJavaStructConverter buildStructConverter(StructConverterAnnotation converterAnnotation) {
+		return new EclipseLinkJavaStructConverter(this, converterAnnotation);
 	}
 
 	protected void syncStructConverters() {
@@ -302,7 +302,7 @@ public class EclipseLinkJavaConverterContainerImpl
 		return this.getJavaResourceAnnotatedElement().getAnnotations(StructConverterAnnotation.ANNOTATION_NAME);
 	}
 
-	protected ContextListContainer<JavaEclipseLinkStructConverter, StructConverterAnnotation> buildStructConverterContainer() {
+	protected ContextListContainer<EclipseLinkJavaStructConverter, StructConverterAnnotation> buildStructConverterContainer() {
 		StructConverterContainer container = new StructConverterContainer();
 		container.initialize();
 		return container;
@@ -312,14 +312,14 @@ public class EclipseLinkJavaConverterContainerImpl
 	 * struct converter container
 	 */
 	protected class StructConverterContainer
-		extends ContextListContainer<JavaEclipseLinkStructConverter, StructConverterAnnotation>
+		extends ContextListContainer<EclipseLinkJavaStructConverter, StructConverterAnnotation>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return STRUCT_CONVERTERS_LIST;
 		}
 		@Override
-		protected JavaEclipseLinkStructConverter buildContextElement(StructConverterAnnotation resourceElement) {
+		protected EclipseLinkJavaStructConverter buildContextElement(StructConverterAnnotation resourceElement) {
 			return EclipseLinkJavaConverterContainerImpl.this.buildStructConverter(resourceElement);
 		}
 		@Override
@@ -327,7 +327,7 @@ public class EclipseLinkJavaConverterContainerImpl
 			return EclipseLinkJavaConverterContainerImpl.this.getStructConverterAnnotations();
 		}
 		@Override
-		protected StructConverterAnnotation getResourceElement(JavaEclipseLinkStructConverter contextElement) {
+		protected StructConverterAnnotation getResourceElement(EclipseLinkJavaStructConverter contextElement) {
 			return contextElement.getConverterAnnotation();
 		}
 	}

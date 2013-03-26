@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkStructConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkStructConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaStructConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStructConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -81,7 +81,7 @@ public class OrmEclipseLinkStructConverter
 
 	// ********** metadata conversion **********
 
-	public void convertFrom(JavaEclipseLinkStructConverter javaConverter) {
+	public void convertFrom(EclipseLinkJavaStructConverter javaConverter) {
 		super.convertFrom(javaConverter);
 		this.setConverterClass(javaConverter.getConverterClass());
 	}

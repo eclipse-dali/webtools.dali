@@ -20,11 +20,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreVali
 /**
  * <code>org.eclipse.persistence.annotations.StructConverter</code>
  */
-public class JavaEclipseLinkStructConverter
+public class EclipseLinkJavaStructConverter
 	extends EclipseLinkJavaConverterClassConverter<StructConverterAnnotation>
 	implements EclipseLinkStructConverter
 {
-	public JavaEclipseLinkStructConverter(EclipseLinkJavaConverterContainer parent, StructConverterAnnotation converterAnnotation) {
+	public EclipseLinkJavaStructConverter(EclipseLinkJavaConverterContainer parent, StructConverterAnnotation converterAnnotation) {
 		super(parent, converterAnnotation, converterAnnotation.getConverter());
 	}
 
