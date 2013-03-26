@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmTypeMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkCustomizer;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlCustomizerHolder;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -106,7 +106,7 @@ public class OrmEclipseLinkCustomizer
 	}
 
 	protected String buildDefaultCustomizerClass() {
-		JavaEclipseLinkCustomizer javaCustomizer = this.getJavaCustomizerForDefaults();
+		EclipseLinkJavaCustomizer javaCustomizer = this.getJavaCustomizerForDefaults();
 		return (javaCustomizer == null) ? null : javaCustomizer.getFullyQualifiedCustomizerClass();
 	}
 
@@ -187,9 +187,9 @@ public class OrmEclipseLinkCustomizer
 		return this.getTypeMapping().getJavaTypeMappingForDefaults();
 	}
 
-	protected JavaEclipseLinkCustomizer getJavaCustomizerForDefaults() {
+	protected EclipseLinkJavaCustomizer getJavaCustomizerForDefaults() {
 		EclipseLinkJavaTypeMapping javaTypeMapping = this.getJavaTypeMappingForDefaults();
-		return (javaTypeMapping == null) ? null : (JavaEclipseLinkCustomizer) javaTypeMapping.getCustomizer();
+		return (javaTypeMapping == null) ? null : (EclipseLinkJavaCustomizer) javaTypeMapping.getCustomizer();
 	}
 
 	protected EntityMappings getEntityMappings() {

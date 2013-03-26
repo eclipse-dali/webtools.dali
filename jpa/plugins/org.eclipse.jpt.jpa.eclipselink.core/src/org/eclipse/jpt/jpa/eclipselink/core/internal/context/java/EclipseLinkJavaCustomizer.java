@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreVali
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class JavaEclipseLinkCustomizer
+public class EclipseLinkJavaCustomizer
 	extends AbstractJavaContextModel<EclipseLinkJavaTypeMapping>
 	implements EclipseLinkCustomizer
 {
@@ -32,7 +32,7 @@ public class JavaEclipseLinkCustomizer
 	private String fullyQualifiedCustomizerClass;
 
 
-	public JavaEclipseLinkCustomizer(EclipseLinkJavaTypeMapping parent) {
+	public EclipseLinkJavaCustomizer(EclipseLinkJavaTypeMapping parent) {
 		super(parent);
 		this.specifiedCustomizerClass = this.buildSpecifiedCustomizerClass();
 	}

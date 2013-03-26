@@ -54,7 +54,7 @@ public class JavaEclipseLinkEntityImpl
 
 	protected final EclipseLinkJavaChangeTracking changeTracking;
 
-	protected final JavaEclipseLinkCustomizer customizer;
+	protected final EclipseLinkJavaCustomizer customizer;
 
 	protected final EclipseLinkJavaMultitenancy2_3 multitenancy;
 
@@ -160,8 +160,8 @@ public class JavaEclipseLinkEntityImpl
 		return this.customizer;
 	}
 
-	protected JavaEclipseLinkCustomizer buildCustomizer() {
-		return new JavaEclipseLinkCustomizer(this);
+	protected EclipseLinkJavaCustomizer buildCustomizer() {
+		return new EclipseLinkJavaCustomizer(this);
 	}
 
 

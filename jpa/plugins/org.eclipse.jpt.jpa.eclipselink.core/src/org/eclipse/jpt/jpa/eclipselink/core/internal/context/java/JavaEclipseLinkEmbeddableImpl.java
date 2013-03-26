@@ -39,7 +39,7 @@ public class JavaEclipseLinkEmbeddableImpl
 
 	protected final EclipseLinkJavaChangeTracking changeTracking;
 
-	protected final JavaEclipseLinkCustomizer customizer;
+	protected final EclipseLinkJavaCustomizer customizer;
 
 
 	public JavaEclipseLinkEmbeddableImpl(JavaPersistentType parent, EmbeddableAnnotation mappingAnnotation) {
@@ -113,8 +113,8 @@ public class JavaEclipseLinkEmbeddableImpl
 		return this.customizer;
 	}
 
-	protected JavaEclipseLinkCustomizer buildCustomizer() {
-		return new JavaEclipseLinkCustomizer(this);
+	protected EclipseLinkJavaCustomizer buildCustomizer() {
+		return new EclipseLinkJavaCustomizer(this);
 	}
 
 
