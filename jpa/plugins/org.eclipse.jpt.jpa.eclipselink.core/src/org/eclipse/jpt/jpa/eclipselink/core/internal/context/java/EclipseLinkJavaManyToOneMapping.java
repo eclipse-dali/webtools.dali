@@ -11,17 +11,16 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaManyToOneMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkManyToOneMapping2_0;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class JavaEclipseLinkManyToOneMapping
+public class EclipseLinkJavaManyToOneMapping
 	extends AbstractJavaManyToOneMapping
 	implements EclipseLinkManyToOneMapping2_0, EclipseLinkJavaConvertibleMapping
 {
@@ -30,7 +29,7 @@ public class JavaEclipseLinkManyToOneMapping
 	protected final EclipseLinkJavaConverterContainer converterContainer;
 
 
-	public JavaEclipseLinkManyToOneMapping(JavaSpecifiedPersistentAttribute parent) {
+	public EclipseLinkJavaManyToOneMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 		this.joinFetch = new EclipseLinkJavaJoinFetch(this);
 		this.converterContainer = this.buildConverterContainer();
