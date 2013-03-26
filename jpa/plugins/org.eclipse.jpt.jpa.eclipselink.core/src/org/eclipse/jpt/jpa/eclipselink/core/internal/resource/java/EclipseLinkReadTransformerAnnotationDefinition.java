@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.BinaryEclipseLinkReadTransformerAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.EclipseLinkBinaryReadTransformerAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.SourceEclipseLinkReadTransformerAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ReadTransformerAnnotation;
 
@@ -50,7 +50,7 @@ public class EclipseLinkReadTransformerAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
-		return new BinaryEclipseLinkReadTransformerAnnotation(parent, jdtAnnotation);
+		return new EclipseLinkBinaryReadTransformerAnnotation(parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {

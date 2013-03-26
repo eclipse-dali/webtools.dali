@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,14 +15,13 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ReadTransformerAnnotation;
 
 /**
- * org.eclipse.persistence.annotations.ReadTransformer
+ * <code>org.eclipse.persistence.annotations.ReadTransformer</code>
  */
-public final class BinaryEclipseLinkReadTransformerAnnotation
+public final class EclipseLinkBinaryReadTransformerAnnotation
 	extends EclipseLinkBinaryTransformerAnnotation
 	implements ReadTransformerAnnotation
 {
-
-	public BinaryEclipseLinkReadTransformerAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
+	public EclipseLinkBinaryReadTransformerAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}
 
@@ -42,5 +41,4 @@ public final class BinaryEclipseLinkReadTransformerAnnotation
 	String getMethodElementName() {
 		return EclipseLink.READ_TRANSFORMER__METHOD;
 	}
-
 }
