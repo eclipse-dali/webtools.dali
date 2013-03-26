@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.binary.BinaryMapKeyJoinColumn2_0Annotation;
+import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.binary.BinaryMapKeyJoinColumnAnnotation2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source.SourceMapKeyJoinColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 
@@ -46,7 +46,7 @@ public final class MapKeyJoinColumnAnnotationDefinition2_0
 	}
 
 	public NestableAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation, int index) {
-		return new BinaryMapKeyJoinColumn2_0Annotation(parent, jdtAnnotation);
+		return new BinaryMapKeyJoinColumnAnnotation2_0(parent, jdtAnnotation);
 	}
 
 	public String getNestableAnnotationName() {
