@@ -34,7 +34,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaMappedSu
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicCollectionMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMapMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkEmbeddableImpl;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaEmbeddableImpl;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkEntityImpl;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkIdMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkManyToManyMapping;
@@ -87,7 +87,7 @@ public class EclipseLinkJpaFactory
 	
 	@Override
 	public JavaEmbeddable buildJavaEmbeddable(JavaPersistentType parent, EmbeddableAnnotation embeddableAnnotation) {
-		return new JavaEclipseLinkEmbeddableImpl(parent, embeddableAnnotation);
+		return new EclipseLinkJavaEmbeddableImpl(parent, embeddableAnnotation);
 	}
 	
 	@Override

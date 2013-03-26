@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaEmbeddable;
@@ -31,7 +30,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * EclipseLink
  * Java embeddable type mapping
  */
-public class JavaEclipseLinkEmbeddableImpl
+public class EclipseLinkJavaEmbeddableImpl
 	extends AbstractJavaEmbeddable
 	implements EclipseLinkJavaEmbeddable, EclipseLinkJavaConverterContainer.Parent
 {
@@ -42,7 +41,7 @@ public class JavaEclipseLinkEmbeddableImpl
 	protected final EclipseLinkJavaCustomizer customizer;
 
 
-	public JavaEclipseLinkEmbeddableImpl(JavaPersistentType parent, EmbeddableAnnotation mappingAnnotation) {
+	public EclipseLinkJavaEmbeddableImpl(JavaPersistentType parent, EmbeddableAnnotation mappingAnnotation) {
 		super(parent, mappingAnnotation);
 		this.converterContainer = this.buildConverterContainer();
 		this.changeTracking = this.buildChangeTracking();
