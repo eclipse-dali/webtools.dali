@@ -317,7 +317,7 @@
 	  <jpaPlatform
 	        id="generic2_1"
 	        label="%GENERIC_2_1_PLATFORM_LABEL"
-	        factoryClass="org.eclipse.jpt.jpa.core.internal.jpa2_1.Generic2_1JpaPlatformFactory"
+	        factoryClass="org.eclipse.jpt.jpa.core.internal.jpa2_1.GenericJpaPlatformFactory2_1"
 	        group="generic"
 	        jpaFacetVersion="2.1"
 	        default="false"/>

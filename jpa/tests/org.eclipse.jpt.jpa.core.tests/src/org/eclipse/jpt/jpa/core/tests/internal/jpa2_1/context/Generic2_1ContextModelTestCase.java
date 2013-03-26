@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.tests.internal.jpa2_1.context;
 
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.Generic2_1JpaPlatformFactory;
+import org.eclipse.jpt.jpa.core.internal.jpa2_1.GenericJpaPlatformFactory2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.JpaProject2_1;
 import org.eclipse.jpt.jpa.core.tests.internal.context.ContextModelTestCase;
 
@@ -22,7 +22,7 @@ public abstract class Generic2_1ContextModelTestCase
 
 	@Override
 	protected String getJpaPlatformID() {
-		return Generic2_1JpaPlatformFactory.ID;
+		return GenericJpaPlatformFactory2_1.ID;
 	}
 
 	@Override
