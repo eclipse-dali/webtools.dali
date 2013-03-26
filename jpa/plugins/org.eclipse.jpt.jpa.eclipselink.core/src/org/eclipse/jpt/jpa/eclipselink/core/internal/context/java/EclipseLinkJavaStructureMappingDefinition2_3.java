@@ -55,7 +55,7 @@ public class EclipseLinkJavaStructureMappingDefinition2_3
 	}
 
 	public JavaAttributeMapping buildMapping(JavaSpecifiedPersistentAttribute persistentAttribute, JpaFactory factory) {
-		return new JavaEclipseLinkStructureMapping2_3(persistentAttribute);
+		return new EclipseLinkJavaStructureMapping2_3(persistentAttribute);
 	}
 
 	@Override
