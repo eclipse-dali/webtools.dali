@@ -33,7 +33,7 @@ import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public abstract class AbstractEclipseLinkOrmConverterContainer
+public abstract class EclipseLinkAbstractOrmConverterContainer
 	extends AbstractOrmXmlContextModel<EclipseLinkOrmConverterContainer.Parent>
 	implements EclipseLinkOrmConverterContainer
 {
@@ -45,7 +45,7 @@ public abstract class AbstractEclipseLinkOrmConverterContainer
 	protected final ContextListContainer<OrmEclipseLinkTypeConverter, XmlTypeConverter> typeConverterContainer;
 
 
-	protected AbstractEclipseLinkOrmConverterContainer(EclipseLinkOrmConverterContainer.Parent parent, XmlConverterContainer xmlConverterContainer) {
+	protected EclipseLinkAbstractOrmConverterContainer(EclipseLinkOrmConverterContainer.Parent parent, XmlConverterContainer xmlConverterContainer) {
 		super(parent);
 		this.xmlConverterContainer = xmlConverterContainer;
 
@@ -153,11 +153,11 @@ public abstract class AbstractEclipseLinkOrmConverterContainer
 		}
 		@Override
 		protected OrmEclipseLinkCustomConverter buildContextElement(XmlConverter resourceElement) {
-			return AbstractEclipseLinkOrmConverterContainer.this.buildCustomConverter(resourceElement);
+			return EclipseLinkAbstractOrmConverterContainer.this.buildCustomConverter(resourceElement);
 		}
 		@Override
 		protected ListIterable<XmlConverter> getResourceElements() {
-			return AbstractEclipseLinkOrmConverterContainer.this.getXmlCustomConverters();
+			return EclipseLinkAbstractOrmConverterContainer.this.getXmlCustomConverters();
 		}
 		@Override
 		protected XmlConverter getResourceElement(OrmEclipseLinkCustomConverter contextElement) {
@@ -238,11 +238,11 @@ public abstract class AbstractEclipseLinkOrmConverterContainer
 		}
 		@Override
 		protected OrmEclipseLinkObjectTypeConverter buildContextElement(XmlObjectTypeConverter resourceElement) {
-			return AbstractEclipseLinkOrmConverterContainer.this.buildObjectTypeConverter(resourceElement);
+			return EclipseLinkAbstractOrmConverterContainer.this.buildObjectTypeConverter(resourceElement);
 		}
 		@Override
 		protected ListIterable<XmlObjectTypeConverter> getResourceElements() {
-			return AbstractEclipseLinkOrmConverterContainer.this.getXmlObjectTypeConverters();
+			return EclipseLinkAbstractOrmConverterContainer.this.getXmlObjectTypeConverters();
 		}
 		@Override
 		protected XmlObjectTypeConverter getResourceElement(OrmEclipseLinkObjectTypeConverter contextElement) {
@@ -322,11 +322,11 @@ public abstract class AbstractEclipseLinkOrmConverterContainer
 		}
 		@Override
 		protected OrmEclipseLinkStructConverter buildContextElement(XmlStructConverter resourceElement) {
-			return AbstractEclipseLinkOrmConverterContainer.this.buildStructConverter(resourceElement);
+			return EclipseLinkAbstractOrmConverterContainer.this.buildStructConverter(resourceElement);
 		}
 		@Override
 		protected ListIterable<XmlStructConverter> getResourceElements() {
-			return AbstractEclipseLinkOrmConverterContainer.this.getXmlStructConverters();
+			return EclipseLinkAbstractOrmConverterContainer.this.getXmlStructConverters();
 		}
 		@Override
 		protected XmlStructConverter getResourceElement(OrmEclipseLinkStructConverter contextElement) {
@@ -407,11 +407,11 @@ public abstract class AbstractEclipseLinkOrmConverterContainer
 		}
 		@Override
 		protected OrmEclipseLinkTypeConverter buildContextElement(XmlTypeConverter resourceElement) {
-			return AbstractEclipseLinkOrmConverterContainer.this.buildTypeConverter(resourceElement);
+			return EclipseLinkAbstractOrmConverterContainer.this.buildTypeConverter(resourceElement);
 		}
 		@Override
 		protected ListIterable<XmlTypeConverter> getResourceElements() {
-			return AbstractEclipseLinkOrmConverterContainer.this.getXmlTypeConverters();
+			return EclipseLinkAbstractOrmConverterContainer.this.getXmlTypeConverters();
 		}
 		@Override
 		protected XmlTypeConverter getResourceElement(OrmEclipseLinkTypeConverter contextElement) {

@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedConverter;
 
 public final class EclipseLinkEntityMappingsConverterContainer
-	extends AbstractEclipseLinkOrmConverterContainer
+	extends EclipseLinkAbstractOrmConverterContainer
 {
 	public EclipseLinkEntityMappingsConverterContainer(EclipseLinkOrmConverterContainer.Parent parent, XmlConverterContainer xmlConverterContainer) {
 		super(parent, xmlConverterContainer);
