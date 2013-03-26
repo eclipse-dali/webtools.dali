@@ -25,14 +25,14 @@ public class OrmEclipseLinkOneToOneMapping
 	extends AbstractOrmOneToOneMapping<XmlOneToOne>
 	implements EclipseLinkOneToOneMapping2_0
 {
-	protected final OrmEclipseLinkPrivateOwned privateOwned;
+	protected final EclipseLinkOrmPrivateOwned privateOwned;
 
 	protected final OrmEclipseLinkJoinFetch joinFetch;
 
 
 	protected OrmEclipseLinkOneToOneMapping(OrmSpecifiedPersistentAttribute parent, XmlOneToOne xmlMapping) {
 		super(parent, xmlMapping);
-		this.privateOwned = new OrmEclipseLinkPrivateOwned(this);
+		this.privateOwned = new EclipseLinkOrmPrivateOwned(this);
 		this.joinFetch = new OrmEclipseLinkJoinFetch(this);
 	}
 

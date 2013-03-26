@@ -38,7 +38,7 @@ public class OrmEclipseLinkOneToManyMapping
 	extends AbstractOrmOneToManyMapping<XmlOneToMany>
 	implements EclipseLinkOneToManyMapping2_0, EclipseLinkOrmConvertibleMapping
 {
-	protected final OrmEclipseLinkPrivateOwned privateOwned;
+	protected final EclipseLinkOrmPrivateOwned privateOwned;
 
 	protected final OrmEclipseLinkJoinFetch joinFetch;
 	
@@ -47,7 +47,7 @@ public class OrmEclipseLinkOneToManyMapping
 
 	public OrmEclipseLinkOneToManyMapping(OrmSpecifiedPersistentAttribute parent, XmlOneToMany xmlMapping) {
 		super(parent, xmlMapping);
-		this.privateOwned = new OrmEclipseLinkPrivateOwned(this);
+		this.privateOwned = new EclipseLinkOrmPrivateOwned(this);
 		this.joinFetch = new OrmEclipseLinkJoinFetch(this);
 		this.converterContainer = this.buildConverterContainer();
 	}

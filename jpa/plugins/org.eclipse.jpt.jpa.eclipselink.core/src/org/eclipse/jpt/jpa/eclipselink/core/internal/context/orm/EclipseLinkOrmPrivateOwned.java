@@ -16,14 +16,14 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkPrivateOwned;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPrivateOwned;
 
-public class OrmEclipseLinkPrivateOwned
+public class EclipseLinkOrmPrivateOwned
 	extends AbstractOrmXmlContextModel<OrmAttributeMapping>
 	implements EclipseLinkPrivateOwned
 {
 	protected boolean privateOwned;
 
 
-	public OrmEclipseLinkPrivateOwned(OrmAttributeMapping parent) {
+	public EclipseLinkOrmPrivateOwned(OrmAttributeMapping parent) {
 		super(parent);
 		this.privateOwned = this.buildPrivateOwned();
 	}
