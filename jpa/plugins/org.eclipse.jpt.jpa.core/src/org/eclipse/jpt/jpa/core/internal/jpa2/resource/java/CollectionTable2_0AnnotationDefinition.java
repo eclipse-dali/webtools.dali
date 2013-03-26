@@ -46,7 +46,7 @@ public final class CollectionTable2_0AnnotationDefinition
 	}
 
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
-		return new NullCollectionTable2_0Annotation(parent);
+		return new NullCollectionTableAnnotation2_0(parent);
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {

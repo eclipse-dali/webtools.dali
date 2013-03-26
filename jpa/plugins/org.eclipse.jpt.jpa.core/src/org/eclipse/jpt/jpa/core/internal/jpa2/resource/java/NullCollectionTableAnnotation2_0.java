@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,11 +19,11 @@ import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
 /**
  * <code>javax.persistence.CollectionTable</code>
  */
-public final class NullCollectionTable2_0Annotation
+public final class NullCollectionTableAnnotation2_0
 	extends NullBaseTableAnnotation<CollectionTableAnnotation2_0>
 	implements CollectionTableAnnotation2_0
 {
-	public NullCollectionTable2_0Annotation(JavaResourceModel parent) {
+	public NullCollectionTableAnnotation2_0(JavaResourceModel parent) {
 		super(parent);
 	}
 	
