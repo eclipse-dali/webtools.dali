@@ -169,7 +169,7 @@ public final class SourceNamedStoredProcedureQuery2_1Annotation
 	}
 	
 	public StoredProcedureParameterAnnotation2_1 buildParameter(int index) {
-		return SourceStoredProcedureParameter2_1Annotation.buildNamedStoredProcedureQuery2_1Parameter(this, this.annotatedElement, this.daa, index);
+		return SourceStoredProcedureParameterAnnotation2_1.buildNamedStoredProcedureQuery2_1Parameter(this, this.annotatedElement, this.daa, index);
 	}
 
 	String getResultClassesElementName() {

@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameterAnn
 /**
  * <code>javax.persistence.StoredProcedureParameter</code>
  */
-public final class SourceStoredProcedureParameter2_1Annotation 
+public final class SourceStoredProcedureParameterAnnotation2_1
 	extends SourceAnnotation
 	implements StoredProcedureParameterAnnotation2_1
 {
@@ -55,7 +55,7 @@ public final class SourceStoredProcedureParameter2_1Annotation
 	// we need a flag since the f-q name can be null
 	private boolean fqTypeNameStale = true;
 	
-	public static SourceStoredProcedureParameter2_1Annotation buildNamedStoredProcedureQuery2_1Parameter(
+	public static SourceStoredProcedureParameterAnnotation2_1 buildNamedStoredProcedureQuery2_1Parameter(
 			JavaResourceModel parent,
 			AnnotatedElement element,
 			DeclarationAnnotationAdapter namedStoredProcedureQueryAdapter,
@@ -69,18 +69,18 @@ public final class SourceStoredProcedureParameter2_1Annotation
 	}
 
 	
-	public static SourceStoredProcedureParameter2_1Annotation buildNestedSourceStoredProcedureParameter2_1Annotation(
+	public static SourceStoredProcedureParameterAnnotation2_1 buildNestedSourceStoredProcedureParameter2_1Annotation(
 			JavaResourceModel parent, 
 			AnnotatedElement element, 
 			IndexedDeclarationAnnotationAdapter idaa) 
 	{
-		return new SourceStoredProcedureParameter2_1Annotation(
+		return new SourceStoredProcedureParameterAnnotation2_1(
 				parent,
 				element,
 				idaa);
 	}
 
-	private SourceStoredProcedureParameter2_1Annotation(
+	private SourceStoredProcedureParameterAnnotation2_1(
 			JavaResourceModel parent,
 			AnnotatedElement element,
 			IndexedDeclarationAnnotationAdapter idaa)
@@ -315,5 +315,4 @@ public final class SourceStoredProcedureParameter2_1Annotation
 				index,
 				ANNOTATION_NAME);
 	}
-
 }
