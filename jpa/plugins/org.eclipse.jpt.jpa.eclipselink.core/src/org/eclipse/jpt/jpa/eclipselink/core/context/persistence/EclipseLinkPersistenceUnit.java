@@ -72,7 +72,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistent
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkPersistenceUnitMetadata;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkCustomization;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkGeneralProperties;
@@ -142,16 +142,16 @@ public class EclipseLinkPersistenceUnit
 		super.update();
 		this.setConverters(this.buildConverters());
 
-		OrmEclipseLinkPersistenceUnitMetadata metadata = this.getEclipseLinkMetadata();
+		EclipseLinkOrmPersistenceUnitMetadata metadata = this.getEclipseLinkMetadata();
 
 		EclipseLinkPersistenceUnitDefaults defaults = (metadata == null) ? null : metadata.getPersistenceUnitDefaults();
 		this.setDefaultTenantDiscriminatorColumns(this.buildDefaultTenantDiscriminatorColumns(defaults));
 	}
 
-	protected OrmEclipseLinkPersistenceUnitMetadata getEclipseLinkMetadata() {
+	protected EclipseLinkOrmPersistenceUnitMetadata getEclipseLinkMetadata() {
 		MappingFilePersistenceUnitMetadata metadata = super.getMetadata();
-		if (metadata instanceof OrmEclipseLinkPersistenceUnitMetadata) {
-			return (OrmEclipseLinkPersistenceUnitMetadata) metadata;
+		if (metadata instanceof EclipseLinkOrmPersistenceUnitMetadata) {
+			return (EclipseLinkOrmPersistenceUnitMetadata) metadata;
 		}
 		return null;
 	}
@@ -159,7 +159,7 @@ public class EclipseLinkPersistenceUnit
 	@Override
 	protected void updatePersistenceUnitMetadata() {
 		super.updatePersistenceUnitMetadata();
-		OrmEclipseLinkPersistenceUnitMetadata metadata = this.getEclipseLinkMetadata();
+		EclipseLinkOrmPersistenceUnitMetadata metadata = this.getEclipseLinkMetadata();
 
 		EclipseLinkPersistenceUnitDefaults defaults = (metadata == null) ? null : metadata.getPersistenceUnitDefaults();
 		this.setDefaultGetMethod(this.buildDefaultGetMethod(defaults));
