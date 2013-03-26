@@ -38,7 +38,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkRe
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkStructConverterAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkStructConverters2_2AnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkStructure2_3AnnotationDefinition;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkTenantDiscriminatorColumn2_3AnnotationDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkTenantDiscriminatorColumnAnnotationDefinition2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkTenantDiscriminatorColumnsAnnotationDefinition2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkTransformationAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkTypeConverterAnnotationDefinition;
@@ -111,7 +111,7 @@ public class EclipseLinkJpaAnnotationDefinitionProvider2_3
 		EclipseLinkConverterAnnotationDefinition.instance(),
 		EclipseLinkObjectTypeConverterAnnotationDefinition.instance(),
 		EclipseLinkStructConverterAnnotationDefinition.instance(),
-		EclipseLinkTenantDiscriminatorColumn2_3AnnotationDefinition.instance(),
+		EclipseLinkTenantDiscriminatorColumnAnnotationDefinition2_3.instance(),
 		EclipseLinkTypeConverterAnnotationDefinition.instance(),
 	};
 }

@@ -1,13 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
@@ -20,12 +19,12 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.Source
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TenantDiscriminatorColumnAnnotation2_3;
 
-public class EclipseLinkTenantDiscriminatorColumn2_3AnnotationDefinition
+public class EclipseLinkTenantDiscriminatorColumnAnnotationDefinition2_3
 	implements NestableAnnotationDefinition
 {
 	// singleton
 	private static final NestableAnnotationDefinition INSTANCE 
-			= new EclipseLinkTenantDiscriminatorColumn2_3AnnotationDefinition();
+			= new EclipseLinkTenantDiscriminatorColumnAnnotationDefinition2_3();
 
 
 	/**
@@ -39,7 +38,7 @@ public class EclipseLinkTenantDiscriminatorColumn2_3AnnotationDefinition
 	/**
 	 * Enforce singleton usage
 	 */
-	private EclipseLinkTenantDiscriminatorColumn2_3AnnotationDefinition() {
+	private EclipseLinkTenantDiscriminatorColumnAnnotationDefinition2_3() {
 		super();
 	}
 
