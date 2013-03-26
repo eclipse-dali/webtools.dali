@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.SequenceGeneratorAnnotation2_
  * JPA 2.0
  * <code>javax.persistence.SequenceGenerator</code>
  */
-public final class BinarySequenceGenerator2_0Annotation
+public final class BinarySequenceGeneratorAnnotation2_0
 	extends BinarySequenceGeneratorAnnotation
 	implements SequenceGeneratorAnnotation2_0
 {
@@ -28,7 +28,7 @@ public final class BinarySequenceGenerator2_0Annotation
 	private String schema;
 
 
-	public BinarySequenceGenerator2_0Annotation(JavaResourceModel parent, IAnnotation jdtAnnotation) {
+	public BinarySequenceGeneratorAnnotation2_0(JavaResourceModel parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.catalog = this.buildCatalog();
 		this.schema = this.buildSchema();
