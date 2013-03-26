@@ -1,13 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2011, 2012  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
@@ -19,9 +18,9 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MultitenantAnnotation2
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MultitenantType2_3;
 
 /**
- * org.eclipse.persistence.annotations.Multitenant
+ * <code>org.eclipse.persistence.annotations.Multitenant</code>
  */
-public class BinaryEclipseLinkMultitenantAnnotation2_3
+public class EclipseLinkBinaryMultitenantAnnotation2_3
 	extends BinaryAnnotation
 	implements MultitenantAnnotation2_3
 {
@@ -29,7 +28,7 @@ public class BinaryEclipseLinkMultitenantAnnotation2_3
 	private Boolean includeCriteria; // added in EclipseLink 2.4
 
 
-	public BinaryEclipseLinkMultitenantAnnotation2_3(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
+	public EclipseLinkBinaryMultitenantAnnotation2_3(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.value = this.buildValue();
 		this.includeCriteria = this.buildIncludeCriteria();
@@ -98,5 +97,4 @@ public class BinaryEclipseLinkMultitenantAnnotation2_3
 	public TextRange getIncludeCriteriaTextRange() {
 		throw new UnsupportedOperationException();
 	}
-
 }
