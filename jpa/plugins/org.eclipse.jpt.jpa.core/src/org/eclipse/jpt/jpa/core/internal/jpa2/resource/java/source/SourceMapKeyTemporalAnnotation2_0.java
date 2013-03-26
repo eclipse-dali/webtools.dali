@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,14 +20,14 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporalAnnotation2_0;
 /**
  * <code>javax.persistence.MapKeyTemporal</code>
  */
-public final class SourceMapKeyTemporal2_0Annotation
+public final class SourceMapKeyTemporalAnnotation2_0
 	extends SourceBaseTemporalAnnotation
 	implements MapKeyTemporalAnnotation2_0
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(MapKeyTemporalAnnotation2_0.ANNOTATION_NAME);
 
 
-	public SourceMapKeyTemporal2_0Annotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
+	public SourceMapKeyTemporalAnnotation2_0(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
 		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 	}
 

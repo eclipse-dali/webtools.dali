@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.binary.BinaryMapKeyTemporalAnnotation2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source.SourceMapKeyTemporal2_0Annotation;
+import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source.SourceMapKeyTemporalAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporalAnnotation2_0;
 
 /**
@@ -42,7 +42,7 @@ public final class MapKeyTemporalAnnotationDefinition2_0
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return new SourceMapKeyTemporal2_0Annotation(parent, annotatedElement);
+		return new SourceMapKeyTemporalAnnotation2_0(parent, annotatedElement);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
