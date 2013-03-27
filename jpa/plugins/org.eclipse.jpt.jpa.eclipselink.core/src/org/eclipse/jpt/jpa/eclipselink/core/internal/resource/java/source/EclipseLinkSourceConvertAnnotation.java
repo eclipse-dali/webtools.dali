@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConvertAnnotation;
  * <code>org.eclipse.persistence.annotations.Convert</code>
  */
 public final class EclipseLinkSourceConvertAnnotation
-	extends SourceEclipseLinkBaseConvertAnnotation
+	extends EclipseLinkSourceBaseConvertAnnotation
 	implements ConvertAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.BaseConvertAnnotation;
  * <li>org.eclipse.persistence.annotations.MapKeyConvert
  * </ul></code>
  */
-public abstract class SourceEclipseLinkBaseConvertAnnotation
+public abstract class EclipseLinkSourceBaseConvertAnnotation
 	extends SourceAnnotation
 	implements BaseConvertAnnotation
 {
@@ -38,7 +38,7 @@ public abstract class SourceEclipseLinkBaseConvertAnnotation
 	private TextRange valueTextRange;
 
 
-	protected SourceEclipseLinkBaseConvertAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
+	protected EclipseLinkSourceBaseConvertAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
 		super(parent, element, daa);
 		this.valueDeclarationAdapter = this.buildValueDeclarationAdapter();
 		this.valueAdapter = new AnnotatedElementAnnotationElementAdapter<String>(element, this.valueDeclarationAdapter);

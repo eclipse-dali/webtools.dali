@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MapKeyConvertAnnotatio
  * <code>org.eclipse.persistence.annotations.MapKeyConvert</code>
  */
 public final class EclipseLinkSourceMapKeyConvertAnnotation2_0
-	extends SourceEclipseLinkBaseConvertAnnotation
+	extends EclipseLinkSourceBaseConvertAnnotation
 	implements MapKeyConvertAnnotation2_0
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(MapKeyConvertAnnotation2_0.ANNOTATION_NAME);
