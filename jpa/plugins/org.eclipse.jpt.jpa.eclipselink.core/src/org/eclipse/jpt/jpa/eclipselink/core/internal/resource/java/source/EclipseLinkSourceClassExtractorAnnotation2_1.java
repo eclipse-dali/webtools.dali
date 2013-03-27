@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,9 +26,9 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ClassExtractorAnnotation2_1;
 
 /**
- * org.eclipse.persistence.annotations.ClassExtractor
+ * <code>org.eclipse.persistence.annotations.ClassExtractor</code>
  */
-public final class SourceEclipseLinkClassExtractorAnnotation2_1
+public final class EclipseLinkSourceClassExtractorAnnotation2_1
 	extends SourceAnnotation
 	implements ClassExtractorAnnotation2_1
 {
@@ -47,7 +47,7 @@ public final class SourceEclipseLinkClassExtractorAnnotation2_1
 	private boolean fqClassNameStale = true;
 
 
-	public SourceEclipseLinkClassExtractorAnnotation2_1(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
+	public EclipseLinkSourceClassExtractorAnnotation2_1(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
 		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 		this.valueAdapter = new AnnotatedElementAnnotationElementAdapter<String>(element, VALUE_ADAPTER);
 	}
@@ -145,5 +145,4 @@ public final class SourceEclipseLinkClassExtractorAnnotation2_1
 	protected static DeclarationAnnotationElementAdapter<String> buildValueAdapter() {
 		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.CLASS_EXTRACTOR__VALUE, SimpleTypeStringExpressionConverter.instance());
 	}
-
 }
