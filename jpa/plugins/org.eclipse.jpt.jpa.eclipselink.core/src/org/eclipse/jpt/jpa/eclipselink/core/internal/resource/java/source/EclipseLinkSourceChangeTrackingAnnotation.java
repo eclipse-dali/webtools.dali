@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ChangeTrackingAnnotati
 /**
  * <code>org.eclipse.persistence.annotations.ChangeTracking</code>
  */
-public final class SourceEclipseLinkChangeTrackingAnnotation
+public final class EclipseLinkSourceChangeTrackingAnnotation
 	extends SourceAnnotation
 	implements ChangeTrackingAnnotation
 {
@@ -39,7 +39,7 @@ public final class SourceEclipseLinkChangeTrackingAnnotation
 	private TextRange valueTextRange;
 
 
-	public SourceEclipseLinkChangeTrackingAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
+	public EclipseLinkSourceChangeTrackingAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
 		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 		this.valueAdapter = new AnnotatedElementAnnotationElementAdapter<String>(element, VALUE_ADAPTER);
 	}
@@ -112,5 +112,4 @@ public final class SourceEclipseLinkChangeTrackingAnnotation
 	private static DeclarationAnnotationElementAdapter<String> buildValueAdapter() {
 		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.CHANGE_TRACKING__VALUE);
 	}
-
 }
