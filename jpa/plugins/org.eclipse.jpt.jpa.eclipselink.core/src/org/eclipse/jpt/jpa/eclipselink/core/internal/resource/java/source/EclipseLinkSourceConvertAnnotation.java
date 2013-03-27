@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,14 +19,14 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConvertAnnotation;
 /**
  * <code>org.eclipse.persistence.annotations.Convert</code>
  */
-public final class SourceEclipseLinkConvertAnnotation
+public final class EclipseLinkSourceConvertAnnotation
 	extends SourceEclipseLinkBaseConvertAnnotation
 	implements ConvertAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 
-	public SourceEclipseLinkConvertAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
+	public EclipseLinkSourceConvertAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
 		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 	}
 
