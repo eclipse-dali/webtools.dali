@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TypeConverterAnnotatio
  * <code>org.eclipse.persistence.annotations.TypeConverter</code>
  */
 public final class EclipseLinkSourceTypeConverterAnnotation
-	extends SourceEclipseLinkBaseTypeConverterAnnotation
+	extends EclipseLinkSourceBaseTypeConverterAnnotation
 	implements TypeConverterAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);

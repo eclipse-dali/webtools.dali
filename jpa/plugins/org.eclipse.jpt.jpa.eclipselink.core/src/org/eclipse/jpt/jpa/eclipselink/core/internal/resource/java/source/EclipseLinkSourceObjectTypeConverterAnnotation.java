@@ -34,7 +34,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ObjectTypeConverterAnn
  * <code>org.eclipse.persistence.annotations.ObjectTypeConverter</code>
  */
 public final class EclipseLinkSourceObjectTypeConverterAnnotation
-	extends SourceEclipseLinkBaseTypeConverterAnnotation
+	extends EclipseLinkSourceBaseTypeConverterAnnotation
 	implements ObjectTypeConverterAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
