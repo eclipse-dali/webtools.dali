@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CustomizerAnnotation;
 /**
  * <code>org.eclipse.persistence.annotations.Customizer</code>
  */
-public final class SourceEclipseLinkCustomizerAnnotation
+public final class EclipseLinkSourceCustomizerAnnotation
 	extends SourceAnnotation
 	implements CustomizerAnnotation
 {
@@ -47,7 +47,7 @@ public final class SourceEclipseLinkCustomizerAnnotation
 	private boolean fqCustomizerClassNameStale = true;
 
 
-	public SourceEclipseLinkCustomizerAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
+	public EclipseLinkSourceCustomizerAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
 		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 		this.valueAdapter = new AnnotatedElementAnnotationElementAdapter<String>(element, VALUE_ADAPTER);
 	}
@@ -146,5 +146,4 @@ public final class SourceEclipseLinkCustomizerAnnotation
 	private static DeclarationAnnotationElementAdapter<String> buildValueAdapter() {
 		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.CUSTOMIZER__VALUE, SimpleTypeStringExpressionConverter.instance());
 	}
-
 }
