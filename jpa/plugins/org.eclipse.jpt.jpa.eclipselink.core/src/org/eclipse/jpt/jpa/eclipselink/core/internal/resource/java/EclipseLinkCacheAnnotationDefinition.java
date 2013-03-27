@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.EclipseLinkBinaryCacheAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.SourceEclipseLinkCacheAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.EclipseLinkSourceCacheAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheAnnotation;
 
 /**
@@ -42,7 +42,7 @@ public class EclipseLinkCacheAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return new SourceEclipseLinkCacheAnnotation(parent, annotatedElement);
+		return new EclipseLinkSourceCacheAnnotation(parent, annotatedElement);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
