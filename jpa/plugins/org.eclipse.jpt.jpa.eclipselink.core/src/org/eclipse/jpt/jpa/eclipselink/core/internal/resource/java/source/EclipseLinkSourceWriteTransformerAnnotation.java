@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.WriteTransformerAnnota
  * <code>org.eclipse.persistence.annotations.WriteTransformer</code>
  */
 public final class EclipseLinkSourceWriteTransformerAnnotation
-	extends SourceEclipseLinkTransformerAnnotation
+	extends EclipseLinkSourceTransformerAnnotation
 	implements WriteTransformerAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);

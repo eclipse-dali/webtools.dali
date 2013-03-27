@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ReadTransformerAnnotat
  * org.eclipse.persistence.annotations.ReadTransformer
  */
 public final class SourceEclipseLinkReadTransformerAnnotation
-	extends SourceEclipseLinkTransformerAnnotation
+	extends EclipseLinkSourceTransformerAnnotation
 	implements ReadTransformerAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
