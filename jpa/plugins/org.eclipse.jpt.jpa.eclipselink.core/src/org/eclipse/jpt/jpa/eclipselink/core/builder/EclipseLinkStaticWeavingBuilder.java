@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.core.gen.LaunchConfigListener;
 import org.eclipse.jpt.common.utility.internal.reference.SynchronizedBoolean;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCoreMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.plugin.JptJpaEclipseLinkCorePlugin;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.weave.StaticWeave;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.weave.EclipseLinkStaticWeave;
 
 public class EclipseLinkStaticWeavingBuilder extends IncrementalProjectBuilder
 {
@@ -59,7 +59,7 @@ public class EclipseLinkStaticWeavingBuilder extends IncrementalProjectBuilder
 		this.generationCompleted.setFalse();
 		this.generationSuccessful = false;
 		
-		JptGenerator staticWeaveGenerator = new StaticWeave(
+		JptGenerator staticWeaveGenerator = new EclipseLinkStaticWeave(
 								this.getJavaProject(),
 								this.configurator.getSourceLocationPreference(),
 								this.configurator.getTargetLocationPreference(),
