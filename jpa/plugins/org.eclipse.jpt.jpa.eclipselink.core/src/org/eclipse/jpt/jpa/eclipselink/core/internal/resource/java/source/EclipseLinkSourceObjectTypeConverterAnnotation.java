@@ -180,7 +180,7 @@ public final class EclipseLinkSourceObjectTypeConverterAnnotation
 	}
 
 	protected ConversionValueAnnotation buildConversionValue(int index) {
-		return SourceEclipseLinkConversionValueAnnotation.buildNestedSourceConversionValueAnnotation(
+		return EclipseLinkSourceConversionValueAnnotation.buildNestedSourceConversionValueAnnotation(
 			this, this.annotatedElement, this.buildConversionValueIndexedDeclarationAnnotationAdapter(index));
 	}
 	
