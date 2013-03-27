@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConverterAnnotation;
 /**
  * <code>org.eclipse.persistence.annotations.Converter</code>
  */
-public final class SourceEclipseLinkConverterAnnotation
+public final class EclipseLinkSourceConverterAnnotation
 	extends EclipseLinkSourceNamedConverterAnnotation
 	implements ConverterAnnotation
 {
@@ -50,17 +50,17 @@ public final class SourceEclipseLinkConverterAnnotation
 	private boolean fqConverterClassNameStale = true;
 
 
-	public static SourceEclipseLinkConverterAnnotation buildSourceConverterAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element, int index) {
+	public static EclipseLinkSourceConverterAnnotation buildSourceConverterAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element, int index) {
 		IndexedDeclarationAnnotationAdapter idaa = buildConverterDeclarationAnnotationAdapter(index);
 		IndexedAnnotationAdapter iaa = buildConverterAnnotationAdapter(element, idaa);
-		return new SourceEclipseLinkConverterAnnotation(
+		return new EclipseLinkSourceConverterAnnotation(
 			parent,
 			element,
 			idaa,
 			iaa);
 	}
 
-	public SourceEclipseLinkConverterAnnotation(
+	public EclipseLinkSourceConverterAnnotation(
 			JavaResourceAnnotatedElement parent,
 			AnnotatedElement element,
 			IndexedDeclarationAnnotationAdapter daa,
