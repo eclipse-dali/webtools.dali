@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.StructConverterAnnotat
 /**
  * <code>org.eclipse.persistence.annotations.StructConverter</code>
  */
-public final class SourceEclipseLinkStructConverterAnnotation
+public final class EclipseLinkSourceStructConverterAnnotation
 	extends SourceEclipseLinkNamedConverterAnnotation
 	implements StructConverterAnnotation
 {
@@ -41,17 +41,17 @@ public final class SourceEclipseLinkStructConverterAnnotation
 	private TextRange converterTextRange;
 
 
-	public static SourceEclipseLinkStructConverterAnnotation buildSourceStructConverterAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element, int index) {
+	public static EclipseLinkSourceStructConverterAnnotation buildSourceStructConverterAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element, int index) {
 		IndexedDeclarationAnnotationAdapter idaa = buildStructConverterDeclarationAnnotationAdapter(index);
 		IndexedAnnotationAdapter iaa = buildStructConverterAnnotationAdapter(element, idaa);
-		return new SourceEclipseLinkStructConverterAnnotation(
+		return new EclipseLinkSourceStructConverterAnnotation(
 			parent,
 			element,
 			idaa,
 			iaa);
 	}
 
-	private SourceEclipseLinkStructConverterAnnotation(
+	private EclipseLinkSourceStructConverterAnnotation(
 			JavaResourceAnnotatedElement parent,
 			AnnotatedElement element,
 			IndexedDeclarationAnnotationAdapter daa,
@@ -149,5 +149,4 @@ public final class SourceEclipseLinkStructConverterAnnotation
 				ANNOTATION_NAME);
 		return idaa;
 	}
-
 }
