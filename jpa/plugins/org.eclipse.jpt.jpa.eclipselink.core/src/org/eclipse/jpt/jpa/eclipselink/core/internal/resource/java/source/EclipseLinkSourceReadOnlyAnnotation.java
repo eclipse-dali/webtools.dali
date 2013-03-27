@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,16 +17,16 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ReadOnlyAnnotation;
 
 /**
- * org.eclipse.persistence.annotations.ReadOnly
+ * <code>org.eclipse.persistence.annotations.ReadOnly</code>
  */
-public final class SourceEclipseLinkReadOnlyAnnotation
+public final class EclipseLinkSourceReadOnlyAnnotation
 	extends SourceAnnotation
 	implements ReadOnlyAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 
-	public SourceEclipseLinkReadOnlyAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
+	public EclipseLinkSourceReadOnlyAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
 		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 	}
 
