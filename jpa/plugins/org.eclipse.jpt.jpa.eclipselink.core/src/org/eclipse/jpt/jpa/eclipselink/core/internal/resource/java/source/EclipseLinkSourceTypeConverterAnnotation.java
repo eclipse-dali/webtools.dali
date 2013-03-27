@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,24 +23,24 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TypeConverterAnnotatio
 /**
  * <code>org.eclipse.persistence.annotations.TypeConverter</code>
  */
-public final class SourceEclipseLinkTypeConverterAnnotation
+public final class EclipseLinkSourceTypeConverterAnnotation
 	extends SourceEclipseLinkBaseTypeConverterAnnotation
 	implements TypeConverterAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 	private static final DeclarationAnnotationAdapter CONTAINER_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(EclipseLink.TYPE_CONVERTERS);
 
-	public static SourceEclipseLinkTypeConverterAnnotation buildSourceTypeConverterAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element, int index) {
+	public static EclipseLinkSourceTypeConverterAnnotation buildSourceTypeConverterAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element, int index) {
 		IndexedDeclarationAnnotationAdapter idaa = buildTypeConverterDeclarationAnnotationAdapter(index);
 		IndexedAnnotationAdapter iaa = buildTypeConverterAnnotationAdapter(element, idaa);
-		return new SourceEclipseLinkTypeConverterAnnotation(
+		return new EclipseLinkSourceTypeConverterAnnotation(
 			parent,
 			element,
 			idaa,
 			iaa);
 	}
 
-	private SourceEclipseLinkTypeConverterAnnotation(
+	private EclipseLinkSourceTypeConverterAnnotation(
 			JavaResourceAnnotatedElement parent,
 			AnnotatedElement element,
 			IndexedDeclarationAnnotationAdapter daa,
