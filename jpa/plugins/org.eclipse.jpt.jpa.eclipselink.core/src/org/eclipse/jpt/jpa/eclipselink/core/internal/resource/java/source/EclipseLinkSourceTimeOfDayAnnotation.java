@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,9 +24,9 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TimeOfDayAnnotation;
 
 /**
- * org.eclipse.persistence.annotations.TimeOfDay
+ * <code>org.eclipse.persistence.annotations.TimeOfDay</code>
  */
-public final class SourceEclipseLinkTimeOfDayAnnotation
+public final class EclipseLinkSourceTimeOfDayAnnotation
 	extends SourceAnnotation
 	implements TimeOfDayAnnotation
 {
@@ -51,7 +51,7 @@ public final class SourceEclipseLinkTimeOfDayAnnotation
 	private TextRange millisecondTextRange;
 
 
-	public SourceEclipseLinkTimeOfDayAnnotation(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
+	public EclipseLinkSourceTimeOfDayAnnotation(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
 		super(parent, element, daa);
 		this.hourDeclarationAdapter = buildHourAdapter(daa);
 		this.hourAdapter = new AnnotatedElementAnnotationElementAdapter<Integer>(element, this.hourDeclarationAdapter);
@@ -249,5 +249,4 @@ public final class SourceEclipseLinkTimeOfDayAnnotation
 	private static DeclarationAnnotationElementAdapter<Integer> buildMillisecondAdapter(DeclarationAnnotationAdapter daa) {
 		return new ConversionDeclarationAnnotationElementAdapter<Integer>(daa, EclipseLink.TIME_OF_DAY__MILLISECOND, NumberIntegerExpressionConverter.instance());
 	}
-
 }

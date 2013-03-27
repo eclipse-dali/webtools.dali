@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TenantDiscriminatorCol
 /**
  * <code>org.eclipse.persistence.annotations.TenantDiscriminatorColumn</code>
  */
-public final class SourceEclipseLinkTenantDiscriminatorColumnAnnotation2_3
+public final class EclipseLinkSourceTenantDiscriminatorColumnAnnotation2_3
 	extends SourceBaseDiscriminatorColumnAnnotation
 	implements TenantDiscriminatorColumnAnnotation2_3
 {
@@ -53,20 +53,20 @@ public final class SourceEclipseLinkTenantDiscriminatorColumnAnnotation2_3
 	private Boolean primaryKey;
 	private TextRange primaryKeyTextRange;
 
-	public static SourceEclipseLinkTenantDiscriminatorColumnAnnotation2_3 buildSourceTenantDiscriminatorColumnAnnotation(
+	public static EclipseLinkSourceTenantDiscriminatorColumnAnnotation2_3 buildSourceTenantDiscriminatorColumnAnnotation(
 			JavaResourceModel parent, 
 			AnnotatedElement element) {
 
-		return new SourceEclipseLinkTenantDiscriminatorColumnAnnotation2_3(parent, element, DECLARATION_ANNOTATION_ADAPTER);
+		return new EclipseLinkSourceTenantDiscriminatorColumnAnnotation2_3(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 	}
 
-	public static SourceEclipseLinkTenantDiscriminatorColumnAnnotation2_3 buildSourceTenantDiscriminatorColumnAnnotation(
+	public static EclipseLinkSourceTenantDiscriminatorColumnAnnotation2_3 buildSourceTenantDiscriminatorColumnAnnotation(
 			JavaResourceAnnotatedElement parent, 
 			AnnotatedElement annotatedElement, 
 			int index) {
 		IndexedDeclarationAnnotationAdapter idaa = buildTenantDiscriminatorColumnDeclarationAnnotationAdapter(index);
 		IndexedAnnotationAdapter iaa = buildTenantDiscriminatorColumnAnnotationAdapter(annotatedElement, idaa);
-		return new SourceEclipseLinkTenantDiscriminatorColumnAnnotation2_3(
+		return new EclipseLinkSourceTenantDiscriminatorColumnAnnotation2_3(
 			parent,
 			annotatedElement,
 			idaa,
@@ -74,23 +74,23 @@ public final class SourceEclipseLinkTenantDiscriminatorColumnAnnotation2_3
 	}
 
 
-	public static SourceEclipseLinkTenantDiscriminatorColumnAnnotation2_3 buildNestedSourceTenantDiscriminatorColumnAnnotation(
+	public static EclipseLinkSourceTenantDiscriminatorColumnAnnotation2_3 buildNestedSourceTenantDiscriminatorColumnAnnotation(
 			JavaResourceModel parent, 
 			AnnotatedElement element, 
 			IndexedDeclarationAnnotationAdapter idaa) {
 		
-		return new SourceEclipseLinkTenantDiscriminatorColumnAnnotation2_3(parent, element, idaa);
+		return new EclipseLinkSourceTenantDiscriminatorColumnAnnotation2_3(parent, element, idaa);
 	}
 
-	private SourceEclipseLinkTenantDiscriminatorColumnAnnotation2_3(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
+	private EclipseLinkSourceTenantDiscriminatorColumnAnnotation2_3(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
 		this(parent, element, daa, new ElementAnnotationAdapter(element, daa));
 	}
 
-	private SourceEclipseLinkTenantDiscriminatorColumnAnnotation2_3(JavaResourceModel parent, AnnotatedElement element, IndexedDeclarationAnnotationAdapter idaa) {
+	private EclipseLinkSourceTenantDiscriminatorColumnAnnotation2_3(JavaResourceModel parent, AnnotatedElement element, IndexedDeclarationAnnotationAdapter idaa) {
 		this(parent, element, idaa, new ElementIndexedAnnotationAdapter(element, idaa));
 	}
 
-	private SourceEclipseLinkTenantDiscriminatorColumnAnnotation2_3(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	private EclipseLinkSourceTenantDiscriminatorColumnAnnotation2_3(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, element, daa, annotationAdapter);
 		this.contextPropertyDeclarationAdapter = this.buildContextPropertyDeclarationAdapter();
 		this.contextPropertyAdapter = this.buildContextPropertyAdapter();

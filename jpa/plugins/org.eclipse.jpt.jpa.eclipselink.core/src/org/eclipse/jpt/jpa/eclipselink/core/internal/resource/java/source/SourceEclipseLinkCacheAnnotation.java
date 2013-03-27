@@ -486,7 +486,7 @@ public final class SourceEclipseLinkCacheAnnotation
 	}
 
 	private TimeOfDayAnnotation buildExpiryTimeOfDay() {
-		return new SourceEclipseLinkTimeOfDayAnnotation(this, this.annotatedElement, EXPIRY_TIME_OF_DAY_ADAPTER);
+		return new EclipseLinkSourceTimeOfDayAnnotation(this, this.annotatedElement, EXPIRY_TIME_OF_DAY_ADAPTER);
 	}
 
 	private void syncExpiryTimeOfDay(CompilationUnit astRoot) {
