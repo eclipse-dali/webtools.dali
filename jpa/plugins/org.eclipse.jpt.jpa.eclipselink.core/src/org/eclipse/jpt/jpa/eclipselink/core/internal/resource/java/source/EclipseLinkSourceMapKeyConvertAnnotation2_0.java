@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,14 +19,14 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MapKeyConvertAnnotatio
 /**
  * <code>org.eclipse.persistence.annotations.MapKeyConvert</code>
  */
-public final class SourceEclipseLinkMapKeyConvertAnnotation2_0
+public final class EclipseLinkSourceMapKeyConvertAnnotation2_0
 	extends SourceEclipseLinkBaseConvertAnnotation
 	implements MapKeyConvertAnnotation2_0
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(MapKeyConvertAnnotation2_0.ANNOTATION_NAME);
 
 
-	public SourceEclipseLinkMapKeyConvertAnnotation2_0(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
+	public EclipseLinkSourceMapKeyConvertAnnotation2_0(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
 		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 	}
 
