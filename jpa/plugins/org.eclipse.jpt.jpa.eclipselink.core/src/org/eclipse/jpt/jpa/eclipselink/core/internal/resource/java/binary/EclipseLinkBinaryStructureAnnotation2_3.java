@@ -17,11 +17,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.StructureAnnotation2_3
 /**
  * <code>org.eclipse.persistence.annotations.Structure</code>
  */
-public final class EclipseLinkBinaryStructureAnnotation
+public final class EclipseLinkBinaryStructureAnnotation2_3
 	extends BinaryAnnotation
 	implements StructureAnnotation2_3
 {
-	public EclipseLinkBinaryStructureAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
+	public EclipseLinkBinaryStructureAnnotation2_3(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}
 

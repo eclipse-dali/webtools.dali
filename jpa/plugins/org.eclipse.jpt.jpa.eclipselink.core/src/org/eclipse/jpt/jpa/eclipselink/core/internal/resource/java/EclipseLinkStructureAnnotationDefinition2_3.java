@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.EclipseLinkBinaryStructureAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.EclipseLinkBinaryStructureAnnotation2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.EclipseLinkSourceStructureAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.StructureAnnotation2_3;
 
@@ -50,7 +50,7 @@ public class EclipseLinkStructureAnnotationDefinition2_3
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
-		return new EclipseLinkBinaryStructureAnnotation(parent, jdtAnnotation);
+		return new EclipseLinkBinaryStructureAnnotation2_3(parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {
