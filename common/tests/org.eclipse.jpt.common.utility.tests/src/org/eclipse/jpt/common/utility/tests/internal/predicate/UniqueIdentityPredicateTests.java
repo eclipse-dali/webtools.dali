@@ -11,14 +11,15 @@ package org.eclipse.jpt.common.utility.tests.internal.predicate;
 
 import java.util.Arrays;
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.internal.predicate.UniqueIdentityPredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
+import org.eclipse.jpt.common.utility.internal.predicate.UniquePredicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
 public class UniqueIdentityPredicateTests
 	extends TestCase
 {
-	private UniqueIdentityPredicate<String> uniqueIdentityPredicate;
+	private UniquePredicate<String> predicate;
 
 
 	public UniqueIdentityPredicateTests(String name) {
@@ -28,7 +29,7 @@ public class UniqueIdentityPredicateTests
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.uniqueIdentityPredicate = new UniqueIdentityPredicate<String>();
+		this.predicate = PredicateTools.uniqueIdentityPredicate();
 	}
 
 	@Override
@@ -38,34 +39,34 @@ public class UniqueIdentityPredicateTests
 	}
 
 	public void testEvaluate() {
-		assertTrue(this.uniqueIdentityPredicate.evaluate("Fred"));
-		assertTrue(this.uniqueIdentityPredicate.evaluate("Wilma"));
-		assertTrue(this.uniqueIdentityPredicate.evaluate("Barney"));
-		assertTrue(this.uniqueIdentityPredicate.evaluate(null));
-		assertFalse(this.uniqueIdentityPredicate.evaluate(null));
-		assertTrue(this.uniqueIdentityPredicate.evaluate(new String("Fred")));
-		assertFalse(this.uniqueIdentityPredicate.evaluate("Fred"));
-		assertFalse(this.uniqueIdentityPredicate.evaluate("Barney"));
+		assertTrue(this.predicate.evaluate("Fred"));
+		assertTrue(this.predicate.evaluate("Wilma"));
+		assertTrue(this.predicate.evaluate("Barney"));
+		assertTrue(this.predicate.evaluate(null));
+		assertFalse(this.predicate.evaluate(null));
+		assertTrue(this.predicate.evaluate(new String("Fred")));
+		assertFalse(this.predicate.evaluate("Fred"));
+		assertFalse(this.predicate.evaluate("Barney"));
 	}
 
 	public void testAdd() {
-		assertTrue(this.uniqueIdentityPredicate.evaluate("Fred"));
-		assertTrue(this.uniqueIdentityPredicate.add("Wilma"));
-		assertTrue(this.uniqueIdentityPredicate.add("Barney"));
-		assertTrue(this.uniqueIdentityPredicate.evaluate(null));
-		assertFalse(this.uniqueIdentityPredicate.evaluate(null));
-		assertTrue(this.uniqueIdentityPredicate.evaluate(new String("Fred")));
-		assertFalse(this.uniqueIdentityPredicate.evaluate("Fred"));
-		assertFalse(this.uniqueIdentityPredicate.evaluate("Barney"));
+		assertTrue(this.predicate.evaluate("Fred"));
+		assertTrue(this.predicate.add("Wilma"));
+		assertTrue(this.predicate.add("Barney"));
+		assertTrue(this.predicate.evaluate(null));
+		assertFalse(this.predicate.evaluate(null));
+		assertTrue(this.predicate.evaluate(new String("Fred")));
+		assertFalse(this.predicate.evaluate("Fred"));
+		assertFalse(this.predicate.evaluate("Barney"));
 	}
 
 	public void testAddAll() {
-		assertTrue(this.uniqueIdentityPredicate.evaluate("Fred"));
-		assertTrue(this.uniqueIdentityPredicate.addAll(Arrays.asList("Wilma", "Barney")));
-		assertTrue(this.uniqueIdentityPredicate.evaluate(null));
-		assertFalse(this.uniqueIdentityPredicate.evaluate(null));
-		assertTrue(this.uniqueIdentityPredicate.evaluate(new String("Fred")));
-		assertFalse(this.uniqueIdentityPredicate.evaluate("Fred"));
-		assertFalse(this.uniqueIdentityPredicate.evaluate("Barney"));
+		assertTrue(this.predicate.evaluate("Fred"));
+		assertTrue(this.predicate.addAll(Arrays.asList("Wilma", "Barney")));
+		assertTrue(this.predicate.evaluate(null));
+		assertFalse(this.predicate.evaluate(null));
+		assertTrue(this.predicate.evaluate(new String("Fred")));
+		assertFalse(this.predicate.evaluate("Fred"));
+		assertFalse(this.predicate.evaluate("Barney"));
 	}
 }

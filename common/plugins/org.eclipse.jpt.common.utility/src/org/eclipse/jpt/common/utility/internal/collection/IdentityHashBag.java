@@ -17,7 +17,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import org.eclipse.jpt.common.utility.collection.Bag;
 
-
 /**
  * This class implements the {@link Bag} interface with a
  * hash table, using object-identity in place of object-equality when
@@ -135,7 +134,7 @@ public class IdentityHashBag<E>
 	 * The maximum capacity, used if a higher value is implicitly specified
 	 * by either of the constructors with arguments.
 	 * MUST be a power of two <= (1 << 30).
-		 */
+	 */
 	private static final int MAXIMUM_CAPACITY = 1 << 30;
 
 	/**
@@ -831,7 +830,8 @@ public class IdentityHashBag<E>
 	public boolean equals(Object o) {
 		if (o == this) {
 			return true;
-		} else if (o instanceof IdentityHashBag<?>) {
+		}
+		if (o instanceof IdentityHashBag<?>) {
 			@SuppressWarnings("unchecked")
 			IdentityHashBag<E> b = (IdentityHashBag<E>) o;
 			if (b.size() != this.size()) {
@@ -847,19 +847,12 @@ public class IdentityHashBag<E>
 				}
 			}
 			return true;
-		} else {
-			return this.equals_(o);
 		}
-//		} else if (o instanceof Bag<?>) {
-//			// hmmm...
-//			return new HashBag<Object>(this).equals(o);
-//		} else {
-//			return false;
-//		}
+		return this.equals_(o);
 	}
 
+	// hmmm...
 	private boolean equals_(Object o) {
-		// hmmm...
 		return (o instanceof Bag<?>) && 
 				new HashBag<Object>(this).equals(o);
 	}

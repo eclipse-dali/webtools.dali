@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.Set;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.collection.IdentityHashSet;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.predicate.CompoundPredicate;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
@@ -332,12 +333,12 @@ public final class PredicateTools {
 	/**
 	 * Return a predicate that will evaluate to <code>true</code> for any object that
 	 * has not been previously evaluated by the predicate (as determined by
-	 * {@link Object#equals(Object) equality}).
+	 * object-identity: <code>==</code>).
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
-//	public static <V> UniquePredicate<V> uniqueIdentityPredicate() {
-//		return uniquePredicate(new IdentityHashSet<V>());
-//	}
+	public static <V> UniquePredicate<V> uniqueIdentityPredicate() {
+		return uniquePredicate(new IdentityHashSet<V>());
+	}
 
 	/**
 	 * Return a predicate that will evaluate to <code>true</code> for any object that

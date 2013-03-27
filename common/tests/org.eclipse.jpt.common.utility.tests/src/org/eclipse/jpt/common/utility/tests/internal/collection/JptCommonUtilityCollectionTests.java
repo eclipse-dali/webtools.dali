@@ -26,6 +26,7 @@ public class JptCommonUtilityCollectionTests {
 		suite.addTestSuite(CollectionToolsTests.class);
 		suite.addTestSuite(HashBagTests.class);
 		suite.addTestSuite(IdentityHashBagTests.class);
+		suite.addTestSuite(IdentityHashSetTests.class);
 		suite.addTestSuite(LinkedQueueTests.class);
 		suite.addTestSuite(LinkedStackTests.class);
 		suite.addTestSuite(ListToolsTests.class);
