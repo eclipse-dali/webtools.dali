@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,16 +17,16 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.StructureAnnotation2_3;
 
 /**
- * org.eclipse.persistence.annotations.Structure
+ * <code>org.eclipse.persistence.annotations.Structure</code>
  */
-public final class SourceEclipseLinkStructureAnnotation
+public final class EclipseLinkSourceStructureAnnotation
 	extends SourceAnnotation
 	implements StructureAnnotation2_3
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 
-	public SourceEclipseLinkStructureAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
+	public EclipseLinkSourceStructureAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
 		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 	}
 
