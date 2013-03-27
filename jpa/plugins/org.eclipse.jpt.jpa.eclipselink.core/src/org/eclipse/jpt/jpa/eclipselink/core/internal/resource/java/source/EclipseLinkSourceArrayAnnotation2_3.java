@@ -19,14 +19,14 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ArrayAnnotation2_3;
 /**
  * <code>org.eclipse.persistence.annotations.Array</code>
  */
-public final class EclipseLinkSourceArrayAnnotation
+public final class EclipseLinkSourceArrayAnnotation2_3
 	extends SourceAnnotation
 	implements ArrayAnnotation2_3
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 
-	public EclipseLinkSourceArrayAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
+	public EclipseLinkSourceArrayAnnotation2_3(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
 		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 	}
 
