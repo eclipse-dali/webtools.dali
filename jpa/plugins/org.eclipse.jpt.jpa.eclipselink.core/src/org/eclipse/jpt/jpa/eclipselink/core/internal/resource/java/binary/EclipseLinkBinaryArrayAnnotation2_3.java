@@ -17,11 +17,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ArrayAnnotation2_3;
 /**
  * <code>org.eclipse.persistence.annotations.Array</code>
  */
-public final class EclipseLinkBinaryArrayAnnotation
+public final class EclipseLinkBinaryArrayAnnotation2_3
 	extends BinaryAnnotation
 	implements ArrayAnnotation2_3
 {
-	public EclipseLinkBinaryArrayAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
+	public EclipseLinkBinaryArrayAnnotation2_3(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}
 
