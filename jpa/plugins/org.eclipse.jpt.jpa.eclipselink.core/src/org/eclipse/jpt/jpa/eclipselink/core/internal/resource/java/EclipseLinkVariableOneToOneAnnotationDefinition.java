@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.EclipseLinkBinaryVariableOneToOneAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.SourceEclipseLinkVariableOneToOneAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.EclipseLinkSourceVariableOneToOneAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.VariableOneToOneAnnotation;
 
 /**
@@ -42,7 +42,7 @@ public class EclipseLinkVariableOneToOneAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return new SourceEclipseLinkVariableOneToOneAnnotation(parent, annotatedElement);
+		return new EclipseLinkSourceVariableOneToOneAnnotation(parent, annotatedElement);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
