@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,7 +33,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ObjectTypeConverterAnn
 /**
  * <code>org.eclipse.persistence.annotations.ObjectTypeConverter</code>
  */
-public final class SourceEclipseLinkObjectTypeConverterAnnotation
+public final class EclipseLinkSourceObjectTypeConverterAnnotation
 	extends SourceEclipseLinkBaseTypeConverterAnnotation
 	implements ObjectTypeConverterAnnotation
 {
@@ -48,17 +48,17 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 	private final ConversionValuesAnnotationContainer conversionValuesContainer = new ConversionValuesAnnotationContainer();
 
 
-	public static SourceEclipseLinkObjectTypeConverterAnnotation buildSourceObjectTypeConverterAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element, int index) {
+	public static EclipseLinkSourceObjectTypeConverterAnnotation buildSourceObjectTypeConverterAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element, int index) {
 		IndexedDeclarationAnnotationAdapter idaa = buildObjectTypeConverterDeclarationAnnotationAdapter(index);
 		IndexedAnnotationAdapter iaa = buildObjectTypeConverterAnnotationAdapter(element, idaa);
-		return new SourceEclipseLinkObjectTypeConverterAnnotation(
+		return new EclipseLinkSourceObjectTypeConverterAnnotation(
 			parent,
 			element,
 			idaa,
 			iaa);
 	}
 
-	private SourceEclipseLinkObjectTypeConverterAnnotation(
+	private EclipseLinkSourceObjectTypeConverterAnnotation(
 			JavaResourceAnnotatedElement parent,
 			AnnotatedElement element,
 			IndexedDeclarationAnnotationAdapter daa,
@@ -228,7 +228,7 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 		}
 		@Override
 		protected ConversionValueAnnotation buildNestedAnnotation(int index) {
-			return SourceEclipseLinkObjectTypeConverterAnnotation.this.buildConversionValue(index);
+			return EclipseLinkSourceObjectTypeConverterAnnotation.this.buildConversionValue(index);
 		}
 	}
 }
