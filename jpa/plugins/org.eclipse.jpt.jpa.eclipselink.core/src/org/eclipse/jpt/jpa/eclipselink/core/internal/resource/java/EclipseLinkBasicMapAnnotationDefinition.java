@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.EclipseLinkBinaryBasicMapAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.SourceEclipseLinkBasicMapAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.EclipseLinkSourceBasicMapAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.BasicMapAnnotation;
 
 /**
@@ -42,7 +42,7 @@ public class EclipseLinkBasicMapAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return new SourceEclipseLinkBasicMapAnnotation(parent, annotatedElement);
+		return new EclipseLinkSourceBasicMapAnnotation(parent, annotatedElement);
 	}
 	
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
