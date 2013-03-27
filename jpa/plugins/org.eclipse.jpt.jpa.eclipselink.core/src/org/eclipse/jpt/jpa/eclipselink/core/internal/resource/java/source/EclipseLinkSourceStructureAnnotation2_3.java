@@ -19,14 +19,14 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.StructureAnnotation2_3
 /**
  * <code>org.eclipse.persistence.annotations.Structure</code>
  */
-public final class EclipseLinkSourceStructureAnnotation
+public final class EclipseLinkSourceStructureAnnotation2_3
 	extends SourceAnnotation
 	implements StructureAnnotation2_3
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 
-	public EclipseLinkSourceStructureAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
+	public EclipseLinkSourceStructureAnnotation2_3(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
 		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 	}
 
