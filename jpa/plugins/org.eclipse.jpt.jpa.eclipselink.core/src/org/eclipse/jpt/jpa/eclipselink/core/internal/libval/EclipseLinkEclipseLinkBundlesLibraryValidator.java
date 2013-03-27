@@ -26,6 +26,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFacto
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory;
 import org.eclipse.osgi.service.resolver.VersionRange;
 
+/**
+ * <strong>NB:</strong> The class name is not a mistake - there is also a
+ * {@link org.eclipse.jpt.jpa.core.internal.libval.GenericEclipseLinkBundlesLibraryValidator}.
+ */
 @SuppressWarnings("nls")
 public class EclipseLinkEclipseLinkBundlesLibraryValidator
 	implements LibraryValidator
