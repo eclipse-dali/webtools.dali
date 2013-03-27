@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.StructConverterAnnotat
  * <code>org.eclipse.persistence.annotations.StructConverter</code>
  */
 public final class EclipseLinkSourceStructConverterAnnotation
-	extends SourceEclipseLinkNamedConverterAnnotation
+	extends EclipseLinkSourceNamedConverterAnnotation
 	implements StructConverterAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);

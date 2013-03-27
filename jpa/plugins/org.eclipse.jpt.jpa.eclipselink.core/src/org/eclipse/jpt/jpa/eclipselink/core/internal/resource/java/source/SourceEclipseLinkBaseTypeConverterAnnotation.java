@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.BaseTypeConverterAnnot
  * </code>
  */
 abstract class SourceEclipseLinkBaseTypeConverterAnnotation
-	extends SourceEclipseLinkNamedConverterAnnotation
+	extends EclipseLinkSourceNamedConverterAnnotation
 	implements BaseTypeConverterAnnotation
 {
 	final DeclarationAnnotationElementAdapter<String> dataTypeDeclarationAdapter;
