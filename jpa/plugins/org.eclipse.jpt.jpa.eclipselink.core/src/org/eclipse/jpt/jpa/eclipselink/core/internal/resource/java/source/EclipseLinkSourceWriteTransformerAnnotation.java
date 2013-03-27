@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.WriteTransformerAnnota
 /**
  * <code>org.eclipse.persistence.annotations.WriteTransformer</code>
  */
-public final class SourceEclipseLinkWriteTransformerAnnotation
+public final class EclipseLinkSourceWriteTransformerAnnotation
 	extends SourceEclipseLinkTransformerAnnotation
 	implements WriteTransformerAnnotation
 {
@@ -40,7 +40,7 @@ public final class SourceEclipseLinkWriteTransformerAnnotation
 	private final ColumnAnnotation nullColumn;
 
 
-	public SourceEclipseLinkWriteTransformerAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
+	public EclipseLinkSourceWriteTransformerAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
 		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 		this.columnAdapter = new ElementAnnotationAdapter(this.annotatedElement, buildColumnAnnotationAdapter(this.daa));
 		this.nullColumn = this.buildNullColumn();
@@ -156,5 +156,4 @@ public final class SourceEclipseLinkWriteTransformerAnnotation
 	private static ColumnAnnotation createColumn(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter writeTransformerAnnotationAdapter) {
 		return new SourceColumnAnnotation(parent, element, buildColumnAnnotationAdapter(writeTransformerAnnotationAdapter));
 	}
-
 }
