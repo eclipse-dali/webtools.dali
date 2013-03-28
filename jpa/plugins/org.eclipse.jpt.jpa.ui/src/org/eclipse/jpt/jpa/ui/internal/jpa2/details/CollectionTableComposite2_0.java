@@ -20,10 +20,10 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
-public class CollectionTable2_0Composite
+public class CollectionTableComposite2_0
 	extends ReferenceTableComposite<ReferenceTable>
 {
-	public CollectionTable2_0Composite(
+	public CollectionTableComposite2_0(
 			Pane<?> parentPane,
 			PropertyValueModel<? extends ReferenceTable> tableModel,
 			Composite parentComposite) {

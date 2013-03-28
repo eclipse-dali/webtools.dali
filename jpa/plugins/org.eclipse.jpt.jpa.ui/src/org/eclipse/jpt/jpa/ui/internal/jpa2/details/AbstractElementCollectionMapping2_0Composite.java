@@ -96,7 +96,7 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 		new FetchTypeComboViewer(this, container);
 
 		// Collection table widgets
-		CollectionTable2_0Composite collectionTableComposite = new CollectionTable2_0Composite(this, buildCollectionTableModel(), container);
+		CollectionTableComposite2_0 collectionTableComposite = new CollectionTableComposite2_0(this, buildCollectionTableModel(), container);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		collectionTableComposite.getControl().setLayoutData(gridData);

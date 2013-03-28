@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.ui.details.orm.JptJpaUiDetailsOrmMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmMappingNameText;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.CollectionTable2_0Composite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.CollectionTableComposite2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.TargetClassChooser2_0;
 import org.eclipse.jpt.jpa.ui.jpa2.details.JptJpaUiDetailsMessages2_0;
 import org.eclipse.swt.layout.GridData;
@@ -73,7 +73,7 @@ public class OrmEclipseLinkElementCollectionMapping2_1Composite
 		new EclipseLinkJoinFetchComboViewer(this, buildJoinFetchModel(), container);
 
 		// Collection table widgets
-		CollectionTable2_0Composite collectionTableComposite = new CollectionTable2_0Composite(this, buildCollectionTableModel(), container);
+		CollectionTableComposite2_0 collectionTableComposite = new CollectionTableComposite2_0(this, buildCollectionTableModel(), container);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		collectionTableComposite.getControl().setLayoutData(gridData);
