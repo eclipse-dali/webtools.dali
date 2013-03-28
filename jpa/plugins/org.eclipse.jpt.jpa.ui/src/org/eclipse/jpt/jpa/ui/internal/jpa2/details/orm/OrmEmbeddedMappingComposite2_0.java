@@ -23,10 +23,10 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-public class OrmEmbeddedMapping2_0Composite
+public class OrmEmbeddedMappingComposite2_0
 	extends AbstractEmbeddedMappingComposite<EmbeddedMapping2_0>
 {
-	public OrmEmbeddedMapping2_0Composite(
+	public OrmEmbeddedMappingComposite2_0(
 			PropertyValueModel<? extends EmbeddedMapping2_0> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
