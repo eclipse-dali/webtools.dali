@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.TargetEntityClassChooser;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmMappingNameText;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.CascadePane2_0;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.OneToManyJoiningStrategy2_0Pane;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.OneToManyJoiningStrategyPane2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.OrderingComposite2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.OrphanRemovalTriStateCheckBox2_0;
 import org.eclipse.swt.layout.GridData;
@@ -82,7 +82,7 @@ public class OrmOneToManyMapping2_0Composite
 
 	@Override
 	protected void initializeJoiningStrategyCollapsibleSection(Composite container) {
-		new OneToManyJoiningStrategy2_0Pane(this, this.buildRelationshipModel(), container);
+		new OneToManyJoiningStrategyPane2_0(this, this.buildRelationshipModel(), container);
 	}
 
 	@Override

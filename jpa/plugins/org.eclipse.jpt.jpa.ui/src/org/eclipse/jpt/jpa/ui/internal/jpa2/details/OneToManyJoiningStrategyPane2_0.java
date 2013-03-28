@@ -49,10 +49,10 @@ import org.eclipse.ui.forms.widgets.Section;
  * @version 2.3
  * @since 2.1
  */
-public class OneToManyJoiningStrategy2_0Pane 
+public class OneToManyJoiningStrategyPane2_0
 	extends Pane<OneToManyRelationship2_0>
 {
-	public OneToManyJoiningStrategy2_0Pane(
+	public OneToManyJoiningStrategyPane2_0(
 			Pane<?> parentPane, 
 			PropertyValueModel<? extends OneToManyRelationship2_0> subjectHolder, 
 			Composite parent) {
