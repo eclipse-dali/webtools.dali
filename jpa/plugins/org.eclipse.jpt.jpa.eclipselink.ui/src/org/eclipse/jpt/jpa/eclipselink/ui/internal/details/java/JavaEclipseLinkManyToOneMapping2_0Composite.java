@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.OptionalTriStateCheckBox;
 import org.eclipse.jpt.jpa.ui.internal.details.TargetEntityClassChooser;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.AbstractManyToOneMapping2_0Composite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.AbstractManyToOneMappingComposite2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.CascadePane2_0;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
 public class JavaEclipseLinkManyToOneMapping2_0Composite
-	extends AbstractManyToOneMapping2_0Composite<EclipseLinkManyToOneMapping2_0, JavaManyToOneRelationship2_0, Cascade2_0>
+	extends AbstractManyToOneMappingComposite2_0<EclipseLinkManyToOneMapping2_0, JavaManyToOneRelationship2_0, Cascade2_0>
 {
 	public JavaEclipseLinkManyToOneMapping2_0Composite(
 			PropertyValueModel<? extends EclipseLinkManyToOneMapping2_0> mappingModel,
