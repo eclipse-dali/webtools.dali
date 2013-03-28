@@ -27,7 +27,7 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
 /**
  *  target entity hyperlink label, combo and browse button 
  */
-public class TargetClassChooser extends ClassChooserComboPane<ElementCollectionMapping2_0>
+public class TargetClassChooser2_0 extends ClassChooserComboPane<ElementCollectionMapping2_0>
 {
 
 	/**
@@ -36,7 +36,7 @@ public class TargetClassChooser extends ClassChooserComboPane<ElementCollectionM
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public TargetClassChooser(Pane<? extends ElementCollectionMapping2_0> parentPane,
+	public TargetClassChooser2_0(Pane<? extends ElementCollectionMapping2_0> parentPane,
 	                           Composite parent,
 	                           Hyperlink hyperlink) {
 
@@ -84,7 +84,7 @@ public class TargetClassChooser extends ClassChooserComboPane<ElementCollectionM
 
 				String name = this.subject.getSpecifiedTargetClass();
 				if (name == null) {
-					name = TargetClassChooser.this.getDefaultValue(this.subject);
+					name = TargetClassChooser2_0.this.getDefaultValue(this.subject);
 				}
 				return name;
 			}
@@ -115,7 +115,7 @@ public class TargetClassChooser extends ClassChooserComboPane<ElementCollectionM
 		return new PropertyAspectAdapter<ElementCollectionMapping2_0, String>(this.getSubjectHolder(), ElementCollectionMapping2_0.DEFAULT_TARGET_CLASS_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return TargetClassChooser.this.getDefaultValue(this.subject);
+				return TargetClassChooser2_0.this.getDefaultValue(this.subject);
 			}
 		};
 	}

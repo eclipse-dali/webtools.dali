@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkJoinFetchC
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.CollectionTable2_0Composite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.TargetClassChooser;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.TargetClassChooser2_0;
 import org.eclipse.jpt.jpa.ui.jpa2.details.JptJpaUiDetailsMessages2_0;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -46,7 +46,7 @@ public class JavaEclipseLinkElementCollectionMapping2_0Composite
 
 		// Target class widgets
 		Hyperlink hyperlink = this.addHyperlink(container, JptJpaUiDetailsMessages2_0.TARGET_CLASS_COMPOSITE_LABEL);
-		new TargetClassChooser(this, container, hyperlink);
+		new TargetClassChooser2_0(this, container, hyperlink);
 
 		// Fetch type widgets
 		this.addLabel(container, JptJpaUiDetailsMessages.BasicGeneralSection_fetchLabel);

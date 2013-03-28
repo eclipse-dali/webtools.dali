@@ -89,7 +89,7 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 
 		// Target class widgets
 		Hyperlink hyperlink = this.addHyperlink(container, JptJpaUiDetailsMessages2_0.TARGET_CLASS_COMPOSITE_LABEL);
-		new TargetClassChooser(this, container, hyperlink);
+		new TargetClassChooser2_0(this, container, hyperlink);
 
 		// Fetch type widgets
 		this.addLabel(container, JptJpaUiDetailsMessages.BasicGeneralSection_fetchLabel);
