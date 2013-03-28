@@ -17,12 +17,12 @@ import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaEntity2_0;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.java.Generic2_0JavaUiFactory;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.java.GenericJavaUiFactory2_0;
 import org.eclipse.jpt.jpa.ui.jpa2_1.details.JpaUiFactory2_1;
 import org.eclipse.swt.widgets.Composite;
 
 public class GenericJavaUiFactory2_1
-	extends Generic2_0JavaUiFactory
+	extends GenericJavaUiFactory2_0
 	implements JpaUiFactory2_1
 {
 	@SuppressWarnings("unchecked")

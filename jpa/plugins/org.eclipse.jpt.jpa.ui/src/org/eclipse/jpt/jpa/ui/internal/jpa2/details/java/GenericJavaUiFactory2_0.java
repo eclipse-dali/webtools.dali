@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -40,7 +40,7 @@ import org.eclipse.jpt.jpa.ui.internal.jpa2.details.EmbeddedIdMappingComposite2_
 import org.eclipse.jpt.jpa.ui.jpa2.details.JpaUiFactory2_0;
 import org.eclipse.swt.widgets.Composite;
 
-public class Generic2_0JavaUiFactory
+public class GenericJavaUiFactory2_0
 	extends AbstractJavaUiFactory
 	implements JpaUiFactory2_0
 {
