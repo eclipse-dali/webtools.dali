@@ -103,7 +103,7 @@ public class OrderingComposite2_0
 			JpaHelpContextIds.MAPPING_ORDER_COLUMN_ORDERING
 		);
 
-		OrderColumnComposite orderColumnComposite = new OrderColumnComposite(
+		OrderColumnComposite2_0 orderColumnComposite = new OrderColumnComposite2_0(
 			this,
 			buildOrderColumnHolder(orderableHolder),
 			buildPaneEnablerHolder(orderableHolder), 

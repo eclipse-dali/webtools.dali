@@ -56,7 +56,7 @@ import org.eclipse.ui.forms.widgets.Section;
  * @version 3.0
  * @since 3.0
  */
-public class OrderColumnComposite extends Pane<SpecifiedOrderColumn2_0> {
+public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 
 	/**
 	 * Creates a new <code>ColumnComposite</code>.
@@ -65,7 +65,7 @@ public class OrderColumnComposite extends Pane<SpecifiedOrderColumn2_0> {
 	 * @param subjectHolder The holder of the subject <code>IColumn</code>
 	 * @param parent The parent container
 	 */
-	public OrderColumnComposite(Pane<?> parentPane,
+	public OrderColumnComposite2_0(Pane<?> parentPane,
 	                       PropertyValueModel<? extends SpecifiedOrderColumn2_0> subjectHolder,
 		                   PropertyValueModel<Boolean> enabledModel,
 	                       Composite parent) {
