@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.ui.internal.details.orm.AbstractOrmEntityComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.MetadataCompleteTriStateCheckBox;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmJavaClassChooser;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Cacheable2_0TriStateCheckBox;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Entity2_0OverridesComposite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.EntityOverridesComposite2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.GenerationComposite2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.QueriesComposite2_0;
 import org.eclipse.swt.layout.GridData;
@@ -97,7 +97,7 @@ public class OrmEntity2_0Composite
 
 	@Override
 	protected Control initializeAttributeOverridesSection(Composite container) {
-		return new Entity2_0OverridesComposite(this, container).getControl();
+		return new EntityOverridesComposite2_0(this, container).getControl();
 	}
 
 	@Override

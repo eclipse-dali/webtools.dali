@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.EntityNameCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.IdClassChooser;
 import org.eclipse.jpt.jpa.ui.internal.details.TableComposite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Entity2_0OverridesComposite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.EntityOverridesComposite2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.GenerationComposite2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.QueriesComposite2_0;
 import org.eclipse.swt.layout.GridData;
@@ -65,7 +65,7 @@ public abstract class AbstractJavaEclipseLinkEntity2_xComposite<T extends Eclips
 
 	@Override
 	protected Control initializeAttributeOverridesSection(Composite container) {
-		return new Entity2_0OverridesComposite(this, container).getControl();
+		return new EntityOverridesComposite2_0(this, container).getControl();
 	}
 
 	@Override

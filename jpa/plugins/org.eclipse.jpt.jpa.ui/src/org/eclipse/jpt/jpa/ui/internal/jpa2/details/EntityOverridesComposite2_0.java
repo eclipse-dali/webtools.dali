@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,10 +17,10 @@ import org.eclipse.jpt.jpa.ui.internal.details.AbstractEntityOverridesComposite;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.PageBook;
 
-public class Entity2_0OverridesComposite
+public class EntityOverridesComposite2_0
 	extends AbstractEntityOverridesComposite
 {
-	public Entity2_0OverridesComposite(
+	public EntityOverridesComposite2_0(
 			Pane<? extends Entity> parentPane,
 			Composite parent) {
 		
