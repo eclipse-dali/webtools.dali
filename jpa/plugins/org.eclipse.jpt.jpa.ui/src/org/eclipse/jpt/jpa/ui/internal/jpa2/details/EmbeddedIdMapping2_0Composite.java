@@ -35,7 +35,7 @@ public class EmbeddedIdMapping2_0Composite
 	protected Control initializeEmbeddedIdSection(Composite container) {
 		container = this.addSubPane(container);
 
-		new EmbeddedIdMapping2_0MappedByRelationshipPane(this, getSubjectHolder(), container);
+		new EmbeddedIdMappingMappedByRelationshipPane2_0(this, getSubjectHolder(), container);
 		new EmbeddedMappingOverridesComposite(this, container);
 
 		return container;

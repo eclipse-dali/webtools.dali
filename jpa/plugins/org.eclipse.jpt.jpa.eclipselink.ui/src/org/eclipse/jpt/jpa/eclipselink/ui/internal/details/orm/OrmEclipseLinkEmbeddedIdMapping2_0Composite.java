@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.ui.internal.details.AbstractEmbeddedIdMappingComposit
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.EmbeddedMappingOverridesComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmMappingNameText;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.EmbeddedIdMapping2_0MappedByRelationshipPane;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.EmbeddedIdMappingMappedByRelationshipPane2_0;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -56,7 +56,7 @@ public class OrmEclipseLinkEmbeddedIdMapping2_0Composite
 		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);
 		
 		// Mapped by relationship widgets
-		EmbeddedIdMapping2_0MappedByRelationshipPane mappedByRelationshipPane = new EmbeddedIdMapping2_0MappedByRelationshipPane(this, getSubjectHolder(), container);
+		EmbeddedIdMappingMappedByRelationshipPane2_0 mappedByRelationshipPane = new EmbeddedIdMappingMappedByRelationshipPane2_0(this, getSubjectHolder(), container);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		mappedByRelationshipPane.getControl().setLayoutData(gridData);

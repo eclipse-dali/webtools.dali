@@ -26,12 +26,12 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.part.PageBook;
 
-public class EmbeddedIdMapping2_0MappedByRelationshipPane
+public class EmbeddedIdMappingMappedByRelationshipPane2_0
 	extends Pane<EmbeddedIdMapping2_0>
 {
 	Label mappedByRelationshipLabel;
 
-	public EmbeddedIdMapping2_0MappedByRelationshipPane(
+	public EmbeddedIdMappingMappedByRelationshipPane2_0(
 			Pane<?> parentPane,
 			PropertyValueModel<? extends EmbeddedIdMapping2_0> subjectModel,
 			Composite parent) {
@@ -81,7 +81,7 @@ public class EmbeddedIdMapping2_0MappedByRelationshipPane
 			if (converter == null || converter == Boolean.FALSE) {
 				return null;
 			}
-			return EmbeddedIdMapping2_0MappedByRelationshipPane.this.getMappedByRelationshipLabel(this.container); 
+			return EmbeddedIdMappingMappedByRelationshipPane2_0.this.getMappedByRelationshipLabel(this.container); 
 		}
 	}
 }
