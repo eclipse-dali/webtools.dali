@@ -38,7 +38,7 @@ import org.eclipse.swt.widgets.Control;
  * @see {@link JavaOneToOneMapping2_0Composite} - A container of this widget
  * @see {@link OrmOneToOneMapping2_0Composite} - A container of this widget
  */
-public class OrphanRemoval2_0TriStateCheckBox extends Pane<OrphanRemovable2_0>
+public class OrphanRemovalTriStateCheckBox2_0 extends Pane<OrphanRemovable2_0>
 {
 	private TriStateCheckBox checkBox;
 
@@ -48,7 +48,7 @@ public class OrphanRemoval2_0TriStateCheckBox extends Pane<OrphanRemovable2_0>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public OrphanRemoval2_0TriStateCheckBox(
+	public OrphanRemovalTriStateCheckBox2_0(
 							Pane<? extends RelationshipMapping> parentPane,
 							PropertyValueModel<? extends OrphanRemovable2_0> subjectHolder,
 							Composite parent) {

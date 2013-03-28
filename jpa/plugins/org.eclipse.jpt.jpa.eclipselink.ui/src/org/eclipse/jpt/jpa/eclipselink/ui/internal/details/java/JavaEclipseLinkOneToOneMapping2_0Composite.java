@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.ui.internal.details.TargetEntityClassChooser;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.AbstractOneToOneMapping2_0Composite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.CascadePane2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.OneToOneJoiningStrategy2_0Pane;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.OrphanRemoval2_0TriStateCheckBox;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.OrphanRemovalTriStateCheckBox2_0;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -75,7 +75,7 @@ public class JavaEclipseLinkOneToOneMapping2_0Composite
 		privateOwnedCheckBox.getControl().setLayoutData(gridData);
 
 		// Orphan removal widgets
-		OrphanRemoval2_0TriStateCheckBox orphanRemovalCheckBox = new OrphanRemoval2_0TriStateCheckBox(this, buildOrphanRemovableModel(), container);
+		OrphanRemovalTriStateCheckBox2_0 orphanRemovalCheckBox = new OrphanRemovalTriStateCheckBox2_0(this, buildOrphanRemovableModel(), container);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		orphanRemovalCheckBox.getControl().setLayoutData(gridData);
