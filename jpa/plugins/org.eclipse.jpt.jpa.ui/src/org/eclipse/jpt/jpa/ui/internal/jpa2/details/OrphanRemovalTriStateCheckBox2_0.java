@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.Control;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see {@link OrphanRemovable2_0}
- * @see {@link JavaOneToOneMapping2_0Composite} - A container of this widget
+ * @see {@link JavaOneToOneMappingComposite2_0} - A container of this widget
  * @see {@link OrmOneToOneMapping2_0Composite} - A container of this widget
  */
 public class OrphanRemovalTriStateCheckBox2_0 extends Pane<OrphanRemovable2_0>

@@ -153,7 +153,7 @@ public class Generic2_0JavaUiFactory
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaOneToOneMapping2_0Composite((PropertyValueModel<? extends OneToOneMapping2_0>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaOneToOneMappingComposite2_0((PropertyValueModel<? extends OneToOneMapping2_0>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	public JpaComposite createElementCollectionMapping2_0Composite(
