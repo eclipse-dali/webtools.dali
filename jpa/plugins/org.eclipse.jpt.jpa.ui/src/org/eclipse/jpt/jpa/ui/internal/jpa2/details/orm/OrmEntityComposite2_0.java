@@ -34,10 +34,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
-public class OrmEntity2_0Composite
+public class OrmEntityComposite2_0
 	extends AbstractOrmEntityComposite<OrmEntity2_0>
 {
-	public OrmEntity2_0Composite(
+	public OrmEntityComposite2_0(
 			PropertyValueModel<? extends OrmEntity2_0> entityModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,

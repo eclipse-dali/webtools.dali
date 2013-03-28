@@ -37,7 +37,7 @@ import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmBasicMapping2_0Compos
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmElementCollectionMapping2_0Composite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmEmbeddedIdMapping2_0Composite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmEmbeddedMapping2_0Composite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmEntity2_0Composite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmEntityComposite2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmIdMappingComposite2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmManyToManyMappingComposite2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmManyToOneMappingComposite2_0;
@@ -60,7 +60,7 @@ public class GenericOrmXmlUiFactory2_0
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new OrmEntity2_0Composite((PropertyValueModel<? extends OrmEntity2_0>) entityModel, parentComposite, widgetFactory, resourceManager);
+		return new OrmEntityComposite2_0((PropertyValueModel<? extends OrmEntity2_0>) entityModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 

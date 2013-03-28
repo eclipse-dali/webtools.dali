@@ -13,13 +13,13 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmEntity2_0;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmEntity2_0Composite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmEntityComposite2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2_1.details.QueriesComposite2_1;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 public class OrmEntityComposite2_1
-	extends OrmEntity2_0Composite
+	extends OrmEntityComposite2_0
 {
 	public OrmEntityComposite2_1(
 			PropertyValueModel<? extends OrmEntity2_0> entityModel,
