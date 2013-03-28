@@ -34,12 +34,12 @@ import org.eclipse.swt.widgets.Control;
  * @see JavaEntity2_0Composite - A container of this widget
  * @see OrmEntity2_0Composite - A container of this widget
  */
-public class Cacheable2_0TriStateCheckBox 
+public class CacheableTriStateCheckBox2_0
 	extends Pane<Cacheable2_0>
 {
 	private TriStateCheckBox checkBox;
 
-	public Cacheable2_0TriStateCheckBox(
+	public CacheableTriStateCheckBox2_0(
 			Pane<?> parentPane,
 			PropertyValueModel<? extends Cacheable2_0> subjectHolder,
 	        Composite parent) {
@@ -117,5 +117,4 @@ public class Cacheable2_0TriStateCheckBox
 			}
 		};
 	}
-
 }

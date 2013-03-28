@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.ui.internal.details.IdClassChooser;
 import org.eclipse.jpt.jpa.ui.internal.details.TableComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.java.JavaInheritanceComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.java.JavaSecondaryTablesComposite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Cacheable2_0TriStateCheckBox;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.CacheableTriStateCheckBox2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.EntityOverridesComposite2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.QueriesComposite2_0;
 import org.eclipse.swt.layout.GridData;
@@ -66,7 +66,7 @@ public class JavaEntity2_0Composite
 		new IdClassChooser(this, this.buildIdClassReferenceModel(), container, hyperlink);
 
 		// Cacheable widgets
-		Cacheable2_0TriStateCheckBox cacheableCheckBox = new Cacheable2_0TriStateCheckBox(this, buildCacheableModel(), container);
+		CacheableTriStateCheckBox2_0 cacheableCheckBox = new CacheableTriStateCheckBox2_0(this, buildCacheableModel(), container);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		cacheableCheckBox.getControl().setLayoutData(gridData);
