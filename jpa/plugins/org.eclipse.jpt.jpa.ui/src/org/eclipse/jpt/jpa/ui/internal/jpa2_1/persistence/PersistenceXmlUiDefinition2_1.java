@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.ui.PersistenceResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.AbstractPersistenceResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitConnection2_0EditorPageDefinition;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitOptions2_0EditorPageDefinition;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitOptionsEditorPageDefinition2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2_1.JavaConverterTypeUiDefinition2_1;
 import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitGeneralEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitPropertiesEditorPageDefinition;
@@ -47,7 +47,7 @@ public class PersistenceXmlUiDefinition2_1
 	protected void addEditorPageDefinitionsTo(List<JpaEditorPageDefinition> definitions) {
 		definitions.add(PersistenceUnitGeneralEditorPageDefinition.instance());
 		definitions.add(PersistenceUnitConnection2_0EditorPageDefinition.instance());
-		definitions.add(PersistenceUnitOptions2_0EditorPageDefinition.instance());
+		definitions.add(PersistenceUnitOptionsEditorPageDefinition2_0.instance());
 		definitions.add(PersistenceUnitSchemaGenerationEditorPageDefinition2_1.instance());
 		definitions.add(PersistenceUnitPropertiesEditorPageDefinition.instance());
 	}

@@ -43,7 +43,7 @@ public class PersistenceXmlUiDefinition2_0
 	protected void addEditorPageDefinitionsTo(List<JpaEditorPageDefinition> definitions) {
 		definitions.add(PersistenceUnitGeneralEditorPageDefinition.instance());
 		definitions.add(PersistenceUnitConnection2_0EditorPageDefinition.instance());
-		definitions.add(PersistenceUnitOptions2_0EditorPageDefinition.instance());
+		definitions.add(PersistenceUnitOptionsEditorPageDefinition2_0.instance());
 		definitions.add(PersistenceUnitPropertiesEditorPageDefinition.instance());
 	}
 
