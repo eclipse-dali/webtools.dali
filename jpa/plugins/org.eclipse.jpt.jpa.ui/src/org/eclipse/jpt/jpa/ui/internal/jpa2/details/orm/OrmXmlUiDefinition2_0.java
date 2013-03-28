@@ -73,7 +73,7 @@ public class OrmXmlUiDefinition2_0
 	protected void addDetailsProvidersTo(List<JpaDetailsProvider> providers) {
 		providers.add(OrmPersistentTypeDetailsProvider.instance());
 		providers.add(OrmPersistentAttributeDetailsProvider.instance());
-		providers.add(EntityMappings2_0DetailsProvider.instance());
+		providers.add(EntityMappingsDetailsProvider2_0.instance());
 	}
 
 
