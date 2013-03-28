@@ -27,12 +27,12 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  PersistenceUnitSchemaGeneration2_1EditorPageDefinition
  */
-public class PersistenceUnitSchemaGeneration2_1EditorPageDefinition
+public class PersistenceUnitSchemaGenerationEditorPageDefinition2_1
 	extends PersistenceUnitEditorPageDefinition
 {
 	// singleton
 	private static final JpaEditorPageDefinition INSTANCE = 
-			new PersistenceUnitSchemaGeneration2_1EditorPageDefinition();
+			new PersistenceUnitSchemaGenerationEditorPageDefinition2_1();
 
 	/**
 	 * Return the singleton.
@@ -45,7 +45,7 @@ public class PersistenceUnitSchemaGeneration2_1EditorPageDefinition
 	/**
 	 * Ensure single instance.
 	 */
-	private PersistenceUnitSchemaGeneration2_1EditorPageDefinition() {
+	private PersistenceUnitSchemaGenerationEditorPageDefinition2_1() {
 		super();
 	}
 
