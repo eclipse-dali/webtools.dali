@@ -17,23 +17,25 @@ import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
+import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTenantDiscriminatorColumn2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.TenantDiscriminatorColumnsComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.TenantDiscriminatorColumnsComposite.TenantDiscriminatorColumnsEditor;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.details.orm.JptJpaUiDetailsOrmMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.jpa.ui.internal.JpaVersionIsCompatibleWith;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.SchemaCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.EntityMappingsDetailsPageManager;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.PersistenceUnitMetadataComposite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.Jpa2_0FlagTransformer;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -130,7 +132,7 @@ public class EclipseLink2_3PersistenceUnitMetadataComposite extends PersistenceU
 		gridData.horizontalSpan = 2;
 		diCheckBox.setLayoutData(gridData);
 
-		SWTTools.controlVisibleState(Jpa2_0FlagTransformer.convertToFlagModel(this.getSubjectHolder()), diCheckBox);
+		SWTTools.controlVisibleState(this.buildDelimitedIdentifiersCheckBoxIsVisibleModel(), diCheckBox);
 
 
 		// Tenant discriminator columns group pane
@@ -149,6 +151,14 @@ public class EclipseLink2_3PersistenceUnitMetadataComposite extends PersistenceU
 				tenantDiscriminatorColumnGroupPane,
 				this.buildTenantDiscriminatorColumnsEditor()
 			);
+	}
+
+	private PropertyValueModel<Boolean> buildDelimitedIdentifiersCheckBoxIsVisibleModel() {
+		return new TransformationPropertyValueModel<OrmPersistenceUnitMetadata, Boolean>(this.getSubjectHolder(), this.buildPUMetadataIsCompatibleWithJpa2_0Transformer());
+	}
+
+	private Transformer<OrmPersistenceUnitMetadata, Boolean> buildPUMetadataIsCompatibleWithJpa2_0Transformer() {
+		return new JpaVersionIsCompatibleWith<OrmPersistenceUnitMetadata>(JpaProject2_0.FACET_VERSION_STRING);
 	}
 
 	private PropertyValueModel<Boolean> buildPaneEnablerHolder() {

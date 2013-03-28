@@ -87,7 +87,7 @@ import org.eclipse.jpt.jpa.ui.JpaProjectModel;
 import org.eclipse.jpt.jpa.ui.JpaWorkbench;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.Jpa2_0FlagTransformer;
+import org.eclipse.jpt.jpa.ui.internal.JpaVersionIsCompatibleWith;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
@@ -366,7 +366,11 @@ public class JpaProjectPropertiesPage
 
 	// ***** JPA 2.0 project flag
 	private PropertyValueModel<Boolean> buildJpa2_0ProjectFlagModel() {
-		return Jpa2_0FlagTransformer.convertToFlagModel(this.jpaProjectModel);
+		return new TransformationPropertyValueModel<JpaProject, Boolean>(this.jpaProjectModel, this.buildJpaProjectIsCompatibleWithJpa2_0Transformer());
+	}
+
+	private Transformer<JpaProject, Boolean> buildJpaProjectIsCompatibleWithJpa2_0Transformer() {
+		return new JpaVersionIsCompatibleWith<JpaProject>(JpaProject2_0.FACET_VERSION_STRING);
 	}
 
 	// ***** metamodel models
