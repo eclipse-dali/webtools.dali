@@ -46,10 +46,10 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  */
-public class JavaMappedSuperclass2_0Composite
+public class JavaMappedSuperclassComposite2_0
 	extends AbstractJavaMappedSuperclassComposite<JavaMappedSuperclass>
 {
-	public JavaMappedSuperclass2_0Composite(
+	public JavaMappedSuperclassComposite2_0(
 			PropertyValueModel<? extends JavaMappedSuperclass> mappedSuperclassModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
