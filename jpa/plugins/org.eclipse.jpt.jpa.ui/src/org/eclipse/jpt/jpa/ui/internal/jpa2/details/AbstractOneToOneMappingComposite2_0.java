@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,10 +21,10 @@ import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractOneToOneMappingComposite;
 import org.eclipse.swt.widgets.Composite;
 
-public abstract class AbstractOneToOneMapping2_0Composite<T extends OneToOneMapping2_0, R extends OneToOneRelationship2_0, C extends Cascade2_0>
+public abstract class AbstractOneToOneMappingComposite2_0<T extends OneToOneMapping2_0, R extends OneToOneRelationship2_0, C extends Cascade2_0>
 	extends AbstractOneToOneMappingComposite<T, R, C>
 {
-	protected AbstractOneToOneMapping2_0Composite(
+	protected AbstractOneToOneMappingComposite2_0(
 			PropertyValueModel<? extends T> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
