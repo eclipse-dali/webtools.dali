@@ -15,12 +15,12 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitEditorPageDefinition;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitEditorPageDefinition2_0;
 import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitGeneralEditorPageDefinition;
 import org.eclipse.swt.widgets.Composite;
 
 public class EclipseLinkPersistenceUnitGeneralEditorPageDefinition
-	extends PersistenceUnitEditorPageDefinition
+	extends PersistenceUnitEditorPageDefinition2_0
 {
 	// singleton
 	private static final JpaEditorPageDefinition INSTANCE = 

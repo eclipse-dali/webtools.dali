@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitEditorPageDefinition;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitEditorPageDefinition2_0;
 import org.eclipse.jpt.jpa.ui.persistence.JptJpaUiPersistenceMessages;
 import org.eclipse.swt.widgets.Composite;
 
@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 2.0
  */
 public class PersistenceUnitConnectionEditorPageDefinition 
-	extends PersistenceUnitEditorPageDefinition
+	extends PersistenceUnitEditorPageDefinition2_0
 {
 	// singleton
 	private static final JpaEditorPageDefinition INSTANCE = 

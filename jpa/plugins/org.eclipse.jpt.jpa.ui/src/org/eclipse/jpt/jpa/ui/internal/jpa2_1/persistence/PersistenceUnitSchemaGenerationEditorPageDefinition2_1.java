@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.PersistenceUnit2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen.SchemaGeneration2_1;
 import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitEditorPageDefinition;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitEditorPageDefinition2_0;
 import org.eclipse.jpt.jpa.ui.jpa2_1.persistence.JptJpaUiPersistenceMessages2_1;
 import org.eclipse.swt.widgets.Composite;
 
@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Composite;
  *  PersistenceUnitSchemaGeneration2_1EditorPageDefinition
  */
 public class PersistenceUnitSchemaGenerationEditorPageDefinition2_1
-	extends PersistenceUnitEditorPageDefinition
+	extends PersistenceUnitEditorPageDefinition2_0
 {
 	// singleton
 	private static final JpaEditorPageDefinition INSTANCE = 

@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.ui.jpa2.persistence.JptJpaUiPersistenceMessages2_0;
 import org.eclipse.swt.widgets.Composite;
 
 public class PersistenceUnitOptionsEditorPageDefinition2_0
-	extends PersistenceUnitEditorPageDefinition
+	extends PersistenceUnitEditorPageDefinition2_0
 {
 	// singleton
 	private static final JpaEditorPageDefinition INSTANCE = 
