@@ -20,15 +20,15 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  DataLoadingComposite
  */
-public class DataLoadingComposite extends Pane<SchemaGeneration2_1>
+public class DataLoadingComposite2_1 extends Pane<SchemaGeneration2_1>
 {
-	public DataLoadingComposite(
+	public DataLoadingComposite2_1(
 			Pane<SchemaGeneration2_1> parent, 
 			Composite container) {
 		super(parent, container);
 	}
 	
-	public DataLoadingComposite(
+	public DataLoadingComposite2_1(
 			Pane<?> parent, 
 			PropertyValueModel<SchemaGeneration2_1> schemaGenModel, 
 			Composite container) {
@@ -74,6 +74,4 @@ public class DataLoadingComposite extends Pane<SchemaGeneration2_1>
 			}
 		};
 	}
-
-
 }

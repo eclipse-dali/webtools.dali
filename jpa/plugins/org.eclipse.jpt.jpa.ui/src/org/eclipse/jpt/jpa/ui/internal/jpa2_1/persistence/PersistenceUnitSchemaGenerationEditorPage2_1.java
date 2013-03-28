@@ -63,7 +63,7 @@ public class PersistenceUnitSchemaGenerationEditorPage2_1
 		
 		// ********** Data Loading **********
 
-		DataLoadingComposite dataLoadingComposite = new DataLoadingComposite(this, client);
+		DataLoadingComposite2_1 dataLoadingComposite = new DataLoadingComposite2_1(this, client);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		dataLoadingComposite.getControl().setLayoutData(gridData);

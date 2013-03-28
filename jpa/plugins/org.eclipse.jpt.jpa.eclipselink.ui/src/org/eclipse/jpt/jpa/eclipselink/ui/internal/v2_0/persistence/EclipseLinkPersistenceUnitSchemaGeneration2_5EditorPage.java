@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersi
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkSchemaGeneration;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.options.PersistenceXmlSchemaGenerationComposite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2_1.persistence.DataLoadingComposite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2_1.persistence.DataLoadingComposite2_1;
 import org.eclipse.jpt.jpa.ui.internal.jpa2_1.persistence.SchemaGenerationComposite2_1;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -93,8 +93,8 @@ public class EclipseLinkPersistenceUnitSchemaGeneration2_5EditorPage
 		
 		// ********** Data Loading **********
 
-		DataLoadingComposite dataLoadingComposite = 
-			new DataLoadingComposite(
+		DataLoadingComposite2_1 dataLoadingComposite = 
+			new DataLoadingComposite2_1(
 				this, 
 				this.buildSchemaGenerationHolder(),
 				client);
