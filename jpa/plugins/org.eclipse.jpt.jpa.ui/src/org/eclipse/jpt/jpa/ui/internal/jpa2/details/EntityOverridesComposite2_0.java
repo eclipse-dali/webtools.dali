@@ -30,6 +30,6 @@ public class EntityOverridesComposite2_0
 	
 	@Override
 	protected Pane<AssociationOverride> buildAssociationOverridePane(PageBook pageBook, PropertyValueModel<AssociationOverride> associationOverrideHolder) {
-		return new AssociationOverride2_0Composite(this, associationOverrideHolder, pageBook);
+		return new AssociationOverrideComposite2_0(this, associationOverrideHolder, pageBook);
 	}
 }
