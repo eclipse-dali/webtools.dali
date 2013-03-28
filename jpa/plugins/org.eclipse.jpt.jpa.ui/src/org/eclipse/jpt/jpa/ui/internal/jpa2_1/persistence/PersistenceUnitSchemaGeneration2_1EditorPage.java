@@ -56,7 +56,7 @@ public class PersistenceUnitSchemaGeneration2_1EditorPage
 
 		// ********** Schema Generation properties **********
 
-		SchemaGenerationComposite schemaGenerationComposite = new SchemaGenerationComposite(this, client);
+		SchemaGenerationComposite2_1 schemaGenerationComposite = new SchemaGenerationComposite2_1(this, client);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		schemaGenerationComposite.getControl().setLayoutData(gridData);

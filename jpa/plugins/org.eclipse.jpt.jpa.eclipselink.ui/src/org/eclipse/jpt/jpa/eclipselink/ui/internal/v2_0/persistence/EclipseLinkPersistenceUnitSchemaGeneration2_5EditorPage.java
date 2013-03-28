@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkSchem
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.options.PersistenceXmlSchemaGenerationComposite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2_1.persistence.DataLoadingComposite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2_1.persistence.SchemaGenerationComposite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2_1.persistence.SchemaGenerationComposite2_1;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -82,8 +82,8 @@ public class EclipseLinkPersistenceUnitSchemaGeneration2_5EditorPage
 
 		// ********** Schema Generation properties **********
 
-		SchemaGenerationComposite schemaGenerationComposite = 
-			new SchemaGenerationComposite(
+		SchemaGenerationComposite2_1 schemaGenerationComposite = 
+			new SchemaGenerationComposite2_1(
 				this, 
 				this.buildSchemaGenerationHolder(),
 				client);

@@ -29,15 +29,15 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  SchemaGenerationComposite
  */
-public class SchemaGenerationComposite extends Pane<SchemaGeneration2_1>
+public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 {
-	public SchemaGenerationComposite(
+	public SchemaGenerationComposite2_1(
 			Pane<SchemaGeneration2_1> parent, 
 			Composite container) {
 		super(parent, container);
 	}
 	
-	public SchemaGenerationComposite(
+	public SchemaGenerationComposite2_1(
 			Pane<?> parent, 
 			PropertyValueModel<SchemaGeneration2_1> schemaGenModel, 
 			Composite container) {
@@ -558,5 +558,4 @@ public class SchemaGenerationComposite extends Pane<SchemaGeneration2_1>
 	//		}
 		};
 	}
-	
 }
