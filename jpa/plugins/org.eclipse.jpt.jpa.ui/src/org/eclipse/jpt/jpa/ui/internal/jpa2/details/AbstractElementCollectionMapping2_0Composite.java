@@ -119,7 +119,7 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 	}
 	
 	protected Control initializeOrderingSection(Composite container) {
-		return new Ordering2_0Composite(this, container).getControl();
+		return new OrderingComposite2_0(this, container).getControl();
 	}
 	
 	protected void initializeValueCollapsibleSection(Composite container) {

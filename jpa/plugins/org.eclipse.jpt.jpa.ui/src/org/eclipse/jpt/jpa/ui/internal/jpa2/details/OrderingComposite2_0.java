@@ -48,10 +48,10 @@ import org.eclipse.swt.widgets.Text;
  * @see OrmManyToManyMappingComposite
  * @see OrmOneToManyMappingComposite
  */
-public class Ordering2_0Composite
+public class OrderingComposite2_0
 	extends AbstractOrderingComposite<Orderable2_0>
 {
-	public Ordering2_0Composite(Pane<? extends CollectionMapping2_0> parentPane, Composite parentComposite) {
+	public OrderingComposite2_0(Pane<? extends CollectionMapping2_0> parentPane, Composite parentComposite) {
 		super(parentPane, parentComposite);
 	}
 	

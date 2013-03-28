@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.TargetEntityClassChooser;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmMappingNameText;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.CascadePane2_0;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Ordering2_0Composite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.OrderingComposite2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.OrphanRemovalTriStateCheckBox2_0;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -107,7 +107,7 @@ public class OrmEclipseLinkOneToManyMapping2_0Composite
 	
 	@Override
 	protected Control initializeOrderingSection(Composite container) {
-		return new Ordering2_0Composite(this, container).getControl();
+		return new OrderingComposite2_0(this, container).getControl();
 	}
 	
 	protected PropertyValueModel<OrphanRemovable2_0> buildOrphanRemovableModel() {
