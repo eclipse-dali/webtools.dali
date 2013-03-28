@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.ui.internal.details.BasicMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmManyToOneMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmOneToManyMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmOneToOneMappingComposite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.java.JavaManyToManyMapping2_0Composite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.java.JavaManyToManyMappingComposite2_0;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see FetchableMapping
  * @see BasicMappingComposite - A container of this widget
- * @see JavaManyToManyMapping2_0Composite - A container of this widget
+ * @see JavaManyToManyMappingComposite2_0 - A container of this widget
  * @see OrmManyToOneMappingComposite - A container of this widget
  * @see OrmOneToManyMappingComposite - A container of this widget
  * @see OrmOneToOneMappingComposite - A container of this widget

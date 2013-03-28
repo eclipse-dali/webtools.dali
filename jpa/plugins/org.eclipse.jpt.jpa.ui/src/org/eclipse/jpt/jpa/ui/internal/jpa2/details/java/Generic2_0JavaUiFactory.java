@@ -120,7 +120,7 @@ public class Generic2_0JavaUiFactory
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaManyToManyMapping2_0Composite((PropertyValueModel<? extends ManyToManyMapping2_0>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaManyToManyMappingComposite2_0((PropertyValueModel<? extends ManyToManyMapping2_0>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@SuppressWarnings("unchecked")
