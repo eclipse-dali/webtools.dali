@@ -33,7 +33,7 @@ import org.eclipse.jpt.jpa.ui.internal.details.java.AbstractJavaResourceUiDefini
 import org.eclipse.jpt.jpa.ui.internal.details.java.DefaultBasicMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.java.DefaultEmbeddedMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.java.NullJavaAttributeMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.ElementCollectionMapping2_0UiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.ElementCollectionMappingUiDefinition2_0;
 
 public class EclipseLink2_3JavaResourceUiDefinition
 	extends AbstractJavaResourceUiDefinition
@@ -83,7 +83,7 @@ public class EclipseLink2_3JavaResourceUiDefinition
 		definitions.add(EclipseLinkArrayMapping2_3UiDefinition.instance());
 		definitions.add(EclipseLinkStructureMapping2_3UiDefinition.instance());
 
-		definitions.add(ElementCollectionMapping2_0UiDefinition.instance());
+		definitions.add(ElementCollectionMappingUiDefinition2_0.instance());
 	}
 
 	@Override

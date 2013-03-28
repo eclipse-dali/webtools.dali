@@ -25,12 +25,12 @@ import org.eclipse.jpt.jpa.ui.jpa2.details.JpaUiFactory2_0;
 import org.eclipse.jpt.jpa.ui.jpa2.details.JptJpaUiDetailsMessages2_0;
 import org.eclipse.swt.widgets.Composite;
 
-public class ElementCollectionMapping2_0UiDefinition
+public class ElementCollectionMappingUiDefinition2_0
 	extends AbstractMappingUiDefinition
 {
 	// singleton
-	private static final ElementCollectionMapping2_0UiDefinition INSTANCE = 
-			new ElementCollectionMapping2_0UiDefinition();
+	private static final ElementCollectionMappingUiDefinition2_0 INSTANCE = 
+			new ElementCollectionMappingUiDefinition2_0();
 	
 	
 	/**
@@ -44,7 +44,7 @@ public class ElementCollectionMapping2_0UiDefinition
 	/**
 	 * Ensure single instance.
 	 */
-	private ElementCollectionMapping2_0UiDefinition() {
+	private ElementCollectionMappingUiDefinition2_0() {
 		super();
 	}
 

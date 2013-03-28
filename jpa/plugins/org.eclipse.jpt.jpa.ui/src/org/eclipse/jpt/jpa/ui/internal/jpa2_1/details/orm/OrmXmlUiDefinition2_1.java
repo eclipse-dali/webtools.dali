@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.ui.internal.details.orm.AbstractOrmXmlResourceUiDefin
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmPersistentAttributeDetailsProvider;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmPersistentTypeDetailsProvider;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmXmlUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.ElementCollectionMapping2_0UiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.ElementCollectionMappingUiDefinition2_0;
 
 public class OrmXmlUiDefinition2_1
 	extends AbstractOrmXmlResourceUiDefinition
@@ -95,6 +95,6 @@ public class OrmXmlUiDefinition2_1
 		definitions.add(EmbeddedMappingUiDefinition.instance());
 		definitions.add(TransientMappingUiDefinition.instance());
 		
-		definitions.add(ElementCollectionMapping2_0UiDefinition.instance());
+		definitions.add(ElementCollectionMappingUiDefinition2_0.instance());
 	}
 }

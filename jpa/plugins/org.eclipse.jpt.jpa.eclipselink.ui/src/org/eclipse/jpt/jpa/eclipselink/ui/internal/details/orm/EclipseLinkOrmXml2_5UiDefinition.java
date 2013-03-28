@@ -34,7 +34,7 @@ import org.eclipse.jpt.jpa.ui.internal.details.TransientMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.VersionMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmPersistentAttributeDetailsProvider;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmPersistentTypeDetailsProvider;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.ElementCollectionMapping2_0UiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.ElementCollectionMappingUiDefinition2_0;
 
 
 public class EclipseLinkOrmXml2_5UiDefinition
@@ -100,7 +100,7 @@ public class EclipseLinkOrmXml2_5UiDefinition
 		definitions.add(EclipseLinkVariableOneToOneMappingUiDefinition.instance());
 		definitions.add(EclipseLinkTransformationMappingUiDefinition.instance());
 
-		definitions.add(ElementCollectionMapping2_0UiDefinition.instance());
+		definitions.add(ElementCollectionMappingUiDefinition2_0.instance());
 		definitions.add(EclipseLinkArrayMapping2_3UiDefinition.instance());
 		definitions.add(EclipseLinkStructureMapping2_3UiDefinition.instance());
 	}

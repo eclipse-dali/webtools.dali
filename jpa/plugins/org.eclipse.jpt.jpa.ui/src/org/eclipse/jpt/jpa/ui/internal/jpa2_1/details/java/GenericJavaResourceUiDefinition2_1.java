@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.ui.internal.details.java.AbstractJavaResourceUiDefini
 import org.eclipse.jpt.jpa.ui.internal.details.java.DefaultBasicMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.java.DefaultEmbeddedMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.java.NullJavaAttributeMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.ElementCollectionMapping2_0UiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.ElementCollectionMappingUiDefinition2_0;
 
 public class GenericJavaResourceUiDefinition2_1
 	extends AbstractJavaResourceUiDefinition
@@ -58,7 +58,7 @@ public class GenericJavaResourceUiDefinition2_1
 	
 	@Override
 	protected void addSpecifiedAttributeMappingUiDefinitionsTo(List<MappingUiDefinition> definitions) {
-		definitions.add(ElementCollectionMapping2_0UiDefinition.instance());
+		definitions.add(ElementCollectionMappingUiDefinition2_0.instance());
 		definitions.add(IdMappingUiDefinition.instance());
 		definitions.add(EmbeddedIdMappingUiDefinition.instance());
 		definitions.add(BasicMappingUiDefinition.instance());
