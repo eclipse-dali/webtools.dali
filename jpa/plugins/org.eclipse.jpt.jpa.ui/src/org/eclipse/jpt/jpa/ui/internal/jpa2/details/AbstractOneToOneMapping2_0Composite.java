@@ -41,7 +41,7 @@ public abstract class AbstractOneToOneMapping2_0Composite<T extends OneToOneMapp
 	}
 
 	protected void initializeDerivedIdentityCollapsibleSection(Composite container) {
-		new DerivedIdentity2_0Pane(this, buildDerivedIdentityModel(), container);
+		new DerivedIdentityPane2_0(this, buildDerivedIdentityModel(), container);
 	}
 	
 	protected PropertyValueModel<DerivedIdentity2_0> buildDerivedIdentityModel() {

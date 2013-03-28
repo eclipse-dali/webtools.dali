@@ -26,10 +26,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-public class DerivedIdentity2_0Pane
+public class DerivedIdentityPane2_0
 	extends Pane<DerivedIdentity2_0>
 {
-	public DerivedIdentity2_0Pane(
+	public DerivedIdentityPane2_0(
 			Pane<?> parentPane, 
 			PropertyValueModel<? extends DerivedIdentity2_0> subjectHolder, 
 			Composite parent) {

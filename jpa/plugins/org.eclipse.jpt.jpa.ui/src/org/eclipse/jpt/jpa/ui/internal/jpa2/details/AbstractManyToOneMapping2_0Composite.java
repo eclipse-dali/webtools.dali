@@ -40,7 +40,7 @@ public abstract class AbstractManyToOneMapping2_0Composite<T extends ManyToOneMa
 	}
 
 	protected void initializeDerivedIdentityCollapsibleSection(Composite container) {
-		new DerivedIdentity2_0Pane(this, buildDerivedIdentityModel(), container);
+		new DerivedIdentityPane2_0(this, buildDerivedIdentityModel(), container);
 	}
 
 	@Override
