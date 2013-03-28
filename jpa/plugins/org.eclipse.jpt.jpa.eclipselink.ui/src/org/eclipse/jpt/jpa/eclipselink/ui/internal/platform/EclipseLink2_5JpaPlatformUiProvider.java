@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.ui.JpaPlatformUiProvider;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.AbstractJpaPlatformUiProvider;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmXmlUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmXml2_0UiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmXmlUiDefinition2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2_1.details.orm.OrmXmlUiDefinition2_1;
 
 
@@ -60,7 +60,7 @@ public class EclipseLink2_5JpaPlatformUiProvider
 	protected void addResourceUiDefinitionsTo(List<ResourceUiDefinition> definitions) {
 		definitions.add(EclipseLink2_5JavaResourceUiDefinition.instance());
 		definitions.add(OrmXmlUiDefinition.instance());
-		definitions.add(OrmXml2_0UiDefinition.instance());
+		definitions.add(OrmXmlUiDefinition2_0.instance());
 		definitions.add(OrmXmlUiDefinition2_1.instance());
 		definitions.add(EclipseLinkOrmXmlUiDefinition.instance());
 		definitions.add(EclipseLinkOrmXml1_1UiDefinition.instance());

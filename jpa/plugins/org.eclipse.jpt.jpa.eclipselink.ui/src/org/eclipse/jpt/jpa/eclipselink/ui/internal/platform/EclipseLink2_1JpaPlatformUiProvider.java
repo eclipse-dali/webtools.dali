@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.ui.JpaPlatformUiProvider;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.AbstractJpaPlatformUiProvider;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmXmlUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmXml2_0UiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmXmlUiDefinition2_0;
 
 /**
  *  EclipseLink2_1JpaPlatformUiProvider
@@ -54,7 +54,7 @@ public class EclipseLink2_1JpaPlatformUiProvider extends AbstractJpaPlatformUiPr
 	protected void addResourceUiDefinitionsTo(List<ResourceUiDefinition> definitions) {
 		definitions.add(EclipseLink2_0JavaResourceUiDefinition.instance());
 		definitions.add(OrmXmlUiDefinition.instance());
-		definitions.add(OrmXml2_0UiDefinition.instance());
+		definitions.add(OrmXmlUiDefinition2_0.instance());
 		definitions.add(EclipseLinkOrmXmlUiDefinition.instance());
 		definitions.add(EclipseLinkOrmXml1_1UiDefinition.instance());
 		definitions.add(EclipseLinkOrmXml1_2UiDefinition.instance());
