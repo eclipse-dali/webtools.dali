@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.IdMapping2_0;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractIdMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.ColumnComposite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.IdMapping2_0MappedByRelationshipPane;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.IdMappingGeneration2_0Composite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.IdMappingGenerationComposite2_0;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -45,6 +45,6 @@ public class JavaIdMapping2_0Composite
 	
 	@Override
 	protected void initializeGenerationCollapsibleSection(Composite container) {
-		new IdMappingGeneration2_0Composite(this, container);
+		new IdMappingGenerationComposite2_0(this, container);
 	}
 }
