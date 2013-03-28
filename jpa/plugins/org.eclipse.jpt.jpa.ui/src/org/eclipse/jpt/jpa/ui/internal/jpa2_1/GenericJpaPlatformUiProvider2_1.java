@@ -25,11 +25,11 @@ import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceXmlUiDefinition;
  * All the state in the JPA platform should be "static" (i.e. unchanging once
  * it is initialized).
  */
-public class Generic2_1JpaPlatformUiProvider extends AbstractJpaPlatformUiProvider
+public class GenericJpaPlatformUiProvider2_1 extends AbstractJpaPlatformUiProvider
 {
 
 	// singleton
-	private static final JpaPlatformUiProvider INSTANCE = new Generic2_1JpaPlatformUiProvider();
+	private static final JpaPlatformUiProvider INSTANCE = new GenericJpaPlatformUiProvider2_1();
 
 	/**
 	 * Return the singleton.
@@ -41,7 +41,7 @@ public class Generic2_1JpaPlatformUiProvider extends AbstractJpaPlatformUiProvid
 	/**
 	 * Ensure single instance.
 	 */
-	private Generic2_1JpaPlatformUiProvider() {
+	private GenericJpaPlatformUiProvider2_1() {
 		super();
 	}
 	
