@@ -15,13 +15,13 @@ import org.eclipse.jpt.jpa.ui.internal.jpa2_1.GenericJpaPlatformUiProvider2_1;
 import org.eclipse.jpt.jpa.ui.internal.platform.generic.GenericJpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.internal.platform.generic.GenericJpaPlatformUiFactory;
 
-public class Generic2_1JpaPlatformUiFactory
+public class GenericJpaPlatformUiFactory2_1
 	implements JpaPlatformUiFactory
 {
 	/**
 	 * Zero arg constructor for extension point
 	 */
-	public Generic2_1JpaPlatformUiFactory() {
+	public GenericJpaPlatformUiFactory2_1() {
 		super();
 	}
 
