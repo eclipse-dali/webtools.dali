@@ -40,7 +40,7 @@ import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmEmbeddedMapping2_0Com
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmEntity2_0Composite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmIdMapping2_0Composite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmManyToManyMapping2_0Composite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmManyToOneMapping2_0Composite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmManyToOneMappingComposite2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmOneToManyMappingComposite2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmOneToOneMappingComposite2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmVersionMappingComposite2_0;
@@ -116,7 +116,7 @@ public class GenericOrmXmlUiFactory2_0
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new OrmManyToOneMapping2_0Composite((PropertyValueModel<? extends ManyToOneMapping2_0>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new OrmManyToOneMappingComposite2_0((PropertyValueModel<? extends ManyToOneMapping2_0>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@SuppressWarnings("unchecked")
