@@ -61,10 +61,10 @@ import org.eclipse.ui.forms.widgets.Section;
  * @version 2.3
  * @since 2.1
  */
-public class OneToOneJoiningStrategy2_0Pane 
+public class OneToOneJoiningStrategyPane2_0
 	extends Pane<OneToOneRelationship2_0>
 {
-	public OneToOneJoiningStrategy2_0Pane(
+	public OneToOneJoiningStrategyPane2_0(
 			Pane<?> parentPane, 
 			PropertyValueModel<? extends OneToOneRelationship2_0> subjectHolder, 
 			Composite parent) {

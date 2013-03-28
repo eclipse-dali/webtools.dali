@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.ui.internal.details.OptionalTriStateCheckBox;
 import org.eclipse.jpt.jpa.ui.internal.details.TargetEntityClassChooser;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.AbstractOneToOneMapping2_0Composite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.CascadePane2_0;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.OneToOneJoiningStrategy2_0Pane;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.OneToOneJoiningStrategyPane2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.OrphanRemovalTriStateCheckBox2_0;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -75,6 +75,6 @@ public class JavaOneToOneMapping2_0Composite
 	
 	@Override
 	protected void initializeJoiningStrategyCollapsibleSection(Composite container) {
-		new OneToOneJoiningStrategy2_0Pane(this, buildRelationshipModel(), container);
+		new OneToOneJoiningStrategyPane2_0(this, buildRelationshipModel(), container);
 	}
 }
