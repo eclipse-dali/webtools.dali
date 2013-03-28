@@ -24,10 +24,10 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-public class OrmEmbeddedIdMapping2_0Composite
+public class OrmEmbeddedIdMappingComposite2_0
 	extends AbstractEmbeddedIdMappingComposite<EmbeddedIdMapping2_0>
 {
-	public OrmEmbeddedIdMapping2_0Composite(
+	public OrmEmbeddedIdMappingComposite2_0(
 			PropertyValueModel<? extends EmbeddedIdMapping2_0> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
