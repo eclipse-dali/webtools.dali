@@ -45,7 +45,7 @@ public abstract class AbstractManyToOneMapping2_0Composite<T extends ManyToOneMa
 
 	@Override
 	protected void initializeJoiningStrategyCollapsibleSection(Composite container) {
-		new ManyToOneJoiningStrategy2_0Pane(this, buildRelationshipModel(), container);
+		new ManyToOneJoiningStrategyPane2_0(this, buildRelationshipModel(), container);
 	}
 
 	protected PropertyValueModel<DerivedIdentity2_0> buildDerivedIdentityModel() {
