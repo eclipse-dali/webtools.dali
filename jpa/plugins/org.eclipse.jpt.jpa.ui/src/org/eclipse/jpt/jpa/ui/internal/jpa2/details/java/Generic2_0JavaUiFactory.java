@@ -36,7 +36,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaEntity2_0;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.java.AbstractJavaUiFactory;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.ElementCollectionMapping2_0Composite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.EmbeddedIdMapping2_0Composite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.EmbeddedIdMappingComposite2_0;
 import org.eclipse.jpt.jpa.ui.jpa2.details.JpaUiFactory2_0;
 import org.eclipse.swt.widgets.Composite;
 
@@ -98,7 +98,7 @@ public class Generic2_0JavaUiFactory
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new EmbeddedIdMapping2_0Composite((PropertyValueModel<? extends EmbeddedIdMapping2_0>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new EmbeddedIdMappingComposite2_0((PropertyValueModel<? extends EmbeddedIdMapping2_0>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@SuppressWarnings("unchecked")
