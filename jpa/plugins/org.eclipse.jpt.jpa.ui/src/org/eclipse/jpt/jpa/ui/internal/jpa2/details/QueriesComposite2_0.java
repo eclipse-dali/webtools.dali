@@ -35,7 +35,7 @@ public class QueriesComposite2_0
 	
 	@Override
 	protected Pane<NamedQuery2_0> buildNamedQueryPropertyComposite(PageBook pageBook) {
-		return new NamedQueryProperty2_0Composite(
+		return new NamedQueryPropertyComposite2_0(
 			this,
 			this.buildSelectedNamedQuery2_0Model(),
 			pageBook);

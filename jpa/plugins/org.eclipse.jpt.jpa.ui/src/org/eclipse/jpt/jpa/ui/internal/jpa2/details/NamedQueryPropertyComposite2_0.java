@@ -59,7 +59,7 @@ import org.eclipse.swt.widgets.Label;
  * @version 3.3
  * @since 2.0
  */
-public class NamedQueryProperty2_0Composite extends Pane<NamedQuery2_0> {
+public class NamedQueryPropertyComposite2_0 extends Pane<NamedQuery2_0> {
 
 	/**
 	 * Creates a new <code>NamedQueryProperty2_0Composite</code>.
@@ -68,7 +68,7 @@ public class NamedQueryProperty2_0Composite extends Pane<NamedQuery2_0> {
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public NamedQueryProperty2_0Composite(Pane<?> parentPane,
+	public NamedQueryPropertyComposite2_0(Pane<?> parentPane,
 	                                      PropertyValueModel<NamedQuery2_0> subjectHolder,
 	                                      Composite parent) {
 
