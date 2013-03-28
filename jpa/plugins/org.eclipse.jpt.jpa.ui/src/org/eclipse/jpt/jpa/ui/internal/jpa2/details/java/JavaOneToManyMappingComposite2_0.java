@@ -30,10 +30,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
-public class JavaOneToManyMapping2_0Composite
+public class JavaOneToManyMappingComposite2_0
 	extends AbstractOneToManyMappingComposite<OneToManyMapping2_0, JavaOneToManyRelationship2_0, Cascade2_0> //TODO can we now get rid of this interface? just use OneToManyRelationship2_0?
 {
-	public JavaOneToManyMapping2_0Composite(
+	public JavaOneToManyMappingComposite2_0(
 			PropertyValueModel<? extends OneToManyMapping2_0> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,

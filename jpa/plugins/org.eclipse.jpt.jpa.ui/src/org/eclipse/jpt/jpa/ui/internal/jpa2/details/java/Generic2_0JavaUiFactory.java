@@ -142,7 +142,7 @@ public class Generic2_0JavaUiFactory
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaOneToManyMapping2_0Composite((PropertyValueModel<? extends OneToManyMapping2_0>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaOneToManyMappingComposite2_0((PropertyValueModel<? extends OneToManyMapping2_0>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@SuppressWarnings("unchecked")
