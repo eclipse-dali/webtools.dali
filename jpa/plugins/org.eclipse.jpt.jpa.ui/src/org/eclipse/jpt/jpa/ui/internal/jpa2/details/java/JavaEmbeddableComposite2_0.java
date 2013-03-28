@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,10 +20,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Section;
 
-public class JavaEmbeddable2_0Composite
+public class JavaEmbeddableComposite2_0
 	extends AbstractEmbeddableComposite<JavaEmbeddable>
 {
-	public JavaEmbeddable2_0Composite(
+	public JavaEmbeddableComposite2_0(
 			PropertyValueModel<? extends JavaEmbeddable> embeddableModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,

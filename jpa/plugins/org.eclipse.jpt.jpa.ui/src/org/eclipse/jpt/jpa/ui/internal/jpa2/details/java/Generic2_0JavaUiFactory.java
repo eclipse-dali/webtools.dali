@@ -73,7 +73,7 @@ public class Generic2_0JavaUiFactory
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaEmbeddable2_0Composite((PropertyValueModel<? extends JavaEmbeddable>) embeddableModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaEmbeddableComposite2_0((PropertyValueModel<? extends JavaEmbeddable>) embeddableModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 
