@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.ui.internal.details.java.JavaInheritanceComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.java.JavaSecondaryTablesComposite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Cacheable2_0TriStateCheckBox;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Entity2_0OverridesComposite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Queries2_0Composite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.QueriesComposite2_0;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -100,6 +100,6 @@ public class JavaEntity2_0Composite
 
 	@Override
 	protected Control initializeQueriesSection(Composite container) {
-		return new Queries2_0Composite(this, this.buildQueryContainerModel(), container).getControl();
+		return new QueriesComposite2_0(this, this.buildQueryContainerModel(), container).getControl();
 	}
 }

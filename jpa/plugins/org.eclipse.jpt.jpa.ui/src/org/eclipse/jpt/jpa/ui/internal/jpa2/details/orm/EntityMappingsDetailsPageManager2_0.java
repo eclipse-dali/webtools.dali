@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.AbstractEntityMappingsDetailsPageManager;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Queries2_0Composite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.QueriesComposite2_0;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -30,6 +30,6 @@ public class EntityMappingsDetailsPageManager2_0
 
 	@Override
 	protected Control initializeQueriesSection(Composite container) {
-		return new Queries2_0Composite(this, this.buildQueryContainerHolder(), container).getControl();
+		return new QueriesComposite2_0(this, this.buildQueryContainerHolder(), container).getControl();
 	}
 }

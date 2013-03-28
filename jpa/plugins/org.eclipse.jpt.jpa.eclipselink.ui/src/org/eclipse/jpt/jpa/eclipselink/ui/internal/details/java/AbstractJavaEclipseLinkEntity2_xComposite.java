@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.ui.internal.details.IdClassChooser;
 import org.eclipse.jpt.jpa.ui.internal.details.TableComposite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Entity2_0OverridesComposite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Generation2_0Composite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Queries2_0Composite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.QueriesComposite2_0;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -80,6 +80,6 @@ public abstract class AbstractJavaEclipseLinkEntity2_xComposite<T extends Eclips
 
 	@Override
 	protected Control initializeQueriesSection(Composite container) {
-		return new Queries2_0Composite(this, this.buildQueryContainerModel(), container).getControl();
+		return new QueriesComposite2_0(this, this.buildQueryContainerModel(), container).getControl();
 	}
 }

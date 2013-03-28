@@ -36,7 +36,7 @@ import org.eclipse.jpt.jpa.core.jpa2_1.context.NamedStoredProcedureQuery2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.QueryContainer2_1;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AddQueryDialog;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Queries2_0Composite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.QueriesComposite2_0;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -44,7 +44,7 @@ import org.eclipse.ui.part.PageBook;
 
 
 public class QueriesComposite2_1
-	extends Queries2_0Composite
+	extends QueriesComposite2_0
 {
 	Pane<? extends NamedStoredProcedureQuery2_1> namedStoredProceduerQueryPane; //lazy initialized to avoid unnecessary handles
 
