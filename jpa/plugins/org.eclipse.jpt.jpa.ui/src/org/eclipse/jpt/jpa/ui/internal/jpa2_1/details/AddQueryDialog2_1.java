@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.ui.internal.details;
+package org.eclipse.jpt.jpa.ui.internal.jpa2_1.details;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +20,8 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.internal.details.AddQueryDialog;
+import org.eclipse.jpt.jpa.ui.internal.details.AddQueryStateObject;
 import org.eclipse.jpt.jpa.ui.jpa2_1.details.JptJpaUiDetailsMessages2_1;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;

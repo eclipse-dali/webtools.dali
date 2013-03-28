@@ -92,12 +92,12 @@ public class AddQueryDialog
 	}
 	
 
-	static class QueryDialogPane
+	protected static class QueryDialogPane
 		extends DialogPane<AddQueryStateObject>
 	{
 		private Text nameText;
 
-		QueryDialogPane(
+		public QueryDialogPane(
 				PropertyValueModel<AddQueryStateObject> subjectModel,
 				Composite parentComposite,
 				ResourceManager resourceManager) {

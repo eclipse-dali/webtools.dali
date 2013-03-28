@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
  * @version 2.1
  * @since 2.1
  */
-final class AddQueryStateObject extends AbstractNode
+public final class AddQueryStateObject extends AbstractNode
 {
 	/**
 	 * The initial name or <code>null</code>
@@ -68,7 +68,7 @@ final class AddQueryStateObject extends AbstractNode
 	 * @param names The collection of names that can't be used or an empty
 	 * collection if none are available
 	 */
-	AddQueryStateObject(PersistenceUnit pUnit) {
+	public AddQueryStateObject(PersistenceUnit pUnit) {
 		super(null);
 		this.pUnit = pUnit;
 	}

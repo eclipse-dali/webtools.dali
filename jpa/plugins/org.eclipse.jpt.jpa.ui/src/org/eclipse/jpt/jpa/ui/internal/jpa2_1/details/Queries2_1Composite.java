@@ -36,7 +36,6 @@ import org.eclipse.jpt.jpa.core.jpa2_1.context.NamedStoredProcedureQuery2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.QueryContainer2_1;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AddQueryDialog;
-import org.eclipse.jpt.jpa.ui.internal.details.AddQueryDialog2_1;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Queries2_0Composite;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
