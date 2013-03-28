@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmXml2_0UiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceXml2_0UiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jpa2_1.details.java.GenericJavaResourceUiDefinition2_1;
 import org.eclipse.jpt.jpa.ui.internal.jpa2_1.details.orm.OrmXmlUiDefinition2_1;
-import org.eclipse.jpt.jpa.ui.internal.jpa2_1.persistence.PersistenceXml2_1UiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.jpa2_1.persistence.PersistenceXmlUiDefinition2_1;
 import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceXmlUiDefinition;
 
 /**
@@ -56,6 +56,6 @@ public class GenericJpaPlatformUiProvider2_1 extends AbstractJpaPlatformUiProvid
 		definitions.add(OrmXmlUiDefinition2_1.instance());
 		definitions.add(PersistenceXmlUiDefinition.instance());
 		definitions.add(PersistenceXml2_0UiDefinition.instance());
-		definitions.add(PersistenceXml2_1UiDefinition.instance());
+		definitions.add(PersistenceXmlUiDefinition2_1.instance());
 	}
 }
