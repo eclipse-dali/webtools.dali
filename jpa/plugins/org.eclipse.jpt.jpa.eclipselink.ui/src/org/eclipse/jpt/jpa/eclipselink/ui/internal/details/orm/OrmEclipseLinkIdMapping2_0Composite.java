@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.ui.details.orm.JptJpaUiDetailsOrmMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.ColumnComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmMappingNameText;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.IdMapping2_0MappedByRelationshipPane;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.IdMappingMappedByRelationshipPane2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.IdMappingGenerationComposite2_0;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -53,7 +53,7 @@ public class OrmEclipseLinkIdMapping2_0Composite
 	protected Control initializeIdSection(Composite container) {
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
-		IdMapping2_0MappedByRelationshipPane mappedByRelationshipPane = new IdMapping2_0MappedByRelationshipPane(this, getSubjectHolder(), container);
+		IdMappingMappedByRelationshipPane2_0 mappedByRelationshipPane = new IdMappingMappedByRelationshipPane2_0(this, getSubjectHolder(), container);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		mappedByRelationshipPane.getControl().setLayoutData(gridData);

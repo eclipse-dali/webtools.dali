@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkIdMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkIdMappingComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkMutableTriStateCheckBox;
 import org.eclipse.jpt.jpa.ui.internal.details.ColumnComposite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.IdMapping2_0MappedByRelationshipPane;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.IdMappingMappedByRelationshipPane2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.IdMappingGenerationComposite2_0;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -46,7 +46,7 @@ public class JavaEclipseLinkIdMapping2_0Composite
 	protected Control initializeIdSection(Composite container) {
 		container = this.addSubPane(container);
 
-		new IdMapping2_0MappedByRelationshipPane(this, getSubjectHolder(), container);
+		new IdMappingMappedByRelationshipPane2_0(this, getSubjectHolder(), container);
 		new ColumnComposite(this, buildColumnModel(), container);
 
 		new EclipseLinkMutableTriStateCheckBox(this, buildMutableModel(), container);
