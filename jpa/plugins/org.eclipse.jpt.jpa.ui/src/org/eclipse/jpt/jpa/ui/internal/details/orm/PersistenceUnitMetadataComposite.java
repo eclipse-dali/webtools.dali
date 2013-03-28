@@ -18,18 +18,20 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXmlDefinition2_0;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmPersistenceUnitDefaults2_0;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.details.orm.JptJpaUiDetailsOrmMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.jpa.ui.internal.ResourceTypeIsKindOf;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.SchemaCombo;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.OrmXml2_0FlagModel;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -305,6 +307,14 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 		gridData.horizontalSpan = 2;
 		diCheckBox.setLayoutData(gridData);
 		
-		SWTTools.controlVisibleState(new OrmXml2_0FlagModel<OrmPersistenceUnitMetadata>(this.getSubjectHolder()), diCheckBox);
+		SWTTools.controlVisibleState(this.buildResourceTypeIsKindOfOrmXml2_0Model(), diCheckBox);
+	}
+
+	protected PropertyValueModel<Boolean> buildResourceTypeIsKindOfOrmXml2_0Model() {
+		return new TransformationPropertyValueModel<OrmPersistenceUnitMetadata, Boolean>(this.getSubjectHolder(), this.buildResourceTypeIsKindOfOrmXml2_0Transformer());
+	}
+
+	protected Transformer<OrmPersistenceUnitMetadata, Boolean> buildResourceTypeIsKindOfOrmXml2_0Transformer() {
+		return new ResourceTypeIsKindOf<OrmPersistenceUnitMetadata>(GenericOrmXmlDefinition2_0.instance().getResourceType());
 	}
 }
