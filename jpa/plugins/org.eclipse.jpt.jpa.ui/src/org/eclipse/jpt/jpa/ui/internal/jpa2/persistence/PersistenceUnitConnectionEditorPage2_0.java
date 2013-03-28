@@ -93,7 +93,7 @@ public class PersistenceUnitConnectionEditorPage2_0
 		gridData.horizontalSpan = 2;
 		jdbcConnectionPropertiesGroup.setLayoutData(gridData);
 
-		new JdbcConnectionPropertiesComposite(this, jdbcConnectionPropertiesGroup, buildJdbcConnectionPropertiesPaneEnbaledModel());
+		new JdbcConnectionPropertiesComposite2_0(this, jdbcConnectionPropertiesGroup, buildJdbcConnectionPropertiesPaneEnbaledModel());
 	}
 
 	private PropertyValueModel<Boolean> buildJdbcConnectionPropertiesPaneEnbaledModel() {

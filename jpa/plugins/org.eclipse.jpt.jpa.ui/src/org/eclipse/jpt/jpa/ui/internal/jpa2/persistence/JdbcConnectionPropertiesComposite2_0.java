@@ -1,12 +1,12 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2013 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.jpa2.persistence;
 
 import java.util.Comparator;
@@ -46,14 +46,14 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
  *  JdbcConnectionPropertiesComposite
  */
 @SuppressWarnings("nls")
-public class JdbcConnectionPropertiesComposite extends Pane<Connection2_0>
+public class JdbcConnectionPropertiesComposite2_0 extends Pane<Connection2_0>
 {
 	/**
 	 * The constant ID used to retrieve the dialog settings.
 	 */
 	private static final String DIALOG_SETTINGS = "org.eclipse.jpt.jpa.ui.internal.jpa2.dialogs.ConnectionDialog";
 
-	public JdbcConnectionPropertiesComposite(Pane<Connection2_0> parentComposite, Composite parent, PropertyValueModel<Boolean> enabledModel) {
+	public JdbcConnectionPropertiesComposite2_0(Pane<Connection2_0> parentComposite, Composite parent, PropertyValueModel<Boolean> enabledModel) {
 
 		super(parentComposite, parent, enabledModel);
 	}
@@ -244,7 +244,7 @@ public class JdbcConnectionPropertiesComposite extends Pane<Connection2_0>
 		 * Creates a new <code>MappingSelectionDialog</code>.
 		 */
 		protected ConnectionSelectionDialog() {
-			super(JdbcConnectionPropertiesComposite.this.getShell_(), false);
+			super(JdbcConnectionPropertiesComposite2_0.this.getShell_(), false);
 			this.setMessage(JptJpaUiPersistenceMessages2_0.JDBC_CONNECTION_PROPERTIES_COMPOSITE_CONNECTION_DIALOG_MESSAGE);
 			this.setTitle(JptJpaUiPersistenceMessages2_0.JDBC_CONNECTION_PROPERTIES_COMPOSITE_CONNECTION_DIALOG_TITLE);
 			this.setListLabelProvider(this.buildLabelProvider());
@@ -294,7 +294,7 @@ public class JdbcConnectionPropertiesComposite extends Pane<Connection2_0>
 		}
 
 		private Iterable<String> getConnectionProfileNames() {
-			ConnectionProfileFactory factory = JdbcConnectionPropertiesComposite.this.getConnectionProfileFactory();
+			ConnectionProfileFactory factory = JdbcConnectionPropertiesComposite2_0.this.getConnectionProfileFactory();
 			return (factory == null) ? IterableTools.<String>emptyIterable() : factory.getConnectionProfileNames();
 		}
 
