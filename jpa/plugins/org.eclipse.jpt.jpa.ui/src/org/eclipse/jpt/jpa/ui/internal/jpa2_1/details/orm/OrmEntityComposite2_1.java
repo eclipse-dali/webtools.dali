@@ -18,11 +18,10 @@ import org.eclipse.jpt.jpa.ui.internal.jpa2_1.details.QueriesComposite2_1;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-public class OrmEntity2_1Composite
+public class OrmEntityComposite2_1
 	extends OrmEntity2_0Composite
 {
-
-	public OrmEntity2_1Composite(
+	public OrmEntityComposite2_1(
 			PropertyValueModel<? extends OrmEntity2_0> entityModel,
 			Composite parentComposite, WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
@@ -33,5 +32,4 @@ public class OrmEntity2_1Composite
 	protected Control initializeQueriesSection(Composite container) {
 		return new QueriesComposite2_1(this, this.buildQueryContainerModel(), container).getControl();
 	}
-
 }

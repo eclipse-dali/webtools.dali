@@ -31,6 +31,6 @@ public class GenericOrmXml2_1UiFactory
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new OrmEntity2_1Composite((PropertyValueModel<? extends OrmEntity2_0>) entityModel, parentComposite, widgetFactory, resourceManager);
+		return new OrmEntityComposite2_1((PropertyValueModel<? extends OrmEntity2_0>) entityModel, parentComposite, widgetFactory, resourceManager);
 	}
 }
