@@ -32,7 +32,7 @@ public class Generation2_0Composite extends GenerationComposite
 
 	@Override
 	protected Control addSequenceGeneratorComposite(Composite container) {
-		return new SequenceGenerator2_0Composite(
+		return new SequenceGeneratorComposite2_0(
 			this,
 			this.buildSequenceGeneratorHolder(),
 			container,

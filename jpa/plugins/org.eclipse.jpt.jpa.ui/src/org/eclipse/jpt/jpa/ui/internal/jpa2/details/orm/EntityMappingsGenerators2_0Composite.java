@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.ui.internal.details.GeneratorComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.GeneratorComposite.GeneratorBuilder;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.EntityMappingsGeneratorsComposite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.SequenceGenerator2_0Composite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.SequenceGeneratorComposite2_0;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -43,7 +43,7 @@ public class EntityMappingsGenerators2_0Composite extends EntityMappingsGenerato
 			PropertyValueModel<SequenceGenerator> sequenceGeneratorHolder,
 			GeneratorBuilder<SequenceGenerator> generatorBuilder) {
 
-		return new SequenceGenerator2_0Composite(
+		return new SequenceGeneratorComposite2_0(
 			this,
 			sequenceGeneratorHolder,
 			parent,

@@ -29,10 +29,10 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  JavaSequenceGenerator2_0Composite
  */
-public class SequenceGenerator2_0Composite extends SequenceGeneratorComposite
+public class SequenceGeneratorComposite2_0 extends SequenceGeneratorComposite
 {
 
-	public SequenceGenerator2_0Composite(Pane<?> parentPane,
+	public SequenceGeneratorComposite2_0(Pane<?> parentPane,
 		PropertyValueModel<SequenceGenerator> subjectHolder,
 		Composite parent,
 		GeneratorBuilder<SequenceGenerator> builder) {
@@ -93,12 +93,12 @@ public class SequenceGenerator2_0Composite extends SequenceGeneratorComposite
 			 */
 			@Override
 			protected JpaProject getJpaProject() {
-				return SequenceGenerator2_0Composite.this.getJpaProject();
+				return SequenceGeneratorComposite2_0.this.getJpaProject();
 			}
 
 			@Override
 			protected void setValue(String value) {
-				((SequenceGenerator2_0) SequenceGenerator2_0Composite.this.retrieveGenerator()).setSpecifiedCatalog(value);
+				((SequenceGenerator2_0) SequenceGeneratorComposite2_0.this.retrieveGenerator()).setSpecifiedCatalog(value);
 			}
 
 			@Override
@@ -144,12 +144,12 @@ public class SequenceGenerator2_0Composite extends SequenceGeneratorComposite
 			 */
 			@Override
 			protected JpaProject getJpaProject() {
-				return SequenceGenerator2_0Composite.this.getJpaProject();
+				return SequenceGeneratorComposite2_0.this.getJpaProject();
 			}
 
 			@Override
 			protected void setValue(String value) {
-				((SequenceGenerator2_0) SequenceGenerator2_0Composite.this.retrieveGenerator()).setSpecifiedSchema(value);
+				((SequenceGenerator2_0) SequenceGeneratorComposite2_0.this.retrieveGenerator()).setSpecifiedSchema(value);
 			}
 
 			@Override
@@ -163,7 +163,7 @@ public class SequenceGenerator2_0Composite extends SequenceGeneratorComposite
 				if (tg != null) {
 					return tg.getDbSchemaContainer();
 				}
-				return SequenceGenerator2_0Composite.this.getSubject().getContextDefaultDbSchemaContainer();
+				return SequenceGeneratorComposite2_0.this.getSubject().getContextDefaultDbSchemaContainer();
 			}
 			
 			@Override

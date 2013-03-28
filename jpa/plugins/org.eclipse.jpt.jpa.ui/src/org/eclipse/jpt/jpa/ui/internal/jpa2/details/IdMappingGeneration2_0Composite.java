@@ -34,7 +34,7 @@ public class IdMappingGeneration2_0Composite extends IdMappingGenerationComposit
 		PropertyValueModel<SequenceGenerator> sequenceGeneratorHolder,
 		GeneratorBuilder<SequenceGenerator> sequenceGeneratorBuilder) {
 
-		return new SequenceGenerator2_0Composite(
+		return new SequenceGeneratorComposite2_0(
 			this,
 			sequenceGeneratorHolder,
 			container,
