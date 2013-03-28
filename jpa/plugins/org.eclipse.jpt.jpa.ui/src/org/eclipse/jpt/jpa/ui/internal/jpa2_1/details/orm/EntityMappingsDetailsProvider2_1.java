@@ -16,11 +16,11 @@ import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEntityMappingsDetailsProvider;
 import org.eclipse.swt.widgets.Composite;
 
-public class EntityMappings2_1DetailsProvider
+public class EntityMappingsDetailsProvider2_1
 	extends AbstractEntityMappingsDetailsProvider
 {
 	// singleton
-	private static final JpaDetailsProvider INSTANCE = new EntityMappings2_1DetailsProvider();
+	private static final JpaDetailsProvider INSTANCE = new EntityMappingsDetailsProvider2_1();
 
 
 	/**
@@ -34,7 +34,7 @@ public class EntityMappings2_1DetailsProvider
 	/**
 	 * Enforce singleton usage
 	 */
-	private EntityMappings2_1DetailsProvider() {
+	private EntityMappingsDetailsProvider2_1() {
 		super();
 	}
 
