@@ -58,7 +58,7 @@ public class OrmXmlUiDefinition2_1
 	
 	@Override
 	protected JpaUiFactory buildUiFactory() {
-		return new GenericOrmXml2_1UiFactory();
+		return new GenericOrmXmlUiFactory2_1();
 	}
 	
 	public boolean providesUi(JptResourceType resourceType) {

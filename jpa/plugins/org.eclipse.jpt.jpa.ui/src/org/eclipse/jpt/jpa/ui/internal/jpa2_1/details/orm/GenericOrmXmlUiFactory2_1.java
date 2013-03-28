@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.ui.internal.jpa2.GenericOrmXmlUiFactory2_0;
 import org.eclipse.jpt.jpa.ui.jpa2_1.details.JpaUiFactory2_1;
 import org.eclipse.swt.widgets.Composite;
 
-public class GenericOrmXml2_1UiFactory
+public class GenericOrmXmlUiFactory2_1
 	extends GenericOrmXmlUiFactory2_0
 	implements JpaUiFactory2_1
 {
