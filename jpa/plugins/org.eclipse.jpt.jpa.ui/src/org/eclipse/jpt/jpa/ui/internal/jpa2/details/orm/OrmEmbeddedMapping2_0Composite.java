@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.ui.details.orm.JptJpaUiDetailsOrmMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEmbeddedMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmMappingNameText;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.EmbeddedMapping2_0OverridesComposite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.EmbeddedMappingOverridesComposite2_0;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -48,7 +48,7 @@ public class OrmEmbeddedMapping2_0Composite
 		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);
 
 		// Overrides widgets
-		EmbeddedMapping2_0OverridesComposite overridesComposite = new EmbeddedMapping2_0OverridesComposite(
+		EmbeddedMappingOverridesComposite2_0 overridesComposite = new EmbeddedMappingOverridesComposite2_0(
 			this,
 			container
 		);

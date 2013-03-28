@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,10 +20,10 @@ import org.eclipse.jpt.jpa.ui.internal.details.AbstractEmbeddedMappingOverridesC
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.PageBook;
 
-public class EmbeddedMapping2_0OverridesComposite
+public class EmbeddedMappingOverridesComposite2_0
 	extends AbstractEmbeddedMappingOverridesComposite<EmbeddedMapping2_0>
 {
-	public EmbeddedMapping2_0OverridesComposite(
+	public EmbeddedMappingOverridesComposite2_0(
 			Pane<? extends EmbeddedMapping2_0> parentPane,
 			Composite parent) {
 		

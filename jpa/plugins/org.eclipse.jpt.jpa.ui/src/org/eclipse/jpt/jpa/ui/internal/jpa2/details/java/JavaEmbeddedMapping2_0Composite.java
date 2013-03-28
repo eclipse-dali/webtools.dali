@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.EmbeddedMapping2_0;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEmbeddedMappingComposite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.EmbeddedMapping2_0OverridesComposite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.EmbeddedMappingOverridesComposite2_0;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -35,7 +35,7 @@ public class JavaEmbeddedMapping2_0Composite
 		//a Section appears to not like having a Group as its client. EmbeddedMappingOverridesComposite
 		//uses a Group as its 'control' so I am adding an extra composite here.
 		container = this.addSubPane(container);
-		new EmbeddedMapping2_0OverridesComposite(this, container);
+		new EmbeddedMappingOverridesComposite2_0(this, container);
 		return container;
 	}
 }
