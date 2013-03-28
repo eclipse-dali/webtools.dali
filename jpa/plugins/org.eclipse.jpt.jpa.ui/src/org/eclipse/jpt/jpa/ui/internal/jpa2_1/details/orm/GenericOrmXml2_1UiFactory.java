@@ -15,12 +15,12 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmEntity2_0;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.GenericOrmXml2_0UiFactory;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.GenericOrmXmlUiFactory2_0;
 import org.eclipse.jpt.jpa.ui.jpa2_1.details.JpaUiFactory2_1;
 import org.eclipse.swt.widgets.Composite;
 
 public class GenericOrmXml2_1UiFactory
-	extends GenericOrmXml2_0UiFactory
+	extends GenericOrmXmlUiFactory2_0
 	implements JpaUiFactory2_1
 {
 

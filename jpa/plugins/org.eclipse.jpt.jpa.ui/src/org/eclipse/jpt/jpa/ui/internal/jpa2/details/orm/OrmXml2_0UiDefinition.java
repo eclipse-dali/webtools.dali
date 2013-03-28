@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.ui.internal.details.orm.AbstractOrmXmlResourceUiDefin
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmPersistentAttributeDetailsProvider;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmPersistentTypeDetailsProvider;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmXmlUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.GenericOrmXml2_0UiFactory;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.GenericOrmXmlUiFactory2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.ElementCollectionMapping2_0UiDefinition;
 
 public class OrmXml2_0UiDefinition
@@ -59,7 +59,7 @@ public class OrmXml2_0UiDefinition
 	
 	@Override
 	protected JpaUiFactory buildUiFactory() {
-		return new GenericOrmXml2_0UiFactory();
+		return new GenericOrmXmlUiFactory2_0();
 	}
 	
 	public boolean providesUi(JptResourceType resourceType) {
