@@ -30,10 +30,10 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-public class PersistenceUnitConnection2_0EditorPage
+public class PersistenceUnitConnectionEditorPage2_0
 	extends Pane<Connection2_0>
 {
-	public PersistenceUnitConnection2_0EditorPage(
+	public PersistenceUnitConnectionEditorPage2_0(
 			PropertyValueModel<Connection2_0> subjectModel,
             Composite parent,
             WidgetFactory widgetFactory,

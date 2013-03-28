@@ -60,7 +60,7 @@ public class PersistenceUnitConnectionEditorPageDefinition2_0
 
 	@Override
 	protected void buildEditorPageContent(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager, PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
-		new PersistenceUnitConnection2_0EditorPage(buildConnectionModel(persistenceUnitModel), parent, widgetFactory, resourceManager);
+		new PersistenceUnitConnectionEditorPage2_0(buildConnectionModel(persistenceUnitModel), parent, widgetFactory, resourceManager);
 	}
 
 	public static PropertyValueModel<Connection2_0> buildConnectionModel(PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
