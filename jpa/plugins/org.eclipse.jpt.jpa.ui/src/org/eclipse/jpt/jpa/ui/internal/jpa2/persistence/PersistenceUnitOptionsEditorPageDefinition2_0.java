@@ -59,7 +59,7 @@ public class PersistenceUnitOptionsEditorPageDefinition2_0
 
 	@Override
 	protected void buildEditorPageContent(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager, PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
-		new PersistenceUnit2_0OptionsEditorPage(buildOptionsModel(persistenceUnitModel), parent, widgetFactory, resourceManager);
+		new PersistenceUnitOptionsEditorPage2_0(buildOptionsModel(persistenceUnitModel), parent, widgetFactory, resourceManager);
 	}
 
 	public static PropertyValueModel<Options2_0> buildOptionsModel(PropertyValueModel<PersistenceUnit> persistenceUnitModel) {

@@ -53,10 +53,10 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.progress.IProgressService;
 
-public class PersistenceUnit2_0OptionsEditorPage 
+public class PersistenceUnitOptionsEditorPage2_0
 	extends Pane<Options2_0>
 {
-	public PersistenceUnit2_0OptionsEditorPage(
+	public PersistenceUnitOptionsEditorPage2_0(
 			PropertyValueModel<Options2_0> subjectModel,
             Composite parent,
             WidgetFactory widgetFactory,
