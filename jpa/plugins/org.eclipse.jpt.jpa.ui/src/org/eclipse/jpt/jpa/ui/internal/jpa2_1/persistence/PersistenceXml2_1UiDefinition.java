@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.AbstractPersistenceResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitConnection2_0EditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitOptions2_0EditorPageDefinition;
-import org.eclipse.jpt.jpa.ui.internal.jpa2_1.JavaConverterTypeUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.jpa2_1.JavaConverterTypeUiDefinition2_1;
 import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitGeneralEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitPropertiesEditorPageDefinition;
 
@@ -59,6 +59,6 @@ public class PersistenceXml2_1UiDefinition
 	@Override
 	protected void addJavaManagedTypeUiDefinitionsTo(List<JavaManagedTypeUiDefinition> definitions) {
 		super.addJavaManagedTypeUiDefinitionsTo(definitions);
-		definitions.add(JavaConverterTypeUiDefinition.instance());
+		definitions.add(JavaConverterTypeUiDefinition2_1.instance());
 	}
 }

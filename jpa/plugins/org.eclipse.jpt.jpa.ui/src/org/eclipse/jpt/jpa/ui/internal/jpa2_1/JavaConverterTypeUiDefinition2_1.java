@@ -15,12 +15,12 @@ import org.eclipse.jpt.jpa.core.jpa2_1.context.java.JavaConverterType2_1;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.JavaManagedTypeUiDefinition;
 
-public class JavaConverterTypeUiDefinition
+public class JavaConverterTypeUiDefinition2_1
 	implements JavaManagedTypeUiDefinition
 {
 	// singleton
-	private static final JavaConverterTypeUiDefinition INSTANCE = 
-			new JavaConverterTypeUiDefinition();
+	private static final JavaConverterTypeUiDefinition2_1 INSTANCE = 
+			new JavaConverterTypeUiDefinition2_1();
 
 
 	/**
@@ -34,7 +34,7 @@ public class JavaConverterTypeUiDefinition
 	/**
 	 * Ensure single instance.
 	 */
-	protected JavaConverterTypeUiDefinition() {
+	protected JavaConverterTypeUiDefinition2_1() {
 		super();
 	}
 
