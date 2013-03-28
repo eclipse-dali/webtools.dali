@@ -21,11 +21,10 @@ import org.eclipse.jpt.jpa.ui.internal.jpa2.details.java.Generic2_0JavaUiFactory
 import org.eclipse.jpt.jpa.ui.jpa2_1.details.JpaUiFactory2_1;
 import org.eclipse.swt.widgets.Composite;
 
-public class Generic2_1JavaUiFactory
+public class GenericJavaUiFactory2_1
 	extends Generic2_0JavaUiFactory
 	implements JpaUiFactory2_1
 {
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public JpaComposite createMappedSuperclassComposite(
@@ -45,5 +44,4 @@ public class Generic2_1JavaUiFactory
 			ResourceManager resourceManager) {
 		return new JavaEntityComposite2_1((PropertyValueModel<? extends JavaEntity2_0>) entityModel, parentComposite, widgetFactory, resourceManager);
 	}
-
 }

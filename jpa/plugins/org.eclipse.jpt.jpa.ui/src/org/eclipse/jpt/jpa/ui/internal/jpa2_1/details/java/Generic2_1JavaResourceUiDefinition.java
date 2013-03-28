@@ -53,7 +53,7 @@ public class Generic2_1JavaResourceUiDefinition
 	
 	@Override
 	protected JpaUiFactory buildUiFactory() {
-		return new Generic2_1JavaUiFactory();
+		return new GenericJavaUiFactory2_1();
 	}
 	
 	@Override
