@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2_1.details.orm;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.AbstractEntityMappingsDetailsPageManager;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.EntityMappingsGenerators2_0Composite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.EntityMappingsGeneratorsComposite2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2_1.details.QueriesComposite2_1;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -27,7 +27,7 @@ public class EntityMappingsDetailsPageManager2_1
 	
 	@Override
 	protected Control initializeGeneratorsSection(Composite container) {
-		return new EntityMappingsGenerators2_0Composite(this, container).getControl();
+		return new EntityMappingsGeneratorsComposite2_0(this, container).getControl();
 	}
 	
 	@Override

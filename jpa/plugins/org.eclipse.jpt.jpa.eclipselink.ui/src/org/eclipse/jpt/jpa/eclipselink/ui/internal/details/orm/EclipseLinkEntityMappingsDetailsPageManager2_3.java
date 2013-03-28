@@ -13,7 +13,7 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.QueriesComposite2_0;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.EntityMappingsGenerators2_0Composite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.EntityMappingsGeneratorsComposite2_0;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -87,7 +87,7 @@ public class EclipseLinkEntityMappingsDetailsPageManager2_3
 
 	@Override
 	protected Control initializeGeneratorsSection(Composite container) {
-		return new EntityMappingsGenerators2_0Composite(this, container).getControl();
+		return new EntityMappingsGeneratorsComposite2_0(this, container).getControl();
 	}
 
 	@Override

@@ -25,7 +25,7 @@ public class EntityMappingsDetailsPageManager2_0
 
 	@Override
 	protected Control initializeGeneratorsSection(Composite container) {
-		return new EntityMappingsGenerators2_0Composite(this, container).getControl();
+		return new EntityMappingsGeneratorsComposite2_0(this, container).getControl();
 	}
 
 	@Override
