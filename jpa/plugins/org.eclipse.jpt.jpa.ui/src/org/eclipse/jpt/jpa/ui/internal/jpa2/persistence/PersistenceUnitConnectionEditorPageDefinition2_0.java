@@ -24,12 +24,12 @@ import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.jpa2.persistence.JptJpaUiPersistenceMessages2_0;
 import org.eclipse.swt.widgets.Composite;
 
-public class PersistenceUnitConnection2_0EditorPageDefinition 
+public class PersistenceUnitConnectionEditorPageDefinition2_0
 	extends PersistenceUnitEditorPageDefinition2_0
 {
 	// singleton
 	private static final JpaEditorPageDefinition INSTANCE = 
-			new PersistenceUnitConnection2_0EditorPageDefinition();
+			new PersistenceUnitConnectionEditorPageDefinition2_0();
 
 	/**
 	 * Return the singleton.
@@ -42,7 +42,7 @@ public class PersistenceUnitConnection2_0EditorPageDefinition
 	/**
 	 * Ensure single instance.
 	 */
-	private PersistenceUnitConnection2_0EditorPageDefinition() {
+	private PersistenceUnitConnectionEditorPageDefinition2_0() {
 		super();
 	}
 
