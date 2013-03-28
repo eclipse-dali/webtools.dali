@@ -18,10 +18,10 @@ import org.eclipse.jpt.jpa.ui.internal.jpa2_1.details.QueriesComposite2_1;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-public class JavaMappedSuperclass2_1Composite
+public class JavaMappedSuperclassComposite2_1
 	extends JavaMappedSuperclass2_0Composite
 {
-	public JavaMappedSuperclass2_1Composite(
+	public JavaMappedSuperclassComposite2_1(
 			PropertyValueModel<? extends JavaMappedSuperclass> mappedSuperclassModel,
 			Composite parentComposite, WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
