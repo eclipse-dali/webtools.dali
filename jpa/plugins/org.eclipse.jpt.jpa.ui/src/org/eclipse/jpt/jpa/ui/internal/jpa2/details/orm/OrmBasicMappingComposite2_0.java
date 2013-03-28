@@ -26,10 +26,10 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-public class OrmBasicMapping2_0Composite
+public class OrmBasicMappingComposite2_0
 	extends AbstractBasicMappingComposite<BasicMapping>
 {
-	public OrmBasicMapping2_0Composite(
+	public OrmBasicMappingComposite2_0(
 			PropertyValueModel<? extends BasicMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
