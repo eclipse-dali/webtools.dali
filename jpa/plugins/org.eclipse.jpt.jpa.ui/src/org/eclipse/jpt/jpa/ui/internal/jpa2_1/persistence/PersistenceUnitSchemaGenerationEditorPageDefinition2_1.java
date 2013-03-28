@@ -65,7 +65,7 @@ public class PersistenceUnitSchemaGenerationEditorPageDefinition2_1
 
 	@Override
 	protected void buildEditorPageContent(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager, PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
-		new PersistenceUnitSchemaGeneration2_1EditorPage(buildSchemaGenerationModel(persistenceUnitModel), parent, widgetFactory, resourceManager);
+		new PersistenceUnitSchemaGenerationEditorPage2_1(buildSchemaGenerationModel(persistenceUnitModel), parent, widgetFactory, resourceManager);
 	}
 
 	public static PropertyValueModel<SchemaGeneration2_1> buildSchemaGenerationModel(PropertyValueModel<PersistenceUnit> persistenceUnitModel) {

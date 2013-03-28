@@ -24,10 +24,10 @@ import org.eclipse.ui.forms.widgets.Section;
 /**
  *  PersistenceUnitSchemaGeneration2_1EditorPage
  */
-public class PersistenceUnitSchemaGeneration2_1EditorPage
+public class PersistenceUnitSchemaGenerationEditorPage2_1
 	extends Pane<SchemaGeneration2_1>
 {
-	public PersistenceUnitSchemaGeneration2_1EditorPage(
+	public PersistenceUnitSchemaGenerationEditorPage2_1(
 		PropertyValueModel<SchemaGeneration2_1> subjectModel,
         Composite parent,
         WidgetFactory widgetFactory,
@@ -69,5 +69,4 @@ public class PersistenceUnitSchemaGeneration2_1EditorPage
 		dataLoadingComposite.getControl().setLayoutData(gridData);
 
 	}
-
 }
