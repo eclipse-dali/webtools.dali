@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkConverters
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkNonEmbeddableTypeMappingAdvancedComposite;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractJavaMappedSuperclassComposite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Generation2_0Composite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.GenerationComposite2_0;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -143,7 +143,7 @@ public abstract class AbstractJavaEclipseLinkMappedSuperclassComposite<T extends
 	}
 
 	protected Control initializeGeneratorsSection(Composite container) {
-		return new Generation2_0Composite(this, this.buildGeneratorContainerModel(), container).getControl();
+		return new GenerationComposite2_0(this, this.buildGeneratorContainerModel(), container).getControl();
 	}
 
 	protected PropertyValueModel<GeneratorContainer> buildGeneratorContainerModel() {

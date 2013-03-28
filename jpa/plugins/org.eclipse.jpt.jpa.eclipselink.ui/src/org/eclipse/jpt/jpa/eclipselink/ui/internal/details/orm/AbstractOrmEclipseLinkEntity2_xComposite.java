@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmEntity;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Entity2_0OverridesComposite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Generation2_0Composite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.GenerationComposite2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.QueriesComposite2_0;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -37,7 +37,7 @@ public abstract class AbstractOrmEclipseLinkEntity2_xComposite<T extends Eclipse
 
 	@Override
 	protected Control initializeGeneratorsSection(Composite container) {
-		return new Generation2_0Composite(this, this.buildGeneratorContainerModel(), container).getControl();
+		return new GenerationComposite2_0(this, this.buildGeneratorContainerModel(), container).getControl();
 	}
 
 	@Override

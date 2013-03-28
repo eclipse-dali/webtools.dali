@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.IdClassChooser;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.MetadataCompleteTriStateCheckBox;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmJavaClassChooser;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Generation2_0Composite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.GenerationComposite2_0;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -183,7 +183,7 @@ public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite<T extends 
 	}
 
 	protected Control initializeGeneratorsSection(Composite container) {
-		return new Generation2_0Composite(this, this.buildGeneratorContainerModel(), container).getControl();
+		return new GenerationComposite2_0(this, this.buildGeneratorContainerModel(), container).getControl();
 	}
 
 	protected PropertyValueModel<GeneratorContainer> buildGeneratorContainerModel() {
