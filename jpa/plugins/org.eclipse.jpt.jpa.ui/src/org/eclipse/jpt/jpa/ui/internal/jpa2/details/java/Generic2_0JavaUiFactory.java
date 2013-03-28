@@ -63,7 +63,7 @@ public class Generic2_0JavaUiFactory
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaEntity2_0Composite((PropertyValueModel<? extends JavaEntity2_0>) entityModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaEntityComposite2_0((PropertyValueModel<? extends JavaEntity2_0>) entityModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@SuppressWarnings("unchecked")

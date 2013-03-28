@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Control;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see Cacheable2_0
- * @see JavaEntity2_0Composite - A container of this widget
+ * @see JavaEntityComposite2_0 - A container of this widget
  * @see OrmEntity2_0Composite - A container of this widget
  */
 public class CacheableTriStateCheckBox2_0
