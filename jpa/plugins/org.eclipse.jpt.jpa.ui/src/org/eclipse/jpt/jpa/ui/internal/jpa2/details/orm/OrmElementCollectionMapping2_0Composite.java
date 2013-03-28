@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.ui.details.orm.JptJpaUiDetailsOrmMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmMappingNameText;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.AbstractElementCollectionMapping2_0Composite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.AbstractElementCollectionMappingComposite2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.CollectionTableComposite2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.TargetClassChooser2_0;
 import org.eclipse.jpt.jpa.ui.jpa2.details.JptJpaUiDetailsMessages2_0;
@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
 public class OrmElementCollectionMapping2_0Composite
-	extends AbstractElementCollectionMapping2_0Composite<ElementCollectionMapping2_0>
+	extends AbstractElementCollectionMappingComposite2_0<ElementCollectionMapping2_0>
 {
 	public OrmElementCollectionMapping2_0Composite(
 			PropertyValueModel<? extends ElementCollectionMapping2_0> mappingModel,

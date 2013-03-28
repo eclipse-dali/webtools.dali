@@ -49,7 +49,7 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.PageBook;
 
-public abstract class AbstractElementCollectionMapping2_0Composite<T extends ElementCollectionMapping2_0> 
+public abstract class AbstractElementCollectionMappingComposite2_0<T extends ElementCollectionMapping2_0> 
 	extends Pane<T>
 	implements JpaComposite
 {
@@ -57,7 +57,7 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 	
 	private Control embeddableValueComposite;
 	
-	protected AbstractElementCollectionMapping2_0Composite(
+	protected AbstractElementCollectionMappingComposite2_0(
 			PropertyValueModel<? extends T> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
@@ -112,7 +112,7 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 			@Override
 			public void expansionStateChanging(ExpansionEvent e) {
 				if (e.getState() && section.getClient() == null) {
-					section.setClient(AbstractElementCollectionMapping2_0Composite.this.initializeOrderingSection(section));
+					section.setClient(AbstractElementCollectionMappingComposite2_0.this.initializeOrderingSection(section));
 				}
 			}
 		});
@@ -130,7 +130,7 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 			@Override
 			public void expansionStateChanging(ExpansionEvent e) {
 				if (e.getState() && section.getClient() == null) {
-					section.setClient(AbstractElementCollectionMapping2_0Composite.this.initializeValueSection(section));
+					section.setClient(AbstractElementCollectionMappingComposite2_0.this.initializeValueSection(section));
 				}
 			}
 		});
@@ -267,7 +267,7 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 
 		@Override
 		public Control transform(T.Type type) {
-			return AbstractElementCollectionMapping2_0Composite.this.transformValueType(type, this.container);
+			return AbstractElementCollectionMappingComposite2_0.this.transformValueType(type, this.container);
 		}
 	}
 

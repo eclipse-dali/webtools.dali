@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.AbstractElementCollectionMapping2_0Composite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.AbstractElementCollectionMappingComposite2_0;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -34,7 +34,7 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
 public abstract class EclipseLinkElementCollectionMapping2_0Composite<T extends EclipseLinkElementCollectionMapping2_0>
-	extends AbstractElementCollectionMapping2_0Composite<T>
+	extends AbstractElementCollectionMappingComposite2_0<T>
 {
 	protected EclipseLinkElementCollectionMapping2_0Composite(
 			PropertyValueModel<? extends T> mappingModel,
