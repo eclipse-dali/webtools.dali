@@ -43,12 +43,12 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.part.PageBook;
 
 
-public class Queries2_1Composite
+public class QueriesComposite2_1
 	extends Queries2_0Composite
 {
 	Pane<? extends NamedStoredProcedureQuery2_1> namedStoredProceduerQueryPane; //lazy initialized to avoid unnecessary handles
 
-	public Queries2_1Composite(
+	public QueriesComposite2_1(
 			Pane<?> parentPane, 
 			PropertyValueModel<? extends QueryContainer> subjectHolder,
 			Composite parent) {
@@ -127,10 +127,10 @@ public class Queries2_1Composite
 		@Override
 		public Control transform_(Query query) {
 			if (query instanceof NamedNativeQuery) {
-				return Queries2_1Composite.this.getNamedNativeQueryPropertyComposite(this.pageBook).getControl();
+				return QueriesComposite2_1.this.getNamedNativeQueryPropertyComposite(this.pageBook).getControl();
 			}
 			if (query instanceof NamedQuery) {
-				return Queries2_1Composite.this.getNamedQueryPropertyComposite(this.pageBook).getControl();
+				return QueriesComposite2_1.this.getNamedQueryPropertyComposite(this.pageBook).getControl();
 			}
 			return null; // This is for UI tolerance. Full UI support should be doing as below:
 //				return Queries2_1Composite.this.getNamedStoredProcedureQueryPropertyComposite(pageBook).getControl();
@@ -205,5 +205,4 @@ public class Queries2_1Composite
 			}
 		};
 	}
-
 }

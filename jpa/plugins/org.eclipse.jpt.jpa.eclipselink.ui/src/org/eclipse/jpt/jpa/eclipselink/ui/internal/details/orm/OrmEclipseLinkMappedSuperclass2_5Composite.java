@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmMultitenan
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkMultitenancyComposite;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
-import org.eclipse.jpt.jpa.ui.internal.jpa2_1.details.Queries2_1Composite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2_1.details.QueriesComposite2_1;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -72,7 +72,7 @@ public class OrmEclipseLinkMappedSuperclass2_5Composite
 	}
 
 	protected Control initializeQueriesSection(Composite container) {
-		return new Queries2_1Composite(this, this.buildQueryContainerModel(), container).getControl();
+		return new QueriesComposite2_1(this, this.buildQueryContainerModel(), container).getControl();
 	}
 
 	private PropertyValueModel<QueryContainer> buildQueryContainerModel() {

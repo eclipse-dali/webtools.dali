@@ -13,7 +13,7 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.EntityMappingsGenerators2_0Composite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2_1.details.Queries2_1Composite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2_1.details.QueriesComposite2_1;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -49,7 +49,7 @@ public class EclipseLinkEntityMappingsDetailsPageManager2_5
 
 	@Override
 	protected Control initializeQueriesSection(Composite container) {
-		return new Queries2_1Composite(this, this.buildQueryContainerHolder(), container).getControl();
+		return new QueriesComposite2_1(this, this.buildQueryContainerHolder(), container).getControl();
 	}
 
 	@Override

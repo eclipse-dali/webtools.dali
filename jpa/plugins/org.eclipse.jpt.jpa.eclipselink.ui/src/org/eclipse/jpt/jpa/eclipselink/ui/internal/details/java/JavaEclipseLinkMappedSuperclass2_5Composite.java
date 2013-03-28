@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.IdClassChooser;
-import org.eclipse.jpt.jpa.ui.internal.jpa2_1.details.Queries2_1Composite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2_1.details.QueriesComposite2_1;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -70,7 +70,7 @@ public class JavaEclipseLinkMappedSuperclass2_5Composite
 
 	@Override
 	protected Control initializeQueriesSection(Composite container) {
-		return new Queries2_1Composite(this, this.buildQueryContainerModel(), container).getControl();
+		return new QueriesComposite2_1(this, this.buildQueryContainerModel(), container).getControl();
 	}
 	
 	@Override
