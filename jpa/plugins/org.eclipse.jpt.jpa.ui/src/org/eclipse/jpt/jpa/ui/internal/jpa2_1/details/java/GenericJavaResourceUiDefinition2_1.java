@@ -30,11 +30,11 @@ import org.eclipse.jpt.jpa.ui.internal.details.java.DefaultEmbeddedMappingUiDefi
 import org.eclipse.jpt.jpa.ui.internal.details.java.NullJavaAttributeMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.ElementCollectionMapping2_0UiDefinition;
 
-public class Generic2_1JavaResourceUiDefinition
+public class GenericJavaResourceUiDefinition2_1
 	extends AbstractJavaResourceUiDefinition
 {
 	// singleton
-	private static final ResourceUiDefinition INSTANCE = new Generic2_1JavaResourceUiDefinition();
+	private static final ResourceUiDefinition INSTANCE = new GenericJavaResourceUiDefinition2_1();
 
 	/**
 	 * Return the singleton.
@@ -47,7 +47,7 @@ public class Generic2_1JavaResourceUiDefinition
 	/**
 	 * zero-argument constructor
 	 */
-	protected Generic2_1JavaResourceUiDefinition() {
+	protected GenericJavaResourceUiDefinition2_1() {
 		super();
 	}
 	
