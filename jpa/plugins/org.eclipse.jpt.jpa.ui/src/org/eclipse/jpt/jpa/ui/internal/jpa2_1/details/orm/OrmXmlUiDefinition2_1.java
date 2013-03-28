@@ -33,11 +33,11 @@ import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmPersistentTypeDetailsProvi
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmXmlUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.ElementCollectionMapping2_0UiDefinition;
 
-public class OrmXml2_1UiDefinition
+public class OrmXmlUiDefinition2_1
 	extends AbstractOrmXmlResourceUiDefinition
 {
 	// singleton
-	private static final ResourceUiDefinition INSTANCE = new OrmXml2_1UiDefinition();
+	private static final ResourceUiDefinition INSTANCE = new OrmXmlUiDefinition2_1();
 	
 	
 	/**
@@ -51,7 +51,7 @@ public class OrmXml2_1UiDefinition
 	/**
 	 * Enforce singleton usage
 	 */
-	private OrmXml2_1UiDefinition() {
+	private OrmXmlUiDefinition2_1() {
 		super();
 	}
 	
