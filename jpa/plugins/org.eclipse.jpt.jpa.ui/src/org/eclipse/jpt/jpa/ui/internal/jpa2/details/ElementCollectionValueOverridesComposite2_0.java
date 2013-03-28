@@ -22,10 +22,10 @@ import org.eclipse.jpt.jpa.ui.internal.details.AssociationOverrideComposite;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.PageBook;
 
-public final class ElementCollectionValueOverridesComposite
+public final class ElementCollectionValueOverridesComposite2_0
 	extends AbstractOverridesComposite<ElementCollectionMapping2_0>
 {
-	public ElementCollectionValueOverridesComposite(
+	public ElementCollectionValueOverridesComposite2_0(
 			Pane<? extends ElementCollectionMapping2_0> parentPane,
 			Composite parent) {
 		

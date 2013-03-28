@@ -230,7 +230,7 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 	}
 
 	protected Control buildEmbeddableValueSection(Composite container) {
-		return new ElementCollectionValueOverridesComposite(this, container).getControl();
+		return new ElementCollectionValueOverridesComposite2_0(this, container).getControl();
 	}
 
 	private void installValueControlSwitcher(PageBook pageBook) {
