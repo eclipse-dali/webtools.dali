@@ -8,7 +8,7 @@
 <title>Error messages</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2013-01-03T9:24:53Z" />
+<meta name="date" content="2013-04-05T12:21:39Z" />
 <meta name="robots" content="noarchive" />
 <meta name="doctitle" content="Error messages" />
 <meta name="relnum" content="Release 3.3" />
@@ -17,7 +17,6 @@
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2013-01-03</p>
 <p><a id="CIHFEDEI" name="CIHFEDEI"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
 <h1>Error messages<a id="sthref335" name="sthref335"></a></h1>
@@ -62,64 +61,61 @@
 <p class="subhead2">Duplicate class "<span class="italic">&lt;CLASS_NAME&gt;</span>".</p>
 <p>You created to persistence classes with the same name. Each Java class must have a unique name. See <a href="task_add_persistence.htm#BABHICAI">"Adding persistence to a class"</a> for more information.</p>
 <a id="sthref344" name="sthref344"></a>
-<p class="subhead2">Embeddable attribute "<span class="italic">&lt;ATTRIBUTE_NAME&gt;</span>" mapped to unresolved column.</p>
-<p><span class="italic">Complete information will be available in a future build.</span></p>
-<a id="sthref345" name="sthref345"></a>
 <p class="subhead2">Entity does not have an Id or Embedded Id.</p>
 <p>You created a persistent entity without identifying its primary key. A persistent entity must have a primary key field designated with an <code>@Id</code> or <code>@EmbeddedId</code> annotation.</p>
 <p>Add an ID mapping to the entity as shown in <a href="tasks015.htm#BABGCBHG">"ID mapping"</a> or <a href="tasks014.htm#CIHDIAEE">"Embedded ID mapping"</a>.</p>
-<a id="sthref346" name="sthref346"></a>
+<a id="sthref345" name="sthref345"></a>
 <p class="subhead2">Multiple generators named "&lt;GENERATOR_NAME&gt;" defined in this persistence unit.</p>
 <p>When creating generators, the converter <span class="bold">Name</span> must be unique within the persistence unit. See <a href="reference029.htm#CACCJJDC">"Primary Key Generation"</a>.</p>
-<a id="sthref347" name="sthref347"></a>
+<a id="sthref346" name="sthref346"></a>
 <p class="subhead2">Multiple persistence.xml files in project.</p>
 <p>You created a JPA project with more than one <code>persistence.xml</code> file. Each JPA project must contain a <span class="italic">single</span> <code>persistence.xml</code> file.</p>
 <p>See <a href="task_manage_persistence.htm#CIHDAJID">"Managing the persistence.xml file"</a> for more information.</p>
-<a id="sthref348" name="sthref348"></a>
+<a id="sthref347" name="sthref347"></a>
 <p class="subhead2">Multiple converters named "<span class="italic">&lt;CONVERTER_NAME&gt;</span>" defined in this persistence unit</p>
 <p>When creating converters, the converter <span class="bold">Name</span> must be unique within the persistence unit. See <a href="ref_add_converter.htm#CIAGCGIJ">"Add Converter dialog"</a>.</p>
-<a id="sthref349" name="sthref349"></a>
+<a id="sthref348" name="sthref348"></a>
 <p class="subhead2">No persistence unit defined.</p>
 <p>There is no persistence unit defined in the <code>persistence.xml</code> file. Use the &lt;persistence-unit name="<span class="italic">&lt;PERSISTENCE_UNIT_NAME&gt;</span>" tag to define the persistent unit.</p>
 <p>See <a href="task_manage_orm.htm#CIHDGDCD">"Managing the orm.xml file"</a> for more information.</p>
-<a id="sthref350" name="sthref350"></a>
+<a id="sthref349" name="sthref349"></a>
 <p class="subhead2">No persistence.xml file in project.</p>
 <p>You created a JPA project without a <code>persistence.xml</code> file. Each JPA project must contain a <span class="italic">single</span> <code>persistence.xml</code> file.</p>
 <p>See <a href="task_manage_persistence.htm#CIHDAJID">"Managing the persistence.xml file"</a> for more information.</p>
-<a id="sthref351" name="sthref351"></a>
+<a id="sthref350" name="sthref350"></a>
 <p class="subhead2">Property "&lt;PROPERTY_NAME&gt;" will be ignored as shared-cache-mode is set to NONE.</p>
 <p>Because the <span class="bold">Shared cache mode</span> option is set to <span class="bold">NONE</span>, Dali will ignore the property. See <a href="reference056.htm#CIABEDCH">"Caching"</a>.</p>
-<a id="sthref352" name="sthref352"></a>
+<a id="sthref351" name="sthref351"></a>
 <p class="subhead2">Referenced column "<span class="italic">&lt;COLUMN_NAME&gt;</span>" in join column "<span class="italic">&lt;COLUMN_NAME&gt;</span>" cannot be resolved.</p>
 <p>The column that you selected to join a relationship mapping does not exist on the database table. Either select a different column on the <a href="reference047.htm#CACIJEGI">Joining Strategy</a> or create the necessary column on the database table.</p>
 <p>See <a href="ref_persistence_map_view.htm#BABIFBAF">"JPA Details view (for attributes)"</a> for more information.</p>
-<a id="sthref353" name="sthref353"></a>
+<a id="sthref352" name="sthref352"></a>
 <p class="subhead2">Schema "&lt;<span class="italic">SCHEMA_NAME</span>&gt;" cannot be resolved for table/join table "&lt;<span class="italic">TABLE_NAME</span>&gt;".</p>
 <p>Define the default database schema information in the persistence unit.</p>
 <p>See <a href="task_manage_orm.htm#CIHDGDCD">"Managing the orm.xml file"</a> for more information.</p>
-<a id="sthref354" name="sthref354"></a>
+<a id="sthref353" name="sthref353"></a>
 <p class="subhead2">Table "<span class="italic">&lt;TABLE_NAME&gt;</span>" cannot be resolved.</p>
 <p>You associated a persistent entity to an incorrect or invalid database table. By default, Dali will attempt to associate each persistent entity with an identically named database table. If the entity's name differs from the table's name, you must explicitly create the association.</p>
 <p>Associate the entity with a valid database table as shown in <a href="task_add_persistence.htm#BABHICAI">"Adding persistence to a class"</a>.</p>
-<a id="sthref355" name="sthref355"></a>
+<a id="sthref354" name="sthref354"></a>
 <p class="subhead2">The @Cache annotation on entity <span class="italic">&lt;ENTITY_NAME&gt;</span> has both expiry() and expiryTimeOfDay() specified.</p>
 <p>You attempted to include both <code>expiry</code> and <code>expiryTimeOfDay</code> in the <code>@Cache</code> annotation. You may use only one. See<a href="reference024.htm#CACJBBCA">"Caching"</a>.</p>
-<a id="sthref356" name="sthref356"></a>
+<a id="sthref355" name="sthref355"></a>
 <p class="subhead2">The converter class <span class="italic">"&lt;CLASS_NAME&gt;"</span> does not exist on the project classpath.</p>
 <p>You defined a convert class but did not include the class within the project. See<a href="reference031.htm#CACJGDAJ">"Converters"</a>.</p>
-<a id="sthref357" name="sthref357"></a>
+<a id="sthref356" name="sthref356"></a>
 <p class="subhead2">The converter class "<span class="italic">&lt;CLASS_NAME&gt;</span>" does not implement the org.eclipse.persistence.mappings.converters.Converter interface</p>
 <p>When creating a converter, its class must implement the <code>org.eclipse.persistence.mappings.converters.Converter</code> interface. See<a href="reference031.htm#CACJGDAJ">"Converters"</a>.</p>
-<a id="sthref358" name="sthref358"></a>
+<a id="sthref357" name="sthref357"></a>
 <p class="subhead2">The converter class must be defined.</p>
 <p>You attempted to use a converter without defining the class. See<a href="reference031.htm#CACJGDAJ">"Converters"</a>.</p>
-<a id="sthref359" name="sthref359"></a>
+<a id="sthref358" name="sthref358"></a>
 <p class="subhead2">The entity customizer class "&lt;CLASS_NAME&gt;" does not implement the org.eclipse.persistence.config.DescriptorCustomizer interface.</p>
 <p>When using a customer class for an entity, the class must implement the <code>org.eclipse.persistence.config.DescriptorCustomizer</code> interface. See <a href="reference032.htm#CACJEEDE">"Advanced"</a></p>
-<a id="sthref360" name="sthref360"></a>
+<a id="sthref359" name="sthref359"></a>
 <p class="subhead2">The exception handler class "<span class="italic">&lt;CLASS_NAME&gt;</span>" does not implement the org.eclipse.persistence.exceptions.ExceptionHandler interface.</p>
 <p>When using a custom exception handler, you must select (or create) a Java class that implements the <code>org.eclipse.persistence.exceptions.ExceptionHandler</code> class. See <a href="reference055.htm#CIAJAFEG">"Customization"</a>.</p>
-<a id="sthref361" name="sthref361"></a>
+<a id="sthref360" name="sthref360"></a>
 <p class="subhead2">The persistent field or property for a Version mapping must be of type int, Integer, short, Short, long, Long, or Timestamp.</p>
 <p>Version mappings may be used only with the following attribute types:</p>
 <ul>
@@ -140,13 +136,13 @@
 </li>
 </ul>
 <p>See <a href="tasks021.htm#BABHIBII">"Version mapping"</a>.</p>
-<a id="sthref362" name="sthref362"></a>
+<a id="sthref361" name="sthref361"></a>
 <p class="subhead2">The struct converter class "<span class="italic">&lt;CLASS_NAME&gt;</span>" does not implement the org.eclipse.persistence.platform.database.converters.StructConverter interface.</p>
 <p>When creating a Struct converter (to enable custom processing of <code>java.sql.Struct</code> types), its class must implement the <code>org.eclipse.persistence.mappings.converters.StructConverter</code> interface. See<a href="reference031.htm#CACJGDAJ">"Converters"</a>.</p>
-<a id="sthref363" name="sthref363"></a>
+<a id="sthref362" name="sthref362"></a>
 <p class="subhead2">Unresolved generator "<span class="italic">&lt;GENERATOR_NAME&gt;</span>" is defined in persistence unit.</p>
 <p>You created a persistence entity that uses sequencing or a table generator, but did not define the generator in the persistence unit. Either define the generator by using an annotation or including it in the XML mapping file.</p>
-<a id="sthref364" name="sthref364"></a>
+<a id="sthref363" name="sthref363"></a>
 <p class="subhead2">Related concepts</p>
 <ul>
 <li>

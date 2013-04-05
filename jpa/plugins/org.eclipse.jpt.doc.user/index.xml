@@ -2,128 +2,128 @@
 <index version="1.0">
   <entry keyword="@Basic">
 <entry keyword="Basic mapping"><topic href="tasks011.htm#sthref203" /></entry>
-<entry keyword="Basic Mapping"><topic href="reference033.htm#sthref542" /></entry>
+<entry keyword="Basic Mapping"><topic href="reference033.htm#sthref541" /></entry>
   </entry>
   <entry keyword="@Column">
-<entry keyword="Basic Mapping"><topic href="reference033.htm#sthref544" /></entry>
-<entry keyword="ID Mapping"><topic href="reference037.htm#sthref554" /></entry>
-<entry keyword="Version Mapping"><topic href="reference042.htm#sthref571" /></entry>
+<entry keyword="Basic Mapping"><topic href="reference033.htm#sthref543" /></entry>
+<entry keyword="ID Mapping"><topic href="reference037.htm#sthref553" /></entry>
+<entry keyword="Version Mapping"><topic href="reference042.htm#sthref570" /></entry>
   </entry>
-<entry keyword="@DiscriminatorColumn, Inheritance"><topic href="reference026.htm#sthref492" /></entry>
-<entry keyword="@DiscriminatorValue, Inheritance"><topic href="reference026.htm#sthref490" /></entry>
+<entry keyword="@DiscriminatorColumn, Inheritance"><topic href="reference026.htm#sthref491" /></entry>
+<entry keyword="@DiscriminatorValue, Inheritance"><topic href="reference026.htm#sthref489" /></entry>
 <entry keyword="@Embeddable, Embeddable"><topic href="tasks005.htm#sthref109" /></entry>
 <entry keyword="@Embedded, Embedded mapping"><topic href="tasks013.htm#sthref218" /></entry>
 <entry keyword="@EmbeddedId, Embedded ID mapping"><topic href="tasks014.htm#sthref226" /></entry>
 <entry keyword="@Entity, Entity"><topic href="tasks004.htm#sthref101" /></entry>
-<entry keyword="@Enumerated, Type information"><topic href="reference043.htm#sthref579" /></entry>
-<entry keyword="@GeneratedValue, Primary Key Generation information"><topic href="ref_primary_key.htm#sthref593" /></entry>
+<entry keyword="@Enumerated, Type information"><topic href="reference043.htm#sthref578" /></entry>
+<entry keyword="@GeneratedValue, Primary Key Generation information"><topic href="ref_primary_key.htm#sthref592" /></entry>
   <entry keyword="@Id">
 <entry keyword="ID mapping"><topic href="tasks015.htm#sthref234" /></entry>
-<entry keyword="ID Mapping"><topic href="reference037.htm#sthref552" /></entry>
+<entry keyword="ID Mapping"><topic href="reference037.htm#sthref551" /></entry>
   </entry>
 <entry keyword="@Inheritance, Specifying entity inheritance"><topic href="task_inheritance.htm#sthref177" /></entry>
-<entry keyword="@JoinColumn, Joining Strategy"><topic href="reference047.htm#sthref589" /></entry>
-<entry keyword="@Lob, Type information"><topic href="reference043.htm#sthref574" /></entry>
+<entry keyword="@JoinColumn, Joining Strategy"><topic href="reference047.htm#sthref588" /></entry>
+<entry keyword="@Lob, Type information"><topic href="reference043.htm#sthref573" /></entry>
   <entry keyword="@ManyToMany">
 <entry keyword="Many-to-many mapping"><topic href="tasks016.htm#sthref243" /></entry>
-<entry keyword="Many-to-Many Mapping"><topic href="reference038.htm#sthref557" /></entry>
+<entry keyword="Many-to-Many Mapping"><topic href="reference038.htm#sthref556" /></entry>
   </entry>
   <entry keyword="@ManyToOne">
 <entry keyword="Many-to-one mapping"><topic href="tasks017.htm#sthref253" /></entry>
-<entry keyword="Many-to-One Mapping"><topic href="reference039.htm#sthref560" /></entry>
+<entry keyword="Many-to-One Mapping"><topic href="reference039.htm#sthref559" /></entry>
   </entry>
 <entry keyword="@MappedSuperclass, Mapped superclass"><topic href="tasks006.htm#sthref117" /></entry>
 <entry keyword="@NamedQuery, Creating queries"><topic href="tasks010.htm#sthref189" /></entry>
-<entry keyword="@ObjectTypeConverter, Converters"><topic href="reference031.htm#sthref517" /></entry>
+<entry keyword="@ObjectTypeConverter, Converters"><topic href="reference031.htm#sthref516" /></entry>
   <entry keyword="@OneToMany">
 <entry keyword="One-to-many mapping"><topic href="tasks018.htm#sthref260" /></entry>
-<entry keyword="One-to-Many Mapping"><topic href="reference040.htm#sthref563" /></entry>
+<entry keyword="One-to-Many Mapping"><topic href="reference040.htm#sthref562" /></entry>
   </entry>
   <entry keyword="@OneToOne">
 <entry keyword="One-to-one mapping"><topic href="tasks019.htm#sthref268" /></entry>
-<entry keyword="One-to-One Mapping"><topic href="reference041.htm#sthref566" /></entry>
+<entry keyword="One-to-One Mapping"><topic href="reference041.htm#sthref565" /></entry>
   </entry>
-<entry keyword="@OrderBy, Ordering"><topic href="reference046.htm#sthref584" /></entry>
+<entry keyword="@OrderBy, Ordering"><topic href="reference046.htm#sthref583" /></entry>
 <entry keyword="@SecondaryTable, Specifying additional tables"><topic href="task_additonal_tables.htm#sthref172" /></entry>
   <entry keyword="@SequenceGenerator">
-<entry keyword="Primary Key Generation"><topic href="reference029.htm#sthref505" /></entry>
-<entry keyword="Primary Key Generation"><topic href="reference029.htm#sthref507" /></entry>
-<entry keyword="Primary Key Generation information"><topic href="ref_primary_key.htm#sthref595" /></entry>
+<entry keyword="Primary Key Generation"><topic href="reference029.htm#sthref504" /></entry>
+<entry keyword="Primary Key Generation"><topic href="reference029.htm#sthref506" /></entry>
+<entry keyword="Primary Key Generation information"><topic href="ref_primary_key.htm#sthref594" /></entry>
   </entry>
-<entry keyword="@StructConverter, Converters"><topic href="reference031.htm#sthref519" /></entry>
+<entry keyword="@StructConverter, Converters"><topic href="reference031.htm#sthref518" /></entry>
   <entry keyword="@Temporal">
+<entry keyword="Type information"><topic href="reference043.htm#sthref575" /></entry>
 <entry keyword="Type information"><topic href="reference043.htm#sthref576" /></entry>
-<entry keyword="Type information"><topic href="reference043.htm#sthref577" /></entry>
   </entry>
 <entry keyword="@Transient, Transient mapping"><topic href="tasks020.htm#sthref276" /></entry>
-<entry keyword="@TypeConverter, Converters"><topic href="reference031.htm#sthref518" /></entry>
+<entry keyword="@TypeConverter, Converters"><topic href="reference031.htm#sthref517" /></entry>
   <entry keyword="@Version">
 <entry keyword="Version mapping"><topic href="tasks021.htm#sthref284" /></entry>
-<entry keyword="Version Mapping"><topic href="reference042.htm#sthref569" /></entry>
+<entry keyword="Version Mapping"><topic href="reference042.htm#sthref568" /></entry>
   </entry>
-<entry keyword="@XMLPath, Tips and tricks"><topic href="tips_and_tricks.htm#sthref742" /></entry>
-<entry keyword="Add Converter dialog, Add Converter dialog"><topic href="ref_add_converter.htm#sthref705" /></entry>
-<entry keyword="Add Join Column dialog, Add Join Column dialog"><topic href="reference072.htm#sthref697" /></entry>
-<entry keyword="Add Primary Key Join Column dialog, Add Primary Key Join Column dialog"><topic href="reference077.htm#sthref715" /></entry>
-<entry keyword="Add Query dialog, Add Query dialog"><topic href="reference076.htm#sthref713" /></entry>
-<entry keyword="Add Schema Location dialog, Add Schema Location dialog"><topic href="reference078.htm#sthref718" /></entry>
-<entry keyword="Add Virtual Attribute dialog, Add Virtual Attribute dialog"><topic href="reference080.htm#sthref726" /></entry>
-<entry keyword="Advanced - in Java Details view, Advanced"><topic href="reference032.htm#sthref524" /></entry>
-<entry keyword="architecture of Dali feature, Dali developer documentation"><topic href="reference084.htm#sthref737" /></entry>
-<entry keyword="association tables, Create New Association wizard"><topic href="ref_create_new_association_wizard.htm#sthref455" /></entry>
-<entry keyword="Attribute Overrides - in Java Details view, Attribute Overrides"><topic href="reference027.htm#sthref498" /></entry>
+<entry keyword="@XMLPath, Tips and tricks"><topic href="tips_and_tricks.htm#sthref741" /></entry>
+<entry keyword="Add Converter dialog, Add Converter dialog"><topic href="ref_add_converter.htm#sthref704" /></entry>
+<entry keyword="Add Join Column dialog, Add Join Column dialog"><topic href="reference072.htm#sthref696" /></entry>
+<entry keyword="Add Primary Key Join Column dialog, Add Primary Key Join Column dialog"><topic href="reference077.htm#sthref714" /></entry>
+<entry keyword="Add Query dialog, Add Query dialog"><topic href="reference076.htm#sthref712" /></entry>
+<entry keyword="Add Schema Location dialog, Add Schema Location dialog"><topic href="reference078.htm#sthref717" /></entry>
+<entry keyword="Add Virtual Attribute dialog, Add Virtual Attribute dialog"><topic href="reference080.htm#sthref725" /></entry>
+<entry keyword="Advanced - in Java Details view, Advanced"><topic href="reference032.htm#sthref523" /></entry>
+<entry keyword="architecture of Dali feature, Dali developer documentation"><topic href="reference084.htm#sthref736" /></entry>
+<entry keyword="association tables, Create New Association wizard"><topic href="ref_create_new_association_wizard.htm#sthref454" /></entry>
+<entry keyword="Attribute Overrides - in Java Details view, Attribute Overrides"><topic href="reference027.htm#sthref497" /></entry>
   <entry keyword="attributes">
-<entry keyword="JPA Details view, JPA Details view (for attributes)"><topic href="ref_persistence_map_view.htm#sthref536" /></entry>
+<entry keyword="JPA Details view, JPA Details view (for attributes)"><topic href="ref_persistence_map_view.htm#sthref535" /></entry>
 <entry keyword="mapping, Understanding OR mappings"><topic href="concept_mapping.htm#sthref22" /></entry>
-<entry keyword="overrides, Attribute Overrides"><topic href="reference027.htm#sthref496" /></entry>
+<entry keyword="overrides, Attribute Overrides"><topic href="reference027.htm#sthref495" /></entry>
 <entry keyword="virtual, Adding virtual attributes"><topic href="tasks007.htm#sthref123" /></entry>
   </entry>
-<entry keyword="attributes - virtual, Add Virtual Attribute dialog"><topic href="reference080.htm#sthref728" /></entry>
+<entry keyword="attributes - virtual, Add Virtual Attribute dialog"><topic href="reference080.htm#sthref727" /></entry>
   <entry keyword="basic mapping">
 <entry keyword="@Basic, Basic mapping"><topic href="tasks011.htm#sthref204" /></entry>
     <entry keyword="about">
 <entry keyword="Basic mapping"><topic href="tasks011.htm#sthref202" /></entry>
-<entry keyword="Basic Mapping"><topic href="reference033.htm#sthref543" /></entry>
+<entry keyword="Basic Mapping"><topic href="reference033.htm#sthref542" /></entry>
     </entry>
     <entry keyword="(See also mappings)"></entry>
   </entry>
-<entry keyword="batch writing - persistence unit, Connection"><topic href="reference054.htm#sthref633" /></entry>
+<entry keyword="batch writing - persistence unit, Connection"><topic href="reference054.htm#sthref632" /></entry>
   <entry keyword="caching">
-<entry keyword="Caching"><topic href="reference024.htm#sthref480" /></entry>
-<entry keyword="Caching"><topic href="reference056.htm#sthref637" /></entry>
+<entry keyword="Caching"><topic href="reference024.htm#sthref479" /></entry>
+<entry keyword="Caching"><topic href="reference056.htm#sthref636" /></entry>
   </entry>
-<entry keyword="Caching - in persistence.xml editor, Caching"><topic href="reference056.htm#sthref638" /></entry>
-<entry keyword="canonical metamodel, Project Properties page - JPA"><topic href="ref_project_properties.htm#sthref670" /></entry>
-<entry keyword="cardinality - association tables, Association Cardinality"><topic href="ref_association_cardinality.htm#sthref463" /></entry>
-<entry keyword="change tracking, Advanced"><topic href="reference032.htm#sthref529" /></entry>
+<entry keyword="Caching - in persistence.xml editor, Caching"><topic href="reference056.htm#sthref637" /></entry>
+<entry keyword="canonical metamodel, Project Properties page - JPA"><topic href="ref_project_properties.htm#sthref669" /></entry>
+<entry keyword="cardinality - association tables, Association Cardinality"><topic href="ref_association_cardinality.htm#sthref462" /></entry>
+<entry keyword="change tracking, Advanced"><topic href="reference032.htm#sthref528" /></entry>
   <entry keyword="classes">
 <entry keyword="adding persistence to, Adding persistence to a class"><topic href="task_add_persistence.htm#sthref93" /></entry>
 <entry keyword="embeddable, Embeddable"><topic href="tasks005.htm#sthref108" /></entry>
 <entry keyword="entity, Entity"><topic href="tasks004.htm#sthref99" /></entry>
-<entry keyword="managed, General"><topic href="ref_persistence_general.htm#sthref629" /></entry>
-<entry keyword="managing persistent classes, JPA Facet page"><topic href="ref_jpa_facet.htm#sthref424" /></entry>
+<entry keyword="managed, General"><topic href="ref_persistence_general.htm#sthref628" /></entry>
+<entry keyword="managing persistent classes, JPA Facet page"><topic href="ref_jpa_facet.htm#sthref423" /></entry>
 <entry keyword="mapped superclass, Mapped superclass"><topic href="tasks006.htm#sthref115" /></entry>
 <entry keyword="synchronizing, Synchronizing classes"><topic href="task_manage_persistence001.htm#sthref145" /></entry>
   </entry>
 <entry keyword="collection mappings, Element collection mapping"><topic href="tasks012.htm#sthref211" /></entry>
   <entry keyword="columns">
-<entry keyword="discriminator, Inheritance"><topic href="reference026.htm#sthref493" /></entry>
-<entry keyword="join, Joining Strategy"><topic href="reference047.htm#sthref588" /></entry>
+<entry keyword="discriminator, Inheritance"><topic href="reference026.htm#sthref492" /></entry>
+<entry keyword="join, Joining Strategy"><topic href="reference047.htm#sthref587" /></entry>
     <entry keyword="mapping to">
-<entry keyword="Basic Mapping"><topic href="reference033.htm#sthref545" /></entry>
-<entry keyword="ID Mapping"><topic href="reference037.htm#sthref555" /></entry>
-<entry keyword="Version Mapping"><topic href="reference042.htm#sthref572" /></entry>
+<entry keyword="Basic Mapping"><topic href="reference033.htm#sthref544" /></entry>
+<entry keyword="ID Mapping"><topic href="reference037.htm#sthref554" /></entry>
+<entry keyword="Version Mapping"><topic href="reference042.htm#sthref571" /></entry>
     </entry>
-<entry keyword="value, Inheritance"><topic href="reference026.htm#sthref491" /></entry>
+<entry keyword="value, Inheritance"><topic href="reference026.htm#sthref490" /></entry>
   </entry>
 <entry keyword="connection pool, The persistence.xml Editor"><topic href="task_manage_persistence.htm#sthref131" /></entry>
-<entry keyword="Connection - in persistence.xml Editor, Connection"><topic href="reference054.htm#sthref631" /></entry>
-<entry keyword="connections - database, Tips and tricks"><topic href="tips_and_tricks.htm#sthref739" /></entry>
-<entry keyword="converters, Converters"><topic href="reference045.htm#sthref581" /></entry>
+<entry keyword="Connection - in persistence.xml Editor, Connection"><topic href="reference054.htm#sthref630" /></entry>
+<entry keyword="connections - database, Tips and tricks"><topic href="tips_and_tricks.htm#sthref738" /></entry>
+<entry keyword="converters, Converters"><topic href="reference045.htm#sthref580" /></entry>
   <entry keyword="Converters - in JPA Details view">
-<entry keyword="Converters"><topic href="reference031.htm#sthref516" /></entry>
-<entry keyword="Converters"><topic href="reference045.htm#sthref580" /></entry>
-<entry keyword="Converters"><topic href="reference053.htm#sthref620" /></entry>
+<entry keyword="Converters"><topic href="reference031.htm#sthref515" /></entry>
+<entry keyword="Converters"><topic href="reference045.htm#sthref579" /></entry>
+<entry keyword="Converters"><topic href="reference053.htm#sthref619" /></entry>
   </entry>
   <entry keyword="converting">
 <entry keyword="Java project to JPA, Converting a Java project to a JPA project"><topic href="tasks003.htm#sthref74" /></entry>
@@ -134,43 +134,43 @@
 <entry keyword="Creating a new JAXB project"><topic href="tasks001.htm#sthref52" /></entry>
 <entry keyword="Creating Database Web Services from Builder XML"><topic href="tasks002.htm#sthref64" /></entry>
   </entry>
-<entry keyword="Create JPA Entity wizard, Create JPA Entity wizard"><topic href="ref_create_jpa_entity_wizard.htm#sthref400" /></entry>
-<entry keyword="Create New Association wizard, Create New Association wizard"><topic href="ref_create_new_association_wizard.htm#sthref457" /></entry>
-<entry keyword="Create New JAXB Project wizard, Create New JAXB Project wizard"><topic href="reference010.htm#sthref428" /></entry>
-<entry keyword="Create New JPA Project wizard, Create New JPA Project wizard"><topic href="ref_new_jpa_project_wizard.htm#sthref415" /></entry>
-<entry keyword="Create ORM Mapping File wizard, Create ORM Mapping File wizard"><topic href="reference007.htm#sthref408" /></entry>
-<entry keyword="Customization - in persistence.xml editor, Customization"><topic href="reference055.htm#sthref635" /></entry>
-<entry keyword="customizer class - for entities, Advanced"><topic href="reference032.htm#sthref527" /></entry>
+<entry keyword="Create JPA Entity wizard, Create JPA Entity wizard"><topic href="ref_create_jpa_entity_wizard.htm#sthref399" /></entry>
+<entry keyword="Create New Association wizard, Create New Association wizard"><topic href="ref_create_new_association_wizard.htm#sthref456" /></entry>
+<entry keyword="Create New JAXB Project wizard, Create New JAXB Project wizard"><topic href="reference010.htm#sthref427" /></entry>
+<entry keyword="Create New JPA Project wizard, Create New JPA Project wizard"><topic href="ref_new_jpa_project_wizard.htm#sthref414" /></entry>
+<entry keyword="Create ORM Mapping File wizard, Create ORM Mapping File wizard"><topic href="reference007.htm#sthref407" /></entry>
+<entry keyword="Customization - in persistence.xml editor, Customization"><topic href="reference055.htm#sthref634" /></entry>
+<entry keyword="customizer class - for entities, Advanced"><topic href="reference032.htm#sthref526" /></entry>
 <entry keyword="database tables - generating entities from, Generating entities from tables"><topic href="tasks022.htm#sthref293" /></entry>
   <entry keyword="database - persistence">
     <entry keyword="connection">
-<entry keyword="Project Properties page - JPA"><topic href="ref_project_properties.htm#sthref665" /></entry>
-<entry keyword="Project Properties page - JAXB Options"><topic href="reference068.htm#sthref687" /></entry>
+<entry keyword="Project Properties page - JPA"><topic href="ref_project_properties.htm#sthref664" /></entry>
+<entry keyword="Project Properties page - JAXB Options"><topic href="reference068.htm#sthref686" /></entry>
     </entry>
-<entry keyword="schema, Project Properties page - JPA"><topic href="ref_project_properties.htm#sthref667" /></entry>
+<entry keyword="schema, Project Properties page - JPA"><topic href="ref_project_properties.htm#sthref666" /></entry>
   </entry>
   <entry keyword="DBWS project - creating">
 <entry keyword="Creating Database Web Services from Builder XML"><topic href="tasks002.htm#sthref62" /></entry>
-<entry keyword="New Database Web services from Builder XML wizard"><topic href="reference014.htm#sthref441" /></entry>
+<entry keyword="New Database Web services from Builder XML wizard"><topic href="reference014.htm#sthref440" /></entry>
   </entry>
 <entry keyword="DDL script - generating, Generating tables from entities"><topic href="tasks023.htm#sthref303" /></entry>
-<entry keyword="DDL - generating, Generate Tables from Entities wizard"><topic href="reference018.htm#sthref451" /></entry>
-<entry keyword="Derived Identity - in JPA Details view, Derived Identity"><topic href="reference048.htm#sthref591" /></entry>
-<entry keyword="developer documentation - Dali, Dali developer documentation"><topic href="reference084.htm#sthref736" /></entry>
+<entry keyword="DDL - generating, Generate Tables from Entities wizard"><topic href="reference018.htm#sthref450" /></entry>
+<entry keyword="Derived Identity - in JPA Details view, Derived Identity"><topic href="reference048.htm#sthref590" /></entry>
+<entry keyword="developer documentation - Dali, Dali developer documentation"><topic href="reference084.htm#sthref735" /></entry>
 <entry keyword="Driver Files page, The Select Builder XML File Page"><topic href="tasks002.htm#sthref69" /></entry>
 <entry keyword="dynamic entities - from tables, Generating dynamic entities from tables"><topic href="tasks024.htm#sthref309" /></entry>
-<entry keyword="eager fetch, Basic Mapping"><topic href="reference033.htm#sthref547" /></entry>
-<entry keyword="EclipseLink XML mapping file, General"><topic href="ref_persistence_general.htm#sthref630" /></entry>
+<entry keyword="eager fetch, Basic Mapping"><topic href="reference033.htm#sthref546" /></entry>
+<entry keyword="EclipseLink XML mapping file, General"><topic href="ref_persistence_general.htm#sthref629" /></entry>
 <entry keyword="eclipselink-orm.xml file - with dynamic entities, Sample eclipselink-orm.xml File with Dynamic Entities"><topic href="tasks024.htm#sthref315" /></entry>
-<entry keyword="Edit Join Columns dialog, Edit Join Columns dialog"><topic href="reference071.htm#sthref695" /></entry>
+<entry keyword="Edit Join Columns dialog, Edit Join Columns dialog"><topic href="reference071.htm#sthref694" /></entry>
   <entry keyword="element collection mapping">
-<entry keyword="about, Element Collection Mapping"><topic href="reference034.htm#sthref550" /></entry>
+<entry keyword="about, Element Collection Mapping"><topic href="reference034.htm#sthref549" /></entry>
 <entry keyword="creating, Element collection mapping"><topic href="tasks012.htm#sthref210" /></entry>
   </entry>
   <entry keyword="embeddable class">
 <entry keyword="@Embeddable, Embeddable"><topic href="tasks005.htm#sthref110" /></entry>
 <entry keyword="about, Embeddable"><topic href="tasks005.htm#sthref107" /></entry>
-<entry keyword="JPA Details view, Embeddable"><topic href="reference022.htm#sthref474" /></entry>
+<entry keyword="JPA Details view, Embeddable"><topic href="reference022.htm#sthref473" /></entry>
   </entry>
   <entry keyword="embedded ID mapping">
 <entry keyword="@EmbeddedId, Embedded ID mapping"><topic href="tasks014.htm#sthref227" /></entry>
@@ -185,29 +185,29 @@
 <entry keyword="about, Understanding Java persistence"><topic href="concept_persistence.htm#sthref21" /></entry>
     <entry keyword="creating">
 <entry keyword="Creating a JPA entity"><topic href="task_create_jpa_entity.htm#sthref80" /></entry>
-<entry keyword="Create JPA Entity wizard"><topic href="ref_create_jpa_entity_wizard.htm#sthref401" /></entry>
+<entry keyword="Create JPA Entity wizard"><topic href="ref_create_jpa_entity_wizard.htm#sthref400" /></entry>
     </entry>
     <entry keyword="creating tables from">
 <entry keyword="Generating tables from entities"><topic href="tasks023.htm#sthref302" /></entry>
-<entry keyword="Generate Tables from Entities wizard"><topic href="reference018.htm#sthref450" /></entry>
+<entry keyword="Generate Tables from Entities wizard"><topic href="reference018.htm#sthref449" /></entry>
     </entry>
-<entry keyword="customer class, Advanced"><topic href="reference032.htm#sthref528" /></entry>
+<entry keyword="customer class, Advanced"><topic href="reference032.htm#sthref527" /></entry>
     <entry keyword="customizing">
-<entry keyword="Customize Individual Entities"><topic href="ref_customizIndividualEntities.htm#sthref382" /></entry>
-<entry keyword="Customize Individual Entities"><topic href="reference006.htm#sthref397" /></entry>
+<entry keyword="Customize Individual Entities"><topic href="ref_customizIndividualEntities.htm#sthref381" /></entry>
+<entry keyword="Customize Individual Entities"><topic href="reference006.htm#sthref396" /></entry>
     </entry>
 <entry keyword="embeddable, Embeddable"><topic href="tasks005.htm#sthref111" /></entry>
     <entry keyword="from tables">
 <entry keyword="Generating entities from tables"><topic href="tasks022.htm#sthref290" /></entry>
 <entry keyword="Generating dynamic entities from tables"><topic href="tasks024.htm#sthref307" /></entry>
-<entry keyword="Select Tables"><topic href="ref_selectTables.htm#sthref372" /></entry>
-<entry keyword="Select Tables"><topic href="reference003.htm#sthref387" /></entry>
+<entry keyword="Select Tables"><topic href="ref_selectTables.htm#sthref371" /></entry>
+<entry keyword="Select Tables"><topic href="reference003.htm#sthref386" /></entry>
     </entry>
     <entry keyword="generating">
-<entry keyword="Customize Default Entity Generation"><topic href="ref_customizeDefaultEntityGeneration.htm#sthref379" /></entry>
-<entry keyword="Customize Default Entity Generation"><topic href="reference005.htm#sthref394" /></entry>
+<entry keyword="Customize Default Entity Generation"><topic href="ref_customizeDefaultEntityGeneration.htm#sthref378" /></entry>
+<entry keyword="Customize Default Entity Generation"><topic href="reference005.htm#sthref393" /></entry>
     </entry>
-<entry keyword="JPA Details view, JPA Details view (for entities)"><topic href="ref_persistence_prop_view.htm#sthref469" /></entry>
+<entry keyword="JPA Details view, JPA Details view (for entities)"><topic href="ref_persistence_prop_view.htm#sthref468" /></entry>
 <entry keyword="mapped superclass, Mapped superclass"><topic href="tasks006.htm#sthref118" /></entry>
     <entry keyword="mapping">
 <entry keyword="Creating a Java persistent entity with persistent fields"><topic href="getting_started004.htm#sthref14" /></entry>
@@ -218,62 +218,62 @@
 <entry keyword="Entity"><topic href="tasks004.htm#sthref97" /></entry>
 <entry keyword="Entity"><topic href="tasks004.htm#sthref103" /></entry>
     </entry>
-<entry keyword="read-only, Advanced"><topic href="reference032.htm#sthref526" /></entry>
-<entry keyword="secondary tables, Secondary tables"><topic href="reference030.htm#sthref512" /></entry>
-<entry keyword="tracking changes, Advanced"><topic href="reference032.htm#sthref532" /></entry>
+<entry keyword="read-only, Advanced"><topic href="reference032.htm#sthref525" /></entry>
+<entry keyword="secondary tables, Secondary tables"><topic href="reference030.htm#sthref511" /></entry>
+<entry keyword="tracking changes, Advanced"><topic href="reference032.htm#sthref531" /></entry>
   </entry>
 <entry keyword="Entity Class page, Selecting the Create a JPA Entity Wizard"><topic href="task_create_jpa_entity.htm#sthref84" /></entry>
 <entry keyword="Entity Properties page, &lt;a id=&quot;sthref84&quot; name=&quot;sthref84&quot;&gt;&lt;/a&gt;The Entity Class Page"><topic href="task_create_jpa_entity.htm#sthref86" /></entry>
-<entry keyword="enumerated, Type information"><topic href="reference043.htm#sthref578" /></entry>
+<entry keyword="enumerated, Type information"><topic href="reference043.htm#sthref577" /></entry>
   <entry keyword="error messages - Dali">
 <entry keyword="Validating mappings and reporting problems"><topic href="tasks027.htm#sthref328" /></entry>
 <entry keyword="Error messages"><topic href="tasks028.htm#sthref335" /></entry>
   </entry>
-<entry keyword="extension points - Dali feature, Dali developer documentation"><topic href="reference084.htm#sthref738" /></entry>
-<entry keyword="fetch type, Basic Mapping"><topic href="reference033.htm#sthref546" /></entry>
-<entry keyword="firewall, Tips and tricks"><topic href="tips_and_tricks.htm#sthref741" /></entry>
-<entry keyword="General - in persistence.xml Editor, General"><topic href="ref_persistence_general.htm#sthref627" /></entry>
-<entry keyword="Generate Dynamic Entities from Tables wizard, Generate Dynamic Entities from Tables wizard"><topic href="reference002.htm#sthref385" /></entry>
+<entry keyword="extension points - Dali feature, Dali developer documentation"><topic href="reference084.htm#sthref737" /></entry>
+<entry keyword="fetch type, Basic Mapping"><topic href="reference033.htm#sthref545" /></entry>
+<entry keyword="firewall, Tips and tricks"><topic href="tips_and_tricks.htm#sthref740" /></entry>
+<entry keyword="General - in persistence.xml Editor, General"><topic href="ref_persistence_general.htm#sthref626" /></entry>
+<entry keyword="Generate Dynamic Entities from Tables wizard, Generate Dynamic Entities from Tables wizard"><topic href="reference002.htm#sthref384" /></entry>
   <entry keyword="Generate Entities from Tables dialog">
 <entry keyword="Generating entities from tables"><topic href="tasks022.htm#sthref292" /></entry>
-<entry keyword="Select Tables"><topic href="ref_selectTables.htm#sthref371" /></entry>
-<entry keyword="Select Tables"><topic href="reference003.htm#sthref386" /></entry>
+<entry keyword="Select Tables"><topic href="ref_selectTables.htm#sthref370" /></entry>
+<entry keyword="Select Tables"><topic href="reference003.htm#sthref385" /></entry>
   </entry>
-<entry keyword="Generate Entities from Tables wizard, Generate Entities from Tables wizard"><topic href="ref_create_custom_entities_wizard.htm#sthref370" /></entry>
-<entry keyword="Generate Tables from Entities wizard, Generate Tables from Entities wizard"><topic href="reference018.htm#sthref448" /></entry>
+<entry keyword="Generate Entities from Tables wizard, Generate Entities from Tables wizard"><topic href="ref_create_custom_entities_wizard.htm#sthref369" /></entry>
+<entry keyword="Generate Tables from Entities wizard, Generate Tables from Entities wizard"><topic href="reference018.htm#sthref447" /></entry>
   <entry keyword="generated values">
-<entry keyword="entities - preferences, Project Properties page - Entity Generation"><topic href="reference066.htm#sthref678" /></entry>
-<entry keyword="ID mappings, Primary Key Generation information"><topic href="ref_primary_key.htm#sthref594" /></entry>
+<entry keyword="entities - preferences, Project Properties page - Entity Generation"><topic href="reference066.htm#sthref677" /></entry>
+<entry keyword="ID mappings, Primary Key Generation information"><topic href="ref_primary_key.htm#sthref593" /></entry>
     <entry keyword="sequence">
-<entry keyword="Primary Key Generation"><topic href="reference029.htm#sthref506" /></entry>
-<entry keyword="Primary Key Generation"><topic href="reference029.htm#sthref508" /></entry>
-<entry keyword="Primary Key Generation information"><topic href="ref_primary_key.htm#sthref596" /></entry>
+<entry keyword="Primary Key Generation"><topic href="reference029.htm#sthref505" /></entry>
+<entry keyword="Primary Key Generation"><topic href="reference029.htm#sthref507" /></entry>
+<entry keyword="Primary Key Generation information"><topic href="ref_primary_key.htm#sthref595" /></entry>
     </entry>
   </entry>
-<entry keyword="generating DDL, Generate Tables from Entities wizard"><topic href="reference018.htm#sthref452" /></entry>
-<entry keyword="Generators - in JPA Detail view, Generators"><topic href="reference051.htm#sthref607" /></entry>
+<entry keyword="generating DDL, Generate Tables from Entities wizard"><topic href="reference018.htm#sthref451" /></entry>
+<entry keyword="Generators - in JPA Detail view, Generators"><topic href="reference051.htm#sthref606" /></entry>
   <entry keyword="hints - query">
 <entry keyword="Add Query Dialog"><topic href="tasks010.htm#sthref194" /></entry>
-<entry keyword="Queries"><topic href="reference052.htm#sthref617" /></entry>
+<entry keyword="Queries"><topic href="reference052.htm#sthref616" /></entry>
   </entry>
   <entry keyword="ID mapping">
 <entry keyword="@Id, ID mapping"><topic href="tasks015.htm#sthref235" /></entry>
     <entry keyword="about">
 <entry keyword="ID mapping"><topic href="tasks015.htm#sthref233" /></entry>
-<entry keyword="ID Mapping"><topic href="reference037.htm#sthref553" /></entry>
+<entry keyword="ID Mapping"><topic href="reference037.htm#sthref552" /></entry>
     </entry>
   </entry>
-<entry keyword="identity - derived, Derived Identity"><topic href="reference048.htm#sthref590" /></entry>
+<entry keyword="identity - derived, Derived Identity"><topic href="reference048.htm#sthref589" /></entry>
   <entry keyword="inheritance">
     <entry keyword="entity">
 <entry keyword="Specifying entity inheritance"><topic href="task_inheritance.htm#sthref176" /></entry>
-<entry keyword="Entity Class page"><topic href="ref_EntityClassPage.htm#sthref402" /></entry>
-<entry keyword="Inheritance"><topic href="reference026.htm#sthref489" /></entry>
+<entry keyword="Entity Class page"><topic href="ref_EntityClassPage.htm#sthref401" /></entry>
+<entry keyword="Inheritance"><topic href="reference026.htm#sthref488" /></entry>
     </entry>
 <entry keyword="joined tables, Single Table Inheritance"><topic href="task_inheritance.htm#sthref184" /></entry>
 <entry keyword="single table, Specifying entity inheritance"><topic href="task_inheritance.htm#sthref179" /></entry>
   </entry>
-<entry keyword="Inheritance - in Java Details view, Inheritance"><topic href="reference026.htm#sthref488" /></entry>
+<entry keyword="Inheritance - in Java Details view, Inheritance"><topic href="reference026.htm#sthref487" /></entry>
 <entry keyword="installation - Dali, Requirements and installation"><topic href="getting_started001.htm#sthref3" /></entry>
   <entry keyword="Java Persistence API (JPA)">
 <entry keyword="about, Understanding Java Persistence API"><topic href="concepts001.htm#sthref25" /></entry>
@@ -282,204 +282,204 @@
   <entry keyword="JAXB">
 <entry keyword="about, &lt;a id=&quot;sthref31&quot; name=&quot;sthref31&quot;&gt;&lt;/a&gt;The orm.xml file"><topic href="concepts004.htm#sthref34" /></entry>
     <entry keyword="options">
-<entry keyword="Project Properties page - JAXB Options"><topic href="reference068.htm#sthref682" /></entry>
-<entry keyword="Project Properties page - Schemas"><topic href="reference069.htm#sthref690" /></entry>
+<entry keyword="Project Properties page - JAXB Options"><topic href="reference068.htm#sthref681" /></entry>
+<entry keyword="Project Properties page - Schemas"><topic href="reference069.htm#sthref689" /></entry>
     </entry>
-<entry keyword="schema - adding, Add Schema Location dialog"><topic href="reference078.htm#sthref720" /></entry>
+<entry keyword="schema - adding, Add Schema Location dialog"><topic href="reference078.htm#sthref719" /></entry>
   </entry>
   <entry keyword="JAXB project">
     <entry keyword="creating">
 <entry keyword="Creating a new JAXB project"><topic href="tasks001.htm#sthref50" /></entry>
-<entry keyword="Create New JAXB Project wizard"><topic href="reference010.htm#sthref430" /></entry>
+<entry keyword="Create New JAXB Project wizard"><topic href="reference010.htm#sthref429" /></entry>
     </entry>
-<entry keyword="implementation, JAXB Facet page"><topic href="reference013.htm#sthref435" /></entry>
+<entry keyword="implementation, JAXB Facet page"><topic href="reference013.htm#sthref434" /></entry>
   </entry>
-<entry keyword="JAXB schema - adding, Select Schema Location dialog"><topic href="reference079.htm#sthref724" /></entry>
+<entry keyword="JAXB schema - adding, Select Schema Location dialog"><topic href="reference079.htm#sthref723" /></entry>
   <entry keyword="join columns">
-<entry keyword="Join Columns"><topic href="ref_join_columns.htm#sthref460" /></entry>
-<entry keyword="Add Join Column dialog"><topic href="reference072.htm#sthref698" /></entry>
+<entry keyword="Join Columns"><topic href="ref_join_columns.htm#sthref459" /></entry>
+<entry keyword="Add Join Column dialog"><topic href="reference072.htm#sthref697" /></entry>
   </entry>
 <entry keyword="joined tables - inheritance, Single Table Inheritance"><topic href="task_inheritance.htm#sthref185" /></entry>
-<entry keyword="joining, Joining Strategy"><topic href="reference047.htm#sthref586" /></entry>
-<entry keyword="Joining Strategy - in JPA Details view, Joining Strategy"><topic href="reference047.htm#sthref587" /></entry>
+<entry keyword="joining, Joining Strategy"><topic href="reference047.htm#sthref585" /></entry>
+<entry keyword="Joining Strategy - in JPA Details view, Joining Strategy"><topic href="reference047.htm#sthref586" /></entry>
   <entry keyword="JPA Details view">
-<entry keyword="attributes, JPA Details view (for attributes)"><topic href="ref_persistence_map_view.htm#sthref534" /></entry>
-<entry keyword="entities, JPA Details view (for entities)"><topic href="ref_persistence_prop_view.htm#sthref467" /></entry>
-<entry keyword="Mappings tab, JPA Details view (for attributes)"><topic href="ref_persistence_map_view.htm#sthref538" /></entry>
-<entry keyword="orm.xml file, JPA Details view (for orm.xml)"><topic href="ref_details_orm.htm#sthref599" /></entry>
+<entry keyword="attributes, JPA Details view (for attributes)"><topic href="ref_persistence_map_view.htm#sthref533" /></entry>
+<entry keyword="entities, JPA Details view (for entities)"><topic href="ref_persistence_prop_view.htm#sthref466" /></entry>
+<entry keyword="Mappings tab, JPA Details view (for attributes)"><topic href="ref_persistence_map_view.htm#sthref537" /></entry>
+<entry keyword="orm.xml file, JPA Details view (for orm.xml)"><topic href="ref_details_orm.htm#sthref598" /></entry>
   </entry>
-<entry keyword="JPA Development perspective, JPA Development perspective"><topic href="ref_persistence_perspective.htm#sthref730" /></entry>
+<entry keyword="JPA Development perspective, JPA Development perspective"><topic href="ref_persistence_perspective.htm#sthref729" /></entry>
 <entry keyword="JPA entity - creating, Creating a JPA entity"><topic href="task_create_jpa_entity.htm#sthref81" /></entry>
   <entry keyword="JPA Facet page">
 <entry keyword="The Java Source Page"><topic href="task_create_new_project.htm#sthref45" /></entry>
 <entry keyword="The Java Source Page"><topic href="tasks001.htm#sthref57" /></entry>
   </entry>
-<entry keyword="JPA Metadata Conversion dialog, JPA Metadata Conversion dialog"><topic href="reference074.htm#sthref709" /></entry>
+<entry keyword="JPA Metadata Conversion dialog, JPA Metadata Conversion dialog"><topic href="reference074.htm#sthref708" /></entry>
   <entry keyword="JPA project">
 <entry keyword="converting from Java, Converting a Java project to a JPA project"><topic href="tasks003.htm#sthref73" /></entry>
 <entry keyword="converting metadata to XML, Converting JPA metadata to XML"><topic href="tasks026.htm#sthref324" /></entry>
     <entry keyword="creating">
 <entry keyword="Creating a new JPA project"><topic href="task_create_new_project.htm#sthref39" /></entry>
-<entry keyword="Create New JPA Project wizard"><topic href="ref_new_jpa_project_wizard.htm#sthref417" /></entry>
+<entry keyword="Create New JPA Project wizard"><topic href="ref_new_jpa_project_wizard.htm#sthref416" /></entry>
     </entry>
-<entry keyword="implementation, JPA Facet page"><topic href="ref_jpa_facet.htm#sthref422" /></entry>
+<entry keyword="implementation, JPA Facet page"><topic href="ref_jpa_facet.htm#sthref421" /></entry>
     <entry keyword="page">
 <entry keyword="&lt;a id=&quot;sthref41&quot; name=&quot;sthref41&quot;&gt;&lt;/a&gt;Selecting the Create a JPA Project wizard"><topic href="task_create_new_project.htm#sthref43" /></entry>
 <entry keyword="&lt;a id=&quot;sthref52&quot; name=&quot;sthref52&quot;&gt;&lt;/a&gt;Selecting the Create a JAXB Project wizard"><topic href="tasks001.htm#sthref54" /></entry>
     </entry>
     <entry keyword="platform">
-<entry keyword="Project Properties page - JPA"><topic href="ref_project_properties.htm#sthref664" /></entry>
-<entry keyword="Project Properties page - JAXB Options"><topic href="reference068.htm#sthref686" /></entry>
+<entry keyword="Project Properties page - JPA"><topic href="ref_project_properties.htm#sthref663" /></entry>
+<entry keyword="Project Properties page - JAXB Options"><topic href="reference068.htm#sthref685" /></entry>
     </entry>
   </entry>
-<entry keyword="JPA Structure view, JPA Structure view"><topic href="ref_persistence_outline.htm#sthref623" /></entry>
-<entry keyword="key - primary, Primary Key Generation"><topic href="reference029.htm#sthref504" /></entry>
-<entry keyword="lazy fetch, Basic Mapping"><topic href="reference033.htm#sthref548" /></entry>
+<entry keyword="JPA Structure view, JPA Structure view"><topic href="ref_persistence_outline.htm#sthref622" /></entry>
+<entry keyword="key - primary, Primary Key Generation"><topic href="reference029.htm#sthref503" /></entry>
+<entry keyword="lazy fetch, Basic Mapping"><topic href="reference033.htm#sthref547" /></entry>
   <entry keyword="library">
-<entry keyword="JAXB, JAXB Facet page"><topic href="reference013.htm#sthref436" /></entry>
-<entry keyword="JPA, JPA Facet page"><topic href="ref_jpa_facet.htm#sthref423" /></entry>
+<entry keyword="JAXB, JAXB Facet page"><topic href="reference013.htm#sthref435" /></entry>
+<entry keyword="JPA, JPA Facet page"><topic href="ref_jpa_facet.htm#sthref422" /></entry>
   </entry>
-<entry keyword="Logging - in persistence.xml editor, Logging"><topic href="reference057.htm#sthref640" /></entry>
-<entry keyword="Make Persistent dialog, Make Persistent dialog"><topic href="reference075.htm#sthref711" /></entry>
+<entry keyword="Logging - in persistence.xml editor, Logging"><topic href="reference057.htm#sthref639" /></entry>
+<entry keyword="Make Persistent dialog, Make Persistent dialog"><topic href="reference075.htm#sthref710" /></entry>
   <entry keyword="many-to-many mapping">
 <entry keyword="@ManyToMany, Many-to-many mapping"><topic href="tasks016.htm#sthref244" /></entry>
     <entry keyword="about">
 <entry keyword="Many-to-many mapping"><topic href="tasks016.htm#sthref242" /></entry>
-<entry keyword="Many-to-Many Mapping"><topic href="reference038.htm#sthref558" /></entry>
+<entry keyword="Many-to-Many Mapping"><topic href="reference038.htm#sthref557" /></entry>
     </entry>
   </entry>
   <entry keyword="many-to-one mapping">
 <entry keyword="@ManyToOne, Many-to-one mapping"><topic href="tasks017.htm#sthref252" /></entry>
     <entry keyword="about">
 <entry keyword="Many-to-one mapping"><topic href="tasks017.htm#sthref251" /></entry>
-<entry keyword="Many-to-One Mapping"><topic href="reference039.htm#sthref561" /></entry>
+<entry keyword="Many-to-One Mapping"><topic href="reference039.htm#sthref560" /></entry>
     </entry>
   </entry>
   <entry keyword="mapped superclass">
 <entry keyword="@MappedSuperclass, Mapped superclass"><topic href="tasks006.htm#sthref116" /></entry>
 <entry keyword="about, Mapped superclass"><topic href="tasks006.htm#sthref114" /></entry>
-<entry keyword="JPA Details view, Mapped Superclass"><topic href="reference023.htm#sthref477" /></entry>
+<entry keyword="JPA Details view, Mapped Superclass"><topic href="reference023.htm#sthref476" /></entry>
   </entry>
 <entry keyword="mapping entities, Creating a Java persistent entity with persistent fields"><topic href="getting_started004.htm#sthref13" /></entry>
   <entry keyword="mapping file">
 <entry keyword="Creating an orm.xml file"><topic href="tasks008.htm#sthref157" /></entry>
-<entry keyword="Entity Class page"><topic href="ref_EntityClassPage.htm#sthref403" /></entry>
-<entry keyword="Create ORM Mapping File wizard"><topic href="reference007.htm#sthref409" /></entry>
+<entry keyword="Entity Class page"><topic href="ref_EntityClassPage.htm#sthref402" /></entry>
+<entry keyword="Create ORM Mapping File wizard"><topic href="reference007.htm#sthref408" /></entry>
   </entry>
-<entry keyword="Mapping Type Selection dialog, Mapping Type Selection dialog"><topic href="reference073.htm#sthref707" /></entry>
+<entry keyword="Mapping Type Selection dialog, Mapping Type Selection dialog"><topic href="reference073.htm#sthref706" /></entry>
   <entry keyword="mappings">
     <entry keyword="about">
 <entry keyword="Understanding OR mappings"><topic href="concept_mapping.htm#sthref23" /></entry>
 <entry keyword="Mapping an entity"><topic href="task_mapping.htm#sthref198" /></entry>
-<entry keyword="JPA Details view (for attributes)"><topic href="ref_persistence_map_view.htm#sthref537" /></entry>
+<entry keyword="JPA Details view (for attributes)"><topic href="ref_persistence_map_view.htm#sthref536" /></entry>
     </entry>
     <entry keyword="basic">
 <entry keyword="Basic mapping"><topic href="tasks011.htm#sthref201" /></entry>
-<entry keyword="Basic Mapping"><topic href="reference033.htm#sthref541" /></entry>
+<entry keyword="Basic Mapping"><topic href="reference033.htm#sthref540" /></entry>
     </entry>
     <entry keyword="element collection">
 <entry keyword="Element collection mapping"><topic href="tasks012.htm#sthref209" /></entry>
-<entry keyword="Element Collection Mapping"><topic href="reference034.htm#sthref549" /></entry>
+<entry keyword="Element Collection Mapping"><topic href="reference034.htm#sthref548" /></entry>
     </entry>
 <entry keyword="embedded, Embedded mapping"><topic href="tasks013.htm#sthref216" /></entry>
 <entry keyword="embedded ID, Embedded ID mapping"><topic href="tasks014.htm#sthref224" /></entry>
     <entry keyword="ID">
 <entry keyword="ID mapping"><topic href="tasks015.htm#sthref232" /></entry>
-<entry keyword="ID Mapping"><topic href="reference037.htm#sthref551" /></entry>
+<entry keyword="ID Mapping"><topic href="reference037.htm#sthref550" /></entry>
     </entry>
     <entry keyword="many-to-many">
 <entry keyword="Many-to-many mapping"><topic href="tasks016.htm#sthref241" /></entry>
-<entry keyword="Many-to-Many Mapping"><topic href="reference038.htm#sthref556" /></entry>
+<entry keyword="Many-to-Many Mapping"><topic href="reference038.htm#sthref555" /></entry>
     </entry>
     <entry keyword="many-to-one">
 <entry keyword="Many-to-one mapping"><topic href="tasks017.htm#sthref250" /></entry>
-<entry keyword="Many-to-One Mapping"><topic href="reference039.htm#sthref559" /></entry>
+<entry keyword="Many-to-One Mapping"><topic href="reference039.htm#sthref558" /></entry>
     </entry>
     <entry keyword="one-to-many">
 <entry keyword="One-to-many mapping"><topic href="tasks018.htm#sthref258" /></entry>
-<entry keyword="One-to-Many Mapping"><topic href="reference040.htm#sthref562" /></entry>
+<entry keyword="One-to-Many Mapping"><topic href="reference040.htm#sthref561" /></entry>
     </entry>
     <entry keyword="one-to-one">
 <entry keyword="One-to-one mapping"><topic href="tasks019.htm#sthref266" /></entry>
-<entry keyword="One-to-One Mapping"><topic href="reference041.htm#sthref565" /></entry>
+<entry keyword="One-to-One Mapping"><topic href="reference041.htm#sthref564" /></entry>
     </entry>
 <entry keyword="problems, Validating mappings and reporting problems"><topic href="tasks027.htm#sthref331" /></entry>
 <entry keyword="transient, Transient mapping"><topic href="tasks020.htm#sthref274" /></entry>
     <entry keyword="version">
 <entry keyword="Version mapping"><topic href="tasks021.htm#sthref282" /></entry>
-<entry keyword="Version Mapping"><topic href="reference042.htm#sthref568" /></entry>
+<entry keyword="Version Mapping"><topic href="reference042.htm#sthref567" /></entry>
     </entry>
   </entry>
 <entry keyword="metadata - converting to XML, Converting JPA metadata to XML"><topic href="tasks026.htm#sthref322" /></entry>
-<entry keyword="metamodel - canonical, Project Properties page - JPA"><topic href="ref_project_properties.htm#sthref671" /></entry>
-<entry keyword="multitenancy, Multitenancy"><topic href="reference028.htm#sthref501" /></entry>
+<entry keyword="metamodel - canonical, Project Properties page - JPA"><topic href="ref_project_properties.htm#sthref670" /></entry>
+<entry keyword="multitenancy, Multitenancy"><topic href="reference028.htm#sthref500" /></entry>
   <entry keyword="named queries">
-<entry keyword="Queries"><topic href="reference052.htm#sthref614" /></entry>
+<entry keyword="Queries"><topic href="reference052.htm#sthref613" /></entry>
     <entry keyword="entity">
 <entry keyword="Creating queries"><topic href="tasks010.htm#sthref188" /></entry>
     </entry>
 <entry keyword="hints, Add Query Dialog"><topic href="tasks010.htm#sthref195" /></entry>
-<entry keyword="JPA Detail view, Queries"><topic href="reference025.htm#sthref483" /></entry>
+<entry keyword="JPA Detail view, Queries"><topic href="reference025.htm#sthref482" /></entry>
   </entry>
   <entry keyword="native queries">
 <entry keyword="Add Query Dialog"><topic href="tasks010.htm#sthref196" /></entry>
-<entry keyword="Queries"><topic href="reference025.htm#sthref484" /></entry>
-<entry keyword="Queries"><topic href="reference052.htm#sthref615" /></entry>
+<entry keyword="Queries"><topic href="reference025.htm#sthref483" /></entry>
+<entry keyword="Queries"><topic href="reference052.htm#sthref614" /></entry>
   </entry>
-<entry keyword="New Database Web services from Builder XML wizard, New Database Web services from Builder XML wizard"><topic href="reference014.htm#sthref439" /></entry>
-<entry keyword="New EclipseLink Mapping File dialog, New EclipseLink Mapping File dialog"><topic href="ref_eclipselink_mapping_file.htm#sthref701" /></entry>
+<entry keyword="New Database Web services from Builder XML wizard, New Database Web services from Builder XML wizard"><topic href="reference014.htm#sthref438" /></entry>
+<entry keyword="New EclipseLink Mapping File dialog, New EclipseLink Mapping File dialog"><topic href="ref_eclipselink_mapping_file.htm#sthref700" /></entry>
   <entry keyword="nonpersistent">
 <entry keyword="classes, Adding persistence to a class"><topic href="task_add_persistence.htm#sthref92" /></entry>
     <entry keyword="fields. See transient"></entry>
   </entry>
-<entry keyword="object type converter, Converters"><topic href="reference031.htm#sthref520" /></entry>
-<entry keyword="ObjectChangePolicy, Advanced"><topic href="reference032.htm#sthref531" /></entry>
+<entry keyword="object type converter, Converters"><topic href="reference031.htm#sthref519" /></entry>
+<entry keyword="ObjectChangePolicy, Advanced"><topic href="reference032.htm#sthref530" /></entry>
   <entry keyword="one-to-many mapping">
 <entry keyword="@OneToMany, One-to-many mapping"><topic href="tasks018.htm#sthref261" /></entry>
     <entry keyword="about">
 <entry keyword="One-to-many mapping"><topic href="tasks018.htm#sthref259" /></entry>
-<entry keyword="One-to-Many Mapping"><topic href="reference040.htm#sthref564" /></entry>
+<entry keyword="One-to-Many Mapping"><topic href="reference040.htm#sthref563" /></entry>
     </entry>
   </entry>
   <entry keyword="one-to-one mapping">
 <entry keyword="@OneToOne, One-to-one mapping"><topic href="tasks019.htm#sthref269" /></entry>
     <entry keyword="about">
 <entry keyword="One-to-one mapping"><topic href="tasks019.htm#sthref267" /></entry>
-<entry keyword="One-to-One Mapping"><topic href="reference041.htm#sthref567" /></entry>
+<entry keyword="One-to-One Mapping"><topic href="reference041.htm#sthref566" /></entry>
     </entry>
   </entry>
-<entry keyword="Options - in persistence.xml editor, Options"><topic href="reference058.htm#sthref644" /></entry>
-<entry keyword="ordering, Ordering"><topic href="reference046.htm#sthref583" /></entry>
-<entry keyword="Ordering - in JPA Details view, Ordering"><topic href="reference046.htm#sthref585" /></entry>
+<entry keyword="Options - in persistence.xml editor, Options"><topic href="reference058.htm#sthref643" /></entry>
+<entry keyword="ordering, Ordering"><topic href="reference046.htm#sthref582" /></entry>
+<entry keyword="Ordering - in JPA Details view, Ordering"><topic href="reference046.htm#sthref584" /></entry>
   <entry keyword="orm.xml file">
 <entry keyword="about, The orm.xml file"><topic href="concepts003.htm#sthref31" /></entry>
     <entry keyword="creating">
-<entry keyword="Create ORM Mapping File wizard"><topic href="reference007.htm#sthref410" /></entry>
-<entry keyword="JPA Facet page"><topic href="ref_jpa_facet.htm#sthref425" /></entry>
+<entry keyword="Create ORM Mapping File wizard"><topic href="reference007.htm#sthref409" /></entry>
+<entry keyword="JPA Facet page"><topic href="ref_jpa_facet.htm#sthref424" /></entry>
     </entry>
-<entry keyword="generators, Generators"><topic href="reference051.htm#sthref608" /></entry>
-<entry keyword="JPA Details view, JPA Details view (for orm.xml)"><topic href="ref_details_orm.htm#sthref600" /></entry>
+<entry keyword="generators, Generators"><topic href="reference051.htm#sthref607" /></entry>
+<entry keyword="JPA Details view, JPA Details view (for orm.xml)"><topic href="ref_details_orm.htm#sthref599" /></entry>
 <entry keyword="managing, Managing the orm.xml file"><topic href="task_manage_orm.htm#sthref151" /></entry>
-<entry keyword="queries, Queries"><topic href="reference052.htm#sthref613" /></entry>
+<entry keyword="queries, Queries"><topic href="reference052.htm#sthref612" /></entry>
 <entry keyword="sample, Managing the orm.xml file"><topic href="task_manage_orm.htm#sthref152" /></entry>
   </entry>
-<entry keyword="overrides - JPA attributes, Attribute Overrides"><topic href="reference027.htm#sthref497" /></entry>
+<entry keyword="overrides - JPA attributes, Attribute Overrides"><topic href="reference027.htm#sthref496" /></entry>
   <entry keyword="persistence">
 <entry keyword="about, Understanding Java persistence"><topic href="concept_persistence.htm#sthref20" /></entry>
     <entry keyword="database connection">
-<entry keyword="Project Properties page - JPA"><topic href="ref_project_properties.htm#sthref666" /></entry>
-<entry keyword="Project Properties page - JAXB Options"><topic href="reference068.htm#sthref688" /></entry>
+<entry keyword="Project Properties page - JPA"><topic href="ref_project_properties.htm#sthref665" /></entry>
+<entry keyword="Project Properties page - JAXB Options"><topic href="reference068.htm#sthref687" /></entry>
     </entry>
-<entry keyword="database schema, Project Properties page - JPA"><topic href="ref_project_properties.htm#sthref669" /></entry>
+<entry keyword="database schema, Project Properties page - JPA"><topic href="ref_project_properties.htm#sthref668" /></entry>
 <entry keyword="entity class, Adding persistence to a class"><topic href="task_add_persistence.htm#sthref91" /></entry>
-<entry keyword="options, Project Properties page - JPA"><topic href="ref_project_properties.htm#sthref660" /></entry>
-<entry keyword="provider, General"><topic href="ref_persistence_general.htm#sthref628" /></entry>
-<entry keyword="unit, Persistence Unit"><topic href="reference050.htm#sthref604" /></entry>
+<entry keyword="options, Project Properties page - JPA"><topic href="ref_project_properties.htm#sthref659" /></entry>
+<entry keyword="provider, General"><topic href="ref_persistence_general.htm#sthref627" /></entry>
+<entry keyword="unit, Persistence Unit"><topic href="reference050.htm#sthref603" /></entry>
   </entry>
-<entry keyword="Persistence Unit - in JPA Details, Persistence Unit"><topic href="reference050.htm#sthref603" /></entry>
+<entry keyword="Persistence Unit - in JPA Details, Persistence Unit"><topic href="reference050.htm#sthref602" /></entry>
   <entry keyword="persistence.xml Editor">
 <entry keyword="Managing the persistence.xml file"><topic href="task_manage_persistence.htm#ABC4949575SRI1" /></entry>
-<entry keyword="persistence.xml Editor"><topic href="ref_persistence_xmll_editor.htm#sthref626" /></entry>
+<entry keyword="persistence.xml Editor"><topic href="ref_persistence_xmll_editor.htm#sthref625" /></entry>
   </entry>
   <entry keyword="persistence.xml file">
 <entry keyword="about, The persistence.xml file"><topic href="concepts002.htm#sthref28" /></entry>
@@ -488,35 +488,35 @@
 <entry keyword="Working with orm.xml file"><topic href="tasks009.htm#sthref165" /></entry>
     </entry>
 <entry keyword="sample, Managing the persistence.xml file"><topic href="task_manage_persistence.htm#sthref127" /></entry>
-<entry keyword="schema based, Tips and tricks"><topic href="tips_and_tricks.htm#sthref740" /></entry>
+<entry keyword="schema based, Tips and tricks"><topic href="tips_and_tricks.htm#sthref739" /></entry>
 <entry keyword="synchronizing with classes, Synchronizing classes"><topic href="task_manage_persistence001.htm#sthref146" /></entry>
   </entry>
 <entry keyword="persistent entity, Entity"><topic href="tasks004.htm#sthref98" /></entry>
-<entry keyword="perspective - JPA Development, JPA Development perspective"><topic href="ref_persistence_perspective.htm#sthref731" /></entry>
+<entry keyword="perspective - JPA Development, JPA Development perspective"><topic href="ref_persistence_perspective.htm#sthref730" /></entry>
   <entry keyword="platform - JPA">
-<entry keyword="Project Properties page - JPA"><topic href="ref_project_properties.htm#sthref663" /></entry>
-<entry keyword="Project Properties page - JAXB Options"><topic href="reference068.htm#sthref685" /></entry>
+<entry keyword="Project Properties page - JPA"><topic href="ref_project_properties.htm#sthref662" /></entry>
+<entry keyword="Project Properties page - JAXB Options"><topic href="reference068.htm#sthref684" /></entry>
   </entry>
   <entry keyword="preferences">
-<entry keyword="Dali, Preferences"><topic href="reference062.htm#sthref654" /></entry>
-<entry keyword="errors and warnings, Java Persistence Preferences page - Errors/Warnings"><topic href="reference064.htm#sthref658" /></entry>
-<entry keyword="JPA, Java Persistence Preferences page - JPA"><topic href="reference063.htm#sthref656" /></entry>
-<entry keyword="project - EclipseLink, Project Properties page - EclipseLink"><topic href="reference065.htm#sthref673" /></entry>
-<entry keyword="project - Entity Generation, Project Properties page - Entity Generation"><topic href="reference066.htm#sthref677" /></entry>
-<entry keyword="project - errors and warnings, Project Properties page - Errors/Warnings"><topic href="reference067.htm#sthref680" /></entry>
+<entry keyword="Dali, Preferences"><topic href="reference062.htm#sthref653" /></entry>
+<entry keyword="errors and warnings, Java Persistence Preferences page - Errors/Warnings"><topic href="reference064.htm#sthref657" /></entry>
+<entry keyword="JPA, Java Persistence Preferences page - JPA"><topic href="reference063.htm#sthref655" /></entry>
+<entry keyword="project - EclipseLink, Project Properties page - EclipseLink"><topic href="reference065.htm#sthref672" /></entry>
+<entry keyword="project - Entity Generation, Project Properties page - Entity Generation"><topic href="reference066.htm#sthref676" /></entry>
+<entry keyword="project - errors and warnings, Project Properties page - Errors/Warnings"><topic href="reference067.htm#sthref679" /></entry>
     <entry keyword="project - JAXB">
-<entry keyword="Project Properties page - JAXB Options"><topic href="reference068.htm#sthref684" /></entry>
-<entry keyword="Project Properties page - Schemas"><topic href="reference069.htm#sthref692" /></entry>
+<entry keyword="Project Properties page - JAXB Options"><topic href="reference068.htm#sthref683" /></entry>
+<entry keyword="Project Properties page - Schemas"><topic href="reference069.htm#sthref691" /></entry>
     </entry>
-<entry keyword="project - JPA, Project Properties page - JPA"><topic href="ref_project_properties.htm#sthref662" /></entry>
+<entry keyword="project - JPA, Project Properties page - JPA"><topic href="ref_project_properties.htm#sthref661" /></entry>
   </entry>
   <entry keyword="Primary Key Generation - in JPA Details view">
-<entry keyword="Primary Key Generation"><topic href="reference029.htm#sthref503" /></entry>
-<entry keyword="Primary Key Generation information"><topic href="ref_primary_key.htm#sthref592" /></entry>
+<entry keyword="Primary Key Generation"><topic href="reference029.htm#sthref502" /></entry>
+<entry keyword="Primary Key Generation information"><topic href="ref_primary_key.htm#sthref591" /></entry>
   </entry>
 <entry keyword="problems, Validating mappings and reporting problems"><topic href="tasks027.htm#sthref330" /></entry>
   <entry keyword="projects">
-<entry keyword="DBWS, New Database Web services from Builder XML wizard"><topic href="reference014.htm#sthref440" /></entry>
+<entry keyword="DBWS, New Database Web services from Builder XML wizard"><topic href="reference014.htm#sthref439" /></entry>
   </entry>
   <entry keyword="projects - DBWS">
 <entry keyword="creating new, Creating Database Web Services from Builder XML"><topic href="tasks002.htm#sthref61" /></entry>
@@ -524,122 +524,122 @@
   <entry keyword="projects - JAXB">
     <entry keyword="creating new">
 <entry keyword="Creating a new JAXB project"><topic href="tasks001.htm#sthref49" /></entry>
-<entry keyword="Create New JAXB Project wizard"><topic href="reference010.htm#sthref429" /></entry>
+<entry keyword="Create New JAXB Project wizard"><topic href="reference010.htm#sthref428" /></entry>
     </entry>
     <entry keyword="options">
-<entry keyword="Project Properties page - JAXB Options"><topic href="reference068.htm#sthref683" /></entry>
-<entry keyword="Project Properties page - Schemas"><topic href="reference069.htm#sthref691" /></entry>
+<entry keyword="Project Properties page - JAXB Options"><topic href="reference068.htm#sthref682" /></entry>
+<entry keyword="Project Properties page - Schemas"><topic href="reference069.htm#sthref690" /></entry>
     </entry>
   </entry>
   <entry keyword="projects - JPA">
     <entry keyword="creating new">
 <entry keyword="Creating a new JPA project"><topic href="getting_started003.htm#sthref10" /></entry>
 <entry keyword="Creating a new JPA project"><topic href="task_create_new_project.htm#sthref38" /></entry>
-<entry keyword="Create New JPA Project wizard"><topic href="ref_new_jpa_project_wizard.htm#sthref416" /></entry>
+<entry keyword="Create New JPA Project wizard"><topic href="ref_new_jpa_project_wizard.htm#sthref415" /></entry>
     </entry>
-<entry keyword="options, Project Properties page - JPA"><topic href="ref_project_properties.htm#sthref661" /></entry>
+<entry keyword="options, Project Properties page - JPA"><topic href="ref_project_properties.htm#sthref660" /></entry>
 <entry keyword="properties, Modifying persistent project properties"><topic href="tasks025.htm#sthref316" /></entry>
   </entry>
   <entry keyword="properties">
-<entry keyword="Properties"><topic href="reference060.htm#sthref650" /></entry>
+<entry keyword="Properties"><topic href="reference060.htm#sthref649" /></entry>
     <entry keyword="project">
 <entry keyword="Modifying persistent project properties"><topic href="tasks025.htm#sthref317" /></entry>
     </entry>
   </entry>
-<entry keyword="Properties - in persistence.xml editor, Properties"><topic href="reference060.htm#sthref648" /></entry>
-<entry keyword="property pages, Property pages"><topic href="reference020.htm#sthref466" /></entry>
+<entry keyword="Properties - in persistence.xml editor, Properties"><topic href="reference060.htm#sthref647" /></entry>
+<entry keyword="property pages, Property pages"><topic href="reference020.htm#sthref465" /></entry>
   <entry keyword="queries">
-<entry keyword="Queries"><topic href="reference025.htm#sthref482" /></entry>
-<entry keyword="Queries"><topic href="reference052.htm#sthref611" /></entry>
+<entry keyword="Queries"><topic href="reference025.htm#sthref481" /></entry>
+<entry keyword="Queries"><topic href="reference052.htm#sthref610" /></entry>
   </entry>
   <entry keyword="query hints">
 <entry keyword="Add Query Dialog"><topic href="tasks010.htm#sthref193" /></entry>
-<entry keyword="Queries"><topic href="reference052.htm#sthref616" /></entry>
+<entry keyword="Queries"><topic href="reference052.htm#sthref615" /></entry>
   </entry>
-<entry keyword="Query - in JPA Details view, Queries"><topic href="reference052.htm#sthref612" /></entry>
+<entry keyword="Query - in JPA Details view, Queries"><topic href="reference052.htm#sthref611" /></entry>
 <entry keyword="quick start - Dali, Dali quick start"><topic href="getting_started002.htm#sthref8" /></entry>
-<entry keyword="read-only entities, Advanced"><topic href="reference032.htm#sthref525" /></entry>
+<entry keyword="read-only entities, Advanced"><topic href="reference032.htm#sthref524" /></entry>
   <entry keyword="requirements">
 <entry keyword="Dali Java Persistence Tools, Requirements and installation"><topic href="getting_started001.htm#sthref4" /></entry>
 <entry keyword="persistent entities, Entity"><topic href="tasks004.htm#sthref100" /></entry>
   </entry>
   <entry keyword="schema">
-<entry keyword="database, Project Properties page - JPA"><topic href="ref_project_properties.htm#sthref668" /></entry>
-<entry keyword="JAXB, Add Schema Location dialog"><topic href="reference078.htm#sthref719" /></entry>
+<entry keyword="database, Project Properties page - JPA"><topic href="ref_project_properties.htm#sthref667" /></entry>
+<entry keyword="JAXB, Add Schema Location dialog"><topic href="reference078.htm#sthref718" /></entry>
   </entry>
-<entry keyword="Schema Generation - in persistence.xml editor, Schema Generation"><topic href="reference059.htm#sthref646" /></entry>
-<entry keyword="schema - JAXB, Select Schema Location dialog"><topic href="reference079.htm#sthref723" /></entry>
+<entry keyword="Schema Generation - in persistence.xml editor, Schema Generation"><topic href="reference059.htm#sthref645" /></entry>
+<entry keyword="schema - JAXB, Select Schema Location dialog"><topic href="reference079.htm#sthref722" /></entry>
   <entry keyword="secondary tables">
 <entry keyword="Specifying additional tables"><topic href="task_additonal_tables.htm#sthref171" /></entry>
-<entry keyword="Secondary tables"><topic href="reference030.htm#sthref510" /></entry>
+<entry keyword="Secondary tables"><topic href="reference030.htm#sthref509" /></entry>
   </entry>
-<entry keyword="Secondary Tables - in Java Details view, Secondary tables"><topic href="reference030.htm#sthref513" /></entry>
-<entry keyword="Select Cascade dialog, Select Cascade dialog"><topic href="ref_select_cascade_dialog.htm#sthref700" /></entry>
-<entry keyword="Select Schema Location dialog, Select Schema Location dialog"><topic href="reference079.htm#sthref722" /></entry>
+<entry keyword="Secondary Tables - in Java Details view, Secondary tables"><topic href="reference030.htm#sthref512" /></entry>
+<entry keyword="Select Cascade dialog, Select Cascade dialog"><topic href="ref_select_cascade_dialog.htm#sthref699" /></entry>
+<entry keyword="Select Schema Location dialog, Select Schema Location dialog"><topic href="reference079.htm#sthref721" /></entry>
 <entry keyword="single table inheritance, Specifying entity inheritance"><topic href="task_inheritance.htm#sthref180" /></entry>
-<entry keyword="Source - in persistence.xml editor, Source"><topic href="reference061.htm#sthref652" /></entry>
-<entry keyword="struct converter, Converters"><topic href="reference031.htm#sthref522" /></entry>
+<entry keyword="Source - in persistence.xml editor, Source"><topic href="reference061.htm#sthref651" /></entry>
+<entry keyword="struct converter, Converters"><topic href="reference031.htm#sthref521" /></entry>
 <entry keyword="superclass, Mapped superclass"><topic href="tasks006.htm#sthref119" /></entry>
 <entry keyword="synchronizing classes with persistence.xml file, Synchronizing classes"><topic href="task_manage_persistence001.htm#sthref147" /></entry>
   <entry keyword="tables">
     <entry keyword="associations">
-<entry keyword="Table Associations"><topic href="ref_tableAssociations.htm#sthref376" /></entry>
-<entry keyword="Table Associations"><topic href="reference004.htm#sthref391" /></entry>
-<entry keyword="Create New Association wizard"><topic href="ref_create_new_association_wizard.htm#sthref456" /></entry>
+<entry keyword="Table Associations"><topic href="ref_tableAssociations.htm#sthref375" /></entry>
+<entry keyword="Table Associations"><topic href="reference004.htm#sthref390" /></entry>
+<entry keyword="Create New Association wizard"><topic href="ref_create_new_association_wizard.htm#sthref455" /></entry>
     </entry>
 <entry keyword="creating dynamic entities from, Generating dynamic entities from tables"><topic href="tasks024.htm#sthref308" /></entry>
     <entry keyword="creating entities from">
 <entry keyword="Generating entities from tables"><topic href="tasks022.htm#sthref291" /></entry>
-<entry keyword="Select Tables"><topic href="ref_selectTables.htm#sthref373" /></entry>
-<entry keyword="Select Tables"><topic href="reference003.htm#sthref388" /></entry>
+<entry keyword="Select Tables"><topic href="ref_selectTables.htm#sthref372" /></entry>
+<entry keyword="Select Tables"><topic href="reference003.htm#sthref387" /></entry>
     </entry>
-<entry keyword="creating from entities, Generate Tables from Entities wizard"><topic href="reference018.htm#sthref449" /></entry>
+<entry keyword="creating from entities, Generate Tables from Entities wizard"><topic href="reference018.htm#sthref448" /></entry>
 <entry keyword="from entities, Generating tables from entities"><topic href="tasks023.htm#sthref301" /></entry>
 <entry keyword="inheritance, Specifying entity inheritance"><topic href="task_inheritance.htm#sthref181" /></entry>
     <entry keyword="secondary">
 <entry keyword="Specifying additional tables"><topic href="task_additonal_tables.htm#sthref170" /></entry>
-<entry keyword="Secondary tables"><topic href="reference030.htm#sthref511" /></entry>
+<entry keyword="Secondary tables"><topic href="reference030.htm#sthref510" /></entry>
     </entry>
   </entry>
-<entry keyword="temporal, Type information"><topic href="reference043.htm#sthref575" /></entry>
-<entry keyword="thread identifier - in logging, Logging"><topic href="reference057.htm#sthref642" /></entry>
-<entry keyword="timestamp - in logging, Logging"><topic href="reference057.htm#sthref641" /></entry>
-<entry keyword="tracking changes, Advanced"><topic href="reference032.htm#sthref530" /></entry>
-<entry keyword="transaction type - persistence unit, Connection"><topic href="reference054.htm#sthref632" /></entry>
+<entry keyword="temporal, Type information"><topic href="reference043.htm#sthref574" /></entry>
+<entry keyword="thread identifier - in logging, Logging"><topic href="reference057.htm#sthref641" /></entry>
+<entry keyword="timestamp - in logging, Logging"><topic href="reference057.htm#sthref640" /></entry>
+<entry keyword="tracking changes, Advanced"><topic href="reference032.htm#sthref529" /></entry>
+<entry keyword="transaction type - persistence unit, Connection"><topic href="reference054.htm#sthref631" /></entry>
   <entry keyword="transient mapping">
 <entry keyword="@Transient, Transient mapping"><topic href="tasks020.htm#sthref277" /></entry>
 <entry keyword="about, Transient mapping"><topic href="tasks020.htm#sthref275" /></entry>
   </entry>
-<entry keyword="type converter, Converters"><topic href="reference031.htm#sthref521" /></entry>
-<entry keyword="Type Information - in JPA Details view, Type information"><topic href="reference043.htm#sthref573" /></entry>
-<entry keyword="vendor-specific properties, Properties"><topic href="reference060.htm#sthref649" /></entry>
+<entry keyword="type converter, Converters"><topic href="reference031.htm#sthref520" /></entry>
+<entry keyword="Type Information - in JPA Details view, Type information"><topic href="reference043.htm#sthref572" /></entry>
+<entry keyword="vendor-specific properties, Properties"><topic href="reference060.htm#sthref648" /></entry>
   <entry keyword="version mapping">
 <entry keyword="@Version, Version mapping"><topic href="tasks021.htm#sthref285" /></entry>
     <entry keyword="about">
 <entry keyword="Version mapping"><topic href="tasks021.htm#sthref283" /></entry>
-<entry keyword="Version Mapping"><topic href="reference042.htm#sthref570" /></entry>
+<entry keyword="Version Mapping"><topic href="reference042.htm#sthref569" /></entry>
     </entry>
   </entry>
   <entry keyword="views">
     <entry keyword="JPA Details view">
-<entry keyword="JPA Details view (for entities)"><topic href="ref_persistence_prop_view.htm#sthref468" /></entry>
-<entry keyword="JPA Details view (for attributes)"><topic href="ref_persistence_map_view.htm#sthref535" /></entry>
+<entry keyword="JPA Details view (for entities)"><topic href="ref_persistence_prop_view.htm#sthref467" /></entry>
+<entry keyword="JPA Details view (for attributes)"><topic href="ref_persistence_map_view.htm#sthref534" /></entry>
     </entry>
-<entry keyword="JPA Structure view, JPA Structure view"><topic href="ref_persistence_outline.htm#sthref622" /></entry>
+<entry keyword="JPA Structure view, JPA Structure view"><topic href="ref_persistence_outline.htm#sthref621" /></entry>
   </entry>
 <entry keyword="virtual access type, Generating dynamic entities from tables"><topic href="tasks024.htm#sthref310" /></entry>
   <entry keyword="virtual attributes - adding">
 <entry keyword="Adding virtual attributes"><topic href="tasks007.htm#sthref122" /></entry>
-<entry keyword="Add Virtual Attribute dialog"><topic href="reference080.htm#sthref727" /></entry>
+<entry keyword="Add Virtual Attribute dialog"><topic href="reference080.htm#sthref726" /></entry>
   </entry>
 <entry keyword="warning messages - Dali, Validating mappings and reporting problems"><topic href="tasks027.htm#sthref329" /></entry>
   <entry keyword="weaving">
-<entry keyword="EclipseLink, Project Properties page - EclipseLink"><topic href="reference065.htm#sthref674" /></entry>
+<entry keyword="EclipseLink, Project Properties page - EclipseLink"><topic href="reference065.htm#sthref673" /></entry>
   </entry>
 <entry keyword="Web Dynamic Project page, &lt;a id=&quot;sthref64&quot; name=&quot;sthref64&quot;&gt;&lt;/a&gt;Selecting the Web Services from Builder XML wizard"><topic href="tasks002.htm#sthref66" /></entry>
 <entry keyword="Web Tools Platform (WTP), Requirements and installation"><topic href="getting_started001.htm#sthref5" /></entry>
-<entry keyword="wizards, Wizards"><topic href="reference001.htm#sthref369" /></entry>
+<entry keyword="wizards, Wizards"><topic href="reference001.htm#sthref368" /></entry>
 <entry keyword="XML editor, Working with orm.xml file"><topic href="tasks009.htm#sthref164" /></entry>
 <entry keyword="XML - project metatdata, Converting JPA metadata to XML"><topic href="tasks026.htm#sthref325" /></entry>
-<entry keyword="XMLPath, Tips and tricks"><topic href="tips_and_tricks.htm#sthref743" /></entry>
+<entry keyword="XMLPath, Tips and tricks"><topic href="tips_and_tricks.htm#sthref742" /></entry>
 </index>
