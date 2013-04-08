@@ -106,7 +106,7 @@ public class NewSchemaFileWizardPage extends WizardNewFileCreationPage {
 		}
 		this.overrideFileExistsWarning();
 		
-		//TODO move this validation to the dataModel - see MappingFileNewFileWizardPage
+		//TODO move this validation to the dataModel - see NewJptFileWizardPage
 		// Validate Project
 		valid = ProjectTools.isJavaProject(this.getProject());
 		if( ! valid) {

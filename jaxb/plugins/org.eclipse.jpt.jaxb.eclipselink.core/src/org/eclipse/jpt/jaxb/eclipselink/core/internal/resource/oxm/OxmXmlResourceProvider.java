@@ -9,13 +9,15 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.oxm;
 
+import static org.eclipse.jpt.jaxb.eclipselink.core.internal.operations.OxmFileCreationDataModelProperties.*;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jpt.common.core.internal.resource.xml.AbstractJptXmlResourceProvider;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings;
-import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.Oxm;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmFactory;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 public class OxmXmlResourceProvider
 		extends AbstractJptXmlResourceProvider {
@@ -48,8 +50,13 @@ public class OxmXmlResourceProvider
 	
 	@Override
 	protected void populateRoot(Object config) {
+		IDataModel dataModel = (IDataModel) config;
 		EXmlBindings xmlBindings = OxmFactory.eINSTANCE.createEXmlBindings();
-		xmlBindings.setDocumentVersion(Oxm.SCHEMA_VERSION_2_4); // TODO - for now
+		xmlBindings.setDocumentVersion(dataModel.getStringProperty(VERSION));
+		String packageName = dataModel.getStringProperty(PACKAGE_NAME); 
+		if (! StringTools.isBlank(packageName)) {
+			xmlBindings.setPackageName(packageName);
+		}	
 		getResourceContents().add(xmlBindings);
 	}
 }

@@ -23,7 +23,14 @@ public class JptJaxbEclipseLinkCoreMessages {
 	}
 
 	public static String EL_JAXB_USER_LIBRARY_VALIDATOR__NO_XJC_CLASSES;
-
+	
+	public static String VALIDATE__NEW_OXM_FILE__PROJECT_NOT_JAXB;
+	public static String VALIDATE__NEW_OXM_FILE__PROJECT_NOT_ECLIPSELINK;
+	public static String VALIDATE__NEW_OXM_FILE__CONTAINER_QUESTIONABLE;
+	public static String VALIDATE__NEW_OXM_FILE__PACKAGE_UNSPECIFIED;
+	public static String VALIDATE__NEW_OXM_FILE__PACKAGE_DOESNT_EXIST;
+	
+	
 	private JptJaxbEclipseLinkCoreMessages() {
 		throw new UnsupportedOperationException();
 	}

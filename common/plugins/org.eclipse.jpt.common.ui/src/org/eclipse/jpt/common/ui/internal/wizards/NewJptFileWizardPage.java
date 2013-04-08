@@ -7,7 +7,7 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.jpa.ui.internal.wizards.orm;
+package org.eclipse.jpt.common.ui.internal.wizards;
 
 import static org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties.*;
 import org.eclipse.core.runtime.IPath;
@@ -16,13 +16,13 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
-public class MappingFileNewFileWizardPage
+public class NewJptFileWizardPage
 		extends WizardNewFileCreationPage {
 	
 	protected IDataModel dataModel;
 	
 	
-	public MappingFileNewFileWizardPage(
+	public NewJptFileWizardPage(
 			String pageName, IStructuredSelection selection, IDataModel dataModel,
 			String title, String description) {
 		

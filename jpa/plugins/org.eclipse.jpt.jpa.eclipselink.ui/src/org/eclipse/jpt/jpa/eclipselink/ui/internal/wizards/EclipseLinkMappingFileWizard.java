@@ -11,9 +11,9 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jpt.common.ui.internal.wizards.NewJptFileWizardPage;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.operations.EclipseLinkOrmFileCreationDataModelProvider;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
-import org.eclipse.jpt.jpa.ui.internal.wizards.orm.MappingFileNewFileWizardPage;
 import org.eclipse.jpt.jpa.ui.internal.wizards.orm.MappingFileOptionsWizardPage;
 import org.eclipse.jpt.jpa.ui.internal.wizards.orm.MappingFileWizard;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
@@ -38,8 +38,8 @@ public class EclipseLinkMappingFileWizard
 	
 	
 	@Override
-	protected MappingFileNewFileWizardPage buildMappingFileNewFileWizardPage() {
-		return new MappingFileNewFileWizardPage(
+	protected NewJptFileWizardPage buildMappingFileNewFileWizardPage() {
+		return new NewJptFileWizardPage(
 				"Page_1", this.mungedSelection, getDataModel(),
 				JptJpaEclipseLinkUiMessages.MAPPING_FILE_WIZARD_PAGE_NEW_FILE_TITLE, 
 				JptJpaEclipseLinkUiMessages.MAPPING_FILE_WIZARD_PAGE_NEW_FILE_DESC);

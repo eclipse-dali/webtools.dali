@@ -24,6 +24,8 @@ import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * {@link IJavaProject} convenience methods.
@@ -37,6 +39,28 @@ public final class JavaProjectTools {
 			JptCommonCorePlugin.instance().logError(ex);
 			return null;
 		}
+	}
+	
+	/**
+	 * Returns an iterable of *existing* {@link IPackageFragment}s for the given project that have 
+	 * the specified name
+	 */
+	public static Iterable<IPackageFragment> getPackageFragments(
+			final IJavaProject javaProject, final String packageName) {
+		
+		return IterableTools.filter(
+				IterableTools.transform(
+						getPackageFragmentRoots(javaProject),
+						new Transformer<IPackageFragmentRoot, IPackageFragment>() {
+							public IPackageFragment transform(IPackageFragmentRoot pfr) {
+								return pfr.getPackageFragment(packageName);
+							}
+						}),
+				new Predicate<IPackageFragment>() {
+					public boolean evaluate(IPackageFragment pf) {
+						return pf.exists();
+					}
+				});
 	}
 
 	public static Iterable<IPackageFragmentRoot> getSourceFolders(IJavaProject javaProject) {

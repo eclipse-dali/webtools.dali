@@ -31,6 +31,27 @@
 	</extension>
 	
 	
+	<!-- ***** expressions ***** -->
+
+	<extension point="org.eclipse.core.expressions.definitions">
+		<!-- A test for determining whether something adapts to a JaxbPlatformConfig 
+			and has an eclipselink platform.
+			Force activation of the wst facet plug-in containing the property tester.
+			Possible usage:
+			<adapt type="org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig">
+				<reference definitionId="org.eclipse.jpt.jaxb.eclipselink.reference.hasEclipseLinkPlatform"/>
+			</adapt>
+		-->			
+		<definition id="org.eclipse.jpt.jaxb.eclipselink.reference.hasEclipseLinkPlatform">
+			<test
+				property="org.eclipse.jpt.jaxb.core.jaxbPlatformGroup"
+				value="eclipselink"
+				forcePluginActivation="true"/>
+		</definition>
+		
+	</extension>
+	
+	
 	<extension 
 		point="org.eclipse.core.expressions.propertyTesters">
 		

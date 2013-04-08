@@ -9,7 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_2;
 
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
+import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.Oxm;
 
 
 public class ELJaxb_2_2_PlatformDefinition
@@ -40,5 +42,10 @@ public class ELJaxb_2_2_PlatformDefinition
 	@Override
 	protected String getConfigId() {
 		return ID;
+	}
+	
+	@Override
+	protected JptResourceType getMostRecentOxmResourceType() {
+		return Oxm.RESOURCE_TYPE_2_2;
 	}
 }

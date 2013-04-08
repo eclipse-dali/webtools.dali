@@ -31,6 +31,7 @@ import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlValu
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlInverseReferenceAnnotationDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlPathAnnotationDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlPathsAnnotationDefinition;
+import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.Oxm;
 
 
 public abstract class AbstractELJaxb_2_1_PlatformDefinition
@@ -54,8 +55,13 @@ public abstract class AbstractELJaxb_2_1_PlatformDefinition
 	}
 	
 	public JptResourceType getMostRecentSupportedResourceType(IContentType contentType) {
+		if (contentType.equals(Oxm.CONTENT_TYPE)) {
+			return getMostRecentOxmResourceType();
+		}
 		return getGenericJaxbPlatformDefinition().getMostRecentSupportedResourceType(contentType);
 	}
+	
+	protected abstract JptResourceType getMostRecentOxmResourceType();
 	
 	@Override
 	protected AnnotationDefinition[] buildAnnotationDefinitions() {

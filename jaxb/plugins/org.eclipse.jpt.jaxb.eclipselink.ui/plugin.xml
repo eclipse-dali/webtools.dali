@@ -87,4 +87,53 @@
 		
 	</extension>
 	
+	
+	<extension
+		point="org.eclipse.ui.navigator.navigatorContent">
+				
+		<commonWizard
+			menuGroupId="org.eclipse.jpt.jaxb.ui.menu.jaxb"
+			type="new"
+			wizardId="org.eclipse.jpt.jaxb.eclipselink.ui.wizard.newOxmFile"
+			associatedExtensionId="org.eclipse.jpt.jaxb.ui.jaxbNavigatorContent">
+			<enablement>
+				<and>
+					<or>
+						<instanceof value="org.eclipse.core.resources.IProject"/>
+						<instanceof value="org.eclipse.core.resources.IFolder"/>
+						<instanceof value="org.eclipse.jdt.core.IPackageFragmentRoot"/>
+						<instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
+					</or>
+					<adapt type="org.eclipse.core.resources.IResource">
+						<reference definitionId="org.eclipse.jpt.jaxb.reference.hasJaxbFacet"/>
+					</adapt>
+					<adapt type="org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig">
+						<reference definitionId="org.eclipse.jpt.jaxb.eclipselink.reference.hasEclipseLinkPlatform"/>
+					</adapt>
+				</and>
+			</enablement>
+		</commonWizard>
+		
+	</extension>
+	
+	
+	<extension
+		point="org.eclipse.ui.newWizards">
+		
+		<category
+			id="org.eclipse.jpt.jaxb.eclipselink"
+			name="%eclipseLinkWizardCategoryName"
+			parentCategory="org.eclipse.jpt.jaxb"/>
+			
+		<wizard
+            id="org.eclipse.jpt.jaxb.eclipselink.ui.wizard.newOxmFile"
+			name="%newOxmFileWizardName"
+			icon="$nl$/images/buttons/new-oxm-file.png"
+			class="org.eclipse.jpt.jaxb.eclipselink.ui.internal.wizards.oxm.OxmFileWizard"
+			category="org.eclipse.jpt.jaxb/org.eclipse.jpt.jaxb.eclipselink">
+			<description>%newOxmFileWizardDesc</description>
+		</wizard>
+      
+	</extension>
+	
 </plugin>

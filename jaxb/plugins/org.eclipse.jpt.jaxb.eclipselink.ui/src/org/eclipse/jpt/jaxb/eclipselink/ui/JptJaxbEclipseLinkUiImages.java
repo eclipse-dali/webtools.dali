@@ -29,30 +29,36 @@ import org.eclipse.jpt.jaxb.eclipselink.ui.internal.plugin.JptJaxbEclipseLinkUiP
 // TODO add corresponding ImageDescriptorTest...
 @SuppressWarnings("nls")
 public final class JptJaxbEclipseLinkUiImages {
-
+	
 	// ********** directories **********
-
+	
 	private static final String OBJECTS_ = JptCommonUiImages.OBJECTS_;
-
-
+	private static final String WIZARDS_ = JptCommonUiImages.WIZARDS_;
+	
+	
 	// ********** oxm **********
-
+	
 	public static final ImageDescriptor OXM_FILE = buildImageDescriptor(OBJECTS_ + "oxm-file.gif");
 	
-
+	
 	// ********** mappings **********
-
+	
 	public static final ImageDescriptor XML_INVERSE_REFERENCE = buildImageDescriptor(OBJECTS_ + "xml-inverse-reference.gif");
 	public static final ImageDescriptor XML_JOIN_NODES = buildImageDescriptor(OBJECTS_ + "xml-join-nodes.gif");
 	public static final ImageDescriptor XML_TRANSFORMATION = buildImageDescriptor(OBJECTS_ + "xml-transformation.gif");
-
-
+	
+	
+	// ********** wizard banners **********
+	
+	public static final ImageDescriptor OXM_FILE_BANNER = buildImageDescriptor(WIZARDS_ + "oxm-file-banner.png");
+	
+	
 	// ********** misc **********
-
+	
 	private static ImageDescriptor buildImageDescriptor(String path) {
 		return JptJaxbEclipseLinkUiPlugin.instance().buildImageDescriptor(path);
 	}
-
+	
 	private JptJaxbEclipseLinkUiImages() {
 		throw new UnsupportedOperationException();
 	}

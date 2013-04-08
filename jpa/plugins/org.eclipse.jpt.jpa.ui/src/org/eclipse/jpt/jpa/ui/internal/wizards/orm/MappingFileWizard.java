@@ -35,6 +35,7 @@ import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.core.internal.utility.PathTools;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
+import org.eclipse.jpt.common.ui.internal.wizards.NewJptFileWizardPage;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
@@ -196,8 +197,8 @@ public class MappingFileWizard extends Wizard
 		addPage(this.secondPage);
 	}
 	
-	protected MappingFileNewFileWizardPage buildMappingFileNewFileWizardPage() {
-		return new MappingFileNewFileWizardPage(
+	protected NewJptFileWizardPage buildMappingFileNewFileWizardPage() {
+		return new NewJptFileWizardPage(
 				"Page_1", this.mungedSelection, getDataModel(),
 				JptJpaUiMessages.MappingFileWizardPage_newFile_title, 
 				JptJpaUiMessages.MappingFileWizardPage_newFile_desc);
