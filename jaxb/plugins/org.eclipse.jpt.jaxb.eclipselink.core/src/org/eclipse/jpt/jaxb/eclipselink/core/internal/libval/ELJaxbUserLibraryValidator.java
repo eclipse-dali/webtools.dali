@@ -23,6 +23,7 @@ import org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_1.ELJaxb_2_1_PlatformDe
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_2.ELJaxb_2_2_PlatformDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_3.ELJaxb_2_3_PlatformDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_4.ELJaxb_2_4_PlatformDefinition;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_5.ELJaxb_2_5_PlatformDefinition;
 import org.eclipse.osgi.service.resolver.VersionRange;
 
 
@@ -68,6 +69,7 @@ public class ELJaxbUserLibraryValidator
 		versionRanges.put(ELJaxb_2_2_PlatformDefinition.ID, new VersionRange("[2.2, 3.0)"));
 		versionRanges.put(ELJaxb_2_3_PlatformDefinition.ID, new VersionRange("[2.3, 3.0)"));
 		versionRanges.put(ELJaxb_2_4_PlatformDefinition.ID, new VersionRange("[2.4, 3.0)"));
+		versionRanges.put(ELJaxb_2_5_PlatformDefinition.ID, new VersionRange("[2.5, 3.0)"));
 		return versionRanges;
 	}
 

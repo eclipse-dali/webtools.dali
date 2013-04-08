@@ -901,6 +901,7 @@ public class EXmlBindings extends ERootObjectImpl
 		map.put(Oxm.SCHEMA_VERSION_2_2, Oxm.SCHEMA_LOCATION_2_2);
 		map.put(Oxm.SCHEMA_VERSION_2_3, Oxm.SCHEMA_LOCATION_2_3);
 		map.put(Oxm.SCHEMA_VERSION_2_4, Oxm.SCHEMA_LOCATION_2_4);
+		map.put(Oxm.SCHEMA_VERSION_2_5, Oxm.SCHEMA_LOCATION_2_5);
 		return map;
 	}
 	
@@ -919,6 +920,7 @@ public class EXmlBindings extends ERootObjectImpl
 		map.put(Oxm.SCHEMA_VERSION_2_2, Oxm.SCHEMA_NAMESPACE);
 		map.put(Oxm.SCHEMA_VERSION_2_3, Oxm.SCHEMA_NAMESPACE);
 		map.put(Oxm.SCHEMA_VERSION_2_4, Oxm.SCHEMA_NAMESPACE);
+		map.put(Oxm.SCHEMA_VERSION_2_5, Oxm.SCHEMA_NAMESPACE);
 		return map;
 	}
 

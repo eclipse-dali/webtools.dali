@@ -104,6 +104,14 @@
 			jaxbFacetVersion="2.2"
 			default="false"/>
 		
+		<jaxbPlatform
+			id="eclipselink_2_5"
+			label="%ECLIPSELINK_2_5_PLATFORM_LABEL"
+			factoryClass="org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_5.ELJaxb_2_5_PlatformDefinitionFactory"
+			group="eclipselink"
+			jaxbFacetVersion="2.2"
+			default="false"/>
+		
 	</extension>
 	
 	
@@ -154,6 +162,11 @@
 			id="org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm_2_4"
 			content-type="org.eclipse.jpt.jaxb.eclipselink.core.content.oxm"
 			version="2.4"/>
+		
+		<resource-type
+			id="org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm_2_5"
+			content-type="org.eclipse.jpt.jaxb.eclipselink.core.content.oxm"
+			version="2.5"/>
 		
 	</extension>
 	

@@ -40,6 +40,11 @@ public interface Oxm {
 	
 	JptResourceType RESOURCE_TYPE_2_4 = ContentTypeTools.getResourceType(CONTENT_TYPE, SCHEMA_VERSION_2_4);
 	
+	String SCHEMA_VERSION_2_5 = "2.5";
+	String SCHEMA_LOCATION_2_5 = "http://www.eclipse.org/eclipselink/xsds/eclipselink_oxm_2_5.xsd";
+	
+	JptResourceType RESOURCE_TYPE_2_5 = ContentTypeTools.getResourceType(CONTENT_TYPE, SCHEMA_VERSION_2_5);
+	
 	
 	// Oxm specific nodes
 	String ATTRIBUTE_FORM_DEFAULT = "attribute-form-default"; //$NON-NLS-1$

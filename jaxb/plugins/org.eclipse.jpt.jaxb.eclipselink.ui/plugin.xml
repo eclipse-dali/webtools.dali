@@ -35,6 +35,11 @@
 			jaxbPlatform="eclipselink_2_4"
 			class="org.eclipse.jpt.jaxb.eclipselink.ui.internal.v2_4.ELJaxb_2_4_PlatformUi"/>
 		
+		<jaxbPlatformUi
+			id="eclipselink_2_5.ui"
+			jaxbPlatform="eclipselink_2_5"
+			class="org.eclipse.jpt.jaxb.eclipselink.ui.internal.v2_5.ELJaxb_2_5_PlatformUi"/>
+				
 	</extension>
 	
 	
