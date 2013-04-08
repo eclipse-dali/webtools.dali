@@ -7,13 +7,16 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java;
+package org.eclipse.jpt.jpa.core.jpa2_1.context.java;
 
-import org.eclipse.jpt.jpa.core.jpa2_1.context.StoredProcedureParameter2_1;
-import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameterAnnotation2_1;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.NamedStoredProcedureQuery2_1;
+import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.NamedStoredProcedureQueryAnnotation2_1;
 
 /**
- * Java stored procedure parameter
+ * JPA 2.1
+ * Java named stored procedure query
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -24,8 +27,16 @@ import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameterAnn
  * @version 3.3
  * @since 3.3
  */
-public interface JavaStoredProcedureParameter2_1
-	extends StoredProcedureParameter2_1
+public interface JavaNamedStoredProcedureQuery2_1
+	extends NamedStoredProcedureQuery2_1, JavaQuery
 {
-	StoredProcedureParameterAnnotation2_1 getStoredProcedureParameter2_1Annotation();
+	NamedStoredProcedureQueryAnnotation2_1 getQueryAnnotation();
+
+	// *********** parameters ************
+	
+	ListIterable<JavaStoredProcedureParameter2_1> getParameters();
+
+	JavaStoredProcedureParameter2_1 addParameter();
+
+	JavaStoredProcedureParameter2_1 addParameter(int index);
 }
