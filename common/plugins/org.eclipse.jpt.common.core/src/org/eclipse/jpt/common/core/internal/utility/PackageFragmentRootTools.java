@@ -10,10 +10,12 @@
 package org.eclipse.jpt.common.core.internal.utility;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
@@ -80,6 +82,30 @@ public final class PackageFragmentRootTools {
 		IResource resource = pfr.getUnderlyingResource();
 		return (resource != null) && (resource.getType() == IResource.FOLDER);
 	}
+
+
+	// ********** package fragment **********
+
+	/**
+	 * Transform a package fragment root into the configured package fragment.
+	 * @see IPackageFragmentRoot#getPackageFragment(String)
+	 */
+	public static class PackageFragmentTransformer
+		extends TransformerAdapter<IPackageFragmentRoot, IPackageFragment>
+	{
+		private final String packageName;
+		public PackageFragmentTransformer(String packageName) {
+			super();
+			this.packageName = packageName;
+		}
+		@Override
+		public IPackageFragment transform(IPackageFragmentRoot pfr) {
+			return pfr.getPackageFragment(this.packageName);
+		}
+	}
+
+
+	// ********** disabled constructor **********
 
 	private PackageFragmentRootTools() {
 		throw new UnsupportedOperationException();

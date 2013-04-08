@@ -14,11 +14,15 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IParent;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
  * {@link IJavaElement} convenience methods.
  */
 public class JavaElementTools {
+
+	// ********** children **********
 
 	/**
 	 * Wrap checked exception and check for out of sync workspace.
@@ -35,6 +39,23 @@ public class JavaElementTools {
 		}
 	}
 	private static final IJavaElement[] EMPTY_JAVA_ELEMENT_ARRAY = new IJavaElement[0];
+
+
+	// ********** exists **********
+
+	public static final Predicate<IJavaElement> EXISTS = new Exists();
+
+	public static class Exists
+		extends PredicateAdapter<IJavaElement>
+	{
+		@Override
+		public boolean evaluate(IJavaElement javaElement) {
+			return javaElement.exists();
+		}
+	}
+
+
+	// ********** disabled constructor **********
 
 	private JavaElementTools() {
 		throw new UnsupportedOperationException();
