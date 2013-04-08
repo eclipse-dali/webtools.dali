@@ -17,6 +17,9 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
@@ -165,14 +168,14 @@ public class ClassesGeneratorWizard
 			IFolder folder = this.getJavaProject().getProject().getFolder(this.destinationFolder);
 			this.createFolderIfNotExist(folder);
 		}
-
+		
 		if (this.performsGeneration) {
-			if (this.displayOverwritingClassesWarning(this.generatorOptions)) {
-				this.scheduleGenerateJaxbClassesJob();
-				this.addSchemaToLibrary();
+			if (displayOverwritingClassesWarning(this.generatorOptions)) {
+				doGenerateJaxbClasses();
+				doAddSchemaToLibrary();
 			}
 		}
-
+		
 		return true;
 	}
     
@@ -370,7 +373,7 @@ public class ClassesGeneratorWizard
 		}
 	}
 	
-	private void scheduleGenerateJaxbClassesJob() {
+	private void doGenerateJaxbClasses() {
 		try {
 			WorkspaceJob generateJaxbClassesJob = 
 					new GenerateJaxbClassesJob(
@@ -394,25 +397,55 @@ public class ClassesGeneratorWizard
 		}
 	}
 	
-	private void addSchemaToLibrary() {
-		JaxbProject jaxbProject = getJaxbProject();
-		
-		if (jaxbProject == null) {
-			return;
-		}
-		
-		String schemaLocation = getSchemaLocation();
-		String resolvedUri = XsdUtil.getResolvedUri(schemaLocation);
-		XSDSchema schema = XSDImpl.buildXSDModel(resolvedUri);
-		if (schema != null) {
-			SchemaLibrary schemaLib = jaxbProject.getSchemaLibrary();
-			List<String> schemas = new Vector<String>(schemaLib.getSchemaLocations());
-			if (! schemas.contains(schemaLocation)) {
-				schemas.add(schemaLocation);
-				schemaLib.setSchemaLocations(schemas);
+	private void doAddSchemaToLibrary() {
+		try {
+			JaxbProject jaxbProject = getJaxbProject();
+			if (jaxbProject == null) {
+				return;
 			}
+			WorkspaceJob addSchemaToLibraryJob = new AddSchemaToLibraryJob(jaxbProject, getSchemaLocation());
+			addSchemaToLibraryJob.schedule();
+		}
+		catch(RuntimeException re) {
+			JptJaxbUiPlugin.instance().logError(re);
+			
+			String msg = re.getMessage();
+			String message = (msg == null) ? re.toString() : msg;
+			this.logError(message);
 		}
 	}
+	
+	
+	protected class AddSchemaToLibraryJob
+			extends WorkspaceJob {
+		
+		private final JaxbProject jaxbProject;
+		private final String schemaLocation;
+		
+		
+		protected AddSchemaToLibraryJob(JaxbProject jaxbProject, String schemaLocation) {
+			super(JptJaxbUiMessages.ADD_SCHEMA_TO_LIBRARY_JOB__NAME);
+			this.jaxbProject = jaxbProject;
+			this.schemaLocation = schemaLocation;
+		}
+		
+		
+		@Override
+		public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+			String resolvedUri = XsdUtil.getResolvedUri(this.schemaLocation);
+			XSDSchema schema = XSDImpl.buildXSDModel(resolvedUri);
+			if (schema != null) {
+				SchemaLibrary schemaLib = this.jaxbProject.getSchemaLibrary();
+				List<String> schemas = new Vector<String>(schemaLib.getSchemaLocations());
+				if (! schemas.contains(this.schemaLocation)) {
+					schemas.add(this.schemaLocation);
+					schemaLib.setSchemaLocations(schemas);
+				}
+			}
+			return Status.OK_STATUS;
+		}
+	}
+	
 	
 	protected void logError(String message) {
 			this.displayError(message);

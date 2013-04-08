@@ -21,7 +21,9 @@ public class JptJaxbUiMessages {
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, BUNDLE_CLASS);
 	}
-
+	
+	public static String ADD_SCHEMA_TO_LIBRARY_JOB__NAME;
+	
 	public static String JAVA_PROJECT_WIZARD_PAGE_PROJECT;
 	public static String JAVA_PROJECT_WIZARD_PAGE_DESTINATION_PROJECT;
 	
