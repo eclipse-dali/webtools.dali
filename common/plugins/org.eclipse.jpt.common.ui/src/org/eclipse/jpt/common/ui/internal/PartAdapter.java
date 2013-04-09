@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,31 +7,35 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.ui.internal.utility;
+package org.eclipse.jpt.common.ui.internal;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.ui.IWindowListener;
-import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.IPartListener;
+import org.eclipse.ui.IWorkbenchPart;
 
 /**
- * Convenience implementation of {@link IWindowListener}.
+ * Convenience implementation of {@link IPartListener}.
  */
-public class WindowAdapter
-	implements IWindowListener
+public class PartAdapter
+	implements IPartListener
 {
-	public void windowOpened(IWorkbenchWindow window) {
+	public void partOpened(IWorkbenchPart part) {
 		// NOP
 	}
 
-	public void windowActivated(IWorkbenchWindow window) {
+	public void partBroughtToTop(IWorkbenchPart part) {
 		// NOP
 	}
 
-	public void windowDeactivated(IWorkbenchWindow window) {
+	public void partActivated(IWorkbenchPart part) {
 		// NOP
 	}
 
-	public void windowClosed(IWorkbenchWindow window) {
+	public void partDeactivated(IWorkbenchPart part) {
+		// NOP
+	}
+
+	public void partClosed(IWorkbenchPart part) {
 		// NOP
 	}
 

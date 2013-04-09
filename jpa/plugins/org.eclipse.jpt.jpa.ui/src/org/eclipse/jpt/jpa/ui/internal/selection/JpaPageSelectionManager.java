@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.selection;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import org.eclipse.jpt.common.ui.internal.utility.PartAdapter2;
+import org.eclipse.jpt.common.ui.internal.PartAdapter2;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.value.DoubleModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.DoublePropertyValueModel;

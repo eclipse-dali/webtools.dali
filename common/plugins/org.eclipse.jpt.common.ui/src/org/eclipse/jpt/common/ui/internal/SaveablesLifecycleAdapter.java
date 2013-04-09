@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,20 +7,19 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.ui.internal.utility;
+package org.eclipse.jpt.common.ui.internal;
 
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.ui.ISelectionListener;
-import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.ISaveablesLifecycleListener;
+import org.eclipse.ui.SaveablesLifecycleEvent;
 
 /**
- * Convenience implementation of {@link ISelectionListener}.
+ * Convenience implementation of {@link ISaveablesLifecycleListener}.
  */
-public class SelectionAdapter
-	implements ISelectionListener
+public class SaveablesLifecycleAdapter
+	implements ISaveablesLifecycleListener
 {
-	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+	public void handleLifecycleEvent(SaveablesLifecycleEvent event) {
 		// NOP
 	}
 
