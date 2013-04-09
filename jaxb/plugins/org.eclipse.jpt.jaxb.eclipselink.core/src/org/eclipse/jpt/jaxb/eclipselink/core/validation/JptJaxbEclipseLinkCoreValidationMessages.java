@@ -14,6 +14,7 @@ import org.eclipse.jpt.common.core.internal.utility.ValidationMessageLoader;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * Localized validation messages used by Dali EclipseLink JAXB core.
@@ -29,6 +30,7 @@ public class JptJaxbEclipseLinkCoreValidationMessages {
 	public static ValidationMessage PROJECT_MISSING_ECLIPSELINK_JAXB_CONTEXT_FACTORY;
 	
 	// oxm file
+	public static ValidationMessage OXM_FILE__NOT_LATEST_VERSION;
 	public static ValidationMessage OXM_FILE__NO_PACKAGE_SPECIFIED;
 	public static ValidationMessage OXM_FILE__NO_SUCH_PACKAGE;
 	
@@ -103,5 +105,8 @@ public class JptJaxbEclipseLinkCoreValidationMessages {
 	private static final Class<?> BUNDLE_CLASS = JptJaxbEclipseLinkCoreValidationMessages.class;
 	static {
 		ValidationMessageLoader.load(BUNDLE_CLASS, MESSAGE_BUNDLE_NAME, DESCRIPTION_BUNDLE_NAME, JaxbProject.MARKER_TYPE, PREFERENCES_ADAPTER);
+		
+		// INFOs
+		OXM_FILE__NOT_LATEST_VERSION.setDefaultSeverity(IMessage.LOW_SEVERITY);
 	}
 }

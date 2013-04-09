@@ -10,6 +10,8 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.oxm;
 
 import java.util.List;
+import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ClassNameTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -30,6 +32,7 @@ import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlEnum;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmFactory;
+import org.eclipse.jpt.jaxb.eclipselink.core.validation.JptJaxbEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -477,11 +480,34 @@ public class OxmXmlBindingsImpl
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		
+		validateVersion(messages);
+		
 		for (OxmXmlEnum xmlEnum : getXmlEnums()) {
 			xmlEnum.validate(messages, reporter);
 		}
 		for (OxmJavaType javaType : getJavaTypes()) {
 			javaType.validate(messages, reporter);
 		}
+	}
+	
+	protected void validateVersion(List<IMessage> messages) {
+		if (ObjectTools.notEquals(getLatestDocumentVersion(), this.eXmlBindings.getDocumentVersion())) {
+			messages.add(
+				ValidationMessageTools.buildValidationMessage(
+					getResource(),
+					this.eXmlBindings.getVersionTextRange(),
+					JptJaxbEclipseLinkCoreValidationMessages.OXM_FILE__NOT_LATEST_VERSION));
+		}
+	}
+	
+	/**
+	 * Return the latest version of the document supported by the platform
+	 */
+	protected String getLatestDocumentVersion() {
+		return getJaxbProject().getPlatform().getDefinition().getMostRecentSupportedResourceType(getContentType()).getVersion();
+	}
+
+	protected IContentType getContentType() {
+		return EXmlBindings.CONTENT_TYPE;
 	}
 }
