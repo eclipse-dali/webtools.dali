@@ -13,7 +13,7 @@ import java.util.Hashtable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jpt.common.core.internal.utility.JptPlugin;
 import org.eclipse.jpt.common.ui.internal.JptUIPlugin;
-import org.eclipse.jpt.common.ui.internal.swt.Adapter;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.Adapter;
 import org.eclipse.jpt.common.utility.internal.reference.AbstractBooleanReference;
 import org.eclipse.jpt.common.utility.reference.BooleanReference;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
