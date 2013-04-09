@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,23 +7,19 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.ui.internal.swt;
+package org.eclipse.jpt.common.ui.internal.swt.events;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TraverseListener;
 
 /**
- * Convenience implementation of {@link FocusListener}.
+ * Convenience implementation of {@link TraverseListener}.
  */
-public class FocusAdapter
-	implements FocusListener
+public class TraverseAdapter
+	implements TraverseListener
 {
-	public void focusGained(FocusEvent e) {
-		// NOP
-	}
-
-	public void focusLost(FocusEvent e) {
+	public void keyTraversed(TraverseEvent e) {
 		// NOP
 	}
 

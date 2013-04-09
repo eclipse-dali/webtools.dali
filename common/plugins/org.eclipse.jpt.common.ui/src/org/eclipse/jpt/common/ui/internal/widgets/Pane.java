@@ -22,9 +22,9 @@ import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWra
 import org.eclipse.jpt.common.ui.internal.plugin.JptCommonUiPlugin;
 import org.eclipse.jpt.common.ui.internal.swt.ComboModelAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.DateTimeModelAdapter;
-import org.eclipse.jpt.common.ui.internal.swt.DisposeAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.SpinnerModelAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.TriStateCheckBoxModelAdapter;
+import org.eclipse.jpt.common.ui.internal.swt.events.DisposeAdapter;
 import org.eclipse.jpt.common.ui.internal.util.LabeledButton;
 import org.eclipse.jpt.common.ui.internal.util.LabeledControlUpdater;
 import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.ui.internal.utility.swt;
 
 import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
-import org.eclipse.jpt.common.ui.internal.swt.DisposeAdapter;
+import org.eclipse.jpt.common.ui.internal.swt.events.DisposeAdapter;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.utility.internal.RunnableAdapter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
