@@ -24,7 +24,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	LabeledButtonTest.class,
 	LabeledLabelTest.class,
 	LabeledControlUpdaterTest.class,
-	PaneVisibilityEnablerTest.class,
 	SectionExpanderTest.class,
 })
 @RunWith(Suite.class)
