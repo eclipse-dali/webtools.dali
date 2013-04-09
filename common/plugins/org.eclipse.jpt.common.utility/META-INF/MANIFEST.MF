@@ -22,6 +22,7 @@ Export-Package: org.eclipse.jpt.common.utility,
    org.eclipse.jpt.jpa.db,
    org.eclipse.jpt.jpa.db.ui,
    org.eclipse.jpt.jpa.gen,
+   org.eclipse.jpt.jpa.annotate,
    org.eclipse.jpt.jpa.ui",
  org.eclipse.jpt.common.utility.internal.collection;
   x-friends:="org.eclipse.jpt.jpa.core,

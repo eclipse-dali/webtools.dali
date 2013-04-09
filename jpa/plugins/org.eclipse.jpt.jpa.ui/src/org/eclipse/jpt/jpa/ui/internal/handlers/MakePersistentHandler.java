@@ -29,7 +29,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
-import org.eclipse.jpt.jpa.ui.internal.wizards.JpaMakePersistentWizard;
+import org.eclipse.jpt.jpa.ui.internal.wizards.makepersistent.JpaMakePersistentWizard;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;

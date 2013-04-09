@@ -117,6 +117,10 @@ public final class JptJpaUiImages {
 	public static final ImageDescriptor ENTITY_GEN_COLUMN = buildImageDescriptor(OBJECTS_ + "entity-gen-column.gif");
 	public static final ImageDescriptor ENTITY_GEN_KEY_COLUMN = buildImageDescriptor(OBJECTS_ + "entity-gen-column-key.gif");
 
+	// ********** make persistent database **********
+	
+	public static final ImageDescriptor LIST_OF_VALUES = buildImageDescriptor(OBJECTS_ + "list-of-values.png");
+	public static final ImageDescriptor KEY = buildImageDescriptor(OBJECTS_ + "key.gif");
 
 	// ********** misc **********
 

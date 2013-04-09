@@ -80,7 +80,7 @@ public class DatabaseGroup
 
 	// ********** construction **********
 
-	protected DatabaseGroup(IWizardContainer wizardContainer, JpaProject jpaProject, Composite parent, ResourceManager resourceManager, int widthHint) {
+	public DatabaseGroup(IWizardContainer wizardContainer, JpaProject jpaProject, Composite parent, ResourceManager resourceManager, int widthHint) {
 		super();
 		this.wizardContainer = wizardContainer;
 		this.jpaProject = jpaProject;
