@@ -127,10 +127,10 @@ public class OxmFileWizard
 			return null;
 		}
 		if (resource instanceof IProject) {
-			return getDefaultContainer((IProject) selection);
+			return getDefaultContainer((IProject) resource);
 		}
 		if (resource instanceof IContainer) {
-			return (IContainer) selection;
+			return (IContainer) resource;
 		}
 		return resource.getParent();
 	}
