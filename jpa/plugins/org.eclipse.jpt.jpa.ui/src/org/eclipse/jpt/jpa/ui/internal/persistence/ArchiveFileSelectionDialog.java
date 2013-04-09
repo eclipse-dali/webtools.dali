@@ -22,7 +22,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.ui.internal.jface.ArchiveFileViewerFilter;
-import org.eclipse.jpt.common.ui.internal.swt.bind.SWTTools;
+import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
@@ -89,7 +89,7 @@ public class ArchiveFileSelectionDialog
 		
 		Text jarPathText = new Text(subComposite, SWT.BORDER);
 		jarPathText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		SWTTools.bind(jarPathModel, jarPathText);
+		SWTBindTools.bind(jarPathModel, jarPathText);
 		
 		return composite;
 	}

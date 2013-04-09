@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jpt.common.core.internal.utility.ICUStringCollator;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.ui.internal.properties.JptProjectPropertiesPage;
-import org.eclipse.jpt.common.ui.internal.swt.bind.SWTTools;
+import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.BufferedModifiablePropertyValueModel;
@@ -190,7 +190,7 @@ public class JaxbProjectPropertiesPage
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
 		Combo platformDropDown = this.buildDropDown(group);
-		SWTTools.bind(
+		SWTBindTools.bind(
 				buildPlatformChoicesModel(),
 				this.platformModel,
 				platformDropDown,

@@ -33,7 +33,7 @@ import org.eclipse.ui.forms.widgets.Section;
  * Various SWT tools.
  */
 @SuppressWarnings("nls")
-public final class SWTTools {
+public final class SWTBindTools {
 
 	// ********** check-box/radio button/toggle button **********
 
@@ -423,7 +423,7 @@ public final class SWTTools {
 	/**
 	 * Suppress default constructor, ensuring non-instantiability.
 	 */
-	private SWTTools() {
+	private SWTBindTools() {
 		super();
 		throw new UnsupportedOperationException();
 	}

@@ -14,7 +14,7 @@ import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.common.ui.internal.swt.bind.SWTTools;
+import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
@@ -118,19 +118,19 @@ public class TextFieldModelBindingUITest
 
 	private void buildNameTextField(Composite parent) {
 		Text textField = new Text(parent, SWT.SINGLE);
-		SWTTools.bind(this.nameHolder, textField);
+		SWTBindTools.bind(this.nameHolder, textField);
 	}
 
 	private void buildReadOnlyNameTextField(Composite parent) {
 		Text textField = new Text(parent, SWT.SINGLE);
 		textField.setEnabled(false);
-		SWTTools.bind(this.nameHolder, textField);
+		SWTBindTools.bind(this.nameHolder, textField);
 	}
 
 	private void buildAllCapsNameTextField(Composite parent) {
 		Text textField = new Text(parent, SWT.SINGLE);
 		textField.setEnabled(false);
-		SWTTools.bind(this.allCapsNameHolder, textField);
+		SWTBindTools.bind(this.allCapsNameHolder, textField);
 	}
 
 	private void buildControlPanel(Composite parent, Control checkBoxPanel) {

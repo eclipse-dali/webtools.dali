@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 import java.util.Arrays;
 import java.util.Collection;
 import org.eclipse.jpt.common.ui.JptCommonUiMessages;
-import org.eclipse.jpt.common.ui.internal.swt.bind.SWTTools;
+import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
 import org.eclipse.jpt.common.ui.internal.widgets.ComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
@@ -90,7 +90,7 @@ public class TenantDiscriminatorColumnComposite extends Pane<EclipseLinkTenantDi
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		pkCheckBox.getCheckBox().setLayoutData(gridData);
-		SWTTools.controlVisibleState(new EclipseLink2_4ProjectFlagModel<EclipseLinkTenantDiscriminatorColumn2_3>(this.getSubjectHolder()), pkCheckBox.getCheckBox());
+		SWTBindTools.controlVisibleState(new EclipseLink2_4ProjectFlagModel<EclipseLinkTenantDiscriminatorColumn2_3>(this.getSubjectHolder()), pkCheckBox.getCheckBox());
 	}
 
 	private ColumnCombo<EclipseLinkTenantDiscriminatorColumn2_3> addNameCombo(Composite container) {

@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
-import org.eclipse.jpt.common.ui.internal.swt.bind.SWTTools;
+import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
@@ -132,7 +132,7 @@ public class EclipseLink2_3PersistenceUnitMetadataComposite extends PersistenceU
 		gridData.horizontalSpan = 2;
 		diCheckBox.setLayoutData(gridData);
 
-		SWTTools.controlVisibleState(this.buildDelimitedIdentifiersCheckBoxIsVisibleModel(), diCheckBox);
+		SWTBindTools.controlVisibleState(this.buildDelimitedIdentifiersCheckBoxIsVisibleModel(), diCheckBox);
 
 
 		// Tenant discriminator columns group pane

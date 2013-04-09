@@ -32,7 +32,7 @@ import org.eclipse.swt.events.SelectionListener;
  * @see ListValueModel
  * @see ModifiablePropertyValueModel
  * @see DropDownListBox
- * @see SWTTools
+ * @see SWTBindTools
  */
 @SuppressWarnings("nls")
 final class DropDownListBoxSelectionBinding<E>

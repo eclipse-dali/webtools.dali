@@ -22,7 +22,7 @@ import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.common.ui.internal.swt.bind.SWTTools;
+import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
@@ -206,7 +206,7 @@ public class ListBoxModelBindingUITest
 			fd.left = new FormAttachment(0);
 			fd.right = new FormAttachment(100);
 		listBox.setLayoutData(fd);
-		SWTTools.bind(model, selectedItemsModel, listBox);  // use #toString()
+		SWTBindTools.bind(model, selectedItemsModel, listBox);  // use #toString()
 		return listBox;
 	}
 

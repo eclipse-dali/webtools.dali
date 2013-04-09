@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.List;
  * @see ListValueModel
  * @see ModifiableCollectionValueModel
  * @see List
- * @see SWTTools
+ * @see SWTBindTools
  */
 @SuppressWarnings("nls")
 final class ListBoxSelectionBinding<E>

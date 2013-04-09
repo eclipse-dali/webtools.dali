@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jpt.common.ui.internal.swt.bind.SWTTools;
+import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
 import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
@@ -96,7 +96,7 @@ public abstract class AbstractOverridesComposite<T extends JpaContextModel>
 				JptJpaUiDetailsMessages.OverridesComposite_overrideDefault,
 				getOverrideVirtualOverrideHolder(),
 				null);
-		SWTTools.controlVisibleState(buildSelectedOverrideBooleanHolder(), overrideCheckBox);
+		SWTBindTools.controlVisibleState(buildSelectedOverrideBooleanHolder(), overrideCheckBox);
 		
 		// Property pane
 		PageBook pageBook = addPageBook(container);

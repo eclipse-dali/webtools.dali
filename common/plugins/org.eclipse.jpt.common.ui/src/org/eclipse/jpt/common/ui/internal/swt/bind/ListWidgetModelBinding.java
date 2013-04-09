@@ -34,7 +34,7 @@ import org.eclipse.swt.events.DisposeListener;
  * @see Transformer
  * @see ListWidget
  * @see SelectionBinding
- * @see SWTTools
+ * @see SWTBindTools
  */
 @SuppressWarnings("nls")
 final class ListWidgetModelBinding<E> {

@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.ui.internal.swt.ComboModelAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.DateTimeModelAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.SpinnerModelAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.TriStateCheckBoxModelAdapter;
-import org.eclipse.jpt.common.ui.internal.swt.bind.SWTTools;
+import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
 import org.eclipse.jpt.common.ui.internal.swt.events.DisposeAdapter;
 import org.eclipse.jpt.common.ui.internal.util.LabeledButton;
 import org.eclipse.jpt.common.ui.internal.util.LabeledControlUpdater;
@@ -1305,7 +1305,7 @@ public abstract class Pane<T extends Model> {
 	                                        String helpId) {
 
 		Text text = this.addMultiLineText(container, lineCount, helpId);
-		SWTTools.bind(textHolder, text);
+		SWTBindTools.bind(textHolder, text);
 		return text;
 	}
 
@@ -1383,7 +1383,7 @@ public abstract class Pane<T extends Model> {
 	                                       ModifiablePropertyValueModel<String> textHolder) {
 
 		Text text = this.addPasswordText(container);
-		SWTTools.bind(textHolder, text);
+		SWTBindTools.bind(textHolder, text);
 
 		return text;
 	}
@@ -1852,7 +1852,7 @@ public abstract class Pane<T extends Model> {
 	                               String helpId) {
 
 		Text text = this.addText(container, helpId);
-		SWTTools.bind(textHolder, text);
+		SWTBindTools.bind(textHolder, text);
 
 		return text;
 	}
@@ -1885,7 +1885,7 @@ public abstract class Pane<T extends Model> {
 	                               String helpId) {
 
 		Text text = this.addUnmanagedText(container, helpId);
-		SWTTools.bind(textHolder, text);
+		SWTBindTools.bind(textHolder, text);
 
 		return text;
 	}
@@ -1993,7 +1993,7 @@ public abstract class Pane<T extends Model> {
 		}
 
 		button.setLayoutData(new GridData());
-		SWTTools.bind(booleanHolder, button);
+		SWTBindTools.bind(booleanHolder, button);
 
 		if (helpId != null) {
 			getHelpSystem().setHelp(button, helpId);
@@ -2158,7 +2158,7 @@ public abstract class Pane<T extends Model> {
 	 * controls might be disabled when the pane is enabled.
 	 */
 	protected void controlEnabledState(Control... controls) {
-		SWTTools.controlEnabledState(this.enabledModel, controls);
+		SWTBindTools.controlEnabledState(this.enabledModel, controls);
 	}
 
 	/**
@@ -2171,7 +2171,7 @@ public abstract class Pane<T extends Model> {
 	 * controls are only enabled when the pane is enabled.
 	 */
 	protected void controlEnabledState(PropertyValueModel<Boolean> controlsEnabledModel, Control... controls) {
-		SWTTools.controlEnabledState(this.andEnabledModel(controlsEnabledModel), controls);
+		SWTBindTools.controlEnabledState(this.andEnabledModel(controlsEnabledModel), controls);
 	}
 
 	/**
