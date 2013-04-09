@@ -51,7 +51,7 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandContext;
-import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
+import org.eclipse.jpt.common.ui.internal.swt.bind.SWTTools;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;

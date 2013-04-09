@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 import java.util.Arrays;
 import java.util.Collection;
 import org.eclipse.jpt.common.ui.JptCommonUiMessages;
-import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
+import org.eclipse.jpt.common.ui.internal.swt.bind.SWTTools;
 import org.eclipse.jpt.common.ui.internal.widgets.ComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;

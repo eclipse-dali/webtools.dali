@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.ui.internal.utility.swt;
+package org.eclipse.jpt.common.ui.internal.swt.bind;
 
 import java.util.HashSet;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;

@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
 import java.util.Arrays;
 import java.util.Collection;
-import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
+import org.eclipse.jpt.common.ui.internal.swt.bind.SWTTools;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;

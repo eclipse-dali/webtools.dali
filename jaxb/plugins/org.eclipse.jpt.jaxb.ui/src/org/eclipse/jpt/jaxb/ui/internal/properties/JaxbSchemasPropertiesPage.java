@@ -49,7 +49,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.ui.internal.swt.ColumnAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.TableModelAdapter;
-import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
+import org.eclipse.jpt.common.ui.internal.swt.bind.SWTTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
