@@ -19,7 +19,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.ui.internal.PropertyAdapter;
 import org.eclipse.jpt.common.ui.internal.jface.SelectionChangedAdapter;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.value.DoublePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
@@ -336,7 +336,7 @@ class JpaTextEditorManager
 	}
 
 	private void execute(Runnable runnable) {
-		SWTUtil.execute(this.textEditor.getSite().getShell().getDisplay(), runnable);
+		DisplayTools.execute(this.textEditor.getSite().getShell().getDisplay(), runnable);
 	}
 
 	public void dispose() {

@@ -34,6 +34,7 @@ import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.ui.internal.dialogs.OptionalMessageDialog;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaEntityGeneratorDatabaseAnnotationNameBuilder;
@@ -61,7 +62,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.PlatformUI;
 
 public class GenerateEntitiesFromSchemaWizard
 	extends Wizard 
@@ -103,15 +103,11 @@ public class GenerateEntitiesFromSchemaWizard
 
 	protected ResourceManager buildResourceManager() {
 		JpaWorkbench jpaWorkbench = this.getJpaWorkbench();
-		return (jpaWorkbench != null) ? jpaWorkbench.buildLocalResourceManager() : new LocalResourceManager(JFaceResources.getResources(this.getWorkbench().getDisplay()));
+		return (jpaWorkbench != null) ? jpaWorkbench.buildLocalResourceManager() : new LocalResourceManager(JFaceResources.getResources(WorkbenchTools.getDisplay()));
 	}
 
 	protected JpaWorkbench getJpaWorkbench() {
-		return PlatformTools.getAdapter(this.getWorkbench(), JpaWorkbench.class);
-	}
-	
-	protected IWorkbench getWorkbench() {
-		return PlatformUI.getWorkbench();
+		return WorkbenchTools.getAdapter(JpaWorkbench.class);
 	}
 	
 	@Override
@@ -311,7 +307,7 @@ public class GenerateEntitiesFromSchemaWizard
 		private boolean promptUser(final String className) {
 			// get on the UI thread synchronously, need feedback before continuing
 			final boolean ret[]=new boolean[1];
-			org.eclipse.jpt.common.ui.internal.util.SWTUtil.syncExec(new Runnable() {
+			org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools.syncExec(new Runnable() {
 				public void run() {
 					final OverwriteConfirmerDialog dialog = new OverwriteConfirmerDialog(Display.getCurrent().getActiveShell(), className);
 					dialog.open();

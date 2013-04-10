@@ -24,7 +24,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.Schema;
@@ -39,7 +40,6 @@ import org.eclipse.jpt.jpa.ui.internal.wizards.gen.TablesSelectorWizardPage;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 
 public class GenerateDynamicEntitiesFromSchemaWizard
@@ -171,11 +171,13 @@ public class GenerateDynamicEntitiesFromSchemaWizard
 		
 		private void openEditor(final IFile file) {
 			if (file != null) {
-				SWTUtil.asyncExec(new Runnable() {
+				DisplayTools.asyncExec(new Runnable() {
 					public void run() {
 						try {
-							IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-							IDE.openEditor(page, file, true);
+							IWorkbenchPage page = WorkbenchTools.getActivePage();
+							if (page != null) {
+								IDE.openEditor(page, file, true);
+							}
 						}
 						catch (PartInitException e) {
 							JptJpaEclipseLinkUiPlugin.instance().logError(e);

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.ui.internal.util;
 
 import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.ControlTools;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -146,7 +147,7 @@ public final class ControlSwitcher
 		this.pageBook.showPage(page);
 
 		// Revalidate the parents in order to update the layout
-		SWTUtil.reflow(this.pageBook);
+		ControlTools.reflow(this.pageBook);
 	}
 
 	@SuppressWarnings("unchecked")

@@ -16,7 +16,8 @@ import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.ControlTools;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -186,7 +187,7 @@ public abstract class AbstractJpaPlatformUi
 	// ********** convenience methods **********
 
 	protected void displayMessage(String title, String message) {
-	    MessageDialog.openInformation(SWTUtil.getShell(), title, message);
+	    MessageDialog.openInformation(DisplayTools.getShell(), title, message);
 	}
 
 	protected void openInDialog(JavaMetadataConversionWizardPage wizardPage) {
@@ -211,7 +212,7 @@ public abstract class AbstractJpaPlatformUi
 		}
 
 		public SizedWizardDialog(IWizard wizard, int width, int height) {
-			this(SWTUtil.getShell(), wizard, width, height);
+			this(DisplayTools.getShell(), wizard, width, height);
 		}
 
 		public SizedWizardDialog(Shell shell, IWizard wizard, int width, int height) {
@@ -224,7 +225,7 @@ public abstract class AbstractJpaPlatformUi
 		protected void configureShell(Shell shell) {
 			super.configureShell(shell);
 			shell.setSize(this.width, this.height);
-			SWTUtil.center(shell, this.getParentShell());
+			ControlTools.center(shell, this.getParentShell());
 		}
 	}
 }

@@ -29,7 +29,7 @@ import java.util.List;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ResourceManager;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.utility.internal.CharacterTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -49,7 +49,6 @@ import org.eclipse.persistence.jpa.jpql.tools.spi.IMapping;
 import org.eclipse.persistence.jpa.jpql.tools.spi.IType;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * The abstract definition of JPQL content assist support.
@@ -427,7 +426,7 @@ abstract class JpqlCompletionProposalComputer<T> {
 	}
 
 	JpaWorkbench getJpaWorkbench() {
-		return PlatformTools.getAdapter(PlatformUI.getWorkbench(), JpaWorkbench.class);
+		return WorkbenchTools.getAdapter(JpaWorkbench.class);
 	}
 
 	ResourceManager getResourceManager(Control control) {

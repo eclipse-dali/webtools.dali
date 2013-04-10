@@ -14,13 +14,12 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiMessages;
 import org.eclipse.ui.IEditorDescriptor;
-import org.eclipse.ui.IEditorRegistry;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.BaseSelectionListenerAction;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.FileEditorInput;
@@ -72,17 +71,17 @@ public class OpenJaxbResourceAction
 	}
 	
 	protected void openEditor(IFile file) {
-		IEditorRegistry registry = PlatformUI.getWorkbench().getEditorRegistry();
-		IContentType contentType = IDE.getContentType(file);
-		IEditorDescriptor editorDescriptor = registry.getDefaultEditor(file.getName(), contentType);
+		IEditorDescriptor editorDescriptor = WorkbenchTools.getDefaultEditor(file);
 		if (editorDescriptor == null) {
 			return;  // no editor associated...
 		}
 		
-		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		IWorkbenchPage page = WorkbenchTools.getActivePage();
 		
 		try {
-			page.openEditor(new FileEditorInput(file), editorDescriptor.getId());
+			if (page != null) {
+				page.openEditor(new FileEditorInput(file), editorDescriptor.getId());
+			}
 		} 
 		catch (Exception e) {
 			MessageDialog.openError(page.getWorkbenchWindow().getShell(), JptJaxbUiMessages.ERROR_OPENING_EDITOR, e.getMessage());

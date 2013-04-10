@@ -9,9 +9,11 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.ui.internal.wizards.oxm;
 
-import static org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties.*;
+import static org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties.CONTAINER_PATH;
+import static org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties.FILE_NAME;
 import static org.eclipse.jpt.jaxb.eclipselink.core.internal.operations.OxmFileCreationDataModelProperties.PACKAGE_NAME;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.jaxb.eclipselink.ui.JptJaxbEclipseLinkUiMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -19,7 +21,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.internal.datamodel.ui.DataModelWizardPage;
 
@@ -76,7 +77,7 @@ public class OxmFileOptionsWizardPage
 		
 //		new Label(composite, SWT.NONE);
 		
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, getInfopopID());
+		WorkbenchTools.setHelp(composite, getInfopopID());
 	    Dialog.applyDialogFont(parent);
 		return composite;
 	}

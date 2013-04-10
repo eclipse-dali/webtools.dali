@@ -132,6 +132,6 @@ public class SWTUtil {
 	}
 
 	public static Shell getShell() {
-		return org.eclipse.jpt.common.ui.internal.util.SWTUtil.getShell();
+		return org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools.getShell();
 	}
 }

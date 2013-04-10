@@ -21,9 +21,9 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.jface.resource.ResourceManager;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.core.internal.utility.ResourceChangeAdapter;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.ui.internal.jface.NavigatorContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
@@ -31,8 +31,6 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.ui.JpaContextModelRootModel;
 import org.eclipse.jpt.jpa.ui.JpaWorkbench;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.navigator.ICommonContentExtensionSite;
 
 /**
@@ -93,7 +91,7 @@ public class JpaNavigatorContentProvider
 	}
 
 	private ResourceManager buildResourceManager_() {
-		return new LocalResourceManager(JFaceResources.getResources(this.getWorkbench().getDisplay()));
+		return new LocalResourceManager(JFaceResources.getResources(WorkbenchTools.getDisplay()));
 	}
 
 
@@ -227,11 +225,7 @@ public class JpaNavigatorContentProvider
 	}
 
 	private JpaWorkbench getJpaWorkbench() {
-		return PlatformTools.getAdapter(this.getWorkbench(), JpaWorkbench.class);
-	}
-
-	private IWorkbench getWorkbench() {
-		return PlatformUI.getWorkbench();
+		return WorkbenchTools.getAdapter(JpaWorkbench.class);
 	}
 
 

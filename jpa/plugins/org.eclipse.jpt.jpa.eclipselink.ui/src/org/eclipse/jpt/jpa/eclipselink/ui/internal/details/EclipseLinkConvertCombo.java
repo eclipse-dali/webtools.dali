@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import java.util.ArrayList;
 import org.eclipse.jpt.common.ui.JptCommonUiMessages;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.ComboTools;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
@@ -82,7 +82,7 @@ public class EclipseLinkConvertCombo
 			buildConverterNameTransformer(),
 			(String) null
 		);
-		SWTUtil.attachDefaultValueHandler(this.combo);
+		ComboTools.handleDefaultValue(this.combo);
 	}
 
 	protected final ModifiablePropertyValueModel<String> buildConvertNameHolder() {

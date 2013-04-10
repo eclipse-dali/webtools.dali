@@ -19,6 +19,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -33,7 +34,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.ui.PlatformUI;
 
 /**
  *  JavaProjectWizardPage
@@ -174,9 +174,7 @@ public class JavaProjectWizardPage extends WizardPage {
 	private final class ProjectTableLabelProvider extends LabelProvider implements ITableLabelProvider {
 
 		public Image getColumnImage(Object element, int columnIndex) {
-			if(columnIndex == PROJECT_NAME_COLUMN_INDEX)
-				return PlatformUI.getWorkbench().getSharedImages().getImage(org.eclipse.ui.ide.IDE.SharedImages.IMG_OBJ_PROJECT);
-			return null;
+			return (columnIndex == PROJECT_NAME_COLUMN_INDEX) ? WorkbenchTools.getSharedImage(org.eclipse.ui.ide.IDE.SharedImages.IMG_OBJ_PROJECT) : null;
 		}
 
 		public String getColumnText(Object element, int columnIndex) {

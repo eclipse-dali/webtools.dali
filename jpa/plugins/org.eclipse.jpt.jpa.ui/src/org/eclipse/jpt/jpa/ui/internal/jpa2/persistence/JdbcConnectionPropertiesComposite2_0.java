@@ -18,7 +18,7 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -38,7 +38,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.FilteredItemsSelectionDialog;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
@@ -186,7 +185,7 @@ public class JdbcConnectionPropertiesComposite2_0 extends Pane<Connection2_0>
 	}
 
 	private JpaWorkbench getJpaWorkbench() {
-		return PlatformTools.getAdapter(PlatformUI.getWorkbench(), JpaWorkbench.class);
+		return WorkbenchTools.getAdapter(JpaWorkbench.class);
 	}
 
 	// broaden access a bit

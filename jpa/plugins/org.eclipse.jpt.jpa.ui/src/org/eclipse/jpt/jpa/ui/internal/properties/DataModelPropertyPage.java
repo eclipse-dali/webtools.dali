@@ -15,10 +15,10 @@ import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PropertyPage;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelEvent;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -96,8 +96,9 @@ public abstract class DataModelPropertyPage
 	 * Set up info pop hooks if set.
 	 */
 	protected void setupInfopop(Control parent) {
-		if (getInfopopID() != null)
-			PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, getInfopopID());
+		if (getInfopopID() != null) {
+			WorkbenchTools.setHelp(parent, getInfopopID());
+		}
 	}
 
 	/**

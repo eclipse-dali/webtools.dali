@@ -28,6 +28,7 @@ import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.wizard.IWizardPage;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.jaxb.core.internal.gen.SchemaGenerator;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiMessages;
@@ -44,7 +45,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.PlatformUI;
 import org.osgi.framework.Bundle;
 
 /**
@@ -205,7 +205,7 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 		Composite composite = new Composite(parent, SWT.NULL);
 		composite.setLayout(new GridLayout());
 		
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, HELP_CONTEXT_ID);
+		WorkbenchTools.setHelp(composite, HELP_CONTEXT_ID);
 		
 		this.settingsGroup = new SettingsGroup(composite);
 

@@ -14,12 +14,11 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.ui.selection.JpaSelectionManager;
 import org.eclipse.ui.ISources;
 import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.IElementUpdater;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.menus.UIElement;
@@ -90,7 +89,7 @@ public class PersistentTypeMapAsHandler
 	}
 
 	private JpaSelectionManager getJpaSelectionManager() {
-		return PlatformTools.getAdapter(PlatformUI.getWorkbench(), JpaSelectionManager.class);
+		return WorkbenchTools.getAdapter(JpaSelectionManager.class);
 	}
 
 	public void updateElement(UIElement element, @SuppressWarnings("rawtypes") Map parameters) {

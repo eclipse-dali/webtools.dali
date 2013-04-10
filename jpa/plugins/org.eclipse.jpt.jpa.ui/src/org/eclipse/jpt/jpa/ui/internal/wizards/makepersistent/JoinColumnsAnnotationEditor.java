@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.ui.internal.wizards.makepersistent;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ResourceManager;
@@ -24,7 +23,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.TableTools;
 import org.eclipse.jpt.jpa.annotate.mapping.ColumnAttributes;
 import org.eclipse.jpt.jpa.annotate.mapping.EntityRefPropertyElem;
 import org.eclipse.jpt.jpa.annotate.mapping.JoinTableAttributes;
@@ -369,7 +368,7 @@ public class JoinColumnsAnnotationEditor
 			
 			joinColumnTable = createJoinColumnTable(composite, joinColumns, 200);
 			GridData gd2 = new GridData(GridData.FILL_HORIZONTAL);
-			gd2.heightHint = SWTUtil.getTableHeightHint(joinColumnTable.getTable(), 5);
+			gd2.heightHint = TableTools.calculateHeightHint(joinColumnTable.getTable(), 5);
 			joinColumnTable.getTable().setLayoutData(gd2);
 			joinColumnTable.addSelectionChangedListener(new ISelectionChangedListener()
 			{

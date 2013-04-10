@@ -15,7 +15,7 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.common.ui.internal.swt.ColumnAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.TableModelAdapter;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
@@ -261,7 +261,7 @@ public class AddRemoveListPane<T extends Model, E extends Object> extends AddRem
 	 * notified before the table has been updated (table column added or removed).
 	 */
 	private void revalidateLayout() {
-		SWTUtil.asyncExec(new Runnable() { public void run() {
+		DisplayTools.asyncExec(new Runnable() { public void run() {
 			if (!table.isDisposed()) {
 				table.getParent().computeSize(SWT.DEFAULT, SWT.DEFAULT);
 				table.getParent().layout();

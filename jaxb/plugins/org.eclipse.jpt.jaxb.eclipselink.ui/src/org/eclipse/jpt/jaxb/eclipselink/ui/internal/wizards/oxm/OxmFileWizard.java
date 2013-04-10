@@ -9,7 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.ui.internal.wizards.oxm;
 
-import static org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties.*;
+import static org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties.CONTAINER_PATH;
+import static org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties.FILE_NAME;
 import java.lang.reflect.InvocationTargetException;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -30,6 +31,7 @@ import org.eclipse.jpt.common.core.internal.utility.PathTools;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.ui.internal.wizards.NewJptFileWizardPage;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.operations.OxmFileCreationDataModelProperties;
@@ -41,7 +43,6 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -280,8 +281,10 @@ public class OxmFileWizard
             getShell().getDisplay().asyncExec(new Runnable() {
                 public void run() {
                     try {
-                        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-                        IDE.openEditor(page, file, true);
+                        IWorkbenchPage page = WorkbenchTools.getActivePage();
+                        if (page != null) {
+                        	IDE.openEditor(page, file, true);
+                        }
                     }
                     catch (PartInitException e) {
                     	JptJaxbEclipseLinkUiPlugin.instance().logError(e);

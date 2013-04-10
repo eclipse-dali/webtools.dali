@@ -25,8 +25,8 @@ import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jpt.common.core.internal.utility.ContentTypeTools;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
@@ -37,7 +37,6 @@ import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.ui.JaxbWorkbench;
 import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
-import org.eclipse.ui.PlatformUI;
 
 
 public class JaxbJavaCompletionProposalComputer
@@ -200,7 +199,7 @@ public class JaxbJavaCompletionProposalComputer
 	}
 
 	private JaxbWorkbench getJaxbWorkbench() {
-		return PlatformTools.getAdapter(PlatformUI.getWorkbench(), JaxbWorkbench.class);
+		return WorkbenchTools.getAdapter(JaxbWorkbench.class);
 	}
 
 	private Predicate<String> buildPrefixFilter(char[] prefix) {

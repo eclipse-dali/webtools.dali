@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.ui.internal.swt.bind;
 
 import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.common.ui.internal.swt.events.DisposeAdapter;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.common.utility.internal.RunnableAdapter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
@@ -167,7 +167,7 @@ abstract class BooleanStateController {
 	abstract void setControlState(boolean controlState);
 
 	void setControlState(Control control, boolean controlState) {
-		SWTUtil.execute(new SetControlStateRunnable(control, controlState));
+		DisplayTools.execute(new SetControlStateRunnable(control, controlState));
 	}
 
 	/* CU private */ class SetControlStateRunnable

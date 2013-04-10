@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.ui.internal.properties;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.listener.CollectionChangeAdapter;
@@ -20,7 +20,6 @@ import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
 import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.ui.JaxbWorkbench;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * Treat the JAXB project as an "aspect" of the Eclipse project (IProject);
@@ -94,6 +93,6 @@ class JaxbProjectModel
 	}
 
 	private JaxbWorkbench getJaxbWorkbench() {
-		return PlatformTools.getAdapter(PlatformUI.getWorkbench(), JaxbWorkbench.class);
+		return WorkbenchTools.getAdapter(JaxbWorkbench.class);
 	}
 }

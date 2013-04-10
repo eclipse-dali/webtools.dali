@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.ui.tests.internal.util;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -28,7 +28,7 @@ public final class ControlEnablerTest {
 
 	@Before
 	public void setUp() {
-		parent = new Composite(SWTUtil.getShell(), SWT.NONE);
+		parent = new Composite(DisplayTools.getShell(), SWT.NONE);
 		parent.setLayout(new GridLayout());
 	}
 

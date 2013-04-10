@@ -21,6 +21,7 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.ui.internal.jface.NavigatorContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
@@ -35,7 +36,6 @@ import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.ui.JaxbWorkbench;
 import org.eclipse.jpt.jaxb.ui.platform.JaxbPlatformUi;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * This extension of navigator content provider delegates to the platform UI
@@ -151,11 +151,7 @@ public class JaxbNavigatorContentProvider
 	}
 
 	private JaxbWorkbench getJaxbWorkbench() {
-		return PlatformTools.getAdapter(this.getWorkbench(), JaxbWorkbench.class);
-	}
-
-	private IWorkbench getWorkbench() {
-		return PlatformUI.getWorkbench();
+		return PlatformTools.getAdapter(WorkbenchTools.getWorkbench(), JaxbWorkbench.class);
 	}
 
 	

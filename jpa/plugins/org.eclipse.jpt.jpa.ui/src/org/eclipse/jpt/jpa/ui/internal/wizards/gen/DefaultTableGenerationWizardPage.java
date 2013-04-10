@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.ui.internal.wizards.gen;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -34,9 +33,9 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.core.internal.utility.PackageFragmentRootTools;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenTable;
@@ -48,9 +47,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
-import org.eclipse.ui.help.IWorkbenchHelpSystem;
 
 /**
  * A wizard page allowing the entry of the default table generation 
@@ -111,7 +108,7 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 		GridLayout layout = new GridLayout();
 		layout.numColumns = nColumns;
 		composite.setLayout(layout);
-		this.getHelpSystem().setHelp(composite, JpaHelpContextIds.GENERATE_ENTITIES_WIZARD_CUSTOMIZE_DEFAULT_ENTITY_GENERATION);
+		WorkbenchTools.setHelp(composite, JpaHelpContextIds.GENERATE_ENTITIES_WIZARD_CUSTOMIZE_DEFAULT_ENTITY_GENERATION);
 
 		//Create entity access, collection type, etc 
 		this.defaultTableGenPanel = new TableGenPanel(composite, 4, true, this);
@@ -368,10 +365,6 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 
 	@Override
     public final void performHelp() {
-        this.getHelpSystem().displayHelp(this.getWizard().getHelpContextID());
+        WorkbenchTools.displayHelp(this.getWizard().getHelpContextID());
     }
-    
-	protected final IWorkbenchHelpSystem getHelpSystem() {
-		return PlatformUI.getWorkbench().getHelpSystem();
-	}
 }

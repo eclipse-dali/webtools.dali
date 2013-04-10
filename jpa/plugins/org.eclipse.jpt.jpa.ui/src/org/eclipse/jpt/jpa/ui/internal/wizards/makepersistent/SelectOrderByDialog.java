@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IField;
@@ -34,7 +33,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.common.ui.JptCommonUiImages;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.TableTools;
 import org.eclipse.jpt.common.ui.internal.util.TableLayoutComposite;
 import org.eclipse.jpt.jpa.annotate.mapping.EntityRefPropertyElem;
 import org.eclipse.jpt.jpa.annotate.util.AnnotateMappingUtil;
@@ -154,7 +153,7 @@ public class SelectOrderByDialog extends Dialog
 		entityNameColumn.setResizable(true);
 		
 		GridData gd= new GridData(GridData.FILL_BOTH);
-		gd.heightHint= SWTUtil.getTableHeightHint(table, 10);
+		gd.heightHint= TableTools.calculateHeightHint(table, 10);
 		gd.widthHint = 400;
 		layout.setLayoutData(gd);
 

@@ -7,36 +7,34 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.ui.internal;
+package org.eclipse.jpt.common.ui.internal.swt.widgets;
 
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.ui.IViewReference;
-import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.swt.widgets.Table;
 
 /**
- * {@link IWorkbenchPage} utility methods.
+ * {@link Table} utility methods.
  */
-public final class WorkbenchPageTools {
+public final class TableTools {
 
-	/**
-	 * Close all the views in the specified workbench page with the
-	 * specified ID.
-	 */
-	public static void closeAllViews(IWorkbenchPage page, String viewID) {
-		for (IViewReference ref : page.getViewReferences()) {
-			if (ObjectTools.equals(ref.getId(), viewID)) {
-				page.hideView(ref);
-			}
+	public static int calculateHeightHint(Table table, int rowCount) {
+		if (table.getFont().equals(JFaceResources.getDefaultFont())) {
+			table.setFont(JFaceResources.getDialogFont());
 		}
+		int hint = table.getHeaderHeight() + (table.getItemHeight() * rowCount);
+		if (table.getLinesVisible()) {
+			hint += table.getGridLineWidth() * (rowCount - 1);
+		}
+		return hint;
 	}
- 
 
-	// ********** constructor **********
+
+	// ********** disabled constructor **********
 
 	/**
 	 * Suppress default constructor, ensuring non-instantiability.
 	 */
-	private WorkbenchPageTools() {
+	private TableTools() {
 		super();
 		throw new UnsupportedOperationException();
 	}

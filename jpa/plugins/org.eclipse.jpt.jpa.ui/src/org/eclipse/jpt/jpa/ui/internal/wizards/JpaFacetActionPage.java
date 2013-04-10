@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.wizards;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
@@ -24,8 +25,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectWorkingCopy;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent;
@@ -57,7 +56,7 @@ public abstract class JpaFacetActionPage
 		setUpRuntimeListener();
 		
 		Dialog.applyDialogFont(parent);
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, JpaHelpContextIds.DIALOG_JPA_FACET);
+		WorkbenchTools.setHelp(parent, JpaHelpContextIds.DIALOG_JPA_FACET);
 		
 		return composite;
 	}
@@ -141,10 +140,6 @@ public abstract class JpaFacetActionPage
 			setErrorMessage();
 		}
 	}
-	
-	protected final IWorkbenchHelpSystem getHelpSystem() {
-		return PlatformUI.getWorkbench().getHelpSystem();
-	}
 
 	@Override
 	public void dispose() {
@@ -163,7 +158,7 @@ public abstract class JpaFacetActionPage
 			group.setText(JptJpaUiMessages.JpaFacetWizardPage_platformLabel);
 			group.setLayout(new GridLayout());
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, JpaHelpContextIds.DIALOG_JPA_PLATFORM);
+			WorkbenchTools.setHelp(group, JpaHelpContextIds.DIALOG_JPA_PLATFORM);
 
 			platformCombo = createCombo(group, 1, true);
 			synchHelper.synchCombo(platformCombo, PLATFORM, null);
@@ -183,7 +178,7 @@ public abstract class JpaFacetActionPage
 					composite, librariesInstallDelegate, 
 					JptJpaUiMessages.JpaFacetWizardPage_jpaImplementationLabel );
 			librariesComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			PlatformUI.getWorkbench().getHelpSystem().setHelp(librariesComposite, JpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_CLASSPATH);			
+			WorkbenchTools.setHelp(librariesComposite, JpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_CLASSPATH);			
 		}
 	}
 	
@@ -200,7 +195,7 @@ public abstract class JpaFacetActionPage
 			group.setText(JptJpaUiMessages.JpaFacetWizardPage_persistentClassManagementLabel);
 			group.setLayout(new GridLayout());
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, JpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_CLASSPATH);
+			WorkbenchTools.setHelp(group, JpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_CLASSPATH);
 			
 			discoverClassesButton = createButton(group, 1, JptJpaUiMessages.JpaFacetWizardPage_discoverClassesButton, SWT.RADIO);
 			synchHelper.synchRadio(discoverClassesButton, DISCOVER_ANNOTATED_CLASSES, null);

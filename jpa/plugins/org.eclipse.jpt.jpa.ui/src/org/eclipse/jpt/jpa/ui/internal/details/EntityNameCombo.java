@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.JptCommonUiMessages;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.ComboTools;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
@@ -77,7 +77,7 @@ public class EntityNameCombo
 			TransformerTools.<String>objectToStringTransformer(),
 			JpaHelpContextIds.ENTITY_NAME);
 		
-		SWTUtil.attachDefaultValueHandler(this.combo);
+		ComboTools.handleDefaultValue(this.combo);
 	}
 
 	private ListValueModel<String> buildDefaultEntityNameListHolder() {

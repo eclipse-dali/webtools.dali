@@ -16,7 +16,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.ComboTools;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
@@ -199,7 +199,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 			TransformerTools.<String>objectToStringTransformer(),
 			EclipseLinkHelpContextIds.PERSISTENCE_OPTIONS_SESSION_NAME
 		);
-		SWTUtil.attachDefaultValueHandler(sessionNameCombo);
+		ComboTools.handleDefaultValue(sessionNameCombo);
 
 
 		this.addLabel(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_SESSIONS_XML);
@@ -209,7 +209,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 			this.buildSessionsXmlFileNameHolder(),
 			TransformerTools.<String>objectToStringTransformer(),
 			EclipseLinkHelpContextIds.PERSISTENCE_OPTIONS_SESSIONS_XML);
-		SWTUtil.attachDefaultValueHandler(sessionsXmlCombo);
+		ComboTools.handleDefaultValue(sessionsXmlCombo);
 
 
 		this.addLabel(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_TARGET_DATABASE_LABEL);
@@ -220,7 +220,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 			this.buildTargetDatabaseLabelTransformer(),
 			EclipseLinkHelpContextIds.PERSISTENCE_OPTIONS_TARGET_DATABASE
 		);
-		SWTUtil.attachDefaultValueHandler(targetDatabaseCombo);
+		ComboTools.handleDefaultValue(targetDatabaseCombo);
 
 
 		this.addLabel(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_TARGET_SERVER_LABEL);
@@ -231,7 +231,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 			this.buildTargetServerConverter(),
 			EclipseLinkHelpContextIds.PERSISTENCE_OPTIONS_TARGET_SERVER
 		);
-		SWTUtil.attachDefaultValueHandler(targetServerCombo);
+		ComboTools.handleDefaultValue(targetServerCombo);
 
 		Hyperlink eventListenerLink = addHyperlink(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_EVENT_LISTENER_LABEL);
 		this.initializeEventListenerClassChooser(container, eventListenerLink);

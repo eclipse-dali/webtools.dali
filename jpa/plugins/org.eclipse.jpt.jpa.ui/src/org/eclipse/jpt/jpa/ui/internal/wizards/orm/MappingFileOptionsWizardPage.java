@@ -10,9 +10,13 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.wizards.orm;
 
-import static org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties.*;
-import static org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProperties.*;
+import static org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties.CONTAINER_PATH;
+import static org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties.FILE_NAME;
+import static org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProperties.ADD_TO_PERSISTENCE_UNIT;
+import static org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProperties.DEFAULT_ACCESS;
+import static org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProperties.PERSISTENCE_UNIT;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -23,7 +27,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.internal.datamodel.ui.DataModelWizardPage;
 
@@ -118,7 +121,7 @@ public class MappingFileOptionsWizardPage
 		new Label(composite, SWT.NONE);
 		
 //		classText.setFocus();
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, getInfopopID());
+		WorkbenchTools.setHelp(composite, getInfopopID());
 	    Dialog.applyDialogFont(parent);
 		return composite;
 	}

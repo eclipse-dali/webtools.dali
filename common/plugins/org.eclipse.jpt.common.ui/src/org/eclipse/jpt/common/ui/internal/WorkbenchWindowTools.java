@@ -15,7 +15,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 /**
  * {@link IWorkbenchWindow} utility methods.
  */
-public class WorkbenchWindowTools {
+public final class WorkbenchWindowTools {
 
 	/**
 	 * Close all the views in the specified workbench window with the

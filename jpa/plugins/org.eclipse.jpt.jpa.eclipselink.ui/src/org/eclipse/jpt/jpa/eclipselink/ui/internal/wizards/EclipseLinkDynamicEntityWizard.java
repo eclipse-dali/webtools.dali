@@ -18,7 +18,8 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
@@ -31,7 +32,6 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelProvider;
@@ -111,12 +111,14 @@ public class EclipseLinkDynamicEntityWizard extends DataModelWizard implements I
 	 * Open the EclipseLink mapping file where the dynamic entity is created
 	 */
 	protected void openEditor(final JptXmlResource xmlResource) {
-		SWTUtil.asyncExec(new Runnable() {
+		DisplayTools.asyncExec(new Runnable() {
 			public void run() {
 				IFile file = xmlResource.getFile();
-				IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+				IWorkbenchPage page = WorkbenchTools.getActivePage();
 				try {
-					IDE.openEditor(page, file, true);
+					if (page != null) {
+						IDE.openEditor(page, file, true);
+					}
 				} catch (PartInitException e) {
 					e.printStackTrace();
 				}

@@ -24,6 +24,7 @@ import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
@@ -37,7 +38,6 @@ import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlu
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
-import org.eclipse.ui.progress.IProgressService;
 
 /**
  *  SessionCustomizersComposite
@@ -130,35 +130,25 @@ public class SessionCustomizersComposite extends Pane<EclipseLinkCustomization>
 	 * canceled the dialog
 	 */
 	private IType chooseType() {
-		IJavaProject javaProject = getJavaProject();
-		IJavaElement[] elements = new IJavaElement[] { javaProject };
-		IJavaSearchScope scope = SearchEngine.createJavaSearchScope(elements);
-		IProgressService service = PlatformUI.getWorkbench().getProgressService();
-		SelectionDialog typeSelectionDialog;
-
+		SelectionDialog dialog;
 		try {
-			typeSelectionDialog = JavaUI.createTypeDialog(
-				getShell(),
-				service,
-				scope,
-				IJavaElementSearchConstants.CONSIDER_CLASSES,
-				false,
-				""
-			);
-		}
-		catch (JavaModelException e) {
-			JptJpaEclipseLinkUiPlugin.instance().logError(e);
+			dialog = JavaUI.createTypeDialog(
+					getShell(),
+					PlatformUI.getWorkbench().getProgressService(),
+					SearchEngine.createJavaSearchScope(new IJavaElement[] { getJavaProject() }),
+					IJavaElementSearchConstants.CONSIDER_CLASSES,
+					false,
+					StringTools.EMPTY_STRING
+				);
+		} catch (JavaModelException ex) {
+			JptJpaEclipseLinkUiPlugin.instance().logError(ex);
 			return null;
 		}
 
-		typeSelectionDialog.setTitle(JptCommonUiMessages.CLASS_CHOOSER_PANE__DIALOG_TITLE);
-		typeSelectionDialog.setMessage(JptCommonUiMessages.CLASS_CHOOSER_PANE__DIALOG_MESSAGE);
+		dialog.setTitle(JptCommonUiMessages.CLASS_CHOOSER_PANE__DIALOG_TITLE);
+		dialog.setMessage(JptCommonUiMessages.CLASS_CHOOSER_PANE__DIALOG_MESSAGE);
 
-		if (typeSelectionDialog.open() == Window.OK) {
-			return (IType) typeSelectionDialog.getResult()[0];
-		}
-
-		return null;
+		return (dialog.open() == Window.OK) ? (IType) dialog.getResult()[0] : null;
 	}
 
 	@Override

@@ -464,7 +464,7 @@ public class DatabaseGroup
 			this.connectionChanged();
 		}
 		private void connectionChanged() {
-			org.eclipse.jpt.common.ui.internal.util.SWTUtil.asyncExec(
+			org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools.asyncExec(
 				new Runnable() {
 					public void run() {
 						DatabaseGroup.this.connectionChanged();

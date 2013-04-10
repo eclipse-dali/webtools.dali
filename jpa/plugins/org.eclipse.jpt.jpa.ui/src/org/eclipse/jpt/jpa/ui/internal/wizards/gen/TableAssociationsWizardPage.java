@@ -27,6 +27,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.common.ui.JptCommonUiImages;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.gen.internal.Association;
 import org.eclipse.jpt.jpa.gen.internal.AssociationRole;
@@ -49,8 +50,6 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.help.IWorkbenchHelpSystem;
 
 public class TableAssociationsWizardPage extends WizardPage {
 
@@ -109,7 +108,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 		GridLayout layout = new GridLayout();
 		layout.numColumns = nColumns;
 		composite.setLayout(layout);
-		this.getHelpSystem().setHelp(composite, JpaHelpContextIds.GENERATE_ENTITIES_WIZARD_TABLE_ASSOCIATIONS);
+		WorkbenchTools.setHelp(composite, JpaHelpContextIds.GENERATE_ENTITIES_WIZARD_TABLE_ASSOCIATIONS);
 
 		Label label = new Label(composite, SWT.NONE);
 		label.setText( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_assocPage_label );
@@ -757,10 +756,6 @@ public class TableAssociationsWizardPage extends WizardPage {
 
     @Override
     public final void performHelp() {
-        this.getHelpSystem().displayHelp(this.getWizard().getHelpContextID());
+        WorkbenchTools.displayHelp(this.getWizard().getHelpContextID());
     }
-    
-	protected final IWorkbenchHelpSystem getHelpSystem() {
-		return PlatformUI.getWorkbench().getHelpSystem();
-	}
 }

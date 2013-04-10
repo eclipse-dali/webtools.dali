@@ -488,11 +488,11 @@ public abstract class AddRemovePane<T extends Model, E extends Object> extends P
 
 		// Update the help topic ID
 		if (helpId != null) {
-			getHelpSystem().setHelp(this.addButton, helpId);
-			getHelpSystem().setHelp(this.removeButton, helpId);
+			this.setHelp(this.addButton, helpId);
+			this.setHelp(this.removeButton, helpId);
 
 			if (this.optionalButton != null) {
-				getHelpSystem().setHelp(this.optionalButton, helpId);
+				this.setHelp(this.optionalButton, helpId);
 			}
 		}
 	}

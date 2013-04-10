@@ -34,8 +34,9 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.common.core.internal.utility.WorkspaceRunnableAdapter;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandContext;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -76,7 +77,6 @@ import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 
 public abstract class JavaMetadataConversionWizardPage
@@ -536,7 +536,7 @@ public abstract class JavaMetadataConversionWizardPage
 		}
 
 		protected void saveAllFiles() {
-			SWTUtil.asyncExec(this.buildSaveAllFilesRunnable());
+			DisplayTools.asyncExec(this.buildSaveAllFilesRunnable());
 		}
 
 		protected Runnable buildSaveAllFilesRunnable() {
@@ -548,7 +548,7 @@ public abstract class JavaMetadataConversionWizardPage
 		}
 
 		protected void openEditorOnMappingFile() {
-			SWTUtil.asyncExec(this.buildOpenEditorOnMappingFileRunnable());
+			DisplayTools.asyncExec(this.buildOpenEditorOnMappingFileRunnable());
 		}
 
 		protected Runnable buildOpenEditorOnMappingFileRunnable() {
@@ -608,9 +608,11 @@ public abstract class JavaMetadataConversionWizardPage
 		}
 
 		public void run() {
-			IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+			IWorkbenchPage page = WorkbenchTools.getActivePage();
 			try {
-				IDE.openEditor(page, this.file);
+				if (page != null) {
+					IDE.openEditor(page, this.file);
+				}
 			} catch (PartInitException ex) {
 				JptJpaUiPlugin.instance().logError(ex);
 			}
@@ -637,6 +639,6 @@ public abstract class JavaMetadataConversionWizardPage
 
 	@Override
 	public final void performHelp() {
-		PlatformUI.getWorkbench().getHelpSystem().displayHelp(HELP_CONTEXT_ID);
+		WorkbenchTools.displayHelp(HELP_CONTEXT_ID);
 	}
 }

@@ -19,7 +19,8 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.common.ui.internal.widgets.FormWidgetFactory;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringBuilderTools;
@@ -428,7 +429,7 @@ public class JpaXmlEditor
 	}
 
 	private void execute(Runnable runnable) {
-		SWTUtil.execute(this.getSite().getShell().getDisplay(), runnable);
+		DisplayTools.execute(this.getSite().getShell().getDisplay(), runnable);
 	}
 
 	@Override
@@ -556,14 +557,14 @@ public class JpaXmlEditor
 
 			@Override
 			public ImageDescriptor getImageDescriptor() {
-				return PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_LCL_LINKTO_HELP);
+				return WorkbenchTools.getSharedImageDescriptor(ISharedImages.IMG_LCL_LINKTO_HELP);
 			}
 
 			@Override
 			public void run() {
 				BusyIndicator.showWhile(Page.this.getManagedForm().getForm().getDisplay(), new Runnable() {
 					public void run() {
-						PlatformUI.getWorkbench().getHelpSystem().displayHelp(HelpAction.this.helpID);
+						WorkbenchTools.displayHelp(HelpAction.this.helpID);
 					}
 				});
 			}

@@ -24,7 +24,7 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.jpa.core.JpaEntityGeneratorDatabaseAnnotationNameBuilder;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -41,8 +41,6 @@ import org.eclipse.jpt.jpa.ui.JpaWorkbench;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.PlatformUI;
 
 public class JpaMakePersistentWizard
 	extends Wizard
@@ -78,7 +76,7 @@ public class JpaMakePersistentWizard
 
 	protected ResourceManager buildResourceManager() {
 		JpaWorkbench jpaWorkbench = this.getJpaWorkbench();
-		return (jpaWorkbench != null) ? jpaWorkbench.buildLocalResourceManager() : new LocalResourceManager(JFaceResources.getResources(this.getWorkbench().getDisplay()));
+		return (jpaWorkbench != null) ? jpaWorkbench.buildLocalResourceManager() : new LocalResourceManager(JFaceResources.getResources(WorkbenchTools.getDisplay()));
 	}
 
 	protected JavaClassMapping[] buildJavaClassMappings(Set<IType> selectedJdtTypes) 
@@ -94,11 +92,7 @@ public class JpaMakePersistentWizard
 	}
 	
 	private JpaWorkbench getJpaWorkbench() {
-		return PlatformTools.getAdapter(this.getWorkbench(), JpaWorkbench.class);
-	}
-
-	private IWorkbench getWorkbench() {
-		return PlatformUI.getWorkbench();
+		return WorkbenchTools.getAdapter(JpaWorkbench.class);
 	}
 
 	@Override

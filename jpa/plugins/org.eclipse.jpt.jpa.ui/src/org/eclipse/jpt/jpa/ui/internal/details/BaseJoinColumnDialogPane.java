@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.JptCommonUiMessages;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.ComboTools;
 import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
@@ -351,7 +351,7 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 			JpaHelpContextIds.MAPPING_JOIN_COLUMN_NAME
 		);
 
-		SWTUtil.attachDefaultValueHandler(nameCombo);
+		ComboTools.handleDefaultValue(nameCombo);
 
 		// Referenced Column Name widgets
 		this.addLabel(container, JptJpaUiDetailsMessages.JoinColumnDialog_referencedColumnName);
@@ -363,7 +363,7 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 			JpaHelpContextIds.MAPPING_JOIN_REFERENCED_COLUMN
 		);
 
-		SWTUtil.attachDefaultValueHandler(referencedColumnNameCombo);
+		ComboTools.handleDefaultValue(referencedColumnNameCombo);
 
 		// Table widgets
 		if (isTableEditable()) {
@@ -377,7 +377,7 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 				JpaHelpContextIds.MAPPING_JOIN_REFERENCED_COLUMN
 			);
 
-			SWTUtil.attachDefaultValueHandler(tableCombo);
+			ComboTools.handleDefaultValue(tableCombo);
 		}
 		else {
 			this.addLabel(container, JptJpaUiDetailsMessages.JoinColumnDialogPane_table);

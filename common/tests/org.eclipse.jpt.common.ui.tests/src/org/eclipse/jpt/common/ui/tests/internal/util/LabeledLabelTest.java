@@ -11,8 +11,8 @@ package org.eclipse.jpt.common.ui.tests.internal.util;
 
 import static org.junit.Assert.assertEquals;
 import org.eclipse.core.runtime.AssertionFailedException;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.common.ui.internal.util.LabeledLabel;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridLayout;
@@ -29,7 +29,7 @@ public final class LabeledLabelTest {
 
 	@Before
 	public void setUp() {
-		parent = new Composite(SWTUtil.getShell(), SWT.NONE);
+		parent = new Composite(DisplayTools.getShell(), SWT.NONE);
 		parent.setLayout(new GridLayout());
 	}
 

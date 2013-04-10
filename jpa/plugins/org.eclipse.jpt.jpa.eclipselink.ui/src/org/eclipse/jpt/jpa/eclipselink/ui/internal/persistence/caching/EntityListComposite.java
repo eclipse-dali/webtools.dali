@@ -13,7 +13,6 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jdt.ui.JavaUI;
@@ -22,6 +21,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
@@ -39,7 +39,6 @@ import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlu
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
-import org.eclipse.ui.progress.IProgressService;
 
 /**
  *  EntityListComposite
@@ -153,33 +152,25 @@ public class EntityListComposite<T extends EclipseLinkCaching> extends Pane<T>
 	}
 	
 	private IType chooseEntity() {
-		IJavaProject javaProject = getJavaProject();
-		IJavaElement[] elements = new IJavaElement[] { javaProject };
-		IJavaSearchScope scope = SearchEngine.createJavaSearchScope(elements);
-		IProgressService service = PlatformUI.getWorkbench().getProgressService();
-		SelectionDialog typeSelectionDialog;
-
+		SelectionDialog dialog;
 		try {
-			typeSelectionDialog = JavaUI.createTypeDialog(
-				getShell(),
-				service,
-				scope,
-				IJavaElementSearchConstants.CONSIDER_CLASSES,
-				false,
-				""
-			);
-		}
-		catch (JavaModelException e) {
-			JptJpaEclipseLinkUiPlugin.instance().logError(e);
+			dialog = JavaUI.createTypeDialog(
+					getShell(),
+					PlatformUI.getWorkbench().getProgressService(),
+					SearchEngine.createJavaSearchScope(new IJavaElement[] { getJavaProject() }),
+					IJavaElementSearchConstants.CONSIDER_CLASSES,
+					false,
+					StringTools.EMPTY_STRING
+				);
+		} catch (JavaModelException ex) {
+			JptJpaEclipseLinkUiPlugin.instance().logError(ex);
 			return null;
 		}
-		typeSelectionDialog.setTitle(JptJpaEclipseLinkUiMessages.CACHING_ENTITY_LIST_COMPOSITE_DIALOG_TITLE);
-		typeSelectionDialog.setMessage(JptJpaEclipseLinkUiMessages.CACHING_ENTITY_LIST_COMPOSITE_DIALOG_MESSAGE);
 
-		if (typeSelectionDialog.open() == Window.OK) {
-			return (IType) typeSelectionDialog.getResult()[0];
-		}
-		return null;
+		dialog.setTitle(JptJpaEclipseLinkUiMessages.CACHING_ENTITY_LIST_COMPOSITE_DIALOG_TITLE);
+		dialog.setMessage(JptJpaEclipseLinkUiMessages.CACHING_ENTITY_LIST_COMPOSITE_DIALOG_MESSAGE);
+
+		return (dialog.open() == Window.OK) ? (IType) dialog.getResult()[0] : null;
 	}
 
 	private IJavaProject getJavaProject() {

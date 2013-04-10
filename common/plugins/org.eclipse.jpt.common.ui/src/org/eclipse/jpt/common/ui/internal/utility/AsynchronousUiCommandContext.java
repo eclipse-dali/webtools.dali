@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.utility;
 
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandContext;
 
@@ -35,10 +35,10 @@ public final class AsynchronousUiCommandContext
 	}
 
 	public void execute(Command command) {
-		SWTUtil.asyncExec(this.buildRunnable(command));
+		DisplayTools.asyncExec(this.buildRunnable(command));
 	}
 
 	public void waitToExecute(Command command) {
-		SWTUtil.syncExec(this.buildRunnable(command));
+		DisplayTools.syncExec(this.buildRunnable(command));
 	}
 }

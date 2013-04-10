@@ -58,6 +58,7 @@ import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.AnnotationModel;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewer;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
@@ -76,12 +77,11 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.ISources;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
@@ -207,9 +207,8 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 
 	private void activateHandler() {
 
-		IWorkbench workbench = PlatformUI.getWorkbench();
-		IFocusService focusService = (IFocusService) workbench.getService(IFocusService.class);
-		IHandlerService handlerService = (IHandlerService) workbench.getService(IHandlerService.class);
+		IFocusService focusService = WorkbenchTools.getService(IFocusService.class);
+		IHandlerService handlerService = WorkbenchTools.getService(IHandlerService.class);
 
 		if ((focusService != null) && (handlerService != null)) {
 
@@ -402,8 +401,7 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 		textHolder.removePropertyChangeListener(PropertyValueModel.VALUE, textListener);
 		queryHolder.removePropertyChangeListener(PropertyValueModel.VALUE, subjectChangeListener);
 
-		IWorkbench workbench = PlatformUI.getWorkbench();
-		IHandlerService handlerService = (IHandlerService) workbench.getService(IHandlerService.class);
+		IHandlerService handlerService = WorkbenchTools.getService(IHandlerService.class);
 		if (handlerService != null) { //this can be null if closing the workbench
 			handlerService.deactivateHandler(handlerActivation);
 		}
@@ -411,7 +409,7 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 
 	private KeyStroke findContentAssistTrigger() {
 
-		IBindingService bindingService = (IBindingService) PlatformUI.getWorkbench().getService(IBindingService.class);
+		IBindingService bindingService = WorkbenchTools.getService(IBindingService.class);
 
 		// Dig through the list of available bindings to find the one for content assist
 		for (Binding binding : bindingService.getBindings()) {

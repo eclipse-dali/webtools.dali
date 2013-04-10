@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.ui.internal.widgets;
 
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jpt.common.ui.JptCommonUiMessages;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.ComboTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
@@ -102,7 +102,7 @@ public abstract class IntegerCombo<T extends Model>
 		this.comboBox.setLayoutData(gridData);
 		
 		this.comboBox.addVerifyListener(this.buildVerifyListener());
-		SWTUtil.attachDefaultValueHandler(this.comboBox);
+		ComboTools.handleDefaultValue(this.comboBox);
 	}
 	
 	protected Combo addIntegerCombo(Composite container) {

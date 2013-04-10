@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.wizards;
 
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.ControlTools;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.jpa.core.JpaWorkspace;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProperties;
@@ -32,7 +32,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
-import org.eclipse.ui.PlatformUI;
 
 public class JpaFacetInstallPage
 	extends JpaFacetActionPage
@@ -46,7 +45,7 @@ public class JpaFacetInstallPage
 	@Override
 	protected Composite createTopLevelComposite(Composite parent) {
 		Composite composite = super.createTopLevelComposite(parent);
-		this.getHelpSystem().setHelp(composite, JpaHelpContextIds.NEW_JPA_PROJECT_JPA_FACET);
+		WorkbenchTools.setHelp(composite, JpaHelpContextIds.NEW_JPA_PROJECT_JPA_FACET);
 		return composite;
 	}
 	
@@ -100,7 +99,7 @@ public class JpaFacetInstallPage
 			group.setText(JptJpaUiMessages.JpaFacetWizardPage_connectionLabel);
 			group.setLayout(new GridLayout(3, false));
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, JpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_DATABASE);
+			WorkbenchTools.setHelp(group, JpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_DATABASE);
 			
 			connectionCombo = createCombo(group, 3, true);
 			synchHelper.synchCombo(connectionCombo, CONNECTION, null);
@@ -226,7 +225,7 @@ public class JpaFacetInstallPage
 		}
 	
 		private JpaWorkbench getJpaWorkbench() {
-			return PlatformTools.getAdapter(PlatformUI.getWorkbench(), JpaWorkbench.class);
+			return WorkbenchTools.getAdapter(JpaWorkbench.class);
 		}
 
 		private void updateConnectLink(ConnectionProfile cp) {
@@ -241,7 +240,7 @@ public class JpaFacetInstallPage
 		
 		private void updateConnectLinkText(String text) {
 			connectLink.setText(text);
-			SWTUtil.reflow(connectLink.getParent());
+			ControlTools.reflow(connectLink);
 		}
 	}
 }

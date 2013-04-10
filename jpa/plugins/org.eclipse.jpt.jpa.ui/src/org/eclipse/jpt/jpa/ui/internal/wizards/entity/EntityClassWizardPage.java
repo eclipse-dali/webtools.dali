@@ -29,6 +29,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -54,9 +55,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ISelectionStatusValidator;
-import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -107,7 +106,7 @@ public class EntityClassWizardPage
 	@Override
 	protected Composite createTopLevelComposite(Composite parent) {
 		Composite composite = super.createTopLevelComposite(parent);
-		this.getHelpSystem().setHelp(composite, JpaHelpContextIds.NEW_JPA_ENTITY_ENTITY_CLASS);
+		WorkbenchTools.setHelp(composite, JpaHelpContextIds.NEW_JPA_ENTITY_ENTITY_CLASS);
 		
 		createInheritanceControl(composite);
 		this.inheritanceButton.addSelectionListener(new SelectionAdapter() {
@@ -397,9 +396,5 @@ public class EntityClassWizardPage
 	@Override
 	protected boolean isProjectValid(IProject project) {
 		return (project.isAccessible() && ProjectTools.hasFacet(project, JpaProject.FACET));
-	}
-	
-	protected final IWorkbenchHelpSystem getHelpSystem() {
-		return PlatformUI.getWorkbench().getHelpSystem();
 	}
 }

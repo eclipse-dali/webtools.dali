@@ -49,12 +49,4 @@ public abstract class NewAssociationWizardPage extends WizardPage {
 	
 	public void updateWithNewTables() {
 	}
-
-	/**
-	 * Returns the helps system.
-	 * @return The platform's help system
-	 */
-	protected final IWorkbenchHelpSystem getHelpSystem() {
-		return PlatformUI.getWorkbench().getHelpSystem();
-	}
 }

@@ -16,7 +16,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
@@ -43,14 +42,15 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
@@ -73,7 +73,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
@@ -156,7 +155,7 @@ public class DynamicEntityClassWizardPage extends DataModelWizardPage{
 			classText.setFocus();
 		}
 			    
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, EclipseLinkHelpContextIds.DYNAMIC_ENTITY_CLASS);
+		WorkbenchTools.setHelp(composite, EclipseLinkHelpContextIds.DYNAMIC_ENTITY_CLASS);
 	    Dialog.applyDialogFont(parent);
 		return composite;
 	}
@@ -574,7 +573,7 @@ public class DynamicEntityClassWizardPage extends DataModelWizardPage{
 	}
 
 	private IProject getSelectedProject() {
-		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		IWorkbenchWindow window = WorkbenchTools.getActiveWindow();
 		if (window == null)
 			return null;
 		ISelection selection = window.getSelectionService().getSelection();
@@ -606,7 +605,7 @@ public class DynamicEntityClassWizardPage extends DataModelWizardPage{
 	}
 
 	private IPackageFragment getSelectedPackageFragment() {
-		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		IWorkbenchWindow window = WorkbenchTools.getActiveWindow();
 		if (window == null)
 			return null;
 		ISelection selection = window.getSelectionService().getSelection();
@@ -655,7 +654,7 @@ public class DynamicEntityClassWizardPage extends DataModelWizardPage{
 			}
 		}
 		if (jelem == null) {
-			IWorkbenchWindow window= PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+			IWorkbenchWindow window = WorkbenchTools.getActiveWindow();
 			if (window == null)
 				return null;
 			IWorkbenchPart part = window.getActivePage().getActivePart();

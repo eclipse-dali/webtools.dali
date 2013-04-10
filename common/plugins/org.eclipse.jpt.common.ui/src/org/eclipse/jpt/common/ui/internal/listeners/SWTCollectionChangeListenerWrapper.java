@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.listeners;
 
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.common.utility.internal.RunnableAdapter;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
@@ -125,12 +125,12 @@ public class SWTCollectionChangeListenerWrapper
 	}
 
 	/**
-	 * {@link SWTUtil#execute(Runnable)} seems to work OK;
-	 * but using {@link SWTUtil#syncExec(Runnable)} can somtimes make things
+	 * {@link DisplayTools#execute(Runnable)} seems to work OK;
+	 * but using {@link DisplayTools#syncExec(Runnable)} can somtimes make things
 	 * more predictable when debugging, at the risk of deadlocks.
 	 */
 	private void execute(Runnable r) {
-		SWTUtil.execute(r);
+		DisplayTools.execute(r);
 //		SWTUtil.syncExec(r);
 	}
 

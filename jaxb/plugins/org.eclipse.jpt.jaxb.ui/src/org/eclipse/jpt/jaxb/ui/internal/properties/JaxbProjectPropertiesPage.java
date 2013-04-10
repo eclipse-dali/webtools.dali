@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jpt.common.core.internal.utility.ICUStringCollator;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.ui.internal.properties.JptProjectPropertiesPage;
 import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -52,7 +52,6 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
@@ -279,7 +278,7 @@ public class JaxbProjectPropertiesPage
 	}
 
 	private JaxbWorkbench getJaxbWorkbench() {
-		return PlatformTools.getAdapter(PlatformUI.getWorkbench(), JaxbWorkbench.class);
+		return WorkbenchTools.getAdapter(JaxbWorkbench.class);
 	}
 
 	

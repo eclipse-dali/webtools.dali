@@ -31,10 +31,11 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.jpt.common.core.internal.utility.PathTools;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
-import org.eclipse.jpt.common.core.internal.utility.PathTools;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.ui.internal.wizards.NewJptFileWizardPage;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
@@ -335,8 +336,10 @@ public class MappingFileWizard extends Wizard
             getShell().getDisplay().asyncExec(new Runnable() {
                 public void run() {
                     try {
-                        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-                        IDE.openEditor(page, file, true);
+                        IWorkbenchPage page = WorkbenchTools.getActivePage();
+                        if (page != null) {
+                        	IDE.openEditor(page, file, true);
+                        }
                     }
                     catch (PartInitException e) {
                     	JptJpaUiPlugin.instance().logError(e);

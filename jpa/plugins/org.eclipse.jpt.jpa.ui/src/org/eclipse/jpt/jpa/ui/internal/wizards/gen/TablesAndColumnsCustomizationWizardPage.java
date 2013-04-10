@@ -27,6 +27,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenColumn;
@@ -45,8 +46,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.help.IWorkbenchHelpSystem;
 
 public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 
@@ -97,7 +96,7 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 		GridLayout layout = new GridLayout();
 		layout.numColumns = nColumns;
 		composite.setLayout(layout);
-		this.getHelpSystem().setHelp(composite, JpaHelpContextIds.GENERATE_ENTITIES_WIZARD_CUSTOMIZE_INDIVIDUAL_ENTITIES);
+		WorkbenchTools.setHelp(composite, JpaHelpContextIds.GENERATE_ENTITIES_WIZARD_CUSTOMIZE_INDIVIDUAL_ENTITIES);
 
 		createTableAndColumnsListPanel(composite, 1);
 		
@@ -392,10 +391,6 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 
     @Override
     public final void performHelp() {
-        this.getHelpSystem().displayHelp(this.getWizard().getHelpContextID());
+        WorkbenchTools.displayHelp(this.getWizard().getHelpContextID());
     }
-
-	protected final IWorkbenchHelpSystem getHelpSystem() {
-		return PlatformUI.getWorkbench().getHelpSystem();
-	}
 }

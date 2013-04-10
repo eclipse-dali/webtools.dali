@@ -33,6 +33,7 @@ import org.eclipse.jface.fieldassist.ContentProposalAdapter;
 import org.eclipse.jface.fieldassist.IContentProposalProvider;
 import org.eclipse.jface.fieldassist.SimpleContentProposalProvider;
 import org.eclipse.jface.fieldassist.TextContentAdapter;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
@@ -80,7 +81,7 @@ public class SelectTypeDialog extends TitleAreaDialog {
 	
 	public SelectTypeDialog(String message,
 							String initialType) {
-		super(PlatformUI.getWorkbench().getDisplay().getActiveShell());
+		super(WorkbenchTools.getActiveShell());
 		this.title = JPAEditorMessages.SelectTypeDialog_chooseAttributeTypeDialogTitle;
 		this.message = message;
 		this.type = initialType;
@@ -142,7 +143,7 @@ public class SelectTypeDialog extends TitleAreaDialog {
 				IProgressService service = PlatformUI.getWorkbench().getProgressService();				
 				SelectionDialog d = null;
 				try {
-					d = JavaUI.createTypeDialog(PlatformUI.getWorkbench().getDisplay().getActiveShell(), 
+					d = JavaUI.createTypeDialog(WorkbenchTools.getActiveShell(), 
 					service, 
 					scope, 
 					IJavaElementSearchConstants.CONSIDER_ALL_TYPES, 

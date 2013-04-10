@@ -156,10 +156,6 @@ public abstract class JaxbFacetPage
 		super.validatePage(showMessage);
 	}
 	
-	protected final IWorkbenchHelpSystem getHelpSystem() {
-		return PlatformUI.getWorkbench().getHelpSystem();
-	}
-	
 	
 	protected final class PlatformGroup
 	{

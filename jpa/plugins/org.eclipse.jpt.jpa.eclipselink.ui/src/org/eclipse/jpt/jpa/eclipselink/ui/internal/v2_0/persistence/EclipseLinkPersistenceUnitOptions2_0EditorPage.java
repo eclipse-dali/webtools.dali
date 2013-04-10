@@ -29,6 +29,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
@@ -43,9 +44,9 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.Options2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.ValidationMode2_0;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOptions2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.options.EclipseLinkPersistenceUnitOptionsEditorPage;
@@ -57,7 +58,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
 import org.eclipse.ui.forms.widgets.Section;
-import org.eclipse.ui.progress.IProgressService;
 
 class EclipseLinkPersistenceUnitOptions2_0EditorPage 
 	extends EclipseLinkPersistenceUnitOptionsEditorPage {
@@ -447,35 +447,25 @@ class EclipseLinkPersistenceUnitOptions2_0EditorPage
 	 * canceled the dialog
 	 */
 	private IType chooseType() {
-		IJavaProject javaProject = this.getSubject().getJpaProject().getJavaProject();
-		IJavaElement[] elements = new IJavaElement[] { javaProject };
-		IJavaSearchScope scope = SearchEngine.createJavaSearchScope(elements);
-		IProgressService service = PlatformUI.getWorkbench().getProgressService();
-		SelectionDialog typeSelectionDialog;
-
+		SelectionDialog dialog;
 		try {
-			typeSelectionDialog = JavaUI.createTypeDialog(
+			dialog = JavaUI.createTypeDialog(
 				getShell(),
-				service,
-				scope,
+				PlatformUI.getWorkbench().getProgressService(),
+				SearchEngine.createJavaSearchScope(new IJavaElement[] { this.getSubject().getJpaProject().getJavaProject() }),
 				IJavaElementSearchConstants.CONSIDER_CLASSES,
 				false,
-				""
+				StringTools.EMPTY_STRING
 			);
-		}
-		catch (JavaModelException e) {
-			JptJpaEclipseLinkUiPlugin.instance().logError(e);
+		} catch (JavaModelException ex) {
+			JptJpaEclipseLinkUiPlugin.instance().logError(ex);
 			return null;
 		}
 
-		typeSelectionDialog.setTitle(JptCommonUiMessages.CLASS_CHOOSER_PANE__DIALOG_TITLE);
-		typeSelectionDialog.setMessage(JptCommonUiMessages.CLASS_CHOOSER_PANE__DIALOG_MESSAGE);
+		dialog.setTitle(JptCommonUiMessages.CLASS_CHOOSER_PANE__DIALOG_TITLE);
+		dialog.setMessage(JptCommonUiMessages.CLASS_CHOOSER_PANE__DIALOG_MESSAGE);
 
-		if (typeSelectionDialog.open() == Window.OK) {
-			return (IType) typeSelectionDialog.getResult()[0];
-		}
-
-		return null;
+		return (dialog.open() == Window.OK)  ? (IType) dialog.getResult()[0] : null;
 	}
 
 	private ModifiableCollectionValueModel<String> buildSelectedItemsModel() {

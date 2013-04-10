@@ -13,7 +13,6 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jdt.ui.JavaUI;
@@ -26,6 +25,7 @@ import org.eclipse.jpt.common.ui.internal.jface.ResourceManagerLabelProvider;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
@@ -42,8 +42,8 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.JavaManagedTypeUiDefinition;
+import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.PersistenceResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
@@ -53,7 +53,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
-import org.eclipse.ui.progress.IProgressService;
 
 @SuppressWarnings("nls")
 public class PersistenceUnitClassesComposite
@@ -286,35 +285,25 @@ public class PersistenceUnitClassesComposite
 	 * canceled the dialog
 	 */
 	private IType chooseType() {
-		IJavaProject javaProject = getJavaProject();
-		IJavaElement[] elements = new IJavaElement[] { javaProject };
-		IJavaSearchScope scope = SearchEngine.createJavaSearchScope(elements);
-		IProgressService service = PlatformUI.getWorkbench().getProgressService();
-		SelectionDialog typeSelectionDialog;
-
+		SelectionDialog dialog;
 		try {
-			typeSelectionDialog = JavaUI.createTypeDialog(
-				getShell(),
-				service,
-				scope,
-				IJavaElementSearchConstants.CONSIDER_CLASSES,
-				false,
-				""
-			);
-		}
-		catch (JavaModelException e) {
-			JptJpaUiPlugin.instance().logError(e);
+			dialog = JavaUI.createTypeDialog(
+					getShell(),
+					PlatformUI.getWorkbench().getProgressService(),
+					SearchEngine.createJavaSearchScope(new IJavaElement[] { getJavaProject() }),
+					IJavaElementSearchConstants.CONSIDER_CLASSES,
+					false,
+					StringTools.EMPTY_STRING
+				);
+		} catch (JavaModelException ex) {
+			JptJpaUiPlugin.instance().logError(ex);
 			return null;
 		}
 
-		typeSelectionDialog.setTitle(JptCommonUiMessages.CLASS_CHOOSER_PANE__DIALOG_TITLE);
-		typeSelectionDialog.setMessage(JptCommonUiMessages.CLASS_CHOOSER_PANE__DIALOG_MESSAGE);
+		dialog.setTitle(JptCommonUiMessages.CLASS_CHOOSER_PANE__DIALOG_TITLE);
+		dialog.setMessage(JptCommonUiMessages.CLASS_CHOOSER_PANE__DIALOG_MESSAGE);
 
-		if (typeSelectionDialog.open() == Window.OK) {
-			return (IType) typeSelectionDialog.getResult()[0];
-		}
-
-		return null;
+		return (dialog.open() == Window.OK) ? (IType) dialog.getResult()[0] : null;
 	}
 
 	protected IType findType(ClassRef classRef) {

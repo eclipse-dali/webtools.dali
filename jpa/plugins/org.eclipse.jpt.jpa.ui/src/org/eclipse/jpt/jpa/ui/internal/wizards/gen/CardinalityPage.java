@@ -10,6 +10,7 @@
 
 package org.eclipse.jpt.jpa.ui.internal.wizards.gen;
 
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.jpa.gen.internal.Association;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
@@ -47,7 +48,7 @@ public class CardinalityPage extends NewAssociationWizardPage {
 		GridLayout layout = new GridLayout();
 		layout.numColumns = nColumns;
 		composite.setLayout(layout);
-		this.getHelpSystem().setHelp(composite, JpaHelpContextIds.GENERATE_ENTITIES_WIZARD_ASSOCIATION_CARDINALITY);
+		WorkbenchTools.setHelp(composite, JpaHelpContextIds.GENERATE_ENTITIES_WIZARD_ASSOCIATION_CARDINALITY);
 
 		CardinalitySelectionListener selectionListener = new CardinalitySelectionListener();
 		cardinalityButtons[0] = createRadioButton( composite, 1, JptJpaUiWizardsEntityGenMessages.manyToOne);

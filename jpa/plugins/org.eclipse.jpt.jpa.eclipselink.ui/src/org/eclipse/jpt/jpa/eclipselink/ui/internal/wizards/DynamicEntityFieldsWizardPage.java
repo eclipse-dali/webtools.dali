@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
@@ -21,7 +22,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.common.componentcore.internal.operation.IArtifactEditOperationDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.internal.datamodel.ui.DataModelWizardPage;
@@ -64,7 +64,7 @@ public class DynamicEntityFieldsWizardPage extends DataModelWizardPage {
 			setErrorMessage(projectStatus.getMessage());
 			composite.setEnabled(false);
 		}
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, EclipseLinkHelpContextIds.DYNAMIC_ENTITY_FIELD);
+		WorkbenchTools.setHelp(composite, EclipseLinkHelpContextIds.DYNAMIC_ENTITY_FIELD);
 	    Dialog.applyDialogFont(parent);
 		return composite;
 	}

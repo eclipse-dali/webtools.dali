@@ -20,7 +20,7 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.ui.internal.dialogs.OptionalMessageDialog;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
@@ -37,7 +37,6 @@ import org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen.ClassesGeneratorWizar
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.xsd.contentmodel.internal.XSDImpl;
 import org.eclipse.xsd.XSDSchema;
 
@@ -191,7 +190,7 @@ public class ClassesGeneratorUi {
 	}
 
 	private JaxbWorkbench getJaxbWorkbench() {
-		return PlatformTools.getAdapter(PlatformUI.getWorkbench(), JaxbWorkbench.class);
+		return WorkbenchTools.getAdapter(JaxbWorkbench.class);
 	}
 
 	private boolean isOverwritingClasses(ClassesGeneratorOptions generatorOptions) {

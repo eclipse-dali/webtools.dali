@@ -14,7 +14,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
-
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.dialogs.IPageChangedListener;
 import org.eclipse.jface.dialogs.PageChangedEvent;
@@ -33,7 +32,8 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.TableTools;
 import org.eclipse.jpt.common.ui.internal.util.TableLayoutComposite;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.Schema;
@@ -90,7 +90,7 @@ public class JoinColumnsPage extends NewAssociationWizardPage {
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 1;
 		composite.setLayout(layout);
-		this.getHelpSystem().setHelp(composite, JpaHelpContextIds.GENERATE_ENTITIES_WIZARD_JOIN_COLUMNS);
+		WorkbenchTools.setHelp(composite, JpaHelpContextIds.GENERATE_ENTITIES_WIZARD_JOIN_COLUMNS);
 
 		tablesGroup1 = new Composite(composite, SWT.SHADOW_ETCHED_IN);
 		tablesGroup1.setLayoutData(new GridData());
@@ -385,7 +385,7 @@ public class JoinColumnsPage extends NewAssociationWizardPage {
 		referencedColumn.setResizable(true);
 		
 		GridData gd= new GridData(GridData.FILL_BOTH);
-		gd.heightHint= SWTUtil.getTableHeightHint(table, 3);
+		gd.heightHint= TableTools.calculateHeightHint(table, 3);
 		gd.widthHint = 300;
 		layout.setLayoutData(gd);
 

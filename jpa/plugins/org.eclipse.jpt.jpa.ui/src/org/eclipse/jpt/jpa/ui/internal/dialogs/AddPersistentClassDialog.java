@@ -14,7 +14,6 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.internal.ui.refactoring.contentassist.ControlContentAssistHelper;
 import org.eclipse.jdt.internal.ui.refactoring.contentassist.JavaTypeCompletionProcessor;
@@ -57,7 +56,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
-import org.eclipse.ui.progress.IProgressService;
 
 public class AddPersistentClassDialog extends StatusDialog
 {
@@ -237,29 +235,25 @@ public class AddPersistentClassDialog extends StatusDialog
 	}
 	
 	protected IType chooseType() {
-		IJavaElement[] elements= new IJavaElement[] { getJpaProject().getJavaProject() };
-		IJavaSearchScope scope= SearchEngine.createJavaSearchScope(elements);
-		IProgressService service = PlatformUI.getWorkbench().getProgressService();
-		
-		SelectionDialog typeSelectionDialog;
+		SelectionDialog dialog;
 		try {
-			typeSelectionDialog = 
-				JavaUI.createTypeDialog(
-						getShell(), service, scope, 
-						IJavaElementSearchConstants.CONSIDER_CLASSES, 
-						false, getClassName());
+			dialog = JavaUI.createTypeDialog(
+					getShell(),
+					PlatformUI.getWorkbench().getProgressService(),
+					SearchEngine.createJavaSearchScope(new IJavaElement[] { getJpaProject().getJavaProject() }),
+					IJavaElementSearchConstants.CONSIDER_CLASSES,
+					false,
+					getClassName()
+				);
+		} catch (JavaModelException ex) {
+			JptJpaUiPlugin.instance().logError(ex);
+			return null;
 		}
-		catch (JavaModelException e) {
-			JptJpaUiPlugin.instance().logError(e);
-			throw new RuntimeException(e);
-		}
-		typeSelectionDialog.setTitle(JptJpaUiMessages.AddPersistentClassDialog_classDialog_title); 
-		typeSelectionDialog.setMessage(JptJpaUiMessages.AddPersistentClassDialog_classDialog_message); 
 
-		if (typeSelectionDialog.open() == Window.OK) {
-			return (IType) typeSelectionDialog.getResult()[0];
-		}
-		return null;
+		dialog.setTitle(JptJpaUiMessages.AddPersistentClassDialog_classDialog_title); 
+		dialog.setMessage(JptJpaUiMessages.AddPersistentClassDialog_classDialog_message); 
+
+		return (dialog.open() == Window.OK) ? (IType) dialog.getResult()[0] : null;
 	}
 	
 	private void validate() {

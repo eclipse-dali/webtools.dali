@@ -10,9 +10,9 @@
 package org.eclipse.jpt.common.ui.tests.internal.util;
 
 import static org.junit.Assert.assertEquals;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.common.ui.internal.util.LabeledControlUpdater;
 import org.eclipse.jpt.common.ui.internal.util.LabeledLabel;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.swt.SWT;
@@ -31,7 +31,7 @@ public final class LabeledControlUpdaterTest {
 
 	@Before
 	public void setUp() {
-		parent = new Composite(SWTUtil.getShell(), SWT.NONE);
+		parent = new Composite(DisplayTools.getShell(), SWT.NONE);
 		parent.setLayout(new GridLayout());
 	}
 

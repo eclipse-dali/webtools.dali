@@ -19,7 +19,8 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.swt.ColumnAdapter;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.ControlTools;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveTablePane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
@@ -360,12 +361,12 @@ public class PersistenceUnitPropertiesEditorPage
 		 * notified before the table has been updated (table column added or removed).
 		 */
 		private void revalidateLayout() {
-			SWTUtil.asyncExec(new Runnable() { public void run() {
+			DisplayTools.asyncExec(new Runnable() { public void run() {
 				Table table = getMainControl();
 				if (!table.isDisposed()) {
 					// We have to do a total relayout of the tab otherwise the
 					// table might become cut off at the bottom
-					SWTUtil.reflow(table);
+					ControlTools.reflow(table);
 				}
 			}});
 		}

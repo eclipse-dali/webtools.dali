@@ -43,7 +43,9 @@ import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.common.ui.JptCommonUiImages;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.TableTools;
 import org.eclipse.jpt.common.ui.internal.util.TableLayoutComposite;
 import org.eclipse.jpt.common.utility.internal.StringMatcher;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
@@ -75,8 +77,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.help.IWorkbenchHelpSystem;
 
 public class TablesSelectorWizardPage extends WizardPage {
 
@@ -140,16 +140,12 @@ public class TablesSelectorWizardPage extends WizardPage {
 
     @Override
     public final void performHelp() {
-    	this.getHelpSystem().displayHelp(this.getWizard().getHelpContextID());
+    	WorkbenchTools.displayHelp(this.getWizard().getHelpContextID());
     }
     
 	@Override
 	public GenerateEntitiesFromSchemaWizard getWizard() {
 		return (GenerateEntitiesFromSchemaWizard) super.getWizard();
-	}
-
-	protected final IWorkbenchHelpSystem getHelpSystem() {
-		return PlatformUI.getWorkbench().getHelpSystem();
 	}
 
 	// ********** IWizardPage implementation  **********
@@ -173,7 +169,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 		GridLayout layout = new GridLayout();
 		layout.numColumns = nColumns;
 		composite.setLayout(layout);
-		this.getHelpSystem().setHelp(composite, JpaHelpContextIds.GENERATE_ENTITIES_WIZARD_SELECT_TABLES);
+		WorkbenchTools.setHelp(composite, JpaHelpContextIds.GENERATE_ENTITIES_WIZARD_SELECT_TABLES);
 
 		this.databaseGroup = this.createDatabaseGroup(composite, 400);
 
@@ -190,7 +186,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 		this.buildRestoreDefaultsButton(composite);
 
 		this.updateSelectionState(this.databaseGroup.getSelectedSchema());
-		this.getHelpSystem().setHelp(this.tableTable.getControl(), JpaHelpContextIds.DIALOG_GENERATE_ENTITIES_TABLES);
+		WorkbenchTools.setHelp(this.tableTable.getControl(), JpaHelpContextIds.DIALOG_GENERATE_ENTITIES_TABLES);
 		return composite;
 	}
 
@@ -353,7 +349,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 		table.addKeyListener(this.buildTableKeyListener());
 		
 		GridData gridData= new GridData(GridData.FILL_BOTH);
-		gridData.heightHint= SWTUtil.getTableHeightHint(table, 20);
+		gridData.heightHint= TableTools.calculateHeightHint(table, 20);
 		gridData.widthHint = 250;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true ;
@@ -661,7 +657,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 			@Override
 			public void done(final IJobChangeEvent event) {
 				
-				 SWTUtil.asyncExec(new Runnable() {
+				 DisplayTools.asyncExec(new Runnable() {
 		               public void run() {
 		            	   updateTablesListViewer(tables);
 		               }

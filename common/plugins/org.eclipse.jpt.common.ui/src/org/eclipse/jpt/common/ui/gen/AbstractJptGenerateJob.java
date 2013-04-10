@@ -25,13 +25,13 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jpt.common.core.gen.JptGenerator;
 import org.eclipse.jpt.common.core.gen.LaunchConfigListener;
 import org.eclipse.jpt.common.ui.JptCommonUiMessages;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.common.utility.internal.reference.SynchronizedBoolean;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 
 /**
@@ -110,11 +110,13 @@ public abstract class AbstractJptGenerateJob extends WorkspaceJob {
 	
 	protected void openEditor(final IFile file) {
 		if(file != null) {
-			SWTUtil.asyncExec(new Runnable() {
+			DisplayTools.asyncExec(new Runnable() {
 				public void run() {
 					try {
-						IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-						IDE.openEditor(page, file, true);
+						IWorkbenchPage page = WorkbenchTools.getActivePage();
+						if (page != null) {
+							IDE.openEditor(page, file, true);
+						}
 					}
 					catch (PartInitException e) {
 						AbstractJptGenerateJob.this.logException(e);
@@ -161,7 +163,7 @@ public abstract class AbstractJptGenerateJob extends WorkspaceJob {
 	}
 
 	private void displayError(final String message) {
-		SWTUtil.syncExec(new Runnable() {
+		DisplayTools.syncExec(new Runnable() {
 			public void run() {
 				MessageDialog.openError(
 					AbstractJptGenerateJob.this.getShell(),

@@ -47,6 +47,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
 import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandContext;
 import org.eclipse.jpt.common.utility.command.Command;
@@ -96,7 +97,6 @@ import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
@@ -496,7 +496,7 @@ public class JpaMakePersistentWizardPage
 
 	@Override
 	public final void performHelp() {
-	    PlatformUI.getWorkbench().getHelpSystem().displayHelp( this.helpContextId );
+	    WorkbenchTools.displayHelp( this.helpContextId );
 	}
 	
 	protected void performFinish() throws InvocationTargetException {
@@ -542,8 +542,10 @@ public class JpaMakePersistentWizardPage
 			getShell().getDisplay().asyncExec(new Runnable() {
 				public void run() {
 					try {
-						IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-						IDE.openEditor(page, file, true);
+						IWorkbenchPage page = WorkbenchTools.getActivePage();
+						if (page != null) {
+							IDE.openEditor(page, file, true);
+						}
 					}
 					catch (PartInitException e) {
 						JptJpaUiPlugin.instance().logError(e);

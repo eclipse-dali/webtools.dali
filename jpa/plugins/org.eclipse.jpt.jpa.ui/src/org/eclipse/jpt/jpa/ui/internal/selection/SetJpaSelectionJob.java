@@ -13,7 +13,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.common.utility.internal.RunnableAdapter;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
@@ -67,7 +67,7 @@ class SetJpaSelectionJob
 
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
-		SWTUtil.asyncExec(this.setJpaSelectionRunnable);
+		DisplayTools.asyncExec(this.setJpaSelectionRunnable);
 		return Status.OK_STATUS;
 	}
 

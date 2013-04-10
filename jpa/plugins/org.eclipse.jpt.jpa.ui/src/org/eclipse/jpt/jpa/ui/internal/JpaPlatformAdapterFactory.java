@@ -10,13 +10,12 @@
 package org.eclipse.jpt.jpa.ui.internal;
 
 import org.eclipse.core.runtime.IAdapterFactory;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUiManager;
 import org.eclipse.jpt.jpa.ui.JpaWorkbench;
 import org.eclipse.jpt.jpa.ui.internal.platform.InternalJpaPlatformUiManager;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * Factory to build adapters for a {@link JpaPlatform}:<ul>
@@ -60,6 +59,6 @@ public class JpaPlatformAdapterFactory
 	}
 
 	private JpaWorkbench getJpaWorkbench() {
-		return PlatformTools.getAdapter(PlatformUI.getWorkbench(), JpaWorkbench.class);
+		return WorkbenchTools.getAdapter(JpaWorkbench.class);
 	}
 }

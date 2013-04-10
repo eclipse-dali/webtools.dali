@@ -15,7 +15,7 @@ import org.eclipse.jface.viewers.BaseLabelProvider;
 import org.eclipse.jface.viewers.LabelProviderChangedEvent;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemStructuredContentProvider;
@@ -232,7 +232,7 @@ public abstract class AbstractItemStructuredStateProviderManager<V extends Struc
 	}
 
 	protected void execute(Runnable runnable) {
-		SWTUtil.execute(this.viewer, runnable);
+		DisplayTools.execute(this.viewer, runnable);
 	}
 
 	protected boolean viewerIsAlive() {

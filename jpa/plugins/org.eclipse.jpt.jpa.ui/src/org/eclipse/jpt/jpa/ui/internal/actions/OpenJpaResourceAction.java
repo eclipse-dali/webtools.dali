@@ -11,13 +11,12 @@ package org.eclipse.jpt.jpa.ui.internal.actions;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaElementReference;
@@ -25,12 +24,9 @@ import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.selection.JpaSelectionManager;
 import org.eclipse.ui.IEditorDescriptor;
-import org.eclipse.ui.IEditorRegistry;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.BaseSelectionListenerAction;
-import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.FileEditorInput;
 
 /**
@@ -73,7 +69,7 @@ public class OpenJpaResourceAction
 		if ((resource != null) && resource.exists() && (resource.getType() == IResource.FILE)) {
 			this.openEditor((IFile) resource);
 			if (this.selectedNode instanceof JpaStructureNode) {
-				JpaSelectionManager selectionManager = PlatformTools.getAdapter(PlatformUI.getWorkbench(), JpaSelectionManager.class);
+				JpaSelectionManager selectionManager = WorkbenchTools.getAdapter(JpaSelectionManager.class);
 				selectionManager.setSelection((JpaStructureNode) this.selectedNode);
 			}
 		}
@@ -84,17 +80,17 @@ public class OpenJpaResourceAction
 	}
 
 	protected void openEditor(IFile file) {
-		IEditorRegistry registry = PlatformUI.getWorkbench().getEditorRegistry();
-		IContentType contentType = IDE.getContentType(file);
-		IEditorDescriptor editorDescriptor = registry.getDefaultEditor(file.getName(), contentType);
+		IEditorDescriptor editorDescriptor = WorkbenchTools.getDefaultEditor(file);
 		if (editorDescriptor == null) {
 			return;  // no editor associated...
 		}
 
-		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		IWorkbenchPage page = WorkbenchTools.getActivePage();
 
 		try {
-			page.openEditor(new FileEditorInput(file), editorDescriptor.getId());
+			if (page != null) {
+				page.openEditor(new FileEditorInput(file), editorDescriptor.getId());
+			}
 		}
 		catch (Exception e) {
 			MessageDialog.openError(page.getWorkbenchWindow().getShell(), JptJpaUiMessages.OpenJpaResourceAction_error, e.getMessage());

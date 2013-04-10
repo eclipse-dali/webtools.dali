@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.options;
 
 import java.util.Collection;
 import org.eclipse.jpt.common.ui.JptCommonUiMessages;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.ComboTools;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.FolderChooserComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -69,7 +69,7 @@ public class PersistenceXmlSchemaGenerationComposite
 			TransformerTools.<String>objectToStringTransformer(),
 			getHelpID()
 		);
-		SWTUtil.attachDefaultValueHandler(ddlFileNameCombo);
+		ComboTools.handleDefaultValue(ddlFileNameCombo);
 
 		// Drop DDL File Name:
 		this.addLabel(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_SCHEMA_GENERATION_TAB_DROP_DDL_FILE_NAME_LABEL);
@@ -80,7 +80,7 @@ public class PersistenceXmlSchemaGenerationComposite
 			TransformerTools.<String>objectToStringTransformer(),
 			getHelpID()
 		);
-		SWTUtil.attachDefaultValueHandler(dropDDLCombo);
+		ComboTools.handleDefaultValue(dropDDLCombo);
 	}
 
 	//************ DDL generation type ************

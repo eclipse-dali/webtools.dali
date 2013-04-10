@@ -10,11 +10,11 @@
 package org.eclipse.jpt.jpa.ui.internal.wizards;
 
 import java.util.EventListener;
-
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -38,7 +38,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
 /**
@@ -78,7 +77,7 @@ public class DatabaseSchemaWizardPage extends WizardPage {
 		composite.setLayout(new GridLayout());
 		this.databaseGroup = new DatabaseGroup(composite);
 		Dialog.applyDialogFont(parent);
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, JpaHelpContextIds.PROPERTIES_JAVA_PERSISTENCE_CONNECTION);
+		WorkbenchTools.setHelp(composite, JpaHelpContextIds.PROPERTIES_JAVA_PERSISTENCE_CONNECTION);
 		return composite;
 	}
 
@@ -366,7 +365,7 @@ public class DatabaseSchemaWizardPage extends WizardPage {
 				this.connectionChanged();
 			}
 			private void connectionChanged() {
-				SWTUtil.asyncExec(
+				DisplayTools.asyncExec(
 					new Runnable() {
 						public void run() {
 							DatabaseGroup.this.connectionChanged();

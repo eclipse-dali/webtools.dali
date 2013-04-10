@@ -25,11 +25,11 @@ import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.internal.utility.ICUStringCollator;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.common.ui.internal.properties.JptProjectPropertiesPage;
 import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.ControlTools;
 import org.eclipse.jpt.common.utility.internal.BitTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -105,7 +105,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
@@ -536,7 +535,7 @@ public class JpaProjectPropertiesPage
 		this.buildPersistentClassManagementGroup(parent);
 		this.buildMetamodelGroup(parent);
 
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, JpaHelpContextIds.PROPERTIES_JAVA_PERSISTENCE);
+		WorkbenchTools.setHelp(parent, JpaHelpContextIds.PROPERTIES_JAVA_PERSISTENCE);
 	}
 
 	@Override
@@ -671,7 +670,7 @@ public class JpaProjectPropertiesPage
 	}
 
 	/* CU private */ static JpaWorkbench getJpaWorkbench() {
-		return PlatformTools.getAdapter(PlatformUI.getWorkbench(), JpaWorkbench.class);
+		return WorkbenchTools.getAdapter(JpaWorkbench.class);
 	}
 
 
@@ -683,7 +682,7 @@ public class JpaProjectPropertiesPage
 		group.setLayout(new GridLayout(3, false));
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(group, JpaHelpContextIds.PROPERTIES_JAVA_PERSISTENCE_CONNECTION);
+		WorkbenchTools.setHelp(group, JpaHelpContextIds.PROPERTIES_JAVA_PERSISTENCE_CONNECTION);
 
 		Combo connectionDropDown = this.buildDropDown(group, 3);
 		SWTBindTools.bind(
@@ -754,7 +753,7 @@ public class JpaProjectPropertiesPage
 			return;
 		}
 		this.connectLink.setText(text);
-		SWTUtil.reflow(this.connectLink.getParent());
+		ControlTools.reflow(this.connectLink);
 	}
 
 	/* CU private */ class AddConnectionLinkListener
@@ -834,7 +833,7 @@ public class JpaProjectPropertiesPage
 				SIMPLE_STRING_TRANSFORMER
 		);
 
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(group, JpaHelpContextIds.PROPERTIES_JAVA_PERSISTENCE_METAMODEL);
+		WorkbenchTools.setHelp(group, JpaHelpContextIds.PROPERTIES_JAVA_PERSISTENCE_METAMODEL);
 
 		SWTBindTools.controlVisibleState(this.jpa2_0ProjectFlagModel, group, metamodelSourceFolderLink, metamodelSourceFolderDropDown);
 	}

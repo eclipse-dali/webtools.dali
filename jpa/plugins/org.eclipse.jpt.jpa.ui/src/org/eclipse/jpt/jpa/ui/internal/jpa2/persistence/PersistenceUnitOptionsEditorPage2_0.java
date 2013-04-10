@@ -11,10 +11,8 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2.persistence;
 
 import java.util.Collection;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jdt.ui.JavaUI;
@@ -29,6 +27,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
@@ -51,7 +50,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
-import org.eclipse.ui.progress.IProgressService;
 
 public class PersistenceUnitOptionsEditorPage2_0
 	extends Pane<Options2_0>
@@ -396,35 +394,25 @@ public class PersistenceUnitOptionsEditorPage2_0
 	 * canceled the dialog
 	 */
 	private IType chooseType() {
-		IJavaProject javaProject = this.getSubject().getJpaProject().getJavaProject();
-		IJavaElement[] elements = new IJavaElement[] { javaProject };
-		IJavaSearchScope scope = SearchEngine.createJavaSearchScope(elements);
-		IProgressService service = PlatformUI.getWorkbench().getProgressService();
-		SelectionDialog typeSelectionDialog;
-
+		SelectionDialog dialog;
 		try {
-			typeSelectionDialog = JavaUI.createTypeDialog(
-				getShell(),
-				service,
-				scope,
-				IJavaElementSearchConstants.CONSIDER_CLASSES,
-				false,
-				""
-			);
-		}
-		catch (JavaModelException e) {
-			JptJpaUiPlugin.instance().logError(e);
+			dialog = JavaUI.createTypeDialog(
+					getShell(),
+					PlatformUI.getWorkbench().getProgressService(),
+					SearchEngine.createJavaSearchScope(new IJavaElement[] { this.getSubject().getJpaProject().getJavaProject() }),
+					IJavaElementSearchConstants.CONSIDER_CLASSES,
+					false,
+					StringTools.EMPTY_STRING
+				);
+		} catch (JavaModelException ex) {
+			JptJpaUiPlugin.instance().logError(ex);
 			return null;
 		}
 
-		typeSelectionDialog.setTitle(JptCommonUiMessages.CLASS_CHOOSER_PANE__DIALOG_TITLE);
-		typeSelectionDialog.setMessage(JptCommonUiMessages.CLASS_CHOOSER_PANE__DIALOG_MESSAGE);
+		dialog.setTitle(JptCommonUiMessages.CLASS_CHOOSER_PANE__DIALOG_TITLE);
+		dialog.setMessage(JptCommonUiMessages.CLASS_CHOOSER_PANE__DIALOG_MESSAGE);
 
-		if (typeSelectionDialog.open() == Window.OK) {
-			return (IType) typeSelectionDialog.getResult()[0];
-		}
-
-		return null;
+		return (dialog.open() == Window.OK) ? (IType) dialog.getResult()[0] : null;
 	}
 
 	private ModifiableCollectionValueModel<String> buildSelectedItemsModel() {

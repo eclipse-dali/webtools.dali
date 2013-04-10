@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.JptCommonUiImages;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.Table;
@@ -68,7 +69,7 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 		layout.numColumns = nColumns;
 		assocKindGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		assocKindGroup.setLayout(layout);
-		this.getHelpSystem().setHelp(composite, JpaHelpContextIds.GENERATE_ENTITIES_WIZARD_ASSOCIATION_TABLES);
+		WorkbenchTools.setHelp(composite, JpaHelpContextIds.GENERATE_ENTITIES_WIZARD_ASSOCIATION_TABLES);
 		assocKindGroup.setText( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_assocKind);
 
 		simpleAssoBtn = createButton(assocKindGroup, 3, JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_simpleAssoc, SWT.RADIO);

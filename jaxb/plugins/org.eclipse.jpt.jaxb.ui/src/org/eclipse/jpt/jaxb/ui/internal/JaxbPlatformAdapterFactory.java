@@ -10,13 +10,12 @@
 package org.eclipse.jpt.jaxb.ui.internal;
 
 import org.eclipse.core.runtime.IAdapterFactory;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
 import org.eclipse.jpt.jaxb.ui.JaxbWorkbench;
 import org.eclipse.jpt.jaxb.ui.internal.platform.InternalJaxbPlatformUiManager;
 import org.eclipse.jpt.jaxb.ui.platform.JaxbPlatformUi;
 import org.eclipse.jpt.jaxb.ui.platform.JaxbPlatformUiManager;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * Factory to build adapters for a {@link JaxbPlatform}:<ul>
@@ -60,6 +59,6 @@ public class JaxbPlatformAdapterFactory
 	}
 
 	private JaxbWorkbench getJaxbWorkbench() {
-		return PlatformTools.getAdapter(PlatformUI.getWorkbench(), JaxbWorkbench.class);
+		return WorkbenchTools.getAdapter(JaxbWorkbench.class);
 	}
 }

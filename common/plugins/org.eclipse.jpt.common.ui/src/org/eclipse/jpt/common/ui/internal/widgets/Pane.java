@@ -18,6 +18,7 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.common.ui.internal.plugin.JptCommonUiPlugin;
 import org.eclipse.jpt.common.ui.internal.swt.ComboModelAdapter;
@@ -65,11 +66,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
-import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.ui.part.PageBook;
 
 /**
@@ -553,7 +552,7 @@ public abstract class Pane<T extends Model> {
 		});
 
 		if (helpId != null) {
-			getHelpSystem().setHelp(button, helpId);
+			this.setHelp(button, helpId);
 		}
 
 		GridData gridData = new GridData();
@@ -643,7 +642,7 @@ public abstract class Pane<T extends Model> {
 		Combo combo = this.addUnmanagedCombo(container);
 
 		if (helpId != null) {
-			getHelpSystem().setHelp(combo, helpId);
+			this.setHelp(combo, helpId);
 		}
 
 		this.controlEnabledState(combo);
@@ -818,7 +817,7 @@ public abstract class Pane<T extends Model> {
 		Combo combo = this.getWidgetFactory().createEditableCombo(container);
 
 		if (helpId != null) {
-			getHelpSystem().setHelp(combo, helpId);
+			this.setHelp(combo, helpId);
 		}
 
 		combo.setLayoutData(getFieldGridData());
@@ -1030,7 +1029,7 @@ public abstract class Pane<T extends Model> {
 		SpinnerModelAdapter.adapt(numberHolder, spinner, defaultValue);
 
 		if (helpId != null) {
-			getHelpSystem().setHelp(spinner, helpId);
+			this.setHelp(spinner, helpId);
 		}
 
 		return spinner;
@@ -1099,7 +1098,7 @@ public abstract class Pane<T extends Model> {
 		DateTimeModelAdapter.adapt(hoursHolder, minutesHolder, secondsHolder, dateTime);
 
 		if (helpId != null) {
-			getHelpSystem().setHelp(dateTime, helpId);
+			this.setHelp(dateTime, helpId);
 		}
 
 		return dateTime;
@@ -1151,7 +1150,7 @@ public abstract class Pane<T extends Model> {
 		
 
 		if (helpId != null) {
-			getHelpSystem().setHelp(container, helpId);
+			this.setHelp(container, helpId);
 		}
 
 		return combo;
@@ -1226,7 +1225,7 @@ public abstract class Pane<T extends Model> {
 		list.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		if (helpId != null) {
-			getHelpSystem().setHelp(list, helpId);
+			this.setHelp(list, helpId);
 		}
 
 		return list;
@@ -1266,7 +1265,7 @@ public abstract class Pane<T extends Model> {
 		adjustMultiLineTextLayout(lineCount, text, text.getLineHeight());
 
 		if (helpId != null) {
-			getHelpSystem().setHelp(text, helpId);
+			this.setHelp(text, helpId);
 		}
 
 		return text;
@@ -1450,7 +1449,7 @@ public abstract class Pane<T extends Model> {
 		button.setLayoutData(new GridData());
 
 		if (helpId != null) {
-			getHelpSystem().setHelp(button, helpId);
+			this.setHelp(button, helpId);
 		}
 
 		return button;
@@ -1704,7 +1703,7 @@ public abstract class Pane<T extends Model> {
 		table.setLayoutData(gridData);
 
 		if (helpId != null) {
-			getHelpSystem().setHelp(table, helpId);
+			this.setHelp(table, helpId);
 		}
 
 		return table;
@@ -1794,7 +1793,7 @@ public abstract class Pane<T extends Model> {
 		Text text = this.addText(container);
 
 		if (helpId != null) {
-			getHelpSystem().setHelp(text, helpId);
+			this.setHelp(text, helpId);
 		}
 
 		return text;
@@ -1816,7 +1815,7 @@ public abstract class Pane<T extends Model> {
 		Text text = this.addUnmanagedText(container);
 
 		if (helpId != null) {
-			getHelpSystem().setHelp(text, helpId);
+			this.setHelp(text, helpId);
 		}
 
 		return text;
@@ -1950,7 +1949,7 @@ public abstract class Pane<T extends Model> {
 		group.setLayout(layout);
 
 		if (helpId != null) {
-			getHelpSystem().setHelp(group, helpId);
+			this.setHelp(group, helpId);
 		}
 
 		return group;
@@ -1996,7 +1995,7 @@ public abstract class Pane<T extends Model> {
 		SWTBindTools.bind(booleanHolder, button);
 
 		if (helpId != null) {
-			getHelpSystem().setHelp(button, helpId);
+			this.setHelp(button, helpId);
 		}
 
 		return button;
@@ -2073,7 +2072,7 @@ public abstract class Pane<T extends Model> {
 		);
 		
 		if (helpId != null) {
-			getHelpSystem().setHelp(checkBox.getCheckBox(), helpId);
+			this.setHelp(checkBox.getCheckBox(), helpId);
 		}
 		
 		return checkBox;
@@ -2267,8 +2266,8 @@ public abstract class Pane<T extends Model> {
 		return (this.parent == null) ? this.resourceManager : this.parent.getResourceManager();
 	}
 
-	protected final IWorkbenchHelpSystem getHelpSystem() {
-		return PlatformUI.getWorkbench().getHelpSystem();
+	protected final void setHelp(Control control, String contextID) {
+		WorkbenchTools.setHelp(control, contextID);
 	}
 
 	protected final boolean isPopulating() {

@@ -30,7 +30,7 @@ import org.eclipse.jpt.common.ui.internal.jface.ItemTreeStateProviderManager;
 import org.eclipse.jpt.common.ui.internal.jface.NullItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.common.ui.internal.jface.SelectionChangedAdapter;
 import org.eclipse.jpt.common.ui.internal.jface.SimpleMessageTreeContent;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.common.ui.jface.TreeStateProvider;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -523,7 +523,7 @@ public class JpaStructurePage
 	}
 
 	private void execute(Runnable runnable) {
-		SWTUtil.execute(this.getSite().getShell().getDisplay(), runnable);
+		DisplayTools.execute(this.getSite().getShell().getDisplay(), runnable);
 	}
 
 	@Override

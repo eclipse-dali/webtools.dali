@@ -18,7 +18,6 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.internal.ui.refactoring.contentassist.ControlContentAssistHelper;
 import org.eclipse.jdt.internal.ui.refactoring.contentassist.JavaTypeCompletionProcessor;
@@ -38,8 +37,8 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.widgets.Composite;
@@ -356,33 +355,25 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	 * cancelled the dialog
 	 */
 	protected IType chooseType() {
-		IJavaElement[] elements = new IJavaElement[] { getJavaProject() };
-		IJavaSearchScope scope = SearchEngine.createJavaSearchScope(elements);
-		SelectionDialog typeSelectionDialog;
-
+		SelectionDialog dialog;
 		try {
-			typeSelectionDialog = JavaUI.createTypeDialog(
-				getShell(),
-				PlatformUI.getWorkbench().getProgressService(),
-				scope,
-				getTypeDialogStyle(),
-				false,
-				StringTools.isBlank(getClassName()) ? "" : ClassNameTools.simpleName(getClassName())
-			);
-		}
-		catch (JavaModelException e) {
-			JptCommonUiPlugin.instance().logError(e);
+			dialog = JavaUI.createTypeDialog(
+					getShell(),
+					PlatformUI.getWorkbench().getProgressService(),
+					SearchEngine.createJavaSearchScope(new IJavaElement[] { getJavaProject() }),
+					getTypeDialogStyle(),
+					false,
+					StringTools.isBlank(getClassName()) ? StringTools.EMPTY_STRING : ClassNameTools.simpleName(getClassName())
+				);
+		} catch (JavaModelException ex) {
+			JptCommonUiPlugin.instance().logError(ex);
 			return null;
 		}
 
-		typeSelectionDialog.setTitle(JptCommonUiMessages.CLASS_CHOOSER_PANE__DIALOG_TITLE);
-		typeSelectionDialog.setMessage(JptCommonUiMessages.CLASS_CHOOSER_PANE__DIALOG_MESSAGE);
+		dialog.setTitle(JptCommonUiMessages.CLASS_CHOOSER_PANE__DIALOG_TITLE);
+		dialog.setMessage(JptCommonUiMessages.CLASS_CHOOSER_PANE__DIALOG_MESSAGE);
 
-		if (typeSelectionDialog.open() == Window.OK) {
-			return (IType) typeSelectionDialog.getResult()[0];
-		}
-
-		return null;
+		return (dialog.open() == Window.OK) ? (IType) dialog.getResult()[0] : null;
 	}
 
 	protected int getTypeDialogStyle() {

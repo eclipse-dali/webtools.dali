@@ -13,6 +13,7 @@ package org.eclipse.jpt.jpa.ui.internal.wizards.entity;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.model.IEntityDataModelProperties;
 import org.eclipse.jpt.jpa.ui.wizards.entity.JptJpaUiWizardsEntityMessages;
@@ -26,8 +27,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.wst.common.componentcore.internal.operation.IArtifactEditOperationDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelEvent;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -68,7 +67,7 @@ public class EntityFieldsWizardPage extends DataModelWizardPage {
 	protected Composite createTopLevelComposite(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NULL);
 		composite.setLayout(new GridLayout());
-		this.getHelpSystem().setHelp(composite, JpaHelpContextIds.NEW_JPA_ENTITY_ENTITY_PROPERTIES);
+		WorkbenchTools.setHelp(composite, JpaHelpContextIds.NEW_JPA_ENTITY_ENTITY_PROPERTIES);
 		
 		GridData data = new GridData(GridData.FILL_BOTH);
 		data.widthHint = 300;
@@ -225,10 +224,6 @@ public class EntityFieldsWizardPage extends DataModelWizardPage {
 			tableNameCheckButton.setEnabled(!isNonEntity);
 			tableNameText.setEnabled(!tableNameCheckButton.getSelection());
 		}		
-	}
-	
-	protected final IWorkbenchHelpSystem getHelpSystem() {
-		return PlatformUI.getWorkbench().getHelpSystem();
 	}
 }
 

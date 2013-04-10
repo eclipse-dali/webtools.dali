@@ -48,8 +48,8 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.TableTools;
 import org.eclipse.jpt.common.ui.internal.util.TableLayoutComposite;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -80,7 +80,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.osgi.framework.Bundle;
 
@@ -308,7 +307,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		Composite composite = new Composite(parent, SWT.NULL);
 		composite.setLayout(new GridLayout());
 
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, HELP_CONTEXT_ID);
+		WorkbenchTools.setHelp(composite, HELP_CONTEXT_ID);
 		
 		this.settingsGroup = new SettingsGroup(composite);
 
@@ -488,7 +487,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 	}
 
 	private JaxbWorkbench getJaxbWorkbench() {
-		return PlatformTools.getAdapter(PlatformUI.getWorkbench(), JaxbWorkbench.class);
+		return WorkbenchTools.getAdapter(JaxbWorkbench.class);
 	}
 
 	// huh? why is this here???
@@ -643,7 +642,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		
 			GridData gridData= new GridData(GridData.FILL_BOTH);
 			gridData.horizontalSpan = 2;
-			gridData.heightHint= SWTUtil.getTableHeightHint(table, 3);
+			gridData.heightHint= TableTools.calculateHeightHint(table, 3);
 			tableLayout.setLayoutData(gridData);
 		
 			TableViewer tableViewer = new TableViewer(table);

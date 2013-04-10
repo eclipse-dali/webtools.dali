@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.utility;
 
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandContext;
 import org.eclipse.jpt.common.utility.internal.command.CommandRunnable;
@@ -48,7 +48,7 @@ abstract class AbstractUiCommandContext
 		SynchronizingCommand syncCommand = new SynchronizingCommand(command);
 
 		// dispatch the sync command to the UI thread...
-		SWTUtil.asyncExec(this.buildRunnable(syncCommand));
+		DisplayTools.asyncExec(this.buildRunnable(syncCommand));
 
 		// ...and wait for it to execute
 		try {

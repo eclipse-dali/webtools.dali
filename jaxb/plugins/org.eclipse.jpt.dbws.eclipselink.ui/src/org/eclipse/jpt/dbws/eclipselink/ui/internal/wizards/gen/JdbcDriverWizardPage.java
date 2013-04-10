@@ -25,7 +25,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.TableTools;
 import org.eclipse.jpt.common.ui.internal.util.TableLayoutComposite;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
@@ -214,7 +214,7 @@ public class JdbcDriverWizardPage extends WizardPage
 			
 			GridData gridData= new GridData(GridData.FILL_BOTH);
 			gridData.horizontalSpan = 1;
-			gridData.heightHint= SWTUtil.getTableHeightHint(table, 7);
+			gridData.heightHint= TableTools.calculateHeightHint(table, 7);
 			tableLayout.setLayoutData(gridData);
 			
 			TableViewer tableViewer = new TableViewer(table);

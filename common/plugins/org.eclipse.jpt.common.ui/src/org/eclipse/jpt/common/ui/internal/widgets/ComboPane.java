@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.ui.internal.widgets;
 
 import org.eclipse.jpt.common.ui.JptCommonUiMessages;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.ComboTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.Model;
@@ -80,7 +80,7 @@ public abstract class ComboPane<T extends Model>
 	protected void initializeLayout(Composite container) {
 		this.comboBox = this.addEditableCombo(container, getHelpId());
 		this.comboBox.addModifyListener(this.buildModifyListener());
-		SWTUtil.attachDefaultValueHandler(this.comboBox);
+		ComboTools.handleDefaultValue(this.comboBox);
 	}
 	
 	protected ModifyListener buildModifyListener() {

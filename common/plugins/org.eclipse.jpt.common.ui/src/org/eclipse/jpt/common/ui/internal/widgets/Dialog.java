@@ -23,8 +23,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.help.IWorkbenchHelpSystem;
 
 /**
  * The abstract implementation of a dialog using a "state object" (model object)
@@ -199,17 +197,6 @@ public abstract class Dialog<T extends Node>
 	 */
 	protected boolean hasTitleArea() {
 		return false;
-	}
-
-	/**
-	 * Returns the helps system.
-	 *
-	 * @return The platform's help system
-	 *
-	 * @category Helper
-	 */
-	protected final IWorkbenchHelpSystem getHelpSystem() {
-		return PlatformUI.getWorkbench().getHelpSystem();
 	}
 
 	/**
