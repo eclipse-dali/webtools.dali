@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.forms.widgets.Section;
+import org.eclipse.ui.part.PageBook;
 
 /**
  * Various SWT tools.
@@ -203,6 +204,50 @@ public final class SWTBindTools {
 	private static <E> void bind(ListValueModel<E> listModel, ListWidgetModelBinding.ListWidget listWidget, Transformer<E, String> transformer, ListWidgetModelBinding.SelectionBinding selectionBinding) {
 		// the new binding will add itself as a listener to the value models and the list box
 		new ListWidgetModelBinding<E>(listModel, listWidget, transformer, selectionBinding);
+	}
+
+
+	// ********** page book **********
+
+	/**
+	 * Bind the specified control model to the specified page book. The model's
+	 * value will determine which page the page book displays.
+	 */
+	public static void bind(PropertyValueModel<Control> controlModel, PageBook pageBook) {
+		bind(controlModel, pageBook, null);
+	}
+
+	/**
+	 * Bind the specified control model to the specified page book. The model's
+	 * value will determine which page the page book displays. If the model's
+	 * value is <code>null</code>, the page book will display the specified
+	 * default page.
+	 */
+	public static void bind(PropertyValueModel<Control> controlModel, PageBook pageBook, Control defaultPage) {
+		bind(controlModel, TransformerTools.<Control>passThruTransformer(), pageBook, defaultPage);
+	}
+
+	/**
+	 * Bind the specified model to the specified page book. The model's value will
+	 * determine which page the page book displays. The specified transformer
+	 * will convert the model's value into the control to be displayed in the
+	 * page book.
+	 */
+	public static <T> void bind(PropertyValueModel<T> valueModel, Transformer<? super T, Control> transformer, PageBook pageBook) {
+		bind(valueModel, transformer, pageBook, null);
+	}
+
+	/**
+	 * Bind the specified model to the specified page book. The model's value will
+	 * determine which page the page book displays. The specified transformer
+	 * will convert the model's value into the control to be displayed in the
+	 * page book. If the transformer converts the model's value into
+	 * <code>null</code>, the page book will display the specified default
+	 * page.
+	 */
+	@SuppressWarnings("unused")
+	public static <T> void bind(PropertyValueModel<T> valueModel, Transformer<? super T, Control> transformer, PageBook pageBook, Control defaultPage) {
+		new PageBookModelBinding<T>(valueModel, transformer, pageBook, defaultPage);
 	}
 
 

@@ -14,7 +14,6 @@ import java.util.List;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
-import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -162,14 +161,8 @@ public abstract class AbstractOverridesComposite<T extends JpaContextModel>
 		return new AssociationOverrideComposite(this, overrideHolder, buildOverrideBooleanHolder(overrideHolder), pageBook);		
 	}
 	
-	private void installOverrideControlSwitcher(
-			PropertyValueModel<Override_> overrideHolder,
-			PageBook pageBook) {
-		
-		new ControlSwitcher(
-				overrideHolder,
-				buildPaneTransformer(pageBook),
-				pageBook);
+	private void installOverrideControlSwitcher(PropertyValueModel<Override_> overrideHolder, PageBook pageBook) {
+		SWTBindTools.bind(overrideHolder, buildPaneTransformer(pageBook), pageBook);
 	}
 	
 	private PropertyValueModel<AssociationOverride> buildAssociationOverrideModel() {

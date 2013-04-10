@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 
-import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
+import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
@@ -44,7 +44,7 @@ public class EmbeddedIdMappingMappedByRelationshipPane2_0
 		PageBook pageBook = new PageBook(container, SWT.NULL);
 		pageBook.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		new ControlSwitcher(buildDerivedModel(), this.buildPaneTransformer(pageBook), pageBook);
+		SWTBindTools.bind(buildDerivedModel(), this.buildPaneTransformer(pageBook), pageBook);
 	}
 
 	protected Label getMappedByRelationshipLabel(Composite container) {

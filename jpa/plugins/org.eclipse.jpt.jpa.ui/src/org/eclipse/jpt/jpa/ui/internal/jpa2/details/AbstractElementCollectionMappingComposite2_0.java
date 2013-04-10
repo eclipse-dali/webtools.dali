@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
+import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
@@ -234,12 +234,7 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 	}
 
 	private void installValueControlSwitcher(PageBook pageBook) {
-
-		new ControlSwitcher(
-			buildValueHolder(),
-			buildPaneTransformer(pageBook),
-			pageBook
-		);
+		SWTBindTools.bind(buildValueHolder(), buildPaneTransformer(pageBook), pageBook);
 	}
 	
 	protected PropertyValueModel<T.Type> buildValueHolder() {
