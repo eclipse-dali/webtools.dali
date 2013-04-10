@@ -54,7 +54,7 @@ public class ClickAddFeatureTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		System.setProperty(JPACreateFactory.JPA_JAR_NAME_SYSTEM_PROPERTY, "C:\\lib\\persistence-api-1.0.jar");
+//		System.setProperty(JPACreateFactory.JPA_JAR_NAME_SYSTEM_PROPERTY, "C:\\lib\\persistence-api-1.0.jar");
 		factory = JPACreateFactory.instance();
 		jpaProject = factory.createJPAProject(TEST_PROJECT + "_" + System.currentTimeMillis());
 		assertNotNull(jpaProject);

@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(SWTBotJunit4ClassRunner.class)
+@SuppressWarnings("restriction")
 public class OrmPersistentTypesSWTBotTest extends AbstractSwtBotEditorTest {
 	
 	protected static String TEST_PROJECT = "Test_" + System.currentTimeMillis();

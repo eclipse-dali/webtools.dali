@@ -136,14 +136,6 @@ public class EditorProxy {
 		assertTrue("The JPA Content node is disabled.", item.isEnabled());
 		ContextMenuHelper.clickContextMenu(projectTree, "Open Diagram");
 
-		workbenchBot
-				.waitUntil(
-						shellIsActive(JPAEditorMessages.OpenJpaDiagramActionDelegate_jpaSupportWarningTitle),
-						10000);
-		SWTBotShell jpaSupportWarningDialog = workbenchBot
-				.shell(JPAEditorMessages.OpenJpaDiagramActionDelegate_jpaSupportWarningTitle);
-		getOkButton(jpaSupportWarningDialog).click();
-
 		SWTBotGefEditor jpaDiagramEditor = bot.gefEditor(name);
 		assertFalse("Editor must not be dirty!", jpaDiagramEditor.isDirty());
 
@@ -154,23 +146,12 @@ public class EditorProxy {
 		return jpaDiagramEditor;
 	}
 
-	public SWTBotGefEditor openDiagramOnJPAProjectNode(String name,
-			boolean isJPA20) {
+	public SWTBotGefEditor openDiagramOnJPAProjectNode(String name) {
 		SWTBotTree projectTree = workbenchBot.viewByTitle("Project Explorer")
 				.bot().tree();
 		projectTree.getTreeItem(name).select();
 		ContextMenuHelper.clickContextMenu(projectTree, "JPA Tools",
 				"Open Diagram");
-
-		if (isJPA20) {
-			workbenchBot
-					.waitUntil(
-							shellIsActive(JPAEditorMessages.OpenJpaDiagramActionDelegate_jpaSupportWarningTitle),
-							10000);
-			SWTBotShell jpaSupportWarningDialog = workbenchBot
-					.shell(JPAEditorMessages.OpenJpaDiagramActionDelegate_jpaSupportWarningTitle);
-			getOkButton(jpaSupportWarningDialog).click();
-		}
 
 		SWTBotGefEditor jpaDiagramEditor = bot.gefEditor(name);
 		assertFalse("Editor must not be dirty!", jpaDiagramEditor.isDirty());

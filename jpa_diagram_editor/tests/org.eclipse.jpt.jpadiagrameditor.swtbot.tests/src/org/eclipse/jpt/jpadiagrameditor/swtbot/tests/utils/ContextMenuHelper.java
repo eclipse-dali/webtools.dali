@@ -8,9 +8,7 @@ import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
 import java.text.MessageFormat;
-import java.util.ArrayDeque;
 import java.util.Arrays;
-import java.util.Deque;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
@@ -38,6 +36,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.internal.WorkbenchMessages;
 import org.hamcrest.Matcher;
 
+@SuppressWarnings("restriction")
 public class ContextMenuHelper
 {
 
@@ -49,7 +48,6 @@ public class ContextMenuHelper
      * @throws WidgetNotFoundException
      *           if the widget is not found.
      */
-    @SuppressWarnings("unchecked")
 	public static void clickContextMenu( final AbstractSWTBot<?> bot, final String... texts )
     {
         final Matcher<?>[] matchers = new Matcher<?>[texts.length];
@@ -167,7 +165,6 @@ public class ContextMenuHelper
 				Shell control = (Shell) bot.widget;
 				Menu menu = control.getMenuBar();
 				for (String text : texts) {
-					@SuppressWarnings("unchecked")
 					Matcher<?> matcher = allOf(instanceOf(MenuItem.class), withMnemonic(text));
 					item = show(menu, matcher);
 					if (item != null) {

@@ -80,19 +80,7 @@ public class OpenJpaDiagramActionDelegate implements IObjectActionDelegate {
 	public static IDiagramContainer openDiagramEditor(final Diagram diagram) {
 		
 		String diagramName = diagram.getName();
-		JpaProject jpaProject = ModelIntegrationUtil.getProjectByDiagram(diagramName);
-		if (!JPAEditorUtil.checkJPAFacetVersion(jpaProject, JPAEditorUtil.JPA_PROJECT_FACET_10) && !ModelIntegrationUtil.isDiagramOpen(diagramName)) {
-			boolean wasEnabled = OptionalMessageDialog.isDialogEnabled(JPAEditorConstants.JPA_SUPPORT_DIALOG_ID);
-			int btnIndex = OptionalMessageDialog.open(JPAEditorConstants.JPA_SUPPORT_DIALOG_ID, 
-									   Display.getDefault().getShells()[0], 
-									   JPAEditorMessages.OpenJpaDiagramActionDelegate_jpaSupportWarningTitle, 
-									   Display.getDefault().getSystemImage(SWT.ICON_WARNING),
-									   JPAEditorMessages.OpenJpaDiagramActionDelegate_jpaSupportWarningMsg, 
-									   0, 
-									   new String[] {JPAEditorMessages.BTN_OK}, 
-									   0);
-		}
-		
+		JpaProject jpaProject = ModelIntegrationUtil.getProjectByDiagram(diagramName);		
 		final JPADiagramEditorInput diagramEditorInput = JPADiagramEditorInput.createEditorInput(diagram, JPAEditorDiagramTypeProvider.ID); 
 		IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 		final IWorkbenchPage workbenchPage = workbenchWindow.getActivePage();

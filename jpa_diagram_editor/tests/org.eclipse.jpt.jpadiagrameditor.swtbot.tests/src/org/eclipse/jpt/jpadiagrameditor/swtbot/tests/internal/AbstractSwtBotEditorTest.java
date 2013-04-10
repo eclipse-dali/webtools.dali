@@ -71,13 +71,10 @@ public class AbstractSwtBotEditorTest extends SWTBotGefTestCase{
 		bot.closeAllEditors();
 
 		factory = JPACreateFactory.instance();
-		boolean isJPA20 = false;
 		if(version.equals("1.0")){
 			jpaProject = factory.createJPAProject(name);
-			isJPA20 = false;
 		} else {
 			jpaProject = factory.createJPA20Project(name);
-			isJPA20 = true;
 		}
 		assertNotNull(jpaProject);
 		assertEquals(name, jpaProject.getName());
@@ -97,7 +94,7 @@ public class AbstractSwtBotEditorTest extends SWTBotGefTestCase{
 		}
 
 		jpaDiagramEditor = editorProxy.openDiagramOnJPAProjectNode(
-				jpaProject.getName(), isJPA20);
+				jpaProject.getName());
 		editorProxy.setJpaDiagramEditor(jpaDiagramEditor);
 
 		relUtils = new RelationshipsUtils(jpaDiagramEditor, editorProxy, jpaProject);
@@ -193,28 +190,28 @@ public class AbstractSwtBotEditorTest extends SWTBotGefTestCase{
 		}
 	}
 	
-	private static void createJpaProjectViaWizard(String name, String version) {
-		ContextMenuHelper.clickMenu("File", "New", "Other...");
-		SWTBot swtBot = workbenchBot.shell("New").bot();
-		ContextMenuHelper.selectTreeItem(swtBot.tree(), "JPA", "JPA Project");
-		swtBot.button(IDialogConstants.NEXT_LABEL).click();
-		
-		swtBot.textWithLabel("Project name:").setText(name);
-		swtBot.comboBoxInGroup("Target runtime").setSelection("jre6");
-		swtBot.comboBoxInGroup("JPA version").setSelection(version);
-		swtBot.button(IDialogConstants.NEXT_LABEL).click();
-		
-		swtBot.button(IDialogConstants.NEXT_LABEL).click();
-		
-		swtBot.comboBoxInGroup("Platform").setSelection("Generic 2.0");
-		swtBot.comboBoxWithLabel("Type:").setSelection("Disable Library Configuration");
-		
-//		swtBot.checkBox("Create mapping file (orm.xml)").select();
-				
-		swtBot.button(IDialogConstants.FINISH_LABEL).click();
-		
-		swtBot.waitUntil(shellCloses(swtBot.activeShell()), 30000);
-	}
+//	private static void createJpaProjectViaWizard(String name, String version) {
+//		ContextMenuHelper.clickMenu("File", "New", "Other...");
+//		SWTBot swtBot = workbenchBot.shell("New").bot();
+//		ContextMenuHelper.selectTreeItem(swtBot.tree(), "JPA", "JPA Project");
+//		swtBot.button(IDialogConstants.NEXT_LABEL).click();
+//		
+//		swtBot.textWithLabel("Project name:").setText(name);
+//		swtBot.comboBoxInGroup("Target runtime").setSelection("jre6");
+//		swtBot.comboBoxInGroup("JPA version").setSelection(version);
+//		swtBot.button(IDialogConstants.NEXT_LABEL).click();
+//		
+//		swtBot.button(IDialogConstants.NEXT_LABEL).click();
+//		
+//		swtBot.comboBoxInGroup("Platform").setSelection("Generic 2.0");
+//		swtBot.comboBoxWithLabel("Type:").setSelection("Disable Library Configuration");
+//		
+////		swtBot.checkBox("Create mapping file (orm.xml)").select();
+//				
+//		swtBot.button(IDialogConstants.FINISH_LABEL).click();
+//		
+//		swtBot.waitUntil(shellCloses(swtBot.activeShell()), 30000);
+//	}
 	
 	@After
 	public void tearDown() throws Exception {

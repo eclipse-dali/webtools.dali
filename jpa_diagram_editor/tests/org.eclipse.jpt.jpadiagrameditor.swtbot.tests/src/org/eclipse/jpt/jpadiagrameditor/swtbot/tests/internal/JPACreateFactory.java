@@ -52,13 +52,9 @@ import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetDataModelProperties;
-import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProperties;
-import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProvider;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.utils.Utils;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
-import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
@@ -74,8 +70,6 @@ public class JPACreateFactory {
 	private IFacetedProject facetedProject; 
 	private IProject project; 
 	private IJavaProject javaProject;
-	//private IPackageFragmentRoot sourceFolder;
-//	JpaProject jpaProject;
 	
 	public static synchronized JPACreateFactory instance() {
 		if (factory == null)

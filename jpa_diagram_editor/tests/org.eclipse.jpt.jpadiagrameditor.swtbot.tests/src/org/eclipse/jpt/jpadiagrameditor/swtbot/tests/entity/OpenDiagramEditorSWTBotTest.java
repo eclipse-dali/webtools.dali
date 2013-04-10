@@ -29,7 +29,7 @@ public class OpenDiagramEditorSWTBotTest extends AbstractSwtBotEditorTest{
 		workbenchBot.closeAllEditors();
 		// open JPA diagram editor on project level: JPA Tools -> Open Diagram
 		SWTBotGefEditor diagramEditor = editorProxy
-				.openDiagramOnJPAProjectNode(jpaProject.getName(), true);
+				.openDiagramOnJPAProjectNode(jpaProject.getName());
 		diagramEditor.close();
 
 		Utils.sayTestFinished("testOpenDiagramOnProjectLevel");

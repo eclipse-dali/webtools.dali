@@ -23,7 +23,6 @@ import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.editor.EditorTest;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.feature.AddAttributeFeatureTest;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.feature.AddJPAEntityFeatureTest;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.feature.AddRelationFeatureTest;
-import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.feature.ClickAddFeatureTest;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.feature.DeleteRelationFeatureTest;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.feature.DirectEditAttributeFeatureTest;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.feature.LayoutEntityFeatureTest;
@@ -55,7 +54,7 @@ import org.junit.runners.Suite.SuiteClasses;
 				JPAEditorPreferenceInitializerTest.class,
 	 			JPAEditorPreferencesPageTest.class,
 	 			AddJPAEntityFeatureTest.class,
-				ClickAddFeatureTest.class,
+//				ClickAddFeatureTest.class,
 //				CreateDeleteEntity.class,
 				DirectEditAttributeFeatureTest.class,
 				EditorTest.class,	

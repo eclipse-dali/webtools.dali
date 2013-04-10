@@ -24,9 +24,6 @@ import static org.junit.Assert.assertTrue;
 import org.easymock.EasyMock;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspaceRunnable;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.graphiti.dt.IDiagramTypeProvider;
@@ -213,14 +210,13 @@ public class ModelIntegrationTest {
 	
 	private void deleteAllProjects() throws Exception {
 		IProgressMonitor monitor= new NullProgressMonitor();
-		ResourcesPlugin.getWorkspace().run(new IWorkspaceRunnable() {
-			public void run(IProgressMonitor monitor) throws CoreException {
+//		ResourcesPlugin.getWorkspace().run(new IWorkspaceRunnable() {
+//			public void run(IProgressMonitor monitor) throws CoreException {
 				IProject project = jpaProject.getProject();
 			    project.close(monitor);	    	
-			    project.close(monitor);
 			    project.delete(true, true, monitor);				
-			}
-		} , monitor);
+//			}
+//		} , monitor);
 	}	
 	
 }

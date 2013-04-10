@@ -22,6 +22,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
 
+@SuppressWarnings("restriction")
 public class RelationshipsUtils {
 	
 	private SWTBotGefEditor jpaDiagramEditor;
@@ -1310,7 +1311,7 @@ public class RelationshipsUtils {
 			assertNotNull(ormXml.getPersistentType(dependentEntityName));
 		}
 
-		PersistentType depJPTType= editorProxy.getJPTObjectForGefElement(dependentEntity);
+		editorProxy.getJPTObjectForGefElement(dependentEntity);
 		JavaPersistentType idClass = editorProxy.setIdClass(dependentEntity, embeddableJPT.getSimpleName(), jpaProject, false);
 		
 		editorProxy.deleteEntityDefaultPK(dependentEntity, isOrmXml);
