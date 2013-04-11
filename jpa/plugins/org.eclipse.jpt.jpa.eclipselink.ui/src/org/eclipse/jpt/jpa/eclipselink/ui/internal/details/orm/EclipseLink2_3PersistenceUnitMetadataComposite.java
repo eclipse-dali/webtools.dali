@@ -15,9 +15,11 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
+import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
@@ -30,7 +32,6 @@ import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.TenantDiscriminatorCo
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.details.orm.JptJpaUiDetailsOrmMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.JpaVersionIsCompatibleWith;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.SchemaCombo;
@@ -158,7 +159,7 @@ public class EclipseLink2_3PersistenceUnitMetadataComposite extends PersistenceU
 	}
 
 	private Transformer<OrmPersistenceUnitMetadata, Boolean> buildPUMetadataIsCompatibleWithJpa2_0Transformer() {
-		return new JpaVersionIsCompatibleWith<OrmPersistenceUnitMetadata>(JpaProject2_0.FACET_VERSION_STRING);
+		return TransformerTools.adapt(new JpaModel.JpaVersionIsCompatibleWith(JpaProject2_0.FACET_VERSION_STRING));
 	}
 
 	private PropertyValueModel<Boolean> buildPaneEnablerHolder() {

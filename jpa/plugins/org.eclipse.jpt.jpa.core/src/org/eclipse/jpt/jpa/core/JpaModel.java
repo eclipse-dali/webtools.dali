@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.model.Model;
 
 /**
@@ -65,4 +66,23 @@ public interface JpaModel
 	 * Return the model's resource, typically used for validation messages.
 	 */
 	IResource getResource();
+
+	/**
+	 * A predicate that returns whether a JPA model's JPA version compatible
+	 * with the configured version.
+	 * @see JpaPlatform.Version#isCompatibleWithJpaVersion(String)
+	 */
+	class JpaVersionIsCompatibleWith
+		extends CriterionPredicate<JpaModel, String>
+	{
+		public JpaVersionIsCompatibleWith(String version) {
+			super(version);
+			if (version == null) {
+				throw new NullPointerException();
+			}
+		}
+		public boolean evaluate(JpaModel jpaModel) {
+			return jpaModel.getJpaProject().getJpaPlatform().getJpaVersion().isCompatibleWithJpaVersion(this.criterion);
+		}
+	}
 }
