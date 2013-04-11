@@ -12,6 +12,7 @@ package org.eclipse.jpt.common.ui.internal.swt.bind;
 import java.util.Arrays;
 import org.eclipse.jpt.common.utility.internal.BitTools;
 import org.eclipse.jpt.common.utility.internal.model.value.ModifiablePropertyCollectionValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.NullPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
@@ -21,12 +22,24 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Caret;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Item;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
+import org.eclipse.ui.forms.widgets.Form;
+import org.eclipse.ui.forms.widgets.Hyperlink;
+import org.eclipse.ui.forms.widgets.ImageHyperlink;
+import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.PageBook;
 
@@ -35,6 +48,240 @@ import org.eclipse.ui.part.PageBook;
  */
 @SuppressWarnings("nls")
 public final class SWTBindTools {
+
+	// ********** "label" **********
+
+	/**
+	 * Bind the specified button's label to the specified image model.
+	 */
+	public static void bindImageLabel(PropertyValueModel<Image> imageModel, Button button) {
+		bindImage(imageModel, new ButtonLabelAdapter(button));
+	}
+
+	/**
+	 * Bind the specified button's label to the specified text model.
+	 */
+	public static void bindTextLabel(PropertyValueModel<String> textModel, Button button) {
+		bindText(textModel, new ButtonLabelAdapter(button));
+	}
+
+	/**
+	 * Bind the specified button's label to the specified image and
+	 * text models.
+	 */
+	public static void bindLabel(PropertyValueModel<Image> imageModel, PropertyValueModel<String> textModel, Button button) {
+		bind(imageModel, textModel, new ButtonLabelAdapter(button));
+	}
+
+	/**
+	 * Bind the specified "custom" label to the specified image model.
+	 */
+	public static void bindImageLabel(PropertyValueModel<Image> imageModel, CLabel label) {
+		bindImage(imageModel, new CLabelLabelAdapter(label));
+	}
+
+	/**
+	 * Bind the specified "custom" label to the specified text model.
+	 */
+	public static void bindTextLabel(PropertyValueModel<String> textModel, CLabel label) {
+		bindText(textModel, new CLabelLabelAdapter(label));
+	}
+
+	/**
+	 * Bind the specified "custom" label to the specified image and
+	 * text models.
+	 */
+	public static void bindLabel(PropertyValueModel<Image> imageModel, PropertyValueModel<String> textModel, CLabel label) {
+		bind(imageModel, textModel, new CLabelLabelAdapter(label));
+	}
+
+	/**
+	 * Bind the specified form's label to the specified image model.
+	 */
+	public static void bindImageLabel(PropertyValueModel<Image> imageModel, Form form) {
+		bindImage(imageModel, new FormLabelAdapter(form));
+	}
+
+	/**
+	 * Bind the specified form's label to the specified text model.
+	 */
+	public static void bindTextLabel(PropertyValueModel<String> textModel, Form form) {
+		bindText(textModel, new FormLabelAdapter(form));
+	}
+
+	/**
+	 * Bind the specified form's label to the specified image and
+	 * text models.
+	 */
+	public static void bindLabel(PropertyValueModel<Image> imageModel, PropertyValueModel<String> textModel, Form form) {
+		bind(imageModel, textModel, new FormLabelAdapter(form));
+	}
+
+	/**
+	 * Bind the specified hyperlink's label to the specified image model.
+	 */
+	public static void bindImageLabel(PropertyValueModel<Image> imageModel, ImageHyperlink hyperlink) {
+		bindImage(imageModel, new ImageHyperlinkLabelAdapter(hyperlink));
+	}
+
+	/**
+	 * Bind the specified hyperlink's label to the specified text model.
+	 */
+	public static void bindTextLabel(PropertyValueModel<String> textModel, ImageHyperlink hyperlink) {
+		bindText(textModel, new ImageHyperlinkLabelAdapter(hyperlink));
+	}
+
+	/**
+	 * Bind the specified hyperlink's label to the specified image and
+	 * text models.
+	 */
+	public static void bindLabel(PropertyValueModel<Image> imageModel, PropertyValueModel<String> textModel, ImageHyperlink hyperlink) {
+		bind(imageModel, textModel, new ImageHyperlinkLabelAdapter(hyperlink));
+	}
+
+	/**
+	 * Bind the specified label to the specified image model.
+	 */
+	public static void bindImageLabel(PropertyValueModel<Image> imageModel, Label label) {
+		bindImage(imageModel, new LabelLabelAdapter(label));
+	}
+
+	/**
+	 * Bind the specified label to the specified text model.
+	 */
+	public static void bindTextLabel(PropertyValueModel<String> textModel, Label label) {
+		bindText(textModel, new LabelLabelAdapter(label));
+	}
+
+	/**
+	 * Bind the specified label to the specified image and
+	 * text models.
+	 */
+	public static void bindLabel(PropertyValueModel<Image> imageModel, PropertyValueModel<String> textModel, Label label) {
+		bind(imageModel, textModel, new LabelLabelAdapter(label));
+	}
+
+	/**
+	 * Bind the specified form's label to the specified image model.
+	 */
+	public static void bindImageLabel(PropertyValueModel<Image> imageModel, ScrolledForm form) {
+		bindImage(imageModel, new ScrolledFormLabelAdapter(form));
+	}
+
+	/**
+	 * Bind the specified form's label to the specified text models.
+	 */
+	public static void bindTextLabel(PropertyValueModel<String> textModel, ScrolledForm form) {
+		bindText(textModel, new ScrolledFormLabelAdapter(form));
+	}
+
+	/**
+	 * Bind the specified form's label to the specified image and
+	 * text models.
+	 */
+	public static void bindLabel(PropertyValueModel<Image> imageModel, PropertyValueModel<String> textModel, ScrolledForm form) {
+		bind(imageModel, textModel, new ScrolledFormLabelAdapter(form));
+	}
+
+	/**
+	 * Bind the specified item's label to the specified image model.
+	 */
+	public static void bindImageLabel(PropertyValueModel<Image> imageModel, Item item) {
+		bindImage(imageModel, new ItemLabelAdapter(item));
+	}
+
+	/**
+	 * Bind the specified item's label to the specified text model.
+	 */
+	public static void bindTextLabel(PropertyValueModel<String> textModel, Item item) {
+		bindText(textModel, new ItemLabelAdapter(item));
+	}
+
+	/**
+	 * Bind the specified item's label to the specified image and
+	 * text models.
+	 */
+	public static void bindLabel(PropertyValueModel<Image> imageModel, PropertyValueModel<String> textModel, Item item) {
+		bind(imageModel, textModel, new ItemLabelAdapter(item));
+	}
+
+	/**
+	 * Bind the specified window's label to the specified image model.
+	 */
+	public static void bindImageLabel(PropertyValueModel<Image> imageModel, Shell window) {
+		bindImage(imageModel, new ShellLabelAdapter(window));
+	}
+
+	/**
+	 * Bind the specified window's label to the specified text model.
+	 */
+	public static void bindLabel(PropertyValueModel<String> textModel, Shell window) {
+		bindText(textModel, new ShellLabelAdapter(window));
+	}
+
+	/**
+	 * Bind the specified window's label to the specified image and
+	 * text models.
+	 */
+	public static void bindLabel(PropertyValueModel<Image> imageModel, PropertyValueModel<String> textModel, Shell window) {
+		bind(imageModel, textModel, new ShellLabelAdapter(window));
+	}
+
+	/**
+	 * Bind the specified caret to the specified image model.
+	 */
+	public static void bindLabel(PropertyValueModel<Image> imageModel, Caret caret) {
+		bindImage(imageModel, new CaretLabelAdapter(caret));
+	}
+
+	/**
+	 * Bind the specified group's text to the specified text model.
+	 */
+	public static void bindLabel(PropertyValueModel<String> textModel, Group group) {
+		bindText(textModel, new GroupLabelAdapter(group));
+	}
+
+	/**
+	 * Bind the specified hyperlink's text to the specified text model.
+	 */
+	public static void bindLabel(PropertyValueModel<String> textModel, Hyperlink hyperlink) {
+		bindText(textModel, new HyperlinkLabelAdapter(hyperlink));
+	}
+
+	/**
+	 * Bind the specified link's text to the specified text model.
+	 */
+	public static void bindLabel(PropertyValueModel<String> textModel, Link link) {
+		bindText(textModel, new LinkLabelAdapter(link));
+	}
+
+	/**
+	 * Bind the specified label adapter's widget's label to the specified
+	 * image model.
+	 */
+	@SuppressWarnings("unused")
+	public static void bindImage(PropertyValueModel<Image> imageModel, WidgetLabelAdapter labelAdapter) {
+		new LabelModelBinding(imageModel, new NullPropertyValueModel<String>(), labelAdapter);
+	}
+
+	/**
+	 * Bind the specified label adapter's widget's label to the specified
+	 * text model.
+	 */
+	@SuppressWarnings("unused")
+	public static void bindText(PropertyValueModel<String> textModel, WidgetLabelAdapter labelAdapter) {
+		new LabelModelBinding(new NullPropertyValueModel<Image>(), textModel, labelAdapter);
+	}
+
+	/**
+	 * Bind the specified label adapter's widget's label to the specified
+	 * image and text models.
+	 */
+	@SuppressWarnings("unused")
+	public static void bind(PropertyValueModel<Image> imageModel, PropertyValueModel<String> textModel, WidgetLabelAdapter labelAdapter) {
+		new LabelModelBinding(imageModel, textModel, labelAdapter);
+	}
+
 
 	// ********** check-box/radio button/toggle button **********
 

@@ -21,9 +21,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ControlSwitcherTest.class,
 	ControlEnablerTest.class,
 	ControlVisibilityEnablerTest.class,
-	LabeledButtonTest.class,
-	LabeledLabelTest.class,
-	LabeledControlUpdaterTest.class,
+	LabelModelBindingTest.class,
 	SectionExpanderTest.class,
 })
 @RunWith(Suite.class)

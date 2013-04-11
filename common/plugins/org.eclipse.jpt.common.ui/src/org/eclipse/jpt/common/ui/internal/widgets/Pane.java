@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,8 +27,6 @@ import org.eclipse.jpt.common.ui.internal.swt.SpinnerModelAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.TriStateCheckBoxModelAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
 import org.eclipse.jpt.common.ui.internal.swt.events.DisposeAdapter;
-import org.eclipse.jpt.common.ui.internal.util.LabeledButton;
-import org.eclipse.jpt.common.ui.internal.util.LabeledControlUpdater;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeBooleanPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
@@ -1292,19 +1290,19 @@ public abstract class Pane<T extends Model> {
 	 * Creates a new <code>Text</code> widget that has multiple lines.
 	 *
 	 * @param container The parent container
-	 * @param textHolder The holder of the text field's input
+	 * @param textModel The holder of the text field's input
 	 * @param helpId The topic help ID to be registered for the new text
 	 * @return The newly created <code>Text</code> widget
 	 *
 	 * @category Layout
 	 */
 	protected final Text addMultiLineText(Composite container,
-	                                        ModifiablePropertyValueModel<String> textHolder,
+	                                        ModifiablePropertyValueModel<String> textModel,
 	                                        int lineCount,
 	                                        String helpId) {
 
 		Text text = this.addMultiLineText(container, lineCount, helpId);
-		SWTBindTools.bind(textHolder, text);
+		SWTBindTools.bind(textModel, text);
 		return text;
 	}
 
@@ -1373,16 +1371,16 @@ public abstract class Pane<T extends Model> {
 	 * Creates a new <code>Text</code> widget.
 	 *
 	 * @param container The parent container
-	 * @param textHolder The holder of the text field's input
+	 * @param textModel The holder of the text field's input
 	 * @return The newly created <code>Text</code> widget
 	 *
 	 * @category Layout
 	 */
 	protected final Text addPasswordText(Composite container,
-	                                       ModifiablePropertyValueModel<String> textHolder) {
+	                                       ModifiablePropertyValueModel<String> textModel) {
 
 		Text text = this.addPasswordText(container);
-		SWTBindTools.bind(textHolder, text);
+		SWTBindTools.bind(textModel, text);
 
 		return text;
 	}
@@ -1840,18 +1838,18 @@ public abstract class Pane<T extends Model> {
 	 * Creates a new <code>Text</code> widget.
 	 *
 	 * @param container The parent container
-	 * @param textHolder The holder of the text field's input
+	 * @param textModel The holder of the text field's input
 	 * @param helpId The topic help ID to be registered for the new text
 	 * @return The newly created <code>Text</code> widget
 	 *
 	 * @category Layout
 	 */
 	protected final Text addText(Composite container,
-	                               ModifiablePropertyValueModel<String> textHolder,
+	                               ModifiablePropertyValueModel<String> textModel,
 	                               String helpId) {
 
 		Text text = this.addText(container, helpId);
-		SWTBindTools.bind(textHolder, text);
+		SWTBindTools.bind(textModel, text);
 
 		return text;
 	}
@@ -1873,18 +1871,18 @@ public abstract class Pane<T extends Model> {
 	 * The owning object will handle it with its own PaneEnabler or ControlEnabler.
 	 *
 	 * @param container The parent container
-	 * @param textHolder The holder of the text field's input
+	 * @param textModel The holder of the text field's input
 	 * @param helpId The topic help ID to be registered for the new text
 	 * @return The newly created <code>Text</code> widget
 	 *
 	 * @category Layout
 	 */
 	private Text addUnmanagedText(Composite container,
-	                               ModifiablePropertyValueModel<String> textHolder,
+	                               ModifiablePropertyValueModel<String> textModel,
 	                               String helpId) {
 
 		Text text = this.addUnmanagedText(container, helpId);
-		SWTBindTools.bind(textHolder, text);
+		SWTBindTools.bind(textModel, text);
 
 		return text;
 	}
@@ -1963,7 +1961,7 @@ public abstract class Pane<T extends Model> {
 	 *
 	 * @param parent The parent container
 	 * @param buttonText The button's text
-	 * @param booleanHolder The holder of the selection state
+	 * @param booleanModel The holder of the selection state
 	 * @param helpId The topic help ID to be registered for the new button
 	 * @return The newly created <code>Button</code>
 	 *
@@ -1972,7 +1970,7 @@ public abstract class Pane<T extends Model> {
 	private Button addUnmanagedToggleButton(
 			Composite parent,
 	        String buttonText,
-	        ModifiablePropertyValueModel<Boolean> booleanHolder,
+	        ModifiablePropertyValueModel<Boolean> booleanModel,
 	        String helpId,
 	        int toggleButtonType) {
 
@@ -1992,7 +1990,7 @@ public abstract class Pane<T extends Model> {
 		}
 
 		button.setLayoutData(new GridData());
-		SWTBindTools.bind(booleanHolder, button);
+		SWTBindTools.bind(booleanModel, button);
 
 		if (helpId != null) {
 			this.setHelp(button, helpId);
@@ -2086,7 +2084,7 @@ public abstract class Pane<T extends Model> {
 	 * @param text The button's text
 	 * @param booleanHolder The holder of the boolean value where <code>null</code>
 	 * means partially selected
-	 * @param stringHolder The holder of the string to put in parenthesis after
+	 * @param textModel The holder of the string to put in parenthesis after
 	 * the check box's text when it is partially selected
 	 * @param helpId The topic help ID to be registered for the new check box
 	 * @return The newly created <code>TriStateCheckBox</code>
@@ -2096,7 +2094,7 @@ public abstract class Pane<T extends Model> {
 	protected final TriStateCheckBox addTriStateCheckBoxWithDefault(Composite parent,
 	                                                                  String text,
 	                                                                  ModifiablePropertyValueModel<Boolean> booleanHolder,
-	                                                                  PropertyValueModel<String> stringHolder,
+	                                                                  PropertyValueModel<String> textModel,
 	                                                                  String helpId) {
 
 		TriStateCheckBox checkBox = this.addTriStateCheckBox(
@@ -2106,10 +2104,7 @@ public abstract class Pane<T extends Model> {
 			helpId
 		);
 
-		new LabeledControlUpdater(
-			new LabeledButton(checkBox.getCheckBox()),
-			stringHolder
-		);
+		SWTBindTools.bindTextLabel(textModel, checkBox.getCheckBox());
 
 		return checkBox;
 	}
@@ -2117,7 +2112,7 @@ public abstract class Pane<T extends Model> {
 	protected final TriStateCheckBox addTriStateCheckBoxWithDefault(Composite parent,
 			        String text,
 			        ModifiablePropertyValueModel<Boolean> booleanHolder,
-			        PropertyValueModel<String> stringHolder,
+			        PropertyValueModel<String> textModel,
 			        PropertyValueModel<Boolean> enabledModel,
 			        String helpId) {
 			
@@ -2125,10 +2120,7 @@ public abstract class Pane<T extends Model> {
 		
 		this.controlEnabledState(enabledModel, checkBox.getCheckBox());
 		
-		new LabeledControlUpdater(
-			new LabeledButton(checkBox.getCheckBox()),
-			stringHolder
-		);
+		SWTBindTools.bindTextLabel(textModel, checkBox.getCheckBox());
 		
 		return checkBox;
 	}
