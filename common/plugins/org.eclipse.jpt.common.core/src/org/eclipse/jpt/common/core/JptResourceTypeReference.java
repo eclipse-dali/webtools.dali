@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core;
 
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -39,6 +40,25 @@ public interface JptResourceTypeReference {
 		@Override
 		public JptResourceType transform(JptResourceTypeReference ref) {
 			return ref.getResourceType();
+		}
+	}
+
+	/**
+	 * A predicate that returns whether a reference's resource type is a
+	 * "kind of" the configured resource type.
+	 * @see JptResourceType#isKindOf(JptResourceType)
+	 */
+	class ResourceTypeIsKindOf
+		extends CriterionPredicate<JptResourceTypeReference, JptResourceType>
+	{
+		public ResourceTypeIsKindOf(JptResourceType resourceType) {
+			super(resourceType);
+			if (resourceType == null) {
+				throw new NullPointerException();
+			}
+		}
+		public boolean evaluate(JptResourceTypeReference ref) {
+			return ref.getResourceType().isKindOf(this.criterion);
 		}
 	}
 }

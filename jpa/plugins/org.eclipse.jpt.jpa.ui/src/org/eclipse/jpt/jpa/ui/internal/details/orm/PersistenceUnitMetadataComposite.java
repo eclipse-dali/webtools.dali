@@ -11,11 +11,13 @@ package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
 import java.util.Arrays;
 import java.util.Collection;
+import org.eclipse.jpt.common.core.JptResourceTypeReference;
 import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -28,7 +30,6 @@ import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.details.orm.JptJpaUiDetailsOrmMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.ResourceTypeIsKindOf;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.SchemaCombo;
@@ -315,6 +316,6 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 	}
 
 	protected Transformer<OrmPersistenceUnitMetadata, Boolean> buildResourceTypeIsKindOfOrmXml2_0Transformer() {
-		return new ResourceTypeIsKindOf<OrmPersistenceUnitMetadata>(GenericOrmXmlDefinition2_0.instance().getResourceType());
+		return TransformerTools.adapt(new JptResourceTypeReference.ResourceTypeIsKindOf(GenericOrmXmlDefinition2_0.instance().getResourceType()));
 	}
 }

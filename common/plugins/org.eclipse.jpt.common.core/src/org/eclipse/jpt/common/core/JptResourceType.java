@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.core;
 
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -90,6 +91,19 @@ public interface JptResourceType
 	 * <ul>
 	 */
 	boolean isKindOf(JptResourceType resourceType);
+	class IsKindOf
+		extends CriterionPredicate<JptResourceType, JptResourceType>
+	{
+		public IsKindOf(JptResourceType resourceType) {
+			super(resourceType);
+			if (resourceType == null) {
+				throw new NullPointerException();
+			}
+		}
+		public boolean evaluate(JptResourceType resourceType) {
+			return resourceType.isKindOf(this.criterion);
+		}
+	}
 
 	/**
 	 * Return the ID of the plug-in that contributed the resource type.
