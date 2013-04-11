@@ -147,13 +147,22 @@ public class EditorProxy {
 	}
 
 	public SWTBotGefEditor openDiagramOnJPAProjectNode(String name) {
+		JPACreateFactory.waitBuildAndRerfreshJobs();
+		try {
+			JPACreateFactory.waitNonSystemJobs();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
 		SWTBotTree projectTree = workbenchBot.viewByTitle("Project Explorer")
 				.bot().tree();
 		projectTree.getTreeItem(name).select();
 		ContextMenuHelper.clickContextMenu(projectTree, "JPA Tools",
 				"Open Diagram");
 
+		waitASecond();
 		SWTBotGefEditor jpaDiagramEditor = bot.gefEditor(name);
+		assertNotNull(jpaDiagramEditor);
 		assertFalse("Editor must not be dirty!", jpaDiagramEditor.isDirty());
 		return jpaDiagramEditor;
 	}

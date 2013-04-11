@@ -8,6 +8,7 @@ import java.util.Iterator;
 import junit.framework.ComparisonFailure;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -59,38 +60,12 @@ public class AbstractSwtBotEditorTest extends SWTBotGefTestCase{
 	}
 	
 	private static void createJPa20Project(String name, String version, boolean withOrmXml) throws Exception{
-		SWTBotPreferences.TIMEOUT = 1000;
-		try {
-			bot.viewByTitle("Welcome").close();
-		} catch (Exception e) {
-			// ignore
-		} finally {
-			SWTBotPreferences.TIMEOUT = 5000;
-		}
-		workbenchBot.perspectiveByLabel("JPA").activate();
-		bot.closeAllEditors();
+		closeWelcomeScreen();
 
-		factory = JPACreateFactory.instance();
-		if(version.equals("1.0")){
-			jpaProject = factory.createJPAProject(name);
-		} else {
-			jpaProject = factory.createJPA20Project(name);
-		}
-		assertNotNull(jpaProject);
-		assertEquals(name, jpaProject.getName());
-		editorProxy = new EditorProxy(workbenchBot, bot);
+		createProject(name, version);
 
 		if(withOrmXml) {
-			JPACreateFactory.waitNonSystemJobs();
-			jpaDiagramEditorPropertiesPage(jpaProject.getName());
-			
-			JPACreateFactory.waitNonSystemJobs();
-
-			jpaProject.getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
-			//assert that the orm.xml file exists.
-			ormXml = getOrmXMl(jpaProject);
-			assertNotNull(ormXml);
-			editorProxy.setOrmXml(ormXml);
+			setOrmXml();
 		}
 
 		jpaDiagramEditor = editorProxy.openDiagramOnJPAProjectNode(
@@ -104,6 +79,45 @@ public class AbstractSwtBotEditorTest extends SWTBotGefTestCase{
 		}
 		
 		Thread.sleep(2000);
+	}
+
+	private static void setOrmXml() throws InterruptedException, CoreException {
+		JPACreateFactory.waitNonSystemJobs();
+		jpaDiagramEditorPropertiesPage(jpaProject.getName());
+		
+		JPACreateFactory.waitNonSystemJobs();
+
+		jpaProject.getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+		//assert that the orm.xml file exists.
+		ormXml = getOrmXMl(jpaProject);
+		assertNotNull(ormXml);
+		editorProxy.setOrmXml(ormXml);
+	}
+
+	private static void createProject(String name, String version)
+			throws CoreException {
+		factory = JPACreateFactory.instance();
+		if(version.equals("1.0")){
+			jpaProject = factory.createJPAProject(name);
+		} else {
+			jpaProject = factory.createJPA20Project(name);
+		}
+		assertNotNull(jpaProject);
+		assertEquals(name, jpaProject.getName());
+		editorProxy = new EditorProxy(workbenchBot, bot);
+	}
+
+	private static void closeWelcomeScreen() {
+		SWTBotPreferences.TIMEOUT = 1000;
+		try {
+			bot.viewByTitle("Welcome").close();
+		} catch (Exception e) {
+			// ignore
+		} finally {
+			SWTBotPreferences.TIMEOUT = 5000;
+		}
+		workbenchBot.perspectiveByLabel("JPA").activate();
+		bot.closeAllEditors();
 	}
 	
 	private static void jpaDiagramEditorPropertiesPage(String name) {
@@ -218,21 +232,15 @@ public class AbstractSwtBotEditorTest extends SWTBotGefTestCase{
 		editorProxy.deleteResources(jpaProject, ormXml!=null);
 	}
 
-	private static OrmXml getOrmXMl(JpaProject jpaProject){
-		jpaProject.getContextModelRoot().synchronizeWithResourceModel();
-		
+	private static OrmXml getOrmXMl(JpaProject jpaProject){		
 		try {
 			JPACreateFactory.waitNonSystemJobs();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		PersistenceUnit unit = JpaArtifactFactory.instance().getPersistenceUnit(jpaProject);
 		assertNotNull(unit);
-		unit.synchronizeWithResourceModel();
-		unit.update();
-		
 		
 		assertTrue(unit.getMappingFileRefsSize() > 0);
 		if(unit.getMappingFileRefsSize() == 0)
