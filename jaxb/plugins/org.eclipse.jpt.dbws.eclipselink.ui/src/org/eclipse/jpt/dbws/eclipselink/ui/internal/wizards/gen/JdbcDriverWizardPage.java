@@ -26,7 +26,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.common.ui.internal.swt.widgets.TableTools;
-import org.eclipse.jpt.common.ui.internal.util.TableLayoutComposite;
+import org.eclipse.jpt.common.ui.internal.widgets.TableLayoutComposite;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.dbws.eclipselink.ui.JptDbwsEclipseLinkUiImages;

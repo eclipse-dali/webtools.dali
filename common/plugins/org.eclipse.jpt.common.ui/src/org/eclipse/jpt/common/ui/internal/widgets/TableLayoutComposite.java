@@ -1,3 +1,4 @@
+// copied from org.eclipse.jdt.internal.ui.util.tablelayoutcomposite
 /*******************************************************************************
  * Copyright (c) 2000, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
@@ -8,8 +9,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-// copied from org.eclipse.jdt.internal.ui.util.TableLayoutComposite
-package org.eclipse.jpt.common.ui.internal.util;
+package org.eclipse.jpt.common.ui.internal.widgets;
 
 import java.util.ArrayList;
 import java.util.List;

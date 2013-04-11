@@ -46,7 +46,7 @@ import org.eclipse.jpt.common.ui.JptCommonUiImages;
 import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.common.ui.internal.swt.widgets.TableTools;
-import org.eclipse.jpt.common.ui.internal.util.TableLayoutComposite;
+import org.eclipse.jpt.common.ui.internal.widgets.TableLayoutComposite;
 import org.eclipse.jpt.common.utility.internal.StringMatcher;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jpa.core.JpaProject;

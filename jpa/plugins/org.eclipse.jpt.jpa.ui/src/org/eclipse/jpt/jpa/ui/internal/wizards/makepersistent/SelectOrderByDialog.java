@@ -34,7 +34,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.common.ui.JptCommonUiImages;
 import org.eclipse.jpt.common.ui.internal.swt.widgets.TableTools;
-import org.eclipse.jpt.common.ui.internal.util.TableLayoutComposite;
+import org.eclipse.jpt.common.ui.internal.widgets.TableLayoutComposite;
 import org.eclipse.jpt.jpa.annotate.mapping.EntityRefPropertyElem;
 import org.eclipse.jpt.jpa.annotate.util.AnnotateMappingUtil;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;

@@ -50,7 +50,7 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.ui.internal.swt.widgets.TableTools;
-import org.eclipse.jpt.common.ui.internal.util.TableLayoutComposite;
+import org.eclipse.jpt.common.ui.internal.widgets.TableLayoutComposite;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jaxb.core.JaxbPreferences;

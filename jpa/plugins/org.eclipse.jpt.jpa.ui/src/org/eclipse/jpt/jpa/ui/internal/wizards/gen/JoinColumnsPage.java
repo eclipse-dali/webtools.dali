@@ -34,7 +34,7 @@ import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.ui.internal.swt.widgets.TableTools;
-import org.eclipse.jpt.common.ui.internal.util.TableLayoutComposite;
+import org.eclipse.jpt.common.ui.internal.widgets.TableLayoutComposite;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.Table;
