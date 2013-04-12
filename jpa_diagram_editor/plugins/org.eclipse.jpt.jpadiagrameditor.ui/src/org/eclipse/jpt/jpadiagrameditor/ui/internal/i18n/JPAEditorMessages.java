@@ -232,8 +232,6 @@ public class JPAEditorMessages extends NLS {
 
 	public static String OpenJpaDiagramActionDelegate_openJPADiagramErrorMsgTitle;
 	public static String OpenJpaDiagramActionDelegate_openJPADiagramErrorMsg;
-	public static String OpenJpaDiagramActionDelegate_jpaSupportWarningTitle;
-	public static String OpenJpaDiagramActionDelegate_jpaSupportWarningMsg;
 	public static String OpenJpaDiagramActionDelegate_noPersistenceUnitTitle;
 	public static String OpenJpaDiagramActionDelegate_noPersistenceUnitMsg; 
 

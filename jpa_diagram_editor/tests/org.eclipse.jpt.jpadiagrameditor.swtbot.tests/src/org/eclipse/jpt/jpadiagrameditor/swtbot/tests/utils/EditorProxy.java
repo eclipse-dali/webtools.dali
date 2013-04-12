@@ -2324,11 +2324,7 @@ public class EditorProxy {
 	private String assertContainsHelperAttrInIdClass(
 			SWTBotGefEditPart inverse, JavaPersistentType idClass,
 			PersistentAttribute jpa, String IdClassFQN) throws JavaModelException {
-		
-//		IType idClassType = JavaCore.createCompilationUnitFrom(idClass).findPrimaryType();
-//		assertNotNull(idClassType);
-//		idClassType.getCompilationUnit().save(new NullProgressMonitor(), true);
-		
+
 		AttributeMapping attributeMapping = JpaArtifactFactory.instance().getAttributeMapping(jpa);
 		assertTrue(SingleRelationshipMapping2_0.class.isInstance(attributeMapping));
 		DerivedIdentity2_0 identity = ((SingleRelationshipMapping2_0)attributeMapping).getDerivedIdentity();
@@ -2337,7 +2333,6 @@ public class EditorProxy {
 		JavaSpecifiedPersistentAttribute helperAttr = idClass.getAttributeNamed(jpa.getName());
 		assertNotNull(helperAttr);		
 	
-//		helperAttr.getClassFile().isOpen().getTypeSignature();
 		String helperAttrType = helperAttr.getTypeName();
 			
 		if(IdClassFQN != null){

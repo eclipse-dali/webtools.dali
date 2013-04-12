@@ -18,6 +18,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.utils.ContextMenuHelper;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.utils.EditorProxy;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.utils.RelationshipsUtils;
+import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.utils.Utils;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.propertypage.JPADiagramPropertyPage;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
@@ -63,6 +64,8 @@ public class AbstractSwtBotEditorTest extends SWTBotGefTestCase{
 		closeWelcomeScreen();
 
 		createProject(name, version);
+		
+		editorProxy = new EditorProxy(workbenchBot, bot);
 
 		if(withOrmXml) {
 			setOrmXml();
@@ -70,6 +73,9 @@ public class AbstractSwtBotEditorTest extends SWTBotGefTestCase{
 
 		jpaDiagramEditor = editorProxy.openDiagramOnJPAProjectNode(
 				jpaProject.getName());
+	
+		Utils.printlnFormatted("------> JPA diagram editor is opened");
+		
 		editorProxy.setJpaDiagramEditor(jpaDiagramEditor);
 
 		relUtils = new RelationshipsUtils(jpaDiagramEditor, editorProxy, jpaProject);
@@ -78,7 +84,8 @@ public class AbstractSwtBotEditorTest extends SWTBotGefTestCase{
 			relUtils.setOrmXml(ormXml);
 		}
 		
-		Thread.sleep(2000);
+		Utils.printlnFormatted("======> Test are ready to start!");
+//		Thread.sleep(2000);
 	}
 
 	private static void setOrmXml() throws InterruptedException, CoreException {
@@ -104,7 +111,8 @@ public class AbstractSwtBotEditorTest extends SWTBotGefTestCase{
 		}
 		assertNotNull(jpaProject);
 		assertEquals(name, jpaProject.getName());
-		editorProxy = new EditorProxy(workbenchBot, bot);
+		
+		Utils.printlnFormatted("-----> JPA project is created!");
 	}
 
 	private static void closeWelcomeScreen() {
@@ -117,7 +125,9 @@ public class AbstractSwtBotEditorTest extends SWTBotGefTestCase{
 			SWTBotPreferences.TIMEOUT = 5000;
 		}
 		workbenchBot.perspectiveByLabel("JPA").activate();
+		Utils.printlnFormatted("-----> JPA perspective is activated successfully!");
 		bot.closeAllEditors();
+		Utils.printlnFormatted("-----> All editors are closed!");
 	}
 	
 	private static void jpaDiagramEditorPropertiesPage(String name) {
@@ -232,7 +242,9 @@ public class AbstractSwtBotEditorTest extends SWTBotGefTestCase{
 		editorProxy.deleteResources(jpaProject, ormXml!=null);
 	}
 
-	private static OrmXml getOrmXMl(JpaProject jpaProject){		
+	private static OrmXml getOrmXMl(JpaProject jpaProject){
+		jpaProject.getContextModelRoot().synchronizeWithResourceModel();
+		
 		try {
 			JPACreateFactory.waitNonSystemJobs();
 		} catch (InterruptedException e) {
@@ -241,6 +253,9 @@ public class AbstractSwtBotEditorTest extends SWTBotGefTestCase{
 
 		PersistenceUnit unit = JpaArtifactFactory.instance().getPersistenceUnit(jpaProject);
 		assertNotNull(unit);
+		unit.synchronizeWithResourceModel();
+		unit.update();
+		
 		
 		assertTrue(unit.getMappingFileRefsSize() > 0);
 		if(unit.getMappingFileRefsSize() == 0)
