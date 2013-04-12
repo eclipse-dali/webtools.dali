@@ -101,11 +101,8 @@ public class JPACreateFactory {
 		if (jpaConfig != null) {
 			jpaFacetVersion = jpaConfig.getStringProperty(IFacetDataModelProperties.FACET_VERSION_STR);
 		}
+		Utils.waitBuildAndRerfreshJobs();
 		
-//		installFacet(facetedProject, "jst.utility", "1.0");
-//		installFacet(facetedProject, "jpt.jpa", jpaFacetVersion, jpaConfig);
-		
-		addProjectFacet("jst.utility", "1.0");
 		addProjectFacet("jpt.jpa", jpaFacetVersion);
 		
 		addPersistenceJarIntoProject(javaProject);
