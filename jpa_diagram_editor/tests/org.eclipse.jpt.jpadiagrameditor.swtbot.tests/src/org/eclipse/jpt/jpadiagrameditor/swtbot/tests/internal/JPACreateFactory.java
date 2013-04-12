@@ -55,6 +55,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
+import org.eclipse.wst.common.project.facet.core.IFacetedProjectWorkingCopy;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 
@@ -100,8 +101,13 @@ public class JPACreateFactory {
 		if (jpaConfig != null) {
 			jpaFacetVersion = jpaConfig.getStringProperty(IFacetDataModelProperties.FACET_VERSION_STR);
 		}
-		installFacet(facetedProject, "jst.utility", "1.0");
-		installFacet(facetedProject, "jpt.jpa", jpaFacetVersion, jpaConfig);
+		
+//		installFacet(facetedProject, "jst.utility", "1.0");
+//		installFacet(facetedProject, "jpt.jpa", jpaFacetVersion, jpaConfig);
+		
+		addProjectFacet("jst.utility", "1.0");
+		addProjectFacet("jpt.jpa", jpaFacetVersion);
+		
 		addPersistenceJarIntoProject(javaProject);
 		int cnt = 0;
 		JpaProject jpaProject = null;
@@ -188,16 +194,31 @@ public class JPACreateFactory {
 	}
 	
 	private IFacetedProject createFacetedProject(IProject project) throws CoreException {
-		return ProjectFacetsManager.create(project, true, null);		// true = "convert if necessary"
+		Utils.printlnFormatted("------> Start convertion of the project to faceted project!");
+		IFacetedProject fp = ProjectFacetsManager.create(project, true, null);		// true = "convert if necessary"
+		Utils.printlnFormatted("------> End convertion of the project to faceted project!");
+		return fp;
 	}
 	
 	public IJavaProject createJavaProject(IProject project,  
 										  boolean autoBuild) throws CoreException {
 		facetedProject = createFacetedProject(project);
-		installFacet(facetedProject, "jst.java", "6.0");
+		addProjectFacet("jst.java", "6.0");
 		javaProject = JavaCore.create(project);
 		//sourceFolder = javaProject.getPackageFragmentRoot(project.getFolder("src"));
 		return javaProject;
+	}
+
+	private void addProjectFacet(String facetName, String facetVersion) throws CoreException {
+		Utils.printlnFormatted("----> Start instalation of " + facetName + "project facet version " + facetVersion);
+		IProjectFacetVersion javaFacet60 = ProjectFacetsManager.getProjectFacet
+				(facetName).getVersion(facetVersion);
+		IFacetedProjectWorkingCopy fcpwc = facetedProject.createWorkingCopy();
+		fcpwc.addProjectFacet(javaFacet60);
+		fcpwc.commitChanges(new NullProgressMonitor());
+		
+		Utils.printlnFormatted("----> End instalation of " + facetName + "project facet version " + facetVersion);
+
 	}
 	
 	public static String jpaJarName() {
