@@ -36,7 +36,6 @@ import org.junit.After;
 
 @SuppressWarnings("restriction")
 public class AbstractSwtBotEditorTest extends SWTBotGefTestCase{
-	protected static JPACreateFactory factory = JPACreateFactory.instance();
 	protected static JpaProject jpaProject;
 
 	protected static SWTGefBot bot = new SWTGefBot();
@@ -89,10 +88,10 @@ public class AbstractSwtBotEditorTest extends SWTBotGefTestCase{
 	}
 
 	private static void setOrmXml() throws InterruptedException, CoreException {
-		JPACreateFactory.waitNonSystemJobs();
+		Utils.waitNonSystemJobs();
 		jpaDiagramEditorPropertiesPage(jpaProject.getName());
 		
-		JPACreateFactory.waitNonSystemJobs();
+		Utils.waitNonSystemJobs();
 
 		jpaProject.getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 		//assert that the orm.xml file exists.
@@ -103,11 +102,12 @@ public class AbstractSwtBotEditorTest extends SWTBotGefTestCase{
 
 	private static void createProject(String name, String version)
 			throws CoreException {
-		factory = JPACreateFactory.instance();
+		Utils.printlnFormatted("-----> Start JPA project creation!");
+
 		if(version.equals("1.0")){
-			jpaProject = factory.createJPAProject(name);
+			jpaProject = JPACreateFactory.instance().createJPAProject(name);
 		} else {
-			jpaProject = factory.createJPA20Project(name);
+			jpaProject = JPACreateFactory.instance().createJPA20Project(name);
 		}
 		assertNotNull(jpaProject);
 		assertEquals(name, jpaProject.getName());
@@ -148,9 +148,8 @@ public class AbstractSwtBotEditorTest extends SWTBotGefTestCase{
 		propertiesPageBot.button("Apply").click();
 	
 		try {
-			JPACreateFactory.waitNonSystemJobs();
+			Utils.waitNonSystemJobs();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -246,7 +245,7 @@ public class AbstractSwtBotEditorTest extends SWTBotGefTestCase{
 		jpaProject.getContextModelRoot().synchronizeWithResourceModel();
 		
 		try {
-			JPACreateFactory.waitNonSystemJobs();
+			Utils.waitNonSystemJobs();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

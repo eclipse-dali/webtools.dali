@@ -9,6 +9,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.conditions.ElementAppearsInDiagram;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.conditions.ElementIsShown;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.AbstractSwtBotEditorTest;
+import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.JPACreateFactory;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.utils.Utils;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
@@ -635,7 +636,7 @@ public class EntitiesInDiagramSWTBotTest extends AbstractSwtBotEditorTest {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor
 				.mainEditPart().children().isEmpty());
 
-		factory.createEntity(jpaProject, "com.sap.test.Customer");
+		JPACreateFactory.instance().createEntity(jpaProject, "com.sap.test.Customer");
 		assertTrue(jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		jpaDiagramEditor

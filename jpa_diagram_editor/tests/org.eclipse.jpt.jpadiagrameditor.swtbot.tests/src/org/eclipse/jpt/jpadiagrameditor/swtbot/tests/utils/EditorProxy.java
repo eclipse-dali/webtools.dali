@@ -147,9 +147,9 @@ public class EditorProxy {
 	}
 
 	public SWTBotGefEditor openDiagramOnJPAProjectNode(String name) {
-		JPACreateFactory.waitBuildAndRerfreshJobs();
+		Utils.waitBuildAndRerfreshJobs();
 		try {
-			JPACreateFactory.waitNonSystemJobs();
+			Utils.waitNonSystemJobs();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -626,7 +626,7 @@ public class EditorProxy {
 	public void deleteDiagramElements(boolean isOrmXml) {
 		
 		try {
-			JPACreateFactory.waitNonSystemJobs(60000);
+			Utils.waitNonSystemJobs(60000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -664,7 +664,7 @@ public class EditorProxy {
 		jpaDiagramEditor.save();
 		
 		try {
-			JPACreateFactory.waitNonSystemJobs();
+			Utils.waitNonSystemJobs();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -693,7 +693,7 @@ public class EditorProxy {
 	public void deleteAttributeInJPT(SWTBotGefEditPart jpt, String attributeName) {
 		
 		try {
-			JPACreateFactory.waitNonSystemJobs(60000);
+			Utils.waitNonSystemJobs(60000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1670,7 +1670,7 @@ public class EditorProxy {
 	public void deleteJPTViaButton(SWTBotGefEditPart jptType, boolean must) {
 		
 		try {
-			JPACreateFactory.waitNonSystemJobs(60000);
+			Utils.waitNonSystemJobs(60000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1704,7 +1704,7 @@ public class EditorProxy {
 	public void deleteJPTViaMenu(SWTBotGefEditPart jptType) {
 		
 		try {
-			JPACreateFactory.waitNonSystemJobs(60000);
+			Utils.waitNonSystemJobs(60000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -2970,12 +2970,6 @@ public class EditorProxy {
 				embeddable, refType, embeddedMappingKey, linkLabel,
 				elementsInDiagramCount);
 
-//		try {
-//			JPACreateFactory.waitNonSystemJobs();
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 		deleteAttributeInJPT(embeddingEntity, attributeName);
 
 		waitASecond();
