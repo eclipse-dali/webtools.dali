@@ -153,7 +153,7 @@ class LabelModelBinding {
 		// so we can still remove our listener
 		this.getWidget().removeDisposeListener(this.widgetDisposeListener);
 		this.imageModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.imageListener);
-		this.textModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.imageListener);
+		this.textModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.textListener);
 	}
 
 
