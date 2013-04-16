@@ -357,7 +357,7 @@
 		
 		<handler
 			commandId="org.eclipse.jpt.jpa.eclipselink.ui.generateDynamicEntities"
-			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.commands.GenerateDynamicEntitiesHandler">
+			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.commands.EclipseLinkGenerateDynamicEntitiesHandler">
 			<activeWhen>
 				<with variable="selection">
 					<count value="1"/>

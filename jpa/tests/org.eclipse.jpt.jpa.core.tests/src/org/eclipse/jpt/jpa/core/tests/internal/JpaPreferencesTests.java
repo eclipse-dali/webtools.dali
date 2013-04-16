@@ -13,7 +13,6 @@ import org.eclipse.jpt.common.core.internal.utility.JptPlugin;
 import org.eclipse.jpt.common.core.tests.PreferencesTests;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
-import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -127,29 +126,30 @@ public class JpaPreferencesTests
 	private static final String JPQL_IDENTIFIER_MATCH_FIRST_CHARACTER_CASE = "jpqlIdentifier.MATCH_FIRST_CHARACTER_CASE";
 
 	public void testWorkspaceValidationPreferencesOverridden() throws Exception {
-		JptJpaCorePlugin.instance().setWorkspaceValidationPreferencesOverridden(this.getProject(), true);
+		JpaPreferences.setWorkspaceValidationOverridden(this.getProject(), true);
 		this.flushProjectPrefs();
-		assertTrue(JptJpaCorePlugin.instance().getWorkspaceValidationPreferencesOverridden(this.getProject()));
+		assertTrue(JpaPreferences.getWorkspaceValidationOverridden(this.getProject()));
 		assertTrue(Boolean.parseBoolean(this.readProjectPrefs().getProperty(WORKSPACE_PREFERENCES_OVERRIDDEN)));
 	}
 	// DO NOT CHANGE THIS CONSTANT - as it is testing backward-compatibility
-	private static final String WORKSPACE_PREFERENCES_OVERRIDDEN = "workspace_preferences_overriden";
+	// (unless you support migration of the preference)
+	private static final String WORKSPACE_PREFERENCES_OVERRIDDEN = "workspace_validation_preferences_overridden";
 
 	public void testProblemSeverity_Project() throws Exception {
-		JptJpaCorePlugin.instance().setValidationMessageSeverityPreference(this.getProject(), JptJpaCoreValidationMessages.NO_JPA_PROJECT.getID(), IMessage.LOW_SEVERITY);
+		JpaPreferences.setValidationMessageSeverity(this.getProject(), JptJpaCoreValidationMessages.NO_JPA_PROJECT.getID(), IMessage.LOW_SEVERITY);
 		this.flushProjectPrefs();
-		assertEquals(IMessage.LOW_SEVERITY, JptJpaCorePlugin.instance().getValidationMessageSeverityPreference(this.getProject(), JptJpaCoreValidationMessages.NO_JPA_PROJECT.getID()));
+		assertEquals(IMessage.LOW_SEVERITY, JpaPreferences.getValidationMessageSeverity(this.getProject(), JptJpaCoreValidationMessages.NO_JPA_PROJECT.getID()));
 		assertEquals(ClassTools.get(JptPlugin.class, "PROBLEM_INFO"), this.readProjectPrefs().getProperty(PROBLEM_NO_JPA_PROJECT));
 	}
 	// DO NOT CHANGE THIS CONSTANT - as it is testing backward-compatibility
 	private static final String PROBLEM_NO_JPA_PROJECT = "problem.NO_JPA_PROJECT";
 
 	public void testProblemSeverity_Workspace() throws Exception {
-		JptJpaCorePlugin.instance().setValidationMessageSeverityPreference(JptJpaCoreValidationMessages.NO_JPA_PROJECT.getID(), IMessage.NORMAL_SEVERITY);
+		JpaPreferences.setValidationMessageSeverity(JptJpaCoreValidationMessages.NO_JPA_PROJECT.getID(), IMessage.NORMAL_SEVERITY);
 		this.flushWorkspacePrefs();
 		// verify workspace pref affects project-level pref
-		assertEquals(IMessage.NORMAL_SEVERITY, JptJpaCorePlugin.instance().getValidationMessageSeverityPreference(this.getProject(), JptJpaCoreValidationMessages.NO_JPA_PROJECT.getID()));
-		assertEquals(IMessage.NORMAL_SEVERITY, JptJpaCorePlugin.instance().getValidationMessageSeverityPreference(JptJpaCoreValidationMessages.NO_JPA_PROJECT.getID()));
+		assertEquals(IMessage.NORMAL_SEVERITY, JpaPreferences.getValidationMessageSeverity(this.getProject(), JptJpaCoreValidationMessages.NO_JPA_PROJECT.getID()));
+		assertEquals(IMessage.NORMAL_SEVERITY, JpaPreferences.getValidationMessageSeverity(JptJpaCoreValidationMessages.NO_JPA_PROJECT.getID()));
 		assertEquals(ClassTools.get(JptPlugin.class, "PROBLEM_WARNING"), this.readWorkspacePrefs().getProperty(PROBLEM_NO_JPA_PROJECT));
 	}
 }
