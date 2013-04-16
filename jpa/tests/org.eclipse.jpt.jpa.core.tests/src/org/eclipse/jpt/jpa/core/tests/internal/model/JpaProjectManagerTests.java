@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,6 +18,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties;
 import org.eclipse.jpt.common.core.internal.utility.JptPlugin;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestFacetedProject;
@@ -29,8 +30,8 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
-import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProperties;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProvider;
+import org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProvider;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
@@ -120,12 +121,20 @@ public class JpaProjectManagerTests
 	
 	private IDataModel buildJpaConfigDataModel() {
 		IDataModel dataModel = DataModelFactory.createDataModel(new JpaFacetInstallDataModelProvider());
-		dataModel.setProperty(JpaFacetInstallDataModelProperties.CREATE_ORM_XML, Boolean.TRUE);
 		return dataModel;
+	}
+
+	private void createDefaultOrmXmlFile() throws Exception {
+		IDataModel config =
+			DataModelFactory.createDataModel(new OrmFileCreationDataModelProvider());
+		config.setProperty(JptFileCreationDataModelProperties.CONTAINER_PATH, 
+				this.getJpaProject().getProject().getFolder("src/META-INF").getFullPath());
+		config.getDefaultOperation().execute(null, null);
 	}
 
 	public void testProjectCloseReopen() throws Exception {
 		this.testProjectHarness.installFacet(JpaProject.FACET_ID, JpaProject.FACET_VERSION_STRING, buildJpaConfigDataModel());
+		this.createDefaultOrmXmlFile();
 		JpaProject jpaProject = this.getJpaProject();
 		assertNotNull(jpaProject);
 
@@ -148,6 +157,7 @@ public class JpaProjectManagerTests
 
 	public void testProjectDeleteReimport() throws Exception {
 		this.testProjectHarness.installFacet(JpaProject.FACET_ID, JpaProject.FACET_VERSION_STRING, buildJpaConfigDataModel());
+		this.createDefaultOrmXmlFile();
 		JpaProject jpaProject = this.getJpaProject();
 		assertNotNull(jpaProject);
 		assertEquals(1, IterableTools.size(this.getJpaProjectManager().waitToGetJpaProjects()));
@@ -195,12 +205,12 @@ public class JpaProjectManagerTests
 		assertEquals(1, IterableTools.size(this.getJpaProjectManager().waitToGetJpaProjects()));
 		JpaProject jpaProject = this.getJpaProject();
 		assertNotNull(jpaProject);
-		assertEquals(4, jpaProject.getJpaFilesSize());
+		assertEquals(3, jpaProject.getJpaFilesSize());
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProjectHarness, "src/test/pkg/TestEntity.java")));
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProjectHarness, "src/test/pkg/TestEntity2.java")));
 
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProjectHarness, "src/META-INF/persistence.xml")));
-		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProjectHarness, "src/META-INF/orm.xml")));
+		assertNull(jpaProject.getJpaFile(this.getFile(this.testProjectHarness, "src/META-INF/orm.xml")));
 
 		this.testProjectHarness.uninstallFacet(JpaProject.FACET_ID, "1.0");
 		assertEquals(0, IterableTools.size(this.getJpaProjectManager().waitToGetJpaProjects()));
@@ -272,10 +282,10 @@ public class JpaProjectManagerTests
 		assertEquals(1, IterableTools.size(this.getJpaProjectManager().waitToGetJpaProjects()));
 		jpaProject = this.getJpaProject();
 		assertNotNull(jpaProject);
-		assertEquals(4, jpaProject.getJpaFilesSize());
+		assertEquals(3, jpaProject.getJpaFilesSize());
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProjectHarness, "src/test/pkg/TestEntity.java")));
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProjectHarness, "src/test/pkg/TestEntity2.java")));
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProjectHarness, "src/META-INF/persistence.xml")));
-		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProjectHarness, "src/META-INF/orm.xml")));
+		assertNull(jpaProject.getJpaFile(this.getFile(this.testProjectHarness, "src/META-INF/orm.xml")));
 	}
 }

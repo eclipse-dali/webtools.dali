@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.common.core.tests.internal.utility.jdt.AnnotationTestCase;
@@ -32,8 +33,9 @@ import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetDataModelProperties;
-import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProperties;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProvider;
+import org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProvider;
+import org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationOperation;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
@@ -85,15 +87,30 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	
 	protected TestJpaProject buildJpaProject(String projectName, boolean autoBuild, IDataModel jpaConfig) 
 			throws Exception {
-		return TestJpaProject.buildJpaProject(projectName, autoBuild, jpaConfig);
+		TestJpaProject testJpaProject =TestJpaProject.buildJpaProject(projectName, autoBuild, jpaConfig);
+
+		if (createOrmXml()) {
+			OrmFileCreationOperation operation = 
+					new OrmFileCreationOperation(buildGenericOrmConfig(testJpaProject));
+			operation.execute(null, null);
+		}
+
+		return testJpaProject;
 	}
 	
 	protected IDataModel buildJpaConfigDataModel() {
 		IDataModel dataModel = DataModelFactory.createDataModel(new JpaFacetInstallDataModelProvider());		
 		dataModel.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, this.getJpaFacetVersionString());
 		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM, this.getJpaPlatformConfig());
-		dataModel.setProperty(JpaFacetInstallDataModelProperties.CREATE_ORM_XML, Boolean.valueOf(this.createOrmXml()));
 		return dataModel;
+	}
+	
+	protected IDataModel buildGenericOrmConfig(TestJpaProject testJpaProject) {
+		IDataModel config =
+				DataModelFactory.createDataModel(new OrmFileCreationDataModelProvider());
+			config.setProperty(JptFileCreationDataModelProperties.CONTAINER_PATH, 
+					testJpaProject.getProject().getFolder("src/META-INF").getFullPath());
+			return config;
 	}
 
 	// default facet version is the latest version - but most tests use 1.0

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -40,7 +40,6 @@ public class JpaFacetInstallDataModelProvider
 		Set<String> propertyNames = super.getPropertyNames();
 		propertyNames.add(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH);
 		propertyNames.add(DB_DRIVER_NAME);
-		propertyNames.add(CREATE_ORM_XML);
 		return propertyNames;
 	}
 	
@@ -80,9 +79,6 @@ public class JpaFacetInstallDataModelProvider
 		}
 		if (propertyName.equals(DB_DRIVER_NAME)) {
 			return this.getDefaultDriverName();
-		}
-		if (propertyName.equals(CREATE_ORM_XML)) {
-			return Boolean.FALSE;
 		}
 		
 		return super.getDefaultProperty(propertyName);

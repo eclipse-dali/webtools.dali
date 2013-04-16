@@ -23,7 +23,6 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.jpa.core.JpaWorkspace;
-import org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProvider;
 import org.eclipse.jpt.jpa.core.internal.operations.PersistenceFileCreationDataModelProvider;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
@@ -59,7 +58,7 @@ public class JpaFacetInstallDelegate
 		this.addDbDriverLibraryToClasspath(javaProject, dataModel, sm.newChild(1));
 
 		// create project XML files
-		this.createProjectXml(project, dataModel.getBooleanProperty(CREATE_ORM_XML), sm.newChild(8));
+		this.createProjectXml(project, sm.newChild(8));
 	}
 	
 	protected void addDbDriverLibraryToClasspath(
@@ -96,14 +95,9 @@ public class JpaFacetInstallDelegate
 		}
 	}
 	
-	private void createProjectXml(IProject project, boolean buildOrmXml, IProgressMonitor monitor) {
-		int tasks = 1 + (buildOrmXml ? 1 : 0);
-		SubMonitor sm = SubMonitor.convert(monitor, tasks);
-
+	private void createProjectXml(IProject project, IProgressMonitor monitor) {
+		SubMonitor sm = SubMonitor.convert(monitor, 1);
 		this.createPersistenceXml(project, sm.newChild(1));
-		if (buildOrmXml) {
-			this.createOrmXml(project, sm.newChild(1));
-		}
 	}
 
 	private void createPersistenceXml(IProject project, IProgressMonitor monitor) {
@@ -120,20 +114,6 @@ public class JpaFacetInstallDelegate
 		}
 	}
 
-	private void createOrmXml(IProject project, IProgressMonitor monitor) {
-		SubMonitor sm = SubMonitor.convert(monitor, 5);
-		
-		IDataModel config = DataModelFactory.createDataModel(new OrmFileCreationDataModelProvider());
-		config.setProperty(CONTAINER_PATH, defaultResourceLocation(project));
-		sm.worked(1);
-		// default values for all other properties should suffice
-		try {
-			config.getDefaultOperation().execute(sm.newChild(4), null);
-		} catch (ExecutionException ex) {
-			JptJpaCorePlugin.instance().logError(ex);
-		}
-	}
-	
 	protected IPath defaultResourceLocation(IProject project) {
 		ProjectResourceLocator resourceLocator = (ProjectResourceLocator) project.getAdapter(ProjectResourceLocator.class);
 		if (resourceLocator == null) {
