@@ -249,6 +249,12 @@ public class GenerateEntitiesFromSchemaWizard
 		return true;
 	}
 
+	@Override
+    public boolean canFinish() {
+		boolean canFinish = super.canFinish();
+		return canFinish && this.tablesSelectorPage.hasTablesSelected();
+    }
+
 	protected void scheduleGenerateEntitiesJob(
 			OverwriteConfirmer overwriteConfirmer) {
 		WorkspaceJob genEntitiesJob = new GenerateEntitiesJob(this.jpaProject, getCustomizer(), overwriteConfirmer, false);

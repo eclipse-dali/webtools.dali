@@ -589,6 +589,10 @@ public class TablesSelectorWizardPage extends WizardPage {
 
 	// ********** table behaviors **********
 
+	public boolean hasTablesSelected() {
+		return (this.tableTable != null) ? (this.getSelectedTables().size() > 0) : false;
+	}
+	
 	private void editEntityNameIfPossible() {
 		Object[] selected = ((IStructuredSelection) this.tableTable.getSelection()).toArray();
 		if (selected.length != 1) {
@@ -601,10 +605,6 @@ public class TablesSelectorWizardPage extends WizardPage {
 		for (Object selectedTable : this.tableTable.getCheckedElements())
 			selectedTables.add((Table) selectedTable);
 		return selectedTables;
-	}
-
-	private boolean hasTablesSelected() {
-		return (this.tableTable != null) ? (this.getSelectedTables().size() > 0) : false;
 	}
 
 	private void updateTablesListViewer(Collection<Table> possibleTables) {
