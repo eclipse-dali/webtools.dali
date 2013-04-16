@@ -12,6 +12,7 @@ package org.eclipse.jpt.common.ui.internal.swt.bind;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.common.ui.internal.swt.events.DisposeAdapter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -137,7 +138,7 @@ class LabelModelBinding {
 
 	/* CU private */ void setText(String text) {
 		if ( ! this.getWidget().isDisposed()) {
-			this.labelAdapter.setText(text);
+			this.labelAdapter.setText((text != null) ? text : StringTools.EMPTY_STRING);
 		}
 	}
 
