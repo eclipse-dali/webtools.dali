@@ -9,11 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.validation;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageLoader;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.plugin.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
@@ -46,7 +45,6 @@ public class JptJpaEclipseLinkCoreValidationMessages {
 	public static ValidationMessage EXCEPTION_HANDLER_CLASS_NOT_VALID;
 	public static ValidationMessage EXCEPTION_HANDLER_CLASS_IMPLEMENTS_EXCEPTION_HANDLER;
 	
-	public static ValidationMessage GENERATOR_DUPLICATE_NAME;
 	public static ValidationMessage GENERATOR_EQUIVALENT;
 
 	public static ValidationMessage ID_MAPPING_UNRESOLVED_CONVERTER_NAME;
@@ -60,7 +58,6 @@ public class JptJpaEclipseLinkCoreValidationMessages {
 
 	public static ValidationMessage PERSISTENCE_UNIT_CACHING_PROPERTY_IGNORED;
 
-	public static ValidationMessage QUERY_DUPLICATE_NAME;
 	public static ValidationMessage QUERY_EQUIVALENT;
 
 	public static ValidationMessage SESSION_CUSTOMIZER_CLASS_NOT_SPECIFIED;
@@ -102,23 +99,7 @@ public class JptJpaEclipseLinkCoreValidationMessages {
 
 	// ********** static initialization **********
 
-	private static final ValidationMessageLoader.PreferencesAdapter PREFERENCES_ADAPTER = new PreferencesAdapter();
-	private static class PreferencesAdapter
-		implements ValidationMessageLoader.PreferencesAdapter
-	{
-		PreferencesAdapter() {
-			super();
-		}
-		// TODO
-		public int getSeverity(IProject project, String messageID, int defaultSeverity) {
-			return defaultSeverity;
-			// return JpaEclipseLinkPreferences.getValidationMessageSeverity(project, messageID, defaultSeverity);
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.toString(this);
-		}
-	}
+	private static final ValidationMessageLoader.PreferencesAdapter PREFERENCES_ADAPTER = new ValidationMessageLoader.PluginPreferencesAdapter(JptJpaEclipseLinkCorePlugin.instance());
 
 	private static final String MESSAGE_BUNDLE_NAME = "jpt_jpa_eclipselink_core_validation"; //$NON-NLS-1$
 	private static final String DESCRIPTION_BUNDLE_NAME = "jpt_jpa_eclipselink_core_validation_description"; //$NON-NLS-1$

@@ -31,6 +31,7 @@ import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jpt.common.core.JptCommonCoreMessages;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ExceptionHandlerAdapter;
@@ -39,6 +40,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.osgi.service.debug.DebugOptions;
 import org.eclipse.osgi.service.debug.DebugTrace;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -714,6 +716,185 @@ public abstract class JptPlugin
 				return JptCommonCorePlugin.instance().logError(ex);
 			}
 			return Status.OK_STATUS;
+		}
+	}
+
+
+	// ********** validation preferences **********
+
+	/**
+	 * Return whether the specified project has project-specific preferences
+	 * for its validation messages.
+	 */
+	public boolean getWorkspaceValidationPreferencesOverridden(IProject project) {
+		String legacyPref = this.getPreference(project, LEGACY_WORKSPACE_VALIDATION_PREFERENCES_OVERRIDDEN);
+		if (legacyPref != null) {
+			boolean legacyBooleanPref = this.getBooleanPreference(project, LEGACY_WORKSPACE_VALIDATION_PREFERENCES_OVERRIDDEN);
+			this.setWorkspaceValidationPreferencesOverridden(project, legacyBooleanPref);
+			this.removePreference(project, LEGACY_WORKSPACE_VALIDATION_PREFERENCES_OVERRIDDEN);
+		}
+		return this.getBooleanPreference(project, WORKSPACE_VALIDATION_PREFERENCES_OVERRIDDEN);
+	}
+
+	// unfortunate legacy typo :-(
+	private static final String LEGACY_WORKSPACE_VALIDATION_PREFERENCES_OVERRIDDEN = "workspace_preferences_overriden"; //$NON-NLS-1$
+
+	/**
+	 * @see #getWorkspaceValidationPreferencesOverridden(IProject)
+	 */
+	public void setWorkspaceValidationPreferencesOverridden(IProject project, boolean value) {
+		String legacyPref = this.getPreference(project, LEGACY_WORKSPACE_VALIDATION_PREFERENCES_OVERRIDDEN);
+		if (legacyPref != null) {
+			this.removePreference(project, LEGACY_WORKSPACE_VALIDATION_PREFERENCES_OVERRIDDEN);
+		}
+		this.setBooleanPreference(project, WORKSPACE_VALIDATION_PREFERENCES_OVERRIDDEN, value);
+	}
+
+	private static final String WORKSPACE_VALIDATION_PREFERENCES_OVERRIDDEN = "workspace_validation_preferences_overridden"; //$NON-NLS-1$
+
+	/**
+	 * Return the severity for the specified validation message within the
+	 * specified project. If there are no workspace- or project-level
+	 * preferences specified for the message, return the specified default
+	 * severity.
+	 * @see IMessage#getSeverity()
+	 * @see ValidationMessage#IGNORE_SEVERITY
+	 */
+	public int getValidationMessageSeverity(IProject project, String messageID, int defaultSeverity) {
+		int prefSeverity = this.getValidationMessageSeverityPreference(project, messageID);
+		return (prefSeverity != ValidationMessage.UNSET_SEVERITY_PREFERENCE) ? prefSeverity : defaultSeverity;
+	}
+
+	/**
+	 * Return the project-level preference for the specified validation
+	 * message's severity.
+	 * @see IMessage#getSeverity()
+	 * @see ValidationMessage#IGNORE_SEVERITY
+	 * @see ValidationMessage#UNSET_SEVERITY_PREFERENCE
+	 */
+	public int getValidationMessageSeverityPreference(IProject project, String messageID) {
+		return this.convertPreferenceValueToMessageSeverity(this.getValidationMessageSeverityPreference_(project, messageID));
+	}
+
+	private String getValidationMessageSeverityPreference_(IProject project, String messageID) {
+		return this.getPreference(project, PROBLEM_ + messageID);
+	}
+
+	/**
+	 * @see #getValidationMessageSeverityPreference(IProject, String)
+	 */
+	public void setValidationMessageSeverityPreference(IProject project, String messageID, int value) {
+		this.setValidationMessageSeverityPreference_(project, messageID, this.convertMessageSeverityToPreferenceValue(value));
+	}
+
+	private void setValidationMessageSeverityPreference_(IProject project, String messageID, String value) {
+		this.setPreference(project, PROBLEM_ + messageID, value);
+	}
+
+	/**
+	 * Return the workspace-level preference for the specified validation
+	 * message's severity.
+	 * @see IMessage#getSeverity()
+	 * @see ValidationMessage#IGNORE_SEVERITY
+	 * @see ValidationMessage#UNSET_SEVERITY_PREFERENCE
+	 */
+	public int getValidationMessageSeverityPreference(String messageID) {
+		return this.convertPreferenceValueToMessageSeverity(this.getValidationMessageSeverityPreference_(messageID));
+	}
+
+	private String getValidationMessageSeverityPreference_(String messageID) {
+		return this.getPreference(PROBLEM_ + messageID);
+	}
+
+	/**
+	 * @see #getValidationMessageSeverityPreference(String)
+	 */
+	public void setValidationMessageSeverityPreference(String messageID, int value) {
+		this.setValidationMessageSeverityPreference_(messageID, this.convertMessageSeverityToPreferenceValue(value));
+	}
+
+	private void setValidationMessageSeverityPreference_(String messageID, String value) {
+		this.setPreference(PROBLEM_ + messageID, value);
+	}
+
+	private static final String PROBLEM = "problem"; //$NON-NLS-1$
+	private static final String PROBLEM_ = PROBLEM + '.';
+
+	/**
+	 * Convert the specified severity preference value to the corresponding
+	 * problem validation message severity.
+	 * @see IMessage#getSeverity()
+	 * @see org.eclipse.jpt.common.core.utility.ValidationMessage#getDefaultSeverity()
+	 */
+	private int convertPreferenceValueToMessageSeverity(String prefSeverity) {
+		for (PreferenceSeverityMapping mapping : PREFERENCE_SEVERITY_MAPPINGS) {
+			if (ObjectTools.equals(prefSeverity, mapping.preferenceValue)) {
+				return mapping.validationSeverity;
+			}
+		}
+		throw new IllegalArgumentException("unknown preference severity: " + prefSeverity); //$NON-NLS-1$
+	}
+
+	/**
+	 * Convert the specified validation message severity to the corresponding
+	 * problem severity preference value.
+	 * @see IMessage#getSeverity()
+	 * @see org.eclipse.jpt.common.core.utility.ValidationMessage#getDefaultSeverity()
+	 */
+	private String convertMessageSeverityToPreferenceValue(int severity) {
+		for (PreferenceSeverityMapping mapping : PREFERENCE_SEVERITY_MAPPINGS) {
+			if (severity == mapping.validationSeverity) {
+				return mapping.preferenceValue;
+			}
+		}
+		throw new IllegalArgumentException("unknown severity: " + severity); //$NON-NLS-1$
+	}
+
+	/**
+	 * Preference value for {@link IMessage#HIGH_SEVERITY}.
+	 */
+	private static final String PROBLEM_ERROR = "error"; //$NON-NLS-1$
+
+	/**
+	 * Preference value for {@link IMessage#NORMAL_SEVERITY}.
+	 */
+	private static final String PROBLEM_WARNING = "warning"; //$NON-NLS-1$
+
+	/**
+	 * Preference value for {@link IMessage#LOW_SEVERITY}.
+	 */
+	private static final String PROBLEM_INFO = "info"; //$NON-NLS-1$
+
+	/**
+	 * Preference value for {@link ValidationMessage#IGNORE_SEVERITY}.
+	 */
+	private static final String PROBLEM_IGNORE = "ignore"; //$NON-NLS-1$
+
+	/**
+	 * Map the problem severity preference values to their corresponding
+	 * validation message severities, and vice-versa.
+	 * 
+	 * @see IMessage#getSeverity()
+	 */
+	private static final PreferenceSeverityMapping[] PREFERENCE_SEVERITY_MAPPINGS = new PreferenceSeverityMapping[] {
+		new PreferenceSeverityMapping(PROBLEM_ERROR, IMessage.HIGH_SEVERITY),
+		new PreferenceSeverityMapping(PROBLEM_WARNING, IMessage.NORMAL_SEVERITY),
+		new PreferenceSeverityMapping(PROBLEM_INFO, IMessage.LOW_SEVERITY),
+		new PreferenceSeverityMapping(PROBLEM_IGNORE, ValidationMessage.IGNORE_SEVERITY),
+		new PreferenceSeverityMapping(null, ValidationMessage.UNSET_SEVERITY_PREFERENCE)
+	};
+
+	private static class PreferenceSeverityMapping {
+		final String preferenceValue;
+		final int validationSeverity;
+		PreferenceSeverityMapping(String preferenceValue, int validationSeverity) {
+			super();
+			this.preferenceValue = preferenceValue;
+			this.validationSeverity = validationSeverity;
+		}
+		@Override
+		public String toString() {
+			return ObjectTools.toString(this, this.preferenceValue);
 		}
 	}
 

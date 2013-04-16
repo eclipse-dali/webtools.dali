@@ -28,6 +28,7 @@ Require-Bundle: org.eclipse.core.commands,
  org.eclipse.wst.common.frameworks,
  org.eclipse.wst.common.modulecore,
  org.eclipse.wst.common.project.facet.core,
+ org.eclipse.wst.validation,
  org.junit
 Export-Package: org.eclipse.jpt.jpa.core.tests.internal;x-internal:=true,
  org.eclipse.jpt.jpa.core.tests.internal.context;x-internal:=true,

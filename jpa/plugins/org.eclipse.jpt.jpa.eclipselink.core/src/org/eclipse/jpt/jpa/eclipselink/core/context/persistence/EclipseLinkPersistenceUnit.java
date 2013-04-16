@@ -754,8 +754,10 @@ public class EclipseLinkPersistenceUnit
 							handlerProperty.getValue()
 					)
 			);
-		} else if (!TypeTools.isSubType(
-				handlerProperty.getValue(), EclipseLinkCustomization.ECLIPSELINK_EXCEPTION_HANDLER_CLASS_NAME, javaProject)
+		} else if ( ! TypeTools.isSubType(
+				handlerProperty.getValue(),
+				org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomization.ECLIPSELINK_EXCEPTION_HANDLER_CLASS_NAME,
+				javaProject)
 		) {
 			messages.add(
 					this.buildValidationMessage(

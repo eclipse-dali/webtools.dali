@@ -10,9 +10,9 @@
 package org.eclipse.jpt.jpa.core;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.jpt.common.core.internal.utility.JptPlugin;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * Public access to the Dali JPA preferences.
@@ -231,131 +231,53 @@ public final class JpaPreferences {
 
 	// ********** project validation messages **********
 
-	public static boolean getWorkspaceValidationPreferencesOverridden(IProject project) {
-		return getPlugin().getBooleanPreference(project, WORKSPACE_PREFERENCES_OVERRIDDEN);
+	/**
+	 * @see JptPlugin#getWorkspaceValidationPreferencesOverridden(IProject)
+	 */
+	public static boolean getWorkspaceValidationOverridden(IProject project) {
+		return getPlugin().getWorkspaceValidationPreferencesOverridden(project);
 	}
-
-	public static void setWorkspaceValidationPreferencesOverridden(IProject project, boolean value) {
-		getPlugin().setBooleanPreference(project, WORKSPACE_PREFERENCES_OVERRIDDEN, value);
-	}
-
-	// unfortunate legacy typo :-(
-	private static final String WORKSPACE_PREFERENCES_OVERRIDDEN = "workspace_preferences_overriden"; //$NON-NLS-1$
 
 	/**
-	 * Project-level validation message preference.
-	 * Return <code>-1</code> if the specified message is to be ignored.
-	 * @see org.eclipse.wst.validation.internal.provisional.core.IMessage#getSeverity()
+	 * @see #getWorkspaceValidationOverridden(IProject)
+	 */
+	public static void setWorkspaceValidationOverridden(IProject project, boolean value) {
+		getPlugin().setWorkspaceValidationPreferencesOverridden(project, value);
+	}
+
+	/**
+	 * @see JptPlugin#getValidationMessageSeverity(IProject, String, int)
 	 */
 	public static int getValidationMessageSeverity(IProject project, String messageID, int defaultSeverity) {
-		String prefSeverity = getProblemSeverity(project, messageID);
-		return (prefSeverity == null) ? defaultSeverity : convertPreferenceValueToMessageSeverity(prefSeverity);
-	}
-
-	private static int convertPreferenceValueToMessageSeverity(String prefSeverity) {
-		for (PreferenceSeverityMapping mapping : PREFERENCE_SEVERITY_MAPPINGS) {
-			if (prefSeverity.equals(mapping.preferenceValue)) {
-				return mapping.validationSeverity;
-			}
-		}
-		throw new IllegalArgumentException("unknown preference severity: " + prefSeverity); //$NON-NLS-1$
+		return getPlugin().getValidationMessageSeverity(project, messageID, defaultSeverity);
 	}
 
 	/**
-	 * Convert the specified validation message severity to the corresponding
-	 * problem severity preference value.
-	 * @see #getProblemSeverity(String)
-	 * @see #getProblemSeverity(IProject, String)
-	 * @see IMessage#getSeverity()
-	 * @see org.eclipse.jpt.common.core.utility.ValidationMessage#getDefaultSeverity()
+	 * @see JptPlugin#getValidationMessageSeverityPreference(IProject, String)
 	 */
-	public static String convertMessageSeverityToPreferenceValue(int severity) {
-		for (PreferenceSeverityMapping mapping : PREFERENCE_SEVERITY_MAPPINGS) {
-			if (severity == mapping.validationSeverity) {
-				return mapping.preferenceValue;
-			}
-		}
-		throw new IllegalArgumentException("unknown severity: " + severity); //$NON-NLS-1$
+	public static int getValidationMessageSeverity(IProject project, String messageID) {
+		return getPlugin().getValidationMessageSeverityPreference(project, messageID);
 	}
 
 	/**
-	 * Project-level problem preference.
-	 * @see #PROBLEM_ERROR
-	 * @see #PROBLEM_WARNING
-	 * @see #PROBLEM_INFO
-	 * @see #PROBLEM_IGNORE
+	 * @see #getValidationMessageSeverity(IProject, String)
 	 */
-	public static String getProblemSeverity(IProject project, String messageID) {
-		return getPlugin().getPreference(project, PROBLEM_ + messageID);
+	public static void setValidationMessageSeverity(IProject project, String messageID, int value) {
+		getPlugin().setValidationMessageSeverityPreference(project, messageID, value);
 	}
 
 	/**
-	 * Project-level problem preference.
-	 * @see #PROBLEM_ERROR
-	 * @see #PROBLEM_WARNING
-	 * @see #PROBLEM_INFO
-	 * @see #PROBLEM_IGNORE
+	 * @see JptPlugin#getValidationMessageSeverityPreference(String)
 	 */
-	public static void setProblemSeverity(IProject project, String messageID, String value) {
-		getPlugin().setPreference(project, PROBLEM_ + messageID, value);
+	public static int getValidationMessageSeverity(String messageID) {
+		return getPlugin().getValidationMessageSeverityPreference(messageID);
 	}
 
 	/**
-	 * Workspace-level problem preference.
-	 * @see #PROBLEM_ERROR
-	 * @see #PROBLEM_WARNING
-	 * @see #PROBLEM_INFO
-	 * @see #PROBLEM_IGNORE
+	 * @see #getValidationMessageSeverity(String)
 	 */
-	public static String getProblemSeverity(String messageID) {
-		return getPlugin().getPreference(PROBLEM_ + messageID);
-	}
-
-	/**
-	 * Workspace-level problem preference.
-	 * @see #PROBLEM_ERROR
-	 * @see #PROBLEM_WARNING
-	 * @see #PROBLEM_INFO
-	 * @see #PROBLEM_IGNORE
-	 */
-	public static void setProblemSeverity(String messageID, String value) {
-		getPlugin().setPreference(PROBLEM_ + messageID, value);
-	}
-
-	private static final String PROBLEM = "problem"; //$NON-NLS-1$
-	private static final String PROBLEM_ = PROBLEM + '.';
-
-	public static final String PROBLEM_ERROR = "error"; //$NON-NLS-1$
-	public static final String PROBLEM_WARNING = "warning"; //$NON-NLS-1$
-	public static final String PROBLEM_INFO = "info"; //$NON-NLS-1$
-	public static final String PROBLEM_IGNORE = "ignore"; //$NON-NLS-1$
-
-
-	/**
-	 * Map the problem severity preference values to their corresponding
-	 * validation message severities, and vice-versa.
-	 * 
-	 * @see IMessage#getSeverity()
-	 */
-	private static final PreferenceSeverityMapping[] PREFERENCE_SEVERITY_MAPPINGS = new PreferenceSeverityMapping[] {
-		new PreferenceSeverityMapping(PROBLEM_ERROR, IMessage.HIGH_SEVERITY),
-		new PreferenceSeverityMapping(PROBLEM_WARNING, IMessage.NORMAL_SEVERITY),
-		new PreferenceSeverityMapping(PROBLEM_INFO, IMessage.LOW_SEVERITY),
-		new PreferenceSeverityMapping(PROBLEM_IGNORE, JpaProject.VALIDATION_IGNORE_SEVERITY)
-	};
-
-	private static class PreferenceSeverityMapping {
-		final String preferenceValue;
-		final int validationSeverity;
-		PreferenceSeverityMapping(String preferenceValue, int validationSeverity) {
-			super();
-			this.preferenceValue = preferenceValue;
-			this.validationSeverity = validationSeverity;
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.toString(this, this.preferenceValue);
-		}
+	public static void setValidationMessageSeverity(String messageID, int value) {
+		getPlugin().setValidationMessageSeverityPreference(messageID, value);
 	}
 
 
@@ -385,7 +307,7 @@ public final class JpaPreferences {
 		getPlugin().removePreferences();
 	}
 
-	private static JptJpaCorePlugin getPlugin() {
+	private static JptPlugin getPlugin() {
 		return JptJpaCorePlugin.instance();
 	}
 

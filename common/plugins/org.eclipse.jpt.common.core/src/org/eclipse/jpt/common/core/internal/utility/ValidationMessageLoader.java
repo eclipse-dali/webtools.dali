@@ -46,13 +46,40 @@ public class ValidationMessageLoader {
 	 */
 	public interface PreferencesAdapter {
 		/**
-		 * Return the specified message's user-specified severity. If there is
-		 * no user-specified preference for the message's severity, return the
-		 * specified default severity. Return <code>-1</code> if the
-		 * user-specified severity is "ignore".
+		 * Return the specified validation message's user-configured severity
+		 * within the specified project. If there is no user-configured
+		 * preference for the message's severity, return the specified default
+		 * severity.
+		 * Return {@link ValidationMessage#IGNORE_SEVERITY} if the specified
+		 * message is to be ignored.
 		 * @see IMessage#getSeverity()
 		 */
 		int getSeverity(IProject project, String messageID, int defaultSeverity);
+	}
+
+	/**
+	 * Preferences adapter implementation that uses the standart Dali
+	 * preferences settings, localized to the configured plug-in.
+	 * @see JptPlugin#getValidationMessageSeverity(IProject, String, int)
+	 */
+	public static class PluginPreferencesAdapter
+		implements PreferencesAdapter
+	{
+		private final JptPlugin plugin;
+
+		public PluginPreferencesAdapter(JptPlugin plugin) {
+			super();
+			this.plugin = plugin;
+		}
+
+		public int getSeverity(IProject project, String messageID, int defaultSeverity) {
+			return this.plugin.getValidationMessageSeverity(project, messageID, defaultSeverity);
+		}
+
+		@Override
+		public String toString() {
+			return ObjectTools.toString(this, this.plugin);
+		}
 	}
 
 	/**

@@ -15,6 +15,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
+import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
@@ -106,7 +107,7 @@ public class JpaValidator
 	{
 		@Override
 		public boolean evaluate(IMessage message) {
-			return message.getSeverity() != JpaProject.VALIDATION_IGNORE_SEVERITY;
+			return message.getSeverity() != ValidationMessage.IGNORE_SEVERITY;
 		}
 	}
 

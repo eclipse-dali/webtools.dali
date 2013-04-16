@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright (c) 2007, 2012 Oracle. All rights reserved.
+  Copyright (c) 2007, 2013 Oracle. All rights reserved.
   This program and the accompanying materials are made available under the
   terms of the Eclipse Public License v1.0, which accompanies this distribution
   and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,8 @@
  -->
 
 <plugin>
+
+	<!-- ***** Dali extensions ***** -->
 
 	<extension
 		point="org.eclipse.jpt.jpa.ui.jpaPlatformUis">
@@ -58,9 +60,12 @@
 			id="eclipselink2_5.ui"
 			jpaPlatform="eclipselink2_5"
 			factoryClass="org.eclipse.jpt.jpa.eclipselink.ui.internal.platform.EclipseLink2_5JpaPlatformUiFactory"/>
+
 	</extension>
 	
 	
+	<!-- ***** "New Dialog" wizards ***** -->
+
 	<extension
 		point="org.eclipse.ui.newWizards">
 		
@@ -83,11 +88,11 @@
 		</wizard>
 		
 		<wizard
-			category="org.eclipse.jpt.jpa/org.eclipse.jpt.jpa.eclipselink"
-			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards.gen.GenerateDynamicEntitiesFromSchemaWizard"
-			icon="platform:/plugin/org.eclipse.jpt.jpa.ui/$nl$/images/buttons/new-jpa-file.gif"
 			id="org.eclipse.jpt.jpa.eclipselink.ui.wizard.newDynamicEntitiesFromTables"
-			name="%newDynamicEntityFromTableWizardName">
+			name="%newDynamicEntityFromTableWizardName"
+			icon="platform:/plugin/org.eclipse.jpt.jpa.ui/$nl$/images/buttons/new-jpa-file.gif"
+			category="org.eclipse.jpt.jpa/org.eclipse.jpt.jpa.eclipselink"
+			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards.gen.GenerateDynamicEntitiesFromSchemaWizard">
 			<description>%newDynamicEntityFromTableWizardDesc</description>
 			<selection class="org.eclipse.core.resources.IResource"/> 
         </wizard>		
@@ -107,6 +112,8 @@
 		    
 	</extension>
 
+
+	<!-- ***** navigator content ***** -->
 
 	<extension
 		point="org.eclipse.ui.navigator.navigatorContent">
@@ -176,7 +183,9 @@
 		
 	</extension>
 	
-	
+		
+	<!-- ***** JPA Perspective ***** -->
+
 	<extension
 		point="org.eclipse.ui.perspectiveExtensions">
 		
@@ -196,11 +205,28 @@
 		
 	</extension>
 
+
+	<!-- ***** preferences ***** -->
+
+	<extension
+		point="org.eclipse.ui.preferencePages">
+
+		<page
+			id="org.eclipse.jpt.jpa.eclipselink.ui.jpaProblemSeveritiesPreferences"
+			name="%eclipseLinkJpaProblemSeveritiesPreferencesNode"
+			category="org.eclipse.jpt.jpa.ui.jpaProblemSeveritiesPreferences"
+			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.prefs.EclipseLinkJpaProblemSeveritiesPage"/>
+
+	</extension>
+	
+	
+	<!-- ***** JPA project properties pages ***** -->
+
 	<extension
 		point="org.eclipse.ui.propertyPages">
 		
 		<page
-			id="org.eclipse.jpt.jpa.eclipselink.ui.eclipselinkProjectProperties"
+			id="org.eclipse.jpt.jpa.eclipselink.ui.eclipseLinkProjectProperties"
 			name="%eclipseLinkNode"
 			category="org.eclipse.jpt.jpa.ui.jpaProjectProperties"
 			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.weave.EclipseLinkPreferencePage">
@@ -218,7 +244,27 @@
 			</enabledWhen>
 		</page>
 		
+		<page
+			id="org.eclipse.jpt.jpa.eclipselink.ui.jpaProblemSeveritiesProperties"
+			name="%eclipseLinkJpaProblemSeveritiesPropertiesNode"
+			category="org.eclipse.jpt.jpa.eclipselink.ui.eclipseLinkProjectProperties"
+			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.prefs.EclipseLinkJpaProblemSeveritiesPage">
+			<enabledWhen>
+				<and>
+					<adapt type="org.eclipse.core.resources.IProject">
+						<reference definitionId="org.eclipse.jpt.jpa.reference.hasJpaFacet"/>
+					</adapt>
+					<!-- if the o.e.jpt.jpa.core plug-in is not loaded yet, 
+					this will result in true and properties page will appear for a non-eclipselink platform project  -->
+					<adapt type="org.eclipse.jpt.jpa.core.JpaPlatform$Config">
+						<reference definitionId="org.eclipse.jpt.jpa.eclipselink.reference.hasEclipseLinkJpaPlatform"/>
+					</adapt>
+				</and>
+			</enabledWhen>
+		</page>
+		
 	</extension>
+
 
 	<!-- ***** commands ***** -->
 
@@ -255,6 +301,7 @@
   		</command>
 
   	</extension>
+
 
 	<!-- ***** handlers ***** -->
 
@@ -424,6 +471,7 @@
 			<command commandId="org.eclipse.jpt.jpa.eclipselink.ui.persistentTypeAddVirtualAttribute">
 				<visibleWhen checkEnabled="true"/>
 			</command>
+
 		</menuContribution>
 		
         <!-- contributions to "Move to XML" submenu-->

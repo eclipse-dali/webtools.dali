@@ -9,12 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.validation;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageLoader;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.plugin.JptJaxbEclipseLinkCorePlugin;
 
 /**
  * Localized validation messages used by Dali EclipseLink JAXB core.
@@ -82,23 +81,7 @@ public class JptJaxbEclipseLinkCoreValidationMessages {
 
 	// ********** static initialization **********
 
-	private static final ValidationMessageLoader.PreferencesAdapter PREFERENCES_ADAPTER = new PreferencesAdapter();
-	private static class PreferencesAdapter
-		implements ValidationMessageLoader.PreferencesAdapter
-	{
-		PreferencesAdapter() {
-			super();
-		}
-		// TODO
-		public int getSeverity(IProject project, String messageID, int defaultSeverity) {
-			return defaultSeverity;
-			// return JaxbEclipseLinkPreferences.getValidationMessageSeverity(project, messageID, defaultSeverity);
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.toString(this);
-		}
-	}
+	private static final ValidationMessageLoader.PreferencesAdapter PREFERENCES_ADAPTER = new ValidationMessageLoader.PluginPreferencesAdapter(JptJaxbEclipseLinkCorePlugin.instance());
 
 	private static final String MESSAGE_BUNDLE_NAME = "jpt_jaxb_eclipselink_core_validation"; //$NON-NLS-1$
 	private static final String DESCRIPTION_BUNDLE_NAME = "jpt_jaxb_eclipselink_core_validation_description"; //$NON-NLS-1$

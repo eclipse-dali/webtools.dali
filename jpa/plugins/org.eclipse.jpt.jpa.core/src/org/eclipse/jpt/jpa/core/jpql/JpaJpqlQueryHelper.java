@@ -17,12 +17,12 @@ import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.jpa.core.JpaPreferences;
+import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.jpql.spi.IManagedTypeBuilder;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaManagedTypeProvider;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaQuery;
@@ -276,11 +276,12 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 		);
 	}
 
-	protected String getValidationPreference(NamedQuery namedQuery) {
-		return JpaPreferences.getProblemSeverity(
-			namedQuery.getResource().getProject(),
-			JptJpaCoreValidationMessages.JPQL_QUERY_VALIDATION.getID()
-		);
+	protected int getValidationSeverity(NamedQuery namedQuery) {
+		return JptJpaCorePlugin.instance().getValidationMessageSeverity(
+				namedQuery.getResource().getProject(),
+				JptJpaCoreValidationMessages.JPQL_QUERY_VALIDATION.getID(),
+				JptJpaCoreValidationMessages.JPQL_QUERY_VALIDATION.getDefaultSeverity()
+			);
 	}
 
 	/**
@@ -303,10 +304,7 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 	}
 
 	protected boolean shouldValidate(NamedQuery namedQuery) {
-		return ObjectTools.notEquals(
-			getValidationPreference(namedQuery),
-			JpaPreferences.PROBLEM_IGNORE
-		);
+		return this.getValidationSeverity(namedQuery) != ValidationMessage.IGNORE_SEVERITY;
 	}
 
 	/**

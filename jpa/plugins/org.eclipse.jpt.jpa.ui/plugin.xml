@@ -1147,25 +1147,24 @@
 
 	<extension
 		point="org.eclipse.ui.preferencePages">
-		
+
 		<page
 			id="org.eclipse.jpt.jpa.ui.preferences"
 			name="%javaPersistenceNode"
 			class="org.eclipse.jpt.jpa.ui.internal.prefs.JptPreferencesPage"/>
-		
+
 		<page
 			id="org.eclipse.jpt.jpa.ui.jpaPreferences"
+			name="%jpaNode"
 			category="org.eclipse.jpt.jpa.ui.preferences"
-			class="org.eclipse.jpt.jpa.ui.internal.prefs.JpaPreferencesPage"
-			name="%jpaNode"/>
-		
+			class="org.eclipse.jpt.jpa.ui.internal.prefs.JpaPreferencesPage"/>
+
 		<page
 			id="org.eclipse.jpt.jpa.ui.jpaProblemSeveritiesPreferences"
+			name="%jpaProblemSeveritiesNode"
 			category="org.eclipse.jpt.jpa.ui.jpaPreferences"
-			class="org.eclipse.jpt.jpa.ui.internal.prefs.JpaProblemSeveritiesPage"
-			name="%jpaProblemSeveritiesNode">
-		</page>
-		
+			class="org.eclipse.jpt.jpa.ui.internal.prefs.JpaProblemSeveritiesPage"/>
+
 	</extension>
 	
 	

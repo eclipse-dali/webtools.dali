@@ -479,7 +479,10 @@ public class JptJpaEclipseLinkUiMessages {
 	public static String ADD_VIRTUAL_ATTRIBUTE_DIALOG_NO_ATTRIBUTE_TYPE_ERROR;
 	public static String ADD_VIRTUAL_ATTRIBUTE_DIALOG_TARGET_TYPE_LABEL;
 	public static String ADD_VIRTUAL_ATTRIBUTE_DIALOG_NO_TARGET_TYPE_ERROR;
-	
+
+	public static String MULTITENANCY_CATEGORY;
+	public static String VIRTUAL_CATEGORY;
+
 	private JptJpaEclipseLinkUiMessages() {
 		throw new UnsupportedOperationException();
 	}

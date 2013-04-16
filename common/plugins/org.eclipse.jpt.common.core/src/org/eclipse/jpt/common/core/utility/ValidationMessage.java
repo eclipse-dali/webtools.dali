@@ -23,6 +23,24 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
  */
 public interface ValidationMessage {
 	/**
+	 * Any validation message with this severity will be ignored and no
+	 * marker produced.
+	 * <p>
+	 * Value: {@value}
+	 * @see IMessage#getSeverity()
+	 */
+	int IGNORE_SEVERITY = 8;
+
+	/**
+	 * This value is returned for any validation severity preference that has
+	 * not been specified.
+	 * <p>
+	 * Value: {@value}
+	 * @see IMessage#getSeverity()
+	 */
+	int UNSET_SEVERITY_PREFERENCE = -1;
+
+	/**
 	 * Return the message's ID. This is the name of the static field that
 	 * holds the message.
 	 */

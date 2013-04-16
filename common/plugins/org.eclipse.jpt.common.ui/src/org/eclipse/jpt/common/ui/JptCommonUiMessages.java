@@ -44,6 +44,11 @@ public class JptCommonUiMessages {
 
 	public static String OPTIONAL_MESSAGE_DIALOG__DO_NOT_SHOW_WARNING;
 
+	public static String PROBLEM_SEVERITIES_PAGE__ERROR;
+	public static String PROBLEM_SEVERITIES_PAGE__WARNING;
+	public static String PROBLEM_SEVERITIES_PAGE__INFO;
+	public static String PROBLEM_SEVERITIES_PAGE__IGNORE;
+
 	public static String ABSTRACT_JPT_GENERATE_JOB__GENERATION_FAILED;
 	public static String ABSTRACT_JPT_GENERATE_JOB__ERROR;
 

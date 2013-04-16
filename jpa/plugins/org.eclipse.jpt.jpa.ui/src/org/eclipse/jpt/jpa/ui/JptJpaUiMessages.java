@@ -154,10 +154,6 @@ public class JptJpaUiMessages {
 	public static String JpaPreferencesPage_jpqlEditor_textAreaNumberOfLines;
 	public static String JpaPreferencesPage_jpqlEditor_upperCaseRadioButton;
 	public static String JpaProblemSeveritiesPage_Description;
-	public static String JpaProblemSeveritiesPage_Error;
-	public static String JpaProblemSeveritiesPage_Ignore;
-	public static String JpaProblemSeveritiesPage_Info;
-	public static String JpaProblemSeveritiesPage_Warning;
 	public static String JpaEntityGenPreferencePage_Description;
 	public static String JpaEntityGenPreferencePage_generalGroup_title;
 	public static String JpaEntityGenPreferencePage_defaultPackageLabel;

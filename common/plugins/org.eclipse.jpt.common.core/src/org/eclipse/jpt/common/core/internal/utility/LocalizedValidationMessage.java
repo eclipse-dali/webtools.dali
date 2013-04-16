@@ -11,6 +11,7 @@ package org.eclipse.jpt.common.core.internal.utility;
 
 import java.util.Locale;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.wst.validation.internal.core.Message;
 
 /**
@@ -49,5 +50,10 @@ public class LocalizedValidationMessage
 	@Override
 	public String getText(Locale l, ClassLoader cl) {
 		return this.localizedMessage;
+	}
+
+	@Override
+	public String toString() {
+		return ObjectTools.toString(this, this.localizedMessage);
 	}
 }

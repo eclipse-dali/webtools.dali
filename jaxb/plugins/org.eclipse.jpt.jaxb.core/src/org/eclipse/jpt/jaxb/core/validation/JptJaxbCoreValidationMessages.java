@@ -9,11 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.validation;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageLoader;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
+import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
@@ -133,23 +132,7 @@ public class JptJaxbCoreValidationMessages {
 
 	// ********** static initialization **********
 
-	private static final ValidationMessageLoader.PreferencesAdapter PREFERENCES_ADAPTER = new PreferencesAdapter();
-	private static class PreferencesAdapter
-		implements ValidationMessageLoader.PreferencesAdapter
-	{
-		PreferencesAdapter() {
-			super();
-		}
-		// TODO
-		public int getSeverity(IProject project, String messageID, int defaultSeverity) {
-			return defaultSeverity;
-			// return JaxbPreferences.getValidationMessageSeverity(project, messageID, defaultSeverity);
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.toString(this);
-		}
-	}
+	private static final ValidationMessageLoader.PreferencesAdapter PREFERENCES_ADAPTER = new ValidationMessageLoader.PluginPreferencesAdapter(JptJaxbCorePlugin.instance());
 
 	private static final String MESSAGE_BUNDLE_NAME = "jpt_jaxb_core_validation"; //$NON-NLS-1$
 	private static final String DESCRIPTION_BUNDLE_NAME = "jpt_jaxb_core_validation_description"; //$NON-NLS-1$
