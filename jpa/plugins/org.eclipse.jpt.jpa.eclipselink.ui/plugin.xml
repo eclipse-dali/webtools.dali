@@ -337,7 +337,7 @@
 		
 		<handler
 			commandId="org.eclipse.jpt.jpa.eclipselink.ui.convertJavaConverters"
-			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.commands.JavaConverterConversionHandler">
+			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.commands.EclipseLinkJavaConverterConversionHandler">
 			<activeWhen>
 				<with variable="selection">
 					<count value="1"/>

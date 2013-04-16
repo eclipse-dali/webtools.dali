@@ -14,10 +14,10 @@ import org.eclipse.jpt.jpa.eclipselink.ui.internal.platform.EclipseLinkJpaPlatfo
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.internal.handlers.AbstractJavaMetadataConversionHandler;
 
-public class JavaConverterConversionHandler
+public class EclipseLinkJavaConverterConversionHandler
 	extends AbstractJavaMetadataConversionHandler
 {
-	public JavaConverterConversionHandler() {
+	public EclipseLinkJavaConverterConversionHandler() {
 		super();
 	}
 
