@@ -23,7 +23,7 @@ public class EclipseLinkJpaPlatformUiFactory2_4
 
 	@Override
 	public JpaPlatformUi buildJpaPlatformUi() {
-		return new EclipseLink2_0JpaPlatformUi(
+		return new EclipseLinkJpaPlatformUi2_0(
 					EclipseLinkJpaPlatformUiFactory.NAVIGATOR_FACTORY_PROVIDER,
 					EclipseLinkJpaPlatformUiProvider2_4.instance()
 				);
