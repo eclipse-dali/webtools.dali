@@ -34,10 +34,10 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 
-public abstract class AbstractEclipseLinkOneToManyMappingComposite<T extends EclipseLinkOneToManyMapping, C extends Cascade> 
+public abstract class EclipseLinkAbstractOneToManyMappingComposite<T extends EclipseLinkOneToManyMapping, C extends Cascade> 
 	extends AbstractOneToManyMappingComposite<T, EclipseLinkOneToManyRelationship, C>
 {
-	protected AbstractEclipseLinkOneToManyMappingComposite(
+	protected EclipseLinkAbstractOneToManyMappingComposite(
 			PropertyValueModel<? extends T> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,

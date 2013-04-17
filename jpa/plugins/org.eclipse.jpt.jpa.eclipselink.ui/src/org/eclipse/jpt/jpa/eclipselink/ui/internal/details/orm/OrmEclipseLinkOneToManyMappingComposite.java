@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Cascade;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkOneToManyMapping;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.AbstractEclipseLinkOneToManyMappingComposite;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkAbstractOneToManyMappingComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkJoinFetchComboViewer;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkPrivateOwnedCheckBox;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
@@ -31,7 +31,7 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
 
 
 public class OrmEclipseLinkOneToManyMappingComposite
-	extends AbstractEclipseLinkOneToManyMappingComposite<EclipseLinkOneToManyMapping, Cascade>
+	extends EclipseLinkAbstractOneToManyMappingComposite<EclipseLinkOneToManyMapping, Cascade>
 {
 	public OrmEclipseLinkOneToManyMappingComposite(
 			PropertyValueModel<? extends EclipseLinkOneToManyMapping> mappingModel,
