@@ -100,7 +100,7 @@ public class EclipseLinkEntityListComposite<T extends EclipseLinkCaching>
 		);
 
 		// Entity Caching property pane
-		new EntityCachingPropertyComposite(
+		new EclipseLinkEntityCachingPropertyComposite(
 			this,
 			this.selectedEntityModel,
 			buildPaneEnablerModel(this.selectedEntityModel),

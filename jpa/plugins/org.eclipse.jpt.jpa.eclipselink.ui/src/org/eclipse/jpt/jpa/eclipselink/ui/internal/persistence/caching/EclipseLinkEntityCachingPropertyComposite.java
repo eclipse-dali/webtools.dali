@@ -36,12 +36,9 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * @version 2.0
- * @since 2.0
- */
-public class EntityCachingPropertyComposite extends Pane<EclipseLinkCachingEntity> {
-
+public class EclipseLinkEntityCachingPropertyComposite
+	extends Pane<EclipseLinkCachingEntity>
+{
 	/**
 	 * Creates a new <code>EntityCachingPropertyComposite</code>.
 	 *
@@ -49,7 +46,7 @@ public class EntityCachingPropertyComposite extends Pane<EclipseLinkCachingEntit
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public EntityCachingPropertyComposite(Pane<? extends EclipseLinkCaching> parentComposite,
+	public EclipseLinkEntityCachingPropertyComposite(Pane<? extends EclipseLinkCaching> parentComposite,
 	                                      PropertyValueModel<EclipseLinkCachingEntity> subjectHolder,
 	                                      PropertyValueModel<Boolean> enabledModel,
 	                                      Composite parent) {
@@ -86,7 +83,7 @@ public class EntityCachingPropertyComposite extends Pane<EclipseLinkCachingEntit
 	private class CacheTypeComboViewer extends EnumFormComboViewer<EclipseLinkCachingEntity, EclipseLinkCacheType> {
 
 		private CacheTypeComboViewer(Composite parent) {
-			super(EntityCachingPropertyComposite.this, parent);
+			super(EclipseLinkEntityCachingPropertyComposite.this, parent);
 		}
 
 		@Override
