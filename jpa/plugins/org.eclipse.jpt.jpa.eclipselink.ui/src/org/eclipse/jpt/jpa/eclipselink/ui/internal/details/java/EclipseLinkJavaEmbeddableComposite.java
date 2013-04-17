@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Section;
 
 public class EclipseLinkJavaEmbeddableComposite
-	extends AbstractJavaEclipseLinkEmbeddableComposite<EclipseLinkJavaEmbeddable>
+	extends EclipseLinkAbstractJavaEmbeddableComposite<EclipseLinkJavaEmbeddable>
 {
 	public EclipseLinkJavaEmbeddableComposite(
 			PropertyValueModel<? extends EclipseLinkJavaEmbeddable> embeddableModel,
