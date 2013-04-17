@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.swt.widgets.Composite;
 
 public class EclipseLinkOrmXmlUiFactory2_3
-	extends EclipseLinkOrmXml2_0UiFactory
+	extends EclipseLinkOrmXmlUiFactory2_0
 {
 	// ********** type mappings **********
 
