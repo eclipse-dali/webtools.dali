@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.ui.jpa2_1.details.JpaUiFactory2_1;
 import org.eclipse.swt.widgets.Composite;
 
 public class EclipseLinkJavaUiFactory2_5
-	extends EclipseLink2_0JavaUiFactory
+	extends EclipseLinkJavaUiFactory2_0
 	implements JpaUiFactory2_1
 {
 
