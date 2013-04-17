@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.platform;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 
 public class EclipseLinkJpaPlatformUiFactory2_4
-	extends EclipseLink2_0JpaPlatformUiFactory
+	extends EclipseLinkJpaPlatformUiFactory2_0
 {
 	/**
 	 * Zero arg constructor for extension point
