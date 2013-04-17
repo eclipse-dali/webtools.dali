@@ -60,10 +60,10 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  */
-public abstract class AbstractEclipseLinkManyToOneMappingComposite<T extends EclipseLinkManyToOneMapping, C extends Cascade> 
+public abstract class EclipseLinkAbstractManyToOneMappingComposite<T extends EclipseLinkManyToOneMapping, C extends Cascade> 
 	extends AbstractManyToOneMappingComposite<T, ManyToOneRelationship, C>
 {
-	protected AbstractEclipseLinkManyToOneMappingComposite(
+	protected EclipseLinkAbstractManyToOneMappingComposite(
 			PropertyValueModel<? extends T> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,

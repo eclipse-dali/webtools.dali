@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Cascade;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkManyToOneMapping;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.AbstractEclipseLinkManyToOneMappingComposite;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkAbstractManyToOneMappingComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkJoinFetchComboViewer;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
 public class OrmEclipseLinkManyToOneMapping1_1Composite
-	extends AbstractEclipseLinkManyToOneMappingComposite<EclipseLinkManyToOneMapping, Cascade>
+	extends EclipseLinkAbstractManyToOneMappingComposite<EclipseLinkManyToOneMapping, Cascade>
 {
 	public OrmEclipseLinkManyToOneMapping1_1Composite(
 			PropertyValueModel<? extends EclipseLinkManyToOneMapping> mappingModel,

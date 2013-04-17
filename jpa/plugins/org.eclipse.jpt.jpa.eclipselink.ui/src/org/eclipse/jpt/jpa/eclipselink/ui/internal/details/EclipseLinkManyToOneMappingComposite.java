@@ -48,7 +48,7 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  */
 public class EclipseLinkManyToOneMappingComposite
-	extends AbstractEclipseLinkManyToOneMappingComposite<EclipseLinkManyToOneMapping, Cascade>
+	extends EclipseLinkAbstractManyToOneMappingComposite<EclipseLinkManyToOneMapping, Cascade>
 {
 	public EclipseLinkManyToOneMappingComposite(
 			PropertyValueModel<? extends EclipseLinkManyToOneMapping> mappingModel,
