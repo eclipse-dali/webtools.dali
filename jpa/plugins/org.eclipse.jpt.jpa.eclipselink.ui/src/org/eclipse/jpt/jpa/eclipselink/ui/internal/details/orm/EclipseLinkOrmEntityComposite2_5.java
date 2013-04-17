@@ -27,7 +27,7 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
 public class EclipseLinkOrmEntityComposite2_5
-	extends AbstractOrmEclipseLinkEntity2_xComposite<EclipseLinkOrmEntity>
+	extends EclipseLinkAbstractOrmEntityComposite2_x<EclipseLinkOrmEntity>
 {
 
 	public EclipseLinkOrmEntityComposite2_5(

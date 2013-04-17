@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,10 +19,10 @@ import org.eclipse.jpt.jpa.ui.internal.jpa2.details.QueriesComposite2_0;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-public abstract class AbstractOrmEclipseLinkEntity2_xComposite<T extends EclipseLinkOrmEntity>
+public abstract class EclipseLinkAbstractOrmEntityComposite2_x<T extends EclipseLinkOrmEntity>
 	extends EclipseLinkAbstractOrmEntityComposite<T>
 {
-	protected AbstractOrmEclipseLinkEntity2_xComposite(
+	protected EclipseLinkAbstractOrmEntityComposite2_x(
 			PropertyValueModel<? extends T> entityModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -49,5 +49,4 @@ public abstract class AbstractOrmEclipseLinkEntity2_xComposite<T extends Eclipse
 	protected Control initializeQueriesSection(Composite container) {
 		return new QueriesComposite2_0(this, this.buildQueryContainerModel(), container).getControl();
 	}
-
 }
