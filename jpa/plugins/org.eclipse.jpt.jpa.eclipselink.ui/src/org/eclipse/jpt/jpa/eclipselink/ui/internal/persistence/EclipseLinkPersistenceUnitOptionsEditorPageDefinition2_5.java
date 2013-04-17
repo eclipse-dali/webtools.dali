@@ -54,6 +54,6 @@ public class EclipseLinkPersistenceUnitOptionsEditorPageDefinition2_5
 
 	@Override
 	protected void buildEditorPageContent(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager, PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
-		new EclipseLinkPersistenceUnitOptions2_5EditorPage(persistenceUnitModel, parent, widgetFactory, resourceManager);
+		new EclipseLinkPersistenceUnitOptionsEditorPage2_5(persistenceUnitModel, parent, widgetFactory, resourceManager);
 	}
 }

@@ -15,13 +15,10 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- *  EclipseLinkPersistenceUnitOptions2_5EditorPage
- */
-public class EclipseLinkPersistenceUnitOptions2_5EditorPage
+public class EclipseLinkPersistenceUnitOptionsEditorPage2_5
 	extends EclipseLinkPersistenceUnitOptions2_4EditorPage
 {
-	public EclipseLinkPersistenceUnitOptions2_5EditorPage(
+	public EclipseLinkPersistenceUnitOptionsEditorPage2_5(
 			PropertyValueModel<PersistenceUnit> persistenceUnitModel,
 	        Composite parentComposite,
 	        WidgetFactory widgetFactory,
@@ -38,5 +35,4 @@ public class EclipseLinkPersistenceUnitOptions2_5EditorPage
 
 		this.buildMiscellaneousSection(container);
 	}
-
 }
