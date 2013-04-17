@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,15 +15,14 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.swt.widgets.Composite;
 
-public class JavaEclipseLinkEntity2_0Composite
+public class EclipseLinkJavaEntityComposite2_0
 	extends AbstractJavaEclipseLinkEntity2_xComposite<EclipseLinkJavaEntity>
 {
-	public JavaEclipseLinkEntity2_0Composite(
+	public EclipseLinkJavaEntityComposite2_0(
 			PropertyValueModel<? extends EclipseLinkJavaEntity> entityModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
 		super(entityModel, parentComposite, widgetFactory, resourceManager);
 	}
-
 }
