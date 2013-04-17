@@ -104,7 +104,7 @@ public abstract class AbstractEclipseLinkOrmXmlUiFactory
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new OrmEclipseLinkVersionMappingComposite((PropertyValueModel<? extends EclipseLinkVersionMapping>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new EclipseLinkOrmVersionMappingComposite((PropertyValueModel<? extends EclipseLinkVersionMapping>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@SuppressWarnings("unchecked")
