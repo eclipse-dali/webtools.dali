@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMess
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkCacheSizeCombo;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkCacheTypeComboViewer;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkCachingComposite2_0;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java.JavaEclipseLinkEntityComposite;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java.EclipseLinkJavaEntityComposite;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -39,7 +39,7 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see Entity
  * @see EclipseLinkCaching
- * @see JavaEclipseLinkEntityComposite - The parent container
+ * @see EclipseLinkJavaEntityComposite - The parent container
  * @see EclipseLinkCacheTypeComboViewer
  * @see EclipseLinkCacheSizeCombo
  * @see EclipseLinkAlwaysRefreshComposite

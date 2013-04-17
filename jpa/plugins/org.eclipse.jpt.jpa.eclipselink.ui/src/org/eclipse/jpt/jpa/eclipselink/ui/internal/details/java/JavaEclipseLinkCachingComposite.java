@@ -40,7 +40,7 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see Entity
  * @see EclipseLinkCaching2_0
- * @see JavaEclipseLinkEntityComposite - The parent container
+ * @see EclipseLinkJavaEntityComposite - The parent container
  * @see EclipseLinkCacheTypeComboViewer
  * @see EclipseLinkCacheSizeCombo
  * @see EclipseLinkAlwaysRefreshComposite

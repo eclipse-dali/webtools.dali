@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkExistenceType;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java.JavaEclipseLinkEntityComposite;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java.EclipseLinkJavaEntityComposite;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -53,7 +53,7 @@ import org.eclipse.ui.forms.widgets.Section;
  *
  * @see Entity
  * @see EclipseLinkCaching
- * @see JavaEclipseLinkEntityComposite - The parent container
+ * @see EclipseLinkJavaEntityComposite - The parent container
  * @see EclipseLinkCacheTypeComboViewer
  * @see EclipseLinkCacheSizeCombo
  * @see EclipseLinkAlwaysRefreshComposite
