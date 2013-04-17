@@ -13,13 +13,10 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory;
 import org.eclipse.jpt.jpa.ui.internal.wizards.gen.PromptJPAProjectWizardPage;
 
-/**
- *  PromptEclipseLinkProjectWizardPage
- */
-public class PromptEclipseLinkProjectWizardPage extends PromptJPAProjectWizardPage
+public class EclipseLinkPromptJpaProjectWizardPage
+	extends PromptJPAProjectWizardPage
 {
-
-	public PromptEclipseLinkProjectWizardPage(String helpContextId) {
+	public EclipseLinkPromptJpaProjectWizardPage(String helpContextId) {
 		super(helpContextId);
 	}
 

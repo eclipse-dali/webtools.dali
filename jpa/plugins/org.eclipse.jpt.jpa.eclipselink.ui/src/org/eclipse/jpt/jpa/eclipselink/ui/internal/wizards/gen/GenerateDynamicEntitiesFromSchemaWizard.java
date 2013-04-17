@@ -119,7 +119,7 @@ public class GenerateDynamicEntitiesFromSchemaWizard
 
 	@Override
 	protected PromptJPAProjectWizardPage buildProjectWizardPage() {
-		return new PromptEclipseLinkProjectWizardPage(HELP_CONTEXT_ID);
+		return new EclipseLinkPromptJpaProjectWizardPage(HELP_CONTEXT_ID);
 	}
 
 	@Override
