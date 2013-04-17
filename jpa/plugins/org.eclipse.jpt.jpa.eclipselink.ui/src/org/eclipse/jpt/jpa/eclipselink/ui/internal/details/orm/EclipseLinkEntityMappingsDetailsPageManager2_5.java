@@ -54,7 +54,7 @@ public class EclipseLinkEntityMappingsDetailsPageManager2_5
 
 	@Override
 	protected Control initializePersistenceUnitMetadataSection(Composite container) {
-		return new EclipseLink2_3PersistenceUnitMetadataComposite(
+		return new EclipseLinkPersistenceUnitMetadataComposite2_3(
 			this,
 			buildPersistentUnitMetadataHolder(),
 			container

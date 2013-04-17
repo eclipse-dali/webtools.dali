@@ -75,12 +75,12 @@ import org.eclipse.swt.widgets.Group;
  * @version 3.1
  * @since 3.1
  */
-public class EclipseLink2_3PersistenceUnitMetadataComposite extends PersistenceUnitMetadataComposite
+public class EclipseLinkPersistenceUnitMetadataComposite2_3 extends PersistenceUnitMetadataComposite
 {
 
 	protected EclipseLinkTenantDiscriminatorColumnsComposite<OrmPersistenceUnitDefaults> tenantDiscriminatorColumnsComposite;
 
-	public EclipseLink2_3PersistenceUnitMetadataComposite(Pane<?> parentPane,
+	public EclipseLinkPersistenceUnitMetadataComposite2_3(Pane<?> parentPane,
 	                                        PropertyValueModel<? extends OrmPersistenceUnitMetadata> subjectHolder,
 	                                        Composite parent) {
 
@@ -215,5 +215,4 @@ public class EclipseLink2_3PersistenceUnitMetadataComposite extends PersistenceU
 			((EclipseLinkPersistenceUnitDefaults) subject).removeTenantDiscriminatorColumn((EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3) column);
 		}
 	}
-
 }

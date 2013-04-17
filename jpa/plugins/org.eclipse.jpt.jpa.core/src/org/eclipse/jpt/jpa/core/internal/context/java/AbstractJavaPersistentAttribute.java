@@ -153,7 +153,7 @@ public abstract class AbstractJavaPersistentAttribute
 	}
 
 	protected AccessType buildDefaultAccess() {
-		return getAccessor().getDefaultAccess();
+		return this.accessor.getDefaultAccess();
 	}
 
 	public AccessType getSpecifiedAccess() {
