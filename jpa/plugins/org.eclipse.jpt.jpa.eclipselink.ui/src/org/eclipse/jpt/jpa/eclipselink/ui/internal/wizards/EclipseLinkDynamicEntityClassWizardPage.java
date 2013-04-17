@@ -82,7 +82,7 @@ import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.internal.datamodel.ui.DataModelWizardPage;
 
-public class DynamicEntityClassWizardPage extends DataModelWizardPage{
+public class EclipseLinkDynamicEntityClassWizardPage extends DataModelWizardPage{
 	protected Text packageText;
 	protected Button packageButton;
 	protected Label packageLabel;
@@ -105,7 +105,7 @@ public class DynamicEntityClassWizardPage extends DataModelWizardPage{
 	 * @param model
 	 * @param pageName
 	 */
-	public DynamicEntityClassWizardPage(IDataModel model, String pageName) {
+	public EclipseLinkDynamicEntityClassWizardPage(IDataModel model, String pageName) {
 		super(model, pageName);
 		setDescription(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_CLASS_WIZARD_PAGE_DESC);
 		this.setTitle(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_CLASS_WIZARD_PAGE_TITLE);
