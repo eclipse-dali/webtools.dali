@@ -27,8 +27,8 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTenantDiscriminat
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.TenantDiscriminatorColumnsComposite;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.TenantDiscriminatorColumnsComposite.TenantDiscriminatorColumnsEditor;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkTenantDiscriminatorColumnsComposite;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkTenantDiscriminatorColumnsComposite.TenantDiscriminatorColumnsEditor;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.details.orm.JptJpaUiDetailsOrmMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
@@ -77,7 +77,7 @@ import org.eclipse.swt.widgets.Group;
 public class EclipseLink2_3PersistenceUnitMetadataComposite extends PersistenceUnitMetadataComposite
 {
 
-	protected TenantDiscriminatorColumnsComposite<OrmPersistenceUnitDefaults> tenantDiscriminatorColumnsComposite;
+	protected EclipseLinkTenantDiscriminatorColumnsComposite<OrmPersistenceUnitDefaults> tenantDiscriminatorColumnsComposite;
 
 	public EclipseLink2_3PersistenceUnitMetadataComposite(Pane<?> parentPane,
 	                                        PropertyValueModel<? extends OrmPersistenceUnitMetadata> subjectHolder,
@@ -145,7 +145,7 @@ public class EclipseLink2_3PersistenceUnitMetadataComposite extends PersistenceU
 		gridData.horizontalSpan = 2;
 		tenantDiscriminatorColumnGroupPane.setLayoutData(gridData);
 
-		this.tenantDiscriminatorColumnsComposite = new TenantDiscriminatorColumnsComposite<OrmPersistenceUnitDefaults>(
+		this.tenantDiscriminatorColumnsComposite = new EclipseLinkTenantDiscriminatorColumnsComposite<OrmPersistenceUnitDefaults>(
 				this,
 				this.getPersistenceUnitDefaultsHolder(),
 				this.buildPaneEnablerHolder(),

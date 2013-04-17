@@ -27,8 +27,8 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkSpecifiedTenantDi
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.TenantDiscriminatorColumnsComposite;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.TenantDiscriminatorColumnsComposite.TenantDiscriminatorColumnsEditor;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkTenantDiscriminatorColumnsComposite;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkTenantDiscriminatorColumnsComposite.TenantDiscriminatorColumnsEditor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
@@ -59,8 +59,8 @@ public class EclipseLinkEntityMappingsTenantDiscriminatorColumnsComposite extend
 		this.buildTenantDiscriminatorColumnsComposite(tenantDiscriminatorColumnGroupPane);
 	}
 
-	protected TenantDiscriminatorColumnsComposite<EntityMappings>  buildTenantDiscriminatorColumnsComposite(Composite container) {
-		return new TenantDiscriminatorColumnsComposite<EntityMappings>(
+	protected EclipseLinkTenantDiscriminatorColumnsComposite<EntityMappings>  buildTenantDiscriminatorColumnsComposite(Composite container) {
+		return new EclipseLinkTenantDiscriminatorColumnsComposite<EntityMappings>(
 				this,
 				this.getSubjectHolder(),
 				new TenantDiscriminatorColumnPaneEnablerHolder(),

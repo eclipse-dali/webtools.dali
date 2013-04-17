@@ -34,7 +34,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTenantDiscriminat
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.TenantDiscriminatorColumnsComposite.TenantDiscriminatorColumnsEditor;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkTenantDiscriminatorColumnsComposite.TenantDiscriminatorColumnsEditor;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -65,7 +65,7 @@ import org.eclipse.swt.widgets.Group;
  */
 public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenancy2_3>
 {
-	private TenantDiscriminatorColumnsComposite<EclipseLinkMultitenancy2_3> tenantDiscriminatorColumnsComposite;
+	private EclipseLinkTenantDiscriminatorColumnsComposite<EclipseLinkMultitenancy2_3> tenantDiscriminatorColumnsComposite;
 
 	public EclipseLinkMultitenancyComposite(Pane<?> parentPane,
 								PropertyValueModel<? extends EclipseLinkMultitenancy2_3> subjectHolder,
@@ -230,8 +230,8 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 		};
 	}
 
-	protected TenantDiscriminatorColumnsComposite<EclipseLinkMultitenancy2_3>  buildTenantDiscriminatorColumnsComposite(Composite container) {
-		return new TenantDiscriminatorColumnsComposite<EclipseLinkMultitenancy2_3>(
+	protected EclipseLinkTenantDiscriminatorColumnsComposite<EclipseLinkMultitenancy2_3>  buildTenantDiscriminatorColumnsComposite(Composite container) {
+		return new EclipseLinkTenantDiscriminatorColumnsComposite<EclipseLinkMultitenancy2_3>(
 				this,
 				this.getSubjectHolder(),
 				new TenantDiscriminatorColumnPaneEnablerHolder(),

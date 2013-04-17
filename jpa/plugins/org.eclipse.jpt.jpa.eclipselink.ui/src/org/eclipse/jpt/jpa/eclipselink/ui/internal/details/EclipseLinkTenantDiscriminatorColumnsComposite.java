@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -43,7 +43,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.part.PageBook;
 
-public class TenantDiscriminatorColumnsComposite<T extends JpaModel>
+public class EclipseLinkTenantDiscriminatorColumnsComposite<T extends JpaModel>
 	extends Pane<T>
 {
 	/**
@@ -56,7 +56,7 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaModel>
 	private PropertyValueModel<EclipseLinkTenantDiscriminatorColumn2_3> selectedTenantDiscriminatorColumnModel;
 
 
-	public TenantDiscriminatorColumnsComposite(
+	public EclipseLinkTenantDiscriminatorColumnsComposite(
 			Pane<?> parent,
 			PropertyValueModel<? extends T> subjectModel,
 			PropertyValueModel<Boolean> enabledModel,
@@ -170,7 +170,7 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaModel>
 		return new AbstractAdapter<EclipseLinkTenantDiscriminatorColumn2_3>() {
 
 			public EclipseLinkTenantDiscriminatorColumn2_3 addNewItem() {
-				return TenantDiscriminatorColumnsComposite.this.tenantDiscriminatorColumnsEditor.addTenantDiscriminatorColumn(getSubject());
+				return EclipseLinkTenantDiscriminatorColumnsComposite.this.tenantDiscriminatorColumnsEditor.addTenantDiscriminatorColumn(getSubject());
 			}
 
 			@Override
@@ -185,7 +185,7 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaModel>
 
 			public void removeSelectedItems(CollectionValueModel<EclipseLinkTenantDiscriminatorColumn2_3> selectedItemsModel) {
 				EclipseLinkSpecifiedTenantDiscriminatorColumn2_3 column = (EclipseLinkSpecifiedTenantDiscriminatorColumn2_3) selectedItemsModel.iterator().next();
-				TenantDiscriminatorColumnsComposite.this.tenantDiscriminatorColumnsEditor.removeTenantDiscriminatorColumn(getSubject(), column);
+				EclipseLinkTenantDiscriminatorColumnsComposite.this.tenantDiscriminatorColumnsEditor.removeTenantDiscriminatorColumn(getSubject(), column);
 			}
 		};
 	}
@@ -207,12 +207,12 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaModel>
 		return new ListAspectAdapter<T, EclipseLinkTenantDiscriminatorColumn2_3>(getSubjectHolder(), this.tenantDiscriminatorColumnsEditor.getSpecifiedTenantDiscriminatorsListPropertyName()) {
 			@Override
 			protected ListIterable<EclipseLinkTenantDiscriminatorColumn2_3> getListIterable() {
-				return TenantDiscriminatorColumnsComposite.this.tenantDiscriminatorColumnsEditor.getSpecifiedTenantDiscriminatorColumns(this.subject);
+				return EclipseLinkTenantDiscriminatorColumnsComposite.this.tenantDiscriminatorColumnsEditor.getSpecifiedTenantDiscriminatorColumns(this.subject);
 			}
 
 			@Override
 			protected int size_() {
-				return TenantDiscriminatorColumnsComposite.this.tenantDiscriminatorColumnsEditor.getSpecifiedTenantDiscriminatorColumnsSize(this.subject);
+				return EclipseLinkTenantDiscriminatorColumnsComposite.this.tenantDiscriminatorColumnsEditor.getSpecifiedTenantDiscriminatorColumnsSize(this.subject);
 			}
 		};
 	}
@@ -221,12 +221,12 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaModel>
 		return new ListAspectAdapter<T, EclipseLinkTenantDiscriminatorColumn2_3>(getSubjectHolder(), this.tenantDiscriminatorColumnsEditor.getDefaultTenantDiscriminatorsListPropertyName()) {
 			@Override
 			protected ListIterable<EclipseLinkTenantDiscriminatorColumn2_3> getListIterable() {
-				return TenantDiscriminatorColumnsComposite.this.tenantDiscriminatorColumnsEditor.getDefaultTenantDiscriminatorColumns(this.subject);
+				return EclipseLinkTenantDiscriminatorColumnsComposite.this.tenantDiscriminatorColumnsEditor.getDefaultTenantDiscriminatorColumns(this.subject);
 			}
 
 			@Override
 			protected int size_() {
-				return TenantDiscriminatorColumnsComposite.this.tenantDiscriminatorColumnsEditor.getDefaultTenantDiscriminatorColumnsSize(this.subject);
+				return EclipseLinkTenantDiscriminatorColumnsComposite.this.tenantDiscriminatorColumnsEditor.getDefaultTenantDiscriminatorColumnsSize(this.subject);
 			}
 		};
 	}
