@@ -108,7 +108,7 @@ public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite<T extends 
 	}
 	
 	protected Control initializeCachingSection(Composite container) {
-		return new OrmEclipseLinkCachingComposite(this, buildCachingModel(), container).getControl();
+		return new EclipseLinkOrmCachingComposite(this, buildCachingModel(), container).getControl();
 	}
 	
 	protected PropertyAspectAdapter<T, EclipseLinkCaching> buildCachingModel() {
