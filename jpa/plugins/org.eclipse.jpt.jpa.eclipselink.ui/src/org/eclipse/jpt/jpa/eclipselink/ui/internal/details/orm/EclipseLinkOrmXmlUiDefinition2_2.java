@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmX
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
 
 public class EclipseLinkOrmXmlUiDefinition2_2
-	extends EclipseLinkOrmXml2_1UiDefinition
+	extends EclipseLinkOrmXmlUiDefinition2_1
 {
 	// singleton
 	private static final ResourceUiDefinition INSTANCE = new EclipseLinkOrmXmlUiDefinition2_2();
