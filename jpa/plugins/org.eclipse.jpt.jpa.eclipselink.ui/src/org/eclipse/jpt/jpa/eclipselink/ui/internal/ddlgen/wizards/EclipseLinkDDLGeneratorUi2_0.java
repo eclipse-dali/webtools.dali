@@ -33,7 +33,7 @@ public class EclipseLinkDDLGeneratorUi2_0 extends EclipseLinkDDLGeneratorUi
 	// ********** behavior **********
 
 	@Override
-	protected GenerateDDLWizard buildGenerateDDLWizard(JpaProject project, String puName) {
+	protected EclipseLinkGenerateDDLWizard buildGenerateDDLWizard(JpaProject project, String puName) {
 		return new EclipseLinkGenerateDDLWizard2_0(project, puName);
 	}
 }

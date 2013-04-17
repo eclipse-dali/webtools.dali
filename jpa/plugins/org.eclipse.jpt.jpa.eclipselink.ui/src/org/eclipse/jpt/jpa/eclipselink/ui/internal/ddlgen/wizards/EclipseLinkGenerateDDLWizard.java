@@ -1,12 +1,12 @@
 /*******************************************************************************
-* Copyright (c) 2007, 2012 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.ddlgen.wizards;
 
 import org.eclipse.core.resources.IContainer;
@@ -39,7 +39,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  *  GenerateDDLWizard
  */
-public class GenerateDDLWizard extends Wizard {	
+public class EclipseLinkGenerateDDLWizard extends Wizard {	
 
 	private static final String CR = StringTools.CR;
 	
@@ -52,7 +52,7 @@ public class GenerateDDLWizard extends Wizard {
 
 	// ********** constructor **********
 
-	public GenerateDDLWizard(JpaProject jpaProject, String puName) {
+	public EclipseLinkGenerateDDLWizard(JpaProject jpaProject, String puName) {
 		super();
 		this.jpaProject = jpaProject;
 		this.puName = puName;

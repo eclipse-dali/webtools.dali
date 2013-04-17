@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.ddlgen.wizards.GenerateDDLWizard;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.ddlgen.wizards.EclipseLinkGenerateDDLWizard;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -52,7 +52,7 @@ public class EclipseLinkDDLGeneratorUi
 		PersistenceUnit persistenceUnit = this.getPersistenceUnits().iterator().next(); // Take the first persistenceUnit
 		String puName = persistenceUnit.getName();
 
-		GenerateDDLWizard wizard = this.buildGenerateDDLWizard(this.project, puName);
+		EclipseLinkGenerateDDLWizard wizard = this.buildGenerateDDLWizard(this.project, puName);
 		WizardDialog wizardDialog = new WizardDialog(this.getCurrentShell(), wizard);
 		wizardDialog.create();
 		if(wizard.getPageCount() > 0) {
@@ -60,8 +60,8 @@ public class EclipseLinkDDLGeneratorUi
 		}
 	}
 	
-	protected GenerateDDLWizard buildGenerateDDLWizard(JpaProject project, String puName) {
-		return new GenerateDDLWizard(project, puName);
+	protected EclipseLinkGenerateDDLWizard buildGenerateDDLWizard(JpaProject project, String puName) {
+		return new EclipseLinkGenerateDDLWizard(project, puName);
 	}
 	
 	private Shell getCurrentShell() {

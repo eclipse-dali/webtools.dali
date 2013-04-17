@@ -22,7 +22,7 @@ import org.eclipse.wst.validation.ValidationFramework;
 /**
  *  EclipseLink2_0GenerateDDLWizard
  */
-public class EclipseLinkGenerateDDLWizard2_0 extends GenerateDDLWizard {
+public class EclipseLinkGenerateDDLWizard2_0 extends EclipseLinkGenerateDDLWizard {
 
 	public EclipseLinkGenerateDDLWizard2_0(JpaProject jpaProject, String puName) {
 		super(jpaProject, puName);
@@ -35,7 +35,7 @@ public class EclipseLinkGenerateDDLWizard2_0 extends GenerateDDLWizard {
 
 	// ********** generate ddl job **********
 
-	protected static class Generate2_0DDLJob extends GenerateDDLWizard.GenerateDDLJob {
+	protected static class Generate2_0DDLJob extends EclipseLinkGenerateDDLWizard.GenerateDDLJob {
 
 		// ********** constructor **********
 		
