@@ -76,7 +76,7 @@ public class EclipseLinkOrmXmlUiDefinition2_0
 	protected void addDetailsProvidersTo(List<JpaDetailsProvider> providers) {
 		providers.add(OrmPersistentTypeDetailsProvider.instance());
 		providers.add(OrmPersistentAttributeDetailsProvider.instance());
-		providers.add(EclipseLinkEntityMappings2_0DetailsProvider.instance());
+		providers.add(EclipseLinkEntityMappingsDetailsProvider2_0.instance());
 	}
 
 
