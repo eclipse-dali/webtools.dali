@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.jpa2_1.details.JpaUiFactory2_1;
 import org.eclipse.swt.widgets.Composite;
 
-public class EclipseLink2_5JavaUiFactory
+public class EclipseLinkJavaUiFactory2_5
 	extends EclipseLink2_0JavaUiFactory
 	implements JpaUiFactory2_1
 {
