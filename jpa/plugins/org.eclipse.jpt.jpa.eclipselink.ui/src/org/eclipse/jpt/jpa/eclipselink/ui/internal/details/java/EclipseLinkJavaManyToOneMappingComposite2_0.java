@@ -30,10 +30,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
-public class JavaEclipseLinkManyToOneMapping2_0Composite
+public class EclipseLinkJavaManyToOneMappingComposite2_0
 	extends AbstractManyToOneMappingComposite2_0<EclipseLinkManyToOneMapping2_0, JavaManyToOneRelationship2_0, Cascade2_0>
 {
-	public JavaEclipseLinkManyToOneMapping2_0Composite(
+	public EclipseLinkJavaManyToOneMappingComposite2_0(
 			PropertyValueModel<? extends EclipseLinkManyToOneMapping2_0> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
@@ -82,5 +82,4 @@ public class JavaEclipseLinkManyToOneMapping2_0Composite
 			}
 		};
 	}
-
 }
