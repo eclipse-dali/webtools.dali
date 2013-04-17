@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
 public class EclipseLinkJavaEntityComposite1_2
-	extends AbstractJavaEclipseLinkEntityComposite<EclipseLinkJavaEntity>
+	extends EclipseLinkAbstractJavaEntityComposite<EclipseLinkJavaEntity>
 {
 	public EclipseLinkJavaEntityComposite1_2(
 			PropertyValueModel<? extends EclipseLinkJavaEntity> entityModel,
