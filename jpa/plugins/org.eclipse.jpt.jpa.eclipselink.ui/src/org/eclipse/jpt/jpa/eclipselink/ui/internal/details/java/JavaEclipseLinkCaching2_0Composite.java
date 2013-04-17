@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaCaching;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkCacheSizeCombo;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkCacheTypeComboViewer;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkCaching2_0Composite;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkCachingComposite2_0;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -50,7 +50,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 3.0
  * @since 3.0
  */
-public class JavaEclipseLinkCaching2_0Composite extends EclipseLinkCaching2_0Composite<EclipseLinkJavaCaching>
+public class JavaEclipseLinkCaching2_0Composite extends EclipseLinkCachingComposite2_0<EclipseLinkJavaCaching>
 {
 
 	public JavaEclipseLinkCaching2_0Composite(Pane<?> parentPane,

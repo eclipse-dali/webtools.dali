@@ -62,10 +62,10 @@ import org.eclipse.ui.forms.widgets.Section;
  * @version 3.0
  * @since 3.0
  */
-public abstract class EclipseLinkCaching2_0Composite<T extends EclipseLinkCaching> extends EclipseLinkCachingComposite<T>
+public abstract class EclipseLinkCachingComposite2_0<T extends EclipseLinkCaching> extends EclipseLinkCachingComposite<T>
 {
 	
-	protected EclipseLinkCaching2_0Composite(Pane<?> parentPane,
+	protected EclipseLinkCachingComposite2_0(Pane<?> parentPane,
         PropertyValueModel<T> subjectHolder,
         Composite parent) {
 
