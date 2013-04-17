@@ -42,14 +42,14 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
-public class DynamicDefaultTableGenerationWizardPage extends
-		DefaultTableGenerationWizardPage {
-
+public class EclipseLinkDynamicDefaultTableGenerationWizardPage
+	extends DefaultTableGenerationWizardPage
+{
 	private Label xmlMappingFileLabel;
 	private Text xmlMappingFileText;
 	private Button xmlMappingFileBrowseButton;
 
-	public DynamicDefaultTableGenerationWizardPage(JpaProject jpaProject) {
+	public EclipseLinkDynamicDefaultTableGenerationWizardPage(JpaProject jpaProject) {
 		super(jpaProject);
 	}
 	
@@ -179,5 +179,4 @@ public class DynamicDefaultTableGenerationWizardPage extends
 	protected JptXmlResource getOrmXmlResource() {
 		return this.jpaProject.getMappingFileXmlResource(new Path(this.xmlMappingFileText.getText()));
 	}
-	
 }
