@@ -26,10 +26,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
-public class OrmEclipseLinkVersionMapping1_1Composite
+public class EclipseLinkOrmVersionMappingComposite1_1
 	extends EclipseLinkVersionMappingComposite<EclipseLinkVersionMapping>
 {
-	public OrmEclipseLinkVersionMapping1_1Composite(
+	public EclipseLinkOrmVersionMappingComposite1_1(
 			PropertyValueModel<? extends EclipseLinkVersionMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
