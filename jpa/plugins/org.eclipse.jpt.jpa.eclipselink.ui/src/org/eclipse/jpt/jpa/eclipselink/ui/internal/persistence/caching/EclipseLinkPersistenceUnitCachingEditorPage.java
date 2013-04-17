@@ -56,7 +56,7 @@ public class EclipseLinkPersistenceUnitCachingEditorPage<T extends EclipseLinkCa
 		section.setClient(client);
 
 		// Defaults
-		CacheDefaultsComposite<T> defaultsComposite = new CacheDefaultsComposite<T>(this, client);
+		EclipseLinkCacheDefaultsComposite<T> defaultsComposite = new EclipseLinkCacheDefaultsComposite<T>(this, client);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		defaultsComposite.getControl().setLayoutData(gridData);

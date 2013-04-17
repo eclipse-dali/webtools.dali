@@ -30,9 +30,10 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  CacheDefaultsComposite
  */
-public class CacheDefaultsComposite<T extends EclipseLinkCaching> extends Pane<T>
+public class EclipseLinkCacheDefaultsComposite<T extends EclipseLinkCaching>
+	extends Pane<T>
 {
-	public CacheDefaultsComposite(Pane<T> subjectHolder,
+	public EclipseLinkCacheDefaultsComposite(Pane<T> subjectHolder,
 	                                       Composite container) {
 
 		super(subjectHolder, container);
