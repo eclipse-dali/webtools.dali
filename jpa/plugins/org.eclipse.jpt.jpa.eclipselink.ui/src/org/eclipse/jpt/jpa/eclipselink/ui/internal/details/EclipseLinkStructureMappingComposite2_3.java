@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,11 +17,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkStructureMapping2
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.swt.widgets.Composite;
 
-public class EclipseLinkStructureMapping2_3Composite
+public class EclipseLinkStructureMappingComposite2_3
 	extends Pane<EclipseLinkStructureMapping2_3>
 	implements JpaComposite
 {
-	public EclipseLinkStructureMapping2_3Composite(
+	public EclipseLinkStructureMappingComposite2_3(
 			PropertyValueModel<? extends EclipseLinkStructureMapping2_3> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
