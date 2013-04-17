@@ -20,11 +20,10 @@ import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.jpa2_1.details.JpaUiFactory2_1;
 import org.eclipse.swt.widgets.Composite;
 
-public class EclipseLinkOrmXml2_5UiFactory
+public class EclipseLinkOrmXmlUiFactory2_5
 	extends EclipseLinkOrmXml2_0UiFactory
 	implements JpaUiFactory2_1
 {
-
 	// ********** type mappings **********
 
 	@SuppressWarnings("unchecked")
@@ -46,5 +45,4 @@ public class EclipseLinkOrmXml2_5UiFactory
 			ResourceManager resourceManager) {
 		return new EclipseLinkOrmEntityComposite2_5((PropertyValueModel<EclipseLinkOrmEntity>) entityModel, parentComposite, widgetFactory, resourceManager);
 	}
-
 }

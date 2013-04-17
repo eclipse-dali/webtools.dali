@@ -61,7 +61,7 @@ public class EclipseLinkOrmXml2_5UiDefinition
 
 	@Override
 	protected JpaUiFactory buildUiFactory() {
-		return new EclipseLinkOrmXml2_5UiFactory();
+		return new EclipseLinkOrmXmlUiFactory2_5();
 	}
 
 	@Override
