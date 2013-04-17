@@ -68,7 +68,7 @@ public abstract class AbstractEclipseLinkOrmXmlUiFactory
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new OrmEclipseLinkEmbeddableComposite((PropertyValueModel<EclipseLinkOrmEmbeddable>) embeddableModel, parentComposite, widgetFactory, resourceManager);
+		return new EclipseLinkOrmEmbeddableComposite((PropertyValueModel<EclipseLinkOrmEmbeddable>) embeddableModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 

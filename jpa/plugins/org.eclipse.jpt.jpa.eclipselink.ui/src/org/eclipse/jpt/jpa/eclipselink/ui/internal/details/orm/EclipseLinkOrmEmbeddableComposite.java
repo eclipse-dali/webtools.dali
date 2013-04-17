@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,10 +27,10 @@ import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-public class OrmEclipseLinkEmbeddableComposite
+public class EclipseLinkOrmEmbeddableComposite
 	extends AbstractOrmEmbeddableComposite<EclipseLinkOrmEmbeddable>
 {
-	public OrmEclipseLinkEmbeddableComposite(
+	public EclipseLinkOrmEmbeddableComposite(
 			PropertyValueModel<? extends EclipseLinkOrmEmbeddable> embeddableModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
