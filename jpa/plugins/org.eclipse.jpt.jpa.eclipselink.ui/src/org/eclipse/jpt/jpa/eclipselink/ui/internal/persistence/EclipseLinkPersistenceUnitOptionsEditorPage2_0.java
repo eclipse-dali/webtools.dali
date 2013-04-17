@@ -11,10 +11,8 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence;
 
 import java.util.Collection;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jdt.ui.JavaUI;
@@ -59,12 +57,12 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
 import org.eclipse.ui.forms.widgets.Section;
 
-class EclipseLinkPersistenceUnitOptions2_0EditorPage 
+class EclipseLinkPersistenceUnitOptionsEditorPage2_0
 	extends EclipseLinkPersistenceUnitOptionsEditorPage {
 
 	private PropertyValueModel<EclipseLinkOptions2_0> optionsModel;
 
-	public EclipseLinkPersistenceUnitOptions2_0EditorPage(
+	public EclipseLinkPersistenceUnitOptionsEditorPage2_0(
 			PropertyValueModel<PersistenceUnit> persistenceUnitModel,
             Composite parentComposite,
             WidgetFactory widgetFactory,

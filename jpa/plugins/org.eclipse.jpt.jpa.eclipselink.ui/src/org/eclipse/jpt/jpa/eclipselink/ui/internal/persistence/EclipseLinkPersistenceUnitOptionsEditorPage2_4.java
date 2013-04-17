@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Section;
 
 class EclipseLinkPersistenceUnitOptionsEditorPage2_4
-	extends EclipseLinkPersistenceUnitOptions2_0EditorPage
+	extends EclipseLinkPersistenceUnitOptionsEditorPage2_0
 {
 	public EclipseLinkPersistenceUnitOptionsEditorPage2_4(
 			PropertyValueModel<PersistenceUnit> persistenceUnitModel,
