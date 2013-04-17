@@ -28,10 +28,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
-public class JavaEclipseLinkElementCollectionMapping2_0Composite
+public class EclipseLinkJavaElementCollectionMappingComposite2_0
 	extends EclipseLinkElementCollectionMappingComposite2_0<EclipseLinkElementCollectionMapping2_0>
 {
-	public JavaEclipseLinkElementCollectionMapping2_0Composite(
+	public EclipseLinkJavaElementCollectionMappingComposite2_0(
 			PropertyValueModel<? extends EclipseLinkElementCollectionMapping2_0> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
