@@ -42,7 +42,8 @@ import org.eclipse.ui.dialogs.SelectionDialog;
 /**
  *  SessionCustomizersComposite
  */
-public class SessionCustomizersComposite extends Pane<EclipseLinkCustomization>
+public class EclipseLinkSessionCustomizersComposite
+	extends Pane<EclipseLinkCustomization>
 {
 	/**
 	 * Creates a new <code>SessionCustomizerComposite</code>.
@@ -50,7 +51,7 @@ public class SessionCustomizersComposite extends Pane<EclipseLinkCustomization>
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public SessionCustomizersComposite(Pane<? extends EclipseLinkCustomization> parentPane,
+	public EclipseLinkSessionCustomizersComposite(Pane<? extends EclipseLinkCustomization> parentPane,
                            Composite parent) {
 
 		super(parentPane, parent);

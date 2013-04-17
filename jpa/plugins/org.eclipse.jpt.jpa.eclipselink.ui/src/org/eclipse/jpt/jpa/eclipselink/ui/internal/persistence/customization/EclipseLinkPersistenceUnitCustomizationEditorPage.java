@@ -141,7 +141,7 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Eclipse
 		Composite container = this.addSubPane(customizersSection);
 
 		// Session Customizer
-		new SessionCustomizersComposite(this, container);
+		new EclipseLinkSessionCustomizersComposite(this, container);
 
 		this.buildEntityListComposite(container);
 
