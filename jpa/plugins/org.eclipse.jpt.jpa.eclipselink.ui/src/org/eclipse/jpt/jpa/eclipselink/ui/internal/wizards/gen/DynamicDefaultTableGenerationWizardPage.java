@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards.SelectEclipseLinkMappingFileDialog;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards.EclipseLinkSelectMappingFileDialog;
 import org.eclipse.jpt.jpa.eclipselink.ui.wizards.gen.JptJpaEclipseLinkUiDynamicEntityGenMessages;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
@@ -133,7 +133,7 @@ public class DynamicDefaultTableGenerationWizardPage extends
 		ViewerFilter filter = getDialogViewerFilter(this.jpaProject);
 		ITreeContentProvider contentProvider = new WorkbenchContentProvider();
 		ILabelProvider labelProvider = new WorkbenchLabelProvider();
-		SelectMappingFileDialog dialog = new SelectEclipseLinkMappingFileDialog(getShell(), this.jpaProject.getProject(), labelProvider, contentProvider);
+		SelectMappingFileDialog dialog = new EclipseLinkSelectMappingFileDialog(getShell(), this.jpaProject.getProject(), labelProvider, contentProvider);
 		dialog.setTitle(JptJpaUiMessages.SelectMappingFileDialog_title);
 		dialog.setMessage(JptJpaUiMessages.SelectMappingFileDialog_message);
 		dialog.addFilter(filter);

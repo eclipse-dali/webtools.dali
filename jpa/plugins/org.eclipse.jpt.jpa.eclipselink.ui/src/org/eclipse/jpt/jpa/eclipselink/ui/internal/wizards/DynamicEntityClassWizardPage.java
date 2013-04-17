@@ -393,7 +393,7 @@ public class DynamicEntityClassWizardPage extends DataModelWizardPage{
 		ViewerFilter filter = getDialogViewerFilter(jpaProject);
 		ITreeContentProvider contentProvider = new WorkbenchContentProvider();
 		ILabelProvider labelProvider = new WorkbenchLabelProvider();
-		SelectMappingFileDialog dialog = new SelectEclipseLinkMappingFileDialog(getShell(), project, labelProvider, contentProvider);
+		SelectMappingFileDialog dialog = new EclipseLinkSelectMappingFileDialog(getShell(), project, labelProvider, contentProvider);
 		dialog.setTitle(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_CLASS_WIZARD_PAGE_CHOOSE_XML_DIALOG_TITLE);
 		dialog.setMessage(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_CLASS_WIZARD_PAGE_CHOOSE_XML_DIALOG_MSG);
 		dialog.addFilter(filter);
