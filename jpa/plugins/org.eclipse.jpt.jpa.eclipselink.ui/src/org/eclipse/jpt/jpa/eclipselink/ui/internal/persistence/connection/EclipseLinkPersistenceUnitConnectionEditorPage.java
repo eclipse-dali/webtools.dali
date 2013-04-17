@@ -98,7 +98,7 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 		gridData.horizontalSpan = 2;
 		nativeSqlCheckBox.getCheckBox().setLayoutData(gridData);
 
-		ConnectionPropertiesComposite<EclipseLinkConnection> connectionPropertiesComposite = new ConnectionPropertiesComposite<EclipseLinkConnection>(this, client);
+		EclipseLinkConnectionPropertiesComposite<EclipseLinkConnection> connectionPropertiesComposite = new EclipseLinkConnectionPropertiesComposite<EclipseLinkConnection>(this, client);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		connectionPropertiesComposite.getControl().setLayoutData(gridData);

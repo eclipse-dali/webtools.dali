@@ -1,12 +1,12 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2012 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-*
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.connection;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -25,10 +25,10 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  ConnectionPropertiesComposite
  */
-public class ConnectionPropertiesComposite<T extends EclipseLinkConnection> 
+public class EclipseLinkConnectionPropertiesComposite<T extends EclipseLinkConnection> 
 	extends Pane<T>
 {
-	public ConnectionPropertiesComposite(
+	public EclipseLinkConnectionPropertiesComposite(
 					Pane<T> parentComposite, 
 					Composite parent) {
 
@@ -163,5 +163,4 @@ public class ConnectionPropertiesComposite<T extends EclipseLinkConnection>
 			}
 		};
 	}
-
 }
