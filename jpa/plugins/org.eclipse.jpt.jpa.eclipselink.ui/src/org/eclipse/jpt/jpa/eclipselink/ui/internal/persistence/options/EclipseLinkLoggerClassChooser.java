@@ -41,7 +41,8 @@ import com.ibm.icu.text.Collator;
 /**
  *  LoggerComposite
  */
-public class LoggerClassChooser extends ClassChooserComboPane<EclipseLinkLogging>
+public class EclipseLinkLoggerClassChooser
+	extends ClassChooserComboPane<EclipseLinkLogging>
 {
 	/**
 	 * Creates a new <code>LoggerComposite</code>.
@@ -49,7 +50,7 @@ public class LoggerClassChooser extends ClassChooserComboPane<EclipseLinkLogging
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public LoggerClassChooser(Pane<? extends EclipseLinkLogging> parentPane,
+	public EclipseLinkLoggerClassChooser(Pane<? extends EclipseLinkLogging> parentPane,
 	                           Composite parent,
 	                           Hyperlink hyperlink) {
 
@@ -82,7 +83,7 @@ public class LoggerClassChooser extends ClassChooserComboPane<EclipseLinkLogging
 
 				String name = this.subject.getLogger();
 				if (name == null) {
-					name = LoggerClassChooser.this.getDefaultValue(this.subject);
+					name = EclipseLinkLoggerClassChooser.this.getDefaultValue(this.subject);
 				}
 				return name;
 			}
@@ -102,7 +103,7 @@ public class LoggerClassChooser extends ClassChooserComboPane<EclipseLinkLogging
 		return new PropertyAspectAdapter<EclipseLinkLogging, String>(this.getSubjectHolder(), EclipseLinkLogging.DEFAULT_LOGGER) {
 			@Override
 			protected String buildValue_() {
-				return LoggerClassChooser.this.getDefaultValue(this.subject);
+				return EclipseLinkLoggerClassChooser.this.getDefaultValue(this.subject);
 			}
 		};
 	}

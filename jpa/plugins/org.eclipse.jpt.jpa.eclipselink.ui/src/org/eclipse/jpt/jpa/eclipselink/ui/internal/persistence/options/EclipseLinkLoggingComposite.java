@@ -57,7 +57,7 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 		
 		// Logger:
 		Hyperlink loggerHyperlink = this.addHyperlink(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_LOGGER_LABEL);
-		new LoggerClassChooser(this, container, loggerHyperlink);
+		new EclipseLinkLoggerClassChooser(this, container, loggerHyperlink);
 	}
 
 	protected void logPropertiesComposite(Composite parent) {
