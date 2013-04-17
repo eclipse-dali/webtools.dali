@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -36,11 +36,11 @@ import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmPersistentAttributeDetails
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmPersistentTypeDetailsProvider;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmXmlUiDefinition;
 
-public class EclipseLinkOrmXml1_2UiDefinition
+public class EclipseLinkOrmXmlUiDefinition1_2
 	extends AbstractOrmXmlResourceUiDefinition
 {
 	// singleton
-	private static final ResourceUiDefinition INSTANCE = new EclipseLinkOrmXml1_2UiDefinition();
+	private static final ResourceUiDefinition INSTANCE = new EclipseLinkOrmXmlUiDefinition1_2();
 	
 	
 	/**
@@ -54,7 +54,7 @@ public class EclipseLinkOrmXml1_2UiDefinition
 	/**
 	 * Enforce singleton usage
 	 */
-	private EclipseLinkOrmXml1_2UiDefinition() {
+	private EclipseLinkOrmXmlUiDefinition1_2() {
 		super();
 	}
 	
