@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
 import java.util.List;
@@ -37,11 +37,11 @@ import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmPersistentTypeDetailsProvi
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.ElementCollectionMappingUiDefinition2_0;
 
 
-public class EclipseLinkOrmXml2_3UiDefinition
+public class EclipseLinkOrmXmlUiDefinition2_3
 	extends EclipseLinkOrmXml2_1UiDefinition
 {
 	// singleton
-	private static final ResourceUiDefinition INSTANCE = new EclipseLinkOrmXml2_3UiDefinition();
+	private static final ResourceUiDefinition INSTANCE = new EclipseLinkOrmXmlUiDefinition2_3();
 
 
 	/**
@@ -55,7 +55,7 @@ public class EclipseLinkOrmXml2_3UiDefinition
 	/**
 	 * Enforce singleton usage
 	 */
-	private EclipseLinkOrmXml2_3UiDefinition() {
+	private EclipseLinkOrmXmlUiDefinition2_3() {
 		super();
 	}
 
@@ -102,5 +102,4 @@ public class EclipseLinkOrmXml2_3UiDefinition
 		definitions.add(EclipseLinkArrayMappingUiDefinition2_3.instance());
 		definitions.add(EclipseLinkStructureMappingUiDefinition2_3.instance());
 	}
-
 }

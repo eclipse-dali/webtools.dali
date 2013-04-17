@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm.EclipseLinkOrmXml
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm.EclipseLinkOrmXml2_0UiDefinition;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm.EclipseLinkOrmXml2_1UiDefinition;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm.EclipseLinkOrmXml2_2UiDefinition;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm.EclipseLinkOrmXml2_3UiDefinition;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm.EclipseLinkOrmXmlUiDefinition2_3;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm.EclipseLinkOrmXmlUiDefinition2_4;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm.EclipseLinkOrmXmlUiDefinition;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.EclipseLinkPersistenceXmlUiDefinition;
@@ -64,7 +64,7 @@ public class EclipseLink2_4JpaPlatformUiProvider
 		definitions.add(EclipseLinkOrmXml2_0UiDefinition.instance());
 		definitions.add(EclipseLinkOrmXml2_1UiDefinition.instance());
 		definitions.add(EclipseLinkOrmXml2_2UiDefinition.instance());
-		definitions.add(EclipseLinkOrmXml2_3UiDefinition.instance());
+		definitions.add(EclipseLinkOrmXmlUiDefinition2_3.instance());
 		definitions.add(EclipseLinkOrmXmlUiDefinition2_4.instance());
 		definitions.add(EclipseLinkPersistenceXmlUiDefinition.instance());
 		definitions.add(EclipseLinkPersistenceXml2_4UiDefinition.instance());
