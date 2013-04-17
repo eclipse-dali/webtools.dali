@@ -36,10 +36,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-public class EclipseLinkPersistenceUnitCaching2_0EditorPage
+public class EclipseLinkPersistenceUnitCachingEditorPage2_0
 	extends EclipseLinkPersistenceUnitCachingEditorPage<EclipseLinkCaching>
 {
-	public EclipseLinkPersistenceUnitCaching2_0EditorPage(
+	public EclipseLinkPersistenceUnitCachingEditorPage2_0(
 			PropertyValueModel<EclipseLinkCaching> subjectModel,
 			Composite parentComposite,
             WidgetFactory widgetFactory,

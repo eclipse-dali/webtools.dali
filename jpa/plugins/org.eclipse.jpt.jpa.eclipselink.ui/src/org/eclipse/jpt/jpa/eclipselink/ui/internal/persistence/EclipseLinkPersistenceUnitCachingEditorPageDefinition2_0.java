@@ -59,6 +59,6 @@ public class EclipseLinkPersistenceUnitCachingEditorPageDefinition2_0
 
 	@Override
 	protected void buildEditorPageContent(Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager, PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
-		new EclipseLinkPersistenceUnitCaching2_0EditorPage(EclipseLinkPersistenceUnitCachingEditorPageDefinition.buildCachingModel(persistenceUnitModel), parentComposite, widgetFactory, resourceManager);
+		new EclipseLinkPersistenceUnitCachingEditorPage2_0(EclipseLinkPersistenceUnitCachingEditorPageDefinition.buildCachingModel(persistenceUnitModel), parentComposite, widgetFactory, resourceManager);
 	}
 }
