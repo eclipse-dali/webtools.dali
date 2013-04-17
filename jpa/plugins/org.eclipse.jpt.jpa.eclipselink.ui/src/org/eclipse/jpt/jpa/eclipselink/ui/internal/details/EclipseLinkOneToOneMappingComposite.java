@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Composite;
 
 
 public class EclipseLinkOneToOneMappingComposite
-	extends AbstractEclipseLinkOneToOneMappingComposite<EclipseLinkOneToOneMapping, Cascade>
+	extends EclipseLinkAbstractOneToOneMappingComposite<EclipseLinkOneToOneMapping, Cascade>
 {
 	public EclipseLinkOneToOneMappingComposite(
 			PropertyValueModel<? extends EclipseLinkOneToOneMapping> mappingModel,

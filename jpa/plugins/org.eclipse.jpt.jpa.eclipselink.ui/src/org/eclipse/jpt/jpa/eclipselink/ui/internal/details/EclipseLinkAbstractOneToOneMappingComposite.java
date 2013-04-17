@@ -31,10 +31,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
 
-public abstract class AbstractEclipseLinkOneToOneMappingComposite<T extends EclipseLinkOneToOneMapping, C extends Cascade>
+public abstract class EclipseLinkAbstractOneToOneMappingComposite<T extends EclipseLinkOneToOneMapping, C extends Cascade>
 	extends AbstractOneToOneMappingComposite<T, OneToOneRelationship, C>
 {
-	protected AbstractEclipseLinkOneToOneMappingComposite(
+	protected EclipseLinkAbstractOneToOneMappingComposite(
 			PropertyValueModel<? extends T> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
