@@ -56,7 +56,7 @@ public class EclipseLink1_2JavaResourceUiDefinition
 
 	@Override
 	protected JpaUiFactory buildUiFactory() {
-		return new EclipseLink1_2JavaUiFactory();
+		return new EclipseLinkJavaUiFactory1_2();
 	}
 
 	@Override
