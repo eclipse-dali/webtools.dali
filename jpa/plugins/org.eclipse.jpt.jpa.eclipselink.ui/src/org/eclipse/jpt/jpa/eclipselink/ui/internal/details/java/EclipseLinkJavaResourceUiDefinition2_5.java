@@ -93,6 +93,6 @@ public class EclipseLinkJavaResourceUiDefinition2_5
 		definitions.add(NullJavaAttributeMappingUiDefinition.instance());
 		definitions.add(DefaultJavaEclipseLinkOneToOneMappingUiDefinition.instance());
 		definitions.add(DefaultJavaEclipseLinkOneToManyMappingUiDefinition.instance());
-		definitions.add(DefaultJavaEclipseLinkVariableOneToOneMappingUiDefinition.instance());
+		definitions.add(EclipseLinkDefaultJavaVariableOneToOneMappingUiDefinition.instance());
 	}
 }

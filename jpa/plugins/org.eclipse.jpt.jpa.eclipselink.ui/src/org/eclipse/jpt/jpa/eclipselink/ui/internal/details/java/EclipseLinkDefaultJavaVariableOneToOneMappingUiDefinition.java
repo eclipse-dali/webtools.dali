@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,12 +23,12 @@ import org.eclipse.jpt.jpa.ui.details.JpaUiFactory;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractMappingUiDefinition;
 import org.eclipse.swt.widgets.Composite;
 
-public class DefaultJavaEclipseLinkVariableOneToOneMappingUiDefinition
+public class EclipseLinkDefaultJavaVariableOneToOneMappingUiDefinition
 	extends AbstractMappingUiDefinition
 	implements DefaultMappingUiDefinition
 {
 	// singleton
-	private static final DefaultJavaEclipseLinkVariableOneToOneMappingUiDefinition INSTANCE = new DefaultJavaEclipseLinkVariableOneToOneMappingUiDefinition();
+	private static final EclipseLinkDefaultJavaVariableOneToOneMappingUiDefinition INSTANCE = new EclipseLinkDefaultJavaVariableOneToOneMappingUiDefinition();
 
 	/**
 	 * Return the singleton.
@@ -41,7 +41,7 @@ public class DefaultJavaEclipseLinkVariableOneToOneMappingUiDefinition
 	/**
 	 * Ensure single instance.
 	 */
-	private DefaultJavaEclipseLinkVariableOneToOneMappingUiDefinition() {
+	private EclipseLinkDefaultJavaVariableOneToOneMappingUiDefinition() {
 		super();
 	}
 	
