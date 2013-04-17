@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,11 +33,11 @@ import org.eclipse.jpt.jpa.ui.internal.details.java.DefaultBasicMappingUiDefinit
 import org.eclipse.jpt.jpa.ui.internal.details.java.DefaultEmbeddedMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.java.NullJavaAttributeMappingUiDefinition;
 
-public class EclipseLink1_2JavaResourceUiDefinition
+public class EclipseLinkJavaResourceUiDefinition1_2
 	extends AbstractJavaResourceUiDefinition
 {
 	// singleton
-	private static final ResourceUiDefinition INSTANCE = new EclipseLink1_2JavaResourceUiDefinition();
+	private static final ResourceUiDefinition INSTANCE = new EclipseLinkJavaResourceUiDefinition1_2();
 
 	/**
 	 * Return the singleton.
@@ -50,7 +50,7 @@ public class EclipseLink1_2JavaResourceUiDefinition
 	/**
 	 * zero-argument constructor
 	 */
-	protected EclipseLink1_2JavaResourceUiDefinition() {
+	protected EclipseLinkJavaResourceUiDefinition1_2() {
 		super();
 	}
 
