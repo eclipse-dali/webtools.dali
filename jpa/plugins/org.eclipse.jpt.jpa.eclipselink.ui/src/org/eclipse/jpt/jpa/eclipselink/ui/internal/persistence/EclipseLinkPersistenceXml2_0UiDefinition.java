@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.eclipselink.ui.internal.v2_0.persistence;
+package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.JptResourceType;
@@ -19,11 +19,11 @@ import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.AbstractPersistenceResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitPropertiesEditorPageDefinition;
 
-public class EclipseLinkPersistenceXml2_4UiDefinition
+public class EclipseLinkPersistenceXml2_0UiDefinition
 	extends AbstractPersistenceResourceUiDefinition
 {
 	// singleton
-	private static final PersistenceResourceUiDefinition INSTANCE = new EclipseLinkPersistenceXml2_4UiDefinition();
+	private static final PersistenceResourceUiDefinition INSTANCE = new EclipseLinkPersistenceXml2_0UiDefinition();
 
 	/**
 	 * Return the singleton
@@ -36,10 +36,9 @@ public class EclipseLinkPersistenceXml2_4UiDefinition
 	/**
 	 * Enforce singleton usage
 	 */
-	private EclipseLinkPersistenceXml2_4UiDefinition() {
+	private EclipseLinkPersistenceXml2_0UiDefinition() {
 		super();
 	}
-
 
 	@Override
 	protected void addEditorPageDefinitionsTo(List<JpaEditorPageDefinition> definitions) {
@@ -47,7 +46,7 @@ public class EclipseLinkPersistenceXml2_4UiDefinition
 		definitions.add(EclipseLinkPersistenceUnitConnectionEditorPageDefinition.instance());
 		definitions.add(EclipseLinkPersistenceUnitCustomization2_0EditorPageDefinition.instance());
 		definitions.add(EclipseLinkPersistenceUnitCaching2_0EditorPageDefinition.instance());
-		definitions.add(EclipseLinkPersistenceUnitOptions2_4EditorPageDefinition.instance());
+		definitions.add(EclipseLinkPersistenceUnitOptions2_0EditorPageDefinition.instance());
 		definitions.add(PersistenceUnitPropertiesEditorPageDefinition.instance());
 	}
 

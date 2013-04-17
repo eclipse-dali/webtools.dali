@@ -7,7 +7,7 @@
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
-package org.eclipse.jpt.jpa.eclipselink.ui.internal.v2_0.persistence;
+package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;

@@ -7,27 +7,26 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.eclipselink.ui.internal.v2_0.persistence;
+package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.options.EclipseLinkPersistenceUnitOptionsEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitEditorPageDefinition2_0;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- *  EclipseLinkPersistenceUnitSchemaGeneration2_5EditorPageDefinition
+ *  EclipseLinkPersistenceUnitOptions2_5EditorPageDefinition
  */
-public class EclipseLinkPersistenceUnitSchemaGeneration2_5EditorPageDefinition
-extends PersistenceUnitEditorPageDefinition2_0
+public class EclipseLinkPersistenceUnitOptions2_5EditorPageDefinition
+extends EclipseLinkPersistenceUnitOptions2_4EditorPageDefinition
 {
 	// singleton
 	private static final JpaEditorPageDefinition INSTANCE = 
-			new EclipseLinkPersistenceUnitSchemaGeneration2_5EditorPageDefinition();
+		new EclipseLinkPersistenceUnitOptions2_5EditorPageDefinition();
 	
 	/**
 	 * Return the singleton.
@@ -40,27 +39,24 @@ extends PersistenceUnitEditorPageDefinition2_0
 	/**
 	 * Ensure single instance.
 	 */
-	private EclipseLinkPersistenceUnitSchemaGeneration2_5EditorPageDefinition() {
+	private EclipseLinkPersistenceUnitOptions2_5EditorPageDefinition() {
 		super();
 	}
 	
-	
 	public ImageDescriptor getTitleImageDescriptor() {
-		return null;
+		return EclipseLinkPersistenceUnitOptionsEditorPageDefinition.instance().getTitleImageDescriptor();
 	}
 	
-	public String getTitleText() {	
-		return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_ECLIPSELINK_SCHEMA_GENERATION_PAGE_TITLE;
+	public String getTitleText() {
+		return EclipseLinkPersistenceUnitOptionsEditorPageDefinition.instance().getTitleText();
 	}
 	
 	public String getHelpID() {
-		return null;
+		return EclipseLinkPersistenceUnitOptionsEditorPageDefinition.instance().getHelpID();
 	}
-	
+
 	@Override
 	protected void buildEditorPageContent(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager, PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
-	
-			new EclipseLinkPersistenceUnitSchemaGeneration2_5EditorPage(persistenceUnitModel, parent, widgetFactory, resourceManager);
+		new EclipseLinkPersistenceUnitOptions2_5EditorPage(persistenceUnitModel, parent, widgetFactory, resourceManager);
 	}
 }
-

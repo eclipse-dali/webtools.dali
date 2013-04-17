@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.jpa.eclipselink.ui.internal.v2_0.persistence;
+package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ResourceManager;
@@ -19,12 +19,12 @@ import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitEditorPageDefinition2_0;
 import org.eclipse.swt.widgets.Composite;
 
-public class EclipseLinkPersistenceUnitOptions2_4EditorPageDefinition
+public class EclipseLinkPersistenceUnitOptions2_0EditorPageDefinition
 	extends PersistenceUnitEditorPageDefinition2_0
 {
 	// singleton
 	private static final JpaEditorPageDefinition INSTANCE = 
-		new EclipseLinkPersistenceUnitOptions2_4EditorPageDefinition();
+			new EclipseLinkPersistenceUnitOptions2_0EditorPageDefinition();
 
 	/**
 	 * Return the singleton.
@@ -37,7 +37,7 @@ public class EclipseLinkPersistenceUnitOptions2_4EditorPageDefinition
 	/**
 	 * Ensure single instance.
 	 */
-	protected EclipseLinkPersistenceUnitOptions2_4EditorPageDefinition() {
+	private EclipseLinkPersistenceUnitOptions2_0EditorPageDefinition() {
 		super();
 	}
 
@@ -55,6 +55,6 @@ public class EclipseLinkPersistenceUnitOptions2_4EditorPageDefinition
 
 	@Override
 	protected void buildEditorPageContent(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager, PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
-		new EclipseLinkPersistenceUnitOptions2_4EditorPage(persistenceUnitModel, parent, widgetFactory, resourceManager);
+		new EclipseLinkPersistenceUnitOptions2_0EditorPage(persistenceUnitModel, parent, widgetFactory, resourceManager);
 	}
 }
