@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -59,7 +59,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.wst.common.componentcore.internal.operation.IArtifactEditOperationDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
-public class DynamicEntityFieldTableSection extends Composite {
+public class EclipseLinkDynamicEntityFieldTableSection extends Composite {
 
 	private IDataModel model;
 	private Table mTableWidget = null;
@@ -78,7 +78,7 @@ public class DynamicEntityFieldTableSection extends Composite {
 	 * @param model the data model representation
 	 * @param propertyName data property name
 	 */
-	public DynamicEntityFieldTableSection(Composite parent, IDataModel model, String propertyName) {
+	public EclipseLinkDynamicEntityFieldTableSection(Composite parent, IDataModel model, String propertyName) {
 		super(parent, SWT.NONE);	
 		this.model = model;
 		this.propertyName = propertyName;		
@@ -310,7 +310,7 @@ public class DynamicEntityFieldTableSection extends Composite {
 				pkFields.add(field);
 			}
 		}
-		DynamicEntityFieldTableSection.this.model.setProperty(IEntityDataModelProperties.PK_FIELDS, pkFields);
+		EclipseLinkDynamicEntityFieldTableSection.this.model.setProperty(IEntityDataModelProperties.PK_FIELDS, pkFields);
 	}
 
 	// ********** Control listener for field columns **************

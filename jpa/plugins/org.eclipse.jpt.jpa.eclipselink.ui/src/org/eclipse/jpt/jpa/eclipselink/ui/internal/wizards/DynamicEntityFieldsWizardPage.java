@@ -76,7 +76,7 @@ public class DynamicEntityFieldsWizardPage extends DataModelWizardPage {
 		group.setLayoutData(groupGridData);
 		group.setLayout(new GridLayout(3, false));
 		group.setText(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_FIELDS_WIZARD_PAGE_ENTITY_FIELD_GROUP);
-		new DynamicEntityFieldTableSection(group, model, IEntityDataModelProperties.ENTITY_FIELDS);
+		new EclipseLinkDynamicEntityFieldTableSection(group, model, IEntityDataModelProperties.ENTITY_FIELDS);
 	}
 
 	/**
