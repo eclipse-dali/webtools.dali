@@ -1,12 +1,12 @@
 /*******************************************************************************
-* Copyright (c) 2012 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.ddlgen.wizards;
 
 import org.eclipse.core.resources.IProject;
@@ -22,9 +22,9 @@ import org.eclipse.wst.validation.ValidationFramework;
 /**
  *  EclipseLink2_0GenerateDDLWizard
  */
-public class EclipseLink2_0GenerateDDLWizard extends GenerateDDLWizard {
+public class EclipseLinkGenerateDDLWizard2_0 extends GenerateDDLWizard {
 
-	public EclipseLink2_0GenerateDDLWizard(JpaProject jpaProject, String puName) {
+	public EclipseLinkGenerateDDLWizard2_0(JpaProject jpaProject, String puName) {
 		super(jpaProject, puName);
 	}
 
