@@ -65,7 +65,7 @@ public class EclipseLink2_3JavaResourceUiDefinition
 
 	@Override
 	protected void addSpecifiedAttributeMappingUiDefinitionsTo(List<MappingUiDefinition> definitions) {
-		definitions.add(JavaEclipseLinkIdMapping2_0UiDefinition.instance());
+		definitions.add(EclipseLinkJavaIdMappingUiDefinition2_0.instance());
 		definitions.add(EmbeddedIdMappingUiDefinition.instance());
 		definitions.add(BasicMappingUiDefinition.instance());
 		definitions.add(VersionMappingUiDefinition.instance());

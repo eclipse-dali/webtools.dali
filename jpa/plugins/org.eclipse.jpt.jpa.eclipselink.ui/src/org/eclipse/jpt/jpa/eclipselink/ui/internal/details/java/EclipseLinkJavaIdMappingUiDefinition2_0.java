@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2010, 2012  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -16,12 +16,12 @@ import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.IdMappingUiDefinition;
 
-public class JavaEclipseLinkIdMapping2_0UiDefinition
+public class EclipseLinkJavaIdMappingUiDefinition2_0
 	extends IdMappingUiDefinition
 {
 	// singleton
-	private static final JavaEclipseLinkIdMapping2_0UiDefinition INSTANCE = 
-			new JavaEclipseLinkIdMapping2_0UiDefinition();
+	private static final EclipseLinkJavaIdMappingUiDefinition2_0 INSTANCE = 
+			new EclipseLinkJavaIdMappingUiDefinition2_0();
 	
 	
 	/**
@@ -35,7 +35,7 @@ public class JavaEclipseLinkIdMapping2_0UiDefinition
 	/**
 	 * Enforce singleton usage
 	 */
-	private JavaEclipseLinkIdMapping2_0UiDefinition() {
+	private EclipseLinkJavaIdMappingUiDefinition2_0() {
 		super();
 	}
 	
