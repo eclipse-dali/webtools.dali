@@ -45,7 +45,7 @@ public class EclipseLinkPersistenceXmlUiDefinition2_4
 	protected void addEditorPageDefinitionsTo(List<JpaEditorPageDefinition> definitions) {
 		definitions.add(EclipseLinkPersistenceUnitGeneralEditorPageDefinition.instance());
 		definitions.add(EclipseLinkPersistenceUnitConnectionEditorPageDefinition.instance());
-		definitions.add(EclipseLinkPersistenceUnitCustomization2_0EditorPageDefinition.instance());
+		definitions.add(EclipseLinkPersistenceUnitCustomizationEditorPageDefinition2_0.instance());
 		definitions.add(EclipseLinkPersistenceUnitCaching2_0EditorPageDefinition.instance());
 		definitions.add(EclipseLinkPersistenceUnitOptionsEditorPageDefinition2_4.instance());
 		definitions.add(PersistenceUnitPropertiesEditorPageDefinition.instance());

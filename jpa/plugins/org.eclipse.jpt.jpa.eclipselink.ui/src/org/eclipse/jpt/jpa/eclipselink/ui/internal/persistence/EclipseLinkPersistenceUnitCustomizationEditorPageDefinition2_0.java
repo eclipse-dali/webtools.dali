@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,12 +19,12 @@ import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitEditorPageDefinition2_0;
 import org.eclipse.swt.widgets.Composite;
 
-public class EclipseLinkPersistenceUnitCustomization2_0EditorPageDefinition
+public class EclipseLinkPersistenceUnitCustomizationEditorPageDefinition2_0
 	extends PersistenceUnitEditorPageDefinition2_0
 {
 	// singleton
 	private static final JpaEditorPageDefinition INSTANCE = 
-			new EclipseLinkPersistenceUnitCustomization2_0EditorPageDefinition();
+			new EclipseLinkPersistenceUnitCustomizationEditorPageDefinition2_0();
 
 	/**
 	 * Return the singleton.
@@ -37,7 +37,7 @@ public class EclipseLinkPersistenceUnitCustomization2_0EditorPageDefinition
 	/**
 	 * Ensure single instance.
 	 */
-	private EclipseLinkPersistenceUnitCustomization2_0EditorPageDefinition() {
+	private EclipseLinkPersistenceUnitCustomizationEditorPageDefinition2_0() {
 		super();
 	}
 
