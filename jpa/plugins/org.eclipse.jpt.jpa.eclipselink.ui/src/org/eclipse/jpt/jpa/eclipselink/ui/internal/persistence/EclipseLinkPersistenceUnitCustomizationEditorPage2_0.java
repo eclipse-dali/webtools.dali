@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2010, 2012 Oracle. All rights reserved.
+* Copyright (c) 2010, 2013 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,10 +16,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCusto
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.customization.EclipseLinkPersistenceUnitCustomizationEditorPage;
 import org.eclipse.swt.widgets.Composite;
 
-public class EclipseLinkPersistenceUnitCustomization2_0EditorPage
+public class EclipseLinkPersistenceUnitCustomizationEditorPage2_0
 	extends EclipseLinkPersistenceUnitCustomizationEditorPage<EclipseLinkCustomization>
 {
-	public EclipseLinkPersistenceUnitCustomization2_0EditorPage(
+	public EclipseLinkPersistenceUnitCustomizationEditorPage2_0(
 		PropertyValueModel<EclipseLinkCustomization> subjectModel,
 			Composite parentComposite,
             WidgetFactory widgetFactory,
