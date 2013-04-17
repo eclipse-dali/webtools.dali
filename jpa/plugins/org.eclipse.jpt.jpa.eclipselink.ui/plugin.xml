@@ -320,7 +320,7 @@
 
 		<handler
 			commandId="org.eclipse.jpt.jpa.eclipselink.ui.persistentTypeAddVirtualAttribute"
-			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.handlers.AddVirtualAttributeHandler">
+			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.handlers.EclipseLinkAddVirtualAttributeHandler">
 			<activeWhen>
 				<and>
 					<reference definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaStructureView"/>
