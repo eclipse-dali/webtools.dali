@@ -31,7 +31,7 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 
 public class EclipseLinkJavaMappedSuperclassComposite2_3
-	extends AbstractJavaEclipseLinkMappedSuperclassComposite<EclipseLinkJavaMappedSuperclass>
+	extends EclipseLinkAbstractJavaMappedSuperclassComposite<EclipseLinkJavaMappedSuperclass>
 {
 	public EclipseLinkJavaMappedSuperclassComposite2_3(
 			PropertyValueModel<? extends EclipseLinkJavaMappedSuperclass> mappedSuperclassModel,

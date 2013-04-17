@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaMappedSu
 import org.eclipse.swt.widgets.Composite;
 
 public class EclipseLinkJavaMappedSuperclassComposite
-	extends AbstractJavaEclipseLinkMappedSuperclassComposite<EclipseLinkJavaMappedSuperclass>
+	extends EclipseLinkAbstractJavaMappedSuperclassComposite<EclipseLinkJavaMappedSuperclass>
 {
 	public EclipseLinkJavaMappedSuperclassComposite(
 			PropertyValueModel<? extends EclipseLinkJavaMappedSuperclass> mappedSuperclassModel,

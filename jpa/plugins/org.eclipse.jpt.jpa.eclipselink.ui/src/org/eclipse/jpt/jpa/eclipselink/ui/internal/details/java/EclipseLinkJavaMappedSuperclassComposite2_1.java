@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
 public class EclipseLinkJavaMappedSuperclassComposite2_1
-	extends AbstractJavaEclipseLinkMappedSuperclassComposite<EclipseLinkJavaMappedSuperclass>
+	extends EclipseLinkAbstractJavaMappedSuperclassComposite<EclipseLinkJavaMappedSuperclass>
 {
 	public EclipseLinkJavaMappedSuperclassComposite2_1(
 			PropertyValueModel<? extends EclipseLinkJavaMappedSuperclass> mappedSuperclassModel,

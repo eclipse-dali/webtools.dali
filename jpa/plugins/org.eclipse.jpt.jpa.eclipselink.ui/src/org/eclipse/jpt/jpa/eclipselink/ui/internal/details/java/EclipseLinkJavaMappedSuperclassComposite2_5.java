@@ -32,7 +32,7 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 
 public class EclipseLinkJavaMappedSuperclassComposite2_5
-	extends AbstractJavaEclipseLinkMappedSuperclassComposite<EclipseLinkJavaMappedSuperclass>
+	extends EclipseLinkAbstractJavaMappedSuperclassComposite<EclipseLinkJavaMappedSuperclass>
 {
 
 	protected EclipseLinkJavaMappedSuperclassComposite2_5(

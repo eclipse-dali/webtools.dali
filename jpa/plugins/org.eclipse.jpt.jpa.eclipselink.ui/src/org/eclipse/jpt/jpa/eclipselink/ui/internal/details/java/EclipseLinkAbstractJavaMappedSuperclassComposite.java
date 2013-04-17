@@ -31,10 +31,10 @@ import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-public abstract class AbstractJavaEclipseLinkMappedSuperclassComposite<T extends EclipseLinkJavaMappedSuperclass>
+public abstract class EclipseLinkAbstractJavaMappedSuperclassComposite<T extends EclipseLinkJavaMappedSuperclass>
 	extends AbstractJavaMappedSuperclassComposite<T>
 {
-	protected AbstractJavaEclipseLinkMappedSuperclassComposite(
+	protected EclipseLinkAbstractJavaMappedSuperclassComposite(
 			PropertyValueModel<? extends T> mappedSuperclassModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
