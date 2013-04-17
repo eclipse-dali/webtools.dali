@@ -39,9 +39,9 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
-public class TenantDiscriminatorColumnComposite extends Pane<EclipseLinkTenantDiscriminatorColumn2_3> {
+public class EclipseLinkTenantDiscriminatorColumnComposite extends Pane<EclipseLinkTenantDiscriminatorColumn2_3> {
 
-	public TenantDiscriminatorColumnComposite(Pane<?> parentPane,
+	public EclipseLinkTenantDiscriminatorColumnComposite(Pane<?> parentPane,
 	                                   PropertyValueModel<EclipseLinkTenantDiscriminatorColumn2_3> subjectHolder,
 	                                   Composite parent) {
 

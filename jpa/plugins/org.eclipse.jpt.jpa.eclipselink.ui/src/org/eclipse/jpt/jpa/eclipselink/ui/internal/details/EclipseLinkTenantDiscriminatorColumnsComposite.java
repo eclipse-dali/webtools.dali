@@ -126,7 +126,7 @@ public class EclipseLinkTenantDiscriminatorColumnsComposite<T extends JpaModel>
 	}
 
 	protected Pane<EclipseLinkTenantDiscriminatorColumn2_3> buildTenantDiscriminatorColumnComposite(PageBook pageBook) {
-		return new TenantDiscriminatorColumnComposite(
+		return new EclipseLinkTenantDiscriminatorColumnComposite(
 			this,
 			this.selectedTenantDiscriminatorColumnModel,
 			pageBook
