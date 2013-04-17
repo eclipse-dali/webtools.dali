@@ -26,10 +26,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
-public class OrmEclipseLinkIdMapping1_1Composite
+public class EclipseLinkOrmIdMappingComposite1_1
 	extends EclipseLinkIdMappingComposite<EclipseLinkIdMapping>
 {
-	public OrmEclipseLinkIdMapping1_1Composite(
+	public EclipseLinkOrmIdMappingComposite1_1(
 			PropertyValueModel<? extends EclipseLinkIdMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
