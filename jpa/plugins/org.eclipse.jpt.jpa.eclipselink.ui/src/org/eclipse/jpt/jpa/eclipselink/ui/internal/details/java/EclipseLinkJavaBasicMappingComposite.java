@@ -23,10 +23,10 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-public class JavaEclipseLinkBasicMappingComposite
+public class EclipseLinkJavaBasicMappingComposite
 	extends EclipseLinkBasicMappingComposite<EclipseLinkBasicMapping>
 {
-	public JavaEclipseLinkBasicMappingComposite(
+	public EclipseLinkJavaBasicMappingComposite(
 			PropertyValueModel<? extends EclipseLinkBasicMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
