@@ -315,7 +315,7 @@
 		
 		<handler
 			commandId="org.eclipse.jpt.jpa.eclipselink.ui.newDynamicEntity"
-			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.handlers.NewDynamicEntityHandler">
+			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.handlers.EclipseLinkNewDynamicEntityHandler">
 		</handler>
 
 		<handler
