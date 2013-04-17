@@ -30,6 +30,6 @@ class EclipseLinkPersistenceUnitOptionsEditorPage2_4
 
 	@Override
 	protected Control initializeLoggingSection(Section section) {			
-		return new EclipseLinkLogging2_4Composite(this, this.buildLoggingModel(), section).getControl();
+		return new EclipseLinkLoggingComposite2_4(this, this.buildLoggingModel(), section).getControl();
 	}
 }
