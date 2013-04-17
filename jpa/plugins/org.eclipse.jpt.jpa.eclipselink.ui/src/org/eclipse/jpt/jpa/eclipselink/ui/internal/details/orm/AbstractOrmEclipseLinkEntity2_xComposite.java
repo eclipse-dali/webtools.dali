@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 public abstract class AbstractOrmEclipseLinkEntity2_xComposite<T extends EclipseLinkOrmEntity>
-	extends AbstractOrmEclipseLinkEntityComposite<T>
+	extends EclipseLinkAbstractOrmEntityComposite<T>
 {
 	protected AbstractOrmEclipseLinkEntity2_xComposite(
 			PropertyValueModel<? extends T> entityModel,
