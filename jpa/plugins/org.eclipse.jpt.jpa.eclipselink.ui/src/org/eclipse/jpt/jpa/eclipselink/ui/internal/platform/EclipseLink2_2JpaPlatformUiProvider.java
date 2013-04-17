@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.platform;
 
 import java.util.List;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java.EclipseLinkJavaResourceUiDefinition2_0;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm.EclipseLinkOrmXml1_1UiDefinition;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm.EclipseLinkOrmXmlUiDefinition1_1;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm.EclipseLinkOrmXmlUiDefinition1_2;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm.EclipseLinkOrmXmlUiDefinition2_0;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm.EclipseLinkOrmXmlUiDefinition2_1;
@@ -57,7 +57,7 @@ public class EclipseLink2_2JpaPlatformUiProvider extends AbstractJpaPlatformUiPr
 		definitions.add(OrmXmlUiDefinition.instance());
 		definitions.add(OrmXmlUiDefinition2_0.instance());
 		definitions.add(EclipseLinkOrmXmlUiDefinition.instance());
-		definitions.add(EclipseLinkOrmXml1_1UiDefinition.instance());
+		definitions.add(EclipseLinkOrmXmlUiDefinition1_1.instance());
 		definitions.add(EclipseLinkOrmXmlUiDefinition1_2.instance());
 		definitions.add(EclipseLinkOrmXmlUiDefinition2_0.instance());
 		definitions.add(EclipseLinkOrmXmlUiDefinition2_1.instance());
