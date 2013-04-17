@@ -26,11 +26,11 @@ import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-public class OrmEclipseLinkEntity2_5Composite 
+public class EclipseLinkOrmEntityComposite2_5
 	extends AbstractOrmEclipseLinkEntity2_xComposite<EclipseLinkOrmEntity>
 {
 
-	public OrmEclipseLinkEntity2_5Composite(
+	public EclipseLinkOrmEntityComposite2_5(
 			PropertyValueModel<? extends EclipseLinkOrmEntity> entityModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,

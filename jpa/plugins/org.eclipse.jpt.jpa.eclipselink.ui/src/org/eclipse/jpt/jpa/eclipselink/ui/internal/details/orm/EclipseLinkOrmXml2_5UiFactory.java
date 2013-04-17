@@ -44,7 +44,7 @@ public class EclipseLinkOrmXml2_5UiFactory
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new OrmEclipseLinkEntity2_5Composite((PropertyValueModel<EclipseLinkOrmEntity>) entityModel, parentComposite, widgetFactory, resourceManager);
+		return new EclipseLinkOrmEntityComposite2_5((PropertyValueModel<EclipseLinkOrmEntity>) entityModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 }
