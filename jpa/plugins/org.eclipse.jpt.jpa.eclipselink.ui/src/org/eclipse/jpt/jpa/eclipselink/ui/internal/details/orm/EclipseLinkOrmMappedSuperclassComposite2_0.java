@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 public class EclipseLinkOrmMappedSuperclassComposite2_0
-	extends AbstractOrmEclipseLinkMappedSuperclassComposite<EclipseLinkOrmMappedSuperclass>
+	extends EclipseLinkAbstractOrmMappedSuperclassComposite<EclipseLinkOrmMappedSuperclass>
 {
 	public EclipseLinkOrmMappedSuperclassComposite2_0(
 			PropertyValueModel<? extends EclipseLinkOrmMappedSuperclass> mappedSuperclassModel,

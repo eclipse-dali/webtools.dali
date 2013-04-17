@@ -38,10 +38,10 @@ import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
-public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite<T extends EclipseLinkOrmMappedSuperclass>
+public abstract class EclipseLinkAbstractOrmMappedSuperclassComposite<T extends EclipseLinkOrmMappedSuperclass>
 	extends AbstractMappedSuperclassComposite<T> 
 {
-	protected AbstractOrmEclipseLinkMappedSuperclassComposite(
+	protected EclipseLinkAbstractOrmMappedSuperclassComposite(
 			PropertyValueModel<? extends T> mappedSuperclassModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
