@@ -22,11 +22,11 @@ import org.eclipse.jpt.jpa.ui.internal.AbstractPersistenceResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jpa2_1.JavaConverterTypeUiDefinition2_1;
 import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitPropertiesEditorPageDefinition;
 
-public class EclipseLinkPersistenceXml2_5UiDefinition
+public class EclipseLinkPersistenceXmlUiDefinition2_5
 	extends AbstractPersistenceResourceUiDefinition
 {
 	// singleton
-	private static final PersistenceResourceUiDefinition INSTANCE = new EclipseLinkPersistenceXml2_5UiDefinition();
+	private static final PersistenceResourceUiDefinition INSTANCE = new EclipseLinkPersistenceXmlUiDefinition2_5();
 
 	/**
 	 * Return the singleton
@@ -39,7 +39,7 @@ public class EclipseLinkPersistenceXml2_5UiDefinition
 	/**
 	 * Enforce singleton usage
 	 */
-	private EclipseLinkPersistenceXml2_5UiDefinition() {
+	private EclipseLinkPersistenceXmlUiDefinition2_5() {
 		super();
 	}
 
