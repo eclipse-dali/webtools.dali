@@ -24,11 +24,11 @@ import org.eclipse.swt.widgets.Composite;
  * @version 3.3
  * @since 3.1
  */
-public class EclipseLinkEntityMappings2_5DetailsProvider
+public class EclipseLinkEntityMappingsDetailsProvider2_5
 	extends AbstractEntityMappingsDetailsProvider
 {
 	// singleton
-	private static final JpaDetailsProvider INSTANCE = new EclipseLinkEntityMappings2_5DetailsProvider();
+	private static final JpaDetailsProvider INSTANCE = new EclipseLinkEntityMappingsDetailsProvider2_5();
 
 
 	/**
@@ -42,7 +42,7 @@ public class EclipseLinkEntityMappings2_5DetailsProvider
 	/**
 	 * Enforce singleton usage
 	 */
-	private EclipseLinkEntityMappings2_5DetailsProvider() {
+	private EclipseLinkEntityMappingsDetailsProvider2_5() {
 		super();
 	}
 
