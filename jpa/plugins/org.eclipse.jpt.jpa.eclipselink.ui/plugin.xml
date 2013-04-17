@@ -310,7 +310,7 @@
 		
 		<handler
 			commandId="org.eclipse.jpt.jpa.eclipselink.ui.newEclipseLinkMappingFile"
-			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.handlers.NewEclipseLinkMappingFileHandler">
+			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.handlers.EclipseLinkNewMappingFileHandler">
 		</handler>
 		
 		<handler
