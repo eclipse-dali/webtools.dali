@@ -130,6 +130,6 @@ public class EclipseLinkOrmXmlUiFactory1_1
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new OrmEclipseLinkEmbeddedMapping1_1Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new EclipseLinkOrmEmbeddedMappingComposite1_1(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 }
