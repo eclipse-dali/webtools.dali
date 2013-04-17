@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,10 +17,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Section;
 
-class EclipseLinkPersistenceUnitOptions2_4EditorPage 
+class EclipseLinkPersistenceUnitOptionsEditorPage2_4
 	extends EclipseLinkPersistenceUnitOptions2_0EditorPage
 {
-	public EclipseLinkPersistenceUnitOptions2_4EditorPage(
+	public EclipseLinkPersistenceUnitOptionsEditorPage2_4(
 			PropertyValueModel<PersistenceUnit> persistenceUnitModel,
             Composite parentComposite,
             WidgetFactory widgetFactory,

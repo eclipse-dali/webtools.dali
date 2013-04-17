@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.swt.widgets.Composite;
 
 public class EclipseLinkPersistenceUnitOptionsEditorPage2_5
-	extends EclipseLinkPersistenceUnitOptions2_4EditorPage
+	extends EclipseLinkPersistenceUnitOptionsEditorPage2_4
 {
 	public EclipseLinkPersistenceUnitOptionsEditorPage2_5(
 			PropertyValueModel<PersistenceUnit> persistenceUnitModel,
