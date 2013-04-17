@@ -31,11 +31,11 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 
-public class JavaEclipseLinkMappedSuperclass2_5Composite
+public class EclipseLinkJavaMappedSuperclassComposite2_5
 	extends AbstractJavaEclipseLinkMappedSuperclassComposite<EclipseLinkJavaMappedSuperclass>
 {
 
-	protected JavaEclipseLinkMappedSuperclass2_5Composite(
+	protected EclipseLinkJavaMappedSuperclassComposite2_5(
 			PropertyValueModel<? extends EclipseLinkJavaMappedSuperclass> mappedSuperclassModel,
 			Composite parentComposite, WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
