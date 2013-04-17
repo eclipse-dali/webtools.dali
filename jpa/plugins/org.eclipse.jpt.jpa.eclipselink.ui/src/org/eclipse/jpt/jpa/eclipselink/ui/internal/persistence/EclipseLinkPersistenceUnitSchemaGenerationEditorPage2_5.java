@@ -30,13 +30,12 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-public class EclipseLinkPersistenceUnitSchemaGeneration2_5EditorPage
+public class EclipseLinkPersistenceUnitSchemaGenerationEditorPage2_5
 	extends Pane<PersistenceUnit>
 {
-
 	// ********** constructor **********
 	
-	public EclipseLinkPersistenceUnitSchemaGeneration2_5EditorPage(
+	public EclipseLinkPersistenceUnitSchemaGenerationEditorPage2_5(
 			PropertyValueModel<PersistenceUnit> persistenceUnitModel,
             Composite parentComposite,
             WidgetFactory widgetFactory,
