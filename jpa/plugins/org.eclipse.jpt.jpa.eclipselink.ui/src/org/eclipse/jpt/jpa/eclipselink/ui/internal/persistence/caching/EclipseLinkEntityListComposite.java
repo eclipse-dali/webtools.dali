@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -43,12 +43,13 @@ import org.eclipse.ui.dialogs.SelectionDialog;
 /**
  *  EntityListComposite
  */
-public class EntityListComposite<T extends EclipseLinkCaching> extends Pane<T>
+public class EclipseLinkEntityListComposite<T extends EclipseLinkCaching>
+	extends Pane<T>
 {
 	private ModifiableCollectionValueModel<EclipseLinkCachingEntity> selectedEntitiesModel;
 	private PropertyValueModel<EclipseLinkCachingEntity> selectedEntityModel;
 	
-	public EntityListComposite(Pane<T> parentComposite, Composite parent) {
+	public EclipseLinkEntityListComposite(Pane<T> parentComposite, Composite parent) {
 
 		super(parentComposite, parent);
 	}
@@ -111,7 +112,7 @@ public class EntityListComposite<T extends EclipseLinkCaching> extends Pane<T>
 		return new AddRemoveListPane.AbstractAdapter<EclipseLinkCachingEntity>() {
 
 			public EclipseLinkCachingEntity addNewItem() {
-				return EntityListComposite.this.addEntity();
+				return EclipseLinkEntityListComposite.this.addEntity();
 			}
 
 			@Override

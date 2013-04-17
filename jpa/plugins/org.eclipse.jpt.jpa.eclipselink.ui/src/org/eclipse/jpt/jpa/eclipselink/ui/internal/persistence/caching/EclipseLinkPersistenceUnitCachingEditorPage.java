@@ -62,7 +62,7 @@ public class EclipseLinkPersistenceUnitCachingEditorPage<T extends EclipseLinkCa
 		defaultsComposite.getControl().setLayoutData(gridData);
 
 		// EntitiesList
-		EntityListComposite<T> entitiesComposite = new EntityListComposite<T>(this, client);
+		EclipseLinkEntityListComposite<T> entitiesComposite = new EclipseLinkEntityListComposite<T>(this, client);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		entitiesComposite.getControl().setLayoutData(gridData);
