@@ -1,12 +1,12 @@
 /*******************************************************************************
-* Copyright (c) 2010, 2012 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.platform;
 
 import java.util.List;
@@ -24,14 +24,11 @@ import org.eclipse.jpt.jpa.ui.internal.AbstractJpaPlatformUiProvider;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmXmlUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmXmlUiDefinition2_0;
 
-/**
- *  EclipseLink2_1JpaPlatformUiProvider
- */
-public class EclipseLink2_1JpaPlatformUiProvider extends AbstractJpaPlatformUiProvider
+public class EclipseLinkJpaPlatformUiProvider2_1
+	extends AbstractJpaPlatformUiProvider
 {
-
 	// singleton
-	private static final JpaPlatformUiProvider INSTANCE = new EclipseLink2_1JpaPlatformUiProvider();
+	private static final JpaPlatformUiProvider INSTANCE = new EclipseLinkJpaPlatformUiProvider2_1();
 
 	/**
 	 * Return the singleton.
@@ -43,7 +40,7 @@ public class EclipseLink2_1JpaPlatformUiProvider extends AbstractJpaPlatformUiPr
 	/**
 	 * Ensure single instance.
 	 */
-	private EclipseLink2_1JpaPlatformUiProvider() {
+	private EclipseLinkJpaPlatformUiProvider2_1() {
 		super();
 	}
 
