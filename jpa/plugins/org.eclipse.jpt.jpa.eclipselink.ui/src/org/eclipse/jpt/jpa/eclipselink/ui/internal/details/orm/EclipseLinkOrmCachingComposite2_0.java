@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -49,10 +49,10 @@ import org.eclipse.swt.widgets.Composite;
  * @version 3.0
  * @since 3.0
  */
-public class OrmEclipseLinkCaching2_0Composite extends EclipseLinkCachingComposite2_0<EclipseLinkCaching>
+public class EclipseLinkOrmCachingComposite2_0
+	extends EclipseLinkCachingComposite2_0<EclipseLinkCaching>
 {
-
-	public OrmEclipseLinkCaching2_0Composite(Pane<?> parentPane,
+	public EclipseLinkOrmCachingComposite2_0(Pane<?> parentPane,
         PropertyValueModel<EclipseLinkCaching> subjectHolder,
         Composite parent) {
 
