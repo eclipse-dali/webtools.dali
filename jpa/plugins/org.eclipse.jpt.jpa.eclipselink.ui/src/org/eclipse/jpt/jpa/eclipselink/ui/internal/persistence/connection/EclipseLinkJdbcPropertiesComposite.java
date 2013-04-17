@@ -31,10 +31,10 @@ import org.eclipse.ui.forms.widgets.Section;
 /**
  *  JdbcPropertiesComposite
  */
-public class JdbcPropertiesComposite<T extends EclipseLinkConnection> 
+public class EclipseLinkJdbcPropertiesComposite<T extends EclipseLinkConnection> 
 	extends Pane<T>
 {
-	public JdbcPropertiesComposite(Pane<T> parentComposite, Composite parent, PropertyValueModel<Boolean> enabledModel) {
+	public EclipseLinkJdbcPropertiesComposite(Pane<T> parentComposite, Composite parent, PropertyValueModel<Boolean> enabledModel) {
 
 		super(parentComposite, parent, enabledModel);
 	}

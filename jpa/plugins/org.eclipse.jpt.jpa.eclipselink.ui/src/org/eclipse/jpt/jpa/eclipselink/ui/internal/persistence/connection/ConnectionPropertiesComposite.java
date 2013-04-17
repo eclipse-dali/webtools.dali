@@ -65,7 +65,7 @@ public class ConnectionPropertiesComposite<T extends EclipseLinkConnection>
 		PropertyValueModel<Boolean> enabledModel = buildTransacationTypeResourceLocalEnabledModel();
 
 		// EclipseLink Connection Pool
-		JdbcPropertiesComposite<T> jdbcComposite = new JdbcPropertiesComposite<T>(this, container, enabledModel);
+		EclipseLinkJdbcPropertiesComposite<T> jdbcComposite = new EclipseLinkJdbcPropertiesComposite<T>(this, container, enabledModel);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		jdbcComposite.getControl().setLayoutData(gridData);
