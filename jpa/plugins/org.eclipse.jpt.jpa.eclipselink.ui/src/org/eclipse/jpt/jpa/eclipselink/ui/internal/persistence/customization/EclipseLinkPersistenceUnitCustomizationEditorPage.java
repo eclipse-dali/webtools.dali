@@ -83,7 +83,7 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Eclipse
 	}
 
 	protected Control initializeWeavingSection(Section weavingSection) {
-		return new WeavingPropertiesComposite(this, weavingSection).getControl();
+		return new EclipseLinkWeavingPropertiesComposite(this, weavingSection).getControl();
 	}
 
 	protected Control initializeOtherSection(Section otherSection) {
