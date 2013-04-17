@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 import java.util.List;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition2_4;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkArrayMapping2_3UiDefinition;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkArrayMappingUiDefinition2_3;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkBasicCollectionMappingUiDefinition;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkBasicMapMappingUiDefinition;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkStructureMappingUiDefinition2_3;
@@ -101,7 +101,7 @@ public class EclipseLinkOrmXml2_4UiDefinition
 		definitions.add(EclipseLinkTransformationMappingUiDefinition.instance());
 
 		definitions.add(ElementCollectionMappingUiDefinition2_0.instance());
-		definitions.add(EclipseLinkArrayMapping2_3UiDefinition.instance());
+		definitions.add(EclipseLinkArrayMappingUiDefinition2_3.instance());
 		definitions.add(EclipseLinkStructureMappingUiDefinition2_3.instance());
 	}
 }

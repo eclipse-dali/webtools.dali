@@ -22,12 +22,12 @@ import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractMappingUiDefinition;
 import org.eclipse.swt.widgets.Composite;
 
-public class EclipseLinkArrayMapping2_3UiDefinition
+public class EclipseLinkArrayMappingUiDefinition2_3
 	extends AbstractMappingUiDefinition
 {
 	// singleton
-	private static final EclipseLinkArrayMapping2_3UiDefinition INSTANCE = 
-			new EclipseLinkArrayMapping2_3UiDefinition();
+	private static final EclipseLinkArrayMappingUiDefinition2_3 INSTANCE = 
+			new EclipseLinkArrayMappingUiDefinition2_3();
 
 
 	/**
@@ -41,7 +41,7 @@ public class EclipseLinkArrayMapping2_3UiDefinition
 	/**
 	 * Ensure single instance.
 	 */
-	private EclipseLinkArrayMapping2_3UiDefinition() {
+	private EclipseLinkArrayMappingUiDefinition2_3() {
 		super();
 	}
 
