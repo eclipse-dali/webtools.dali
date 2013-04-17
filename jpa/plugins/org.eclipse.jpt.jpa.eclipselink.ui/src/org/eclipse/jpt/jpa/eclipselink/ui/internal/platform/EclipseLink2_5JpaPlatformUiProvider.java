@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.platform;
 
 import java.util.List;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java.EclipseLink2_5JavaResourceUiDefinition;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java.EclipseLinkJavaResourceUiDefinition2_5;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm.EclipseLinkOrmXml1_1UiDefinition;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm.EclipseLinkOrmXml1_2UiDefinition;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm.EclipseLinkOrmXml2_0UiDefinition;
@@ -58,7 +58,7 @@ public class EclipseLink2_5JpaPlatformUiProvider
 
 	@Override
 	protected void addResourceUiDefinitionsTo(List<ResourceUiDefinition> definitions) {
-		definitions.add(EclipseLink2_5JavaResourceUiDefinition.instance());
+		definitions.add(EclipseLinkJavaResourceUiDefinition2_5.instance());
 		definitions.add(OrmXmlUiDefinition.instance());
 		definitions.add(OrmXmlUiDefinition2_0.instance());
 		definitions.add(OrmXmlUiDefinition2_1.instance());

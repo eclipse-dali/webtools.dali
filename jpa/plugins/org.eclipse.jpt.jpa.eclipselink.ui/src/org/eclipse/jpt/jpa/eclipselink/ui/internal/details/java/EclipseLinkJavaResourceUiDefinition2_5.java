@@ -35,11 +35,11 @@ import org.eclipse.jpt.jpa.ui.internal.details.java.DefaultEmbeddedMappingUiDefi
 import org.eclipse.jpt.jpa.ui.internal.details.java.NullJavaAttributeMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.ElementCollectionMappingUiDefinition2_0;
 
-public class EclipseLink2_5JavaResourceUiDefinition
+public class EclipseLinkJavaResourceUiDefinition2_5
 	extends AbstractJavaResourceUiDefinition
 {
 	// singleton
-	private static final ResourceUiDefinition INSTANCE = new EclipseLink2_5JavaResourceUiDefinition();
+	private static final ResourceUiDefinition INSTANCE = new EclipseLinkJavaResourceUiDefinition2_5();
 
 
 	/**
@@ -53,7 +53,7 @@ public class EclipseLink2_5JavaResourceUiDefinition
 	/**
 	 * zero-argument constructor
 	 */
-	protected EclipseLink2_5JavaResourceUiDefinition() {
+	protected EclipseLinkJavaResourceUiDefinition2_5() {
 		super();
 	}
 
