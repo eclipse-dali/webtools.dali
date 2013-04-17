@@ -21,15 +21,18 @@ import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.TableColumn;
 import org.eclipse.jpt.jpa.db.Table;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkSpecifiedTenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_4;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
@@ -90,7 +93,15 @@ public class EclipseLinkTenantDiscriminatorColumnComposite extends Pane<EclipseL
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		pkCheckBox.getCheckBox().setLayoutData(gridData);
-		SWTBindTools.controlVisibleState(new EclipseLink2_4ProjectFlagModel<EclipseLinkTenantDiscriminatorColumn2_3>(this.getSubjectHolder()), pkCheckBox.getCheckBox());
+		SWTBindTools.controlVisibleState(this.buildPKCheckBoxIsVisibleModel(), pkCheckBox.getCheckBox());
+	}
+
+	private PropertyValueModel<Boolean> buildPKCheckBoxIsVisibleModel() {
+		return new TransformationPropertyValueModel<EclipseLinkTenantDiscriminatorColumn2_3, Boolean>(this.getSubjectHolder(), this.buildTenantDiscriminatorColumnIsCompatibleWithEclipseLink2_4Transformer());
+	}
+
+	private Transformer<EclipseLinkTenantDiscriminatorColumn2_3, Boolean> buildTenantDiscriminatorColumnIsCompatibleWithEclipseLink2_4Transformer() {
+		return TransformerTools.adapt(new EclipseLinkVersionIsCompatibleWith(EclipseLinkJpaPlatformFactory2_4.VERSION));
 	}
 
 	private ColumnCombo<EclipseLinkTenantDiscriminatorColumn2_3> addNameCombo(Composite container) {

@@ -22,16 +22,19 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.ReadOnlyModifiablePropertyValueModelWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ValueListAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMultitenantType2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkSpecifiedTenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_4;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkTenantDiscriminatorColumnsComposite.TenantDiscriminatorColumnsEditor;
@@ -100,7 +103,7 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		includeCriteriaCheckBox.getCheckBox().setLayoutData(gridData);
-		SWTBindTools.controlVisibleState(new EclipseLink2_4ProjectFlagModel<EclipseLinkMultitenancy2_3>(this.getSubjectHolder()), includeCriteriaCheckBox.getCheckBox());
+		SWTBindTools.controlVisibleState(this.buildIncludeCriteriaCheckBoxIsVisibleModel(), includeCriteriaCheckBox.getCheckBox());
 
 		// Tenant discriminator columns group pane
 		Group tenantDiscriminatorColumnGroupPane = addTitledGroup(
@@ -135,8 +138,8 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 			}
 		};
 	}
-	private EnumFormComboViewer<EclipseLinkMultitenancy2_3, EclipseLinkMultitenantType2_3> addMultitenantStrategyCombo(Composite container) {
 
+	private EnumFormComboViewer<EclipseLinkMultitenancy2_3, EclipseLinkMultitenantType2_3> addMultitenantStrategyCombo(Composite container) {
 		return new EnumFormComboViewer<EclipseLinkMultitenancy2_3, EclipseLinkMultitenantType2_3>(this, container) {
 
 			@Override
@@ -283,6 +286,14 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 		public void removeTenantDiscriminatorColumn(EclipseLinkMultitenancy2_3 subject, EclipseLinkTenantDiscriminatorColumn2_3 column) {
 			subject.removeSpecifiedTenantDiscriminatorColumn((EclipseLinkSpecifiedTenantDiscriminatorColumn2_3) column);
 		}
+	}
+
+	private PropertyValueModel<Boolean> buildIncludeCriteriaCheckBoxIsVisibleModel() {
+		return new TransformationPropertyValueModel<EclipseLinkMultitenancy2_3, Boolean>(this.getSubjectHolder(), this.buildMultitenancyIsCompatibleWithEclipseLink2_4Transformer());
+	}
+
+	private Transformer<EclipseLinkMultitenancy2_3, Boolean> buildMultitenancyIsCompatibleWithEclipseLink2_4Transformer() {
+		return TransformerTools.adapt(new EclipseLinkVersionIsCompatibleWith(EclipseLinkJpaPlatformFactory2_4.VERSION));
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildOverrideDefaultTenantDiscriminatorColumnHolder() {
