@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.Section;
 
 public class EclipseLinkLoggingComposite2_4
-	extends EclipseLinkLogging2_0Composite
+	extends EclipseLinkLoggingComposite2_0
 {
 	public EclipseLinkLoggingComposite2_4(
 			Pane<?> parent,

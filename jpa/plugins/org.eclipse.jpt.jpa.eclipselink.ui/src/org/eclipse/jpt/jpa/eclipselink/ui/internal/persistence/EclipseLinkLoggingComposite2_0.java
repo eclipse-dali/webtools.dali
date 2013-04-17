@@ -31,10 +31,10 @@ import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-public class EclipseLinkLogging2_0Composite
+public class EclipseLinkLoggingComposite2_0
 	extends EclipseLinkLoggingComposite<EclipseLinkLogging2_0>
 {
-	public EclipseLinkLogging2_0Composite(
+	public EclipseLinkLoggingComposite2_0(
 			Pane<?> parent,
 			PropertyValueModel<EclipseLinkLogging2_0> subjectModel,
 			Composite parentComposite) {
