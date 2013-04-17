@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,10 +16,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmMappedSupe
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-public class OrmEclipseLinkMappedSuperclass2_0Composite
+public class EclipseLinkOrmMappedSuperclassComposite2_0
 	extends AbstractOrmEclipseLinkMappedSuperclassComposite<EclipseLinkOrmMappedSuperclass>
 {
-	public OrmEclipseLinkMappedSuperclass2_0Composite(
+	public EclipseLinkOrmMappedSuperclassComposite2_0(
 			PropertyValueModel<? extends EclipseLinkOrmMappedSuperclass> mappedSuperclassModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
