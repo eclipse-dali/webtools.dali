@@ -37,11 +37,11 @@ import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmPersistentTypeDetailsProvi
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.ElementCollectionMappingUiDefinition2_0;
 
 
-public class EclipseLinkOrmXml2_5UiDefinition
+public class EclipseLinkOrmXmlUiDefinition2_5
 	extends EclipseLinkOrmXml2_1UiDefinition
 {
 	// singleton
-	private static final ResourceUiDefinition INSTANCE = new EclipseLinkOrmXml2_5UiDefinition();
+	private static final ResourceUiDefinition INSTANCE = new EclipseLinkOrmXmlUiDefinition2_5();
 
 
 	/**
@@ -55,7 +55,7 @@ public class EclipseLinkOrmXml2_5UiDefinition
 	/**
 	 * Enforce singleton usage
 	 */
-	private EclipseLinkOrmXml2_5UiDefinition() {
+	private EclipseLinkOrmXmlUiDefinition2_5() {
 		super();
 	}
 
