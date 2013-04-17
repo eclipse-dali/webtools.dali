@@ -68,7 +68,7 @@ public abstract class AbstractJavaEclipseLinkMappedSuperclassComposite<T extends
 	}
 	
 	protected Control initializeCachingSection(Composite container) {
-		return new JavaEclipseLinkCachingComposite(this, buildCachingModel(), container).getControl();
+		return new EclipseLinkJavaCachingComposite(this, buildCachingModel(), container).getControl();
 	}
 	
 	protected PropertyAspectAdapter<T, EclipseLinkJavaCaching> buildCachingModel() {

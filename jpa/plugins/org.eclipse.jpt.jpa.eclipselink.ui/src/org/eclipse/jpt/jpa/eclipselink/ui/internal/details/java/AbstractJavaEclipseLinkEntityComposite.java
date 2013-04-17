@@ -71,7 +71,7 @@ public abstract class AbstractJavaEclipseLinkEntityComposite<T extends EclipseLi
 	}
 	
 	protected Control initializeCachingSection(Composite container) {
-		return new JavaEclipseLinkCachingComposite(this, buildCachingModel(), container).getControl();
+		return new EclipseLinkJavaCachingComposite(this, buildCachingModel(), container).getControl();
 	}
 	
 	protected PropertyAspectAdapter<T, EclipseLinkJavaCaching> buildCachingModel() {
