@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,11 +17,11 @@ import org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards.conversion.java.Eclip
 import org.eclipse.jpt.jpa.ui.JpaPlatformUiProvider;
 import org.eclipse.jpt.jpa.ui.internal.platform.base.AbstractJpaPlatformUi;
 
-public abstract class AbstractEclipseLinkJpaPlatformUi
+public abstract class EclipseLinkAbstractJpaPlatformUi
 	extends AbstractJpaPlatformUi
 	implements EclipseLinkJpaPlatformUi
 {
-	protected AbstractEclipseLinkJpaPlatformUi(
+	protected EclipseLinkAbstractJpaPlatformUi(
 			ItemTreeStateProviderFactoryProvider navigatorFactoryProvider,
 			JpaPlatformUiProvider platformUiProvider
 	) {

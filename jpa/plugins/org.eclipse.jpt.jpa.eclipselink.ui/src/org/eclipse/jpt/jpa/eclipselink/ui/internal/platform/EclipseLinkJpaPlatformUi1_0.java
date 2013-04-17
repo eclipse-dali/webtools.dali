@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.eclipselink.ui.internal.ddlgen.EclipseLinkDDLGenerato
 import org.eclipse.jpt.jpa.ui.JpaPlatformUiProvider;
 
 public class EclipseLinkJpaPlatformUi1_0
-	extends AbstractEclipseLinkJpaPlatformUi
+	extends EclipseLinkAbstractJpaPlatformUi
 {
 	public EclipseLinkJpaPlatformUi1_0(
 			ItemTreeStateProviderFactoryProvider navigatorFactoryProvider,
