@@ -69,7 +69,7 @@ import org.eclipse.ui.forms.widgets.Section;
  * -----------------------------------------------------------------------------</pre>
  */
 public class EclipseLinkEntityMappingsDetailsPageManager2_3
-	extends AbstractEclipseLinkEntityMappingsDetailsPageManager
+	extends EclipseLinkAbstractEntityMappingsDetailsPageManager
 {
 	public EclipseLinkEntityMappingsDetailsPageManager2_3(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
 		super(parent, widgetFactory, resourceManager);

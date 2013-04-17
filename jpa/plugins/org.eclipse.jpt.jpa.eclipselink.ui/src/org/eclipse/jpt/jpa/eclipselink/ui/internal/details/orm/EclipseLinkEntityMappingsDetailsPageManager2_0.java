@@ -75,7 +75,7 @@ import org.eclipse.swt.widgets.Control;
  * @see SchemaCombo
  */
 public class EclipseLinkEntityMappingsDetailsPageManager2_0
-	extends AbstractEclipseLinkEntityMappingsDetailsPageManager
+	extends EclipseLinkAbstractEntityMappingsDetailsPageManager
 {
 	public EclipseLinkEntityMappingsDetailsPageManager2_0(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
 		super(parent, widgetFactory, resourceManager);

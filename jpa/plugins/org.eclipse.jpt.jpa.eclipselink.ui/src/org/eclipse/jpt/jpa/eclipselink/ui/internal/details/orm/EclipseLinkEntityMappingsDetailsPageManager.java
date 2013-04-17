@@ -72,7 +72,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see SchemaCombo
  */
 public class EclipseLinkEntityMappingsDetailsPageManager
-	extends AbstractEclipseLinkEntityMappingsDetailsPageManager
+	extends EclipseLinkAbstractEntityMappingsDetailsPageManager
 {
 	public EclipseLinkEntityMappingsDetailsPageManager(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
 		super(parent, widgetFactory, resourceManager);

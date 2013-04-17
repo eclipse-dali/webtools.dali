@@ -23,7 +23,7 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
 public class EclipseLinkEntityMappingsDetailsPageManager2_5
-	extends AbstractEclipseLinkEntityMappingsDetailsPageManager
+	extends EclipseLinkAbstractEntityMappingsDetailsPageManager
 {
 	public EclipseLinkEntityMappingsDetailsPageManager2_5(
 			Composite parent, 
