@@ -27,10 +27,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
-public abstract class AbstractJavaEclipseLinkEntity2_xComposite<T extends EclipseLinkJavaEntity>
+public abstract class EclipseLinkAbstractJavaEntityComposite2_x<T extends EclipseLinkJavaEntity>
 	extends EclipseLinkAbstractJavaEntityComposite<T>
 {
-	protected AbstractJavaEclipseLinkEntity2_xComposite(
+	protected EclipseLinkAbstractJavaEntityComposite2_x(
 			PropertyValueModel<? extends T> entityModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,

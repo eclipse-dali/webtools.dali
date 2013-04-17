@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.swt.widgets.Composite;
 
 public class EclipseLinkJavaEntityComposite2_0
-	extends AbstractJavaEclipseLinkEntity2_xComposite<EclipseLinkJavaEntity>
+	extends EclipseLinkAbstractJavaEntityComposite2_x<EclipseLinkJavaEntity>
 {
 	public EclipseLinkJavaEntityComposite2_0(
 			PropertyValueModel<? extends EclipseLinkJavaEntity> entityModel,
