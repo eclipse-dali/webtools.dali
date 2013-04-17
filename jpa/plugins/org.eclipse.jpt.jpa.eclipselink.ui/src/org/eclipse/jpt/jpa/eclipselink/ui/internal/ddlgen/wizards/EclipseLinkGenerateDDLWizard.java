@@ -48,7 +48,7 @@ public class EclipseLinkGenerateDDLWizard extends Wizard {
 	private JptGenerator ddlGenerator;
 	
 	private DatabaseSchemaWizardPage dbSettingsPage;
-	private GenerationOutputModeWizardPage generationOutputModePage;
+	private EclipseLinkGenerationOutputModeWizardPage generationOutputModePage;
 
 	// ********** constructor **********
 
@@ -68,7 +68,7 @@ public class EclipseLinkGenerateDDLWizard extends Wizard {
 			this.dbSettingsPage = new DatabaseSchemaWizardPage(this.jpaProject);
 			this.addPage(this.dbSettingsPage);
 		}
-		this.generationOutputModePage = new GenerationOutputModeWizardPage();
+		this.generationOutputModePage = new EclipseLinkGenerationOutputModeWizardPage();
 		this.addPage(this.generationOutputModePage);
 	}
 	
