@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
 public class EclipseLinkOrmXmlUiFactory
-	extends AbstractEclipseLinkOrmXmlUiFactory
+	extends EclipseLinkAbstractOrmXmlUiFactory
 {
 	// nothing
 }

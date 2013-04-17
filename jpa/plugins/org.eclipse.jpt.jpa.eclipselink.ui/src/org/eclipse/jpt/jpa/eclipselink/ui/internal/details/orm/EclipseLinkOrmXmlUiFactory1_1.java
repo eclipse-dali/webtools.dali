@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.swt.widgets.Composite;
 
 public class EclipseLinkOrmXmlUiFactory1_1
-	extends AbstractEclipseLinkOrmXmlUiFactory
+	extends EclipseLinkAbstractOrmXmlUiFactory
 {
 	// ********** attribute mappings **********
 
