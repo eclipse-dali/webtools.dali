@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,10 +33,10 @@ import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-public abstract class EclipseLinkElementCollectionMapping2_0Composite<T extends EclipseLinkElementCollectionMapping2_0>
+public abstract class EclipseLinkElementCollectionMappingComposite2_0<T extends EclipseLinkElementCollectionMapping2_0>
 	extends AbstractElementCollectionMappingComposite2_0<T>
 {
-	protected EclipseLinkElementCollectionMapping2_0Composite(
+	protected EclipseLinkElementCollectionMappingComposite2_0(
 			PropertyValueModel<? extends T> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
@@ -62,7 +62,7 @@ public abstract class EclipseLinkElementCollectionMapping2_0Composite<T extends 
 			@Override
 			public void expansionStateChanging(ExpansionEvent e) {
 				if (e.getState() && section.getClient() == null) {
-					section.setClient(EclipseLinkElementCollectionMapping2_0Composite.this.initializeConvertersSection(section));
+					section.setClient(EclipseLinkElementCollectionMappingComposite2_0.this.initializeConvertersSection(section));
 				}
 			}
 		});
@@ -138,3 +138,4 @@ public abstract class EclipseLinkElementCollectionMapping2_0Composite<T extends 
 		return new TransformationPropertyValueModel<M, Boolean>(valueModel, TransformerTools.<M>isNotNullTransformer());
 	}
 }
+

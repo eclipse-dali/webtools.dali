@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkElementCollectionMapping2_0Composite;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkElementCollectionMappingComposite2_0;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.details.orm.JptJpaUiDetailsOrmMessages;
@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
 public class OrmEclipseLinkElementCollectionMapping2_0Composite
-	extends EclipseLinkElementCollectionMapping2_0Composite<EclipseLinkElementCollectionMapping2_0>
+	extends EclipseLinkElementCollectionMappingComposite2_0<EclipseLinkElementCollectionMapping2_0>
 {
 	public OrmEclipseLinkElementCollectionMapping2_0Composite(
 			PropertyValueModel<? extends EclipseLinkElementCollectionMapping2_0> mappingModel,
