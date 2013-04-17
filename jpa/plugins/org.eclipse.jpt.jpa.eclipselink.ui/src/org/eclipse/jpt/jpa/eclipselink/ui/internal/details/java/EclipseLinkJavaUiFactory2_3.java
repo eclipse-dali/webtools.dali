@@ -31,7 +31,7 @@ public class EclipseLinkJavaUiFactory2_3
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaEclipseLinkEntity2_3Composite((PropertyValueModel<? extends EclipseLinkJavaEntity>) entityModel, parentComposite, widgetFactory, resourceManager);
+		return new EclipseLinkJavaEntityComposite2_3((PropertyValueModel<? extends EclipseLinkJavaEntity>) entityModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@SuppressWarnings("unchecked")
