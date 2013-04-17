@@ -19,15 +19,12 @@ import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitEditorPageDefinition2_0;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- *  EclipseLinkPersistenceUnitSchemaGeneration2_5EditorPageDefinition
- */
-public class EclipseLinkPersistenceUnitSchemaGeneration2_5EditorPageDefinition
-extends PersistenceUnitEditorPageDefinition2_0
+public class EclipseLinkPersistenceUnitSchemaGenerationEditorPageDefinition2_5
+	extends PersistenceUnitEditorPageDefinition2_0
 {
 	// singleton
 	private static final JpaEditorPageDefinition INSTANCE = 
-			new EclipseLinkPersistenceUnitSchemaGeneration2_5EditorPageDefinition();
+			new EclipseLinkPersistenceUnitSchemaGenerationEditorPageDefinition2_5();
 	
 	/**
 	 * Return the singleton.
@@ -40,7 +37,7 @@ extends PersistenceUnitEditorPageDefinition2_0
 	/**
 	 * Ensure single instance.
 	 */
-	private EclipseLinkPersistenceUnitSchemaGeneration2_5EditorPageDefinition() {
+	private EclipseLinkPersistenceUnitSchemaGenerationEditorPageDefinition2_5() {
 		super();
 	}
 	
@@ -63,4 +60,3 @@ extends PersistenceUnitEditorPageDefinition2_0
 			new EclipseLinkPersistenceUnitSchemaGeneration2_5EditorPage(persistenceUnitModel, parent, widgetFactory, resourceManager);
 	}
 }
-
