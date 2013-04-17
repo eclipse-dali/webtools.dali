@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,12 +14,12 @@ import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMess
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractOneToManyMappingUiDefinition;
 
-public class DefaultJavaEclipseLinkOneToManyMappingUiDefinition
+public class EclipseLinkDefaultJavaOneToManyMappingUiDefinition
 	extends AbstractOneToManyMappingUiDefinition
 	implements DefaultMappingUiDefinition
 {
 	// singleton
-	private static final DefaultJavaEclipseLinkOneToManyMappingUiDefinition INSTANCE = new DefaultJavaEclipseLinkOneToManyMappingUiDefinition();
+	private static final EclipseLinkDefaultJavaOneToManyMappingUiDefinition INSTANCE = new EclipseLinkDefaultJavaOneToManyMappingUiDefinition();
 
 	/**
 	 * Return the singleton.
@@ -32,7 +32,7 @@ public class DefaultJavaEclipseLinkOneToManyMappingUiDefinition
 	/**
 	 * Ensure single instance.
 	 */
-	private DefaultJavaEclipseLinkOneToManyMappingUiDefinition() {
+	private EclipseLinkDefaultJavaOneToManyMappingUiDefinition() {
 		super();
 	}
 
