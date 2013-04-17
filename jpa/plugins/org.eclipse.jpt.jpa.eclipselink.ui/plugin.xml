@@ -376,7 +376,7 @@
 		</handler>
 
   		<handler
-        	class="org.eclipse.jpt.jpa.eclipselink.ui.internal.commands.UpgradeToEclipseLinkMappingFileXmlResourceHandler"
+        	class="org.eclipse.jpt.jpa.eclipselink.ui.internal.commands.EclipseLinkUpgradeXmlResourceToMappingFileHandler"
         	commandId="org.eclipse.jpt.jpa.eclipselink.ui.upgradeToEclipseLinkMappingFile">
      		
 			<activeWhen>

@@ -37,7 +37,7 @@ public class EclipseLinkUpgradeXmlFileToMappingFileHandler
 	}
 
 	protected void upgradeToEclipseLinkMappingFile(Object selectedObject) {
-		UpgradeToEclipseLinkMappingFileXmlResourceHandler.upgradeToEclipseLinkMappingFile(this.adaptSelection(selectedObject));
+		EclipseLinkUpgradeXmlResourceToMappingFileHandler.upgradeToEclipseLinkMappingFile(this.adaptSelection(selectedObject));
 	}
 
 	protected JptXmlResource adaptSelection(Object selectedObject) {

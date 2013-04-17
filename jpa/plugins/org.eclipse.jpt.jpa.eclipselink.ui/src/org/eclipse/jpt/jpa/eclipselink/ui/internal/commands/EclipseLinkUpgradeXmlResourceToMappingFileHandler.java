@@ -46,7 +46,7 @@ import org.xml.sax.SAXException;
  * when the selected object adapts to a <code>JptXmlResource</code>.
  * See org.eclipse.jpt.jpa.eclipselink.ui/plugin.xml
  */
-public class UpgradeToEclipseLinkMappingFileXmlResourceHandler 
+public class EclipseLinkUpgradeXmlResourceToMappingFileHandler 
 	extends AbstractHandler
 {
 
