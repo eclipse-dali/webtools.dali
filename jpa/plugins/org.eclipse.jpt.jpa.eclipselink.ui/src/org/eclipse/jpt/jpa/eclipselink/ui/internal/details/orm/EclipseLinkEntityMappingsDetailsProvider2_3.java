@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,11 +24,11 @@ import org.eclipse.swt.widgets.Composite;
  * @version 3.3
  * @since 3.1
  */
-public class EclipseLinkEntityMappings2_3DetailsProvider
+public class EclipseLinkEntityMappingsDetailsProvider2_3
 	extends AbstractEntityMappingsDetailsProvider
 {
 	// singleton
-	private static final JpaDetailsProvider INSTANCE = new EclipseLinkEntityMappings2_3DetailsProvider();
+	private static final JpaDetailsProvider INSTANCE = new EclipseLinkEntityMappingsDetailsProvider2_3();
 
 
 	/**
@@ -42,7 +42,7 @@ public class EclipseLinkEntityMappings2_3DetailsProvider
 	/**
 	 * Enforce singleton usage
 	 */
-	private EclipseLinkEntityMappings2_3DetailsProvider() {
+	private EclipseLinkEntityMappingsDetailsProvider2_3() {
 		super();
 	}
 
