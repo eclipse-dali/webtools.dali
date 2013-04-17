@@ -42,19 +42,19 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
 
-public class GenerateDynamicEntitiesFromSchemaWizard
+public class EclipseLinkGenerateDynamicEntitiesFromSchemaWizard
 	extends GenerateEntitiesFromSchemaWizard
 {	
 	private static final String HELP_CONTEXT_ID = JptJpaEclipseLinkUiPlugin.instance().getPluginID() + ".GenerateEntitiesFromSchemaWizard"; //$NON-NLS-1$
 
 	// ********** constructor **********
 
-	public GenerateDynamicEntitiesFromSchemaWizard() {
+	public EclipseLinkGenerateDynamicEntitiesFromSchemaWizard() {
 		super();
 		this.setWindowTitle(JptJpaEclipseLinkUiDynamicEntityGenMessages.GENERATE_DYNAMIC_ENTITIES_WIZARD__GENERATE_ENTITIES);
 	}
 	
-	public GenerateDynamicEntitiesFromSchemaWizard( JpaProject jpaProject, IStructuredSelection selection) {
+	public EclipseLinkGenerateDynamicEntitiesFromSchemaWizard( JpaProject jpaProject, IStructuredSelection selection) {
 		super(jpaProject, selection);
 		this.setWindowTitle(JptJpaEclipseLinkUiDynamicEntityGenMessages.GENERATE_DYNAMIC_ENTITIES_WIZARD__GENERATE_ENTITIES);
 	}
@@ -187,5 +187,4 @@ public class GenerateDynamicEntitiesFromSchemaWizard
 			}
 		}
 	}
-	
 }

@@ -17,7 +17,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards.gen.GenerateDynamicEntitiesFromSchemaWizard;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards.gen.EclipseLinkGenerateDynamicEntitiesFromSchemaWizard;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 
@@ -32,7 +32,7 @@ public class EclipseLinkGenerateDynamicEntitiesHandler
 	private void execute_(ExecutionEvent event) throws ExecutionException {
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getCurrentSelectionChecked(event);
 		JpaProject project = PlatformTools.getAdapter(selection.getFirstElement(), JpaProject.class);
-		GenerateDynamicEntitiesFromSchemaWizard wizard = new GenerateDynamicEntitiesFromSchemaWizard(project, selection);
+		EclipseLinkGenerateDynamicEntitiesFromSchemaWizard wizard = new EclipseLinkGenerateDynamicEntitiesFromSchemaWizard(project, selection);
 		WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShellChecked(event), wizard);
 		dialog.create();
 		int returnCode = dialog.open();

@@ -92,7 +92,7 @@
 			name="%newDynamicEntityFromTableWizardName"
 			icon="platform:/plugin/org.eclipse.jpt.jpa.ui/$nl$/images/buttons/new-jpa-file.gif"
 			category="org.eclipse.jpt.jpa/org.eclipse.jpt.jpa.eclipselink"
-			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards.gen.GenerateDynamicEntitiesFromSchemaWizard">
+			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards.gen.EclipseLinkGenerateDynamicEntitiesFromSchemaWizard">
 			<description>%newDynamicEntityFromTableWizardDesc</description>
 			<selection class="org.eclipse.core.resources.IResource"/> 
         </wizard>		
