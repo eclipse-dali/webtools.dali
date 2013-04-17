@@ -71,7 +71,7 @@ public class EclipseLinkGenerateDynamicEntitiesFromSchemaWizard
 		this.addPage(this.defaultTableGenerationPage);
 		this.defaultTableGenerationPage.init(this.selection);
 		
-		this.tablesAndColumnsCustomizationPage = new DynamicTablesAndColumnsCustomizationWizardPage(this.jpaProject, this.resourceManager);
+		this.tablesAndColumnsCustomizationPage = new EclipseLinkDynamicTablesAndColumnsCustomizationWizardPage(this.jpaProject, this.resourceManager);
 		this.addPage(this.tablesAndColumnsCustomizationPage);
 		this.tablesAndColumnsCustomizationPage.init(this.selection);		
 	}
