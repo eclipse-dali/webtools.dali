@@ -62,7 +62,7 @@ public class EclipseLinkOrmXml2_1UiDefinition
 	
 	@Override
 	protected JpaUiFactory buildUiFactory() {
-		return new EclipseLinkOrmXml2_1UiFactory();
+		return new EclipseLinkOrmXmlUiFactory2_1();
 	}
 	
 	public boolean providesUi(JptResourceType resourceType) {
