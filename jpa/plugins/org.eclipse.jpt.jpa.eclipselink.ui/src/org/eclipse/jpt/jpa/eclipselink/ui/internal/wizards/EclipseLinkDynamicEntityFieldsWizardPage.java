@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,9 +26,9 @@ import org.eclipse.wst.common.componentcore.internal.operation.IArtifactEditOper
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.internal.datamodel.ui.DataModelWizardPage;
 
-public class DynamicEntityFieldsWizardPage extends DataModelWizardPage {
+public class EclipseLinkDynamicEntityFieldsWizardPage extends DataModelWizardPage {
 
-	public DynamicEntityFieldsWizardPage(IDataModel model, String pageName) {
+	public EclipseLinkDynamicEntityFieldsWizardPage(IDataModel model, String pageName) {
 		super(model, pageName);
 		this.setTitle(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_FIELDS_WIZARD_PAGE_TITLE);
 		this.setDescription(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_FIELDS_WIZARD_PAGE_DESC);

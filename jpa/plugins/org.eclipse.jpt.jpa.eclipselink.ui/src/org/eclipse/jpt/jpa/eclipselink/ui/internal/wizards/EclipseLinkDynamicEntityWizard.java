@@ -41,7 +41,7 @@ public class EclipseLinkDynamicEntityWizard extends DataModelWizard implements I
 
 	private String initialProjectName;
 	private DynamicEntityClassWizardPage page1;
-	private DynamicEntityFieldsWizardPage page2;
+	private EclipseLinkDynamicEntityFieldsWizardPage page2;
 
 	public EclipseLinkDynamicEntityWizard(IDataModel model) {
 		super(model);
@@ -64,7 +64,7 @@ public class EclipseLinkDynamicEntityWizard extends DataModelWizard implements I
 		page1 = new DynamicEntityClassWizardPage(getDataModel(), "pageOne");
 		page1.setProjectName(this.initialProjectName);
 		addPage(page1);
-		page2 = new DynamicEntityFieldsWizardPage(getDataModel(), "pageTwo");
+		page2 = new EclipseLinkDynamicEntityFieldsWizardPage(getDataModel(), "pageTwo");
 		addPage(page2);
 	}
 
