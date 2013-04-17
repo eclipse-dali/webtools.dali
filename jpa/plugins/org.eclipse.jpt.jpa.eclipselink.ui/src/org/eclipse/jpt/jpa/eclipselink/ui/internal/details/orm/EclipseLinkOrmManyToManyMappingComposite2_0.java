@@ -65,7 +65,7 @@ public class EclipseLinkOrmManyToManyMappingComposite2_0
 
 		// Attribute type widgets
 		Hyperlink attributeTypeHyperlink = this.addHyperlink(container, JptJpaEclipseLinkUiDetailsMessages.ORM_ATTRIBUTE_TYPE_COMPOSITE_ATTRIBUTE_TYPE);
-		new OrmAttributeTypeClassChooser(this, getSubjectHolder(), container, attributeTypeHyperlink);
+		new EclipseLinkOrmAttributeTypeClassChooser(this, getSubjectHolder(), container, attributeTypeHyperlink);
 
 		// Access type widgets
 		this.addLabel(container, JptJpaUiMessages.AccessTypeComposite_access);
