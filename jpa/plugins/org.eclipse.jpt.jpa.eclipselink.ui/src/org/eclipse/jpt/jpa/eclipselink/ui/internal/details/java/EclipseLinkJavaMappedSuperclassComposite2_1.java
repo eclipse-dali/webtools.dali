@@ -21,10 +21,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
-public class JavaEclipseLinkMappedSuperclass2_1Composite
+public class EclipseLinkJavaMappedSuperclassComposite2_1
 	extends AbstractJavaEclipseLinkMappedSuperclassComposite<EclipseLinkJavaMappedSuperclass>
 {
-	public JavaEclipseLinkMappedSuperclass2_1Composite(
+	public EclipseLinkJavaMappedSuperclassComposite2_1(
 			PropertyValueModel<? extends EclipseLinkJavaMappedSuperclass> mappedSuperclassModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
