@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkManyToManyMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.AbstractEclipseLinkManyToManyMappingComposite;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkAbstractManyToManyMappingComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkJoinFetchComboViewer;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
 public class JavaEclipseLinkManyToManyMapping2_0Composite
-	extends AbstractEclipseLinkManyToManyMappingComposite<EclipseLinkManyToManyMapping2_0, Cascade2_0>
+	extends EclipseLinkAbstractManyToManyMappingComposite<EclipseLinkManyToManyMapping2_0, Cascade2_0>
 {
 	public JavaEclipseLinkManyToManyMapping2_0Composite(
 			PropertyValueModel<? extends EclipseLinkManyToManyMapping2_0> mappingModel,

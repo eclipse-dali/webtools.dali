@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkManyToManyMapping
 import org.eclipse.swt.widgets.Composite;
 
 public class EclipseLinkManyToManyMappingComposite
-	extends AbstractEclipseLinkManyToManyMappingComposite<EclipseLinkManyToManyMapping, Cascade>
+	extends EclipseLinkAbstractManyToManyMappingComposite<EclipseLinkManyToManyMapping, Cascade>
 {
 	public EclipseLinkManyToManyMappingComposite(
 			PropertyValueModel<? extends EclipseLinkManyToManyMapping> mappingModel,
