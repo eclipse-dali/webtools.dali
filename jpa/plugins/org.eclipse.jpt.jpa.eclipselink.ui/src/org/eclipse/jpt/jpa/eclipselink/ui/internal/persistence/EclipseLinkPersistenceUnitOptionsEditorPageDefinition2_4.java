@@ -19,12 +19,12 @@ import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitEditorPageDefinition2_0;
 import org.eclipse.swt.widgets.Composite;
 
-public class EclipseLinkPersistenceUnitOptions2_4EditorPageDefinition
+public class EclipseLinkPersistenceUnitOptionsEditorPageDefinition2_4
 	extends PersistenceUnitEditorPageDefinition2_0
 {
 	// singleton
 	private static final JpaEditorPageDefinition INSTANCE = 
-		new EclipseLinkPersistenceUnitOptions2_4EditorPageDefinition();
+		new EclipseLinkPersistenceUnitOptionsEditorPageDefinition2_4();
 
 	/**
 	 * Return the singleton.
@@ -37,7 +37,7 @@ public class EclipseLinkPersistenceUnitOptions2_4EditorPageDefinition
 	/**
 	 * Ensure single instance.
 	 */
-	protected EclipseLinkPersistenceUnitOptions2_4EditorPageDefinition() {
+	protected EclipseLinkPersistenceUnitOptionsEditorPageDefinition2_4() {
 		super();
 	}
 

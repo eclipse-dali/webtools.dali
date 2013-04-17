@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
 import org.eclipse.swt.widgets.Composite;
 
 public class EclipseLinkPersistenceUnitOptionsEditorPageDefinition2_5
-	extends EclipseLinkPersistenceUnitOptions2_4EditorPageDefinition
+	extends EclipseLinkPersistenceUnitOptionsEditorPageDefinition2_4
 {
 	// singleton
 	private static final JpaEditorPageDefinition INSTANCE = 
