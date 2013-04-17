@@ -31,9 +31,10 @@ import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.operation.NewEntityCl
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.internal.plugin.WTPCommonPlugin;
 
-public class NewDynamicEntityClassOperation extends NewEntityClassOperation {
-
-	public NewDynamicEntityClassOperation(IDataModel dataModel) {
+public class EclipseLinkNewDynamicEntityClassOperation
+	extends NewEntityClassOperation
+{
+	public EclipseLinkNewDynamicEntityClassOperation(IDataModel dataModel) {
 		super(dataModel);
 	}
 

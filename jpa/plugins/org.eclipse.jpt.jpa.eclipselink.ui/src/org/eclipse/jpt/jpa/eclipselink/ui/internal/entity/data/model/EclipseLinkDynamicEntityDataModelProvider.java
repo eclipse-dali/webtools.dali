@@ -50,7 +50,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkJpaProject;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.entity.data.operation.NewDynamicEntityClassOperation;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.entity.data.operation.EclipseLinkNewDynamicEntityClassOperation;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.model.IEntityDataModelProperties;
 import org.eclipse.jst.j2ee.internal.common.J2EECommonMessages;
@@ -68,7 +68,7 @@ public class EclipseLinkDynamicEntityDataModelProvider
 
 	@Override
 	public IDataModelOperation getDefaultOperation() {
-		return new NewDynamicEntityClassOperation(getDataModel());
+		return new EclipseLinkNewDynamicEntityClassOperation(getDataModel());
 	}
 
 	// ************** model properties ****************
