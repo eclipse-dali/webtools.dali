@@ -129,7 +129,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	}
 
 	protected Control initializeSchemaGenerationSection(Section section) {
-		return new PersistenceXmlSchemaGenerationComposite(this, this.buildSchemaGenerationHolder(), section).getControl();
+		return new EclipseLinkPersistenceXmlSchemaGenerationComposite(this, this.buildSchemaGenerationHolder(), section).getControl();
 	}
 
 	private PropertyValueModel<EclipseLinkSchemaGeneration> buildSchemaGenerationHolder() {

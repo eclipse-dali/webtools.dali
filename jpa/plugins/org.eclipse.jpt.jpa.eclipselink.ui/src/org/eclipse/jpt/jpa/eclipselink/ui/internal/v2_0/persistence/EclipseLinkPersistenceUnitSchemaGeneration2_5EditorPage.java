@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen.SchemaGener
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkSchemaGeneration;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.options.PersistenceXmlSchemaGenerationComposite;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.options.EclipseLinkPersistenceXmlSchemaGenerationComposite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2_1.persistence.DataLoadingComposite2_1;
 import org.eclipse.jpt.jpa.ui.internal.jpa2_1.persistence.SchemaGenerationComposite2_1;
 import org.eclipse.swt.SWT;
@@ -128,7 +128,7 @@ public class EclipseLinkPersistenceUnitSchemaGeneration2_5EditorPage
 	}
 
 	protected Control initializeEclipseLinkSchemaGenerationSection(Section section) {
-		return new PersistenceXmlSchemaGenerationComposite(this, this.buildEclipseLinkSchemaGenerationHolder(), section).getControl();
+		return new EclipseLinkPersistenceXmlSchemaGenerationComposite(this, this.buildEclipseLinkSchemaGenerationHolder(), section).getControl();
 	}
 
 	private PropertyValueModel<EclipseLinkSchemaGeneration> buildEclipseLinkSchemaGenerationHolder() {

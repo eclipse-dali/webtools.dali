@@ -30,10 +30,10 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
-public class PersistenceXmlSchemaGenerationComposite
+public class EclipseLinkPersistenceXmlSchemaGenerationComposite
 	extends Pane<EclipseLinkSchemaGeneration>
 {
-	public PersistenceXmlSchemaGenerationComposite(Pane<?> parent, PropertyValueModel<EclipseLinkSchemaGeneration> schemaGenModel, Composite parentComposite) {
+	public EclipseLinkPersistenceXmlSchemaGenerationComposite(Pane<?> parent, PropertyValueModel<EclipseLinkSchemaGeneration> schemaGenModel, Composite parentComposite) {
 		super(parent, schemaGenModel, parentComposite);
 	}
 
@@ -192,7 +192,7 @@ public class PersistenceXmlSchemaGenerationComposite
 		return new PropertyAspectAdapter<EclipseLinkSchemaGeneration, String>(this.getSubjectHolder(), EclipseLinkSchemaGeneration.DEFAULT_SCHEMA_GENERATION_CREATE_FILE_NAME) {
 			@Override
 			protected String buildValue_() {
-				return PersistenceXmlSchemaGenerationComposite.this.getDefaultCreateFileNameValue(subject);
+				return EclipseLinkPersistenceXmlSchemaGenerationComposite.this.getDefaultCreateFileNameValue(subject);
 			}
 		};
 	}
@@ -210,7 +210,7 @@ public class PersistenceXmlSchemaGenerationComposite
 
 				String name = subject.getCreateFileName();
 				if (name == null) {
-					name = PersistenceXmlSchemaGenerationComposite.this.getDefaultCreateFileNameValue(subject);
+					name = EclipseLinkPersistenceXmlSchemaGenerationComposite.this.getDefaultCreateFileNameValue(subject);
 				}
 				return name;
 			}
@@ -246,7 +246,7 @@ public class PersistenceXmlSchemaGenerationComposite
 		return new PropertyAspectAdapter<EclipseLinkSchemaGeneration, String>(this.getSubjectHolder(), EclipseLinkSchemaGeneration.DEFAULT_SCHEMA_GENERATION_DROP_FILE_NAME) {
 			@Override
 			protected String buildValue_() {
-				return PersistenceXmlSchemaGenerationComposite.this.getDefaultDropDdlFileNameValue(subject);
+				return EclipseLinkPersistenceXmlSchemaGenerationComposite.this.getDefaultDropDdlFileNameValue(subject);
 			}
 		};
 	}
@@ -264,7 +264,7 @@ public class PersistenceXmlSchemaGenerationComposite
 
 				String name = subject.getDropFileName();
 				if (name == null) {
-					name = PersistenceXmlSchemaGenerationComposite.this.getDefaultDropDdlFileNameValue(subject);
+					name = EclipseLinkPersistenceXmlSchemaGenerationComposite.this.getDefaultDropDdlFileNameValue(subject);
 				}
 				return name;
 			}
@@ -272,7 +272,7 @@ public class PersistenceXmlSchemaGenerationComposite
 			@Override
 			protected void setValue_(String value) {
 
-				if (PersistenceXmlSchemaGenerationComposite.this.getDefaultDropDdlFileNameValue(subject).equals(value)) {
+				if (EclipseLinkPersistenceXmlSchemaGenerationComposite.this.getDefaultDropDdlFileNameValue(subject).equals(value)) {
 					value = null;
 				}
 				subject.setDropFileName(value);
