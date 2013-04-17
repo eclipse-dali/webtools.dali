@@ -35,7 +35,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.dialogs.AddVirtualAttributeDialog;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.dialogs.EclipseLinkAddVirtualAttributeDialog;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.entity.data.model.DynamicEntityField;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.model.IEntityDataModelProperties;
@@ -430,7 +430,7 @@ public class DynamicEntityFieldTableSection extends Composite {
 	 * The dialog used to collect information for a new dynamic entity field
 	 * Information includes name, mapping type, attribute type and target type
 	 */
-	private class AddFieldDialog extends AddVirtualAttributeDialog {
+	private class AddFieldDialog extends EclipseLinkAddVirtualAttributeDialog {
 		
 		protected DynamicEntityField entityField;
 		protected final JpaProject jpaProject;

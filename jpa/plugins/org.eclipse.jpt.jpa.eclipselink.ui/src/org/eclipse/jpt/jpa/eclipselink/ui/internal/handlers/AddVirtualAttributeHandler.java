@@ -16,7 +16,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.dialogs.AddVirtualAttributeDialog;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.dialogs.EclipseLinkAddVirtualAttributeDialog;
 import org.eclipse.jpt.jpa.ui.selection.JpaSelectionManager;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -40,7 +40,7 @@ public class AddVirtualAttributeHandler
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getCurrentSelectionChecked(event);
 		EclipseLinkOrmPersistentType persistentType = (EclipseLinkOrmPersistentType) selection.getFirstElement();
 
-		AddVirtualAttributeDialog dialog = new AddVirtualAttributeDialog(window.getShell(), persistentType);
+		EclipseLinkAddVirtualAttributeDialog dialog = new EclipseLinkAddVirtualAttributeDialog(window.getShell(), persistentType);
 		dialog.create();
 		dialog.setBlockOnOpen(true);
 		OrmSpecifiedPersistentAttribute attribute = dialog.openAndReturnAttribute();

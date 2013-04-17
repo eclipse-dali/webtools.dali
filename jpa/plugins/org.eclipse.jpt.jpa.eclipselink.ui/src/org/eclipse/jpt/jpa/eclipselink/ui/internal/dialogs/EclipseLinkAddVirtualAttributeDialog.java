@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -65,7 +65,7 @@ import org.eclipse.ui.dialogs.SelectionDialog;
 import org.eclipse.ui.progress.IProgressService;
 import com.ibm.icu.text.Collator;
 
-public class AddVirtualAttributeDialog extends StatusDialog {
+public class EclipseLinkAddVirtualAttributeDialog extends StatusDialog {
 
 	private EclipseLinkOrmPersistentType persistentType;
 	private OrmSpecifiedPersistentAttribute addedAttribute;
@@ -79,7 +79,7 @@ public class AddVirtualAttributeDialog extends StatusDialog {
 	protected Text attributeTypeText;
 	protected Text targetTypeText;
 
-	public AddVirtualAttributeDialog(Shell parentShell, EclipseLinkOrmPersistentType persistentType) {
+	public EclipseLinkAddVirtualAttributeDialog(Shell parentShell, EclipseLinkOrmPersistentType persistentType) {
 		super(parentShell);
 		this.persistentType = persistentType;
 		setTitle(JptJpaEclipseLinkUiMessages.ADD_VIRTUAL_ATTRIBUTE_DIALOG_TITLE);
@@ -112,18 +112,18 @@ public class AddVirtualAttributeDialog extends StatusDialog {
 				});
 		this.mappingCombo.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
-				String mappingKey = AddVirtualAttributeDialog.this.getMappingKey();
+				String mappingKey = EclipseLinkAddVirtualAttributeDialog.this.getMappingKey();
 				OrmAttributeMappingDefinition mapping = 
-						AddVirtualAttributeDialog.this.getAttributeMappingDefinition(mappingKey);
+						EclipseLinkAddVirtualAttributeDialog.this.getAttributeMappingDefinition(mappingKey);
 				if (mapping.isSingleRelationshipMapping()) {
-					AddVirtualAttributeDialog.this.enableAttributeType(false);
-					AddVirtualAttributeDialog.this.enableTargetType(true);
+					EclipseLinkAddVirtualAttributeDialog.this.enableAttributeType(false);
+					EclipseLinkAddVirtualAttributeDialog.this.enableTargetType(true);
 				} else if  (mapping.isCollectionMapping()) {
-					AddVirtualAttributeDialog.this.enableAttributeType(true);
-					AddVirtualAttributeDialog.this.enableTargetType(true);
+					EclipseLinkAddVirtualAttributeDialog.this.enableAttributeType(true);
+					EclipseLinkAddVirtualAttributeDialog.this.enableTargetType(true);
 				} else {
-					AddVirtualAttributeDialog.this.enableAttributeType(true);
-					AddVirtualAttributeDialog.this.enableTargetType(false);
+					EclipseLinkAddVirtualAttributeDialog.this.enableAttributeType(true);
+					EclipseLinkAddVirtualAttributeDialog.this.enableTargetType(false);
 				}
 				validate();
 			}
@@ -202,7 +202,7 @@ public class AddVirtualAttributeDialog extends StatusDialog {
 			public Object[] getElements(Object inputElement) {
 				return ArrayTools.array(
 					IterableTools.sort(
-						((JpaPlatformUi) inputElement).getAttributeMappingUiDefinitions(AddVirtualAttributeDialog.this.getJptResourceType()),
+						((JpaPlatformUi) inputElement).getAttributeMappingUiDefinitions(EclipseLinkAddVirtualAttributeDialog.this.getJptResourceType()),
 						getProvidersComparator()));
 			}
 
