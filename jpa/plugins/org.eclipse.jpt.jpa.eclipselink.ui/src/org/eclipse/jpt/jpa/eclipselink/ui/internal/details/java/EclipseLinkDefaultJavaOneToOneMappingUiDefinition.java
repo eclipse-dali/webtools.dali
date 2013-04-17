@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,12 +14,12 @@ import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMess
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractOneToOneMappingUiDefinition;
 
-public class DefaultJavaEclipseLinkOneToOneMappingUiDefinition
+public class EclipseLinkDefaultJavaOneToOneMappingUiDefinition
 	extends AbstractOneToOneMappingUiDefinition
 	implements DefaultMappingUiDefinition
 {
 	// singleton
-	private static final DefaultJavaEclipseLinkOneToOneMappingUiDefinition INSTANCE = new DefaultJavaEclipseLinkOneToOneMappingUiDefinition();
+	private static final EclipseLinkDefaultJavaOneToOneMappingUiDefinition INSTANCE = new EclipseLinkDefaultJavaOneToOneMappingUiDefinition();
 
 	/**
 	 * Return the singleton.
@@ -32,7 +32,7 @@ public class DefaultJavaEclipseLinkOneToOneMappingUiDefinition
 	/**
 	 * Ensure single instance.
 	 */
-	private DefaultJavaEclipseLinkOneToOneMappingUiDefinition() {
+	private EclipseLinkDefaultJavaOneToOneMappingUiDefinition() {
 		super();
 	}
 
