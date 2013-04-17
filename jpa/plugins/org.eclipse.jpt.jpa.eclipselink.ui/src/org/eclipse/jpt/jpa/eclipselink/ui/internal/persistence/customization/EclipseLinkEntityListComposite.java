@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -49,12 +49,13 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
 /**
  *  EntityListComposite
  */
-public class EntityListComposite extends Pane<EclipseLinkCustomization>
+public class EclipseLinkEntityListComposite
+	extends Pane<EclipseLinkCustomization>
 {
 	private ModifiableCollectionValueModel<EclipseLinkCustomizationEntity> selectedEntitiesModel;
 	private PropertyValueModel<EclipseLinkCustomizationEntity> selectedEntityModel;
 
-	public EntityListComposite(Pane<? extends EclipseLinkCustomization> parentComposite, Composite parent) {
+	public EclipseLinkEntityListComposite(Pane<? extends EclipseLinkCustomization> parentComposite, Composite parent) {
 
 		super(parentComposite, parent);
 	}
@@ -112,7 +113,7 @@ public class EntityListComposite extends Pane<EclipseLinkCustomization>
 		return new AddRemoveListPane.AbstractAdapter<EclipseLinkCustomizationEntity>() {
 
 			public EclipseLinkCustomizationEntity addNewItem() {
-				return EntityListComposite.this.addEntity();
+				return EclipseLinkEntityListComposite.this.addEntity();
 			}
 
 			@Override
@@ -267,5 +268,4 @@ public class EntityListComposite extends Pane<EclipseLinkCustomization>
 			}
 		};
 	}
-
 }

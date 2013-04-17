@@ -149,7 +149,7 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Eclipse
 	}
 
 	protected void buildEntityListComposite(Composite parent) {
-		new EntityListComposite(this, parent); 
+		new EclipseLinkEntityListComposite(this, parent); 
 	}
 
 
