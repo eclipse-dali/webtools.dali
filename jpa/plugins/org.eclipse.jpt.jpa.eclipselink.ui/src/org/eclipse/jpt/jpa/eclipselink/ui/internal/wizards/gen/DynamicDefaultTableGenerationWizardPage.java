@@ -65,7 +65,7 @@ public class DynamicDefaultTableGenerationWizardPage extends
 
 		createXmlMappingFileGroup(composite);
 		createDomainJavaClassesPropertiesGroup(composite, 4);
-		defaultTableGenPanel = new DynamicTableGenPanel(composite, 4, true, this);
+		defaultTableGenPanel = new EclipseLinkDynamicTableGenPanel(composite, 4, true, this);
 
 		setControl(composite);
 		

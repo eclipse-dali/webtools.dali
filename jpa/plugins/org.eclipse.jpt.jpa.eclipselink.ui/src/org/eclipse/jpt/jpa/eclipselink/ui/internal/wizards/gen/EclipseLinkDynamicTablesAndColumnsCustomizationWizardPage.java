@@ -36,7 +36,7 @@ public class EclipseLinkDynamicTablesAndColumnsCustomizationWizardPage
 			gridLayout.numColumns = 4;
 			tableGenDetatilGroup.setLayout(gridLayout);
 			
-			this.tableGenPanel = new DynamicTableGenPanel(tableGenDetatilGroup, 4 , false, this );
+			this.tableGenPanel = new EclipseLinkDynamicTableGenPanel(tableGenDetatilGroup, 4 , false, this );
 
 		}
 		this.tableGenPanel.setORMGenTable(table);

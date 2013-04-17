@@ -19,9 +19,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
 
-public class DynamicTableGenPanel extends TableGenPanel {
-	
-	public DynamicTableGenPanel(Composite parent, int columns , boolean isDefaultTable, WizardPage wizardPage){
+public class EclipseLinkDynamicTableGenPanel
+	extends TableGenPanel
+{
+	public EclipseLinkDynamicTableGenPanel(Composite parent, int columns , boolean isDefaultTable, WizardPage wizardPage){
 		super(parent, columns, isDefaultTable, wizardPage);
 	}
 
@@ -58,5 +59,4 @@ public class DynamicTableGenPanel extends TableGenPanel {
 	protected void updateGenerateOptionalAnnotationControls(){
 		//do nothing, not applicable for Dynamic
 	}
-
 }
