@@ -132,7 +132,7 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Eclipse
 
 		// Profiler:
 		Hyperlink profilerHyperlink = this.addHyperlink(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_PROFILER_LABEL);
-		new ProfilerClassChooser(this, container, profilerHyperlink);
+		new EclipseLinkProfilerClassChooser(this, container, profilerHyperlink);
 		
 		return container;
 	}

@@ -41,7 +41,8 @@ import com.ibm.icu.text.Collator;
 /**
  *  ProfilerComposite
  */
-public class ProfilerClassChooser extends ClassChooserComboPane<EclipseLinkCustomization>
+public class EclipseLinkProfilerClassChooser
+	extends ClassChooserComboPane<EclipseLinkCustomization>
 {
 
 	/**
@@ -50,7 +51,7 @@ public class ProfilerClassChooser extends ClassChooserComboPane<EclipseLinkCusto
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public ProfilerClassChooser(
+	public EclipseLinkProfilerClassChooser(
 								Pane<? extends EclipseLinkCustomization> parentPane,
 	                           Composite parent,
 	                           Hyperlink hyperlink) {
@@ -76,7 +77,7 @@ public class ProfilerClassChooser extends ClassChooserComboPane<EclipseLinkCusto
 
 				String name = this.subject.getProfiler();
 				if (name == null) {
-					name = ProfilerClassChooser.this.getDefaultValue(this.subject);
+					name = EclipseLinkProfilerClassChooser.this.getDefaultValue(this.subject);
 				}
 				return name;
 			}
@@ -96,7 +97,7 @@ public class ProfilerClassChooser extends ClassChooserComboPane<EclipseLinkCusto
 		return new PropertyAspectAdapter<EclipseLinkCustomization, String>(this.getSubjectHolder(), EclipseLinkCustomization.DEFAULT_PROFILER) {
 			@Override
 			protected String buildValue_() {
-				return ProfilerClassChooser.this.getDefaultValue(this.subject);
+				return EclipseLinkProfilerClassChooser.this.getDefaultValue(this.subject);
 			}
 		};
 	}
