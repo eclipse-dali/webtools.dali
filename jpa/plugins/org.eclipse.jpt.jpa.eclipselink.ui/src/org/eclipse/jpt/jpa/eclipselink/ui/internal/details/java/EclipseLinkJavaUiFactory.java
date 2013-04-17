@@ -52,7 +52,7 @@ public class EclipseLinkJavaUiFactory
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaEclipseLinkMappedSuperclassComposite((PropertyValueModel<? extends EclipseLinkJavaMappedSuperclass>) mappedSuperclassModel, parentComposite, widgetFactory, resourceManager);
+		return new EclipseLinkJavaMappedSuperclassComposite((PropertyValueModel<? extends EclipseLinkJavaMappedSuperclass>) mappedSuperclassModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	
