@@ -25,7 +25,7 @@ public class EclipseLink2_4JpaPlatformUiFactory
 	public JpaPlatformUi buildJpaPlatformUi() {
 		return new EclipseLink2_0JpaPlatformUi(
 					EclipseLinkJpaPlatformUiFactory.NAVIGATOR_FACTORY_PROVIDER,
-					EclipseLink2_4JpaPlatformUiProvider.instance()
+					EclipseLinkJpaPlatformUiProvider2_4.instance()
 				);
 	}
 }
