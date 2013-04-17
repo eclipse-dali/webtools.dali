@@ -18,15 +18,12 @@ import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.options.EclipseLi
 import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- *  EclipseLinkPersistenceUnitOptions2_5EditorPageDefinition
- */
-public class EclipseLinkPersistenceUnitOptions2_5EditorPageDefinition
-extends EclipseLinkPersistenceUnitOptions2_4EditorPageDefinition
+public class EclipseLinkPersistenceUnitOptionsEditorPageDefinition2_5
+	extends EclipseLinkPersistenceUnitOptions2_4EditorPageDefinition
 {
 	// singleton
 	private static final JpaEditorPageDefinition INSTANCE = 
-		new EclipseLinkPersistenceUnitOptions2_5EditorPageDefinition();
+		new EclipseLinkPersistenceUnitOptionsEditorPageDefinition2_5();
 	
 	/**
 	 * Return the singleton.
@@ -39,7 +36,7 @@ extends EclipseLinkPersistenceUnitOptions2_4EditorPageDefinition
 	/**
 	 * Ensure single instance.
 	 */
-	private EclipseLinkPersistenceUnitOptions2_5EditorPageDefinition() {
+	private EclipseLinkPersistenceUnitOptionsEditorPageDefinition2_5() {
 		super();
 	}
 	
