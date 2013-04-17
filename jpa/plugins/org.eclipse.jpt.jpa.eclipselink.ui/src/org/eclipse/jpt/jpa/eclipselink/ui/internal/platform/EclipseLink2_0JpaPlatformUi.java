@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.platform;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.ddlgen.wizards.EclipseLink2_0DDLGeneratorUi;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.ddlgen.wizards.EclipseLinkDDLGeneratorUi2_0;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUiProvider;
 
 public class EclipseLink2_0JpaPlatformUi
@@ -28,6 +28,6 @@ public class EclipseLink2_0JpaPlatformUi
 	// ********** DDL generation **********
 
 	public void generateDDL(JpaProject project, IStructuredSelection selection) {
-		EclipseLink2_0DDLGeneratorUi.generate(project);
+		EclipseLinkDDLGeneratorUi2_0.generate(project);
 	}
 }
