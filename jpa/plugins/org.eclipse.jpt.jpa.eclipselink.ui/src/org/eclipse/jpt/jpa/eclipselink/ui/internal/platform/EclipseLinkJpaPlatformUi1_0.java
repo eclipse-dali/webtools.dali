@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,10 +15,10 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.ddlgen.EclipseLinkDDLGeneratorUi;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUiProvider;
 
-public class EclipseLink1_0JpaPlatformUi
+public class EclipseLinkJpaPlatformUi1_0
 	extends AbstractEclipseLinkJpaPlatformUi
 {
-	public EclipseLink1_0JpaPlatformUi(
+	public EclipseLinkJpaPlatformUi1_0(
 			ItemTreeStateProviderFactoryProvider navigatorFactoryProvider,
 			JpaPlatformUiProvider platformUiProvider
 	) {
