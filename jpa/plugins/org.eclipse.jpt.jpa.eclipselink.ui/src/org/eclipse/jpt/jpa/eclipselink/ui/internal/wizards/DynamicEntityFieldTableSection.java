@@ -36,7 +36,7 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.dialogs.EclipseLinkAddVirtualAttributeDialog;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.entity.data.model.DynamicEntityField;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.entity.data.model.EclipseLinkDynamicEntityField;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.model.IEntityDataModelProperties;
 import org.eclipse.swt.SWT;
@@ -192,22 +192,22 @@ public class DynamicEntityFieldTableSection extends Composite {
 		if (result == Window.CANCEL) {
 			return;
 		}
-		DynamicEntityField entityField = dialog.getEntityField();
+		EclipseLinkDynamicEntityField entityField = dialog.getEntityField();
 		addEntityField(entityField);
 	}
 
 	/**
 	 * Add the given dynamic entity field to the table
 	 * 
-	 * @param DynamicEntityField
+	 * @param EclipseLinkDynamicEntityField
 	 * @return the DynamicEntityField which is to be added to the table
 	 */
-	private void addEntityField(DynamicEntityField field) {
+	private void addEntityField(EclipseLinkDynamicEntityField field) {
 		if (field == null)
 			return;
-		List<DynamicEntityField> valueList = (ArrayList<DynamicEntityField>) mTableViewer.getInput();		
+		List<EclipseLinkDynamicEntityField> valueList = (ArrayList<EclipseLinkDynamicEntityField>) mTableViewer.getInput();		
 		if (valueList == null)
-			valueList = new ArrayList<DynamicEntityField>();		
+			valueList = new ArrayList<EclipseLinkDynamicEntityField>();		
 		valueList.add(field);
 		setInput(valueList);
 	}
@@ -225,12 +225,12 @@ public class DynamicEntityFieldTableSection extends Composite {
 			return;
 
 		Object selectedObj = selection.getFirstElement();
-		DynamicEntityField fieldForEdit = (DynamicEntityField) selectedObj;
+		EclipseLinkDynamicEntityField fieldForEdit = (EclipseLinkDynamicEntityField) selectedObj;
 		int index = mTableWidget.getSelectionIndex();
 
 		EditFieldDialog dialog = new EditFieldDialog(getShell(), this.getJpaProject(), fieldForEdit);
 		dialog.open();
-		DynamicEntityField entityField = dialog.getEntityField();
+		EclipseLinkDynamicEntityField entityField = dialog.getEntityField();
 		if (entityField != null) {			
 			editEntityField(index, entityField);
 		}
@@ -241,12 +241,12 @@ public class DynamicEntityFieldTableSection extends Composite {
 	 * @param index the index of the dynamic entity field in the table
 	 * @param field the edited dynamic entity field
 	 */
-	private void editEntityField(int index, DynamicEntityField field) {
+	private void editEntityField(int index, EclipseLinkDynamicEntityField field) {
 		if (field == null)
 			return;
-		List<DynamicEntityField> valueList = (ArrayList<DynamicEntityField>) mTableViewer.getInput();		
+		List<EclipseLinkDynamicEntityField> valueList = (ArrayList<EclipseLinkDynamicEntityField>) mTableViewer.getInput();		
 		if (valueList == null) {
-			valueList = new ArrayList<DynamicEntityField>();
+			valueList = new ArrayList<EclipseLinkDynamicEntityField>();
 		}
 		if (index == -1) {
 			valueList.add(field);
@@ -263,7 +263,7 @@ public class DynamicEntityFieldTableSection extends Composite {
 		ISelection selection = mTableViewer.getSelection();
 		if (selection.isEmpty() || !(selection instanceof IStructuredSelection))
 			return;
-		List<DynamicEntityField> selectedObject = ((IStructuredSelection) selection).toList();
+		List<EclipseLinkDynamicEntityField> selectedObject = ((IStructuredSelection) selection).toList();
 		removeEntityField(selectedObject);
 	}
 
@@ -271,8 +271,8 @@ public class DynamicEntityFieldTableSection extends Composite {
 	 * Removes the selected dynamic entity field(s) from the table
 	 * @param fields list of dynamic entity fields which should be removed
 	 */
-	private void removeEntityField(Collection<DynamicEntityField> fields) {
-		List<DynamicEntityField> valueList = (ArrayList<DynamicEntityField>) mTableViewer.getInput();
+	private void removeEntityField(Collection<EclipseLinkDynamicEntityField> fields) {
+		List<EclipseLinkDynamicEntityField> valueList = (ArrayList<EclipseLinkDynamicEntityField>) mTableViewer.getInput();
 		valueList.removeAll(fields);
 		setInput(valueList);
 	}
@@ -281,10 +281,10 @@ public class DynamicEntityFieldTableSection extends Composite {
 	 * Set the input of the table
 	 * @param input the list of dynamic entity fields which have to be presented in the table
 	 */
-	private void setInput(List<DynamicEntityField> input) {
+	private void setInput(List<EclipseLinkDynamicEntityField> input) {
 		mTableViewer.setInput(input);
 		// Create a new list to trigger property change
-		ArrayList<DynamicEntityField> newInput = new ArrayList<DynamicEntityField>();
+		ArrayList<EclipseLinkDynamicEntityField> newInput = new ArrayList<EclipseLinkDynamicEntityField>();
 		newInput.addAll(input);
 		model.setProperty(propertyName, newInput);		
 	}
@@ -300,11 +300,11 @@ public class DynamicEntityFieldTableSection extends Composite {
 	 * Update PK fields property when any field(s) added to, edited in, or removed from the field table viewer
 	 */
 	private void updatePrimaryKeyFieldProperty() {
-		List<DynamicEntityField> pkFields = new ArrayList<DynamicEntityField>();
+		List<EclipseLinkDynamicEntityField> pkFields = new ArrayList<EclipseLinkDynamicEntityField>();
 		TableItem[] children = mTableViewer.getTable().getItems();
 		for (int i = 0; i < children.length; i++) {
 			TableItem item = children[i];
-			DynamicEntityField field = (DynamicEntityField)item.getData();
+			EclipseLinkDynamicEntityField field = (EclipseLinkDynamicEntityField)item.getData();
 			if (field.getMappingType().getKey().equals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY)) {
 				field.setKey(true);
 				pkFields.add(field);
@@ -393,7 +393,7 @@ public class DynamicEntityFieldTableSection extends Composite {
 		}
 
 		public String getColumnText(Object element, int columnIndex) {
-			DynamicEntityField entity = (DynamicEntityField) element;
+			EclipseLinkDynamicEntityField entity = (EclipseLinkDynamicEntityField) element;
 			if (columnIndex == NAME_COLUMN) {
 				return entity.getName();
 			}
@@ -432,7 +432,7 @@ public class DynamicEntityFieldTableSection extends Composite {
 	 */
 	private class AddFieldDialog extends EclipseLinkAddVirtualAttributeDialog {
 		
-		protected DynamicEntityField entityField;
+		protected EclipseLinkDynamicEntityField entityField;
 		protected final JpaProject jpaProject;
 
 		/**
@@ -463,7 +463,7 @@ public class DynamicEntityFieldTableSection extends Composite {
 			/**
 			 * @see org.eclipse.jpt.jpa.eclipselink.ui.internal.entity.data.model.DynamicEntityField
 			 */
-			DynamicEntityField field = new DynamicEntityField();
+			EclipseLinkDynamicEntityField field = new EclipseLinkDynamicEntityField();
 			field.setName(this.nameText.getText());
 			field.setMappingType(this.getMappingUiDefinition(this.mappingCombo));
 			String mappingKey = field.getMappingType().getKey();
@@ -496,7 +496,7 @@ public class DynamicEntityFieldTableSection extends Composite {
 		/**
 		 * @return the dynamic entity field representation with the information collected from the dialog
 		 */
-		public DynamicEntityField getEntityField() {
+		public EclipseLinkDynamicEntityField getEntityField() {
 			return this.entityField;
 		}
 
@@ -525,7 +525,7 @@ public class DynamicEntityFieldTableSection extends Composite {
 	 */
 	private class EditFieldDialog extends AddFieldDialog {
 
-		public EditFieldDialog(Shell shell, JpaProject jpaProject, DynamicEntityField field) {
+		public EditFieldDialog(Shell shell, JpaProject jpaProject, EclipseLinkDynamicEntityField field) {
 			super(shell, jpaProject);
 			this.entityField = field;		
 		}

@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmTypeMapping;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.entity.data.model.DynamicEntityField;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.entity.data.model.EclipseLinkDynamicEntityField;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.entity.data.model.EclipseLinkDynamicEntityTemplateModel;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.operation.NewEntityClassOperation;
@@ -100,14 +100,14 @@ public class NewDynamicEntityClassOperation extends NewEntityClassOperation {
 				persistentType.addVirtualAttribute(this.model.getDefaultEmbeddedIdName(),
 						MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, embeddable.getName(), null);
 
-				for (DynamicEntityField field : this.model.getPKFields()) {
+				for (EclipseLinkDynamicEntityField field : this.model.getPKFields()) {
 					String attributeType = field.getFqnAttributeType();
 					String name = field.getName();
 					String mappingType = MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
 					embeddable.addVirtualAttribute(name, mappingType, attributeType, null);
 				}
 
-				for (DynamicEntityField field : this.model.getEntityFields()) {
+				for (EclipseLinkDynamicEntityField field : this.model.getEntityFields()) {
 					if (field.getMappingType().getKey() != MappingKeys.ID_ATTRIBUTE_MAPPING_KEY) {
 						persistentType.addVirtualAttribute(
 								field.getName(), field.getMappingType().getKey(), 
@@ -116,7 +116,7 @@ public class NewDynamicEntityClassOperation extends NewEntityClassOperation {
 					}
 				}
 			} else {
-				for (DynamicEntityField field : this.model.getEntityFields()) {
+				for (EclipseLinkDynamicEntityField field : this.model.getEntityFields()) {
 					persistentType.addVirtualAttribute(
 							field.getName(), field.getMappingType().getKey(), 
 							field.getFqnAttributeType(), field.getFqnTargetType()

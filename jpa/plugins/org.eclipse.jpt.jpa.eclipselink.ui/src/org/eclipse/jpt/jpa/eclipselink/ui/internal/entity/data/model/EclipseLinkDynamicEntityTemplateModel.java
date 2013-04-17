@@ -134,10 +134,10 @@ public class EclipseLinkDynamicEntityTemplateModel {
 	/**
 	 * @return list of the dynamic entity fields
 	 */
-	public List<DynamicEntityField> getEntityFields() {
-		ArrayList<DynamicEntityField> fields = (ArrayList<DynamicEntityField>) dataModel.getProperty(IEntityDataModelProperties.ENTITY_FIELDS);
+	public List<EclipseLinkDynamicEntityField> getEntityFields() {
+		ArrayList<EclipseLinkDynamicEntityField> fields = (ArrayList<EclipseLinkDynamicEntityField>) dataModel.getProperty(IEntityDataModelProperties.ENTITY_FIELDS);
 		if (fields == null){
-			return new ArrayList<DynamicEntityField>();
+			return new ArrayList<EclipseLinkDynamicEntityField>();
 		} else
 			return fields;
 	}
@@ -152,8 +152,8 @@ public class EclipseLinkDynamicEntityTemplateModel {
 	/**
 	 * @return list of primary key fields
 	 */
-	public List<DynamicEntityField> getPKFields() {
-		return (ArrayList<DynamicEntityField>) dataModel.getProperty(IEntityDataModelProperties.PK_FIELDS);
+	public List<EclipseLinkDynamicEntityField> getPKFields() {
+		return (ArrayList<EclipseLinkDynamicEntityField>) dataModel.getProperty(IEntityDataModelProperties.PK_FIELDS);
 	}
 
 	/**

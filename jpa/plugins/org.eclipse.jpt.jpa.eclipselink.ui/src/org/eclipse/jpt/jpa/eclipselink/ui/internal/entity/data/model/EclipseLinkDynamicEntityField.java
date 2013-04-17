@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,7 +7,6 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.entity.data.model;
 
 import java.util.Arrays;
@@ -15,7 +14,7 @@ import java.util.List;
 
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 
-public class DynamicEntityField {
+public class EclipseLinkDynamicEntityField {
 
 	private static final String DOT = "."; //$NON-NLS-1$
 	private static final char BRACKET_SQUARE = '[';
@@ -251,7 +250,7 @@ public class DynamicEntityField {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		final DynamicEntityField other = (DynamicEntityField) obj;
+		final EclipseLinkDynamicEntityField other = (EclipseLinkDynamicEntityField) obj;
 		if (this.fqnAttributeType == null) {
 			if (other.fqnAttributeType != null)
 				return false;

@@ -113,9 +113,9 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 		} else if (propertyName.equals(TABLE_NAME)) {
 			return getStringProperty(CLASS_NAME);			
 		} else if (propertyName.equals(ENTITY_FIELDS)) {
-			return new ArrayList<DynamicEntityField>();
+			return new ArrayList<EclipseLinkDynamicEntityField>();
 		} else if (propertyName.equals(PK_FIELDS)) {
-			return new ArrayList<DynamicEntityField>();
+			return new ArrayList<EclipseLinkDynamicEntityField>();
 		} else if (propertyName.equals(JAVA_PACKAGE_FRAGMENT_ROOT))
 			return getJavaPackageFragmentRoots();
 
@@ -175,10 +175,10 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 			return validateXmlName(getStringProperty(propertyName));
 		}
 		if (propertyName.equals(ENTITY_FIELDS)) {
-			return validateFieldsList((ArrayList<DynamicEntityField>) getProperty(propertyName));
+			return validateFieldsList((ArrayList<EclipseLinkDynamicEntityField>) getProperty(propertyName));
 		}
 		if (propertyName.equals(PK_FIELDS)) {
-			return validatePrimaryKeyFieldsList((ArrayList<DynamicEntityField>) getProperty(propertyName));
+			return validatePrimaryKeyFieldsList((ArrayList<EclipseLinkDynamicEntityField>) getProperty(propertyName));
 		}
 		return result;		
 	}
@@ -248,7 +248,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 	 * 				   or is the dynamic entity field attribute type valid
 	 * 				   or are the dynamic entity field mapping types valid
 	 */
-	private IStatus validateFieldsList(ArrayList<DynamicEntityField> fields) {
+	private IStatus validateFieldsList(ArrayList<EclipseLinkDynamicEntityField> fields) {
 		if (fields != null && !fields.isEmpty()) {
 			// Ensure there are no dynamic entity fields that have the same name in the table
 			boolean hasDuplicates = hasDuplicatesInEntityFields(fields);
@@ -285,7 +285,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 		return Status.OK_STATUS;
 	}
 
-	private String checkInputFieldsMappingTypes(ArrayList<DynamicEntityField> fields) {
+	private String checkInputFieldsMappingTypes(ArrayList<EclipseLinkDynamicEntityField> fields) {
 		IStatus validateFieldMappingTypeStatus = Status.OK_STATUS;
 		Iterable<String> mappingKeys = this.getMappingKeys(fields);
 		if (hasIDAndEmbeddedIDMappingDefined(mappingKeys)) {
@@ -299,15 +299,15 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 		return null;
 	}
 
-	private Iterable<String> getMappingKeys(ArrayList<DynamicEntityField> fields) {
+	private Iterable<String> getMappingKeys(ArrayList<EclipseLinkDynamicEntityField> fields) {
 		return IterableTools.transform(fields, new MappingKeyFieldTransformer());
 	}
 
 	static class MappingKeyFieldTransformer
-		extends TransformerAdapter<DynamicEntityField, String>
+		extends TransformerAdapter<EclipseLinkDynamicEntityField, String>
 	{
 		@Override
-		public String transform(DynamicEntityField field) {
+		public String transform(EclipseLinkDynamicEntityField field) {
 			return field.getMappingType().getKey();
 		}
 	}
@@ -328,9 +328,9 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 		return false;
 	}
 
-	private String checkInputFieldsAttributeTypeValidity(List<DynamicEntityField> fields) {
+	private String checkInputFieldsAttributeTypeValidity(List<EclipseLinkDynamicEntityField> fields) {
 		IStatus validateFieldTypeStatus = Status.OK_STATUS;
-		for (DynamicEntityField field: fields) {
+		for (EclipseLinkDynamicEntityField field: fields) {
 			// don't validate attribute type for a fields that is with single relationship mapping type
 			if (this.getAttributeMappingDefinition(field.getMappingType().getKey()).isSingleRelationshipMapping()) {
 				continue;
@@ -367,9 +367,9 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 		return null;
 	}
 
-	protected String checkInputFieldsAttributeTypeExistence(List<DynamicEntityField> fields) {
+	protected String checkInputFieldsAttributeTypeExistence(List<EclipseLinkDynamicEntityField> fields) {
 		IStatus validateFieldTypeStatus=Status.OK_STATUS;
-		for (DynamicEntityField field: fields) {
+		for (EclipseLinkDynamicEntityField field: fields) {
 			// don't validate attribute type for a fields that is with single relationship mapping type
 			if (this.getAttributeMappingDefinition(field.getMappingType().getKey()).isSingleRelationshipMapping()) {
 				continue;
@@ -423,9 +423,9 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 		return null;
 	}
 
-	private String checkInputFieldsTargetTypeValidity(List<DynamicEntityField> fields) {
+	private String checkInputFieldsTargetTypeValidity(List<EclipseLinkDynamicEntityField> fields) {
 		IStatus validateFieldTypeStatus = Status.OK_STATUS;
-		for (DynamicEntityField field: fields) {
+		for (EclipseLinkDynamicEntityField field: fields) {
 			// don't validate target type for a fields that is not with relationship or collection mapping type
 			if (!this.getAttributeMappingDefinition(field.getMappingType().getKey()).isSingleRelationshipMapping() &&
 					!this.getAttributeMappingDefinition(field.getMappingType().getKey()).isCollectionMapping()) {
@@ -459,9 +459,9 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 		return null;
 	}
 
-	protected String checkInputFieldsTargetTypeExistence(List<DynamicEntityField> fields) {
+	protected String checkInputFieldsTargetTypeExistence(List<EclipseLinkDynamicEntityField> fields) {
 		IStatus validateFieldTypeStatus=Status.OK_STATUS;
-		for (DynamicEntityField field: fields) {
+		for (EclipseLinkDynamicEntityField field: fields) {
 			// don't validate target type for a fields that is not with relationship or collection mapping type
 			if (!this.getAttributeMappingDefinition(field.getMappingType().getKey()).isSingleRelationshipMapping() &&
 					!this.getAttributeMappingDefinition(field.getMappingType().getKey()).isCollectionMapping()) {
@@ -524,16 +524,16 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 	 * @param list of DynamicEntityField
 	 * @return boolean true if duplicate fields exist; otherwise, false
 	 */
-	private boolean hasDuplicatesInEntityFields(ArrayList<DynamicEntityField> fields) {
+	private boolean hasDuplicatesInEntityFields(ArrayList<EclipseLinkDynamicEntityField> fields) {
 		if (fields == null) {
 			return false;
 		}
 		int n = fields.size();
 		// nested for loops to check each element to see if other elements are the same
 		for (int i = 0; i < n; i++) {
-			DynamicEntityField field = fields.get(i);
+			EclipseLinkDynamicEntityField field = fields.get(i);
 			for (int j = i + 1; j < n; j++) {
-				DynamicEntityField intEntity = fields.get(j);
+				EclipseLinkDynamicEntityField intEntity = fields.get(j);
 				if (intEntity.getName().equals(field.getName())) {
 					return true;
 				}
@@ -551,7 +551,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 	 * @param list of DynamicEntityField with ID mapping type
 	 * @return boolean true if duplicate fields exist; otherwise, false
 	 */
-	private IStatus validatePrimaryKeyFieldsList(ArrayList<DynamicEntityField> pkFields) {
+	private IStatus validatePrimaryKeyFieldsList(ArrayList<EclipseLinkDynamicEntityField> pkFields) {
 		return (pkFields.size() > 1) ?
 				JptJpaEclipseLinkUiPlugin.instance().buildStatus(IStatus.INFO, JptJpaEclipseLinkUiMessages.ECLIPSELINK_DYNAMIC_ENTITY_WIZARD_APPLY_EMBEDDED_ID_MAPPING_INFO) :
 				null;
