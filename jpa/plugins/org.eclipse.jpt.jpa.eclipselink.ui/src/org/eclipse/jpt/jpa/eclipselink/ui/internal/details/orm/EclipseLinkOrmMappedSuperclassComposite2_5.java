@@ -28,11 +28,11 @@ import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-public class OrmEclipseLinkMappedSuperclass2_5Composite
+public class EclipseLinkOrmMappedSuperclassComposite2_5
 	extends AbstractOrmEclipseLinkMappedSuperclassComposite<EclipseLinkOrmMappedSuperclass>
 {
 
-	public OrmEclipseLinkMappedSuperclass2_5Composite(
+	public EclipseLinkOrmMappedSuperclassComposite2_5(
 			PropertyValueModel<? extends EclipseLinkOrmMappedSuperclass> mappedSuperclassModel, 
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
