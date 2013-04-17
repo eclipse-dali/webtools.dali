@@ -33,7 +33,7 @@ public class EclipseLinkSelectMappingFileDialog
 
 	@Override
 	protected void openNewMappingFileWizard() {
-		IPath path = EmbeddedEclipseLinkMappingFileWizard.createNewMappingFile(new StructuredSelection(super.project));
+		IPath path = EclipseLinkEmbeddedMappingFileWizard.createNewMappingFile(new StructuredSelection(super.project));
 		this.updateDialog(path);
 	}
 }

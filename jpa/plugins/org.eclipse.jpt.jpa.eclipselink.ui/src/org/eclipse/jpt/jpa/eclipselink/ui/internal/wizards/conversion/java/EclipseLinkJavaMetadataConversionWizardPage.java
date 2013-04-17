@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.ui.internal.dialogs.OptionalMessageDialog;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards.EmbeddedEclipseLinkMappingFileWizard;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards.EclipseLinkEmbeddedMappingFileWizard;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards.EclipseLinkSelectMappingFileDialog;
 import org.eclipse.jpt.jpa.ui.internal.jface.XmlMappingFileViewerFilter;
 import org.eclipse.jpt.jpa.ui.internal.wizards.SelectMappingFileDialog;
@@ -41,7 +41,7 @@ public abstract class EclipseLinkJavaMetadataConversionWizardPage
 
 	@Override
 	protected IPath openNewMappingFileWizard() {
-		return EmbeddedEclipseLinkMappingFileWizard.createNewMappingFile(new StructuredSelection(this.jpaProject.getProject()));
+		return EclipseLinkEmbeddedMappingFileWizard.createNewMappingFile(new StructuredSelection(this.jpaProject.getProject()));
 	}
 
 	@Override
