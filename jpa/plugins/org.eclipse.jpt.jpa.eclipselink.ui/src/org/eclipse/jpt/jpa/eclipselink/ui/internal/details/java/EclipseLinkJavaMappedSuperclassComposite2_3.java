@@ -69,7 +69,7 @@ public class EclipseLinkJavaMappedSuperclassComposite2_3
 
 	@Override
 	protected Control initializeCachingSection(Composite container) {
-		return new JavaEclipseLinkCaching2_0Composite(this, this.buildCachingModel(), container).getControl();
+		return new EclipseLinkJavaCachingComposite2_0(this, this.buildCachingModel(), container).getControl();
 	}
 	
 	protected void initializeMultitenancyCollapsibleSection(Composite container) {
