@@ -59,6 +59,6 @@ public class EclipseLinkArrayMappingUiDefinition2_3
 
 	@SuppressWarnings("unchecked")
 	public JpaComposite buildMappingComposite(JpaUiFactory factory, PropertyValueModel<? extends JpaContextModel> mappingModel, PropertyValueModel<Boolean> enabledModel, Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager) {
-		return new EclipseLinkArrayMapping2_3Composite((PropertyValueModel<EclipseLinkArrayMapping2_3>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new EclipseLinkArrayMappingComposite2_3((PropertyValueModel<EclipseLinkArrayMapping2_3>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 }
