@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.entity.data.model.DynamicEntityDataModelProvider;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.entity.data.model.EclipseLinkDynamicEntityDataModelProvider;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.model.IEntityDataModelProperties;
@@ -84,7 +84,7 @@ public class EclipseLinkDynamicEntityWizard extends DataModelWizard implements I
 	 */
 	@Override
 	protected IDataModelProvider getDefaultProvider() {
-		return new DynamicEntityDataModelProvider();
+		return new EclipseLinkDynamicEntityDataModelProvider();
 	}
 
 	/* 

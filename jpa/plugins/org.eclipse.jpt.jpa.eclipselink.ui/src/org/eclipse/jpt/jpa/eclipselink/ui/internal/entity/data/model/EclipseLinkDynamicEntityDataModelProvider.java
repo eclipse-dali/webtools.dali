@@ -60,8 +60,10 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelProvider;
 import org.eclipse.wst.common.frameworks.internal.plugin.WTPCommonPlugin;
 
-public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvider implements IEntityDataModelProperties {
-
+public class EclipseLinkDynamicEntityDataModelProvider
+	extends NewJavaClassDataModelProvider
+	implements IEntityDataModelProperties
+{
 	private static final String DOT = "."; //$NON-NLS-1$
 
 	@Override
