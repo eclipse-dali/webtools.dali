@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMapping
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.entity.data.model.DynamicEntityField;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.entity.data.model.DynamicEntityTemplateModel;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.entity.data.model.EclipseLinkDynamicEntityTemplateModel;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.operation.NewEntityClassOperation;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -49,7 +49,7 @@ public class NewDynamicEntityClassOperation extends NewEntityClassOperation {
 
 	protected void generateUsingTemplates(IProgressMonitor monitor) {
 		// Create the entity template model
-		DynamicEntityTemplateModel tempModel = new DynamicEntityTemplateModel(this.model);
+		EclipseLinkDynamicEntityTemplateModel tempModel = new EclipseLinkDynamicEntityTemplateModel(this.model);
 		IProject project = this.getTargetProject();
 		Command command = new AddDynamicEntityToXMLCommand(tempModel, project);
 		this.run(new DaliRunnable(project.getWorkspace(), command));
@@ -58,11 +58,11 @@ public class NewDynamicEntityClassOperation extends NewEntityClassOperation {
 	// ********* add dynamic type mapping to XML command ***********
 
 	protected static class AddDynamicTypeMappingToXMLCommand implements Command {
-		protected final DynamicEntityTemplateModel model;
+		protected final EclipseLinkDynamicEntityTemplateModel model;
 		protected final IProject project;
 		protected final String typeMappingKey;
 
-		protected AddDynamicTypeMappingToXMLCommand(DynamicEntityTemplateModel model, IProject project, String typeMappingKey) {
+		protected AddDynamicTypeMappingToXMLCommand(EclipseLinkDynamicEntityTemplateModel model, IProject project, String typeMappingKey) {
 			super();
 			this.model = model;
 			this.project = project;
@@ -150,7 +150,7 @@ public class NewDynamicEntityClassOperation extends NewEntityClassOperation {
 	// ********* add dynamic entity to XML command ***********
 
 	protected static class AddDynamicEntityToXMLCommand extends AddDynamicTypeMappingToXMLCommand {
-		protected AddDynamicEntityToXMLCommand(DynamicEntityTemplateModel model, IProject project) {
+		protected AddDynamicEntityToXMLCommand(EclipseLinkDynamicEntityTemplateModel model, IProject project) {
 			super(model, project, MappingKeys.ENTITY_TYPE_MAPPING_KEY);
 		}
 

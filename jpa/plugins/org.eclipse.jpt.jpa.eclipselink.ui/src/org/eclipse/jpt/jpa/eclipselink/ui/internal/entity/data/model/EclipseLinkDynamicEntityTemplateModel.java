@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,7 +24,7 @@ import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.wst.common.componentcore.internal.operation.IArtifactEditOperationDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
-public class DynamicEntityTemplateModel {
+public class EclipseLinkDynamicEntityTemplateModel {
 
 	protected IDataModel dataModel;
 
@@ -36,7 +36,7 @@ public class DynamicEntityTemplateModel {
 	 * Constructs entity model as expansion of the data model
 	 * @param dataModel
 	 */
-	public DynamicEntityTemplateModel(IDataModel dataModel) {
+	public EclipseLinkDynamicEntityTemplateModel(IDataModel dataModel) {
 		this.dataModel = dataModel;
 	}
 
@@ -177,5 +177,4 @@ public class DynamicEntityTemplateModel {
 		String projectName = dataModel.getStringProperty(IArtifactEditOperationDataModelProperties.PROJECT_NAME);
 		return ProjectUtilities.getProject(projectName);
 	}
-
 }
