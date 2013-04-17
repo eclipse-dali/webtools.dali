@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmX
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkArrayMapping2_3UiDefinition;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkBasicCollectionMappingUiDefinition;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkBasicMapMappingUiDefinition;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkStructureMapping2_3UiDefinition;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkStructureMappingUiDefinition2_3;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkTransformationMappingUiDefinition;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkVariableOneToOneMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
@@ -100,7 +100,7 @@ public class EclipseLinkOrmXml2_3UiDefinition
 
 		definitions.add(ElementCollectionMappingUiDefinition2_0.instance());
 		definitions.add(EclipseLinkArrayMapping2_3UiDefinition.instance());
-		definitions.add(EclipseLinkStructureMapping2_3UiDefinition.instance());
+		definitions.add(EclipseLinkStructureMappingUiDefinition2_3.instance());
 	}
 
 }
