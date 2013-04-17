@@ -71,7 +71,7 @@ public class ConnectionPropertiesComposite<T extends EclipseLinkConnection>
 		jdbcComposite.getControl().setLayoutData(gridData);
 
 		// Exclusive Connections
-		JdbcExclusiveConnectionsPropertiesComposite<T> exclusiveConnectionsComposite = new JdbcExclusiveConnectionsPropertiesComposite<T>(this, container, enabledModel);
+		EclipseLinkJdbcExclusiveConnectionsPropertiesComposite<T> exclusiveConnectionsComposite = new EclipseLinkJdbcExclusiveConnectionsPropertiesComposite<T>(this, container, enabledModel);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		exclusiveConnectionsComposite.getControl().setLayoutData(gridData);

@@ -29,10 +29,10 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  JdbcExclusiveConnectionsPropertiesComposite
  */
-public class JdbcExclusiveConnectionsPropertiesComposite<T extends EclipseLinkConnection> 
+public class EclipseLinkJdbcExclusiveConnectionsPropertiesComposite<T extends EclipseLinkConnection> 
 	extends Pane<T>
 {
-	public JdbcExclusiveConnectionsPropertiesComposite(Pane<T> parentComposite, Composite parent, PropertyValueModel<Boolean> enabledModel) {
+	public EclipseLinkJdbcExclusiveConnectionsPropertiesComposite(Pane<T> parentComposite, Composite parent, PropertyValueModel<Boolean> enabledModel) {
 
 		super(parentComposite, parent, enabledModel);
 	}
