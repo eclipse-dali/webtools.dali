@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,13 +11,13 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.platform;
 
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 
-public class EclipseLink2_2JpaPlatformUiFactory
+public class EclipseLinkJpaPlatformUiFactory2_2
 	extends EclipseLink2_0JpaPlatformUiFactory
 {
 	/**
 	 * Zero arg constructor for extension point
 	 */
-	public EclipseLink2_2JpaPlatformUiFactory() {
+	public EclipseLinkJpaPlatformUiFactory2_2() {
 		super();
 	}
 
