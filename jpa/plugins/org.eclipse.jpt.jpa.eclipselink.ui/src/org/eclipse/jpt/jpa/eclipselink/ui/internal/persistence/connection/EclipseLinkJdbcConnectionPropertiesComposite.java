@@ -53,7 +53,7 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
  *  JdbcConnectionPropertiesComposite
  */
 @SuppressWarnings("nls")
-public class JdbcConnectionPropertiesComposite<T extends EclipseLinkConnection> 
+public class EclipseLinkJdbcConnectionPropertiesComposite<T extends EclipseLinkConnection> 
 	extends Pane<T>
 {
 	/**
@@ -61,7 +61,7 @@ public class JdbcConnectionPropertiesComposite<T extends EclipseLinkConnection>
 	 */
 	private static final String DIALOG_SETTINGS = "org.eclipse.jpt.jpa.eclipselink.ui.dialogs.ConnectionDialog";
 
-	public JdbcConnectionPropertiesComposite(
+	public EclipseLinkJdbcConnectionPropertiesComposite(
 			Pane<T> parent, 
 			Composite parentComposite
 	) {
@@ -310,7 +310,7 @@ public class JdbcConnectionPropertiesComposite<T extends EclipseLinkConnection>
 		 * Creates a new <code>MappingSelectionDialog</code>.
 		 */
 		protected ConnectionSelectionDialog() {
-			super(JdbcConnectionPropertiesComposite.this.getShell_(), false);
+			super(EclipseLinkJdbcConnectionPropertiesComposite.this.getShell_(), false);
 			setMessage(JptJpaEclipseLinkUiMessages.JDBC_CONNECTION_PROPERTIES_COMPOSITE_CONNECTION_DIALOG_MESSAGE);
 			setTitle(JptJpaEclipseLinkUiMessages.JDBC_CONNECTION_PROPERTIES_COMPOSITE_CONNECTION_DIALOG_TITLE);
 			setListLabelProvider(buildLabelProvider());
@@ -357,7 +357,7 @@ public class JdbcConnectionPropertiesComposite<T extends EclipseLinkConnection>
 		}
 
 		private Iterable<String> getConnectionProfileNames() {
-			ConnectionProfileFactory factory = JdbcConnectionPropertiesComposite.this.getConnectionProfileFactory();
+			ConnectionProfileFactory factory = EclipseLinkJdbcConnectionPropertiesComposite.this.getConnectionProfileFactory();
 			return (factory == null) ? IterableTools.<String>emptyIterable() : factory.getConnectionProfileNames();
 		}
 

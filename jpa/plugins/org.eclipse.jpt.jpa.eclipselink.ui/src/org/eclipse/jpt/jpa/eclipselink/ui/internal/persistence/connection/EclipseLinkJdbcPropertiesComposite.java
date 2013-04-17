@@ -52,7 +52,7 @@ public class EclipseLinkJdbcPropertiesComposite<T extends EclipseLinkConnection>
 	@Override
 	protected void initializeLayout(Composite container) {
 		// Connection Properties
-		JdbcConnectionPropertiesComposite<T> connectionComposite = new JdbcConnectionPropertiesComposite<T>(this, container);
+		EclipseLinkJdbcConnectionPropertiesComposite<T> connectionComposite = new EclipseLinkJdbcConnectionPropertiesComposite<T>(this, container);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		connectionComposite.getControl().setLayoutData(gridData);
