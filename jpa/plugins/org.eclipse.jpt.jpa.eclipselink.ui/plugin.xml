@@ -54,7 +54,7 @@
 		<jpaPlatformUi
 			id="eclipselink2_4.ui"
 			jpaPlatform="eclipselink2_4"
-			factoryClass="org.eclipse.jpt.jpa.eclipselink.ui.internal.platform.EclipseLink2_4JpaPlatformUiFactory"/>
+			factoryClass="org.eclipse.jpt.jpa.eclipselink.ui.internal.platform.EclipseLinkJpaPlatformUiFactory2_4"/>
 		
 		<jpaPlatformUi
 			id="eclipselink2_5.ui"
