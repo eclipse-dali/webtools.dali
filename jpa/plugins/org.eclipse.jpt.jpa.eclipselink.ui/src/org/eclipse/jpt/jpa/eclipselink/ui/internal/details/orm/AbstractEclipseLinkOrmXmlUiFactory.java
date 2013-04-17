@@ -82,7 +82,7 @@ public abstract class AbstractEclipseLinkOrmXmlUiFactory
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new OrmEclipseLinkIdMappingComposite((PropertyValueModel<? extends EclipseLinkIdMapping>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new EclipseLinkOrmIdMappingComposite((PropertyValueModel<? extends EclipseLinkIdMapping>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@SuppressWarnings("unchecked")
