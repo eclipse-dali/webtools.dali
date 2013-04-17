@@ -58,7 +58,7 @@ public abstract class AbstractEclipseLinkOrmXmlUiFactory
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new OrmEclipseLinkEntityComposite((PropertyValueModel<EclipseLinkOrmEntity>) entityModel, parentComposite, widgetFactory, resourceManager);
+		return new EclipseLinkOrmEntityComposite((PropertyValueModel<EclipseLinkOrmEntity>) entityModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@SuppressWarnings("unchecked")
