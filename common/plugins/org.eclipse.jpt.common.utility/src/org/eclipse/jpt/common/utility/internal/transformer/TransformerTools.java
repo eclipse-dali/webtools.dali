@@ -144,14 +144,18 @@ public final class TransformerTools {
 	}
 
 	/**
-	 * Return a transformer that adapts the specified predicate to the
-	 * {@link Transformer} interface.
+	 * Return a transformer that adapts the specified {@link Predicate
+	 * predicate} to the {@link Transformer transformer} interface.
+	 * If passed a <code>null</code> <em>input</em>, the
+	 * transformer will simply return a <code>null</code> <em>output</em>
+	 * without forwarding the <em>input</em> to the predicate.
 	 * @param <I> input: the type of the object passed to the transformer (and
 	 *   forwarded to the wrapped predicate)
 	 * @see PredicateTransformer
+	 * @see #nullCheck(Transformer)
 	 */
 	public static <I> Transformer<I, Boolean> adapt(Predicate<? super I> predicate) {
-		return new PredicateTransformer<I>(predicate);
+		return nullCheck(new PredicateTransformer<I>(predicate));
 	}
 
 
