@@ -65,14 +65,4 @@ public class MethodPredicateTests
 		assertEquals(this.parmMethodPredicate.hashCode(), parmMethodPredicate2.hashCode());
 		assertFalse(this.parmMethodPredicate.equals(IsNotNull.instance()));
 	}
-
-	public void testSerialization() throws Exception {
-		Predicate<BooleanReference> methodPredicate2 = TestTools.serialize(this.methodPredicate);
-		assertEquals(this.methodPredicate, methodPredicate2);
-		assertNotSame(this.methodPredicate, methodPredicate2);
-
-		Predicate<Transformer<String, Boolean>> parmMethodPredicate2 = TestTools.serialize(this.parmMethodPredicate);
-		assertEquals(this.parmMethodPredicate, parmMethodPredicate2);
-		assertNotSame(this.parmMethodPredicate, parmMethodPredicate2);
-	}
 }

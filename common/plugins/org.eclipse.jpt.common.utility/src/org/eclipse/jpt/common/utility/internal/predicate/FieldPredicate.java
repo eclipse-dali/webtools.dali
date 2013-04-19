@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.predicate;
 
-import java.io.Serializable;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 
@@ -24,11 +23,9 @@ import org.eclipse.jpt.common.utility.predicate.Predicate;
  * @param <V> the type of objects to be evaluated by the predicate
  */
 public class FieldPredicate<V>
-	implements Predicate<V>, Serializable
+	implements Predicate<V>
 {
 	private final String fieldName;
-
-	private static final long serialVersionUID = 1L;
 
 
 	/**

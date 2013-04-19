@@ -248,6 +248,32 @@ public final class PredicateTools {
 	// ********** wrappers **********
 
 	/**
+	 * Return a predicate that wraps the specified predicate and checks
+	 * for a <code>null</code> variable before forwarding the variable to the
+	 * specified predicate. If the variable is <code>null</code>, the predicate
+	 * will return <code>false</code>.
+	 * @param <V> the type of the object passed to the predicate
+	 * @see NullCheckPredicateWrapper
+	 * @see #nullCheck(Predicate, boolean)
+	 */
+	public static <V> Predicate<V> nullCheck(Predicate<? super V> predicate) {
+		return nullCheck(predicate, false);
+	}
+
+	/**
+	 * Return a predicate that wraps the specified predicate and checks
+	 * for a <code>null</code> variable before forwarding the variable to the
+	 * specified predicate. If the variable is <code>null</code>, the predicate
+	 * will return the specified value.
+	 * @param <V> the type of the object passed to the predicate
+	 * @see NullCheckPredicateWrapper
+	 * @see #nullCheck(Predicate)
+	 */
+	public static <V> Predicate<V> nullCheck(Predicate<? super V> predicate, boolean nullValue) {
+		return new NullCheckPredicateWrapper<V>(predicate, nullValue);
+	}
+
+	/**
 	 * Return a predicate that wraps the specified predicate, allowing the
 	 * wrapped predicate to be changed as necessary.
 	 * @param <V> the type of objects to be evaluated by the predicate
@@ -291,8 +317,8 @@ public final class PredicateTools {
 	 * the predicate will evaluate to <code>false</code>.
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
-	public static <V> Predicate<V> transformerPredicate(Transformer<V, Boolean> transformer) {
-		return transformerPredicate(transformer, false);
+	public static <V> Predicate<V> adapt(Transformer<V, Boolean> transformer) {
+		return adapt(transformer, false);
 	}
 
 	/**
@@ -302,8 +328,20 @@ public final class PredicateTools {
 	 * the predicate will evaluate to the specified null value.
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
-	public static <V> Predicate<V> transformerPredicate(Transformer<V, Boolean> transformer, boolean nullValue) {
-		return new TransformerPredicate<V>(transformer, nullValue);
+	public static <V> Predicate<V> adapt(Transformer<V, Boolean> transformer, boolean nullValue) {
+		return nullCheck(adapt_(transformer), nullValue);
+	}
+
+	/**
+	 * Return a predicate that will convert the specified transformer's output
+	 * value to a predicate evaluation result (i.e. <code>true</code> or
+	 * <code>false</code>).
+	 * <strong>NB:</strong> If the transformer's output is <code>null</code>,
+	 * the predicate will throw a {@link NullPointerException}.
+	 * @param <V> the type of objects to be evaluated by the predicate
+	 */
+	public static <V> Predicate<V> adapt_(Transformer<V, Boolean> transformer) {
+		return new TransformerPredicate<V>(transformer);
 	}
 
 

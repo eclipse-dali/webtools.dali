@@ -27,27 +27,20 @@ public class TransformerPredicate<V>
 	implements Predicate<V>, Serializable
 {
 	protected final Transformer<? super V, Boolean> transformer;
-	protected final boolean nullValue;
 
 	private static final long serialVersionUID = 1L;
 
 
-	public TransformerPredicate(Transformer<? super V, Boolean> transformer, boolean nullValue) {
+	public TransformerPredicate(Transformer<? super V, Boolean> transformer) {
 		super();
 		if (transformer == null) {
 			throw new NullPointerException();
 		}
 		this.transformer = transformer;
-		this.nullValue = nullValue;
 	}
 
 	public boolean evaluate(V variable) {
-		Boolean value = this.evaluate_(variable);
-		return (value == null) ? this.nullValue : value.booleanValue();
-	}
-
-	private Boolean evaluate_(V variable) {
-		return this.transformer.transform(variable);
+		return this.transformer.transform(variable).booleanValue();
 	}
 
 	@Override
@@ -57,12 +50,12 @@ public class TransformerPredicate<V>
 		}
 		@SuppressWarnings("unchecked")
 		TransformerPredicate<V> other = (TransformerPredicate<V>) o;
-		return this.transformer.equals(other.transformer) && (this.nullValue == other.nullValue);
+		return this.transformer.equals(other.transformer);
 	}
 
 	@Override
 	public int hashCode() {
-		return this.transformer.hashCode() ^ Boolean.valueOf(this.nullValue).hashCode();
+		return this.transformer.hashCode();
 	}
 
 	@Override

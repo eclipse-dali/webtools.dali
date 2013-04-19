@@ -27,10 +27,10 @@ public class PredicateTests
 
 	public void testPredicateAdapter() {
 		Predicate<String> filter = new PredicateAdapter<String>();
-		assertTrue(filter.evaluate(""));
-		assertTrue(filter.evaluate(null));
-		assertTrue(filter.evaluate("foo"));
-		assertTrue(filter.evaluate("bar"));
+		assertFalse(filter.evaluate(""));
+		assertFalse(filter.evaluate(null));
+		assertFalse(filter.evaluate("foo"));
+		assertFalse(filter.evaluate("bar"));
 	}
 
 	public void testPredicateAdapter_toString() {

@@ -54,12 +54,6 @@ public class TransformationPredicateTests
 		assertFalse(this.predicate.equals(IsNotNull.instance()));
 	}
 
-	public void testSerialization() throws Exception {
-		Predicate<Person> predicate2 = TestTools.serialize(this.predicate);
-		assertEquals(this.predicate, predicate2);
-		assertNotSame(this.predicate, predicate2);
-	}
-
 	static class Person {
 		final String name;
 		Person(String name) {

@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.predicate;
 
-import java.io.Serializable;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -24,12 +23,10 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  *   by the wrapped predicate
  */
 public class TransformationPredicate<I, O>
-	implements Predicate<I>, Serializable
+	implements Predicate<I>
 {
 	protected final Predicate<? super O> predicate;
 	protected final Transformer<? super I, O> transformer;
-
-	private static final long serialVersionUID = 1L;
 
 
 	public TransformationPredicate(Predicate<? super O> predicate, Transformer<? super I, O> transformer) {

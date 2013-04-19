@@ -34,7 +34,7 @@ public class TransformerPredicateTests
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.transformer = new LessThan42Transformer();
-		this.transformerPredicate = PredicateTools.transformerPredicate(this.transformer);
+		this.transformerPredicate = PredicateTools.adapt(this.transformer);
 	}
 
 	@Override
@@ -61,16 +61,10 @@ public class TransformerPredicateTests
 	}
 
 	public void testEquals() {
-		Predicate<Integer> transformerPredicate2 = PredicateTools.transformerPredicate(this.transformer);
+		Predicate<Integer> transformerPredicate2 = PredicateTools.adapt(this.transformer);
 		assertEquals(this.transformerPredicate, transformerPredicate2);
 		assertEquals(this.transformerPredicate.hashCode(), transformerPredicate2.hashCode());
 		assertFalse(this.transformerPredicate.equals(IsNotNull.instance()));
-	}
-
-	public void testSerialization() throws Exception {
-		Predicate<Integer> transformerPredicate2 = TestTools.serialize(this.transformerPredicate);
-		assertEquals(this.transformerPredicate, transformerPredicate2);
-		assertNotSame(this.transformerPredicate, transformerPredicate2);
 	}
 
 	static class LessThan42Transformer

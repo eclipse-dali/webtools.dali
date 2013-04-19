@@ -53,10 +53,4 @@ public class FieldPredicateTests
 		assertEquals(this.fieldPredicate.hashCode(), fieldPredicate2.hashCode());
 		assertFalse(this.fieldPredicate.equals(IsNotNull.instance()));
 	}
-
-	public void testSerialization() throws Exception {
-		Predicate<BooleanReference> fieldPredicate2 = TestTools.serialize(this.fieldPredicate);
-		assertEquals(this.fieldPredicate, fieldPredicate2);
-		assertNotSame(this.fieldPredicate, fieldPredicate2);
-	}
 }

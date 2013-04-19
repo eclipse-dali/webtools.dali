@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.predicate;
 
-import java.io.Serializable;
 import java.util.Arrays;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -26,13 +25,11 @@ import org.eclipse.jpt.common.utility.predicate.Predicate;
  * @param <V> the type of objects to be evaluated by the predicate
  */
 public class MethodPredicate<V>
-	implements Predicate<V>, Serializable
+	implements Predicate<V>
 {
 	private final String methodName;
 	private final Class<?>[] parameterTypes;
 	private final Object[] arguments;
-
-	private static final long serialVersionUID = 1L;
 
 
 	/**

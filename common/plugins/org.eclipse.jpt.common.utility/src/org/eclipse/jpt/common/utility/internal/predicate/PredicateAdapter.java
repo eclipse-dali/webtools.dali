@@ -22,7 +22,7 @@ public class PredicateAdapter<V>
 	implements Predicate<V>
 {
 	public boolean evaluate(V variable) {
-		return true;
+		return false;
 	}
 
 	@Override

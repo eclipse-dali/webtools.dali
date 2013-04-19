@@ -78,10 +78,4 @@ public class NOTTests
 		assertEquals(this.notPredicate.hashCode(), notPredicate2.hashCode());
 		assertFalse(this.notPredicate.equals(IsNotNull.instance()));
 	}
-
-	public void testSerialization() throws Exception {
-		NOT<Number> notPredicate2 = TestTools.serialize(this.notPredicate);
-		assertEquals(this.notPredicate.getPredicate(), notPredicate2.getPredicate());
-		assertNotSame(this.notPredicate, notPredicate2);
-	}
 }
