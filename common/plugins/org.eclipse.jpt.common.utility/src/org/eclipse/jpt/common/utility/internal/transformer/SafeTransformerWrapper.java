@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * @param <I> input: the type of the object passed to the transformer
  * @param <O> output: the type of the object returned by the transformer
  */
-public class SafeTransformer<I, O>
+public class SafeTransformerWrapper<I, O>
 	implements Transformer<I, O>
 {
 	private final Transformer<? super I, ? extends O> transformer;
@@ -30,7 +30,7 @@ public class SafeTransformer<I, O>
 	private final O exceptionOutput;
 
 
-	public SafeTransformer(Transformer<? super I, ? extends O> transformer, ExceptionHandler exceptionHandler, O exceptionOutput) {
+	public SafeTransformerWrapper(Transformer<? super I, ? extends O> transformer, ExceptionHandler exceptionHandler, O exceptionOutput) {
 		super();
 		if ((transformer == null) || (exceptionHandler == null)) {
 			throw new NullPointerException();

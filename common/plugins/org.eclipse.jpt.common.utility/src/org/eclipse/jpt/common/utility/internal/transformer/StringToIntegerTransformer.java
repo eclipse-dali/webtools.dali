@@ -10,37 +10,41 @@
 package org.eclipse.jpt.common.utility.internal.transformer;
 
 import java.io.Serializable;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * Transform a {@link String} into an {@link Integer} if possible.
- * Transform a <code>null</code> string into a client-configured
- * {@link Integer}.
  * @see Integer#valueOf(String)
  */
-public class StringToIntegerTransformer
+public final class StringToIntegerTransformer
 	implements Transformer<String, Integer>, Serializable
 {
-	private final Integer nullInteger;
+	public static final Transformer<String, Integer> INSTANCE = new StringToIntegerTransformer();
 
-	private static final long serialVersionUID = 1L;
+	public static Transformer<String, Integer> instance() {
+		return INSTANCE;
+	}
 
-
-	public StringToIntegerTransformer(Integer nullInteger) {
+	// ensure single instance
+	private StringToIntegerTransformer() {
 		super();
-		this.nullInteger = nullInteger;
 	}
 
 	/**
 	 * @see Integer#valueOf(String)
 	 */
 	public Integer transform(String string) {
-		return (string == null) ? this.nullInteger : Integer.valueOf(string);
+		return Integer.valueOf(string);
 	}
 
 	@Override
 	public String toString() {
-		return ObjectTools.toString(this, this. nullInteger);
+		return this.getClass().getSimpleName();
+	}
+
+	private static final long serialVersionUID = 1L;
+	private Object readResolve() {
+		// replace this object with the singleton
+		return INSTANCE;
 	}
 }

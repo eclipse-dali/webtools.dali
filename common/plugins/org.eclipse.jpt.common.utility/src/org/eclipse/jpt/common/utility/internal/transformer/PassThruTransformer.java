@@ -9,34 +9,46 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.transformer;
 
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import java.io.Serializable;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * A transformer that will perform no transformation at all;
- * it will simply return the input if it is not <code>null</code>.
- * A <code>null</code> input is transformed into a client-configured
- * output.
+ * it will simply return the input.
  * 
  * @param <I> input: the type of the object passed to the transformer
  */
-public class PassThruTransformer<I>
-	implements Transformer<I, I>
+public final class PassThruTransformer<I>
+	implements Transformer<I, I>, Serializable
 {
-	private final I nullOutput;
+	@SuppressWarnings("rawtypes")
+	public static final Transformer INSTANCE = new PassThruTransformer();
 
-
-	public PassThruTransformer(I nullOutput) {
-		super();
-		this.nullOutput = nullOutput;
+	@SuppressWarnings("unchecked")
+	public static <I> Transformer<I, I> instance() {
+		return INSTANCE;
 	}
 
+	// ensure single instance
+	private PassThruTransformer() {
+		super();
+	}
+
+	/**
+	 * Return the specified input, unchanged.
+	 */
 	public I transform(I input) {
-		return (input == null) ? this.nullOutput : input;
+		return input;
 	}
 
 	@Override
 	public String toString() {
-		return ObjectTools.toString(this, this.nullOutput);
+		return this.getClass().getSimpleName();
+	}
+
+	private static final long serialVersionUID = 1L;
+	private Object readResolve() {
+		// replace this object with the singleton
+		return INSTANCE;
 	}
 }

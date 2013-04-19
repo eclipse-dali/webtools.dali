@@ -28,10 +28,10 @@ import org.eclipse.jpt.common.ui.internal.swt.TriStateCheckBoxModelAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
 import org.eclipse.jpt.common.ui.internal.swt.events.DisposeAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeBooleanPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.NullCheckPropertyValueModelWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.BooleanTransformer;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
@@ -350,7 +350,7 @@ public abstract class Pane<T extends Model> {
 	 * (which is typical with aspect adapters etc.).
 	 */
 	private static PropertyValueModel<Boolean> buildNonNullModel(PropertyValueModel<Boolean> booleanModel) {
-		return new TransformationPropertyValueModel<Boolean, Boolean>(booleanModel, BooleanTransformer.FALSE);
+		return new NullCheckPropertyValueModelWrapper<Boolean>(booleanModel, Boolean.FALSE);
 	}
 
 

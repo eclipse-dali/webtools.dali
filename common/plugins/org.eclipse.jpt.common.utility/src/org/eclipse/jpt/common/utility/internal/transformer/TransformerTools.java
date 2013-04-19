@@ -28,71 +28,92 @@ public final class TransformerTools {
 	// ********** object to string **********
 
 	/**
-	 * Return a transformer that will transform an object into the string
-	 * returned by its {@link Object#toString()} method. A <code>null</code>
-	 * object is transformed into the string <code>"null"</code>.
+	 * Return a transformer that transforms an object into
+	 * the string returned by the {@link String#valueOf(Object)} method,
+	 * which is slightly different than the string returned by the
+	 * {@link Object#toString()} method.
+	 * <p>
+	 * <strong>NB:</strong> The transformer will return the string
+	 * <code>"null"</code> if it is passed a <code>null</code> input.
 	 * @param <I> input: the type of the object passed to the transformer
 	 * @see ObjectToStringTransformer
-	 * @see #objectToStringTransformer(String)
+	 * @see String#valueOf(Object)
 	 * @see #objectToStringTransformer()
+	 * @see #objectToStringTransformer(String)
+	 * @see #objectToStringTransformer_()
 	 */
-	public static <I> Transformer<I, String> nonNullObjectToStringTransformer() {
+	public static <I> Transformer<I, String> stringFromObjectTransformer() {
 		return objectToStringTransformer(String.valueOf((Object) null));
 	}
 
 	/**
-	 * Return a transformer that will transform an object into the string
-	 * returned by its {@link Object#toString()} method. A <code>null</code>
-	 * object is transformed into the specified string.
+	 * Return a transformer that transforms an object into the string
+	 * returned by its {@link Object#toString()} method.
+	 * <p>
+	 * <strong>NB:</strong> The transformer will return <code>null</code>
+	 * if it is passed a <code>null</code> input.
 	 * @param <I> input: the type of the object passed to the transformer
 	 * @see ObjectToStringTransformer
-	 * @see #objectToStringTransformer()
-	 * @see #nonNullObjectToStringTransformer()
+	 * @see Object#toString()
+	 * @see #objectToStringTransformer(String)
+	 * @see #objectToStringTransformer_()
+	 * @see #stringFromObjectTransformer()
 	 */
-	public static <I> Transformer<I, String> objectToStringTransformer(String nullString) {
-		return new ObjectToStringTransformer<I>(nullString);
+	public static <I> Transformer<I, String> objectToStringTransformer() {
+		return objectToStringTransformer(null);
 	}
 
 	/**
-	 * Return a transformer that will transform an object into the string
-	 * returned by its {@link Object#toString()} method. A <code>null</code>
-	 * object is transformed into <code>null</code>.
+	 * Return a transformer that transforms an object into the string
+	 * returned by its {@link Object#toString()} method.
+	 * The transformer will return the specified string
+	 * if it is passed a <code>null</code> input.
 	 * @param <I> input: the type of the object passed to the transformer
 	 * @see ObjectToStringTransformer
-	 * @see #objectToStringTransformer(String)
-	 * @see #nonNullObjectToStringTransformer()
+	 * @see Object#toString()
+	 * @see #objectToStringTransformer()
+	 * @see #objectToStringTransformer_()
+	 * @see #stringFromObjectTransformer()
 	 */
-	@SuppressWarnings("unchecked")
-	public static <I> Transformer<I, String> objectToStringTransformer() {
-		return OBJECT_TO_STRING_TRANSFORMER;
+	public static <I> Transformer<I, String> objectToStringTransformer(String nullString) {
+		return nullCheck(objectToStringTransformer_(), nullString);
 	}
-	@SuppressWarnings("rawtypes")
-	private static final Transformer OBJECT_TO_STRING_TRANSFORMER = objectToStringTransformer(null);
+
+	/**
+	 * Return a transformer that transforms a non-<code>null</code> object into
+	 * the string returned by its {@link Object#toString()} method.
+	 * <p>
+	 * <strong>NB:</strong> The transformer will throw a
+	 * {@link NullPointerException} if it is passed a <code>null</code> input.
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @see ObjectToStringTransformer
+	 * @see Object#toString()
+	 * @see #objectToStringTransformer()
+	 * @see #objectToStringTransformer(String)
+	 * @see #stringFromObjectTransformer()
+	 */
+	public static <I> Transformer<I, String> objectToStringTransformer_() {
+		return ObjectToStringTransformer.instance();
+	}
 
 
 	// ********** boolean **********
 
 	/**
-	 * @see #booleanTransformer(Boolean)
-	 * @see BooleanTransformer
-	 */
-	public static Transformer<Boolean, Boolean> booleanTransformer(boolean nullValue) {
-		return BooleanTransformer.valueOf(nullValue);
-	}
-
-	/**
-	 * Return a transformer that will transform a possibly-null
-	 * {@link Boolean} to a non-null {@link Boolean}:<ul>
-	 * <li>When the original {@link Boolean} is <em>not</em> <code>null</code>,
-	 * the transformer will return it unchanged.
-	 * <li>When the original {@link Boolean} is <code>null</code>,
-	 * the transformer will return the specified "null value"
-	 * ({@link Boolean#TRUE} or {@link Boolean#FALSE}).
+	 * Return a transformer that will transform a
+	 * {@link Boolean} to its NOT value:<ul>
+	 * <li>If the original {@link Boolean} is {@link Boolean#TRUE},
+	 * the transformer will return {@link Boolean#FALSE}.
+	 * <li>If the original {@link Boolean} is {@link Boolean#FALSE},
+	 * the transformer will return {@link Boolean#TRUE}.
+	 * <li>If the original {@link Boolean} is <code>null</code>,
+	 * the transformer will return the specified value.
 	 * </ul>
-	 * @see BooleanTransformer
+	 * @see NotBooleanTransformer
+	 * @see #notBooleanTransformer()
 	 */
-	public static Transformer<Boolean, Boolean> booleanTransformer(Boolean nullValue) {
-		return BooleanTransformer.valueOf(nullValue);
+	public static Transformer<Boolean, Boolean> notBooleanTransformer(Boolean nullBoolean) {
+		return nullCheck(notBooleanTransformer(), nullBoolean);
 	}
 
 	/**
@@ -105,9 +126,8 @@ public final class TransformerTools {
 	 * <li>If the original {@link Boolean} is <code>null</code>,
 	 * the transformer will return <code>null</code>.
 	 * </ul>
-	 * Use a {@link #booleanTransformer(Boolean)} to specify a value for when a
-	 * {@link Boolean} is <code>null</code>
 	 * @see NotBooleanTransformer
+	 * @see #notBooleanTransformer(Boolean)
 	 */
 	public static Transformer<Boolean, Boolean> notBooleanTransformer() {
 		return NotBooleanTransformer.instance();
@@ -146,63 +166,140 @@ public final class TransformerTools {
 	/**
 	 * Return a transformer that adapts the specified {@link Predicate
 	 * predicate} to the {@link Transformer transformer} interface.
-	 * If passed a <code>null</code> <em>input</em>, the
+	 * <p>
+	 * <strong>NB:</strong> If passed a <code>null</code> <em>input</em>, the
 	 * transformer will simply return a <code>null</code> <em>output</em>
 	 * without forwarding the <em>input</em> to the predicate.
 	 * @param <I> input: the type of the object passed to the transformer (and
 	 *   forwarded to the wrapped predicate)
 	 * @see PredicateTransformer
-	 * @see #nullCheck(Transformer)
+	 * @see #adapt(Predicate, Boolean)
+	 * @see #adapt_(Predicate)
 	 */
 	public static <I> Transformer<I, Boolean> adapt(Predicate<? super I> predicate) {
-		return nullCheck(new PredicateTransformer<I>(predicate));
+		return adapt(predicate, null);
+	}
+
+	/**
+	 * Return a transformer that adapts the specified {@link Predicate
+	 * predicate} to the {@link Transformer transformer} interface.
+	 * <p>
+	 * <strong>NB:</strong> If passed a <code>null</code> <em>input</em>, the
+	 * transformer will simply return the specified value
+	 * without forwarding the <em>input</em> to the predicate.
+	 * @param <I> input: the type of the object passed to the transformer (and
+	 *   forwarded to the wrapped predicate)
+	 * @see PredicateTransformer
+	 * @see #adapt(Predicate)
+	 * @see #adapt_(Predicate)
+	 */
+	public static <I> Transformer<I, Boolean> adapt(Predicate<? super I> predicate, Boolean nullBoolean) {
+		return nullCheck(adapt_(predicate), nullBoolean);
+	}
+
+	/**
+	 * Return a transformer that adapts the specified {@link Predicate
+	 * predicate} to the {@link Transformer transformer} interface.
+	 * <p>
+	 * <strong>NB:</strong> If passed a <code>null</code> <em>input</em>, the
+	 * transformer will pass a <code>null</code> to the predicate.
+	 * @param <I> input: the type of the object passed to the transformer (and
+	 *   forwarded to the wrapped predicate)
+	 * @see PredicateTransformer
+	 * @see #adapt(Predicate)
+	 * @see #adapt(Predicate, Boolean)
+	 */
+	public static <I> Transformer<I, Boolean> adapt_(Predicate<? super I> predicate) {
+		return new PredicateTransformer<I>(predicate);
 	}
 
 
 	// ********** string **********
 
 	/**
-	 * Return a transformer that converts a {@link String} to the appropriate
+	 * Return a transformer that transforms a {@link String} to the appropriate
 	 * {@link Boolean}.
+	 * <p>
+	 * <strong>NB:</strong> The transformer will return <code>null</code>
+	 * if it is passed a <code>null</code> input.
 	 * @see StringToBooleanTransformer
 	 * @see Boolean#valueOf(String)
 	 * @see #stringToBooleanTransformer(Boolean)
+	 * @see #stringToBooleanTransformer_()
 	 */
 	public static Transformer<String, Boolean> stringToBooleanTransformer() {
 		return stringToBooleanTransformer(null);
 	}
 
 	/**
-	 * Return a transformer that converts a {@link String} to the appropriate
-	 * {@link Boolean}.
+	 * Return a transformer that transforms a {@link String} to the appropriate
+	 * {@link Boolean}. The transformer will return the specified value
+	 * if it is passed a <code>null</code> input.
 	 * @see StringToBooleanTransformer
 	 * @see Boolean#valueOf(String)
 	 * @see #stringToBooleanTransformer()
+	 * @see #stringToBooleanTransformer_()
 	 */
 	public static Transformer<String, Boolean> stringToBooleanTransformer(Boolean nullBoolean) {
-		return new StringToBooleanTransformer(nullBoolean);
+		return nullCheck(stringToBooleanTransformer_(), nullBoolean);
 	}
 
 	/**
-	 * Return a transformer that converts a {@link String} to the appropriate
+	 * Return a transformer that transforms a {@link String} to the appropriate
+	 * {@link Boolean}.
+	 * <p>
+	 * <strong>NB:</strong> The transformer will return {@link Boolean#FALSE}
+	 * if it is passed a <code>null</code> input.
+	 * @see StringToBooleanTransformer
+	 * @see Boolean#valueOf(String)
+	 * @see #stringToBooleanTransformer(Boolean)
+	 * @see #stringToBooleanTransformer()
+	 */
+	public static Transformer<String, Boolean> stringToBooleanTransformer_() {
+		return StringToBooleanTransformer.instance();
+	}
+
+	/**
+	 * Return a transformer that transforms a {@link String} to the appropriate
 	 * {@link Integer}.
+	 * <p>
+	 * <strong>NB:</strong> The transformer will return <code>null</code>
+	 * if it is passed a <code>null</code> input.
 	 * @see StringToIntegerTransformer
 	 * @see Integer#valueOf(String)
 	 * @see #stringToIntegerTransformer(Integer)
+	 * @see #stringToIntegerTransformer_()
 	 */
 	public static Transformer<String, Integer> stringToIntegerTransformer() {
 		return stringToIntegerTransformer(null);
 	}
 
 	/**
-	 * Return a transformer that converts a {@link String} to the appropriate
-	 * {@link Integer}.
+	 * Return a transformer that transforms a {@link String} to the appropriate
+	 * {@link Integer}.  The transformer will return the specified value
+	 * if it is passed a <code>null</code> input.
 	 * @see StringToIntegerTransformer
 	 * @see Integer#valueOf(String)
 	 * @see #stringToIntegerTransformer()
+	 * @see #stringToIntegerTransformer_()
 	 */
 	public static Transformer<String, Integer> stringToIntegerTransformer(Integer nullInteger) {
-		return new StringToIntegerTransformer(nullInteger);
+		return nullCheck(stringToIntegerTransformer_(), nullInteger);
+	}
+
+	/**
+	 * Return a transformer that transforms a non-<code>null</code> {@link String}
+	 * to the appropriate {@link Integer}.
+	 * <p>
+	 * <strong>NB:</strong> The transformer will throw a
+	 * {@link NumberFormatException} if it is passed a <code>null</code> input.
+	 * @see StringToIntegerTransformer
+	 * @see Integer#valueOf(String)
+	 * @see #stringToIntegerTransformer()
+	 * @see #stringToIntegerTransformer(Integer)
+	 */
+	public static Transformer<String, Integer> stringToIntegerTransformer_() {
+		return StringToIntegerTransformer.instance();
 	}
 
 
@@ -363,7 +460,7 @@ public final class TransformerTools {
 	 * returned.
 	 * @param <I> input: the type of the object passed to the transformer
 	 * @param <O> output: the type of the object returned by the transformer
-	 * @see SafeTransformer
+	 * @see SafeTransformerWrapper
 	 * @see DefaultExceptionHandler
 	 */
 	public static <I, O> Transformer<I, O> safe(Transformer<? super I, ? extends O> transformer) {
@@ -378,7 +475,7 @@ public final class TransformerTools {
 	 * and specified output will be returned.
 	 * @param <I> input: the type of the object passed to the transformer
 	 * @param <O> output: the type of the object returned by the transformer
-	 * @see SafeTransformer
+	 * @see SafeTransformerWrapper
 	 * @see DefaultExceptionHandler
 	 */
 	public static <I, O> Transformer<I, O> safe(Transformer<? super I, ? extends O> transformer, O exceptionOutput) {
@@ -392,7 +489,7 @@ public final class TransformerTools {
 	 * and <code>null</code> will be returned.
 	 * @param <I> input: the type of the object passed to the transformer
 	 * @param <O> output: the type of the object returned by the transformer
-	 * @see SafeTransformer
+	 * @see SafeTransformerWrapper
 	 */
 	public static <I, O> Transformer<I, O> safe(Transformer<? super I, ? extends O> transformer, ExceptionHandler exceptionHandler) {
 		return safe(transformer, exceptionHandler, null);
@@ -405,29 +502,14 @@ public final class TransformerTools {
 	 * and specified output will be returned.
 	 * @param <I> input: the type of the object passed to the transformer
 	 * @param <O> output: the type of the object returned by the transformer
-	 * @see SafeTransformer
+	 * @see SafeTransformerWrapper
 	 */
 	public static <I, O> Transformer<I, O> safe(Transformer<? super I, ? extends O> transformer, ExceptionHandler exceptionHandler, O exceptionOutput) {
-		return new SafeTransformer<I, O>(transformer, exceptionHandler, exceptionOutput);
+		return new SafeTransformerWrapper<I, O>(transformer, exceptionHandler, exceptionOutput);
 	}
 
 
 	// ********** pass-thru **********
-
-	/**
-	 * Return a transformer that will perform no transformation at all;
-	 * it will simply return the input if it is not <code>null</code>.
-	 * A <code>null</code> input is transformed into the specified
-	 * output.
-	 * 
-	 * @param <I> input: the type of the object passed to the transformer
-	 *   (and returned by the transformer)
-	 * @see PassThruTransformer
-	 * @see #passThruTransformer()
-	 */
-	public static <I> Transformer<I, I> passThruTransformer(I nullOutput) {
-		return new PassThruTransformer<I>(nullOutput);
-	}
 
 	/**
 	 * Return a transformer that will perform no transformation at all;
@@ -437,12 +519,24 @@ public final class TransformerTools {
 	 * @see PassThruTransformer
 	 * @see #passThruTransformer(Object)
 	 */
-	@SuppressWarnings("unchecked")
 	public static <I> Transformer<I, I> passThruTransformer() {
-		return PASS_THRU_TRANSFORMER;
+		return PassThruTransformer.instance();
 	}
-	@SuppressWarnings("rawtypes")
-	private static final Transformer PASS_THRU_TRANSFORMER = passThruTransformer(null);
+
+	/**
+	 * Return a transformer that will perform no transformation at all;
+	 * it will simply return the input if it is not <code>null</code>.
+	 * The transformer will convert a <code>null</code> input into the specified
+	 * output.
+	 * @param <I> input: the type of the object passed to the transformer
+	 *   (and returned by the transformer)
+	 * @see PassThruTransformer
+	 * @see #passThruTransformer()
+	 */
+	@SuppressWarnings("unchecked")
+	public static <I> Transformer<I, I> passThruTransformer(I nullOutput) {
+		return (Transformer<I, I>) nullCheck(passThruTransformer(), nullOutput);
+	}
 
 
 	// ********** reflection **********

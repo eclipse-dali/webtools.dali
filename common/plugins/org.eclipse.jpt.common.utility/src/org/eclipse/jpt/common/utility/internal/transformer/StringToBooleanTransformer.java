@@ -15,34 +15,39 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 /**
  * Transform a {@link String} into a {@link Boolean} (i.e. transform
  * a string equal to <code>"true"</code> (ignoring case) into
- * {@link Boolean#TRUE}; transform all other non-<code>null</code>
+ * {@link Boolean#TRUE}; transform all other
  * strings into {@link Boolean#FALSE}).
- * Transform a <code>null</code> string into a client-configured
- * {@link Boolean}.
  * @see Boolean#valueOf(String)
  */
-public class StringToBooleanTransformer
+public final class StringToBooleanTransformer
 	implements Transformer<String, Boolean>, Serializable
 {
-	private final Boolean nullBoolean;
+	public static final Transformer<String, Boolean> INSTANCE = new StringToBooleanTransformer();
 
-	private static final long serialVersionUID = 1L;
+	public static Transformer<String, Boolean> instance() {
+		return INSTANCE;
+	}
 
-
-	public StringToBooleanTransformer(Boolean nullBoolean) {
+	// ensure single instance
+	private StringToBooleanTransformer() {
 		super();
-		this.nullBoolean = nullBoolean;
 	}
 
 	/**
 	 * @see Boolean#valueOf(String)
 	 */
 	public Boolean transform(String string) {
-		return (string == null) ? this.nullBoolean : Boolean.valueOf(string);
+		return Boolean.valueOf(string);
 	}
 
 	@Override
 	public String toString() {
 		return this.getClass().getSimpleName();
+	}
+
+	private static final long serialVersionUID = 1L;
+	private Object readResolve() {
+		// replace this object with the singleton
+		return INSTANCE;
 	}
 }
