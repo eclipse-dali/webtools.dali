@@ -95,7 +95,7 @@ public abstract class EclipseLinkElementCollectionMappingComposite2_0<T extends 
 		((GridData) elConverterButton.getLayoutData()).horizontalSpan = 2;
 
 		PropertyValueModel<EclipseLinkConvert> convertModel = this.buildEclipseLinkConvertModel(converterHolder);
-		PropertyValueModel<Boolean> convertEnabledModel = this.buildNotNullModel(convertModel);
+		PropertyValueModel<Boolean> convertEnabledModel = buildIsNotNullModel(convertModel);
 		Label convertLabel = this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERT_COMPOSITE_CONVERTER_NAME_LABEL, convertEnabledModel);
 		GridData gridData = new GridData();
 		gridData.horizontalIndent = 20;
@@ -132,10 +132,6 @@ public abstract class EclipseLinkElementCollectionMappingComposite2_0<T extends 
 	}
 	protected PropertyValueModel<EclipseLinkConvert> buildEclipseLinkConvertModel(PropertyValueModel<Converter> converterModel) {
 		return new TransformationPropertyValueModel<Converter, EclipseLinkConvert>(converterModel, TransformerTools.nullCheck(EclipseLinkConvert.CONVERTER_TRANSFORMER));
-	}
-
-	protected <M> PropertyValueModel<Boolean> buildNotNullModel(PropertyValueModel<M> valueModel) {
-		return new TransformationPropertyValueModel<M, Boolean>(valueModel, TransformerTools.<M>isNotNullTransformer());
 	}
 }
 

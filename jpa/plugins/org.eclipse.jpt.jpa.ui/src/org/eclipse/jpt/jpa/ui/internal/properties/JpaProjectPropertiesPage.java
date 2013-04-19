@@ -44,6 +44,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionVa
 import org.eclipse.jpt.common.utility.internal.model.value.CompositePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.DoublePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ExtendedListValueModelWrapper;
+import org.eclipse.jpt.common.utility.internal.model.value.PredicatePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SetCollectionValueModel;
@@ -52,6 +53,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.StaticCollectionValue
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
@@ -63,6 +65,7 @@ import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaModel;
@@ -118,7 +121,7 @@ public class JpaProjectPropertiesPage
 	public static final String PROP_ID = "org.eclipse.jpt.jpa.ui.jpaProjectProperties"; //$NON-NLS-1$
 
 	private PropertyValueModel<JpaProject> jpaProjectModel;
-	private PropertyValueModel<Boolean> jpaProjectNotNullFlagModel;
+	private PropertyValueModel<Boolean> jpaProjectIsNotNullFlagModel;
 
 	private BufferedModifiablePropertyValueModel<JpaPlatform.Config> jpaPlatformConfigModel;
 	private PropertyChangeListener jpaPlatformConfigListener;
@@ -160,7 +163,7 @@ public class JpaProjectPropertiesPage
 	@Override
 	protected void buildModels() {
 		this.jpaProjectModel = this.buildJpaProjectModel();
-		this.jpaProjectNotNullFlagModel = this.buildJpaProjectNotNullFlagModel();
+		this.jpaProjectIsNotNullFlagModel = this.buildJpaProjectIsNotNullFlagModel();
 
 		this.jpaPlatformConfigModel = this.buildJpaPlatformConfigModel();
 		this.jpaPlatformConfigListener = this.buildJpaPlatformConfigListener();
@@ -209,20 +212,9 @@ public class JpaProjectPropertiesPage
 		}
 	}
 
-	// ***** JPA project not null model
-	private PropertyValueModel<Boolean> buildJpaProjectNotNullFlagModel() {
-		return new TransformationPropertyValueModel<JpaProject, Boolean>(this.jpaProjectModel, JPA_PROJECT_NOT_NULL_TRANSFORMER);
-	}
-
-	private static final Transformer<JpaProject, Boolean> JPA_PROJECT_NOT_NULL_TRANSFORMER = new JpaProjectNotNullTransformer();
-
-	/* CU private */ static class JpaProjectNotNullTransformer
-		extends AbstractTransformer<JpaProject, Boolean>
-	{
-		@Override
-		protected Boolean transform_(JpaProject jpaProject) {
-			return Boolean.TRUE;  // if we get here, the JPA project is not null
-		}
+	// ***** JPA project is not null model
+	private PropertyValueModel<Boolean> buildJpaProjectIsNotNullFlagModel() {
+		return new PredicatePropertyValueModel<JpaProject>(this.jpaProjectModel, PredicateTools.isNotNull());
 	}
 
 	// ***** JPA platform config model
@@ -365,12 +357,10 @@ public class JpaProjectPropertiesPage
 
 	// ***** JPA 2.0 project flag
 	private PropertyValueModel<Boolean> buildJpa2_0ProjectFlagModel() {
-		return new TransformationPropertyValueModel<JpaProject, Boolean>(this.jpaProjectModel, this.buildJpaProjectIsCompatibleWithJpa2_0Transformer());
+		return new PredicatePropertyValueModel<JpaProject>(this.jpaProjectModel, IS_COMPATIBLE_WITH_JPA_2_0);
 	}
 
-	private Transformer<JpaProject, Boolean> buildJpaProjectIsCompatibleWithJpa2_0Transformer() {
-		return TransformerTools.adapt(new JpaModel.JpaVersionIsCompatibleWith(JpaProject2_0.FACET_VERSION_STRING));
-	}
+	private static final Predicate<JpaModel> IS_COMPATIBLE_WITH_JPA_2_0 = PredicateTools.nullCheck(new JpaModel.JpaVersionIsCompatibleWith(JpaProject2_0.FACET_VERSION_STRING));
 
 	// ***** metamodel models
 	private BufferedModifiablePropertyValueModel<String> buildMetamodelSourceFolderModel() {
@@ -529,7 +519,7 @@ public class JpaProjectPropertiesPage
 				JptJpaUiMessages.JpaFacetWizardPage_jpaImplementationLabel);
 
  		libraryProviderComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		SWTBindTools.controlEnabledState(this.jpaProjectNotNullFlagModel, libraryProviderComposite);
+		SWTBindTools.controlEnabledState(this.jpaProjectIsNotNullFlagModel, libraryProviderComposite);
 
 		this.buildConnectionGroup(parent);
 		this.buildPersistentClassManagementGroup(parent);
@@ -570,7 +560,7 @@ public class JpaProjectPropertiesPage
 
 		Link facetsPageLink = this.buildFacetsPageLink(group, JptJpaUiMessages.JpaFacetWizardPage_facetsPageLink);
 
-		SWTBindTools.controlEnabledState(this.jpaProjectNotNullFlagModel, group, jpaPlatformDropDown, facetsPageLink);
+		SWTBindTools.controlEnabledState(this.jpaProjectIsNotNullFlagModel, group, jpaPlatformDropDown, facetsPageLink);
 	}
 
 	/**
@@ -719,7 +709,7 @@ public class JpaProjectPropertiesPage
 
 		SWTBindTools.controlEnabledState(this.userOverrideDefaultSchemaFlagModel, defaultSchemaLabel, defaultSchemaDropDown);
 
-		SWTBindTools.controlEnabledState(this.jpaProjectNotNullFlagModel, group, connectionDropDown, addConnectionLink, overrideDefaultCatalogCheckBox, overrideDefaultSchemaButton);
+		SWTBindTools.controlEnabledState(this.jpaProjectIsNotNullFlagModel, group, connectionDropDown, addConnectionLink, overrideDefaultCatalogCheckBox, overrideDefaultSchemaButton);
 	}
 
 	private static final Transformer<String, String> SIMPLE_STRING_TRANSFORMER = TransformerTools.passThruTransformer(JptJpaUiMessages.JpaFacetWizardPage_none);
@@ -811,7 +801,7 @@ public class JpaProjectPropertiesPage
 		Button listClassesRadioButton = this.buildRadioButton(group, 1, JptJpaUiMessages.JpaFacetWizardPage_listClassesButton);
 		SWTBindTools.bind(this.listAnnotatedClassesModel, listClassesRadioButton);
 
-		SWTBindTools.controlEnabledState(this.jpaProjectNotNullFlagModel, group, discoverClassesRadioButton, listClassesRadioButton);
+		SWTBindTools.controlEnabledState(this.jpaProjectIsNotNullFlagModel, group, discoverClassesRadioButton, listClassesRadioButton);
 	}
 
 

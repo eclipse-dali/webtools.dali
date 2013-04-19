@@ -60,7 +60,7 @@ public class EnumTypeComboViewer extends Pane<BaseEnumeratedConverter>
 
 	private EnumFormComboViewer<BaseEnumeratedConverter, EnumType> addEnumTypeCombo(Composite container) {
 
-		return new EnumFormComboViewer<BaseEnumeratedConverter, EnumType>(this, container, buildBooleanHolder()) {
+		return new EnumFormComboViewer<BaseEnumeratedConverter, EnumType>(this, container, this.buildSubjectIsNotNullModel()) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -105,9 +105,5 @@ public class EnumTypeComboViewer extends Pane<BaseEnumeratedConverter>
 				return JpaHelpContextIds.MAPPING_ENUMERATED;
 			}
 		};
-	}
-
-	protected PropertyValueModel<Boolean> buildBooleanHolder() {
-		return this.buildNotNullSubjectModel();
 	}
 }

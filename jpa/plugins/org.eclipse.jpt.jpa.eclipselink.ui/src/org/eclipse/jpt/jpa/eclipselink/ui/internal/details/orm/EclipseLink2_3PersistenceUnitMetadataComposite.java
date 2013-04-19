@@ -14,11 +14,12 @@ import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.model.value.PredicatePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.transformer.Transformer;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
@@ -155,12 +156,11 @@ public class EclipseLink2_3PersistenceUnitMetadataComposite extends PersistenceU
 	}
 
 	private PropertyValueModel<Boolean> buildDelimitedIdentifiersCheckBoxIsVisibleModel() {
-		return new TransformationPropertyValueModel<OrmPersistenceUnitMetadata, Boolean>(this.getSubjectHolder(), this.buildPUMetadataIsCompatibleWithJpa2_0Transformer());
+		return new PredicatePropertyValueModel<JpaModel>(this.getSubjectHolder(), IS_COMPATIBLE_WITH_JPA_2_0);
 	}
 
-	private Transformer<OrmPersistenceUnitMetadata, Boolean> buildPUMetadataIsCompatibleWithJpa2_0Transformer() {
-		return TransformerTools.adapt(new JpaModel.JpaVersionIsCompatibleWith(JpaProject2_0.FACET_VERSION_STRING));
-	}
+	protected static final Predicate<JpaModel> IS_COMPATIBLE_WITH_JPA_2_0 =
+			PredicateTools.nullCheck(new JpaModel.JpaVersionIsCompatibleWith(JpaProject2_0.FACET_VERSION_STRING));
 
 	private PropertyValueModel<Boolean> buildPaneEnablerHolder() {
 		return new TransformationPropertyValueModel<OrmPersistenceUnitDefaults, Boolean>(getPersistenceUnitDefaultsHolder()) {

@@ -18,18 +18,19 @@ import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListPropertyValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PredicatePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ReadOnlyModifiablePropertyValueModelWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ValueListAdapter;
-import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.transformer.Transformer;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMultitenantType2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkSpecifiedTenantDiscriminatorColumn2_3;
@@ -289,12 +290,11 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 	}
 
 	private PropertyValueModel<Boolean> buildIncludeCriteriaCheckBoxIsVisibleModel() {
-		return new TransformationPropertyValueModel<EclipseLinkMultitenancy2_3, Boolean>(this.getSubjectHolder(), this.buildMultitenancyIsCompatibleWithEclipseLink2_4Transformer());
+		return new PredicatePropertyValueModel<EclipseLinkMultitenancy2_3>(this.getSubjectHolder(), IS_COMPATIBLE_WITH_ECLIPSELINK_2_4);
 	}
 
-	private Transformer<EclipseLinkMultitenancy2_3, Boolean> buildMultitenancyIsCompatibleWithEclipseLink2_4Transformer() {
-		return TransformerTools.adapt(new EclipseLinkVersionIsCompatibleWith(EclipseLinkJpaPlatformFactory2_4.VERSION));
-	}
+	private static final Predicate<EclipseLinkMultitenancy2_3> IS_COMPATIBLE_WITH_ECLIPSELINK_2_4 =
+			PredicateTools.nullCheck(new EclipseLinkVersionIsCompatibleWith(EclipseLinkJpaPlatformFactory2_4.VERSION));
 
 	private ModifiablePropertyValueModel<Boolean> buildOverrideDefaultTenantDiscriminatorColumnHolder() {
 		return new OverrideDefaultTenantDiscriminatorColumnHolder();

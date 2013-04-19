@@ -15,12 +15,13 @@ import org.eclipse.jpt.common.core.JptResourceTypeReference;
 import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.model.value.PredicatePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.transformer.Transformer;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXmlDefinition2_0;
@@ -312,10 +313,9 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 	}
 
 	protected PropertyValueModel<Boolean> buildResourceTypeIsKindOfOrmXml2_0Model() {
-		return new TransformationPropertyValueModel<OrmPersistenceUnitMetadata, Boolean>(this.getSubjectHolder(), this.buildResourceTypeIsKindOfOrmXml2_0Transformer());
+		return new PredicatePropertyValueModel<OrmPersistenceUnitMetadata>(this.getSubjectHolder(), RESOURCE_TYPE_IS_KIND_OF_ORM_XML_2_0);
 	}
 
-	protected Transformer<OrmPersistenceUnitMetadata, Boolean> buildResourceTypeIsKindOfOrmXml2_0Transformer() {
-		return TransformerTools.adapt(new JptResourceTypeReference.ResourceTypeIsKindOf(GenericOrmXmlDefinition2_0.instance().getResourceType()));
-	}
+	protected static final Predicate<JptResourceTypeReference> RESOURCE_TYPE_IS_KIND_OF_ORM_XML_2_0 =
+			PredicateTools.nullCheck(new JptResourceTypeReference.ResourceTypeIsKindOf(GenericOrmXmlDefinition2_0.instance().getResourceType()));
 }

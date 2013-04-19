@@ -14,12 +14,12 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
+import org.eclipse.jpt.common.utility.internal.model.value.PredicatePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.transformer.Transformer;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCacheType;
@@ -162,7 +162,7 @@ public class EclipseLinkPersistenceUnitCaching2_0EditorPage
 	}
 
 	private PropertyValueModel<Boolean> buildSharedCacheModeEnabledModel(PropertyValueModel<PersistenceUnit2_0> persistenceUnitModel) {
-		return new TransformationPropertyValueModel<SharedCacheMode2_0, Boolean>(this.buildSharedCacheModeModel(persistenceUnitModel), SHARED_CACHE_MODE_ENABLED_TRANSFORMER);
+		return new PredicatePropertyValueModel<SharedCacheMode2_0>(this.buildSharedCacheModeModel(persistenceUnitModel), SHARED_CACHE_MODE_ENABLED);
 	}
 
 	private PropertyValueModel<SharedCacheMode2_0> buildSharedCacheModeModel(PropertyValueModel<PersistenceUnit2_0> persistenceUnitModel) {
@@ -177,13 +177,13 @@ public class EclipseLinkPersistenceUnitCaching2_0EditorPage
 		};
 	}
 
-	private static final Transformer<SharedCacheMode2_0, Boolean> SHARED_CACHE_MODE_ENABLED_TRANSFORMER = new SharedCacheModeEnabledTransformer();
-	/* CU private */ static class SharedCacheModeEnabledTransformer
-		extends TransformerAdapter<SharedCacheMode2_0, Boolean>
+	private static final Predicate<SharedCacheMode2_0> SHARED_CACHE_MODE_ENABLED = new SharedCacheModeEnabled();
+	/* CU private */ static class SharedCacheModeEnabled
+		extends PredicateAdapter<SharedCacheMode2_0>
 	{
 		@Override
-		public Boolean transform(SharedCacheMode2_0 mode) {
-			return Boolean.valueOf(mode != SharedCacheMode2_0.NONE);
+		public boolean evaluate(SharedCacheMode2_0 mode) {
+			return mode != SharedCacheMode2_0.NONE;
 		}
 	}
 

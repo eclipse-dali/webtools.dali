@@ -19,12 +19,14 @@ import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.model.value.PredicatePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.transformer.Transformer;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
+import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
@@ -97,12 +99,11 @@ public class EclipseLinkTenantDiscriminatorColumnComposite extends Pane<EclipseL
 	}
 
 	private PropertyValueModel<Boolean> buildPKCheckBoxIsVisibleModel() {
-		return new TransformationPropertyValueModel<EclipseLinkTenantDiscriminatorColumn2_3, Boolean>(this.getSubjectHolder(), this.buildTenantDiscriminatorColumnIsCompatibleWithEclipseLink2_4Transformer());
+		return new PredicatePropertyValueModel<JpaModel>(this.getSubjectHolder(), IS_COMPATIBLE_WITH_ECLIPSELINK_2_4);
 	}
 
-	private Transformer<EclipseLinkTenantDiscriminatorColumn2_3, Boolean> buildTenantDiscriminatorColumnIsCompatibleWithEclipseLink2_4Transformer() {
-		return TransformerTools.adapt(new EclipseLinkVersionIsCompatibleWith(EclipseLinkJpaPlatformFactory2_4.VERSION));
-	}
+	private static final Predicate<JpaModel> IS_COMPATIBLE_WITH_ECLIPSELINK_2_4 =
+			PredicateTools.nullCheck(new EclipseLinkVersionIsCompatibleWith(EclipseLinkJpaPlatformFactory2_4.VERSION));
 
 	private ColumnCombo<EclipseLinkTenantDiscriminatorColumn2_3> addNameCombo(Composite container) {
 

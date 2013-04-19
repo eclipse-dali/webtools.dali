@@ -72,7 +72,7 @@ public class TemporalTypeCombo extends Pane<BaseTemporalConverter> {
 			buildTemporalTypeListHolder(),
 			buildTemporalTypeHolder(),
 			buildTemporalTypeConverter(),
-			buildBooleanHolder()
+			this.buildSubjectIsNotNullModel()
 		);
 	}
 
@@ -134,9 +134,5 @@ public class TemporalTypeCombo extends Pane<BaseTemporalConverter> {
 			default :
 				throw new IllegalStateException();
 		}
-	}
-
-	protected PropertyValueModel<Boolean> buildBooleanHolder() {
-		return this.buildNotNullSubjectModel();
 	}
 }
