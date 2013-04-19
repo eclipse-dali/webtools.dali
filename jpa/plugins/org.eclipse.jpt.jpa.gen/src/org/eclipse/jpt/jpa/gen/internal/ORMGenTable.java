@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -133,7 +133,7 @@ public class ORMGenTable
 		String srcFolder = customized(SRC_FOLDER);
 		return srcFolder == null ? "" : srcFolder;
 	}
-	
+
 	public String getImportStatements(){
 		buildColumnTypesMap();
 		Collection<String> packages = columnTypesMap.keySet();
@@ -597,8 +597,12 @@ public class ORMGenTable
 
 	private String simplifyClassName(String fullClassName) {
 		final String JAVA_LANG = "java.lang.";
+		final String JAVA_IO = "java.io.";
 		if (fullClassName.startsWith(JAVA_LANG)) {
 			return fullClassName.substring(JAVA_LANG.length());
+		}
+		else if (fullClassName.startsWith(JAVA_IO)) {
+			return fullClassName.substring(JAVA_IO.length());
 		}
 		String pkg = StringUtil.getPackageName(fullClassName);
 		if (pkg != null && StringUtil.equalObjects(pkg, getPackage())) {
