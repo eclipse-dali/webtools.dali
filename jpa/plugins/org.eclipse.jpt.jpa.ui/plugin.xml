@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <!--
-  Copyright (c) 2007, 2012 Oracle. All rights reserved.
+  Copyright (c) 2007, 2013 Oracle. All rights reserved.
   This program and the accompanying materials are made available under the
   terms of the Eclipse Public License v1.0, which accompanies this distribution
   and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -34,6 +34,12 @@
 			</with>
 		</definition>
 		
+		<definition id="org.eclipse.jpt.jpa.ui.reference.inJpaPerspective">
+			<with variable="activePartId">
+				<equals value="org.eclipse.jpt.ui.jpaPerspective"/>
+			</with>
+		</definition>
+
 	</extension>
 
 
@@ -660,7 +666,14 @@
 					disabledIcon="$nl$/images/buttons/new-entity-disabled.gif"
 					style="pulldown">
 				</command>
-				
+
+				<!-- visibleWhen not working in this case, dependent on bug 201589  -->
+				<visibleWhen>
+					<reference
+						definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaPerspective">
+					</reference>
+				</visibleWhen>
+
 			</toolbar>
 
 		</menuContribution>
