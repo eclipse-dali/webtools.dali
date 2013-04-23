@@ -169,10 +169,11 @@ public interface JavaResourceMethod
 
 		private int calculateNameIndex(String getMethodName) {
 			int len = getMethodName.length();
-			if (getMethodName.startsWith("get") && (len > 3)) {
+			// as some methods may actually be named "get" or "is", allow for that possibility
+			if (getMethodName.startsWith("get") && (len >= 3)) {
 				return 3;
 			}
-			if (getMethodName.startsWith("is") && (len > 2)) {
+			if (getMethodName.startsWith("is") && (len >= 2)) {
 				return 2;
 			}
 			throw new IllegalArgumentException(getMethodName);
