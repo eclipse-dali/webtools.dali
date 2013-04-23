@@ -38,16 +38,14 @@ public enum CacheKeyType_2_1 implements Enumerator
 	ID_VALUE(0, "ID_VALUE", "ID_VALUE"),
 
 	/**
-	 * The '<em><b>CACHE KEY</b></em>' literal object.
+	 * The '<em><b>CACHE ID</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #CACHE_KEY_VALUE
+	 * @see #CACHE_ID_VALUE
 	 * @generated
 	 * @ordered
 	 */
-	CACHE_KEY(1, "CACHE_KEY", "CACHE_KEY"),
-
-	/**
+	CACHE_ID(1, "CACHE_ID", "CACHE_ID"), /**
 	 * The '<em><b>AUTO</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -73,19 +71,19 @@ public enum CacheKeyType_2_1 implements Enumerator
 	public static final int ID_VALUE_VALUE = 0;
 
 	/**
-	 * The '<em><b>CACHE KEY</b></em>' literal value.
+	 * The '<em><b>CACHE ID</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of '<em><b>CACHE KEY</b></em>' literal object isn't clear,
+	 * If the meaning of '<em><b>CACHE ID</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #CACHE_KEY
+	 * @see #CACHE_ID
 	 * @model
 	 * @generated
 	 * @ordered
 	 */
-	public static final int CACHE_KEY_VALUE = 1;
+	public static final int CACHE_ID_VALUE = 1;
 
 	/**
 	 * The '<em><b>AUTO</b></em>' literal value.
@@ -112,7 +110,7 @@ public enum CacheKeyType_2_1 implements Enumerator
 		new CacheKeyType_2_1[]
 		{
 			ID_VALUE,
-			CACHE_KEY,
+			CACHE_ID,
 			AUTO,
 		};
 
@@ -173,7 +171,7 @@ public enum CacheKeyType_2_1 implements Enumerator
 		switch (value)
 		{
 			case ID_VALUE_VALUE: return ID_VALUE;
-			case CACHE_KEY_VALUE: return CACHE_KEY;
+			case CACHE_ID_VALUE: return CACHE_ID;
 			case AUTO_VALUE: return AUTO;
 		}
 		return null;

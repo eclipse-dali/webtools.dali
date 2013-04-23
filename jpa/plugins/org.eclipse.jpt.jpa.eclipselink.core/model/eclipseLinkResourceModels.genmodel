@@ -322,7 +322,7 @@
         ecorePackage="eclipselink_orm.ecore#//v2_1">
       <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//v2_1/CacheKeyType_2_1">
         <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v2_1/CacheKeyType_2_1/ID_VALUE"/>
-        <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v2_1/CacheKeyType_2_1/CACHE_KEY"/>
+        <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v2_1/CacheKeyType_2_1/CACHE_ID"/>
         <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v2_1/CacheKeyType_2_1/AUTO"/>
       </genEnums>
       <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//v2_1/BatchFetchType_2_1">

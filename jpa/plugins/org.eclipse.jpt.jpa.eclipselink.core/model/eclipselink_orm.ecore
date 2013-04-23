@@ -439,7 +439,7 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EEnum" name="CacheKeyType_2_1">
       <eLiterals name="ID_VALUE" literal="ID_VALUE"/>
-      <eLiterals name="CACHE_KEY" value="1"/>
+      <eLiterals name="CACHE_ID" value="1" literal="CACHE_ID"/>
       <eLiterals name="AUTO" value="2"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EEnum" name="BatchFetchType_2_1">

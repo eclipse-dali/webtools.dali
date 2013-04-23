@@ -1638,7 +1638,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 		// Initialize enums and add enum literals
 		initEEnum(cacheKeyType_2_1EEnum, CacheKeyType_2_1.class, "CacheKeyType_2_1");
 		addEEnumLiteral(cacheKeyType_2_1EEnum, CacheKeyType_2_1.ID_VALUE);
-		addEEnumLiteral(cacheKeyType_2_1EEnum, CacheKeyType_2_1.CACHE_KEY);
+		addEEnumLiteral(cacheKeyType_2_1EEnum, CacheKeyType_2_1.CACHE_ID);
 		addEEnumLiteral(cacheKeyType_2_1EEnum, CacheKeyType_2_1.AUTO);
 
 		initEEnum(batchFetchType_2_1EEnum, BatchFetchType_2_1.class, "BatchFetchType_2_1");
