@@ -6,6 +6,7 @@ import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.ui.internal.parts.DiagramEditPart;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.conditions.ElementAppearsInDiagram;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.conditions.ElementIsShown;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.AbstractSwtBotEditorTest;
@@ -31,11 +32,12 @@ import org.junit.runner.RunWith;
 @SuppressWarnings("restriction")
 public class EntitiesInDiagramSWTBotTest extends AbstractSwtBotEditorTest {
 
-	protected static String TEST_PROJECT = "Test_" + System.currentTimeMillis();
+	private static String TEST_PROJECT = "Test_" + System.currentTimeMillis();
+	private static JpaProject jpaProject;
 
 	@BeforeClass
 	public static void beforeClass() throws Exception {
-		createJPa20Project(TEST_PROJECT);
+		jpaProject = createJPa20Project(TEST_PROJECT);
 	}
 
 	/**

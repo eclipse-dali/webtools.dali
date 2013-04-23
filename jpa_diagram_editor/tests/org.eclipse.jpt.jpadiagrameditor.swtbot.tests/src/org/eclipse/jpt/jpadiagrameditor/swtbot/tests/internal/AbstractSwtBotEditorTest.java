@@ -36,7 +36,8 @@ import org.junit.After;
 
 @SuppressWarnings("restriction")
 public class AbstractSwtBotEditorTest extends SWTBotGefTestCase{
-	protected static JpaProject jpaProject;
+	
+	private static JpaProject jpaPj;
 
 	protected static SWTGefBot bot = new SWTGefBot();
 	protected static SWTWorkbenchBot workbenchBot = new SWTWorkbenchBot();
@@ -47,37 +48,37 @@ public class AbstractSwtBotEditorTest extends SWTBotGefTestCase{
 	protected static OrmXml ormXml;
 	
 	
-	public static void createJPa10Project(String name) throws Exception{
-		createJPa20Project(name, "1.0", false);
+	public static JpaProject createJPa10Project(String name) throws Exception{
+		return createJPa20Project(name, "1.0", false);
 	}
 	
-	public static void createJPa20Project(String name) throws Exception{
-		createJPa20Project(name, "2.0", false);
+	public static JpaProject createJPa20Project(String name) throws Exception{
+		return createJPa20Project(name, "2.0", false);
 	}
 	
-	public static void createJPa20ProjectWithOrm(String name) throws Exception{
-		createJPa20Project(name, "2.0", true);
+	public static JpaProject createJPa20ProjectWithOrm(String name) throws Exception{
+		return createJPa20Project(name, "2.0", true);
 	}
 	
-	private static void createJPa20Project(String name, String version, boolean withOrmXml) throws Exception{
+	private static JpaProject createJPa20Project(String name, String version, boolean withOrmXml) throws Exception{
 		closeWelcomeScreen();
 
-		createProject(name, version);
+		jpaPj = createProject(name, version);
 		
 		editorProxy = new EditorProxy(workbenchBot, bot);
 
 		if(withOrmXml) {
-			setOrmXml();
+			setOrmXml(jpaPj);
 		}
 
 		jpaDiagramEditor = editorProxy.openDiagramOnJPAProjectNode(
-				jpaProject.getName());
+				jpaPj.getName());
 	
 		Utils.printlnFormatted("------> JPA diagram editor is opened");
 		
 		editorProxy.setJpaDiagramEditor(jpaDiagramEditor);
 
-		relUtils = new RelationshipsUtils(jpaDiagramEditor, editorProxy, jpaProject);
+		relUtils = new RelationshipsUtils(jpaDiagramEditor, editorProxy, jpaPj);
 		if(withOrmXml) {
 			assertNotNull(ormXml);
 			relUtils.setOrmXml(ormXml);
@@ -85,9 +86,11 @@ public class AbstractSwtBotEditorTest extends SWTBotGefTestCase{
 		
 		Utils.printlnFormatted("======> Test are ready to start!");
 //		Thread.sleep(2000);
+		
+		return jpaPj;
 	}
 
-	private static void setOrmXml() throws InterruptedException, CoreException {
+	private static void setOrmXml(JpaProject jpaProject) throws InterruptedException, CoreException {
 		Utils.waitNonSystemJobs();
 		jpaDiagramEditorPropertiesPage(jpaProject.getName());
 		
@@ -100,10 +103,10 @@ public class AbstractSwtBotEditorTest extends SWTBotGefTestCase{
 		editorProxy.setOrmXml(ormXml);
 	}
 
-	private static void createProject(String name, String version)
+	private static JpaProject createProject(String name, String version)
 			throws CoreException {
 		Utils.printlnFormatted("-----> Start JPA project creation!");
-
+		JpaProject jpaProject = null;
 		if(version.equals("1.0")){
 			jpaProject = JPACreateFactory.instance().createJPAProject(name);
 		} else {
@@ -113,6 +116,8 @@ public class AbstractSwtBotEditorTest extends SWTBotGefTestCase{
 		assertEquals(name, jpaProject.getName());
 		
 		Utils.printlnFormatted("-----> JPA project is created!");
+		
+		return jpaProject;
 	}
 
 	private static void closeWelcomeScreen() {
@@ -238,7 +243,7 @@ public class AbstractSwtBotEditorTest extends SWTBotGefTestCase{
 	
 	@After
 	public void tearDown() throws Exception {
-		editorProxy.deleteResources(jpaProject, ormXml!=null);
+		editorProxy.deleteResources(jpaPj, ormXml!=null);
 	}
 
 	private static OrmXml getOrmXMl(JpaProject jpaProject){

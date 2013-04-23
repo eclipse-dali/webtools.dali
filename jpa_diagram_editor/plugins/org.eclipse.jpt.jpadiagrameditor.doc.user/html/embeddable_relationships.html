@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<style>
+p.notep {
+	font-weight: bold;
+}
+
+table.note {
+	background: #FFFFC0;
+	border: 1px solid #000000;
+	width: 100%;
+}
+
+span.courier {
+	font-family: "Courier New", Courier, monospace;
+	font-size: 12pt;
+}
+
+kbd.keyboard {
+	font-weight: bold;
+	color: white;
+	background-color: #BEBEBE;
+}
+</style>
+<title>Defining and Removing Relationships between Embeddables
+	and Entities</title>
+
+<!-- contents -->
+</head>
+<body>
+
+	<div class="sect1">
+		<!-- infolevel="all" infotype="General" -->
+		<h1>Defining and Removing Relationships between Embeddables and
+			Entities</h1>
+		<td><div>
+				<ol>
+					<li><p>
+							In the <i>Relations</i> list of <i>Palette</i>, choose a
+							relationship type.
+						</p></li>
+					<li><p>
+							<a href="embeddables.html">Embed the embeddable</a> in an entity.
+						</p>
+
+
+						<table class="note" summary="" cellpadding="3" cellspacing="0">
+							<tbody>
+								<tr>
+									<td align="left">
+										<p class="notep">Note:</p>
+										<p>To create a bi-directional relationship from embeddable
+											to an entity, the embeddable must be pinned to exactly one
+											entity.</p>
+										<p>Also, bear in mind that JPA diagram editor supports
+											only one bidirectional relationship per embeddable.</p>
+									</td>
+								</tr>
+							</tbody>
+						</table></li>
+					<li><p>
+							Click on the embeddable or press
+							<kbd class="keyboard">ESCAPE</kbd>
+							to cancel.
+						</p></li>
+					<li><p>
+							Click on the target entity of the relationship or press
+							<kbd class="keyboard">ESCAPE</kbd>
+							to cancel.
+						</p>
+						<p>The Eclipse IDE creates and visualizes the relationship, as
+							well as the relevant relationship attributes of the entity and
+							the embeddable, depending on the type of relation.</p></li>
+					<li><p>
+							To remove a particular relationship, select the relation on the
+							JPA diagram and press
+							<kbd class="keyboard">DELETE</kbd>
+							, or choose <i>Delete</i> from the context menu.
+						</p>
+						<p>Removing a relationship via the JPA diagram also removes it
+							from the application data model and deletes the relationship
+							attributes of the related entity and embeddable.</p></li>
+				</ol>
+			</div></td>
+	</div>
+</body>
+</html>

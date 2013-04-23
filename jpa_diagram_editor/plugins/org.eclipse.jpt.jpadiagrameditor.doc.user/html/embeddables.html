@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<style>
+span.courier {
+	font-family: "Courier New", Courier, monospace;
+	font-size: 12pt;
+}
+
+kbd.keyboard {
+	font-weight: bold;
+	color: white;
+	background-color: #BEBEBE;
+}
+</style>
+<title>Embedding an Embeddable</title>
+
+<!-- contents -->
+</head>
+<body>
+
+	<div class="sect1">
+		<!-- infolevel="all" infotype="General" -->
+		<h1>Embedding an Embeddable</h1>
+		<h2>Overview</h2>
+		<p>An embeddable class can be pinned either to an entity, or to
+			another embeddable.</p>
+		<p>You can embed a single instance of the embeddable class, or a
+			collection of the embeddable class.</p>
+
+		<h2>Embedding a Single Element</h2>
+		<td><div>
+				<ol>
+					<li><p>
+							In the <i>Composition</i> list of <i>Palette</i>, choose <i>Embed
+								Single Element</i>.
+						</p></li>
+					<li><p>
+							Click on the source entity or the embeddable of the Has-A
+							relationship or press
+							<kbd class="keyboard">ESCAPE</kbd>
+							to cancel.
+						</p></li>
+					<li><p>
+							Click on the target embeddable of the Has-A relationship or press
+							<kbd class="keyboard">ESCAPE</kbd>
+							to cancel.
+						</p>
+						<p>The Eclipse IDE creates and visualizes the Has-A
+							relationship, as well as the relevant embedded attribute in the
+							entity, in which the embeddable is set.</p>
+						<p>
+							The attribute will be mapped with the <span class="sourier">@Embedded</span>
+							annotation.
+						</p></li>
+				</ol>
+
+				<h2>Embedding Collection of Elements</h2>
+				<ol>
+					<li><p>
+							In the <i>Composition</i> list of <i>Palette</i>, choose <i>Embed
+								Collection of Elements</i>.
+						</p></li>
+					<li><p>
+							Click on the source entity or the embeddable of the Has-A
+							relationship or press
+							<kbd class="keyboard">ESCAPE</kbd>
+							to cancel.
+						</p></li>
+					<li><p>
+							Click on the target embeddable of the Has-A relationship or press
+							<kbd class="keyboard">ESCAPE</kbd>
+							to cancel.
+						</p>
+						<p>The Eclipse IDE creates and visualizes the Has-A
+							relationship, as well as the relevant embedded attribute in the
+							entity, in which the embeddable is set.</p>
+						<p>
+							The attribute will be mapped with the <span class="courier">@ElementCollection</span>
+							annotation.
+						</p></li>
+				</ol>
+
+				<h2>Removing Has-A Relationships</h2>
+				<p>
+					To remove a particular Has-A relationship, select the relation on
+					the JPA diagram and press
+					<kbd class="keyboard">DELETE</kbd>
+					, or choose <i>Delete</i> from the context menu.
+				</p>
+				<div>
+					<p>Removing a relationship via the JPA diagram also removes it
+						from the application data model and deletes the embedded
+						attributes of the embedding entity.</p>
+				</div>
+			</div></td>
+	</div>
+</body>
+</html>

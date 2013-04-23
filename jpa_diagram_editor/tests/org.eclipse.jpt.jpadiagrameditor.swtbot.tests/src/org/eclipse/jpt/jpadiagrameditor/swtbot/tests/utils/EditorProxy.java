@@ -95,6 +95,7 @@ import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefConnectionEditPart
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.utils.Position;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
@@ -695,7 +696,6 @@ public class EditorProxy {
 		try {
 			Utils.waitNonSystemJobs(60000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -704,7 +704,11 @@ public class EditorProxy {
 		SWTBotGefEditPart attribute = getAttributeInPE(jpt, attributeName);
 		attribute.select();
 		attribute.click();
-		jpaDiagramEditor.clickContextMenu("Delete");
+		try {
+			jpaDiagramEditor.clickContextMenu("Delete");
+		} catch (WidgetNotFoundException e) {
+			pressAttributeDeleteContextButton(attribute);
+		}
 		confirmDelete();
 		bot.waitUntil(new ElementDisappears(jpaDiagramEditor, jpt,
 				attributeName), 10000);

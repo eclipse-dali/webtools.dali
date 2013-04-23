@@ -6,8 +6,18 @@
 
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Refactor, view, edit and remove entities and their
-	attributes</title>
+<style>
+p.notep {
+	font-weight: bold;
+}
+
+table.note {
+	background: #FFFFC0;
+	border: 1px solid #000000;
+	width: 100%;
+}
+</style>
+<title>Refactoring, Configuring and Removing Persistent Types</title>
 
 <!-- contents -->
 </head>
@@ -15,90 +25,99 @@
 
 	<div class="sect1">
 		<!-- infolevel="all" infotype="General" -->
-		<h2>Refactoring entities and attribute types</h2>
-		<td><div>
-				<p>
-					<b>Caution:</b>
-				</p>
-				<div>
-					<ul>
-						<li><p>
-								If you rename or move an entity using a different approach (for
-								example, via the <i>Project Explorer</i>), the entity disappears
-								from the JPA diagram.
-							</p>
-						</li>
-						<li><p>When you refactor an attribute type, any existing
-								business logic within the attribute's access methods is deleted.</p>
-						</li>
-					</ul>
-				</div>
-			</div>
+		<h2>Refactoring Persistent Types and Attribute Types</h2>
+		<td>
+			<table class="note" summary="" cellpadding="3" cellspacing="0">
+				<tbody>
+					<tr>
+						<td align="left">
+							<p class="notep">Caution:</p>
+							<div>
+								<ul>
+									<li><p>
+											If you rename or move a persistent type using a different
+											approach (for example, via the <i>Project Explorer</i>), the
+											persistent type disappears from the JPA diagram.
+										</p></li>
+									<li><p>When you refactor an attribute type, any
+											existing business logic within the attribute's access methods
+											is deleted.</p></li>
+								</ul>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<h2>Overview</h2>
 			<p>Using the JPA diagram editor, you can perform the following
 				refactoring operations:</p>
 			<div>
 				<ul>
 					<li><p>
-							Rename the entity class - in the context menu of the entity name,
-							choose <span><i>Refactor Entity Class</i> -&gt; <i>Rename</i>
-							</span>, then complete the wizard.
-						</p>
-					</li>
+							Rename the persistent type class: from the context menu of the
+							persistent type name, choose <span><i>Refactor
+									Persistent Type Class</i> &rarr; <i>Rename</i> </span>, and then complete
+							the wizard.
+						</p></li>
 					<li><p>
-							Move the entity to another source package - in the context menu
-							of the entity name, choose <span><i>Refactor Entity
-									Class</i> -&gt; <i>Move</i>
-							</span>, then complete the wizard.
-						</p>
-					</li>
+							Move the persistent type to another source package: from the
+							context menu of the persistent type name, choose <span><i>Refactor
+									Persistent Type Class</i> &rarr; <i>Move</i> </span>, and then complete
+							the wizard.
+						</p></li>
 					<li><p>
-							Refactor an attribute type - in the context menu of an attribute,
-							choose <i>Refactor Attribute Type</i>, change the type, and
-							choose <i>OK</i>.
-						</p>
-					</li>
+							Refactor an attribute type: from the context menu of an
+							attribute, choose <i>Refactor Attribute Type</i>, change the
+							type, and then choose <i>OK</i>.
+						</p></li>
 				</ul>
-			</div></td>
+			</div>
+		</td>
 
-		<h2>Viewing and editing entities' source code</h2>
+		<h2>Viewing and Editing the Source Code of Persistent Types</h2>
 		<td><p>To view and edit the source code of a particular
-				entity, double-click the title of the corresponding entity block on
-				the diagram.</p>
-			<p>The Eclipse IDE opens the entity class in the standard source
-				code editor.</p>
+				persistent type, double-click on the title of the corresponding
+				persistent type block on the diagram.</p>
+			<p>The Eclipse IDE opens the persistent type class in the
+				standard source code editor.</p>
 			<p>When you apply changes to the source code, they are
 				automatically synchronized with the diagram.</p></td>
 
-		<h2>Removing all entities from the diagram</h2>
-		<td><div>
-				<p>
-					<b>Note:</b>
-				</p>
-				<p>This operation removes the entities from the JPA diagram
-					only, that is, they are not removed from the underlying application
-					data model.</p>
-			</div>
+		<h2>Removing All Persistent Types from a Diagram</h2>
+		<td>
+			<table class="note" summary="" cellpadding="3" cellspacing="0">
+				<tbody>
+					<tr>
+						<td align="left">
+							<p class="notep">Note:</p>
+							<p>This operation removes the persistent types from the JPA
+								diagram only, that is, they are not removed from the underlying
+								application data model.</p>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 			<div>
 				<ol>
-					<li><p>Click the JPA diagram with the secondary mouse
-							button.</p>
-					</li>
+					<li><p>Click upon the JPA diagram with the secondary mouse
+							button.</p></li>
 					<li><p>
 							To save any unsaved changes to the application data model, and
-							remove all entities from the diagram, choose <span> <i>Remove
-									All Entities from Diagram</i> -&gt; <i>...and Save Changes</i>
+							remove all persistent types from the diagram, choose <span>
+								<i>Remove all Persistent Types from Diagram</i> &rarr; <i>...and
+									Save Changes</i>
 							</span>
-						</p>
-					</li>
+						</p></li>
 					<li><p>
-							To remove all entities from the diagram without saving any
-							unsaved changes to the data model, choose <span><i>Remove
-									All Entities from Diagram</i> -&gt; <i>...and Discard Changes</i>
-							</span>.
-						</p>
-					</li>
+							To remove all persistent types from the diagram without saving
+							any unsaved changes to the data model, choose <span><i>Remove
+									all Persistent Types from Diagram</i> &rarr; <i>...and Discard
+									Changes</i> </span>.
+						</p></li>
 				</ol>
-			</div></td>
+			</div>
+		</td>
 	</div>
 </body>
 </html>

@@ -6,7 +6,7 @@
 
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Open JPA Diagram, create and display entities</title>
+<title>Creating and Displaying Persistent Types</title>
 
 <!-- contents -->
 </head>
@@ -14,46 +14,68 @@
 
 	<div class="sect1">
 		<!-- infolevel="all" infotype="General" -->
-		<h2>Opening JPA Diagram Editor</h2>
+		<h2>Opening the JPA Diagram Editor</h2>
 		<td><div>
 				<ol>
 					<li><p>
-							In the <i>Project Explorer</i>, select the project that you are
-							using or want to use for your entities.
-						</p>
-					</li>
+							In the <i>Project Explorer</i>, select the project that you want
+							to use for your entities.
+						</p></li>
 					<li><p>
-							In the context menu, choose <span title="Navigation path">
-								<i>JPA Tools</i> -&grt; <i>Open Diagram</i>
+							From the project context menu, choose <span
+								title="Navigation path"> <i>JPA Tools</i> &rarr; <i>Open
+									Diagram</i>
 							</span>.
-						</p>
-					</li>
+						</p></li>
 				</ol>
 			</div></td>
-		<h2>Creating new entities</h2>
+
+		<h2>Creating New Entity</h2>
 		<td><p>
 				In the <i>Entities</i> list of the <i>Palette</i>, choose <span><img
 					src="../img/jpaeditor_entity.gif" alt="Entity" title="Entity" /> (<i
-					title="Quick info">Entity</i>)</span>, then click the diagram area.
+					title="Quick info">Entity</i>)</span>, and then click upon the diagram
+				area.
 			</p>
 			<p>The Eclipse IDE creates the new entity with a predefined name
 				and a primary key.</p></td>
-		<h2>Displaying existing entities (if any) within a project on the
-			diagram</h2>
+
+		<h2>Creating New Embeddable</h2>
+		<td><p>
+				In the <i>Entities</i> list of the <i>Palette</i>, choose <span><img
+					src="../img/jpaeditor_embeddable.gif" alt="Embeddable"
+					title="Embeddable" /> (<i title="Quick info">Embeddable</i>)</span>, and
+				then click upon the diagram area.
+			</p>
+			<p>The Eclipse IDE creates the new embeddable with a predefined
+				name.</p></td>
+
+		<h2>Creating New Mapped Superclass</h2>
+		<td><p>
+				In the <i>Entities</i> list of the <i>Palette</i>, choose <span><img
+					src="../img/jpaeditor_mapped_superclass.gif"
+					alt="Mapped Superclass" title="Mapped Superclass" /> (<i
+					title="Quick info">Mapped Superclass</i>)</span>, and then click upon the
+				diagram area.
+			</p>
+			<p>The Eclipse IDE creates the new mapped superclass with a
+				predefined name.</p></td>
+
+		<h2>Displaying Existing Persistent Types within a Project on the Diagram</h2>
 		<td><div>
 				<ul>
 					<li><p>
-							To display a single entity, copy the entity using drag and drop
-							from the <i>Project Explorer</i> to the JPA diagram.
-						</p>
-					</li>
+							To display a single persistent type, copy the persistent type,
+							using drag and drop, from the <i>Project Explorer</i> to the JPA
+							diagram.
+						</p></li>
 					<li><p>
-							To display all entities, click the JPA diagram with the secondary
-							mouse button and choose <i>Show All Entities</i>, or copy the <i>JPA
-								Content</i> node from the project in the <i>Project Explorer</i> to
-							the JPA diagram, using drag and drop.
-						</p>
-					</li>
+							To display all persistent types, click on the JPA diagram with the
+							secondary mouse button and choose <i>Show all Persistent
+								Types</i>. The alternative way is to copy the <i>JPA Content</i>
+							node from the project, in the <i>Project Explorer</i>, to the JPA
+							diagram, using drag and drop.
+						</p></li>
 				</ul>
 			</div></td>
 	</div>

@@ -11,7 +11,7 @@ import org.junit.runner.RunWith;
 @RunWith(SWTBotJunit4ClassRunner.class)
 public class OrmEntitiesDerivedIdsSWTBotTest extends AbstractSwtBotEditorTest {
 	
-	protected static String TEST_PROJECT = "Test_" + System.currentTimeMillis();
+	private static String TEST_PROJECT = "Test_" + System.currentTimeMillis();
 	
 	@BeforeClass
 	public static void beforeClass() throws Exception {

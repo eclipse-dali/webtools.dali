@@ -1,5 +1,6 @@
 package org.eclipse.jpt.jpadiagrameditor.swtbot.tests.mappedsuperclass.relationships;
 
+import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.AbstractSwtBotEditorTest;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.utils.Utils;
@@ -15,11 +16,12 @@ import org.junit.runner.RunWith;
 @SuppressWarnings("restriction")
 public class MappedSuperclassRelationshipsSWTBotTest extends AbstractSwtBotEditorTest {
 	
-	protected static String TEST_PROJECT = "Test_" + System.currentTimeMillis();
+	private static String TEST_PROJECT = "Test_" + System.currentTimeMillis();
+	private static JpaProject jpaProject;
 	
 	@BeforeClass
 	public static void beforeClass() throws Exception {
-		createJPa20Project(TEST_PROJECT);
+		jpaProject = createJPa20Project(TEST_PROJECT);
 	}
 	
 	/**

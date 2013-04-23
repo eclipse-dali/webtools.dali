@@ -1,5 +1,6 @@
 package org.eclipse.jpt.jpadiagrameditor.swtbot.tests.entity;
 
+import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.AbstractSwtBotEditorTest;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.utils.Utils;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
@@ -8,11 +9,12 @@ import org.junit.Test;
 
 public class OpenDiagramEditorSWTBotTest extends AbstractSwtBotEditorTest{
 	
-	protected static String TEST_PROJECT = "Test_" + System.currentTimeMillis();
+	private static String TEST_PROJECT = "Test_" + System.currentTimeMillis();
+	private static JpaProject jpaProjectToOpen;
 
 	@BeforeClass
 	public static void beforeClass() throws Exception {
-		createJPa20Project(TEST_PROJECT);
+		jpaProjectToOpen = createJPa20Project(TEST_PROJECT);
 	}
 	
 	/**
@@ -29,7 +31,7 @@ public class OpenDiagramEditorSWTBotTest extends AbstractSwtBotEditorTest{
 		workbenchBot.closeAllEditors();
 		// open JPA diagram editor on project level: JPA Tools -> Open Diagram
 		SWTBotGefEditor diagramEditor = editorProxy
-				.openDiagramOnJPAProjectNode(jpaProject.getName());
+				.openDiagramOnJPAProjectNode(jpaProjectToOpen.getName());
 		diagramEditor.close();
 
 		Utils.sayTestFinished("testOpenDiagramOnProjectLevel");
@@ -49,7 +51,7 @@ public class OpenDiagramEditorSWTBotTest extends AbstractSwtBotEditorTest{
 		workbenchBot.closeAllEditors();
 		// open JPA diagram editor on JPA content level: Open Diagram
 		SWTBotGefEditor diagramEditor = editorProxy
-				.openDiagramOnJPAContentNode(jpaProject.getName());
+				.openDiagramOnJPAContentNode(jpaProjectToOpen.getName());
 		diagramEditor.close();
 
 		Utils.sayTestFinished("testOpenDiagramOnJPAContentNodeLevel");

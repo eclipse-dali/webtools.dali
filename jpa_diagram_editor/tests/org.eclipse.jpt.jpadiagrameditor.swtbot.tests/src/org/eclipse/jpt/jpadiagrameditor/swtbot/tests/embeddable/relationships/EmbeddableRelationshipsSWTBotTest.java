@@ -1,5 +1,6 @@
 package org.eclipse.jpt.jpadiagrameditor.swtbot.tests.embeddable.relationships;
 
+import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
@@ -19,11 +20,12 @@ import org.junit.runner.RunWith;
 @SuppressWarnings("restriction")
 public class EmbeddableRelationshipsSWTBotTest extends AbstractSwtBotEditorTest {
 
-	protected static String TEST_PROJECT = "Test_" + System.currentTimeMillis();
+	private static String TEST_PROJECT = "Test_" + System.currentTimeMillis();
+	private static JpaProject jpaProject;
 	
 	@BeforeClass
 	public static void beforeClass() throws Exception {
-		createJPa20Project(TEST_PROJECT);
+		jpaProject = createJPa20Project(TEST_PROJECT);
 	}
 	
 	/**

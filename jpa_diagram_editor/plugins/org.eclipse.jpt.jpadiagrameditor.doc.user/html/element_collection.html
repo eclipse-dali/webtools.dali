@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<style>
+span.courier {
+	font-family: "Courier New", Courier, monospace;
+	font-size: 12pt;
+}
+kbd.keyboard {
+	font-weight: bold;
+	color: white;
+	background-color: #BEBEBE;
+}
+</style>
+<title>Adding Attribute of Type element-collection</title>
+
+<!-- contents -->
+</head>
+<body>
+
+	<div class="sect1">
+		<!-- infolevel="all" infotype="General" -->
+		<h1>Adding Attribute of Type element-collection</h1>
+		<h2>Overview</h2>
+		<p>The JPA diagram editor supports collections of embeddables and
+			primitives.</p>
+
+		<ul>
+			<li><p>
+					To add an element-collection attribute of primitives, position the
+					mouse cursor over the entity you want to manage and choose the <i>Create
+						Collection Attribute</i> button. Each button has an informative
+					tooltip that describes the relevant operation.
+				</p></li>
+			<li><p>
+					To add an element-collection attribute of embeddables, a collection
+					of embeddable should be pinned to an entity or to another
+					embeddable. In the <i>Composition</i> list of <i>Palette</i>,
+					choose <i>Embed Collection of Elements</i>.
+				</p></li>
+		</ul>
+
+		<h2>Procedure</h2>
+		<ol>
+			<li><p>
+					Click on the source entity or the embeddable of the Has-A
+					relationship or press
+					<kbd class="keyboard">ESCAPE</kbd>
+					to cancel.
+				</p></li>
+			<li><p>
+					Click on the target embeddable of the Has-A relationship or press
+					<kbd class="keyboard">ESCAPE</kbd>
+					to cancel.
+				</p>
+				<p>The Eclipse IDE creates and visualizes the Has-A relationship
+					as well as the relevant embedded attribute in the entity, in which
+					the embeddable is set.</p></li>
+		</ol>
+		<p>
+			The attribute will be mapped with <span class="courier">@ElementCollection</span>
+			annotation.
+		</p>
+
+	</div>
+</body>
+</html>

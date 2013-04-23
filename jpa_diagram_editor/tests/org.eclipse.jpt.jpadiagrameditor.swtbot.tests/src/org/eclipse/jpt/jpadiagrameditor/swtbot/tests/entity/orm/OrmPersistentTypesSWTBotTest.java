@@ -1,5 +1,6 @@
 package org.eclipse.jpt.jpadiagrameditor.swtbot.tests.entity.orm;
 
+import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.AbstractSwtBotEditorTest;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.utils.Utils;
@@ -14,11 +15,12 @@ import org.junit.runner.RunWith;
 @SuppressWarnings("restriction")
 public class OrmPersistentTypesSWTBotTest extends AbstractSwtBotEditorTest {
 	
-	protected static String TEST_PROJECT = "Test_" + System.currentTimeMillis();
+	private static String TEST_PROJECT = "Test_" + System.currentTimeMillis();
+	private static JpaProject jpaProject;
 	
 	@BeforeClass
 	public static void beforeClass() throws Exception {
-		createJPa20ProjectWithOrm(TEST_PROJECT);
+		jpaProject = createJPa20ProjectWithOrm(TEST_PROJECT);
 	}
 	
 	/**

@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<style>
+p.notep {
+	font-weight: bold;
+}
+
+table.note {
+	background: #FFFFC0;
+	border: 1px solid #000000;
+	width: 100%;
+}
+
+span.courier {
+	font-family: "Courier New", Courier, monospace;
+	font-size: 12pt;
+}
+
+kbd.keyboard {
+	font-weight: bold;
+	color: white;
+	background-color: #BEBEBE;
+}
+</style>
+<title>Managing Persistent Types</title>
+
+<!-- contents -->
+</head>
+<body>
+
+	<div class="sect1">
+		<!-- infolevel="all" infotype="General" -->
+		<h1>Managing Persistent Types</h1>
+		<h2>Overview</h2>
+		<td><p>You can perform the following operations on a
+				particular entity graphical model:</p>
+			<div>
+				<ul>
+					<li><p>Rename entities</p>
+						<p>
+							In terms of source code, this operation changes the <span
+								class="courier">name</span> attribute of the <span
+								class="courier">@Entity</span> annotation only.
+						</p></li>
+					<li><p>Add, rename, or remove attributes</p>
+						<table class="note" summary="" cellpadding="3" cellspacing="0">
+							<tbody>
+								<tr>
+									<td align="left">
+										<p class="notep">Note:</p>
+										<p>
+											The Eclipse IDE automatically generates <span class="courier">getter</span>
+											and <span class="courier">setter</span> methods for new
+											attributes. The default data type for new attributes is <span
+												class="courier">java.lang.String</span> .
+										</p>
+										<p>
+											In terms of source code, renaming attributes changes the
+											field names of entities, together with the fields' <span
+												class="courier">getter</span> and <span class="courier">setter</span>
+											methods.
+										</p>
+										<p>Removing attributes removes them from the data model
+											also.</p>
+									</td>
+								</tr>
+							</tbody>
+						</table></li>
+					<li><p>Collapse or expand entities or attribute groups</p></li>
+					<li><p>Save or discard your changes, as also remove the
+							entity from the diagram without removing it from the application
+							data model</p></li>
+					<li><p>Remove the entity from the diagram and delete it
+							from the application data model</p></li>
+				</ul>
+			</div>
+
+			<h2>Procedure</h2>
+			<p>To perform the actions described above, follow the steps:</p>
+			<div>
+				<ol>
+					<li><p>Position the mouse cursor over the entity you want
+							to manage.</p>
+						<p>A button bar appears by the entity.</p>
+						<div>
+							<p>
+								<img src="../img/jpa_diagram_entity_operations.gif"
+									alt="This graphic is explained in the accompanying text."
+									title="This graphic is explained in the accompanying text." />
+							</p>
+							<br />
+						</div></li>
+					<li><p>Choose the relevant pushbutton. Each button has an
+							informative tooltip that describes the relevant operation.</p></li>
+					<li><p>
+							To rename an entity or an attribute, double-click the title of an
+							entity or the attribute, change the name, and press
+							<kbd class="keyboard">ENTER</kbd>
+							.
+						</p></li>
+					<li><p>
+							To remove an attribute, click the attribute and press
+							<kbd class="keyboard">DELETE</kbd>
+							or choose <i>Delete</i> from the context menu.
+						</p>
+						<p>
+							You can also remove an attribute by positioning the mouse cursor
+							over the attribute and choosing the <i>Delete Attribute</i>
+							pushbutton.
+						</p>
+						<div>
+							<p>
+								<img src="../img/jpa_diagram_delete_attribute.gif"
+									alt="This graphic is explained in the accompanying text."
+									title="This graphic is explained in the accompanying text." />
+							</p>
+							<p />
+						</div></li>
+				</ol>
+			</div></td>
+	</div>
+
+	<table class="note" summary="" cellpadding="3" cellspacing="0">
+		<tbody>
+			<tr>
+				<td align="left">
+					<p class="notep">Note:</p>
+					<p>All operations can be performed on embeddable, as well
+						mapped superclass graphical models.</p>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+</body>
+</html>
+
