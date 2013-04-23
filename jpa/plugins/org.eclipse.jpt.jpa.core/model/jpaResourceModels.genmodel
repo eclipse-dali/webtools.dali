@@ -472,8 +472,7 @@
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_1/ConstructorResult_2_1">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/ConstructorResult_2_1/targetClass"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference orm.ecore#//v2_1/ConstructorResult_2_1/columnResults"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/ConstructorResult_2_1/columns"/>
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlAssociationOverride_2_1">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlAssociationOverride_2_1/foreignKey"/>

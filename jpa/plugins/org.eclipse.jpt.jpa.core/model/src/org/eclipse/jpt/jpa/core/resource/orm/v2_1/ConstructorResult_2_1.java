@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.ColumnResult;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.ConstructorResult_2_1#getTargetClass <em>Target Class</em>}</li>
- *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.ConstructorResult_2_1#getColumnResults <em>Column Results</em>}</li>
+ *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.ConstructorResult_2_1#getColumns <em>Columns</em>}</li>
  * </ul>
  * </p>
  *
@@ -67,19 +67,19 @@ public interface ConstructorResult_2_1 extends EBaseObject
 	void setTargetClass(String value);
 
 	/**
-	 * Returns the value of the '<em><b>Column Results</b></em>' containment reference list.
+	 * Returns the value of the '<em><b>Columns</b></em>' containment reference list.
 	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.ColumnResult}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Column Results</em>' reference list isn't clear,
+	 * If the meaning of the '<em>Columns</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Column Results</em>' containment reference list.
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package#getConstructorResult_2_1_ColumnResults()
+	 * @return the value of the '<em>Columns</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package#getConstructorResult_2_1_Columns()
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<ColumnResult> getColumnResults();
+	EList<ColumnResult> getColumns();
 
 } // ConstructorResult_2_1

@@ -133,13 +133,13 @@ public class OrmV2_1Package extends EPackageImpl
 	public static final int CONSTRUCTOR_RESULT_21__TARGET_CLASS = 0;
 
 	/**
-	 * The feature id for the '<em><b>Column Results</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Columns</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int CONSTRUCTOR_RESULT_21__COLUMN_RESULTS = 1;
+	public static final int CONSTRUCTOR_RESULT_21__COLUMNS = 1;
 
 	/**
 	 * The number of structural features of the '<em>Constructor Result 21</em>' class.
@@ -1627,15 +1627,15 @@ public class OrmV2_1Package extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.ConstructorResult_2_1#getColumnResults <em>Column Results</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.ConstructorResult_2_1#getColumns <em>Columns</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Column Results</em>'.
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.ConstructorResult_2_1#getColumnResults()
+	 * @return the meta object for the containment reference list '<em>Columns</em>'.
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.ConstructorResult_2_1#getColumns()
 	 * @see #getConstructorResult_2_1()
 	 * @generated
 	 */
-	public EReference getConstructorResult_2_1_ColumnResults()
+	public EReference getConstructorResult_2_1_Columns()
 	{
 		return (EReference)constructorResult_2_1EClass.getEStructuralFeatures().get(1);
 	}
@@ -3012,7 +3012,7 @@ public class OrmV2_1Package extends EPackageImpl
 
 		constructorResult_2_1EClass = createEClass(CONSTRUCTOR_RESULT_21);
 		createEAttribute(constructorResult_2_1EClass, CONSTRUCTOR_RESULT_21__TARGET_CLASS);
-		createEReference(constructorResult_2_1EClass, CONSTRUCTOR_RESULT_21__COLUMN_RESULTS);
+		createEReference(constructorResult_2_1EClass, CONSTRUCTOR_RESULT_21__COLUMNS);
 
 		xmlAssociationOverride_2_1EClass = createEClass(XML_ASSOCIATION_OVERRIDE_21);
 		createEReference(xmlAssociationOverride_2_1EClass, XML_ASSOCIATION_OVERRIDE_21__FOREIGN_KEY);
@@ -3178,7 +3178,7 @@ public class OrmV2_1Package extends EPackageImpl
 
 		initEClass(constructorResult_2_1EClass, ConstructorResult_2_1.class, "ConstructorResult_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getConstructorResult_2_1_TargetClass(), theXMLTypePackage.getString(), "targetClass", null, 1, 1, ConstructorResult_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getConstructorResult_2_1_ColumnResults(), theOrmPackage.getColumnResult(), null, "columnResults", null, 0, -1, ConstructorResult_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getConstructorResult_2_1_Columns(), theOrmPackage.getColumnResult(), null, "columns", null, 0, -1, ConstructorResult_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlAssociationOverride_2_1EClass, XmlAssociationOverride_2_1.class, "XmlAssociationOverride_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlAssociationOverride_2_1_ForeignKey(), theOrmPackage.getXmlForeignKey(), null, "foreignKey", null, 0, 1, XmlAssociationOverride_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3360,12 +3360,12 @@ public class OrmV2_1Package extends EPackageImpl
 		public static final EAttribute CONSTRUCTOR_RESULT_21__TARGET_CLASS = eINSTANCE.getConstructorResult_2_1_TargetClass();
 
 		/**
-		 * The meta object literal for the '<em><b>Column Results</b></em>' containment reference list feature.
+		 * The meta object literal for the '<em><b>Columns</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference CONSTRUCTOR_RESULT_21__COLUMN_RESULTS = eINSTANCE.getConstructorResult_2_1_ColumnResults();
+		public static final EReference CONSTRUCTOR_RESULT_21__COLUMNS = eINSTANCE.getConstructorResult_2_1_Columns();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlAssociationOverride_2_1 <em>Xml Association Override 21</em>}' class.

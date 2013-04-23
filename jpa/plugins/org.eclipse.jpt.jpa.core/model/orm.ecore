@@ -606,7 +606,7 @@
         interface="true">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="targetClass" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="columnResults" upperBound="-1"
+      <eStructuralFeatures xsi:type="ecore:EReference" name="columns" upperBound="-1"
           eType="#//ColumnResult" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlAssociationOverride_2_1" abstract="true"

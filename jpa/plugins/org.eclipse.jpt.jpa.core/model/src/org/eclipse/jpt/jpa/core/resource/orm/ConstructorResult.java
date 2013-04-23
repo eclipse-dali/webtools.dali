@@ -72,14 +72,14 @@ public class ConstructorResult extends EBaseObjectImpl implements ConstructorRes
 	protected String targetClass = TARGET_CLASS_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getColumnResults() <em>Column Results</em>}' containment reference list.
+	 * The cached value of the '{@link #getColumns() <em>Columns</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getColumnResults()
+	 * @see #getColumns()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<ColumnResult> columnResults;
+	protected EList<ColumnResult> columns;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -138,26 +138,26 @@ public class ConstructorResult extends EBaseObjectImpl implements ConstructorRes
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Column Results</b></em>' containment reference list.
+	 * Returns the value of the '<em><b>Columns</b></em>' containment reference list.
 	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.ColumnResult}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Column Results</em>' reference list isn't clear,
+	 * If the meaning of the '<em>Columns</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Column Results</em>' containment reference list.
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getConstructorResult_2_1_ColumnResults()
+	 * @return the value of the '<em>Columns</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getConstructorResult_2_1_Columns()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<ColumnResult> getColumnResults()
+	public EList<ColumnResult> getColumns()
 	{
-		if (columnResults == null)
+		if (columns == null)
 		{
-			columnResults = new EObjectContainmentEList<ColumnResult>(ColumnResult.class, this, OrmPackage.CONSTRUCTOR_RESULT__COLUMN_RESULTS);
+			columns = new EObjectContainmentEList<ColumnResult>(ColumnResult.class, this, OrmPackage.CONSTRUCTOR_RESULT__COLUMNS);
 		}
-		return columnResults;
+		return columns;
 	}
 
 	/**
@@ -170,8 +170,8 @@ public class ConstructorResult extends EBaseObjectImpl implements ConstructorRes
 	{
 		switch (featureID)
 		{
-			case OrmPackage.CONSTRUCTOR_RESULT__COLUMN_RESULTS:
-				return ((InternalEList<?>)getColumnResults()).basicRemove(otherEnd, msgs);
+			case OrmPackage.CONSTRUCTOR_RESULT__COLUMNS:
+				return ((InternalEList<?>)getColumns()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -188,8 +188,8 @@ public class ConstructorResult extends EBaseObjectImpl implements ConstructorRes
 		{
 			case OrmPackage.CONSTRUCTOR_RESULT__TARGET_CLASS:
 				return getTargetClass();
-			case OrmPackage.CONSTRUCTOR_RESULT__COLUMN_RESULTS:
-				return getColumnResults();
+			case OrmPackage.CONSTRUCTOR_RESULT__COLUMNS:
+				return getColumns();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -208,9 +208,9 @@ public class ConstructorResult extends EBaseObjectImpl implements ConstructorRes
 			case OrmPackage.CONSTRUCTOR_RESULT__TARGET_CLASS:
 				setTargetClass((String)newValue);
 				return;
-			case OrmPackage.CONSTRUCTOR_RESULT__COLUMN_RESULTS:
-				getColumnResults().clear();
-				getColumnResults().addAll((Collection<? extends ColumnResult>)newValue);
+			case OrmPackage.CONSTRUCTOR_RESULT__COLUMNS:
+				getColumns().clear();
+				getColumns().addAll((Collection<? extends ColumnResult>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -229,8 +229,8 @@ public class ConstructorResult extends EBaseObjectImpl implements ConstructorRes
 			case OrmPackage.CONSTRUCTOR_RESULT__TARGET_CLASS:
 				setTargetClass(TARGET_CLASS_EDEFAULT);
 				return;
-			case OrmPackage.CONSTRUCTOR_RESULT__COLUMN_RESULTS:
-				getColumnResults().clear();
+			case OrmPackage.CONSTRUCTOR_RESULT__COLUMNS:
+				getColumns().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -248,8 +248,8 @@ public class ConstructorResult extends EBaseObjectImpl implements ConstructorRes
 		{
 			case OrmPackage.CONSTRUCTOR_RESULT__TARGET_CLASS:
 				return TARGET_CLASS_EDEFAULT == null ? targetClass != null : !TARGET_CLASS_EDEFAULT.equals(targetClass);
-			case OrmPackage.CONSTRUCTOR_RESULT__COLUMN_RESULTS:
-				return columnResults != null && !columnResults.isEmpty();
+			case OrmPackage.CONSTRUCTOR_RESULT__COLUMNS:
+				return columns != null && !columns.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -290,7 +290,7 @@ public class ConstructorResult extends EBaseObjectImpl implements ConstructorRes
 	}
 
 	protected static Translator buildColumnTranslator() {
-		return ColumnResult.buildTranslator(JPA2_1.COLUMN, OrmV2_1Package.eINSTANCE.getConstructorResult_2_1_ColumnResults());
+		return ColumnResult.buildTranslator(JPA2_1.COLUMN, OrmV2_1Package.eINSTANCE.getConstructorResult_2_1_Columns());
 	}
 
 	protected static Translator buildTargetClassTranslator() {

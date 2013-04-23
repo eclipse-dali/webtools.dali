@@ -2015,13 +2015,13 @@ public class OrmPackage extends EPackageImpl
 	public static final int CONSTRUCTOR_RESULT__TARGET_CLASS = OrmV2_1Package.CONSTRUCTOR_RESULT_21__TARGET_CLASS;
 
 	/**
-	 * The feature id for the '<em><b>Column Results</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Columns</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int CONSTRUCTOR_RESULT__COLUMN_RESULTS = OrmV2_1Package.CONSTRUCTOR_RESULT_21__COLUMN_RESULTS;
+	public static final int CONSTRUCTOR_RESULT__COLUMNS = OrmV2_1Package.CONSTRUCTOR_RESULT_21__COLUMNS;
 
 	/**
 	 * The number of structural features of the '<em>Constructor Result</em>' class.
