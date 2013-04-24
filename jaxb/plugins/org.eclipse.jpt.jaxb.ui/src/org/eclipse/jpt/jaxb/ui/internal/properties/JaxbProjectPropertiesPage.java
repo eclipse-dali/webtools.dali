@@ -29,6 +29,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelA
 import org.eclipse.jpt.common.utility.internal.model.value.StaticCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -94,14 +95,19 @@ public class JaxbProjectPropertiesPage
 	}
 	
 	private PropertyChangeListener buildPlatformListener(){
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent event) {
-				JaxbProjectPropertiesPage.this.platformChanged((JaxbPlatformConfig) event.getNewValue());
-			}
-		};
+		return new PlatformListener();
+	}
+
+	/* CU private */ class PlatformListener
+		extends PropertyChangeAdapter
+	{
+		@Override
+		public void propertyChanged(PropertyChangeEvent event) {
+			JaxbProjectPropertiesPage.this.platformChanged();
+		}
 	}
 	
-	void platformChanged(JaxbPlatformConfig newPlatform) {
+	void platformChanged() {
 		if ( ! this.getControl().isDisposed()) {
 			// handle null, in the case the jpa facet is changed via the facets page,
 			// the library install delegate is temporarily null
@@ -168,15 +174,15 @@ public class JaxbProjectPropertiesPage
 	}
 	
 	@Override
-	protected void engageListeners() {
-		super.engageListeners();
+	protected void engageListeners_() {
+		super.engageListeners_();
 		this.platformModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.platformListener);
 	}
 	
 	@Override
-	public void disengageListeners() {
+	public void disengageListeners_() {
 		this.platformModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.platformListener);
-		super.disengageListeners();
+		super.disengageListeners_();
 	}
 	
 	
@@ -287,7 +293,7 @@ public class JaxbProjectPropertiesPage
 	@Override
 	protected Model[] buildValidationModels() {
 		return new Model[] {
-			platformModel
+			this.platformModel
 		};
 	}
 	

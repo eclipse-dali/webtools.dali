@@ -90,7 +90,7 @@ public class JpaFacetInstallDataModelProvider
 	}
 	
 	@Override
-	protected String getDefaultConnection() {
+	protected String getDefaultConnectionName() {
 		return null;
 	}
 	

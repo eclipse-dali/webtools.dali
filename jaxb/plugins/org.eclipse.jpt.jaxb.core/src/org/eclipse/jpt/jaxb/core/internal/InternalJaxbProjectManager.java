@@ -234,7 +234,8 @@ public class InternalJaxbProjectManager
 	// ********** plug-in controlled life-cycle **********
 
 	/**
-	 * Internal: called by {@link JptJaxbCorePlugin Dali plug-in}.
+	 * Internal: called by the {@link InternalJaxbWorkspace JAXB workspace}
+	 * constructor.
 	 */
 	void start() {
 		try {

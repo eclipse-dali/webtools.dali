@@ -55,7 +55,14 @@ import org.eclipse.wst.common.project.facet.ui.internal.FacetsPropertyPage;
 
 
 public abstract class JptProjectPropertiesPage
-		extends LibraryFacetPropertyPage {
+	extends LibraryFacetPropertyPage
+{
+	/**
+	 * It's not clear what this page's lifecycle is (e.g. when {@link
+	 * #createPageContents(Composite)} is called and how often it can be called);
+	 * so we must maintain this flag.
+	 */
+	protected volatile boolean engaged = false;
 
 	protected final ModifiablePropertyValueModel<IProject> projectModel;
 	protected final BufferedModifiablePropertyValueModel.Trigger trigger;
@@ -117,9 +124,7 @@ public abstract class JptProjectPropertiesPage
 
 	@Override
 	protected Control createPageContents(Composite parent) {
-		if (this.projectModel.getValue() != null) {
-			this.disengageListeners();
-		}
+		this.disengageListeners(); // not sure why we do this here...
 
 		this.projectModel.setValue(this.getProject());
 
@@ -146,11 +151,25 @@ public abstract class JptProjectPropertiesPage
 	 */
 	protected abstract void createWidgets(Composite parent);
 
-	protected void engageListeners() {
+	protected final void engageListeners() {
+		if ( ! this.engaged) {
+			this.engageListeners_();
+			this.engaged = true;
+		}
+	}
+
+	protected void engageListeners_() {
 		this.engageValidationListener();
 	}
 
-	protected void disengageListeners() {
+	protected final void disengageListeners() {
+		if (this.engaged) {
+			this.disengageListeners_();
+			this.engaged = false;
+		}
+	}
+
+	protected void disengageListeners_() {
 		this.disengageValidationListener();
 	}
 

@@ -174,7 +174,7 @@ public abstract class JpaFacetDataModelProvider
 			return getDefaultLibraryProvider();
 		}
 		if (propertyName.equals(CONNECTION)) {
-			return getDefaultConnection();
+			return getDefaultConnectionName();
 		}
 		if (propertyName.equals(CONNECTION_ACTIVE)) {
 			return Boolean.valueOf(this.connectionIsActive());
@@ -252,7 +252,7 @@ public abstract class JpaFacetDataModelProvider
 			};
 	}
 	
-	protected abstract String getDefaultConnection();
+	protected abstract String getDefaultConnectionName();
 	
 	protected abstract Boolean getDefaultUserWantsToOverrideDefaultCatalog();
 	

@@ -529,17 +529,17 @@ public class JpaProjectPropertiesPage
 	}
 
 	@Override
-	protected void engageListeners() {
-		super.engageListeners();
+	protected void engageListeners_() {
+		super.engageListeners_();
 		this.jpaPlatformConfigModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.jpaPlatformConfigListener);
 		this.disconnectedModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.disconnectedModelListener);
 	}
 
 	@Override
-	protected void disengageListeners() {
+	protected void disengageListeners_() {
 		this.jpaPlatformConfigModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.jpaPlatformConfigListener);
 		this.disconnectedModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.disconnectedModelListener);
-		super.disengageListeners();
+		super.disengageListeners_();
 	}
 
 

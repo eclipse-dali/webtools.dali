@@ -14,119 +14,119 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
-import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JptJpaCoreMessages;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 
+/**
+ * See <code>org.eclipse.jpt.jpa.core/plugin.xml:org.eclipse.wst.common.project.facet.core.facets</code>.
+ * <p>
+ * <strong>NB:</strong> We could get the default values from the JPA project
+ * (instead of from the preferences);
+ * but that exposes us to deadlocks (see bug 406352): We have a lock on the
+ * faceted project here and would be waiting for the JPA project to be built;
+ * meanwhile, the JPA project manager is building the JPA project and could be
+ * waiting on a lock on the faceted project....
+ */
 public class JpaFacetVersionChangeDataModelProvider
 	extends JpaFacetDataModelProvider
 {
 	/**
-	 * required default constructor
+	 * default constructor used by extension point
 	 */
 	public JpaFacetVersionChangeDataModelProvider() {
 		super();
 	}
-	
-	
-	protected String getProjectName() {
-		return getStringProperty(FACET_PROJECT_NAME);
-	}
-	
-	protected JpaProject getJpaProject() {
-		try {
-			JpaProject.Reference ref = this.getJpaProjectReference();
-			return (ref == null) ? null : ref.getValue();
-		} catch (InterruptedException ex) {
-			Thread.currentThread().interrupt();
-			return null;
-		}
+
+
+	// ********** default values **********
+
+	@Override
+	protected JpaPlatform.Config getDefaultPlatformConfig() {
+		String id = JpaPreferences.getJpaPlatformID(this.getProject());
+		return (id == null) ? null : this.getPlatformConfig(id);
 	}
 
-	protected JpaProject.Reference getJpaProjectReference() {
-		return (JpaProject.Reference) this.getProject().getAdapter(JpaProject.Reference.class);
+	protected JpaPlatform.Config getPlatformConfig(String id) {
+		JpaPlatformManager jpaPlatformManager = this.getJpaPlatformManager();
+		return (jpaPlatformManager == null) ? null : jpaPlatformManager.getJpaPlatformConfig(id);
+	}
+
+	@Override
+	protected String getDefaultConnectionName() {
+		return JpaPreferences.getConnectionProfileName(this.getProject());
+	}
+
+	@Override
+	protected Boolean getDefaultUserWantsToOverrideDefaultCatalog() {
+		return Boolean.valueOf(this.getDefaultUserWantsToOverrideDefaultCatalog_());
+	}
+
+	protected boolean getDefaultUserWantsToOverrideDefaultCatalog_() {
+		return this.getDefaultCatalogIdentifier() != null;
+	}
+
+	@Override
+	protected String getDefaultCatalogIdentifier() {
+		return JpaPreferences.getUserOverrideDefaultCatalog(this.getProject());
+	}
+
+	@Override
+	protected Boolean getDefaultUserWantsToOverrideDefaultSchema() {
+		return Boolean.valueOf(this.getDefaultUserWantsToOverrideDefaultSchema_());
+	}
+
+	protected boolean getDefaultUserWantsToOverrideDefaultSchema_() {
+		return this.getDefaultSchemaIdentifier() != null;
+	}
+
+	@Override
+	protected String getDefaultSchemaIdentifier() {
+		return JpaPreferences.getUserOverrideDefaultSchema(this.getProject());
+	}
+
+	@Override
+	protected Boolean getDefaultDiscoverAnnotatedClasses() {
+		return Boolean.valueOf(this.getDefaultDiscoverAnnotatedClasses_());
+	}
+
+	protected boolean getDefaultDiscoverAnnotatedClasses_() {
+		return JpaPreferences.getDiscoverAnnotatedClasses(this.getProject());
 	}
 
 	protected IProject getProject() {
 		return ResourcesPlugin.getWorkspace().getRoot().getProject(this.getProjectName());
 	}
-	
-	
-	// **************** defaults **********************************************
-	
-	@Override
-	protected JpaPlatform.Config getDefaultPlatformConfig() {
-		return getJpaProject().getJpaPlatform().getConfig();
+
+	protected String getProjectName() {
+		return this.getStringProperty(FACET_PROJECT_NAME);
 	}
-	
-	@Override
-	protected String getDefaultConnection() {
-		return getJpaProject().getDataSource().getConnectionProfileName();
-	}
-	
-	@Override
-	protected Boolean getDefaultUserWantsToOverrideDefaultCatalog() {
-		return Boolean.valueOf(this.getDefaultUserWantsToOverrideDefaultCatalog_());
-	}
-	
-	protected boolean getDefaultUserWantsToOverrideDefaultCatalog_() {
-		return this.getJpaProject().getUserOverrideDefaultCatalog() != null;
-	}
-	
-	@Override
-	protected String getDefaultCatalogIdentifier() {
-		return getJpaProject().getUserOverrideDefaultCatalog();
-	}
-	
-	@Override
-	protected Boolean getDefaultUserWantsToOverrideDefaultSchema() {
-		return Boolean.valueOf(this.getDefaultUserWantsToOverrideDefaultSchema_());
-	}
-	
-	protected boolean getDefaultUserWantsToOverrideDefaultSchema_() {
-		return this.getJpaProject().getUserOverrideDefaultSchema() != null;
-	}
-	
-	@Override
-	protected String getDefaultSchemaIdentifier() {
-		return getJpaProject().getDefaultSchema();
-	}
-	
-	@Override
-	protected Boolean getDefaultDiscoverAnnotatedClasses() {
-		return Boolean.valueOf(this.getDefaultDiscoverAnnotatedClasses_());
-	}
-	
-	protected boolean getDefaultDiscoverAnnotatedClasses_() {
-		return getJpaProject().discoversAnnotatedClasses();
-	}
-	
-	
-	// **************** valid property descriptors ****************************
-	
+
+
+	// ********** valid property descriptors **********
+
 	@Override
 	protected Iterable<JpaPlatform.Config> buildValidPlatformConfigs() {
 		// add existing platform to list of choices
 		Iterable<JpaPlatform.Config> validPlatformConfigs = super.buildValidPlatformConfigs();
-		if (! IterableTools.contains(validPlatformConfigs, getDefaultPlatformConfig())) {
-			validPlatformConfigs = IterableTools.insert(getDefaultPlatformConfig(), validPlatformConfigs);
+		if (! IterableTools.contains(validPlatformConfigs, this.getDefaultPlatformConfig())) {
+			validPlatformConfigs = IterableTools.insert(this.getDefaultPlatformConfig(), validPlatformConfigs);
 		}
 		return validPlatformConfigs;
 	}
-	
-	
-	// **************** validation ********************************************
-	
+
+
+	// ********** validation **********
+
 	@Override
 	protected IStatus validatePlatform() {
 		IStatus status = super.validatePlatform();
-		
 		if (status.isOK()) {
-			if (! getPlatformConfig().supportsJpaFacetVersion(getProjectFacetVersion())) {
+			if (! this.getPlatformConfig().supportsJpaFacetVersion(this.getProjectFacetVersion())) {
 				status = JptJpaCorePlugin.instance().buildErrorStatus(JptJpaCoreMessages.VALIDATE_PLATFORM_DOES_NOT_SUPPORT_FACET_VERSION);
 			}
 		}
-		
 		return status;
 	}
 }
