@@ -258,11 +258,16 @@ class InternalJpaProjectManager
 		// dump a stack trace so we can determine what triggers this
 		JptJpaCorePlugin.instance().dumpStackTrace(TRACE_OPTION, "*** new JPA project manager ***"); //$NON-NLS-1$
 		try {
+			// 406353 - prevent scheduling conflicts by forcing initialization
+			// of the Java plug-in *before* we begin building JPA projects;
+			// otherwise, it could be lazily initialized as we build JPA projects...
+			// [that's the hope - we have not been able to re-create and test the bug...]
+			JavaCore.initializeAfterLoad(null);
 			this.commandContext = this.buildAsynchronousCommandContext();
 			this.buildJpaProjects();  // typically async
 			this.getWorkspace().addResourceChangeListener(this.resourceChangeListener, RESOURCE_CHANGE_EVENT_TYPES);
 			JavaCore.addElementChangedListener(this.javaElementChangeListener, JAVA_CHANGE_EVENT_TYPES);
-		} catch (RuntimeException ex) {
+		} catch (Exception ex) {
 			JptJpaCorePlugin.instance().logError(ex);
 			this.dispose();
 		}
@@ -1114,11 +1119,8 @@ class InternalJpaProjectManager
 	/**
 	 * <strong>NB:</strong>
 	 * This method is called (via reflection) when the test plug-in is loaded.
-	 * This is only useful during tests because none of the files are open in
-	 * the UI, so all the Java events come to us synchronously (i.e. without the
-	 * 0.5 second delay).
 	 * <p>
-	 * See org.eclipse.jpt.jpa.core.tests.JptJpaCoreTestsPlugin#start(org.osgi.framework.BundleContext).
+	 * See <code>org.eclipse.jpt.jpa.core.tests.JptJpaCoreTestsPlugin#start(org.osgi.framework.BundleContext)</code>.
 	 *
 	 * @see #executeCommandsAsynchronously()
 	 */
