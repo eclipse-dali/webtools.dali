@@ -325,6 +325,22 @@
 	</extension>
 	
 	
+	 <extension
+	 	point="org.eclipse.emf.ecore.generated_package">
+		
+		<package
+			uri="http://www.eclipse.org/dali/persistence"
+			class="org.eclipse.jpt.jpa.core.resource.persistence.PersistencePackage"
+			genModel="model/jpaResourceModels.genmodel"/>
+		
+		<package
+			uri="http://www.eclipse.org/dali/orm"
+			class="org.eclipse.jpt.jpa.core.resource.orm.OrmPackage"
+			genModel="model/jpaResourceModels.genmodel"/>
+		
+	</extension>
+	
+	
 	<extension
 		point="org.eclipse.jpt.common.core.libraryValidators">
 		
