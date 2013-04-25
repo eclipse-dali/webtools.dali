@@ -420,16 +420,5 @@
 		</validator>
 		
 	</extension>
-	
-	
-	<extension point="org.eclipse.wst.xml.core.catalogContributions">
-		
-		<catalogContribution id="default">
-			<uri
-				name="http://java.sun.com/xml/ns/jaxb/bindingschema_2_0.xsd"
-				uri="schemas/bindingschema_2_0.xsd"/>
-		</catalogContribution>
-		
-	</extension>
 		
 </plugin>
