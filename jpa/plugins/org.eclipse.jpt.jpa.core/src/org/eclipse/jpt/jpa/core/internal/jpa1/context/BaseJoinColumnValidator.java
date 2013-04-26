@@ -19,7 +19,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 public abstract class BaseJoinColumnValidator<C extends BaseJoinColumn>
 	extends AbstractNamedColumnValidator<C>
 {
-	private final BaseJoinColumn.ParentAdapter joinColumnParentAdapter;
+	protected final BaseJoinColumn.ParentAdapter joinColumnParentAdapter;
 
 	protected BaseJoinColumnValidator(
 				C column,

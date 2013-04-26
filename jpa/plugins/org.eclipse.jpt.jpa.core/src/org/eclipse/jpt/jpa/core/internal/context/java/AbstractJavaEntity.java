@@ -80,13 +80,13 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.AssociationOverrideValidat
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AttributeOverrideColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AttributeOverrideValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.DiscriminatorColumnValidator;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityPrimaryKeyJoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericEntityPrimaryKeyValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.JoinTableTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.MappedSuperclassOverrideDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.SecondaryTableValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.TableValidator;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.JavaEntityPrimaryKeyJoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.resource.java.NullPrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAssociationOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAttributeOverrideContainer2_0;
@@ -1155,7 +1155,7 @@ public abstract class AbstractJavaEntity
 	 * Return whether the entity is the top of an inheritance hierarchy
 	 * and has no descendants and no specified inheritance strategy has been defined.
 	 */
-	protected boolean isRootNoDescendantsNoStrategyDefined() {
+	public boolean isRootNoDescendantsNoStrategyDefined() {
 		return this.isRootEntity() &&
 				this.descendants.isEmpty() &&
 				(this.specifiedInheritanceStrategy == null);
@@ -1637,7 +1637,7 @@ public abstract class AbstractJavaEntity
 		}
 
 		public JpaValidator buildColumnValidator(NamedColumn column) {
-			return new EntityPrimaryKeyJoinColumnValidator((BaseJoinColumn) column, this);
+			return new JavaEntityPrimaryKeyJoinColumnValidator((BaseJoinColumn) column, this, AbstractJavaEntity.this);
 		}
 	}
 
