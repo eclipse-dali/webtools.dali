@@ -45,12 +45,19 @@ public interface XmlEnumAnnotation
 	 * Set to null to remove the element.
 	 */
 	void setValue(String value);
+	
+	/**
+	 * Return the {@link TextRange} for the 'value' element. If the element 
+	 * does not exist return null.
+	 */
+	TextRange getValueTextRange();
+	
 	/**
 	 * Return the {@link TextRange} for the 'value' element. If the element 
 	 * does not exist return the {@link TextRange} for the XmlEnum annotation.
 	 */
-	TextRange getValueTextRange();
-
+	TextRange getValueValidationTextRange();
+	
 	/**
 	 * Return the fully-qualified value class name as resolved by the AST's bindings.
 	 * <pre>
@@ -61,5 +68,4 @@ public interface XmlEnumAnnotation
 	 */
 	String getFullyQualifiedValueClassName();
 		String FULLY_QUALIFIED_VALUE_CLASS_NAME_PROPERTY = "fullyQualifiedValueClassName"; //$NON-NLS-1$
-
 }

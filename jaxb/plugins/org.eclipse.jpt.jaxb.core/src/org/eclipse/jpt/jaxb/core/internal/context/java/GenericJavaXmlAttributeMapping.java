@@ -214,7 +214,7 @@ public class GenericJavaXmlAttributeMapping
 		if (! xsdFeature.typeIsValid(expectedSchemaType, isItemType)) {
 			messages.add(
 					this.buildValidationMessage(
-							this.qName.getNameTextRange(),
+							this.qName.getNameValidationTextRange(),
 							JptJaxbCoreValidationMessages.XML_ATTRIBUTE__INVALID_SCHEMA_TYPE,
 							getValueTypeName(),
 							xsdFeature.getName()));
@@ -304,7 +304,7 @@ public class GenericJavaXmlAttributeMapping
 							return GenericJavaXmlAttributeMapping.this.getPersistentAttribute().getJavaResourceAttributeBaseTypeName();
 						}
 						
-						public TextRange getTypeTextRange() {
+						public TextRange getTypeValidationTextRange() {
 							// 1) if we're getting here, XmlIDREF will not be null
 							// 2) use the @XmlIDREF text range, since there is no specific place where the type is specified
 							return GenericJavaXmlAttributeMapping.this.getXmlIDREF().getValidationTextRange();
@@ -314,8 +314,8 @@ public class GenericJavaXmlAttributeMapping
 							return GenericJavaXmlAttributeMapping.this.getXsdFeature();
 						}
 						
-						public TextRange getXsdFeatureTextRange() {
-							return GenericJavaXmlAttributeMapping.this.getQName().getNameTextRange();
+						public TextRange getXsdFeatureValidationTextRange() {
+							return GenericJavaXmlAttributeMapping.this.getQName().getNameValidationTextRange();
 						}
 					});
 		}

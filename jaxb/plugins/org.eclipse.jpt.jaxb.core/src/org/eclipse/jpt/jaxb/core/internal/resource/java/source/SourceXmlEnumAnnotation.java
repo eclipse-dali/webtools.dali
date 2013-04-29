@@ -30,15 +30,16 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlEnumAnnotation;
  * javax.xml.bind.annotation.XmlEnum
  */
 public final class SourceXmlEnumAnnotation
-	extends SourceAnnotation
-	implements XmlEnumAnnotation
-{
+		extends SourceAnnotation
+		implements XmlEnumAnnotation {
+	
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JAXB.XML_ENUM);
 
 	private static final DeclarationAnnotationElementAdapter<String> VALUE_ADAPTER = buildValueAdapter();
 	private final AnnotationElementAdapter<String> valueAdapter;
 	private String value;
 	private TextRange valueTextRange;
+	private TextRange valueValidationTextRange;
 	
 	private String fullyQualifiedValueClassName;
 
@@ -58,17 +59,19 @@ public final class SourceXmlEnumAnnotation
 	@Override
 	public void initialize(Annotation astAnnotation) {
 		super.initialize(astAnnotation);
-		this.value = this.buildValue(astAnnotation);
-		this.valueTextRange = this.buildValueTextRange(astAnnotation);
-		this.fullyQualifiedValueClassName = this.buildFullyQualifiedValueClassName(astAnnotation);
+		this.value = buildValue(astAnnotation);
+		this.valueTextRange = buildValueTextRange(astAnnotation);
+		this.valueValidationTextRange = buildValueValidationTextRange(astAnnotation);
+		this.fullyQualifiedValueClassName = buildFullyQualifiedValueClassName(astAnnotation);
 	}
-
+	
 	@Override
 	public void synchronizeWith(Annotation astAnnotation) {
 		super.synchronizeWith(astAnnotation);
-		this.syncValue(this.buildValue(astAnnotation));
-		this.valueTextRange = this.buildValueTextRange(astAnnotation);
-		this.syncFullyQualifiedValueClassName(this.buildFullyQualifiedValueClassName(astAnnotation));
+		syncValue(buildValue(astAnnotation));
+		this.valueTextRange = buildValueTextRange(astAnnotation);
+		this.valueValidationTextRange = buildValueValidationTextRange(astAnnotation);
+		syncFullyQualifiedValueClassName(buildFullyQualifiedValueClassName(astAnnotation));
 	}
 
 	@Override
@@ -100,41 +103,49 @@ public final class SourceXmlEnumAnnotation
 	private String buildValue(Annotation astAnnotation) {
 		return this.valueAdapter.getValue(astAnnotation);
 	}
-
+	
+	private TextRange buildValueTextRange(Annotation astAnnotation) {
+		return getAnnotationElementTextRange(VALUE_ADAPTER, astAnnotation);
+	}
+	
+	private TextRange buildValueValidationTextRange(Annotation astAnnotation) {
+		return getElementTextRange(VALUE_ADAPTER, astAnnotation);
+	}
+	
 	public TextRange getValueTextRange() {
 		return this.valueTextRange;
 	}
-
-	private TextRange buildValueTextRange(Annotation astAnnotation) {
-		return this.getElementTextRange(VALUE_ADAPTER, astAnnotation);
+	
+	public TextRange getValueValidationTextRange() {
+		return this.valueValidationTextRange;
 	}
-
+	
 	public boolean valueTouches(int pos) {
 		return this.textRangeTouches(this.valueTextRange, pos);
 	}
-
+	
 	// ***** fully-qualified value class name
 	public String getFullyQualifiedValueClassName() {
 		return this.fullyQualifiedValueClassName;
 	}
-
+	
 	private void syncFullyQualifiedValueClassName(String name) {
 		String old = this.fullyQualifiedValueClassName;
 		this.fullyQualifiedValueClassName = name;
 		this.firePropertyChanged(FULLY_QUALIFIED_VALUE_CLASS_NAME_PROPERTY, old, name);
 	}
-
+	
 	private String buildFullyQualifiedValueClassName(Annotation astAnnotation) {
 		return (this.value == null) ? null : ASTTools.resolveFullyQualifiedName(this.valueAdapter.getExpression(astAnnotation));
 	}
-
-
+	
+	
 	//*********** static methods ****************
-
+	
 	private static DeclarationAnnotationElementAdapter<String> buildValueAdapter() {
 		return buildAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_ENUM__VALUE, SimpleTypeStringExpressionConverter.instance());
 	}
-
+	
 	static DeclarationAnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, ExpressionConverter<String> converter) {
 		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, converter);
 	}

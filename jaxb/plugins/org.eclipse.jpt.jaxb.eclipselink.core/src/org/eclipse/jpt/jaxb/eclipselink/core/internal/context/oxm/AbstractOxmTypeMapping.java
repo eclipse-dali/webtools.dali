@@ -605,7 +605,7 @@ public abstract class AbstractOxmTypeMapping
 							this.buildDefaultNamespace())) {
 				messages.add(
 					this.buildValidationMessage(
-						this.proxy.getNamespaceTextRange(),
+						this.proxy.getNamespaceValidationTextRange(),
 						JptJaxbCoreValidationMessages.XML_TYPE__UNMATCHING_NAMESPACE_FOR_ANONYMOUS_TYPE
 					));
 			}
@@ -656,9 +656,9 @@ public abstract class AbstractOxmTypeMapping
 			return (eXmlType == null) ? false : eXmlType.namespaceTouches(pos);
 		}
 		
-		public TextRange getNamespaceTextRange() {
+		public TextRange getNamespaceValidationTextRange() {
 			EXmlType eXmlType = getEXmlType(false);
-			return (eXmlType == null) ? null : eXmlType.getNamespaceTextRange();
+			return (eXmlType == null) ? null : eXmlType.getNamespaceValidationTextRange();
 		}
 		
 		public String getName() {
@@ -675,9 +675,9 @@ public abstract class AbstractOxmTypeMapping
 			return (eXmlType == null) ? false : eXmlType.nameTouches(pos);
 		}
 		
-		public TextRange getNameTextRange() {
+		public TextRange getNameValidationTextRange() {
 			EXmlType eXmlType = getEXmlType(false);
-			return (eXmlType == null) ? null : eXmlType.getNameTextRange();
+			return (eXmlType == null) ? null : eXmlType.getNameValidationTextRange();
 		}
 	}
 }

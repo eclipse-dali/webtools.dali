@@ -47,7 +47,13 @@ public interface XmlDiscriminatorValueAnnotation
 	
 	/**
 	 * Return the text range associated with the 'value' element.
-	 * Return the text range of this annotation if the element is absent.
+	 * Return null if the element is absent.
 	 */
 	TextRange getValueTextRange();
+	
+	/**
+	 * Return the text range associated with the 'value' element.
+	 * Return the text range of this annotation if the element is absent.
+	 */
+	TextRange getValueValidationTextRange();	
 }

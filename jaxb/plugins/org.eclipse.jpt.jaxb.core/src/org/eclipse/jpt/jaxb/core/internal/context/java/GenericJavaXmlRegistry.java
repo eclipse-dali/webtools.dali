@@ -203,7 +203,7 @@ public class GenericJavaXmlRegistry
 				messages.add(
 						this.buildValidationMessage(
 								xmlElementDecl,
-								xmlElementDecl.getQName().getNameTextRange(),
+								xmlElementDecl.getQName().getNameValidationTextRange(),
 								JptJaxbCoreValidationMessages.XML_REGISTRY__DUPLICATE_XML_ELEMENT_QNAME,
 								xmlElementName,
 								scopeDesc));

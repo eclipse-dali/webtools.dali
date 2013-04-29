@@ -47,6 +47,10 @@ public final class NullXmlEnumValueAnnotation
 	public TextRange getValueTextRange() {
 		return null;
 	}
+
+	public TextRange getValueValidationTextRange() {
+		return null;
+	}
 	
 	public boolean valueTouches(int pos) {
 		return false;

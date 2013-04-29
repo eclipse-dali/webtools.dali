@@ -147,7 +147,7 @@ public class JaxbJavaCompletionProposalComputer
 		for (JaxbContextNode javaNode : javaNodes) {
 			for (String proposal : this.buildCompletionProposals(javaNode, context.getInvocationOffset(), filter)) {
 				if (tokenKind == CompletionContext.TOKEN_KIND_STRING_LITERAL) {//already quoted
-					proposals.add(new CompletionProposal(proposal, tokenStart, tokenEnd - tokenStart - 1, proposal.length()));					
+					proposals.add(new CompletionProposal(proposal, tokenStart + 1, tokenEnd - tokenStart - 1, proposal.length()));					
 				}
 				else {//add the quotes
 					proposals.add(new CompletionProposal("\"" + proposal + "\"", tokenStart, tokenEnd - tokenStart + 1, proposal.length() + 2)); //$NON-NLS-1$ //$NON-NLS-2$

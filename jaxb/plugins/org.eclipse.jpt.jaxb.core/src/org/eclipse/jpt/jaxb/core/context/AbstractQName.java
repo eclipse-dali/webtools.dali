@@ -237,12 +237,12 @@ public abstract class AbstractQName
 		return (textRange != null) ? textRange : getParent().getValidationTextRange();
 	}
 	
-	public TextRange getNamespaceTextRange() {
-		return getTextRange(this.proxy.getNamespaceTextRange());
+	public TextRange getNamespaceValidationTextRange() {
+		return getTextRange(this.proxy.getNamespaceValidationTextRange());
 	}
 	
-	public TextRange getNameTextRange() {
-		return getTextRange(this.proxy.getNameTextRange());
+	public TextRange getNameValidationTextRange() {
+		return getTextRange(this.proxy.getNameValidationTextRange());
 	}
 	
 	/**
@@ -268,7 +268,7 @@ public abstract class AbstractQName
 		if (StringTools.isBlank(getName())) {
 			messages.add(
 				this.buildValidationMessage(
-					getNameTextRange(),
+					getNameValidationTextRange(),
 					JptJaxbCoreValidationMessages.QNAME__MISSING_NAME,
 					getReferencedComponentTypeDescription()
 				)
@@ -280,7 +280,7 @@ public abstract class AbstractQName
 	
 	protected IMessage getUnresolveSchemaComponentMessage() {
 		return this.buildValidationMessage(
-				getNameTextRange(),
+				getNameValidationTextRange(),
 				JptJaxbCoreValidationMessages.QNAME__UNRESOLVED_COMPONENT,
 				getReferencedComponentTypeDescription(),
 				getNamespace(),
@@ -297,7 +297,7 @@ public abstract class AbstractQName
 		
 		boolean namespaceTouches(int pos);
 		
-		TextRange getNamespaceTextRange();
+		TextRange getNamespaceValidationTextRange();
 		
 		String getName();
 		
@@ -305,6 +305,6 @@ public abstract class AbstractQName
 		
 		boolean nameTouches(int pos);
 		
-		TextRange getNameTextRange();
+		TextRange getNameValidationTextRange();
 	}
 }

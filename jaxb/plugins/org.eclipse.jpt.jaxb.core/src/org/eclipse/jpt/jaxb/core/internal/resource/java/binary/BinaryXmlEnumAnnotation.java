@@ -73,6 +73,10 @@ public final class BinaryXmlEnumAnnotation
 		throw new UnsupportedOperationException();
 	}
 
+	public TextRange getValueValidationTextRange() {
+		throw new UnsupportedOperationException();
+	}
+
 	// ***** fully-qualified value class name
 	public String getFullyQualifiedValueClassName() {
 		return this.value;

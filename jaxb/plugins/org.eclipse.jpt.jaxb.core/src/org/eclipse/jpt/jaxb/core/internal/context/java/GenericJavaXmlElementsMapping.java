@@ -369,7 +369,7 @@ public class GenericJavaXmlElementsMapping
 			messages.add(
 					this.buildValidationMessage(
 							xmlElement,
-							xmlElement.getQName().getNameTextRange(),
+							xmlElement.getQName().getNameValidationTextRange(),
 							JptJaxbCoreValidationMessages.XML_ELEMENTS__DUPLICATE_XML_ELEMENT_QNAME,
 							xmlElementName));
 		}	
@@ -475,8 +475,7 @@ public class GenericJavaXmlElementsMapping
 	}
 
 	public static class XmlElementValidatableReference
-		implements ValidatableReference
-	{
+			implements ValidatableReference {
 		protected final XmlElement xmlElement;
 		public XmlElementValidatableReference(XmlElement xmlElement) {
 			super();
@@ -486,7 +485,7 @@ public class GenericJavaXmlElementsMapping
 			return this.xmlElement.getFullyQualifiedType();
 		}
 		
-		public TextRange getTypeTextRange() {
+		public TextRange getTypeValidationTextRange() {
 			return this.xmlElement.getTypeTextRange();
 		}
 		
@@ -494,8 +493,8 @@ public class GenericJavaXmlElementsMapping
 			return this.xmlElement.getXsdElement();
 		}
 		
-		public TextRange getXsdFeatureTextRange() {
-			return this.xmlElement.getQName().getNameTextRange();
+		public TextRange getXsdFeatureValidationTextRange() {
+			return this.xmlElement.getQName().getNameValidationTextRange();
 		}
 	}
 }

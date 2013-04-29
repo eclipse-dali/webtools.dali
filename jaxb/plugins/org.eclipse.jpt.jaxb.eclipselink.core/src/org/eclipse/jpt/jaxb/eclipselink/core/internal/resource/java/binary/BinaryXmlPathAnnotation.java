@@ -70,6 +70,10 @@ public class BinaryXmlPathAnnotation
 		throw new UnsupportedOperationException();
 	}
 	
+	public TextRange getValueValidationTextRange() {
+		throw new UnsupportedOperationException();
+	}
+	
 	public boolean valueTouches(int pos) {
 		throw new UnsupportedOperationException();
 	}

@@ -47,12 +47,19 @@ public interface XmlInverseReferenceAnnotation
 	
 	/**
 	 * Return the text range associated with the 'mappedBy' element.
-	 * Return the text range of this annotation if the element is absent.
+	 * Return null if the element is absent.
 	 */
 	TextRange getMappedByTextRange();
 	
 	/**
+	 * Return the validation text range associated with the 'mappedBy' element.
+	 * Return the text range of this annotation if the element is absent.
+	 */
+	TextRange getMappedByValidationTextRange();
+	
+	/**
 	 * Return whether the specified text position is within the 'mappedBy' element.
+	 * Always return false if the element does not exist.
 	 */
 	boolean mappedByTouches(int pos);
 }

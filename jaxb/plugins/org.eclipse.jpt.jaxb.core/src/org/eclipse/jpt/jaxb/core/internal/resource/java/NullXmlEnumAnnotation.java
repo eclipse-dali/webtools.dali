@@ -51,4 +51,8 @@ public final class NullXmlEnumAnnotation
 	public TextRange getValueTextRange() {
 		return null;
 	}
+
+	public TextRange getValueValidationTextRange() {
+		return null;
+	}
 }

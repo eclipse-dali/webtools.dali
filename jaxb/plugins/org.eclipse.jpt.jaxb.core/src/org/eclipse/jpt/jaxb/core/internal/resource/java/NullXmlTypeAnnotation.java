@@ -84,6 +84,10 @@ public final class NullXmlTypeAnnotation
 		return null;
 	}
 	
+	public TextRange getNameValidationTextRange() {
+		return null;
+	}
+	
 	public boolean nameTouches(int pos) {
 		return false;
 	}
@@ -101,6 +105,10 @@ public final class NullXmlTypeAnnotation
 	}
 
 	public TextRange getNamespaceTextRange() {
+		return null;
+	}
+	
+	public TextRange getNamespaceValidationTextRange() {
 		return null;
 	}
 	

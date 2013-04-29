@@ -45,10 +45,16 @@ public interface QNameAnnotation
 	void setNamespace(String namespace);
 	
 	/**
-	 * Return the {@link TextRange} for the 'namespace' element. If the element 
-	 * does not exist return the {@link TextRange} for the annotation itself.
+	 * Return the {@link TextRange} for the 'name' element. If the element 
+	 * does not exist return null.
 	 */
 	TextRange getNamespaceTextRange();
+	
+	/**
+	 * Return the {@link TextRange} for the 'name' element. If the element 
+	 * does not exist return the {@link TextRange} for the annotation itself.
+	 */
+	TextRange getNamespaceValidationTextRange();
 	
 	/**
 	 * Return whether the specified position touches the 'namespace' element.
@@ -75,9 +81,16 @@ public interface QNameAnnotation
 	
 	/**
 	 * Return the {@link TextRange} for the 'name' element. If the element 
-	 * does not exist return the {@link TextRange} for the annotation itself.
+	 * does not exist return null.
 	 */
 	TextRange getNameTextRange();
+	
+	/**
+	 * Return the {@link TextRange} for the 'name' element. If the element 
+	 * does not exist return the {@link TextRange} for the annotation itself.
+	 */
+	TextRange getNameValidationTextRange();
+	
 	
 	/**
 	 * Return whether the specified position touches the 'name' element.

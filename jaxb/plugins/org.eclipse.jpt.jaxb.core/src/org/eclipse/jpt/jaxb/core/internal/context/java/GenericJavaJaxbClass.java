@@ -11,6 +11,8 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.TypeKind;
 import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
@@ -124,6 +126,27 @@ public class GenericJavaJaxbClass
 		if (this.xmlRegistry != null) {
 			this.xmlRegistry.update();
 		}
+	}
+	
+	
+	// ***** content assist *****
+	
+	@Override
+	public Iterable<String> getCompletionProposals(int pos) {
+		
+		Iterable<String> result = super.getCompletionProposals(pos);
+		if (! IterableTools.isEmpty(result)) {
+			return result;
+		}
+		
+		if (this.xmlRegistry != null) {
+			result = this.xmlRegistry.getCompletionProposals(pos);
+			if (! IterableTools.isEmpty(result)) {
+				return result;
+			}
+		}
+		
+		return EmptyIterable.instance();
 	}
 	
 	

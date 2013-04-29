@@ -63,7 +63,7 @@ public interface JaxbQName
 	
 	// ***** validation *****
 	
-	TextRange getNamespaceTextRange();
+	TextRange getNamespaceValidationTextRange();
 	
-	TextRange getNameTextRange();
+	TextRange getNameValidationTextRange();
 }

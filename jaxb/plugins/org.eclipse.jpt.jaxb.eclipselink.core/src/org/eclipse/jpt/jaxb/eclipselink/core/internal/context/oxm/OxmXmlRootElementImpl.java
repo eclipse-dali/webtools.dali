@@ -192,8 +192,8 @@ public class OxmXmlRootElementImpl
 			return getEXmlRootElement().namespaceTouches(pos);
 		}
 		
-		public TextRange getNamespaceTextRange() {
-			return getEXmlRootElement().getNamespaceTextRange();
+		public TextRange getNamespaceValidationTextRange() {
+			return getEXmlRootElement().getNamespaceValidationTextRange();
 		}
 		
 		public String getName() {
@@ -208,8 +208,8 @@ public class OxmXmlRootElementImpl
 			return getEXmlRootElement().nameTouches(pos);
 		}
 		
-		public TextRange getNameTextRange() {
-			return getEXmlRootElement().getNameTextRange();
+		public TextRange getNameValidationTextRange() {
+			return getEXmlRootElement().getNameValidationTextRange();
 		}
 	}
 }

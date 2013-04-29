@@ -44,9 +44,15 @@ public interface XmlEnumValueAnnotation
 	
 	/**
 	 * Return the {@link TextRange} for the 'value' element. If the element 
-	 * does not exist return the {@link TextRange} for the XmlEnumValue annotation.
+	 * does not exist return null.
 	 */
 	TextRange getValueTextRange();
+	
+	/**
+	 * Return the {@link TextRange} for the 'value' element. If the element 
+	 * does not exist return the {@link TextRange} for the XmlEnumValue annotation.
+	 */
+	TextRange getValueValidationTextRange();
 	
 	/**
 	 * Return whether the given position touches the 'value' element value.

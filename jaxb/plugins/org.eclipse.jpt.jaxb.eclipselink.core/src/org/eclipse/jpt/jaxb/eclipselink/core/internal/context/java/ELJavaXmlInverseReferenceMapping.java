@@ -166,7 +166,7 @@ public class ELJavaXmlInverseReferenceMapping
 		if (StringTools.isBlank(mappedBy)) {
 			messages.add(
 					this.buildValidationMessage(
-							getMappedByTextRange(),
+							getMappedByValidationTextRange(),
 							JptJaxbEclipseLinkCoreValidationMessages.XML_INVERSE_REFERENCE__MAPPED_BY_NOT_SPECIFIED
 						));
 			return;
@@ -182,7 +182,7 @@ public class ELJavaXmlInverseReferenceMapping
 		if (referencedAttribute == null) {
 			messages.add(
 					this.buildValidationMessage(
-							getMappedByTextRange(),
+							getMappedByValidationTextRange(),
 							JptJaxbEclipseLinkCoreValidationMessages.XML_INVERSE_REFERENCE__MAPPED_BY_NOT_RESOLVED,
 							mappedBy,
 							referencedClassMapping.getTypeName().getFullyQualifiedName()));
@@ -193,7 +193,7 @@ public class ELJavaXmlInverseReferenceMapping
 						referencedAttribute.getMappingKey())) {
 			messages.add(
 					this.buildValidationMessage(
-							getMappedByTextRange(),
+							getMappedByValidationTextRange(),
 							JptJaxbEclipseLinkCoreValidationMessages.XML_INVERSE_REFERENCE__MAPPED_BY_ILLEGAL_MAPPING_TYPE,
 							mappedBy,
 							referencedClassMapping.getTypeName().getFullyQualifiedName()));
@@ -213,8 +213,7 @@ public class ELJavaXmlInverseReferenceMapping
 		MappingKeys.XML_VALUE_ATTRIBUTE_MAPPING_KEY
 	};
 	
-	protected TextRange getMappedByTextRange() {
-		TextRange textRange = getXmlInverseReferenceAnnotation().getMappedByTextRange();
-		return (textRange != null) ? textRange : getValidationTextRange();
+	protected TextRange getMappedByValidationTextRange() {
+		return getXmlInverseReferenceAnnotation().getMappedByValidationTextRange();
 	}
 }

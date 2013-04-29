@@ -11,7 +11,6 @@ package org.eclipse.jpt.jaxb.core.internal.resource.java.binary;
 
 import java.util.Vector;
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -23,9 +22,9 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
  * javax.xml.bind.annotation.XmlType
  */
 public final class BinaryXmlTypeAnnotation
-	extends BinaryAnnotation
-	implements XmlTypeAnnotation
-{
+		extends BinaryQNameAnnotation
+		implements XmlTypeAnnotation {
+	
 	private String factoryClass;
 	private String factoryMethod;
 	private String name;
@@ -119,11 +118,7 @@ public final class BinaryXmlTypeAnnotation
 	public String getName() {
 		return this.name;
 	}
-
-	public void setName(String name) {
-		throw new UnsupportedOperationException();
-	}
-
+	
 	private void setName_(String name) {
 		String old = this.name;
 		this.name = name;
@@ -134,40 +129,20 @@ public final class BinaryXmlTypeAnnotation
 		return (String) this.getJdtMemberValue(JAXB.XML_TYPE__NAME);
 	}
 	
-	public TextRange getNameTextRange() {
-		throw new UnsupportedOperationException();
-	}
-	
-	public boolean nameTouches(int pos) {
-		throw new UnsupportedOperationException();
-	}
-	
 	
 	// ***** namespace
 	public String getNamespace() {
 		return this.namespace;
 	}
-
-	public void setNamespace(String namespace) {
-		throw new UnsupportedOperationException();
-	}
-
+	
 	private void setNamespace_(String namespace) {
 		String old = this.namespace;
 		this.namespace = namespace;
 		this.firePropertyChanged(NAMESPACE_PROPERTY, old, namespace);
 	}
-
+	
 	private String buildNamespace() {
 		return (String) this.getJdtMemberValue(JAXB.XML_TYPE__NAMESPACE);
-	}
-
-	public TextRange getNamespaceTextRange() {
-		throw new UnsupportedOperationException();
-	}
-	
-	public boolean namespaceTouches(int pos) {
-		throw new UnsupportedOperationException();
 	}
 	
 	

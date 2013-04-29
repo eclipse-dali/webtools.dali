@@ -70,6 +70,10 @@ public class BinaryXmlInverseReferenceAnnotation
 		throw new UnsupportedOperationException();
 	}
 	
+	public TextRange getMappedByValidationTextRange() {
+		throw new UnsupportedOperationException();
+	}
+	
 	public boolean mappedByTouches(int pos) {
 		throw new UnsupportedOperationException();
 	}

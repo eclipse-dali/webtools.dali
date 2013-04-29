@@ -74,6 +74,10 @@ public class BinaryXmlJoinNodeAnnotation
 		throw new UnsupportedOperationException();
 	}
 	
+	public TextRange getXmlPathValidationTextRange() {
+		throw new UnsupportedOperationException();
+	}
+	
 	public boolean xmlPathTouches(int pos) {
 		throw new UnsupportedOperationException();
 	}
@@ -100,6 +104,10 @@ public class BinaryXmlJoinNodeAnnotation
 	}
 	
 	public TextRange getReferencedXmlPathTextRange() {
+		throw new UnsupportedOperationException();
+	}
+	
+	public TextRange getReferencedXmlPathValidationTextRange() {
 		throw new UnsupportedOperationException();
 	}
 	

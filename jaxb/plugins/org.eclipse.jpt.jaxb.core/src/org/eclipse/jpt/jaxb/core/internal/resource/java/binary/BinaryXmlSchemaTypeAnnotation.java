@@ -12,7 +12,6 @@ package org.eclipse.jpt.jaxb.core.internal.resource.java.binary;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.TypeTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -23,7 +22,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
  * javax.xml.bind.annotation.XmlSchemaType
  */
 public class BinaryXmlSchemaTypeAnnotation
-		extends BinaryAnnotation
+		extends BinaryQNameAnnotation
 		implements XmlSchemaTypeAnnotation {
 	
 	private String name;
@@ -60,21 +59,8 @@ public class BinaryXmlSchemaTypeAnnotation
 	public String getName() {
 		return this.name;
 	}
-	
-	public void setName(String name) {
-		throw new UnsupportedOperationException();
-	}
-	
 	private String buildName() {
 		return (String) this.getJdtMemberValue(JAXB.XML_SCHEMA_TYPE__NAME);
-	}
-
-	public TextRange getNameTextRange() {
-		throw new UnsupportedOperationException();
-	}
-	
-	public boolean nameTouches(int pos) {
-		throw new UnsupportedOperationException();
 	}
 	
 	// ***** namespace
@@ -82,22 +68,10 @@ public class BinaryXmlSchemaTypeAnnotation
 		return this.namespace;
 	}
 	
-	public void setNamespace(String namespace) {
-		throw new UnsupportedOperationException();
-	}
-	
 	private String buildNamespace() {
 		return (String) this.getJdtMemberValue(JAXB.XML_SCHEMA_TYPE__NAMESPACE);
 	}
 	
-	public TextRange getNamespaceTextRange() {
-		throw new UnsupportedOperationException();
-	}
-	
-	public boolean namespaceTouches(int pos) {
-		throw new UnsupportedOperationException();
-	}
-
 	// ***** type
 	public String getType() {
 		return this.type;
@@ -122,5 +96,4 @@ public class BinaryXmlSchemaTypeAnnotation
 	private String buildFullyQualifiedType(IAnnotation jdtAnnotation) {
 		return TypeTools.resolveType((IType)jdtAnnotation.getAncestor(IJavaElement.TYPE), this.type);
 	}
-	
 }

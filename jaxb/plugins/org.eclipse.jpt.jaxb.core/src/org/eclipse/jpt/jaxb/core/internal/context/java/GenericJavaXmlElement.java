@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jpt.common.core.internal.utility.TypeTools;
 import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
+import org.eclipse.jpt.common.core.internal.utility.TypeTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
@@ -426,7 +426,7 @@ public class GenericJavaXmlElement
 		if (! xsdElement.typeIsValid(expectedSchemaType, this.context.hasXmlList())) {
 			messages.add(
 					this.buildValidationMessage(
-							this.qName.getNameTextRange(),
+							this.qName.getNameValidationTextRange(),
 							JptJaxbCoreValidationMessages.XML_ELEMENT__INVALID_SCHEMA_TYPE,
 							typeName,
 							xsdElement.getName()));

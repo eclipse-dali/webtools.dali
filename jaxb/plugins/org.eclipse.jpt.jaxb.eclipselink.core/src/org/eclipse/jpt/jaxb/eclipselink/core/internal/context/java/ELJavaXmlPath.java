@@ -137,7 +137,7 @@ public class ELJavaXmlPath
 			messages.add(
 					this.buildValidationMessage(
 								ELJavaXmlPath.this,
-								getValueTextRange(),
+								getValueValidationTextRange(),
 								JptJaxbEclipseLinkCoreValidationMessages.XPATH__ROOT_NOT_SUPPORTED
 							));
 			return;
@@ -149,8 +149,12 @@ public class ELJavaXmlPath
 	}
 	
 	protected TextRange getValueTextRange() {
-		// should never be null
+		// could be null if there is no value (or no "")
 		return getAnnotation().getValueTextRange();
+	}
+	
+	protected TextRange getValueValidationTextRange() {
+		return getAnnotation().getValueValidationTextRange();
 	}
 	
 	
@@ -178,6 +182,7 @@ public class ELJavaXmlPath
 		}
 		
 		public TextRange getTextRange() {
+			// should never be null when there is an xpath
 			return ELJavaXmlPath.this.getValueTextRange();
 		}
 	}

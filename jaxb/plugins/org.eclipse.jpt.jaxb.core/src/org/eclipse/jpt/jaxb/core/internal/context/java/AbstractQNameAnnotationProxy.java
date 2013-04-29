@@ -35,9 +35,9 @@ public abstract class AbstractQNameAnnotationProxy
 		return (annotation == null) ? false : annotation.namespaceTouches(pos);
 	}
 	
-	public TextRange getNamespaceTextRange() {
+	public TextRange getNamespaceValidationTextRange() {
 		QNameAnnotation annotation = getAnnotation(false);
-		return (annotation == null) ? null : annotation.getNamespaceTextRange();
+		return (annotation == null) ? null : annotation.getNamespaceValidationTextRange();
 	}
 		
 	public String getName() {
@@ -54,8 +54,8 @@ public abstract class AbstractQNameAnnotationProxy
 		return (annotation == null) ? false : annotation.nameTouches(pos);
 	}
 	
-	public TextRange getNameTextRange() {
+	public TextRange getNameValidationTextRange() {
 		QNameAnnotation annotation = getAnnotation(false);
-		return (annotation == null) ? null : annotation.getNameTextRange();
+		return (annotation == null) ? null : annotation.getNameValidationTextRange();
 	}
 }

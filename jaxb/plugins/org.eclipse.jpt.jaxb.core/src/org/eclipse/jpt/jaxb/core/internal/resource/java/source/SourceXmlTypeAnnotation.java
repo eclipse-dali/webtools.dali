@@ -39,9 +39,9 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
  * javax.xml.bind.annotation.XmlType
  */
 public final class SourceXmlTypeAnnotation
-	extends SourceAnnotation
-	implements XmlTypeAnnotation
-{
+		extends SourceAnnotation
+		implements XmlTypeAnnotation {
+	
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JAXB.XML_TYPE);
 
 	private static final DeclarationAnnotationElementAdapter<String> FACTORY_CLASS_ADAPTER = buildFactoryClassAdapter();
@@ -50,28 +50,30 @@ public final class SourceXmlTypeAnnotation
 	private TextRange factoryClassTextRange;
 	
 	private String fullyQualifiedFactoryClassName;
-
+	
 	private static final DeclarationAnnotationElementAdapter<String> FACTORY_METHOD_ADAPTER = buildFactoryMethodAdapter();
 	private final AnnotationElementAdapter<String> factoryMethodAdapter;
 	private String factoryMethod;
 	private TextRange factoryMethodTextRange;
-
+	
 	private static final DeclarationAnnotationElementAdapter<String> NAME_ADAPTER = buildNameAdapter();
 	private final AnnotationElementAdapter<String> nameAdapter;
 	private String name;
 	private TextRange nameTextRange;
-
+	private TextRange nameValidationTextRange;
+	
 	private static final DeclarationAnnotationElementAdapter<String> NAMESPACE_ADAPTER = buildNamespaceAdapter();
 	private final AnnotationElementAdapter<String> namespaceAdapter;
 	private String namespace;
 	private TextRange namespaceTextRange;
-
+	private TextRange namespaceValidationTextRange;
+	
 	private final IndexedDeclarationAnnotationElementAdapter<String> propOrderDeclarationAdapter;
 	private final AnnotationElementAdapter<String[]> propOrderAdapter;
 	private final Vector<String> propOrder = new Vector<String>();
 	private TextRange propOrderTextRange;
 	private final Vector<TextRange> propTextRanges = new Vector<TextRange>();
-
+	
 	public SourceXmlTypeAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
 		super(parent, annotatedElement, DECLARATION_ANNOTATION_ADAPTER);
 		this.factoryClassAdapter = this.buildAnnotationElementAdapter(FACTORY_CLASS_ADAPTER);
@@ -101,41 +103,43 @@ public final class SourceXmlTypeAnnotation
 	public String getAnnotationName() {
 		return JAXB.XML_TYPE;
 	}
-
+	
 	@Override
 	public void initialize(Annotation astAnnotation) {
 		super.initialize(astAnnotation);
-		this.factoryClass = this.buildFactoryClass(astAnnotation);
-		this.factoryClassTextRange = this.buildFactoryClassTextRange(astAnnotation);
-		this.fullyQualifiedFactoryClassName = this.buildFullyQualifiedFactoryClassName(astAnnotation);
-		this.factoryMethod = this.buildFactoryMethod(astAnnotation);
-		this.factoryMethodTextRange = this.buildFactoryMethodTextRange(astAnnotation);
-		this.name = this.buildName(astAnnotation);
-		this.nameTextRange = this.buildNameTextRange(astAnnotation);
-		this.namespace = this.buildNamespace(astAnnotation);
-		this.namespaceTextRange = this.buildNamespaceTextRange(astAnnotation);
-		this.initializePropOrder(astAnnotation);
-		this.propOrderTextRange = this.buildPropOrderTextRange(astAnnotation);
-		this.syncPropTextRanges(astAnnotation);
+		this.factoryClass = buildFactoryClass(astAnnotation);
+		this.factoryClassTextRange = buildFactoryClassTextRange(astAnnotation);
+		this.fullyQualifiedFactoryClassName = buildFullyQualifiedFactoryClassName(astAnnotation);
+		this.factoryMethod = buildFactoryMethod(astAnnotation);
+		this.factoryMethodTextRange = buildFactoryMethodTextRange(astAnnotation);
+		this.name = buildName(astAnnotation);
+		this.nameTextRange = buildNameTextRange(astAnnotation);
+		this.nameValidationTextRange = buildNameValidationTextRange(astAnnotation);
+		this.namespace = buildNamespace(astAnnotation);
+		this.namespaceTextRange = buildNamespaceTextRange(astAnnotation);
+		this.namespaceValidationTextRange = buildNamespaceValidationTextRange(astAnnotation);
+		initializePropOrder(astAnnotation);
+		this.propOrderTextRange = buildPropOrderTextRange(astAnnotation);
+		syncPropTextRanges(astAnnotation);
 	}
-
+	
 	@Override
 	public void synchronizeWith(Annotation astAnnotation) {
 		super.synchronizeWith(astAnnotation);
-		this.syncFactoryClass(this.buildFactoryClass(astAnnotation));
-		this.factoryClassTextRange = this.buildFactoryClassTextRange(astAnnotation);
-		this.syncFullyQualifiedFactoryClassName(this.buildFullyQualifiedFactoryClassName(astAnnotation));
-		this.syncFactoryMethod(this.buildFactoryMethod(astAnnotation));
-		this.factoryMethodTextRange = this.buildFactoryMethodTextRange(astAnnotation);
-		this.syncName(this.buildName(astAnnotation));
-		this.nameTextRange = this.buildNameTextRange(astAnnotation);
-		this.syncNamespace(this.buildNamespace(astAnnotation));
-		this.namespaceTextRange = this.buildNamespaceTextRange(astAnnotation);
-		this.syncPropOrder(astAnnotation);
-		this.propOrderTextRange = this.buildPropOrderTextRange(astAnnotation);
-		this.syncPropTextRanges(astAnnotation);
+		syncFactoryClass(buildFactoryClass(astAnnotation));
+		this.factoryClassTextRange = buildFactoryClassTextRange(astAnnotation);
+		syncFullyQualifiedFactoryClassName(buildFullyQualifiedFactoryClassName(astAnnotation));
+		syncFactoryMethod(buildFactoryMethod(astAnnotation));
+		this.factoryMethodTextRange = buildFactoryMethodTextRange(astAnnotation);
+		syncName(buildName(astAnnotation));
+		this.nameTextRange = buildNameTextRange(astAnnotation);
+		this.syncNamespace(buildNamespace(astAnnotation));
+		this.namespaceTextRange = buildNamespaceTextRange(astAnnotation);
+		syncPropOrder(astAnnotation);
+		this.propOrderTextRange = buildPropOrderTextRange(astAnnotation);
+		syncPropTextRanges(astAnnotation);
 	}
-
+	
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.name);
@@ -241,13 +245,21 @@ public final class SourceXmlTypeAnnotation
 	private String buildName(Annotation astAnnotation) {
 		return this.nameAdapter.getValue(astAnnotation);
 	}
-
+	
 	private TextRange buildNameTextRange(Annotation astAnnotation) {
-		return this.getElementTextRange(NAME_ADAPTER, astAnnotation);
+		return getAnnotationElementTextRange(NAME_ADAPTER, astAnnotation);
 	}
-
+	
+	private TextRange buildNameValidationTextRange(Annotation astAnnotation) {
+		return getElementTextRange(NAME_ADAPTER, astAnnotation);
+	}
+	
 	public TextRange getNameTextRange() {
 		return this.nameTextRange;
+	}
+	
+	public TextRange getNameValidationTextRange() {
+		return this.nameValidationTextRange;
 	}
 	
 	public boolean nameTouches(int pos) {
@@ -276,13 +288,21 @@ public final class SourceXmlTypeAnnotation
 	private String buildNamespace(Annotation astAnnotation) {
 		return this.namespaceAdapter.getValue(astAnnotation);
 	}
-
+	
 	private TextRange buildNamespaceTextRange(Annotation astAnnotation) {
-		return this.getElementTextRange(NAMESPACE_ADAPTER, astAnnotation);
+		return getAnnotationElementTextRange(NAMESPACE_ADAPTER, astAnnotation);
 	}
-
+	
+	private TextRange buildNamespaceValidationTextRange(Annotation astAnnotation) {
+		return getElementTextRange(NAMESPACE_ADAPTER, astAnnotation);
+	}
+	
 	public TextRange getNamespaceTextRange() {
 		return this.namespaceTextRange;
+	}
+	
+	public TextRange getNamespaceValidationTextRange() {
+		return this.namespaceValidationTextRange;
 	}
 	
 	public boolean namespaceTouches(int pos) {

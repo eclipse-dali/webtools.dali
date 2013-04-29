@@ -47,12 +47,19 @@ public interface XmlJoinNodeAnnotation
 	
 	/**
 	 * Return the text range associated with the 'xmlPath' element.
-	 * Return the text range of this annotation if the element is absent.
+	 * Return null if the element is absent.
 	 */
 	TextRange getXmlPathTextRange();
 	
 	/**
+	 * Return the text range associated with the 'xmlPath' element.
+	 * Return the text range of this annotation if the element is absent.
+	 */
+	TextRange getXmlPathValidationTextRange();
+	
+	/**
 	 * Return whether the specified text position is within the 'xmlPath' element.
+	 * Return false if the element is absent.
 	 */
 	boolean xmlPathTouches(int pos);
 	
@@ -76,12 +83,19 @@ public interface XmlJoinNodeAnnotation
 	
 	/**
 	 * Return the text range associated with the 'referencedXmlPath' element.
-	 * Return the text range of this annotation if the element is absent.
+	 * Return null if the element is absent.
 	 */
 	TextRange getReferencedXmlPathTextRange();
 	
 	/**
+	 * Return the text range associated with the 'referencedXmlPath' element.
+	 * Return the text range of this annotation if the element is absent.
+	 */
+	TextRange getReferencedXmlPathValidationTextRange();
+	
+	/**
 	 * Return whether the specified text position is within the 'referencedXmlPath' element.
+	 * Return null if the element is absent.
 	 */
 	boolean referencedXmlPathTouches(int pos);
 }

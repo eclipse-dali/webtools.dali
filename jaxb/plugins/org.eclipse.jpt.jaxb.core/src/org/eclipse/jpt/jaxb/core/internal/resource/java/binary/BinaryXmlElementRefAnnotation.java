@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
@@ -20,9 +19,9 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefAnnotation;
  * javax.xml.bind.annotation.XmlElementRef
  */
 public final class BinaryXmlElementRefAnnotation
-	extends BinaryAnnotation
-	implements XmlElementRefAnnotation
-{
+		extends BinaryQNameAnnotation
+		implements XmlElementRefAnnotation {
+	
 	private String name;
 	private String namespace;
 	private Boolean required;
@@ -61,56 +60,34 @@ public final class BinaryXmlElementRefAnnotation
 	public String getName() {
 		return this.name;
 	}
-
-	public void setName(String name) {
-		throw new UnsupportedOperationException();
-	}
-
+	
 	private void setName_(String name) {
 		String old = this.name;
 		this.name = name;
 		this.firePropertyChanged(NAME_PROPERTY, old, name);
 	}
-
+	
 	private String buildName() {
 		return (String) this.getJdtMemberValue(JAXB.XML_ELEMENT_REF__NAME);
 	}
-
-	public TextRange getNameTextRange() {
-		throw new UnsupportedOperationException();
-	}
 	
-	public boolean nameTouches(int pos) {
-		throw new UnsupportedOperationException();
-	}
-
+	
 	// ***** namespace
 	public String getNamespace() {
 		return this.namespace;
 	}
-
-	public void setNamespace(String namespace) {
-		throw new UnsupportedOperationException();
-	}
-
+	
 	private void setNamespace_(String namespace) {
 		String old = this.namespace;
 		this.namespace = namespace;
 		this.firePropertyChanged(NAMESPACE_PROPERTY, old, namespace);
 	}
-
+	
 	private String buildNamespace() {
 		return (String) this.getJdtMemberValue(JAXB.XML_ELEMENT_REF__NAMESPACE);
 	}
-
-	public TextRange getNamespaceTextRange() {
-		throw new UnsupportedOperationException();
-	}
 	
-	public boolean namespaceTouches(int pos) {
-		throw new UnsupportedOperationException();
-	}
-
+	
 	// ***** required
 	public Boolean getRequired() {
 		return this.required;
@@ -162,5 +139,4 @@ public final class BinaryXmlElementRefAnnotation
 	public String getFullyQualifiedTypeName() {
 		return this.type;
 	}
-
 }

@@ -27,16 +27,18 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlEnumValueAnnotation;
  * javax.xml.bind.annotation.XmlEnumValue
  */
 public final class SourceXmlEnumValueAnnotation
-	extends SourceAnnotation
-	implements XmlEnumValueAnnotation
-{
+		extends SourceAnnotation
+		implements XmlEnumValueAnnotation {
+	
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JAXB.XML_ENUM_VALUE);
 
 	private static final DeclarationAnnotationElementAdapter<String> VALUE_ADAPTER = buildValueAdapter();
 	private final AnnotationElementAdapter<String> valueAdapter;
 	private String value;
 	private TextRange valueTextRange;
-
+	private TextRange valueValidationTextRange;
+	
+	
 	public SourceXmlEnumValueAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
 		super(parent, annotatedElement, DECLARATION_ANNOTATION_ADAPTER);
 		this.valueAdapter = this.buildAnnotationElementAdapter(VALUE_ADAPTER);
@@ -53,17 +55,19 @@ public final class SourceXmlEnumValueAnnotation
 	@Override
 	public void initialize(Annotation astAnnotation) {
 		super.initialize(astAnnotation);
-		this.value = this.buildValue(astAnnotation);
-		this.valueTextRange = this.buildValueTextRange(astAnnotation);
+		this.value = buildValue(astAnnotation);
+		this.valueTextRange = buildValueTextRange(astAnnotation);
+		this.valueValidationTextRange = buildValueValidationTextRange(astAnnotation);
 	}
-
+	
 	@Override
 	public void synchronizeWith(Annotation astAnnotation) {
 		super.synchronizeWith(astAnnotation);
-		this.syncValue(this.buildValue(astAnnotation));
-		this.valueTextRange = this.buildValueTextRange(astAnnotation);
+		syncValue(buildValue(astAnnotation));
+		this.valueTextRange = buildValueTextRange(astAnnotation);
+		this.valueValidationTextRange = buildValueValidationTextRange(astAnnotation);
 	}
-
+	
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.value);
@@ -92,13 +96,21 @@ public final class SourceXmlEnumValueAnnotation
 	private String buildValue(Annotation astAnnotation) {
 		return this.valueAdapter.getValue(astAnnotation);
 	}
-
+	
+	private TextRange buildValueTextRange(Annotation astAnnotation) {
+		return getAnnotationElementTextRange(VALUE_ADAPTER, astAnnotation);
+	}
+	
+	private TextRange buildValueValidationTextRange(Annotation astAnnotation) {
+		return getElementTextRange(VALUE_ADAPTER, astAnnotation);
+	}
+	
 	public TextRange getValueTextRange() {
 		return this.valueTextRange;
 	}
-
-	private TextRange buildValueTextRange(Annotation astAnnotation) {
-		return this.getElementTextRange(VALUE_ADAPTER, astAnnotation);
+	
+	public TextRange getValueValidationTextRange() {
+		return this.valueValidationTextRange;
 	}
 	
 	public boolean valueTouches(int pos) {
@@ -107,9 +119,8 @@ public final class SourceXmlEnumValueAnnotation
 	
 	
 	//*********** static methods ****************
-
+	
 	private static DeclarationAnnotationElementAdapter<String> buildValueAdapter() {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_ENUM_VALUE__VALUE);
 	}
-
 }

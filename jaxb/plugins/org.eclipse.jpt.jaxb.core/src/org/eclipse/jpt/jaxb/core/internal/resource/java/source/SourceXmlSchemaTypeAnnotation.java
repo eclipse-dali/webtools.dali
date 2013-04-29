@@ -44,11 +44,13 @@ public class SourceXmlSchemaTypeAnnotation
 	private final AnnotationElementAdapter<String> nameAdapter;
 	private String name;
 	private TextRange nameTextRange;
+	private TextRange nameValidationTextRange;
 	
 	private final DeclarationAnnotationElementAdapter<String> namespaceDeclarationAdapter;
 	private final AnnotationElementAdapter<String> namespaceAdapter;
 	private String namespace;
 	private TextRange namespaceTextRange;
+	private TextRange namespaceValidationTextRange;
 	
 	private final DeclarationAnnotationElementAdapter<String> typeDeclarationAdapter;
 	private final AnnotationElementAdapter<String> typeAdapter;
@@ -124,21 +126,25 @@ public class SourceXmlSchemaTypeAnnotation
 	public void initialize(Annotation astAnnotation) {
 		super.initialize(astAnnotation);
 		this.name = buildName(astAnnotation);
-		this.nameTextRange = this.buildNameTextRange(astAnnotation);
+		this.nameTextRange = buildNameTextRange(astAnnotation);
+		this.nameValidationTextRange = buildNameValidationTextRange(astAnnotation);
 		this.namespace = buildNamespace(astAnnotation);
-		this.namespaceTextRange = this.buildNamespaceTextRange(astAnnotation);
+		this.namespaceTextRange = buildNamespaceTextRange(astAnnotation);
+		this.namespaceValidationTextRange = buildNamespaceValidationTextRange(astAnnotation);
 		this.type = buildType(astAnnotation);
 		this.fullyQualifiedType = buildFullyQualifiedType(astAnnotation);
-		this.typeTextRange = this.buildTypeTextRange(astAnnotation);
+		this.typeTextRange = buildTypeTextRange(astAnnotation);
 	}
 	
 	@Override
 	public void synchronizeWith(Annotation astAnnotation) {
 		super.synchronizeWith(astAnnotation);
 		syncName(buildName(astAnnotation));
-		this.nameTextRange = this.buildNameTextRange(astAnnotation);
+		this.nameTextRange = buildNameTextRange(astAnnotation);
+		this.nameValidationTextRange = buildNameValidationTextRange(astAnnotation);
 		syncNamespace(buildNamespace(astAnnotation));
-		this.namespaceTextRange = this.buildNamespaceTextRange(astAnnotation);
+		this.namespaceTextRange = buildNamespaceTextRange(astAnnotation);
+		this.namespaceValidationTextRange = buildNamespaceValidationTextRange(astAnnotation);
 		syncType(buildType(astAnnotation));
 		syncFullyQualifiedType(buildFullyQualifiedType(astAnnotation));
 		this.typeTextRange = this.buildTypeTextRange(astAnnotation);
@@ -175,15 +181,23 @@ public class SourceXmlSchemaTypeAnnotation
 	}
 
 	private TextRange buildNameTextRange(Annotation astAnnotation) {
-		return this.getElementTextRange(this.nameDeclarationAdapter, astAnnotation);
+		return getAnnotationElementTextRange(this.nameDeclarationAdapter, astAnnotation);
 	}
-
+	
+	private TextRange buildNameValidationTextRange(Annotation astAnnotation) {
+		return getElementTextRange(this.nameDeclarationAdapter, astAnnotation);
+	}
+	
 	public TextRange getNameTextRange() {
 		return this.nameTextRange;
 	}
 	
+	public TextRange getNameValidationTextRange() {
+		return this.nameValidationTextRange;
+	}
+	
 	public boolean nameTouches(int pos) {
-		return this.textRangeTouches(this.nameTextRange, pos);
+		return textRangeTouches(this.nameTextRange, pos);
 	}
 	
 	// ***** namespace
@@ -207,13 +221,21 @@ public class SourceXmlSchemaTypeAnnotation
 	private String buildNamespace(Annotation astAnnotation) {
 		return this.namespaceAdapter.getValue(astAnnotation);
 	}
-
+	
 	private TextRange buildNamespaceTextRange(Annotation astAnnotation) {
-		return this.getElementTextRange(this.namespaceDeclarationAdapter, astAnnotation);
+		return getAnnotationElementTextRange(this.namespaceDeclarationAdapter, astAnnotation);
 	}
-
+	
+	private TextRange buildNamespaceValidationTextRange(Annotation astAnnotation) {
+		return getElementTextRange(this.namespaceDeclarationAdapter, astAnnotation);
+	}
+	
 	public TextRange getNamespaceTextRange() {
 		return this.namespaceTextRange;
+	}
+	
+	public TextRange getNamespaceValidationTextRange() {
+		return this.namespaceValidationTextRange;
 	}
 	
 	public boolean namespaceTouches(int pos) {

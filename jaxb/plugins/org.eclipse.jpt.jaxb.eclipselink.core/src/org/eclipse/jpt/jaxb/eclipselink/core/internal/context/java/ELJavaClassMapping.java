@@ -12,8 +12,6 @@ package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
-import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlNamedNodeMapping;

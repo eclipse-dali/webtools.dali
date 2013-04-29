@@ -389,7 +389,7 @@ public class GenericJavaElementFactoryMethod
 			if ("".equals(getName())) {
 				messages.add(
 						this.buildValidationMessage(
-								getNameTextRange(),
+								getNameValidationTextRange(),
 								JptJaxbCoreValidationMessages.QNAME__MISSING_NAME,
 								getReferencedComponentTypeDescription()));
 			}
@@ -397,7 +397,7 @@ public class GenericJavaElementFactoryMethod
 				if (ObjectTools.equals(getName(), GenericJavaElementFactoryMethod.this.getQName().getName())) {
 					messages.add(
 							this.buildValidationMessage(
-									getNameTextRange(),
+									getNameValidationTextRange(),
 									JptJaxbCoreValidationMessages.XML_ELEMENT_DECL__SUBST_HEAD_NAME_EQUALS_NAME
 								));
 				}
@@ -450,9 +450,9 @@ public class GenericJavaElementFactoryMethod
 			return (annotation == null) ? false : annotation.substitutionHeadNamespaceTouches(pos);
 		}
 		
-		public TextRange getNamespaceTextRange() {
+		public TextRange getNamespaceValidationTextRange() {
 			XmlElementDeclAnnotation annotation = getAnnotation();
-			return (annotation == null) ? null : annotation.getSubstitutionHeadNamespaceTextRange();
+			return (annotation == null) ? null : annotation.getSubstitutionHeadNamespaceValidationTextRange();
 		}
 		
 		public String getName() {
@@ -469,9 +469,9 @@ public class GenericJavaElementFactoryMethod
 			return (annotation == null) ? false : annotation.substitutionHeadNameTouches(pos);
 		}
 		
-		public TextRange getNameTextRange() {
+		public TextRange getNameValidationTextRange() {
 			XmlElementDeclAnnotation annotation = getAnnotation();
-			return (annotation == null) ? null : annotation.getSubstitutionHeadNameTextRange();
+			return (annotation == null) ? null : annotation.getSubstitutionHeadNameValidationTextRange();
 		}
 	}
 }

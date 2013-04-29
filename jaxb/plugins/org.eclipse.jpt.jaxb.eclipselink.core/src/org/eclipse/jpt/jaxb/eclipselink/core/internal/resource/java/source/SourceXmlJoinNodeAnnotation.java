@@ -43,11 +43,13 @@ public class SourceXmlJoinNodeAnnotation
 	private final AnnotationElementAdapter<String> xmlPathAdapter;
 	private String xmlPath;
 	private TextRange xmlPathTextRange;
+	private TextRange xmlPathValidationTextRange;
 	
 	private final DeclarationAnnotationElementAdapter<String> referencedXmlPathDeclarationAdapter;
 	private final AnnotationElementAdapter<String> referencedXmlPathAdapter;
 	private String referencedXmlPath;
 	private TextRange referencedXmlPathTextRange;
+	private TextRange referencedXmlPathValidationTextRange;
 	
 	
 	public static SourceXmlJoinNodeAnnotation buildSourceXmlJoinNodeAnnotation(
@@ -101,18 +103,22 @@ public class SourceXmlJoinNodeAnnotation
 	public void initialize(Annotation astAnnotation) {
 		super.initialize(astAnnotation);
 		this.xmlPath = buildXmlPath(astAnnotation);
-		this.xmlPathTextRange = this.buildXmlPathTextRange(astAnnotation);
+		this.xmlPathTextRange = buildXmlPathTextRange(astAnnotation);
+		this.xmlPathValidationTextRange = buildXmlPathValidationTextRange(astAnnotation);
 		this.referencedXmlPath = buildReferencedXmlPath(astAnnotation);
-		this.referencedXmlPathTextRange = this.buildReferencedXmlPathTextRange(astAnnotation);
+		this.referencedXmlPathTextRange = buildReferencedXmlPathTextRange(astAnnotation);
+		this.referencedXmlPathValidationTextRange = buildReferencedXmlPathValidationTextRange(astAnnotation);
 	}
 	
 	@Override
 	public void synchronizeWith(Annotation astAnnotation) {
 		super.synchronizeWith(astAnnotation);
 		syncXmlPath(buildXmlPath(astAnnotation));
-		this.xmlPathTextRange = this.buildXmlPathTextRange(astAnnotation);
+		this.xmlPathTextRange = buildXmlPathTextRange(astAnnotation);
+		this.xmlPathValidationTextRange = buildXmlPathValidationTextRange(astAnnotation);
 		syncReferencedXmlPath(buildReferencedXmlPath(astAnnotation));
-		this.referencedXmlPathTextRange = this.buildReferencedXmlPathTextRange(astAnnotation);
+		this.referencedXmlPathTextRange = buildReferencedXmlPathTextRange(astAnnotation);
+		this.referencedXmlPathValidationTextRange = buildReferencedXmlPathValidationTextRange(astAnnotation);
 	}
 	
 	@Override
@@ -143,17 +149,25 @@ public class SourceXmlJoinNodeAnnotation
 	private String buildXmlPath(Annotation astAnnotation) {
 		return this.xmlPathAdapter.getValue(astAnnotation);
 	}
-
+	
 	private TextRange buildXmlPathTextRange(Annotation astAnnotation) {
-		return this.getElementTextRange(this.xmlPathDeclarationAdapter, astAnnotation);
+		return getAnnotationElementTextRange(this.xmlPathDeclarationAdapter, astAnnotation);
 	}
-
+	
+	private TextRange buildXmlPathValidationTextRange(Annotation astAnnotation) {
+		return getElementTextRange(this.xmlPathDeclarationAdapter, astAnnotation);
+	}
+	
 	public TextRange getXmlPathTextRange() {
 		return this.xmlPathTextRange;
 	}
 	
+	public TextRange getXmlPathValidationTextRange() {
+		return this.xmlPathValidationTextRange;
+	}
+	
 	public boolean xmlPathTouches(int pos) {
-		return this.textRangeTouches(this.xmlPathTextRange, pos);
+		return textRangeTouches(this.xmlPathTextRange, pos);
 	}
 	
 	
@@ -179,17 +193,25 @@ public class SourceXmlJoinNodeAnnotation
 	private String buildReferencedXmlPath(Annotation astAnnotation) {
 		return this.referencedXmlPathAdapter.getValue(astAnnotation);
 	}
-
+	
 	private TextRange buildReferencedXmlPathTextRange(Annotation astAnnotation) {
-		return this.getElementTextRange(this.referencedXmlPathDeclarationAdapter, astAnnotation);
+		return getAnnotationElementTextRange(this.referencedXmlPathDeclarationAdapter, astAnnotation);
 	}
-
+	
+	private TextRange buildReferencedXmlPathValidationTextRange(Annotation astAnnotation) {
+		return getElementTextRange(this.referencedXmlPathDeclarationAdapter, astAnnotation);
+	}
+	
 	public TextRange getReferencedXmlPathTextRange() {
 		return this.referencedXmlPathTextRange;
 	}
 	
+	public TextRange getReferencedXmlPathValidationTextRange() {
+		return this.referencedXmlPathValidationTextRange;
+	}
+	
 	public boolean referencedXmlPathTouches(int pos) {
-		return this.textRangeTouches(this.referencedXmlPathTextRange, pos);
+		return textRangeTouches(this.referencedXmlPathTextRange, pos);
 	}
 	
 	

@@ -466,7 +466,7 @@ public class EXmlType extends EBaseObjectImpl implements EBaseObject
 	
 	// ***** validation *****
 	
-	public TextRange getNamespaceTextRange() {
+	public TextRange getNamespaceValidationTextRange() {
 		return getAttributeTextRange(Oxm.NAMESPACE);
 	}
 	
@@ -475,7 +475,7 @@ public class EXmlType extends EBaseObjectImpl implements EBaseObject
 		return (textRange != null) && (textRange.touches(pos));
 	}
 	
-	public TextRange getNameTextRange() {
+	public TextRange getNameValidationTextRange() {
 		return getAttributeTextRange(Oxm.NAME);
 	}
 	

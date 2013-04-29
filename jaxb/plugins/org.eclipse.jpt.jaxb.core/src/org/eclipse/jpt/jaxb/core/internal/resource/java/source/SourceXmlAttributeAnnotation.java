@@ -29,27 +29,29 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlAttributeAnnotation;
  * javax.xml.bind.annotation.XmlAttribute
  */
 public final class SourceXmlAttributeAnnotation
-	extends SourceAnnotation
-	implements XmlAttributeAnnotation
-{
+		extends SourceAnnotation
+		implements XmlAttributeAnnotation {
+	
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JAXB.XML_ATTRIBUTE);
 
 	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
 	private final AnnotationElementAdapter<String> nameAdapter;
 	private String name;
 	private TextRange nameTextRange;
-
+	private TextRange nameValidationTextRange;
+	
 	private final DeclarationAnnotationElementAdapter<String> namespaceDeclarationAdapter;
 	private final AnnotationElementAdapter<String> namespaceAdapter;
 	private String namespace;
 	private TextRange namespaceTextRange;
-
+	private TextRange namespaceValidationTextRange;
+	
 	private final DeclarationAnnotationElementAdapter<Boolean> requiredDeclarationAdapter;
 	private final AnnotationElementAdapter<Boolean> requiredAdapter;
 	private Boolean required;
 	private TextRange requiredTextRange;
-
-
+	
+	
 	// ********** constructors **********
 	public SourceXmlAttributeAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
 		this(parent, annotatedElement, DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(annotatedElement, DECLARATION_ANNOTATION_ADAPTER));
@@ -92,23 +94,27 @@ public final class SourceXmlAttributeAnnotation
 	@Override
 	public void initialize(Annotation astAnnotation) {
 		super.initialize(astAnnotation);
-		this.name = this.buildName(astAnnotation);
-		this.nameTextRange = this.buildNameTextRange(astAnnotation);
-		this.namespace = this.buildNamespace(astAnnotation);
-		this.namespaceTextRange = this.buildNamespaceTextRange(astAnnotation);
-		this.required = this.buildRequired(astAnnotation);
-		this.requiredTextRange = this.buildRequiredTextRange(astAnnotation);
+		this.name = buildName(astAnnotation);
+		this.nameTextRange = buildNameTextRange(astAnnotation);
+		this.nameValidationTextRange = buildNameValidationTextRange(astAnnotation);
+		this.namespace = buildNamespace(astAnnotation);
+		this.namespaceTextRange = buildNamespaceTextRange(astAnnotation);
+		this.namespaceValidationTextRange = buildNamespaceValidationTextRange(astAnnotation);
+		this.required = buildRequired(astAnnotation);
+		this.requiredTextRange = buildRequiredTextRange(astAnnotation);
 	}
-
+	
 	@Override
 	public void synchronizeWith(Annotation astAnnotation) {
 		super.synchronizeWith(astAnnotation);
-		this.syncName(this.buildName(astAnnotation));
-		this.nameTextRange = this.buildNameTextRange(astAnnotation);
-		this.syncNamespace(this.buildNamespace(astAnnotation));
-		this.namespaceTextRange = this.buildNamespaceTextRange(astAnnotation);
-		this.syncRequired(this.buildRequired(astAnnotation));
-		this.requiredTextRange = this.buildRequiredTextRange(astAnnotation);
+		syncName(buildName(astAnnotation));
+		this.nameTextRange = buildNameTextRange(astAnnotation);
+		this.nameValidationTextRange = buildNameValidationTextRange(astAnnotation);
+		this.syncNamespace(buildNamespace(astAnnotation));
+		this.namespaceTextRange = buildNamespaceTextRange(astAnnotation);
+		this.namespaceValidationTextRange = buildNamespaceValidationTextRange(astAnnotation);
+		this.syncRequired(buildRequired(astAnnotation));
+		this.requiredTextRange = buildRequiredTextRange(astAnnotation);
 	}
 
 	@Override
@@ -140,13 +146,21 @@ public final class SourceXmlAttributeAnnotation
 	private String buildName(Annotation astAnnotation) {
 		return this.nameAdapter.getValue(astAnnotation);
 	}
-
+	
 	private TextRange buildNameTextRange(Annotation astAnnotation) {
-		return this.getElementTextRange(this.nameDeclarationAdapter, astAnnotation);
+		return getAnnotationElementTextRange(this.nameDeclarationAdapter, astAnnotation);
 	}
-
+	
+	private TextRange buildNameValidationTextRange(Annotation astAnnotation) {
+		return getElementTextRange(this.nameDeclarationAdapter, astAnnotation);
+	}
+	
 	public TextRange getNameTextRange() {
 		return this.nameTextRange;
+	}
+	
+	public TextRange getNameValidationTextRange() {
+		return this.nameValidationTextRange;
 	}
 	
 	public boolean nameTouches(int pos) {
@@ -175,13 +189,21 @@ public final class SourceXmlAttributeAnnotation
 	private String buildNamespace(Annotation astAnnotation) {
 		return this.namespaceAdapter.getValue(astAnnotation);
 	}
-
+	
 	private TextRange buildNamespaceTextRange(Annotation astAnnotation) {
-		return this.getElementTextRange(this.namespaceDeclarationAdapter, astAnnotation);
+		return getAnnotationElementTextRange(this.namespaceDeclarationAdapter, astAnnotation);
 	}
-
+	
+	private TextRange buildNamespaceValidationTextRange(Annotation astAnnotation) {
+		return getElementTextRange(this.namespaceDeclarationAdapter, astAnnotation);
+	}
+	
 	public TextRange getNamespaceTextRange() {
 		return this.namespaceTextRange;
+	}
+	
+	public TextRange getNamespaceValidationTextRange() {
+		return this.namespaceValidationTextRange;
 	}
 	
 	public boolean namespaceTouches(int pos) {

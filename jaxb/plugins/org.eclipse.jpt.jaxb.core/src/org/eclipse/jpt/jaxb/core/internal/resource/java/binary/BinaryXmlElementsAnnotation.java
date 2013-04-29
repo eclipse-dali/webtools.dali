@@ -23,9 +23,9 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlElementsAnnotation;
  * javax.xml.bind.annotation.XmlElements
  */
 public final class BinaryXmlElementsAnnotation
-	extends BinaryAnnotation
-	implements XmlElementsAnnotation
-{
+		extends BinaryAnnotation
+		implements XmlElementsAnnotation {
+	
 	private final Vector<XmlElementAnnotation> xmlElements;
 
 

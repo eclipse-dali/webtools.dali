@@ -92,10 +92,16 @@ public interface XmlElementDeclAnnotation
 	void setSubstitutionHeadNamespace(String substitutionHeadNamespace);
 	
 	/**
-	 * Return the {@link TextRange} for the 'substitutionHeadNamespace' element. If the element 
-	 * does not exist return the {@link TextRange} for the XmlElementDecl annotation.
+	 * Return the text range associated with the 'subtitutionHeadNamespace' element.
+	 * Return null if the element is absent.
 	 */
 	TextRange getSubstitutionHeadNamespaceTextRange();
+	
+	/**
+	 * Return the validation text range associated with the 'subtitutionHeadNamespace' element.
+	 * Return the text range of this annotation if the element is absent.
+	 */
+	TextRange getSubstitutionHeadNamespaceValidationTextRange();
 	
 	/**
 	 * Return whether the specified position touches the 'substitutionHeadNamespace' element.
@@ -124,10 +130,16 @@ public interface XmlElementDeclAnnotation
 	void setSubstitutionHeadName(String substitutionHeadName);
 	
 	/**
-	 * Return the {@link TextRange} for the 'substitutionHeadName' element. If the element 
-	 * does not exist return the {@link TextRange} for the XmlElementDecl annotation.
+	 * Return the text range associated with the 'subtitutionHeadName' element.
+	 * Return null if the element is absent.
 	 */
 	TextRange getSubstitutionHeadNameTextRange();
+	
+	/**
+	 * Return the validation text range associated with the 'subtitutionHeadName' element.
+	 * Return the text range of this annotation if the element is absent.
+	 */
+	TextRange getSubstitutionHeadNameValidationTextRange();
 	
 	/**
 	 * Return whether the specified position touches the 'substitutionHeadName' element.

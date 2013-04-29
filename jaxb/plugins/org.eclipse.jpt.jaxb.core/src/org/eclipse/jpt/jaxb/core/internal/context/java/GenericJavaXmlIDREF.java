@@ -67,7 +67,7 @@ public class GenericJavaXmlIDREF
 				if (classMapping == null || classMapping.getXmlIdMapping() == null) {
 					messages.add(
 					this.buildValidationMessage(
-						ref.getTypeTextRange(),
+						ref.getTypeValidationTextRange(),
 						JptJaxbCoreValidationMessages.XML_ID_REF__TYPE_DOES_NOT_CONTAIN_XML_ID,
 						typeName));				
 				}
@@ -81,7 +81,7 @@ public class GenericJavaXmlIDREF
 					&& ! xsdFeature.typeIsValid(XsdUtil.getSchemaForSchema().getTypeDefinition("IDREF"), this.context.isList())) {
 				messages.add(
 						this.buildValidationMessage(
-							ref.getXsdFeatureTextRange(),
+							ref.getXsdFeatureValidationTextRange(),
 							JptJaxbCoreValidationMessages.XML_ID_REF__SCHEMA_TYPE_NOT_IDREF,
 							xsdFeature.getName()));
 			}
@@ -103,10 +103,10 @@ public class GenericJavaXmlIDREF
 		
 		String getFullyQualifiedType();
 		
-		TextRange getTypeTextRange();
+		TextRange getTypeValidationTextRange();
 		
 		XsdFeature getXsdFeature();
 		
-		TextRange getXsdFeatureTextRange();
+		TextRange getXsdFeatureValidationTextRange();
 	}
 }

@@ -292,7 +292,7 @@ public class GenericJavaXmlElementMapping
 							return GenericJavaXmlElementMapping.this.xmlElement.getType();
 						}
 						
-						public TextRange getTypeTextRange() {
+						public TextRange getTypeValidationTextRange() {
 							// 1) if we're getting here, XmlIDREF will not be null
 							// 2) if there is an @XmlElement annotation, use that, otherwise use the @XmlIDREF
 							return (GenericJavaXmlElementMapping.this.getAnnotation() == null) ?
@@ -304,8 +304,8 @@ public class GenericJavaXmlElementMapping
 							return GenericJavaXmlElementMapping.this.getXsdFeature();
 						}
 						
-						public TextRange getXsdFeatureTextRange() {
-							return GenericJavaXmlElementMapping.this.xmlElement.getQName().getNameTextRange();
+						public TextRange getXsdFeatureValidationTextRange() {
+							return GenericJavaXmlElementMapping.this.xmlElement.getQName().getNameValidationTextRange();
 						}
 					});
 		}

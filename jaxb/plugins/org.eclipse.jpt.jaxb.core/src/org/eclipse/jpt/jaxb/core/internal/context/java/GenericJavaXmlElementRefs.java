@@ -176,7 +176,7 @@ public class GenericJavaXmlElementRefs
 				messages.add(
 						this.buildValidationMessage(
 								xmlElementRef,
-								xmlElementRef.getQName().getNameTextRange(),
+								xmlElementRef.getQName().getNameValidationTextRange(),
 								JptJaxbCoreValidationMessages.XML_ELEMENT_REFS__DUPLICATE_XML_ELEMENT_QNAME,
 								xmlElementName));
 			}
