@@ -33,6 +33,7 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.ui.internal.dialogs.OptionalMessageDialog;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.common.ui.internal.wizards.JavaProjectWizardPage;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
@@ -48,6 +49,7 @@ import org.eclipse.jpt.jaxb.ui.internal.gen.GenerateJaxbClassesJob;
 import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
@@ -96,18 +98,23 @@ public class ClassesGeneratorWizard
 		this.javaProject = javaProject;
 		this.preselectedXsdFile = xsdFile;
 		this.performsGeneration = false;
+		init(DisplayTools.getDisplay());
 	}
 	
 	
 	// ********** IWorkbenchWizard implementation  **********
 	
 	public void init(IWorkbench workbench, IStructuredSelection sel) {
-		this.resourceManager = new LocalResourceManager(JFaceResources.getResources(workbench.getDisplay()));
 		this.selection = sel;
+		init(workbench.getDisplay());
+	}
+	
+	protected void init(Display display) {
+		this.resourceManager = new LocalResourceManager(JFaceResources.getResources(display));
 		
-		this.setWindowTitle(JptJaxbUiMessages.CLASSES_GENERATOR_WIZARD_TITLE);
-		this.setDefaultPageImageDescriptor(JptJaxbUiImages.CLASSES_GEN_BANNER);
-		this.setNeedsProgressMonitor(true);
+		setWindowTitle(JptJaxbUiMessages.CLASSES_GENERATOR_WIZARD_TITLE);
+		setDefaultPageImageDescriptor(JptJaxbUiImages.CLASSES_GEN_BANNER);
+		setNeedsProgressMonitor(true);
 	}
 	
 	
