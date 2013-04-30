@@ -95,14 +95,14 @@ public class ClassMappingPage extends WizardPage
 
 	public void createControl(Composite parent) 
 	{
-		initializeDialogUnits(parent);
+		this.initializeDialogUnits(parent);
 		
 		Composite composite = new Composite(parent, SWT.NULL);
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 3;
 		composite.setLayout(layout);
 
-		this.databaseGroup = createDatabaseGroup(composite, -1);
+		this.databaseGroup = this.createDatabaseGroup(composite, -1);
 		
 		// Create class - db table mapping table
 		Composite comp = new Composite( composite , SWT.NONE );
@@ -126,8 +126,8 @@ public class ClassMappingPage extends WizardPage
 		data.widthHint = TYPE_COLUMN_WIDTH + DATABASE_TABLE_COLUMN_WIDTH + PRIMARY_KEY_PROPERTY_COLUMN_WIDTH;
 		data.heightHint = MAPPING_TABLE_HEIGHT;
 		this.classMappingTableViewer.getTable().setLayoutData(data);	
-		
-		setControl(composite);
+
+		this.setControl(composite);
 	}
 
 	@Override
@@ -147,9 +147,12 @@ public class ClassMappingPage extends WizardPage
 	{
 		return this.schema;
 	}
+
+	private void setSchema(Schema s) {
+		this.schema = s;
+	}
 	
-	private DatabaseGroup createDatabaseGroup(Composite parent, int widthHint) 
-	{	
+	private DatabaseGroup createDatabaseGroup(Composite parent, int widthHint) {	
 		DatabaseGroup dbGroup = new DatabaseGroup(this.getContainer(), this.jpaProject, parent, resourceManager, widthHint);
 		/**
 		 * listen for when the Database Connection changes its selected schema
@@ -157,11 +160,12 @@ public class ClassMappingPage extends WizardPage
 		 */
 		class DatabasePageListener implements DatabaseGroup.Listener {
 			public void selectedConnectionProfileChanged(ConnectionProfile connectionProfile) {
-				// ignore
+				ClassMappingPage.this.jpaProject.getDataSource().setConnectionProfileName(connectionProfile.getName());
 			}
+
 			public void selectedSchemaChanged(Schema schema) {
-				ClassMappingPage.this.schema = schema;
-				updateTableNames();
+				ClassMappingPage.this.setSchema(schema);
+				ClassMappingPage.this.updateTableNames();
 			}
 		}
 		dbGroup.addListener(new DatabasePageListener());
