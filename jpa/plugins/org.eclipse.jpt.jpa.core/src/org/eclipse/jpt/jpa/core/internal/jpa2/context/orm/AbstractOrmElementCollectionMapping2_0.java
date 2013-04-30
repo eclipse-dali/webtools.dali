@@ -87,6 +87,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.context.MapKeyJoinColumnValidator;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ManyToOneRelationship2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
@@ -312,10 +313,15 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	// ********** resolved target type/embeddable/entity **********
 
 	public PersistentType getResolvedTargetType() {
-		if (this.fullyQualifiedTargetClass == null) {
-			return null;
-		}
-		return this.getPersistenceUnit().getPersistentType(this.fullyQualifiedTargetClass);
+		return (this.fullyQualifiedTargetClass == null) ? null : this.getPersistenceUnit().getPersistentType(this.fullyQualifiedTargetClass);
+	}
+
+	/**
+	 * <strong>NB:</strong> Be certain you are dealing with a JPA 2.0 project
+	 * before calling this method.
+	 */
+	protected PersistentType2_0 getResolvedTargetType2_0() {
+		return (PersistentType2_0) this.getResolvedTargetType();
 	}
 
 	protected Embeddable getResolvedTargetEmbeddable() {
@@ -329,8 +335,8 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected TypeMapping getResolvedTargetTypeMapping() {
-		PersistentType resolvedTargetType = this.getResolvedTargetType();
-		return (resolvedTargetType == null) ? null : resolvedTargetType.getMapping();
+		PersistentType targetType = this.getResolvedTargetType();
+		return (targetType == null) ? null : targetType.getMapping();
 	}
 
 
@@ -1205,11 +1211,12 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 	@Override
 	public String getMetamodelTypeName() {
-		PersistentType resolvedTargetType = this.getResolvedTargetType();
-		if(((PersistentType2_0)resolvedTargetType).getMetamodelType() == null) { // dynamic type
-			return null;
+		PersistentType2_0 targetType = this.getResolvedTargetType2_0();
+		if (targetType == null) {
+			return MetamodelField2_0.DEFAULT_TYPE_NAME;
 		}
-		return resolvedTargetType.getName();
+		targetType = targetType.getMetamodelType();
+		return (targetType != null) ? targetType.getName() : MetamodelField2_0.DEFAULT_TYPE_NAME;
 	}
 
 	@Override

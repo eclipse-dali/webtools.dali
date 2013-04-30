@@ -46,9 +46,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
  * </ul>
  */
 public class EclipseLinkOrmPersistentTypeImpl
-		extends SpecifiedOrmPersistentType
-		implements EclipseLinkOrmPersistentType {
-	
+	extends SpecifiedOrmPersistentType
+	implements EclipseLinkOrmPersistentType
+{
 	protected String specifiedGetMethod;
 	protected String defaultGetMethod;
 
@@ -56,6 +56,7 @@ public class EclipseLinkOrmPersistentTypeImpl
 	protected String defaultSetMethod;
 
 	protected boolean dynamic;
+
 
 	public EclipseLinkOrmPersistentTypeImpl(EntityMappings parent, XmlTypeMapping xmlTypeMapping) {
 		super(parent, xmlTypeMapping);
@@ -72,6 +73,7 @@ public class EclipseLinkOrmPersistentTypeImpl
 	public EclipseLinkOrmTypeMapping getMapping() {
 		return (EclipseLinkOrmTypeMapping) super.getMapping();
 	}
+
 
 	// ********** synchronize/update **********
 
@@ -91,7 +93,7 @@ public class EclipseLinkOrmPersistentTypeImpl
 	}
 
 
-	//*************** dynamic *****************
+	// ********** dynamic **********
 
 	public boolean isDynamic() {
 		return this.dynamic;
@@ -128,7 +130,7 @@ public class EclipseLinkOrmPersistentTypeImpl
 
 	@Override
 	protected JavaManagedType buildJavaManagedType(JavaResourceType jrt) {
-		return this.isDynamic() ?
+		return this.dynamic ?
 				this.buildVirtualJavaPersistentType() :
 				super.buildJavaManagedType(jrt);
 	}
@@ -140,10 +142,7 @@ public class EclipseLinkOrmPersistentTypeImpl
 
 	@Override
 	public PersistentType getOverriddenPersistentType() {
-		if (this.isDynamic()) {
-			return null;
-		}
-		return super.getOverriddenPersistentType();
+		return this.dynamic ? null : super.getOverriddenPersistentType();
 	}
 
 	public OrmSpecifiedPersistentAttribute addVirtualAttribute(String attributeName, String mappingKey, String attributeType, String targetType) {
@@ -171,19 +170,17 @@ public class EclipseLinkOrmPersistentTypeImpl
 	
 	@Override
 	public TypeBinding getAttributeTypeBinding(PersistentAttribute attribute) {
-		if (isDynamic()) {
-			PersistentType superPT = getSuperPersistentType();
-			return (superPT == null) ? null : superPT.getAttributeTypeBinding(attribute);
+		if (this.dynamic) {
+			return (this.superPersistentType == null) ? null : this.superPersistentType.getAttributeTypeBinding(attribute);
 		}
 		return super.getAttributeTypeBinding(attribute);
 	}
 	
 	
-	//*************** get method *****************
+	// ********** get method **********
 
 	public String getGetMethod() {
-		String getMethod = this.getSpecifiedGetMethod();
-		return (getMethod != null) ? getMethod : this.defaultGetMethod;
+		return (this.specifiedGetMethod != null) ? this.specifiedGetMethod : this.defaultGetMethod;
 	}
 
 	public String getDefaultGetMethod() {
@@ -230,11 +227,10 @@ public class EclipseLinkOrmPersistentTypeImpl
 	}
 
 
-	//*************** set method *****************
+	// ********** set method **********
 
 	public String getSetMethod() {
-		String setMethod = this.getSpecifiedSetMethod();
-		return (setMethod != null) ? setMethod : this.defaultSetMethod;
+		return (this.specifiedSetMethod != null) ? this.specifiedSetMethod : this.defaultSetMethod;
 	}
 
 	public String getDefaultSetMethod() {
@@ -280,7 +276,8 @@ public class EclipseLinkOrmPersistentTypeImpl
 		return accessMethods != null ? accessMethods.getSetMethod() : null;
 	}
 
-	//*************** XML access methods *****************
+
+	// ********** XML access methods **********
 
 	protected XmlAccessMethodsHolder getXmlAccessMethodsHolder() {
 		return this.getXmlTypeMapping();
@@ -324,16 +321,16 @@ public class EclipseLinkOrmPersistentTypeImpl
 
 	@Override
 	protected void validateClassResolves(List<IMessage> messages) {
-		if (this.isDynamic() && !this.isVirtualAccess()) {
+		if (this.dynamic && ! this.isVirtualAccess()) {
 			super.validateClassResolves(messages);
 		}
 	}
+
 
 	// ********** metamodel **********
 
 	@Override
 	public PersistentType2_0 getMetamodelType() {
-		return (this.isDynamic()) ? null : this;
+		return this.dynamic ? null : this;
 	}
-
 }

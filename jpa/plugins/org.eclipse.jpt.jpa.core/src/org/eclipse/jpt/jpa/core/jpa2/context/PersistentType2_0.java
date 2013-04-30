@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context;
 
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 
 /**
@@ -33,10 +35,22 @@ public interface PersistentType2_0
 	 */
 	String getDeclaringTypeName();
 		String DECLARING_TYPE_NAME_PROPERTY = "declaringTypeName"; //$NON-NLS-1$
-		
+
 	/**
-	 * Return the PersistentType used for Metamodel, which is "this" most of the time.
+	 * Return the persistent type to be used for static metamodel generation,
+	 * typically the persistent type itself. Return <code>null</code> if the
+	 * persistent type is not to be used for static metamodel generation
+	 * (e.g. the type does not have a corresponding Java source declaration
+	 * and the resulting metamodel classes would not compile).
 	 */
 	PersistentType2_0 getMetamodelType();
-
+	Transformer<PersistentType2_0, PersistentType2_0> METAMODEL_TYPE_TRANSFORMER = new MetamodelTypeTransformer();
+	class MetamodelTypeTransformer
+		extends TransformerAdapter<PersistentType2_0, PersistentType2_0>
+	{
+		@Override
+		public PersistentType2_0 transform(PersistentType2_0 pt) {
+			return pt.getMetamodelType();
+		}
+	}
 }

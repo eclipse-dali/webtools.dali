@@ -21,15 +21,16 @@ import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.FetchType;
-import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappingRelationship;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmRelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmCascade;
+import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.RelationshipMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCascade2_0;
@@ -154,16 +155,21 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 	}
 
 	protected TypeMapping getResolvedTargetTypeMapping() {
-		PersistentType resolvedTargetType = this.getResolvedTargetType();
-		return (resolvedTargetType == null) ? null : resolvedTargetType.getMapping();
+		PersistentType targetType = this.getResolvedTargetType();
+		return (targetType == null) ? null : targetType.getMapping();
 	}
 
 	// sub-classes like this to be public
 	public PersistentType getResolvedTargetType() {
-		if (this.fullyQualifiedTargetEntity == null) {
-			return null;
-		}
-		return getPersistenceUnit().getPersistentType(this.fullyQualifiedTargetEntity);
+		return (this.fullyQualifiedTargetEntity == null) ? null : this.getPersistenceUnit().getPersistentType(this.fullyQualifiedTargetEntity);
+	}
+
+	/**
+	 * <strong>NB:</strong> Be certain you are dealing with a JPA 2.0 project
+	 * before calling this method.
+	 */
+	protected PersistentType2_0 getResolvedTargetType2_0() {
+		return (PersistentType2_0) this.getResolvedTargetType();
 	}
 
 	public char getTargetEntityEnclosingTypeSeparator() {
@@ -422,11 +428,12 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 
 	@Override
 	public String getMetamodelTypeName() {
-		PersistentType resolvedTargetType = this.getResolvedTargetType();
-		if(((PersistentType2_0)resolvedTargetType).getMetamodelType() == null) { // dynamic type
-			return null;
+		PersistentType2_0 targetType = this.getResolvedTargetType2_0();
+		if (targetType == null) {
+			return MetamodelField2_0.DEFAULT_TYPE_NAME;
 		}
-		return resolvedTargetType.getName();
+		targetType = targetType.getMetamodelType();
+		return (targetType != null) ? targetType.getName() : MetamodelField2_0.DEFAULT_TYPE_NAME;
 	}
 	
 	

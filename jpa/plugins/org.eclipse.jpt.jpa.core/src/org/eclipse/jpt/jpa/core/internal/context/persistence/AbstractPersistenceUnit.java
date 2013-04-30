@@ -2727,11 +2727,7 @@ public abstract class AbstractPersistenceUnit
 	 */
 	// TODO check monitor for cancel
 	public IStatus synchronizeMetamodel(IProgressMonitor monitor) {
-		// gather up the persistent unit's types, eliminating duplicates;
-		// if we have persistent types with the same name in multiple locations,
-		// the last one we encounter wins (i.e. the classes in the orm.xml take
-		// precedence)
-		HashMap<String, PersistentType> allPersistentTypes = this.getPersistentTypesToSynchronizeMetamodel();
+		HashMap<String, PersistentType> allPersistentTypes = this.getMetamodelPersistentTypes();
 
 		// build a list of the top-level types and a tree of their associated
 		// member types etc.
@@ -2833,15 +2829,51 @@ public abstract class AbstractPersistenceUnit
 	/**
 	 * Gather up the persistent unit's types, eliminating duplicates;
 	 * if we have persistent types with the same name in multiple locations,
-	 * the last one we encounter wins (i.e. the classes in the orm.xml take
-	 * precedence)
+	 * the last one we encounter wins
+	 * (i.e. the classes in the <code>orm.xml</code> take precedence)
 	 */
-	protected HashMap<String, PersistentType> getPersistentTypesToSynchronizeMetamodel() {
+	protected HashMap<String, PersistentType> getMetamodelPersistentTypes() {
 		HashMap<String, PersistentType> allPersistentTypes = new HashMap<String, PersistentType>();
-		this.addPersistentTypesTo(this.getJarFilePersistentTypes(), allPersistentTypes);
-		this.addPersistentTypesTo(this.getClassRefPersistentTypes(), allPersistentTypes);
-		this.addPersistentTypesTo(this.getMappingFilePersistentTypes(), allPersistentTypes);
+		this.addPersistentTypesTo(this.getMetamodelJarFilePersistentTypes(), allPersistentTypes);
+		this.addPersistentTypesTo(this.getMetamodelClassRefPersistentTypes(), allPersistentTypes);
+		this.addPersistentTypesTo(this.getMetamodelMappingFilePersistentTypes(), allPersistentTypes);
 		return allPersistentTypes;
+	}
+
+	/**
+	 * Remove any types that are not to be used in the metamodel.
+	 * @see PersistentType2_0#getMetamodelType()
+	 */
+	protected Iterable<PersistentType2_0> getMetamodelJarFilePersistentTypes() {
+		return IterableTools.removeNulls(IterableTools.transform(this.getJarFilePersistentTypes2_0(), PersistentType2_0.METAMODEL_TYPE_TRANSFORMER));
+	}
+
+	protected Iterable<PersistentType2_0> getJarFilePersistentTypes2_0() {
+		return IterableTools.downCast(this.getJarFilePersistentTypes());
+	}
+
+	/**
+	 * Remove any types that are not to be used in the metamodel.
+	 * @see PersistentType2_0#getMetamodelType()
+	 */
+	protected Iterable<PersistentType2_0> getMetamodelClassRefPersistentTypes() {
+		return IterableTools.removeNulls(IterableTools.transform(this.getClassRefPersistentTypes2_0(), PersistentType2_0.METAMODEL_TYPE_TRANSFORMER));
+	}
+
+	protected Iterable<PersistentType2_0> getClassRefPersistentTypes2_0() {
+		return IterableTools.downCast(this.getClassRefPersistentTypes());
+	}
+
+	/**
+	 * Remove any types that are not to be used in the metamodel.
+	 * @see PersistentType2_0#getMetamodelType()
+	 */
+	protected Iterable<PersistentType2_0> getMetamodelMappingFilePersistentTypes() {
+		return IterableTools.removeNulls(IterableTools.transform(this.getMappingFilePersistentTypes2_0(), PersistentType2_0.METAMODEL_TYPE_TRANSFORMER));
+	}
+
+	protected Iterable<PersistentType2_0> getMappingFilePersistentTypes2_0() {
+		return IterableTools.downCast(this.getMappingFilePersistentTypes());
 	}
 
 	protected MetamodelSourceType2_0 selectSourceType(Iterable<MetamodelSourceType2_0> types, String typeName) {

@@ -397,24 +397,15 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 	// ********** metamodel **********
 
 	public MetamodelField2_0 getMetamodelField() {
-		// if we don't have a name we can't build a metamodel field...
 		String metamodelFieldName = this.getMetamodelFieldName();
-		if(metamodelFieldName == null) {
-			return null;
-		}
-		MetamodelField2_0 result = null;
-		try {
-			result = new SimpleMetamodelField(
-				this.getMetamodelFieldModifiers(),
-				this.getMetamodelFieldTypeName(),
-				this.getMetamodelFieldTypeArgumentNames(),
-				metamodelFieldName
-			);
-		}
-		catch(IllegalMetamodelFieldTypeArgumentException e) {
-			// the target entity is dynamic
-		}
-		return result;
+		// if we don't have a name we can't build a metamodel field...
+		return (metamodelFieldName == null) ? null :
+					new SimpleMetamodelField(
+						this.getMetamodelFieldModifiers(),
+						this.getMetamodelFieldTypeName(),
+						this.getMetamodelFieldTypeArgumentNames(),
+						metamodelFieldName
+					);
 	}
 
 	protected Iterable<String> getMetamodelFieldModifiers() {
@@ -436,16 +427,12 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 	}
 
 	/**
-	 * by default, we add only the mapping's attribute type name;
+	 * By default, we add only the mapping's attribute type name;
 	 * but collection relationship mappings will also need to add the key type
-	 * name if the "collection" is of type java.util.Map
+	 * name if the "collection" is of type {@link java.util.Map}.
 	 */
 	protected void addMetamodelFieldTypeArgumentNamesTo(ArrayList<String> typeArgumentNames) {
-		String metamodelTypeName = this.getMetamodelTypeName();
-		if(metamodelTypeName == null) {		// the attribute is dynamic
-			throw this.buildIllegalMetamodelFieldTypeArgumentException();
-		}
-		typeArgumentNames.add(metamodelTypeName);
+		typeArgumentNames.add(this.getMetamodelTypeName());
 	}
 
 	public String getMetamodelTypeName() {
@@ -456,9 +443,6 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 		return this.name;
 	}
 
-	protected IllegalMetamodelFieldTypeArgumentException buildIllegalMetamodelFieldTypeArgumentException() {
-		return new IllegalMetamodelFieldTypeArgumentException();
-	}
 
 	// ********** refactoring **********
 

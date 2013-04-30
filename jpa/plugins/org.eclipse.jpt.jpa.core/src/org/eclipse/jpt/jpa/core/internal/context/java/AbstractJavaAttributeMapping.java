@@ -269,9 +269,9 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 	}
 
 	/**
-	 * by default, we add only the mapping's attribute type name;
+	 * By default, we add only the mapping's attribute type name;
 	 * but collection relationship mappings will also need to add the key type
-	 * name if the "collection" is of type java.util.Map
+	 * name if the "collection" is of type {@link java.util.Map}.
 	 */
 	protected void addMetamodelFieldTypeArgumentNamesTo(ArrayList<String> typeArgumentNames) {
 		typeArgumentNames.add(this.getMetamodelTypeName());

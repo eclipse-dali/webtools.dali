@@ -402,7 +402,7 @@ public final class MappingTools {
 		String mapKey = mapping.getMapKey();
 		if ((mapKey == null) || (targetType == null)) {
 			String mapKeyClass = mapping.getFullyQualifiedMapKeyClass();
-			return mapKeyClass != null ? mapKeyClass : MetamodelField2_0.DEFAULT_TYPE_NAME;
+			return (mapKeyClass != null) ? mapKeyClass : MetamodelField2_0.DEFAULT_TYPE_NAME;
 		}
 		PersistentAttribute mapKeyAttribute = targetType.resolveAttribute(mapKey);
 		if (mapKeyAttribute == null) {

@@ -360,6 +360,7 @@ public class EclipseLinkVirtualJavaPersistentType
 		sb.append(this.getName());
 	}
 
+
 	// ********** metamodel **********
 
 	public PersistentType2_0 getMetamodelType() {

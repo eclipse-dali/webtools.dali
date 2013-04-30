@@ -16,7 +16,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkBasicMapMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.Attributes;
@@ -63,9 +62,6 @@ public abstract class EclipseLinkAbstractOrmBasicMapMapping
 		String targetTypeName = null;
 		JavaSpecifiedPersistentAttribute javaPersistentAttribute = this.getJavaPersistentAttribute();
 		if (javaPersistentAttribute != null) {
-			if(((PersistentType2_0)javaPersistentAttribute).getMetamodelType() == null) { // dynamic type
-				return null;
-			}
 			targetTypeName = javaPersistentAttribute.getMultiReferenceTargetTypeName();
 		}
 		return (targetTypeName != null) ? targetTypeName : MetamodelField2_0.DEFAULT_TYPE_NAME;
@@ -83,7 +79,9 @@ public abstract class EclipseLinkAbstractOrmBasicMapMapping
 		if (javaPersistentAttribute != null) {
 			mapKeyTypeName = javaPersistentAttribute.getMultiReferenceMapKeyTypeName();
 		}
-		mapKeyTypeName = mapKeyTypeName != null ? mapKeyTypeName : MetamodelField2_0.DEFAULT_TYPE_NAME;
+		if (mapKeyTypeName == null) {
+			mapKeyTypeName = MetamodelField2_0.DEFAULT_TYPE_NAME;
+		}
 		typeArgumentNames.add(mapKeyTypeName);
 	}
 }

@@ -776,7 +776,7 @@ public class EclipseLinkPersistenceUnit
 			return;
 		}
 
-		if (ArrayTools.contains(EclipseLinkCustomization.RESERVED_PROFILER_NAMES, profilerProperty.getValue())) {
+		if (ArrayTools.contains(org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomization.RESERVED_PROFILER_NAMES, profilerProperty.getValue())) {
 			return;
 		}
 
@@ -807,7 +807,7 @@ public class EclipseLinkPersistenceUnit
 					)
 			);
 		} else if (!TypeTools.isSubType(
-				profilerProperty.getValue(), EclipseLinkCustomization.ECLIPSELINK_SESSION_PROFILER_CLASS_NAME, javaProject)
+				profilerProperty.getValue(), org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomization.ECLIPSELINK_SESSION_PROFILER_CLASS_NAME, javaProject)
 		) {
 			messages.add(
 					this.buildValidationMessage(
@@ -853,7 +853,7 @@ public class EclipseLinkPersistenceUnit
 							)
 					);
 				} else if (!TypeTools.isSubType(
-						property.getValue(), EclipseLinkCustomization.ECLIPSELINK_SESSION_CUSTOMIZER_CLASS_NAME, javaProject)
+						property.getValue(), org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomization.ECLIPSELINK_SESSION_CUSTOMIZER_CLASS_NAME, javaProject)
 				) {
 					messages.add(
 							this.buildValidationMessage(
@@ -883,47 +883,47 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	private Property getCacheTypeDefaultProperty() {
-		return this.getProperty(EclipseLinkCaching.ECLIPSELINK_CACHE_TYPE_DEFAULT);
+		return this.getProperty(org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCaching.ECLIPSELINK_CACHE_TYPE_DEFAULT);
 	}
 
 	private Property getCacheSizeDefaultProperty() {
-		return this.getProperty(EclipseLinkCaching.ECLIPSELINK_CACHE_SIZE_DEFAULT);
+		return this.getProperty(org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCaching.ECLIPSELINK_CACHE_SIZE_DEFAULT);
 	}
 
 	private Property getCacheSharedDefaultProperty() {
-		return this.getProperty(EclipseLinkCaching.ECLIPSELINK_CACHE_SHARED_DEFAULT);
+		return this.getProperty(org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCaching.ECLIPSELINK_CACHE_SHARED_DEFAULT);
 	}
 
 	private Property getFlushClearCacheProperty() {
-		return this.getProperty(EclipseLinkCaching.ECLIPSELINK_FLUSH_CLEAR_CACHE);
+		return this.getProperty(org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCaching.ECLIPSELINK_FLUSH_CLEAR_CACHE);
 	}
 
 	/**
 	 * Returns all Shared Cache Properties, including Entity and default.
 	 */
 	private Iterable<Property> getSharedCacheProperties() {
-		return this.getPropertiesWithNamePrefix(EclipseLinkCaching.ECLIPSELINK_SHARED_CACHE);
+		return this.getPropertiesWithNamePrefix(org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCaching.ECLIPSELINK_SHARED_CACHE);
 	}
 
 	/**
 	 * Returns Entity Cache Size Properties, excluding default.
 	 */
 	private Iterable<Property> getEntityCacheSizeProperties() {
-		return this.getEntityPropertiesWithPrefix(EclipseLinkCaching.ECLIPSELINK_CACHE_SIZE);
+		return this.getEntityPropertiesWithPrefix(org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCaching.ECLIPSELINK_CACHE_SIZE);
 	}
 
 	/**
 	 * Returns Entity Cache Type Properties, excluding default.
 	 */
 	private Iterable<Property> getEntityCacheTypeProperties() {
-		return this.getEntityPropertiesWithPrefix(EclipseLinkCaching.ECLIPSELINK_CACHE_TYPE);
+		return this.getEntityPropertiesWithPrefix(org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCaching.ECLIPSELINK_CACHE_TYPE);
 	}
 
 	/**
 	 * Returns Descriptor Customizer Properties.
 	 */
 	private Iterable<Property> getDescriptorCustomizerProperties() {
-		return this.getEntityPropertiesWithPrefix(EclipseLinkCustomization.ECLIPSELINK_DESCRIPTOR_CUSTOMIZER);
+		return this.getEntityPropertiesWithPrefix(org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomization.ECLIPSELINK_DESCRIPTOR_CUSTOMIZER);
 	}
 
 	/**
@@ -955,18 +955,18 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	private Property getExceptionHandlerProperty() {
-		return this.getProperty(EclipseLinkCustomization.ECLIPSELINK_EXCEPTION_HANDLER);
+		return this.getProperty(org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomization.ECLIPSELINK_EXCEPTION_HANDLER);
 	}
 
 	private Property getPerformanceProfilerProperty() {
-		return this.getProperty(EclipseLinkCustomization.ECLIPSELINK_PROFILER);
+		return this.getProperty(org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomization.ECLIPSELINK_PROFILER);
 	}
 
 	/**
 	 * Returns all Session Customizer Properties.
 	 */
 	private Iterable<Property> getSessionCustomizerProperties() {
-		return this.getPropertiesWithNamePrefix(EclipseLinkCustomization.ECLIPSELINK_SESSION_CUSTOMIZER);
+		return this.getPropertiesWithNamePrefix(org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomization.ECLIPSELINK_SESSION_CUSTOMIZER);
 	}
 
 	/**
@@ -1343,22 +1343,5 @@ public class EclipseLinkPersistenceUnit
 		}
 
 		return convertibleModels;
-	}
-
-	// ********** metamodel **********
-
-	@Override
-	protected HashMap<String, PersistentType> getPersistentTypesToSynchronizeMetamodel() {
-		HashMap<String, PersistentType> allPersistentTypes = super.getPersistentTypesToSynchronizeMetamodel();
-		
-		this.removeDynamicTypes(allPersistentTypes);
-		return allPersistentTypes;
-	}
-
-	private void removeDynamicTypes(HashMap<String, PersistentType> persistentTypes) {
-		Iterator<String> dynamicTypeNames = this.getEclipseLinkDynamicPersistentTypeNames().iterator();
-		while(dynamicTypeNames.hasNext()) {
-			persistentTypes.remove(dynamicTypeNames.next());
-		}
 	}
 }
