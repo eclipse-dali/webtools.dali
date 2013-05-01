@@ -155,7 +155,7 @@ public abstract class AbstractJavaJoinTableRelationshipStrategy<P extends JavaJo
 
 	public void removeStrategy() {
 		if (this.joinTable != null) {
-			if (this.getJoinTableAnnotation() != null) {
+			if (this.getJoinTableAnnotation().isSpecified()) {
 				this.removeJoinTableAnnotation();
 			}
 			this.setJoinTable(null);
