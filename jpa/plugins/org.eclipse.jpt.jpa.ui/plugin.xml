@@ -35,7 +35,7 @@
 		</definition>
 		
 		<definition id="org.eclipse.jpt.jpa.ui.reference.inJpaPerspective">
-			<with variable="activePartId">
+			<with variable="activeWorkbenchWindow.activePerspective">
 				<equals value="org.eclipse.jpt.ui.jpaPerspective"/>
 			</with>
 		</definition>
@@ -236,6 +236,17 @@
 	
 	</extension>
 	
+	
+	<extension
+		point="org.eclipse.ui.actionSets">
+		
+		<actionSet
+			id="org.eclipse.jpt.jpa.ui.actionSet.jpaElementCreation"
+			label="%JptCreationToolbar.label"
+			description="%JptCreationToolbar.description">
+		</actionSet>
+		
+	</extension>
 	
 	<!-- ***** commands ***** -->
 
@@ -665,14 +676,31 @@
 					icon="$nl$/images/buttons/new-entity.gif"
 					disabledIcon="$nl$/images/buttons/new-entity-disabled.gif"
 					style="pulldown">
+					<visibleWhen>
+						<or>
+							<reference
+								definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaPerspective">
+							</reference>
+							<with
+								variable="activeContexts">
+								<iterate
+									operator="or">
+									<equals
+										value="org.eclipse.jpt.jpa.ui.actionSet.jpaElementCreation">
+									</equals>
+								</iterate>
+							</with>
+						</or>
+					</visibleWhen>
 				</command>
 
-				<!-- visibleWhen not working in this case, dependent on bug 201589  -->
+				<!-- visibleWhen not working in this case, dependent on bug 201589
 				<visibleWhen>
 					<reference
 						definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaPerspective">
 					</reference>
 				</visibleWhen>
+				-->
 
 			</toolbar>
 
