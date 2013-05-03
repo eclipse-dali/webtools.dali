@@ -56,9 +56,9 @@ public class JavaNullTypeMapping
 	/**
 	 * We added this message here because the most likely solution is to add
 	 * an annotation to the .java file.
-	 * This message used to be found on the <class> tag in persistence.xml.
-	 * The other possible way to fix the error is to remove it from persistence.xml.
-	 * This can be accomplished with the Synchronize Classes action.
+	 * However, this message can also be found on the <class> tag in persistence.xml, as
+	 * this error may also be fixed by removing the class from the persistence.xml
+	 * or synchronizing classes.
 	 * We could also add a quick fix for this error.
 	 */
 	@Override

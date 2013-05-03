@@ -29,7 +29,7 @@ public class ManagedTypeItemLabelProvider
 
 	@Override
 	protected ImageDescriptor getImageDescriptor() {
-		return JptJpaUiImages.CLASS_REF;
+		return JptJpaUiImages.CONVERTER;
 	}
 
 

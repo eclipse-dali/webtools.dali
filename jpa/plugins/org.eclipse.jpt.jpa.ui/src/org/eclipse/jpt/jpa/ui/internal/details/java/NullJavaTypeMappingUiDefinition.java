@@ -11,11 +11,11 @@ package org.eclipse.jpt.jpa.ui.internal.details.java;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ResourceManager;
-import org.eclipse.jpt.common.ui.JptCommonUiImages;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.details.JpaUiFactory;
@@ -71,7 +71,7 @@ public class NullJavaTypeMappingUiDefinition
 
 	@Override
 	public ImageDescriptor getImageDescriptor() {
-		return JptCommonUiImages.WARNING;
+		return JptJpaUiImages.NULL_TYPE_MAPPING;
 	}
 
 	public JpaComposite buildMappingComposite(JpaUiFactory factory, PropertyValueModel<? extends JpaContextModel> mappingModel, PropertyValueModel<Boolean> enabledModel, Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager) {

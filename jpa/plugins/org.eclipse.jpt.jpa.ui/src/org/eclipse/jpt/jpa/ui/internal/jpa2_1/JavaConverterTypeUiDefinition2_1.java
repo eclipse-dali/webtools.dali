@@ -12,8 +12,8 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2_1;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.java.JavaConverterType2_1;
-import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.JavaManagedTypeUiDefinition;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 
 public class JavaConverterTypeUiDefinition2_1
 	implements JavaManagedTypeUiDefinition
@@ -43,6 +43,6 @@ public class JavaConverterTypeUiDefinition2_1
 	}
 
 	public ImageDescriptor getImageDescriptor(JavaManagedType managedType) {
-		return JptJpaUiImages.CLASS_REF;
+		return JptJpaUiImages.CONVERTER;
 	}
 }

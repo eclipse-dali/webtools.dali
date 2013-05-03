@@ -19,7 +19,6 @@ import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.common.ui.JptCommonUiImages;
 import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.jface.ResourceManagerLabelProvider;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
@@ -44,6 +43,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.JavaManagedTypeUiDefinition;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.PersistenceResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
@@ -218,12 +218,12 @@ public class PersistenceUnitClassesComposite
 
 		private ImageDescriptor getImageDescriptor(ClassRef classRef) {
 			if (classRef.getJavaManagedType() == null) {
-				return JptCommonUiImages.WARNING;
+				return JptJpaUiImages.NULL_TYPE_MAPPING;
 			}
 			JavaManagedTypeUiDefinition def = this.getManagedTypeUiDefinition(classRef);
 			return (def != null) ?
 					def.getImageDescriptor(classRef.getJavaManagedType()) :
-						JptCommonUiImages.WARNING;
+						JptJpaUiImages.NULL_TYPE_MAPPING;
 		}
 
 		private JavaManagedTypeUiDefinition getManagedTypeUiDefinition(ClassRef classRef) {
