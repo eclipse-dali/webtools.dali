@@ -302,7 +302,7 @@ public class PackageGenerator {
 			javaFile.refreshLocal(1, sm.newChild(1));
 			
 		} catch (Throwable e) {
-			JptJpaGenPlugin.instance().logError(e, JptJpaGenMessages.TEMPLATES_NOT_FOUND);
+			JptJpaGenPlugin.instance().logError(e, JptJpaGenMessages.ERROR_GENERATING_ENTITIES);
 		}
 	}
 	
@@ -469,7 +469,7 @@ public class PackageGenerator {
 		    xmlFile.refreshLocal(1, null);
 			
 		} catch (Throwable e) {
-			JptJpaGenPlugin.instance().logError(e, JptJpaGenMessages.TEMPLATES_NOT_FOUND);
+			JptJpaGenPlugin.instance().logError(e, JptJpaGenMessages.ERROR_GENERATING_ENTITIES);
 		}
 	}
 	
