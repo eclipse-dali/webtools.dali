@@ -10,10 +10,13 @@
 package org.eclipse.jpt.common.utility.internal.collection;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 import org.eclipse.jpt.common.utility.collection.Queue;
+import org.eclipse.jpt.common.utility.collection.Stack;
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.internal.iterable.QueueIterable;
 
 /**
  * Thread-safe implementation of the {@link Queue} interface.
@@ -301,27 +304,158 @@ public class SynchronizedQueue<E>
 	// ********** additional public protocol **********
 
 	/**
-	 * "Drain" all the current items from the queue and return them.
+	 * "Enqueue" all the elements returned by the specified iterable.
 	 */
-	public Iterable<E> drain() {
-		ArrayQueue<E> q = new ArrayQueue<E>();
-		this.drainTo(q);
-		return new QueueIterable<E>(q);
+	public void enqueueAll(Iterable<? extends E> iterable) {
+		this.enqueueAll(iterable.iterator());
 	}
 
 	/**
-	 * "Drain" all the current items from the queue into specified queue.
+	 * "Enqueue" all the elements returned by the specified iterator.
 	 */
-	public void drainTo(Queue<E> q) {
+	public void enqueueAll(Iterator<? extends E> iterator) {
 		synchronized (this.mutex) {
-			this.drainTo_(q);
+			this.enqueueAll_(iterator);
 		}
 	}
 
 	/**
 	 * Pre-condition: synchronized
 	 */
-	private void drainTo_(Queue<E> q) {
+	private void enqueueAll_(Iterator<? extends E> iterator) {
+		while (iterator.hasNext()) {
+			this.enqueue_(iterator.next());
+		}
+	}
+
+	/**
+	 * "Enqueue" all the elements in the specified array.
+	 */
+	public void enqueueAll(E... array) {
+		synchronized (this.mutex) {
+			this.enqueueAll_(array);
+		}
+	}
+
+	/**
+	 * Pre-condition: synchronized
+	 */
+	private void enqueueAll_(E[] array) {
+		for (E element : array) {
+			this.enqueue_(element);
+		}
+	}
+
+	/**
+	 * Pop all the elements from the specified stack and "enqueue" them.
+	 */
+	public void enqueueAll(Stack<? extends E> stack) {
+		synchronized (this.mutex) {
+			this.enqueueAll_(stack);
+		}
+	}
+
+	/**
+	 * Pre-condition: synchronized
+	 */
+	private void enqueueAll_(Stack<? extends E> stack) {
+		while ( ! stack.isEmpty()) {
+			this.enqueue_(stack.pop());
+		}
+	}
+
+	/**
+	 * "Dequeue" all the elements from the second specified queue and
+	 * "enqueue" them.
+	 * @see #drainTo(Queue)
+	 */
+	public void enqueueAll(Queue<? extends E> q) {
+		synchronized (this.mutex) {
+			this.enqueueAll_(q);
+		}
+	}
+
+	/**
+	 * Pre-condition: synchronized
+	 */
+	private void enqueueAll_(Queue<? extends E> q) {
+		while ( ! q.isEmpty()) {
+			this.enqueue_(q.dequeue());
+		}
+	}
+
+	/**
+	 * "Drain" all the current items from the queue and return them in a list.
+	 */
+	public Iterable<E> drain() {
+		return this.drainTo(new ArrayList<E>());
+	}
+
+	/**
+	 * "Drain" all the current items from the queue into specified collection.
+	 * Return the collection.
+	 */
+	public <C extends Collection<? super E>> C drainTo(C c) {
+		synchronized (this.mutex) {
+			return this.drainTo_(c);
+		}
+	}
+
+	/**
+	 * Pre-condition: synchronized
+	 */
+	private <C extends Collection<? super E>> C drainTo_(C c) {
+		boolean changed = false;
+		while ( ! this.queue.isEmpty()) {
+			c.add(this.queue.dequeue());
+			changed = true;
+		}
+		if (changed) {
+			this.mutex.notifyAll();
+		}
+		return c;
+	}
+
+	/**
+	 * "Drain" all the current items from the queue into specified stack.
+	 * Return the stack.
+	 */
+	public <S extends Stack<? super E>> S drainTo(S stack) {
+		synchronized (this.mutex) {
+			return this.drainTo_(stack);
+		}
+	}
+
+	/**
+	 * Pre-condition: synchronized
+	 */
+	private <S extends Stack<? super E>> S drainTo_(S stack) {
+		boolean changed = false;
+		while ( ! this.queue.isEmpty()) {
+			stack.push(this.queue.dequeue());
+			changed = true;
+		}
+		if (changed) {
+			this.mutex.notifyAll();
+		}
+		return stack;
+	}
+
+	/**
+	 * "Drain" all the current items from the queue into specified queue.
+	 * Return the specified queue.
+	 * @see #enqueueAll(Queue)
+	 */
+	public <Q extends Queue<? super E>> Q drainTo(Q q) {
+		synchronized (this.mutex) {
+			return this.drainTo_(q);
+		}
+	}
+
+	/**
+	 * Pre-condition: synchronized
+	 */
+	private <Q extends Queue<? super E>> Q drainTo_(Q q) {
 		boolean changed = false;
 		while ( ! this.queue.isEmpty()) {
 			q.enqueue(this.queue.dequeue());
@@ -330,6 +464,7 @@ public class SynchronizedQueue<E>
 		if (changed) {
 			this.mutex.notifyAll();
 		}
+		return q;
 	}
 
 	/**

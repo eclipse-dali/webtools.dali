@@ -10,10 +10,13 @@
 package org.eclipse.jpt.common.utility.internal.collection;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.EmptyStackException;
+import java.util.Iterator;
+import org.eclipse.jpt.common.utility.collection.Queue;
 import org.eclipse.jpt.common.utility.collection.Stack;
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.internal.iterable.StackIterable;
 
 /**
  * Thread-safe implementation of the {@link Stack} interface.
@@ -301,27 +304,132 @@ public class SynchronizedStack<E>
 	// ********** additional public protocol **********
 
 	/**
-	 * "Drain" all the current items from the stack and return them.
+	 * "Push" all the elements returned by the specified iterable.
 	 */
-	public Iterable<E> drain() {
-		ArrayStack<E> q = new ArrayStack<E>();
-		this.drainTo(q);
-		return new StackIterable<E>(q);
+	public void pushAll(Iterable<? extends E> iterable) {
+		this.pushAll(iterable.iterator());
 	}
 
 	/**
-	 * "Drain" all the current items from the stack into specified stack.
+	 * "Push" all the elements returned by the specified iterator.
 	 */
-	public void drainTo(Stack<E> s) {
+	public void pushAll(Iterator<? extends E> iterator) {
 		synchronized (this.mutex) {
-			this.drainTo_(s);
+			this.pushAll_(iterator);
 		}
 	}
 
 	/**
 	 * Pre-condition: synchronized
 	 */
-	private void drainTo_(Stack<E> s) {
+	private void pushAll_(Iterator<? extends E> iterator) {
+		while (iterator.hasNext()) {
+			this.push_(iterator.next());
+		}
+	}
+
+	/**
+	 * "Push" all the elements in the specified array.
+	 */
+	public void pushAll(E... array) {
+		synchronized (this.mutex) {
+			this.pushAll_(array);
+		}
+	}
+
+	/**
+	 * Pre-condition: synchronized
+	 */
+	private void pushAll_(E[] array) {
+		for (E element : array) {
+			this.push_(element);
+		}
+	}
+
+	/**
+	 * Pop all the elements from the specified stack and "push" them.
+	 */
+	public void pushAll(Stack<? extends E> s) {
+		synchronized (this.mutex) {
+			this.pushAll_(s);
+		}
+	}
+
+	/**
+	 * Pre-condition: synchronized
+	 */
+	private void pushAll_(Stack<? extends E> s) {
+		while ( ! s.isEmpty()) {
+			this.push_(s.pop());
+		}
+	}
+
+	/**
+	 * "Dequeue" all the elements from the second specified queue and
+	 * "push" them.
+	 * @see #popAllTo(Queue)
+	 */
+	public void pushAll(Queue<? extends E> queue) {
+		synchronized (this.mutex) {
+			this.pushAll_(queue);
+		}
+	}
+
+	/**
+	 * Pre-condition: synchronized
+	 */
+	private void pushAll_(Queue<? extends E> queue) {
+		while ( ! queue.isEmpty()) {
+			this.push_(queue.dequeue());
+		}
+	}
+
+	/**
+	 * Pop all the current items from the stack and return them in a list.
+	 */
+	public Iterable<E> popAll() {
+		return this.popAllTo(new ArrayList<E>());
+	}
+
+	/**
+	 * Pop all the current items from the stack into specified collection.
+	 * Return the collection.
+	 */
+	public <C extends Collection<? super E>> C popAllTo(C c) {
+		synchronized (this.mutex) {
+			return this.popAllTo_(c);
+		}
+	}
+
+	/**
+	 * Pre-condition: synchronized
+	 */
+	private <C extends Collection<? super E>> C popAllTo_(C c) {
+		boolean changed = false;
+		while ( ! this.stack.isEmpty()) {
+			c.add(this.stack.pop());
+			changed = true;
+		}
+		if (changed) {
+			this.mutex.notifyAll();
+		}
+		return c;
+	}
+
+	/**
+	 * Pop all the current items from the stack into specified stack.
+	 * Return the stack.
+	 */
+	public <S extends Stack<? super E>> S popAllTo(S s) {
+		synchronized (this.mutex) {
+			return this.popAllTo_(s);
+		}
+	}
+
+	/**
+	 * Pre-condition: synchronized
+	 */
+	private <S extends Stack<? super E>> S popAllTo_(S s) {
 		boolean changed = false;
 		while ( ! this.stack.isEmpty()) {
 			s.push(this.stack.pop());
@@ -330,6 +438,33 @@ public class SynchronizedStack<E>
 		if (changed) {
 			this.mutex.notifyAll();
 		}
+		return s;
+	}
+
+	/**
+	 * Pop all the current items from the stack into specified queue.
+	 * Return the specified queue.
+	 * @see #pushAll(Queue)
+	 */
+	public <Q extends Queue<? super E>> Q popAllTo(Q queue) {
+		synchronized (this.mutex) {
+			return this.popAllTo_(queue);
+		}
+	}
+
+	/**
+	 * Pre-condition: synchronized
+	 */
+	private <Q extends Queue<? super E>> Q popAllTo_(Q queue) {
+		boolean changed = false;
+		while ( ! this.stack.isEmpty()) {
+			queue.enqueue(this.stack.pop());
+			changed = true;
+		}
+		if (changed) {
+			this.mutex.notifyAll();
+		}
+		return queue;
 	}
 
 	/**

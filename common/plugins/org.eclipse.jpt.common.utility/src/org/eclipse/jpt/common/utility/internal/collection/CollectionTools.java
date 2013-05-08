@@ -15,7 +15,6 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.Vector;
 import org.eclipse.jpt.common.utility.collection.Queue;
@@ -47,9 +46,10 @@ public final class CollectionTools {
 	 * Add all the elements returned by the specified iterable
 	 * to the specified collection.
 	 * Return whether the collection changed as a result.
+	 * The specified iterable size is a performance hint.
 	 */
-	public static <E> boolean addAll(Collection<? super E> collection, Iterable<? extends E> iterable, int size) {
-		return addAll(collection, iterable.iterator(), size);
+	public static <E> boolean addAll(Collection<? super E> collection, Iterable<? extends E> iterable, int iterableSize) {
+		return addAll(collection, iterable.iterator(), iterableSize);
 	}
 
 	/**
@@ -58,7 +58,7 @@ public final class CollectionTools {
 	 * Return whether the collection changed as a result.
 	 */
 	public static <E> boolean addAll(Collection<? super E> collection, Iterator<? extends E> iterator) {
-		return iterator.hasNext() ? addAll_(collection, iterator) : false;
+		return iterator.hasNext() && addAll_(collection, iterator);
 	}
 
 	/**
@@ -76,9 +76,10 @@ public final class CollectionTools {
 	 * Add all the elements returned by the specified iterator
 	 * to the specified collection.
 	 * Return whether the collection changed as a result.
+	 * The specified iterator size is a performance hint.
 	 */
-	public static <E> boolean addAll(Collection<? super E> collection, Iterator<? extends E> iterator, int size) {
-		return iterator.hasNext() ? collection.addAll(ListTools.list(iterator, size)) : false;
+	public static <E> boolean addAll(Collection<? super E> collection, Iterator<? extends E> iterator, int iteratorSize) {
+		return iterator.hasNext() && collection.addAll(ListTools.list(iterator, iteratorSize));
 	}
 
 	/**
@@ -87,7 +88,7 @@ public final class CollectionTools {
 	 * Return whether the collection changed as a result.
 	 */
 	public static <E> boolean addAll(Collection<? super E> collection, E... array) {
-		return (array.length == 0) ? false : addAll_(collection, array);
+		return (array.length != 0) && addAll_(collection, array);
 	}
 
 	/**
@@ -99,6 +100,66 @@ public final class CollectionTools {
 			modified |= collection.add(element);
 		}
 		return modified;
+	}
+
+	/**
+	 * Dequeue all the elements from the specified queue and add them
+	 * to the specified collection.
+	 * Return whether the collection changed as a result.
+	 */
+	public static <E> boolean addAll(Collection<? super E> collection, Queue<? extends E> queue) {
+		return ( ! queue.isEmpty()) && addAll_(collection, queue);
+	}
+
+	/**
+	 * assume the queue is not empty
+	 */
+	private static <E> boolean addAll_(Collection<? super E> collection, Queue<? extends E> queue) {
+		boolean modified = false;
+		while ( ! queue.isEmpty()) {
+			modified |= collection.add(queue.dequeue());
+		}
+		return modified;
+	}
+
+	/**
+	 * Dequeue all the elements from the specified queue and add them
+	 * to the specified collection.
+	 * Return whether the collection changed as a result.
+	 * The specified queue size is a performance hint.
+	 */
+	public static <E> boolean addAll(Collection<? super E> collection, Queue<? extends E> queue, int queueSize) {
+		return ( ! queue.isEmpty()) && collection.addAll(ListTools.list(queue, queueSize));
+	}
+
+	/**
+	 * Pop all the elements from the specified stack and add them
+	 * to the specified collection.
+	 * Return whether the collection changed as a result.
+	 */
+	public static <E> boolean addAll(Collection<? super E> collection, Stack<? extends E> stack) {
+		return ( ! stack.isEmpty()) && addAll_(collection, stack);
+	}
+
+	/**
+	 * assume the stack is not empty
+	 */
+	private static <E> boolean addAll_(Collection<? super E> collection, Stack<? extends E> stack) {
+		boolean modified = false;
+		while ( ! stack.isEmpty()) {
+			modified |= collection.add(stack.pop());
+		}
+		return modified;
+	}
+
+	/**
+	 * Pop all the elements from the specified stack and add them
+	 * to the specified collection.
+	 * Return whether the collection changed as a result.
+	 * The specified stack size is a performance hint.
+	 */
+	public static <E> boolean addAll(Collection<? super E> collection, Stack<? extends E> stack, int stackSize) {
+		return ( ! stack.isEmpty()) && collection.addAll(ListTools.list(stack, stackSize));
 	}
 
 
@@ -114,7 +175,8 @@ public final class CollectionTools {
 
 	/**
 	 * Return whether the specified collection contains all of the
-	 * elements in the specified iterator.
+	 * elements in the specified iterator, retrieving elements from the iterator
+	 * until one is not found in the collection.
 	 */
 	public static boolean containsAll(Collection<?> collection, Iterator<?> iterator) {
 		while (iterator.hasNext()) {
@@ -132,6 +194,34 @@ public final class CollectionTools {
 	public static boolean containsAll(Collection<?> collection, Object... array) {
 		for (int i = array.length; i-- > 0; ) {
 			if ( ! collection.contains(array[i])) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Return whether the specified collection contains all of the
+	 * elements in the specified queue, dequeueing elements from the queue
+	 * until one is not found in the collection.
+	 */
+	public static boolean containsAll(Collection<?> collection, Queue<?> queue) {
+		while ( ! queue.isEmpty()) {
+			if ( ! collection.contains(queue.dequeue())) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Return whether the specified collection contains all of the
+	 * elements in the specified stack, popping elements from the stack
+	 * until one is not found in the collection.
+	 */
+	public static boolean containsAll(Collection<?> collection, Stack<?> stack) {
+		while ( ! stack.isEmpty()) {
+			if ( ! collection.contains(stack.pop())) {
 				return false;
 			}
 		}
@@ -183,7 +273,7 @@ public final class CollectionTools {
 	 * Return whether the collection changed as a result.
 	 */
 	public static boolean removeAll(Collection<?> collection, Iterator<?> iterator) {
-		return iterator.hasNext() ? collection.removeAll(set(iterator)) : false;
+		return iterator.hasNext() && collection.removeAll(set(iterator));
 	}
 
 	/**
@@ -193,7 +283,7 @@ public final class CollectionTools {
 	 * The specified iterator size is a performance hint.
 	 */
 	public static boolean removeAll(Collection<?> collection, Iterator<?> iterator, int iteratorSize) {
-		return iterator.hasNext() ? collection.removeAll(set(iterator, iteratorSize)) : false;
+		return iterator.hasNext() && collection.removeAll(set(iterator, iteratorSize));
 	}
 
 	/**
@@ -202,7 +292,45 @@ public final class CollectionTools {
 	 * Return whether the collection changed as a result.
 	 */
 	public static boolean removeAll(Collection<?> collection, Object... array) {
-		return (array.length == 0) ? false : collection.removeAll(set(array));
+		return (array.length != 0) && collection.removeAll(set(array));
+	}
+
+	/**
+	 * Remove all the elements dequeued from the specified queue
+	 * from the specified collection, draining the queue in the process.
+	 * Return whether the collection changed as a result.
+	 */
+	public static boolean removeAll(Collection<?> collection, Queue<?> queue) {
+		return ( ! queue.isEmpty()) && collection.removeAll(set(queue));
+	}
+
+	/**
+	 * Remove all the elements dequeued from the specified queue
+	 * from the specified collection, draining the queue in the process.
+	 * Return whether the collection changed as a result.
+	 * The specified queue size is a performance hint.
+	 */
+	public static boolean removeAll(Collection<?> collection, Queue<?> queue, int queueSize) {
+		return ( ! queue.isEmpty()) && collection.removeAll(set(queue, queueSize));
+	}
+
+	/**
+	 * Remove all the elements from the specified stack
+	 * from the specified collection, draining the stack in the process.
+	 * Return whether the collection changed as a result.
+	 */
+	public static boolean removeAll(Collection<?> collection, Stack<?> stack) {
+		return ( ! stack.isEmpty()) && collection.removeAll(set(stack));
+	}
+
+	/**
+	 * Remove all the elements from the specified stack
+	 * from the specified collection, draining the stack in the process.
+	 * Return whether the collection changed as a result.
+	 * The specified stack size is a performance hint.
+	 */
+	public static boolean removeAll(Collection<?> collection, Stack<?> stack, int stackSize) {
+		return ( ! stack.isEmpty()) && collection.removeAll(set(stack, stackSize));
 	}
 
 
@@ -305,6 +433,72 @@ public final class CollectionTools {
 		return true;
 	}
 
+	/**
+	 * Retain only the elements in the specified queue
+	 * in the specified collection, draining the queue in the process.
+	 * Return whether the collection changed as a result.
+	 */
+	public static boolean retainAll(Collection<?> collection, Queue<?> queue) {
+		if ( ! queue.isEmpty()) {
+			return collection.retainAll(set(queue));
+		}
+		if (collection.isEmpty()) {
+			return false;
+		}
+		collection.clear();
+		return true;
+	}
+
+	/**
+	 * Retain only the elements in the specified queue
+	 * in the specified collection, draining the queue in the process.
+	 * Return whether the collection changed as a result.
+	 * The specified queue size is a performance hint.
+	 */
+	public static boolean retainAll(Collection<?> collection, Queue<?> queue, int queueSize) {
+		if ( ! queue.isEmpty()) {
+			return collection.retainAll(set(queue, queueSize));
+		}
+		if (collection.isEmpty()) {
+			return false;
+		}
+		collection.clear();
+		return true;
+	}
+
+	/**
+	 * Retain only the elements in the specified stack
+	 * in the specified collection, draining the stack in the process.
+	 * Return whether the collection changed as a result.
+	 */
+	public static boolean retainAll(Collection<?> collection, Stack<?> stack) {
+		if ( ! stack.isEmpty()) {
+			return collection.retainAll(set(stack));
+		}
+		if (collection.isEmpty()) {
+			return false;
+		}
+		collection.clear();
+		return true;
+	}
+
+	/**
+	 * Retain only the elements in the specified stack
+	 * in the specified collection, draining the stack in the process.
+	 * Return whether the collection changed as a result.
+	 * The specified stack size is a performance hint.
+	 */
+	public static boolean retainAll(Collection<?> collection, Stack<?> stack, int stackSize) {
+		if ( ! stack.isEmpty()) {
+			return collection.retainAll(set(stack, stackSize));
+		}
+		if (collection.isEmpty()) {
+			return false;
+		}
+		collection.clear();
+		return true;
+	}
+
 
 	// ********** transform **********
 
@@ -372,6 +566,54 @@ public final class CollectionTools {
 		return bag;
 	}
 
+	/**
+	 * Return a bag corresponding to the specified queue, draining the queue
+	 * in the process.
+	 */
+	public static <E> HashBag<E> bag(Queue<? extends E> queue) {
+		return bag(queue, new HashBag<E>());
+	}
+
+	/**
+	 * Return a bag corresponding to the specified queue, draining the queue
+	 * in the process.
+	 * The specified queue size is a performance hint.
+	 */
+	public static <E> HashBag<E> bag(Queue<? extends E> queue, int queueSize) {
+		return bag(queue, new HashBag<E>(queueSize));
+	}
+
+	private static <E> HashBag<E> bag(Queue<? extends E> queue, HashBag<E> set) {
+		while ( ! queue.isEmpty()) {
+			set.add(queue.dequeue());
+		}
+		return set;
+	}
+
+	/**
+	 * Return a bag corresponding to the specified stack, draining the stack
+	 * in the process.
+	 */
+	public static <E> HashBag<E> bag(Stack<? extends E> stack) {
+		return bag(stack, new HashBag<E>());
+	}
+
+	/**
+	 * Return a bag corresponding to the specified stack, draining the stack
+	 * in the process.
+	 * The specified stack size is a performance hint.
+	 */
+	public static <E> HashBag<E> bag(Stack<? extends E> stack, int stackSize) {
+		return bag(stack, new HashBag<E>(stackSize));
+	}
+
+	private static <E> HashBag<E> bag(Stack<? extends E> stack, HashBag<E> set) {
+		while ( ! stack.isEmpty()) {
+			set.add(stack.pop());
+		}
+		return set;
+	}
+
 
 	// ********** collection factory methods **********
 
@@ -412,97 +654,38 @@ public final class CollectionTools {
 		return bag(array);
 	}
 
-
-	// ********** queue factory methods **********
-
 	/**
-	 * Return a FIFO queue corresponding to the specified iterable.
+	 * Return a collection corresponding to the specified queue, draining the queue
+	 * in the process.
 	 */
-	public static <E> ArrayQueue<E> queue(Iterable<? extends E> iterable) {
-		return queue(iterable.iterator());
+	public static <E> HashBag<E> collection(Queue<? extends E> queue) {
+		return bag(queue);
 	}
 
 	/**
-	 * Return a FIFO queue corresponding to the specified iterable.
-	 * The specified iterable size is a performance hint.
+	 * Return a collection corresponding to the specified queue, draining the queue
+	 * in the process.
+	 * The specified queue size is a performance hint.
 	 */
-	public static <E> ArrayQueue<E> queue(Iterable<? extends E> iterable, int iterableSize) {
-		return queue(iterable.iterator(), iterableSize);
+	public static <E> HashBag<E> collection(Queue<? extends E> queue, int queueSize) {
+		return bag(queue, queueSize);
 	}
 
 	/**
-	 * Return a FIFO queue corresponding to the specified iterator.
+	 * Return a collection corresponding to the specified stack, draining the stack
+	 * in the process.
 	 */
-	public static <E> ArrayQueue<E> queue(Iterator<? extends E> iterator) {
-		return queue(iterator, new ArrayQueue<E>());
+	public static <E> HashBag<E> collection(Stack<? extends E> stack) {
+		return bag(stack);
 	}
 
 	/**
-	 * Return a FIFO queue corresponding to the specified iterator.
-	 * The specified iterator size is a performance hint.
+	 * Return a collection corresponding to the specified stack, draining the stack
+	 * in the process.
+	 * The specified stack size is a performance hint.
 	 */
-	public static <E> ArrayQueue<E> queue(Iterator<? extends E> iterator, int iteratorSize) {
-		return queue(iterator, new ArrayQueue<E>(iteratorSize));
-	}
-
-	private static <E> ArrayQueue<E> queue(Iterator<? extends E> iterator, ArrayQueue<E> queue) {
-		while (iterator.hasNext()) {
-			queue.enqueue(iterator.next());
-		}
-		return queue;
-	}
-
-	/**
-	 * Return a FIFO queue corresponding to the specified array.
-	 */
-	public static <E> ArrayQueue<E> queue(E... array) {
-		int len = array.length;
-		ArrayQueue<E> queue = new ArrayQueue<E>(len);
-		for (E item : array) {
-			queue.enqueue(item);
-		}
-		return queue;
-	}
-
-	/**
-	 * Return a LIFO queue.
-	 */
-	public static <E> StackQueue<E> stackQueue() {
-		return queue(new ArrayStack<E>());
-	}
-
-	/**
-	 * Adapt the specified stack to the {@link Queue} interface,
-	 * implementing a LIFO queue.
-	 */
-	public static <E> StackQueue<E> queue(Stack<E> stack) {
-		return new StackQueue<E>(stack);
-	}
-
-	/**
-	 * Return a priority queue that returns its elements in
-	 * {@linkplain Comparable natural order}.
-	 */
-	public static <E> PriorityQueue<E> priorityQueue() {
-		return priorityQueue((Comparator<? super E>) null);
-	}
-
-	/**
-	 * Return a priority queue whose elements are returned in
-	 * the order determined by the specified comparator.
-	 * If the specified comparator is <code>null</code>, the elements will be
-	 * returned in {@linkplain Comparable natural order}.
-	 */
-	public static <E> PriorityQueue<E> priorityQueue(Comparator<? super E> comparator) {
-		return priorityQueue(new TreeSet<E>(comparator));
-	}
-
-	/**
-	 * Adapt the specified sorted set to the {@link Queue} interface,
-	 * implementing a priority queue.
-	 */
-	public static <E> PriorityQueue<E> priorityQueue(SortedSet<E> elements) {
-		return new PriorityQueue<E>(elements);
+	public static <E> HashBag<E> collection(Stack<? extends E> stack, int stackSize) {
+		return bag(stack, stackSize);
 	}
 
 
@@ -552,6 +735,54 @@ public final class CollectionTools {
 		HashSet<E> set = new HashSet<E>(array.length);
 		for (int i = array.length; i-- > 0;) {
 			set.add(array[i]);
+		}
+		return set;
+	}
+
+	/**
+	 * Return a set corresponding to the specified queue, draining the queue
+	 * in the process.
+	 */
+	public static <E> HashSet<E> set(Queue<? extends E> queue) {
+		return set(queue, new HashSet<E>());
+	}
+
+	/**
+	 * Return a set corresponding to the specified queue, draining the queue
+	 * in the process.
+	 * The specified queue size is a performance hint.
+	 */
+	public static <E> HashSet<E> set(Queue<? extends E> queue, int queueSize) {
+		return set(queue, new HashSet<E>(queueSize));
+	}
+
+	private static <E> HashSet<E> set(Queue<? extends E> queue, HashSet<E> set) {
+		while ( ! queue.isEmpty()) {
+			set.add(queue.dequeue());
+		}
+		return set;
+	}
+
+	/**
+	 * Return a set corresponding to the specified stack, draining the stack
+	 * in the process.
+	 */
+	public static <E> HashSet<E> set(Stack<? extends E> stack) {
+		return set(stack, new HashSet<E>());
+	}
+
+	/**
+	 * Return a set corresponding to the specified stack, draining the stack
+	 * in the process.
+	 * The specified stack size is a performance hint.
+	 */
+	public static <E> HashSet<E> set(Stack<? extends E> stack, int stackSize) {
+		return set(stack, new HashSet<E>(stackSize));
+	}
+
+	private static <E> HashSet<E> set(Stack<? extends E> stack, HashSet<E> set) {
+		while ( ! stack.isEmpty()) {
+			set.add(stack.pop());
 		}
 		return set;
 	}
@@ -646,56 +877,73 @@ public final class CollectionTools {
 		return sortedSet;
 	}
 
-
-	// ********** stack factory methods **********
-
 	/**
-	 * Return a stack corresponding to the specified iterable.
+	 * Return a sorted set corresponding to the specified queue,
+	 * draining the queue in the process.
 	 */
-	public static <E> ArrayStack<E> stack(Iterable<? extends E> iterable) {
-		return stack(iterable.iterator());
+	public static <E> TreeSet<E> sortedSet(Queue<? extends E> queue) {
+		return sortedSet(queue, null);
 	}
 
 	/**
-	 * Return a stack corresponding to the specified iterable.
-	 * The specified iterable size is a performance hint.
+	 * Return a sorted set corresponding to the specified queue,
+	 * draining the queue in the process.
+	 * The specified queue size is a performance hint.
 	 */
-	public static <E> ArrayStack<E> stack(Iterable<? extends E> iterable, int iterableSize) {
-		return stack(iterable.iterator(), iterableSize);
+	public static <E> TreeSet<E> sortedSet(Queue<? extends E> queue, int queueSize) {
+		return sortedSet(queue, null, queueSize);
 	}
 
 	/**
-	 * Return a stack corresponding to the specified iterator.
+	 * Return a sorted set corresponding to the specified queue and comparator,
+	 * draining the queue in the process.
+	 * The specified queue size is a performance hint.
 	 */
-	public static <E> ArrayStack<E> stack(Iterator<? extends E> iterator) {
-		return stack(iterator, new ArrayStack<E>());
+	public static <E> TreeSet<E> sortedSet(Queue<? extends E> queue, Comparator<? super E> comparator) {
+		return sortedSet(ListTools.list(queue), comparator);
 	}
 
 	/**
-	 * Return a stack corresponding to the specified iterator.
-	 * The specified iterator size is a performance hint.
+	 * Return a sorted set corresponding to the specified queue and comparator,
+	 * draining the queue in the process.
+	 * The specified queue size is a performance hint.
 	 */
-	public static <E> ArrayStack<E> stack(Iterator<? extends E> iterator, int iteratorSize) {
-		return stack(iterator, new ArrayStack<E>(iteratorSize));
-	}
-
-	private static <E> ArrayStack<E> stack(Iterator<? extends E> iterator, ArrayStack<E> stack) {
-		while (iterator.hasNext()) {
-			stack.push(iterator.next());
-		}
-		return stack;
+	public static <E> TreeSet<E> sortedSet(Queue<? extends E> queue, Comparator<? super E> comparator, int queueSize) {
+		return sortedSet(ListTools.list(queue, queueSize), comparator);
 	}
 
 	/**
-	 * Return a stack corresponding to the specified array.
+	 * Return a sorted set corresponding to the specified stack,
+	 * draining the stack in the process.
 	 */
-	public static <E> ArrayStack<E> stack(E... array) {
-		int len = array.length;
-		ArrayStack<E> stack = new ArrayStack<E>(len);
-		for (E item : array) {
-			stack.push(item);
-		}
-		return stack;
+	public static <E> TreeSet<E> sortedSet(Stack<? extends E> stack) {
+		return sortedSet(stack, null);
+	}
+
+	/**
+	 * Return a sorted set corresponding to the specified stack,
+	 * draining the stack in the process.
+	 * The specified stack size is a performance hint.
+	 */
+	public static <E> TreeSet<E> sortedSet(Stack<? extends E> stack, int stackSize) {
+		return sortedSet(stack, null, stackSize);
+	}
+
+	/**
+	 * Return a sorted set corresponding to the specified stack and comparator,
+	 * draining the stack in the process.
+	 */
+	public static <E> TreeSet<E> sortedSet(Stack<? extends E> stack, Comparator<? super E> comparator) {
+		return sortedSet(ListTools.list(stack), comparator);
+	}
+
+	/**
+	 * Return a sorted set corresponding to the specified stack and comparator,
+	 * draining the stack in the process.
+	 * The specified stack size is a performance hint.
+	 */
+	public static <E> TreeSet<E> sortedSet(Stack<? extends E> stack, Comparator<? super E> comparator, int stackSize) {
+		return sortedSet(ListTools.list(stack, stackSize), comparator);
 	}
 
 

@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
 import java.util.RandomAccess;
+import org.eclipse.jpt.common.utility.collection.Queue;
+import org.eclipse.jpt.common.utility.collection.Stack;
 import org.eclipse.jpt.common.utility.internal.Range;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
@@ -59,16 +61,17 @@ public final class ListTools {
 	 * Return whether the list changed as a result.
 	 */
 	public static <E> boolean addAll(List<? super E> list, int index, Iterator<? extends E> iterator) {
-		return iterator.hasNext() ? list.addAll(index, list(iterator)) : false;
+		return iterator.hasNext() && list.addAll(index, list(iterator));
 	}
 
 	/**
 	 * Add all the elements returned by the specified iterator
 	 * to the specified list at the specified index.
 	 * Return whether the list changed as a result.
+	 * The specified iterator size is a performance hint.
 	 */
 	public static <E> boolean addAll(List<? super E> list, int index, Iterator<? extends E> iterator, int iteratorSize) {
-		return iterator.hasNext() ? list.addAll(index, list(iterator, iteratorSize)) : false;
+		return iterator.hasNext() && list.addAll(index, list(iterator, iteratorSize));
 	}
 
 	/**
@@ -77,7 +80,49 @@ public final class ListTools {
 	 * Return whether the list changed as a result.
 	 */
 	public static <E> boolean addAll(List<? super E> list, int index, E... array) {
-		return (array.length == 0) ? false : list.addAll(index, Arrays.asList(array));
+		return (array.length != 0) && list.addAll(index, Arrays.asList(array));
+	}
+
+	/**
+	 * Add all the elements in the specified queue
+	 * to the specified list at the specified index,
+	 * draining the queue in the process.
+	 * Return whether the list changed as a result.
+	 */
+	public static <E> boolean addAll(List<? super E> list, int index, Queue<? extends E> queue) {
+		return ( ! queue.isEmpty()) && list.addAll(index, list(queue));
+	}
+
+	/**
+	 * Add all the elements in the specified queue
+	 * to the specified list at the specified index,
+	 * draining the queue in the process.
+	 * Return whether the list changed as a result.
+	 * The specified queue size is a performance hint.
+	 */
+	public static <E> boolean addAll(List<? super E> list, int index, Queue<? extends E> queue, int queueSize) {
+		return ( ! queue.isEmpty()) && list.addAll(index, list(queue, queueSize));
+	}
+
+	/**
+	 * Add all the elements in the specified stack
+	 * to the specified list at the specified index,
+	 * draining the stack in the process.
+	 * Return whether the list changed as a result.
+	 */
+	public static <E> boolean addAll(List<? super E> list, int index, Stack<? extends E> stack) {
+		return ( ! stack.isEmpty()) && list.addAll(index, list(stack));
+	}
+
+	/**
+	 * Add all the elements in the specified stack
+	 * to the specified list at the specified index,
+	 * draining the stack in the process.
+	 * Return whether the list changed as a result.
+	 * The specified stack size is a performance hint.
+	 */
+	public static <E> boolean addAll(List<? super E> list, int index, Stack<? extends E> stack, int stackSize) {
+		return ( ! stack.isEmpty()) && list.addAll(index, list(stack, stackSize));
 	}
 
 
@@ -577,6 +622,54 @@ public final class ListTools {
 		ArrayList<E> list = new ArrayList<E>(array.length);
 		for (E e : array) {
 			list.add(e);
+		}
+		return list;
+	}
+
+	/**
+	 * Return a list corresponding to the specified queue,
+	 * draining the queue in the process.
+	 */
+	public static <E> ArrayList<E> list(Queue<? extends E> queue) {
+		return list(queue, new ArrayList<E>());
+	}
+
+	/**
+	 * Return a list corresponding to the specified queue,
+	 * draining the queue in the process.
+	 * The specified queue size is a performance hint.
+	 */
+	public static <E> ArrayList<E> list(Queue<? extends E> queue, int queueSize) {
+		return list(queue, new ArrayList<E>(queueSize));
+	}
+
+	private static <E> ArrayList<E> list(Queue<? extends E> queue, ArrayList<E> list) {
+		while ( ! queue.isEmpty()) {
+			list.add(queue.dequeue());
+		}
+		return list;
+	}
+
+	/**
+	 * Return a list corresponding to the specified stack,
+	 * draining the stack in the process.
+	 */
+	public static <E> ArrayList<E> list(Stack<? extends E> stack) {
+		return list(stack, new ArrayList<E>());
+	}
+
+	/**
+	 * Return a list corresponding to the specified stack,
+	 * draining the stack in the process.
+	 * The specified stack size is a performance hint.
+	 */
+	public static <E> ArrayList<E> list(Stack<? extends E> stack, int stackSize) {
+		return list(stack, new ArrayList<E>(stackSize));
+	}
+
+	private static <E> ArrayList<E> list(Stack<? extends E> stack, ArrayList<E> list) {
+		while ( ! stack.isEmpty()) {
+			list.add(stack.pop());
 		}
 		return list;
 	}

@@ -19,7 +19,7 @@ public final class EmptyQueue<E>
 	@SuppressWarnings("rawtypes")
 	public static final Queue INSTANCE = new EmptyQueue();
 	@SuppressWarnings("unchecked")
-	public static <T> Queue<T> instance() {
+	public static <E> Queue<E> instance() {
 		return INSTANCE;
 	}
 

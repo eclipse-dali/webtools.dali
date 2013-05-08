@@ -19,7 +19,7 @@ public final class EmptyStack<E>
 	@SuppressWarnings("rawtypes")
 	public static final Stack INSTANCE = new EmptyStack();
 	@SuppressWarnings("unchecked")
-	public static <T> Stack<T> instance() {
+	public static <E> Stack<E> instance() {
 		return INSTANCE;
 	}
 
