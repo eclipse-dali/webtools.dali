@@ -71,7 +71,8 @@ public class SWTCollectionChangeListenerWrapper
 	}
 
 	void forwardEvents() {
-		for (CollectionEvent event : this.events.drain()) {
+		Iterable<CollectionEvent> temp = this.events.drain();  // debug
+		for (CollectionEvent event : temp) {
 			try {
 				this.forwardEvent(event);
 			} catch (RuntimeException ex) {

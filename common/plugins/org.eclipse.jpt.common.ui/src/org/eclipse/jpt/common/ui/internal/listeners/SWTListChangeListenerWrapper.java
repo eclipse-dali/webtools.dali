@@ -83,7 +83,8 @@ public class SWTListChangeListenerWrapper
 	}
 
 	void forwardEvents() {
-		for (ListEvent event : this.events.drain()) {
+		Iterable<ListEvent> temp = this.events.drain();  // debug
+		for (ListEvent event : temp) {
 			try {
 				this.forwardEvent(event);
 			} catch (RuntimeException ex) {

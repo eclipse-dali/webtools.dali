@@ -59,7 +59,8 @@ public class SWTPropertyChangeListenerWrapper
 	}
 
 	void forwardEvents() {
-		for (PropertyChangeEvent event : this.events.drain()) {
+		Iterable<PropertyChangeEvent> temp = this.events.drain();  // debug
+		for (PropertyChangeEvent event : temp) {
 			try {
 				this.listener.propertyChanged(event);
 			} catch (RuntimeException ex) {

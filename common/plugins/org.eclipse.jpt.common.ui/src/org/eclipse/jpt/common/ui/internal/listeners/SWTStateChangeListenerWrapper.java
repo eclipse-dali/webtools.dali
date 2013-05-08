@@ -54,7 +54,8 @@ public class SWTStateChangeListenerWrapper
 	}
 
 	void forwardEvents() {
-		for (StateChangeEvent event : this.events.drain()) {
+		Iterable<StateChangeEvent> temp = this.events.drain();  // debug
+		for (StateChangeEvent event : temp) {
 			try {
 				this.listener.stateChanged(event);
 			} catch (RuntimeException ex) {
