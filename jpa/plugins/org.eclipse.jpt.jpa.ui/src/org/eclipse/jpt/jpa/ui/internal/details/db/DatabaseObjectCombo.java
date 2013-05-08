@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.details.db;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.common.ui.internal.widgets.ComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -104,12 +105,19 @@ public abstract class DatabaseObjectCombo<T extends JpaModel>
 	}
 	
 	protected PropertyChangeListener buildConnectionProfileListener_() {
-		return new PropertyChangeListener(){
-		
-			public void propertyChanged(PropertyChangeEvent event) {
-				connectionProfileChanged(event);
-			}
-		};
+		return new ConnectionProfileListener();
+	}
+
+	public class ConnectionProfileListener
+		implements PropertyChangeListener
+	{
+		public void propertyChanged(PropertyChangeEvent event) {
+			DatabaseObjectCombo.this.connectionProfileChanged(event);
+		}
+		@Override
+		public String toString() {
+			return ObjectTools.toString(this, DatabaseObjectCombo.this);
+		}
 	}
 	
 	protected void connectionProfileChanged(PropertyChangeEvent event) {
@@ -276,10 +284,10 @@ public abstract class DatabaseObjectCombo<T extends JpaModel>
 	
 	// ********** connection listener **********
 	
-	protected class LocalConnectionListener 
+	public class LocalConnectionListener 
 		implements ConnectionListener 
 	{
-		protected LocalConnectionListener() {
+		public LocalConnectionListener() {
 			super();
 		}
 		
@@ -340,6 +348,11 @@ public abstract class DatabaseObjectCombo<T extends JpaModel>
 		public void foreignKeyChanged(ConnectionProfile profile, ForeignKey foreignKey) {
 			JptJpaUiPlugin.instance().trace(TRACE_OPTION, "foreign key changed: {0}", foreignKey);
 			DatabaseObjectCombo.this.foreignKeyChanged(foreignKey);
+		}
+
+		@Override
+		public String toString() {
+			return ObjectTools.toString(this, DatabaseObjectCombo.this);
 		}
 	}	
 	/* CU private */ static final String TRACE_OPTION = DatabaseObjectCombo.class.getSimpleName();
