@@ -280,6 +280,9 @@ public class GenericJavaOrderable
 			if (this.getOrderColumnAnnotation() == null) {
 				this.addOrderColumnAnnotation();
 			}
+			if (this.getOrderByAnnotation() != null) {
+				this.removeOrderByAnnotation();
+			}
 
 			this.setSpecifiedOrderBy_(null);
 			this.setNoOrdering_(false);
