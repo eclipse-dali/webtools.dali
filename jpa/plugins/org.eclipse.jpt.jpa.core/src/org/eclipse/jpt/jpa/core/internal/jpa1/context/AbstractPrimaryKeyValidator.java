@@ -681,11 +681,11 @@ public abstract class AbstractPrimaryKeyValidator
 	// **************** maps id mappings **************************************
 	
 	protected Iterable<SingleRelationshipMapping2_0> getMapsIdMappings(TypeMapping typeMapping) {
-		return IterableTools.filter(this.getAllSingleRelationshipMappings(typeMapping), SingleRelationshipMapping2_0.TYPE_MAPPING_USES_ID_DERIVED_IDENTITY_STRATEGY);
+		return IterableTools.filter(this.getAllSingleRelationshipMappings(typeMapping), SingleRelationshipMapping2_0.TYPE_MAPPING_USES_MAPS_ID_DERIVED_IDENTITY_STRATEGY);
 	}
 	
 	protected Iterable<SingleRelationshipMapping2_0> getMapsIdMappingsDefinedLocally(TypeMapping typeMapping) {
-		return IterableTools.filter(this.getSingleRelationshipMappings(typeMapping), SingleRelationshipMapping2_0.TYPE_MAPPING_USES_ID_DERIVED_IDENTITY_STRATEGY);
+		return IterableTools.filter(this.getSingleRelationshipMappings(typeMapping), SingleRelationshipMapping2_0.TYPE_MAPPING_USES_MAPS_ID_DERIVED_IDENTITY_STRATEGY);
 	}
 	
 	
