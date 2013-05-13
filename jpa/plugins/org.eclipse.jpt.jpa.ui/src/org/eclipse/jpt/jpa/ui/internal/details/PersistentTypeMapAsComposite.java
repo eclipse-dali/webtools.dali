@@ -40,8 +40,8 @@ public class PersistentTypeMapAsComposite
 		return new TypeMappingChangeHandler();
 	}
 
-	protected class TypeMappingChangeHandler
-		implements MappingChangeHandler
+	public class TypeMappingChangeHandler
+		extends AbstractMappingChangeHandler
 	{
 		public String getLabelText() {
 			String mappingKey = getMappingKey();
@@ -54,7 +54,8 @@ public class PersistentTypeMapAsComposite
 			return getMappingUiDefinition().getLinkLabel();
 		}
 
-		public void morphMapping(MappingUiDefinition definition) {
+		@Override
+		protected void morphMapping_(MappingUiDefinition definition) {
 			getSubject().setMappingKey(definition.getKey());
 		}
 

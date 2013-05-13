@@ -31,11 +31,11 @@ public class DoubleModifiablePropertyValueModel<V>
 	}
 
 	public void setValue(V value) {
-		ModifiablePropertyValueModel<V> vmv = this.getValueModelValueModel();
-		if (vmv == null) {
+		ModifiablePropertyValueModel<V> vmvm = this.getValueModelValueModel();
+		if (vmvm == null) {
 			this.setValue_(value);
 		} else {
-			vmv.setValue(value);
+			vmvm.setValue(value);
 		}
 	}
 

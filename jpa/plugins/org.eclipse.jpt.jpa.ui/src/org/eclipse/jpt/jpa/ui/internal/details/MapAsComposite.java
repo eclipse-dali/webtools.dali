@@ -10,25 +10,29 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.Comparator;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.resource.JFaceColors;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.ui.internal.jface.ResourceManagerLabelProvider;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.JpaModel;
+import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
+import org.eclipse.jpt.jpa.ui.selection.JpaSelectionManager;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
@@ -61,7 +65,7 @@ import com.ibm.icu.text.Collator;
  * -----------------------------------------------------------------------------</pre>
  */
 @SuppressWarnings("nls")
-public abstract class MapAsComposite<T extends JpaModel>
+public abstract class MapAsComposite<T extends JpaStructureNode>
 	extends Pane<T>
 {
 	protected boolean dragEvent;
@@ -430,6 +434,43 @@ public abstract class MapAsComposite<T extends JpaModel>
 		 * @return The supported types of mapping
 		 */
 		MappingUiDefinition getMappingUiDefinition();
+	}
+
+	/**
+	 * Lock the project while morphing the mapping to postpone any "updates"
+	 * until we are finished; then set the JPA selection.
+	 */
+	public abstract class AbstractMappingChangeHandler
+		implements MappingChangeHandler
+	{
+		/**
+		 * @see org.eclipse.jpt.jpa.ui.internal.handlers.JpaStructureViewHandler#execute(org.eclipse.core.commands.ExecutionEvent)
+		 */
+		public final void morphMapping(MappingUiDefinition definition) {
+			IProject project = MapAsComposite.this.getSubject().getJpaProject().getProject();
+			try {
+				Job.getJobManager().beginRule(project, null);
+				this.morphMapping_(definition);
+				this.setJpaSelection(MapAsComposite.this.getSubject());
+			} finally {
+				Job.getJobManager().endRule(project);
+			}
+		}
+
+		protected abstract void morphMapping_(MappingUiDefinition definition);
+
+		/**
+		 * @see org.eclipse.jpt.jpa.ui.internal.handlers.JpaStructureViewHandler#setJpaSelection(org.eclipse.ui.IWorkbenchWindow, JpaStructureNode)
+		 */
+		private void setJpaSelection(JpaStructureNode jpaSelection) {
+			JpaSelectionManager mgr = this.getJpaSelectionManager();
+			mgr.setSelection(null);
+			mgr.setSelection(jpaSelection);
+		}
+
+		private JpaSelectionManager getJpaSelectionManager() {
+			return WorkbenchTools.getAdapter(JpaSelectionManager.class);
+		}
 	}
 
 	/**

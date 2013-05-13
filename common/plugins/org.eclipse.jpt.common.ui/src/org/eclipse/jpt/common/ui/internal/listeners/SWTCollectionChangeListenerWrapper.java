@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,11 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.listeners;
 
+import org.eclipse.jpt.common.ui.internal.plugin.JptCommonUiPlugin;
 import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.common.utility.internal.RunnableAdapter;
+import org.eclipse.jpt.common.utility.internal.collection.SynchronizedQueue;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionClearEvent;
+import org.eclipse.jpt.common.utility.model.event.CollectionEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener;
 
@@ -27,6 +30,8 @@ public class SWTCollectionChangeListenerWrapper
 	implements CollectionChangeListener
 {
 	private final CollectionChangeListener listener;
+	private final SynchronizedQueue<CollectionEvent> events = new SynchronizedQueue<CollectionEvent>();
+
 
 	public SWTCollectionChangeListenerWrapper(CollectionChangeListener listener) {
 		super();
@@ -37,91 +42,57 @@ public class SWTCollectionChangeListenerWrapper
 	}
 
 	public void itemsAdded(CollectionAddEvent event) {
-		this.execute(new ItemsAddedRunnable(event));
-	}
-
-	/* CU private */ class ItemsAddedRunnable
-		extends RunnableAdapter
-	{
-		private final CollectionAddEvent event;
-		ItemsAddedRunnable(CollectionAddEvent event) {
-			super();
-			this.event = event;
-		}
-		@Override
-		public void run() {
-			SWTCollectionChangeListenerWrapper.this.itemsAdded_(this.event);
-		}
-	}
-
-	void itemsAdded_(CollectionAddEvent event) {
-		this.listener.itemsAdded(event);
+		this.events.enqueue(event);
+		this.execute(new ForwardEventsRunnable());
 	}
 
 	public void itemsRemoved(CollectionRemoveEvent event) {
-		this.execute(new ItemsRemovedRunnable(event));
-	}
-
-	/* CU private */ class ItemsRemovedRunnable
-		extends RunnableAdapter
-	{
-		private final CollectionRemoveEvent event;
-		ItemsRemovedRunnable(CollectionRemoveEvent event) {
-			super();
-			this.event = event;
-		}
-		@Override
-		public void run() {
-			SWTCollectionChangeListenerWrapper.this.itemsRemoved_(this.event);
-		}
-	}
-
-	void itemsRemoved_(CollectionRemoveEvent event) {
-		this.listener.itemsRemoved(event);
+		this.events.enqueue(event);
+		this.execute(new ForwardEventsRunnable());
 	}
 
 	public void collectionCleared(CollectionClearEvent event) {
-		this.execute(new CollectionClearedRunnable(event));
-	}
-
-	/* CU private */ class CollectionClearedRunnable
-		extends RunnableAdapter
-	{
-		private final CollectionClearEvent event;
-		CollectionClearedRunnable(CollectionClearEvent event) {
-			super();
-			this.event = event;
-		}
-		@Override
-		public void run() {
-			SWTCollectionChangeListenerWrapper.this.collectionCleared_(this.event);
-		}
-	}
-
-	void collectionCleared_(CollectionClearEvent event) {
-		this.listener.collectionCleared(event);
+		this.events.enqueue(event);
+		this.execute(new ForwardEventsRunnable());
 	}
 
 	public void collectionChanged(CollectionChangeEvent event) {
-		this.execute(new CollectionChangedRunnable(event));
+		this.events.enqueue(event);
+		this.execute(new ForwardEventsRunnable());
 	}
 
-	/* CU private */ class CollectionChangedRunnable
+	/* CU private */ class ForwardEventsRunnable
 		extends RunnableAdapter
 	{
-		private final CollectionChangeEvent event;
-		CollectionChangedRunnable(CollectionChangeEvent event) {
-			super();
-			this.event = event;
-		}
 		@Override
 		public void run() {
-			SWTCollectionChangeListenerWrapper.this.collectionChanged_(this.event);
+			SWTCollectionChangeListenerWrapper.this.forwardEvents();
 		}
 	}
 
-	void collectionChanged_(CollectionChangeEvent event) {
-		this.listener.collectionChanged(event);
+	void forwardEvents() {
+		for (CollectionEvent event : this.events.drain()) {
+			try {
+				this.forwardEvent(event);
+			} catch (RuntimeException ex) {
+				JptCommonUiPlugin.instance().logError(ex);
+			}
+		}
+	}
+
+	private void forwardEvent(CollectionEvent event) {
+		if (event instanceof CollectionAddEvent) {
+			this.listener.itemsAdded((CollectionAddEvent) event);
+		}
+		else if (event instanceof CollectionRemoveEvent) {
+			this.listener.itemsRemoved((CollectionRemoveEvent) event);
+		}
+		else if (event instanceof CollectionClearEvent) {
+			this.listener.collectionCleared((CollectionClearEvent) event);
+		}
+		else if (event instanceof CollectionChangeEvent) {
+			this.listener.collectionChanged((CollectionChangeEvent) event);
+		}
 	}
 
 	/**

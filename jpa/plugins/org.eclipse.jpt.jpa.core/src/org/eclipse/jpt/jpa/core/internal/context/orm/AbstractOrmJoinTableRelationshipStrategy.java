@@ -152,7 +152,8 @@ public abstract class AbstractOrmJoinTableRelationshipStrategy<P extends OrmJoin
 
 	public void initializeFrom(JoinTableRelationshipStrategy oldStrategy) {
 		JoinTable oldJoinTable = oldStrategy.getJoinTable();
-		if (oldJoinTable != null) {
+		// the old join table should always be an orm specified join table...
+		if ((oldJoinTable instanceof OrmSpecifiedJoinTable) && ((OrmSpecifiedJoinTable) oldJoinTable).isSpecifiedInResource()) {
 			this.addStrategy();
 			this.joinTable.initializeFrom(oldJoinTable);
 		}

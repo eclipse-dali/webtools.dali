@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,17 +10,12 @@
 package org.eclipse.jpt.jpa.ui.internal.handlers;
 
 import java.util.Map;
-import org.eclipse.core.commands.AbstractHandler;
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.ui.selection.JpaSelectionManager;
 import org.eclipse.ui.ISources;
 import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.commands.IElementUpdater;
-import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.menus.UIElement;
 import org.eclipse.ui.services.IEvaluationService;
 
@@ -34,11 +29,9 @@ import org.eclipse.ui.services.IEvaluationService;
  * 
  * @see org.eclipse.jpt.jpa.ui.internal.menus.PersistentTypeMapAsContribution
  * @see PersistentType
- * @version 2.0
- * @since 2.0
  */
 public class PersistentTypeMapAsHandler
-	extends AbstractHandler
+	extends JpaStructureViewHandler
 	implements IElementUpdater
 {
 	/**
@@ -65,31 +58,13 @@ public class PersistentTypeMapAsHandler
 		super();
 	}
 
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getCurrentSelectionChecked(event);
-		String mappingKey = event.getParameter(COMMAND_PARAMETER_ID);
-		Object[] items = selection.toArray();
+	@Override
+	protected void execute_(Object[] items, Map<String, String> parameters, IWorkbenchWindow window) {
+		String mappingKey = parameters.get(COMMAND_PARAMETER_ID);
 		for (Object item : items) {
 			PersistentType type = (PersistentType) item;
 			type.setMappingKey(mappingKey);
 		}
-		this.setJpaSelection(items);
-		return null;
-	}
-
-	/**
-	 * @see PersistentAttributeMapAsHandler#setJpaSelection(Object[])
-	 */
-	private void setJpaSelection(Object[] items) {
-		if (items.length == 1) {
-			JpaSelectionManager mgr = this.getJpaSelectionManager();
-			mgr.setSelection(null);
-			mgr.setSelection((PersistentType) items[0]);
-		}
-	}
-
-	private JpaSelectionManager getJpaSelectionManager() {
-		return WorkbenchTools.getAdapter(JpaSelectionManager.class);
 	}
 
 	public void updateElement(UIElement element, @SuppressWarnings("rawtypes") Map parameters) {

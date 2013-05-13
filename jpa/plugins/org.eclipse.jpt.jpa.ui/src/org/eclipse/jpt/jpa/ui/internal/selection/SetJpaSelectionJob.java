@@ -14,7 +14,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
-import org.eclipse.jpt.common.utility.internal.RunnableAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 
@@ -76,7 +76,7 @@ class SetJpaSelectionJob
 	 * @see SetJpaSelectionJob#run(IProgressMonitor)
 	 */
 	private static class SetJpaSelectionRunnable
-		extends RunnableAdapter
+		implements Runnable
 	{
 		private final Manager jpaSelectionManager;
 		private final JpaStructureNode selection;
@@ -87,9 +87,13 @@ class SetJpaSelectionJob
 			this.selection = selection;
 		}
 
-		@Override
 		public void run() {
 			this.jpaSelectionManager.setSelection_(this.selection);
+		}
+
+		@Override
+		public String toString() {
+			return ObjectTools.toString(this, this.selection);
 		}
 	}
 

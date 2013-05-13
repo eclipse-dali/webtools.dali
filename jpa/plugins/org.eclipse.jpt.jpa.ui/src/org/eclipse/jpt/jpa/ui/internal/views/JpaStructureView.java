@@ -14,6 +14,11 @@ import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
+import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.ui.JpaWorkbench;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.selection.JpaEditorManager;
@@ -58,6 +63,21 @@ public class JpaStructureView
 	private volatile Manager manager;
 
 	/**
+	 * <strong>NB:</strong> We add a <strong>NOP</strong> listener to the
+	 * {@link org.eclipse.jpt.jpa.ui.selection.JpaViewManager.PageManager
+	 * <em>workbench window</em> page manager's}
+	 * JPA selection model to force it to be active so it will notify the
+	 * structure view's {@link JpaStructurePage <em>structure</em> pages} when
+	 * the JPA selection is changed from elsewhere (e.g. a menu command
+	 * handler).
+	 * Otherwise, the <em>workbench window</em> page manager's JPA selection
+	 * model, since it has no direct listeners, will ignore any changes and not
+	 * forward them to the {@link JpaEditorManager JPA editor manager} of the
+	 * current editor, which is what the <em>structure</em> page listens to.
+	 */
+	private final PropertyChangeListener jpaSelectionListener = new PropertyChangeAdapter();
+
+	/**
 	 * The resource manager is created when the view's control is
 	 * {@link #createPartControl(Composite) created}
 	 * and disposed, if necessary, when the view is
@@ -73,6 +93,9 @@ public class JpaStructureView
 	@Override
 	public void createPartControl(Composite parent) {
 		this.manager = this.buildManager();
+		if (this.manager != null) {
+			this.manager.getJpaSelectionModel().addPropertyChangeListener(PropertyValueModel.VALUE, this.jpaSelectionListener);
+		}
 		this.resourceManager = this.buildResourceManager();
 		super.createPartControl(parent);
 	}
@@ -175,6 +198,7 @@ public class JpaStructureView
 	public void dispose() {
 		super.dispose();
 		if (this.manager != null) {
+			this.manager.getJpaSelectionModel().removePropertyChangeListener(PropertyValueModel.VALUE, this.jpaSelectionListener);
 			this.manager.dispose();
 		}
 		if (this.resourceManager != null) {
@@ -217,6 +241,10 @@ public class JpaStructureView
 
 		JpaEditorManager getEditorManager(IEditorPart editor) {
 			return this.pageManager.getEditorManager(editor);
+		}
+
+		ModifiablePropertyValueModel<JpaStructureNode> getJpaSelectionModel() {
+			return this.pageManager.getJpaSelectionModel();
 		}
 
 		void dispose() {

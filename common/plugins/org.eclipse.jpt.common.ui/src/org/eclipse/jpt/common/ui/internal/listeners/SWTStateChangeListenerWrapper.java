@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.listeners;
 
+import org.eclipse.jpt.common.ui.internal.plugin.JptCommonUiPlugin;
 import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.common.utility.internal.RunnableAdapter;
 import org.eclipse.jpt.common.utility.internal.collection.SynchronizedQueue;
@@ -54,7 +55,11 @@ public class SWTStateChangeListenerWrapper
 
 	void forwardEvents() {
 		for (StateChangeEvent event : this.events.drain()) {
-			this.listener.stateChanged(event);
+			try {
+				this.listener.stateChanged(event);
+			} catch (RuntimeException ex) {
+				JptCommonUiPlugin.instance().logError(ex);
+			}
 		}
 	}
 

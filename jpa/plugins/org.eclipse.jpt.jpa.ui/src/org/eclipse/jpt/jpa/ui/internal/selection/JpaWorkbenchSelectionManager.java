@@ -67,7 +67,8 @@ class JpaWorkbenchSelectionManager
 	 * <br>
 	 * <strong>NB:</strong> {@link IWorkbench#getActiveWorkbenchWindow()}
 	 * (and, thus, this method) must
-	 * be called from the UI thread or it will return <code>null</code>.
+	 * be called from the UI thread or it will return <code>null</code>
+	 * (and this method will do nothing).
 	 * @see SetJpaSelectionJob.SetJpaSelectionRunnable#run()
 	 */
 	public void setSelection_(JpaStructureNode selection) {
