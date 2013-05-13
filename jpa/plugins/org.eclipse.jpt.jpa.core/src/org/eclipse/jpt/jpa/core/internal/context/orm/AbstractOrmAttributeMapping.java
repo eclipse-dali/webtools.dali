@@ -196,7 +196,9 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 	// ********** morphing mappings **********
 
 	public void initializeFromOrmAttributeMapping(OrmAttributeMapping oldMapping) {
-		this.setName(oldMapping.getName());
+		// the name is set by the orm persistent type when it is moving the persistent
+		// attribute within the type's list of specified attributes (as required by orm.xml xsd...)
+		// this.setName(oldMapping.getName());
 		this.setSpecifiedAttributeType(oldMapping.getSpecifiedAttributeType());
 	}
 

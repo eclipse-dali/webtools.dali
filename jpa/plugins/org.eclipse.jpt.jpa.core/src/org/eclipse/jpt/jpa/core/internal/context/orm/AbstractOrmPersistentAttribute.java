@@ -142,11 +142,18 @@ public abstract class AbstractOrmPersistentAttribute
 		return md.buildContextMapping(this, xmlAttributeMapping, this.getContextModelFactory());
 	}
 
+	/**
+	 * @see SpecifiedOrmPersistentType#changeMapping(OrmSpecifiedPersistentAttribute, OrmAttributeMapping, OrmAttributeMapping)
+	 */
 	protected void setMapping(OrmAttributeMapping mapping) {
 		OrmAttributeMapping old = this.mapping;
 		this.mapping = mapping;
-		this.firePropertyChanged(MAPPING_PROPERTY, old, mapping);
+		// wait until the attribute is moved in the persistent type's list before firing an event
 		this.getDeclaringPersistentType().changeMapping(this, old, mapping);
+		this.firePropertyChanged(MAPPING_PROPERTY, old, mapping);
+		// now that the attribute and mapping are in place and listeners notified,
+		// copy any relevant state from the old mapping to the new mapping
+		old.initializeOn(mapping);
 	}
 
 	/**

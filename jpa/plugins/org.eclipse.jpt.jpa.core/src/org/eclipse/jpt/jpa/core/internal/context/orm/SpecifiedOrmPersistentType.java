@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -500,6 +501,11 @@ public abstract class SpecifiedOrmPersistentType
 		this.removeXmlAttributesIfUnset();
 	}
 
+	/**
+	 * <em>Silently</em> move the specified attribute before triggering an
+	 * <em>update</em> or the inconsistent state will cause problems.
+	 * @see org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmPersistentAttribute#setMapping(OrmAttributeMapping)
+	 */
 	public void changeMapping(OrmSpecifiedPersistentAttribute attribute, OrmAttributeMapping oldMapping, OrmAttributeMapping newMapping) {
 		// keep the context model in sync with each change to the resource model
 		int sourceIndex = this.specifiedAttributes.indexOf(attribute);
@@ -510,7 +516,9 @@ public abstract class SpecifiedOrmPersistentType
 		this.specifiedAttributes.add(targetIndex, attribute);
 		newMapping.addXmlAttributeMappingTo(this.getXmlAttributes());
 
-		oldMapping.initializeOn(newMapping);
+		// this will trigger the initial update;
+		// no changes to either collection (default or specified) should be detected at this point
+		newMapping.setName(oldMapping.getName());
 
 		this.fireItemMoved(SPECIFIED_ATTRIBUTES_LIST, targetIndex, sourceIndex);
 	}
@@ -1022,13 +1030,13 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	protected void initializeChildren() {
-		this.children.addAll(this.specifiedAttributes); //defaultAttributes haven't been built yet
+		this.children.addAll(this.specifiedAttributes); // default attributes haven't been built yet
 	}
 
 	protected void updateChildren() {
-		Vector<OrmPersistentAttribute> newChildren = new Vector<OrmPersistentAttribute>();
-		newChildren.addAll(this.specifiedAttributes);
-		newChildren.addAll(this.defaultAttributes);
+		ArrayList<OrmPersistentAttribute> newChildren = new ArrayList<OrmPersistentAttribute>(this.specifiedAttributes.size() + this.defaultAttributes.size());
+		CollectionTools.addAll(newChildren, this.getSpecifiedAttributes());
+		CollectionTools.addAll(newChildren, this.getDefaultAttributes());
 		this.synchronizeCollection(newChildren, this.children, CHILDREN_COLLECTION);
 	}
 
