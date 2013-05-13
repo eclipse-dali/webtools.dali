@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 
 /**
- * Context model corresponding to:<ul>
+ * (Extensible) context model "enum" corresponding to:<ul>
  * <li>the XML resource model
  * {@link org.eclipse.jpt.jpa.core.resource.orm.AccessType},
  * which corresponds to the <code>access</code> element in the
@@ -48,8 +48,8 @@ public class AccessType {
 	protected final String ormAccessType;
 	protected final String displayString;
 
-	public AccessType(org.eclipse.jpt.jpa.core.resource.java.AccessType javaAccessType, String ormAccessType, String displayString) {
-		if (ormAccessType == null) {
+	protected AccessType(org.eclipse.jpt.jpa.core.resource.java.AccessType javaAccessType, String ormAccessType, String displayString) {
+		if ((ormAccessType == null) || (displayString == null)) {
 			throw new NullPointerException();
 		}
 		this.javaAccessType = javaAccessType;
@@ -68,6 +68,12 @@ public class AccessType {
 	public String getDisplayString() {
 		return this.displayString;
 	}
+
+	@Override
+	public String toString() {
+		return this.displayString;
+	}
+
 
 	// ********** static methods **********
 
@@ -104,5 +110,4 @@ public class AccessType {
 	public static String toOrmResourceModel(AccessType accessType) {
 		return (accessType == null) ? null : accessType.getOrmAccessType();
 	}
-
 }
