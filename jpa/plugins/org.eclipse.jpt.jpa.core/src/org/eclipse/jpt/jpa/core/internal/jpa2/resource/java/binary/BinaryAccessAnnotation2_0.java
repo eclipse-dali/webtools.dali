@@ -66,7 +66,7 @@ public final class BinaryAccessAnnotation2_0
 	}
 
 	private AccessType buildValue() {
-		return AccessType.fromJavaAnnotationValue(this.getJdtMemberValue(JPA2_0.ACCESS));
+		return AccessType.fromJavaAnnotationValue(this.getJdtMemberValue(JPA2_0.ACCESS__VALUE));
 	}
 
 	public TextRange getValueTextRange() {
