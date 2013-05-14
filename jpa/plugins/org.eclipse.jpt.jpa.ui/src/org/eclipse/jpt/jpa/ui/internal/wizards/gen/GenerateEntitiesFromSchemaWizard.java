@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.wizards.gen;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceRuleFactory;
@@ -195,7 +196,12 @@ public class GenerateEntitiesFromSchemaWizard
 		else if (newDefaultTable.getPackage().equals(StringTools.EMPTY_STRING)) {
 			newDefaultTable.setPackage(JpaPreferences.getEntityGenDefaultPackageName(this.jpaProject.getProject()));
 		}
-			
+		//test to see if this is our first entity gen run for this project
+		//if so, default all entities generated to implement serializable here
+		//in case user clicks finish on first page - see bug 407652
+		if (this.customizer.getTableNames().isEmpty()) { 
+			newDefaultTable.setImplements(Arrays.asList(ORMGenTable.SERIALIZABLE_INTERFACE));
+		}
 		return this.customizer;
 	}
 	
