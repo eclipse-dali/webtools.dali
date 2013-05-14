@@ -167,9 +167,10 @@ public class ELJavaXmlPath
 	
 	
 	protected class XPathContext
-		implements XPath.Context {
+			extends XPath.AbstractContext {
 		
 		protected XPathContext() {
+			super();
 		}
 		
 		

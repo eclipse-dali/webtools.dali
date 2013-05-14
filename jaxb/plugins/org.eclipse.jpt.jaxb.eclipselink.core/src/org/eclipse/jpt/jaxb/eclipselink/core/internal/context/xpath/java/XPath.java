@@ -9,12 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.xpath.java;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 import org.eclipse.jpt.common.core.internal.utility.SimpleTextRange;
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
@@ -26,6 +31,7 @@ import org.eclipse.jpt.jaxb.core.JaxbNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
+import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
 import org.eclipse.jpt.jaxb.core.context.XmlSchema;
 import org.eclipse.jpt.jaxb.core.xsd.XsdAttributeUse;
 import org.eclipse.jpt.jaxb.core.xsd.XsdElementDeclaration;
@@ -197,7 +203,7 @@ public class XPath {
 		result = ArrayTools.addAll(result, predicate);
 		return result;
 	}
-	
+		
 	
 	// ***** content assist *****
 	
@@ -241,6 +247,11 @@ public class XPath {
 		@Override
 		protected String getValue() {
 			return ATT_PREFIX + super.getValue();
+		}
+		
+		@Override
+		protected String resolveNamespace(Context context) {
+			return context.getAttributeNamespace(this.nsPrefix);
 		}
 		
 		@Override
@@ -306,6 +317,11 @@ public class XPath {
 			super(nsPrefix, localName, predicates);
 		}
 		
+		
+		@Override
+		protected String resolveNamespace(Context context) {
+			return context.getElementNamespace(this.nsPrefix);
+		}
 		
 		@Override
 		protected XsdTypeDefinition
@@ -418,16 +434,7 @@ public class XPath {
 			return sb.toString();
 		}
 		
-		protected String resolveNamespace(Context context) {
-			JaxbPackage pkg = context.getJaxbPackage();
-			if (this.nsPrefix == null) {
-				return "";
-			}
-			else {
-				JaxbPackageInfo pkgInfo = pkg.getPackageInfo();
-				return (pkgInfo == null) ? null : pkgInfo.getNamespaceForPrefix(this.nsPrefix);
-			}
-		}
+		protected abstract String resolveNamespace(Context context);
 		
 		@Override
 		protected void validate(
@@ -460,8 +467,6 @@ public class XPath {
 		
 		protected abstract XsdTypeDefinition validateLocalName(
 				Context context, XsdTypeDefinition previousType, String namespace, List<IMessage> messages);
-		
-//		protected abstract TextRange buildNamespacePrefixTextRange(CompilationUnit astRoot);
 	}
 
 	protected class SelfStep
@@ -549,22 +554,37 @@ public class XPath {
 		
 		protected Iterable<String> getAttributeProposals(Context context, final XsdTypeDefinition xsdType) {
 			return IterableTools.concatenate(
-					IterableTools.concatenate(
-							IterableTools.transform(getXmlNsInfos(context), new XmlNsAttributeNamesTransformer(xsdType))),
-					IterableTools.transform(xsdType.getAttributeNames(StringTools.EMPTY_STRING), new AttributeNameTransformer(null)));
+					IterableTools.transform(
+							calculatePrefixes(context),
+							new PrefixToAttributeNamesTransformer(context, xsdType)));
 		}
 		
 		protected Iterable<String> getElementProposals(Context context, final XsdTypeDefinition xsdType) {
 			return IterableTools.concatenate(
-					IterableTools.concatenate(
-							IterableTools.transform(getXmlNsInfos(context), new XmlNsElementNamesTransformer(xsdType))),
-					xsdType.getElementNames(StringTools.EMPTY_STRING, false));
+					IterableTools.transform(
+							calculatePrefixes(context), 
+							new PrefixToElementNamesTransformer(context, xsdType)));
 		}
 		
-		protected Iterable<XmlNs> getXmlNsInfos(Context context) {
-			JaxbPackageInfo pkgInfo = context.getJaxbPackage().getPackageInfo();
+		protected Iterable<String> calculatePrefixes(Context context) {
+			Set<String> result = new HashSet();
+			result.add(null);
+			
+			JaxbPackage jaxbPackage = context.getJaxbPackage();
+			JaxbPackageInfo pkgInfo = (jaxbPackage == null) ? null : jaxbPackage.getPackageInfo();
 			XmlSchema xmlSchema = (pkgInfo == null) ? null : pkgInfo.getXmlSchema();
-			return (xmlSchema == null) ? EmptyIterable.<XmlNs>instance() : xmlSchema.getXmlNsPrefixes();
+			
+			if (xmlSchema != null) {
+				for (XmlNs xmlns : xmlSchema.getXmlNsPrefixes()) {
+					String prefix = xmlns.getPrefix();
+					if (StringTools.EMPTY_STRING.equals(prefix)) {
+						prefix = null;
+					}
+					result.add(prefix);
+				}
+			}
+			
+			return result;
 		}
 		
 		protected void validate(Context context, XsdTypeDefinition previousType, List<IMessage> messages) {
@@ -575,10 +595,11 @@ public class XPath {
 			return XPath.this.buildTextRange(context, this);
 		}
 	}
-
+	
+	
 	static class StringPrefixer
-		extends TransformerAdapter<String, String>
-	{
+			extends TransformerAdapter<String, String> {
+		
 		private final String prefix;
 		StringPrefixer(String prefix) {
 			super();
@@ -631,59 +652,169 @@ public class XPath {
 		
 		JaxbPackage getJaxbPackage();
 		
+		String getAttributeNamespace(String prefix);
+		
+		String getElementNamespace(String prefix);
+		
 		TextRange getTextRange();
 	}
+	
+	
+	public static abstract class AbstractContext
+			implements Context {
+		
+		protected Map<String, String> namespaceMap;
+		
+		public AbstractContext() {
+			buildNamespaceMap();
+		}
+		
+		protected void buildNamespaceMap() {
+			this.namespaceMap = new HashMap();
+			for (XmlNs xmlns : getXmlNsInfos()) {
+				String prefix = xmlns.getPrefix();
+				if (ObjectTools.equals("", prefix)) {
+					prefix = null;
+				}
+				namespaceMap.put(prefix, xmlns.getNamespaceURI());
+			}
+		}
+		
+		protected Iterable<XmlNs> getXmlNsInfos() {
+			XmlSchema xmlSchema = getXmlSchema();
+			return (xmlSchema == null) ? EmptyIterable.<XmlNs>instance() : xmlSchema.getXmlNsPrefixes();
+		}
+		
+		protected XmlSchema getXmlSchema() {
+			JaxbPackageInfo pkgInfo = getJaxbPackage().getPackageInfo();
+			return (pkgInfo == null) ? null : pkgInfo.getXmlSchema();
+		}
+		
+		public String getAttributeNamespace(String prefix) {
+			String namespace = StringTools.EMPTY_STRING;
+			if (this.namespaceMap.containsKey(prefix)) {
+				namespace = this.namespaceMap.get(prefix);
+			}
+			
+			// Default namespaces do not apply to attributes.
+			// Therefore, return the empty namespace ("") for all null prefixes
+			// *except* in the case that the default form for attributes is QUALIFIED.
+			// In that case, no prefix makes no sense, so return null.
+			
+			XmlSchema xmlSchema = getXmlSchema();
+			if (prefix == null && xmlSchema != null && xmlSchema.getAttributeFormDefault() == XmlNsForm.QUALIFIED) {
+				return null;
+			}
+			
+			return namespace;
+		}
+		
+		public String getElementNamespace(String prefix) {
+			if (this.namespaceMap.containsKey(prefix)) {
+				return this.namespaceMap.get(prefix);
+			}
+			
+			// Default namespaces do apply to elements.
+			// Therefore, return the "no" namespace ("") for all null prefixes
+			// *except* in the case that the default form for elements is QUALIFIED.
+			// In that case, return the default namespace specified on the package.
+			
+			XmlSchema xmlSchema = getXmlSchema();
+			if (xmlSchema != null && xmlSchema.getElementFormDefault() == XmlNsForm.QUALIFIED) {
+				return xmlSchema.getNamespace();
+			}
+			
+			return StringTools.EMPTY_STRING;
+		}
+	}
+	
 
-	public static class XmlNsAttributeNamesTransformer
-		extends TransformerAdapter<XmlNs, Iterable<String>>
-	{
-		protected final XsdTypeDefinition<?> xsdType;
-		public XmlNsAttributeNamesTransformer(XsdTypeDefinition<?> xsdType) {
+	public static class PrefixToAttributeNamesTransformer
+			extends TransformerAdapter<String, Iterable<String>> {
+		
+		protected final Context context;
+		protected final XsdTypeDefinition xsdType;
+		
+		public PrefixToAttributeNamesTransformer(Context context, XsdTypeDefinition xsdType) {
 			super();
+			this.context = context;
 			this.xsdType = xsdType;
 		}
+		
 		@Override
-		public Iterable<String> transform(XmlNs xmlns) {
-			return IterableTools.transform(this.xsdType.getAttributeNames(xmlns.getNamespaceURI()), new AttributeNameTransformer(xmlns.getPrefix()));
+		public Iterable<String> transform(String prefix) {
+			// Here in XPath, a null namespace is invalid and a "" namespace 
+			// is the "no" namespace.
+			// In XSD, null is the "no" namespace.  Account for this.
+			String namespace = this.context.getAttributeNamespace(prefix);
+			if (namespace == null) {
+				return EmptyIterable.instance();
+			}
+			else if (StringTools.EMPTY_STRING.equals(namespace)) {
+				namespace = null;
+			}
+			return IterableTools.transform(
+					this.xsdType.getAttributeNames(namespace), 
+					new PrefixedAttributeNameTransformer(prefix));
 		}
 	}
 
-	public static class AttributeNameTransformer
-		extends TransformerAdapter<String, String>
-	{
+	public static class PrefixedAttributeNameTransformer
+			extends TransformerAdapter<String, String> {
+		
 		protected final String prefix;
-		public AttributeNameTransformer(String prefix) {
+		
+		public PrefixedAttributeNameTransformer(String prefix) {
 			super();
 			this.prefix = prefix;
 		}
+		
 		@Override
 		public String transform(String localName) {
 			return XPath.attributeXPath(this.prefix, localName);
 		}
 	}
 
-	public static class XmlNsElementNamesTransformer
-		extends TransformerAdapter<XmlNs, Iterable<String>>
-	{
-		protected final XsdTypeDefinition<?> xsdType;
-		public XmlNsElementNamesTransformer(XsdTypeDefinition<?> xsdType) {
+	public static class PrefixToElementNamesTransformer
+			extends TransformerAdapter<String, Iterable<String>> {
+		
+		protected final Context context;
+		protected final XsdTypeDefinition xsdType;
+		
+		public PrefixToElementNamesTransformer(Context context, XsdTypeDefinition xsdType) {
 			super();
+			this.context = context;
 			this.xsdType = xsdType;
 		}
+		
 		@Override
-		public Iterable<String> transform(XmlNs xmlns) {
-			return IterableTools.transform(this.xsdType.getElementNames(xmlns.getNamespaceURI(), false), new ElementNameTransformer(xmlns.getPrefix()));
+		public Iterable<String> transform(String prefix) {
+			// Here in XPath, a null namespace is invalid and a "" namespace 
+			// is the "no" namespace.
+			// In XSD, null is the "no" namespace.  Account for this.
+			String namespace = this.context.getElementNamespace(prefix);
+			if (namespace == null) {
+				return EmptyIterable.instance();
+			}
+			else if (StringTools.EMPTY_STRING.equals(namespace)) {
+				namespace = null;
+			}
+			return IterableTools.transform(
+					this.xsdType.getElementNames(namespace, false), 
+					new PrefixedElementNameTransformer(prefix));
 		}
 	}
-
-	public static class ElementNameTransformer
-		extends TransformerAdapter<String, String>
-	{
+	
+	public static class PrefixedElementNameTransformer
+			extends TransformerAdapter<String, String> {
+		
 		protected final String prefix;
-		public ElementNameTransformer(String prefix) {
+		
+		public PrefixedElementNameTransformer(String prefix) {
 			super();
 			this.prefix = prefix;
 		}
+		
 		@Override
 		public String transform(String localName) {
 			return XPath.elementXPath(this.prefix, localName);
