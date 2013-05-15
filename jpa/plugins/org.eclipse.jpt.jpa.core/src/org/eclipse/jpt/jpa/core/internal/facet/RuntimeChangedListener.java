@@ -12,12 +12,16 @@ package org.eclipse.jpt.jpa.core.internal.facet;
 import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
+import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.JpaWorkspace;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.libprov.JpaLibraryProviderInstallOperationConfig;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectBase;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
@@ -25,8 +29,8 @@ import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectListener;
 
 public class RuntimeChangedListener
-	implements IFacetedProjectListener
-{
+		implements IFacetedProjectListener {
+	
 	public void handleEvent(IFacetedProjectEvent facetedProjectEvent) {
 		
 		IFacetedProjectBase fpb = facetedProjectEvent.getWorkingCopy();
@@ -52,30 +56,20 @@ public class RuntimeChangedListener
 	}
 	
 	protected String getJpaPlatformId(IProject project) {
-		JpaProject jpaProject = this.getJpaProject(project);
-		return (jpaProject == null) ? null : jpaProject.getJpaPlatform().getId();
+		return JpaPreferences.getJpaPlatformID(project);
 	}
 	
 	protected JpaPlatform.Config getJpaPlatformConfig(IProject project) {
-		JpaProject jpaProject = this.getJpaProject(project);
-		return (jpaProject == null) ? null : jpaProject.getJpaPlatform().getConfig();
+		JpaPlatformManager jpaPlatformManager = getJpaPlatformManager();
+		return (jpaPlatformManager == null) ? null : jpaPlatformManager.getJpaPlatformConfig(getJpaPlatformId(project));
+	}
+	
+	protected JpaPlatformManager getJpaPlatformManager() {
+		JpaWorkspace jpaWorkspace = getJpaWorkspace();
+		return (jpaWorkspace == null) ? null : jpaWorkspace.getJpaPlatformManager();
 	}
 
-	protected JpaProject getJpaProject(IProject project) {
-		try {
-			return this.getJpaProject_(project);
-		} catch (InterruptedException ex) {
-			Thread.currentThread().interrupt();
-			return null;
-		}
-	}
-
-	protected JpaProject getJpaProject_(IProject project) throws InterruptedException {
-		JpaProject.Reference ref = this.getJpaProjectReference(project);
-		return (ref == null) ? null : ref.getValue();
-	}
-
-	protected JpaProject.Reference getJpaProjectReference(IProject project) {
-		return (JpaProject.Reference) project.getAdapter(JpaProject.Reference.class);
+	protected JpaWorkspace getJpaWorkspace() {
+		return (JpaWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JpaWorkspace.class);
 	}
 }
