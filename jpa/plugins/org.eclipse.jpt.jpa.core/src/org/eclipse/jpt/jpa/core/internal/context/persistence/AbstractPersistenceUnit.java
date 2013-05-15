@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.context.persistence;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -29,6 +30,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
@@ -2046,13 +2048,14 @@ public abstract class AbstractPersistenceUnit
 	// ********** synchronize classes **********
 
 	public void synchronizeClasses(IProgressMonitor monitor) {
-		SubMonitor sm = SubMonitor.convert(monitor, 3);
+		SubMonitor sm = SubMonitor.convert(monitor, 4);
 
-		// calculate the refs to remove and add
+		// newTypes collection only includes those that are annotated
 		HashSet<JavaResourceAbstractType> newTypes = CollectionTools.set(this.getJpaProject().getPotentialJavaSourceTypes());
 		ArrayList<ClassRef> deadClassRefs = new ArrayList<ClassRef>();
 		HashSet<String> mappingFileTypeNames = this.getMappingFileTypeNames();
 
+		// collect those class refs that need to be removed from persistence.xml
 		for (ClassRef classRef : this.getSpecifiedClassRefs()) {
 			JavaManagedType specifiedJMT = classRef.getJavaManagedType();
 			if (specifiedJMT == null) {
@@ -2069,6 +2072,14 @@ public abstract class AbstractPersistenceUnit
 				}
 			}
 		}
+
+		// if a type is included in a mapping file, remove it from the newTypes collection
+		for (java.util.Iterator<JavaResourceAbstractType> iterator = newTypes.iterator(); iterator.hasNext();) {
+			JavaResourceAbstractType type = iterator.next();
+			if (mappingFileTypeNames.contains(type.getTypeBinding().getQualifiedName())) {
+				iterator.remove();
+			}
+		}
 		if (sm.isCanceled()) {
 			return;
 		}
@@ -2082,6 +2093,16 @@ public abstract class AbstractPersistenceUnit
 
 		this.addSpecifiedClassRefs(newTypes);
 		sm.worked(1);
+
+		// sort the list of class refs within the persistence.xml
+		ECollections.sort(this.getXmlPersistenceUnit().getClasses(), new XmlJavaClassRefNameComp());
+		sm.worked(1);
+	}
+
+	public class XmlJavaClassRefNameComp implements Comparator<XmlJavaClassRef>{
+		public int compare(XmlJavaClassRef xjcr1, XmlJavaClassRef xjcr2) {
+			return xjcr1.getJavaClass().compareTo(xjcr2.getJavaClass());
+		}
 	}
 
 	/**
