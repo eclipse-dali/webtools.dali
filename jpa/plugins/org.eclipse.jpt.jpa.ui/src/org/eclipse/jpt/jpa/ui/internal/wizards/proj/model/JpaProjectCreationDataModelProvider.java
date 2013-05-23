@@ -53,7 +53,10 @@ public class JpaProjectCreationDataModelProvider
 		this.moduleFacetDataModelListener 
 			= new IDataModelListener() {
 				public void propertyChanged(DataModelEvent event) {
-					if (IJ2EEModuleFacetInstallDataModelProperties.EAR_PROJECT_NAME.equals(event.getPropertyName())) {
+					if (IJ2EEModuleFacetInstallDataModelProperties.FACET_PROJECT_NAME.equals(event.getPropertyName())) {
+						model.notifyPropertyChange(EAR_PROJECT_NAME, IDataModel.DEFAULT_CHG);
+					}
+					else if (IJ2EEModuleFacetInstallDataModelProperties.EAR_PROJECT_NAME.equals(event.getPropertyName())) {
 						if (isPropertySet(EAR_PROJECT_NAME)) {
 							setProperty(EAR_PROJECT_NAME, event.getProperty());
 						}
@@ -181,12 +184,18 @@ public class JpaProjectCreationDataModelProvider
 	
 	@Override
 	public boolean propertySet(String propertyName, Object propertyValue) {
+		IDataModel moduleFacetDataModel = getModuleFacetDataModel();
+		if (moduleFacetDataModel != null && moduleFacetDataModel.getAllProperties().contains(propertyName)) {
+			moduleFacetDataModel.setProperty(propertyName, propertyValue);
+		}
+		
 		if (EAR_PROJECT_NAME.equals(propertyName) || ADD_TO_EAR.equals(propertyName) || FACET_RUNTIME.equals(propertyName) || MODULE_FACET_DATA_MODEL.equals(propertyName)) {
-			IDataModel moduleFacetDataModel = getModuleFacetDataModel();
 			if (moduleFacetDataModel != null){
 				if (EAR_PROJECT_NAME.equals(propertyName) || MODULE_FACET_DATA_MODEL.equals(propertyName)) {
-					moduleFacetDataModel.setProperty(
-							IJ2EEModuleFacetInstallDataModelProperties.EAR_PROJECT_NAME, getEarProjectName());
+					if (this.model.isPropertySet(EAR_PROJECT_NAME)) {
+						moduleFacetDataModel.setProperty(
+								IJ2EEModuleFacetInstallDataModelProperties.EAR_PROJECT_NAME, getEarProjectName());
+					}
 				}
 				if (ADD_TO_EAR.equals(propertyName) || MODULE_FACET_DATA_MODEL.equals(propertyName)) {
 					moduleFacetDataModel.setProperty(
@@ -302,12 +311,16 @@ public class JpaProjectCreationDataModelProvider
 				oldModuleFacetDataModel.removeListener(this.moduleFacetDataModelListener);
 			}
 			if (newModuleFacetDataModel != null) {
-				newModuleFacetDataModel.setProperty(
-						IJ2EEModuleFacetInstallDataModelProperties.ADD_TO_EAR,
-						getProperty(ADD_TO_EAR));
-				newModuleFacetDataModel.setProperty(
-						IJ2EEModuleFacetInstallDataModelProperties.EAR_PROJECT_NAME,
-						getProperty(EAR_PROJECT_NAME));
+				if (this.model.isPropertySet(ADD_TO_EAR)) {
+					newModuleFacetDataModel.setProperty(
+							IJ2EEModuleFacetInstallDataModelProperties.ADD_TO_EAR,
+							getProperty(ADD_TO_EAR));
+				}
+				if (this.model.isPropertySet(EAR_PROJECT_NAME)) {
+					newModuleFacetDataModel.setProperty(
+							IJ2EEModuleFacetInstallDataModelProperties.EAR_PROJECT_NAME,
+							getProperty(EAR_PROJECT_NAME));
+				}
 				newModuleFacetDataModel.addListener(this.moduleFacetDataModelListener);
 			}
 			else {

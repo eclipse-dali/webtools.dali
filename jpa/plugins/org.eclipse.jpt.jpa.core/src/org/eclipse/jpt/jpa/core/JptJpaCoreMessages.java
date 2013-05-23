@@ -71,6 +71,12 @@ public class JptJpaCoreMessages {
 	public static String MAKE_PERSISTENT_ANNOTATING_CLASS;
 	public static String MAKE_PERSISTENT_ADD_TO_PERSISTENCE_XML_RESOURCE_MODEL;
 	public static String MAKE_PERSISTENT_LISTING_IN_PERSISTENCE_XML;
+	
+	public static String BASIC_JPA_SE_PRESET_CONFIG__LABEL;
+	public static String BASIC_JPA_SE_PRESET_CONFIG__DESC;
+	public static String BASIC_JPA_EE_PRESET_CONFIG__LABEL;
+	public static String BASIC_JPA_EE_PRESET_CONFIG__DESC;
+	
 
 	private JptJpaCoreMessages() {
 		throw new UnsupportedOperationException();

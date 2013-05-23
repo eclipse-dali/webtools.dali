@@ -599,9 +599,6 @@
 			<label>%JPA_TEMPLATE_LABEL</label>
 			<fixed facet="jpt.jpa"/>
 			<fixed facet="java"/>
-			<!--
-			<preset id="jpt.jpa.2_0.preset"/>
-			-->
 		</template>
 		
 		<action facet="jpt.jpa" type="install" id="jpt.jpa.install">
@@ -627,6 +624,20 @@
 		<listener
 			class="org.eclipse.jpt.jpa.core.internal.facet.RuntimeChangedListener"
 			eventTypes="TARGETED_RUNTIMES_CHANGED"/>
+		
+	</extension>
+	
+	
+	<extension 
+		point="org.eclipse.wst.common.project.facet.core.presets">
+		
+		<dynamic-preset id="basic.jpa.se.configuration">
+			<factory class="org.eclipse.jpt.jpa.core.internal.facet.BasicJpaSEConfigurationPresetFactory"/>
+		</dynamic-preset>
+		
+		<dynamic-preset id="basic.jpa.ee.configuration">
+			<factory class="org.eclipse.jpt.jpa.core.internal.facet.BasicJpaEEConfigurationPresetFactory"/>
+		</dynamic-preset>
 		
 	</extension>
 	
