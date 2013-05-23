@@ -194,14 +194,5 @@
       <topic href="reference084.htm" label="Dali developer documentation" />
     </topic>
     <topic href="tips_and_tricks.htm" label="Tips and tricks" />
-    <topic href="whats_new.htm" label="What's new">
-      <topic href="whats_new001.htm" label="Support for generic JPA 2.x" />
-      <topic href="whats_new002.htm" label="Support for generic JAXB" />
-      <topic href="whats_new003.htm" label="Support for EclipseLink JPA 2.5.x">
-        <topic href="whats_new004.htm" label="JPA Support" />
-        <topic href="whats_new005.htm" label="JAXB Support" />
-      </topic>
-      <topic href="whats_new006.htm" label="JPA Diagram Editor" />
-    </topic>
     <topic href="legal.htm" label=" Legal" />
 </toc>
