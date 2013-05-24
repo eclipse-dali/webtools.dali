@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import java.util.List;
-
+import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -18,8 +18,6 @@ import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TableColumn;
 import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
-import org.eclipse.jpt.jpa.core.internal.context.NullJpaValidator;
-import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -66,7 +64,7 @@ public abstract class AbstractNamedColumnValidator<C extends NamedColumn>
 	}
 
 	protected JpaValidator buildTableValidator() {
-		return NullJpaValidator.instance();
+		return new ExistenceTableValidator();
 	}
 
 	public final boolean validate(List<IMessage> messages, IReporter reporter) {
@@ -149,7 +147,26 @@ public abstract class AbstractNamedColumnValidator<C extends NamedColumn>
 			}
 		}
 	}
-
+	
+	
+	// ***** existence table validator *****
+	
+	/**
+	 * Simply checks if the db table exists.  If it doesn't then will return false,
+	 * effectively short-circuiting the column validation.
+	 * The default table validator.
+	 */
+	protected class ExistenceTableValidator
+			implements JpaValidator {
+		
+		protected ExistenceTableValidator() {
+			super();
+		}
+		
+		public boolean validate(List<IMessage> messages, IReporter reporter) {
+			return AbstractNamedColumnValidator.this.column.getDbTable() != null;
+		}
+	}
 
 	// ********** base column table validator **********
 
