@@ -1120,7 +1120,7 @@ public abstract class AbstractJavaEntity
 	 * Return whether the entity is a descendant in (as opposed to the root of)
 	 * an inheritance hierarchy.
 	 */
-	protected boolean isDescendant() {
+	public boolean isDescendant() {
 		return ! this.isRootEntity();
 	}
 

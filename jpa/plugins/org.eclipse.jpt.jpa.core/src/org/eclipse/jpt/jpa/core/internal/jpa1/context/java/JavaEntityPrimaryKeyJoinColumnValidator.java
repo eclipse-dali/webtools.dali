@@ -30,10 +30,10 @@ public class JavaEntityPrimaryKeyJoinColumnValidator
 
 	@Override
 	protected void validateJoinColumnName(List<IMessage> messages) {
-		if ( ! this.entity.isRootNoDescendantsNoStrategyDefined()) {
-			messages.add(this.buildUnresolvedNameMessage(this.getVirtualPKJoinColumnUnresolvedNameMessage()));
-		}
-		else if (this.entity.getSpecifiedPrimaryKeyJoinColumnsSize() > 0) {
+		// Based on the spec., the PrimaryKeyJoinColumn annotation is really only meaningful when 
+		// applying on an entity subclass so we only validate it when an entity is a descendant or an entity
+		// has specified primary key join columns
+		if (this.entity.isDescendant() || this.entity.getSpecifiedPrimaryKeyJoinColumnsSize() > 0) {
 			super.validateJoinColumnName(messages);
 		}
 	}
