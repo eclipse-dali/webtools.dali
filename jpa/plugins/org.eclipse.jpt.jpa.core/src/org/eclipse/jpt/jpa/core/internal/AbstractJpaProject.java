@@ -30,6 +30,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
@@ -609,8 +610,16 @@ public abstract class AbstractJpaProject
 	}
 
 	protected ProjectResourceLocator getProjectResourceLocator() {
-		return (ProjectResourceLocator) this.project.getAdapter(ProjectResourceLocator.class);
+		Object resourceLocator =  this.project.getAdapter(ProjectResourceLocator.class);
+		//Hack fix to ensure the adatper can be successfully loaded as there are currently problems in the platform
+		//in this area.  See bugs 405320 and 408506.  This fix is essentially a delay mechanism but appears to
+		//fully resolve the issue.  This temp fix should be removed when bug 408506 is fixed in the platform.
+		if (resourceLocator == null) {
+			resourceLocator = Platform.getAdapterManager().loadAdapter(this.project, ProjectResourceLocator.class.getName());
+		}
+		return (ProjectResourceLocator) resourceLocator;
 	}
+	
 	
 	/**
 	 * Log any developer exceptions and don't build a JPA file rather
