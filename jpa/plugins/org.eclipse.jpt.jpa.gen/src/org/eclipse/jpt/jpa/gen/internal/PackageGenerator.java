@@ -287,7 +287,15 @@ public class PackageGenerator {
 			vep.setProperty("file.resource.loader.path", templateDirPath); //$NON-NLS-1$
 			vep.setProperty( JdkLogChute.RUNTIME_LOG_JDK_LOGGER, LOGGER_NAME );
 			VelocityEngine ve = new VelocityEngine();
-		    ve.init(vep);
+			//Massage TCCL to deal with bug in m2e - see 396554
+			ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
+			Thread.currentThread().setContextClassLoader(ve.getClass().getClassLoader());
+			try {
+		    	ve.init(vep);
+			} finally {
+				Thread.currentThread().setContextClassLoader(oldClassLoader);
+			}
+			
 		    sm.worked(2);
 		    
 		    generateJavaFile(table, javaFile, ve, "main.java.vm", true/*isDomainClass*/, sm.newChild(6)); //$NON-NLS-1$
@@ -417,7 +425,14 @@ public class PackageGenerator {
 			vep.setProperty("file.resource.loader.path", templateDirPath); //$NON-NLS-1$
 			vep.setProperty( JdkLogChute.RUNTIME_LOG_JDK_LOGGER, LOGGER_NAME );
 			VelocityEngine ve = new VelocityEngine();
-		    ve.init(vep);
+			//Massage TCCL to deal with bug in m2e - 396554
+			ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
+			Thread.currentThread().setContextClassLoader(ve.getClass().getClassLoader());
+			try {
+		    	ve.init(vep);
+			} finally {
+				Thread.currentThread().setContextClassLoader(oldClassLoader);
+			}
 
 		    StringBuilder xmlFileContents = new StringBuilder();
 		    xmlFileContents.append(generateXmlHeaderFooter(ve, "header.vm")); //$NON-NLS-1$
