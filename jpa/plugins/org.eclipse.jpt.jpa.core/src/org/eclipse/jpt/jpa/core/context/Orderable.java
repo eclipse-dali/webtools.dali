@@ -18,27 +18,54 @@ package org.eclipse.jpt.jpa.core.context;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.4
  * @since 2.3
  */
 public interface Orderable
-	extends JpaContextModel
-{
+		extends JpaContextModel {
+	
 	AttributeMapping getParent();
-
-	String getSpecifiedOrderBy();
-	void setSpecifiedOrderBy(String orderBy);
-		String SPECIFIED_ORDER_BY_PROPERTY = "specifiedOrderBy"; //$NON-NLS-1$
 	
+	
+	// ***** no ordering *****
+	
+	/**
+	 * String associated with changes to the "noOrdering" property
+	 */
+	String NO_ORDERING_PROPERTY = "noOrdering"; //$NON-NLS-1$
+	
+	/**
+	 * Will have no ordering if no other metadata is present
+	 */
 	boolean isNoOrdering();
-	void setNoOrdering(boolean noOrdering);
-		String NO_ORDERING_PROPERTY = "noOrdering"; //$NON-NLS-1$
 	
-	boolean isPkOrdering();
-	void setPkOrdering(boolean pkOrdering);
-		String PK_ORDERING_PROPERTY = "pkOrdering"; //$NON-NLS-1$
+	/**
+	 * Will set noOrdering to true (will remove all other metadata)
+	 */
+	void setNoOrdering();
 	
-	boolean isCustomOrdering();
-	void setCustomOrdering(boolean customOrdering);
-		String CUSTOM_ORDERING_PROPERTY = "customOrdering"; //$NON-NLS-1$
+	
+	// ***** order by *****
+	
+	/**
+	 * String associated with changes to the "orderByOrdering" property
+	 */
+	String ORDER_BY_ORDERING_PROPERTY = "orderByOrdering"; //$NON-NLS-1$
+	
+	/**
+	 * If true, will have orderBy metadata that takes precedence over other metadata
+	 */
+	boolean isOrderByOrdering();
+	
+	/**
+	 * Will set orderByOrdering to true 
+	 * (will remove all other metadata, and will set orderBy to null)
+	 */
+	void setOrderByOrdering();
+	
+	/**
+	 * Return the orderBy object.
+	 * This will never be null.
+	 */
+	OrderBy getOrderBy();
 }

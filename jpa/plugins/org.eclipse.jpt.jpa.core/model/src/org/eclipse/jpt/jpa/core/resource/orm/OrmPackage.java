@@ -660,7 +660,7 @@ public class OrmPackage extends EPackageImpl
 	public static final int ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_COLUMN = ABSTRACT_XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 2;
 
 	/**
-	 * The feature id for the '<em><b>Order By</b></em>' attribute.
+	 * The feature id for the '<em><b>Order By</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1087,7 +1087,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlTypeMapping()
 	 * @generated
 	 */
-	public static final int XML_TYPE_MAPPING = 100;
+	public static final int XML_TYPE_MAPPING = 101;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlTypeMapping <em>Abstract Xml Type Mapping</em>}' class.
@@ -1295,7 +1295,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlOverride()
 	 * @generated
 	 */
-	public static final int XML_OVERRIDE = 77;
+	public static final int XML_OVERRIDE = 78;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2317,7 +2317,7 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_ELEMENT_COLLECTION__ORDER_COLUMN = ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 4;
 
 	/**
-	 * The feature id for the '<em><b>Order By</b></em>' attribute.
+	 * The feature id for the '<em><b>Order By</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -3374,7 +3374,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlQuery()
 	 * @generated
 	 */
-	public static final int XML_QUERY = 90;
+	public static final int XML_QUERY = 91;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlNamedNativeQuery <em>Xml Named Native Query</em>}' class.
@@ -3434,7 +3434,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlOrderColumn()
 	 * @generated
 	 */
-	public static final int XML_ORDER_COLUMN = 76;
+	public static final int XML_ORDER_COLUMN = 77;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlPersistenceUnitDefaults <em>Xml Persistence Unit Defaults</em>}' class.
@@ -3444,7 +3444,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlPersistenceUnitDefaults()
 	 * @generated
 	 */
-	public static final int XML_PERSISTENCE_UNIT_DEFAULTS = 78;
+	public static final int XML_PERSISTENCE_UNIT_DEFAULTS = 79;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlPersistenceUnitMetadata <em>Xml Persistence Unit Metadata</em>}' class.
@@ -3454,7 +3454,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlPersistenceUnitMetadata()
 	 * @generated
 	 */
-	public static final int XML_PERSISTENCE_UNIT_METADATA = 79;
+	public static final int XML_PERSISTENCE_UNIT_METADATA = 80;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.PostLoad <em>Post Load</em>}' class.
@@ -3464,7 +3464,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getPostLoad()
 	 * @generated
 	 */
-	public static final int POST_LOAD = 81;
+	public static final int POST_LOAD = 82;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.PostPersist <em>Post Persist</em>}' class.
@@ -3474,7 +3474,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getPostPersist()
 	 * @generated
 	 */
-	public static final int POST_PERSIST = 82;
+	public static final int POST_PERSIST = 83;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.PostRemove <em>Post Remove</em>}' class.
@@ -3484,7 +3484,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getPostRemove()
 	 * @generated
 	 */
-	public static final int POST_REMOVE = 83;
+	public static final int POST_REMOVE = 84;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.PostUpdate <em>Post Update</em>}' class.
@@ -3494,7 +3494,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getPostUpdate()
 	 * @generated
 	 */
-	public static final int POST_UPDATE = 84;
+	public static final int POST_UPDATE = 85;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.PrePersist <em>Pre Persist</em>}' class.
@@ -3504,7 +3504,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getPrePersist()
 	 * @generated
 	 */
-	public static final int PRE_PERSIST = 85;
+	public static final int PRE_PERSIST = 86;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.PreRemove <em>Pre Remove</em>}' class.
@@ -3514,7 +3514,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getPreRemove()
 	 * @generated
 	 */
-	public static final int PRE_REMOVE = 86;
+	public static final int PRE_REMOVE = 87;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.PreUpdate <em>Pre Update</em>}' class.
@@ -3524,7 +3524,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getPreUpdate()
 	 * @generated
 	 */
-	public static final int PRE_UPDATE = 87;
+	public static final int PRE_UPDATE = 88;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlPrimaryKeyJoinColumn <em>Xml Primary Key Join Column</em>}' class.
@@ -3534,7 +3534,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlPrimaryKeyJoinColumn()
 	 * @generated
 	 */
-	public static final int XML_PRIMARY_KEY_JOIN_COLUMN = 88;
+	public static final int XML_PRIMARY_KEY_JOIN_COLUMN = 89;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlQueryContainer <em>Xml Query Container</em>}' class.
@@ -3544,7 +3544,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlQueryContainer()
 	 * @generated
 	 */
-	public static final int XML_QUERY_CONTAINER = 91;
+	public static final int XML_QUERY_CONTAINER = 92;
 
 	/**
 	 * The feature id for the '<em><b>Version</b></em>' attribute.
@@ -4296,7 +4296,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlReferenceTable()
 	 * @generated
 	 */
-	public static final int XML_REFERENCE_TABLE = 80;
+	public static final int XML_REFERENCE_TABLE = 81;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4498,7 +4498,7 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_MANY_TO_MANY__ORDER_COLUMN = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_COLUMN;
 
 	/**
-	 * The feature id for the '<em><b>Order By</b></em>' attribute.
+	 * The feature id for the '<em><b>Order By</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -5229,7 +5229,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlStoredProcedureParameter()
 	 * @generated
 	 */
-	public static final int XML_STORED_PROCEDURE_PARAMETER = 96;
+	public static final int XML_STORED_PROCEDURE_PARAMETER = 97;
 
 	/**
 	 * The feature id for the '<em><b>Access</b></em>' attribute.
@@ -5331,7 +5331,7 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_ONE_TO_MANY__ORDER_COLUMN = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_COLUMN;
 
 	/**
-	 * The feature id for the '<em><b>Order By</b></em>' attribute.
+	 * The feature id for the '<em><b>Order By</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -5617,7 +5617,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlQueryHint()
 	 * @generated
 	 */
-	public static final int XML_QUERY_HINT = 92;
+	public static final int XML_QUERY_HINT = 93;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlSecondaryTable <em>Xml Secondary Table</em>}' class.
@@ -5627,7 +5627,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlSecondaryTable()
 	 * @generated
 	 */
-	public static final int XML_SECONDARY_TABLE = 93;
+	public static final int XML_SECONDARY_TABLE = 94;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlSequenceGenerator <em>Xml Sequence Generator</em>}' class.
@@ -5637,7 +5637,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlSequenceGenerator()
 	 * @generated
 	 */
-	public static final int XML_SEQUENCE_GENERATOR = 94;
+	public static final int XML_SEQUENCE_GENERATOR = 95;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlTable <em>Xml Table</em>}' class.
@@ -5647,7 +5647,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlTable()
 	 * @generated
 	 */
-	public static final int XML_TABLE = 97;
+	public static final int XML_TABLE = 98;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlTableGenerator <em>Xml Table Generator</em>}' class.
@@ -5657,7 +5657,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlTableGenerator()
 	 * @generated
 	 */
-	public static final int XML_TABLE_GENERATOR = 98;
+	public static final int XML_TABLE_GENERATOR = 99;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlTransient <em>Xml Transient</em>}' class.
@@ -5667,7 +5667,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlTransient()
 	 * @generated
 	 */
-	public static final int XML_TRANSIENT = 99;
+	public static final int XML_TRANSIENT = 100;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlUniqueConstraint <em>Xml Unique Constraint</em>}' class.
@@ -5677,7 +5677,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlUniqueConstraint()
 	 * @generated
 	 */
-	public static final int XML_UNIQUE_CONSTRAINT = 101;
+	public static final int XML_UNIQUE_CONSTRAINT = 102;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlVersion <em>Xml Version</em>}' class.
@@ -5687,7 +5687,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlVersion()
 	 * @generated
 	 */
-	public static final int XML_VERSION = 102;
+	public static final int XML_VERSION = 103;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlOrderable <em>Xml Orderable</em>}' class.
@@ -5709,7 +5709,7 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_ORDERABLE__ORDER_COLUMN = OrmV2_0Package.XML_ORDERABLE_20__ORDER_COLUMN;
 
 	/**
-	 * The feature id for the '<em><b>Order By</b></em>' attribute.
+	 * The feature id for the '<em><b>Order By</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -5725,6 +5725,34 @@ public class OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_ORDERABLE_FEATURE_COUNT = OrmV2_0Package.XML_ORDERABLE_20_FEATURE_COUNT + 1;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlOrderBy <em>Xml Order By</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.XmlOrderBy
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlOrderBy()
+	 * @generated
+	 */
+	public static final int XML_ORDER_BY = 76;
+
+	/**
+	 * The feature id for the '<em><b>Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ORDER_BY__VALUE = 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Order By</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ORDER_BY_FEATURE_COUNT = 1;
 
 	/**
 	 * The feature id for the '<em><b>Column Definition</b></em>' attribute.
@@ -6139,7 +6167,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlPrimaryKeyJoinColumnContainer()
 	 * @generated
 	 */
-	public static final int XML_PRIMARY_KEY_JOIN_COLUMN_CONTAINER = 89;
+	public static final int XML_PRIMARY_KEY_JOIN_COLUMN_CONTAINER = 90;
 
 	/**
 	 * The feature id for the '<em><b>Primary Key Join Columns</b></em>' containment reference list.
@@ -6383,7 +6411,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlSqlResultSetMapping()
 	 * @generated
 	 */
-	public static final int XML_SQL_RESULT_SET_MAPPING = 95;
+	public static final int XML_SQL_RESULT_SET_MAPPING = 96;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -6843,7 +6871,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getDiscriminatorType()
 	 * @generated
 	 */
-	public static final int DISCRIMINATOR_TYPE = 103;
+	public static final int DISCRIMINATOR_TYPE = 104;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.EnumType <em>Enum Type</em>}' enum.
@@ -6853,7 +6881,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getEnumType()
 	 * @generated
 	 */
-	public static final int ENUM_TYPE = 104;
+	public static final int ENUM_TYPE = 105;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.FetchType <em>Fetch Type</em>}' enum.
@@ -6863,7 +6891,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getFetchType()
 	 * @generated
 	 */
-	public static final int FETCH_TYPE = 105;
+	public static final int FETCH_TYPE = 106;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.GenerationType <em>Generation Type</em>}' enum.
@@ -6873,7 +6901,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getGenerationType()
 	 * @generated
 	 */
-	public static final int GENERATION_TYPE = 106;
+	public static final int GENERATION_TYPE = 107;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.InheritanceType <em>Inheritance Type</em>}' enum.
@@ -6883,7 +6911,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getInheritanceType()
 	 * @generated
 	 */
-	public static final int INHERITANCE_TYPE = 107;
+	public static final int INHERITANCE_TYPE = 108;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.TemporalType <em>Temporal Type</em>}' enum.
@@ -6893,7 +6921,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getTemporalType()
 	 * @generated
 	 */
-	public static final int TEMPORAL_TYPE = 108;
+	public static final int TEMPORAL_TYPE = 109;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -7615,6 +7643,13 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlOrderableEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlOrderByEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -11107,17 +11142,46 @@ public class OrmPackage extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlOrderable#getOrderBy <em>Order By</em>}'.
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlOrderable#getOrderBy <em>Order By</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Order By</em>'.
+	 * @return the meta object for the containment reference '<em>Order By</em>'.
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.XmlOrderable#getOrderBy()
 	 * @see #getXmlOrderable()
 	 * @generated
 	 */
-	public EAttribute getXmlOrderable_OrderBy()
+	public EReference getXmlOrderable_OrderBy()
 	{
-		return (EAttribute)xmlOrderableEClass.getEStructuralFeatures().get(0);
+		return (EReference)xmlOrderableEClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlOrderBy <em>Xml Order By</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Order By</em>'.
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.XmlOrderBy
+	 * @generated
+	 */
+	public EClass getXmlOrderBy()
+	{
+		return xmlOrderByEClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlOrderBy#getValue <em>Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Value</em>'.
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.XmlOrderBy#getValue()
+	 * @see #getXmlOrderBy()
+	 * @generated
+	 */
+	public EAttribute getXmlOrderBy_Value()
+	{
+		return (EAttribute)xmlOrderByEClass.getEStructuralFeatures().get(0);
 	}
 
 
@@ -11493,7 +11557,10 @@ public class OrmPackage extends EPackageImpl
 		xmlOneToOneEClass = createEClass(XML_ONE_TO_ONE);
 
 		xmlOrderableEClass = createEClass(XML_ORDERABLE);
-		createEAttribute(xmlOrderableEClass, XML_ORDERABLE__ORDER_BY);
+		createEReference(xmlOrderableEClass, XML_ORDERABLE__ORDER_BY);
+
+		xmlOrderByEClass = createEClass(XML_ORDER_BY);
+		createEAttribute(xmlOrderByEClass, XML_ORDER_BY__VALUE);
 
 		xmlOrderColumnEClass = createEClass(XML_ORDER_COLUMN);
 
@@ -12036,7 +12103,10 @@ public class OrmPackage extends EPackageImpl
 		initEClass(xmlOneToOneEClass, XmlOneToOne.class, "XmlOneToOne", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlOrderableEClass, XmlOrderable.class, "XmlOrderable", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlOrderable_OrderBy(), theXMLTypePackage.getString(), "orderBy", null, 0, 1, XmlOrderable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlOrderable_OrderBy(), this.getXmlOrderBy(), null, "orderBy", null, 0, 1, XmlOrderable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlOrderByEClass, XmlOrderBy.class, "XmlOrderBy", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlOrderBy_Value(), theXMLTypePackage.getString(), "value", null, 0, 1, XmlOrderBy.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlOrderColumnEClass, XmlOrderColumn.class, "XmlOrderColumn", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -14329,12 +14399,30 @@ public class OrmPackage extends EPackageImpl
 		public static final EClass XML_ORDERABLE = eINSTANCE.getXmlOrderable();
 
 		/**
-		 * The meta object literal for the '<em><b>Order By</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Order By</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EAttribute XML_ORDERABLE__ORDER_BY = eINSTANCE.getXmlOrderable_OrderBy();
+		public static final EReference XML_ORDERABLE__ORDER_BY = eINSTANCE.getXmlOrderable_OrderBy();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlOrderBy <em>Xml Order By</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.jpa.core.resource.orm.XmlOrderBy
+		 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlOrderBy()
+		 * @generated
+		 */
+		public static final EClass XML_ORDER_BY = eINSTANCE.getXmlOrderBy();
+
+		/**
+		 * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_ORDER_BY__VALUE = eINSTANCE.getXmlOrderBy_Value();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.core.resource.orm.DiscriminatorType <em>Discriminator Type</em>}' enum.

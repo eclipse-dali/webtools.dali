@@ -19,32 +19,32 @@ import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.Sourc
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
+import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
+import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
+import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.EnumType;
-import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.FetchType;
-import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
-import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOneToManyMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.NullOrmConverter;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToManyMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToManyRelationship2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOneToManyRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumnAnnotation2_0;
@@ -654,7 +654,7 @@ public class GenericOrmOneToManyMapping2_0Tests
 		assertEquals(false, orderable.isOrderColumnOrdering());
 		assertEquals(true, orderable.isNoOrdering());
 		
-		orderable.setOrderColumnOrdering(true);
+		orderable.setOrderColumnOrdering();
 		SpecifiedOrderColumn2_0 orderColumn = orderable.getOrderColumn();
 		assertEquals(true, orderable.isOrderColumnOrdering());
 		assertEquals(null, orderColumn.getSpecifiedName());
@@ -686,7 +686,7 @@ public class GenericOrmOneToManyMapping2_0Tests
 		assertEquals(true, orderable.isNoOrdering());
 		
 		JavaOneToManyMapping javaOneToManyMapping = (JavaOneToManyMapping) ormPersistentAttribute.getJavaPersistentAttribute().getMapping();
-		((Orderable2_0) javaOneToManyMapping.getOrderable()).setOrderColumnOrdering(true);
+		((Orderable2_0) javaOneToManyMapping.getOrderable()).setOrderColumnOrdering();
 				
 		assertEquals(false, orderable.isOrderColumnOrdering());
 		assertEquals(true, orderable.isNoOrdering());
@@ -1140,7 +1140,7 @@ public class GenericOrmOneToManyMapping2_0Tests
 		OneToManyMapping2_0 javaOneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getJavaPersistentAttribute().getMapping();
 		OneToManyRelationship2_0 rr = (OneToManyRelationship2_0) javaOneToManyMapping.getRelationship();
 		rr.setStrategyToJoinColumn();
-		((Orderable2_0) javaOneToManyMapping.getOrderable()).setOrderColumnOrdering(true);
+		((Orderable2_0) javaOneToManyMapping.getOrderable()).setOrderColumnOrdering();
 		SpecifiedOrderColumn2_0 orderColumn = ((Orderable2_0) oneToManyMapping.getOrderable()).getOrderColumn();
 
 		assertNull(orderColumn.getSpecifiedName());
@@ -1161,7 +1161,7 @@ public class GenericOrmOneToManyMapping2_0Tests
 
 		rr.setStrategyToJoinColumn();
 		assertFalse(((Orderable2_0) oneToManyMapping.getOrderable()).isOrderColumnOrdering());
-		((Orderable2_0) oneToManyMapping.getOrderable()).setOrderColumnOrdering(true);
+		((Orderable2_0) oneToManyMapping.getOrderable()).setOrderColumnOrdering();
 		orderColumn = ((Orderable2_0) oneToManyMapping.getOrderable()).getOrderColumn();
 
 		assertNull(orderColumn.getSpecifiedName());
@@ -1199,8 +1199,8 @@ public class GenericOrmOneToManyMapping2_0Tests
 		assertTrue(cascade.isRefresh());
 		assertTrue(cascade.isDetach());
 
-		assertTrue(virtualOneToManyMapping.getOrderable().isCustomOrdering());
-		assertEquals("city", virtualOneToManyMapping.getOrderable().getSpecifiedOrderBy());
+		assertTrue(virtualOneToManyMapping.getOrderable().isOrderByOrdering());
+		assertEquals("city", virtualOneToManyMapping.getOrderable().getOrderBy().getKey());
 
 		assertTrue(((OrphanRemovalMapping2_0) virtualOneToManyMapping).getOrphanRemoval().isOrphanRemoval());
 	}
@@ -1237,7 +1237,7 @@ public class GenericOrmOneToManyMapping2_0Tests
 		assertFalse(cascade.isDetach());
 
 		assertTrue(ormOneToManyMapping.getOrderable().isNoOrdering());
-		assertEquals(null, ormOneToManyMapping.getOrderable().getSpecifiedOrderBy());
+		assertEquals(null, ormOneToManyMapping.getOrderable().getOrderBy().getKey());
 
 		assertFalse(((OrphanRemovalMapping2_0) ormOneToManyMapping).getOrphanRemoval().isOrphanRemoval());
 	}

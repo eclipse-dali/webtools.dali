@@ -12,9 +12,9 @@ package org.eclipse.jpt.jpa.core.tests.internal.context.java;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
@@ -29,6 +29,7 @@ import org.eclipse.jpt.jpa.core.context.ManyToManyRelationship;
 import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
+import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TransientMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -302,7 +303,8 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
-		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
+		manyToManyMapping.getOrderable().setOrderByOrdering();
+		manyToManyMapping.getOrderable().getOrderBy().setKey("asdf");
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
 		assertFalse(manyToManyMapping.isDefault());
 		
@@ -324,7 +326,8 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
-		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
+		manyToManyMapping.getOrderable().setOrderByOrdering();
+		manyToManyMapping.getOrderable().getOrderBy().setKey("asdf");
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
 		assertFalse(manyToManyMapping.isDefault());
 		
@@ -344,7 +347,8 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
-		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
+		manyToManyMapping.getOrderable().setOrderByOrdering();
+		manyToManyMapping.getOrderable().getOrderBy().setKey("asdf");
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
 		assertFalse(manyToManyMapping.isDefault());
 		
@@ -366,7 +370,8 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
-		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
+		manyToManyMapping.getOrderable().setOrderByOrdering();
+		manyToManyMapping.getOrderable().getOrderBy().setKey("asdf");
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
 		assertFalse(manyToManyMapping.isDefault());
 		
@@ -388,7 +393,8 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
-		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
+		manyToManyMapping.getOrderable().setOrderByOrdering();
+		manyToManyMapping.getOrderable().getOrderBy().setKey("asdf");
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
 		assertFalse(manyToManyMapping.isDefault());
 		
@@ -410,7 +416,8 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
-		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
+		manyToManyMapping.getOrderable().setOrderByOrdering();
+		manyToManyMapping.getOrderable().getOrderBy().setKey("asdf");
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
 		assertFalse(manyToManyMapping.isDefault());
 		
@@ -432,7 +439,8 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
-		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
+		manyToManyMapping.getOrderable().setOrderByOrdering();
+		manyToManyMapping.getOrderable().getOrderBy().setKey("asdf");
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
 		assertFalse(manyToManyMapping.isDefault());
 		
@@ -454,7 +462,8 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
-		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
+		manyToManyMapping.getOrderable().setOrderByOrdering();
+		manyToManyMapping.getOrderable().getOrderBy().setKey("asdf");
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
 		assertFalse(manyToManyMapping.isDefault());
 		
@@ -476,7 +485,8 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
-		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
+		manyToManyMapping.getOrderable().setOrderByOrdering();
+		manyToManyMapping.getOrderable().getOrderBy().setKey("asdf");
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
 		assertFalse(manyToManyMapping.isDefault());
 		
@@ -498,7 +508,8 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
-		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
+		manyToManyMapping.getOrderable().setOrderByOrdering();
+		manyToManyMapping.getOrderable().getOrderBy().setKey("asdf");
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
 		assertFalse(manyToManyMapping.isDefault());
 		
@@ -1002,172 +1013,82 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		assertEquals("zip", mapKeyNames.next());
 		assertFalse(mapKeyNames.hasNext());
 	}
+	
 	public void testUpdateOrderBy() throws Exception {
 		createTestEntityWithManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
-		
+		Orderable orderable = manyToManyMapping.getOrderable();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
-		assertNull(manyToManyMapping.getOrderable().getSpecifiedOrderBy());
-		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
-				
-		//set orderBy in the resource model, verify context model updated
-		resourceField.addAnnotation(OrderByAnnotation.ANNOTATION_NAME);
-		OrderByAnnotation orderBy = (OrderByAnnotation) resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME);
-		orderBy.setValue("newOrderBy");
+		assertNull(resourceField.getAnnotation(JPA.ORDER_BY));
+		assertTrue(orderable.isNoOrdering());
+		assertFalse(orderable.isOrderByOrdering());
+		assertNull(orderable.getOrderBy().getKey());
+		
+		resourceField.addAnnotation(JPA.ORDER_BY);
 		getJpaProject().synchronizeContextModel();
-		assertEquals("newOrderBy", manyToManyMapping.getOrderable().getSpecifiedOrderBy());
-		assertEquals("newOrderBy", orderBy.getValue());
-	
-		//set orderBy to null in the resource model
-		resourceField.removeAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+		
+		assertNotNull(resourceField.getAnnotation(JPA.ORDER_BY));
+		assertFalse(orderable.isNoOrdering());
+		assertTrue(orderable.isOrderByOrdering());
+		assertTrue(orderable.getOrderBy().isByPrimaryKey());
+		assertNull(orderable.getOrderBy().getKey());
+		
+		((OrderByAnnotation) resourceField.getAnnotation(JPA.ORDER_BY)).setValue("foo");
 		getJpaProject().synchronizeContextModel();
-		assertNull(manyToManyMapping.getOrderable().getSpecifiedOrderBy());
-		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
+		
+		assertEquals("foo", ((OrderByAnnotation) resourceField.getAnnotation(JPA.ORDER_BY)).getValue());
+		assertFalse(orderable.isNoOrdering());
+		assertTrue(orderable.isOrderByOrdering());
+		assertFalse(orderable.getOrderBy().isByPrimaryKey());
+		assertEquals("foo", orderable.getOrderBy().getKey());
+		
+		resourceField.removeAnnotation(JPA.ORDER_BY);
+		getJpaProject().synchronizeContextModel();
+		
+		assertNull(resourceField.getAnnotation(JPA.ORDER_BY));
+		assertTrue(orderable.isNoOrdering());
+		assertFalse(orderable.isOrderByOrdering());
 	}
 	
 	public void testModifyOrderBy() throws Exception {
 		createTestEntityWithManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
-		
+		Orderable orderable = manyToManyMapping.getOrderable();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
-		assertNull(manyToManyMapping.getOrderable().getSpecifiedOrderBy());
-		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
-				
-		//set mappedBy in the context model, verify resource model updated
-		manyToManyMapping.getOrderable().setSpecifiedOrderBy("newOrderBy");
-		assertEquals("newOrderBy", manyToManyMapping.getOrderable().getSpecifiedOrderBy());
-		OrderByAnnotation orderBy = (OrderByAnnotation) resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME);
-		assertEquals("newOrderBy", orderBy.getValue());
-	
-		//set mappedBy to null in the context model
-		manyToManyMapping.getOrderable().setSpecifiedOrderBy(null);
-		assertNull(manyToManyMapping.getOrderable().getSpecifiedOrderBy());
-		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
-	}
-	
-	public void testUpdateNoOrdering()  throws Exception {
-		createTestEntityWithManyToManyMapping();
-		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		assertNull(resourceField.getAnnotation(JPA.ORDER_BY));
+		assertTrue(orderable.isNoOrdering());
+		assertFalse(orderable.isOrderByOrdering());
+		assertNull(orderable.getOrderBy().getKey());
 		
-		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
-		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
+		orderable.setOrderByOrdering();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		assertNotNull(resourceField.getAnnotation(JPA.ORDER_BY));
+		assertFalse(orderable.isNoOrdering());
+		assertTrue(orderable.isOrderByOrdering());
+		assertTrue(orderable.getOrderBy().isByPrimaryKey());
+		assertNull(orderable.getOrderBy().getKey());
 		
-		assertTrue(manyToManyMapping.getOrderable().isNoOrdering());
-		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
-				
-		//set orderBy in the resource model, verify context model updated
-		resourceField.addAnnotation(OrderByAnnotation.ANNOTATION_NAME);
-		getJpaProject().synchronizeContextModel();
-		assertFalse(manyToManyMapping.getOrderable().isNoOrdering());
+		orderable.getOrderBy().setKey("foo");
 		
-		OrderByAnnotation orderBy = (OrderByAnnotation) resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME);
-		orderBy.setValue("newOrderBy");
-		getJpaProject().synchronizeContextModel();
-		assertFalse(manyToManyMapping.getOrderable().isNoOrdering());
-	
-		//set orderBy to null in the resource model
-		resourceField.removeAnnotation(OrderByAnnotation.ANNOTATION_NAME);
-		getJpaProject().synchronizeContextModel();
-		assertTrue(manyToManyMapping.getOrderable().isNoOrdering());
-		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
-	}
-	
-	public void testModifyNoOrdering() throws Exception {
-		createTestEntityWithManyToManyMapping();
-		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		assertEquals("foo", ((OrderByAnnotation) resourceField.getAnnotation(JPA.ORDER_BY)).getValue());
+		assertFalse(orderable.isNoOrdering());
+		assertTrue(orderable.isOrderByOrdering());
+		assertFalse(orderable.getOrderBy().isByPrimaryKey());
+		assertEquals("foo", orderable.getOrderBy().getKey());
 		
-		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
-		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
+		orderable.setNoOrdering();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		
-		assertTrue(manyToManyMapping.getOrderable().isNoOrdering());
-		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
-				
-//		manyToManyMapping.setNoOrdering(false); //this does nothing
-//		//set mappedBy in the context model, verify resource model updated
-//		manyToManyMapping.setOrderBy("newOrderBy");
-//		assertEquals("newOrderBy", manyToManyMapping.getOrderBy());
-//		OrderBy orderBy = (OrderBy) resourceField.annotation(OrderBy.ANNOTATION_NAME);
-//		assertEquals("newOrderBy", orderBy.getValue());
-//	
-//		//set mappedBy to null in the context model
-//		manyToManyMapping.setOrderBy(null);
-//		assertNull(manyToManyMapping.getOrderBy());
-//		assertNull(resourceField.annotation(OrderBy.ANNOTATION_NAME));		
-	}
-	
-	public void testUpdatePkOrdering() throws Exception {
-		createTestEntityWithManyToManyMapping();
-		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		
-		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
-		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
-		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		
-		assertFalse(manyToManyMapping.getOrderable().isPkOrdering());
-		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
-				
-		//set orderBy in the resource model, verify context model updated
-		resourceField.addAnnotation(OrderByAnnotation.ANNOTATION_NAME);
-		getJpaProject().synchronizeContextModel();
-		assertTrue(manyToManyMapping.getOrderable().isPkOrdering());
-		
-		OrderByAnnotation orderBy = (OrderByAnnotation) resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME);
-		orderBy.setValue("newOrderBy");
-		getJpaProject().synchronizeContextModel();
-		assertFalse(manyToManyMapping.getOrderable().isPkOrdering());
-	
-		//set orderBy to null in the resource model
-		resourceField.removeAnnotation(OrderByAnnotation.ANNOTATION_NAME);
-		getJpaProject().synchronizeContextModel();
-		assertFalse(manyToManyMapping.getOrderable().isPkOrdering());
-		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
-	}
-
-	public void testUpdateCustomOrdering()  throws Exception {
-		createTestEntityWithManyToManyMapping();
-		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		
-		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
-		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
-		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
-		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		
-		assertFalse(manyToManyMapping.getOrderable().isCustomOrdering());
-		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
-				
-		//set orderBy in the resource model, verify context model updated
-		resourceField.addAnnotation(OrderByAnnotation.ANNOTATION_NAME);
-		assertFalse(manyToManyMapping.getOrderable().isCustomOrdering());
-		
-		OrderByAnnotation orderBy = (OrderByAnnotation) resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME);
-		orderBy.setValue("newOrderBy");
-		getJpaProject().synchronizeContextModel();
-		assertTrue(manyToManyMapping.getOrderable().isCustomOrdering());
-	
-		//set orderBy to null in the resource model
-		resourceField.removeAnnotation(OrderByAnnotation.ANNOTATION_NAME);
-		getJpaProject().synchronizeContextModel();
-		assertFalse(manyToManyMapping.getOrderable().isCustomOrdering());
-		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(JPA.ORDER_BY));
+		assertTrue(orderable.isNoOrdering());
+		assertFalse(orderable.isOrderByOrdering());
 	}
 	
 	public void testDefaultTargetEntityForMap() throws Exception {

@@ -270,7 +270,10 @@
     <genClasses image="false" ecoreClass="orm.ecore#//XmlOneToMany"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlOneToOne"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlOrderable">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlOrderable/orderBy"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference orm.ecore#//XmlOrderable/orderBy"/>
+    </genClasses>
+    <genClasses ecoreClass="orm.ecore#//XmlOrderBy">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlOrderBy/key"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//XmlOrderColumn"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlOverride">

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.orm;
 
 import java.util.Iterator;
-
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
@@ -18,25 +17,25 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
-import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
+import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.EnumType;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
-import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToManyMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ManyToManyMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToManyMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
@@ -606,13 +605,13 @@ public class EclipseLink2_0OrmManyToManyMappingTests
 		assertEquals(true, queuesOrderable.isNoOrdering());
 
 		
-		jobsOrderable.setOrderColumnOrdering(true);
+		jobsOrderable.setOrderColumnOrdering();
 		jobsOrderColumn = jobsOrderable.getOrderColumn();
 		assertEquals(true, jobsOrderable.isOrderColumnOrdering());
 		assertEquals(null, jobsOrderColumn.getSpecifiedName());
 		assertEquals("jobs_ORDER", jobsOrderColumn.getDefaultName());
 		assertEquals("PrintJob_PrintQueue", jobsOrderColumn.getTableName());
-		queuesOrderable.setOrderColumnOrdering(true);
+		queuesOrderable.setOrderColumnOrdering();
 		queuesOrderColumn = queuesOrderable.getOrderColumn();
 		assertEquals(true, queuesOrderable.isOrderColumnOrdering());
 		assertEquals(null, queuesOrderColumn.getSpecifiedName());
@@ -662,7 +661,7 @@ public class EclipseLink2_0OrmManyToManyMappingTests
 		assertEquals(true, queuesOrderable.isNoOrdering());
 		
 		JavaManyToManyMapping javaJobsManyToManyMapping = (JavaManyToManyMapping) jobsPersistentAttribute.getJavaPersistentAttribute().getMapping();
-		((Orderable2_0) javaJobsManyToManyMapping.getOrderable()).setOrderColumnOrdering(true);
+		((Orderable2_0) javaJobsManyToManyMapping.getOrderable()).setOrderColumnOrdering();
 				
 		assertEquals(false, jobsOrderable.isOrderColumnOrdering());
 		assertEquals(true, jobsOrderable.isNoOrdering());
@@ -946,8 +945,8 @@ public class EclipseLink2_0OrmManyToManyMappingTests
 		assertTrue(cascade.isRefresh());
 		assertTrue(cascade.isDetach());
 
-		assertTrue(virtualManyToManyMapping.getOrderable().isCustomOrdering());
-		assertEquals("city", virtualManyToManyMapping.getOrderable().getSpecifiedOrderBy());
+		assertTrue(virtualManyToManyMapping.getOrderable().isOrderByOrdering());
+		assertEquals("city", virtualManyToManyMapping.getOrderable().getOrderBy().getKey());
 
 		assertEquals(EclipseLinkJoinFetchType.INNER, ((EclipseLinkJoinFetchMapping) virtualManyToManyMapping).getJoinFetch().getValue());
 	}
@@ -983,7 +982,7 @@ public class EclipseLink2_0OrmManyToManyMappingTests
 		assertFalse(cascade.isDetach());
 
 		assertTrue(ormManyToManyMapping.getOrderable().isNoOrdering());
-		assertEquals(null, ormManyToManyMapping.getOrderable().getSpecifiedOrderBy());
+		assertEquals(null, ormManyToManyMapping.getOrderable().getOrderBy().getKey());
 
 		assertEquals(null, ormManyToManyMapping.getJoinFetch().getValue());
 	}

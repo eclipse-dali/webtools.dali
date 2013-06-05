@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.annotate;
 
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jpt.jpa.annotate.mapping.AnnotationAttributeNames;
@@ -660,9 +659,9 @@ public class JavaClassAnnotater
 		// TODO @MapKey
 		
 		// Order by
-		if (refPropElem.getOrderBy() != null)
-		{
-			collectionMapping.getOrderable().setSpecifiedOrderBy(refPropElem.getOrderBy());
+		if (refPropElem.getOrderBy() != null) {
+			collectionMapping.getOrderable().setOrderByOrdering();
+			collectionMapping.getOrderable().getOrderBy().setKey(refPropElem.getOrderBy());
 		}
 	}
 	

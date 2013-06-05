@@ -11,40 +11,21 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.CollectionMapping;
+import org.eclipse.jpt.jpa.core.context.OrderBy;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * | - Ordering -------------------------------------------------------------- |
- * | |                                                                       | |
- * | | o None                                                                | |
- * | |                                                                       | |
- * | | o Primary Key                                                         | |
- * | |                                                                       | |
- * | | o Custom                                                              | |
- * | |   ------------------------------------------------------------------- | |
- * | |   | I                                                               | | |
- * | |   ------------------------------------------------------------------- | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see CollectionMapping
- * @see ManyToManyMappingComposite
- * @see OneToManyMappingComposite
- */
 public abstract class AbstractOrderingComposite<T extends Orderable>
-	extends Pane<CollectionMapping>
-{
+		extends Pane<CollectionMapping> {
+	
 	protected AbstractOrderingComposite(Pane<? extends CollectionMapping> parentPane, Composite parentComposite) {
 		super(parentPane, parentComposite);
 	}
-
+	
 	protected PropertyValueModel<T> buildOrderableModel() {
 		return new PropertyAspectAdapter<CollectionMapping, T>(getSubjectHolder()) {
 			@SuppressWarnings("unchecked")
@@ -54,61 +35,45 @@ public abstract class AbstractOrderingComposite<T extends Orderable>
 			}
 		};
 	}
-
+	
 	protected ModifiablePropertyValueModel<Boolean> buildNoOrderingHolder(PropertyValueModel<T> orderableHolder) {
 		return new PropertyAspectAdapter<T, Boolean>(orderableHolder, Orderable.NO_ORDERING_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isNoOrdering());
 			}
-
+			
 			@Override
 			protected void setValue_(Boolean value) {
-				this.subject.setNoOrdering(value.booleanValue());
+				if (value) {
+					this.subject.setNoOrdering();
+				}
 			}
 		};
 	}
-
-	protected ModifiablePropertyValueModel<Boolean> buildPrimaryKeyOrderingHolder(PropertyValueModel<T> orderableHolder) {
-		return new PropertyAspectAdapter<T, Boolean>(orderableHolder, Orderable.PK_ORDERING_PROPERTY) {
+	
+	protected ModifiablePropertyValueModel<Boolean> buildOrderByOrderingHolder(PropertyValueModel<T> orderableHolder) {
+		return new PropertyAspectAdapter<T, Boolean>(orderableHolder, Orderable.ORDER_BY_ORDERING_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.isPkOrdering());
+				return Boolean.valueOf(this.subject.isOrderByOrdering());
 			}
-
+			
 			@Override
 			protected void setValue_(Boolean value) {
-				this.subject.setPkOrdering(value.booleanValue());
+				if (value) {
+					this.subject.setOrderByOrdering();	
+				}
 			}
 		};
 	}
-
-	protected ModifiablePropertyValueModel<Boolean> buildCustomOrderingHolder(PropertyValueModel<T> orderableHolder) {
-		return new PropertyAspectAdapter<T, Boolean>(orderableHolder, Orderable.CUSTOM_ORDERING_PROPERTY) {
+	
+	protected PropertyValueModel<OrderBy> buildOrderByHolder(PropertyValueModel<T> orderableHolder) {
+		return new TransformationPropertyValueModel<T, OrderBy>(orderableHolder) {
 			@Override
-			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.isCustomOrdering());
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				this.subject.setCustomOrdering(value.booleanValue());
+			protected OrderBy transform_(T v) {
+				return v.getOrderBy();
 			}
 		};
 	}
-
-	protected ModifiablePropertyValueModel<String> buildSpecifiedOrderByHolder(PropertyValueModel<T> orderableHolder) {
-		return new PropertyAspectAdapter<T, String>(orderableHolder, Orderable.SPECIFIED_ORDER_BY_PROPERTY) {
-			@Override
-			protected String buildValue_() {
-				return this.subject.getSpecifiedOrderBy();
-			}
-
-			@Override
-			protected void setValue_(String value) {
-				this.subject.setSpecifiedOrderBy(value);
-			}
-		};
-	}
-
 }

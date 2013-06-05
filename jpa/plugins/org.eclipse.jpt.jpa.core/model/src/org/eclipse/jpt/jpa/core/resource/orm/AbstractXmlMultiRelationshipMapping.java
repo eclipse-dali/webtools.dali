@@ -91,23 +91,14 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 	 */
 	protected XmlOrderColumn orderColumn;
 	/**
-	 * The default value of the '{@link #getOrderBy() <em>Order By</em>}' attribute.
+	 * The cached value of the '{@link #getOrderBy() <em>Order By</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getOrderBy()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String ORDER_BY_EDEFAULT = null;
-	/**
-	 * The cached value of the '{@link #getOrderBy() <em>Order By</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getOrderBy()
-	 * @generated
-	 * @ordered
-	 */
-	protected String orderBy = ORDER_BY_EDEFAULT;
+	protected XmlOrderBy orderBy;
 	/**
 	 * The cached value of the '{@link #getMapKeyAttributeOverrides() <em>Map Key Attribute Overrides</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -359,36 +350,62 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Order By</b></em>' attribute.
+	 * Returns the value of the '<em><b>Order By</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Order By</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Order By</em>' attribute.
-	 * @see #setOrderBy(String)
+	 * @return the value of the '<em>Order By</em>' containment reference.
+	 * @see #setOrderBy(XmlOrderBy)
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlOrderable_OrderBy()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @model containment="true"
 	 * @generated
 	 */
-	public String getOrderBy() {
+	public XmlOrderBy getOrderBy() {
 		return orderBy;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlMultiRelationshipMapping#getOrderBy <em>Order By</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Order By</em>' attribute.
+	 * @generated
+	 */
+	public NotificationChain basicSetOrderBy(XmlOrderBy newOrderBy, NotificationChain msgs)
+	{
+		XmlOrderBy oldOrderBy = orderBy;
+		orderBy = newOrderBy;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY, oldOrderBy, newOrderBy);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlMultiRelationshipMapping#getOrderBy <em>Order By</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Order By</em>' containment reference.
 	 * @see #getOrderBy()
 	 * @generated
 	 */
-	public void setOrderBy(String newOrderBy) {
-		String oldOrderBy = orderBy;
-		orderBy = newOrderBy;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY, oldOrderBy, orderBy));
+	public void setOrderBy(XmlOrderBy newOrderBy)
+	{
+		if (newOrderBy != orderBy)
+		{
+			NotificationChain msgs = null;
+			if (orderBy != null)
+				msgs = ((InternalEObject)orderBy).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY, null, msgs);
+			if (newOrderBy != null)
+				msgs = ((InternalEObject)newOrderBy).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY, null, msgs);
+			msgs = basicSetOrderBy(newOrderBy, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY, newOrderBy, newOrderBy));
 	}
 
 	/**
@@ -705,6 +722,8 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 				return basicSetJoinTable(null, msgs);
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_COLUMN:
 				return basicSetOrderColumn(null, msgs);
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY:
+				return basicSetOrderBy(null, msgs);
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES:
 				return ((InternalEList<?>)getMapKeyAttributeOverrides()).basicRemove(otherEnd, msgs);
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_CLASS:
@@ -776,7 +795,7 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 				setOrderColumn((XmlOrderColumn)newValue);
 				return;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY:
-				setOrderBy((String)newValue);
+				setOrderBy((XmlOrderBy)newValue);
 				return;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES:
 				getMapKeyAttributeOverrides().clear();
@@ -825,7 +844,7 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 				setOrderColumn((XmlOrderColumn)null);
 				return;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY:
-				setOrderBy(ORDER_BY_EDEFAULT);
+				setOrderBy((XmlOrderBy)null);
 				return;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES:
 				getMapKeyAttributeOverrides().clear();
@@ -869,7 +888,7 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_COLUMN:
 				return orderColumn != null;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY:
-				return ORDER_BY_EDEFAULT == null ? orderBy != null : !ORDER_BY_EDEFAULT.equals(orderBy);
+				return orderBy != null;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES:
 				return mapKeyAttributeOverrides != null && !mapKeyAttributeOverrides.isEmpty();
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_TEMPORAL:
@@ -1041,8 +1060,6 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (mappedBy: ");
 		result.append(mappedBy);
-		result.append(", orderBy: ");
-		result.append(orderBy);
 		result.append(", mapKeyTemporal: ");
 		result.append(mapKeyTemporal);
 		result.append(", mapKeyEnumerated: ");
@@ -1081,7 +1098,7 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 	// ********** translators **********
 	
 	protected static Translator buildOrderByTranslator() {
-		return new Translator(JPA.ORDER_BY, OrmPackage.eINSTANCE.getXmlOrderable_OrderBy());
+		return XmlOrderBy.buildTranslator();
 	}
 	
 	protected static Translator buildMapKeyTranslator() {

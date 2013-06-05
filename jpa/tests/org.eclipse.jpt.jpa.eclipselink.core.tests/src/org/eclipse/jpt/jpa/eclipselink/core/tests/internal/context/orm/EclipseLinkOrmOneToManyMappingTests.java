@@ -16,12 +16,12 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.Cascade;
 import org.eclipse.jpt.jpa.core.context.FetchType;
-import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToManyMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetchType;
@@ -721,8 +721,8 @@ public class EclipseLinkOrmOneToManyMappingTests
 		assertTrue(cascade.isRemove());
 		assertTrue(cascade.isRefresh());
 
-		assertTrue(virtualOneToManyMapping.getOrderable().isCustomOrdering());
-		assertEquals("city", virtualOneToManyMapping.getOrderable().getSpecifiedOrderBy());
+		assertTrue(virtualOneToManyMapping.getOrderable().isOrderByOrdering());
+		assertEquals("city", virtualOneToManyMapping.getOrderable().getOrderBy().getKey());
 
 		assertEquals(EclipseLinkJoinFetchType.INNER, virtualOneToManyMapping.getJoinFetch().getValue());
 	}
@@ -753,7 +753,7 @@ public class EclipseLinkOrmOneToManyMappingTests
 		assertFalse(cascade.isRefresh());
 
 		assertTrue(virtualOneToManyMapping.getOrderable().isNoOrdering());
-		assertEquals(null, virtualOneToManyMapping.getOrderable().getSpecifiedOrderBy());
+		assertEquals(null, virtualOneToManyMapping.getOrderable().getOrderBy().getKey());
 
 		assertEquals(null, virtualOneToManyMapping.getJoinFetch().getValue());
 	}

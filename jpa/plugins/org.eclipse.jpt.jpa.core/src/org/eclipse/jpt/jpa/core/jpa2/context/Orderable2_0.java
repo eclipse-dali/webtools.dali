@@ -23,55 +23,78 @@ import org.eclipse.jpt.jpa.db.Table;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.3
  * @since 2.3
  */
 public interface Orderable2_0
-	extends Orderable
-{
+		extends Orderable {
+	
+	// ***** order column *****
+	
+	/**
+	 * String associated with changes to the "orderColumnOrdering" property
+	 */
+	String ORDER_COLUMN_ORDERING_PROPERTY = "orderColumnOrdering"; //$NON-NLS-1$
+	
+	/**
+	 * If true, will have orderColumn metadata that takes precedence over other metadata
+	 */
 	boolean isOrderColumnOrdering();
-	void setOrderColumnOrdering(boolean value);
-		String ORDER_COLUMN_ORDERING_PROPERTY = "orderColumnOrdering"; //$NON-NLS-1$
-
+	
+	/**
+	 * Will set orderColumnOrdering to true 
+	 * (will remove all other metadata, and will set orderColumn to null)
+	 */
+	void setOrderColumnOrdering();
+	
+	/**
+	 * Return the orderColumn object.
+	 * This will never be null.
+	 */
 	SpecifiedOrderColumn2_0 getOrderColumn();
-
+	
+	
 	String getDefaultTableName();
-
-
-	// ************ parent adapter ************
-
+	
+	
+	// ***** parent adapter *****
+	
 	/**
 	 * interface allowing ordering in multiple places
 	 * (i.e. multi-value relationship and element collection mappings)
 	 */
 	interface ParentAdapter<M extends AttributeMapping> {
-
+		
 		M getOrderableParent();
-
+		
 		/**
 		 * Return the name of the column's table.
 		 */
 		String getTableName();
-
+		
 		Table resolveDbTable(String tableName);
-
+		
 		/**
 		 * This can be used for JPA 1.0 implementations.
 		 */
 		class Null<M extends AttributeMapping>
-			implements ParentAdapter<M>
-		{
+				implements ParentAdapter<M> {
+			
 			protected final M parent;
+			
 			public Null(M parent) {
 				super();
 				this.parent = parent;
 			}
+			
 			public M getOrderableParent() {
 				return this.parent;
 			}
+			
 			public String getTableName() {
 				return null;
 			}
+			
 			public Table resolveDbTable(String tableName) {
 				return null;
 			}

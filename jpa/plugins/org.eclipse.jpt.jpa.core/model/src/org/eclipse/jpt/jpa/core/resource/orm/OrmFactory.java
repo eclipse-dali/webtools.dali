@@ -123,6 +123,7 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY: return (EObject)createXmlNamedStoredProcedureQuery();
 			case OrmPackage.XML_ONE_TO_MANY: return (EObject)createXmlOneToMany();
 			case OrmPackage.XML_ONE_TO_ONE: return (EObject)createXmlOneToOne();
+			case OrmPackage.XML_ORDER_BY: return (EObject)createXmlOrderBy();
 			case OrmPackage.XML_ORDER_COLUMN: return (EObject)createXmlOrderColumn();
 			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS: return (EObject)createXmlPersistenceUnitDefaults();
 			case OrmPackage.XML_PERSISTENCE_UNIT_METADATA: return (EObject)createXmlPersistenceUnitMetadata();
@@ -685,6 +686,17 @@ public class OrmFactory extends EFactoryImpl
 	{
 		XmlOneToOne xmlOneToOne = new XmlOneToOne();
 		return xmlOneToOne;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlOrderBy createXmlOrderBy()
+	{
+		XmlOrderBy xmlOrderBy = new XmlOrderBy();
+		return xmlOrderBy;
 	}
 
 	/**

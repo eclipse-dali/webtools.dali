@@ -380,7 +380,7 @@ public class OrmV2_0Package extends EPackageImpl
 	public static final int XML_ELEMENT_COLLECTION_20__ORDER_COLUMN = OrmPackage.XML_CONVERTIBLE_MAPPING_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Order By</b></em>' attribute.
+	 * The feature id for the '<em><b>Order By</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated

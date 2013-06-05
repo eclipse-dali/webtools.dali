@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.tests.internal.context.orm;
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -21,22 +22,23 @@ import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
-import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
-import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
-import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
+import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TransientMapping;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOneToManyRelationship;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntity;
@@ -571,20 +573,35 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmSpecifiedPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		OrmOneToManyMapping ormOneToManyMapping = (OrmOneToManyMapping) ormPersistentAttribute.getMapping();
+		Orderable orderable = ormOneToManyMapping.getOrderable();
 		XmlOneToMany oneToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getOneToManys().get(0);
 		
-		assertNull(ormOneToManyMapping.getOrderable().getSpecifiedOrderBy());
 		assertNull(oneToMany.getOrderBy());
-				
-		//set orderBy in the resource model, verify context model updated
-		oneToMany.setOrderBy("newOrderBy");
-		assertEquals("newOrderBy", ormOneToManyMapping.getOrderable().getSpecifiedOrderBy());
-		assertEquals("newOrderBy", oneToMany.getOrderBy());
-	
-		//set orderBy to null in the resource model
+		assertTrue(orderable.isNoOrdering());
+		assertFalse(orderable.isOrderByOrdering());
+		assertNull(orderable.getOrderBy().getKey());
+		
+		oneToMany.setOrderBy(OrmFactory.eINSTANCE.createXmlOrderBy());
+		
+		assertNotNull(oneToMany.getOrderBy());
+		assertFalse(orderable.isNoOrdering());
+		assertTrue(orderable.isOrderByOrdering());
+		assertTrue(orderable.getOrderBy().isByPrimaryKey());
+		assertTrue(StringTools.isBlank(orderable.getOrderBy().getKey()));
+		
+		oneToMany.getOrderBy().setValue("foo");
+		
+		assertNotNull(oneToMany.getOrderBy().getValue());
+		assertFalse(orderable.isNoOrdering());
+		assertTrue(orderable.isOrderByOrdering());
+		assertFalse(orderable.getOrderBy().isByPrimaryKey());
+		assertEquals("foo", orderable.getOrderBy().getKey());
+		
 		oneToMany.setOrderBy(null);
-		assertNull(ormOneToManyMapping.getOrderable().getSpecifiedOrderBy());
+		
 		assertNull(oneToMany.getOrderBy());
+		assertTrue(orderable.isNoOrdering());
+		assertFalse(orderable.isOrderByOrdering());
 	}
 	
 	public void testModifyOrderBy() throws Exception {
@@ -592,74 +609,35 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmSpecifiedPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		OrmOneToManyMapping ormOneToManyMapping = (OrmOneToManyMapping) ormPersistentAttribute.getMapping();
+		Orderable orderable = ormOneToManyMapping.getOrderable();
 		XmlOneToMany oneToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getOneToManys().get(0);
 		
-		assertNull(ormOneToManyMapping.getOrderable().getSpecifiedOrderBy());
 		assertNull(oneToMany.getOrderBy());
+		assertTrue(orderable.isNoOrdering());
+		assertFalse(orderable.isOrderByOrdering());
+		assertNull(orderable.getOrderBy().getKey());
 				
-		//set mappedBy in the context model, verify resource model updated
-		ormOneToManyMapping.getOrderable().setSpecifiedOrderBy("newOrderBy");
-		assertEquals("newOrderBy", ormOneToManyMapping.getOrderable().getSpecifiedOrderBy());
-		assertEquals("newOrderBy", oneToMany.getOrderBy());
-	
-		//set mappedBy to null in the context model
-		ormOneToManyMapping.getOrderable().setSpecifiedOrderBy(null);
-		assertNull(ormOneToManyMapping.getOrderable().getSpecifiedOrderBy());
+		orderable.setOrderByOrdering();
+		
+		assertNotNull(oneToMany.getOrderBy());
+		assertFalse(orderable.isNoOrdering());
+		assertTrue(orderable.isOrderByOrdering());
+		assertTrue(orderable.getOrderBy().isByPrimaryKey());
+		assertTrue(StringTools.isBlank(orderable.getOrderBy().getKey()));
+		
+		orderable.getOrderBy().setKey("foo");
+		
+		assertNotNull(oneToMany.getOrderBy().getValue());
+		assertFalse(orderable.isNoOrdering());
+		assertTrue(orderable.isOrderByOrdering());
+		assertFalse(orderable.getOrderBy().isByPrimaryKey());
+		assertEquals("foo", orderable.getOrderBy().getKey());
+		
+		orderable.setNoOrdering();
+		
 		assertNull(oneToMany.getOrderBy());
-	}
-	
-	public void testIsNoOrdering() throws Exception {
-		createTestType();
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmSpecifiedPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
-		OrmOneToManyMapping ormOneToManyMapping = (OrmOneToManyMapping) ormPersistentAttribute.getMapping();
-		
-		assertTrue(ormOneToManyMapping.getOrderable().isNoOrdering());
-
-		ormOneToManyMapping.getOrderable().setSpecifiedOrderBy("foo");
-		assertFalse(ormOneToManyMapping.getOrderable().isNoOrdering());
-		
-		ormOneToManyMapping.getOrderable().setSpecifiedOrderBy(null);
-		assertTrue(ormOneToManyMapping.getOrderable().isNoOrdering());
-	}
-	
-	public void testSetNoOrdering() throws Exception {
-		createTestType();
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmSpecifiedPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
-		OrmOneToManyMapping ormOneToManyMapping = (OrmOneToManyMapping) ormPersistentAttribute.getMapping();
-		
-		assertTrue(ormOneToManyMapping.getOrderable().isNoOrdering());
-
-		ormOneToManyMapping.getOrderable().setSpecifiedOrderBy("foo");
-		assertFalse(ormOneToManyMapping.getOrderable().isNoOrdering());
-		
-		ormOneToManyMapping.getOrderable().setNoOrdering(true);
-		assertTrue(ormOneToManyMapping.getOrderable().isNoOrdering());
-		assertNull(ormOneToManyMapping.getOrderable().getSpecifiedOrderBy());
-	}
-//TODO
-//	public boolean isOrderByPk() {
-//		return "".equals(getOrderBy());
-//	}
-//
-//	public void setOrderByPk() {
-//		setOrderBy("");
-//	}
-
-	public void testIsCustomOrdering() throws Exception {
-		createTestType();
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmSpecifiedPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
-		OrmOneToManyMapping ormOneToManyMapping = (OrmOneToManyMapping) ormPersistentAttribute.getMapping();
-		
-		assertFalse(ormOneToManyMapping.getOrderable().isCustomOrdering());
-
-		ormOneToManyMapping.getOrderable().setSpecifiedOrderBy("foo");
-		assertTrue(ormOneToManyMapping.getOrderable().isCustomOrdering());
-		
-		ormOneToManyMapping.getOrderable().setSpecifiedOrderBy(null);
-		assertFalse(ormOneToManyMapping.getOrderable().isCustomOrdering());
+		assertTrue(orderable.isNoOrdering());
+		assertFalse(orderable.isOrderByOrdering());
 	}
 	
 	public void testOneToManyMorphToIdMapping() throws Exception {
@@ -671,7 +649,8 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		assertFalse(oneToManyMapping.isDefault());
 		oneToManyMapping.setSpecifiedFetch(FetchType.EAGER);
 		oneToManyMapping.setSpecifiedTargetEntity("TargetEntity");
-		oneToManyMapping.getOrderable().setSpecifiedOrderBy("customOrder");
+		oneToManyMapping.getOrderable().setOrderByOrdering();
+		oneToManyMapping.getOrderable().getOrderBy().setKey("customOrder");
 		oneToManyMapping.setSpecifiedMapKey("mapKey");
 		oneToManyMapping.getRelationship().getMappedByStrategy().setMappedByAttribute("mappedBy");
 		assertFalse(oneToManyMapping.isDefault());	
@@ -692,7 +671,8 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		assertFalse(oneToManyMapping.isDefault());
 		oneToManyMapping.setSpecifiedFetch(FetchType.EAGER);
 		oneToManyMapping.setSpecifiedTargetEntity("TargetEntity");
-		oneToManyMapping.getOrderable().setSpecifiedOrderBy("customOrder");
+		oneToManyMapping.getOrderable().setOrderByOrdering();
+		oneToManyMapping.getOrderable().getOrderBy().setKey("customOrder");
 		oneToManyMapping.setSpecifiedMapKey("mapKey");
 		oneToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
 		SpecifiedJoinColumn joinColumn = oneToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().addSpecifiedJoinColumn(0);
@@ -719,7 +699,8 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		assertFalse(oneToManyMapping.isDefault());
 		oneToManyMapping.setSpecifiedFetch(FetchType.EAGER);
 		oneToManyMapping.setSpecifiedTargetEntity("TargetEntity");
-		oneToManyMapping.getOrderable().setSpecifiedOrderBy("customOrder");
+		oneToManyMapping.getOrderable().setOrderByOrdering();
+		oneToManyMapping.getOrderable().getOrderBy().setKey("customOrder");
 		oneToManyMapping.setSpecifiedMapKey("mapKey");
 		oneToManyMapping.getRelationship().getMappedByStrategy().setMappedByAttribute("mappedBy");
 		assertFalse(oneToManyMapping.isDefault());	
@@ -740,7 +721,8 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		assertFalse(oneToManyMapping.isDefault());
 		oneToManyMapping.setSpecifiedFetch(FetchType.EAGER);
 		oneToManyMapping.setSpecifiedTargetEntity("TargetEntity");
-		oneToManyMapping.getOrderable().setSpecifiedOrderBy("customOrder");
+		oneToManyMapping.getOrderable().setOrderByOrdering();
+		oneToManyMapping.getOrderable().getOrderBy().setKey("customOrder");
 		oneToManyMapping.setSpecifiedMapKey("mapKey");
 		oneToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
 		SpecifiedJoinColumn joinColumn = oneToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().addSpecifiedJoinColumn(0);
@@ -767,7 +749,8 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		assertFalse(oneToManyMapping.isDefault());
 		oneToManyMapping.setSpecifiedFetch(FetchType.EAGER);
 		oneToManyMapping.setSpecifiedTargetEntity("TargetEntity");
-		oneToManyMapping.getOrderable().setSpecifiedOrderBy("customOrder");
+		oneToManyMapping.getOrderable().setOrderByOrdering();
+		oneToManyMapping.getOrderable().getOrderBy().setKey("customOrder");
 		oneToManyMapping.setSpecifiedMapKey("mapKey");
 		oneToManyMapping.getRelationship().getMappedByStrategy().setMappedByAttribute("mappedBy");
 		assertFalse(oneToManyMapping.isDefault());	
@@ -788,7 +771,8 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		assertFalse(oneToManyMapping.isDefault());
 		oneToManyMapping.setSpecifiedFetch(FetchType.EAGER);
 		oneToManyMapping.setSpecifiedTargetEntity("TargetEntity");
-		oneToManyMapping.getOrderable().setSpecifiedOrderBy("customOrder");
+		oneToManyMapping.getOrderable().setOrderByOrdering();
+		oneToManyMapping.getOrderable().getOrderBy().setKey("customOrder");
 		oneToManyMapping.setSpecifiedMapKey("mapKey");
 		oneToManyMapping.getRelationship().getMappedByStrategy().setMappedByAttribute("mappedBy");
 		oneToManyMapping.getCascade().setAll(true);
@@ -822,7 +806,8 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		assertFalse(oneToManyMapping.isDefault());
 		oneToManyMapping.setSpecifiedFetch(FetchType.EAGER);
 		oneToManyMapping.setSpecifiedTargetEntity("TargetEntity");
-		oneToManyMapping.getOrderable().setSpecifiedOrderBy("customOrder");
+		oneToManyMapping.getOrderable().setOrderByOrdering();
+		oneToManyMapping.getOrderable().getOrderBy().setKey("customOrder");
 		oneToManyMapping.setSpecifiedMapKey("mapKey");
 		oneToManyMapping.getCascade().setAll(true);
 		oneToManyMapping.getCascade().setMerge(true);
@@ -867,7 +852,8 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		assertFalse(oneToManyMapping.isDefault());
 		oneToManyMapping.setSpecifiedFetch(FetchType.EAGER);
 		oneToManyMapping.setSpecifiedTargetEntity("TargetEntity");
-		oneToManyMapping.getOrderable().setSpecifiedOrderBy("customOrder");
+		oneToManyMapping.getOrderable().setOrderByOrdering();
+		oneToManyMapping.getOrderable().getOrderBy().setKey("customOrder");
 		oneToManyMapping.setSpecifiedMapKey("mapKey");
 		oneToManyMapping.getRelationship().getMappedByStrategy().setMappedByAttribute("mappedBy");
 		oneToManyMapping.getCascade().setAll(true);
@@ -900,7 +886,8 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		assertFalse(oneToManyMapping.isDefault());
 		oneToManyMapping.setSpecifiedFetch(FetchType.EAGER);
 		oneToManyMapping.setSpecifiedTargetEntity("TargetEntity");
-		oneToManyMapping.getOrderable().setSpecifiedOrderBy("customOrder");
+		oneToManyMapping.getOrderable().setOrderByOrdering();
+		oneToManyMapping.getOrderable().getOrderBy().setKey("customOrder");
 		oneToManyMapping.setSpecifiedMapKey("mapKey");
 		oneToManyMapping.getRelationship().getMappedByStrategy().setMappedByAttribute("mappedBy");
 		oneToManyMapping.getCascade().setAll(true);
@@ -1042,10 +1029,10 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		assertTrue(cascade.isRemove());
 		assertTrue(cascade.isRefresh());
 
-		assertTrue(virtualOneToManyMapping.getOrderable().isCustomOrdering());
-		assertEquals("city", virtualOneToManyMapping.getOrderable().getSpecifiedOrderBy());
+		assertTrue(virtualOneToManyMapping.getOrderable().isOrderByOrdering());
+		assertEquals("city", virtualOneToManyMapping.getOrderable().getOrderBy().getKey());
 	}
-
+	
 	public void testVirtualMappingMetadataCompleteTrue() throws Exception {
 		createTestEntityOneToManyMapping();
 		createTestTargetEntityAddress();
@@ -1075,6 +1062,6 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		assertFalse(cascade.isRefresh());
 
 		assertTrue(ormOneToManyMapping.getOrderable().isNoOrdering());
-		assertEquals(null, ormOneToManyMapping.getOrderable().getSpecifiedOrderBy());
+		assertEquals(null, ormOneToManyMapping.getOrderable().getOrderBy().getKey());
 	}
 }

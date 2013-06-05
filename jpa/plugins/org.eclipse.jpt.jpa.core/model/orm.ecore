@@ -322,7 +322,11 @@
   <eClassifiers xsi:type="ecore:EClass" name="XmlOneToOne" eSuperTypes="#//AbstractXmlSingleRelationshipMapping #//XmlMappedByMapping #//XmlPrimaryKeyJoinColumnContainer #//v2_0/XmlOneToOne_2_0 #//v2_1/XmlOneToOne_2_1"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlOrderable" abstract="true" interface="true"
       eSuperTypes="#//v2_0/XmlOrderable_2_0">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="orderBy" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="orderBy" eType="#//XmlOrderBy"
+        containment="true" resolveProxies="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlOrderBy">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlOrderColumn" eSuperTypes="#//AbstractXmlNamedColumn #//v2_0/XmlOrderColumn_2_0"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlOverride" abstract="true" interface="true">

@@ -234,10 +234,10 @@ public class JptJpaUiDetailsMessages {
 	public static String NO_NAME_SET;
 	public static String OPTIONAL_COMPOSITE_FALSE;
 	public static String OPTIONAL_COMPOSITE_TRUE;
-	public static String ORDERING_COMPOSITE_CUSTOM;
 	public static String ORDERING_COMPOSITE_NONE;
+	public static String ORDERING_COMPOSITE_ORDER_BY;
 	public static String ORDERING_COMPOSITE_ORDERING_GROUP;
-	public static String ORDERING_COMPOSITE_primary_Key;
+	public static String ORDERING_COMPOSITE_PRIMARY_KEY;
 	public static String ORM_SECONDARY_TABLES_COMPOSITE_DEFINE_IN_XML;
 	public static String OVERRIDES_COMPOSITE_ASSOCIATION;
 	public static String OVERRIDES_COMPOSITE_ATTRIBUTE;
@@ -295,7 +295,7 @@ public class JptJpaUiDetailsMessages {
 	public static String TEMPORAL_TYPE_COMPOSITE_DATE;
 	public static String TEMPORAL_TYPE_COMPOSITE_TIME;
 	public static String TEMPORAL_TYPE_COMPOSITE_TIMESTAMP;
-
+	
 	private JptJpaUiDetailsMessages() {
 		throw new UnsupportedOperationException();
 	}

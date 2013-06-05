@@ -16,12 +16,12 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.Cascade;
 import org.eclipse.jpt.jpa.core.context.FetchType;
-import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetchMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetchType;
@@ -355,8 +355,8 @@ public class EclipseLinkOrmManyToManyMappingTests
 		assertTrue(cascade.isRemove());
 		assertTrue(cascade.isRefresh());
 
-		assertTrue(virtualManyToManyMapping.getOrderable().isCustomOrdering());
-		assertEquals("city", virtualManyToManyMapping.getOrderable().getSpecifiedOrderBy());
+		assertTrue(virtualManyToManyMapping.getOrderable().isOrderByOrdering());
+		assertEquals("city", virtualManyToManyMapping.getOrderable().getOrderBy().getKey());
 
 		assertEquals(EclipseLinkJoinFetchType.INNER, ((EclipseLinkJoinFetchMapping) virtualManyToManyMapping).getJoinFetch().getValue());
 	}
@@ -390,7 +390,7 @@ public class EclipseLinkOrmManyToManyMappingTests
 		assertFalse(cascade.isRefresh());
 
 		assertTrue(ormManyToManyMapping.getOrderable().isNoOrdering());
-		assertEquals(null, ormManyToManyMapping.getOrderable().getSpecifiedOrderBy());
+		assertEquals(null, ormManyToManyMapping.getOrderable().getOrderBy().getKey());
 
 		assertEquals(null, ormManyToManyMapping.getJoinFetch().getValue());
 	}
