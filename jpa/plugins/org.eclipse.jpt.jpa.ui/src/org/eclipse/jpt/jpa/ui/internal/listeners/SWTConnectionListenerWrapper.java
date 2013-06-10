@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,13 +22,19 @@ import org.eclipse.jpt.jpa.db.Sequence;
 import org.eclipse.jpt.jpa.db.Table;
 
 /**
- * Wrap another connection listener and forward events to it on the SWT
- * UI thread, asynchronously if necessary.
+ * Wrap another connection listener and forward events to it asynchronously
+ * on the SWT UI thread.
+ * <p>
+ * <strong>NB:</strong> <em>All</em> the events are handled asynchronously
+ * so they arrive in the same order in which they are fired. This is different
+ * from our typical model listeners, which may handle an event synchronously
+ * (see {@link org.eclipse.jpt.common.ui.internal.listeners.AbstractSWTListenerWrapper});
+ * but that is OK, as no connection changes are initiated by the UI, they
+ * are all triggered by a user "refresh".
  */
 public class SWTConnectionListenerWrapper
 	implements ConnectionListener
 {
-
 	private final ConnectionListener listener;
 
 	public SWTConnectionListenerWrapper(ConnectionListener listener) {
@@ -320,18 +326,12 @@ public class SWTConnectionListenerWrapper
 		this.listener.foreignKeyChanged(profile, foreignKey);
 	}
 
-	/**
-	 * {@link DisplayTools#execute(Runnable)} seems to work OK;
-	 * but using {@link DisplayTools#syncExec(Runnable)} can somtimes make things
-	 * more predictable when debugging, at the risk of deadlocks.
-	 */
 	private void execute(Runnable r) {
-		DisplayTools.execute(r);
-//		SWTUtil.syncExec(r);
+		DisplayTools.asyncExec(r);
 	}
 
 	@Override
 	public String toString() {
-		return "SWT(" + this.listener + ')'; //$NON-NLS-1$
+		return "SWT[" + this.listener + ']'; //$NON-NLS-1$
 	}
 }
