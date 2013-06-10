@@ -9,79 +9,44 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.listeners;
 
-import org.eclipse.jpt.common.ui.internal.plugin.JptCommonUiPlugin;
-import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
-import org.eclipse.jpt.common.utility.internal.RunnableAdapter;
-import org.eclipse.jpt.common.utility.internal.collection.SynchronizedQueue;
+import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * Wrap another collection change listener and forward events to it on the SWT
  * UI thread, asynchronously if necessary.
- * 
- * @see SWTPropertyChangeListenerWrapper
  */
 public class SWTCollectionChangeListenerWrapper
+	extends AbstractSWTListenerWrapper<CollectionEvent, CollectionChangeListener>
 	implements CollectionChangeListener
 {
-	private final CollectionChangeListener listener;
-	private final SynchronizedQueue<CollectionEvent> events = new SynchronizedQueue<CollectionEvent>();
-
-
-	public SWTCollectionChangeListenerWrapper(CollectionChangeListener listener) {
-		super();
-		if (listener == null) {
-			throw new NullPointerException();
-		}
-		this.listener = listener;
+	public SWTCollectionChangeListenerWrapper(CollectionChangeListener listener, Display display, ExceptionHandler exceptionHandler) {
+		super(listener, display, exceptionHandler);
 	}
 
 	public void itemsAdded(CollectionAddEvent event) {
-		this.events.enqueue(event);
-		this.execute(new ForwardEventsRunnable());
+		this.delegate.handle(event);
 	}
 
 	public void itemsRemoved(CollectionRemoveEvent event) {
-		this.events.enqueue(event);
-		this.execute(new ForwardEventsRunnable());
+		this.delegate.handle(event);
 	}
 
 	public void collectionCleared(CollectionClearEvent event) {
-		this.events.enqueue(event);
-		this.execute(new ForwardEventsRunnable());
+		this.delegate.handle(event);
 	}
 
 	public void collectionChanged(CollectionChangeEvent event) {
-		this.events.enqueue(event);
-		this.execute(new ForwardEventsRunnable());
+		this.delegate.handle(event);
 	}
 
-	/* CU private */ class ForwardEventsRunnable
-		extends RunnableAdapter
-	{
-		@Override
-		public void run() {
-			SWTCollectionChangeListenerWrapper.this.forwardEvents();
-		}
-	}
-
-	void forwardEvents() {
-		Iterable<CollectionEvent> temp = this.events.drain();  // debug
-		for (CollectionEvent event : temp) {
-			try {
-				this.forwardEvent(event);
-			} catch (RuntimeException ex) {
-				JptCommonUiPlugin.instance().logError(ex);
-			}
-		}
-	}
-
-	private void forwardEvent(CollectionEvent event) {
+	public void forward(CollectionEvent event) {
 		if (event instanceof CollectionAddEvent) {
 			this.listener.itemsAdded((CollectionAddEvent) event);
 		}
@@ -94,20 +59,5 @@ public class SWTCollectionChangeListenerWrapper
 		else if (event instanceof CollectionChangeEvent) {
 			this.listener.collectionChanged((CollectionChangeEvent) event);
 		}
-	}
-
-	/**
-	 * {@link DisplayTools#execute(Runnable)} seems to work OK;
-	 * but using {@link DisplayTools#syncExec(Runnable)} can somtimes make things
-	 * more predictable when debugging, at the risk of deadlocks.
-	 */
-	private void execute(Runnable r) {
-		DisplayTools.execute(r);
-//		SWTUtil.syncExec(r);
-	}
-
-	@Override
-	public String toString() {
-		return "SWT(" + this.listener + ')'; //$NON-NLS-1$
 	}
 }

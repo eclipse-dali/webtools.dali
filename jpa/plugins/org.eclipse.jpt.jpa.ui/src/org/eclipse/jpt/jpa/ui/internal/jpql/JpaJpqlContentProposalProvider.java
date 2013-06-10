@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0 and Eclipse Distribution License v. 1.0
  * which accompanies this distribution.
@@ -59,7 +59,7 @@ import org.eclipse.jface.text.source.AnnotationModel;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
-import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
+import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -371,7 +371,7 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 	}
 
 	private PropertyChangeListener buildTextListener() {
-		return new SWTPropertyChangeListenerWrapper(new PropertyChangeListener() {
+		return SWTListenerWrapperTools.wrap(new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent event) {
 				String text = (String) event.getNewValue();
 				if (text == null) {

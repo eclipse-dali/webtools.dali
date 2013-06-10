@@ -19,7 +19,7 @@ import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
-import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
+import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
 import org.eclipse.jpt.common.ui.internal.plugin.JptCommonUiPlugin;
 import org.eclipse.jpt.common.ui.internal.swt.ComboModelAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.DateTimeModelAdapter;
@@ -375,7 +375,7 @@ public abstract class Pane<T extends Model> {
 	}
 
 	private PropertyChangeListener buildSubjectChangeListener() {
-		return new SWTPropertyChangeListenerWrapper(this.buildSubjectChangeListener_());
+		return SWTListenerWrapperTools.wrap(this.buildSubjectChangeListener_());
 	}
 
 	private PropertyChangeListener buildSubjectChangeListener_() {
@@ -431,7 +431,7 @@ public abstract class Pane<T extends Model> {
 	}
 
 	private PropertyChangeListener buildAspectChangeListener() {
-		return new SWTPropertyChangeListenerWrapper(buildAspectChangeListener_());
+		return SWTListenerWrapperTools.wrap(buildAspectChangeListener_());
 	}
 
 	private PropertyChangeListener buildAspectChangeListener_() {

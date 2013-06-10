@@ -9,12 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.swt.bind;
 
-import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
+import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -97,7 +97,7 @@ final class BooleanButtonModelBinding {
 	// ********** initialization **********
 
 	private PropertyChangeListener buildBooleanChangeListener() {
-		return new SWTPropertyChangeListenerWrapper(this.buildBooleanChangeListener_());
+		return SWTListenerWrapperTools.wrap(this.buildBooleanChangeListener_(), this.button);
 	}
 
 	private PropertyChangeListener buildBooleanChangeListener_() {

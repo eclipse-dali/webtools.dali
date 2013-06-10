@@ -11,8 +11,7 @@ package org.eclipse.jpt.common.ui.internal.swt.bind;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import org.eclipse.jpt.common.ui.internal.listeners.SWTCollectionChangeListenerWrapper;
+import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
@@ -100,7 +99,7 @@ final class ListBoxSelectionBinding<E>
 	// ********** initialization **********
 
 	private CollectionChangeListener buildSelectedItemsChangeListener() {
-		return new SWTCollectionChangeListenerWrapper(this.buildSelectedItemsChangeListener_());
+		return SWTListenerWrapperTools.wrap(this.buildSelectedItemsChangeListener_(), this.listBox);
 	}
 
 	private CollectionChangeListener buildSelectedItemsChangeListener_() {

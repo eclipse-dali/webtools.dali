@@ -26,7 +26,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.internal.utility.ICUStringCollator;
 import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
-import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
+import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
 import org.eclipse.jpt.common.ui.internal.properties.JptProjectPropertiesPage;
 import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
 import org.eclipse.jpt.common.ui.internal.swt.widgets.ControlTools;
@@ -715,7 +715,7 @@ public class JpaProjectPropertiesPage
 	private static final Transformer<String, String> SIMPLE_STRING_TRANSFORMER = TransformerTools.passThruTransformer(JptJpaUiMessages.JpaFacetWizardPage_none);
 
 	private PropertyChangeListener buildDisconnectedModelListener() {
-		return new SWTPropertyChangeListenerWrapper(new DisconnectedModelListener());
+		return SWTListenerWrapperTools.wrap(new DisconnectedModelListener());
 	}
 
 	/* CU private */ class DisconnectedModelListener

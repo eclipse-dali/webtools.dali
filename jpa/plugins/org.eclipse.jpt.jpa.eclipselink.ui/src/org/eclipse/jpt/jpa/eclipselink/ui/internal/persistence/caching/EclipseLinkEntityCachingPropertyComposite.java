@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.caching;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.eclipse.jpt.common.ui.JptCommonUiMessages;
-import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
+import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -115,9 +115,7 @@ public class EclipseLinkEntityCachingPropertyComposite
 		}
 
 		private PropertyChangeListener buildDefaultCachingTypePropertyChangeListener() {
-			return new SWTPropertyChangeListenerWrapper(
-				buildDefaultCachingTypePropertyChangeListener_()
-			);
+			return SWTListenerWrapperTools.wrap(buildDefaultCachingTypePropertyChangeListener_());
 		}
 
 		private PropertyChangeListener buildDefaultCachingTypePropertyChangeListener_() {

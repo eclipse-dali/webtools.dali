@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.ui.internal.widgets;
 
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jpt.common.ui.JptCommonUiMessages;
-import org.eclipse.jpt.common.ui.internal.listeners.SWTListChangeListenerWrapper;
+import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -287,7 +287,7 @@ public abstract class AddRemovePane<T extends Model, E extends Object> extends P
 	}
 
 	private ListChangeListener buildListChangeListener() {
-		return new SWTListChangeListenerWrapper(buildListChangeListener_());
+		return SWTListenerWrapperTools.wrap(buildListChangeListener_());
 	}
 
 	private ListChangeListener buildListChangeListener_() {

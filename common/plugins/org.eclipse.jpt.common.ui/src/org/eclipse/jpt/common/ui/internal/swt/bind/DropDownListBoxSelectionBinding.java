@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.swt.bind;
 
-import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
+import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 
@@ -98,7 +98,7 @@ final class DropDownListBoxSelectionBinding<E>
 	// ********** initialization **********
 
 	private PropertyChangeListener buildSelectedItemChangeListener() {
-		return new SWTPropertyChangeListenerWrapper(this.buildSelectedItemChangeListener_());
+		return SWTListenerWrapperTools.wrap(this.buildSelectedItemChangeListener_());
 	}
 
 	private PropertyChangeListener buildSelectedItemChangeListener_() {

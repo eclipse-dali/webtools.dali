@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,8 +16,7 @@ import java.util.EventListener;
 import java.util.EventObject;
 import java.util.List;
 import org.eclipse.jface.viewers.ITableLabelProvider;
-import org.eclipse.jpt.common.ui.internal.listeners.SWTCollectionChangeListenerWrapper;
-import org.eclipse.jpt.common.ui.internal.listeners.SWTListChangeListenerWrapper;
+import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -36,8 +35,8 @@ import org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -230,7 +229,7 @@ public class TableModelAdapter<E> {
 	// ********** initialization **********
 
 	protected ListChangeListener buildListChangeListener() {
-		return new SWTListChangeListenerWrapper(this.buildListChangeListener_());
+		return SWTListenerWrapperTools.wrap(this.buildListChangeListener_(), this.table);
 	}
 
 	protected ListChangeListener buildListChangeListener_() {
@@ -261,7 +260,7 @@ public class TableModelAdapter<E> {
 	}
 
 	protected CollectionChangeListener buildSelectedItemsChangeListener() {
-		return new SWTCollectionChangeListenerWrapper(this.buildSelectedItemsChangeListener_());
+		return SWTListenerWrapperTools.wrap(this.buildSelectedItemsChangeListener_(), this.table);
 	}
 
 	protected CollectionChangeListener buildSelectedItemsChangeListener_() {

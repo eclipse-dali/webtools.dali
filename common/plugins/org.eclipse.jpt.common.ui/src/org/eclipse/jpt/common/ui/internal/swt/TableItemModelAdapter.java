@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.ui.internal.swt;
 
 import org.eclipse.jface.viewers.ITableLabelProvider;
-import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
+import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
 import org.eclipse.jpt.common.ui.internal.swt.events.DisposeAdapter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
@@ -117,9 +117,7 @@ public class TableItemModelAdapter {
 
 
 	protected PropertyChangeListener buildPropertyChangeListener(int index) {
-		return new SWTPropertyChangeListenerWrapper(
-			this.buildPropertyChangeListener_(index)
-		);
+		return SWTListenerWrapperTools.wrap(this.buildPropertyChangeListener_(index), this.tableItem);
 	}
 
 	protected PropertyChangeListener buildPropertyChangeListener_(int index) {

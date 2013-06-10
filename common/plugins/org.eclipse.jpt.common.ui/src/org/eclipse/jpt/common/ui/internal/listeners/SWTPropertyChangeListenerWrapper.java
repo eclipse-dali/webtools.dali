@@ -9,78 +9,28 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.listeners;
 
-import org.eclipse.jpt.common.ui.internal.plugin.JptCommonUiPlugin;
-import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
-import org.eclipse.jpt.common.utility.internal.RunnableAdapter;
-import org.eclipse.jpt.common.utility.internal.collection.SynchronizedQueue;
+import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * Wrap another property change listener and forward events to it on the SWT
- * UI thread, asynchronously if necessary. If the event arrived on the UI
- * thread that is probably because it was initiated by a UI widget; as a
- * result, we want to loop back synchronously so the events can be
- * short-circuited. (Typically, the adapter(s) between a <em>property</em> and
- * its corresponding UI widget are read-write; as opposed to the adapter(s)
- * between a <em>collection</em> (or <em>list</em>) and its UI widget, which
- * is read-only.)
- * <p>
- * Any events received earlier (on a non-UI thread) will be
- * forwarded, in the order received, before the current event is forwarded.
+ * UI thread, asynchronously if necessary.
  */
 public class SWTPropertyChangeListenerWrapper
+	extends AbstractSWTListenerWrapper<PropertyChangeEvent, PropertyChangeListener>
 	implements PropertyChangeListener
 {
-	private final PropertyChangeListener listener;
-	private final SynchronizedQueue<PropertyChangeEvent> events = new SynchronizedQueue<PropertyChangeEvent>();
-
-
-	public SWTPropertyChangeListenerWrapper(PropertyChangeListener listener) {
-		super();
-		if (listener == null) {
-			throw new NullPointerException();
-		}
-		this.listener = listener;
+	public SWTPropertyChangeListenerWrapper(PropertyChangeListener listener, Display display, ExceptionHandler exceptionHandler) {
+		super(listener, display, exceptionHandler);
 	}
 
 	public void propertyChanged(PropertyChangeEvent event) {
-		this.events.enqueue(event);
-		this.execute(new ForwardEventsRunnable());
+		this.delegate.handle(event);
 	}
 
-	/* CU private */ class ForwardEventsRunnable
-		extends RunnableAdapter
-	{
-		@Override
-		public void run() {
-			SWTPropertyChangeListenerWrapper.this.forwardEvents();
-		}
-	}
-
-	void forwardEvents() {
-		Iterable<PropertyChangeEvent> temp = this.events.drain();  // debug
-		for (PropertyChangeEvent event : temp) {
-			try {
-				this.listener.propertyChanged(event);
-			} catch (RuntimeException ex) {
-				JptCommonUiPlugin.instance().logError(ex);
-			}
-		}
-	}
-
-	/**
-	 * {@link DisplayTools#execute(Runnable)} seems to work OK;
-	 * but using {@link DisplayTools#syncExec(Runnable)} can somtimes make things
-	 * more predictable when debugging, at the risk of deadlocks.
-	 */
-	private void execute(Runnable r) {
-		DisplayTools.execute(r);
-//		SWTUtil.syncExec(r);
-	}
-
-	@Override
-	public String toString() {
-		return "SWT(" + this.listener + ')'; //$NON-NLS-1$
+	public void forward(PropertyChangeEvent event) {
+		this.listener.propertyChanged(event);
 	}
 }

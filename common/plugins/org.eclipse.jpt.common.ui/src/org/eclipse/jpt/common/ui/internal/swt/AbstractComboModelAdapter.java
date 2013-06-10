@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,8 +12,7 @@ package org.eclipse.jpt.common.ui.internal.swt;
 import java.util.EventListener;
 import java.util.EventObject;
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.jpt.common.ui.internal.listeners.SWTListChangeListenerWrapper;
-import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
+import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -174,7 +173,7 @@ public abstract class AbstractComboModelAdapter<E> {
 	// ********** initialization **********
 
 	protected ListChangeListener buildListChangeListener() {
-		return new SWTListChangeListenerWrapper(this.buildListChangeListener_());
+		return SWTListenerWrapperTools.wrap(this.buildListChangeListener_());
 	}
 
 	protected ListChangeListener buildListChangeListener_() {
@@ -205,7 +204,7 @@ public abstract class AbstractComboModelAdapter<E> {
 	}
 
 	protected PropertyChangeListener buildSelectedItemChangeListener() {
-		return new SWTPropertyChangeListenerWrapper(this.buildSelectedItemChangeListener_());
+		return SWTListenerWrapperTools.wrap(this.buildSelectedItemChangeListener_());
 	}
 
 	protected PropertyChangeListener buildSelectedItemChangeListener_() {

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.ui.internal.swt.bind;
 
 import java.util.ArrayList;
-import org.eclipse.jpt.common.ui.internal.listeners.SWTListChangeListenerWrapper;
+import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
@@ -109,7 +109,7 @@ final class ListWidgetModelBinding<E> {
 	// ********** initialization **********
 
 	private ListChangeListener buildListChangeListener() {
-		return new SWTListChangeListenerWrapper(this.buildListChangeListener_());
+		return SWTListenerWrapperTools.wrap(this.buildListChangeListener_());
 	}
 
 	private ListChangeListener buildListChangeListener_() {

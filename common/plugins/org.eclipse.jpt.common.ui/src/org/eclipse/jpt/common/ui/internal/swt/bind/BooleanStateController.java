@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.swt.bind;
 
-import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
+import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
 import org.eclipse.jpt.common.ui.internal.swt.events.DisposeAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
-import org.eclipse.jpt.common.utility.internal.RunnableAdapter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.RunnableAdapter;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -89,7 +89,7 @@ abstract class BooleanStateController {
 	// ********** initialization **********
 
 	private PropertyChangeListener buildBooleanChangeListener() {
-		return new SWTPropertyChangeListenerWrapper(this.buildBooleanChangeListener_());
+		return SWTListenerWrapperTools.wrap(this.buildBooleanChangeListener_());
 	}
 
 	private PropertyChangeListener buildBooleanChangeListener_() {

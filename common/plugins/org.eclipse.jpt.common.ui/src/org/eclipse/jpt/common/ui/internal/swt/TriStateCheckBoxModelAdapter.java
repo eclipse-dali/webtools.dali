@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,13 +10,13 @@
 package org.eclipse.jpt.common.ui.internal.swt;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
+import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -97,7 +97,7 @@ public class TriStateCheckBoxModelAdapter {
 	// ********** initialization **********
 
 	protected PropertyChangeListener buildBooleanChangeListener() {
-		return new SWTPropertyChangeListenerWrapper(this.buildBooleanChangeListener_());
+		return SWTListenerWrapperTools.wrap(this.buildBooleanChangeListener_(), this.button.getCheckBox());
 	}
 
 	protected PropertyChangeListener buildBooleanChangeListener_() {

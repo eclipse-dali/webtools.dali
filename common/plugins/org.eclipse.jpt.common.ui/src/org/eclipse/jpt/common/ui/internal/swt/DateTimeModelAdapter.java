@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,12 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.swt;
 
-import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
+import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -146,7 +146,7 @@ public class DateTimeModelAdapter {
 	// ********** initialization **********
 
 	protected PropertyChangeListener buildHoursPropertyChangeListener() {
-		return new SWTPropertyChangeListenerWrapper(this.buildHoursPropertyChangeListener_());
+		return SWTListenerWrapperTools.wrap(this.buildHoursPropertyChangeListener_(), this.dateTime);
 	}
 
 	protected PropertyChangeListener buildHoursPropertyChangeListener_() {
@@ -162,7 +162,7 @@ public class DateTimeModelAdapter {
 	}
 	
 	protected PropertyChangeListener buildMinutesPropertyChangeListener() {
-		return new SWTPropertyChangeListenerWrapper(this.buildMinutesPropertyChangeListener_());
+		return SWTListenerWrapperTools.wrap(this.buildMinutesPropertyChangeListener_(), this.dateTime);
 	}
 
 	protected PropertyChangeListener buildMinutesPropertyChangeListener_() {
@@ -178,7 +178,7 @@ public class DateTimeModelAdapter {
 	}
 	
 	protected PropertyChangeListener buildSecondsPropertyChangeListener() {
-		return new SWTPropertyChangeListenerWrapper(this.buildSecondsPropertyChangeListener_());
+		return SWTListenerWrapperTools.wrap(this.buildSecondsPropertyChangeListener_(), this.dateTime);
 	}
 
 	protected PropertyChangeListener buildSecondsPropertyChangeListener_() {
