@@ -139,6 +139,8 @@ public abstract class AbstractJpaProject
 	 */
 	protected final IProject project;
 
+	protected final ProjectResourceLocator projectResourceLocator;
+
 	/**
 	 * The vendor-specific JPA platform that builds the JPA project
 	 * and all its contents.
@@ -234,6 +236,7 @@ public abstract class AbstractJpaProject
 		}
 		this.manager = config.getJpaProjectManager();
 		this.project = config.getProject();
+		this.projectResourceLocator = this.buildProjectResourceLocator();
 		this.synchronizeContextModelCommand = this.buildSynchronizeContextModelCommand();
 		this.updateCommand = this.buildTempUpdateCommand();  // temporary command
 		this.jpaPlatform = config.getJpaPlatform();
@@ -274,6 +277,17 @@ public abstract class AbstractJpaProject
 	@Override
 	public IResource getResource() {
 		return this.project;
+	}
+
+	protected ProjectResourceLocator buildProjectResourceLocator() {
+		Object resourceLocator =  this.project.getAdapter(ProjectResourceLocator.class);
+		//Hack fix to ensure the adatper can be successfully loaded as there are currently problems in the platform
+		//in this area.  See bugs 405320 and 408506.  This fix is essentially a delay mechanism but appears to
+		//fully resolve the issue.  This temp fix should be removed when bug 408506 is fixed in the platform.
+		if (resourceLocator == null) {
+			resourceLocator = Platform.getAdapterManager().loadAdapter(this.project, ProjectResourceLocator.class.getName());
+		}
+		return (ProjectResourceLocator) resourceLocator;
 	}
 
 	protected JavaResourceTypeCache buildExternalJavaResourceTypeCache() {
@@ -606,21 +620,9 @@ public abstract class AbstractJpaProject
 	}
 
 	protected boolean fileResourceLocationIsValid(IFile file) {
-		return this.getProjectResourceLocator().locationIsValid(file.getParent());
+		return this.projectResourceLocator.locationIsValid(file.getParent());
 	}
 
-	protected ProjectResourceLocator getProjectResourceLocator() {
-		Object resourceLocator =  this.project.getAdapter(ProjectResourceLocator.class);
-		//Hack fix to ensure the adatper can be successfully loaded as there are currently problems in the platform
-		//in this area.  See bugs 405320 and 408506.  This fix is essentially a delay mechanism but appears to
-		//fully resolve the issue.  This temp fix should be removed when bug 408506 is fixed in the platform.
-		if (resourceLocator == null) {
-			resourceLocator = Platform.getAdapterManager().loadAdapter(this.project, ProjectResourceLocator.class.getName());
-		}
-		return (ProjectResourceLocator) resourceLocator;
-	}
-	
-	
 	/**
 	 * Log any developer exceptions and don't build a JPA file rather
 	 * than completely failing to build the JPA Project.
@@ -783,7 +785,7 @@ public abstract class AbstractJpaProject
 	// ********** utility **********
 
 	public IFile getPlatformFile(IPath runtimePath) {
-		return this.getProjectResourceLocator().getPlatformFile(runtimePath);
+		return this.projectResourceLocator.getPlatformFile(runtimePath);
 	}
 
 
