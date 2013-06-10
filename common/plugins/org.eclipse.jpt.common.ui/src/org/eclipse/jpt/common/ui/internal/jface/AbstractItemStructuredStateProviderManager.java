@@ -11,24 +11,26 @@ package org.eclipse.jpt.common.ui.internal.jface;
 
 import java.util.HashMap;
 import org.eclipse.jface.resource.ResourceManager;
-import org.eclipse.jface.viewers.BaseLabelProvider;
+import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.LabelProviderChangedEvent;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jpt.common.ui.internal.plugin.JptCommonUiPlugin;
 import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
+import org.eclipse.jpt.common.ui.jface.ItemContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
-import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemStructuredContentProvider;
 import org.eclipse.jpt.common.ui.jface.StructuredStateProvider;
+import org.eclipse.jpt.common.utility.ExceptionHandler;
+import org.eclipse.jpt.common.utility.internal.ListenerList;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.RunnableAdapter;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Control;
+import com.ibm.icu.text.MessageFormat;
 
 /**
- * This provider maintains caches of item content and label providers, each
- * keyed by item. This allows the providers to listen to the items and update
- * the viewer as necessary.
+ * This provider maintains an input element content provider and a cache of item
+ * label providers, each keyed by item. This allows the providers to listen to
+ * the items and update the viewer as necessary.
  * <p>
  * <strong>NB:</strong> This class, if used as a label provider should typically
  * be used also as a content provider for the same viewer. Otherwise, the item
@@ -43,252 +45,360 @@ import org.eclipse.swt.widgets.Control;
  * @see ItemStructuredContentProvider
  * @see ItemExtendedLabelProvider
  */
-public abstract class AbstractItemStructuredStateProviderManager<V extends StructuredViewer, CP extends ItemStructuredContentProvider>
-	extends BaseLabelProvider
-	implements StructuredStateProvider, ItemStructuredContentProvider.Manager, ItemExtendedLabelProvider.Manager
+abstract class AbstractItemStructuredStateProviderManager<V extends StructuredViewer, CP extends ItemContentProvider, CPF extends ItemStructuredContentProvider.Factory>
+	implements StructuredStateProvider,
+				ItemStructuredContentProvider.Manager,
+				ItemExtendedLabelProvider.Manager
 {
+	/* private-protected */ V viewer;
+
+	private Object input;
+
+	/* private-protected */ final CPF itemContentProviderFactory;
+
+	private ItemStructuredContentProvider inputContentProvider;
+
+	private final ItemExtendedLabelProvider.Factory itemLabelProviderFactory;
+
 	/**
-	 * May be <code>null</code>.
+	 * This maps <em>every</em> item in the view to its label provider
+	 * (<em>including</em> the {@link #input} item).
 	 */
-	protected final ItemExtendedLabelProvider.Factory itemLabelProviderFactory;
+	private final HashMap<Object, ItemExtendedLabelProvider> itemLabelProviders = new HashMap<Object, ItemExtendedLabelProvider>();
 
-	protected final HashMap<Object, CP> itemContentProviders = new HashMap<Object, CP>();
+	private final ResourceManager resourceManager;
 
-	protected final HashMap<Object, ItemExtendedLabelProvider> itemLabelProviders = new HashMap<Object, ItemExtendedLabelProvider>();
+	private final ListenerList<ILabelProviderListener> listenerList = new ListenerList<ILabelProviderListener>(ILabelProviderListener.class);
+	private final ExceptionHandler exceptionHandler;
 
-	/**
-	 * Never <code>null</code>.
-	 */
-	protected final ResourceManager resourceManager;
-
-	protected volatile V viewer;
+	/* private-protected */ final static JptCommonUiPlugin PLUG_IN = JptCommonUiPlugin.instance();
 
 
-	protected AbstractItemStructuredStateProviderManager(ItemExtendedLabelProvider.Factory itemLabelProviderFactory, ResourceManager resourceManager) {
+	/* private-protected */ AbstractItemStructuredStateProviderManager(
+			CPF itemContentProviderFactory,
+			ItemExtendedLabelProvider.Factory itemLabelProviderFactory,
+			ResourceManager resourceManager,
+			ExceptionHandler exceptionHandler
+	) {
 		super();
+		if (itemContentProviderFactory == null) {
+			throw new NullPointerException();
+		}
+		this.itemContentProviderFactory = itemContentProviderFactory;
+		if (itemLabelProviderFactory == null) {
+			throw new NullPointerException();
+		}
 		this.itemLabelProviderFactory = itemLabelProviderFactory;
 		if (resourceManager == null) {
 			throw new NullPointerException();
 		}
 		this.resourceManager = resourceManager;
-	}
-
-
-	// ********** content provider **********
-
-	@SuppressWarnings("unchecked")
-	public synchronized void inputChanged(Viewer v, Object oldInput, Object newInput) {
-		if (oldInput != newInput) {
-			this.disposeProviders();
+		if (exceptionHandler == null) {
+			throw new NullPointerException();
 		}
-		this.viewer = (V) v;
+		this.exceptionHandler = exceptionHandler;
 	}
 
+
+	// ********** structured content provider **********
+
+	/**
+	 * <em>API Commentary:</em> The viewer and the original input should be
+	 * passed to the provider's constructor; and this method should be passed
+	 * <em>only</em> the new input.
+	 */
+	public void inputChanged(Viewer v, Object oldInput, Object newInput) {
+		@SuppressWarnings("unchecked")
+		V temp = (V) v;
+		this.viewer = temp;
+		if (oldInput != newInput) {
+			if (this.inputContentProvider != null) {
+				this.disposeInputProviders();
+			}
+			this.input = newInput;
+			if (newInput != null) {
+				// build a label provider for the input because the viewer might
+				// use the input's label for a title etc. (e.g. the CommonViewer
+				// stores the input's label text on the frame list to enable
+				// "Back" and "Forward" navigation)
+				this.addLabelProvider(newInput);
+				this.inputContentProvider = this.itemContentProviderFactory.buildProvider(newInput, this);
+				this.addAll(newInput, this.inputContentProvider.getElements());
+			}
+		}
+	}
+
+	/**
+	 * Assume the input element passed to this method
+	 * is the same object as the "new input" passed (earlier) to
+	 * {@link #inputChanged(Viewer, Object, Object)},
+	 * and it is not <code>null</code>.
+	 * <p>
+	 * <em>API Commentary:</em> The input element should be passed to the
+	 * provider's constructor and {@link #inputChanged(Viewer, Object, Object)};
+	 * and this method should have <em>no</em> parameters.
+	 */
 	public Object[] getElements(Object inputElement) {
-		CP provider = this.getItemContentProvider(inputElement);
-		return (provider == null) ? ObjectTools.EMPTY_OBJECT_ARRAY : provider.getElements();
+		if (inputElement != this.input) {
+			String msg = MessageFormat.format("Mismatched input: this.input: '{0}' vs. inputElement: '{1}'", this.input, inputElement); //$NON-NLS-1$
+			IllegalArgumentException ex = new IllegalArgumentException(msg);
+			if (PLUG_IN != null) {
+				PLUG_IN.logError(ex);
+			} else {
+				ex.printStackTrace();
+			}
+		}
+		return this.inputContentProvider.getElements();
 	}
 
 
 	// ********** label provider **********
 
 	public Image getImage(Object element) {
-		ItemLabelProvider provider = this.getItemLabelProvider(element);
-		return (provider == null) ? null : provider.getImage();
+		return this.getItemLabelProvider(element).getImage();
 	}
 
 	public String getText(Object element) {
-		ItemLabelProvider provider = this.getItemLabelProvider(element);
-		return (provider == null) ? null : provider.getText();
+		return this.getItemLabelProvider(element).getText();
 	}
 
 	public String getDescription(Object element) {
-		ItemExtendedLabelProvider provider = this.getItemLabelProvider(element);
-		return (provider == null) ? null : provider.getDescription();
+		return this.getItemLabelProvider(element).getDescription();
 	}
 
-
-	// ********** item provider caches **********
-
-	protected synchronized CP getItemContentProvider(Object item) {
-		CP provider = this.itemContentProviders.get(item);
-		if (provider == null) {
-			if ( ! this.itemContentProviders.containsKey(item)) {  // null is an allowed value
-				provider = this.buildItemContentProvider(item);
-				this.itemContentProviders.put(item, provider);
-			}
-		}
-		return provider;
-	}
-
-	protected abstract CP buildItemContentProvider(Object item);
-
-	protected synchronized ItemExtendedLabelProvider getItemLabelProvider(Object item) {
-		ItemExtendedLabelProvider provider = this.itemLabelProviders.get(item);
-		if (provider == null) {
-			if ( ! this.itemLabelProviders.containsKey(item)) {  // null is an allowed value
-				provider = this.buildItemLabelProvider(item);
-				this.itemLabelProviders.put(item, provider);
-			}
-		}
-		return provider;
-	}
-
-	protected ItemExtendedLabelProvider buildItemLabelProvider(Object item) {
+	/**
+	 * <strong>NB:</strong> We have a bug if this method ever returns
+	 * <code>null</code>.
+	 */
+	private ItemExtendedLabelProvider getItemLabelProvider(Object item) {
 		this.checkViewer();
-		return (this.itemLabelProviderFactory == null) ? null : this.itemLabelProviderFactory.buildProvider(item, this);
+		return this.itemLabelProviders.get(item);
 	}
 
 	/**
-	 * The viewer passes itself to its content provider; so it will be
-	 * initialized by the time we get here if this provider is the
-	 * viewer's content provider.
+	 * The viewer passes itself to its content provider
+	 * (via {@link #inputChanged(Viewer, Object, Object)}); so the manager's
+	 * {@link #viewer} will be initialized by the time we get here if the
+	 * manager is also the viewer's content provider.
 	 */
-	protected void checkViewer() {
+	private void checkViewer() {
 		if (this.viewer == null) {
-			throw new IllegalStateException("This provider must be used as a content provider *as well as* a label provider."); //$NON-NLS-1$
+			String msg = "This manager must be both the viewer's content provider *and* the viewer's label provider."; //$NON-NLS-1$
+			IllegalStateException ex = new IllegalStateException(msg);
+			if (PLUG_IN != null) {
+				PLUG_IN.logError(ex);
+			} else {
+				ex.printStackTrace();
+			}
 		}
 	}
 
 
-	// ********** update elements **********
+	// ********** elements changed **********
 
 	/**
-	 * Dispatch to the UI thread.
+	 * If the {@link #input} has changed out from under us, ignore the "event".
 	 */
-	public void updateElements(Object inputElement) {
-		this.execute(new UpdateElementsRunnable(inputElement));
+	public void elementsChanged(Object parent, Iterable<?> addedElements, Iterable<?> removedElements) {
+		this.checkUIThread();
+		if (parent == this.input) {
+			this.elementsChanged_(parent, addedElements, removedElements);
+		}
 	}
 
-	/* CU private */ class UpdateElementsRunnable
-		extends RunnableAdapter
-	{
-		private final Object inputElement;
-		UpdateElementsRunnable(Object inputElement) {
-			super();
-			this.inputElement = inputElement;
-		}
-		@Override
-		public void run() {
-			AbstractItemStructuredStateProviderManager.this.updateElements_(this.inputElement);
-		}
+	private void elementsChanged_(Object parent, Iterable<?> addedElements, Iterable<?> removedElements) {
+		this.addAll(parent, addedElements);
+		this.removeAll(removedElements);
+		this.viewer.refresh();
 	}
 
 	/**
-	 * Update the specified item's elements.
+	 * @see #addAll(Object, Iterable)
 	 */
-	/* CU private */ void updateElements_(Object inputElement) {
-		if (this.viewerIsAlive()) {
-			this.viewer.refresh(inputElement);
-		}
-	}
-
-
-	// ********** update label **********
-
-	/**
-	 * Dispatch to the UI thread.
-	 */
-	public void updateLabel(Object item) {
-		this.execute(new UpdateLabelRunnable(item));
-	}
-
-	/* CU private */ class UpdateLabelRunnable
-		extends RunnableAdapter
-	{
-		private final Object item;
-		UpdateLabelRunnable(Object item) {
-			super();
-			this.item = item;
-		}
-		@Override
-		public void run() {
-			AbstractItemStructuredStateProviderManager.this.updateLabel_(this.item);
+	/* private-protected */ void addAll(Object parent, Object[] items) {
+		for (Object item : items) {
+			this.add(parent, item);
 		}
 	}
 
 	/**
-	 * Update the specified item's label.
+	 * Add the specified items' content and label providers.
+	 * <p>
+	 * Pre-condition: Executing on the UI thread.
 	 */
-	/* CU private */ void updateLabel_(Object item) {
-		if (this.viewerIsAlive()) {
-			this.fireLabelProviderChanged(new LabelProviderChangedEvent(this, item));
+	/* private-protected */ void addAll(Object parent, Iterable<?> items) {
+		for (Object item : items) {
+			this.add(parent, item);
 		}
 	}
-
-
-	// ********** update description **********
-
-	public void updateDescription(Object item) {
-		// NOP - currently there is no way affect the status bar;
-		// it is updated when the viewer's selection changes
-	}
-
-
-	// ********** misc **********
-
-	public ResourceManager getResourceManager() {
-		return this.resourceManager;
-	}
-
-	protected void execute(Runnable runnable) {
-		DisplayTools.execute(this.viewer, runnable);
-	}
-
-	protected boolean viewerIsAlive() {
-		Control control = (this.viewer == null) ? null : this.viewer.getControl();
-		return (control != null) && ! control.isDisposed();
-	}
-
-	@Override
-	public String toString() {
-		return ObjectTools.toString(this);
-	}
-
-
-	// ********** dispose **********
 
 	/**
-	 * Disposes resource manager and all item providers.
+	 * Add the specified item's content and label providers.
+	 * <p>
+	 * Pre-condition: Executing on the UI thread.
 	 */
-	@Override
-	public synchronized void dispose() {
-		this.disposeProviders();
-		this.resourceManager.dispose();
-		super.dispose();
+	/* private-protected */ void add(@SuppressWarnings("unused") Object parent, Object item) {
+		this.addLabelProvider(item);
 	}
 
-	protected synchronized void disposeProviders() {
-		// coded this way because the item providers will call back to this
-		// manager to dispose their children when they are disposed
-		while ( ! this.itemContentProviders.isEmpty()) {
-			this.dispose_(this.itemContentProviders.keySet().iterator().next());
+	private void addLabelProvider(Object item) {
+		this.itemLabelProviders.put(item, this.itemLabelProviderFactory.buildProvider(item, this));
+	}
+
+	/**
+	 * @see #removeAll(Iterable)
+	 */
+	/* private-protected */ void removeAll(Object[] items) {
+		for (Object item : items) {
+			this.remove(item);
 		}
-		// dispose the label providers for any items that did not have a content provider;
-		// although that is most likely a bug, it is allowed and handled
-		while (! this.itemLabelProviders.isEmpty()) {
-			this.dispose_(this.itemLabelProviders.keySet().iterator().next());
+	}
+
+	/**
+	 * Dispose the specified items' content and label providers.
+	 * <p>
+	 * Pre-condition: Executing on the UI thread.
+	 */
+	/* private-protected */ void removeAll(Iterable<?> items) {
+		for (Object item : items) {
+			this.remove(item);
 		}
 	}
 
 	/**
 	 * Dispose the specified item's content and label providers.
+	 * <p>
+	 * Pre-condition: Executing on the UI thread.
 	 */
-	public synchronized void dispose(Object item) {
-		this.dispose_(item);
+	/* private-protected */ void remove(Object item) {
+		this.removeLabelProvider(item);
 	}
 
+	private void removeLabelProvider(Object item) {
+		this.itemLabelProviders.get(item).dispose();
+		this.itemLabelProviders.remove(item);
+	}
+
+
+	// ********** label changed **********
+
 	/**
-	 * Pre-condition: synchronized
+	 * If the specified item has been removed from under us, ignore the "event".
 	 */
-	private void dispose_(Object item) {
-		ItemStructuredContentProvider icp = this.itemContentProviders.remove(item);
-		if (icp != null) {
-			icp.dispose();
+	public void labelChanged(Object item) {
+		this.checkUIThread();
+		if (this.getItemLabelProvider(item) != null) {
+			this.labelChanged_(item);
 		}
-		ItemLabelProvider ilp = this.itemLabelProviders.remove(item);
-		if (ilp != null) {
-			ilp.dispose();
+	}
+
+	private void labelChanged_(Object item) {
+		this.fireLabelProviderChanged(new LabelProviderChangedEvent(this, item));
+	}
+
+
+	// ********** description changed **********
+
+	/**
+	 * If the specified item has been removed from under us, ignore the "event".
+	 */
+	public void descriptionChanged(Object item) {
+		this.checkUIThread();
+		if (this.getItemLabelProvider(item) != null) {
+			this.descriptionChanged_(item);
 		}
+	}
+
+	private void descriptionChanged_(@SuppressWarnings("unused") Object item) {
+		// NOP - currently there is no way affect the status bar;
+		// it is updated when the viewer's selection changes
+	}
+
+
+	// ********** listeners **********
+
+	public void addListener(ILabelProviderListener listener) {
+		this.listenerList.add(listener);
+	}
+
+	public void removeListener(ILabelProviderListener listener) {
+		this.listenerList.remove(listener);
+	}
+
+	public boolean isLabelProperty(Object element, String property) {
+		return true;
+	}
+
+	/* private-protected */ void fireLabelProviderChanged(LabelProviderChangedEvent event) {
+		for (ILabelProviderListener listener : this.listenerList.getListeners()) {
+			try {
+				listener.labelProviderChanged(event);
+			} catch (Throwable t) {
+				this.exceptionHandler.handleException(t);
+			}
+		}
+	}
+
+	// ********** dispose **********
+
+	/**
+	 * Typically, the provider's input is set to <code>null</code> (via
+	 * {@link #inputChanged(Viewer, Object, Object) inputChanged(...)}) <em>before</em> the
+	 * provider is disposed
+	 * (see {@link org.eclipse.jface.viewers.ContentViewer#handleDispose(org.eclipse.swt.events.DisposeEvent)
+	 * ContentViewer.handleDispose(...)}).
+	 * But {@link org.eclipse.ui.navigator.CommonViewer CommonViewer}
+	 * disposes its {@link org.eclipse.ui.navigator.INavigatorContentService
+	 * content service} (and its delegate content providers) <em>before</em> the input
+	 * is set to <code>null</code>
+	 * (see {@link org.eclipse.ui.navigator.CommonViewer#handleDispose(org.eclipse.swt.events.DisposeEvent)
+	 * CommonViewer.handleDispose(...)}).
+	 * This is <em>intentional</em>;
+	 * see the comment in {@link org.eclipse.ui.internal.navigator.NavigatorContentService#updateService(Viewer, Object, Object)
+	 * NavigatorContentService.updateService(...)}.
+	 */
+	public void dispose() {
+		if (this.inputContentProvider != null) {
+			this.disposeInputProviders();
+			this.input = null;
+		}
+		// the input is set to null before the content and label providers are disposed,
+		// so there is no need to dispose the item providers here - they are already gone...
+		if ( ! this.itemLabelProviders.isEmpty()) {
+			String msg = MessageFormat.format("Not all item label providers were disposed: {0}", this.itemLabelProviders); //$NON-NLS-1$
+			IllegalStateException ex = new IllegalStateException(msg);
+			if (PLUG_IN != null) {
+				PLUG_IN.logError(ex);
+			} else {
+				ex.printStackTrace();
+			}
+		}
+	}
+
+	private void disposeInputProviders() {
+		this.removeAll(this.inputContentProvider.getElements());
+		this.inputContentProvider.dispose();
+		this.inputContentProvider = null;
+		this.removeLabelProvider(this.input);
+	}
+
+
+	// ********** misc **********
+
+	public StructuredViewer getViewer() {
+		return this.viewer;
+	}
+
+	public ResourceManager getResourceManager() {
+		return this.resourceManager;
+	}
+
+	/* private-protected */ void checkUIThread() {
+		DisplayTools.checkUIThread(this.viewer);
+	}
+
+	@Override
+	public String toString() {
+		return ObjectTools.toString(this);
 	}
 }

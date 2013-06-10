@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,24 +10,32 @@
 package org.eclipse.jpt.jaxb.eclipselink.ui.internal.navigator;
 
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jpt.common.ui.internal.jface.ModelItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.internal.jface.StaticItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
-import org.eclipse.jpt.jaxb.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmFile;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaAttribute;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaType;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmTypeMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlEnum;
 import org.eclipse.jpt.jaxb.eclipselink.ui.JptJaxbEclipseLinkUiImages;
-import org.eclipse.jpt.jaxb.ui.internal.jaxb21.GenericJaxb_2_1_NavigatorItemLabelProviderFactory;
+import org.eclipse.jpt.jaxb.eclipselink.ui.internal.ELJaxbMappingImageHelper;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiImages;
+import org.eclipse.jpt.jaxb.ui.internal.AbstractNavigatorItemLabelProviderFactory;
 
 
 public class ELJaxbNavigatorItemLabelProviderFactory
-		extends GenericJaxb_2_1_NavigatorItemLabelProviderFactory {
+	extends AbstractNavigatorItemLabelProviderFactory
+{
+	private static ItemExtendedLabelProvider.Factory INSTANCE = new ELJaxbNavigatorItemLabelProviderFactory();
 	
-	private static ELJaxbNavigatorItemLabelProviderFactory INSTANCE = new ELJaxbNavigatorItemLabelProviderFactory();
 	
-	
-	public static GenericJaxb_2_1_NavigatorItemLabelProviderFactory instance() {
+	public static ItemExtendedLabelProvider.Factory instance() {
 		return INSTANCE;
 	}
 	
@@ -40,10 +48,7 @@ public class ELJaxbNavigatorItemLabelProviderFactory
 	@Override
 	public ItemExtendedLabelProvider buildProvider(Object item, ItemExtendedLabelProvider.Manager manager) {
 		
-		if (item instanceof JavaPersistentAttribute) {
-			return new ELJaxbJavaPersistentAttributeLabelProvider((JavaPersistentAttribute) item, manager);
-		}
-		else if (item instanceof OxmFile) {
+		if (item instanceof OxmFile) {
 			return buildOxmFileLabelProvider((OxmFile) item, manager);
 		}
 		else if (item instanceof OxmXmlEnum) {
@@ -58,7 +63,12 @@ public class ELJaxbNavigatorItemLabelProviderFactory
 		
 		return super.buildProvider(item, manager);
 	}
-	
+
+	@Override
+	protected ImageDescriptor buildJavaPersistentAttributeImageDescriptor(String mappingKey) {
+		return ELJaxbMappingImageHelper.imageDescriptorForAttributeMapping(mappingKey);
+	}
+
 	protected ItemExtendedLabelProvider buildOxmFileLabelProvider(OxmFile file, ItemExtendedLabelProvider.Manager manager) {
 		return new StaticItemExtendedLabelProvider(
 					JptJaxbEclipseLinkUiImages.OXM_FILE,
@@ -68,7 +78,7 @@ public class ELJaxbNavigatorItemLabelProviderFactory
 				);
 	}
 	
-	private String buildOxmFileText(OxmFile file) {
+	protected String buildOxmFileText(OxmFile file) {
 		StringBuffer text = new StringBuffer();
 		IPath path = file.getOxmResource().getFile().getRawLocation();
 		text.append(path.lastSegment());
@@ -77,23 +87,117 @@ public class ELJaxbNavigatorItemLabelProviderFactory
 		return text.toString();
 	}
 	
-	private String buildOxmFileDescription(OxmFile file) {
+	protected String buildOxmFileDescription(OxmFile file) {
 		// the same, for now
 		return buildOxmFileText(file);
 	}
 	
-	protected ItemExtendedLabelProvider buildOxmJavaTypeLabelProvider(
-			OxmJavaType item, ItemExtendedLabelProvider.Manager manager) {
-		return new OxmJavaTypeLabelProvider(item, manager);
+
+	// ********** oxm java type **********
+
+	protected ItemExtendedLabelProvider buildOxmJavaTypeLabelProvider(OxmJavaType item, ItemExtendedLabelProvider.Manager manager) {
+		return new ModelItemExtendedLabelProvider(
+				item,
+				manager,
+				this.buildOxmJavaTypeImageDescriptorModel(item),
+				this.buildOxmJavaTypeTextModel(item),
+				this.buildOxmJavaTypeDescriptionModel(item)
+			);
+	}
+
+	protected PropertyValueModel<ImageDescriptor> buildOxmJavaTypeImageDescriptorModel(@SuppressWarnings("unused") OxmJavaType item) {
+		return new StaticPropertyValueModel<ImageDescriptor>(JptJaxbUiImages.JAXB_CLASS);
+	}
+
+	protected PropertyValueModel<String> buildOxmJavaTypeTextModel(OxmJavaType item) {
+		return new PropertyAspectAdapter<OxmJavaType, String>(OxmTypeMapping.TYPE_NAME_PROPERTY, item) {
+			@Override
+			protected String buildValue_() {
+				return this.subject.getTypeName().getTypeQualifiedName();
+			}
+		};
+	}
+
+	protected PropertyValueModel<String> buildOxmJavaTypeDescriptionModel(OxmJavaType item) {
+		return new PropertyAspectAdapter<OxmJavaType, String>(OxmTypeMapping.TYPE_NAME_PROPERTY, item) {
+			@Override
+			protected String buildValue_() {
+				return this.subject.getTypeName().getFullyQualifiedName();
+			}
+		};
 	}
 	
-	protected ItemExtendedLabelProvider buildOxmXmlEnumLabelProvider(
-			OxmXmlEnum item, ItemExtendedLabelProvider.Manager manager) {
-		return new OxmXmlEnumLabelProvider(item, manager);
+
+	// ********** oxm xml enum **********
+
+	protected ItemExtendedLabelProvider buildOxmXmlEnumLabelProvider(OxmXmlEnum item, ItemExtendedLabelProvider.Manager manager) {
+		return new ModelItemExtendedLabelProvider(
+				item,
+				manager,
+				this.buildOxmXmlEnumImageDescriptorModel(item),
+				this.buildOxmXmlEnumTextModel(item),
+				this.buildOxmXmlEnumDescriptionModel(item)
+			);
+	}
+
+	protected PropertyValueModel<ImageDescriptor> buildOxmXmlEnumImageDescriptorModel(@SuppressWarnings("unused") OxmXmlEnum item) {
+		return new StaticPropertyValueModel<ImageDescriptor>(JptJaxbUiImages.JAXB_ENUM);
 	}
 	
-	protected ItemExtendedLabelProvider buildOxmJavaAttributeLabelProvider(
-			OxmJavaAttribute item, ItemExtendedLabelProvider.Manager manager) {
-		return new OxmJavaAttributeLabelProvider(item, manager);
+	protected PropertyValueModel<String> buildOxmXmlEnumTextModel(OxmXmlEnum item) {
+		return new PropertyAspectAdapter<OxmXmlEnum, String>(OxmTypeMapping.TYPE_NAME_PROPERTY, item) {
+			@Override
+			protected String buildValue_() {
+				return this.subject.getTypeName().getTypeQualifiedName();
+			}
+		};
+	}
+
+	protected PropertyValueModel<String> buildOxmXmlEnumDescriptionModel(OxmXmlEnum item) {
+		return new PropertyAspectAdapter<OxmXmlEnum, String>(OxmTypeMapping.TYPE_NAME_PROPERTY, item) {
+			@Override
+			protected String buildValue_() {
+				return this.subject.getTypeName().getFullyQualifiedName();
+			}
+		};
+	}
+	
+
+	// ********** oxm java attribute **********
+
+	protected ItemExtendedLabelProvider buildOxmJavaAttributeLabelProvider(OxmJavaAttribute item, ItemExtendedLabelProvider.Manager manager) {
+		return new ModelItemExtendedLabelProvider(
+				item,
+				manager,
+				this.buildOxmJavaAttributeImageDescriptorModel(item),
+				this.buildOxmJavaAttributeTextModel(item),
+				this.buildOxmJavaAttributeDescriptionModel(item)
+			);
+	}
+
+	protected PropertyValueModel<ImageDescriptor> buildOxmJavaAttributeImageDescriptorModel(OxmJavaAttribute item) {
+		return new PropertyAspectAdapter<OxmJavaAttribute, ImageDescriptor>(JaxbPersistentAttribute.MAPPING_PROPERTY, item) {
+			@Override
+			protected ImageDescriptor buildValue_() {
+				return ELJaxbNavigatorItemLabelProviderFactory.this.buildOxmJavaAttributeImageDescriptor(this.subject.getMappingKey());
+			}
+		};
+	}
+
+	protected ImageDescriptor buildOxmJavaAttributeImageDescriptor(String mappingKey) {
+		return ELJaxbMappingImageHelper.imageDescriptorForAttributeMapping(mappingKey);
+	}
+	
+	protected PropertyValueModel<String> buildOxmJavaAttributeTextModel(OxmJavaAttribute item) {
+		return new PropertyAspectAdapter<OxmJavaAttribute, String>(OxmJavaAttribute.JAVA_ATTRIBUTE_NAME_PROPERTY, item) {
+			@Override
+			protected String buildValue_() {
+				return this.subject.getJavaAttributeName();
+			}
+		};
+	}
+
+	protected PropertyValueModel<String> buildOxmJavaAttributeDescriptionModel(OxmJavaAttribute item) {
+		return buildOxmJavaAttributeTextModel(item);
 	}
 }

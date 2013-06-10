@@ -11,8 +11,8 @@ package org.eclipse.jpt.common.ui.jface;
 
 /**
  * Implementations of this interface can be used to maintain the content of a
- * specific tree element. The implementation will monitor the element for any
- * changes that affect the element's children and forward them
+ * specific (non-root) tree item. The implementation will monitor the item for
+ * any changes that affect the item's list of children and forward them
  * appropriately to the {@link Manager}.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
@@ -22,11 +22,10 @@ package org.eclipse.jpt.common.ui.jface;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
  * @see org.eclipse.jface.viewers.IContentProvider
- * @see org.eclipse.jface.viewers.IStructuredContentProvider
  * @see org.eclipse.jface.viewers.ITreeContentProvider
  */
 public interface ItemTreeContentProvider
-	extends ItemStructuredContentProvider
+	extends ItemContentProvider
 {
 	/**
 	 * Return the item's parent.
@@ -49,32 +48,55 @@ public interface ItemTreeContentProvider
 	 */
 	Object[] getChildren();
 
+	/**
+	 * Dispose the item content provider.
+	 * Stop listening to the provider's item, as appropriate.
+	 */
+	void dispose();
+
 
 	/**
 	 * An item tree content provider's manager is notified whenever the
-	 * item's children have changed.
+	 * item's list of children has changed.
 	 */
 	interface Manager
-		extends ItemStructuredContentProvider.Manager
+		extends ItemContentProvider.Manager
 	{
 		/**
-		 * The children for the specified element have changed.
-		 * Update appropriately.
+		 * The list of children for the specified item has changed.
+		 * The specified elements were added and removed. Add providers
+		 * for the added elements, dispose the providers for the removed
+		 * elements, and refresh the view. This method must be called from the
+		 * UI event thread.
+		 * 
+		 * @see org.eclipse.jface.viewers.StructuredViewer#refresh(Object, boolean)
 		 */
-		void updateChildren(Object element);
+		void childrenChanged(Object item, Iterable<?> addedChildren, Iterable<?> removedChildren);
 	}
 
 
 	/**
-	 * Factory interface for constructing item tree content providers.
+	 * Factory interface for constructing item tree content providers
+	 * for both root and branch/leaf items.
 	 * Typically used by {@link ItemTreeContentProvider.Manager item tree content
 	 * provider managers}.
+	 * <p>
+	 * <strong>NB:</strong> This interface extends the
+	 * {@link ItemStructuredContentProvider.Factory item structured content
+	 * factory interface}, defining different factory methods for:<ul>
+	 * <li>the tree root item
+	 * <li>tree branch/leaf items
+	 * </ul>
 	 */
-	interface Factory {
+	interface Factory
+		extends ItemStructuredContentProvider.Factory
+	{
 		/**
 		 * Build a tree content provider for the specified item.
-		 * Return <code>null</code> if there is no provider for the specified item.
+		 * Do not return <code>null</code>.
+		 * 
+		 * @see org.eclipse.jpt.common.ui.internal.jface.NullItemTreeContentProvider
 		 */
-		ItemTreeContentProvider buildProvider(Object item, Manager manager);
+		ItemTreeContentProvider buildProvider(Object item, Object parent, Manager manager);
 	}
 }

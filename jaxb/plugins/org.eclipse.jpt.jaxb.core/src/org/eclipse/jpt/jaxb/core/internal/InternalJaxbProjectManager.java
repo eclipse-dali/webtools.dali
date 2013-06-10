@@ -668,6 +668,10 @@ public class InternalJaxbProjectManager
 
 	// ********** miscellaneous **********
 
+	public JaxbWorkspace getJaxbWorkspace() {
+		return this.jaxbWorkspace;
+	}
+
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.jaxbProjects);

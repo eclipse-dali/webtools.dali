@@ -172,6 +172,9 @@ public final class DisplayTools {
 		}
 	}
 
+
+	// ********** active UI components **********
+
 	/**
 	 * Return the current shell. Return <code>null</code> if there is none.
 	 * @exception org.eclipse.swt.SWTException if not called from the UI thread
@@ -209,42 +212,95 @@ public final class DisplayTools {
 	}
 
 
-	// ********** UI thread **********
+	// ********** UI thread check **********
 
 	/**
-	 * Determines if the current thread is the UI event thread.
-	 *
-	 * @return <code>true</code> if it's the UI event thread, <code>false</code>
-	 * otherwise
+	 * Check whether the current thread is a UI event thread.
+	 * Throw an exception if it is not.
+	 * @see #uiThread()
+	 * @see Display#getCurrent()
+	 */
+	public static void checkUIThread() {
+		checkUIThread(Display.getCurrent());
+	}
+
+	/**
+	 * Check whether the current thread is the UI event thread associated
+	 * with the specified viewer.
+	 * @exception IllegalStateException if the current thread is not the UI
+	 * thread associated with the specified viewer
+	 * @exception NullPointerException if the specified viewer is disposed
+	 * @see #uiThread(Viewer)
+	 */
+	public static void checkUIThread(Viewer viewer) {
+		checkUIThread(viewer.getControl());
+	}
+
+	/**
+	 * Check whether the current thread is the UI event thread associated
+	 * with the specified widget.
+	 * @exception IllegalStateException if the current thread is not the UI
+	 * thread associated with the specified widget
+	 * @exception NullPointerException if the specified widget is disposed
+	 * @see #uiThread(Widget)
+	 */
+	public static void checkUIThread(Widget widget) {
+		checkUIThread(widget.getDisplay());
+	}
+
+	/**
+	 * Check whether the current thread is the UI event thread associated
+	 * with the specified display.
+	 * @exception IllegalStateException if the current thread is not the UI
+	 * thread associated with the specified display
+	 * @exception NullPointerException if the specified display is
+	 * <code>null</code>
+	 * @see #uiThread(Display)
+	 */
+	public static void checkUIThread(Display display) {
+		if ( ! uiThread(display)) {
+			throw new IllegalStateException("Invalid thread"); //$NON-NLS-1$
+		}
+	}
+
+	/**
+	 * Return whether the current thread is a UI event thread.
+	 * @see #checkUIThread()
+	 * @see Display#getCurrent()
 	 */
 	public static boolean uiThread() {
 		return Display.getCurrent() != null;
 	}
 
 	/**
-	 * Determines if the current thread is the UI event thread by using the
-	 * thread from which the given viewer's display was instantiated.
-	 *
-	 * @param viewer The viewer used to determine if the current thread
-	 * is the UI event thread
-	 * @return <code>true</code> if the current thread is the UI event thread;
-	 * <code>false</code> otherwise
+	 * Return whether the current thread is the UI event thread associated
+	 * with the specified viewer.
+	 * @exception NullPointerException if the specified viewer is disposed
+	 * @see #checkUIThread(Viewer)
 	 */
 	public static boolean uiThread(Viewer viewer) {
 		return uiThread(viewer.getControl());
 	}
 
 	/**
-	 * Determines if the current thread is the UI event thread by using the
-	 * thread from which the given widget's display was instantiated.
-	 *
-	 * @param widget The widget used to determine if the current thread
-	 * is the UI event thread
-	 * @return <code>true</code> if the current thread is the UI event thread;
-	 * <code>false</code> otherwise
+	 * Return whether the current thread is the UI event thread associated
+	 * with the specified widget.
+	 * @exception NullPointerException if the specified widget is disposed
+	 * @see #checkUIThread(Widget)
 	 */
 	public static boolean uiThread(Widget widget) {
-		return widget.getDisplay().getThread() == Thread.currentThread();
+		return uiThread(widget.getDisplay());
+	}
+
+	/**
+	 * Return whether the current thread is the UI event thread associated
+	 * with the specified display.
+	 * @exception NullPointerException if the specified display
+	 * is <code>null</code>
+	 * @see #checkUIThread(Display)
+	 */
+	public static boolean uiThread(Display display) {
+		return display.getThread() == Thread.currentThread();
 	}
 
 

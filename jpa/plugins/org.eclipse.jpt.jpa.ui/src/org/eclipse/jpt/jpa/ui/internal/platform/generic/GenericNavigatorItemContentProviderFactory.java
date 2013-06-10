@@ -12,6 +12,12 @@ package org.eclipse.jpt.jpa.ui.internal.platform.generic;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
 import org.eclipse.jpt.jpa.ui.internal.platform.base.AbstractNavigatorItemContentProviderFactory;
 
+/**
+ * This factory builds item content providers for the JPA content in the
+ * Project Explorer. It is to be used by
+ * {@link org.eclipse.jpt.jpa.ui.internal.navigator.JpaNavigatorItemContentProviderFactory}
+ * as a delegate for <em>Generic</em> JPA projects.
+ */
 public class GenericNavigatorItemContentProviderFactory
 	extends AbstractNavigatorItemContentProviderFactory
 {

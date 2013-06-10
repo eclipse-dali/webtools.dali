@@ -15,10 +15,10 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * A <em>null</em> item tree content provider that returns
- * an empty array of elements, an empty array of children, and a
- * <code>null</code> parent.
+ * a <code>null</code> parent and an empty list of children.
  */
 public final class NullItemTreeContentProvider
+	extends NullItemContentProvider
 	implements ItemTreeContentProvider, Serializable
 {
 	public static final ItemTreeContentProvider INSTANCE = new NullItemTreeContentProvider();
@@ -32,29 +32,16 @@ public final class NullItemTreeContentProvider
 		super();
 	}
 
-	public Object[] getElements() {
-		return ObjectTools.EMPTY_OBJECT_ARRAY;
-	}
-
 	public Object getParent() {
 		return null;
-	}
-
-	public Object[] getChildren() {
-		return ObjectTools.EMPTY_OBJECT_ARRAY;
 	}
 
 	public boolean hasChildren() {
 		return false;
 	}
 
-	public void dispose() {
-		// NOP
-	}
-
-	@Override
-	public String toString() {
-		return ObjectTools.singletonToString(this);
+	public Object[] getChildren() {
+		return ObjectTools.EMPTY_OBJECT_ARRAY;
 	}
 
 	private static final long serialVersionUID = 1L;

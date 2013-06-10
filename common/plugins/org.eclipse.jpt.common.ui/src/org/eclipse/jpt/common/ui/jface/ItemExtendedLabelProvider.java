@@ -23,6 +23,7 @@ package org.eclipse.jpt.common.ui.jface;
  * 
  * @see org.eclipse.jface.viewers.ILabelProvider
  * @see org.eclipse.ui.navigator.IDescriptionProvider
+ * @see ExtendedLabelProvider
  */
 public interface ItemExtendedLabelProvider
 	extends ItemLabelProvider
@@ -42,9 +43,11 @@ public interface ItemExtendedLabelProvider
 		extends ItemLabelProvider.Manager
 	{
 		/**
-		 * The description for the specified item has changed. Update appropriately.
+		 * The description for the specified item has changed.
+		 * Refresh the view appropriately. This method must be called from the
+		 * UI event thread.
 		 */
-		void updateDescription(Object item);
+		void descriptionChanged(Object item);
 	}
 
 	/**
@@ -53,6 +56,8 @@ public interface ItemExtendedLabelProvider
 	interface Factory {
 		/**
 		 * Build an extended label provider for the specified item.
+		 * Do not return <code>null</code>.
+		 * @see org.eclipse.jpt.common.ui.internal.jface.NullItemExtendedLabelProvider
 		 */
 		ItemExtendedLabelProvider buildProvider(Object item, Manager manager);
 	}

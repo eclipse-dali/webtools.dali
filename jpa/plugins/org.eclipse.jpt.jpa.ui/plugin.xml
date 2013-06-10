@@ -62,15 +62,11 @@
 			<adapter type="org.eclipse.jpt.jpa.ui.JpaProjectsModel"/>
 		</factory>
 
-		<!-- IProject
-				-> JpaProjectModel
-				-> JpaRootContextNodeModel
-		-->
+		<!-- IProject -> JpaProjectModel -->
 		<factory
 			adaptableType="org.eclipse.core.resources.IProject"
 			class="org.eclipse.jpt.jpa.ui.internal.ProjectAdapterFactory">
 			<adapter type="org.eclipse.jpt.jpa.ui.JpaProjectModel"/>
-			<adapter type="org.eclipse.jpt.jpa.ui.JpaContextModelRootModel"/>
 		</factory>
 
 		<!-- IFile -> JpaFileModel -->
@@ -975,12 +971,11 @@
 			icon="$nl$/images/objects/jpa-content.gif"
 			activeByDefault="true"
 			contentProvider="org.eclipse.jpt.jpa.ui.internal.navigator.JpaNavigatorContentProvider"
-			labelProvider="org.eclipse.jpt.common.ui.internal.jface.NavigatorLabelProvider">
+			labelProvider="org.eclipse.jpt.common.ui.internal.navigator.NavigatorLabelProvider">
 			
 			<triggerPoints>
 				<or>
 					<instanceof value="org.eclipse.jpt.jpa.core.context.JpaContextModel"/>
-					<instanceof value="org.eclipse.jpt.jpa.ui.JpaContextModelRootModel"/>
 					<adapt type="org.eclipse.core.resources.IProject"> 
 						<reference definitionId="org.eclipse.jpt.jpa.reference.hasJpaFacet"/>
 					</adapt>
@@ -992,10 +987,22 @@
 			</possibleChildren>
 			
 			<actionProvider
-				class="org.eclipse.jpt.jpa.ui.internal.navigator.JpaNavigatorActionProvider"
-				id="org.eclipse.jpt.jpa.ui.jpaActionProvider">
+				class="org.eclipse.jpt.jpa.ui.internal.navigator.OpenJpaResourceActionProvider"
+				id="org.eclipse.jpt.jpa.ui.OpenJpaResourceActionProvider">
 				<enablement>
 					<instanceof value="org.eclipse.jpt.jpa.core.context.JpaContextModel"/>
+				</enablement>
+			</actionProvider>
+
+			<actionProvider
+				class="org.eclipse.ui.navigator.resources.GoIntoActionProvider"
+				id="org.eclipse.jpt.jpa.ui.GoIntoActionProvider">
+				<enablement>
+					<and>
+						<instanceof value="org.eclipse.jpt.jpa.core.context.JpaContextModel"/>
+						<not><instanceof value="org.eclipse.jpt.jpa.core.context.PersistentAttribute"/></not>
+						<not><instanceof value="org.eclipse.jpt.jpa.core.jpa2_1.context.ConverterType2_1"/></not>
+					</and>
 				</enablement>
 			</actionProvider>
 			

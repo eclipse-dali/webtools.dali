@@ -23,6 +23,9 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceTypeCache;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandContext;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
@@ -103,6 +106,16 @@ public interface JaxbProject
 	 * Return the Eclipse project associated with the JAXB project.
 	 */
 	IProject getProject();
+	class ProjectEquals
+		extends CriterionPredicate<JaxbProject, IProject>
+	{
+		public ProjectEquals(IProject project) {
+			super(project);
+		}
+		public boolean evaluate(JaxbProject jaxbProject) {
+			return jaxbProject.getProject().equals(this.criterion);
+		}
+	}
 
 	/**
 	 * Return the Java project associated with the JAXB project.
@@ -277,6 +290,18 @@ public interface JaxbProject
 	 * Return the root of the JAXB project's context model.
 	 */
 	JaxbContextRoot getContextRoot();
+
+	Transformer<JaxbProject, JaxbContextRoot> CONTEXT_ROOT_TRANSFORMER = new ContextRootTransformer();
+
+	class ContextRootTransformer
+		extends TransformerAdapter<JaxbProject, JaxbContextRoot>
+	{
+		@Override
+		public JaxbContextRoot transform(JaxbProject jaxbProject) {
+			return jaxbProject.getContextRoot();
+		}
+	}
+
 
 	/**
 	 * Return all types/package infos that are primary context objects for the 

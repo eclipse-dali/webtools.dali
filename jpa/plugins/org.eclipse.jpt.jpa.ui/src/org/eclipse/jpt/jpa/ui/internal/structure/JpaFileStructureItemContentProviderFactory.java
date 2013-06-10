@@ -9,14 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.structure;
 
+import org.eclipse.jpt.common.ui.internal.jface.ModelItemStructuredContentProvider;
+import org.eclipse.jpt.common.ui.internal.jface.ModelItemTreeContentProvider;
+import org.eclipse.jpt.common.ui.internal.jface.NullItemTreeContentProvider;
+import org.eclipse.jpt.common.ui.jface.ItemStructuredContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
-import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider.Manager;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
+import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 
 /**
- * This factory builds item content providers for a <code>persistence.xml</code>
- * file JPA Structure View.
+ * JPA Structure View content provider factory
  */
 public class JpaFileStructureItemContentProviderFactory
 	implements ItemTreeContentProvider.Factory
@@ -36,18 +40,67 @@ public class JpaFileStructureItemContentProviderFactory
 		super();
 	}
 
-	public ItemTreeContentProvider buildProvider(Object item, ItemTreeContentProvider.Manager manager) {
-		if (item instanceof JpaFile) {
-			return this.buildJpaFileProvider((JpaFile) item, manager);			
+	public ItemStructuredContentProvider buildProvider(Object input, ItemStructuredContentProvider.Manager manager) {
+		return this.buildJpaFileProvider((JpaFile) input, manager);			
+	}
+
+	protected ItemStructuredContentProvider buildJpaFileProvider(JpaFile jpaFile, ItemStructuredContentProvider.Manager manager) {
+		return new ModelItemStructuredContentProvider(jpaFile, this.buildJpaFileChildrenModel(jpaFile), manager);
+	}
+
+	protected CollectionValueModel<JpaStructureNode> buildJpaFileChildrenModel(JpaFile jpaFile) {
+		return new JpaFileChildrenModel(jpaFile);
+	}
+
+	public static class JpaFileChildrenModel
+		extends CollectionAspectAdapter<JpaFile, JpaStructureNode>
+	{
+		public JpaFileChildrenModel(JpaFile jpaFile) {
+			super(JpaFile.ROOT_STRUCTURE_NODES_COLLECTION, jpaFile);
 		}
-		return this.buildJpaStructureNodeProvider((JpaStructureNode) item, manager);
+
+		@Override
+		protected Iterable<JpaStructureNode> getIterable() {
+			return this.subject.getRootStructureNodes();
+		}
+
+		@Override
+		public int size_() {
+			return this.subject.getRootStructureNodesSize();
+		}
 	}
 
-	protected ItemTreeContentProvider buildJpaFileProvider(JpaFile item, Manager manager) {
-		return new JpaFileItemContentProvider(item, manager);
+	public ItemTreeContentProvider buildProvider(Object item, Object parent, ItemTreeContentProvider.Manager manager) {
+		if (item instanceof JpaStructureNode) {
+			return this.buildJpaStructureNodeProvider((JpaStructureNode) item, parent, manager);
+		}
+		return NullItemTreeContentProvider.instance();
 	}
 
-	protected ItemTreeContentProvider buildJpaStructureNodeProvider(JpaStructureNode item, Manager manager) {
-		return new JpaStructureNodeItemContentProvider(item, manager);
+	protected ItemTreeContentProvider buildJpaStructureNodeProvider(JpaStructureNode node, Object parent, ItemTreeContentProvider.Manager manager) {
+		return new ModelItemTreeContentProvider(node, parent, this.buildJpaStructureNodeChildrenModel(node), manager);
+	}
+
+	protected CollectionValueModel<JpaStructureNode> buildJpaStructureNodeChildrenModel(JpaStructureNode node) {
+		return new JpaStructureNodeChildrenModel(node);
+	}
+
+	public static class JpaStructureNodeChildrenModel
+		extends CollectionAspectAdapter<JpaStructureNode, JpaStructureNode>
+	{
+		public JpaStructureNodeChildrenModel(JpaStructureNode node) {
+			super(JpaStructureNode.CHILDREN_COLLECTION, node);
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		protected Iterable<JpaStructureNode> getIterable() {
+			return (Iterable<JpaStructureNode>) this.subject.getChildren();
+		}
+
+		@Override
+		public int size_() {
+			return this.subject.getChildrenSize();
+		}
 	}
 }

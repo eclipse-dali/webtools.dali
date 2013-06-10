@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,7 +25,8 @@ public class StaticItemLabelProvider
 
 	/**
 	 * Construct an item label provider that returns the specified image
-	 * and text.
+	 * and text. The manager need only be specified if the specified image
+	 * descriptor is not <code>null</code>.
 	 */
 	public StaticItemLabelProvider(ImageDescriptor imageDescriptor, String text, ItemLabelProvider.Manager manager) {
 		super(imageDescriptor, text, manager);

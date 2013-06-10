@@ -10,14 +10,26 @@
 package org.eclipse.jpt.jpa.ui.internal.navigator;
 
 import java.util.HashMap;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.jpt.common.ui.internal.jface.ModelItemStructuredContentProvider;
+import org.eclipse.jpt.common.ui.internal.jface.ModelItemTreeContentProvider;
+import org.eclipse.jpt.common.ui.internal.jface.NullItemTreeContentProviderFactory;
+import org.eclipse.jpt.common.ui.internal.model.value.WorkspaceProjectsModel;
+import org.eclipse.jpt.common.ui.jface.ItemStructuredContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
-import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider.Manager;
-import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
+import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
+import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.ui.JpaContextModelRootModel;
+import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
+import org.eclipse.jpt.jpa.ui.JpaProjectModel;
 
 /**
  * This factory can be used by a item tree content provider that must provide
@@ -26,6 +38,9 @@ import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
  * to the item's JPA platform. The cache of JPA platform-specific factories is
  * populated as needed and is never purged. Theoretically, this could be a
  * singleton....
+ * <p>
+ * <strong>NB:</strong> Project Explorer? Navigator? CommonViewer? It's just
+ * not clear what the thing is called!
  */
 public class JpaNavigatorItemContentProviderFactory
 	implements ItemTreeContentProvider.Factory
@@ -40,43 +55,80 @@ public class JpaNavigatorItemContentProviderFactory
 		super();
 	}
 
-	public ItemTreeContentProvider buildProvider(Object item, ItemTreeContentProvider.Manager manager) {
-		// we hand JpaContextModelRootModel differently because it can exist when the
-		// JPA facet is present by the JPA project may not yet be present...
-		if (item instanceof JpaContextModelRootModel) {
-			return this.buildContextModelRootModelProvider((JpaContextModelRootModel) item, manager);
+	/**
+	 * Neither the Eclipse workspace root nor its projects are associated with
+	 * a JPA platform, so we handle them here.
+	 */
+	public ItemStructuredContentProvider buildProvider(Object input, ItemStructuredContentProvider.Manager manager) {
+		if (input instanceof IWorkspaceRoot) {
+			return this.buildItemStructuredContentProvider(input, this.buildWorkspaceRootProjectsModel((IWorkspaceRoot) input), manager);
 		}
-		ItemTreeContentProvider.Factory delegate = this.getDelegate(item);
-		return (delegate == null) ? null : delegate.buildProvider(item, manager);
+		if (input instanceof IProject) {
+			return this.buildItemStructuredContentProvider(input, this.buildProjectChildrenModel((IProject) input), manager);
+		}
+		return this.getDelegate(input).buildProvider(input, manager);
 	}
 
-	protected ItemTreeContentProvider buildContextModelRootModelProvider(JpaContextModelRootModel item, Manager manager) {
-		return new JpaContextModelRootModelItemContentProvider(item, manager);
+	protected ItemStructuredContentProvider buildItemStructuredContentProvider(Object input, CollectionValueModel<?> elementsModel, ItemStructuredContentProvider.Manager manager) {
+		return new ModelItemStructuredContentProvider(input, elementsModel, manager);
 	}
 
-	private ItemTreeContentProvider.Factory getDelegate(Object element) {
-		return (element instanceof JpaContextModel) ? this.getDelegate((JpaContextModel) element) : null;
+	protected CollectionValueModel<IProject> buildWorkspaceRootProjectsModel(IWorkspaceRoot workspaceRoot) {
+		return new WorkspaceProjectsModel(workspaceRoot);
 	}
 
-	private synchronized ItemTreeContentProvider.Factory getDelegate(JpaContextModel contextNode) {
+	/**
+	 * @see #buildProvider(Object, ItemStructuredContentProvider.Manager)
+	 */
+	public ItemTreeContentProvider buildProvider(Object item, Object parent, ItemTreeContentProvider.Manager manager) {
+		return (item instanceof IProject) ?
+				this.buildItemTreeContentProvider(item, parent, this.buildProjectChildrenModel((IProject) item), manager) :
+				this.getDelegate(item).buildProvider(item, parent, manager);
+	}
+
+	protected ItemTreeContentProvider buildItemTreeContentProvider(Object item, Object parent, CollectionValueModel<?> childrenModel, ItemTreeContentProvider.Manager manager) {
+		return new ModelItemTreeContentProvider(item, parent, childrenModel, manager);
+	}
+
+
+	// ********** project **********
+
+	protected CollectionValueModel<JpaContextModelRoot> buildProjectChildrenModel(IProject project) {
+		return new PropertyCollectionValueModelAdapter<JpaContextModelRoot>(this.buildProjectJpaContextModelRootModel(project));
+	}
+
+	protected PropertyValueModel<JpaContextModelRoot> buildProjectJpaContextModelRootModel(IProject project) {
+		return new TransformationPropertyValueModel<JpaProject, JpaContextModelRoot>(this.buildProjectJpaProjectModel(project), TransformerTools.nullCheck(JpaProject.CONTEXT_MODEL_ROOT_TRANSFORMER));
+	}
+
+	protected PropertyValueModel<JpaProject> buildProjectJpaProjectModel(IProject project) {
+		return (JpaProjectModel) project.getAdapter(JpaProjectModel.class);
+	}
+
+
+	// ********** delegates **********
+
+	protected ItemTreeContentProvider.Factory getDelegate(Object item) {
+		return (item instanceof JpaContextModel) ?
+				this.getDelegate((JpaContextModel) item) :
+				NullItemTreeContentProviderFactory.instance();
+	}
+
+	protected ItemTreeContentProvider.Factory getDelegate(JpaContextModel contextNode) {
 		JpaPlatform jpaPlatform = contextNode.getJpaPlatform();
 		ItemTreeContentProvider.Factory delegate = this.delegates.get(jpaPlatform);
 		if (delegate == null) {
-			if ( ! this.delegates.containsKey(jpaPlatform)) {  // null is an allowed value
-				delegate = this.buildDelegate(jpaPlatform);
-				this.delegates.put(jpaPlatform, delegate);
-			}
+			delegate = this.buildDelegate(jpaPlatform);
+			this.delegates.put(jpaPlatform, delegate);
 		}
 		return delegate;
 	}
 
-	private ItemTreeContentProvider.Factory buildDelegate(JpaPlatform jpaPlatform) {
+	protected ItemTreeContentProvider.Factory buildDelegate(JpaPlatform jpaPlatform) {
 		JpaPlatformUi platformUI = (JpaPlatformUi) jpaPlatform.getAdapter(JpaPlatformUi.class);
-		if (platformUI == null) {
-			return null;
-		}
-		ItemTreeStateProviderFactoryProvider factoryProvider = platformUI.getNavigatorFactoryProvider();
-		return (factoryProvider == null) ? null : factoryProvider.getItemContentProviderFactory();
+		return (platformUI != null) ?
+				platformUI.getNavigatorFactoryProvider().getItemContentProviderFactory() :
+				NullItemTreeContentProviderFactory.instance();
 	}
 
 	@Override

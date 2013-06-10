@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.ui.jface;
 
 import org.eclipse.jface.resource.ResourceManager;
+import org.eclipse.jface.viewers.ContentViewer;
 import org.eclipse.swt.graphics.Image;
 
 /**
@@ -64,9 +65,16 @@ public interface ItemLabelProvider {
 
 		/**
 		 * The label (image and/or text) for the specified item has changed.
-		 * Update appropriately.
+		 * Refresh the view appropriately. This method must be called from the
+		 * UI event thread.
 		 */
-		void updateLabel(Object item);
+		void labelChanged(Object item);
+
+		/**
+		 * Return the manager's viewer. This can be used to notify the manager
+		 * of any changes on the viewer's UI thread.
+		 */
+		ContentViewer getViewer();
 	}
 
 
@@ -76,6 +84,8 @@ public interface ItemLabelProvider {
 	interface Factory {
 		/**
 		 * Build a label provider for the specified item.
+		 * Do not return <code>null</code>.
+		 * @see org.eclipse.jpt.common.ui.internal.jface.NullItemLabelProvider
 		 */
 		ItemLabelProvider buildProvider(Object item, Manager manager);
 	}

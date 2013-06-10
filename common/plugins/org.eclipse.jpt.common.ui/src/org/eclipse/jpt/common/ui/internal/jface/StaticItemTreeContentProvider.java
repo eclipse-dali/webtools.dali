@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,65 +15,45 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 /**
  * Item tree content provider that contains unchanging parent and children.
  * 
- * @see org.eclipse.jpt.common.ui.internal.jface.NullItemTreeContentProvider
+ * @see NullItemTreeContentProvider
  */
 public class StaticItemTreeContentProvider
+	extends StaticItemContentProvider<ItemTreeContentProvider.Manager>
 	implements ItemTreeContentProvider
 {
-	protected final Object parent;
-	protected final Object[] children;
+	private final Object parent;
+
 
 	/**
-	 * Construct an item tree content provider for an item with neither
-	 * a parent nor children.
+	 * Construct an item tree content provider for a <em>leaf</em> item with the
+	 * specified parent (but no children).
 	 */
-	public StaticItemTreeContentProvider() {
-		this(null);
+	public StaticItemTreeContentProvider(Object item, Object parent, ItemTreeContentProvider.Manager manager) {
+		this(item, parent, ObjectTools.EMPTY_OBJECT_ARRAY, manager);
 	}
 
 	/**
-	 * Construct an item tree content provider for an item with the specified
-	 * parent but no children.
+	 * Construct an item tree content provider for a <em>branch</em> item with
+	 * the specified parent and children.
 	 */
-	public StaticItemTreeContentProvider(Object parent) {
-		this(parent, ObjectTools.EMPTY_OBJECT_ARRAY);
-	}
-
-	/**
-	 * Construct an item tree content provider for an item with the specified
-	 * parent and children.
-	 */
-	public StaticItemTreeContentProvider(Object parent, Object[] children) {
-		super();
-		if (children == null) {
+	public StaticItemTreeContentProvider(Object item, Object parent, Object[] children, ItemTreeContentProvider.Manager manager) {
+		super(item, children, manager);
+		if (parent == null) {
 			throw new NullPointerException();
 		}
 		this.parent = parent;
-		this.children = children;
-	}
-
-	public Object[] getElements() {
-		return this.children;
 	}
 
 	public Object getParent() {
 		return this.parent;
 	}
 
-	public Object[] getChildren() {
-		return this.children;
-	}
-
 	public boolean hasChildren() {
 		return this.children.length > 0;
 	}
 
-	public void dispose() {
-		// NOP
-	}
-
 	@Override
-	public String toString() {
-		return ObjectTools.toString(this);
+	public Object[] getChildren() {
+		return this.children;
 	}
 }

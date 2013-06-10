@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,13 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.jface;
 
-import org.eclipse.core.commands.common.EventManager;
-import org.eclipse.core.runtime.SafeRunner;
-import org.eclipse.jface.util.SafeRunnable;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jpt.common.utility.ExceptionHandler;
+import org.eclipse.jpt.common.utility.internal.ListenerList;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
@@ -24,59 +23,42 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * events}.
  */
 public abstract class AbstractSelectionProvider
-	extends EventManager
 	implements ISelectionProvider
 {
-	protected AbstractSelectionProvider() {
+	private final ExceptionHandler exceptionHandler;
+	private ListenerList<ISelectionChangedListener> listenerList = new ListenerList<ISelectionChangedListener>(ISelectionChangedListener.class);
+
+
+	protected AbstractSelectionProvider(ExceptionHandler exceptionHandler) {
 		super();
+		this.exceptionHandler = exceptionHandler;
 	}
 
 	public void addSelectionChangedListener(ISelectionChangedListener listener) {
-		this.addListenerObject(listener);
+		this.listenerList.add(listener);
 	}
 
 	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
-		this.removeListenerObject(listener);
+		this.listenerList.remove(listener);
 	}
 
 	protected void fireSelectionChanged(ISelection selection) {
 		SelectionChangedEvent event = new SelectionChangedEvent(this, selection);
-		for (Object listener : this.getListeners()) {
-			SafeRunner.run(new ListenerNotifier(listener, event));
+		for (ISelectionChangedListener listener : this.listenerList.getListeners()) {
+			this.fireSelectionChanged(listener, event);
         }
+	}
+
+	private void fireSelectionChanged(ISelectionChangedListener listener, SelectionChangedEvent event) {
+		try {
+			listener.selectionChanged(event);
+		} catch (Throwable t) {
+			this.exceptionHandler.handleException(t);
+		}
 	}
 
 	@Override
 	public String toString() {
 		return ObjectTools.toString(this);
-	}
-
-
-	// ********** listener notifier **********
-
-	/**
-	 * A runnable that forwards an event to a listener and handles any
-	 * exceptions thrown by the listener by notifying the user via a dialog.
-	 */
-	/* CU private */ class ListenerNotifier
-		extends SafeRunnable
-	{
-		private final ISelectionChangedListener listener;
-		private final SelectionChangedEvent event;
-
-		ListenerNotifier(Object listener, SelectionChangedEvent event) {
-			super();
-			this.listener = (ISelectionChangedListener) listener;
-			this.event = event;
-		}
-
-		public void run() {
-			this.listener.selectionChanged(this.event);
-		}
-
-		@Override
-		public String toString() {
-			return ObjectTools.toString(this, this.listener);
-		}
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,15 +20,17 @@ import org.eclipse.swt.graphics.Image;
 public abstract class AbstractStaticItemLabelProvider<M extends ItemLabelProvider.Manager>
 	implements ItemLabelProvider
 {
-	protected final ImageDescriptor imageDescriptor;
-	protected final String text;
-	protected final M manager;
+	private final ImageDescriptor imageDescriptor;
+	private Image image;
+	private boolean imageBuilt = false;  // image can be null
+	private final String text;
+	/* private-protected */ final M manager;
 
 	/**
 	 * Construct an item label provider that returns the specified text but
 	 * no image.
 	 */
-	protected AbstractStaticItemLabelProvider(String text) {
+	/* private-protected */ AbstractStaticItemLabelProvider(String text) {
 		this(null, text, null);
 	}
 
@@ -37,7 +39,7 @@ public abstract class AbstractStaticItemLabelProvider<M extends ItemLabelProvide
 	 * and text. The manager need only be specified if the specified image
 	 * descriptor is not <code>null</code>.
 	 */
-	protected AbstractStaticItemLabelProvider(ImageDescriptor imageDescriptor, String text, M manager) {
+	/* private-protected */ AbstractStaticItemLabelProvider(ImageDescriptor imageDescriptor, String text, M manager) {
 		super();
 		this.imageDescriptor = imageDescriptor;
 		this.text = text;
@@ -47,15 +49,19 @@ public abstract class AbstractStaticItemLabelProvider<M extends ItemLabelProvide
 		this.manager = manager;
 	}
 
+	/**
+	 * Return the image (lazy-initialized).
+	 */
 	public Image getImage() {
-		return (this.imageDescriptor == null) ? null : this.getImage_();
+		if ( ! this.imageBuilt) {
+			this.imageBuilt = true;
+			this.image = this.buildImage();
+		}
+		return this.image;
 	}
 
-	/**
-	 * Pre-condition: the image descriptor is not <code>null</code>.
-	 */
-	protected Image getImage_() {
-		return this.manager.getResourceManager().createImage(this.imageDescriptor);
+	private Image buildImage() {
+		return (this.imageDescriptor == null) ? null : this.manager.getResourceManager().createImage(this.imageDescriptor);
 	}
 
 	public String getText() {
@@ -63,8 +69,9 @@ public abstract class AbstractStaticItemLabelProvider<M extends ItemLabelProvide
 	}
 
 	public void dispose() {
-		if (this.imageDescriptor != null) {
+		if (this.image != null) {
 			this.manager.getResourceManager().destroyImage(this.imageDescriptor);
+			this.image = null;
 		}
 	}
 

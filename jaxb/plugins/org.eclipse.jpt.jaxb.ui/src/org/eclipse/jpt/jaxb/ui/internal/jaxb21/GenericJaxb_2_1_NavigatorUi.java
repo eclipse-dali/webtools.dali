@@ -34,7 +34,7 @@ public class GenericJaxb_2_1_NavigatorUi
 	
 	
 	public ItemTreeContentProvider.Factory getTreeItemContentProviderFactory() {
-		return GenericJaxb_2_1_NavigatorTreeItemContentProviderFactory.instance();
+		return GenericJaxb_2_1_NavigatorItemContentProviderFactory.instance();
 	}
 	
 	public ItemExtendedLabelProvider.Factory getItemLabelProviderFactory() {

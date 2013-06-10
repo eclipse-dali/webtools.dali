@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,7 +19,7 @@ public class StaticItemExtendedLabelProvider
 	extends AbstractStaticItemLabelProvider<ItemExtendedLabelProvider.Manager>
 	implements ItemExtendedLabelProvider
 {
-	protected final String description;
+	private final String description;
 
 	/**
 	 * Construct an item label provider that returns the specified text
@@ -33,7 +33,8 @@ public class StaticItemExtendedLabelProvider
 	/**
 	 * Construct an item label provider that returns the specified image
 	 * and text. The provider will also return the specified text as the
-	 * description.
+	 * description. The manager need only be specified if the specified image
+	 * descriptor is not <code>null</code>.
 	 */
 	public StaticItemExtendedLabelProvider(ImageDescriptor imageDescriptor, String text, ItemExtendedLabelProvider.Manager manager) {
 		this(imageDescriptor, text, text, manager);
@@ -41,7 +42,8 @@ public class StaticItemExtendedLabelProvider
 
 	/**
 	 * Construct an item label provider that returns the specified image, text,
-	 * and description.
+	 * and description. The manager need only be specified if the specified image
+	 * descriptor is not <code>null</code>.
 	 */
 	public StaticItemExtendedLabelProvider(ImageDescriptor imageDescriptor, String text, String description, ItemExtendedLabelProvider.Manager manager) {
 		super(imageDescriptor, text, manager);

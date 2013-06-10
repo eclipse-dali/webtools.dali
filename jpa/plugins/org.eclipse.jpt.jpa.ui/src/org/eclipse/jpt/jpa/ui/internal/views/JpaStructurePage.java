@@ -43,6 +43,7 @@ import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.selection.JpaEditorManager;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -476,10 +477,14 @@ public class JpaStructurePage
 	 * {@link #treeViewer tree viewer} for the page book view.
 	 * The selection is {@link JpaStructurePage#filterSelection(IStructuredSelection) filtered}.
 	 */
-	/* CU private */ class SelectionProvider
+	private class SelectionProvider
 		extends AbstractSelectionProvider
 		implements ISelectionChangedListener
 	{
+		SelectionProvider() {
+			super(JptJpaUiPlugin.instance().getExceptionHandler());
+		}
+
 		/**
 		 * This method is called by the page site.
 		 */

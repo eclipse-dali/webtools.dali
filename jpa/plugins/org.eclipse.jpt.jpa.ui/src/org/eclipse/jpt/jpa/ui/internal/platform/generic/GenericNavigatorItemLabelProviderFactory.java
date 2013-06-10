@@ -11,18 +11,27 @@ package org.eclipse.jpt.jpa.ui.internal.platform.generic;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jpt.common.ui.internal.jface.ModelItemExtendedLabelProvider;
+import org.eclipse.jpt.common.ui.internal.jface.NullItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.internal.jface.StaticItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
-import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider.Factory;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaModel;
+import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
 import org.eclipse.jpt.jpa.core.context.ManagedType;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JarFile;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.ConverterType2_1;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
+import org.eclipse.jpt.jpa.ui.internal.structure.MappingStructureItemLabelProviderFactory;
+import org.eclipse.jpt.jpa.ui.internal.structure.PersistenceStructureItemLabelProviderFactory;
 
 /**
  * This factory builds item label providers for the JPA content in the
@@ -42,11 +51,14 @@ public class GenericNavigatorItemLabelProviderFactory
 	}
 
 
-	protected GenericNavigatorItemLabelProviderFactory() {
+	private GenericNavigatorItemLabelProviderFactory() {
 		super();
 	}
 
 	public ItemExtendedLabelProvider buildProvider(Object item, ItemExtendedLabelProvider.Manager manager) {
+		if (item instanceof JpaContextModelRoot) {
+			return this.buildJpaContextModelRootProvider((JpaContextModelRoot) item, manager);
+		}
 		if (item instanceof PersistenceXml) {
 			return this.buildPersistenceXmlProvider((PersistenceXml) item, manager);
 		}
@@ -59,8 +71,8 @@ public class GenericNavigatorItemLabelProviderFactory
 		if (item instanceof PersistentType) {
 			return this.buildPersistentTypeProvider((PersistentType) item, manager);
 		}
-		if (item instanceof ManagedType) { //check instanceof PersistentType first, then ManagedType
-			return this.buildManagedTypeProvider((ManagedType) item, manager);
+		if (item instanceof ConverterType2_1) {
+			return this.buildConverterTypeProvider((ManagedType) item, manager);
 		}
 		if (item instanceof PersistentAttribute) {
 			return this.buildPersistentAttributeProvider((PersistentAttribute) item, manager);
@@ -68,7 +80,16 @@ public class GenericNavigatorItemLabelProviderFactory
 		if (item instanceof JarFile) {
 			return this.buildJarFileProvider((JarFile) item, manager);
 		}
-		return null;
+		return NullItemExtendedLabelProvider.instance();
+	}
+
+	protected ItemExtendedLabelProvider buildJpaContextModelRootProvider(JpaContextModelRoot item, ItemExtendedLabelProvider.Manager manager) {
+		return new StaticItemExtendedLabelProvider(
+				JptJpaUiImages.JPA_CONTENT,
+				JptJpaUiMessages.JpaContent_label,
+				JptJpaUiMessages.JpaContent_label + " - " + item.getResource().getFullPath().makeRelative(), //$NON-NLS-1$
+				manager
+			);
 	}
 
 	protected ItemExtendedLabelProvider buildPersistenceXmlProvider(PersistenceXml item, ItemExtendedLabelProvider.Manager manager) {
@@ -76,7 +97,7 @@ public class GenericNavigatorItemLabelProviderFactory
 	}
 
 	protected ItemExtendedLabelProvider buildPersistenceUnitProvider(PersistenceUnit item, ItemExtendedLabelProvider.Manager manager) {
-		return new PersistenceUnitItemLabelProvider(item, manager);
+		return PersistenceStructureItemLabelProviderFactory.buildPersistenceUnitProvider(item, manager);
 	}
 
 	protected ItemExtendedLabelProvider buildOrmXmlProvider(OrmXml item, ItemExtendedLabelProvider.Manager manager) {
@@ -84,15 +105,49 @@ public class GenericNavigatorItemLabelProviderFactory
 	}
 
 	protected ItemExtendedLabelProvider buildPersistentTypeProvider(PersistentType item, ItemExtendedLabelProvider.Manager manager) {
-		return new PersistentTypeItemLabelProvider(item, manager);
+		return MappingStructureItemLabelProviderFactory.buildPersistentTypeProvider(item, manager);
 	}
 
-	protected ItemExtendedLabelProvider buildManagedTypeProvider(ManagedType item, ItemExtendedLabelProvider.Manager manager) {
-		return new ManagedTypeItemLabelProvider(item, manager);
+	protected ItemExtendedLabelProvider buildConverterTypeProvider(ManagedType item, ItemExtendedLabelProvider.Manager manager) {
+		return new ModelItemExtendedLabelProvider(
+				item,
+				manager,
+				this.buildConverterTypeImageDescriptorModel(item),
+				this.buildConverterTypeTextModel(item),
+				this.buildConverterTypeDescriptionModel(item)
+			);
+	}
+
+	protected PropertyValueModel<ImageDescriptor> buildConverterTypeImageDescriptorModel(@SuppressWarnings("unused") ManagedType item) {
+		return new StaticPropertyValueModel<ImageDescriptor>(JptJpaUiImages.CONVERTER);
+	}
+
+	protected PropertyValueModel<String> buildConverterTypeTextModel(ManagedType managedType) {
+		return new ConverterTypeTextModel(managedType);
+	}
+
+	public static class ConverterTypeTextModel
+		extends PropertyAspectAdapter<ManagedType, String>
+	{
+		public ConverterTypeTextModel(ManagedType subject) {
+			super(ManagedType.NAME_PROPERTY, subject);
+		}
+		@Override
+		protected String buildValue_() {
+			return this.subject.getSimpleName();
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	protected PropertyValueModel<String> buildConverterTypeDescriptionModel(ManagedType managedType) {
+		return PersistenceStructureItemLabelProviderFactory.buildNonQuotedComponentDescriptionModel(
+					managedType,
+					this.buildConverterTypeTextModel(managedType)
+				);
 	}
 
 	protected ItemExtendedLabelProvider buildPersistentAttributeProvider(PersistentAttribute item, ItemExtendedLabelProvider.Manager manager) {
-		return new PersistentAttributeItemLabelProvider(item, manager);
+		return MappingStructureItemLabelProviderFactory.buildPersistentAttributeProvider(item, manager);
 	}
 
 	protected ItemExtendedLabelProvider buildJarFileProvider(JarFile item, ItemExtendedLabelProvider.Manager manager) {

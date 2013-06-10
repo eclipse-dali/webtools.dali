@@ -15,9 +15,10 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * A <em>null</em> item structured content provider that returns
- * an empty array of elements.
+ * an empty list of elements.
  */
 public final class NullItemStructuredContentProvider
+	extends NullItemContentProvider
 	implements ItemStructuredContentProvider, Serializable
 {
 	public static final ItemStructuredContentProvider INSTANCE = new NullItemStructuredContentProvider();
@@ -33,15 +34,6 @@ public final class NullItemStructuredContentProvider
 
 	public Object[] getElements() {
 		return ObjectTools.EMPTY_OBJECT_ARRAY;
-	}
-
-	public void dispose() {
-		// NOP
-	}
-
-	@Override
-	public String toString() {
-		return ObjectTools.singletonToString(this);
 	}
 
 	private static final long serialVersionUID = 1L;

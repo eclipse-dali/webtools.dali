@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 /**
  * A <em>null</em> item extended label provider factory that returns a
  * <em>null</em> provider.
- * @see org.eclipse.jpt.common.ui.internal.jface.NullItemExtendedLabelProvider
+ * @see NullItemExtendedLabelProvider
  */
 public final class NullItemExtendedLabelProviderFactory
 	implements ItemExtendedLabelProvider.Factory, Serializable

@@ -11,8 +11,6 @@ package org.eclipse.jpt.common.ui.internal.jface;
 
 import java.io.Serializable;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.swt.graphics.Image;
 
 /**
  * A <em>null</em> item extended label provider that returns a
@@ -20,6 +18,7 @@ import org.eclipse.swt.graphics.Image;
  * a <code>null</code> description string.
  */
 public final class NullItemExtendedLabelProvider
+	extends AbstractNullItemLabelProvider
 	implements ItemExtendedLabelProvider, Serializable
 {
 	public static final ItemExtendedLabelProvider INSTANCE = new NullItemExtendedLabelProvider();
@@ -33,25 +32,8 @@ public final class NullItemExtendedLabelProvider
 		super();
 	}
 
-	public Image getImage() {
-		return null;
-	}
-
-	public String getText() {
-		return null;
-	}
-
 	public String getDescription() {
 		return null;
-	}
-
-	public void dispose() {
-		// NOP
-	}
-
-	@Override
-	public String toString() {
-		return ObjectTools.singletonToString(this);
 	}
 
 	private static final long serialVersionUID = 1L;

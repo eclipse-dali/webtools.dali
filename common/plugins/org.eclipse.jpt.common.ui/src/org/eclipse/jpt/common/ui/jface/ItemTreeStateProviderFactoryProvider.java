@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.ui.jface;
 
 /**
  * This provider supplies the factories used by a tree view to build
- * the content and labels its tree.
+ * the content and labels in its tree.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -23,12 +23,16 @@ public interface ItemTreeStateProviderFactoryProvider {
 	/**
 	 * Return a factory to be used to create {@link ItemTreeContentProvider}s
 	 * for a tree view.
+	 * Do not return <code>null</code>.
+	 * @see org.eclipse.jpt.common.ui.internal.jface.NullItemTreeContentProviderFactory
 	 */
 	ItemTreeContentProvider.Factory getItemContentProviderFactory();
 	
 	/**
 	 * Return a factory to be used to create {@link ItemExtendedLabelProvider}s
 	 * for a tree view.
+	 * Do not return <code>null</code>.
+	 * @see org.eclipse.jpt.common.ui.internal.jface.NullItemExtendedLabelProviderFactory
 	 */
 	ItemExtendedLabelProvider.Factory getItemLabelProviderFactory();
 }

@@ -24,12 +24,23 @@ public class SimpleItemTreeStateProviderFactoryProvider
 	private final ItemExtendedLabelProvider.Factory labelProviderFactory;
 
 
+	/**
+	 * Neither factory can be <code>null</code>.
+	 * @see NullItemTreeContentProviderFactory
+	 * @see NullItemExtendedLabelProviderFactory
+	 */
 	public SimpleItemTreeStateProviderFactoryProvider(
 			ItemTreeContentProvider.Factory contentProviderFactory,
 			ItemExtendedLabelProvider.Factory labelProviderFactory
 	) {
 		super();
+		if (contentProviderFactory == null) {
+			throw new NullPointerException();
+		}
 		this.contentProviderFactory = contentProviderFactory;
+		if (labelProviderFactory == null) {
+			throw new NullPointerException();
+		}
 		this.labelProviderFactory = labelProviderFactory;
 	}
 

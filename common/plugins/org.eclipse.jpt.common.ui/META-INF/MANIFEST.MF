@@ -50,6 +50,14 @@ Export-Package: org.eclipse.jpt.common.ui,
   x-friends:="org.eclipse.jpt.jaxb.ui,
    org.eclipse.jpt.jpa.db.ui,
    org.eclipse.jpt.jpa.ui",
+ org.eclipse.jpt.common.ui.internal.model.value;
+  x-friends:="org.eclipse.jpt.jaxb.ui,
+   org.eclipse.jpt.jpa.db.ui,
+   org.eclipse.jpt.jpa.ui",
+ org.eclipse.jpt.common.ui.internal.navigator;
+  x-friends:="org.eclipse.jpt.jaxb.ui,
+   org.eclipse.jpt.jpa.db.ui,
+   org.eclipse.jpt.jpa.ui",
  org.eclipse.jpt.common.ui.internal.prefs;
   x-friends:="org.eclipse.jpt.jaxb.ui,
    org.eclipse.jpt.jpa.db.ui,

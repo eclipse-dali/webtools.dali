@@ -60,6 +60,8 @@ public interface JpaPlatformUi {
 	 * Return the platform's Navigator factory provider.
 	 * This is used by the Common Navigator to build and maintain the JPA
 	 * content and labels.
+	 * Do not return <code>null</code>.
+	 * @see org.eclipse.jpt.common.ui.internal.jface.NullItemTreeStateProviderFactoryProvider
 	 */
 	ItemTreeStateProviderFactoryProvider getNavigatorFactoryProvider();
 

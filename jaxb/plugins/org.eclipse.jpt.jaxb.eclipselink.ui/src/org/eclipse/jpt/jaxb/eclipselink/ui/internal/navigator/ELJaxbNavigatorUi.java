@@ -37,6 +37,6 @@ public class ELJaxbNavigatorUi
 	
 	@Override
 	public ItemTreeContentProvider.Factory getTreeItemContentProviderFactory() {
-		return ELJaxbNavigatorTreeItemContentProviderFactory.instance();
+		return ELJaxbNavigatorItemContentProviderFactory.instance();
 	}
 }

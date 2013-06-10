@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.ui.internal.jface;
 
 import java.io.Serializable;
+import org.eclipse.jpt.common.ui.jface.ItemStructuredContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
@@ -32,7 +33,11 @@ public final class NullItemTreeContentProviderFactory
 		super();
 	}
 
-	public ItemTreeContentProvider buildProvider(Object item, org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider.Manager manager) {
+	public ItemStructuredContentProvider buildProvider(Object inputElement, ItemStructuredContentProvider.Manager manager) {
+		return NullItemStructuredContentProvider.instance();
+	}
+
+	public ItemTreeContentProvider buildProvider(Object item, Object parent, ItemTreeContentProvider.Manager manager) {
 		return NullItemTreeContentProvider.instance();
 	}
 

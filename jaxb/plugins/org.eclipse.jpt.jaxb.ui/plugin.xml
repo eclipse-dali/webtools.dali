@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?><!--
-     Copyright (c) 2010, 2012  Oracle. All rights reserved.
+     Copyright (c) 2010, 2013 Oracle. All rights reserved.
      This program and the accompanying materials are made available under the
      terms of the Eclipse Public License v1.0, which accompanies this distribution
      and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -32,6 +32,20 @@
 			adaptableType="org.eclipse.ui.IWorkbench"
 			class="org.eclipse.jpt.jaxb.ui.internal.WorkbenchAdapterFactory">
 			<adapter type="org.eclipse.jpt.jaxb.ui.JaxbWorkbench"/>
+		</factory>
+
+		<!-- IWorkspace -> JpaProjectsModel -->
+		<factory
+			adaptableType="org.eclipse.core.resources.IWorkspace"
+			class="org.eclipse.jpt.jaxb.ui.internal.WorkspaceAdapterFactory">
+			<adapter type="org.eclipse.jpt.jaxb.ui.JaxbProjectsModel"/>
+		</factory>
+
+		<!-- IProject -> JpaProjectModel -->
+		<factory
+			adaptableType="org.eclipse.core.resources.IProject"
+			class="org.eclipse.jpt.jaxb.ui.internal.ProjectAdapterFactory">
+			<adapter type="org.eclipse.jpt.jaxb.ui.JaxbProjectModel"/>
 		</factory>
 
 	</extension>
@@ -284,7 +298,7 @@
 			icon="$nl$/images/objects/jaxb-content.gif"
 			activeByDefault="true"
 			contentProvider="org.eclipse.jpt.jaxb.ui.internal.navigator.JaxbNavigatorContentProvider"
-			labelProvider="org.eclipse.jpt.common.ui.internal.jface.NavigatorLabelProvider">
+			labelProvider="org.eclipse.jpt.common.ui.internal.navigator.NavigatorLabelProvider">
 			
 			<triggerPoints>
 				<or>
@@ -300,10 +314,20 @@
 			</possibleChildren>
 			
 			<actionProvider
-				class="org.eclipse.jpt.jaxb.ui.internal.navigator.JaxbNavigatorActionProvider"
-				id="org.eclipse.jpt.jaxb.ui.jaxbActionProvider">
+				class="org.eclipse.jpt.jaxb.ui.internal.navigator.OpenJaxbResourceActionProvider"
+				id="org.eclipse.jpt.jaxb.ui.OpenJaxbResourceActionProvider">
 				<enablement>
 					<instanceof value="org.eclipse.jpt.jaxb.core.context.JaxbContextNode"/>
+				</enablement>
+			</actionProvider>
+			
+			<actionProvider
+				class="org.eclipse.ui.navigator.resources.GoIntoActionProvider"
+				id="org.eclipse.jpt.jaxb.ui.GoIntoActionProvider">
+				<enablement>
+					<and>
+						<instanceof value="org.eclipse.jpt.jaxb.core.context.JaxbContextNode"/>
+					</and>
 				</enablement>
 			</actionProvider>
 			

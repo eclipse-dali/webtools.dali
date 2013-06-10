@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,8 @@ package org.eclipse.jpt.common.ui.internal.plugin;
 
 import org.eclipse.jpt.common.core.internal.utility.JptPlugin;
 import org.eclipse.jpt.common.ui.internal.JptUIPlugin;
+import org.eclipse.jpt.common.utility.ExceptionHandler;
+import org.eclipse.jpt.common.utility.internal.RuntimeExceptionHandler;
 
 /**
  * Dali UI plug-in.
@@ -34,6 +36,12 @@ public class JptCommonUiPlugin
 	public static JptCommonUiPlugin instance() {
 		return INSTANCE;
 	}
+
+	/**
+	 * Provider an exception handler for non-OSGi UIs.
+	 */
+	public static final ExceptionHandler EXCEPTION_HANDLER =
+			(INSTANCE != null) ? INSTANCE.getExceptionHandler() : RuntimeExceptionHandler.instance();
 
 
 	// ********** Dali plug-in **********

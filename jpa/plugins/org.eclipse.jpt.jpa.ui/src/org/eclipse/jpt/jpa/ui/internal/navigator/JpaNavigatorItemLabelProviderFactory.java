@@ -10,14 +10,12 @@
 package org.eclipse.jpt.jpa.ui.internal.navigator;
 
 import java.util.HashMap;
+import org.eclipse.jpt.common.ui.internal.jface.NullItemExtendedLabelProviderFactory;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
-import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider.Factory;
-import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
-import org.eclipse.jpt.jpa.ui.JpaContextModelRootModel;
 
 /**
  * @see JpaNavigatorItemContentProviderFactory
@@ -36,42 +34,33 @@ public class JpaNavigatorItemLabelProviderFactory
 	}
 
 	public ItemExtendedLabelProvider buildProvider(Object item, ItemExtendedLabelProvider.Manager manager) {
-		// we hand JpaContextModelRootModel differently because it can exist when the
-		// JPA facet is present by the JPA project may not yet be present...
-		if (item instanceof JpaContextModelRootModel) {
-			return this.buildContextModelRootModelProvider((JpaContextModelRootModel) item, manager);
-		}
-		ItemExtendedLabelProvider.Factory delegate = this.getDelegate(item);
-		return (delegate == null) ? null : delegate.buildProvider(item, manager);
+		return this.getDelegate(item).buildProvider(item, manager);
 	}
 
-	protected ItemExtendedLabelProvider buildContextModelRootModelProvider(JpaContextModelRootModel item, ItemExtendedLabelProvider.Manager manager) {
-		return new JpaContextModelRootModelItemLabelProvider(item, manager);
-	}
+
+	// ********** delegates **********
 
 	private ItemExtendedLabelProvider.Factory getDelegate(Object item) {
-		return (item instanceof JpaContextModel) ? this.getDelegate((JpaContextModel) item) : null;
+		return (item instanceof JpaContextModel) ?
+				this.getDelegate((JpaContextModel) item) :
+				NullItemExtendedLabelProviderFactory.instance();
 	}
 
-	private synchronized ItemExtendedLabelProvider.Factory getDelegate(JpaContextModel item) {
+	private ItemExtendedLabelProvider.Factory getDelegate(JpaContextModel item) {
 		JpaPlatform jpaPlatform = item.getJpaProject().getJpaPlatform();
 		ItemExtendedLabelProvider.Factory delegate = this.delegates.get(jpaPlatform);
 		if (delegate == null) {
-			if ( ! this.delegates.containsKey(jpaPlatform)) {  // null is an allowed value
-				delegate = this.buildDelegate(jpaPlatform);
-				this.delegates.put(jpaPlatform, delegate);
-			}
+			delegate = this.buildDelegate(jpaPlatform);
+			this.delegates.put(jpaPlatform, delegate);
 		}
 		return delegate;
 	}
 
 	private ItemExtendedLabelProvider.Factory buildDelegate(JpaPlatform jpaPlatform) {
 		JpaPlatformUi platformUI = (JpaPlatformUi) jpaPlatform.getAdapter(JpaPlatformUi.class);
-		if (platformUI == null) {
-			return null;
-		}
-		ItemTreeStateProviderFactoryProvider factoryProvider = platformUI.getNavigatorFactoryProvider();
-		return (factoryProvider == null) ? null : factoryProvider.getItemLabelProviderFactory();
+		return (platformUI != null) ?
+				platformUI.getNavigatorFactoryProvider().getItemLabelProviderFactory() :
+				NullItemExtendedLabelProviderFactory.instance();
 	}
 
 	@Override

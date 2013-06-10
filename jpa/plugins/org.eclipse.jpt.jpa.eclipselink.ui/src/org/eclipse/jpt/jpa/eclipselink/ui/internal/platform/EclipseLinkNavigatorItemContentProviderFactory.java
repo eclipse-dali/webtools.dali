@@ -9,10 +9,25 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.platform;
 
+import java.util.ArrayList;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
+import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
+import org.eclipse.jpt.jpa.core.context.MappingFile;
+import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.ui.internal.platform.base.AbstractNavigatorItemContentProviderFactory;
 
+/**
+ * This factory builds item content providers for the JPA content in the
+ * Project Explorer. It is to be used by
+ * {@link org.eclipse.jpt.jpa.ui.internal.navigator.JpaNavigatorItemContentProviderFactory}
+ * as a delegate for <em>EclipseLink</em> JPA projects.
+ */
 public class EclipseLinkNavigatorItemContentProviderFactory
 	extends AbstractNavigatorItemContentProviderFactory
 {
@@ -31,11 +46,44 @@ public class EclipseLinkNavigatorItemContentProviderFactory
 		super();
 	}
 
+
+	// ********** persistence unit **********
+
 	@Override
-	public ItemTreeContentProvider buildProvider(Object item, ItemTreeContentProvider.Manager manager) {
-		if (item instanceof EclipseLinkPersistenceUnit) {
-			return new EclipseLinkPersistenceUnitItemContentProvider((EclipseLinkPersistenceUnit) item, manager);
+	protected void addPersistenceUnitChildrenModelsTo(PersistenceUnit persistenceUnit, ArrayList<CollectionValueModel<? extends JpaContextModel>> list) {
+		super.addPersistenceUnitChildrenModelsTo(persistenceUnit, list);
+		// add after the implied mapping file
+		list.add(3, this.buildPersistenceUnitImpliedEclipseLinkMappingFilesModel((EclipseLinkPersistenceUnit) persistenceUnit));
+	}
+
+
+	// ********** persistence unit - implied EclipseLink mapping file **********
+
+	/**
+	 * No need to filter this list model as it will be empty if the wrapped
+	 * property model is <code>null</code>.
+	 */
+	protected CollectionValueModel<MappingFile> buildPersistenceUnitImpliedEclipseLinkMappingFilesModel(EclipseLinkPersistenceUnit item) {
+		return new PropertyCollectionValueModelAdapter<MappingFile>(this.buildPersistenceUnitImpliedEclipseLinkMappingFileModel(item));
+	}
+
+	protected PropertyValueModel<MappingFile> buildPersistenceUnitImpliedEclipseLinkMappingFileModel(EclipseLinkPersistenceUnit item) {
+		return new PersistenceUnitImpliedMappingFileModel(this.buildPersistenceUnitImpliedEclipseLinkMappingFileRefModel(item));
+	}
+
+	protected PropertyValueModel<MappingFileRef> buildPersistenceUnitImpliedEclipseLinkMappingFileRefModel(EclipseLinkPersistenceUnit item) {
+		return new PersistenceUnitImpliedEclipseLinkMappingFileRefModel(item);
+	}
+
+	public static class PersistenceUnitImpliedEclipseLinkMappingFileRefModel
+		extends PropertyAspectAdapter<EclipseLinkPersistenceUnit, MappingFileRef>
+	{
+		public PersistenceUnitImpliedEclipseLinkMappingFileRefModel(EclipseLinkPersistenceUnit persistenceUnit) {
+			super(EclipseLinkPersistenceUnit.IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY, persistenceUnit);
 		}
-		return super.buildProvider(item, manager);
+		@Override
+		protected MappingFileRef buildValue_() {
+			return this.subject.getImpliedEclipseLinkMappingFileRef();
+		}
 	}
 }

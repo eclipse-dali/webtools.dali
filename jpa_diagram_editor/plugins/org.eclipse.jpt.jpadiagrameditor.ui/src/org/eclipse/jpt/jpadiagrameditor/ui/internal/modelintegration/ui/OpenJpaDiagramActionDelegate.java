@@ -16,7 +16,6 @@
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.ui;
 
 import java.lang.ref.WeakReference;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -26,7 +25,6 @@ import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.platform.IDiagramContainer;
-import org.eclipse.jdt.internal.ui.dialogs.OptionalMessageDialog;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -35,19 +33,14 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.ui.JpaContextModelRootModel;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditor;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.CreateDiagramJob;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.ModelIntegrationUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorDiagramTypeProvider;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.Wrp;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IObjectActionDelegate;
@@ -153,9 +146,7 @@ public class OpenJpaDiagramActionDelegate implements IObjectActionDelegate {
 	protected PersistenceUnit obtainJpaProjectAndPersistenceUnit(ISelection selection) throws CoreException {
 		JpaProject jpaProject = null;
 		Object firstElement = ((IStructuredSelection) selection).getFirstElement();
-		if(firstElement instanceof JpaContextModelRootModel){
-			jpaProject = JpaArtifactFactory.instance().getJpaProject(((JpaContextModelRootModel)firstElement).getProject());
-		} else if (firstElement instanceof JpaModel) {
+		if (firstElement instanceof JpaModel) {
         	jpaProject = ((JpaModel)firstElement).getJpaProject();
         } else if (firstElement instanceof IProject) {
         	jpaProject = JpaArtifactFactory.instance().getJpaProject((IProject)firstElement);

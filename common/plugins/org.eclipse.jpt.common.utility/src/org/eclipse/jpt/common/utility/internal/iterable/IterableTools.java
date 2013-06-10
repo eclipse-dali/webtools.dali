@@ -223,6 +223,13 @@ public final class IterableTools {
 	}
 
 	/**
+	 * Return the first element corresponding in the specified iterable.
+	 */
+	public static <E> E first(Iterable<? extends E> iterable) {
+		return iterable.iterator().next();
+	}
+
+	/**
 	 * Return the element corresponding to the specified index
 	 * in the specified iterable.
 	 */

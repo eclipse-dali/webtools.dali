@@ -11,35 +11,35 @@ package org.eclipse.jpt.common.ui.internal.jface;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.StructuredViewer;
+import org.eclipse.jpt.common.ui.internal.plugin.JptCommonUiPlugin;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemStructuredContentProvider;
+import org.eclipse.jpt.common.utility.ExceptionHandler;
 
 /**
  * @see AbstractItemStructuredStateProviderManager
  */
 public class ItemStructuredStateProviderManager
-	extends AbstractItemStructuredStateProviderManager<StructuredViewer, ItemStructuredContentProvider>
+	extends AbstractItemStructuredStateProviderManager<StructuredViewer, ItemStructuredContentProvider, ItemStructuredContentProvider.Factory>
 {
-	/**
-	 * Never <code>null</code>.
-	 */
-	protected final ItemStructuredContentProvider.Factory itemContentProviderFactory;
-
-
 	public ItemStructuredStateProviderManager(ItemStructuredContentProvider.Factory itemContentProviderFactory, ResourceManager resourceManager) {
-		this(itemContentProviderFactory, null, resourceManager);
+		this(itemContentProviderFactory, NullItemExtendedLabelProviderFactory.instance(), resourceManager);
 	}
 
-	public ItemStructuredStateProviderManager(ItemStructuredContentProvider.Factory itemContentProviderFactory, ItemExtendedLabelProvider.Factory itemLabelProviderFactory, ResourceManager resourceManager) {
-		super(itemLabelProviderFactory, resourceManager);
-		if (itemContentProviderFactory == null) {
-			throw new NullPointerException();
-		}
-		this.itemContentProviderFactory = itemContentProviderFactory;
+	public ItemStructuredStateProviderManager(
+			ItemStructuredContentProvider.Factory itemContentProviderFactory,
+			ItemExtendedLabelProvider.Factory itemLabelProviderFactory,
+			ResourceManager resourceManager
+	) {
+		this(itemContentProviderFactory, itemLabelProviderFactory, resourceManager, JptCommonUiPlugin.EXCEPTION_HANDLER);
 	}
 
-	@Override
-	protected ItemStructuredContentProvider buildItemContentProvider(Object item) {
-		return this.itemContentProviderFactory.buildProvider(item, this);
+	public ItemStructuredStateProviderManager(
+			ItemStructuredContentProvider.Factory itemContentProviderFactory,
+			ItemExtendedLabelProvider.Factory itemLabelProviderFactory,
+			ResourceManager resourceManager,
+			ExceptionHandler exceptionHandler
+	) {
+		super(itemContentProviderFactory, itemLabelProviderFactory, resourceManager, exceptionHandler);
 	}
 }
