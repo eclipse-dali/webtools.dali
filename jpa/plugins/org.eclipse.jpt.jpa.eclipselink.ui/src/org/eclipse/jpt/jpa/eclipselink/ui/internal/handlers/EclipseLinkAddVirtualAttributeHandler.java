@@ -25,7 +25,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
  * Add a virtual attribute (no underlying java attribute) to the selected persistent type.
  * This handler is only active if <em>one</em> EclipseLink ORM persistent type is selected.
  * <p>
- * See <code>org.eclipse.jpt.jpa.eclipselink.ui/plugin.xml</code>.
+ * See <code>org.eclipse.jpt.jpa.eclipselink.ui/plugin.xml:org.eclipse.ui.handlers</code>.
  */
 public class EclipseLinkAddVirtualAttributeHandler
 	extends AbstractHandler

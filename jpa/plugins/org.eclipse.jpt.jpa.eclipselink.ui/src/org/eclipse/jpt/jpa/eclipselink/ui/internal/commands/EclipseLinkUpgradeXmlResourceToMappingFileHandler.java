@@ -44,7 +44,7 @@ import org.xml.sax.SAXException;
 /**
  * Handler used to upgrade an orm.xml file to an eclipselink orm.xml file
  * when the selected object adapts to a <code>JptXmlResource</code>.
- * See org.eclipse.jpt.jpa.eclipselink.ui/plugin.xml
+ * See <code>org.eclipse.jpt.jpa.eclipselink.ui/plugin.xml:org.eclipse.ui.handlers</code>
  */
 public class EclipseLinkUpgradeXmlResourceToMappingFileHandler 
 	extends AbstractHandler

@@ -16,7 +16,7 @@ package org.eclipse.jpt.jpa.core;
  * See the  extension point
  * <code>org.eclipse.jpt.jpa.core.jpaPlatforms</code>
  * in
- * <code>org.eclipse.jpt.jpa.core/plugin.xml</code>
+ * <code>org.eclipse.jpt.jpa.core/plugin.xml:jpaPlatforms</code>
  * and
  * <code>org.eclipse.jpt.jpa.core/schema/jpaPlatforms.exsd</code>
  * <p>

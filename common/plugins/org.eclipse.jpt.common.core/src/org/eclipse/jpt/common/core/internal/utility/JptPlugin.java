@@ -1387,7 +1387,7 @@ public abstract class JptPlugin
 	 * (This will be present because all Dali debug options have been activated
 	 * via the <code>org.eclipse.jpt.common.ui</code> extension
 	 * to the <code>org.eclipse.ui.trace.traceComponents</code> extension point.
-	 * See <code>org.eclipse.jpt.common.ui/plugin.xml</code>.)
+	 * See <code>org.eclipse.jpt.common.ui/plugin.xml:org.eclipse.ui.trace.traceComponents</code>.)
 	 * </ul>
 	 */
 	public boolean isDebugEnabled() {

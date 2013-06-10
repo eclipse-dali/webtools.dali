@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,7 +31,7 @@ import org.eclipse.ui.part.FileEditorInput;
 
 /**
  * The selection will be a JPA context node.
- * @see org.eclipse.jpt.jpa.ui.internal.navigator.JpaNavigatorActionProvider
+ * @see org.eclipse.jpt.jpa.ui.internal.navigator.OpenJpaResourceActionProvider
  */
 public class OpenJpaResourceAction
 	extends BaseSelectionListenerAction
@@ -86,14 +86,14 @@ public class OpenJpaResourceAction
 		}
 
 		IWorkbenchPage page = WorkbenchTools.getActivePage();
+		if (page == null) {
+			return;
+		}
 
 		try {
-			if (page != null) {
-				page.openEditor(new FileEditorInput(file), editorDescriptor.getId());
-			}
-		}
-		catch (Exception e) {
-			MessageDialog.openError(page.getWorkbenchWindow().getShell(), JptJpaUiMessages.OpenJpaResourceAction_error, e.getMessage());
+			page.openEditor(new FileEditorInput(file), editorDescriptor.getId());
+		} catch (Exception ex) {
+			MessageDialog.openError(page.getWorkbenchWindow().getShell(), JptJpaUiMessages.OpenJpaResourceAction_error, ex.getMessage());
 		}
 	}
 

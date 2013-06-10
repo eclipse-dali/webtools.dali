@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.IPath;
 /**
  * Client-defined resource locator.
  * <p>
- * See <code>org.eclipse.jpt.common.core/plugin.xml</code>.
+ * See <code>org.eclipse.jpt.common.core/plugin.xml:resourceLocators</code>.
  * <p>
  * See <code>org.eclipse.jpt.common.core/schema/resourceLocators.exsd</code>.
  * <p>

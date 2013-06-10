@@ -21,7 +21,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 /**
  * Handler used to upgrade an orm.xml file to an eclipselink orm.xml file
  * when the selected object adapts to an <code>XmlFile</code>.
- * See org.eclipse.jpt.jpa.eclipselink.ui/plugin.xml
+ * See <code>org.eclipse.jpt.jpa.eclipselink.ui/plugin.xml:org.eclipse.ui.handlers</code>
  */
 public class EclipseLinkUpgradeXmlFileToMappingFileHandler
 	extends AbstractHandler
