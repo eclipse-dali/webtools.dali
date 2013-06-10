@@ -1910,6 +1910,14 @@ public final class StringBuilderTools {
 	 * </code>
 	 */
 	public static void append(StringBuilder sb, Object[] array) {
+		if (array == null) {
+			sb.append(array);
+		} else {
+			append_(sb, array);
+		}
+	}
+
+	private static void append_(StringBuilder sb, Object[] array) {
 		sb.append('[');
 		if (array.length > 0) {
 			for (Object element : array) {

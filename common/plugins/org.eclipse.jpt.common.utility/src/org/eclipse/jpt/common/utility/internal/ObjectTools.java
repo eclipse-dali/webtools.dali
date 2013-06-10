@@ -150,6 +150,18 @@ public final class ObjectTools {
 	/**
 	 * @see #toString(Object, Object)
 	 */
+	public static String toString(Object object, Object[] additionalInfo) {
+		StringBuilder sb = new StringBuilder();
+		StringBuilderTools.appendHashCodeToString(sb, object);
+		sb.append('(');
+		StringBuilderTools.append(sb, additionalInfo);
+		sb.append(')');
+		return sb.toString();
+	}
+
+	/**
+	 * @see #toString(Object, Object)
+	 */
 	public static String toString(Object object, boolean additionalInfo) {
 		StringBuilder sb = new StringBuilder();
 		StringBuilderTools.appendHashCodeToString(sb, object);
