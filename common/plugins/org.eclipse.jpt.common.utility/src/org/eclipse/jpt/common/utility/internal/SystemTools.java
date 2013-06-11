@@ -9,6 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal;
 
+import java.io.PrintStream;
+import java.util.Map;
+
 /**
  * Various system utility methods.
  * @see System#getProperty(String)
@@ -153,6 +156,64 @@ public final class SystemTools {
 
 	private static boolean osIs(String osName) {
 		return System.getProperty("os.name").indexOf(osName) != -1;
+	}
+
+
+	// ********** thread dump **********
+
+	/**
+	 * Print all the current threads' stack traces on a string and return the
+	 * resulting string.
+	 * @see Thread#getAllStackTraces()
+	 */
+	public static String allThreadsToString() {
+		StringBuilder sb = new StringBuilder(5000);
+		dumpAllThreadsOn(sb);
+		return sb.toString();
+	}
+
+	/**
+	 * Dump all the current threads' stack traces to the specified string
+	 * builder.
+	 * @see Thread#getAllStackTraces()
+	 */
+	public static void dumpAllThreadsOn(StringBuilder sb) {
+		Map<Thread, StackTraceElement[]> stackTraces = Thread.getAllStackTraces();
+		for (Map.Entry<Thread, StackTraceElement[]> entry : stackTraces.entrySet()) {
+			sb.append(entry.getKey().getName());
+			sb.append(StringTools.CR);
+			for (StackTraceElement element : entry.getValue()) {
+				sb.append(element);
+				sb.append(StringTools.CR);
+			}
+			sb.append(StringTools.CR);
+		}
+	}
+
+	/**
+	 * Dump all the current threads' stack traces to the
+	 * {@link System#out system console}.
+	 * @see Thread#getAllStackTraces()
+	 */
+	public static void dumpAllThreads() {
+		synchronized (System.out) {
+			dumpAllThreadsOn(System.out);
+		}
+	}
+
+	/**
+	 * Dump all the current threads' stack traces to the specified stream.
+	 * @see Thread#getAllStackTraces()
+	 */
+	public static void dumpAllThreadsOn(PrintStream stream) {
+		Map<Thread, StackTraceElement[]> stackTraces = Thread.getAllStackTraces();
+		for (Map.Entry<Thread, StackTraceElement[]> entry : stackTraces.entrySet()) {
+			stream.println(entry.getKey().getName());
+			for (StackTraceElement element : entry.getValue()) {
+				stream.println(element);
+			}
+			stream.println();
+		}
 	}
 
 
