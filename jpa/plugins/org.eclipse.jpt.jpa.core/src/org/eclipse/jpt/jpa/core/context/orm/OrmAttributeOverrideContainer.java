@@ -31,6 +31,24 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeOverride;
 public interface OrmAttributeOverrideContainer
 	extends AttributeOverrideContainer, OrmOverrideContainer
 {
+	/**
+	 * Called when converting an embedded mapping to an
+	 * embedded ID mapping (and vice-versa);
+	 * to preserve any specified attribute overrides.
+	 * <p>
+	 * <strong>NB:</strong>
+	 * There is no corresponding method on the Java container because
+	 * Java mapping conversions simply change the mapping annotation and
+	 * leave the [sibling] attribute override annotations in place;
+	 * while <code>orm.xml</code> mapping conversions must move
+	 * the [nested] attribute override XML elements to the new mapping
+	 * XML element.
+	 * <p>
+	 * <strong>NB:</strong>
+	 * There is no corresponding method on the association override container
+	 * because embedded ID mappings do not have <em>association</em> overrides;
+	 * so there is no need to convert those.
+	 */
 	void initializeFrom(OrmAttributeOverrideContainer oldContainer);
 
 	// covariant overrides

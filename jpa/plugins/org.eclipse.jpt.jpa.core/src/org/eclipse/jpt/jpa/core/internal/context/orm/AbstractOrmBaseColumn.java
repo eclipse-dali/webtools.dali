@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.TableColumn;
+import org.eclipse.jpt.jpa.core.context.VirtualBaseColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedBaseColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlBaseColumn;
 
@@ -258,7 +258,7 @@ public abstract class AbstractOrmBaseColumn<PA extends TableColumn.ParentAdapter
 
 	// ********** misc **********
 
-	protected void initializeFrom(BaseColumn oldColumn) {
+	protected void initializeFrom(OrmSpecifiedBaseColumn oldColumn) {
 		super.initializeFrom(oldColumn);
 		this.setSpecifiedTableName(oldColumn.getSpecifiedTableName());
 		this.setSpecifiedUnique(oldColumn.getSpecifiedUnique());
@@ -267,8 +267,8 @@ public abstract class AbstractOrmBaseColumn<PA extends TableColumn.ParentAdapter
 		this.setSpecifiedUpdatable(oldColumn.getSpecifiedUpdatable());
 	}
 
-	protected void initializeFromVirtual(BaseColumn virtualColumn) {
-		super.initializeFromVirtual(virtualColumn);
+	protected void initializeFrom(VirtualBaseColumn virtualColumn) {
+		super.initializeFrom(virtualColumn);
 		this.setSpecifiedTableName(virtualColumn.getTableName());
 		// ignore other settings?
 	}

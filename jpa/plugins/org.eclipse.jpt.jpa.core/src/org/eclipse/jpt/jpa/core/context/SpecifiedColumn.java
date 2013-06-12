@@ -24,9 +24,11 @@ package org.eclipse.jpt.jpa.core.context;
 public interface SpecifiedColumn
 	extends SpecifiedBaseColumn, Column
 {
-	void initializeFrom(Column oldColumn);
-
-	void initializeFromVirtual(Column oldColumn);
+	/**
+	 * @see org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAttributeOverride#initializeFrom(org.eclipse.jpt.jpa.core.context.java.JavaVirtualAttributeOverride)
+	 * @see org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAttributeOverride#initializeFrom(org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAttributeOverride)
+	 */
+	void initializeFrom(VirtualColumn virtualColumn);
 
 	void setSpecifiedLength(Integer length);
 

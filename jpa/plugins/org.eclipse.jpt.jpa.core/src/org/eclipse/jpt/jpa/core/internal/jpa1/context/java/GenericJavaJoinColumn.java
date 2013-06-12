@@ -14,6 +14,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaBaseColumn;
@@ -140,13 +141,8 @@ public class GenericJavaJoinColumn
 
 	// ********** misc **********
 
-	public void initializeFrom(JoinColumn oldColumn) {
-		super.initializeFrom(oldColumn);
-		this.setSpecifiedReferencedColumnName(oldColumn.getSpecifiedReferencedColumnName());
-	}
-
-	public void initializeFromVirtual(JoinColumn virtualColumn) {
-		super.initializeFromVirtual(virtualColumn);
+	public void initializeFrom(VirtualJoinColumn virtualColumn) {
+		super.initializeFrom(virtualColumn);
 		this.setSpecifiedReferencedColumnName(virtualColumn.getReferencedColumnName());
 	}
 

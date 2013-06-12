@@ -27,6 +27,13 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride;
 public interface OrmSpecifiedAssociationOverride
 	extends SpecifiedAssociationOverride, OrmSpecifiedOverride
 {
+	/**
+	 * Called when a default override is converted into a specified override.
+	 * @see org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer
+	 * AssociationOverrideContainer for a list of clients
+	 */
+	void initializeFrom(OrmVirtualAssociationOverride virtualOverride);
+
 	OrmVirtualAssociationOverride convertToVirtual();
 
 	XmlAssociationOverride getXmlOverride();

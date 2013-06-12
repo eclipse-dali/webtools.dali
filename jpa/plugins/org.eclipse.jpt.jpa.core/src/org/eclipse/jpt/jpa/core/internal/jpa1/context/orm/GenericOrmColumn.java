@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.VirtualColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmBaseColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlColumn;
@@ -173,15 +173,15 @@ public class GenericOrmColumn
 
 	// ********** misc **********
 
-	public void initializeFrom(Column oldColumn) {
+	public void initializeFrom(OrmSpecifiedColumn oldColumn) {
 		super.initializeFrom(oldColumn);
 		this.setSpecifiedLength(oldColumn.getSpecifiedLength());
 		this.setSpecifiedPrecision(oldColumn.getSpecifiedPrecision());
 		this.setSpecifiedScale(oldColumn.getSpecifiedScale());
 	}
 
-	public void initializeFromVirtual(Column virtualColumn) {
-		super.initializeFromVirtual(virtualColumn);
+	public void initializeFrom(VirtualColumn virtualColumn) {
+		super.initializeFrom(virtualColumn);
 		// ignore other settings?
 	}
 }

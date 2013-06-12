@@ -273,9 +273,8 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 		super.initializeFromOrmRelationshipMapping(oldMapping);
 		this.setSpecifiedTargetEntity(oldMapping.getSpecifiedTargetEntity());
 		this.setSpecifiedFetch(oldMapping.getSpecifiedFetch());
-		oldMapping.getRelationship().initializeOn(this.relationship);
+		this.relationship.initializeFrom(oldMapping.getRelationship());
 		this.cascade.initializeFrom(oldMapping.getCascade());
-		//TODO should we set the fetch type from a BasicMapping??
 	}
 
 	public Iterable<String> getAllTargetEntityAttributeNames() {

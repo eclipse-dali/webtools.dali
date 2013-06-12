@@ -11,10 +11,6 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
-import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
-import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
-import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappingRelationship;
@@ -66,25 +62,6 @@ public abstract class AbstractJavaMappingRelationship<P extends JavaRelationship
 	 */
 	protected void updateStrategy() {
 		this.setStrategy(this.buildStrategy());
-	}
-
-
-	// ********** conversions **********
-
-	public void initializeFrom(Relationship oldRelationship) {
-		oldRelationship.initializeOn(this);
-	}
-
-	public void initializeFromMappedByRelationship(MappedByRelationship oldRelationship) {
-		// NOP
-	}
-
-	public void initializeFromJoinTableRelationship(JoinTableRelationship oldRelationship) {
-		// NOP
-	}
-
-	public void initializeFromJoinColumnRelationship(JoinColumnRelationship oldRelationship) {
-		// NOP
 	}
 
 

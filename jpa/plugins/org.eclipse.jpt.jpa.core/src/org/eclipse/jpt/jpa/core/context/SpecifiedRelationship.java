@@ -10,6 +10,9 @@
 package org.eclipse.jpt.jpa.core.context;
 
 /**
+ * <em>Specified</em> relationship
+ * (used by either mappings or <em>specified</em> association overrides)
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -26,17 +29,4 @@ public interface SpecifiedRelationship
 	extends Relationship
 {
 	SpecifiedRelationshipStrategy getStrategy();
-
-
-	// ********** conversions **********
-
-	void initializeFrom(Relationship oldRelationship);
-
-	void initializeFromMappedByRelationship(MappedByRelationship oldRelationship);
-
-	void initializeFromJoinColumnRelationship(JoinColumnRelationship oldRelationship);
-
-	void initializeFromJoinTableRelationship(JoinTableRelationship oldRelationship);
-
-	// we only have a single "client" of the primary key relationship (1:1 mapping)
 }

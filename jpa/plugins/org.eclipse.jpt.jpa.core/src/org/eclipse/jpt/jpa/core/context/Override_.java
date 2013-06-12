@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.db.Table;
 
 /**
- * Read-only (<em>specified</em> or <em>virtual</em>)<ul>
+ * <em>Specified</em> or <em>virtual</em><ul>
  * <li>attribute override
  * <li>association override
  * </ul>

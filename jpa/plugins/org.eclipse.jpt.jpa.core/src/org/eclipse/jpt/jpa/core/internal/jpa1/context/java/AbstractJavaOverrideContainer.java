@@ -509,8 +509,8 @@ public abstract class AbstractJavaOverrideContainer<
 		return this.parentAdapter.buildOverrideValidator(override, this);
 	}
 
-	public JpaValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter parentAdapter) {
-		return this.parentAdapter.buildColumnValidator(override, column, parentAdapter);
+	public JpaValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter tableParentAdapter) {
+		return this.parentAdapter.buildColumnValidator(override, column, tableParentAdapter);
 	}
 
 	public String getPossiblePrefix() {

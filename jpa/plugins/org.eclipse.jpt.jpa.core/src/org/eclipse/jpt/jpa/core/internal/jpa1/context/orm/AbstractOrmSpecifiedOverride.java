@@ -96,10 +96,6 @@ public abstract class AbstractOrmSpecifiedOverride<P extends OrmOverrideContaine
 		this.setName(oldOverride.getName());
 	}
 
-	protected void initializeFromVirtual(Override_ virtualOverride) {
-		this.setName(virtualOverride.getName());
-	}
-
 	public TypeMapping getTypeMapping() {
 		return this.getContainer().getTypeMapping();
 	}

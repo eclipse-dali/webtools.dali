@@ -20,6 +20,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.VirtualTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
@@ -536,17 +537,20 @@ public abstract class AbstractOrmTable<P extends JpaContextModel, PA extends Tab
 	// ********** misc **********
 
 	protected void initializeFrom(Table oldTable) {
+		this.initializeFrom_(oldTable);
+	}
+
+	protected void initializeFrom(VirtualTable virtualTable) {
+		this.initializeFrom_(virtualTable);
+	}
+
+	protected void initializeFrom_(Table oldTable) {
 		this.setSpecifiedName(oldTable.getSpecifiedName());
 		this.setSpecifiedCatalog(oldTable.getSpecifiedCatalog());
 		this.setSpecifiedSchema(oldTable.getSpecifiedSchema());
 		for (UniqueConstraint constraint : oldTable.getUniqueConstraints()) {
 			this.addUniqueConstraint().initializeFrom(constraint);
 		}
-	}
-
-	protected void initializeFromVirtual(Table virtualTable) {
-		this.setSpecifiedName(virtualTable.getName());
-		// ignore other settings?
 	}
 
 	@Override

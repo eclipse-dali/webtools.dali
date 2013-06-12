@@ -10,12 +10,11 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import java.util.List;
-import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
@@ -78,14 +77,9 @@ public class GenericJavaSpecifiedAttributeOverride
 
 	// ********** misc **********
 
-	public void initializeFrom(AttributeOverride oldOverride) {
+	public void initializeFrom(JavaVirtualAttributeOverride oldOverride) {
 		super.initializeFrom(oldOverride);
 		this.column.initializeFrom(oldOverride.getColumn());
-	}
-
-	public void initializeFromVirtual(AttributeOverride oldOverride) {
-		super.initializeFromVirtual(oldOverride);
-		this.column.initializeFromVirtual(oldOverride.getColumn());
 	}
 
 

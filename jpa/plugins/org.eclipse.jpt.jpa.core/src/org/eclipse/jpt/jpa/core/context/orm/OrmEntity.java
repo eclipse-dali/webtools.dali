@@ -70,8 +70,11 @@ public interface OrmEntity
 	boolean secondaryTablesAreDefinedInXml();
 	
 	/**
-	 * If true, then all virtual secondary tables are added in as specified secondary tables to the xml.
-	 * If false, then all the specified secondary tables are remvoed from the xml.
+	 * If the specified flag is <code>true</code>, then all the default
+	 * secondary tables (as determined by the Java secondary tables) are
+	 * converted to specified secondary tables in the XML.
+	 * If the specified flag is <code>false</code>, then all the secondary
+	 * tables specified in the XML are removed.
 	 */
 	void setSecondaryTablesAreDefinedInXml(boolean defineInXml);
 

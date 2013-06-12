@@ -19,7 +19,6 @@ import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterabl
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
@@ -27,6 +26,8 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinTableRelationshipStrategy;
@@ -252,17 +253,17 @@ public class GenericOrmJoinTable
 		return this.getRelationshipStrategy().getJoinTableDefaultName();
 	}
 
-	public void initializeFrom(JoinTable oldTable) {
+	public void initializeFrom(OrmSpecifiedJoinTable oldTable) {
 		super.initializeFrom(oldTable);
-		for (JoinColumn joinColumn : oldTable.getSpecifiedInverseJoinColumns()) {
+		for (OrmSpecifiedJoinColumn joinColumn : oldTable.getSpecifiedInverseJoinColumns()) {
 			this.addSpecifiedInverseJoinColumn().initializeFrom(joinColumn);
 		}
 	}
 
-	public void initializeFromVirtual(JoinTable virtualTable) {
-		super.initializeFromVirtual(virtualTable);
-		for (JoinColumn joinColumn : virtualTable.getInverseJoinColumns()) {
-			this.addSpecifiedInverseJoinColumn().initializeFromVirtual(joinColumn);
+	public void initializeFrom(VirtualJoinTable virtualTable) {
+		super.initializeFrom(virtualTable);
+		for (VirtualJoinColumn joinColumn : virtualTable.getInverseJoinColumns()) {
+			this.addSpecifiedInverseJoinColumn().initializeFrom(joinColumn);
 		}
 	}
 

@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmBaseColumn;
@@ -149,13 +150,13 @@ public class GenericOrmJoinColumn
 
 	// ********** misc **********
 
-	public void initializeFrom(JoinColumn oldColumn) {
+	public void initializeFrom(OrmSpecifiedJoinColumn oldColumn) {
 		super.initializeFrom(oldColumn);
 		this.setSpecifiedReferencedColumnName(oldColumn.getSpecifiedReferencedColumnName());
 	}
 
-	public void initializeFromVirtual(JoinColumn virtualColumn) {
-		super.initializeFromVirtual(virtualColumn);
+	public void initializeFrom(VirtualJoinColumn virtualColumn) {
+		super.initializeFrom(virtualColumn);
 		this.setSpecifiedReferencedColumnName(virtualColumn.getReferencedColumnName());
 	}
 

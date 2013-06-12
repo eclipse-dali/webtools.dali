@@ -28,6 +28,12 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlColumn;
 public interface OrmSpecifiedColumn
 	extends SpecifiedColumn, OrmSpecifiedBaseColumn
 {
+	/**
+	 * @see OrmAttributeMapping#initializeOn(OrmAttributeMapping)
+	 * @see OrmSpecifiedAttributeOverride#initializeFrom(OrmSpecifiedAttributeOverride)
+	 */
+	void initializeFrom(OrmSpecifiedColumn oldColumn);
+
 	XmlColumn getXmlColumn();
 
 

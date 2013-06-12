@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.Table;
-import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.VirtualTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
@@ -492,16 +492,7 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, PA extends Ta
 
 	// ********** misc **********
 
-	protected void initializeFrom(Table oldTable) {
-		this.setSpecifiedName(oldTable.getSpecifiedName());
-		this.setSpecifiedCatalog(oldTable.getSpecifiedCatalog());
-		this.setSpecifiedSchema(oldTable.getSpecifiedSchema());
-		for (UniqueConstraint constraint : oldTable.getUniqueConstraints()) {
-			this.addUniqueConstraint().initializeFrom(constraint);
-		}
-	}
-
-	protected void initializeFromVirtual(Table virtualTable) {
+	protected void initializeFrom(VirtualTable virtualTable) {
 		this.setSpecifiedName(virtualTable.getName());
 		// ignore other settings?
 	}
@@ -514,7 +505,4 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, PA extends Ta
 	protected String buildQualifiedName() {
 		return NameTools.buildQualifiedName(this.getCatalog(), this.getSchema(), this.getName());
 	}
-
-
-
 }

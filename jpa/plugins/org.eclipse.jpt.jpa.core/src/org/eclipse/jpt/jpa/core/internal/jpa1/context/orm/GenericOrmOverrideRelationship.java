@@ -14,18 +14,12 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
-import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
-import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
-import org.eclipse.jpt.jpa.core.context.OverrideRelationship;
-import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
-import org.eclipse.jpt.jpa.core.context.SpecifiedOverrideRelationship;
-import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TableColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
+import org.eclipse.jpt.jpa.core.context.VirtualOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinTableRelationshipStrategy;
@@ -35,6 +29,7 @@ import org.eclipse.jpt.jpa.core.internal.context.orm.GenericOrmOverrideJoinColum
 import org.eclipse.jpt.jpa.core.internal.context.orm.NullOrmJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmOverrideJoinTableRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedMappingRelationshipStrategy2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.VirtualOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmSpecifiedAssociationOverride2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmSpecifiedOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride;
@@ -180,41 +175,11 @@ public class GenericOrmOverrideRelationship
 
 	// ********** conversions **********
 
-	public void initializeFrom(Relationship oldRelationship) {
-		oldRelationship.initializeOn(this);
-	}
-
-	public void initializeOn(SpecifiedRelationship newRelationship) {
-		newRelationship.initializeFromJoinTableRelationship(this);
-		newRelationship.initializeFromJoinColumnRelationship(this);
-	}
-
-	public void initializeFromMappedByRelationship(MappedByRelationship oldRelationship) {
-		// NOP
-	}
-
-	public void initializeFromJoinTableRelationship(JoinTableRelationship oldRelationship) {
-		this.joinTableStrategy.initializeFrom(oldRelationship.getJoinTableStrategy());
-	}
-
-	public void initializeFromJoinColumnRelationship(JoinColumnRelationship oldRelationship) {
-		this.joinColumnStrategy.initializeFrom(oldRelationship.getJoinColumnStrategy());
-	}
-
-	public void initializeFromVirtual(OverrideRelationship virtualRelationship) {
-		virtualRelationship.initializeOnSpecified(this);
-	}
-
-	public void initializeOnSpecified(SpecifiedOverrideRelationship specifiedRelationship) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void initializeFromVirtualJoinTableRelationship(JoinTableRelationship virtualRelationship) {
-		this.joinTableStrategy.initializeFromVirtual(virtualRelationship.getJoinTableStrategy());
-	}
-
-	public void initializeFromVirtualJoinColumnRelationship(JoinColumnRelationship virtualRelationship) {
-		this.joinColumnStrategy.initializeFromVirtual(virtualRelationship.getJoinColumnStrategy());
+	public void initializeFrom(VirtualOverrideRelationship virtualRelationship) {
+		this.joinColumnStrategy.initializeFrom(virtualRelationship.getJoinColumnStrategy());
+		if (this.isJpa2_0Compatible()) {
+			this.joinTableStrategy.initializeFrom(((VirtualOverrideRelationship2_0) virtualRelationship).getJoinTableStrategy());
+		}
 	}
 
 

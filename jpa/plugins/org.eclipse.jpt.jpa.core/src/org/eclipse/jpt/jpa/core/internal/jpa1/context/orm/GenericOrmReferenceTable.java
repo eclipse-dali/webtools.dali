@@ -16,9 +16,10 @@ import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterabl
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.ReferenceTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.Table;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
+import org.eclipse.jpt.jpa.core.context.VirtualReferenceTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedReferenceTable;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -211,17 +212,17 @@ public abstract class GenericOrmReferenceTable<P extends JpaContextModel, PA ext
 
 	// ********** misc **********
 
-	protected void initializeFrom(ReferenceTable oldTable) {
+	protected void initializeFrom(OrmSpecifiedReferenceTable oldTable) {
 		super.initializeFrom(oldTable);
-		for (JoinColumn joinColumn : oldTable.getSpecifiedJoinColumns()) {
+		for (OrmSpecifiedJoinColumn joinColumn : oldTable.getSpecifiedJoinColumns()) {
 			this.addSpecifiedJoinColumn().initializeFrom(joinColumn);
 		}
 	}
 
-	protected void initializeFromVirtual(ReferenceTable virtualTable) {
-		super.initializeFromVirtual(virtualTable);
-		for (JoinColumn joinColumn : virtualTable.getJoinColumns()) {
-			this.addSpecifiedJoinColumn().initializeFromVirtual(joinColumn);
+	protected void initializeFrom(VirtualReferenceTable virtualTable) {
+		super.initializeFrom(virtualTable);
+		for (VirtualJoinColumn joinColumn : virtualTable.getJoinColumns()) {
+			this.addSpecifiedJoinColumn().initializeFrom(joinColumn);
 		}
 	}
 

@@ -19,12 +19,12 @@ import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
-import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedSecondaryTable;
+import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualSecondaryTable;
 import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmTable;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.SecondaryTablePrimaryKeyJoinColumnValidator;
@@ -273,9 +273,9 @@ public class GenericOrmSecondaryTable
 		return false;
 	}
 
-	public void initializeFrom(SecondaryTable oldSecondaryTable) {
-		super.initializeFrom(oldSecondaryTable);
-		for (PrimaryKeyJoinColumn pkJoinColumn : oldSecondaryTable.getSpecifiedPrimaryKeyJoinColumns()) {
+	public void initializeFrom(OrmVirtualSecondaryTable oldTable) {
+		super.initializeFrom(oldTable);
+		for (OrmVirtualPrimaryKeyJoinColumn pkJoinColumn : oldTable.getSpecifiedPrimaryKeyJoinColumns()) {
 			this.addSpecifiedPrimaryKeyJoinColumn().initializeFrom(pkJoinColumn);
 		}
 	}

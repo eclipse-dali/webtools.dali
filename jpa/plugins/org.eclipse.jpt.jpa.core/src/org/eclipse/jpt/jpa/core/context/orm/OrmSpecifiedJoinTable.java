@@ -30,6 +30,11 @@ public interface OrmSpecifiedJoinTable
 {
 	OrmSpecifiedJoinTableRelationshipStrategy getParent();
 
+	/**
+	 * @see OrmSpecifiedJoinTableRelationshipStrategy#initializeFrom(OrmSpecifiedJoinTableRelationshipStrategy)
+	 */
+	void initializeFrom(OrmSpecifiedJoinTable oldTable);
+
 	// ********** inverse join columns **********
 
 	ListIterable<OrmSpecifiedJoinColumn> getInverseJoinColumns();

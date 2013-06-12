@@ -17,8 +17,6 @@ import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
-import org.eclipse.jpt.jpa.core.context.SpecifiedOverrideRelationship;
-import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.TableColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinColumnRelationshipStrategy;
@@ -149,19 +147,6 @@ public class GenericJavaVirtualOverrideRelationship
 
 	protected VirtualJoinTableRelationshipStrategy buildJoinTableStrategy() {
 		return new GenericJavaVirtualOverrideJoinTableRelationshipStrategy2_0(this);
-	}
-
-
-	// ********** conversions **********
-
-	public void initializeOn(SpecifiedRelationship newRelationship) {
-		newRelationship.initializeFromJoinTableRelationship(this);
-		newRelationship.initializeFromJoinColumnRelationship(this);
-	}
-
-	public void initializeOnSpecified(SpecifiedOverrideRelationship specifiedRelationship) {
-		specifiedRelationship.initializeFromVirtualJoinColumnRelationship(this);
-		specifiedRelationship.initializeFromVirtualJoinTableRelationship(this);
 	}
 
 

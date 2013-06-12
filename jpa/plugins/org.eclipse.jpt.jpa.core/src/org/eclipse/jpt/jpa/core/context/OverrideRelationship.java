@@ -53,6 +53,4 @@ public interface OverrideRelationship
 	String getDefaultTableName();
 
 	JpaValidator buildColumnValidator(BaseColumn column, TableColumn.ParentAdapter parentAdapter);
-
-	void initializeOnSpecified(SpecifiedOverrideRelationship specifiedRelationship);
 }

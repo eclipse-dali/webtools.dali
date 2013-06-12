@@ -11,9 +11,9 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.jpa.core.context.Column;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
+import org.eclipse.jpt.jpa.core.context.VirtualColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.jpa.db.Table;
@@ -224,11 +224,7 @@ public class NullJavaMapKeyColumn2_0
 
 	// ********** misc **********
 
-	public void initializeFrom(Column oldColumn) {
-		// NOP
-	}
-
-	public void initializeFromVirtual(Column virtualColumn) {
+	public void initializeFrom(VirtualColumn virtualColumn) {
 		// NOP
 	}
 

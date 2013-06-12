@@ -13,8 +13,16 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 
 /**
  * Attribute override container.
- * Used by entities, embedded mappings, and element collection mappings.
  * <p>
+ * Clients:<ul>
+ * <li>entity - override mapped superclass attribute mappings
+ * <li>embedded mapping - override embeddable attribute mappings
+ * <li>embedded ID mapping - override embeddable attribute mappings
+ * <li>element collection mapping - override (value/map value and map key)
+ *     embeddable attribute mappings
+ * <li>one-to-many mapping - override (map key) embeddable attribute mappings
+ * <li>many-to-many mapping - override (map key) embeddable attribute mappings
+ * </ul>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from

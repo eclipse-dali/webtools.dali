@@ -12,9 +12,9 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.jpa.core.context.JoinTable;
-import org.eclipse.jpt.jpa.core.context.JoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinTable;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTableRelationshipStrategy;
@@ -110,19 +110,11 @@ public abstract class AbstractJavaJoinTableRelationshipStrategy<P extends JavaJo
 		return this.getRelationship().getMapping();
 	}
 
-	public void initializeFrom(JoinTableRelationshipStrategy oldStrategy) {
-		JoinTable oldJoinTable = oldStrategy.getJoinTable();
-		if (oldJoinTable != null) {
+	public void initializeFrom(VirtualJoinTableRelationshipStrategy virtualStrategy) {
+		VirtualJoinTable oldTable = virtualStrategy.getJoinTable();
+		if (oldTable != null) {
 			this.addStrategy();
-			this.joinTable.initializeFrom(oldJoinTable);
-		}
-	}
-
-	public void initializeFromVirtual(JoinTableRelationshipStrategy virtualStrategy) {
-		JoinTable oldJoinTable = virtualStrategy.getJoinTable();
-		if (oldJoinTable != null) {
-			this.addStrategy();
-			this.joinTable.initializeFromVirtual(oldJoinTable);
+			this.joinTable.initializeFrom(oldTable);
 		}
 	}
 

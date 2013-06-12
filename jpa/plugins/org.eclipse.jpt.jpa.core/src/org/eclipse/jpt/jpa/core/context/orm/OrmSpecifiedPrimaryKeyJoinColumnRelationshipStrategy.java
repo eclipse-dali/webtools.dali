@@ -27,6 +27,11 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumnRelationshi
 public interface OrmSpecifiedPrimaryKeyJoinColumnRelationshipStrategy
 	extends SpecifiedPrimaryKeyJoinColumnRelationshipStrategy
 {
+	/**
+	 *@see OrmMappingRelationship#initializeFromPrimaryKeyJoinColumnRelationship(OrmPrimaryKeyJoinColumnRelationship)
+	 */
+	void initializeFrom(OrmSpecifiedPrimaryKeyJoinColumnRelationshipStrategy oldStrategy);
+
 	ListIterable<OrmSpecifiedPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
 	OrmSpecifiedPrimaryKeyJoinColumn getPrimaryKeyJoinColumn(int index);
 	OrmSpecifiedPrimaryKeyJoinColumn addPrimaryKeyJoinColumn();

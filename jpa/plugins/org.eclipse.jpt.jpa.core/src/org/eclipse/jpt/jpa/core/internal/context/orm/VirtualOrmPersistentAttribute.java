@@ -89,14 +89,14 @@ public class VirtualOrmPersistentAttribute
 
 	public VirtualOrmPersistentAttribute(OrmPersistentType parent, JavaResourceField resourceField) {
 		super(parent);
-		this.javaAccessor = new FieldAccessor(this, resourceField);
+		this.javaAccessor = this.buildJavaAccessor(resourceField);
 		this.annotatedJavaAttribute = this.buildAnnotatedJavaAttribute();
 		this.mapping = this.buildMapping();
 	}
 
 	public VirtualOrmPersistentAttribute(OrmPersistentType parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
 		super(parent);
-		this.javaAccessor = new PropertyAccessor(this, resourceGetter, resourceSetter);
+		this.javaAccessor = this.buildJavaAccessor(resourceGetter, resourceSetter);
 		this.annotatedJavaAttribute = this.buildAnnotatedJavaAttribute();
 		this.mapping = this.buildMapping();
 	}
@@ -170,7 +170,7 @@ public class VirtualOrmPersistentAttribute
 	}
 
 	protected JavaSpecifiedPersistentAttribute buildAnnotatedJavaAttribute() {
-		return buildJavaAttribute(this.javaAccessor);
+		return this.buildJavaAttribute(this.javaAccessor);
 	}
 
 	protected JavaSpecifiedPersistentAttribute getUnannotatedJavaAttribute() {
@@ -204,21 +204,6 @@ public class VirtualOrmPersistentAttribute
 		}
 	}
 
-	public Accessor getJavaAccessor() {
-		return this.javaAccessor;
-	}
-
-	public JavaResourceAttribute getJavaResourceAttribute() {
-		return this.javaAccessor.getResourceAttribute();
-	}
-
-	public boolean isFor(JavaResourceField javaResourceField) {
-		return this.javaAccessor.isFor(javaResourceField);
-	}
-
-	public boolean isFor(JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter) {
-		return this.javaAccessor.isFor(javaResourceGetter, javaResourceSetter);
-	}
 
 	// ********** original Java persistent attribute **********
 
@@ -262,6 +247,33 @@ public class VirtualOrmPersistentAttribute
 	 */
 	protected void originalJavaAttributeChanged() {
 		this.syncLocalJavaAttributes();
+	}
+
+
+	// ********** Java accessor **********
+
+	public Accessor getJavaAccessor() {
+		return this.javaAccessor;
+	}
+
+	public JavaResourceAttribute getJavaResourceAttribute() {
+		return this.javaAccessor.getResourceAttribute();
+	}
+
+	public boolean isFor(JavaResourceField javaResourceField) {
+		return this.javaAccessor.isFor(javaResourceField);
+	}
+
+	public boolean isFor(JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter) {
+		return this.javaAccessor.isFor(javaResourceGetter, javaResourceSetter);
+	}
+
+	protected Accessor buildJavaAccessor(JavaResourceField resourceField) {
+		return new FieldAccessor(this, resourceField);
+	}
+
+	protected Accessor buildJavaAccessor(JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
+		return new PropertyAccessor(this, resourceGetter, resourceSetter);
 	}
 
 

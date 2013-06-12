@@ -708,7 +708,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	 * before calling {@link #addSpecifiedSecondaryTable()}.
 	 */
 	protected void specifySecondaryTablesInXml() {
-		for (OrmVirtualSecondaryTable oldVirtualSecondaryTable : getVirtualSecondaryTables()) {
+		for (OrmVirtualSecondaryTable oldVirtualSecondaryTable : this.getVirtualSecondaryTables()) {
 			this.addSpecifiedSecondaryTable_().initializeFrom(oldVirtualSecondaryTable);
 		}
 		// the virtual secondary tables will be cleared during the update
@@ -1324,7 +1324,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		return super.resolveOverriddenRelationship(attributeName);
 	}
 
-	protected Relationship resolveOverriddenRelationshipForAssociationOverride(String attributeName) {
+	protected SpecifiedRelationship resolveOverriddenRelationshipForAssociationOverride(String attributeName) {
 		if ( ! this.isMetadataComplete()) {
 			JavaPersistentType javaType = this.getJavaPersistentType();
 			if (javaType != null) {

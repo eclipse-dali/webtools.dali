@@ -752,9 +752,9 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 
 		List<UniqueConstraint> uniqueConstraints = ListTools.list(ormSecondaryTable.getUniqueConstraints());
 		assertEquals(3, uniqueConstraints.size());
-		assertEquals("FOO", uniqueConstraints.get(0).getColumnNames().iterator().next());
-		assertEquals("BAR", uniqueConstraints.get(1).getColumnNames().iterator().next());
-		assertEquals("BAZ", uniqueConstraints.get(2).getColumnNames().iterator().next());
+		assertEquals("FOO", uniqueConstraints.get(0).getColumnName(0));
+		assertEquals("BAR", uniqueConstraints.get(1).getColumnName(0));
+		assertEquals("BAZ", uniqueConstraints.get(2).getColumnName(0));
 		
 		ormEntity.setSecondaryTablesAreDefinedInXml(true);
 		OrmSpecifiedSecondaryTable ormSecondaryTable2 = ormEntity.getSpecifiedSecondaryTables().iterator().next();

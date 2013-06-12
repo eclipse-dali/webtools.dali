@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import java.util.List;
-import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
@@ -19,8 +18,8 @@ import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaSpecifiedOverride;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSpecifiedAssociationOverride2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAssociationOverrideContainer2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSpecifiedAssociationOverride2_0;
 import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -86,14 +85,9 @@ public class GenericJavaSpecifiedAssociationOverride
 		return this.getContainer().getRelationshipMapping(this.name);
 	}
 
-	public void initializeFrom(AssociationOverride oldOverride) {
-		super.initializeFrom(oldOverride);
-		this.relationship.initializeFrom(oldOverride.getRelationship());
-	}
-
-	public void initializeFromVirtual(AssociationOverride virtualOverride) {
-		super.initializeFromVirtual(virtualOverride);
-		this.relationship.initializeFromVirtual(virtualOverride.getRelationship());
+	public void initializeFrom(JavaVirtualAssociationOverride virtualOverride) {
+		super.initializeFrom(virtualOverride);
+		this.relationship.initializeFrom(virtualOverride.getRelationship());
 	}
 
 

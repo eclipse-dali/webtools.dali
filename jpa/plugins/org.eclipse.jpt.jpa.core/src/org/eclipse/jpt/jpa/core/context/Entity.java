@@ -41,8 +41,9 @@ public interface Entity
 	// ********** table **********
 
 	/**
-	 * Return the table for this entity, either specified or default.
-	 * This will not be null.
+	 * Return the entity's table, either specified or default.
+	 * This will not be <code>null</code>.
+	 * @see SpecifiedTable#isSpecifiedInResource()
 	 */
 	SpecifiedTable getTable();
 

@@ -11,15 +11,15 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.JoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTable;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationship;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
-import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedMappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OverrideRelationship2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedMappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
 import org.eclipse.jpt.jpa.db.Table;
 
@@ -56,11 +56,7 @@ public class NullJavaJoinTableRelationshipStrategy
 		return this.parent;
 	}
 
-	public void initializeFrom(JoinTableRelationshipStrategy oldStrategy) {
-		// NOP
-	}
-
-	public void initializeFromVirtual(JoinTableRelationshipStrategy virtualStrategy) {
+	public void initializeFrom(VirtualJoinTableRelationshipStrategy virtualStrategy) {
 		// NOP
 	}
 

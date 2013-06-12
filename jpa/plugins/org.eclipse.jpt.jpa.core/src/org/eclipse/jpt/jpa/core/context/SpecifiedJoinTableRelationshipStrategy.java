@@ -28,9 +28,10 @@ package org.eclipse.jpt.jpa.core.context;
 public interface SpecifiedJoinTableRelationshipStrategy 
 	extends JoinTableRelationshipStrategy, SpecifiedRelationshipStrategy
 {
-	void initializeFrom(JoinTableRelationshipStrategy oldStrategy);
-
-	void initializeFromVirtual(JoinTableRelationshipStrategy virtualStrategy);
+	/**
+	 * @see SpecifiedOverrideRelationship#initializeFrom(VirtualOverrideRelationship)
+	 */
+	void initializeFrom(VirtualJoinTableRelationshipStrategy virtualStrategy);
 
 	SpecifiedJoinTable getJoinTable();
 }

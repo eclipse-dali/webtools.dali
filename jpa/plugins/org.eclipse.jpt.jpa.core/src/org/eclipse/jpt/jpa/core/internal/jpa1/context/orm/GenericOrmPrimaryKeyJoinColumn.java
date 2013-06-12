@@ -12,8 +12,8 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
-import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmNamedColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.db.Column;
@@ -146,9 +146,14 @@ public class GenericOrmPrimaryKeyJoinColumn
 
 	// ********** misc **********
 
-	public void initializeFrom(PrimaryKeyJoinColumn oldColumn) {
+	public void initializeFrom(OrmSpecifiedPrimaryKeyJoinColumn oldColumn) {
 		super.initializeFrom(oldColumn);
 		this.setSpecifiedReferencedColumnName(oldColumn.getSpecifiedReferencedColumnName());
+	}
+
+	public void initializeFrom(OrmVirtualPrimaryKeyJoinColumn virtualColumn) {
+		super.initializeFrom(virtualColumn);
+		this.setSpecifiedReferencedColumnName(virtualColumn.getSpecifiedReferencedColumnName());
 	}
 
 	@Override

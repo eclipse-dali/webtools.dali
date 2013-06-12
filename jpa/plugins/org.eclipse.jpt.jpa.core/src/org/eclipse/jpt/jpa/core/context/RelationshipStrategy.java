@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.context;
 
 /**
  * Strategy describing how two entities are related, either for a
- * {@link RelationshipMapping} or an {@link SpecifiedAssociationOverride}:<ul>
+ * relationship mapping or an association override:<ul>
  * <li>join column
  * <li>join table
  * <li>"mapped by"

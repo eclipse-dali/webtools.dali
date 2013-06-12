@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
 
 /**
- * <ul>
+ * <em>Specified</em> or <em>virtual</em>:<ul>
  * <li>table
  * <li>secondary table
  * <li>join table

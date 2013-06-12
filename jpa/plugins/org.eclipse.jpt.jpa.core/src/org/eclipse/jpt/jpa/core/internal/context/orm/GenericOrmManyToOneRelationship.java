@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,14 +10,14 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.List;
-import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
-import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
-import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationship;
+import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationship;
+import org.eclipse.jpt.jpa.core.context.orm.OrmManyToOneMapping;
+import org.eclipse.jpt.jpa.core.context.orm.OrmMappingRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinTableRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmManyToOneRelationship2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlManyToOne;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -128,19 +128,19 @@ public class GenericOrmManyToOneRelationship
 
 	// ********** conversions **********
 
-	public void initializeOn(SpecifiedRelationship newRelationship) {
+	public void initializeOn(OrmMappingRelationship newRelationship) {
 		newRelationship.initializeFromJoinColumnRelationship(this);
 		newRelationship.initializeFromJoinTableRelationship(this);
 	}
 
 	@Override
-	public void initializeFromJoinTableRelationship(JoinTableRelationship oldRelationship) {
+	public void initializeFromJoinTableRelationship(OrmJoinTableRelationship oldRelationship) {
 		super.initializeFromJoinTableRelationship(oldRelationship);
 		this.joinTableStrategy.initializeFrom(oldRelationship.getJoinTableStrategy());
 	}
 
 	@Override
-	public void initializeFromJoinColumnRelationship(JoinColumnRelationship oldRelationship) {
+	public void initializeFromJoinColumnRelationship(OrmJoinColumnRelationship oldRelationship) {
 		super.initializeFromJoinColumnRelationship(oldRelationship);
 		this.joinColumnStrategy.initializeFrom(oldRelationship.getJoinColumnStrategy());
 	}

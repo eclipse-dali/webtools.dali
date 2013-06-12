@@ -12,8 +12,8 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
-import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.TableColumn;
+import org.eclipse.jpt.jpa.core.context.VirtualBaseColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedBaseColumn;
 import org.eclipse.jpt.jpa.core.resource.java.BaseColumnAnnotation;
 
@@ -309,17 +309,8 @@ public abstract class AbstractJavaBaseColumn<PA extends TableColumn.ParentAdapte
 
 	// ********** misc **********
 
-	protected void initializeFrom(BaseColumn oldColumn) {
-		super.initializeFrom(oldColumn);
-		this.setSpecifiedTableName(oldColumn.getSpecifiedTableName());
-		this.setSpecifiedUnique(oldColumn.getSpecifiedUnique());
-		this.setSpecifiedNullable(oldColumn.getSpecifiedNullable());
-		this.setSpecifiedInsertable(oldColumn.getSpecifiedInsertable());
-		this.setSpecifiedUpdatable(oldColumn.getSpecifiedUpdatable());
-	}
-
-	protected void initializeFromVirtual(BaseColumn virtualColumn) {
-		super.initializeFromVirtual(virtualColumn);
+	protected void initializeFrom(VirtualBaseColumn virtualColumn) {
+		super.initializeFrom(virtualColumn);
 		this.setSpecifiedTableName(virtualColumn.getTableName());
 		// ignore other settings?
 	}

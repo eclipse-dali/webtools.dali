@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlSecondaryTable;
@@ -32,7 +31,10 @@ public interface OrmSpecifiedSecondaryTable
 {
 	OrmEntity getParent();
 
-	void initializeFrom(SecondaryTable oldSecondaryTable);
+	/**
+	 * @see OrmEntity#setSecondaryTablesAreDefinedInXml(boolean)
+	 */
+	void initializeFrom(OrmVirtualSecondaryTable oldTable);
 
 	XmlSecondaryTable getXmlTable();
 

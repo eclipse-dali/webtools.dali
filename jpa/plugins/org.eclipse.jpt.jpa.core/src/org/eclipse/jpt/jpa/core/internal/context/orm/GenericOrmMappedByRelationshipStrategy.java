@@ -16,13 +16,13 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappedByRelationship;
-import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedMappingRelationshipStrategy2_0;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.jpa2.context.OverrideRelationship2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedMappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlMappedByMapping;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationArgumentMessages;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
@@ -33,7 +33,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericOrmMappedByRelationshipStrategy
 	extends AbstractOrmXmlContextModel<OrmMappedByRelationship>
-	implements SpecifiedMappingRelationshipStrategy2_0, SpecifiedMappedByRelationshipStrategy
+	implements SpecifiedMappingRelationshipStrategy2_0, OrmSpecifiedMappedByRelationshipStrategy
 {
 	protected String mappedByAttribute;
 
@@ -81,7 +81,7 @@ public class GenericOrmMappedByRelationshipStrategy
 		return this.getRelationship().getXmlContainer();
 	}
 
-	public void initializeFrom(SpecifiedMappedByRelationshipStrategy oldStrategy) {
+	public void initializeFrom(OrmSpecifiedMappedByRelationshipStrategy oldStrategy) {
 		this.setMappedByAttribute(oldStrategy.getMappedByAttribute());
 	}
 

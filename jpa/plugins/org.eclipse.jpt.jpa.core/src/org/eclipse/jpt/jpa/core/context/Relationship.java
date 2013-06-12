@@ -69,6 +69,4 @@ public interface Relationship
 	 * Return whether the the relationship is virtual.
 	 */
 	boolean isVirtual();
-
-	void initializeOn(SpecifiedRelationship newRelationship);
 }

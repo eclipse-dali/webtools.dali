@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core.context;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 
-
 /**
  * Join column relationship strategy.
  * <p>

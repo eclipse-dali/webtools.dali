@@ -79,27 +79,69 @@ public interface OrmAttributeMapping
 
 	// ********** morphing mappings **********
 
+	/**
+	 * Called (on the old mapping) when converting one <code>orm.xml</code>
+	 * mapping to another; so we can use <em>double-dispatching</em>. The old
+	 * mapping calls the appropriate <code>initializeFrom___(Orm___Mapping)</code>
+	 * method on the new mapping, passing itself to the new mapping.
+	 * 
+	 * @see OrmPersistentType#changeMapping(OrmSpecifiedPersistentAttribute, OrmAttributeMapping, OrmAttributeMapping)
+	 * @see OrmSpecifiedPersistentAttribute#setMappingKey(String)
+	 */
 	void initializeOn(OrmAttributeMapping newMapping);
 
+	/**
+	 * @see #initializeOn(OrmAttributeMapping)
+	 */
 	void initializeFromOrmAttributeMapping(OrmAttributeMapping oldMapping);
 
+	/**
+	 * @see #initializeOn(OrmAttributeMapping)
+	 */
 	void initializeFromOrmBasicMapping(OrmBasicMapping oldMapping);
 
+	/**
+	 * @see #initializeOn(OrmAttributeMapping)
+	 */
 	void initializeFromOrmIdMapping(OrmIdMapping oldMapping);
 
+	/**
+	 * @see #initializeOn(OrmAttributeMapping)
+	 */
 	void initializeFromOrmTransientMapping(OrmTransientMapping oldMapping);
 
+	/**
+	 * @see #initializeOn(OrmAttributeMapping)
+	 */
 	void initializeFromOrmEmbeddedMapping(OrmEmbeddedMapping oldMapping);
 
+	/**
+	 * @see #initializeOn(OrmAttributeMapping)
+	 */
 	void initializeFromOrmEmbeddedIdMapping(OrmEmbeddedIdMapping oldMapping);
 
+	/**
+	 * @see #initializeOn(OrmAttributeMapping)
+	 */
 	void initializeFromOrmVersionMapping(OrmVersionMapping oldMapping);
 
+	/**
+	 * @see #initializeOn(OrmAttributeMapping)
+	 */
 	void initializeFromOrmOneToManyMapping(OrmOneToManyMapping oldMapping);
 
+	/**
+	 * @see #initializeOn(OrmAttributeMapping)
+	 */
 	void initializeFromOrmManyToOneMapping(OrmManyToOneMapping oldMapping);
 
+	/**
+	 * @see #initializeOn(OrmAttributeMapping)
+	 */
 	void initializeFromOrmOneToOneMapping(OrmOneToOneMapping oldMapping);
 
+	/**
+	 * @see #initializeOn(OrmAttributeMapping)
+	 */
 	void initializeFromOrmManyToManyMapping(OrmManyToManyMapping oldMapping);
 }

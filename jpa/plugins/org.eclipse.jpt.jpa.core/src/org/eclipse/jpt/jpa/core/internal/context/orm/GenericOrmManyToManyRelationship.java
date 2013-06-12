@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,15 +12,15 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
-import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
-import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToManyRelationship;
+import org.eclipse.jpt.jpa.core.context.orm.OrmMappedByRelationship;
+import org.eclipse.jpt.jpa.core.context.orm.OrmMappingRelationship;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlManyToMany;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -29,7 +29,7 @@ public class GenericOrmManyToManyRelationship
 	extends AbstractOrmMappingRelationship<OrmManyToManyMapping>
 	implements OrmManyToManyRelationship
 {
-	protected final SpecifiedMappedByRelationshipStrategy mappedByStrategy;
+	protected final OrmSpecifiedMappedByRelationshipStrategy mappedByStrategy;
 
 	protected final OrmSpecifiedJoinTableRelationshipStrategy joinTableStrategy;
 
@@ -73,7 +73,7 @@ public class GenericOrmManyToManyRelationship
 
 	// ********** mapped by strategy **********
 
-	public SpecifiedMappedByRelationshipStrategy getMappedByStrategy() {
+	public OrmSpecifiedMappedByRelationshipStrategy getMappedByStrategy() {
 		return this.mappedByStrategy;
 	}
 
@@ -91,7 +91,7 @@ public class GenericOrmManyToManyRelationship
 		return mapping.getKey() == MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	protected SpecifiedMappedByRelationshipStrategy buildMappedByStrategy() {
+	protected OrmSpecifiedMappedByRelationshipStrategy buildMappedByStrategy() {
 		return new GenericOrmMappedByRelationshipStrategy(this);
 	}
 
@@ -123,19 +123,19 @@ public class GenericOrmManyToManyRelationship
 
 	// ********** conversions **********
 
-	public void initializeOn(SpecifiedRelationship newRelationship) {
+	public void initializeOn(OrmMappingRelationship newRelationship) {
 		newRelationship.initializeFromMappedByRelationship(this);
 		newRelationship.initializeFromJoinTableRelationship(this);
 	}
 
 	@Override
-	public void initializeFromMappedByRelationship(MappedByRelationship oldRelationship) {
+	public void initializeFromMappedByRelationship(OrmMappedByRelationship oldRelationship) {
 		super.initializeFromMappedByRelationship(oldRelationship);
 		this.mappedByStrategy.initializeFrom(oldRelationship.getMappedByStrategy());
 	}
 
 	@Override
-	public void initializeFromJoinTableRelationship(JoinTableRelationship oldRelationship) {
+	public void initializeFromJoinTableRelationship(OrmJoinTableRelationship oldRelationship) {
 		super.initializeFromJoinTableRelationship(oldRelationship);
 		this.joinTableStrategy.initializeFrom(oldRelationship.getJoinTableStrategy());
 	}

@@ -28,9 +28,10 @@ public interface SpecifiedJoinTable
 {
 	SpecifiedJoinTableRelationshipStrategy getParent();
 
-	void initializeFrom(JoinTable oldJoinTable);
-
-	void initializeFromVirtual(JoinTable virtualJoinTable);
+	/**
+	 * @see SpecifiedJoinTableRelationshipStrategy#initializeFrom(VirtualJoinTableRelationshipStrategy)
+	 */
+	void initializeFrom(VirtualJoinTable virtualTable);
 
 
 	// ********** inverse join columns **********

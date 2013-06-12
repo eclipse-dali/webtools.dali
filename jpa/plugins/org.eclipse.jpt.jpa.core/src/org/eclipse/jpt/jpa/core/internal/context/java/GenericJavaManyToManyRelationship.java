@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,15 +12,12 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
-import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
-import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToManyRelationship;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaMappingJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.resource.java.OwnableRelationshipMappingAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -119,26 +116,6 @@ public class GenericJavaManyToManyRelationship
 
 	protected JavaSpecifiedJoinTableRelationshipStrategy buildJoinTableStrategy() {
 		return new GenericJavaMappingJoinTableRelationshipStrategy(this);
-	}
-
-
-	// ********** conversions **********
-
-	public void initializeOn(SpecifiedRelationship newRelationship) {
-		newRelationship.initializeFromMappedByRelationship(this);
-		newRelationship.initializeFromJoinTableRelationship(this);
-	}
-
-	@Override
-	public void initializeFromMappedByRelationship(MappedByRelationship oldRelationship) {
-		super.initializeFromMappedByRelationship(oldRelationship);
-		this.mappedByStrategy.initializeFrom(oldRelationship.getMappedByStrategy());
-	}
-
-	@Override
-	public void initializeFromJoinTableRelationship(JoinTableRelationship oldRelationship) {
-		super.initializeFromJoinTableRelationship(oldRelationship);
-		this.joinTableStrategy.initializeFrom(oldRelationship.getJoinTableStrategy());
 	}
 
 

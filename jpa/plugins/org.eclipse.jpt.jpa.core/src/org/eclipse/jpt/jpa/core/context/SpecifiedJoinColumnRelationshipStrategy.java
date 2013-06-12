@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.context;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 
 /**
- * Join column relationship strategy.
+ * Join column relationship strategy
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -30,9 +30,10 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 public interface SpecifiedJoinColumnRelationshipStrategy
 	extends JoinColumnRelationshipStrategy, SpecifiedRelationshipStrategy
 {
-	void initializeFrom(JoinColumnRelationshipStrategy oldStrategy);
-
-	void initializeFromVirtual(JoinColumnRelationshipStrategy oldStrategy);
+	/**
+	 * @see SpecifiedOverrideRelationship#initializeFrom(VirtualOverrideRelationship)
+	 */
+	void initializeFrom(VirtualJoinColumnRelationshipStrategy oldStrategy);
 
 
 	// ********** join columns **********
@@ -88,5 +89,4 @@ public interface SpecifiedJoinColumnRelationshipStrategy
 	 * update, the default join columns will be recalculated
 	 */
 	void clearSpecifiedJoinColumns();
-
 }

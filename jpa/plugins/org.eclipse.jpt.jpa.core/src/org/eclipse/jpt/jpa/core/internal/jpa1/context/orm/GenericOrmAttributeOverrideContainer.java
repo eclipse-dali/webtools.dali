@@ -69,7 +69,7 @@ public class GenericOrmAttributeOverrideContainer
 
 	@Override
 	protected void initializeSpecifiedOverride(OrmSpecifiedAttributeOverride specifiedOverride, OrmVirtualAttributeOverride virtualOverride) {
-		specifiedOverride.initializeFromVirtual(virtualOverride);
+		specifiedOverride.initializeFrom(virtualOverride);
 	}
 
 	@Override

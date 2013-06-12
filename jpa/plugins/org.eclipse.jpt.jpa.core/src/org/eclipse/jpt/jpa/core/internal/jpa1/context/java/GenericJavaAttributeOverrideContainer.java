@@ -60,7 +60,7 @@ public class GenericJavaAttributeOverrideContainer
 
 	@Override
 	protected void initializeSpecifiedOverride(JavaSpecifiedAttributeOverride specifiedOverride, JavaVirtualAttributeOverride virtualOverride) {
-		specifiedOverride.initializeFromVirtual(virtualOverride);
+		specifiedOverride.initializeFrom(virtualOverride);
 	}
 
 	@Override

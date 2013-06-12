@@ -13,7 +13,7 @@ import org.eclipse.jpt.jpa.core.context.VirtualJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.VirtualOverrideRelationship;
 
 /**
- * JPA 2.0 virtual association override relationship
+ * JPA 2.0 <em>virtual</em> association override relationship
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching

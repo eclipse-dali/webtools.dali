@@ -25,12 +25,8 @@ public interface SpecifiedJoinColumn
 	extends SpecifiedBaseJoinColumn, SpecifiedBaseColumn, JoinColumn
 {
 	/**
-	 * Initialize the join column from the specified old join column.
+	 * @see SpecifiedJoinColumnRelationshipStrategy#initializeFrom(VirtualJoinColumnRelationshipStrategy)
+	 * @see SpecifiedJoinTable#initializeFrom(VirtualJoinTable)
 	 */
-	void initializeFrom(JoinColumn oldJoinColumn);
-
-	/**
-	 * Initialize the join column from the specified old virtual join column.
-	 */
-	void initializeFromVirtual(JoinColumn virtualJoinColumn);
+	void initializeFrom(VirtualJoinColumn virtualColumn);
 }

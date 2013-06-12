@@ -27,6 +27,18 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeOverride;
 public interface OrmSpecifiedAttributeOverride
 	extends SpecifiedAttributeOverride, OrmSpecifiedOverride
 {
+	/**
+	 * Called when a default override is converted into a specified override.
+	 * @see org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer
+	 * AttributeOverrideContainer for a list of clients
+	 */
+	void initializeFrom(OrmVirtualAttributeOverride oldOverride);
+
+	/**
+	 * @see OrmAttributeOverrideContainer#initializeFrom(OrmAttributeOverrideContainer)
+	 */
+	void initializeFrom(OrmSpecifiedAttributeOverride oldOverride);
+
 	OrmVirtualAttributeOverride convertToVirtual();
 
 	XmlAttributeOverride getXmlOverride();

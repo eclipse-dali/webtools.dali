@@ -23,9 +23,10 @@ public interface AssociationOverride
 {
 	/**
 	 * Return the overridden relationship mapping.
-	 * Return <code>null</code> if it does not exist. This relationship mapping
-	 * will be found in the mapped superclass or embeddable type, not in the
-	 * owning entity
+	 * Return <code>null</code> if it does not exist.
+	 * This relationship mapping will be found in the mapped superclass
+	 * or embeddable type, not in the parent (entity/embedded mapping/
+	 * element collection mapping).
 	 */
 	RelationshipMapping getMapping();
 

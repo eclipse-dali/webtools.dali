@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.context;
 import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 
 /**
- * Read-only join table relationship strategy.
+ * Join table relationship strategy.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -32,9 +32,9 @@ public interface JoinTableRelationshipStrategy
 	String JOIN_TABLE_PROPERTY = "joinTable"; //$NON-NLS-1$
 
 	/**
-	 * Return the strategy's join table. This will be the 
-	 * specified or default join table if one is specified or a default 
-	 * join table applies, otherwise <code>null</code>.
+	 * Return the strategy's join table. This will be the specified join table
+	 * or the default join table if a default join table is possible;
+	 * otherwise return <code>null</code>.
 	 */
 	JoinTable getJoinTable();
 

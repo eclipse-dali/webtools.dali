@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
+import org.eclipse.jpt.jpa.core.context.VirtualNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation;
@@ -53,6 +54,7 @@ public abstract class AbstractJavaNamedColumn<PA extends NamedColumn.ParentAdapt
 	protected String columnDefinition;
 
 	protected Table dbTable;
+
 
 	protected AbstractJavaNamedColumn(PA parentAdapter) {
 		this(parentAdapter, null);
@@ -276,12 +278,7 @@ public abstract class AbstractJavaNamedColumn<PA extends NamedColumn.ParentAdapt
 		return !this.getColumnAnnotation().isSpecified();
 	}
 
-	protected void initializeFrom(NamedColumn oldColumn) {
-		this.setSpecifiedName(oldColumn.getSpecifiedName());
-		this.setColumnDefinition(oldColumn.getColumnDefinition());
-	}
-
-	protected void initializeFromVirtual(NamedColumn virtualColumn) {
+	protected void initializeFrom(VirtualNamedColumn virtualColumn) {
 		this.setSpecifiedName(virtualColumn.getName());
 		this.setColumnDefinition(virtualColumn.getColumnDefinition());
 	}

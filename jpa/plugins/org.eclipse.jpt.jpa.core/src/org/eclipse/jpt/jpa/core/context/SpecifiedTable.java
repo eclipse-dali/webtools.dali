@@ -12,7 +12,9 @@ package org.eclipse.jpt.jpa.core.context;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 
 /**
- * <ul>
+ * <em>Specified</em> (as in not a <em>virtual</em> join or secondary table;
+ * i.e. the table can still be a <em>default</em> table that is not "specified"
+ * in the Java or XML source file - see {@link #isSpecifiedInResource()}):<ul>
  * <li>table
  * <li>secondary table
  * <li>join table

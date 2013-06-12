@@ -131,11 +131,7 @@ public abstract class AbstractJavaSpecifiedOverride<P extends JavaOverrideContai
 		return this.overrideAnnotation;
 	}
 
-	protected void initializeFrom(Override_ oldOverride) {
-		this.setName(this.prefix(oldOverride.getName()));
-	}
-
-	protected void initializeFromVirtual(Override_ virtualOverride) {
+	protected void initializeFrom(Override_ virtualOverride) {
 		this.setName(this.prefix(virtualOverride.getName()));
 	}
 

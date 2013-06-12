@@ -11,13 +11,13 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
-import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
-import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
-import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
+import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationship;
+import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationship;
+import org.eclipse.jpt.jpa.core.context.orm.OrmMappedByRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappingRelationship;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPrimaryKeyJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlRelationshipMapping;
 
@@ -72,19 +72,23 @@ public abstract class AbstractOrmMappingRelationship<P extends OrmRelationshipMa
 
 	// ********** conversions **********
 
-	public void initializeFrom(Relationship oldRelationship) {
+	public void initializeFrom(OrmMappingRelationship oldRelationship) {
 		oldRelationship.initializeOn(this);
 	}
 
-	public void initializeFromMappedByRelationship(MappedByRelationship oldRelationship) {
+	public void initializeFromMappedByRelationship(OrmMappedByRelationship oldRelationship) {
 		// NOP
 	}
 
-	public void initializeFromJoinTableRelationship(JoinTableRelationship oldRelationship) {
+	public void initializeFromJoinTableRelationship(OrmJoinTableRelationship oldRelationship) {
 		// NOP
 	}
 
-	public void initializeFromJoinColumnRelationship(JoinColumnRelationship oldRelationship) {
+	public void initializeFromJoinColumnRelationship(OrmJoinColumnRelationship oldRelationship) {
+		// NOP
+	}
+
+	public void initializeFromPrimaryKeyJoinColumnRelationship(OrmPrimaryKeyJoinColumnRelationship oldRelationship) {
 		// NOP
 	}
 

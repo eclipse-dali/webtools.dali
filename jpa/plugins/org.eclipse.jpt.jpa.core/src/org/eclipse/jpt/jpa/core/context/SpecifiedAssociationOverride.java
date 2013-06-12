@@ -24,10 +24,6 @@ package org.eclipse.jpt.jpa.core.context;
 public interface SpecifiedAssociationOverride
 	extends SpecifiedOverride, AssociationOverride
 {
-	void initializeFrom(AssociationOverride oldOverride);
-
-	void initializeFromVirtual(AssociationOverride virtualOverride);
-
 	// covariant overrides
 	VirtualAssociationOverride convertToVirtual();
 

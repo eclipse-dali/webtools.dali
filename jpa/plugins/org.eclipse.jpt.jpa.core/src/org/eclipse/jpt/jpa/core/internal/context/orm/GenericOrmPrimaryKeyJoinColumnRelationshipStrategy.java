@@ -18,6 +18,7 @@ import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
+import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
@@ -167,6 +168,12 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 
 	protected XmlPrimaryKeyJoinColumnContainer getXmlPrimaryKeyJoinColumnContainer() {
 		return this.getRelationship().getXmlContainer();
+	}
+
+	public void initializeFrom(OrmSpecifiedPrimaryKeyJoinColumnRelationshipStrategy oldStrategy) {
+		for (OrmSpecifiedPrimaryKeyJoinColumn pkJoinColumn : oldStrategy.getPrimaryKeyJoinColumns()) {
+			this.addPrimaryKeyJoinColumn().initializeFrom(pkJoinColumn);
+		}
 	}
 
 	public String getTableName() {

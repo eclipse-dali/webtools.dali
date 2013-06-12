@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlPrimaryKeyJoinColumn;
 
 /**
@@ -28,7 +27,15 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlPrimaryKeyJoinColumn;
 public interface OrmSpecifiedPrimaryKeyJoinColumn
 	extends SpecifiedPrimaryKeyJoinColumn, OrmSpecifiedBaseJoinColumn
 {	
-	XmlPrimaryKeyJoinColumn getXmlColumn();
+	/**
+	 * @see OrmSpecifiedPrimaryKeyJoinColumnRelationshipStrategy#initializeFrom(OrmSpecifiedPrimaryKeyJoinColumnRelationshipStrategy)
+	 */
+	void initializeFrom(OrmSpecifiedPrimaryKeyJoinColumn oldColumn);
 
-	void initializeFrom(PrimaryKeyJoinColumn oldColumn);
+	/**
+	 * @see OrmSpecifiedSecondaryTable#initializeFrom(OrmVirtualSecondaryTable)
+	 */
+	void initializeFrom(OrmVirtualPrimaryKeyJoinColumn oldColumn);
+
+	XmlPrimaryKeyJoinColumn getXmlColumn();
 }

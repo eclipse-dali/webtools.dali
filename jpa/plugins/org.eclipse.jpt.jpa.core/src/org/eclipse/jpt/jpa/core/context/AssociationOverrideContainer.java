@@ -13,8 +13,13 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 
 /**
  * Association override container.
- * Used by entities, embedded mappings, and element collection mappings.
  * <p>
+ * Clients:<ul>
+ * <li>entity - override mapped superclass association mappings
+ * <li>embedded mapping - override embeddable association mappings
+ * <li>element collection mapping - override (value/map value)
+ *     embeddable association mappings
+ * </ul>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from

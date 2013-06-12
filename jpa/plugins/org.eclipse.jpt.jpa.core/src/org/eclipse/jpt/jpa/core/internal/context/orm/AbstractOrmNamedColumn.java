@@ -14,6 +14,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
+import org.eclipse.jpt.jpa.core.context.VirtualNamedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedColumn;
@@ -286,12 +287,12 @@ public abstract class AbstractOrmNamedColumn<PA extends NamedColumn.ParentAdapte
 		return false;
 	}
 
-	protected void initializeFrom(NamedColumn oldColumn) {
+	protected void initializeFrom(OrmSpecifiedNamedColumn oldColumn) {
 		this.setSpecifiedName(oldColumn.getSpecifiedName());
 		this.setColumnDefinition(oldColumn.getColumnDefinition());
 	}
 
-	protected void initializeFromVirtual(NamedColumn virtualColumn) {
+	protected void initializeFrom(VirtualNamedColumn virtualColumn) {
 		this.setSpecifiedName(virtualColumn.getName());
 		this.setColumnDefinition(virtualColumn.getColumnDefinition());
 	}

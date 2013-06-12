@@ -11,11 +11,11 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.jpa.core.context.JoinTable;
-import org.eclipse.jpt.jpa.core.context.JoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinTable;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinTable;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationship;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
@@ -150,20 +150,19 @@ public abstract class AbstractOrmJoinTableRelationshipStrategy<P extends OrmJoin
 		return this.getRelationship().getMapping();
 	}
 
-	public void initializeFrom(JoinTableRelationshipStrategy oldStrategy) {
-		JoinTable oldJoinTable = oldStrategy.getJoinTable();
-		// the old join table should always be an orm specified join table...
-		if ((oldJoinTable instanceof OrmSpecifiedJoinTable) && ((OrmSpecifiedJoinTable) oldJoinTable).isSpecifiedInResource()) {
+	public void initializeFrom(OrmSpecifiedJoinTableRelationshipStrategy oldStrategy) {
+		OrmSpecifiedJoinTable oldJoinTable = oldStrategy.getJoinTable();
+		if (oldJoinTable != null) {
 			this.addStrategy();
 			this.joinTable.initializeFrom(oldJoinTable);
 		}
 	}
 
-	public void initializeFromVirtual(JoinTableRelationshipStrategy virtualStrategy) {
-		JoinTable oldJoinTable = virtualStrategy.getJoinTable();
-		if (oldJoinTable != null) {
+	public void initializeFrom(VirtualJoinTableRelationshipStrategy virtualStrategy) {
+		VirtualJoinTable oldTable = virtualStrategy.getJoinTable();
+		if (oldTable != null) {
 			this.addStrategy();
-			this.joinTable.initializeFromVirtual(oldJoinTable);
+			this.joinTable.initializeFrom(oldTable);
 		}
 	}
 

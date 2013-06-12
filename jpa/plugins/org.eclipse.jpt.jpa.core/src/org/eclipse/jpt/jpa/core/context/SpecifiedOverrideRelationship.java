@@ -27,9 +27,13 @@ public interface SpecifiedOverrideRelationship
 	extends OverrideRelationship,
 			SpecifiedJoinColumnRelationship
 {
-	void initializeFromVirtual(OverrideRelationship virtualRelationship);
-
-	void initializeFromVirtualJoinColumnRelationship(JoinColumnRelationship virtualRelationship);
-
-	void initializeFromVirtualJoinTableRelationship(JoinTableRelationship virtualRelationship);
+	/**
+	 * Called when a default override is converted into a specified override.
+	 * As a result both the receiver and the argument will both be from either
+	 * Java or <code>orm.xml</code> (but that is superfluous, for now).
+	 * <p>
+	 * @see org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer
+	 * AssociationOverrideContainer for a list of clients
+	 */
+	void initializeFrom(VirtualOverrideRelationship virtualRelationship);
 }

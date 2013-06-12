@@ -391,12 +391,31 @@ public abstract class SpecifiedOrmPersistentType
 		}
 
 		int defaultIndex = this.defaultAttributes.size();
+		OrmPersistentAttribute defaultAttribute = this.addDefaultAttribute_(defaultIndex, specifiedAttribute);
+
+		this.removeSpecifiedAttribute(specifiedAttribute);  // trigger update
+
+		if (defaultAttribute != null) {
+			this.fireItemAdded(DEFAULT_ATTRIBUTES_LIST, defaultIndex, defaultAttribute);
+		}
+		return defaultAttribute;
+	}
+
+	/**
+	 * If necessary, <em>silently</em> add a default attribute for the specified
+	 * attribute at the specified index.
+	 * Return the newly-added default attribute, <code>null</code>
+	 * if nothing was added.
+	 * <p>
+	 * Make sure the corresponding Java resource attribute exists in the
+	 * <em>current</em> type; do <em>not</em> take the Java context attribute
+	 * directly from the ORM specified attribute we are converting since it may
+	 * have come from a superclass. Instead, use the ORM specified attribute's
+	 * Java <em>resource</em> attribute (which will match both name and access
+	 * type; but we still need to check its parent type).
+	 */
+	protected OrmPersistentAttribute addDefaultAttribute_(int defaultIndex, OrmSpecifiedPersistentAttribute specifiedAttribute) {
 		OrmPersistentAttribute defaultAttribute = null;
-		// make sure the corresponding resource Java attribute actually exists in the *current* type;
-		// do *not* take the context Java attribute directly from the specified ORM
-		// attribute we are converting since it may have come from a superclass;
-		// instead, use its resource Java attribute (which will match both name and access type,
-		// but we still need to check its parent type)
 		if (specifiedAttribute.getJavaResourceAttribute() != null) {
 			if (specifiedAttribute.getJavaResourceAttribute().getAstNodeType() == AstNodeType.FIELD) {
 				JavaResourceField javaResourceField = (JavaResourceField) specifiedAttribute.getJavaResourceAttribute();
@@ -404,23 +423,15 @@ public abstract class SpecifiedOrmPersistentType
 					defaultAttribute = this.buildDefaultAttribute(javaResourceField);
 					this.defaultAttributes.add(defaultIndex, defaultAttribute);
 				}
-			}
-			else {
+			} else {
 				PropertyAccessor propertyAccessor = (PropertyAccessor) specifiedAttribute.getJavaPersistentAttribute().getAccessor();
 				JavaResourceMethod resourceGetter = propertyAccessor.getResourceGetter();
 				JavaResourceMethod resourceSetter = propertyAccessor.getResourceSetter();
-				
 				if (this.javaResourcePropertyWillBeDefault(resourceGetter, resourceSetter, specifiedAttribute)) {
-					defaultAttribute = this.buildVirtualAttribute(resourceGetter, resourceSetter);
+					defaultAttribute = this.buildDefaultAttribute(resourceGetter, resourceSetter);
 					this.defaultAttributes.add(defaultIndex, defaultAttribute);
 				}		
 			}
-		}
-
-		this.removeSpecifiedAttribute(specifiedAttribute);  // trigger update
-
-		if (defaultAttribute != null) {
-			this.fireItemAdded(DEFAULT_ATTRIBUTES_LIST, defaultIndex, defaultAttribute);
 		}
 		return defaultAttribute;
 	}
@@ -438,11 +449,7 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	/**
-	 * Return whether the specified Java resource attribute will be a
-	 * <em>default</em> attribute when the specified specified attribute is
-	 * removed from the type. The Java resource attribute must be among the
-	 * valid Java resource attributes and it must not correspond to any of the
-	 * remaining specified attributes.
+	 * @see #javaResourceFieldWillBeDefault(JavaResourceField, OrmSpecifiedPersistentAttribute)
 	 */
 	protected boolean javaResourcePropertyWillBeDefault(JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter, OrmSpecifiedPersistentAttribute specifiedAttributeToBeRemoved) {
 		return IterableTools.contains(this.getJavaResourceMethods(), javaResourceGetter) &&
@@ -598,24 +605,26 @@ public abstract class SpecifiedOrmPersistentType
 	 * which can be controlled in a number of different places....
 	 */
 	protected void updateDefaultAttributes() {
-		if (getDefaultJavaAccess() == AccessType.FIELD) {
+		AccessType at = this.getDefaultJavaAccess();
+		if (at == AccessType.FIELD) {
 			this.syncFieldAccessDefaultAttributes();
 		}
-		else if (getDefaultJavaAccess() == AccessType.PROPERTY) {
+		else if (at == AccessType.PROPERTY) {
 			this.syncPropertyAccessDefaultAttributes();
 		}
 	}
 
 	/**
-	 * Initialize the attributes for AccessType.FIELD
-	 * 1. all non-transient, non-static fields
-	 * 2. all annotated methods(getters/setters)
+	 * Synchronize the default attributes for {@link AccessType#FIELD}:<ol>
+	 * <li>all non-transient, non-static fields
+	 * <li>all annotated methods (getters/setters)
+	 * </ol>
 	 */
 	private void syncFieldAccessDefaultAttributes() {
 		HashSet<OrmPersistentAttribute> contextAttributes = CollectionTools.set(this.getDefaultAttributes());
 
 		this.syncFieldDefaultAttributes(contextAttributes, this.buildResourceFieldIsRelevant());
-		if (!getMapping().isMetadataComplete()) {
+		if ( ! this.mapping.isMetadataComplete()) {
 			this.syncAnnotatedPropertyDefaultAttributes(contextAttributes);
 		}
 
@@ -626,15 +635,16 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	/**
-	 * Initialize the attributes for XmlAccessType.PROPERTY
-	 * 1. all getter/setter javabeans pairs
-	 * 2. all annotated fields
-	 * 3. all annotated methods getters/setters that don't have a matching pair
+	 * Synchronize the default attributes for {@link AccessType#PROPERTY}:<ol>
+	 * <li>all getter/setter JavaBean pairs
+	 * <li>all annotated fields
+	 * <li>all annotated getter/setter methods that don't have a matching pair
+	 * </ol>
 	 */
 	private void syncPropertyAccessDefaultAttributes() {
 		HashSet<OrmPersistentAttribute> contextAttributes = CollectionTools.set(this.getDefaultAttributes());
 
-		if (!getMapping().isMetadataComplete()) {
+		if ( ! this.mapping.isMetadataComplete()) {
 			this.syncFieldDefaultAttributes(contextAttributes, JavaResourceAnnotatedElement.IS_ANNOTATED);
 		}
 
@@ -655,7 +665,7 @@ public abstract class SpecifiedOrmPersistentType
 						}
 					}
 					if ( ! match) {
-						this.addDefaultAttribute(getDefaultAttributesSize(), this.buildVirtualAttribute(getterMethod, setterMethod));
+						this.addDefaultAttribute(getterMethod, setterMethod);
 					}
 				}
 			}
@@ -697,7 +707,7 @@ public abstract class SpecifiedOrmPersistentType
 						}
 					}
 					if (!match) {
-						this.addDefaultAttribute(getDefaultAttributesSize(), this.buildVirtualAttribute(getterMethod, setterMethod));
+						this.addDefaultAttribute(getterMethod, setterMethod);
 					}
 				}
 			}
@@ -723,7 +733,7 @@ public abstract class SpecifiedOrmPersistentType
 				// added elements are sync'ed during construction or will be
 				// updated during the next "update" (which is triggered by
 				// their addition to the model)
-				this.addDefaultAttribute(this.getDefaultAttributesSize(), this.buildDefaultAttribute(resourceField));
+				this.addDefaultAttribute(resourceField);
 			}
 		}
 	}
@@ -745,7 +755,7 @@ public abstract class SpecifiedOrmPersistentType
 					}
 				}
 				if (!match) {
-					this.addDefaultAttribute(getDefaultAttributesSize(), this.buildVirtualAttribute(null, resourceMethod));
+					this.addDefaultAttribute(null, resourceMethod);
 				}
 			}
 		}
@@ -869,6 +879,18 @@ public abstract class SpecifiedOrmPersistentType
 		this.moveItemInList(index, defaultAttribute, this.defaultAttributes, DEFAULT_ATTRIBUTES_LIST);
 	}
 
+	protected void addDefaultAttribute(JavaResourceField javaResourceField) {
+		this.addDefaultAttribute(this.buildDefaultAttribute(javaResourceField));
+	}
+
+	protected void addDefaultAttribute(JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter) {
+		this.addDefaultAttribute(this.buildDefaultAttribute(javaResourceGetter, javaResourceSetter));
+	}
+
+	protected void addDefaultAttribute(OrmPersistentAttribute defaultAttribute) {
+		this.addDefaultAttribute(this.defaultAttributes.size(), defaultAttribute);
+	}
+
 	protected void addDefaultAttribute(int index, OrmPersistentAttribute defaultAttribute) {
 		this.addItemToList(index, defaultAttribute, this.defaultAttributes, DEFAULT_ATTRIBUTES_LIST);
 	}
@@ -877,7 +899,7 @@ public abstract class SpecifiedOrmPersistentType
 		return this.getContextModelFactory().buildVirtualOrmPersistentField(this, javaResourceField);
 	}
 
-	protected OrmPersistentAttribute buildVirtualAttribute(JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter) {
+	protected OrmPersistentAttribute buildDefaultAttribute(JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter) {
 		return this.getContextModelFactory().buildVirtualOrmPersistentProperty(this, javaResourceGetter, javaResourceSetter);
 	}
 
@@ -1001,15 +1023,15 @@ public abstract class SpecifiedOrmPersistentType
 	// ********** OrmManagedType implementation **********
 
 	public int getXmlSequence() {
-		return this.getMapping().getXmlSequence();
+		return this.mapping.getXmlSequence();
 	}
 
 	public void addXmlManagedTypeTo(XmlEntityMappings entityMappings) {
-		this.getMapping().addXmlTypeMappingTo(entityMappings);
+		this.mapping.addXmlTypeMappingTo(entityMappings);
 	}
 
 	public void removeXmlManagedTypeFrom(XmlEntityMappings entityMappings) {
-		this.getMapping().removeXmlTypeMappingFrom(entityMappings);
+		this.mapping.removeXmlTypeMappingFrom(entityMappings);
 	}
 
 

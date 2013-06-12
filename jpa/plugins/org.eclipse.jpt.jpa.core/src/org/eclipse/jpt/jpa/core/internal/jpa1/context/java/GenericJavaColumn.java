@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.VirtualColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaBaseColumn;
 import org.eclipse.jpt.jpa.core.resource.java.CompleteColumnAnnotation;
@@ -214,15 +214,8 @@ public class GenericJavaColumn
 
 	// ********** misc **********
 
-	public void initializeFrom(Column oldColumn) {
-		super.initializeFrom(oldColumn);
-		this.setSpecifiedLength(oldColumn.getSpecifiedLength());
-		this.setSpecifiedPrecision(oldColumn.getSpecifiedPrecision());
-		this.setSpecifiedScale(oldColumn.getSpecifiedScale());
-	}
-
-	public void initializeFromVirtual(Column virtualColumn) {
-		super.initializeFromVirtual(virtualColumn);
+	public void initializeFrom(VirtualColumn virtualColumn) {
+		super.initializeFrom(virtualColumn);
 		// ignore other settings?
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,14 +10,11 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
-import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
-import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTableRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaMappingJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.NullJavaJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaManyToOneRelationship2_0;
@@ -123,26 +120,6 @@ public class GenericJavaManyToOneRelationship
 
 	protected JavaSpecifiedJoinColumnRelationshipStrategy buildJoinColumnStrategy() {
 		return new GenericJavaMappingJoinColumnRelationshipStrategy(this);
-	}
-
-
-	// ********** conversions **********
-
-	public void initializeOn(SpecifiedRelationship newRelationship) {
-		newRelationship.initializeFromJoinColumnRelationship(this);
-		newRelationship.initializeFromJoinTableRelationship(this);
-	}
-
-	@Override
-	public void initializeFromJoinTableRelationship(JoinTableRelationship oldRelationship) {
-		super.initializeFromJoinTableRelationship(oldRelationship);
-		this.joinTableStrategy.initializeFrom(oldRelationship.getJoinTableStrategy());
-	}
-
-	@Override
-	public void initializeFromJoinColumnRelationship(JoinColumnRelationship oldRelationship) {
-		super.initializeFromJoinColumnRelationship(oldRelationship);
-		this.joinColumnStrategy.initializeFrom(oldRelationship.getJoinColumnStrategy());
 	}
 
 

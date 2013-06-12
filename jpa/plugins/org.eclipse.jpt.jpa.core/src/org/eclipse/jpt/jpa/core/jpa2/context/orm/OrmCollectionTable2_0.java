@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
 public interface OrmCollectionTable2_0
 	extends CollectionTable2_0, OrmSpecifiedReferenceTable
 {
-	void initializeFrom(CollectionTable2_0 oldCollectionTable);
+	void initializeFrom(OrmCollectionTable2_0 oldTable);
 
 
 	// ********** parent adapter **********

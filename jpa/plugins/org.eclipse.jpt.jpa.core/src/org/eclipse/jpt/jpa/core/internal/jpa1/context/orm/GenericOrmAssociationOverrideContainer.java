@@ -89,7 +89,7 @@ public class GenericOrmAssociationOverrideContainer
 
 	@Override
 	protected void initializeSpecifiedOverride(OrmSpecifiedAssociationOverride specifiedOverride, OrmVirtualAssociationOverride virtualOverride) {
-		specifiedOverride.initializeFromVirtual(virtualOverride);
+		specifiedOverride.initializeFrom(virtualOverride);
 	}
 
 	@Override

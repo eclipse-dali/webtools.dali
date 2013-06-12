@@ -27,8 +27,6 @@ package org.eclipse.jpt.jpa.core.context;
 public interface SpecifiedMappedByRelationshipStrategy
 	extends SpecifiedRelationshipStrategy
 {
-	void initializeFrom(SpecifiedMappedByRelationshipStrategy oldStrategy);
-	
 	/**
 	 * String associated with changes to the attribute property of this object
 	 */

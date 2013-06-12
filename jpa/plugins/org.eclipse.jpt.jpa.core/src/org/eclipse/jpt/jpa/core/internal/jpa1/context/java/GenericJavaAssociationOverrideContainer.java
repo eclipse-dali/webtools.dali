@@ -87,7 +87,7 @@ public class GenericJavaAssociationOverrideContainer
 
 	@Override
 	protected void initializeSpecifiedOverride(JavaSpecifiedAssociationOverride specifiedOverride, JavaVirtualAssociationOverride virtualOverride) {
-		specifiedOverride.initializeFromVirtual(virtualOverride);
+		specifiedOverride.initializeFrom(virtualOverride);
 	}
 
 	@Override

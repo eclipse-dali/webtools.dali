@@ -16,10 +16,11 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumnRelationshipStrategy;
@@ -225,15 +226,9 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy<P extends JavaJ
 		return this.getJpaFactory().buildJavaJoinColumn(this.joinColumnParentAdapter, joinColumnAnnotation);
 	}
 
-	public void initializeFrom(JoinColumnRelationshipStrategy oldStrategy) {
-		for (JoinColumn joinColumn : oldStrategy.getSpecifiedJoinColumns()) {
+	public void initializeFrom(VirtualJoinColumnRelationshipStrategy virtualStrategy) {
+		for (VirtualJoinColumn joinColumn : virtualStrategy.getJoinColumns()) {
 			this.addSpecifiedJoinColumn().initializeFrom(joinColumn);
-		}
-	}
-
-	public void initializeFromVirtual(JoinColumnRelationshipStrategy virtualStrategy) {
-		for (JoinColumn joinColumn : virtualStrategy.getJoinColumns()) {
-			this.addSpecifiedJoinColumn().initializeFromVirtual(joinColumn);
 		}
 	}
 
