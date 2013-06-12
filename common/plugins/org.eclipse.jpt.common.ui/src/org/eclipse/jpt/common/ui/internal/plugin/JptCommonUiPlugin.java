@@ -40,8 +40,9 @@ public class JptCommonUiPlugin
 	/**
 	 * Provider an exception handler for non-OSGi UIs.
 	 */
-	public static final ExceptionHandler EXCEPTION_HANDLER =
-			(INSTANCE != null) ? INSTANCE.getExceptionHandler() : RuntimeExceptionHandler.instance();
+	public static final ExceptionHandler exceptionHandler() {
+		return (INSTANCE != null) ? INSTANCE.getExceptionHandler() : RuntimeExceptionHandler.instance();
+	}
 
 
 	// ********** Dali plug-in **********

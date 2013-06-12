@@ -28,7 +28,7 @@ public final class SWTListenerWrapperTools {
 	 * Wrap the specified property change listener and forward events to it on
 	 * the SWT UI thread, asynchronously if necessary.
 	 * Any exceptions thrown by the specified listener will be handled by the
-	 * {@link JptCommonUiPlugin#EXCEPTION_HANDLER default exception handler}.
+	 * {@link JptCommonUiPlugin#exceptionHandler() default exception handler}.
 	 * @see SWTPropertyChangeListenerWrapper
 	 */
 	public static PropertyChangeListener wrap(PropertyChangeListener listener) {
@@ -40,7 +40,7 @@ public final class SWTListenerWrapperTools {
 	 * the SWT UI thread associated with the specified viewer,
 	 * asynchronously if necessary.
 	 * Any exceptions thrown by the specified listener will be handled by the
-	 * {@link JptCommonUiPlugin#EXCEPTION_HANDLER default exception handler}.
+	 * {@link JptCommonUiPlugin#exceptionHandler() default exception handler}.
 	 * @see SWTPropertyChangeListenerWrapper
 	 */
 	public static PropertyChangeListener wrap(PropertyChangeListener listener, Viewer viewer) {
@@ -52,7 +52,7 @@ public final class SWTListenerWrapperTools {
 	 * the SWT UI thread associated with the specified widget,
 	 * asynchronously if necessary.
 	 * Any exceptions thrown by the specified listener will be handled by the
-	 * {@link JptCommonUiPlugin#EXCEPTION_HANDLER default exception handler}.
+	 * {@link JptCommonUiPlugin#exceptionHandler() default exception handler}.
 	 * @see SWTPropertyChangeListenerWrapper
 	 */
 	public static PropertyChangeListener wrap(PropertyChangeListener listener, Widget widget) {
@@ -64,11 +64,11 @@ public final class SWTListenerWrapperTools {
 	 * the SWT UI thread associated with the specified display,
 	 * asynchronously if necessary.
 	 * Any exceptions thrown by the specified listener will be handled by the
-	 * {@link JptCommonUiPlugin#EXCEPTION_HANDLER default exception handler}.
+	 * {@link JptCommonUiPlugin#exceptionHandler() default exception handler}.
 	 * @see SWTPropertyChangeListenerWrapper
 	 */
 	public static PropertyChangeListener wrap(PropertyChangeListener listener, Display display) {
-		return wrap(listener, display, JptCommonUiPlugin.EXCEPTION_HANDLER);
+		return wrap(listener, display, JptCommonUiPlugin.exceptionHandler());
 	}
 
 	/**
@@ -90,7 +90,7 @@ public final class SWTListenerWrapperTools {
 	 * Wrap the specified collection change listener and forward events to it on
 	 * the SWT UI thread, asynchronously if necessary.
 	 * Any exceptions thrown by the specified listener will be handled by the
-	 * {@link JptCommonUiPlugin#EXCEPTION_HANDLER default exception handler}.
+	 * {@link JptCommonUiPlugin#exceptionHandler() default exception handler}.
 	 * @see SWTCollectionChangeListenerWrapper
 	 */
 	public static CollectionChangeListener wrap(CollectionChangeListener listener) {
@@ -102,7 +102,7 @@ public final class SWTListenerWrapperTools {
 	 * the SWT UI thread associated with the specified viewer,
 	 * asynchronously if necessary.
 	 * Any exceptions thrown by the specified listener will be handled by the
-	 * {@link JptCommonUiPlugin#EXCEPTION_HANDLER default exception handler}.
+	 * {@link JptCommonUiPlugin#exceptionHandler() default exception handler}.
 	 * @see SWTCollectionChangeListenerWrapper
 	 */
 	public static CollectionChangeListener wrap(CollectionChangeListener listener, Viewer viewer) {
@@ -114,7 +114,7 @@ public final class SWTListenerWrapperTools {
 	 * the SWT UI thread associated with the specified widget,
 	 * asynchronously if necessary.
 	 * Any exceptions thrown by the specified listener will be handled by the
-	 * {@link JptCommonUiPlugin#EXCEPTION_HANDLER default exception handler}.
+	 * {@link JptCommonUiPlugin#exceptionHandler() default exception handler}.
 	 * @see SWTCollectionChangeListenerWrapper
 	 */
 	public static CollectionChangeListener wrap(CollectionChangeListener listener, Widget widget) {
@@ -126,11 +126,11 @@ public final class SWTListenerWrapperTools {
 	 * the SWT UI thread associated with the specified display,
 	 * asynchronously if necessary.
 	 * Any exceptions thrown by the specified listener will be handled by the
-	 * {@link JptCommonUiPlugin#EXCEPTION_HANDLER default exception handler}.
+	 * {@link JptCommonUiPlugin#exceptionHandler() default exception handler}.
 	 * @see SWTCollectionChangeListenerWrapper
 	 */
 	public static CollectionChangeListener wrap(CollectionChangeListener listener, Display display) {
-		return wrap(listener, display, JptCommonUiPlugin.EXCEPTION_HANDLER);
+		return wrap(listener, display, JptCommonUiPlugin.exceptionHandler());
 	}
 
 	/**
@@ -152,7 +152,7 @@ public final class SWTListenerWrapperTools {
 	 * Wrap the specified list change listener and forward events to it on
 	 * the SWT UI thread, asynchronously if necessary.
 	 * Any exceptions thrown by the specified listener will be handled by the
-	 * {@link JptCommonUiPlugin#EXCEPTION_HANDLER default exception handler}.
+	 * {@link JptCommonUiPlugin#exceptionHandler() default exception handler}.
 	 * @see SWTListChangeListenerWrapper
 	 */
 	public static ListChangeListener wrap(ListChangeListener listener) {
@@ -164,7 +164,7 @@ public final class SWTListenerWrapperTools {
 	 * the SWT UI thread associated with the specified viewer,
 	 * asynchronously if necessary.
 	 * Any exceptions thrown by the specified listener will be handled by the
-	 * {@link JptCommonUiPlugin#EXCEPTION_HANDLER default exception handler}.
+	 * {@link JptCommonUiPlugin#exceptionHandler() default exception handler}.
 	 * @see SWTListChangeListenerWrapper
 	 */
 	public static ListChangeListener wrap(ListChangeListener listener, Viewer viewer) {
@@ -176,7 +176,7 @@ public final class SWTListenerWrapperTools {
 	 * the SWT UI thread associated with the specified widget,
 	 * asynchronously if necessary.
 	 * Any exceptions thrown by the specified listener will be handled by the
-	 * {@link JptCommonUiPlugin#EXCEPTION_HANDLER default exception handler}.
+	 * {@link JptCommonUiPlugin#exceptionHandler() default exception handler}.
 	 * @see SWTListChangeListenerWrapper
 	 */
 	public static ListChangeListener wrap(ListChangeListener listener, Widget widget) {
@@ -188,11 +188,11 @@ public final class SWTListenerWrapperTools {
 	 * the SWT UI thread associated with the specified display,
 	 * asynchronously if necessary.
 	 * Any exceptions thrown by the specified listener will be handled by the
-	 * {@link JptCommonUiPlugin#EXCEPTION_HANDLER default exception handler}.
+	 * {@link JptCommonUiPlugin#exceptionHandler() default exception handler}.
 	 * @see SWTListChangeListenerWrapper
 	 */
 	public static ListChangeListener wrap(ListChangeListener listener, Display display) {
-		return wrap(listener, display, JptCommonUiPlugin.EXCEPTION_HANDLER);
+		return wrap(listener, display, JptCommonUiPlugin.exceptionHandler());
 	}
 
 	/**
@@ -214,7 +214,7 @@ public final class SWTListenerWrapperTools {
 	 * Wrap the specified state change listener and forward events to it on
 	 * the SWT UI thread, asynchronously if necessary.
 	 * Any exceptions thrown by the specified listener will be handled by the
-	 * {@link JptCommonUiPlugin#EXCEPTION_HANDLER default exception handler}.
+	 * {@link JptCommonUiPlugin#exceptionHandler() default exception handler}.
 	 * @see SWTStateChangeListenerWrapper
 	 */
 	public static StateChangeListener wrap(StateChangeListener listener) {
@@ -226,7 +226,7 @@ public final class SWTListenerWrapperTools {
 	 * the SWT UI thread associated with the specified viewer,
 	 * asynchronously if necessary.
 	 * Any exceptions thrown by the specified listener will be handled by the
-	 * {@link JptCommonUiPlugin#EXCEPTION_HANDLER default exception handler}.
+	 * {@link JptCommonUiPlugin#exceptionHandler() default exception handler}.
 	 * @see SWTStateChangeListenerWrapper
 	 */
 	public static StateChangeListener wrap(StateChangeListener listener, Viewer viewer) {
@@ -238,7 +238,7 @@ public final class SWTListenerWrapperTools {
 	 * the SWT UI thread associated with the specified widget,
 	 * asynchronously if necessary.
 	 * Any exceptions thrown by the specified listener will be handled by the
-	 * {@link JptCommonUiPlugin#EXCEPTION_HANDLER default exception handler}.
+	 * {@link JptCommonUiPlugin#exceptionHandler() default exception handler}.
 	 * @see SWTStateChangeListenerWrapper
 	 */
 	public static StateChangeListener wrap(StateChangeListener listener, Widget widget) {
@@ -250,11 +250,11 @@ public final class SWTListenerWrapperTools {
 	 * the SWT UI thread associated with the specified display,
 	 * asynchronously if necessary.
 	 * Any exceptions thrown by the specified listener will be handled by the
-	 * {@link JptCommonUiPlugin#EXCEPTION_HANDLER default exception handler}.
+	 * {@link JptCommonUiPlugin#exceptionHandler() default exception handler}.
 	 * @see SWTStateChangeListenerWrapper
 	 */
 	public static StateChangeListener wrap(StateChangeListener listener, Display display) {
-		return wrap(listener, display, JptCommonUiPlugin.EXCEPTION_HANDLER);
+		return wrap(listener, display, JptCommonUiPlugin.exceptionHandler());
 	}
 
 	/**

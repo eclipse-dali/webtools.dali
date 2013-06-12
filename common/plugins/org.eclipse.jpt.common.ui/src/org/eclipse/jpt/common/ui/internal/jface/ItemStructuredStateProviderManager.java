@@ -31,7 +31,7 @@ public class ItemStructuredStateProviderManager
 			ItemExtendedLabelProvider.Factory itemLabelProviderFactory,
 			ResourceManager resourceManager
 	) {
-		this(itemContentProviderFactory, itemLabelProviderFactory, resourceManager, JptCommonUiPlugin.EXCEPTION_HANDLER);
+		this(itemContentProviderFactory, itemLabelProviderFactory, resourceManager, JptCommonUiPlugin.exceptionHandler());
 	}
 
 	public ItemStructuredStateProviderManager(

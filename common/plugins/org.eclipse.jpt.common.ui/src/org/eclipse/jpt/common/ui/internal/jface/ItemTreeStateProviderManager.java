@@ -42,7 +42,7 @@ public class ItemTreeStateProviderManager
 			ItemExtendedLabelProvider.Factory itemLabelProviderFactory,
 			ResourceManager resourceManager
 	) {
-		this(itemContentProviderFactory, itemLabelProviderFactory, resourceManager, JptCommonUiPlugin.EXCEPTION_HANDLER);
+		this(itemContentProviderFactory, itemLabelProviderFactory, resourceManager, JptCommonUiPlugin.exceptionHandler());
 	}
 
 	public ItemTreeStateProviderManager(
