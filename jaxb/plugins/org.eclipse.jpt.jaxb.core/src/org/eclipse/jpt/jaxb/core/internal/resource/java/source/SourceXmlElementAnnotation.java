@@ -29,6 +29,7 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapt
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
 
@@ -216,7 +217,7 @@ public final class SourceXmlElementAnnotation
 	}
 
 	public void setName(String name) {
-		if (this.attributeValueHasChanged(this.name, name)) {
+		if (ObjectTools.notEquals(this.name, name)) {
 			this.name = name;
 			this.nameAdapter.setValue(name);
 		}
@@ -259,7 +260,7 @@ public final class SourceXmlElementAnnotation
 	}
 
 	public void setNamespace(String namespace) {
-		if (this.attributeValueHasChanged(this.namespace, namespace)) {
+		if (ObjectTools.notEquals(this.namespace, namespace)) {
 			this.namespace = namespace;
 			this.namespaceAdapter.setValue(namespace);
 		}
@@ -302,7 +303,7 @@ public final class SourceXmlElementAnnotation
 	}
 
 	public void setNillable(Boolean nillable) {
-		if (this.attributeValueHasChanged(this.nillable, nillable)) {
+		if (ObjectTools.notEquals(this.nillable, nillable)) {
 			this.nillable = nillable;
 			this.nillableAdapter.setValue(nillable);
 		}
@@ -333,7 +334,7 @@ public final class SourceXmlElementAnnotation
 	}
 
 	public void setRequired(Boolean required) {
-		if (this.attributeValueHasChanged(this.required, required)) {
+		if (ObjectTools.notEquals(this.required, required)) {
 			this.required = required;
 			this.requiredAdapter.setValue(required);
 		}
@@ -363,7 +364,7 @@ public final class SourceXmlElementAnnotation
 	}
 
 	public void setDefaultValue(String defaultValue) {
-		if (this.attributeValueHasChanged(this.defaultValue, defaultValue)) {
+		if (ObjectTools.notEquals(this.defaultValue, defaultValue)) {
 			this.defaultValue = defaultValue;
 			this.defaultValueAdapter.setValue(defaultValue);
 		}
@@ -393,7 +394,7 @@ public final class SourceXmlElementAnnotation
 	}
 
 	public void setType(String type) {
-		if (this.attributeValueHasChanged(this.type, type)) {
+		if (ObjectTools.notEquals(this.type, type)) {
 			this.type = type;
 			this.typeAdapter.setValue(type);
 		}

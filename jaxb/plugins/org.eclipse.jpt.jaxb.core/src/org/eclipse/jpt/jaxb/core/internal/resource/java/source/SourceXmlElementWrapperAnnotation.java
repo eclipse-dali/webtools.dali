@@ -22,6 +22,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
 
@@ -146,7 +147,7 @@ public final class SourceXmlElementWrapperAnnotation
 	}
 
 	public void setName(String name) {
-		if (this.attributeValueHasChanged(this.name, name)) {
+		if (ObjectTools.notEquals(this.name, name)) {
 			this.name = name;
 			this.nameAdapter.setValue(name);
 		}
@@ -189,7 +190,7 @@ public final class SourceXmlElementWrapperAnnotation
 	}
 
 	public void setNamespace(String namespace) {
-		if (this.attributeValueHasChanged(this.namespace, namespace)) {
+		if (ObjectTools.notEquals(this.namespace, namespace)) {
 			this.namespace = namespace;
 			this.namespaceAdapter.setValue(namespace);
 		}
@@ -232,7 +233,7 @@ public final class SourceXmlElementWrapperAnnotation
 	}
 
 	public void setNillable(Boolean nillable) {
-		if (this.attributeValueHasChanged(this.nillable, nillable)) {
+		if (ObjectTools.notEquals(this.nillable, nillable)) {
 			this.nillable = nillable;
 			this.nillableAdapter.setValue(nillable);
 		}
@@ -263,7 +264,7 @@ public final class SourceXmlElementWrapperAnnotation
 	}
 
 	public void setRequired(Boolean required) {
-		if (this.attributeValueHasChanged(this.required, required)) {
+		if (ObjectTools.notEquals(this.required, required)) {
 			this.required = required;
 			this.requiredAdapter.setValue(required);
 		}

@@ -20,6 +20,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
@@ -76,7 +77,7 @@ public final class SourceXmlAccessorOrderAnnotation
 	}
 
 	public void setValue(XmlAccessOrder value) {
-		if (this.attributeValueHasChanged(this.value, value)) {
+		if (ObjectTools.notEquals(this.value, value)) {
 			this.value = value;
 			this.valueAdapter.setValue(XmlAccessOrder.toJavaAnnotationValue(value));
 		}

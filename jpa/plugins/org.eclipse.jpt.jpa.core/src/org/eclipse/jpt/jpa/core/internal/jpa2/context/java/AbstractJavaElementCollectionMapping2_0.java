@@ -263,7 +263,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	public void setSpecifiedTargetClass(String targetClass) {
-		if (this.valuesAreDifferent(targetClass, this.specifiedTargetClass)) {
+		if (ObjectTools.notEquals(targetClass, this.specifiedTargetClass)) {
 			this.getAnnotationForUpdate().setTargetClass(targetClass);
 			this.setSpecifiedTargetClass_(targetClass);
 		}
@@ -341,7 +341,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	public void setSpecifiedFetch(FetchType fetch) {
-		if (this.valuesAreDifferent(fetch, this.specifiedFetch)) {
+		if (ObjectTools.notEquals(fetch, this.specifiedFetch)) {
 			this.getAnnotationForUpdate().setFetch(FetchType.toJavaResourceModel(fetch));
 			this.setSpecifiedFetch_(fetch);
 		}
@@ -823,7 +823,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	public void setSpecifiedMapKeyClass(String mapKeyClass) {
-		if (this.valuesAreDifferent(mapKeyClass, this.specifiedMapKeyClass)) {
+		if (ObjectTools.notEquals(mapKeyClass, this.specifiedMapKeyClass)) {
 			MapKeyClassAnnotation2_0 annotation = this.getMapKeyClassAnnotation();
 			if (mapKeyClass == null) {
 				if (annotation != null) {

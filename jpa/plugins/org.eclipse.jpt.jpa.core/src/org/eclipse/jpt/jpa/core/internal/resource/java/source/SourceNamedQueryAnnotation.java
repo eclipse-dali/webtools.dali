@@ -24,6 +24,7 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.NamedQueryAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.QueryHintAnnotation;
@@ -96,7 +97,7 @@ public abstract class SourceNamedQueryAnnotation
 	}
 
 	public void setQuery(String query) {
-		if (this.attributeValueHasChanged(this.query, query)) {
+		if (ObjectTools.notEquals(this.query, query)) {
 			this.query = query;
 			this.queryAdapter.setValue(query);
 		}

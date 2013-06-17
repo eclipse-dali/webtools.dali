@@ -22,8 +22,9 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CustomizerAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 
 /**
  * <code>org.eclipse.persistence.annotations.Customizer</code>
@@ -90,7 +91,7 @@ public final class EclipseLinkSourceCustomizerAnnotation
 	}
 
 	public void setValue(String value) {
-		if (this.attributeValueHasChanged(this.value, value)) {
+		if (ObjectTools.notEquals(this.value, value)) {
 			this.value = value;
 			this.fqCustomizerClassNameStale = true;
 			this.valueAdapter.setValue(value);
@@ -98,7 +99,7 @@ public final class EclipseLinkSourceCustomizerAnnotation
 	}
 
 	private void syncValue(String astValue) {
-		if (this.attributeValueHasChanged(this.value, astValue)) {
+		if (ObjectTools.notEquals(this.value, astValue)) {
 			this.syncValue_(astValue);
 		}
 	}

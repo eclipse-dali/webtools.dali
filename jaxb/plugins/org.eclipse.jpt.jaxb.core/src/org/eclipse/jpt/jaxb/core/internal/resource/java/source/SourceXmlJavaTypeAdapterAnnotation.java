@@ -148,7 +148,7 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 	}
 	
 	public void setValue(String value) {
-		if (this.attributeValueHasChanged(this.value, value)) {
+		if (ObjectTools.notEquals(this.value, value)) {
 			this.value = value;
 			this.suppressFQValueEventNotification = true;
 			this.valueAdapter.setValue(value);
@@ -196,7 +196,7 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 	}
 	
 	public void setType(String type) {
-		if (this.attributeValueHasChanged(this.type, type)) {
+		if (ObjectTools.notEquals(this.type, type)) {
 			this.type = type;
 			this.suppressFQTypeEventNotification = true;
 			this.typeAdapter.setValue(type);

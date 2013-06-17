@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.resource.java.CompleteColumnAnnotation;
 
 /**
@@ -91,7 +92,7 @@ public abstract class SourceCompleteColumnAnnotation
 	}
 
 	public void setLength(Integer length) {
-		if (this.attributeValueHasChanged(this.length, length)) {
+		if (ObjectTools.notEquals(this.length, length)) {
 			this.length = length;
 			this.lengthAdapter.setValue(length);
 		}
@@ -131,7 +132,7 @@ public abstract class SourceCompleteColumnAnnotation
 	}
 
 	public void setPrecision(Integer precision) {
-		if (this.attributeValueHasChanged(this.precision, precision)) {
+		if (ObjectTools.notEquals(this.precision, precision)) {
 			this.precision = precision;
 			this.precisionAdapter.setValue(precision);
 		}
@@ -171,7 +172,7 @@ public abstract class SourceCompleteColumnAnnotation
 	}
 
 	public void setScale(Integer scale) {
-		if (this.attributeValueHasChanged(this.scale, scale)) {
+		if (ObjectTools.notEquals(this.scale, scale)) {
 			this.scale = scale;
 			this.scaleAdapter.setValue(scale);
 		}

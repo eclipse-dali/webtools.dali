@@ -22,6 +22,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.resource.java.FetchType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TransformationAnnotation;
@@ -97,7 +98,7 @@ public final class EclipseLinkSourceTransformationAnnotation
 	}
 
 	public void setFetch(FetchType fetch) {
-		if (this.attributeValueHasChanged(this.fetch, fetch)) {
+		if (ObjectTools.notEquals(this.fetch, fetch)) {
 			this.fetch = fetch;
 			this.fetchAdapter.setValue(FetchType.toJavaAnnotationValue(fetch));
 		}
@@ -127,7 +128,7 @@ public final class EclipseLinkSourceTransformationAnnotation
 	}
 
 	public void setOptional(Boolean optional) {
-		if (this.attributeValueHasChanged(this.optional, optional)) {
+		if (ObjectTools.notEquals(this.optional, optional)) {
 			this.optional = optional;
 			this.optionalAdapter.setValue(optional);
 		}

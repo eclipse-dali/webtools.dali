@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringBuilderTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
@@ -458,7 +459,7 @@ public class CompositeListValueModel<E1, E2>
 		for (int i = 0; i < min; i++) {
 			E1 newSource = this.listModel.get(i);
 			E1 oldSource = this.infoList.get(i).source;
-			if (this.valuesAreDifferent(newSource, oldSource)) {
+			if (ObjectTools.notEquals(newSource, oldSource)) {
 				this.replaceComponentSources(i, new SingleElementIterable<E1>(newSource), 1, true);  // true = fire event
 			}
 		}

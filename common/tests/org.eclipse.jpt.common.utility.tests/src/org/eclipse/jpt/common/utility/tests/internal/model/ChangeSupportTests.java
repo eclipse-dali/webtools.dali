@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,21 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.tests.internal.model;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.EventListener;
 import java.util.HashSet;
 import java.util.List;
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.ListenerList;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.SystemTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
@@ -46,10 +37,8 @@ import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.CollectionChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ListChangeAdapter;
-import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeAdapter;
-import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
@@ -3054,142 +3043,7 @@ public class ChangeSupportTests
 	}
 
 
-	// ********** convenience method tests **********
-
-	public void testElementsAreEqual() {
-		Collection<String> c1 = new ArrayList<String>();
-		c1.add("foo");
-		c1.add("bar");
-		c1.add("baz");
-		Collection<String> c2 = new ArrayList<String>();
-		c2.add("foo");
-		c2.add("bar");
-		c2.add("baz");
-		assertTrue(this.testModel.testElementsAreEqual(c1, c2));
-	}
-
-	public void testElementsAreDifferent() {
-		Collection<String> c1 = new ArrayList<String>();
-		c1.add("foo");
-		c1.add("bar");
-		c1.add("baz");
-		Collection<String> c2 = new ArrayList<String>();
-		c2.add("baz");
-		c2.add("bar");
-		c2.add("foo");
-		assertTrue(this.testModel.testElementsAreDifferent(c1, c2));
-	}
-
-
 	// ********** AbstractModel tests **********
-
-	public void testAbstractModelValuesAreEqual1() {
-		assertTrue(this.testModel.testValuesAreEqual(null, null));
-	}
-
-	public void testAbstractModelValuesAreEqual2() {
-		assertTrue(this.testModel.testValuesAreEqual("foo", "foo"));
-	}
-
-	public void testAbstractModelValuesAreEqual3() {
-		assertFalse(this.testModel.testValuesAreEqual("foo", null));
-	}
-
-	public void testAbstractModelValuesAreEqual4() {
-		assertFalse(this.testModel.testValuesAreEqual(null, "foo"));
-	}
-
-	public void testAbstractModelValuesAreEqual5() {
-		assertFalse(this.testModel.testValuesAreEqual("bar", "foo"));
-	}
-
-	public void testAbstractModelValuesAreDifferent1() {
-		assertFalse(this.testModel.testValuesAreDifferent(null, null));
-	}
-
-	public void testAbstractModelValuesAreDifferent2() {
-		assertFalse(this.testModel.testValuesAreDifferent("foo", "foo"));
-	}
-
-	public void testAbstractModelValuesAreDifferent3() {
-		assertTrue(this.testModel.testValuesAreDifferent("foo", null));
-	}
-
-	public void testAbstractModelValuesAreDifferent4() {
-		assertTrue(this.testModel.testValuesAreDifferent(null, "foo"));
-	}
-
-	public void testAbstractModelValuesAreDifferent5() {
-		assertTrue(this.testModel.testValuesAreDifferent("bar", "foo"));
-	}
-
-	public void testAbstractModelAttributeValueHasChanged1() {
-		assertFalse(this.testModel.testAttributeValueHasChanged(null, null));
-	}
-
-	public void testAbstractModelAttributeValueHasChanged2() {
-		assertFalse(this.testModel.testAttributeValueHasChanged("foo", "foo"));
-	}
-
-	public void testAbstractModelAttributeValueHasChanged3() {
-		assertTrue(this.testModel.testAttributeValueHasChanged("foo", null));
-	}
-
-	public void testAbstractModelAttributeValueHasChanged4() {
-		assertTrue(this.testModel.testAttributeValueHasChanged(null, "foo"));
-	}
-
-	public void testAbstractModelAttributeValueHasChanged5() {
-		assertTrue(this.testModel.testAttributeValueHasChanged("bar", "foo"));
-	}
-
-	public void testAbstractModelAttributeValueHasNotChanged1() {
-		assertTrue(this.testModel.testAttributeValueHasNotChanged(null, null));
-	}
-
-	public void testAbstractModelAttributeValueHasNotChanged2() {
-		assertTrue(this.testModel.testAttributeValueHasNotChanged("foo", "foo"));
-	}
-
-	public void testAbstractModelAttributeValueHasNotChanged3() {
-		assertFalse(this.testModel.testAttributeValueHasNotChanged("foo", null));
-	}
-
-	public void testAbstractModelAttributeValueHasNotChanged4() {
-		assertFalse(this.testModel.testAttributeValueHasNotChanged(null, "foo"));
-	}
-
-	public void testAbstractModelAttributeValueHasNotChanged5() {
-		assertFalse(this.testModel.testAttributeValueHasNotChanged("bar", "foo"));
-	}
-
-	public void testAbstractModelClone() {
-		assertFalse(this.testModel.hasAnyPropertyChangeListeners(PROPERTY_NAME));
-		this.testModel.addChangeListener(this.changeListener);
-		assertTrue(this.testModel.hasAnyPropertyChangeListeners(PROPERTY_NAME));
-
-		// verify that the clone does not have any listeners
-		TestModel clone = this.testModel.clone();
-		assertFalse(clone.hasAnyPropertyChangeListeners(PROPERTY_NAME));
-		clone.addChangeListener(this.changeListener);
-		assertTrue(clone.hasAnyPropertyChangeListeners(PROPERTY_NAME));
-		// check original
-		assertTrue(this.testModel.hasAnyPropertyChangeListeners(PROPERTY_NAME));
-
-		// now test events fired by original
-		this.propertyChangeEvent = null;
-		this.propertyChangeCalled = false;
-		this.testModel.testFirePropertyChangedObjectObject();
-		this.verifyPropertyChangeEvent(OLD_OBJECT_VALUE, NEW_OBJECT_VALUE);
-		assertTrue(this.propertyChangeCalled);
-
-		// now test events fired by clone
-		this.propertyChangeEvent = null;
-		this.propertyChangeCalled = false;
-		clone.testFirePropertyChangedObjectObject();
-		this.verifyPropertyChangeEvent(clone, OLD_OBJECT_VALUE, NEW_OBJECT_VALUE);
-		assertTrue(this.propertyChangeCalled);
-	}
 
 	public void testAbstractModelToString() {
 		assertTrue(this.testModel.toString().contains('(' + TEST_TO_STRING + ')'));
@@ -3256,7 +3110,7 @@ public class ChangeSupportTests
 
 	// ********** inner class **********
 
-	private static class TestModel extends AbstractModel implements Cloneable {
+	private static class TestModel extends AbstractModel {
 		TestModel() {
 			super();
 		}
@@ -3755,161 +3609,10 @@ public class ChangeSupportTests
 			assertEquals(newList, oldList);
 		}
 
-		public boolean testAttributeValueHasChanged(Object value1, Object value2) {
-			return this.attributeValueHasChanged(value1, value2);
-		}
-
-		public boolean testAttributeValueHasNotChanged(Object value1, Object value2) {
-			return this.attributeValueHasNotChanged(value1, value2);
-		}
-
 		// ***** misc
-		@Override
-		public TestModel clone() {
-			try {
-				return (TestModel) super.clone();
-			} catch (CloneNotSupportedException ex) {
-				throw new InternalError();
-			}
-		}
-
-		public boolean testValuesAreDifferent(Object value1, Object value2) {
-			return this.valuesAreDifferent(value1, value2);
-		}
-
-		public boolean testValuesAreEqual(Object value1, Object value2) {
-			return this.valuesAreEqual(value1, value2);
-		}
-
-		public boolean testElementsAreDifferent(Iterable<?> iterable1, Iterable<?> iterable2) {
-			return this.getChangeSupport().elementsAreDifferent(iterable1, iterable2);
-		}
-
-		public boolean testElementsAreEqual(Iterable<?> iterable1, Iterable<?> iterable2) {
-			return this.getChangeSupport().elementsAreEqual(iterable1, iterable2);
-		}
-
 		@Override
 		public void toString(StringBuilder sb) {
 			sb.append(TEST_TO_STRING);
-		}
-
-	}
-
-
-	// ********** serialization test **********
-	public void testSerialization() throws java.io.IOException, ClassNotFoundException {
-		if (SystemTools.jvmIsSun()) {
-			// This test doesn't pass in the Eclipse build environment (Linux/IBM JVM) for some reason
-			this.verifySerialization();
-		}
-	}
-
-	private void verifySerialization() throws java.io.IOException, ClassNotFoundException {
-		LocalModel model1 = new LocalModel();
-		Foo foo1 = new Foo();
-		Bar bar1 = new Bar();
-		Joo joo1 = new Joo();
-		Jar jar1 = new Jar();
-		model1.addStateChangeListener(foo1);
-		model1.addStateChangeListener(bar1);
-		model1.addListChangeListener("foo", joo1);
-		model1.addListChangeListener("foo", jar1);
-
-		Iterable<EventListener> listeners1 = this.getListeners(model1, StateChangeListener.class, null);
-		Object[] listenersArray1 = ArrayTools.array(listeners1);
-		assertEquals(2, listenersArray1.length);
-		// the order of these could change...
-		assertEquals(Foo.class, listenersArray1[0].getClass());
-		assertEquals(Bar.class, listenersArray1[1].getClass());
-
-		listeners1 = this.getListeners(model1, ListChangeListener.class, "foo");
-		listenersArray1 = ArrayTools.array(listeners1);
-		assertEquals(2, listenersArray1.length);
-		// the order of these could change...
-		assertEquals(Joo.class, listenersArray1[0].getClass());
-		assertEquals(Jar.class, listenersArray1[1].getClass());
-
-		LocalModel model2 = TestTools.serialize(model1);
-
-		Iterable<EventListener> listeners2 = this.getListeners(model2, StateChangeListener.class, null);
-		Object[] listenersArray2 = ArrayTools.array(listeners2);
-		assertEquals(1, listenersArray2.length);
-		assertEquals(Foo.class, listenersArray2[0].getClass());
-
-		listeners2 = this.getListeners(model2, ListChangeListener.class, "foo");
-		listenersArray2 = ArrayTools.array(listeners2);
-		assertEquals(1, listenersArray2.length);
-		assertEquals(Joo.class, listenersArray2[0].getClass());
-	}
-
-	private Iterable<EventListener> getListeners(LocalModel model, Class<? extends EventListener> listenerClass, String aspectName) {
-		return this.getListenerList(model, listenerClass, aspectName).getListeners();
-	}
-
-	@SuppressWarnings("unchecked")
-	private ListenerList<EventListener> getListenerList(LocalModel model, Class<? extends EventListener> listenerClass, String aspectName) {
-		ChangeSupport changeSupport = (ChangeSupport) ObjectTools.get(model, "changeSupport");
-		return (ListenerList<EventListener>) ObjectTools.execute(changeSupport, "getListenerList_", new Class<?>[] {Class.class, String.class}, new Object[] {listenerClass, aspectName});
-	}
-
-	// we have to manually handle 'changeSupport' since AbstractModel is not Serializable
-	/* CU private */ static class LocalModel
-		extends AbstractModel
-		implements Serializable
-	{
-		private static final long serialVersionUID = 1L;
-		LocalModel() {
-			super();
-		}
-		private synchronized void writeObject(ObjectOutputStream s) throws IOException {
-			s.defaultWriteObject();
-			s.writeObject(this.changeSupport);
-	    }
-		private void readObject(ObjectInputStream s) throws ClassNotFoundException, IOException {
-			s.defaultReadObject();
-			this.changeSupport = (ChangeSupport) s.readObject();
-		}
-	}
-
-	/* CU private */ static class Foo
-		implements Serializable, StateChangeListener
-	{
-		private static final long serialVersionUID = 1L;
-		Foo() {
-			super();
-		}
-		public void stateChanged(StateChangeEvent event) {
-			// do nothing
-		}
-	}
-
-	/* CU private */ static class Bar
-		implements StateChangeListener
-	{
-		Bar() {
-			super();
-		}
-		public void stateChanged(StateChangeEvent event) {
-			// do nothing
-		}
-	}
-
-	/* CU private */ static class Joo
-		extends ListChangeAdapter
-		implements Serializable
-	{
-		private static final long serialVersionUID = 1L;
-		Joo() {
-			super();
-		}
-	}
-
-	/* CU private */ static class Jar
-		extends ListChangeAdapter
-	{
-		Jar() {
-			super();
 		}
 	}
 

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.AbstractOrmNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3;
@@ -108,7 +109,7 @@ public class EclipseLinkOrmTenantDiscriminatorColumn2_3
 	}
 
 	public void setSpecifiedTableName(String tableName) {
-		if (this.valuesAreDifferent(this.specifiedTableName, tableName)) {
+		if (ObjectTools.notEquals(this.specifiedTableName, tableName)) {
 			this.setSpecifiedTableName_(tableName);
 			this.xmlTenantDiscriminatorColumn.setTable(tableName);
 		}
@@ -149,7 +150,7 @@ public class EclipseLinkOrmTenantDiscriminatorColumn2_3
 	}
 
 	public void setSpecifiedContextProperty(String contextProperty) {
-		if (this.valuesAreDifferent(this.specifiedContextProperty, contextProperty)) {
+		if (ObjectTools.notEquals(this.specifiedContextProperty, contextProperty)) {
 			this.setSpecifiedContextProperty_(contextProperty);
 			this.xmlTenantDiscriminatorColumn.setContextProperty(contextProperty);
 		}
@@ -191,7 +192,7 @@ public class EclipseLinkOrmTenantDiscriminatorColumn2_3
 	}
 
 	public void setSpecifiedPrimaryKey(Boolean primaryKey) {
-		if (this.valuesAreDifferent(this.specifiedPrimaryKey, primaryKey)) {
+		if (ObjectTools.notEquals(this.specifiedPrimaryKey, primaryKey)) {
 			this.setSpecifiedPrimaryKey_(primaryKey);
 			this.xmlTenantDiscriminatorColumn.setPrimaryKey(primaryKey);
 		}

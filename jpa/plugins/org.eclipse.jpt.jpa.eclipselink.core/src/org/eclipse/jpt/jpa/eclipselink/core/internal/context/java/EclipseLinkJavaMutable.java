@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
@@ -60,7 +61,7 @@ public class EclipseLinkJavaMutable
 	}
 
 	public void setSpecifiedMutable(Boolean mutable) {
-		if (this.valuesAreDifferent(mutable, this.specifiedMutable)) {
+		if (ObjectTools.notEquals(mutable, this.specifiedMutable)) {
 			MutableAnnotation annotation = this.getMutableAnnotation();
 			if (mutable == null) {
 				if (annotation != null) {

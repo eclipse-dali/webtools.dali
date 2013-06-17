@@ -19,6 +19,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.TableGeneratorAnnotation;
@@ -174,7 +175,7 @@ public final class SourceTableGeneratorAnnotation
 	}
 
 	public void setTable(String table) {
-		if (this.attributeValueHasChanged(this.table, table)) {
+		if (ObjectTools.notEquals(this.table, table)) {
 			this.table = table;
 			this.tableAdapter.setValue(table);
 		}
@@ -208,7 +209,7 @@ public final class SourceTableGeneratorAnnotation
 	}
 
 	public void setSchema(String schema) {
-		if (this.attributeValueHasChanged(this.schema, schema)) {
+		if (ObjectTools.notEquals(this.schema, schema)) {
 			this.schema = schema;
 			this.schemaAdapter.setValue(schema);
 		}
@@ -242,7 +243,7 @@ public final class SourceTableGeneratorAnnotation
 	}
 
 	public void setCatalog(String catalog) {
-		if (this.attributeValueHasChanged(this.catalog, catalog)) {
+		if (ObjectTools.notEquals(this.catalog, catalog)) {
 			this.catalog = catalog;
 			this.catalogAdapter.setValue(catalog);
 		}
@@ -276,7 +277,7 @@ public final class SourceTableGeneratorAnnotation
 	}
 
 	public void setPkColumnName(String pkColumnName) {
-		if (this.attributeValueHasChanged(this.pkColumnName, pkColumnName)) {
+		if (ObjectTools.notEquals(this.pkColumnName, pkColumnName)) {
 			this.pkColumnName = pkColumnName;
 			this.pkColumnNameAdapter.setValue(pkColumnName);
 		}
@@ -310,7 +311,7 @@ public final class SourceTableGeneratorAnnotation
 	}
 
 	public void setValueColumnName(String valueColumnName) {
-		if (this.attributeValueHasChanged(this.valueColumnName, valueColumnName)) {
+		if (ObjectTools.notEquals(this.valueColumnName, valueColumnName)) {
 			this.valueColumnName = valueColumnName;
 			this.valueColumnNameAdapter.setValue(valueColumnName);
 		}
@@ -344,7 +345,7 @@ public final class SourceTableGeneratorAnnotation
 	}
 
 	public void setPkColumnValue(String pkColumnValue) {
-		if (this.attributeValueHasChanged(this.pkColumnValue, pkColumnValue)) {
+		if (ObjectTools.notEquals(this.pkColumnValue, pkColumnValue)) {
 			this.pkColumnValue = pkColumnValue;
 			this.pkColumnValueAdapter.setValue(pkColumnValue);
 		}

@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.NameTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -151,7 +152,7 @@ public abstract class AbstractOrmTable<P extends JpaContextModel, PA extends Tab
 	}
 
 	public void setSpecifiedName(String name) {
-		if (this.valuesAreDifferent(this.specifiedName, name)) {
+		if (ObjectTools.notEquals(this.specifiedName, name)) {
 			X xmlTable = this.getXmlTableForUpdate();
 			this.setSpecifiedName_(name);
 			xmlTable.setName(name);
@@ -194,7 +195,7 @@ public abstract class AbstractOrmTable<P extends JpaContextModel, PA extends Tab
 	}
 
 	public void setSpecifiedSchema(String schema) {
-		if (this.valuesAreDifferent(this.specifiedSchema, schema)) {
+		if (ObjectTools.notEquals(this.specifiedSchema, schema)) {
 			X xmlTable = this.getXmlTableForUpdate();
 			this.setSpecifiedSchema_(schema);
 			xmlTable.setSchema(schema);
@@ -237,7 +238,7 @@ public abstract class AbstractOrmTable<P extends JpaContextModel, PA extends Tab
 	}
 
 	public void setSpecifiedCatalog(String catalog) {
-		if (this.valuesAreDifferent(this.specifiedCatalog, catalog)) {
+		if (ObjectTools.notEquals(this.specifiedCatalog, catalog)) {
 			X xmlTable = this.getXmlTableForUpdate();
 			this.setSpecifiedCatalog_(catalog);
 			xmlTable.setCatalog(catalog);

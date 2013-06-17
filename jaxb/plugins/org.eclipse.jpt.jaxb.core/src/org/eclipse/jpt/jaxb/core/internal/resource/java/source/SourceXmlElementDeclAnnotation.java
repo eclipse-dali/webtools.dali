@@ -24,6 +24,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementDeclAnnotation;
 
@@ -184,7 +185,7 @@ public final class SourceXmlElementDeclAnnotation
 	}
 	
 	public void setScope(String scope) {
-		if (attributeValueHasChanged(this.scope, scope)) {
+		if (ObjectTools.notEquals(this.scope, scope)) {
 			this.scope = scope;
 			this.scopeAdapter.setValue(scope);
 		}
@@ -233,7 +234,7 @@ public final class SourceXmlElementDeclAnnotation
 	}
 	
 	public void setNamespace(String namespace) {
-		if (attributeValueHasChanged(this.namespace, namespace)) {
+		if (ObjectTools.notEquals(this.namespace, namespace)) {
 			this.namespace = namespace;
 			this.namespaceAdapter.setValue(namespace);
 		}
@@ -277,7 +278,7 @@ public final class SourceXmlElementDeclAnnotation
 	}
 	
 	public void setName(String name) {
-		if (attributeValueHasChanged(this.name, name)) {
+		if (ObjectTools.notEquals(this.name, name)) {
 			this.name = name;
 			this.nameAdapter.setValue(name);
 		}
@@ -321,7 +322,7 @@ public final class SourceXmlElementDeclAnnotation
 	}
 	
 	public void setSubstitutionHeadNamespace(String substitutionHeadNamespace) {
-		if (attributeValueHasChanged(this.substitutionHeadNamespace, substitutionHeadNamespace)) {
+		if (ObjectTools.notEquals(this.substitutionHeadNamespace, substitutionHeadNamespace)) {
 			this.substitutionHeadNamespace = substitutionHeadNamespace;
 			this.substitutionHeadNamespaceAdapter.setValue(substitutionHeadNamespace);
 		}
@@ -365,7 +366,7 @@ public final class SourceXmlElementDeclAnnotation
 	}
 	
 	public void setSubstitutionHeadName(String substitutionHeadName) {
-		if (attributeValueHasChanged(this.substitutionHeadName, substitutionHeadName)) {
+		if (ObjectTools.notEquals(this.substitutionHeadName, substitutionHeadName)) {
 			this.substitutionHeadName = substitutionHeadName;
 			this.substitutionHeadNameAdapter.setValue(substitutionHeadName);
 		}
@@ -409,7 +410,7 @@ public final class SourceXmlElementDeclAnnotation
 	}
 	
 	public void setDefaultValue(String defaultValue) {
-		if (attributeValueHasChanged(this.defaultValue, defaultValue)) {
+		if (ObjectTools.notEquals(this.defaultValue, defaultValue)) {
 			this.defaultValue = defaultValue;
 			this.defaultValueAdapter.setValue(defaultValue);
 		}

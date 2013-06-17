@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.core.internal.utility.TypeTools;
 import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
@@ -76,7 +77,7 @@ public class EclipseLinkOrmCustomizer
 	}
 
 	public void setSpecifiedCustomizerClass(String customizerClass) {
-		if (this.valuesAreDifferent(this.specifiedCustomizerClass, customizerClass)) {
+		if (ObjectTools.notEquals(this.specifiedCustomizerClass, customizerClass)) {
 			XmlClassReference xmlClassRef = this.getXmlCustomizerClassRefForUpdate();
 			this.setSpecifiedCustomizerClass_(customizerClass);
 			xmlClassRef.setClassName(customizerClass);

@@ -32,10 +32,7 @@ public final class RuntimeExceptionHandler
 
 	public void handleException(Throwable t) {
 		// re-throw the exception unchecked
-		if (t instanceof RuntimeException) {
-			throw (RuntimeException) t;
-		}
-		throw new RuntimeException(t);
+		throw (t instanceof RuntimeException) ? (RuntimeException) t : new RuntimeException(t);
 	}
 
 	@Override

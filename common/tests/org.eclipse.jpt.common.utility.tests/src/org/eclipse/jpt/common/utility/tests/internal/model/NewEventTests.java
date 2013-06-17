@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,6 +14,7 @@ import java.util.EventListener;
 import junit.framework.TestCase;
 
 import org.eclipse.jpt.common.utility.internal.ListenerList;
+import org.eclipse.jpt.common.utility.internal.RuntimeExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
@@ -25,7 +26,9 @@ import org.eclipse.jpt.common.utility.tests.internal.TestTools;
  * test what it takes to add a new type of event to
  * model and change support
  */
-public class NewEventTests extends TestCase {
+public class NewEventTests
+	extends TestCase
+{
 	private Foo foo;
 
 	public NewEventTests(String name) {
@@ -117,9 +120,8 @@ public class NewEventTests extends TestCase {
 		extends AbstractModel
 		implements FooModel
 	{
-		@Override
 		protected synchronized FooChangeSupport getChangeSupport() {
-			return (FooChangeSupport) super.getChangeSupport();
+			return (FooChangeSupport) this.changeSupport;
 		}
 		@Override
 		protected ChangeSupport buildChangeSupport() {
@@ -145,11 +147,10 @@ public class NewEventTests extends TestCase {
 	static class FooChangeSupport
 		extends ChangeSupport
 	{
-		private static final long serialVersionUID = 1L;
 		FooChangeSupport(FooModel source) {
-			super(source);
+			super(source, RuntimeExceptionHandler.instance());
 		}
-		protected static final Class<FooChangeListener> FOO_CHANGE_LISTENER_CLASS = FooChangeListener.class;
+		static final Class<FooChangeListener> FOO_CHANGE_LISTENER_CLASS = FooChangeListener.class;
 		void addFooChangeListener(FooChangeListener listener) {
 			this.addListener(FOO_CHANGE_LISTENER_CLASS, listener);
 		}

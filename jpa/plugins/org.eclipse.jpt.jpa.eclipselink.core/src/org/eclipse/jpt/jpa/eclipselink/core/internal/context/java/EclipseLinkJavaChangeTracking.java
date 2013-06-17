@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
@@ -52,7 +53,7 @@ public class EclipseLinkJavaChangeTracking
 	}
 
 	public void setSpecifiedType(EclipseLinkChangeTrackingType type) {
-		if (this.valuesAreDifferent(type, this.specifiedType)) {
+		if (ObjectTools.notEquals(type, this.specifiedType)) {
 			ChangeTrackingAnnotation annotation = this.getChangeTrackingAnnotation();
 			if (type == null) {
 				if (annotation != null) {

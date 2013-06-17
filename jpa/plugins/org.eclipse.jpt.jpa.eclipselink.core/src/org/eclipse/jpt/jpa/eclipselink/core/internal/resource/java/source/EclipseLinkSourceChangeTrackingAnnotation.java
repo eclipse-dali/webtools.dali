@@ -20,9 +20,10 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ChangeTrackingAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ChangeTrackingType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ChangeTrackingAnnotation;
 
 /**
  * <code>org.eclipse.persistence.annotations.ChangeTracking</code>
@@ -82,7 +83,7 @@ public final class EclipseLinkSourceChangeTrackingAnnotation
 	}
 
 	public void setValue(ChangeTrackingType value) {
-		if (this.attributeValueHasChanged(this.value, value)) {
+		if (ObjectTools.notEquals(this.value, value)) {
 			this.value = value;
 			this.valueAdapter.setValue(ChangeTrackingType.toJavaAnnotationValue(value));
 		}

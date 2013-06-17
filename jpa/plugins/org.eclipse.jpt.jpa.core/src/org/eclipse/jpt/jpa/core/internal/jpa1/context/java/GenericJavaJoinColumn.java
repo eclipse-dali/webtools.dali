@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
@@ -91,7 +92,7 @@ public class GenericJavaJoinColumn
 	}
 
 	public void setSpecifiedReferencedColumnName(String name) {
-		if (this.valuesAreDifferent(this.specifiedReferencedColumnName, name)) {
+		if (ObjectTools.notEquals(this.specifiedReferencedColumnName, name)) {
 			this.getColumnAnnotation().setReferencedColumnName(name);
 			this.removeColumnAnnotationIfUnset();
 			this.setSpecifiedReferencedColumnName_(name);

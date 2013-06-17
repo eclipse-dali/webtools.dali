@@ -14,11 +14,13 @@ import java.util.Collection;
 import java.util.Iterator;
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.collection.Bag;
+import org.eclipse.jpt.common.utility.internal.RuntimeExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterator.CompositeIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.iterator.TransformationIterator;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
+import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
@@ -210,6 +212,10 @@ public class CompositeCollectionValueModelTests
 			protected Iterator<Family> iterator_() {
 				return this.subject.families();
 			}
+			@Override
+			protected ChangeSupport buildChangeSupport() {
+				return new LocalChangeSupport(this, this.getListenerClass(), this.getListenerAspectName(), RuntimeExceptionHandler.instance());
+			}
 		};
 	}
 
@@ -257,6 +263,11 @@ public class CompositeCollectionValueModelTests
 			this.name = name;
 		}
 	
+		@Override
+		protected ChangeSupport buildChangeSupport() {
+			return new ChangeSupport(this, RuntimeExceptionHandler.instance());
+		}
+
 		public String getName() {
 			return this.name;
 		}

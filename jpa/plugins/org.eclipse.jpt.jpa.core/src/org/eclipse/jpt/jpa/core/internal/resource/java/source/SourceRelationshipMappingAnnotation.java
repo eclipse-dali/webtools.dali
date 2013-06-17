@@ -25,6 +25,7 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.RelationshipMappingAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.CascadeType;
 import org.eclipse.jpt.jpa.core.resource.java.FetchType;
@@ -131,7 +132,7 @@ abstract class SourceRelationshipMappingAnnotation
 	}
 
 	public void setTargetEntity(String targetEntity) {
-		if (this.attributeValueHasChanged(this.targetEntity, targetEntity)) {
+		if (ObjectTools.notEquals(this.targetEntity, targetEntity)) {
 			this.targetEntity = targetEntity;
 			this.fqTargetEntityClassNameStale = true;
 			this.targetEntityAdapter.setValue(targetEntity);
@@ -139,7 +140,7 @@ abstract class SourceRelationshipMappingAnnotation
 	}
 
 	private void syncTargetEntity(String astTargetEntity) {
-		if (this.attributeValueHasChanged(this.targetEntity, astTargetEntity)) {
+		if (ObjectTools.notEquals(this.targetEntity, astTargetEntity)) {
 			this.syncTargetEntity_(astTargetEntity);
 		}
 	}
@@ -191,7 +192,7 @@ abstract class SourceRelationshipMappingAnnotation
 	}
 
 	public void setFetch(FetchType fetch) {
-		if (this.attributeValueHasChanged(this.fetch, fetch)) {
+		if (ObjectTools.notEquals(this.fetch, fetch)) {
 			this.fetch = fetch;
 			this.fetchAdapter.setValue(FetchType.toJavaAnnotationValue(fetch));
 		}

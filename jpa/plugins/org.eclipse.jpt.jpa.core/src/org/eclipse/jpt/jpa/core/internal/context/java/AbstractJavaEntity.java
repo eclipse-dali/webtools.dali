@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
@@ -668,7 +669,7 @@ public abstract class AbstractJavaEntity
 	}
 
 	public void setSpecifiedInheritanceStrategy(InheritanceType inheritanceType) {
-		if (this.valuesAreDifferent(this.specifiedInheritanceStrategy, inheritanceType)) {
+		if (ObjectTools.notEquals(this.specifiedInheritanceStrategy, inheritanceType)) {
 			this.getInheritanceAnnotation().setStrategy(InheritanceType.toJavaResourceModel(inheritanceType));
 			this.removeInheritanceAnnotationIfUnset();
 			this.setSpecifiedInheritanceStrategy_(inheritanceType);
@@ -728,7 +729,7 @@ public abstract class AbstractJavaEntity
 	}
 
 	public void setSpecifiedDiscriminatorValue(String discriminatorValue) {
-		if (this.valuesAreDifferent(this.specifiedDiscriminatorValue, discriminatorValue)) {
+		if (ObjectTools.notEquals(this.specifiedDiscriminatorValue, discriminatorValue)) {
 			this.getDiscriminatorValueAnnotation().setValue(discriminatorValue);
 			this.removeDiscriminatorValueAnnotationIfUnset();
 			this.setSpecifiedDiscriminatorValue_(discriminatorValue);

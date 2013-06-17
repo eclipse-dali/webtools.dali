@@ -26,6 +26,7 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapt
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlJoinNodeAnnotation;
 
@@ -134,7 +135,7 @@ public class SourceXmlJoinNodeAnnotation
 	}
 	
 	public void setXmlPath(String xmlPath) {
-		if (this.attributeValueHasChanged(this.xmlPath, xmlPath)) {
+		if (ObjectTools.notEquals(this.xmlPath, xmlPath)) {
 			this.xmlPath = xmlPath;
 			this.xmlPathAdapter.setValue(xmlPath);
 		}
@@ -178,7 +179,7 @@ public class SourceXmlJoinNodeAnnotation
 	}
 	
 	public void setReferencedXmlPath(String referencedXmlPath) {
-		if (this.attributeValueHasChanged(this.referencedXmlPath, referencedXmlPath)) {
+		if (ObjectTools.notEquals(this.referencedXmlPath, referencedXmlPath)) {
 			this.referencedXmlPath = referencedXmlPath;
 			this.referencedXmlPathAdapter.setValue(referencedXmlPath);
 		}

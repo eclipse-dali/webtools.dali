@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkReadOnly;
@@ -51,7 +52,7 @@ public class EclipseLinkJavaReadOnly
 
 	public void setSpecifiedReadOnly(Boolean readOnly) {
 		readOnly = (readOnly == null) ? null : readOnly.booleanValue() ? readOnly : null;
-		if (this.valuesAreDifferent(readOnly, this.specifiedReadOnly)) {
+		if (ObjectTools.notEquals(readOnly, this.specifiedReadOnly)) {
 			ReadOnlyAnnotation annotation = this.getReadOnlyAnnotation();
 			if (readOnly != null) {
 				if (annotation == null) {

@@ -26,6 +26,7 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapt
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlPathAnnotation;
 
@@ -116,7 +117,7 @@ public class SourceXmlPathAnnotation
 	}
 	
 	public void setValue(String value) {
-		if (this.attributeValueHasChanged(this.value, value)) {
+		if (ObjectTools.notEquals(this.value, value)) {
 			this.value = value;
 			this.valueAdapter.setValue(value);
 		}

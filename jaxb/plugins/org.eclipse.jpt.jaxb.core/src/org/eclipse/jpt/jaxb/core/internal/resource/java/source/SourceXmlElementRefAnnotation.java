@@ -29,6 +29,7 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapt
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefAnnotation;
 
@@ -195,7 +196,7 @@ public final class SourceXmlElementRefAnnotation
 	}
 
 	public void setName(String name) {
-		if (this.attributeValueHasChanged(this.name, name)) {
+		if (ObjectTools.notEquals(this.name, name)) {
 			this.name = name;
 			this.nameAdapter.setValue(name);
 		}
@@ -238,7 +239,7 @@ public final class SourceXmlElementRefAnnotation
 	}
 
 	public void setNamespace(String namespace) {
-		if (this.attributeValueHasChanged(this.namespace, namespace)) {
+		if (ObjectTools.notEquals(this.namespace, namespace)) {
 			this.namespace = namespace;
 			this.namespaceAdapter.setValue(namespace);
 		}
@@ -281,7 +282,7 @@ public final class SourceXmlElementRefAnnotation
 	}
 
 	public void setRequired(Boolean required) {
-		if (this.attributeValueHasChanged(this.required, required)) {
+		if (ObjectTools.notEquals(this.required, required)) {
 			this.required = required;
 			this.requiredAdapter.setValue(required);
 		}
@@ -311,7 +312,7 @@ public final class SourceXmlElementRefAnnotation
 	}
 
 	public void setType(String type) {
-		if (this.attributeValueHasChanged(this.type, type)) {
+		if (ObjectTools.notEquals(this.type, type)) {
 			this.type = type;
 			this.typeAdapter.setValue(type);
 		}

@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.NameTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
@@ -140,7 +141,7 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, PA extends Ta
 	}
 
 	public void setSpecifiedName(String name) {
-		if (this.valuesAreDifferent(this.specifiedName, name)) {
+		if (ObjectTools.notEquals(this.specifiedName, name)) {
 			this.getTableAnnotation().setName(name);
 			this.removeTableAnnotationIfUnset();
 			this.setSpecifiedName_(name);
@@ -181,7 +182,7 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, PA extends Ta
 	}
 
 	public void setSpecifiedSchema(String schema) {
-		if (this.valuesAreDifferent(this.specifiedSchema, schema)) {
+		if (ObjectTools.notEquals(this.specifiedSchema, schema)) {
 			this.getTableAnnotation().setSchema(schema);
 			this.removeTableAnnotationIfUnset();
 			this.setSpecifiedSchema_(schema);
@@ -222,7 +223,7 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, PA extends Ta
 	}
 
 	public void setSpecifiedCatalog(String catalog) {
-		if (this.valuesAreDifferent(this.specifiedCatalog, catalog)) {
+		if (ObjectTools.notEquals(this.specifiedCatalog, catalog)) {
 			this.getTableAnnotation().setCatalog(catalog);
 			this.removeTableAnnotationIfUnset();
 			this.setSpecifiedCatalog_(catalog);

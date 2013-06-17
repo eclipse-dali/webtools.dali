@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.NullJavaDerivedIdentity2_0;
@@ -67,7 +68,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<A extends SingleRela
 	}
 
 	public void setSpecifiedOptional(Boolean optional) {
-		if (this.valuesAreDifferent(optional, this.specifiedOptional)) {
+		if (ObjectTools.notEquals(optional, this.specifiedOptional)) {
 			this.getAnnotationForUpdate().setOptional(optional);
 			this.setSpecifiedOptional_(optional);
 		}

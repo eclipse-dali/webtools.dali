@@ -21,6 +21,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.resource.java.DiscriminatorColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.DiscriminatorType;
 
@@ -81,7 +82,7 @@ public abstract class SourceBaseDiscriminatorColumnAnnotation
 	}
 
 	public void setDiscriminatorType(DiscriminatorType discriminatorType) {
-		if (this.attributeValueHasChanged(this.discriminatorType, discriminatorType)) {
+		if (ObjectTools.notEquals(this.discriminatorType, discriminatorType)) {
 			this.discriminatorType = discriminatorType;
 			this.discriminatorTypeAdapter.setValue(DiscriminatorType.toJavaAnnotationValue(discriminatorType));
 		}
@@ -113,7 +114,7 @@ public abstract class SourceBaseDiscriminatorColumnAnnotation
 	}
 
 	public void setLength(Integer length) {
-		if (this.attributeValueHasChanged(this.length, length)) {
+		if (ObjectTools.notEquals(this.length, length)) {
 			this.length = length;
 			this.lengthAdapter.setValue(length);
 		}

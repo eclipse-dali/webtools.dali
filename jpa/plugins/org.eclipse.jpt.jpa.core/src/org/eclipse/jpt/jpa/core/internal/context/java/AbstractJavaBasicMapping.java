@@ -13,6 +13,7 @@ import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.utility.Association;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.SimpleAssociation;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaFactory;
@@ -116,7 +117,7 @@ public abstract class AbstractJavaBasicMapping
 	}
 
 	public void setSpecifiedFetch(FetchType fetch) {
-		if (this.valuesAreDifferent(fetch, this.specifiedFetch)) {
+		if (ObjectTools.notEquals(fetch, this.specifiedFetch)) {
 			this.getAnnotationForUpdate().setFetch(FetchType.toJavaResourceModel(fetch));
 			this.setSpecifiedFetch_(fetch);
 		}
@@ -159,7 +160,7 @@ public abstract class AbstractJavaBasicMapping
 	}
 
 	public void setSpecifiedOptional(Boolean optional) {
-		if (this.valuesAreDifferent(optional, this.specifiedOptional)) {
+		if (ObjectTools.notEquals(optional, this.specifiedOptional)) {
 			this.getAnnotationForUpdate().setOptional(optional);
 			this.setSpecifiedOptional_(optional);
 		}

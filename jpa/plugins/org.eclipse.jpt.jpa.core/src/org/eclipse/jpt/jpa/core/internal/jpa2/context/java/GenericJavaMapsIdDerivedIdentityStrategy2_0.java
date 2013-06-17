@@ -79,7 +79,7 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 	}
 
 	public void setSpecifiedIdAttributeName(String idAttributeName) {
-		if (this.valuesAreDifferent(idAttributeName, this.specifiedIdAttributeName)) {
+		if (ObjectTools.notEquals(idAttributeName, this.specifiedIdAttributeName)) {
 			this.getAnnotation().setValue(idAttributeName);
 			this.setSpecifiedIdAttributeName_(idAttributeName);
 		}

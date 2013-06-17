@@ -19,6 +19,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OneToManyAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
@@ -112,7 +113,7 @@ public final class SourceOneToManyAnnotation
 	}
 
 	public void setMappedBy(String mappedBy) {
-		if (this.attributeValueHasChanged(this.mappedBy, mappedBy)) {
+		if (ObjectTools.notEquals(this.mappedBy, mappedBy)) {
 			this.mappedBy = mappedBy;
 			this.mappedByAdapter.setValue(mappedBy);
 		}
@@ -147,7 +148,7 @@ public final class SourceOneToManyAnnotation
 	}
 
 	public void setOrphanRemoval(Boolean orphanRemoval) {
-		if (this.attributeValueHasChanged(this.orphanRemoval, orphanRemoval)) {
+		if (ObjectTools.notEquals(this.orphanRemoval, orphanRemoval)) {
 			this.orphanRemoval = orphanRemoval;
 			this.orphanRemovalAdapter.setValue(orphanRemoval);
 		}

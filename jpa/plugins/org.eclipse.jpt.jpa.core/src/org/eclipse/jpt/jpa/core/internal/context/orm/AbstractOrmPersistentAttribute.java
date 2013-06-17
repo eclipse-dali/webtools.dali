@@ -20,6 +20,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -125,7 +126,7 @@ public abstract class AbstractOrmPersistentAttribute
 	}
 
 	public OrmAttributeMapping setMappingKey(String mappingKey) {
-		if (this.valuesAreDifferent(this.getMappingKey(), mappingKey)) {
+		if (ObjectTools.notEquals(this.getMappingKey(), mappingKey)) {
 			this.setMappingKey_(mappingKey);
 		}
 		return this.mapping;

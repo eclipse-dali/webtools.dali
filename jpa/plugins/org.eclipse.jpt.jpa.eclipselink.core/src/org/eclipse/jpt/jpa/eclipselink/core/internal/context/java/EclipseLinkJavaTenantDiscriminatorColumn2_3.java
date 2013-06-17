@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.AbstractJavaNamedDiscriminatorColumn;
@@ -93,7 +94,7 @@ public class EclipseLinkJavaTenantDiscriminatorColumn2_3
 	}
 
 	public void setSpecifiedTableName(String tableName) {
-		if (this.valuesAreDifferent(this.specifiedTableName, tableName)) {
+		if (ObjectTools.notEquals(this.specifiedTableName, tableName)) {
 			this.getColumnAnnotation().setTable(tableName);
 			this.removeColumnAnnotationIfUnset();
 			this.setSpecifiedTableName_(tableName);
@@ -140,7 +141,7 @@ public class EclipseLinkJavaTenantDiscriminatorColumn2_3
 	}
 
 	public void setSpecifiedContextProperty(String contextProperty) {
-		if (this.valuesAreDifferent(this.specifiedContextProperty, contextProperty)) {
+		if (ObjectTools.notEquals(this.specifiedContextProperty, contextProperty)) {
 			this.getColumnAnnotation().setContextProperty(contextProperty);
 			this.removeColumnAnnotationIfUnset();
 			this.setSpecifiedContextProperty_(contextProperty);
@@ -187,7 +188,7 @@ public class EclipseLinkJavaTenantDiscriminatorColumn2_3
 	}
 
 	public void setSpecifiedPrimaryKey(Boolean primaryKey) {
-		if (this.valuesAreDifferent(this.specifiedPrimaryKey, primaryKey)) {
+		if (ObjectTools.notEquals(this.specifiedPrimaryKey, primaryKey)) {
 			this.getColumnAnnotation().setPrimaryKey(primaryKey);
 			this.removeColumnAnnotationIfUnset();
 			this.setSpecifiedPrimaryKey_(primaryKey);

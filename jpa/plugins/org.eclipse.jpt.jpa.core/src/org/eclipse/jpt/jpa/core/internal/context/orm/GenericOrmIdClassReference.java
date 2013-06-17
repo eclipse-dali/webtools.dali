@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.AccessType;
@@ -115,7 +116,7 @@ public class GenericOrmIdClassReference
 	}
 
 	public void setSpecifiedIdClassName(String name) {
-		if (this.valuesAreDifferent(this.specifiedIdClassName, name)) {
+		if (ObjectTools.notEquals(this.specifiedIdClassName, name)) {
 			XmlClassReference xmlClassRef = this.getXmlIdClassRefForUpdate();
 			this.setSpecifiedIdClassName_(name);
 			xmlClassRef.setClassName(name);

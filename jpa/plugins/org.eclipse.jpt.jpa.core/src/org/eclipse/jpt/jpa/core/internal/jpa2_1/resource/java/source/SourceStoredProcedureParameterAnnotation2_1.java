@@ -25,6 +25,7 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.JPA2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.ParameterMode_2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameterAnnotation2_1;
@@ -133,7 +134,7 @@ public final class SourceStoredProcedureParameterAnnotation2_1
 	}
 
 	public void setName(String name) {
-		if (this.attributeValueHasChanged(this.name, name)) {
+		if (ObjectTools.notEquals(this.name, name)) {
 			this.name = name;
 			this.nameAdapter.setValue(name);
 		}
@@ -171,7 +172,7 @@ public final class SourceStoredProcedureParameterAnnotation2_1
 	}
 
 	public void setMode(ParameterMode_2_1 mode) {
-		if (this.attributeValueHasChanged(this.mode, mode)) {
+		if (ObjectTools.notEquals(this.mode, mode)) {
 			this.mode = mode;
 			this.modeAdapter.setValue(ParameterMode_2_1.toJavaAnnotationValue(mode));
 		}
@@ -209,7 +210,7 @@ public final class SourceStoredProcedureParameterAnnotation2_1
 	}
 
 	public void setTypeName(String type) {
-		if (this.attributeValueHasChanged(this.type, type)) {
+		if (ObjectTools.notEquals(this.type, type)) {
 			this.type = type;
 			this.fqTypeNameStale = true;
 			this.typeAdapter.setValue(type);
@@ -217,7 +218,7 @@ public final class SourceStoredProcedureParameterAnnotation2_1
 	}
 	
 	private void syncType(String astType) {
-		if (this.attributeValueHasChanged(this.type, astType)) {
+		if (ObjectTools.notEquals(this.type, astType)) {
 			this.syncType_(astType);
 		}
 	}

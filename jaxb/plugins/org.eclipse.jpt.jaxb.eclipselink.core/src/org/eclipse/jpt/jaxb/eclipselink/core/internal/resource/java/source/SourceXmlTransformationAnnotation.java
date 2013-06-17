@@ -22,6 +22,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlTransformationAnnotation;
 
@@ -88,7 +89,7 @@ public class SourceXmlTransformationAnnotation
 	}
 	
 	public void setOptional(Boolean optional) {
-		if (attributeValueHasChanged(this.optional, optional)) {
+		if (ObjectTools.notEquals(this.optional, optional)) {
 			this.optional = optional;
 			this.optionalAdapter.setValue(optional);
 		}

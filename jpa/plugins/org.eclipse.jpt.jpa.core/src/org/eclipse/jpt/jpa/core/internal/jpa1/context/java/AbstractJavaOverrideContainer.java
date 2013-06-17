@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
@@ -530,7 +531,7 @@ public abstract class AbstractJavaOverrideContainer<
 			if (override == exclude) {
 				continue;  // skip
 			}
-			if (this.valuesAreEqual(override.getName(), name)) {
+			if (ObjectTools.equals(override.getName(), name)) {
 				return override;
 			}
 		}

@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.ConverterAnnotation2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.JPA2_1;
 
@@ -71,7 +72,7 @@ public final class SourceConverterAnnotation2_1
 	}
 
 	public void setAutoApply(Boolean autoApply) {
-		if (this.attributeValueHasChanged(this.autoApply, autoApply)) {
+		if (ObjectTools.notEquals(this.autoApply, autoApply)) {
 			this.autoApply = autoApply;
 			this.autoApplyAdapter.setValue(autoApply);
 		}

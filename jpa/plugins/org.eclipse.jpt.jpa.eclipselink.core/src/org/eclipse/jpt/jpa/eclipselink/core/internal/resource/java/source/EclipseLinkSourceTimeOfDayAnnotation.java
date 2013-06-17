@@ -20,6 +20,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TimeOfDayAnnotation;
 
@@ -117,7 +118,7 @@ public final class EclipseLinkSourceTimeOfDayAnnotation
 	}
 
 	public void setHour(Integer hour) {
-		if (this.attributeValueHasChanged(this.hour, hour)) {
+		if (ObjectTools.notEquals(this.hour, hour)) {
 			this.hour = hour;
 			this.hourAdapter.setValue(hour);
 		}
@@ -147,7 +148,7 @@ public final class EclipseLinkSourceTimeOfDayAnnotation
 	}
 
 	public void setMinute(Integer minute) {
-		if (this.attributeValueHasChanged(this.minute, minute)) {
+		if (ObjectTools.notEquals(this.minute, minute)) {
 			this.minute = minute;
 			this.minuteAdapter.setValue(minute);
 		}
@@ -177,7 +178,7 @@ public final class EclipseLinkSourceTimeOfDayAnnotation
 	}
 
 	public void setSecond(Integer newSecond) {
-		if (this.attributeValueHasChanged(this.second, newSecond)) {
+		if (ObjectTools.notEquals(this.second, newSecond)) {
 			this.second = newSecond;
 			this.secondAdapter.setValue(newSecond);
 		}
@@ -207,7 +208,7 @@ public final class EclipseLinkSourceTimeOfDayAnnotation
 	}
 
 	public void setMillisecond(Integer millisecond) {
-		if (this.attributeValueHasChanged(this.millisecond, millisecond)) {
+		if (ObjectTools.notEquals(this.millisecond, millisecond)) {
 			this.millisecond = millisecond;
 			this.millisecondAdapter.setValue(millisecond);
 		}

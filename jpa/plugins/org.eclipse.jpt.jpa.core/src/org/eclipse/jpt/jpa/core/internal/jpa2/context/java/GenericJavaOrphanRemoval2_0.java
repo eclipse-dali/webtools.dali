@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
@@ -59,7 +60,7 @@ public class GenericJavaOrphanRemoval2_0
 	}
 
 	public void setSpecifiedOrphanRemoval(Boolean orphanRemoval) {
-		if (this.valuesAreDifferent(orphanRemoval, this.specifiedOrphanRemoval)) {
+		if (ObjectTools.notEquals(orphanRemoval, this.specifiedOrphanRemoval)) {
 			this.getMappingAnnotationForUpdate().setOrphanRemoval(orphanRemoval);
 			this.setSpecifiedOrphanRemoval_(orphanRemoval);
 		}

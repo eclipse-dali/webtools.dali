@@ -19,8 +19,9 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConversionValueAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 
 /**
  * <code>org.eclipse.persistence.annotations.ConversionValue</code>
@@ -88,7 +89,7 @@ final class EclipseLinkSourceConversionValueAnnotation
 	}
 
 	public void setDataValue(String dataValue) {
-		if (this.attributeValueHasChanged(this.dataValue, dataValue)) {
+		if (ObjectTools.notEquals(this.dataValue, dataValue)) {
 			this.dataValue = dataValue;
 			this.dataValueAdapter.setValue(dataValue);
 		}
@@ -126,7 +127,7 @@ final class EclipseLinkSourceConversionValueAnnotation
 	}
 
 	public void setObjectValue(String objectValue) {
-		if (this.attributeValueHasChanged(this.objectValue, objectValue)) {
+		if (ObjectTools.notEquals(this.objectValue, objectValue)) {
 			this.objectValue = objectValue;
 			this.objectValueAdapter.setValue(objectValue);
 		}

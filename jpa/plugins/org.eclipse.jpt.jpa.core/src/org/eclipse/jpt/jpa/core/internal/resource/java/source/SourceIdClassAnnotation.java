@@ -22,6 +22,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.resource.java.IdClassAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
@@ -112,7 +113,7 @@ public final class SourceIdClassAnnotation
 	}
 
 	public void setValue(String value) {
-		if (this.attributeValueHasChanged(this.value, value)) {
+		if (ObjectTools.notEquals(this.value, value)) {
 			this.value = value;
 			this.fqClassNameStale = true;
 			this.valueAdapter.setValue(value);
@@ -120,7 +121,7 @@ public final class SourceIdClassAnnotation
 	}
 
 	private void syncValue(String astValue) {
-		if (this.attributeValueHasChanged(this.value, astValue)) {
+		if (ObjectTools.notEquals(this.value, astValue)) {
 			this.syncValue_(astValue);
 		}
 	}

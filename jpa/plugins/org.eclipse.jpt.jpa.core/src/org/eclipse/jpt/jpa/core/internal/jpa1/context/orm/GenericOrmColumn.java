@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.VirtualColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmBaseColumn;
@@ -77,7 +78,7 @@ public class GenericOrmColumn
 	}
 
 	public void setSpecifiedLength(Integer length) {
-		if (this.valuesAreDifferent(this.specifiedLength, length)) {
+		if (ObjectTools.notEquals(this.specifiedLength, length)) {
 			XmlColumn xmlColumn = this.getXmlColumnForUpdate();
 			this.setSpecifiedLength_(length);
 			xmlColumn.setLength(length);
@@ -112,7 +113,7 @@ public class GenericOrmColumn
 	}
 
 	public void setSpecifiedPrecision(Integer precision) {
-		if (this.valuesAreDifferent(this.specifiedPrecision, precision)) {
+		if (ObjectTools.notEquals(this.specifiedPrecision, precision)) {
 			XmlColumn xmlColumn = this.getXmlColumnForUpdate();
 			this.setSpecifiedPrecision_(precision);
 			xmlColumn.setPrecision(precision);
@@ -147,7 +148,7 @@ public class GenericOrmColumn
 	}
 
 	public void setSpecifiedScale(Integer scale) {
-		if (this.valuesAreDifferent(this.specifiedScale, scale)) {
+		if (ObjectTools.notEquals(this.specifiedScale, scale)) {
 			XmlColumn xmlColumn = this.getXmlColumnForUpdate();
 			this.setSpecifiedScale_(scale);
 			xmlColumn.setScale(scale);

@@ -13,6 +13,7 @@ import java.util.List;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -95,7 +96,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 	}
 
 	public void setSpecifiedTargetEntity(String entity) {
-		if (this.valuesAreDifferent(entity, this.specifiedTargetEntity)) {
+		if (ObjectTools.notEquals(entity, this.specifiedTargetEntity)) {
 			this.getAnnotationForUpdate().setTargetEntity(entity);
 			this.setSpecifiedTargetEntity_(entity);
 		}
@@ -186,7 +187,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 	}
 
 	public void setSpecifiedFetch(FetchType fetch) {
-		if (this.valuesAreDifferent(fetch, this.specifiedFetch)) {
+		if (ObjectTools.notEquals(fetch, this.specifiedFetch)) {
 			this.getAnnotationForUpdate().setFetch(FetchType.toJavaResourceModel(fetch));
 			this.setSpecifiedFetch_(fetch);
 		}

@@ -29,6 +29,7 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapt
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedExpressionConverter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
@@ -154,7 +155,7 @@ public final class SourceXmlTypeAnnotation
 	}
 
 	public void setFactoryClass(String factoryClass) {
-		if (this.attributeValueHasChanged(this.factoryClass, factoryClass)) {
+		if (ObjectTools.notEquals(this.factoryClass, factoryClass)) {
 			this.factoryClass = factoryClass;
 			this.factoryClassAdapter.setValue(factoryClass);
 		}
@@ -200,7 +201,7 @@ public final class SourceXmlTypeAnnotation
 	}
 
 	public void setFactoryMethod(String factoryMethod) {
-		if (this.attributeValueHasChanged(this.factoryMethod, factoryMethod)) {
+		if (ObjectTools.notEquals(this.factoryMethod, factoryMethod)) {
 			this.factoryMethod = factoryMethod;
 			this.factoryMethodAdapter.setValue(factoryMethod);
 		}
@@ -230,7 +231,7 @@ public final class SourceXmlTypeAnnotation
 	}
 
 	public void setName(String name) {
-		if (this.attributeValueHasChanged(this.name, name)) {
+		if (ObjectTools.notEquals(this.name, name)) {
 			this.name = name;
 			this.nameAdapter.setValue(name);
 		}
@@ -273,7 +274,7 @@ public final class SourceXmlTypeAnnotation
 	}
 
 	public void setNamespace(String namespace) {
-		if (this.attributeValueHasChanged(this.namespace, namespace)) {
+		if (ObjectTools.notEquals(this.namespace, namespace)) {
 			this.namespace = namespace;
 			this.namespaceAdapter.setValue(namespace);
 		}

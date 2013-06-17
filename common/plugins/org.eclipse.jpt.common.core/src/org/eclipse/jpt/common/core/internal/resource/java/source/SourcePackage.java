@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.JDTPackage;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedPackage;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * @author Dmitry Geraskov
@@ -77,7 +78,7 @@ public final class SourcePackage
 	}
 
 	private void syncName(String astName) {
-		if (valuesAreDifferent(astName, this.name)){
+		if (ObjectTools.notEquals(astName, this.name)){
 			String old = this.name;
 			this.name = astName;
 			this.firePropertyChanged(NAME_PROPERTY, old, astName);

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedNamedDiscriminatorColumn;
@@ -68,7 +69,7 @@ public abstract class AbstractOrmNamedDiscriminatorColumn<PA extends NamedDiscri
 	}
 
 	public void setSpecifiedDiscriminatorType(DiscriminatorType discriminatorType) {
-		if (this.valuesAreDifferent(this.specifiedDiscriminatorType, discriminatorType)) {
+		if (ObjectTools.notEquals(this.specifiedDiscriminatorType, discriminatorType)) {
 			X xmlColumn = this.getXmlColumnForUpdate();
 			this.setSpecifiedDiscriminatorType_(discriminatorType);
 			xmlColumn.setDiscriminatorType(DiscriminatorType.toOrmResourceModel(discriminatorType));
@@ -113,7 +114,7 @@ public abstract class AbstractOrmNamedDiscriminatorColumn<PA extends NamedDiscri
 	}
 
 	public void setSpecifiedLength(Integer length) {
-		if (this.valuesAreDifferent(this.specifiedLength, length)) {
+		if (ObjectTools.notEquals(this.specifiedLength, length)) {
 			X xmlColumn = this.getXmlColumnForUpdate();
 			this.setSpecifiedLength_(length);
 			xmlColumn.setLength(length);

@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
@@ -207,7 +208,7 @@ public class EclipseLinkOrmPersistentTypeImpl
 	}
 
 	public void setSpecifiedGetMethod(String getMethod) {
-		if (this.valuesAreDifferent(this.specifiedGetMethod, getMethod)) {
+		if (ObjectTools.notEquals(this.specifiedGetMethod, getMethod)) {
 			XmlAccessMethods xmlAccessMethods = this.getXmlAccessMethodsForUpdate();
 			this.setSpecifiedGetMethod_(getMethod);
 			xmlAccessMethods.setGetMethod(getMethod);
@@ -257,7 +258,7 @@ public class EclipseLinkOrmPersistentTypeImpl
 	}
 
 	public void setSpecifiedSetMethod(String setMethod) {
-		if (this.valuesAreDifferent(this.specifiedSetMethod, setMethod)) {
+		if (ObjectTools.notEquals(this.specifiedSetMethod, setMethod)) {
 			XmlAccessMethods xmlAccessMethods = this.getXmlAccessMethodsForUpdate();
 			this.setSpecifiedSetMethod_(setMethod);
 			xmlAccessMethods.setSetMethod(setMethod);

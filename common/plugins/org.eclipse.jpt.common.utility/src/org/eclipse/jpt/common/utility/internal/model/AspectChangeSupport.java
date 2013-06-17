@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,8 @@ package org.eclipse.jpt.common.utility.internal.model;
 import java.util.Collection;
 import java.util.EventListener;
 import java.util.List;
+import org.eclipse.jpt.common.utility.ExceptionHandler;
+import org.eclipse.jpt.common.utility.internal.DefaultExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
@@ -39,17 +41,21 @@ import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
 public class AspectChangeSupport
 	extends ChangeSupport
 {
-	private static final long serialVersionUID = 1L;
 	protected static final Class<Listener> LISTENER_CLASS = Listener.class;
 
 
+	// TODO remove
 	public AspectChangeSupport(Model source, Listener listener) {
-		this(source);
+		this(source, listener, DefaultExceptionHandler.instance());
+	}
+
+	public AspectChangeSupport(Model source, Listener listener, ExceptionHandler exceptionHandler) {
+		this(source, exceptionHandler);
 		this.addListener(listener);
 	}
 
-	public AspectChangeSupport(Model source) {
-		super(source);
+	public AspectChangeSupport(Model source, ExceptionHandler exceptionHandler) {
+		super(source, exceptionHandler);
 	}
 
 	protected void aspectChanged(String aspectName) {

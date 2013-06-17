@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceNamedColumnAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumnAnnotation2_0;
@@ -107,7 +108,7 @@ public final class SourceOrderColumnAnnotation2_0
 	}
 
 	public void setNullable(Boolean nullable) {
-		if (this.attributeValueHasChanged(this.nullable, nullable)) {
+		if (ObjectTools.notEquals(this.nullable, nullable)) {
 			this.nullable = nullable;
 			this.nullableAdapter.setValue(nullable);
 		}
@@ -149,7 +150,7 @@ public final class SourceOrderColumnAnnotation2_0
 	}
 
 	public void setInsertable(Boolean insertable) {
-		if (this.attributeValueHasChanged(this.insertable, insertable)) {
+		if (ObjectTools.notEquals(this.insertable, insertable)) {
 			this.insertable = insertable;
 			this.insertableAdapter.setValue(insertable);
 		}
@@ -191,7 +192,7 @@ public final class SourceOrderColumnAnnotation2_0
 	}
 
 	public void setUpdatable(Boolean updatable) {
-		if (this.attributeValueHasChanged(this.updatable, updatable)) {
+		if (ObjectTools.notEquals(this.updatable, updatable)) {
 			this.updatable = updatable;
 			this.updatableAdapter.setValue(updatable);
 		}

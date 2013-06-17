@@ -25,9 +25,10 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConversionValueAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ObjectTypeConverterAnnotation;
 
 /**
@@ -125,7 +126,7 @@ public final class EclipseLinkSourceObjectTypeConverterAnnotation
 	}
 
 	public void setDefaultObjectValue(String defaultObjectValue) {
-		if (this.attributeValueHasChanged(this.defaultObjectValue, defaultObjectValue)) {
+		if (ObjectTools.notEquals(this.defaultObjectValue, defaultObjectValue)) {
 			this.defaultObjectValue = defaultObjectValue;
 			this.defaultObjectValueAdapter.setValue(defaultObjectValue);
 		}

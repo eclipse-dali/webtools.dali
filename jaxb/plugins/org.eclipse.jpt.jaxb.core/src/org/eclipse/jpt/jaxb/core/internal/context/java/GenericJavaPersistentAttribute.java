@@ -198,7 +198,7 @@ public class GenericJavaPersistentAttribute
 				this.setMappingKey_(key);  // replace the default mapping
 			}
 		} else {
-			if (this.valuesAreEqual(key, this.mapping.getKey())) {
+			if (ObjectTools.equals(key, this.mapping.getKey())) {
 				// leave the specified mapping unchanged
 			} else {
 				this.setMappingKey_(key);  // replace the specified mapping
@@ -305,7 +305,7 @@ public class GenericJavaPersistentAttribute
 				this.setMapping(this.buildMapping(definition));
 			} else {
 				// specified => specified
-				if (this.valuesAreEqual(definition.getKey(), this.mapping.getKey())) {
+				if (ObjectTools.equals(definition.getKey(), this.mapping.getKey())) {
 					this.mapping.synchronizeWithResourceModel();
 				} else {
 					this.setMapping(this.buildMapping(definition));

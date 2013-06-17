@@ -13,10 +13,9 @@ import java.util.EventListener;
 import java.util.prefs.PreferenceChangeEvent;
 import java.util.prefs.PreferenceChangeListener;
 import java.util.prefs.Preferences;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.StringToBooleanTransformer;
-import org.eclipse.jpt.common.utility.internal.transformer.StringToIntegerTransformer;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -362,7 +361,7 @@ public class PreferencePropertyValueModel<P>
 	 * would like to ALWAYS pass through the new value to the preference.
 	 */
 	protected boolean preferenceIsToBeSet(Object oldValue, Object newValue) {
-		return this.attributeValueHasChanged(oldValue, newValue);
+		return ObjectTools.notEquals(oldValue, newValue);
 	}
 
 	/**

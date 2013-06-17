@@ -21,6 +21,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.resource.java.GeneratedValueAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.GenerationType;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
@@ -96,7 +97,7 @@ public final class SourceGeneratedValueAnnotation
 	}
 	
 	public void setStrategy(GenerationType strategy) {
-		if (this.attributeValueHasChanged(this.strategy, strategy)) {
+		if (ObjectTools.notEquals(this.strategy, strategy)) {
 			this.strategy = strategy;
 			this.strategyAdapter.setValue(GenerationType.toJavaAnnotationValue(strategy));
 		}
@@ -126,7 +127,7 @@ public final class SourceGeneratedValueAnnotation
 	}
 	
 	public void setGenerator(String generator) {
-		if (this.attributeValueHasChanged(this.generator, generator)) {
+		if (ObjectTools.notEquals(this.generator, generator)) {
 			this.generator = generator;
 			this.generatorAdapter.setValue(generator);
 		}

@@ -22,6 +22,7 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
 
@@ -101,7 +102,7 @@ public class SourceXmlNsAnnotation
 	}
 	
 	public void setNamespaceURI(String namespaceURI) {
-		if (attributeValueHasChanged(this.namespaceURI, namespaceURI)) {
+		if (ObjectTools.notEquals(this.namespaceURI, namespaceURI)) {
 			this.namespaceURI = namespaceURI;
 			this.namespaceURIAdapter.setValue(namespaceURI);
 		}
@@ -137,7 +138,7 @@ public class SourceXmlNsAnnotation
 	}
 	
 	public void setPrefix(String prefix) {
-		if (attributeValueHasChanged(this.prefix, prefix)) {
+		if (ObjectTools.notEquals(this.prefix, prefix)) {
 			this.prefix = prefix;
 			this.prefixAdapter.setValue(prefix);
 		}

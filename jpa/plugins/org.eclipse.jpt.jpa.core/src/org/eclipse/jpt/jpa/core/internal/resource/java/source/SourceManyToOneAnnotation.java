@@ -19,6 +19,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.ManyToOneAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
@@ -99,7 +100,7 @@ public final class SourceManyToOneAnnotation
 	}
 
 	public void setOptional(Boolean optional) {
-		if (this.attributeValueHasChanged(this.optional, optional)) {
+		if (ObjectTools.notEquals(this.optional, optional)) {
 			this.optional = optional;
 			this.optionalAdapter.setValue(optional);
 		}

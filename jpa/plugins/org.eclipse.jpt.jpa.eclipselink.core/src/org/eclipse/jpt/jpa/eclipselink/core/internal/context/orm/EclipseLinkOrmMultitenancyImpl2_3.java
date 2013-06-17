@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
@@ -180,7 +181,7 @@ public class EclipseLinkOrmMultitenancyImpl2_3
 	}
 
 	public void setSpecifiedType(EclipseLinkMultitenantType2_3 type) {
-		if (this.valuesAreDifferent(this.specifiedType, type)) {
+		if (ObjectTools.notEquals(this.specifiedType, type)) {
 			XmlMultitenant xmlMultitenant = this.getXmlMultitenantForUpdate();
 			this.setSpecifiedType_(type);
 			xmlMultitenant.setType(EclipseLinkMultitenantType2_3.toOrmResourceModel(type));
@@ -234,7 +235,7 @@ public class EclipseLinkOrmMultitenancyImpl2_3
 	}
 
 	public void setSpecifiedIncludeCriteria(Boolean includeCriteria) {
-		if (this.valuesAreDifferent(this.specifiedIncludeCriteria, includeCriteria)) {
+		if (ObjectTools.notEquals(this.specifiedIncludeCriteria, includeCriteria)) {
 			XmlMultitenant xmlMultitenant = this.getXmlMultitenantForUpdate();
 			this.setSpecifiedIncludeCriteria_(includeCriteria);
 			xmlMultitenant.setIncludeCriteria(includeCriteria);

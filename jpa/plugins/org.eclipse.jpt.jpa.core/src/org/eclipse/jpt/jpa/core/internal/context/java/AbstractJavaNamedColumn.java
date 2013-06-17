@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
@@ -131,7 +132,7 @@ public abstract class AbstractJavaNamedColumn<PA extends NamedColumn.ParentAdapt
 	}
 
 	public void setSpecifiedName(String name) {
-		if (this.valuesAreDifferent(this.specifiedName, name)) {
+		if (ObjectTools.notEquals(this.specifiedName, name)) {
 			this.getColumnAnnotation().setName(name);
 			this.removeColumnAnnotationIfUnset();
 			this.setSpecifiedName_(name);
@@ -170,7 +171,7 @@ public abstract class AbstractJavaNamedColumn<PA extends NamedColumn.ParentAdapt
 	}
 
 	public void setColumnDefinition(String columnDefinition) {
-		if (this.valuesAreDifferent(this.columnDefinition, columnDefinition)) {
+		if (ObjectTools.notEquals(this.columnDefinition, columnDefinition)) {
 			this.getColumnAnnotation().setColumnDefinition(columnDefinition);
 			this.removeColumnAnnotationIfUnset();
 			this.setColumnDefinition_(columnDefinition);

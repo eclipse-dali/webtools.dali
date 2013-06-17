@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,8 @@ package org.eclipse.jpt.common.utility.internal.model.value;
 
 import java.util.EventListener;
 
+import org.eclipse.jpt.common.utility.ExceptionHandler;
+import org.eclipse.jpt.common.utility.internal.DefaultExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.common.utility.internal.model.SingleAspectChangeSupport;
@@ -233,13 +235,16 @@ public abstract class AspectAdapter<S, A>
 	 * A relevant listener is a listener of the relevant type and aspect or a
 	 * general-purpose listener.
 	 */
-	protected class LocalChangeSupport
+	public class LocalChangeSupport
 		extends SingleAspectChangeSupport
 	{
-		private static final long serialVersionUID = 1L;
-
+		// TODO remove
 		public LocalChangeSupport(AspectAdapter<S, A> source, Class<? extends EventListener> validListenerClass, String validAspectName) {
-			super(source, validListenerClass, validAspectName);
+			this(source, validListenerClass, validAspectName, DefaultExceptionHandler.instance());
+		}
+
+		public LocalChangeSupport(AspectAdapter<S, A> source, Class<? extends EventListener> validListenerClass, String validAspectName, ExceptionHandler exceptionHandler) {
+			super(source, validListenerClass, validAspectName, exceptionHandler);
 		}
 
 		protected boolean hasNoListeners() {

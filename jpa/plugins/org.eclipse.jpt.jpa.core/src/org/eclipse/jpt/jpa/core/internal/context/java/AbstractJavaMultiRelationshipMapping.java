@@ -385,7 +385,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	}
 
 	public void setSpecifiedMapKeyClass(String mapKeyClass) {
-		if (this.valuesAreDifferent(mapKeyClass, this.specifiedMapKeyClass)) {
+		if (ObjectTools.notEquals(mapKeyClass, this.specifiedMapKeyClass)) {
 			MapKeyClassAnnotation2_0 annotation = this.getMapKeyClassAnnotation();
 			if (mapKeyClass == null) {
 				if (annotation != null) {

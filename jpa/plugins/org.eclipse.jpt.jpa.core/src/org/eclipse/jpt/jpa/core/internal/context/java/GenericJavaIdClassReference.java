@@ -14,6 +14,7 @@ import org.eclipse.jpt.common.core.internal.utility.TypeTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
@@ -74,7 +75,7 @@ public class GenericJavaIdClassReference
 	}
 
 	public void setSpecifiedIdClassName(String name) {
-		if (this.valuesAreDifferent(name, this.idClassName)) {
+		if (ObjectTools.notEquals(name, this.idClassName)) {
 			this.getIdClassAnnotationForUpdate().setValue(name);
 			this.removeIdClassAnnotationIfUnset();
 			this.setIdClassName_(name);

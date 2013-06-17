@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -164,7 +165,7 @@ public class EclipseLinkOrmCachingImpl
 	}
 
 	public void setSpecifiedType(EclipseLinkCacheType type) {
-		if (this.valuesAreDifferent(this.specifiedType, type)) {
+		if (ObjectTools.notEquals(this.specifiedType, type)) {
 			XmlCache xmlCache = this.getXmlCacheForUpdate();
 			this.setSpecifiedType_(type);
 			xmlCache.setType(EclipseLinkCacheType.toOrmResourceModel(type));
@@ -217,7 +218,7 @@ public class EclipseLinkOrmCachingImpl
 	}
 
 	public void setSpecifiedSize(Integer size) {
-		if (this.valuesAreDifferent(this.specifiedSize, size)) {
+		if (ObjectTools.notEquals(this.specifiedSize, size)) {
 			XmlCache xmlCache = this.getXmlCacheForUpdate();
 			this.setSpecifiedSize_(size);
 			xmlCache.setSize(size);
@@ -270,7 +271,7 @@ public class EclipseLinkOrmCachingImpl
 	}
 
 	public void setSpecifiedShared(Boolean shared) {
-		if (this.valuesAreDifferent(this.specifiedShared, shared)) {
+		if (ObjectTools.notEquals(this.specifiedShared, shared)) {
 			XmlCache xmlCache = this.getXmlCacheForUpdate();
 			this.setSpecifiedShared_(shared);
 			xmlCache.setShared(shared);
@@ -323,7 +324,7 @@ public class EclipseLinkOrmCachingImpl
 	}
 
 	public void setSpecifiedAlwaysRefresh(Boolean alwaysRefresh) {
-		if (this.valuesAreDifferent(this.specifiedAlwaysRefresh, alwaysRefresh)) {
+		if (ObjectTools.notEquals(this.specifiedAlwaysRefresh, alwaysRefresh)) {
 			XmlCache xmlCache = this.getXmlCacheForUpdate();
 			this.setSpecifiedAlwaysRefresh_(alwaysRefresh);
 			xmlCache.setAlwaysRefresh(alwaysRefresh);
@@ -368,7 +369,7 @@ public class EclipseLinkOrmCachingImpl
 	}
 
 	public void setSpecifiedRefreshOnlyIfNewer(Boolean refreshOnlyIfNewer) {
-		if (this.valuesAreDifferent(this.specifiedRefreshOnlyIfNewer, refreshOnlyIfNewer)) {
+		if (ObjectTools.notEquals(this.specifiedRefreshOnlyIfNewer, refreshOnlyIfNewer)) {
 			XmlCache xmlCache = this.getXmlCacheForUpdate();
 			this.setSpecifiedRefreshOnlyIfNewer_(refreshOnlyIfNewer);
 			xmlCache.setRefreshOnlyIfNewer(refreshOnlyIfNewer);
@@ -413,7 +414,7 @@ public class EclipseLinkOrmCachingImpl
 	}
 
 	public void setSpecifiedDisableHits(Boolean disableHits) {
-		if (this.valuesAreDifferent(this.specifiedDisableHits, disableHits)) {
+		if (ObjectTools.notEquals(this.specifiedDisableHits, disableHits)) {
 			XmlCache xmlCache = this.getXmlCacheForUpdate();
 			this.setSpecifiedDisableHits_(disableHits);
 			xmlCache.setDisableHits(disableHits);
@@ -458,7 +459,7 @@ public class EclipseLinkOrmCachingImpl
 	}
 
 	public void setSpecifiedCoordinationType(EclipseLinkCacheCoordinationType type) {
-		if (this.valuesAreDifferent(this.specifiedCoordinationType, type)) {
+		if (ObjectTools.notEquals(this.specifiedCoordinationType, type)) {
 			XmlCache xmlCache = this.getXmlCacheForUpdate();
 			this.setSpecifiedCoordinationType_(type);
 			xmlCache.setCoordinationType(EclipseLinkCacheCoordinationType.toOrmResourceModel(type));
@@ -499,7 +500,7 @@ public class EclipseLinkOrmCachingImpl
 	}
 
 	public void setExpiry(Integer expiry) {
-		if (this.valuesAreDifferent(this.expiry, expiry)) {
+		if (ObjectTools.notEquals(this.expiry, expiry)) {
 			XmlCache xmlCache = this.getXmlCacheForUpdate();
 			this.setExpiry_(expiry);
 			xmlCache.setExpiry(expiry);
@@ -691,7 +692,7 @@ public class EclipseLinkOrmCachingImpl
 	}
 
 	public void setSpecifiedIsolation(EclipseLinkCacheIsolationType2_2 isolation) {
-		if (this.valuesAreDifferent(this.specifiedIsolation, isolation)) {
+		if (ObjectTools.notEquals(this.specifiedIsolation, isolation)) {
 			XmlCache xmlCache = this.getXmlCacheForUpdate();
 			this.setSpecifiedIsolation_(isolation);
 			xmlCache.setIsolation(EclipseLinkCacheIsolationType2_2.toOrmResourceModel(isolation));

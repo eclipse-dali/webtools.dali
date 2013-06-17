@@ -192,7 +192,7 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	public void setSpecifiedAccess(AccessType access) {
-		if (this.valuesAreDifferent(this.specifiedAccess, access)) {
+		if (ObjectTools.notEquals(this.specifiedAccess, access)) {
 			this.getAccessAnnotation().setValue(AccessType.toJavaResourceModel(access));
 			this.removeAccessAnnotationIfUnset();
 			this.setSpecifiedAccess_(access);
@@ -300,7 +300,7 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	public void setMappingKey(String key) {
-		if (this.valuesAreDifferent(key, this.getMappingKey())) {
+		if (ObjectTools.notEquals(key, this.getMappingKey())) {
 			this.setMapping(this.buildMapping(key));
 		}
 	}
@@ -792,11 +792,13 @@ public abstract class AbstractJavaPersistentType
 	 * {@link org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit#synchronizeWithJavaSourceIfNecessary()}
 	 * in order for our cached text ranges to be updated appropriately.
 	 * <p>
-	 * Also need the synchronizeWithJavaSource() when editing directly in the java source,
-	 * the textRange gets updated after the java delay which is after we are notified of a selection change.
+	 * We also need to call 
+	 * {@link org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit#synchronizeWithJavaSourceIfNecessary()}
+	 * when directly editing the Java source, as our text ranges are
+	 * updated after the Java delay, which is after we are notified of a selection change.
 	 */
 	public JpaStructureNode getStructureNode(int offset) {
-		this.resourceType.getJavaResourceCompilationUnit().synchronizeWithJavaSourceIfNecessary(); //TODO this new API? or just check isConsistent() right here?
+		this.resourceType.getJavaResourceCompilationUnit().synchronizeWithJavaSourceIfNecessary();
 		if (this.containsOffset(offset)) {
 			for (JpaStructureNode child : this.getChildren()) {
 				if (child.containsOffset(offset)) {

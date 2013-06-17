@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaNamedColumn;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSpecifiedOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumnAnnotation2_0;
@@ -92,7 +93,7 @@ public class GenericJavaOrderColumn2_0
 	}
 
 	public void setSpecifiedNullable(Boolean nullable) {
-		if (this.valuesAreDifferent(this.specifiedNullable, nullable)) {
+		if (ObjectTools.notEquals(this.specifiedNullable, nullable)) {
 			this.getColumnAnnotation().setNullable(nullable);
 			this.removeColumnAnnotationIfUnset();
 			this.setSpecifiedNullable_(nullable);
@@ -135,7 +136,7 @@ public class GenericJavaOrderColumn2_0
 	}
 
 	public void setSpecifiedInsertable(Boolean insertable) {
-		if (this.valuesAreDifferent(this.specifiedInsertable, insertable)) {
+		if (ObjectTools.notEquals(this.specifiedInsertable, insertable)) {
 			this.getColumnAnnotation().setInsertable(insertable);
 			this.removeColumnAnnotationIfUnset();
 			this.setSpecifiedInsertable_(insertable);
@@ -178,7 +179,7 @@ public class GenericJavaOrderColumn2_0
 	}
 
 	public void setSpecifiedUpdatable(Boolean updatable) {
-		if (this.valuesAreDifferent(this.specifiedUpdatable, updatable)) {
+		if (ObjectTools.notEquals(this.specifiedUpdatable, updatable)) {
 			this.getColumnAnnotation().setUpdatable(updatable);
 			this.removeColumnAnnotationIfUnset();
 			this.setSpecifiedUpdatable_(updatable);

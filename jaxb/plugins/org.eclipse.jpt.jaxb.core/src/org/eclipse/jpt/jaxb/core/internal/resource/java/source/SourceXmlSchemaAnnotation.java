@@ -23,6 +23,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
@@ -149,7 +150,7 @@ public class SourceXmlSchemaAnnotation
 	}
 	
 	public void setAttributeFormDefault(XmlNsForm attributeFormDefault) {
-		if (attributeValueHasChanged(this.attributeFormDefault, attributeFormDefault)) {
+		if (ObjectTools.notEquals(this.attributeFormDefault, attributeFormDefault)) {
 			this.attributeFormDefault = attributeFormDefault;
 			this.attributeFormDefaultAdapter.setValue(XmlNsForm.toJavaAnnotationValue(attributeFormDefault));
 		}
@@ -181,7 +182,7 @@ public class SourceXmlSchemaAnnotation
 	}
 	
 	public void setElementFormDefault(XmlNsForm elementFormDefault) {
-		if (attributeValueHasChanged(this.elementFormDefault, elementFormDefault)) {
+		if (ObjectTools.notEquals(this.elementFormDefault, elementFormDefault)) {
 			this.elementFormDefault = elementFormDefault;
 			this.elementFormDefaultAdapter.setValue(XmlNsForm.toJavaAnnotationValue(elementFormDefault));
 		}
@@ -213,7 +214,7 @@ public class SourceXmlSchemaAnnotation
 	}
 	
 	public void setLocation(String location) {
-		if (attributeValueHasChanged(this.location, location)) {
+		if (ObjectTools.notEquals(this.location, location)) {
 			this.location = location;
 			this.locationAdapter.setValue(location);
 		}
@@ -245,7 +246,7 @@ public class SourceXmlSchemaAnnotation
 	}
 	
 	public void setNamespace(String namespace) {
-		if (attributeValueHasChanged(this.namespace, namespace)) {
+		if (ObjectTools.notEquals(this.namespace, namespace)) {
 			this.namespace = namespace;
 			this.namespaceAdapter.setValue(namespace);
 		}

@@ -12,7 +12,9 @@ package org.eclipse.jpt.common.utility.tests.internal.model.listener;
 import java.lang.reflect.Method;
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.RuntimeExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
+import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.ReflectiveChangeListener;
@@ -109,6 +111,10 @@ public class ReflectiveStateChangeListenerTests extends TestCase {
 	class TestModel extends AbstractModel {
 		TestModel() {
 			super();
+		}
+		@Override
+		protected ChangeSupport buildChangeSupport() {
+			return new ChangeSupport(this, RuntimeExceptionHandler.instance());
 		}
 		void changeState() {
 			this.fireStateChanged();

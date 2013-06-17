@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
@@ -48,7 +49,7 @@ public class GenericJavaBaseTemporalConverter
 	}
 
 	public void setTemporalType(TemporalType temporalType) {
-		if (this.valuesAreDifferent(this.temporalType, temporalType)) {
+		if (ObjectTools.notEquals(this.temporalType, temporalType)) {
 			this.temporalAnnotation.setValue(TemporalType.toJavaResourceModel(temporalType));
 			this.removeTemporalAnnotationIfUnset();
 			this.setTemporalType_(temporalType);

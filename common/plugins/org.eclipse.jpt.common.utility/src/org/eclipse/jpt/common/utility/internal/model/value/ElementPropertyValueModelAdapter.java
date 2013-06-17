@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.model.value;
 
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
@@ -100,7 +101,7 @@ public class ElementPropertyValueModelAdapter<V>
 
 	protected void itemsRemoved_(Iterable<V> items) {
 		for (V each : items) {
-			if (this.valuesAreEqual(each, this.value)) {
+			if (ObjectTools.equals(each, this.value)) {
 				V old = this.value;
 				this.firePropertyChanged(VALUE, old, this.value = null);
 				return;

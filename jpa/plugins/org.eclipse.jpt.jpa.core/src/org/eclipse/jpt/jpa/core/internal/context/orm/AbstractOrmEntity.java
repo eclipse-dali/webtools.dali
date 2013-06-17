@@ -1063,7 +1063,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	public void setSpecifiedInheritanceStrategy(InheritanceType inheritanceType) {
-		if (this.valuesAreDifferent(this.specifiedInheritanceStrategy, inheritanceType)) {
+		if (ObjectTools.notEquals(this.specifiedInheritanceStrategy, inheritanceType)) {
 			Inheritance xmlInheritance = this.getXmlInheritanceForUpdate();
 			this.setSpecifiedInheritanceStrategy_(inheritanceType);
 			xmlInheritance.setStrategy(InheritanceType.toOrmResourceModel(inheritanceType));

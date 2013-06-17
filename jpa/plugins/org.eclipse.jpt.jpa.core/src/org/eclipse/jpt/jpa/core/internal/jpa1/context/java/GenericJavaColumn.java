@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.VirtualColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaBaseColumn;
@@ -94,7 +95,7 @@ public class GenericJavaColumn
 	}
 
 	public void setSpecifiedLength(Integer length) {
-		if (this.valuesAreDifferent(this.specifiedLength, length)) {
+		if (ObjectTools.notEquals(this.specifiedLength, length)) {
 			this.getColumnAnnotation().setLength(length);
 			this.removeColumnAnnotationIfUnset();
 			this.setSpecifiedLength_(length);
@@ -137,7 +138,7 @@ public class GenericJavaColumn
 	}
 
 	public void setSpecifiedPrecision(Integer precision) {
-		if (this.valuesAreDifferent(this.specifiedPrecision, precision)) {
+		if (ObjectTools.notEquals(this.specifiedPrecision, precision)) {
 			this.getColumnAnnotation().setPrecision(precision);
 			this.removeColumnAnnotationIfUnset();
 			this.setSpecifiedPrecision_(precision);
@@ -180,7 +181,7 @@ public class GenericJavaColumn
 	}
 
 	public void setSpecifiedScale(Integer scale) {
-		if (this.valuesAreDifferent(this.specifiedScale, scale)) {
+		if (ObjectTools.notEquals(this.specifiedScale, scale)) {
 			this.getColumnAnnotation().setScale(scale);
 			this.removeColumnAnnotationIfUnset();
 			this.setSpecifiedScale_(scale);

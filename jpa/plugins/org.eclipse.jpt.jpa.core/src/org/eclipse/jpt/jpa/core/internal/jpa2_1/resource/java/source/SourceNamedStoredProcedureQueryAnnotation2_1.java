@@ -27,6 +27,7 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapt
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
@@ -186,7 +187,7 @@ public final class SourceNamedStoredProcedureQueryAnnotation2_1
 	}
 
 	public void setProcedureName(String procedureName) {
-		if (this.attributeValueHasChanged(this.procedureName, procedureName)) {
+		if (ObjectTools.notEquals(this.procedureName, procedureName)) {
 			this.procedureName = procedureName;
 			this.procedureNameAdapter.setValue(procedureName);
 		}

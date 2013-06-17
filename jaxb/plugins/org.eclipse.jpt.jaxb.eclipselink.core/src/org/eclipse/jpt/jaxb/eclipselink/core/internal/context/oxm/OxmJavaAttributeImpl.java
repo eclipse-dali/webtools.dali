@@ -187,7 +187,7 @@ public class OxmJavaAttributeImpl
 	}
 	
 	public JaxbAttributeMapping setMappingKey(String key) {
-		if (valuesAreDifferent(getMappingKey(), key)) {
+		if (ObjectTools.notEquals(getMappingKey(), key)) {
 			OxmAttributeMappingDefinition mappingDefinition = 
 					getOxmFileDefinition().getAttributeMappingDefinitionForKey(key);
 			EJavaAttribute eJavaAttribute = 

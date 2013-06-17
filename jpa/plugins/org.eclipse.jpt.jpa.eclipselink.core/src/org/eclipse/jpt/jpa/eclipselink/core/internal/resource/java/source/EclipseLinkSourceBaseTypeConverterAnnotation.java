@@ -21,6 +21,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.BaseTypeConverterAnnotation;
 
 /**
@@ -116,7 +117,7 @@ abstract class EclipseLinkSourceBaseTypeConverterAnnotation
 	}
 
 	public void setDataType(String dataType) {
-		if (this.attributeValueHasChanged(this.dataType, dataType)) {
+		if (ObjectTools.notEquals(this.dataType, dataType)) {
 			this.dataType = dataType;
 			this.fqDataTypeStale = true;
 			this.dataTypeAdapter.setValue(dataType);
@@ -124,7 +125,7 @@ abstract class EclipseLinkSourceBaseTypeConverterAnnotation
 	}
 
 	private void syncDataType(String astDataType) {
-		if (this.attributeValueHasChanged(this.dataType, astDataType)) {
+		if (ObjectTools.notEquals(this.dataType, astDataType)) {
 			this.syncDataType_(astDataType);
 		}
 	}
@@ -173,7 +174,7 @@ abstract class EclipseLinkSourceBaseTypeConverterAnnotation
 	}
 
 	public void setObjectType(String objectType) {
-		if (this.attributeValueHasChanged(this.objectType, objectType)) {
+		if (ObjectTools.notEquals(this.objectType, objectType)) {
 			this.objectType = objectType;
 			this.fqObjectTypeStale = true;
 			this.objectTypeAdapter.setValue(objectType);
@@ -181,7 +182,7 @@ abstract class EclipseLinkSourceBaseTypeConverterAnnotation
 	}
 
 	private void syncObjectType(String astObjectType) {
-		if (this.attributeValueHasChanged(this.objectType, astObjectType)) {
+		if (ObjectTools.notEquals(this.objectType, astObjectType)) {
 			this.syncObjectType_(astObjectType);
 		}
 	}

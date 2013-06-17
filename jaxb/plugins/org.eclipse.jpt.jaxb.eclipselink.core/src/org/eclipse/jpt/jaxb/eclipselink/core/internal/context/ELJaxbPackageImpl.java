@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context;
 
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jaxb.core.internal.context.GenericPackage;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbContextRoot;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbPackage;
@@ -48,7 +49,7 @@ public class ELJaxbPackageImpl
 	}
 	
 	protected void setOxmFile(OxmFile oxmFile) {
-		if (valuesAreDifferent(this.oxmFile, oxmFile)) {
+		if (ObjectTools.notEquals(this.oxmFile, oxmFile)) {
 			if (this.oxmFile != null) {
 				this.oxmFile.setPackage(null);
 			}

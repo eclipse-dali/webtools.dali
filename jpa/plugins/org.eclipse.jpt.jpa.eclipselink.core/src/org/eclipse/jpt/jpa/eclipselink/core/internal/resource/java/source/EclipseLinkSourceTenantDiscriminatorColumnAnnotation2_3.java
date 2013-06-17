@@ -24,6 +24,7 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceBaseDiscriminatorColumnAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TenantDiscriminatorColumnAnnotation2_3;
@@ -167,7 +168,7 @@ public final class EclipseLinkSourceTenantDiscriminatorColumnAnnotation2_3
 	}
 
 	public void setContextProperty(String contextProperty) {
-		if (this.attributeValueHasChanged(this.contextProperty, contextProperty)) {
+		if (ObjectTools.notEquals(this.contextProperty, contextProperty)) {
 			this.contextProperty = contextProperty;
 			this.contextPropertyAdapter.setValue(contextProperty);
 		}
@@ -205,7 +206,7 @@ public final class EclipseLinkSourceTenantDiscriminatorColumnAnnotation2_3
 	}
 
 	public void setTable(String table) {
-		if (this.attributeValueHasChanged(this.table, table)) {
+		if (ObjectTools.notEquals(this.table, table)) {
 			this.table = table;
 			this.tableAdapter.setValue(table);
 		}
@@ -247,7 +248,7 @@ public final class EclipseLinkSourceTenantDiscriminatorColumnAnnotation2_3
 	}
 
 	public void setPrimaryKey(Boolean primaryKey) {
-		if (this.attributeValueHasChanged(this.primaryKey, primaryKey)) {
+		if (ObjectTools.notEquals(this.primaryKey, primaryKey)) {
 			this.primaryKey = primaryKey;
 			this.primaryKeyAdapter.setValue(primaryKey);
 		}

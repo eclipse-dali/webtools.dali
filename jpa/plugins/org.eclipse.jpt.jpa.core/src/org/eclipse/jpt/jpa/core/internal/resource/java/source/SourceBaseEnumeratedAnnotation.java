@@ -19,6 +19,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.resource.java.BaseEnumeratedAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.EnumType;
 
@@ -78,7 +79,7 @@ public abstract class SourceBaseEnumeratedAnnotation
 	}
 	
 	public void setValue(EnumType value) {
-		if (this.attributeValueHasChanged(this.value, value)) {
+		if (ObjectTools.notEquals(this.value, value)) {
 			this.value = value;
 			this.valueAdapter.setValue(EnumType.toJavaAnnotationValue(value));
 		}

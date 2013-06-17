@@ -22,6 +22,7 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.StructConverterAnnotation;
 
@@ -102,7 +103,7 @@ public final class EclipseLinkSourceStructConverterAnnotation
 	}
 
 	public void setConverter(String converter) {
-		if (this.attributeValueHasChanged(this.converter, converter)) {
+		if (ObjectTools.notEquals(this.converter, converter)) {
 			this.converter = converter;
 			this.converterAdapter.setValue(converter);
 		}

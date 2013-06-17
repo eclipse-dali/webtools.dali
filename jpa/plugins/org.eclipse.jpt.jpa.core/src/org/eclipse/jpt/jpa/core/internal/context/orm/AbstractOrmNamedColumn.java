@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
@@ -132,7 +133,7 @@ public abstract class AbstractOrmNamedColumn<PA extends NamedColumn.ParentAdapte
 	}
 
 	public void setSpecifiedName(String name) {
-		if (this.valuesAreDifferent(this.specifiedName, name)) {
+		if (ObjectTools.notEquals(this.specifiedName, name)) {
 			X xmlColumn = this.getXmlColumnForUpdate();
 			this.setSpecifiedName_(name);
 			xmlColumn.setName(name);
@@ -173,7 +174,7 @@ public abstract class AbstractOrmNamedColumn<PA extends NamedColumn.ParentAdapte
 	}
 
 	public void setColumnDefinition(String columnDefinition) {
-		if (this.valuesAreDifferent(this.columnDefinition, columnDefinition)) {
+		if (ObjectTools.notEquals(this.columnDefinition, columnDefinition)) {
 			X xmlColumn = this.getXmlColumnForUpdate();
 			this.setColumnDefinition_(columnDefinition);
 			xmlColumn.setColumnDefinition(columnDefinition);

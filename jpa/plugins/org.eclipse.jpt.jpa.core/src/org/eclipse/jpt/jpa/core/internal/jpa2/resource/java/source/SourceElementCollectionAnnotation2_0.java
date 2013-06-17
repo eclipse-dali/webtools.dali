@@ -24,6 +24,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollectionAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.java.FetchType;
@@ -107,7 +108,7 @@ public final class SourceElementCollectionAnnotation2_0
 	}
 
 	public void setTargetClass(String targetClass) {
-		if (this.attributeValueHasChanged(this.targetClass, targetClass)) {
+		if (ObjectTools.notEquals(this.targetClass, targetClass)) {
 			this.targetClass = targetClass;
 			this.fqTargetClassNameStale = true;
 			this.targetClassAdapter.setValue(targetClass);
@@ -115,7 +116,7 @@ public final class SourceElementCollectionAnnotation2_0
 	}
 
 	private void syncTargetClass(String astTargetClass) {
-		if (this.attributeValueHasChanged(this.targetClass, astTargetClass)) {
+		if (ObjectTools.notEquals(this.targetClass, astTargetClass)) {
 			this.syncTargetClass_(astTargetClass);
 		}
 	}
@@ -162,7 +163,7 @@ public final class SourceElementCollectionAnnotation2_0
 	}
 
 	public void setFetch(FetchType fetch) {
-		if (this.attributeValueHasChanged(this.fetch, fetch)) {
+		if (ObjectTools.notEquals(this.fetch, fetch)) {
 			this.fetch = fetch;
 			this.fetchAdapter.setValue(FetchType.toJavaAnnotationValue(fetch));
 		}

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.model.value;
 
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -133,7 +134,7 @@ public class BufferedModifiablePropertyValueModel<V>
 	 */
 	public void setValue(V value) {
 		if (this.buffering) {
-			if (this.valuesAreEqual(value, this.valueModel.getValue())) {
+			if (ObjectTools.equals(value, this.valueModel.getValue())) {
 				// the buffered value is being set back to the original value
 				this.reset();
 			} else {
@@ -143,7 +144,7 @@ public class BufferedModifiablePropertyValueModel<V>
 				this.firePropertyChanged(VALUE, old, value);
 			}
 		} else {
-			if (this.valuesAreEqual(value, this.valueModel.getValue())) {
+			if (ObjectTools.equals(value, this.valueModel.getValue())) {
 				// the buffered value is being set to the same value as the original value - ignore
 			} else {
 				// the buffered value is being set for the first time
@@ -200,7 +201,7 @@ public class BufferedModifiablePropertyValueModel<V>
 	 */
 	protected void wrappedValueChanged_(PropertyChangeEvent event) {
 		if (this.buffering) {
-			if (this.valuesAreEqual(event.getNewValue(), this.bufferedValue)) {
+			if (ObjectTools.equals(event.getNewValue(), this.bufferedValue)) {
 				// the buffered value is being set back to the original value
 				this.reset();
 			} else {

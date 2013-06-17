@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -481,7 +482,7 @@ public class EclipseLinkJavaCachingImpl
 	}
 
 	public void setSpecifiedExistenceType(EclipseLinkExistenceType type) {
-		if (this.valuesAreDifferent(type, this.specifiedExistenceType)) {
+		if (ObjectTools.notEquals(type, this.specifiedExistenceType)) {
 			if (type != null) {
 				this.setExistenceChecking(true);
 			}

@@ -254,7 +254,7 @@ public abstract class AbstractJavaPersistentAttribute
 				this.setMappingKey_(key);  // replace the default mapping
 			}
 		} else {
-			if (this.valuesAreEqual(key, this.mapping.getKey())) {
+			if (ObjectTools.equals(key, this.mapping.getKey())) {
 				// leave the specified mapping unchanged
 			} else {
 				this.setMappingKey_(key);  // replace the specified mapping

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmNamedColumn;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmSpecifiedOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlOrderColumn;
@@ -76,7 +77,7 @@ public class GenericOrmOrderColumn2_0
 	}
 
 	public void setSpecifiedNullable(Boolean nullable) {
-		if (this.valuesAreDifferent(this.specifiedNullable, nullable)) {
+		if (ObjectTools.notEquals(this.specifiedNullable, nullable)) {
 			XmlOrderColumn xmlColumn = this.getXmlColumnForUpdate();
 			this.setSpecifiedNullable_(nullable);
 			xmlColumn.setNullable(nullable);
@@ -111,7 +112,7 @@ public class GenericOrmOrderColumn2_0
 	}
 
 	public void setSpecifiedInsertable(Boolean insertable) {
-		if (this.valuesAreDifferent(this.specifiedInsertable, insertable)) {
+		if (ObjectTools.notEquals(this.specifiedInsertable, insertable)) {
 			XmlOrderColumn xmlColumn = this.getXmlColumnForUpdate();
 			this.setSpecifiedInsertable_(insertable);
 			xmlColumn.setInsertable(insertable);
@@ -146,7 +147,7 @@ public class GenericOrmOrderColumn2_0
 	}
 
 	public void setSpecifiedUpdatable(Boolean updatable) {
-		if (this.valuesAreDifferent(this.specifiedUpdatable, updatable)) {
+		if (ObjectTools.notEquals(this.specifiedUpdatable, updatable)) {
 			XmlOrderColumn xmlColumn = this.getXmlColumnForUpdate();
 			this.setSpecifiedUpdatable_(updatable);
 			xmlColumn.setUpdatable(updatable);

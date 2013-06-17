@@ -138,7 +138,7 @@ public class GenericOrmXml
 		// such as a CVS checkout or an edit reversion.)
 		if ((oldXmlEntityMappings != newXmlEntityMappings) ||
 				(newXmlEntityMappings == null) ||
-				this.valuesAreDifferent(this.resourceType, newResourceType)
+				ObjectTools.notEquals(this.resourceType, newResourceType)
 		) {
 			if (this.root != null) {
 				this.root.dispose();

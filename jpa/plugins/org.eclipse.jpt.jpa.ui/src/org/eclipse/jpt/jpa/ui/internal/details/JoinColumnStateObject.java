@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.ListIterator;
 
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyListIterator;
 import org.eclipse.jpt.jpa.core.context.SpecifiedBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
@@ -185,7 +186,7 @@ public abstract class JoinColumnStateObject
 		if (isTableEditable()) {
 			String table = getTable();
 
-			if (valuesAreDifferent(table, joinColumn.getSpecifiedTableName())) {
+			if (ObjectTools.notEquals(table, joinColumn.getSpecifiedTableName())) {
 				joinColumn.setSpecifiedTableName(table);
 			}
 		}

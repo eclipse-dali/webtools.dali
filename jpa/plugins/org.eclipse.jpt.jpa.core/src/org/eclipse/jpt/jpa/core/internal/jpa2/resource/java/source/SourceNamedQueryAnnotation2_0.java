@@ -19,6 +19,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceNamedQueryAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.LockModeType_2_0;
@@ -82,7 +83,7 @@ public final class SourceNamedQueryAnnotation2_0
 	}
 
 	public void setLockMode(LockModeType_2_0 lockMode) {
-		if (this.attributeValueHasChanged(this.lockMode, lockMode)) {
+		if (ObjectTools.notEquals(this.lockMode, lockMode)) {
 			this.lockMode = lockMode;
 			this.lockModeAdapter.setValue(LockModeType_2_0.toJavaAnnotationValue(lockMode));
 		}

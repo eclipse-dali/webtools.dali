@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
@@ -47,7 +48,7 @@ public class EclipseLinkJavaJoinFetch
 	}
 
 	public void setValue(EclipseLinkJoinFetchType value) {
-		if (this.valuesAreDifferent(value, this.value)) {
+		if (ObjectTools.notEquals(value, this.value)) {
 			JoinFetchAnnotation annotation = this.getJoinFetchAnnotation();
 			if (value == null) {
 				if (annotation != null) {

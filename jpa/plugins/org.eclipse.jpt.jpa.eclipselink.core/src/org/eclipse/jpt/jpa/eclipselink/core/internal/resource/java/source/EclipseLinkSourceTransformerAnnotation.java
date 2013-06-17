@@ -20,6 +20,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TransformerAnnotation;
 
 /**
@@ -93,7 +94,7 @@ abstract class EclipseLinkSourceTransformerAnnotation
 	}
 
 	public void setTransformerClass(String transformerClass) {
-		if (this.attributeValueHasChanged(this.transformerClass, transformerClass)) {
+		if (ObjectTools.notEquals(this.transformerClass, transformerClass)) {
 			this.transformerClass = transformerClass;
 			this.transformerClassAdapter.setValue(transformerClass);
 		}
@@ -125,7 +126,7 @@ abstract class EclipseLinkSourceTransformerAnnotation
 	}
 
 	public void setMethod(String method) {
-		if (this.attributeValueHasChanged(this.method, method)) {
+		if (ObjectTools.notEquals(this.method, method)) {
 			this.method = method;
 			this.methodAdapter.setValue(method);
 		}

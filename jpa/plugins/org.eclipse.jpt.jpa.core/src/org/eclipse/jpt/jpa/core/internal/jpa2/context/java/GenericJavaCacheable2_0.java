@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableReference2_0;
@@ -59,7 +60,7 @@ public class GenericJavaCacheable2_0
 	}
 
 	public void setSpecifiedCacheable(Boolean cacheable) {
-		if (this.valuesAreDifferent(cacheable, this.specifiedCacheable)) {
+		if (ObjectTools.notEquals(cacheable, this.specifiedCacheable)) {
 			if (cacheable == null) {
 				this.removeCacheableAnnotation();
 			} else {

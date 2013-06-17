@@ -19,6 +19,7 @@ import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.utility.EmptyTextRange;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
@@ -117,7 +118,7 @@ public class GenericPersistenceXml
 		// such as a CVS checkout or an edit reversion.)
 		if ((oldXmlPersistence != newXmlPersistence) ||
 				(newXmlPersistence == null) || 
-				this.valuesAreDifferent(this.resourceType, newResourceType)
+				ObjectTools.notEquals(this.resourceType, newResourceType)
 		) {
 			if (this.root != null) {
 				this.root.dispose();

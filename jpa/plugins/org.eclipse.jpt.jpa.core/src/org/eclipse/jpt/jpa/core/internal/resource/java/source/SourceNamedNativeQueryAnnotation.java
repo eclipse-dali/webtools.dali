@@ -25,6 +25,7 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.NamedNativeQueryAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.QueryHintAnnotation;
@@ -148,7 +149,7 @@ public final class SourceNamedNativeQueryAnnotation
 	}
 
 	public void setQuery(String query) {
-		if (this.attributeValueHasChanged(this.query, query)) {
+		if (ObjectTools.notEquals(this.query, query)) {
 			this.query = query;
 			this.queryAdapter.setValue(query);
 		}
@@ -186,7 +187,7 @@ public final class SourceNamedNativeQueryAnnotation
 	}
 
 	public void setResultClass(String resultClass) {
-		if (this.attributeValueHasChanged(this.resultClass, resultClass)) {
+		if (ObjectTools.notEquals(this.resultClass, resultClass)) {
 			this.resultClass = resultClass;
 			this.fqResultClassNameStale = true;
 			this.resultClassAdapter.setValue(resultClass);
@@ -194,7 +195,7 @@ public final class SourceNamedNativeQueryAnnotation
 	}
 
 	private void syncResultClass(String astResultClass) {
-		if (this.attributeValueHasChanged(this.resultClass, astResultClass)) {
+		if (ObjectTools.notEquals(this.resultClass, astResultClass)) {
 			this.syncResultClass_(astResultClass);
 		}
 	}
@@ -249,7 +250,7 @@ public final class SourceNamedNativeQueryAnnotation
 	}
 
 	public void setResultSetMapping(String resultSetMapping) {
-		if (this.attributeValueHasChanged(this.resultSetMapping, resultSetMapping)) {
+		if (ObjectTools.notEquals(this.resultSetMapping, resultSetMapping)) {
 			this.resultSetMapping = resultSetMapping;
 			this.resultSetMappingAdapter.setValue(resultSetMapping);
 		}

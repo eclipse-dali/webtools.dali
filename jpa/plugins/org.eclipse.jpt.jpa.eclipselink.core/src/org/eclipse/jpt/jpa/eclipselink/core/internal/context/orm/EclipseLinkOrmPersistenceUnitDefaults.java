@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -257,7 +258,7 @@ public class EclipseLinkOrmPersistenceUnitDefaults
 	}
 
 	public void setSpecifiedGetMethod(String getMethod) {
-		if (this.valuesAreDifferent(this.specifiedGetMethod, getMethod)) {
+		if (ObjectTools.notEquals(this.specifiedGetMethod, getMethod)) {
 			XmlAccessMethods xmlAccessMethods = this.getXmlAccessMethodsForUpdate();
 			this.setSpecifiedGetMethod_(getMethod);
 			xmlAccessMethods.setGetMethod(getMethod);
@@ -292,7 +293,7 @@ public class EclipseLinkOrmPersistenceUnitDefaults
 	}
 
 	public void setSpecifiedSetMethod(String setMethod) {
-		if (this.valuesAreDifferent(this.specifiedSetMethod, setMethod)) {
+		if (ObjectTools.notEquals(this.specifiedSetMethod, setMethod)) {
 			XmlAccessMethods xmlAccessMethods = this.getXmlAccessMethodsForUpdate();
 			this.setSpecifiedSetMethod_(setMethod);
 			xmlAccessMethods.setSetMethod(setMethod);

@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceSequenceGeneratorAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.SequenceGeneratorAnnotation2_0;
@@ -77,7 +78,7 @@ public final class SourceSequenceGeneratorAnnotation2_0
 	}
 
 	public void setCatalog(String catalog) {
-		if (this.attributeValueHasChanged(this.catalog, catalog)) {
+		if (ObjectTools.notEquals(this.catalog, catalog)) {
 			this.catalog = catalog;
 			this.catalogAdapter.setValue(catalog);
 		}
@@ -111,7 +112,7 @@ public final class SourceSequenceGeneratorAnnotation2_0
 	}
 
 	public void setSchema(String schema) {
-		if (this.attributeValueHasChanged(this.schema, schema)) {
+		if (ObjectTools.notEquals(this.schema, schema)) {
 			this.schema = schema;
 			this.schemaAdapter.setValue(schema);
 		}

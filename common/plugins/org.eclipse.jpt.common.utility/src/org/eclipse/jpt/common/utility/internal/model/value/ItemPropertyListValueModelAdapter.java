@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,8 @@ package org.eclipse.jpt.common.utility.internal.model.value;
 import java.util.Arrays;
 import java.util.EventListener;
 import java.util.EventObject;
+import org.eclipse.jpt.common.utility.ExceptionHandler;
+import org.eclipse.jpt.common.utility.internal.DefaultExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.common.utility.internal.model.SingleAspectChangeSupport;
@@ -101,8 +103,7 @@ public class ItemPropertyListValueModelAdapter<E>
 	@Override
 	protected void itemAspectChanged(EventObject event) {
 		Object item = event.getSource();
-		this.getChangeSupport().fireItemsReplaced(
-			new ListReplaceEvent(this, LIST_VALUES, IterableTools.indexOf(this.listModel, item), item, item));
+		this.changeSupport.fireItemsReplaced(new ListReplaceEvent(this, LIST_VALUES, IterableTools.indexOf(this.listModel, item), item, item));
 	}
 
 	@Override
@@ -110,10 +111,15 @@ public class ItemPropertyListValueModelAdapter<E>
 		return new LocalChangeSupport(this, ListChangeListener.class, ListValueModel.LIST_VALUES);
 	}
 
-	/* CU private */ class LocalChangeSupport extends SingleAspectChangeSupport {
-		private static final long serialVersionUID = 1L;
+	/* CU private */ class LocalChangeSupport
+		extends SingleAspectChangeSupport
+	{
+		// TODO remove
 		LocalChangeSupport(Model source, Class<? extends EventListener> validListenerClass, String validAspectName) {
-			super(source, validListenerClass, validAspectName);
+			this(source, validListenerClass, validAspectName, DefaultExceptionHandler.instance());
+		}
+		LocalChangeSupport(Model source, Class<? extends EventListener> validListenerClass, String validAspectName, ExceptionHandler exceptionHandler) {
+			super(source, validListenerClass, validAspectName, exceptionHandler);
 		}
 		@Override
 		public boolean fireItemsReplaced(ListReplaceEvent event) {

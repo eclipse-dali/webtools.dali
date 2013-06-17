@@ -23,6 +23,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
@@ -160,7 +161,7 @@ public final class SourceGeneratedAnnotation2_0
 	}
 
 	public void setDate(String date) {
-		if (this.attributeValueHasChanged(this.date, date)) {
+		if (ObjectTools.notEquals(this.date, date)) {
 			this.date = date;
 			this.dateAdapter.setValue(date);
 		}
@@ -182,7 +183,7 @@ public final class SourceGeneratedAnnotation2_0
 	}
 
 	public void setComments(String comments) {
-		if (this.attributeValueHasChanged(this.comments, comments)) {
+		if (ObjectTools.notEquals(this.comments, comments)) {
 			this.comments = comments;
 			this.commentsAdapter.setValue(comments);
 		}

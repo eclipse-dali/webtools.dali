@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.core.internal.utility.TypeTools;
 import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaTypeMapping;
@@ -64,7 +65,7 @@ public class EclipseLinkJavaCustomizer
 	}
 
 	public void setSpecifiedCustomizerClass(String customizerClass) {
-		if (this.valuesAreDifferent(customizerClass, this.specifiedCustomizerClass)) {
+		if (ObjectTools.notEquals(customizerClass, this.specifiedCustomizerClass)) {
 			CustomizerAnnotation annotation = this.getCustomizerAnnotation();
 			if (customizerClass == null) {
 				if (annotation != null) {

@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.ManyToManyAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
@@ -98,7 +99,7 @@ public final class SourceManyToManyAnnotation
 	}
 
 	public void setMappedBy(String mappedBy) {
-		if (this.attributeValueHasChanged(this.mappedBy, mappedBy)) {
+		if (ObjectTools.notEquals(this.mappedBy, mappedBy)) {
 			this.mappedBy = mappedBy;
 			this.mappedByAdapter.setValue(mappedBy);
 		}

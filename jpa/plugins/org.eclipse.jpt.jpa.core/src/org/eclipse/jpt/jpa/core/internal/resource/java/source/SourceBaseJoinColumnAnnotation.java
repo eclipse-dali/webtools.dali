@@ -20,6 +20,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.resource.java.BaseJoinColumnAnnotation;
 
 /**
@@ -75,7 +76,7 @@ public abstract class SourceBaseJoinColumnAnnotation
 	}
 
 	public void setReferencedColumnName(String referencedColumnName) {
-		if (this.attributeValueHasChanged(this.referencedColumnName, referencedColumnName)) {
+		if (ObjectTools.notEquals(this.referencedColumnName, referencedColumnName)) {
 			this.referencedColumnName = referencedColumnName;
 			this.referencedColumnNameAdapter.setValue(referencedColumnName);
 		}

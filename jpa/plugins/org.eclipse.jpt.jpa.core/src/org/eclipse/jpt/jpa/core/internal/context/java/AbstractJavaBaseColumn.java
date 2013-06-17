@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.TableColumn;
@@ -99,7 +100,7 @@ public abstract class AbstractJavaBaseColumn<PA extends TableColumn.ParentAdapte
 	}
 
 	public void setSpecifiedTableName(String tableName) {
-		if (this.valuesAreDifferent(this.specifiedTableName, tableName)) {
+		if (ObjectTools.notEquals(this.specifiedTableName, tableName)) {
 			this.getColumnAnnotation().setTable(tableName);
 			this.removeColumnAnnotationIfUnset();
 			this.setSpecifiedTableName_(tableName);
@@ -146,7 +147,7 @@ public abstract class AbstractJavaBaseColumn<PA extends TableColumn.ParentAdapte
 	}
 
 	public void setSpecifiedUnique(Boolean unique) {
-		if (this.valuesAreDifferent(this.specifiedUnique, unique)) {
+		if (ObjectTools.notEquals(this.specifiedUnique, unique)) {
 			this.getColumnAnnotation().setUnique(unique);
 			this.removeColumnAnnotationIfUnset();
 			this.setSpecifiedUnique_(unique);
@@ -189,7 +190,7 @@ public abstract class AbstractJavaBaseColumn<PA extends TableColumn.ParentAdapte
 	}
 
 	public void setSpecifiedNullable(Boolean nullable) {
-		if (this.valuesAreDifferent(this.specifiedNullable, nullable)) {
+		if (ObjectTools.notEquals(this.specifiedNullable, nullable)) {
 			this.getColumnAnnotation().setNullable(nullable);
 			this.removeColumnAnnotationIfUnset();
 			this.setSpecifiedNullable_(nullable);
@@ -232,7 +233,7 @@ public abstract class AbstractJavaBaseColumn<PA extends TableColumn.ParentAdapte
 	}
 
 	public void setSpecifiedInsertable(Boolean insertable) {
-		if (this.valuesAreDifferent(this.specifiedInsertable, insertable)) {
+		if (ObjectTools.notEquals(this.specifiedInsertable, insertable)) {
 			this.getColumnAnnotation().setInsertable(insertable);
 			this.removeColumnAnnotationIfUnset();
 			this.setSpecifiedInsertable_(insertable);
@@ -275,7 +276,7 @@ public abstract class AbstractJavaBaseColumn<PA extends TableColumn.ParentAdapte
 	}
 
 	public void setSpecifiedUpdatable(Boolean updatable) {
-		if (this.valuesAreDifferent(this.specifiedUpdatable, updatable)) {
+		if (ObjectTools.notEquals(this.specifiedUpdatable, updatable)) {
 			this.getColumnAnnotation().setUpdatable(updatable);
 			this.removeColumnAnnotationIfUnset();
 			this.setSpecifiedUpdatable_(updatable);

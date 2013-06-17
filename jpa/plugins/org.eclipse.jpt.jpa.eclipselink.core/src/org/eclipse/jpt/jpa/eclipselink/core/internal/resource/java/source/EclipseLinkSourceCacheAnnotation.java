@@ -26,11 +26,12 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheCoordinationType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheIsolationType2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.TimeOfDayAnnotation;
 
 /**
@@ -228,7 +229,7 @@ public final class EclipseLinkSourceCacheAnnotation
 	}
 
 	public void setType(CacheType type) {
-		if (this.attributeValueHasChanged(this.type, type)) {
+		if (ObjectTools.notEquals(this.type, type)) {
 			this.type = type;
 			this.typeAdapter.setValue(CacheType.toJavaAnnotationValue(type));
 		}
@@ -258,7 +259,7 @@ public final class EclipseLinkSourceCacheAnnotation
 	}
 
 	public void setSize(Integer size) {
-		if (this.attributeValueHasChanged(this.size, size)) {
+		if (ObjectTools.notEquals(this.size, size)) {
 			this.size = size;
 			this.sizeAdapter.setValue(size);
 		}
@@ -288,7 +289,7 @@ public final class EclipseLinkSourceCacheAnnotation
 	}
 
 	public void setShared(Boolean shared) {
-		if (this.attributeValueHasChanged(this.shared, shared)) {
+		if (ObjectTools.notEquals(this.shared, shared)) {
 			this.shared = shared;
 			this.sharedAdapter.setValue(shared);
 		}
@@ -318,7 +319,7 @@ public final class EclipseLinkSourceCacheAnnotation
 	}
 
 	public void setAlwaysRefresh(Boolean alwaysRefresh) {
-		if (this.attributeValueHasChanged(this.alwaysRefresh, alwaysRefresh)) {
+		if (ObjectTools.notEquals(this.alwaysRefresh, alwaysRefresh)) {
 			this.alwaysRefresh = alwaysRefresh;
 			this.alwaysRefreshAdapter.setValue(alwaysRefresh);
 		}
@@ -348,7 +349,7 @@ public final class EclipseLinkSourceCacheAnnotation
 	}
 
 	public void setRefreshOnlyIfNewer(Boolean refreshOnlyIfNewer) {
-		if (this.attributeValueHasChanged(this.refreshOnlyIfNewer, refreshOnlyIfNewer)) {
+		if (ObjectTools.notEquals(this.refreshOnlyIfNewer, refreshOnlyIfNewer)) {
 			this.refreshOnlyIfNewer = refreshOnlyIfNewer;
 			this.refreshOnlyIfNewerAdapter.setValue(refreshOnlyIfNewer);
 		}
@@ -378,7 +379,7 @@ public final class EclipseLinkSourceCacheAnnotation
 	}
 
 	public void setDisableHits(Boolean disableHits) {
-		if (this.attributeValueHasChanged(this.disableHits, disableHits)) {
+		if (ObjectTools.notEquals(this.disableHits, disableHits)) {
 			this.disableHits = disableHits;
 			this.disableHitsAdapter.setValue(disableHits);
 		}
@@ -408,7 +409,7 @@ public final class EclipseLinkSourceCacheAnnotation
 	}
 
 	public void setCoordinationType(CacheCoordinationType coordinationType) {
-		if (this.attributeValueHasChanged(this.coordinationType, coordinationType)) {
+		if (ObjectTools.notEquals(this.coordinationType, coordinationType)) {
 			this.coordinationType = coordinationType;
 			this.coordinationTypeAdapter.setValue(CacheCoordinationType.toJavaAnnotationValue(coordinationType));
 		}
@@ -438,7 +439,7 @@ public final class EclipseLinkSourceCacheAnnotation
 	}
 
 	public void setExpiry(Integer expiry) {
-		if (this.attributeValueHasChanged(this.expiry, expiry)) {
+		if (ObjectTools.notEquals(this.expiry, expiry)) {
 			this.expiry = expiry;
 			this.expiryAdapter.setValue(expiry);
 		}
@@ -524,7 +525,7 @@ public final class EclipseLinkSourceCacheAnnotation
 	}
 
 	public void setIsolation(CacheIsolationType2_2 isolation) {
-		if (this.attributeValueHasChanged(this.isolation, isolation)) {
+		if (ObjectTools.notEquals(this.isolation, isolation)) {
 			this.isolation = isolation;
 			this.isolationAdapter.setValue(CacheIsolationType2_2.toJavaAnnotationValue(isolation));
 		}

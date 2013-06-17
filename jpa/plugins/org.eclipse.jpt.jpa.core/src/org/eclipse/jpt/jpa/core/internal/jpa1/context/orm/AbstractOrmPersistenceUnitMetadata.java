@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModel;
@@ -129,7 +130,7 @@ public abstract class AbstractOrmPersistenceUnitMetadata
 	}
 
 	public void setDescription(String description) {
-		if (this.valuesAreDifferent(this.description, description)) {
+		if (ObjectTools.notEquals(this.description, description)) {
 			XmlPersistenceUnitMetadata xmlPersistenceUnitMetadata = this.getXmlPersistenceUnitMetadataForUpdate();
 			this.setDescription_(description);
 			xmlPersistenceUnitMetadata.setDescription(description);

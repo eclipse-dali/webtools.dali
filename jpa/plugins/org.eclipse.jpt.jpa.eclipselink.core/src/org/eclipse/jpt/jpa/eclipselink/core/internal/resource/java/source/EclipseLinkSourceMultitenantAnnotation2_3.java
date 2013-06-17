@@ -22,6 +22,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MultitenantAnnotation2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MultitenantType2_3;
@@ -99,7 +100,7 @@ public class EclipseLinkSourceMultitenantAnnotation2_3
 	}
 
 	public void setValue(MultitenantType2_3 value) {
-		if (this.attributeValueHasChanged(this.value, value)) {
+		if (ObjectTools.notEquals(this.value, value)) {
 			this.value = value;
 			this.valueAdapter.setValue(MultitenantType2_3.toJavaAnnotationValue(value));
 		}
@@ -130,7 +131,7 @@ public class EclipseLinkSourceMultitenantAnnotation2_3
 	}
 
 	public void setIncludeCriteria(Boolean includeCriteria) {
-		if (this.attributeValueHasChanged(this.includeCriteria, includeCriteria)) {
+		if (ObjectTools.notEquals(this.includeCriteria, includeCriteria)) {
 			this.includeCriteria = includeCriteria;
 			this.includeCriteriaAdapter.setValue(includeCriteria);
 		}

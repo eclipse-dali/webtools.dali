@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,8 @@ package org.eclipse.jpt.common.utility.internal.model;
 import java.util.Collection;
 import java.util.EventListener;
 import java.util.List;
+import org.eclipse.jpt.common.utility.ExceptionHandler;
+import org.eclipse.jpt.common.utility.internal.DefaultExceptionHandler;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
@@ -40,13 +42,14 @@ public class SingleAspectChangeSupport
 	protected final Class<? extends EventListener> validListenerClass;
 	protected final String validAspectName;
 
-	private static final long serialVersionUID = 1L;
 
-
-	// ********** constructor **********
-
+	// TODO remove
 	public SingleAspectChangeSupport(Model source, Class<? extends EventListener> validListenerClass, String validAspectName) {
-		super(source);
+		this(source, validListenerClass, validAspectName, DefaultExceptionHandler.instance());
+	}
+
+	public SingleAspectChangeSupport(Model source, Class<? extends EventListener> validListenerClass, String validAspectName, ExceptionHandler exceptionHandler) {
+		super(source, exceptionHandler);
 		if ( ! validListenerClass.isAssignableFrom(this.getChangeListenerClass())) {
 			throw new IllegalArgumentException("The change support's change listener class (" + this.getChangeListenerClass().getName() + //$NON-NLS-1$
 					") does not extend the valid listener class: " + validListenerClass.getName()); //$NON-NLS-1$

@@ -16,9 +16,11 @@ import java.util.List;
 import java.util.ListIterator;
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.RuntimeExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
+import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.ListClearEvent;
@@ -359,6 +361,10 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 			public static final String STRINGS_LIST = "strings";
 		TestModel() {
 			super();
+		}
+		@Override
+		protected ChangeSupport buildChangeSupport() {
+			return new ChangeSupport(this, RuntimeExceptionHandler.instance());
 		}
 		ListIterator<String> strings() {
 			return IteratorTools.clone(this.strings);

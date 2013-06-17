@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.TableColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualBaseColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedBaseColumn;
@@ -82,7 +83,7 @@ public abstract class AbstractOrmBaseColumn<PA extends TableColumn.ParentAdapter
 	}
 
 	public void setSpecifiedTableName(String tableName) {
-		if (this.valuesAreDifferent(this.specifiedTableName, tableName)) {
+		if (ObjectTools.notEquals(this.specifiedTableName, tableName)) {
 			X xmlColumn = this.getXmlColumnForUpdate();
 			this.setSpecifiedTableName_(tableName);
 			xmlColumn.setTable(tableName);
@@ -127,7 +128,7 @@ public abstract class AbstractOrmBaseColumn<PA extends TableColumn.ParentAdapter
 	}
 
 	public void setSpecifiedUnique(Boolean unique) {
-		if (this.valuesAreDifferent(this.specifiedUnique, unique)) {
+		if (ObjectTools.notEquals(this.specifiedUnique, unique)) {
 			X xmlColumn = this.getXmlColumnForUpdate();
 			this.setSpecifiedUnique_(unique);
 			xmlColumn.setUnique(unique);
@@ -162,7 +163,7 @@ public abstract class AbstractOrmBaseColumn<PA extends TableColumn.ParentAdapter
 	}
 
 	public void setSpecifiedNullable(Boolean nullable) {
-		if (this.valuesAreDifferent(this.specifiedNullable, nullable)) {
+		if (ObjectTools.notEquals(this.specifiedNullable, nullable)) {
 			X xmlColumn = this.getXmlColumnForUpdate();
 			this.setSpecifiedNullable_(nullable);
 			xmlColumn.setNullable(nullable);
@@ -197,7 +198,7 @@ public abstract class AbstractOrmBaseColumn<PA extends TableColumn.ParentAdapter
 	}
 
 	public void setSpecifiedInsertable(Boolean insertable) {
-		if (this.valuesAreDifferent(this.specifiedInsertable, insertable)) {
+		if (ObjectTools.notEquals(this.specifiedInsertable, insertable)) {
 			X xmlColumn = this.getXmlColumnForUpdate();
 			this.setSpecifiedInsertable_(insertable);
 			xmlColumn.setInsertable(insertable);
@@ -232,7 +233,7 @@ public abstract class AbstractOrmBaseColumn<PA extends TableColumn.ParentAdapter
 	}
 
 	public void setSpecifiedUpdatable(Boolean updatable) {
-		if (this.valuesAreDifferent(this.specifiedUpdatable, updatable)) {
+		if (ObjectTools.notEquals(this.specifiedUpdatable, updatable)) {
 			X xmlColumn = this.getXmlColumnForUpdate();
 			this.setSpecifiedUpdatable_(updatable);
 			xmlColumn.setUpdatable(updatable);

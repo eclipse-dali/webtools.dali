@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.resource.java.BaseColumnAnnotation;
 
 /**
@@ -125,7 +126,7 @@ public abstract class SourceBaseColumnAnnotation
 	}
 
 	public void setTable(String table) {
-		if (this.attributeValueHasChanged(this.table, table)) {
+		if (ObjectTools.notEquals(this.table, table)) {
 			this.table = table;
 			this.tableAdapter.setValue(table);
 		}
@@ -169,7 +170,7 @@ public abstract class SourceBaseColumnAnnotation
 	}
 
 	public void setUnique(Boolean unique) {
-		if (this.attributeValueHasChanged(this.unique, unique)) {
+		if (ObjectTools.notEquals(this.unique, unique)) {
 			this.unique = unique;
 			this.uniqueAdapter.setValue(unique);
 		}
@@ -209,7 +210,7 @@ public abstract class SourceBaseColumnAnnotation
 	}
 
 	public void setNullable(Boolean nullable) {
-		if (this.attributeValueHasChanged(this.nullable, nullable)) {
+		if (ObjectTools.notEquals(this.nullable, nullable)) {
 			this.nullable = nullable;
 			this.nullableAdapter.setValue(nullable);
 		}
@@ -249,7 +250,7 @@ public abstract class SourceBaseColumnAnnotation
 	}
 
 	public void setInsertable(Boolean insertable) {
-		if (this.attributeValueHasChanged(this.insertable, insertable)) {
+		if (ObjectTools.notEquals(this.insertable, insertable)) {
 			this.insertable = insertable;
 			this.insertableAdapter.setValue(insertable);
 		}
@@ -289,7 +290,7 @@ public abstract class SourceBaseColumnAnnotation
 	}
 
 	public void setUpdatable(Boolean updatable) {
-		if (this.attributeValueHasChanged(this.updatable, updatable)) {
+		if (ObjectTools.notEquals(this.updatable, updatable)) {
 			this.updatable = updatable;
 			this.updatableAdapter.setValue(updatable);
 		}

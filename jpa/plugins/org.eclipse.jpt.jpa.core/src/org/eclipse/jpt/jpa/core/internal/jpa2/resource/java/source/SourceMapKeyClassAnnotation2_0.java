@@ -22,6 +22,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClassAnnotation2_0;
 
@@ -90,7 +91,7 @@ public final class SourceMapKeyClassAnnotation2_0
 	}
 
 	public void setValue(String value) {
-		if (this.attributeValueHasChanged(this.value, value)) {
+		if (ObjectTools.notEquals(this.value, value)) {
 			this.value = value;
 			this.fqClassNameStale = true;
 			this.valueAdapter.setValue(value);
@@ -98,7 +99,7 @@ public final class SourceMapKeyClassAnnotation2_0
 	}
 
 	private void syncValue(String astValue) {
-		if (this.attributeValueHasChanged(this.value, astValue)) {
+		if (ObjectTools.notEquals(this.value, astValue)) {
 			this.syncValue_(astValue);
 		}
 	}

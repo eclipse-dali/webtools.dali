@@ -17,7 +17,9 @@ import java.util.Collections;
 import java.util.EventListener;
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.common.utility.internal.DefaultExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
@@ -68,17 +70,11 @@ import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
  * <strong>NB3:</strong> Any listener that is added during the firing of events will <em>not</em> be
  * also notified. This is a bit inconsistent with NB2, but seems reasonable
  * since any added listener should already be in sync with the model.
- * <p>
- * <strong>NB4:</strong> This class is serializable, but it will only write out listeners that
- * are also serializable while silently leaving behind listeners that are not.
  * 
  * @see Model
  * @see AbstractModel
  */
-// TODO add ExceptionHandler
-public class ChangeSupport
-	implements Serializable
-{
+public class ChangeSupport {
 	/** The object to be provided as the "source" for any generated events. */
 	protected final Model source;
 
@@ -86,7 +82,7 @@ public class ChangeSupport
 	private AspectListenerListPair<?>[] aspectListenerListPairs = EMPTY_ASPECT_LISTENER_LIST_PAIR_ARRAY;
 		private static final AspectListenerListPair<?>[] EMPTY_ASPECT_LISTENER_LIST_PAIR_ARRAY = new AspectListenerListPair[0];
 
-	private static final long serialVersionUID = 1L;
+	private final ExceptionHandler exceptionHandler;
 
 
 	// ********** constructor **********
@@ -95,12 +91,25 @@ public class ChangeSupport
 	 * Construct support for the specified source of change events.
 	 * The source cannot be <code>null</code>.
 	 */
+	// TODO remove
 	public ChangeSupport(Model source) {
+		this(source, DefaultExceptionHandler.instance());
+	}
+
+	/**
+	 * Construct support for the specified source of change events.
+	 * Neither the source nor the exception handler can be <code>null</code>.
+	 */
+	public ChangeSupport(Model source, ExceptionHandler exceptionHandler) {
 		super();
 		if (source == null) {
 			throw new NullPointerException();
 		}
+		if (exceptionHandler == null) {
+			throw new NullPointerException();
+		}
 		this.source = source;
+		this.exceptionHandler = exceptionHandler;
 	}
 
 
@@ -333,16 +342,24 @@ public class ChangeSupport
 		if (listeners != null) {
 			for (StateChangeListener listener : listeners) {
 				if (this.hasStateChangeListener(listener)) {  // verify listener is still listening
-					listener.stateChanged(event);
+					try {
+						listener.stateChanged(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
 
 		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
-					changeListener.stateChanged(event);
+			for (ChangeListener listener : changeListeners) {
+				if (this.hasChangeListener(listener)) {  // verify listener is still listening
+					try {
+						listener.stateChanged(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
@@ -362,19 +379,27 @@ public class ChangeSupport
 					if (event == null) {
 						event = new StateChangeEvent(this.source);
 					}
-					listener.stateChanged(event);
+					try {
+						listener.stateChanged(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
 
 		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
+			for (ChangeListener listener : changeListeners) {
+				if (this.hasChangeListener(listener)) {  // verify listener is still listening
 					if (event == null) {
 						event = new StateChangeEvent(this.source);
 					}
-					changeListener.stateChanged(event);
+					try {
+						listener.stateChanged(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
@@ -429,7 +454,7 @@ public class ChangeSupport
 	 * Return whether the old and new values are different.
 	 */
 	public boolean firePropertyChanged(PropertyChangeEvent event) {
-		if (this.valuesAreDifferent(event.getOldValue(), event.getNewValue())) {
+		if (ObjectTools.notEquals(event.getOldValue(), event.getNewValue())) {
 			this.firePropertyChanged_(event);
 			return true;
 		}
@@ -445,16 +470,24 @@ public class ChangeSupport
 		if (listeners != null) {
 			for (PropertyChangeListener listener : listeners) {
 				if (this.hasPropertyChangeListener(propertyName, listener)) {  // verify listener is still listening
-					listener.propertyChanged(event);
+					try {
+						listener.propertyChanged(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
 
 		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
-					changeListener.propertyChanged(event);
+			for (ChangeListener listener : changeListeners) {
+				if (this.hasChangeListener(listener)) {  // verify listener is still listening
+					try {
+						listener.propertyChanged(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
@@ -469,7 +502,7 @@ public class ChangeSupport
 	 */
 	public boolean firePropertyChanged(String propertyName, Object oldValue, Object newValue) {
 //		return this.firePropertyChanged(new PropertyChangeEvent(this.source, propertyName, oldValue, newValue));
-		if (this.valuesAreDifferent(oldValue, newValue)) {
+		if (ObjectTools.notEquals(oldValue, newValue)) {
 			this.firePropertyChanged_(propertyName, oldValue, newValue);
 			return true;
 		}
@@ -488,19 +521,27 @@ public class ChangeSupport
 					if (event == null) {
 						event = new PropertyChangeEvent(this.source, propertyName, oldValue, newValue);
 					}
-					listener.propertyChanged(event);
+					try {
+						listener.propertyChanged(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
 
 		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
+			for (ChangeListener listener : changeListeners) {
+				if (this.hasChangeListener(listener)) {  // verify listener is still listening
 					if (event == null) {
 						event = new PropertyChangeEvent(this.source, propertyName, oldValue, newValue);
 					}
-					changeListener.propertyChanged(event);
+					try {
+						listener.propertyChanged(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
@@ -535,19 +576,27 @@ public class ChangeSupport
 					if (event == null) {
 						event = new PropertyChangeEvent(this.source, propertyName, Integer.valueOf(oldValue), Integer.valueOf(newValue));
 					}
-					listener.propertyChanged(event);
+					try {
+						listener.propertyChanged(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
 
 		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
+			for (ChangeListener listener : changeListeners) {
+				if (this.hasChangeListener(listener)) {  // verify listener is still listening
 					if (event == null) {
 						event = new PropertyChangeEvent(this.source, propertyName, Integer.valueOf(oldValue), Integer.valueOf(newValue));
 					}
-					changeListener.propertyChanged(event);
+					try {
+						listener.propertyChanged(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
@@ -582,19 +631,27 @@ public class ChangeSupport
 					if (event == null) {
 						event = new PropertyChangeEvent(this.source, propertyName, Boolean.valueOf(oldValue), Boolean.valueOf(newValue));
 					}
-					listener.propertyChanged(event);
+					try {
+						listener.propertyChanged(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
 
 		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
+			for (ChangeListener listener : changeListeners) {
+				if (this.hasChangeListener(listener)) {  // verify listener is still listening
 					if (event == null) {
 						event = new PropertyChangeEvent(this.source, propertyName, Boolean.valueOf(oldValue), Boolean.valueOf(newValue));
 					}
-					changeListener.propertyChanged(event);
+					try {
+						listener.propertyChanged(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
@@ -662,16 +719,24 @@ public class ChangeSupport
 		if (listeners != null) {
 			for (CollectionChangeListener listener : listeners) {
 				if (this.hasCollectionChangeListener(collectionName, listener)) {  // verify listener is still listening
-					listener.itemsAdded(event);
+					try {
+						listener.itemsAdded(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
 
 		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
-					changeListener.itemsAdded(event);
+			for (ChangeListener listener : changeListeners) {
+				if (this.hasChangeListener(listener)) {  // verify listener is still listening
+					try {
+						listener.itemsAdded(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
@@ -702,19 +767,27 @@ public class ChangeSupport
 					if (event == null) {
 						event = new CollectionAddEvent(this.source, collectionName, addedItems);
 					}
-					listener.itemsAdded(event);
+					try {
+						listener.itemsAdded(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
 
 		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
+			for (ChangeListener listener : changeListeners) {
+				if (this.hasChangeListener(listener)) {  // verify listener is still listening
 					if (event == null) {
 						event = new CollectionAddEvent(this.source, collectionName, addedItems);
 					}
-					changeListener.itemsAdded(event);
+					try {
+						listener.itemsAdded(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
@@ -734,19 +807,27 @@ public class ChangeSupport
 					if (event == null) {
 						event = new CollectionAddEvent(this.source, collectionName, addedItem);
 					}
-					listener.itemsAdded(event);
+					try {
+						listener.itemsAdded(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
 
 		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
+			for (ChangeListener listener : changeListeners) {
+				if (this.hasChangeListener(listener)) {  // verify listener is still listening
 					if (event == null) {
 						event = new CollectionAddEvent(this.source, collectionName, addedItem);
 					}
-					changeListener.itemsAdded(event);
+					try {
+						listener.itemsAdded(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
@@ -773,16 +854,24 @@ public class ChangeSupport
 		if (listeners != null) {
 			for (CollectionChangeListener listener : listeners) {
 				if (this.hasCollectionChangeListener(collectionName, listener)) {  // verify listener is still listening
-					listener.itemsRemoved(event);
+					try {
+						listener.itemsRemoved(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
 
 		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
-					changeListener.itemsRemoved(event);
+			for (ChangeListener listener : changeListeners) {
+				if (this.hasChangeListener(listener)) {  // verify listener is still listening
+					try {
+						listener.itemsRemoved(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
@@ -813,19 +902,27 @@ public class ChangeSupport
 					if (event == null) {
 						event = new CollectionRemoveEvent(this.source, collectionName, removedItems);
 					}
-					listener.itemsRemoved(event);
+					try {
+						listener.itemsRemoved(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
 
 		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
+			for (ChangeListener listener : changeListeners) {
+				if (this.hasChangeListener(listener)) {  // verify listener is still listening
 					if (event == null) {
 						event = new CollectionRemoveEvent(this.source, collectionName, removedItems);
 					}
-					changeListener.itemsRemoved(event);
+					try {
+						listener.itemsRemoved(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
@@ -845,19 +942,27 @@ public class ChangeSupport
 					if (event == null) {
 						event = new CollectionRemoveEvent(this.source, collectionName, removedItem);
 					}
-					listener.itemsRemoved(event);
+					try {
+						listener.itemsRemoved(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
 
 		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
+			for (ChangeListener listener : changeListeners) {
+				if (this.hasChangeListener(listener)) {  // verify listener is still listening
 					if (event == null) {
 						event = new CollectionRemoveEvent(this.source, collectionName, removedItem);
 					}
-					changeListener.itemsRemoved(event);
+					try {
+						listener.itemsRemoved(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
@@ -872,16 +977,24 @@ public class ChangeSupport
 		if (listeners != null) {
 			for (CollectionChangeListener listener : listeners) {
 				if (this.hasCollectionChangeListener(collectionName, listener)) {  // verify listener is still listening
-					listener.collectionCleared(event);
+					try {
+						listener.collectionCleared(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
 
 		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
-					changeListener.collectionCleared(event);
+			for (ChangeListener listener : changeListeners) {
+				if (this.hasChangeListener(listener)) {  // verify listener is still listening
+					try {
+						listener.collectionCleared(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
@@ -901,19 +1014,27 @@ public class ChangeSupport
 					if (event == null) {
 						event = new CollectionClearEvent(this.source, collectionName);
 					}
-					listener.collectionCleared(event);
+					try {
+						listener.collectionCleared(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
 
 		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
+			for (ChangeListener listener : changeListeners) {
+				if (this.hasChangeListener(listener)) {  // verify listener is still listening
 					if (event == null) {
 						event = new CollectionClearEvent(this.source, collectionName);
 					}
-					changeListener.collectionCleared(event);
+					try {
+						listener.collectionCleared(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
@@ -928,16 +1049,24 @@ public class ChangeSupport
 		if (listeners != null) {
 			for (CollectionChangeListener listener : listeners) {
 				if (this.hasCollectionChangeListener(collectionName, listener)) {  // verify listener is still listening
-					listener.collectionChanged(event);
+					try {
+						listener.collectionChanged(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
 
 		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
-					changeListener.collectionChanged(event);
+			for (ChangeListener listener : changeListeners) {
+				if (this.hasChangeListener(listener)) {  // verify listener is still listening
+					try {
+						listener.collectionChanged(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
@@ -957,19 +1086,27 @@ public class ChangeSupport
 					if (event == null) {
 						event = new CollectionChangeEvent(this.source, collectionName, collection);
 					}
-					listener.collectionChanged(event);
+					try {
+						listener.collectionChanged(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
 
 		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
+			for (ChangeListener listener : changeListeners) {
+				if (this.hasChangeListener(listener)) {  // verify listener is still listening
 					if (event == null) {
 						event = new CollectionChangeEvent(this.source, collectionName, collection);
 					}
-					changeListener.collectionChanged(event);
+					try {
+						listener.collectionChanged(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
@@ -1343,16 +1480,24 @@ public class ChangeSupport
 		if (listeners != null) {
 			for (ListChangeListener listener : listeners) {
 				if (this.hasListChangeListener(listName, listener)) {  // verify listener is still listening
-					listener.itemsAdded(event);
+					try {
+						listener.itemsAdded(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
 
 		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
-					changeListener.itemsAdded(event);
+			for (ChangeListener listener : changeListeners) {
+				if (this.hasChangeListener(listener)) {  // verify listener is still listening
+					try {
+						listener.itemsAdded(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
@@ -1383,19 +1528,27 @@ public class ChangeSupport
 					if (event == null) {
 						event = new ListAddEvent(this.source, listName, index, addedItems);
 					}
-					listener.itemsAdded(event);
+					try {
+						listener.itemsAdded(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
 
 		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
+			for (ChangeListener listener : changeListeners) {
+				if (this.hasChangeListener(listener)) {  // verify listener is still listening
 					if (event == null) {
 						event = new ListAddEvent(this.source, listName, index, addedItems);
 					}
-					changeListener.itemsAdded(event);
+					try {
+						listener.itemsAdded(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
@@ -1415,19 +1568,27 @@ public class ChangeSupport
 					if (event == null) {
 						event = new ListAddEvent(this.source, listName, index, addedItem);
 					}
-					listener.itemsAdded(event);
+					try {
+						listener.itemsAdded(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
 
 		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
+			for (ChangeListener listener : changeListeners) {
+				if (this.hasChangeListener(listener)) {  // verify listener is still listening
 					if (event == null) {
 						event = new ListAddEvent(this.source, listName, index, addedItem);
 					}
-					changeListener.itemsAdded(event);
+					try {
+						listener.itemsAdded(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
@@ -1454,16 +1615,24 @@ public class ChangeSupport
 		if (listeners != null) {
 			for (ListChangeListener listener : listeners) {
 				if (this.hasListChangeListener(listName, listener)) {  // verify listener is still listening
-					listener.itemsRemoved(event);
+					try {
+						listener.itemsRemoved(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
 
 		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
-					changeListener.itemsRemoved(event);
+			for (ChangeListener listener : changeListeners) {
+				if (this.hasChangeListener(listener)) {  // verify listener is still listening
+					try {
+						listener.itemsRemoved(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
@@ -1494,19 +1663,27 @@ public class ChangeSupport
 					if (event == null) {
 						event = new ListRemoveEvent(this.source, listName, index, removedItems);
 					}
-					listener.itemsRemoved(event);
+					try {
+						listener.itemsRemoved(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
 
 		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
+			for (ChangeListener listener : changeListeners) {
+				if (this.hasChangeListener(listener)) {  // verify listener is still listening
 					if (event == null) {
 						event = new ListRemoveEvent(this.source, listName, index, removedItems);
 					}
-					changeListener.itemsRemoved(event);
+					try {
+						listener.itemsRemoved(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
@@ -1526,19 +1703,27 @@ public class ChangeSupport
 					if (event == null) {
 						event = new ListRemoveEvent(this.source, listName, index, removedItem);
 					}
-					listener.itemsRemoved(event);
+					try {
+						listener.itemsRemoved(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
 
 		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
+			for (ChangeListener listener : changeListeners) {
+				if (this.hasChangeListener(listener)) {  // verify listener is still listening
 					if (event == null) {
 						event = new ListRemoveEvent(this.source, listName, index, removedItem);
 					}
-					changeListener.itemsRemoved(event);
+					try {
+						listener.itemsRemoved(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
@@ -1549,7 +1734,7 @@ public class ChangeSupport
 	 * Return whether there are any replaced items.
 	 */
 	public boolean fireItemsReplaced(ListReplaceEvent event) {
-		if ((event.getItemsSize() != 0) && this.elementsAreDifferent(event.getNewItems(), event.getOldItems())) {
+		if ((event.getItemsSize() != 0) && IterableTools.elementsAreDifferent(event.getNewItems(), event.getOldItems())) {
 			this.fireItemsReplaced_(event);
 			return true;
 		}
@@ -1565,16 +1750,24 @@ public class ChangeSupport
 		if (listeners != null) {
 			for (ListChangeListener listener : listeners) {
 				if (this.hasListChangeListener(listName, listener)) {  // verify listener is still listening
-					listener.itemsReplaced(event);
+					try {
+						listener.itemsReplaced(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
 
 		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
-					changeListener.itemsReplaced(event);
+			for (ChangeListener listener : changeListeners) {
+				if (this.hasChangeListener(listener)) {  // verify listener is still listening
+					try {
+						listener.itemsReplaced(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
@@ -1586,7 +1779,7 @@ public class ChangeSupport
 	 */
 	public boolean fireItemsReplaced(String listName, int index, List<?> newItems, List<?> oldItems) {
 //		return this.fireItemsReplaced(new ListReplaceEvent(this.source, listName, index, newItems, oldItems));
-		if (( ! newItems.isEmpty()) && this.elementsAreDifferent(newItems, oldItems)) {
+		if (( ! newItems.isEmpty()) && IterableTools.elementsAreDifferent(newItems, oldItems)) {
 			this.fireItemsReplaced_(listName, index, newItems, oldItems);
 			return true;
 		}
@@ -1605,19 +1798,27 @@ public class ChangeSupport
 					if (event == null) {
 						event = new ListReplaceEvent(this.source, listName, index, newItems, oldItems);
 					}
-					listener.itemsReplaced(event);
+					try {
+						listener.itemsReplaced(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
 
 		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
+			for (ChangeListener listener : changeListeners) {
+				if (this.hasChangeListener(listener)) {  // verify listener is still listening
 					if (event == null) {
 						event = new ListReplaceEvent(this.source, listName, index, newItems, oldItems);
 					}
-					changeListener.itemsReplaced(event);
+					try {
+						listener.itemsReplaced(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
@@ -1629,7 +1830,7 @@ public class ChangeSupport
 	 */
 	public boolean fireItemReplaced(String listName, int index, Object newItem, Object oldItem) {
 //		return this.fireItemsReplaced(listName, index, Collections.singletonList(newItem), Collections.singletonList(oldItem));
-		if (this.valuesAreDifferent(newItem, oldItem)) {
+		if (ObjectTools.notEquals(newItem, oldItem)) {
 			this.fireItemReplaced_(listName, index, newItem, oldItem);
 			return true;
 		}
@@ -1648,19 +1849,27 @@ public class ChangeSupport
 					if (event == null) {
 						event = new ListReplaceEvent(this.source, listName, index, newItem, oldItem);
 					}
-					listener.itemsReplaced(event);
+					try {
+						listener.itemsReplaced(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
 
 		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
+			for (ChangeListener listener : changeListeners) {
+				if (this.hasChangeListener(listener)) {  // verify listener is still listening
 					if (event == null) {
 						event = new ListReplaceEvent(this.source, listName, index, newItem, oldItem);
 					}
-					changeListener.itemsReplaced(event);
+					try {
+						listener.itemsReplaced(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
@@ -1689,16 +1898,24 @@ public class ChangeSupport
 		if (listeners != null) {
 			for (ListChangeListener listener : listeners) {
 				if (this.hasListChangeListener(listName, listener)) {  // verify listener is still listening
-					listener.itemsMoved(event);
+					try {
+						listener.itemsMoved(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
 
 		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
-					changeListener.itemsMoved(event);
+			for (ChangeListener listener : changeListeners) {
+				if (this.hasChangeListener(listener)) {  // verify listener is still listening
+					try {
+						listener.itemsMoved(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
@@ -1731,19 +1948,27 @@ public class ChangeSupport
 					if (event == null) {
 						event = new ListMoveEvent(this.source, listName, targetIndex, sourceIndex, length);
 					}
-					listener.itemsMoved(event);
+					try {
+						listener.itemsMoved(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
 
 		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
+			for (ChangeListener listener : changeListeners) {
+				if (this.hasChangeListener(listener)) {  // verify listener is still listening
 					if (event == null) {
 						event = new ListMoveEvent(this.source, listName, targetIndex, sourceIndex, length);
 					}
-					changeListener.itemsMoved(event);
+					try {
+						listener.itemsMoved(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
@@ -1779,16 +2004,24 @@ public class ChangeSupport
 		if (listeners != null) {
 			for (ListChangeListener listener : listeners) {
 				if (this.hasListChangeListener(listName, listener)) {  // verify listener is still listening
-					listener.listCleared(event);
+					try {
+						listener.listCleared(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
 
 		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
-					changeListener.listCleared(event);
+			for (ChangeListener listener : changeListeners) {
+				if (this.hasChangeListener(listener)) {  // verify listener is still listening
+					try {
+						listener.listCleared(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
@@ -1808,19 +2041,27 @@ public class ChangeSupport
 					if (event == null) {
 						event = new ListClearEvent(this.source, listName);
 					}
-					listener.listCleared(event);
+					try {
+						listener.listCleared(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
 
 		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
+			for (ChangeListener listener : changeListeners) {
+				if (this.hasChangeListener(listener)) {  // verify listener is still listening
 					if (event == null) {
 						event = new ListClearEvent(this.source, listName);
 					}
-					changeListener.listCleared(event);
+					try {
+						listener.listCleared(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
@@ -1835,16 +2076,24 @@ public class ChangeSupport
 		if (listeners != null) {
 			for (ListChangeListener listener : listeners) {
 				if (this.hasListChangeListener(listName, listener)) {  // verify listener is still listening
-					listener.listChanged(event);
+					try {
+						listener.listChanged(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
 
 		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
-					changeListener.listChanged(event);
+			for (ChangeListener listener : changeListeners) {
+				if (this.hasChangeListener(listener)) {  // verify listener is still listening
+					try {
+						listener.listChanged(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
@@ -1864,19 +2113,27 @@ public class ChangeSupport
 					if (event == null) {
 						event = new ListChangeEvent(this.source, listName, list);
 					}
-					listener.listChanged(event);
+					try {
+						listener.listChanged(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
 
 		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
+			for (ChangeListener listener : changeListeners) {
+				if (this.hasChangeListener(listener)) {  // verify listener is still listening
 					if (event == null) {
 						event = new ListChangeEvent(this.source, listName, list);
 					}
-					changeListener.listChanged(event);
+					try {
+						listener.listChanged(event);
+					} catch (Throwable t) {
+						this.exceptionHandler.handleException(t);
+					}
 				}
 			}
 		}
@@ -2268,7 +2525,7 @@ public class ChangeSupport
 		}
 
 		int index = list.indexOf(oldItem);
-		if ((index != -1) && this.valuesAreDifferent(oldItem, newItem)) {
+		if ((index != -1) && ObjectTools.notEquals(oldItem, newItem)) {
 			list.set(index, newItem);
 			this.fireItemReplaced_(listName, index, newItem, oldItem);
 		}
@@ -2348,7 +2605,7 @@ public class ChangeSupport
 		if (targetIndex == sourceIndex) {
 			return false;
 		}
-		if (this.valuesAreEqual(list.get(targetIndex), list.get(sourceIndex))) {
+		if (ObjectTools.equals(list.get(targetIndex), list.get(sourceIndex))) {
 			return false;
 		}
 		ListTools.move(list, targetIndex, sourceIndex);
@@ -2427,7 +2684,7 @@ public class ChangeSupport
 		for (int i = 0; i < min; i++) {
 			E newItem = newList.get(i);
 			E oldItem = oldList.set(i, newItem);
-			if (this.valuesAreDifferent(newItem, oldItem)) {
+			if (ObjectTools.notEquals(newItem, oldItem)) {
 				changed = true;
 				this.fireItemReplaced_(listName, i, newItem, oldItem);
 			}
@@ -2449,36 +2706,6 @@ public class ChangeSupport
 
 
 	// ********** misc **********
-
-	/**
-	 * Convenience method for checking whether an attribute value has changed.
-	 * @see ObjectTools#equals(Object, Object)
-	 */
-	public boolean valuesAreEqual(Object value1, Object value2) {
-		return ObjectTools.equals(value1, value2);
-	}
-
-	/**
-	 * Convenience method for checking whether an attribute value has changed.
-	 * @see ObjectTools#notEquals(Object, Object)
-	 */
-	public boolean valuesAreDifferent(Object value1, Object value2) {
-		return ObjectTools.notEquals(value1, value2);
-	}
-
-	/**
-	 * @see IterableTools#elementsAreEqual(Iterable, Iterable)
-	 */
-	public boolean elementsAreEqual(Iterable<?> iterable1, Iterable<?> iterable2) {
-		return IterableTools.elementsAreEqual(iterable1, iterable2);
-	}
-
-	/**
-	 * @see IterableTools#elementsAreDifferent(Iterable, Iterable)
-	 */
-	public boolean elementsAreDifferent(Iterable<?> iterable1, Iterable<?> iterable2) {
-		return IterableTools.elementsAreDifferent(iterable1, iterable2);
-	}
 
 	@Override
 	public String toString() {

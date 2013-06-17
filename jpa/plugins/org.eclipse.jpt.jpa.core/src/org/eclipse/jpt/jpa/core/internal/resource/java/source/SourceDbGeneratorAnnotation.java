@@ -19,6 +19,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.resource.java.DbGeneratorAnnotation;
 
 /**
@@ -93,7 +94,7 @@ abstract class SourceDbGeneratorAnnotation
 	}
 
 	public void setInitialValue(Integer initialValue) {
-		if (this.attributeValueHasChanged(this.initialValue, initialValue)) {
+		if (ObjectTools.notEquals(this.initialValue, initialValue)) {
 			this.initialValue = initialValue;
 			this.initialValueAdapter.setValue(initialValue);
 		}
@@ -125,7 +126,7 @@ abstract class SourceDbGeneratorAnnotation
 	}
 
 	public void setAllocationSize(Integer allocationSize) {
-		if (this.attributeValueHasChanged(this.allocationSize, allocationSize)) {
+		if (ObjectTools.notEquals(this.allocationSize, allocationSize)) {
 			this.allocationSize = allocationSize;
 			this.allocationSizeAdapter.setValue(allocationSize);
 		}

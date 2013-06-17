@@ -24,8 +24,9 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 
 /**
  * <code>org.eclipse.persistence.annotations.Converter</code>
@@ -111,7 +112,7 @@ public final class EclipseLinkSourceConverterAnnotation
 	}
 
 	public void setConverterClass(String converterClass) {
-		if (this.attributeValueHasChanged(this.converterClass, converterClass)) {
+		if (ObjectTools.notEquals(this.converterClass, converterClass)) {
 			this.converterClass = converterClass;
 			this.fqConverterClassNameStale = true;
 			this.converterClassAdapter.setValue(converterClass);
@@ -119,7 +120,7 @@ public final class EclipseLinkSourceConverterAnnotation
 	}
 
 	private void syncConverterClass(String astConverterClass) {
-		if (this.attributeValueHasChanged(this.converterClass, astConverterClass)) {
+		if (ObjectTools.notEquals(this.converterClass, astConverterClass)) {
 			this.syncConverterClass_(astConverterClass);
 		}
 	}

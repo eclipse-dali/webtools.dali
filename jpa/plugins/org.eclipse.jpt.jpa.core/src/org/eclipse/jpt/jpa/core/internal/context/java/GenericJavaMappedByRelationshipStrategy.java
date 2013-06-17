@@ -62,7 +62,7 @@ public class GenericJavaMappedByRelationshipStrategy
 	}
 
 	public void setMappedByAttribute(String mappedByAttribute) {
-		if (this.valuesAreDifferent(mappedByAttribute, this.mappedByAttribute)) {
+		if (ObjectTools.notEquals(mappedByAttribute, this.mappedByAttribute)) {
 			this.getMappingAnnotationForUpdate().setMappedBy(mappedByAttribute);
 			this.setMappedByAttribute_(mappedByAttribute);
 		}

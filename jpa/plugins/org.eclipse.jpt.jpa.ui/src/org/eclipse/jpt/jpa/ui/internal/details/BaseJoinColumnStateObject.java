@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyListIterator;
 import org.eclipse.jpt.common.utility.internal.node.AbstractNode;
@@ -370,17 +371,17 @@ public abstract class BaseJoinColumnStateObject
 	public void updateJoinColumn(SpecifiedBaseJoinColumn jc) {
 
 		// Name
-		if (valuesAreDifferent(name, jc.getSpecifiedName())) {
+		if (ObjectTools.notEquals(name, jc.getSpecifiedName())) {
 			jc.setSpecifiedName(name);
 		}
 
 		// Referenced Column Name
-		if (valuesAreDifferent(referencedColumnName, jc.getSpecifiedReferencedColumnName())) {
+		if (ObjectTools.notEquals(referencedColumnName, jc.getSpecifiedReferencedColumnName())) {
 			jc.setSpecifiedReferencedColumnName(referencedColumnName);
 		}
 
 		// Column Definition
-		if (valuesAreDifferent(columnDefinition, jc.getColumnDefinition())) {
+		if (ObjectTools.notEquals(columnDefinition, jc.getColumnDefinition())) {
 			jc.setColumnDefinition(columnDefinition);
 		}
 	}

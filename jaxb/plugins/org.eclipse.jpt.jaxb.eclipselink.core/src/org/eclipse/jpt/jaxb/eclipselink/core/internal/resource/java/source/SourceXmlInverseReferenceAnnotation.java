@@ -23,6 +23,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlInverseReferenceAnnotation;
 
@@ -92,7 +93,7 @@ public class SourceXmlInverseReferenceAnnotation
 	}
 	
 	public void setMappedBy(String mappedBy) {
-		if (attributeValueHasChanged(this.mappedBy, mappedBy)) {
+		if (ObjectTools.notEquals(this.mappedBy, mappedBy)) {
 			this.mappedBy = mappedBy;
 			this.mappedByAdapter.setValue(mappedBy);
 		}

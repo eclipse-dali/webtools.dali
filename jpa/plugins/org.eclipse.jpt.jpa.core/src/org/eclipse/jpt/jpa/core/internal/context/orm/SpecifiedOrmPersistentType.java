@@ -152,7 +152,7 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	public void setMappingKey(String mappingKey) {
-		if (this.valuesAreDifferent(this.getMappingKey(), mappingKey)) {
+		if (ObjectTools.notEquals(this.getMappingKey(), mappingKey)) {
 			this.setMappingKey_(mappingKey);
 		}
 	}

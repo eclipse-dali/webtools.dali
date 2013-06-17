@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
@@ -95,7 +96,7 @@ public abstract class AbstractOrmPersistenceUnitDefaults
 	}
 
 	public void setSpecifiedAccess(AccessType access) {
-		if (this.valuesAreDifferent(this.specifiedAccess, access)) {
+		if (ObjectTools.notEquals(this.specifiedAccess, access)) {
 			XmlPersistenceUnitDefaults xmlDefaults = this.getXmlDefaultsForUpdate();
 			this.setSpecifiedAccess_(access);
 			xmlDefaults.setAccess(AccessType.toOrmResourceModel(access));
@@ -139,7 +140,7 @@ public abstract class AbstractOrmPersistenceUnitDefaults
 	}
 
 	public void setSpecifiedCatalog(String catalog) {
-		if (this.valuesAreDifferent(this.specifiedCatalog, catalog)) {
+		if (ObjectTools.notEquals(this.specifiedCatalog, catalog)) {
 			XmlPersistenceUnitDefaults xmlDefaults = this.getXmlDefaultsForUpdate();
 			this.setSpecifiedCatalog_(catalog);
 			xmlDefaults.setCatalog(catalog);
@@ -193,7 +194,7 @@ public abstract class AbstractOrmPersistenceUnitDefaults
 	}
 
 	public void setSpecifiedSchema(String schema) {
-		if (this.valuesAreDifferent(this.specifiedSchema, schema)) {
+		if (ObjectTools.notEquals(this.specifiedSchema, schema)) {
 			XmlPersistenceUnitDefaults xmlDefaults = this.getXmlDefaultsForUpdate();
 			this.setSpecifiedSchema_(schema);
 			xmlDefaults.setSchema(schema);
