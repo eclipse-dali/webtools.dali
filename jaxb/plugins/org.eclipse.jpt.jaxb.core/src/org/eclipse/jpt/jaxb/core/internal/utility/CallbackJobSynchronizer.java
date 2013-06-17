@@ -76,7 +76,7 @@ public class CallbackJobSynchronizer
 	 * Notify our listeners.
 	 */
 	void synchronizationQuiesced() {
-		for (Listener listener : this.listenerList.getListeners()) {
+		for (Listener listener : this.listenerList) {
 			listener.synchronizationQuiesced(this);
 		}
 	}

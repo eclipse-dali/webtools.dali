@@ -87,7 +87,7 @@ public class NotifyingRepeatingCommandWrapper
 	 * Notify our listeners.
 	 */
 	private void executionQuiesced() {
-		for (Listener listener : this.listenerList.getListeners()) {
+		for (Listener listener : this.listenerList) {
 			try {
 				listener.executionQuiesced(this);
 			} catch (Throwable ex) {

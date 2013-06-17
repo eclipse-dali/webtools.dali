@@ -282,13 +282,8 @@ public class ChangeSupport {
 		return this.hasAnyListeners(this.getChangeListenerClass());
 	}
 
-	private ListenerList<ChangeListener> getChangeListenerList() {
-		return this.getListenerList(CHANGE_LISTENER_CLASS);
-	}
-
 	private Iterable<ChangeListener> getChangeListeners() {
-		ListenerList<ChangeListener> listenerList = this.getChangeListenerList();
-		return (listenerList == null) ? null : listenerList.getListeners();
+		return this.getListenerList(CHANGE_LISTENER_CLASS);
 	}
 
 	private boolean hasChangeListener(ChangeListener listener) {
@@ -321,13 +316,8 @@ public class ChangeSupport {
 		return this.hasAnyListeners(STATE_CHANGE_LISTENER_CLASS);
 	}
 
-	private ListenerList<StateChangeListener> getStateChangeListenerList() {
-		return this.getListenerList(STATE_CHANGE_LISTENER_CLASS);
-	}
-
 	private Iterable<StateChangeListener> getStateChangeListeners() {
-		ListenerList<StateChangeListener> listenerList = this.getStateChangeListenerList();
-		return (listenerList == null) ? null : listenerList.getListeners();
+		return this.getListenerList(STATE_CHANGE_LISTENER_CLASS);
 	}
 
 	private boolean hasStateChangeListener(StateChangeListener listener) {
@@ -433,13 +423,8 @@ public class ChangeSupport {
 		return this.hasAnyListeners(PROPERTY_CHANGE_LISTENER_CLASS, propertyName);
 	}
 
-	private ListenerList<PropertyChangeListener> getPropertyChangeListenerList(String propertyName) {
-		return this.getListenerList(PROPERTY_CHANGE_LISTENER_CLASS, propertyName);
-	}
-
 	private Iterable<PropertyChangeListener> getPropertyChangeListeners(String propertyName) {
-		ListenerList<PropertyChangeListener> listenerList = this.getPropertyChangeListenerList(propertyName);
-		return (listenerList == null) ? null : listenerList.getListeners();
+		return this.getListenerList(PROPERTY_CHANGE_LISTENER_CLASS, propertyName);
 	}
 
 	private boolean hasPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
@@ -685,13 +670,8 @@ public class ChangeSupport {
 		return this.hasAnyListeners(COLLECTION_CHANGE_LISTENER_CLASS, collectionName);
 	}
 
-	private ListenerList<CollectionChangeListener> getCollectionChangeListenerList(String collectionName) {
-		return this.getListenerList(COLLECTION_CHANGE_LISTENER_CLASS, collectionName);
-	}
-
 	private Iterable<CollectionChangeListener> getCollectionChangeListeners(String collectionName) {
-		ListenerList<CollectionChangeListener> listenerList = this.getCollectionChangeListenerList(collectionName);
-		return (listenerList == null) ? null : listenerList.getListeners();
+		return this.getListenerList(COLLECTION_CHANGE_LISTENER_CLASS, collectionName);
 	}
 
 	private boolean hasCollectionChangeListener(String collectionName, CollectionChangeListener listener) {
@@ -1446,13 +1426,8 @@ public class ChangeSupport {
 		return this.hasAnyListeners(LIST_CHANGE_LISTENER_CLASS, listName);
 	}
 
-	private ListenerList<ListChangeListener> getListChangeListenerList(String listName) {
-		return this.getListenerList(LIST_CHANGE_LISTENER_CLASS, listName);
-	}
-
 	private Iterable<ListChangeListener> getListChangeListeners(String listName) {
-		ListenerList<ListChangeListener> listenerList = this.getListChangeListenerList(listName);
-		return (listenerList == null) ? null : listenerList.getListeners();
+		return this.getListenerList(LIST_CHANGE_LISTENER_CLASS, listName);
 	}
 
 	private boolean hasListChangeListener(String listName, ListChangeListener listener) {

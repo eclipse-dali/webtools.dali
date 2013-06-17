@@ -421,7 +421,7 @@ final class DTPConnectionProfileWrapper
 		public void opened(ConnectEvent event) {
 			// do *not* build the database here - it is built on-demand;
 			// forward event to listeners
-			for (ConnectionListener listener : this.listenerList.getListeners()) {
+			for (ConnectionListener listener : this.listenerList) {
 				listener.opened(DTPConnectionProfileWrapper.this);
 			}
 		}
@@ -434,7 +434,7 @@ final class DTPConnectionProfileWrapper
 		 */
 		public void modified(ConnectEvent event) {
 			// forward event to listeners
-			for (ConnectionListener listener : this.listenerList.getListeners()) {
+			for (ConnectionListener listener : this.listenerList) {
 				listener.modified(DTPConnectionProfileWrapper.this);
 			}
 		}
@@ -442,7 +442,7 @@ final class DTPConnectionProfileWrapper
 		public boolean okToClose(ConnectEvent event) {
 			// forward event to listeners
 			boolean result = true;
-			for (ConnectionListener listener : this.listenerList.getListeners()) {
+			for (ConnectionListener listener : this.listenerList) {
 				result &= listener.okToClose(DTPConnectionProfileWrapper.this);
 			}
 			return result;
@@ -451,7 +451,7 @@ final class DTPConnectionProfileWrapper
 		// live or off-line => inactive
 		public void aboutToClose(ConnectEvent event) {
 			// forward event to listeners
-			for (ConnectionListener listener : this.listenerList.getListeners()) {
+			for (ConnectionListener listener : this.listenerList) {
 				listener.aboutToClose(DTPConnectionProfileWrapper.this);
 			}
 			// clear the database *before* the DTP connection is closed
@@ -463,7 +463,7 @@ final class DTPConnectionProfileWrapper
 		// live or off-line => inactive
 		public void closed(ConnectEvent event) {
 			// forward event to listeners
-			for (ConnectionListener listener : this.listenerList.getListeners()) {
+			for (ConnectionListener listener : this.listenerList) {
 				listener.closed(DTPConnectionProfileWrapper.this);
 			}
 		}
@@ -503,43 +503,43 @@ final class DTPConnectionProfileWrapper
 		// ********** internal methods **********
 
 		void databaseChanged(DTPDatabaseWrapper db) {
-			for (ConnectionListener listener : this.listenerList.getListeners()) {
+			for (ConnectionListener listener : this.listenerList) {
 				listener.databaseChanged(DTPConnectionProfileWrapper.this, db);
 			}
 		}
 
 		void catalogChanged(DTPCatalogWrapper catalog) {
-			for (ConnectionListener listener : this.listenerList.getListeners()) {
+			for (ConnectionListener listener : this.listenerList) {
 				listener.catalogChanged(DTPConnectionProfileWrapper.this, catalog);
 			}
 		}
 
 		void schemaChanged(DTPSchemaWrapper schema) {
-			for (ConnectionListener listener : this.listenerList.getListeners()) {
+			for (ConnectionListener listener : this.listenerList) {
 				listener.schemaChanged(DTPConnectionProfileWrapper.this, schema);
 			}
 		}
 
 		void sequenceChanged(DTPSequenceWrapper sequence) {
-			for (ConnectionListener listener : this.listenerList.getListeners()) {
+			for (ConnectionListener listener : this.listenerList) {
 				listener.sequenceChanged(DTPConnectionProfileWrapper.this, sequence);
 			}
 		}
 
 		void tableChanged(DTPTableWrapper table) {
-			for (ConnectionListener listener : this.listenerList.getListeners()) {
+			for (ConnectionListener listener : this.listenerList) {
 				listener.tableChanged(DTPConnectionProfileWrapper.this, table);
 			}
 		}
 
 		void columnChanged(DTPColumnWrapper column) {
-			for (ConnectionListener listener : this.listenerList.getListeners()) {
+			for (ConnectionListener listener : this.listenerList) {
 				listener.columnChanged(DTPConnectionProfileWrapper.this, column);
 			}
 		}
 
 		void foreignKeyChanged(DTPForeignKeyWrapper foreignKey) {
-			for (ConnectionListener listener : this.listenerList.getListeners()) {
+			for (ConnectionListener listener : this.listenerList) {
 				listener.foreignKeyChanged(DTPConnectionProfileWrapper.this, foreignKey);
 			}
 		}

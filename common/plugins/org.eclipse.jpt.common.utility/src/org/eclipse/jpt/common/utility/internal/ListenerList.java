@@ -11,7 +11,8 @@ package org.eclipse.jpt.common.utility.internal;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
-import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import java.util.Iterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 
 /**
  * Maintain a thread-safe list of listeners that does not allow adding
@@ -19,7 +20,9 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
  * 
  * @param <L> the type of listeners held by the list
  */
-public class ListenerList<L> {
+public class ListenerList<L>
+	implements Iterable<L>
+{
 	/**
 	 * We can mark this <code>volatile</code> and not synchronize the read
 	 * methods because we never change the <em>contents</em> of the array.
@@ -56,8 +59,8 @@ public class ListenerList<L> {
 	/**
 	 * Return the listeners.
 	 */
-	public Iterable<L> getListeners() {
-		return IterableTools.iterable(this.listeners);
+	public Iterator<L> iterator() {
+		return IteratorTools.iterator(this.listeners);
 	}
 
 	/**

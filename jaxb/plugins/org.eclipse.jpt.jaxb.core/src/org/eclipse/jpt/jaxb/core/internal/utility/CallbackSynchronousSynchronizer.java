@@ -62,7 +62,7 @@ public class CallbackSynchronousSynchronizer
 	 * Notify our listeners.
 	 */
 	private void synchronizationQuiesced() {
-		for (Listener listener : this.listenerList.getListeners()) {
+		for (Listener listener : this.listenerList) {
 			listener.synchronizationQuiesced(this);
 		}
 	}

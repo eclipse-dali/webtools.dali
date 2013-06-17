@@ -129,7 +129,7 @@ public abstract class AbstractJaxbFileResourceModel<S>
 	}
 
 	protected void resourceModelChanged() {
-		for (JptResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
+		for (JptResourceModelListener listener : this.resourceModelListenerList) {
 			listener.resourceModelChanged(this);
 		}
 	}

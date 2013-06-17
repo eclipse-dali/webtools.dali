@@ -149,7 +149,7 @@ public final class DTPConnectionProfileFactory
 
 		public void profileAdded(IConnectionProfile dtpProfile) {
 			String name = dtpProfile.getName();
-			for (ConnectionProfileListener listener : this.listenerList.getListeners()) {
+			for (ConnectionProfileListener listener : this.listenerList) {
 				listener.connectionProfileAdded(name);
 			}
 		}
@@ -157,7 +157,7 @@ public final class DTPConnectionProfileFactory
 		public void profileChanged(IConnectionProfile dtpProfile, String oldName, String oldDescription, Boolean oldAutoConnect) {
 			String newName = dtpProfile.getName();
 			if ( ! newName.equals(oldName)) {
-				for (ConnectionProfileListener listener : this.listenerList.getListeners()) {
+				for (ConnectionProfileListener listener : this.listenerList) {
 					listener.connectionProfileRenamed(oldName, newName);
 				}
 			}
@@ -170,7 +170,7 @@ public final class DTPConnectionProfileFactory
 
 		public void profileDeleted(IConnectionProfile dtpProfile) {
 			String name = dtpProfile.getName();
-			for (ConnectionProfileListener listener : this.listenerList.getListeners()) {
+			for (ConnectionProfileListener listener : this.listenerList) {
 				listener.connectionProfileRemoved(name);
 			}
 		}

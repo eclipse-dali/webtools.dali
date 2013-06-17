@@ -613,7 +613,7 @@ public class TableModelAdapter<E> {
 	protected void tableSelectionChanged(@SuppressWarnings("unused") SelectionEvent event) {
 		if (this.selectionChangeListenerList.size() > 0) {
 			SelectionChangeEvent<E> scEvent = new SelectionChangeEvent<E>(this, this.selectedItems());
-			for (SelectionChangeListener<E> selectionChangeListener : this.selectionChangeListenerList.getListeners()) {
+			for (SelectionChangeListener<E> selectionChangeListener : this.selectionChangeListenerList) {
 				selectionChangeListener.selectionChanged(scEvent);
 			}
 		}
@@ -638,7 +638,7 @@ public class TableModelAdapter<E> {
 			// there should be only a single item selected during a double-click(?)
 			E selection = this.listHolder.get(this.table.getSelectionIndex());
 			DoubleClickEvent<E> dcEvent = new DoubleClickEvent<E>(this, selection);
-			for (DoubleClickListener<E> doubleClickListener : this.doubleClickListenerList.getListeners()) {
+			for (DoubleClickListener<E> doubleClickListener : this.doubleClickListenerList) {
 				doubleClickListener.doubleClick(dcEvent);
 			}
 		}

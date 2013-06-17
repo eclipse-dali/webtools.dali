@@ -278,7 +278,7 @@ public class JptXmlResource
 	// ********** listener notifications **********
 
 	protected void resourceModelChanged() {
-		for (JptResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
+		for (JptResourceModelListener listener : this.resourceModelListenerList) {
 			try {
 				listener.resourceModelChanged(this);
 			} catch (Exception ex) {
@@ -288,7 +288,7 @@ public class JptXmlResource
 	}
 
 	protected void resourceModelReverted() {
-		for (JptResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
+		for (JptResourceModelListener listener : this.resourceModelListenerList) {
 			try {
 				listener.resourceModelReverted(this);
 			} catch (Exception ex) {
@@ -298,7 +298,7 @@ public class JptXmlResource
 	}
 
 	protected void resourceModelUnloaded() {
-		for (JptResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
+		for (JptResourceModelListener listener : this.resourceModelListenerList) {
 			try {
 				listener.resourceModelUnloaded(this);
 			} catch (Exception ex) {

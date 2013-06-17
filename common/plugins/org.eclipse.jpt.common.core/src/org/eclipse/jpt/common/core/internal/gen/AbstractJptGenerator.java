@@ -159,7 +159,7 @@ public abstract class AbstractJptGenerator implements JptGenerator
 	}
 
 	private void notifyLaunchConfigListeners(boolean generationSuccessful) {
-		for(LaunchConfigListener launchConfigListener : this.launchConfigListenerList.getListeners()) {
+		for(LaunchConfigListener launchConfigListener : this.launchConfigListenerList) {
 			launchConfigListener.launchCompleted(generationSuccessful);
 		}	
 	}

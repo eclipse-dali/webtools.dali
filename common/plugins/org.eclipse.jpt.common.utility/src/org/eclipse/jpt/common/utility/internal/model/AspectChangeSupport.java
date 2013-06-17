@@ -77,7 +77,7 @@ public class AspectChangeSupport
 
 	private Iterable<Listener> getListeners() {
 		ListenerList<Listener> listenerList = this.getListenerList();
-		return (listenerList == null) ? null : listenerList.getListeners();
+		return (listenerList == null) ? null : listenerList;
 	}
 
 	private ListenerList<Listener> getListenerList() {

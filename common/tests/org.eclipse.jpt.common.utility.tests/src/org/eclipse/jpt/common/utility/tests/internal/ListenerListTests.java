@@ -26,15 +26,13 @@ public class ListenerListTests extends TestCase {
 		ListenerList<Listener> listenerList = new ListenerList<Listener>(Listener.class);
 		Listener listener1 = new LocalListener();
 		Listener listener2 = new LocalListener();
-		Iterable<Listener> listeners = listenerList.getListeners();
-		assertEquals(0, IterableTools.size(listeners));
+		assertEquals(0, IterableTools.size(listenerList));
 
 		listenerList.add(listener1);
 		listenerList.add(listener2);
-		listeners = listenerList.getListeners();
-		assertEquals(2, IterableTools.size(listeners));
-		assertTrue(IterableTools.contains(listeners, listener1));
-		assertTrue(IterableTools.contains(listeners, listener2));
+		assertEquals(2, IterableTools.size(listenerList));
+		assertTrue(IterableTools.contains(listenerList, listener1));
+		assertTrue(IterableTools.contains(listenerList, listener2));
 	}
 
 	public void testSize() throws Exception {
@@ -92,15 +90,15 @@ public class ListenerListTests extends TestCase {
 		Listener listener2 = new LocalListener();
 		listenerList.add(listener1);
 		listenerList.add(listener2);
-		assertTrue(IterableTools.contains(listenerList.getListeners(), listener1));
-		assertTrue(IterableTools.contains(listenerList.getListeners(), listener2));
+		assertTrue(IterableTools.contains(listenerList, listener1));
+		assertTrue(IterableTools.contains(listenerList, listener2));
 
 		listenerList.remove(listener1);
-		assertFalse(IterableTools.contains(listenerList.getListeners(), listener1));
-		assertTrue(IterableTools.contains(listenerList.getListeners(), listener2));
+		assertFalse(IterableTools.contains(listenerList, listener1));
+		assertTrue(IterableTools.contains(listenerList, listener2));
 
 		listenerList.remove(listener2);
-		assertFalse(IterableTools.contains(listenerList.getListeners(), listener2));
+		assertFalse(IterableTools.contains(listenerList, listener2));
 	}
 
 	public void testRemove_null() throws Exception {
@@ -137,12 +135,12 @@ public class ListenerListTests extends TestCase {
 		Listener listener2 = new LocalListener();
 		listenerList.add(listener1);
 		listenerList.add(listener2);
-		assertTrue(IterableTools.contains(listenerList.getListeners(), listener1));
-		assertTrue(IterableTools.contains(listenerList.getListeners(), listener2));
+		assertTrue(IterableTools.contains(listenerList, listener1));
+		assertTrue(IterableTools.contains(listenerList, listener2));
 
 		listenerList.clear();
-		assertFalse(IterableTools.contains(listenerList.getListeners(), listener1));
-		assertFalse(IterableTools.contains(listenerList.getListeners(), listener2));
+		assertFalse(IterableTools.contains(listenerList, listener1));
+		assertFalse(IterableTools.contains(listenerList, listener2));
 	}
 
 	interface Listener extends EventListener {

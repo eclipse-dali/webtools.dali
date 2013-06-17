@@ -10,10 +10,7 @@
 package org.eclipse.jpt.common.utility.tests.internal.model;
 
 import java.util.EventListener;
-
 import junit.framework.TestCase;
-
-import org.eclipse.jpt.common.utility.internal.ListenerList;
 import org.eclipse.jpt.common.utility.internal.RuntimeExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
@@ -160,12 +157,8 @@ public class NewEventTests
 		public boolean hasAnyFooChangeListeners() {
 			return this.hasAnyListeners(FOO_CHANGE_LISTENER_CLASS);
 		}
-		private ListenerList<FooChangeListener> getFooChangeListenerList() {
-			return this.getListenerList(FOO_CHANGE_LISTENER_CLASS);
-		}
 		private Iterable<FooChangeListener> getFooChangeListeners() {
-			ListenerList<FooChangeListener> listenerList = this.getFooChangeListenerList();
-			return (listenerList == null) ? null : listenerList.getListeners();
+			return this.getListenerList(FOO_CHANGE_LISTENER_CLASS);
 		}
 		private boolean hasFooChangeListener(FooChangeListener listener) {
 			return IterableTools.contains(this.getFooChangeListeners(), listener);

@@ -44,7 +44,7 @@ public abstract class AbstractSelectionProvider
 
 	protected void fireSelectionChanged(ISelection selection) {
 		SelectionChangedEvent event = new SelectionChangedEvent(this, selection);
-		for (ISelectionChangedListener listener : this.listenerList.getListeners()) {
+		for (ISelectionChangedListener listener : this.listenerList) {
 			this.fireSelectionChanged(listener, event);
         }
 	}

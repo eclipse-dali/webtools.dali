@@ -330,7 +330,7 @@ abstract class AbstractItemStructuredStateProviderManager<V extends StructuredVi
 	}
 
 	/* private-protected */ void fireLabelProviderChanged(LabelProviderChangedEvent event) {
-		for (ILabelProviderListener listener : this.listenerList.getListeners()) {
+		for (ILabelProviderListener listener : this.listenerList) {
 			try {
 				listener.labelProviderChanged(event);
 			} catch (Throwable t) {

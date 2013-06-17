@@ -108,7 +108,7 @@ public class DatabaseSchemaWizardPage extends WizardPage {
 
 	void fireSchemaChanged(Schema schema) {
 		this.setPageComplete(schema != null);
-		for (Listener listener : this.listenerList.getListeners()) {
+		for (Listener listener : this.listenerList) {
 			listener.selectedSchemaChanged(schema);
 		}
 	}

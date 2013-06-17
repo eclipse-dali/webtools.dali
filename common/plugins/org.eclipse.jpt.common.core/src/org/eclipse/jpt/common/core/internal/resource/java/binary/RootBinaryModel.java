@@ -60,7 +60,7 @@ abstract class RootBinaryModel
 	// ********** JavaResourceNode.Root implementation **********
 
 	public void resourceModelChanged() {
-		for (JptResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
+		for (JptResourceModelListener listener : this.resourceModelListenerList) {
 			listener.resourceModelChanged(this);
 		}
 	}
