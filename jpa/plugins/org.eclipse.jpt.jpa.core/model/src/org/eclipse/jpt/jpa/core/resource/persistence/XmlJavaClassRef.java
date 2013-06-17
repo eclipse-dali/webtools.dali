@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 
 package org.eclipse.jpt.jpa.core.resource.persistence;
 
+import java.util.Comparator;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -208,31 +209,6 @@ public class XmlJavaClassRef extends EBaseObjectImpl implements EBaseObject
 	}
 
 
-	// ********** translators **********
-
-	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
-		return new SimpleTranslator(
-				elementName,
-				structuralFeature,
-				Translator.END_TAG_NO_INDENT,
-				buildTranslatorChildren()
-			);
-	}
-
-	private static Translator[] buildTranslatorChildren() {
-		return new Translator[] {
-				buildClassNameTranslator(),
-			};
-	}
-
-	private static Translator buildClassNameTranslator() {
-		return new Translator(
-				Translator.TEXT_ATTRIBUTE_VALUE,
-				PersistencePackage.eINSTANCE.getXmlJavaClassRef_JavaClass()
-			);
-	}
-
-
 	// *********** refactoring ***********
 
 	public ReplaceEdit createRenameEdit(IType originalType, String newName) {
@@ -257,8 +233,45 @@ public class XmlJavaClassRef extends EBaseObjectImpl implements EBaseObject
 		return new ReplaceEdit(offset, packageLength, newPackageName);
 	}
 
+
+	// ********** misc **********
+
 	public TextRange getJavaClassTextRange(){
 		TextRange textRange = this.buildTextRange(this.getTextNode());
 		return textRange == null ? this.getValidationTextRange() : textRange;
+	}
+
+	public static final Comparator<XmlJavaClassRef> COMPARATOR = new JavaClassComparator();
+	public static class JavaClassComparator
+		implements Comparator<XmlJavaClassRef>
+	{
+		public int compare(XmlJavaClassRef ref1, XmlJavaClassRef ref2) {
+			return ref1.getJavaClass().compareTo(ref2.getJavaClass());
+		}
+	}
+
+
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(
+				elementName,
+				structuralFeature,
+				Translator.END_TAG_NO_INDENT,
+				buildTranslatorChildren()
+			);
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+				buildClassNameTranslator(),
+			};
+	}
+
+	private static Translator buildClassNameTranslator() {
+		return new Translator(
+				Translator.TEXT_ATTRIBUTE_VALUE,
+				PersistencePackage.eINSTANCE.getXmlJavaClassRef_JavaClass()
+			);
 	}
 }

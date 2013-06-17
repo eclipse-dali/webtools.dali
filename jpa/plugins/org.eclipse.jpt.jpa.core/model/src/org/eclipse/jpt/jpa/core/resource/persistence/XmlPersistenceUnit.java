@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,7 @@ package org.eclipse.jpt.jpa.core.resource.persistence;
 import java.util.Collection;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -67,8 +68,9 @@ import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 public class XmlPersistenceUnit extends EBaseObjectImpl implements XmlPersistenceUnit_2_0
 {
 	/**
-	 * changed this to null and removed the generated flag so emf won't generate over it
-	 * we don't want a default for enums, just null if the tag does not exist
+	 * Changed this to <code>null</code> and removed the 'generated' flag so
+	 * EMF won't overwrite it. Enums do not need a default - they are simply
+	 * <code>null</code> if there is no tag.
 	 */
 	protected static final XmlPersistenceUnitCachingType_2_0 SHARED_CACHE_MODE_EDEFAULT = null;
 
@@ -83,8 +85,9 @@ public class XmlPersistenceUnit extends EBaseObjectImpl implements XmlPersistenc
 	protected XmlPersistenceUnitCachingType_2_0 sharedCacheMode = SHARED_CACHE_MODE_EDEFAULT;
 
 	/**
-	 * changed this to null and removed the generated flag so emf won't generate over it
-	 * we don't want a default for enums, just null if the tag does not exist
+	 * Changed this to <code>null</code> and removed the 'generated' flag so
+	 * EMF won't overwrite it. Enums do not need a default - they are simply
+	 * <code>null</code> if there is no tag.
 	 */
 	protected static final XmlPersistenceUnitValidationModeType_2_0 VALIDATION_MODE_EDEFAULT = null;
 
@@ -259,8 +262,9 @@ public class XmlPersistenceUnit extends EBaseObjectImpl implements XmlPersistenc
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * changed this to null and removed the generated flag so emf won't generate over it
-	 * we don't want a default for enums, just null if the tag does not exist
+	 * Changed this to <code>null</code> and removed the 'generated' flag so
+	 * EMF won't overwrite it. Enums do not need a default - they are simply
+	 * <code>null</code> if there is no tag.
 	 */
 	protected static final XmlPersistenceUnitTransactionType TRANSACTION_TYPE_EDEFAULT = null;
 
@@ -997,6 +1001,41 @@ public class XmlPersistenceUnit extends EBaseObjectImpl implements XmlPersistenc
 	}
 	
 	
+	// ********** misc **********
+	
+	public int getLocationToInsertMappingFileRef() {
+		if (getMappingFiles().size() > 0) {
+			XmlMappingFileRef mappingFileRef = IterableTools.last(this.getMappingFiles());
+			return mappingFileRef.getNodeEndOffset();
+		}
+
+		IDOMNode elementNode = null;
+		if (getNonJtaDataSource() != null) {
+			elementNode = getElementNode(JPA.NON_JTA_DATA_SOURCE);
+		}
+		else if (getJtaDataSource() != null) {
+			elementNode = getElementNode(JPA.JTA_DATA_SOURCE);
+		}
+		else if (getProvider() != null) {
+			elementNode = getElementNode(JPA.PROVIDER);			
+		}
+		else if (getDescription() != null) {
+			elementNode = getElementNode(JPA.DESCRIPTION);			
+		}
+		if (elementNode != null) {
+			return elementNode.getLastStructuredDocumentRegion().getEnd();
+		}
+		return this.node.getFirstStructuredDocumentRegion().getEnd();
+	}
+
+	/**
+	 * Sort the persistence unit's class list.
+	 */
+	public void sortClasses() {
+		ECollections.sort(this.getClasses(), XmlJavaClassRef.COMPARATOR);
+	}
+
+
 	// ********** translators **********
 	
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
@@ -1075,31 +1114,5 @@ public class XmlPersistenceUnit extends EBaseObjectImpl implements XmlPersistenc
 		return new Translator(
 				JPA2_0.PERSISTENCE_UNIT__VALIDATION_MODE,
 				PersistenceV2_0Package.eINSTANCE.getXmlPersistenceUnit_2_0_ValidationMode());
-	}
-
-
-	public int getLocationToInsertMappingFileRef() {
-		if (getMappingFiles().size() > 0) {
-			XmlMappingFileRef mappingFileRef = IterableTools.last(this.getMappingFiles());
-			return mappingFileRef.getNodeEndOffset();
-		}
-
-		IDOMNode elementNode = null;
-		if (getNonJtaDataSource() != null) {
-			elementNode = getElementNode(JPA.NON_JTA_DATA_SOURCE);
-		}
-		else if (getJtaDataSource() != null) {
-			elementNode = getElementNode(JPA.JTA_DATA_SOURCE);
-		}
-		else if (getProvider() != null) {
-			elementNode = getElementNode(JPA.PROVIDER);			
-		}
-		else if (getDescription() != null) {
-			elementNode = getElementNode(JPA.DESCRIPTION);			
-		}
-		if (elementNode != null) {
-			return elementNode.getLastStructuredDocumentRegion().getEnd();
-		}
-		return this.node.getFirstStructuredDocumentRegion().getEnd();
 	}
 }

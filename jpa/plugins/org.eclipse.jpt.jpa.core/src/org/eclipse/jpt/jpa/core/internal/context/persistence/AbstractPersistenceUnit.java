@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.core.internal.context.persistence;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -30,7 +29,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
-import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
@@ -848,14 +846,14 @@ public abstract class AbstractPersistenceUnit
 		return classRef;
 	}
 
-	protected Iterable<ClassRef> addSpecifiedClassRefs(Iterable<JavaResourceAbstractType> classNames) {
-		return this.addSpecifiedClassRefs(this.getSpecifiedClassRefsSize(), classNames);
+	protected Iterable<ClassRef> addSpecifiedClassRefs(Iterable<JavaResourceAbstractType> javaResourceTypes) {
+		return this.addSpecifiedClassRefs(this.getSpecifiedClassRefsSize(), javaResourceTypes);
 	}
 
-	protected Iterable<ClassRef> addSpecifiedClassRefs(int index, Iterable<JavaResourceAbstractType> jrats) {
+	protected Iterable<ClassRef> addSpecifiedClassRefs(int index, Iterable<JavaResourceAbstractType> javaResourceTypes) {
 		ArrayList<XmlJavaClassRef> xmlClassRefs = new ArrayList<XmlJavaClassRef>();
-		for (JavaResourceAbstractType jrat : jrats) {
-			xmlClassRefs.add(this.buildXmlJavaClassRef(jrat.getTypeBinding().getQualifiedName()));
+		for (JavaResourceAbstractType javaResourceType : javaResourceTypes) {
+			xmlClassRefs.add(this.buildXmlJavaClassRef(javaResourceType.getTypeBinding().getQualifiedName()));
 		}
 		Iterable<ClassRef> classRefs = this.specifiedClassRefContainer.addContextElements(index, xmlClassRefs);
 		this.xmlPersistenceUnit.getClasses().addAll(index, xmlClassRefs);
@@ -2050,34 +2048,34 @@ public abstract class AbstractPersistenceUnit
 	public void synchronizeClasses(IProgressMonitor monitor) {
 		SubMonitor sm = SubMonitor.convert(monitor, 4);
 
-		// newTypes collection only includes those that are annotated
-		HashSet<JavaResourceAbstractType> newTypes = CollectionTools.set(this.getJpaProject().getPotentialJavaSourceTypes());
-		ArrayList<ClassRef> deadClassRefs = new ArrayList<ClassRef>();
+		// gather up all the annotated Java types and types listed in the mapping files
+		HashSet<JavaResourceAbstractType> newClasses = CollectionTools.set(this.getJpaProject().getPotentialJavaSourceTypes());
 		HashSet<String> mappingFileTypeNames = this.getMappingFileTypeNames();
 
-		// collect those class refs that need to be removed from persistence.xml
-		for (ClassRef classRef : this.getSpecifiedClassRefs()) {
-			JavaManagedType specifiedJMT = classRef.getJavaManagedType();
+		// calculate the class refs to be removed
+		ArrayList<ClassRef> deadClassRefs = new ArrayList<ClassRef>();
+		for (ClassRef specifiedClassRef : this.getSpecifiedClassRefs()) {
+			JavaManagedType specifiedJMT = specifiedClassRef.getJavaManagedType();
 			if (specifiedJMT == null) {
-				// Java type cannot be resolved
-				deadClassRefs.add(classRef);
+				// specified type cannot be resolved
+				deadClassRefs.add(specifiedClassRef);
 			} else {
-				JavaResourceType specifiedType = specifiedJMT.getJavaResourceType();
-				if ( ! newTypes.remove(specifiedType)) {
-					// Java type is not annotated
-					deadClassRefs.add(classRef);
-				} else if (mappingFileTypeNames.contains(specifiedType.getTypeBinding().getQualifiedName())) {
-					// type is also listed in a mapping file
-					deadClassRefs.add(classRef);
+				JavaResourceType specifiedJRT = specifiedJMT.getJavaResourceType();
+				if ( ! newClasses.remove(specifiedJRT)) {
+					// specified type is resolved but not annotated
+					deadClassRefs.add(specifiedClassRef);
+				} else if (mappingFileTypeNames.contains(specifiedJRT.getTypeBinding().getQualifiedName())) {
+					// specified type is resolved but also listed in a mapping file
+					deadClassRefs.add(specifiedClassRef);
 				}
 			}
 		}
 
-		// if a type is included in a mapping file, remove it from the newTypes collection
-		for (java.util.Iterator<JavaResourceAbstractType> iterator = newTypes.iterator(); iterator.hasNext();) {
-			JavaResourceAbstractType type = iterator.next();
-			if (mappingFileTypeNames.contains(type.getTypeBinding().getQualifiedName())) {
-				iterator.remove();
+		// now check for any remaining newly-discovered types that are already listed in a mapping file
+		for (Iterator<JavaResourceAbstractType> stream = newClasses.iterator(); stream.hasNext(); ) {
+			JavaResourceAbstractType javaType = stream.next();
+			if (mappingFileTypeNames.contains(javaType.getTypeBinding().getQualifiedName())) {
+				stream.remove();
 			}
 		}
 		if (sm.isCanceled()) {
@@ -2091,18 +2089,15 @@ public abstract class AbstractPersistenceUnit
 		}
 		sm.worked(1);
 
-		this.addSpecifiedClassRefs(newTypes);
-		sm.worked(1);
-
-		// sort the list of class refs within the persistence.xml
-		ECollections.sort(this.getXmlPersistenceUnit().getClasses(), new XmlJavaClassRefNameComp());
-		sm.worked(1);
-	}
-
-	public class XmlJavaClassRefNameComp implements Comparator<XmlJavaClassRef>{
-		public int compare(XmlJavaClassRef xjcr1, XmlJavaClassRef xjcr2) {
-			return xjcr1.getJavaClass().compareTo(xjcr2.getJavaClass());
+		this.addSpecifiedClassRefs(newClasses);
+		if (sm.isCanceled()) {
+			return;
 		}
+		sm.worked(1);
+
+		// any changes to the XML file will update the specified class refs list
+		this.getXmlPersistenceUnit().sortClasses();
+		sm.worked(1);
 	}
 
 	/**
