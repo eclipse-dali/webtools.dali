@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -104,7 +104,16 @@ public abstract class PropertyValueModelWrapper<V>
 	 * propagate the change notification appropriately.
 	 * @see #wrappedValueChanged(PropertyChangeEvent)
 	 */
-	protected void wrappedValueChanged(@SuppressWarnings("unused") V oldValue, @SuppressWarnings("unused") V newValue) {
+	protected void wrappedValueChanged(@SuppressWarnings("unused") V oldValue, V newValue) {
+		this.wrappedValueChanged(newValue);
+	}
+
+	/**
+	 * The value of the wrapped value model has changed;
+	 * propagate the change notification appropriately.
+	 * @see #wrappedValueChanged(Object, Object)
+	 */
+	protected void wrappedValueChanged(@SuppressWarnings("unused") V newValue) {
 		throw new RuntimeException("This method was not overridden."); //$NON-NLS-1$
 	}
 }
