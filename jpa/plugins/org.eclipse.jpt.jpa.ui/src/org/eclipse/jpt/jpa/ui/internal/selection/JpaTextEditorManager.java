@@ -226,7 +226,7 @@ class JpaTextEditorManager
 			//AbstractJavaPersistentType.getStructureNode(int) will cause a
 			//synchronizeWithJavaSource() to be run, and we don't want that to happen
 			//when we have focus.
-			if (JptJpaUiPlugin.instance().getFocusIsNonDali()) {
+			if (JptJpaUiPlugin.instance().focusIsNotInDaliView()) {
 				JpaTextEditorManager.this.setJpaSelection(event.getSelection());
 			}
 		}

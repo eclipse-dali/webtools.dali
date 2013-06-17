@@ -779,13 +779,18 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	/**
-	 * This method is called by JpaTextEditorManager only when the focus is not in the JPA Details view.
-	 * See JptJpaUiPlugin.getFocusIsNonDali()
+	 * This method is called by <code>JpaTextEditorManager</code> only when the
+	 * focus is <em>not</em> in the JPA Details view.
+	 * See <code>JptJpaUiPlugin.focusIsNotInDaliView()</code>.
 	 * <p>
-	 * We are suppressing java events when the focus is in the JPA Details view so we don't
-	 * want this synchronizeWithJavaSource() to be called in that case.
-	 * When the user moves from the JPA Details view back to the Java source we need to call
-	 * synchronizeWithJavaSource() in order for our cached text ranges to be updated appropriately.
+	 * We are suppressing Java events when the focus is in the JPA Details view
+	 * so we don't want to call
+	 * {@link org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit#synchronizeWithJavaSourceIfNecessary()}
+	 * in that case.
+	 * When the user moves from the JPA Details view to the Java source editor
+	 * we need to call 
+	 * {@link org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit#synchronizeWithJavaSourceIfNecessary()}
+	 * in order for our cached text ranges to be updated appropriately.
 	 * <p>
 	 * Also need the synchronizeWithJavaSource() when editing directly in the java source,
 	 * the textRange gets updated after the java delay which is after we are notified of a selection change.

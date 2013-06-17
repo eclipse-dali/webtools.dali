@@ -38,8 +38,8 @@ public class JptJpaUiPlugin
 	/**
 	 * @see #focusIn(Control)
 	 */
-	private final ControlIsNonDaliListenerFlag controlIsNonDaliFlag = new ControlIsNonDaliListenerFlag();
-	private final AsyncEventListenerFlag asyncEventListenerFlag = new AsyncEventListenerFlag(this.controlIsNonDaliFlag);
+	private final FocusIsNotInDaliViewFlag focusIsNotInDaliViewFlag = new FocusIsNotInDaliViewFlag();
+	private final AsyncEventListenerFlag asyncEventListenerFlag = new AsyncEventListenerFlag(this.focusIsNotInDaliViewFlag);
 	private volatile Display display;
 	private final Listener focusListener = new FocusListener();
 
@@ -180,13 +180,12 @@ public class JptJpaUiPlugin
 	// ********** focus event handling **********
 
 	/**
-	 * Return true if the focus is not in a Dali view.
-	 * <p>
-	 * Currently only the JpaTextEditorManager is using this listen
-	 * to TextEditor selection change events if the focus is in the JPA Details view.
+	 * Return whether the focus is <em>not</em> in a Dali view
+	 * (currently only the JPA Details view is considered a Dali view).
+	 * @see org.eclipse.jpt.jpa.ui.internal.selection.JpaTextEditorManager.TextEditorSelectionListener
 	 */
-	public boolean getFocusIsNonDali() {
-		return this.controlIsNonDaliFlag.getValue();
+	public boolean focusIsNotInDaliView() {
+		return this.focusIsNotInDaliViewFlag.getValue();
 	}
 
 	/**
@@ -206,7 +205,8 @@ public class JptJpaUiPlugin
 	 * to keep the Dali model synchronized with the Java source code.
 	 */
 	/* CU private */ void focusIn(Control control) {
-		this.controlIsNonDaliFlag.setValue(this.controlIsNonDali(control));
+		this.focusIsNotInDaliViewFlag.setValue(this.controlIsNonDali(control));
+		this.focusIsNotInDaliViewFlag.control = control;  // debugging info
 	}
 
 	/**
@@ -265,41 +265,43 @@ public class JptJpaUiPlugin
 	 * on the Java Reconciler thread, the event is ignored; if the event is
 	 * fired on some other thread (typically synchronously on the Main thread),
 	 * the event is forwarded to the JPA projects.
+	 * @see FocusIsNotInDaliViewFlag
 	 */
 	/* CU private */ static class AsyncEventListenerFlag
 		extends AbstractBooleanReference
 	{
-		private final BooleanReference controlIsNonDaliListenerFlag;
+		private final BooleanReference focusIsNotInDaliViewFlag;
 
 		@SuppressWarnings("restriction")
 		private static final String JAVA_RECONCILER_THREAD_NAME = org.eclipse.jdt.internal.ui.text.JavaReconciler.class.getName();
 
-		AsyncEventListenerFlag(BooleanReference controlIsNonDaliListenerFlag) {
+		AsyncEventListenerFlag(BooleanReference focusIsNotInDaliViewFlag) {
 			super();
-			this.controlIsNonDaliListenerFlag = controlIsNonDaliListenerFlag;
+			this.focusIsNotInDaliViewFlag = focusIsNotInDaliViewFlag;
 		}
 
 		public boolean getValue() {
 			if (Thread.currentThread().getName().equals(JAVA_RECONCILER_THREAD_NAME)) {
-				return this.controlIsNonDaliListenerFlag.getValue();
+				return this.focusIsNotInDaliViewFlag.getValue();
 			}
 			return true;
 		}
 	}
 
-	// ********** control is non-Dali listener flag **********
+
+	// ********** focus is not in Dali view flag **********
 
 	/**
 	 * This flag's value is determined by the current UI focus (i.e. whether the 
-	 * focus is somewhere other than a Dali view, currently only the JPA Details view); 
-	 * otherwise the flag's value is <code>true</code>.
+	 * focus is somewhere other than a Dali view, currently only the JPA Details view).
 	 */
-	/* CU private */ static class ControlIsNonDaliListenerFlag
+	/* CU private */ static class FocusIsNotInDaliViewFlag
 		extends AbstractBooleanReference
 	{
 		private volatile boolean value = true;
+		volatile Control control;  // useful for debugging
 
-		ControlIsNonDaliListenerFlag() {
+		FocusIsNotInDaliViewFlag() {
 			super();
 		}
 

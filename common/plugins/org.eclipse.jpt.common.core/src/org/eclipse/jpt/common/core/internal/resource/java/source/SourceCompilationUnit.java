@@ -162,9 +162,9 @@ public abstract class SourceCompilationUnit
 			if (this.compilationUnit.isConsistent()) {
 				return;
 			}
-		}
-		catch (JavaModelException e) {
-			JptCommonCorePlugin.instance().logError(e);
+		} catch (JavaModelException ex) {
+			JptCommonCorePlugin.instance().logError(ex);
+			// fall through and sync anyway?
 		}
 		this.synchronizeWithJavaSource();
 	}
