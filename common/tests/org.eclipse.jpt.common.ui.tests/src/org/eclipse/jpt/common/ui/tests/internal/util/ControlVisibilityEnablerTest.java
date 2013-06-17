@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.ui.tests.internal.util;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
+import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.swt.SWT;
@@ -47,7 +47,7 @@ public final class ControlVisibilityEnablerTest {
 
 		Combo combo = new Combo(parent, SWT.BORDER);
 
-		SWTBindTools.controlVisibleState(booleanHolder, combo);
+		SWTBindingTools.controlVisibleState(booleanHolder, combo);
 
 		assertTrue(
 			"The Combo should be visible",

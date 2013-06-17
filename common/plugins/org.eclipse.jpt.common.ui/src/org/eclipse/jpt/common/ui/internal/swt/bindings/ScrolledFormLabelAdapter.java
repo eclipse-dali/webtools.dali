@@ -7,20 +7,20 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.ui.internal.swt.bind;
+package org.eclipse.jpt.common.ui.internal.swt.bindings;
 
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.forms.widgets.ScrolledForm;
 
 /**
- * Adapt a label to the <em>label</em> interface.
- * @see Label
+ * Adapt a scrolled form to the <em>label</em> interface.
+ * @see ScrolledForm
  */
-final class LabelLabelAdapter
-	extends ControlLabelAdapter<Label>
+final class ScrolledFormLabelAdapter
+	extends ControlLabelAdapter<ScrolledForm>
 {
-	public LabelLabelAdapter(Label label) {
-		super(label);
+	public ScrolledFormLabelAdapter(ScrolledForm form) {
+		super(form);
 	}
 
 	@Override

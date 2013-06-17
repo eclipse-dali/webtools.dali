@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
-import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
+import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
@@ -102,7 +102,7 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		section.setText(JptJpaUiDetailsMessages.GENERATORS_COMPOSITE_SEQUENCE_GENERATOR_SECTION);
-		SWTBindTools.controlExpandedState(this.sequenceGeneratorExpansionStateHolder, section);
+		SWTBindingTools.controlExpandedState(this.sequenceGeneratorExpansionStateHolder, section);
 
 		section.setClient(GenerationComposite.this.initializeSequenceGeneratorPane(section));
 	}
@@ -182,7 +182,7 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		section.setText(JptJpaUiDetailsMessages.GENERATORS_COMPOSITE_TABLE_GENERATOR_SECTION);
-		SWTBindTools.controlExpandedState(this.tableGeneratorExpansionStateHolder, section);
+		SWTBindingTools.controlExpandedState(this.tableGeneratorExpansionStateHolder, section);
 
 		section.setClient(GenerationComposite.this.initializeTableGeneratorPane(section));
 	}

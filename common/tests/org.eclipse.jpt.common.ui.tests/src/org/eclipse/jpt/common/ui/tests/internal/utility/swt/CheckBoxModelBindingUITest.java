@@ -14,7 +14,7 @@ import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
+import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
@@ -135,19 +135,19 @@ public class CheckBoxModelBindingUITest
 	private void buildFlag1CheckBox(Composite parent) {
 		Button checkBox = new Button(parent, SWT.CHECK);
 		checkBox.setText("flag 1");
-		SWTBindTools.bind(this.flag1Holder, checkBox);
+		SWTBindingTools.bind(this.flag1Holder, checkBox);
 	}
 
 	private void buildFlag2CheckBox(Composite parent) {
 		Button checkBox = new Button(parent, SWT.CHECK);
 		checkBox.setText("flag 2");
-		SWTBindTools.bind(this.flag2Holder, checkBox);
+		SWTBindingTools.bind(this.flag2Holder, checkBox);
 	}
 
 	private void buildNotFlag2CheckBox(Composite parent) {
 		Button checkBox = new Button(parent, SWT.CHECK);
 		checkBox.setText("not flag 2");
-		SWTBindTools.bind(this.notFlag2Holder, checkBox);
+		SWTBindingTools.bind(this.notFlag2Holder, checkBox);
 	}
 
 	private void buildUnattachedCheckBox(Composite parent) {
@@ -206,7 +206,7 @@ public class CheckBoxModelBindingUITest
 	private void buildNotFlag2ToggleButton(Composite parent) {
 		Button checkBox = new Button(parent, SWT.TOGGLE);
 		checkBox.setText("not flag 2");
-		SWTBindTools.bind(this.notFlag2Holder, checkBox);
+		SWTBindingTools.bind(this.notFlag2Holder, checkBox);
 	}
 
 	private void buildClearModelButton(Composite parent) {

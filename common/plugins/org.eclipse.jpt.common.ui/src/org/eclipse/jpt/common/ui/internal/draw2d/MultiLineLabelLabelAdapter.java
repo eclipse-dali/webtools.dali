@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.ui.internal.draw2d;
 
 import org.eclipse.draw2d.widgets.MultiLineLabel;
-import org.eclipse.jpt.common.ui.internal.swt.bind.ControlLabelAdapter;
+import org.eclipse.jpt.common.ui.internal.swt.bindings.ControlLabelAdapter;
 import org.eclipse.swt.graphics.Image;
 
 /**

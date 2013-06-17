@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.ui.internal.swt.bind;
+package org.eclipse.jpt.common.ui.internal.swt.bindings;
 
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.List;

@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.ui.tests.internal.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
-import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
+import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
@@ -128,7 +128,7 @@ public final class ControlSwitcherTest {
 		pane2 = buildPane2();
 		pane2.setVisible(false);
 
-		SWTBindTools.bind(switchHolder, transformer, pageBook);
+		SWTBindingTools.bind(switchHolder, transformer, pageBook);
 
 		// Test 1
 		switchHolder.setValue(true);

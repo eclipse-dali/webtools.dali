@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
-import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
+import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -92,7 +92,7 @@ public abstract class AbstractJoiningStrategyPane
 	protected void initializeLayout(Composite container) {
 		this.strategyDetailsComposite = this.buildStrategyDetailsComposite(container);
 		// the container is a PageBook, it was built in addComposite(Composite)
-		SWTBindTools.bind(this.buildUsesStrategyHolder(), buildPageBookTransformer(container), (PageBook) container);
+		SWTBindingTools.bind(this.buildUsesStrategyHolder(), buildPageBookTransformer(container), (PageBook) container);
 	}
 	
 	protected Control getStrategyDetailsComposite(Composite parent) {

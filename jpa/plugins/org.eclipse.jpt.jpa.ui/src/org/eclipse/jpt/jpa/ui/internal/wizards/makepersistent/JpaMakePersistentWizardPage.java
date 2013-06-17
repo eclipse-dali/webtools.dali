@@ -49,7 +49,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
-import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
+import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandContext;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
@@ -221,8 +221,8 @@ public class JpaMakePersistentWizardPage
 	
 		final Button persistenceXmlCheckBox = new Button(composite, SWT.CHECK);
 		persistenceXmlCheckBox.setText(JptJpaUiMessages.JpaMakePersistentWizardPage_listInPersistenceXmlCheckBox);
-		SWTBindTools.bind(this.listInPersistenceXmlModel, persistenceXmlCheckBox);
-		SWTBindTools.controlVisibleState(this.annotateInJavaModel, persistenceXmlCheckBox);
+		SWTBindingTools.bind(this.listInPersistenceXmlModel, persistenceXmlCheckBox);
+		SWTBindingTools.controlVisibleState(this.annotateInJavaModel, persistenceXmlCheckBox);
 		
 		setControl(composite);
 	}
@@ -289,7 +289,7 @@ public class JpaMakePersistentWizardPage
 		);
 		
 		Text mappingFileText = this.createText(composite, 1);
-		SWTBindTools.bind(this.mappingFileModel, mappingFileText);
+		SWTBindingTools.bind(this.mappingFileModel, mappingFileText);
 		this.mappingFileModel.addPropertyChangeListener(PropertyValueModel.VALUE, new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent event) {
 				JptXmlResource ormXmlResource = getOrmXmlResource();
@@ -315,7 +315,7 @@ public class JpaMakePersistentWizardPage
 			}
 		});
 
-		SWTBindTools.controlEnabledState(new ListInOrmMappingFileModel(this.annotateInJavaModel), mappingFileLink, mappingFileText, browseButton);
+		SWTBindingTools.controlEnabledState(new ListInOrmMappingFileModel(this.annotateInJavaModel), mappingFileLink, mappingFileText, browseButton);
 		
 		return composite;
 	}

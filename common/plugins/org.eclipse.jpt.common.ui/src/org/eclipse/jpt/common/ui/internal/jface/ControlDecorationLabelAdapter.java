@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.ui.internal.jface;
 
 import org.eclipse.jface.fieldassist.ControlDecoration;
-import org.eclipse.jpt.common.ui.internal.swt.bind.WidgetLabelAdapter;
+import org.eclipse.jpt.common.ui.internal.swt.bindings.WidgetLabelAdapter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;

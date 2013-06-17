@@ -49,7 +49,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.ui.internal.swt.ColumnAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.TableModelAdapter;
-import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
+import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
@@ -257,7 +257,7 @@ public class JaxbSchemasPropertiesPage
 						editSelectedSchema();
 					}
 				});
-		SWTBindTools.controlEnabledState(buildEditEnabledModel(), editButton);
+		SWTBindingTools.controlEnabledState(buildEditEnabledModel(), editButton);
 		setButtonLayoutData(editButton);
 		
 		Button removeButton = new Button(groupComponent, SWT.PUSH);
@@ -269,7 +269,7 @@ public class JaxbSchemasPropertiesPage
 						removeSelectedSchemas();
 					}
 				});
-		SWTBindTools.controlEnabledState(buildRemoveEnabledModel(), removeButton);
+		SWTBindingTools.controlEnabledState(buildRemoveEnabledModel(), removeButton);
         setButtonLayoutData(removeButton);
 	}
 	

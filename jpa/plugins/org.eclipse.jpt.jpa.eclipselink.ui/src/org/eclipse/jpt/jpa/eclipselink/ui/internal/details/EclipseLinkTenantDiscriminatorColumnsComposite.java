@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
+import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.AbstractAdapter;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
@@ -134,7 +134,7 @@ public class EclipseLinkTenantDiscriminatorColumnsComposite<T extends JpaModel>
 	}
 
 	private void installPaneSwitcher(PageBook pageBook) {
-		SWTBindTools.bind(this.selectedTenantDiscriminatorColumnModel, buildPaneTransformer(pageBook), pageBook);
+		SWTBindingTools.bind(this.selectedTenantDiscriminatorColumnModel, buildPaneTransformer(pageBook), pageBook);
 	}
 
 	private Transformer<EclipseLinkTenantDiscriminatorColumn2_3, Control> buildPaneTransformer(PageBook pageBook) {

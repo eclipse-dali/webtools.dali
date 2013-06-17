@@ -7,25 +7,25 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.ui.internal.swt.bind;
+package org.eclipse.jpt.common.ui.internal.swt.bindings;
 
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Link;
+import org.eclipse.swt.widgets.Label;
 
 /**
- * Adapt a link to the <em>label</em> interface (text-only support).
- * @see Link
+ * Adapt a label to the <em>label</em> interface.
+ * @see Label
  */
-final class LinkLabelAdapter
-	extends ControlLabelAdapter<Link>
+final class LabelLabelAdapter
+	extends ControlLabelAdapter<Label>
 {
-	public LinkLabelAdapter(Link link) {
-		super(link);
+	public LabelLabelAdapter(Label label) {
+		super(label);
 	}
 
 	@Override
-	public void setImage_(Image image) {
-		// NOP
+	protected void setImage_(Image image) {
+		this.control.setImage(image);
 	}
 
 	@Override

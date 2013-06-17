@@ -35,7 +35,7 @@ import org.eclipse.jpt.common.core.internal.utility.WorkspaceRunnableAdapter;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
-import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
+import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandContext;
 import org.eclipse.jpt.common.utility.command.Command;
@@ -237,7 +237,7 @@ public abstract class JavaMetadataConversionWizardPage
 		gridData.horizontalSpan = 1;
 		gridData.grabExcessHorizontalSpace = true;
 		nameTextField.setLayoutData(gridData);
-		SWTBindTools.bind(this.mappingFileNameModel, nameTextField);
+		SWTBindingTools.bind(this.mappingFileNameModel, nameTextField);
 
 		Button browseButton = new Button(composite, SWT.CENTER);
 		browseButton.setToolTipText(JptJpaUiMessages.JavaMetadataConversionWizardPage_mappingFileBrowseButtonToolTip);

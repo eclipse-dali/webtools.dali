@@ -14,7 +14,7 @@ import java.util.List;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
+import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -164,7 +164,7 @@ public class EclipseLinkConvertersComposite
 	}
 
 	private void installPaneSwitcher(PageBook pageBook) {
-		SWTBindTools.bind(this.selectedConverterModel, this.buildPaneTransformer(pageBook), pageBook);
+		SWTBindingTools.bind(this.selectedConverterModel, this.buildPaneTransformer(pageBook), pageBook);
 	}
 	
 	private Adapter<EclipseLinkConverter> buildConvertersAdapter() {

@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import java.util.HashMap;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
+import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.utility.internal.model.value.FilteringPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
@@ -67,7 +67,7 @@ public class PersistentTypeDetailsPageManager
 		book.setLayoutData(gridData);
 		
 		this.mappingHolder = this.buildMappingHolder();
-		SWTBindTools.bind(this.mappingHolder, this.buildPaneTransformer(), book);
+		SWTBindingTools.bind(this.mappingHolder, this.buildPaneTransformer(), book);
 
 		return book;
 	}

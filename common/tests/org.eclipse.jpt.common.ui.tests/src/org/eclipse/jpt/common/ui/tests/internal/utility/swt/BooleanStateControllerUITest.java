@@ -14,7 +14,7 @@ import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
+import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -113,16 +113,16 @@ public class BooleanStateControllerUITest
 		panel.setLayout(new FillLayout(SWT.HORIZONTAL));
 
 		Button enabledComboBoxCheckBox = this.buildEnabledComboBoxCheckBox(panel);
-		SWTBindTools.bind(this.enabledHolder, enabledComboBoxCheckBox);
+		SWTBindingTools.bind(this.enabledHolder, enabledComboBoxCheckBox);
 
 		Button visibleComboBoxCheckBox = this.buildVisibleComboBoxCheckBox(panel);
-		SWTBindTools.bind(this.visibleHolder, visibleComboBoxCheckBox);
+		SWTBindingTools.bind(this.visibleHolder, visibleComboBoxCheckBox);
 
 		Label comboBoxLabel = this.buildComboBoxLabel(panel);
 		Combo comboBox = this.buildComboBox(panel);
-		SWTBindTools.bind(this.listHolder, this.listSelectionHolder, comboBox);
-		SWTBindTools.controlEnabledState(this.enabledHolder, comboBoxLabel, comboBox);
-		SWTBindTools.controlVisibleState(this.visibleHolder, comboBoxLabel, comboBox);
+		SWTBindingTools.bind(this.listHolder, this.listSelectionHolder, comboBox);
+		SWTBindingTools.controlEnabledState(this.enabledHolder, comboBoxLabel, comboBox);
+		SWTBindingTools.controlVisibleState(this.visibleHolder, comboBoxLabel, comboBox);
 	}
 
 	private Button buildEnabledComboBoxCheckBox(Composite parent) {
@@ -158,8 +158,8 @@ public class BooleanStateControllerUITest
 		this.buildCheckBox(panel, "three");
 		this.buildCheckBox(panel, "four");
 
-		SWTBindTools.controlEnabledState(this.enabledHolder, panel, checkBox1);
-		SWTBindTools.controlVisibleState(this.visibleHolder, panel);
+		SWTBindingTools.controlEnabledState(this.enabledHolder, panel, checkBox1);
+		SWTBindingTools.controlVisibleState(this.visibleHolder, panel);
 	}
 
 	private void buildControlPanel(Composite parent, Control widgetPanel) {

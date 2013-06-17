@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.ui.tests.internal.util;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
+import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.swt.SWT;
@@ -49,7 +49,7 @@ public final class SectionExpanderTest {
 
 		Section section = new Section(this.parent, ExpandableComposite.TWISTIE);
 
-		SWTBindTools.controlExpandedState(booleanModel, section);
+		SWTBindingTools.controlExpandedState(booleanModel, section);
 
 		assertFalse(
 			"The Section should not be expanded",

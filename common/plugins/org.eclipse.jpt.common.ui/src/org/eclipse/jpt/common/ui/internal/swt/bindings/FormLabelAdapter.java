@@ -7,25 +7,25 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.ui.internal.swt.bind;
+package org.eclipse.jpt.common.ui.internal.swt.bindings;
 
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.forms.widgets.Hyperlink;
+import org.eclipse.ui.forms.widgets.Form;
 
 /**
- * Adapt a hyperlink to the <em>label</em> interface (text-only support).
- * @see Hyperlink
+ * Adapt a form to the <em>label</em> interface.
+ * @see Form
  */
-final class HyperlinkLabelAdapter
-	extends ControlLabelAdapter<Hyperlink>
+final class FormLabelAdapter
+	extends ControlLabelAdapter<Form>
 {
-	public HyperlinkLabelAdapter(Hyperlink hyperlink) {
-		super(hyperlink);
+	public FormLabelAdapter(Form form) {
+		super(form);
 	}
 
 	@Override
-	public void setImage_(Image image) {
-		// NOP
+	protected void setImage_(Image image) {
+		this.control.setImage(image);
 	}
 
 	@Override

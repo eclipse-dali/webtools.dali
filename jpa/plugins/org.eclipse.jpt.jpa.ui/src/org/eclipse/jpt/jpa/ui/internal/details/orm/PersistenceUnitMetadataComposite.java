@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.details.orm;
 import java.util.Arrays;
 import java.util.Collection;
 import org.eclipse.jpt.common.core.JptResourceTypeReference;
-import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
+import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PredicatePropertyValueModel;
@@ -309,7 +309,7 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 		gridData.horizontalSpan = 2;
 		diCheckBox.setLayoutData(gridData);
 		
-		SWTBindTools.controlVisibleState(this.buildResourceTypeIsKindOfOrmXml2_0Model(), diCheckBox);
+		SWTBindingTools.controlVisibleState(this.buildResourceTypeIsKindOfOrmXml2_0Model(), diCheckBox);
 	}
 
 	protected PropertyValueModel<Boolean> buildResourceTypeIsKindOfOrmXml2_0Model() {

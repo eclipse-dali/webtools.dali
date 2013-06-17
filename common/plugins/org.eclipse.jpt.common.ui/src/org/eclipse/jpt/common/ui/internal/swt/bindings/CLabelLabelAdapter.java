@@ -7,20 +7,20 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.ui.internal.swt.bind;
+package org.eclipse.jpt.common.ui.internal.swt.bindings;
 
+import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.forms.widgets.ImageHyperlink;
 
 /**
- * Adapt an image hyperlink to the <em>label</em> interface.
- * @see ImageHyperlink
+ * Adapt a "custom" label to the <em>label</em> interface.
+ * @see CLabel
  */
-final class ImageHyperlinkLabelAdapter
-	extends ControlLabelAdapter<ImageHyperlink>
+final class CLabelLabelAdapter
+	extends ControlLabelAdapter<CLabel>
 {
-	public ImageHyperlinkLabelAdapter(ImageHyperlink hyperlink) {
-		super(hyperlink);
+	public CLabelLabelAdapter(CLabel label) {
+		super(label);
 	}
 
 	@Override

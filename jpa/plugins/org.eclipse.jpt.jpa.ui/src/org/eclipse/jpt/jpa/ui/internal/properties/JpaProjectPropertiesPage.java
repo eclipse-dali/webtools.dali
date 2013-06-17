@@ -28,7 +28,7 @@ import org.eclipse.jpt.common.core.internal.utility.ICUStringCollator;
 import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
 import org.eclipse.jpt.common.ui.internal.properties.JptProjectPropertiesPage;
-import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
+import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.ui.internal.swt.widgets.ControlTools;
 import org.eclipse.jpt.common.utility.internal.BitTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -519,7 +519,7 @@ public class JpaProjectPropertiesPage
 				JptJpaUiMessages.JpaFacetWizardPage_jpaImplementationLabel);
 
  		libraryProviderComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		SWTBindTools.controlEnabledState(this.jpaProjectIsNotNullFlagModel, libraryProviderComposite);
+		SWTBindingTools.controlEnabledState(this.jpaProjectIsNotNullFlagModel, libraryProviderComposite);
 
 		this.buildConnectionGroup(parent);
 		this.buildPersistentClassManagementGroup(parent);
@@ -552,7 +552,7 @@ public class JpaProjectPropertiesPage
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		Combo jpaPlatformDropDown = this.buildDropDown(group);
-		SWTBindTools.bind(
+		SWTBindingTools.bind(
 				this.buildJpaPlatformConfigChoicesModel(),
 				this.jpaPlatformConfigModel,
 				jpaPlatformDropDown,
@@ -560,7 +560,7 @@ public class JpaProjectPropertiesPage
 
 		Link facetsPageLink = this.buildFacetsPageLink(group, JptJpaUiMessages.JpaFacetWizardPage_facetsPageLink);
 
-		SWTBindTools.controlEnabledState(this.jpaProjectIsNotNullFlagModel, group, jpaPlatformDropDown, facetsPageLink);
+		SWTBindingTools.controlEnabledState(this.jpaProjectIsNotNullFlagModel, group, jpaPlatformDropDown, facetsPageLink);
 	}
 
 	/**
@@ -675,7 +675,7 @@ public class JpaProjectPropertiesPage
 		WorkbenchTools.setHelp(group, JpaHelpContextIds.PROPERTIES_JAVA_PERSISTENCE_CONNECTION);
 
 		Combo connectionDropDown = this.buildDropDown(group, 3);
-		SWTBindTools.bind(
+		SWTBindingTools.bind(
 				CONNECTION_CHOICES_MODEL,
 				this.connectionModel,
 				connectionDropDown,
@@ -686,30 +686,30 @@ public class JpaProjectPropertiesPage
 		addConnectionLink.addSelectionListener(new AddConnectionLinkListener());  // the link will be GCed
 
 		this.connectLink = this.buildLink(group, this.buildConnectLinkText());
-		SWTBindTools.controlEnabledState(this.disconnectedModel, this.connectLink);
+		SWTBindingTools.controlEnabledState(this.disconnectedModel, this.connectLink);
 		this.connectLink.addSelectionListener(new ConnectLinkListener());  // the link will be GCed
 
 		// override default catalog
 		Button overrideDefaultCatalogCheckBox = this.buildCheckBox(group, 3, JptJpaUiMessages.JpaFacetWizardPage_overrideDefaultCatalogLabel);
-		SWTBindTools.bind(this.userOverrideDefaultCatalogFlagModel, overrideDefaultCatalogCheckBox);
+		SWTBindingTools.bind(this.userOverrideDefaultCatalogFlagModel, overrideDefaultCatalogCheckBox);
 
 		Label defaultCatalogLabel = this.buildLabel(group, JptJpaUiMessages.JpaFacetWizardPage_defaultCatalogLabel);
 		Combo defaultCatalogDropDown = this.buildDropDown(group);
-		SWTBindTools.bind(this.catalogChoicesModel, this.defaultCatalogModel, defaultCatalogDropDown);
+		SWTBindingTools.bind(this.catalogChoicesModel, this.defaultCatalogModel, defaultCatalogDropDown);
 
-		SWTBindTools.controlEnabledState(this.userOverrideDefaultCatalogFlagModel, defaultCatalogLabel, defaultCatalogDropDown);
+		SWTBindingTools.controlEnabledState(this.userOverrideDefaultCatalogFlagModel, defaultCatalogLabel, defaultCatalogDropDown);
 
 		// override default schema
 		Button overrideDefaultSchemaButton = this.buildCheckBox(group, 3, JptJpaUiMessages.JpaFacetWizardPage_overrideDefaultSchemaLabel);
-		SWTBindTools.bind(this.userOverrideDefaultSchemaFlagModel, overrideDefaultSchemaButton);
+		SWTBindingTools.bind(this.userOverrideDefaultSchemaFlagModel, overrideDefaultSchemaButton);
 
 		Label defaultSchemaLabel = this.buildLabel(group, JptJpaUiMessages.JpaFacetWizardPage_defaultSchemaLabel);
 		Combo defaultSchemaDropDown = this.buildDropDown(group);
-		SWTBindTools.bind(this.schemaChoicesModel, this.defaultSchemaModel, defaultSchemaDropDown);
+		SWTBindingTools.bind(this.schemaChoicesModel, this.defaultSchemaModel, defaultSchemaDropDown);
 
-		SWTBindTools.controlEnabledState(this.userOverrideDefaultSchemaFlagModel, defaultSchemaLabel, defaultSchemaDropDown);
+		SWTBindingTools.controlEnabledState(this.userOverrideDefaultSchemaFlagModel, defaultSchemaLabel, defaultSchemaDropDown);
 
-		SWTBindTools.controlEnabledState(this.jpaProjectIsNotNullFlagModel, group, connectionDropDown, addConnectionLink, overrideDefaultCatalogCheckBox, overrideDefaultSchemaButton);
+		SWTBindingTools.controlEnabledState(this.jpaProjectIsNotNullFlagModel, group, connectionDropDown, addConnectionLink, overrideDefaultCatalogCheckBox, overrideDefaultSchemaButton);
 	}
 
 	private static final Transformer<String, String> SIMPLE_STRING_TRANSFORMER = TransformerTools.passThruTransformer(JptJpaUiMessages.JpaFacetWizardPage_none);
@@ -796,12 +796,12 @@ public class JpaProjectPropertiesPage
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		Button discoverClassesRadioButton = this.buildRadioButton(group, 1, JptJpaUiMessages.JpaFacetWizardPage_discoverClassesButton);
-		SWTBindTools.bind(this.discoverAnnotatedClassesModel, discoverClassesRadioButton);
+		SWTBindingTools.bind(this.discoverAnnotatedClassesModel, discoverClassesRadioButton);
 
 		Button listClassesRadioButton = this.buildRadioButton(group, 1, JptJpaUiMessages.JpaFacetWizardPage_listClassesButton);
-		SWTBindTools.bind(this.listAnnotatedClassesModel, listClassesRadioButton);
+		SWTBindingTools.bind(this.listAnnotatedClassesModel, listClassesRadioButton);
 
-		SWTBindTools.controlEnabledState(this.jpaProjectIsNotNullFlagModel, group, discoverClassesRadioButton, listClassesRadioButton);
+		SWTBindingTools.controlEnabledState(this.jpaProjectIsNotNullFlagModel, group, discoverClassesRadioButton, listClassesRadioButton);
 	}
 
 
@@ -816,7 +816,7 @@ public class JpaProjectPropertiesPage
 		Link metamodelSourceFolderLink = this.buildLink(group, JptJpaUiMessages.JpaFacetWizardPage_metamodelSourceFolderLink);
 		metamodelSourceFolderLink.addSelectionListener(new MetamodelSourceFolderLinkListener());  // the link will be GCed
 		Combo metamodelSourceFolderDropDown = this.buildDropDown(group);
-		SWTBindTools.bind(
+		SWTBindingTools.bind(
 				this.javaSourceFolderChoicesModel,
 				this.metamodelSourceFolderModel,
 				metamodelSourceFolderDropDown,
@@ -825,7 +825,7 @@ public class JpaProjectPropertiesPage
 
 		WorkbenchTools.setHelp(group, JpaHelpContextIds.PROPERTIES_JAVA_PERSISTENCE_METAMODEL);
 
-		SWTBindTools.controlVisibleState(this.jpa2_0ProjectFlagModel, group, metamodelSourceFolderLink, metamodelSourceFolderDropDown);
+		SWTBindingTools.controlVisibleState(this.jpa2_0ProjectFlagModel, group, metamodelSourceFolderLink, metamodelSourceFolderDropDown);
 	}
 
 	/* CU private */ class MetamodelSourceFolderLinkListener

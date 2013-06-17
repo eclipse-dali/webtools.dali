@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.ui.tests.internal.util;
 
 import static org.junit.Assert.assertEquals;
-import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
+import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -48,7 +48,7 @@ public final class LabelModelBindingTest {
 		try {
 			Label label = new Label(this.composite, SWT.NULL);
 			ModifiablePropertyValueModel<Image> imageModel = new SimplePropertyValueModel<Image>();
-			SWTBindTools.bindImageLabel(imageModel, label);
+			SWTBindingTools.bindImageLabel(imageModel, label);
 			imageModel.setValue(expectedImage);
 			assertEquals(expectedImage, label.getImage());
 		} finally {
@@ -62,7 +62,7 @@ public final class LabelModelBindingTest {
 		try {
 			Label label = new Label(this.composite, SWT.NULL);
 			ModifiablePropertyValueModel<Image> imageModel = new SimplePropertyValueModel<Image>();
-			SWTBindTools.bindImageLabel(imageModel, label);
+			SWTBindingTools.bindImageLabel(imageModel, label);
 			label.dispose();
 			imageModel.setValue(expectedImage);
 		} finally {
@@ -74,7 +74,7 @@ public final class LabelModelBindingTest {
 	public void testSetText() {
 		Label label = new Label(this.composite, SWT.NULL);
 		ModifiablePropertyValueModel<String> textModel = new SimplePropertyValueModel<String>();
-		SWTBindTools.bindTextLabel(textModel, label);
+		SWTBindingTools.bindTextLabel(textModel, label);
 		String expectedText = "This is a test";
 		textModel.setValue(expectedText);
 		assertEquals(expectedText, label.getText());
@@ -84,7 +84,7 @@ public final class LabelModelBindingTest {
 	public void testSetTextDispose() {
 		Label label = new Label(this.composite, SWT.NULL);
 		ModifiablePropertyValueModel<String> textModel = new SimplePropertyValueModel<String>();
-		SWTBindTools.bindTextLabel(textModel, label);
+		SWTBindingTools.bindTextLabel(textModel, label);
 		label.dispose();
 		String expectedString = "This is a test";
 		textModel.setValue(expectedString);

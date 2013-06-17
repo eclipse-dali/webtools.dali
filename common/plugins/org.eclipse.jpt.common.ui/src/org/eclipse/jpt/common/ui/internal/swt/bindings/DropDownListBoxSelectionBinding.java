@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.ui.internal.swt.bind;
+package org.eclipse.jpt.common.ui.internal.swt.bindings;
 
 import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -32,7 +32,7 @@ import org.eclipse.swt.events.SelectionListener;
  * @see ListValueModel
  * @see ModifiablePropertyValueModel
  * @see DropDownListBox
- * @see SWTBindTools
+ * @see SWTBindingTools
  */
 @SuppressWarnings("nls")
 final class DropDownListBoxSelectionBinding<E>

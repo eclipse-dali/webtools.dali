@@ -7,25 +7,25 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.ui.internal.swt.bind;
+package org.eclipse.jpt.common.ui.internal.swt.bindings;
 
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.forms.widgets.ScrolledForm;
+import org.eclipse.swt.widgets.Link;
 
 /**
- * Adapt a scrolled form to the <em>label</em> interface.
- * @see ScrolledForm
+ * Adapt a link to the <em>label</em> interface (text-only support).
+ * @see Link
  */
-final class ScrolledFormLabelAdapter
-	extends ControlLabelAdapter<ScrolledForm>
+final class LinkLabelAdapter
+	extends ControlLabelAdapter<Link>
 {
-	public ScrolledFormLabelAdapter(ScrolledForm form) {
-		super(form);
+	public LinkLabelAdapter(Link link) {
+		super(link);
 	}
 
 	@Override
-	protected void setImage_(Image image) {
-		this.control.setImage(image);
+	public void setImage_(Image image) {
+		// NOP
 	}
 
 	@Override

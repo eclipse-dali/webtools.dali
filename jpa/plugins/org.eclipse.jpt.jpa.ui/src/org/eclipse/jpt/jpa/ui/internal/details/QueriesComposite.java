@@ -15,7 +15,7 @@ import javax.swing.text.html.parser.Entity;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
+import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -150,7 +150,7 @@ public class QueriesComposite
 
 
 	private void installPaneSwitcher(PageBook pageBook) {
-		SWTBindTools.bind(this.getSelectedQueryModel(), this.buildPaneTransformer(pageBook), pageBook);
+		SWTBindingTools.bind(this.getSelectedQueryModel(), this.buildPaneTransformer(pageBook), pageBook);
 	}
 
 	protected Query addQuery() {

@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.ui.internal.swt.bind;
+package org.eclipse.jpt.common.ui.internal.swt.bindings;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Widget;
@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.Widget;
 /**
  * A interface used to bind all the various <em>label</em> implementations to
  * models.
- * @see SWTBindTools#bind(org.eclipse.jpt.common.utility.model.value.PropertyValueModel, org.eclipse.jpt.common.utility.model.value.PropertyValueModel, WidgetLabelAdapter)
+ * @see SWTBindingTools#bind(org.eclipse.jpt.common.utility.model.value.PropertyValueModel, org.eclipse.jpt.common.utility.model.value.PropertyValueModel, WidgetLabelAdapter)
  */
 public interface WidgetLabelAdapter {
 	/**

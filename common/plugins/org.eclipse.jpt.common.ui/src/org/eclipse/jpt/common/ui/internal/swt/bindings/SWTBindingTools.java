@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.ui.internal.swt.bind;
+package org.eclipse.jpt.common.ui.internal.swt.bindings;
 
 import java.util.Arrays;
 import org.eclipse.jpt.common.utility.internal.BitTools;
@@ -44,10 +44,10 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.PageBook;
 
 /**
- * Various SWT tools.
+ * Various SWT binding tools.
  */
 @SuppressWarnings("nls")
-public final class SWTBindTools {
+public final class SWTBindingTools {
 
 	// ********** "label" **********
 
@@ -715,7 +715,7 @@ public final class SWTBindTools {
 	/**
 	 * Suppress default constructor, ensuring non-instantiability.
 	 */
-	private SWTBindTools() {
+	private SWTBindingTools() {
 		super();
 		throw new UnsupportedOperationException();
 	}

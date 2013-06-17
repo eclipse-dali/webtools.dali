@@ -20,7 +20,7 @@ import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
+import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
@@ -223,7 +223,7 @@ public class DropDownListBoxModelBindingUITest
 			fd.left = new FormAttachment(0);
 			fd.right = new FormAttachment(100);
 		comboBox.setLayoutData(fd);
-		SWTBindTools.bind(model, selectedItemModel, comboBox);  // use #toString()
+		SWTBindingTools.bind(model, selectedItemModel, comboBox);  // use #toString()
 	}
 
 	private Combo buildComboBox(Composite parent) {

@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.ui.internal.swt.bind;
+package org.eclipse.jpt.common.ui.internal.swt.bindings;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.List;
  * @see ListValueModel
  * @see ModifiableCollectionValueModel
  * @see List
- * @see SWTBindTools
+ * @see SWTBindingTools
  */
 @SuppressWarnings("nls")
 final class ListBoxSelectionBinding<E>

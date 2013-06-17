@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import java.util.Collection;
 import org.eclipse.jpt.common.ui.JptCommonUiMessages;
-import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
+import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
@@ -104,7 +104,7 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		includeCriteriaCheckBox.getCheckBox().setLayoutData(gridData);
-		SWTBindTools.controlVisibleState(this.buildIncludeCriteriaCheckBoxIsVisibleModel(), includeCriteriaCheckBox.getCheckBox());
+		SWTBindingTools.controlVisibleState(this.buildIncludeCriteriaCheckBoxIsVisibleModel(), includeCriteriaCheckBox.getCheckBox());
 
 		// Tenant discriminator columns group pane
 		Group tenantDiscriminatorColumnGroupPane = addTitledGroup(

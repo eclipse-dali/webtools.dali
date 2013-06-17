@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.Collection;
-import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
+import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -222,7 +222,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 	protected Section initializeSequenceGeneratorCollapsibleSection(Composite container, PropertyValueModel<GeneratorContainer> generatorHolder) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE);
 		section.setText(JptJpaUiDetailsMessages.ID_MAPPING_COMPOSITE_SEQUENCE_GENERATOR_SECTION);
-		SWTBindTools.controlExpandedState(this.sequenceGeneratorExpansionStateHolder, section);
+		SWTBindingTools.controlExpandedState(this.sequenceGeneratorExpansionStateHolder, section);
 
 		section.setClient(this.initializeSequenceGeneratorPane(section, generatorHolder));
 
@@ -315,7 +315,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 	protected Section initializeTableGeneratorCollapsibleSection(Composite container, PropertyValueModel<GeneratorContainer> generatorHolder) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE);
 		section.setText(JptJpaUiDetailsMessages.ID_MAPPING_COMPOSITE_TABLE_GENERATOR_SECTION);
-		SWTBindTools.controlExpandedState(this.tableGeneratorExpansionStateHolder, section);
+		SWTBindingTools.controlExpandedState(this.tableGeneratorExpansionStateHolder, section);
 
 		section.setClient(this.initializeTableGeneratorPane(section, generatorHolder));
 

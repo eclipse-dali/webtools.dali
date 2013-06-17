@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.ui.internal.swt.bind;
+package org.eclipse.jpt.common.ui.internal.swt.bindings;
 
 import java.util.ArrayList;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
@@ -34,7 +34,7 @@ import org.eclipse.swt.events.DisposeListener;
  * @see Transformer
  * @see ListWidget
  * @see SelectionBinding
- * @see SWTBindTools
+ * @see SWTBindingTools
  */
 @SuppressWarnings("nls")
 final class ListWidgetModelBinding<E> {
