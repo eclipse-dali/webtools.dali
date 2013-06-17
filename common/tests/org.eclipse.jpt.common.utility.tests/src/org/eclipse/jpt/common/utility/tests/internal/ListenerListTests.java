@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,11 +11,8 @@ package org.eclipse.jpt.common.utility.tests.internal;
 
 import java.io.Serializable;
 import java.util.EventListener;
-
 import junit.framework.TestCase;
-
 import org.eclipse.jpt.common.utility.internal.ListenerList;
-import org.eclipse.jpt.common.utility.internal.SystemTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 
 @SuppressWarnings("nls")
@@ -146,33 +143,6 @@ public class ListenerListTests extends TestCase {
 		listenerList.clear();
 		assertFalse(IterableTools.contains(listenerList.getListeners(), listener1));
 		assertFalse(IterableTools.contains(listenerList.getListeners(), listener2));
-	}
-
-	public void testSerialization() throws Exception {
-		// This test doesn't pass in the Eclipse build environment (Linux/IBM VM) for some reason
-		if (SystemTools.jvmIsSun()) {
-			this.verifySerialization();
-		}
-	}
-
-	private void verifySerialization() throws Exception {
-		ListenerList<Listener> listenerList = new ListenerList<Listener>(Listener.class);
-		Listener listener1 = new LocalListener();
-		Listener listener2 = new LocalListener();
-		listenerList.add(listener1);
-		listenerList.add(listener2);
-
-		ListenerList<Listener> listenerList2 = TestTools.serialize(listenerList);
-		assertNotSame(listenerList, listenerList2);
-		assertEquals(2, listenerList2.size());
-
-		Listener listener3 = new NonSerializableListener();
-		listenerList.add(listener3);
-
-		listenerList2 = TestTools.serialize(listenerList);
-		assertNotSame(listenerList, listenerList2);
-		assertEquals(2, listenerList2.size());
-
 	}
 
 	interface Listener extends EventListener {

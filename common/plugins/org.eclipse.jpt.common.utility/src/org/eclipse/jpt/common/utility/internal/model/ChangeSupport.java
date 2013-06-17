@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -22,6 +21,7 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.DefaultExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.StringBuilderTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
@@ -2709,7 +2709,27 @@ public class ChangeSupport {
 
 	@Override
 	public String toString() {
-		return ObjectTools.toString(this, this.source);
+		StringBuilder sb = new StringBuilder();
+		StringBuilderTools.appendHashCodeToString(sb, this);
+		sb.append('(');
+		int len = sb.length();
+		this.toString(sb);
+		if (sb.length() == len) {
+			sb.deleteCharAt(len - 1);
+		} else {
+			sb.append(')');
+		}
+		return sb.toString();
+	}
+
+	/**
+	 * This method is public so one delegate can call a nested abstract delegate's
+	 * {@link #toString(StringBuilder)}.
+	 */
+	public void toString(StringBuilder sb) {
+		sb.append(this.source);
+		sb.append(" : "); //$NON-NLS-1$
+		StringBuilderTools.append(sb, this.aspectListenerListPairs);
 	}
 
 
@@ -2719,17 +2739,15 @@ public class ChangeSupport {
 	 * Pair a possibly <code>null</code> aspect name with its associated
 	 * listeners.
 	 */
-	static abstract class AspectListenerListPair<L extends EventListener>
-		implements Serializable
-	{
+	static abstract class AspectListenerListPair<L extends EventListener> {
 		final ListenerList<L> listenerList;
-
-		private static final long serialVersionUID = 1L;
 
 		AspectListenerListPair(Class<L> listenerClass, L listener) {
 			super();
 			this.listenerList = new ListenerList<L>(listenerClass, listener);
 		}
+
+		abstract String getAspectName();
 
 		boolean matches(Class<? extends EventListener> listenerClass, @SuppressWarnings("unused") String aspectName) {
 			return this.listenerList.getListenerType() == listenerClass;
@@ -2741,10 +2759,12 @@ public class ChangeSupport {
 
 		@Override
 		public String toString() {
-			return ObjectTools.toString(this, this.getAspectName());
+			StringBuilder sb = new StringBuilder();
+			sb.append(this.getAspectName());
+			sb.append(" => "); //$NON-NLS-1$
+			this.listenerList.toString(sb);
+			return sb.toString();
 		}
-
-		abstract String getAspectName();
 	}
 
 	/**
@@ -2754,8 +2774,6 @@ public class ChangeSupport {
 		extends AspectListenerListPair<L>
 	{
 		final String aspectName;
-
-		private static final long serialVersionUID = 1L;
 
 		SimpleAspectListenerListPair(Class<L> listenerClass, String aspectName, L listener) {
 			super(listenerClass, listener);
@@ -2783,8 +2801,6 @@ public class ChangeSupport {
 	static class NullAspectListenerListPair<L extends EventListener>
 		extends AspectListenerListPair<L>
 	{
-		private static final long serialVersionUID = 1L;
-
 		NullAspectListenerListPair(Class<L> listenerClass, L listener) {
 			super(listenerClass, listener);
 		}

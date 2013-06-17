@@ -832,7 +832,7 @@ public abstract class AbstractModel
 
 	/**
 	 * This method is public so one model can call a nested abstract model's
-	 * <code>#toString(StringBuilder)</code>.
+	 * {@link #toString(StringBuilder)}.
 	 */
 	public void toString(@SuppressWarnings("unused") StringBuilder sb) {
 		// subclasses should override this to do something a bit more helpful

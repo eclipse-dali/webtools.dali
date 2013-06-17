@@ -9,10 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -23,16 +19,12 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
  * 
  * @param <L> the type of listeners held by the list
  */
-public class ListenerList<L>
-	implements Serializable
-{
+public class ListenerList<L> {
 	/**
 	 * We can mark this <code>volatile</code> and not synchronize the read
 	 * methods because we never change the <em>contents</em> of the array.
 	 */
 	private transient volatile L[] listeners;
-
-	private static final long serialVersionUID = 1L;
 
 
 	/**
@@ -131,40 +123,10 @@ public class ListenerList<L>
 		return Arrays.toString(this.listeners);
 	}
 
-
-	// ********** serialization **********
-
 	/**
-	 * Silently drop any non-serializable listeners.
+	 * @see #toString()
 	 */
-	private synchronized void writeObject(ObjectOutputStream s) throws IOException {
-		// write out any hidden stuff
-		s.defaultWriteObject();
-
-		@SuppressWarnings("unchecked")
-		Class<L> listenerClass = (Class<L>) this.listeners.getClass().getComponentType();
-		s.writeObject(listenerClass);
-
-		// only write out serializable listeners
-		for (L listener : this.listeners) {
-			if (listener instanceof Serializable) {
-				s.writeObject(listener);
-			}
-		}
-
-		s.writeObject(null);
-    }
-
-	@SuppressWarnings("unchecked")
-	private void readObject(ObjectInputStream s) throws ClassNotFoundException, IOException {
-		// read in any hidden stuff
-		s.defaultReadObject();
-
-		Class<L> listenerClass = (Class<L>) s.readObject();
-		this.listeners = this.buildListenerArray(listenerClass, 0);
-		Object o;
-		while ((o = s.readObject()) != null) {
-			this.listeners = ArrayTools.add(this.listeners, (L) o);
-		}
+	public void toString(StringBuilder sb) {
+		StringBuilderTools.append(sb, this.listeners);
 	}
 }
