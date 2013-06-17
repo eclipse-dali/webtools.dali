@@ -39,7 +39,7 @@ public class DataLoadingComposite2_1 extends Pane<SchemaGeneration2_1>
 	protected Composite addComposite(Composite parent) {
 		return this.addTitledGroup(
 			parent,
-			JptJpaUiPersistenceMessages2_1.SchemaGenerationComposite_dataLoadingGroupTitle,
+			JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_DATA_LOADING_GROUP_TITLE,
 			2,
 			null
 		);
@@ -49,7 +49,7 @@ public class DataLoadingComposite2_1 extends Pane<SchemaGeneration2_1>
 	protected void initializeLayout(Composite parentComposite) {
 
 		// SqlLoadScriptSource
-		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SchemaGenerationComposite_sqlLoadScriptSourceLabel); 
+		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_SQL_LOAD_SCRIPT_SOURCE_LABEL); 
 		this.addText(parentComposite, this.buildSqlLoadScriptSourceHolder());
 	}
 

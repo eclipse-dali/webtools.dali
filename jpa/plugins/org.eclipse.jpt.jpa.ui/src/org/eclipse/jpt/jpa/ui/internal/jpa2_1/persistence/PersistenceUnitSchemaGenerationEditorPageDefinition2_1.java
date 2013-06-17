@@ -55,7 +55,7 @@ public class PersistenceUnitSchemaGenerationEditorPageDefinition2_1
 	}
 
 	public String getTitleText() {	
-		return JptJpaUiPersistenceMessages2_1.SchemaGenerationComposite_schemaGenerationTabTitle;
+		return JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_SCHEMA_GENERATION_TAB_TITLE;
 	}
 
 	public String getHelpID() {

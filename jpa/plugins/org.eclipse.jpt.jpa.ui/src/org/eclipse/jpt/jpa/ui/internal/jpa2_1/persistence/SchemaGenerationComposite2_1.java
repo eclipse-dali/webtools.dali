@@ -48,7 +48,7 @@ public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 	protected Composite addComposite(Composite parent) {
 		return this.addTitledGroup(
 			parent,
-			JptJpaUiPersistenceMessages2_1.SchemaGenerationComposite_schemaGenerationGroupTitle,
+			JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_SCHEMA_GENERATION_GROUP_TITLE,
 			2,
 			null
 		);
@@ -57,16 +57,16 @@ public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 	@Override
 	protected void initializeLayout(Composite parentComposite) {
 		// DatabaseAction 
-		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SchemaGenerationComposite_databaseAction);
+		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_DATABASE_ACTION);
 		this.buildDatabaseActionCombo(parentComposite);
 		// ScriptsAction 
-		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SchemaGenerationComposite_scriptsGeneration); 
+		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_SCRIPTS_GENERATION); 
 		this.buildScriptsActionCombo(parentComposite);
 		// CreateSource 
-		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SchemaGenerationComposite_metadataAndScriptCreation); 
+		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_METADATA_AND_SCRIPT_CREATION); 
 		this.buildCreateSourceCombo(parentComposite);
 		// DropSource 
-		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SchemaGenerationComposite_metadataAndScriptDropping); 
+		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_METADATA_AND_SCRIPT_DROPPING); 
 		this.buildDropSourceCombo(parentComposite);
 
 		// Create Database Schemas
@@ -76,35 +76,35 @@ public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 		createDatabaseSchemasCheckBox.getCheckBox().setLayoutData(gridData);
 		
 		// ScriptsCreateTarget
-		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SchemaGenerationComposite_scriptsCreateTarget);
+		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_SCRIPTS_CREATE_TARGET);
 		this.addText(parentComposite, this.buildScriptsCreateTargetHolder());
 		
 		// ScriptsDropTarget
-		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SchemaGenerationComposite_scriptsDropTarget);
+		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_SCRIPTS_DROP_TARGET);
 		this.addText(parentComposite, this.buildScriptsDropTargetHolder());
 		
 		// DatabaseProductName
-		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SchemaGenerationComposite_databaseProductName);
+		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_DATABASE_PRODUCT_NAME);
 		this.addText(parentComposite, this.buildDatabaseProductNameHolder());
 		
 		// DatabaseMajorVersion
-		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SchemaGenerationComposite_databaseMajorVersion);
+		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_DATABASE_MAJOR_VERSION);
 		this.addText(parentComposite, this.buildDatabaseMajorVersionHolder());
 		
 		// DatabaseMinorVersion
-		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SchemaGenerationComposite_databaseMinorVersion);
+		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_DATABASE_MINOR_VERSION);
 		this.addText(parentComposite, this.buildDatabaseMinorVersionHolder());
 
 		// CreateScriptSource
-		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SchemaGenerationComposite_createScriptSource);
+		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_CREATE_SCRIPT_SOURCE);
 		this.addText(parentComposite, this.buildCreateScriptSourceHolder());
 
 		// DropScriptSource
-		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SchemaGenerationComposite_dropScriptSource);
+		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_DROP_SCRIPT_SOURCE);
 		this.addText(parentComposite, this.buildDropScriptSourceHolder());
 
 		// Connection
-		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SchemaGenerationComposite_connection);
+		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_CONNECTION);
 		this.addText(parentComposite, this.buildConnectionHolder());
 	}
 
@@ -290,7 +290,7 @@ public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 	private TriStateCheckBox buildCreateDatabaseSchemasCheckBox(Composite container) {
 		return this.addTriStateCheckBoxWithDefault(
 			container,
-			JptJpaUiPersistenceMessages2_1.SchemaGenerationComposite_createDatabaseSchemasLabel,
+			JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_CREATE_DATABASE_SCHEMAS_LABEL,
 			this.buildCreateDatabaseSchemasHolder(),
 			this.buildCreateDatabaseSchemasStringHolder(),
 			null		// TODO HelpContextIds
@@ -322,9 +322,9 @@ public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiPersistenceMessages2_1.SchemaGenerationComposite_defaultCreateDatabaseSchemasLabel, defaultStringValue);
+					return NLS.bind(JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_DEFAULT_CREATE_DATABASE_SCHEMAS_LABEL, defaultStringValue);
 				}
-				return JptJpaUiPersistenceMessages2_1.SchemaGenerationComposite_createDatabaseSchemasLabel;
+				return JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_CREATE_DATABASE_SCHEMAS_LABEL;
 			}
 		};
 	}
@@ -370,13 +370,13 @@ public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 			protected String displayString(SchemaGenerationAction2_1 value) {
 				switch (value) {
 					case none :
-						return JptJpaUiPersistenceMessages2_1.SchemaGenerationAction_none;
+						return JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_ACTION_NONE;
 					case create :
-						return JptJpaUiPersistenceMessages2_1.SchemaGenerationAction_create;
+						return JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_ACTION_CREATE;
 					case drop_and_create :
-						return JptJpaUiPersistenceMessages2_1.SchemaGenerationAction_drop_and_create;
+						return JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_ACTION_DROP_AND_CREATE;
 					case drop :
-						return JptJpaUiPersistenceMessages2_1.SchemaGenerationAction_drop;
+						return JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_ACTION_DROP;
 					default :
 						throw new IllegalStateException();
 				}
@@ -420,13 +420,13 @@ public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 			protected String displayString(SchemaGenerationAction2_1 value) {
 				switch (value) {
 					case none :
-						return JptJpaUiPersistenceMessages2_1.SchemaGenerationAction_none;
+						return JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_ACTION_NONE;
 					case create :
-						return JptJpaUiPersistenceMessages2_1.SchemaGenerationAction_create;
+						return JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_ACTION_CREATE;
 					case drop_and_create :
-						return JptJpaUiPersistenceMessages2_1.SchemaGenerationAction_drop_and_create;
+						return JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_ACTION_DROP_AND_CREATE;
 					case drop :
-						return JptJpaUiPersistenceMessages2_1.SchemaGenerationAction_drop;
+						return JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_ACTION_DROP;
 					default :
 						throw new IllegalStateException();
 				}
@@ -475,13 +475,13 @@ public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 			protected String displayString(SchemaGenerationTarget2_1 value) {
 				switch (value) {
 					case metadata :
-						return JptJpaUiPersistenceMessages2_1.SchemaGenerationTarget_metadata;
+						return JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_TARGET_METADATA;
 					case script :
-						return JptJpaUiPersistenceMessages2_1.SchemaGenerationTarget_script;
+						return JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_TARGET_SCRIPT;
 					case metadata_then_script :
-						return JptJpaUiPersistenceMessages2_1.SchemaGenerationTarget_metadata_then_script;
+						return JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_TARGET_METADATA_THEN_SCRIPT;
 					case script_then_metadata :
-						return JptJpaUiPersistenceMessages2_1.SchemaGenerationTarget_script_then_metadata;
+						return JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_TARGET_SCRIPT_THEN_METADATA;
 					default :
 						throw new IllegalStateException();
 				}
@@ -530,13 +530,13 @@ public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 			protected String displayString(SchemaGenerationTarget2_1 value) {
 				switch (value) {
 					case metadata :
-						return JptJpaUiPersistenceMessages2_1.SchemaGenerationTarget_metadata;
+						return JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_TARGET_METADATA;
 					case script :
-						return JptJpaUiPersistenceMessages2_1.SchemaGenerationTarget_script;
+						return JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_TARGET_SCRIPT;
 					case metadata_then_script :
-						return JptJpaUiPersistenceMessages2_1.SchemaGenerationTarget_metadata_then_script;
+						return JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_TARGET_METADATA_THEN_SCRIPT;
 					case script_then_metadata :
-						return JptJpaUiPersistenceMessages2_1.SchemaGenerationTarget_script_then_metadata;
+						return JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_TARGET_SCRIPT_THEN_METADATA;
 					default :
 						throw new IllegalStateException();
 				}

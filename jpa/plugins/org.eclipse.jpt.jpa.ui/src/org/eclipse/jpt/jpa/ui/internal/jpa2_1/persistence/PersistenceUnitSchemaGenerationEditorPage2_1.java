@@ -39,8 +39,8 @@ public class PersistenceUnitSchemaGenerationEditorPage2_1
 	protected void initializeLayout(Composite container) {
 		Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | Section.DESCRIPTION);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiPersistenceMessages2_1.PersistenceUnitSchemaGeneration2_1EditorPage_title);
-		section.setDescription(JptJpaUiPersistenceMessages2_1.PersistenceUnitSchemaGeneration2_1EditorPage_description);
+		section.setText(JptJpaUiPersistenceMessages2_1.PERSISTENCE_UNIT_SCHEMA_GENERATION2_1_EDITOR_PAGE_TITLE);
+		section.setDescription(JptJpaUiPersistenceMessages2_1.PERSISTENCE_UNIT_SCHEMA_GENERATION2_1_EDITOR_PAGE_DESCRIPTION);
 
 		Composite client = this.getWidgetFactory().createComposite(section);
 		GridLayout layout = new GridLayout(2, false);

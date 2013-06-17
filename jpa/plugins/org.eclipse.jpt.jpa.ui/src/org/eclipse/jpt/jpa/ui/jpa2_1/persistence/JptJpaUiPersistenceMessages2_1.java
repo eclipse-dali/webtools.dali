@@ -11,9 +11,6 @@ package org.eclipse.jpt.jpa.ui.jpa2_1.persistence;
 
 import org.eclipse.osgi.util.NLS;
 
-/**
- *  JptJpaUiPersistenceMessages2_1
- */
 public class JptJpaUiPersistenceMessages2_1 {
 
 	private static final String BUNDLE_NAME = "jpt_jpa_ui_persistence2_1"; //$NON-NLS-1$
@@ -23,46 +20,46 @@ public class JptJpaUiPersistenceMessages2_1 {
 	}
 
 	// Schema Generation tab
-	public static String SchemaGenerationComposite_schemaGenerationTabTitle;
+	public static String SCHEMA_GENERATION_COMPOSITE_SCHEMA_GENERATION_TAB_TITLE;
 	
-	public static String PersistenceUnitSchemaGeneration2_1EditorPage_title;
-	public static String PersistenceUnitSchemaGeneration2_1EditorPage_description;
+	public static String PERSISTENCE_UNIT_SCHEMA_GENERATION2_1_EDITOR_PAGE_TITLE;
+	public static String PERSISTENCE_UNIT_SCHEMA_GENERATION2_1_EDITOR_PAGE_DESCRIPTION;
 
 	// Schema Generation properties
-	public static String SchemaGenerationComposite_schemaGenerationGroupTitle;
+	public static String SCHEMA_GENERATION_COMPOSITE_SCHEMA_GENERATION_GROUP_TITLE;
 	
-	public static String SchemaGenerationComposite_databaseAction;
-	public static String SchemaGenerationComposite_scriptsGeneration;
-	public static String SchemaGenerationComposite_metadataAndScriptCreation;
-	public static String SchemaGenerationComposite_metadataAndScriptDropping;
+	public static String SCHEMA_GENERATION_COMPOSITE_DATABASE_ACTION;
+	public static String SCHEMA_GENERATION_COMPOSITE_SCRIPTS_GENERATION;
+	public static String SCHEMA_GENERATION_COMPOSITE_METADATA_AND_SCRIPT_CREATION;
+	public static String SCHEMA_GENERATION_COMPOSITE_METADATA_AND_SCRIPT_DROPPING;
 	
-	public static String SchemaGenerationComposite_scriptsCreateTarget;
-	public static String SchemaGenerationComposite_scriptsDropTarget;
-	public static String SchemaGenerationComposite_databaseProductName;
-	public static String SchemaGenerationComposite_databaseMajorVersion;
-	public static String SchemaGenerationComposite_databaseMinorVersion;
-	public static String SchemaGenerationComposite_createScriptSource;
-	public static String SchemaGenerationComposite_dropScriptSource;
-	public static String SchemaGenerationComposite_connection;
+	public static String SCHEMA_GENERATION_COMPOSITE_SCRIPTS_CREATE_TARGET;
+	public static String SCHEMA_GENERATION_COMPOSITE_SCRIPTS_DROP_TARGET;
+	public static String SCHEMA_GENERATION_COMPOSITE_DATABASE_PRODUCT_NAME;
+	public static String SCHEMA_GENERATION_COMPOSITE_DATABASE_MAJOR_VERSION;
+	public static String SCHEMA_GENERATION_COMPOSITE_DATABASE_MINOR_VERSION;
+	public static String SCHEMA_GENERATION_COMPOSITE_CREATE_SCRIPT_SOURCE;
+	public static String SCHEMA_GENERATION_COMPOSITE_DROP_SCRIPT_SOURCE;
+	public static String SCHEMA_GENERATION_COMPOSITE_CONNECTION;
 	
-	public static String SchemaGenerationAction_none;
-	public static String SchemaGenerationAction_create;
-	public static String SchemaGenerationAction_drop_and_create;
-	public static String SchemaGenerationAction_drop;
+	public static String SCHEMA_GENERATION_ACTION_NONE;
+	public static String SCHEMA_GENERATION_ACTION_CREATE;
+	public static String SCHEMA_GENERATION_ACTION_DROP_AND_CREATE;
+	public static String SCHEMA_GENERATION_ACTION_DROP;
 	
-	public static String SchemaGenerationTarget_metadata;
-	public static String SchemaGenerationTarget_script;
-	public static String SchemaGenerationTarget_metadata_then_script;
-	public static String SchemaGenerationTarget_script_then_metadata;
+	public static String SCHEMA_GENERATION_TARGET_METADATA;
+	public static String SCHEMA_GENERATION_TARGET_SCRIPT;
+	public static String SCHEMA_GENERATION_TARGET_METADATA_THEN_SCRIPT;
+	public static String SCHEMA_GENERATION_TARGET_SCRIPT_THEN_METADATA;
 	
-	public static String SchemaGenerationComposite_createDatabaseSchemasLabel;
-	public static String SchemaGenerationComposite_defaultCreateDatabaseSchemasLabel;
+	public static String SCHEMA_GENERATION_COMPOSITE_CREATE_DATABASE_SCHEMAS_LABEL;
+	public static String SCHEMA_GENERATION_COMPOSITE_DEFAULT_CREATE_DATABASE_SCHEMAS_LABEL;
 	
 
 	// Data Loading
-	public static String SchemaGenerationComposite_dataLoadingGroupTitle;
+	public static String SCHEMA_GENERATION_COMPOSITE_DATA_LOADING_GROUP_TITLE;
 	
-	public static String SchemaGenerationComposite_sqlLoadScriptSourceLabel;
+	public static String SCHEMA_GENERATION_COMPOSITE_SQL_LOAD_SCRIPT_SOURCE_LABEL;
 
 
 	private JptJpaUiPersistenceMessages2_1() {
