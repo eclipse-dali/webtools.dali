@@ -49,7 +49,7 @@ public class EclipseLinkOrmOneToOneMappingComposite1_1
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
 		// Target entity widgets
-		Hyperlink targetEntityHyperlink = this.addHyperlink(container, JptJpaUiDetailsMessages.TargetEntityChooser_label);
+		Hyperlink targetEntityHyperlink = this.addHyperlink(container, JptJpaUiDetailsMessages.TARGET_ENTITY_CHOOSER_LABEL);
 		new TargetEntityClassChooser(this, container, targetEntityHyperlink);
 
 		// Name widgets
@@ -61,7 +61,7 @@ public class EclipseLinkOrmOneToOneMappingComposite1_1
 		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);
 
 		// Fetch type widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.BasicGeneralSection_fetchLabel);
+		this.addLabel(container, JptJpaUiDetailsMessages.BASIC_GENERAL_SECTION_FETCH_LABEL);
 		new FetchTypeComboViewer(this, container);
 
 		// Join fetch widgets

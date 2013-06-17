@@ -136,7 +136,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 				ExpandableComposite.TWISTIE |
 				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiDetailsMessages.IdMappingComposite_primaryKeyGenerationSection);
+		section.setText(JptJpaUiDetailsMessages.ID_MAPPING_COMPOSITE_PRIMARY_KEY_GENERATION_SECTION);
 
 		Composite subPane = this.addSubPane(section, 2, 0, 0, 0, 0);
 		section.setClient(subPane);
@@ -149,7 +149,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 		// Primary Key Generation check box
 		Button primaryKeyGenerationCheckBox = addCheckBox(
 			container,
-			JptJpaUiDetailsMessages.IdMappingComposite_primaryKeyGenerationCheckBox,
+			JptJpaUiDetailsMessages.ID_MAPPING_COMPOSITE_PRIMARY_KEY_GENERATION_CHECK_BOX,
 			buildPrimaryKeyGenerationHolder(),
 			JpaHelpContextIds.MAPPING_PRIMARY_KEY_GENERATION
 		);
@@ -158,13 +158,13 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 		primaryKeyGenerationCheckBox.setLayoutData(gridData);
 
 		// Strategy widgets
-		Label strategyLabel = addLabel(container, JptJpaUiDetailsMessages.GeneratedValueComposite_strategy);
+		Label strategyLabel = addLabel(container, JptJpaUiDetailsMessages.GENERATED_VALUE_COMPOSITE_STRATEGY);
 		gridData = new GridData();
 		gridData.horizontalIndent = primaryKeyGenerationCheckBox.getBorderWidth() + 16;
 		strategyLabel.setLayoutData(gridData);
 		this.addStrategyComboViewer(container);
 
-		Label nameLabel = this.addLabel(container, JptJpaUiDetailsMessages.GeneratedValueComposite_generatorName);
+		Label nameLabel = this.addLabel(container, JptJpaUiDetailsMessages.GENERATED_VALUE_COMPOSITE_GENERATOR_NAME);
 		gridData = new GridData();
 		gridData.horizontalIndent = primaryKeyGenerationCheckBox.getBorderWidth() + 16;
 		nameLabel.setLayoutData(gridData);
@@ -221,7 +221,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 
 	protected Section initializeSequenceGeneratorCollapsibleSection(Composite container, PropertyValueModel<GeneratorContainer> generatorHolder) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE);
-		section.setText(JptJpaUiDetailsMessages.IdMappingComposite_sequenceGeneratorSection);
+		section.setText(JptJpaUiDetailsMessages.ID_MAPPING_COMPOSITE_SEQUENCE_GENERATOR_SECTION);
 		SWTBindTools.controlExpandedState(this.sequenceGeneratorExpansionStateHolder, section);
 
 		section.setClient(this.initializeSequenceGeneratorPane(section, generatorHolder));
@@ -237,7 +237,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 		// Sequence Generator check box
 		Button sequenceGeneratorCheckBox = addCheckBox(
 				client,
-			JptJpaUiDetailsMessages.IdMappingComposite_sequenceGeneratorCheckBox,
+			JptJpaUiDetailsMessages.ID_MAPPING_COMPOSITE_SEQUENCE_GENERATOR_CHECK_BOX,
 			buildSequenceGeneratorBooleanHolder(generatorHolder),
 			JpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR
 		);
@@ -314,7 +314,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 
 	protected Section initializeTableGeneratorCollapsibleSection(Composite container, PropertyValueModel<GeneratorContainer> generatorHolder) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE);
-		section.setText(JptJpaUiDetailsMessages.IdMappingComposite_tableGeneratorSection);
+		section.setText(JptJpaUiDetailsMessages.ID_MAPPING_COMPOSITE_TABLE_GENERATOR_SECTION);
 		SWTBindTools.controlExpandedState(this.tableGeneratorExpansionStateHolder, section);
 
 		section.setClient(this.initializeTableGeneratorPane(section, generatorHolder));
@@ -329,7 +329,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 
 		Button tableGeneratorCheckBox = addCheckBox(
 				client,
-			JptJpaUiDetailsMessages.IdMappingComposite_tableGeneratorCheckBox,
+			JptJpaUiDetailsMessages.ID_MAPPING_COMPOSITE_TABLE_GENERATOR_CHECK_BOX,
 			buildTableGeneratorBooleanHolder(generatorHolder),
 			JpaHelpContextIds.MAPPING_TABLE_GENERATOR
 		);
@@ -429,13 +429,13 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 			protected String displayString(GenerationType value) {
 				switch (value) {
 					case AUTO :
-						return JptJpaUiDetailsMessages.GeneratedValueComposite_auto;
+						return JptJpaUiDetailsMessages.GENERATED_VALUE_COMPOSITE_AUTO;
 					case IDENTITY :
-						return JptJpaUiDetailsMessages.GeneratedValueComposite_identity;
+						return JptJpaUiDetailsMessages.GENERATED_VALUE_COMPOSITE_IDENTITY;
 					case SEQUENCE :
-						return JptJpaUiDetailsMessages.GeneratedValueComposite_sequence;
+						return JptJpaUiDetailsMessages.GENERATED_VALUE_COMPOSITE_SEQUENCE;
 					case TABLE :
-						return JptJpaUiDetailsMessages.GeneratedValueComposite_table;
+						return JptJpaUiDetailsMessages.GENERATED_VALUE_COMPOSITE_TABLE;
 					default :
 						throw new IllegalStateException();
 				}

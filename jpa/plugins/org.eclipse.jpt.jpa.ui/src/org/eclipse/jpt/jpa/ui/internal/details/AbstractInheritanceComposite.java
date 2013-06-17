@@ -93,14 +93,14 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 	@Override
 	protected void initializeLayout(Composite container) {
 		// Strategy widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.InheritanceComposite_strategy);
+		this.addLabel(container, JptJpaUiDetailsMessages.INHERITANCE_COMPOSITE_STRATEGY);
 		this.addStrategyCombo(container);
 
 		// Discriminator Value widgets
 		PropertyValueModel<Boolean> dvEnabled = this.buildDiscriminatorValueEnabledHolder();
 		this.addLabel(
 			container, 
-			JptJpaUiDetailsMessages.InheritanceComposite_discriminatorValue,
+			JptJpaUiDetailsMessages.INHERITANCE_COMPOSITE_DISCRIMINATOR_VALUE,
 			dvEnabled
 		);
 		this.addEditableCombo(
@@ -162,7 +162,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 				defaultValue
 			);
 		}
-		return JptJpaUiDetailsMessages.ProviderDefault;
+		return JptJpaUiDetailsMessages.PROVIDER_DEFAULT;
 	}
 
 
@@ -215,11 +215,11 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 			protected String displayString(InheritanceType value) {
 				switch (value) {
 					case JOINED :
-						return JptJpaUiDetailsMessages.AbstractInheritanceComposite_joined;
+						return JptJpaUiDetailsMessages.ABSTRACT_INHERITANCE_COMPOSITE_JOINED;
 					case SINGLE_TABLE :
-						return JptJpaUiDetailsMessages.AbstractInheritanceComposite_single_table;
+						return JptJpaUiDetailsMessages.ABSTRACT_INHERITANCE_COMPOSITE_SINGLE_TABLE;
 					case TABLE_PER_CLASS :
-						return JptJpaUiDetailsMessages.AbstractInheritanceComposite_table_per_class;
+						return JptJpaUiDetailsMessages.ABSTRACT_INHERITANCE_COMPOSITE_TABLE_PER_CLASS;
 					default :
 						throw new IllegalStateException();
 				}

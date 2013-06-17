@@ -51,11 +51,11 @@ public class EmbeddedIdMappingUiDefinition
 	}
 
 	public String getLabel() {
-		return JptJpaUiDetailsMessages.EmbeddedIdMappingUiProvider_label;
+		return JptJpaUiDetailsMessages.EMBEDDED_ID_MAPPING_UI_PROVIDER_LABEL;
 	}
 
 	public String getLinkLabel() {
-		return JptJpaUiDetailsMessages.EmbeddedIdMappingUiProvider_linkLabel;
+		return JptJpaUiDetailsMessages.EMBEDDED_ID_MAPPING_UI_PROVIDER_LINK_LABEL;
 	}
 
 	@Override

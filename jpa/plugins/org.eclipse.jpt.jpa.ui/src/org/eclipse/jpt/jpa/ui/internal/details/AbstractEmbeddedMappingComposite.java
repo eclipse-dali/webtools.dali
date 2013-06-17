@@ -48,7 +48,7 @@ public abstract class AbstractEmbeddedMappingComposite<T extends EmbeddedMapping
 				ExpandableComposite.TWISTIE |
 				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiDetailsMessages.EmbeddedSection_title);
+		section.setText(JptJpaUiDetailsMessages.EMBEDDED_SECTION_TITLE);
 		section.setClient(this.initializeEmbeddedSection(section));
 	}
 	

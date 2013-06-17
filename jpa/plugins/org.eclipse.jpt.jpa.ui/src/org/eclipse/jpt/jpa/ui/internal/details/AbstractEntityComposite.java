@@ -114,7 +114,7 @@ public abstract class AbstractEntityComposite<T extends Entity>
 				ExpandableComposite.TWISTIE |
 				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiDetailsMessages.EntitySection_title);
+		section.setText(JptJpaUiDetailsMessages.ENTITY_SECTION_TITLE);
 		section.setClient(this.initializeEntitySection(section));
 	}
 	
@@ -128,11 +128,11 @@ public abstract class AbstractEntityComposite<T extends Entity>
 		tableComposite.getControl().setLayoutData(gridData);
 
 		//Entity name widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.EntityNameComposite_name);
+		this.addLabel(container, JptJpaUiDetailsMessages.ENTITY_NAME_COMPOSITE_NAME);
 		new EntityNameCombo(this, container);
 
 		//Id class widgets
-		Hyperlink hyperlink = this.addHyperlink(container, JptJpaUiDetailsMessages.IdClassComposite_label);
+		Hyperlink hyperlink = this.addHyperlink(container, JptJpaUiDetailsMessages.ID_CLASS_COMPOSITE_LABEL);
 		new IdClassChooser(this, this.buildIdClassReferenceModel(), container, hyperlink);
 
 		return container;
@@ -150,7 +150,7 @@ public abstract class AbstractEntityComposite<T extends Entity>
 	protected void initializeQueriesCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiDetailsMessages.EntityComposite_queries);
+		section.setText(JptJpaUiDetailsMessages.ENTITY_COMPOSITE_QUERIES);
 
 		section.addExpansionListener(new ExpansionAdapter() {
 			@Override
@@ -178,7 +178,7 @@ public abstract class AbstractEntityComposite<T extends Entity>
 	protected void initializeAttributeOverridesCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiDetailsMessages.OverridesComposite_attributeOverridesSection);
+		section.setText(JptJpaUiDetailsMessages.OVERRIDES_COMPOSITE_ATTRIBUTE_OVERRIDES_SECTION);
 
 		section.addExpansionListener(new ExpansionAdapter() {
 			@Override
@@ -197,7 +197,7 @@ public abstract class AbstractEntityComposite<T extends Entity>
 	protected void initializeInheritanceCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiDetailsMessages.EntityComposite_inheritance);
+		section.setText(JptJpaUiDetailsMessages.ENTITY_COMPOSITE_INHERITANCE);
 
 		section.addExpansionListener(new ExpansionAdapter() {
 			@Override
@@ -214,7 +214,7 @@ public abstract class AbstractEntityComposite<T extends Entity>
 	protected void initializeGeneratorsCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiDetailsMessages.IdMappingComposite_primaryKeyGenerationSection);
+		section.setText(JptJpaUiDetailsMessages.ID_MAPPING_COMPOSITE_PRIMARY_KEY_GENERATION_SECTION);
 
 		section.addExpansionListener(new ExpansionAdapter() {
 			@Override
@@ -242,7 +242,7 @@ public abstract class AbstractEntityComposite<T extends Entity>
 	protected void initializeSecondaryTablesCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiDetailsMessages.SecondaryTablesComposite_secondaryTables);
+		section.setText(JptJpaUiDetailsMessages.SECONDARY_TABLES_COMPOSITE_SECONDARY_TABLES);
 
 		section.addExpansionListener(new ExpansionAdapter() {
 			@Override

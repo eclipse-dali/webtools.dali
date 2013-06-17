@@ -92,7 +92,7 @@ public abstract class AbstractOverridesComposite<T extends JpaContextModel>
 		// Override Default check box
 		Button overrideCheckBox = addCheckBox(
 			container,
-				JptJpaUiDetailsMessages.OverridesComposite_overrideDefault,
+				JptJpaUiDetailsMessages.OVERRIDES_COMPOSITE_OVERRIDE_DEFAULT,
 				getOverrideVirtualOverrideHolder(),
 				null);
 		SWTBindTools.controlVisibleState(buildSelectedOverrideBooleanHolder(), overrideCheckBox);
@@ -237,17 +237,17 @@ public abstract class AbstractOverridesComposite<T extends JpaContextModel>
 		
 		// Retrieve the type
 		if (override instanceof AssociationOverride) {
-			overrideType = JptJpaUiDetailsMessages.OverridesComposite_association;
+			overrideType = JptJpaUiDetailsMessages.OVERRIDES_COMPOSITE_ASSOCIATION;
 		}
 		else {
-			overrideType = JptJpaUiDetailsMessages.OverridesComposite_attribute;
+			overrideType = JptJpaUiDetailsMessages.OVERRIDES_COMPOSITE_ATTRIBUTE;
 		}
 		
 		// Format the name
 		String name = override.getName();
 		
 		if (StringTools.isBlank(name)) {
-			name = JptJpaUiDetailsMessages.OverridesComposite_noName;
+			name = JptJpaUiDetailsMessages.OVERRIDES_COMPOSITE_NO_NAME;
 		}
 		
 		// Format: <name> (Attribute/Association Override)

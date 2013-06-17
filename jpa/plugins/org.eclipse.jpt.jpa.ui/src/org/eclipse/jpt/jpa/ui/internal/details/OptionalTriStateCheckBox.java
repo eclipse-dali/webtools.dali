@@ -65,7 +65,7 @@ public class OptionalTriStateCheckBox extends Pane<OptionalMapping>
 
 		this.checkBox = this.addTriStateCheckBoxWithDefault(
 			container,
-			JptJpaUiDetailsMessages.BasicGeneralSection_optionalLabel,
+			JptJpaUiDetailsMessages.BASIC_GENERAL_SECTION_OPTIONAL_LABEL,
 			buildSpecifiedOptionalHolder(),
 			buildOptionalStringHolder(),
 			JpaHelpContextIds.MAPPING_OPTIONAL
@@ -92,9 +92,9 @@ public class OptionalTriStateCheckBox extends Pane<OptionalMapping>
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiDetailsMessages.BasicGeneralSection_optionalLabelDefault, defaultStringValue);
+					return NLS.bind(JptJpaUiDetailsMessages.BASIC_GENERAL_SECTION_OPTIONAL_LABEL_DEFAULT, defaultStringValue);
 				}
-				return JptJpaUiDetailsMessages.BasicGeneralSection_optionalLabel;
+				return JptJpaUiDetailsMessages.BASIC_GENERAL_SECTION_OPTIONAL_LABEL;
 			}
 		};
 	}

@@ -143,15 +143,15 @@ public class NamedNativeQueryPropertyComposite extends Pane<NamedNativeQuery>
 	@Override
 	protected void initializeLayout(Composite container) {
 		// Name widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.NamedQueryComposite_nameTextLabel);
+		this.addLabel(container, JptJpaUiDetailsMessages.NAMED_QUERY_COMPOSITE_NAME_TEXT_LABEL);
 		this.addText(container, buildNameTextHolder());
 
 		// Result class chooser
-		Hyperlink resultClassHyperlink = this.addHyperlink(container, JptJpaUiDetailsMessages.NamedNativeQueryPropertyComposite_resultClass);
+		Hyperlink resultClassHyperlink = this.addHyperlink(container, JptJpaUiDetailsMessages.NAMED_NATIVE_QUERY_PROPERTY_COMPOSITE_RESULT_CLASS);
 		this.resultClassChooserPane = this.addResultClassChooser(container, resultClassHyperlink);
 
 		// Query text area
-		Label queryLabel = this.addLabel(container, JptJpaUiDetailsMessages.NamedNativeQueryPropertyComposite_query);
+		Label queryLabel = this.addLabel(container, JptJpaUiDetailsMessages.NAMED_NATIVE_QUERY_PROPERTY_COMPOSITE_QUERY);
 		GridData gridData = new GridData();
 		gridData.verticalAlignment = SWT.TOP;
 		queryLabel.setLayoutData(gridData);

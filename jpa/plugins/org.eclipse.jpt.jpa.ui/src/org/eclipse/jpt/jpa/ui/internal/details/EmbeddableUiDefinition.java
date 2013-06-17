@@ -50,11 +50,11 @@ public class EmbeddableUiDefinition
 	}
 
 	public String getLabel() {
-		return JptJpaUiDetailsMessages.EmbeddableUiProvider_label;
+		return JptJpaUiDetailsMessages.EMBEDDABLE_UI_PROVIDER_LABEL;
 	}
 
 	public String getLinkLabel() {
-		return JptJpaUiDetailsMessages.EmbeddableUiProvider_linkLabel;
+		return JptJpaUiDetailsMessages.EMBEDDABLE_UI_PROVIDER_LINK_LABEL;
 	}
 
 	@Override

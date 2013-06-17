@@ -164,9 +164,9 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiDetailsMessages.ColumnComposite_insertableWithDefault, defaultStringValue);
+					return NLS.bind(JptJpaUiDetailsMessages.COLUMN_COMPOSITE_INSERTABLE_WITH_DEFAULT, defaultStringValue);
 				}
-				return JptJpaUiDetailsMessages.ColumnComposite_insertable;
+				return JptJpaUiDetailsMessages.COLUMN_COMPOSITE_INSERTABLE;
 			}
 		};
 	}
@@ -210,9 +210,9 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiDetailsMessages.ColumnComposite_nullableWithDefault, defaultStringValue);
+					return NLS.bind(JptJpaUiDetailsMessages.COLUMN_COMPOSITE_NULLABLE_WITH_DEFAULT, defaultStringValue);
 				}
-				return JptJpaUiDetailsMessages.ColumnComposite_nullable;
+				return JptJpaUiDetailsMessages.COLUMN_COMPOSITE_NULLABLE;
 			}
 		};
 	}
@@ -260,9 +260,9 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiDetailsMessages.ColumnComposite_updatableWithDefault, defaultStringValue);
+					return NLS.bind(JptJpaUiDetailsMessages.COLUMN_COMPOSITE_UPDATABLE_WITH_DEFAULT, defaultStringValue);
 				}
-				return JptJpaUiDetailsMessages.ColumnComposite_updatable;
+				return JptJpaUiDetailsMessages.COLUMN_COMPOSITE_UPDATABLE;
 			}
 		};
 	}
@@ -291,7 +291,7 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 	@Override
 	protected void initializeLayout(Composite container) {
 		// Column widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.ColumnComposite_name);
+		this.addLabel(container, JptJpaUiDetailsMessages.COLUMN_COMPOSITE_NAME);
 		this.addColumnCombo(container);
 
 		// Details sub-pane
@@ -301,7 +301,7 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		section.setLayoutData(gridData);
-		section.setText(JptJpaUiDetailsMessages.ColumnComposite_details);
+		section.setText(JptJpaUiDetailsMessages.COLUMN_COMPOSITE_DETAILS);
 
 		Composite detailsClient = this.addSubPane(section, 2, 0, 0, 0, 0);
 		section.setClient(detailsClient);
@@ -309,7 +309,7 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 		// Insertable tri-state check box
 		TriStateCheckBox insertableCheckBox = addTriStateCheckBoxWithDefault(
 			detailsClient,
-			JptJpaUiDetailsMessages.ColumnComposite_insertable,
+			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_INSERTABLE,
 			buildInsertableHolder(),
 			buildInsertableStringHolder(),
 			JpaHelpContextIds.MAPPING_COLUMN_INSERTABLE
@@ -321,7 +321,7 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 		// Updatable tri-state check box
 		TriStateCheckBox updatableCheckBox = addTriStateCheckBoxWithDefault(
 			detailsClient,
-			JptJpaUiDetailsMessages.ColumnComposite_updatable,
+			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_UPDATABLE,
 			buildUpdatableHolder(),
 			buildUpdatableStringHolder(),
 			JpaHelpContextIds.MAPPING_COLUMN_UPDATABLE
@@ -333,7 +333,7 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 		// Nullable tri-state check box
 		TriStateCheckBox nullableCheckBox = addTriStateCheckBoxWithDefault(
 			detailsClient,
-			JptJpaUiDetailsMessages.ColumnComposite_nullable,
+			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_NULLABLE,
 			buildNullableHolder(),
 			buildNullableStringHolder(),
 			JpaHelpContextIds.MAPPING_COLUMN_NULLABLE
@@ -343,7 +343,7 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 		nullableCheckBox.getCheckBox().setLayoutData(gridData);
 
 		// Column Definition widgets
-		this.addLabel(detailsClient, JptJpaUiDetailsMessages.ColumnComposite_columnDefinition);
+		this.addLabel(detailsClient, JptJpaUiDetailsMessages.COLUMN_COMPOSITE_COLUMN_DEFINITION);
 		this.addText(detailsClient, buildColumnDefinitionHolder());
 	}
 

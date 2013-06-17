@@ -51,11 +51,11 @@ public class ManyToManyMappingUiDefinition
 	}
 
 	public String getLabel() {
-		return JptJpaUiDetailsMessages.ManyToManyMappingUiProvider_label;
+		return JptJpaUiDetailsMessages.MANY_TO_MANY_MAPPING_UI_PROVIDER_LABEL;
 	}
 
 	public String getLinkLabel() {
-		return JptJpaUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel;
+		return JptJpaUiDetailsMessages.MANY_TO_MANY_MAPPING_UI_PROVIDER_LINK_LABEL;
 	}
 
 	@Override

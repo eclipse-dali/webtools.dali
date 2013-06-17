@@ -72,7 +72,7 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity>
 	String buildJoinColumnLabel(PrimaryKeyJoinColumn joinColumn) {
 		if (joinColumn.isVirtual()) {
 			return NLS.bind(
-				JptJpaUiDetailsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsDefault,
+				JptJpaUiDetailsMessages.PRIMARY_KEY_JOIN_COLUMNS_COMPOSITE_MAPPING_BETWEEN_TWO_PARAMS_DEFAULT,
 				joinColumn.getName(),
 				joinColumn.getReferencedColumnName()
 			);
@@ -81,14 +81,14 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity>
 		if (joinColumn.getSpecifiedName() == null) {
 			if (joinColumn.getSpecifiedReferencedColumnName() == null) {
 				return NLS.bind(
-					JptJpaUiDetailsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsBothDefault,
+					JptJpaUiDetailsMessages.PRIMARY_KEY_JOIN_COLUMNS_COMPOSITE_MAPPING_BETWEEN_TWO_PARAMS_BOTH_DEFAULT,
 					joinColumn.getName(),
 					joinColumn.getReferencedColumnName()
 				);
 			}
 
 			return NLS.bind(
-				JptJpaUiDetailsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsFirstDefault,
+				JptJpaUiDetailsMessages.PRIMARY_KEY_JOIN_COLUMNS_COMPOSITE_MAPPING_BETWEEN_TWO_PARAMS_FIRST_DEFAULT,
 				joinColumn.getName(),
 				joinColumn.getReferencedColumnName()
 			);
@@ -96,14 +96,14 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity>
 
 		if (joinColumn.getSpecifiedReferencedColumnName() == null) {
 			return NLS.bind(
-				JptJpaUiDetailsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsSecDefault,
+				JptJpaUiDetailsMessages.PRIMARY_KEY_JOIN_COLUMNS_COMPOSITE_MAPPING_BETWEEN_TWO_PARAMS_SECOND_DEFAULT,
 				joinColumn.getName(),
 				joinColumn.getReferencedColumnName()
 			);
 		}
 
 		return NLS.bind(
-			JptJpaUiDetailsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParams,
+			JptJpaUiDetailsMessages.PRIMARY_KEY_JOIN_COLUMNS_COMPOSITE_MAPPING_BETWEEN_TWO_PARAMS,
 			joinColumn.getName(),
 			joinColumn.getReferencedColumnName()
 		);
@@ -122,7 +122,7 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity>
 
 			@Override
 			public String optionalButtonText() {
-				return JptJpaUiDetailsMessages.PrimaryKeyJoinColumnsComposite_edit;
+				return JptJpaUiDetailsMessages.PRIMARY_KEY_JOIN_COLUMNS_COMPOSITE_EDIT;
 			}
 
 			@Override
@@ -213,7 +213,7 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity>
 	protected Composite addComposite(Composite parent) {
 		return addTitledGroup(
 			parent,
-			JptJpaUiDetailsMessages.PrimaryKeyJoinColumnsComposite_primaryKeyJoinColumn
+			JptJpaUiDetailsMessages.PRIMARY_KEY_JOIN_COLUMNS_COMPOSITE_PRIMARY_KEY_JOIN_COLUMN
 		);
 	}
 
@@ -222,7 +222,7 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity>
 		// Override Default Join Columns check box
 		addCheckBox(
 			container,
-			JptJpaUiDetailsMessages.PrimaryKeyJoinColumnsComposite_overrideDefaultPrimaryKeyJoinColumns,
+			JptJpaUiDetailsMessages.PRIMARY_KEY_JOIN_COLUMNS_COMPOSITE_OVERRIDE_DEFAULT_PRIMARY_KEY_JOIN_COLUMNS,
 			buildOverrideDefaultJoinColumnHolder(),
 			null
 		);

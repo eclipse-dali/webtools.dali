@@ -41,10 +41,10 @@ public class OneToOneMappingUiDefinition
 	}
 
 	public String getLabel() {
-		return JptJpaUiDetailsMessages.OneToOneMappingUiProvider_label;
+		return JptJpaUiDetailsMessages.ONE_TO_ONE_MAPPING_UI_PROVIDER_LABEL;
 	}
 
 	public String getLinkLabel() {
-		return JptJpaUiDetailsMessages.OneToOneMappingUiProvider_linkLabel;
+		return JptJpaUiDetailsMessages.ONE_TO_ONE_MAPPING_UI_PROVIDER_LINK_LABEL;
 	}
 }

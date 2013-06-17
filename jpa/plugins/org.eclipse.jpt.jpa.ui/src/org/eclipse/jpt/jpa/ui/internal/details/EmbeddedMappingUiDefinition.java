@@ -41,10 +41,10 @@ public class EmbeddedMappingUiDefinition
 	}
 
 	public String getLabel() {
-		return JptJpaUiDetailsMessages.EmbeddedMappingUiProvider_label;
+		return JptJpaUiDetailsMessages.EMBEDDED_MAPPING_UI_PROVIDER_LABEL;
 	}
 
 	public String getLinkLabel() {
-		return JptJpaUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel;
+		return JptJpaUiDetailsMessages.EMBEDDED_MAPPING_UI_PROVIDER_LINK_LABEL;
 	}
 }

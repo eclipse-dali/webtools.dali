@@ -55,7 +55,7 @@ public abstract class AbstractManyToManyMappingComposite<T extends ManyToManyMap
 				ExpandableComposite.TWISTIE |
 				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiDetailsMessages.ManyToManySection_title);
+		section.setText(JptJpaUiDetailsMessages.MANY_TO_MANY_SECTION_TITLE);
 		section.setClient(this.initializeManyToManySection(section));
 	}
 
@@ -68,7 +68,7 @@ public abstract class AbstractManyToManyMappingComposite<T extends ManyToManyMap
 	protected void initializeOrderingCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiDetailsMessages.OrderingComposite_orderingGroup);
+		section.setText(JptJpaUiDetailsMessages.ORDERING_COMPOSITE_ORDERING_GROUP);
 
 		section.addExpansionListener(new ExpansionAdapter() {
 			@Override

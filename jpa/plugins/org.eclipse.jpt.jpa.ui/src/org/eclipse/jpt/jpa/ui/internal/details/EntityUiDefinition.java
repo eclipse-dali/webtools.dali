@@ -51,11 +51,11 @@ public class EntityUiDefinition
 	}
 
 	public String getLabel() {
-		return JptJpaUiDetailsMessages.EntityUiProvider_label;
+		return JptJpaUiDetailsMessages.ENTITY_UI_PROVIDER_LABEL;
 	}
 
 	public String getLinkLabel() {
-		return JptJpaUiDetailsMessages.EntityUiProvider_linkLabel;
+		return JptJpaUiDetailsMessages.ENTITY_UI_PROVIDER_LINK_LABEL;
 	}
 
 	@Override

@@ -101,7 +101,7 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 	protected void initializeSequenceGeneratorCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiDetailsMessages.GeneratorsComposite_sequenceGeneratorSection);
+		section.setText(JptJpaUiDetailsMessages.GENERATORS_COMPOSITE_SEQUENCE_GENERATOR_SECTION);
 		SWTBindTools.controlExpandedState(this.sequenceGeneratorExpansionStateHolder, section);
 
 		section.setClient(GenerationComposite.this.initializeSequenceGeneratorPane(section));
@@ -115,7 +115,7 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 		// Sequence Generator check box
 		Button sequenceGeneratorCheckBox = addCheckBox(
 				client,
-			JptJpaUiDetailsMessages.GeneratorsComposite_sequenceGeneratorCheckBox,
+			JptJpaUiDetailsMessages.GENERATORS_COMPOSITE_SEQUENCE_GENERATOR_CHECK_BOX,
 			this.buildSequenceGeneratorBooleanHolder(),
 			JpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR
 		);
@@ -181,7 +181,7 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 	protected void initializeTableGeneratorCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiDetailsMessages.GeneratorsComposite_tableGeneratorSection);
+		section.setText(JptJpaUiDetailsMessages.GENERATORS_COMPOSITE_TABLE_GENERATOR_SECTION);
 		SWTBindTools.controlExpandedState(this.tableGeneratorExpansionStateHolder, section);
 
 		section.setClient(GenerationComposite.this.initializeTableGeneratorPane(section));
@@ -194,7 +194,7 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 
 		Button tableGeneratorCheckBox = addCheckBox(
 				client,
-			JptJpaUiDetailsMessages.GeneratorsComposite_tableGeneratorCheckBox,
+			JptJpaUiDetailsMessages.GENERATORS_COMPOSITE_TABLE_GENERATOR_CHECK_BOX,
 			this.buildTableGeneratorBooleanHolder(),
 			JpaHelpContextIds.MAPPING_TABLE_GENERATOR
 		);

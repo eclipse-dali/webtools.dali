@@ -41,10 +41,10 @@ public class BasicMappingUiDefinition
 	}
 
 	public String getLabel() {
-		return JptJpaUiDetailsMessages.BasicMappingUiProvider_label;
+		return JptJpaUiDetailsMessages.BASIC_MAPPING_UI_PROVIDER_LABEL;
 	}
 
 	public String getLinkLabel() {
-		return JptJpaUiDetailsMessages.BasicMappingUiProvider_linkLabel;
+		return JptJpaUiDetailsMessages.BASIC_MAPPING_UI_PROVIDER_LINK_LABEL;
 	}
 }

@@ -96,7 +96,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 				ExpandableComposite.TWISTIE |
 				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiDetailsMessages.BasicSection_title);
+		section.setText(JptJpaUiDetailsMessages.BASIC_SECTION_TITLE);
 		section.setClient(this.initializeBasicSection(section));
 	}
 	
@@ -108,7 +108,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 		gridData.horizontalSpan = 2;
 		columnComposite.getControl().setLayoutData(gridData);
 
-		this.addLabel(container, JptJpaUiDetailsMessages.BasicGeneralSection_fetchLabel);
+		this.addLabel(container, JptJpaUiDetailsMessages.BASIC_GENERAL_SECTION_FETCH_LABEL);
 		new FetchTypeComboViewer(this, container);
 
 		OptionalTriStateCheckBox optionalCheckBox = new OptionalTriStateCheckBox(this, container);
@@ -122,7 +122,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 	protected void initializeTypeCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiDetailsMessages.TypeSection_type);
+		section.setText(JptJpaUiDetailsMessages.TYPE_SECTION_TYPE);
 		section.addExpansionListener(new ExpansionAdapter() {
 			@Override
 			public void expansionStateChanging(ExpansionEvent e) {
@@ -139,7 +139,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 		// No converter
 		Button noConverterButton = addRadioButton(
 			container, 
-			JptJpaUiDetailsMessages.TypeSection_default, 
+			JptJpaUiDetailsMessages.TYPE_SECTION_DEFAULT, 
 			buildConverterBooleanHolder(null), 
 			null);
 		((GridData) noConverterButton.getLayoutData()).horizontalSpan = 2;
@@ -147,7 +147,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 		// Lob
 		Button lobButton = addRadioButton(
 			container, 
-			JptJpaUiDetailsMessages.TypeSection_lob, 
+			JptJpaUiDetailsMessages.TYPE_SECTION_LOB, 
 			buildConverterBooleanHolder(LobConverter.class), 
 			null);
 		((GridData) lobButton.getLayoutData()).horizontalSpan = 2;
@@ -156,7 +156,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 		// Temporal
 		addRadioButton(
 			container, 
-			JptJpaUiDetailsMessages.TypeSection_temporal, 
+			JptJpaUiDetailsMessages.TYPE_SECTION_TEMPORAL, 
 			buildConverterBooleanHolder(BaseTemporalConverter.class), 
 			null);
 		new TemporalTypeCombo(this, this.buildTemporalConverterHolder(converterHolder), container);
@@ -165,7 +165,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 		// Enumerated
 		addRadioButton(
 			container, 
-			JptJpaUiDetailsMessages.TypeSection_enumerated, 
+			JptJpaUiDetailsMessages.TYPE_SECTION_ENUMERATED, 
 			buildConverterBooleanHolder(BaseEnumeratedConverter.class), 
 			null);
 		new EnumTypeComboViewer(this, this.buildEnumeratedConverterHolder(converterHolder), container);

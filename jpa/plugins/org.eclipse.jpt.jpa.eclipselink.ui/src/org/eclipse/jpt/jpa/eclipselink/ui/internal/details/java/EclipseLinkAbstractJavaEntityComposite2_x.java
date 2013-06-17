@@ -49,7 +49,7 @@ public abstract class EclipseLinkAbstractJavaEntityComposite2_x<T extends Eclips
 		tableComposite.getControl().setLayoutData(gridData);
 
 		// Entity name widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.EntityNameComposite_name);
+		this.addLabel(container, JptJpaUiDetailsMessages.ENTITY_NAME_COMPOSITE_NAME);
 		new EntityNameCombo(this, container);
 
 		// Access type widgets
@@ -57,7 +57,7 @@ public abstract class EclipseLinkAbstractJavaEntityComposite2_x<T extends Eclips
 		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);	
 
 		// Id class widgets
-		Hyperlink hyperlink = this.addHyperlink(container,JptJpaUiDetailsMessages.IdClassComposite_label);
+		Hyperlink hyperlink = this.addHyperlink(container,JptJpaUiDetailsMessages.ID_CLASS_COMPOSITE_LABEL);
 		new IdClassChooser(this, this.buildIdClassReferenceModel(), container, hyperlink);
 
 		return container;

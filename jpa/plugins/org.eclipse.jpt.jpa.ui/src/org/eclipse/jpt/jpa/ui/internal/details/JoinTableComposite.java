@@ -64,21 +64,21 @@ public class JoinTableComposite
 	@Override
 	protected void initializeLayout(Composite container) {
 		// Name widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.JoinTableComposite_name);
+		this.addLabel(container, JptJpaUiDetailsMessages.JOIN_TABLE_COMPOSITE_NAME);
 		this.addTableCombo(container, JpaHelpContextIds.MAPPING_JOIN_TABLE_NAME);
 		
 		// schema widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.JoinTableComposite_schema);
+		this.addLabel(container, JptJpaUiDetailsMessages.JOIN_TABLE_COMPOSITE_SCHEMA);
 		this.addSchemaCombo(container, JpaHelpContextIds.MAPPING_JOIN_TABLE_SCHEMA);
 
 		// catalog widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.JoinTableComposite_catalog);
+		this.addLabel(container, JptJpaUiDetailsMessages.JOIN_TABLE_COMPOSITE_CATALOG);
 		this.addCatalogCombo(container, JpaHelpContextIds.MAPPING_JOIN_TABLE_CATALOG);
 
 		// Join Columns group pane
 		Group joinColumnGroupPane = addTitledGroup(
 			container,
-			JptJpaUiDetailsMessages.JoinTableComposite_joinColumn
+			JptJpaUiDetailsMessages.JOIN_TABLE_COMPOSITE_JOIN_COLUMN
 		);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
@@ -87,7 +87,7 @@ public class JoinTableComposite
 		// Override Default Join Columns check box
 		this.overrideDefaultJoinColumnsCheckBox = addCheckBox(
 			joinColumnGroupPane,
-			JptJpaUiDetailsMessages.JoinTableComposite_overrideDefaultJoinColumns,
+			JptJpaUiDetailsMessages.JOIN_TABLE_COMPOSITE_OVERRIDE_DEFAULT_JOIN_COLUMNS,
 			buildOverrideDefaultJoinColumnHolder(),
 			null
 		);
@@ -102,7 +102,7 @@ public class JoinTableComposite
 		// Inverse Join Columns group pane
 		Group inverseJoinColumnGroupPane = addTitledGroup(
 			container,
-			JptJpaUiDetailsMessages.JoinTableComposite_inverseJoinColumn
+			JptJpaUiDetailsMessages.JOIN_TABLE_COMPOSITE_INVERSE_JOIN_COLUMN
 		);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
@@ -111,7 +111,7 @@ public class JoinTableComposite
 		// Override Default Inverse Join Columns check box
 		this.overrideDefaultInverseJoinColumnsCheckBox = addCheckBox(
 			inverseJoinColumnGroupPane,
-			JptJpaUiDetailsMessages.JoinTableComposite_overrideDefaultInverseJoinColumns,
+			JptJpaUiDetailsMessages.JOIN_TABLE_COMPOSITE_OVERRIDE_DEFAULT_INVERSE_JOIN_COLUMNS,
 			buildOverrideDefaultInverseJoinColumnHolder(),
 			null
 		);

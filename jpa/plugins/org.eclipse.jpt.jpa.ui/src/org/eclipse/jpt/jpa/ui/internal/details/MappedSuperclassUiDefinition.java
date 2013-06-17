@@ -51,11 +51,11 @@ public class MappedSuperclassUiDefinition
 	}
 
 	public String getLabel() {
-		return JptJpaUiDetailsMessages.MappedSuperclassUiProvider_label;
+		return JptJpaUiDetailsMessages.MAPPED_SUPERCLASS_UI_PROVIDER_LABEL;
 	}
 
 	public String getLinkLabel() {
-		return JptJpaUiDetailsMessages.MappedSuperclassUiProvider_linkLabel;
+		return JptJpaUiDetailsMessages.MAPPED_SUPERCLASS_UI_PROVIDER_LINK_LABEL;
 	}
 
 	@Override

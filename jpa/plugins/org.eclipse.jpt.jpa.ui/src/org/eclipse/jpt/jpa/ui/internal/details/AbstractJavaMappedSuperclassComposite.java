@@ -68,7 +68,7 @@ public abstract class AbstractJavaMappedSuperclassComposite<T extends JavaMapped
 	protected void initializeQueriesCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiDetailsMessages.EntityComposite_queries);
+		section.setText(JptJpaUiDetailsMessages.ENTITY_COMPOSITE_QUERIES);
 
 		section.addExpansionListener(new ExpansionAdapter() {
 			@Override

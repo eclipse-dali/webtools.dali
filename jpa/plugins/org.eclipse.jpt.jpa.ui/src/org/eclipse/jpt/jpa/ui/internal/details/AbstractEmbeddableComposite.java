@@ -47,7 +47,7 @@ public abstract class AbstractEmbeddableComposite<E extends Embeddable>
 				ExpandableComposite.TWISTIE |
 				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiDetailsMessages.EmbeddableSection_title);
+		section.setText(JptJpaUiDetailsMessages.EMBEDDABLE_SECTION_TITLE);
 		section.setClient(this.buildEmbeddableSectionClient(section));
 	}
 	

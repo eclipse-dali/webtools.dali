@@ -49,14 +49,14 @@ public abstract class AbstractMappedSuperclassComposite<T extends MappedSupercla
 				ExpandableComposite.TWISTIE |
 				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiDetailsMessages.MappedSuperclassSection_title);
+		section.setText(JptJpaUiDetailsMessages.MAPPED_SUPERCLASS_SECTION_TITLE);
 		section.setClient(this.initializeMappedSuperclassSection(section));
 	}
 	
 	protected Control initializeMappedSuperclassSection(Composite container) {
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
-		Hyperlink hyperlink = this.addHyperlink(container,JptJpaUiDetailsMessages.IdClassComposite_label);
+		Hyperlink hyperlink = this.addHyperlink(container,JptJpaUiDetailsMessages.ID_CLASS_COMPOSITE_LABEL);
 		new IdClassChooser(this, this.buildIdClassReferenceModel(), container, hyperlink);
 
 		return container;

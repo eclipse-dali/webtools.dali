@@ -48,7 +48,7 @@ public abstract class AbstractEmbeddedIdMappingComposite<T extends EmbeddedIdMap
 				ExpandableComposite.TWISTIE |
 				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiDetailsMessages.EmbeddedIdSection_title);
+		section.setText(JptJpaUiDetailsMessages.EMBEDDED_ID_SECTION_TITLE);
 		section.setClient(this.initializeEmbeddedIdSection(section));
 	}
 

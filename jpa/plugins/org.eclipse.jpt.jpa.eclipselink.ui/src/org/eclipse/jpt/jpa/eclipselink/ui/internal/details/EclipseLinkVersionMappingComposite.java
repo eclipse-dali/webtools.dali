@@ -87,7 +87,7 @@ public abstract class EclipseLinkVersionMappingComposite<T extends EclipseLinkVe
 		// No converter
 		Button noConverterButton = addRadioButton(
 			container, 
-			JptJpaUiDetailsMessages.TypeSection_default, 
+			JptJpaUiDetailsMessages.TYPE_SECTION_DEFAULT, 
 			buildConverterBooleanHolder(null), 
 			null);
 		((GridData) noConverterButton.getLayoutData()).horizontalSpan = 2;
@@ -96,7 +96,7 @@ public abstract class EclipseLinkVersionMappingComposite<T extends EclipseLinkVe
 		// Temporal
 		addRadioButton(
 			container, 
-			JptJpaUiDetailsMessages.TypeSection_temporal, 
+			JptJpaUiDetailsMessages.TYPE_SECTION_TEMPORAL, 
 			buildConverterBooleanHolder(BaseTemporalConverter.class), 
 			null);
 		new TemporalTypeCombo(this, this.buildTemporalConverterHolder(converterHolder), container);

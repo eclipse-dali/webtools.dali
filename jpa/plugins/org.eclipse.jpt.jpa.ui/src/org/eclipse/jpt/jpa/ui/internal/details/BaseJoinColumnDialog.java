@@ -52,8 +52,8 @@ public abstract class BaseJoinColumnDialog<P, C extends BaseJoinColumn, S extend
 
 	private static String buildTitle(BaseJoinColumn joinColumn) {
 		return (joinColumn == null) ?
-				JptJpaUiDetailsMessages.JoinColumnDialog_addJoinColumnTitle :
-				JptJpaUiDetailsMessages.JoinColumnDialog_editJoinColumnTitle;
+				JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_ADD_JOIN_COLUMN_TITLE :
+				JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_EDIT_JOIN_COLUMN_TITLE;
 	}
 
 	protected BaseJoinColumnDialog(
@@ -69,14 +69,14 @@ public abstract class BaseJoinColumnDialog<P, C extends BaseJoinColumn, S extend
 
 	@Override
 	protected String getDescription() {
-		return JptJpaUiDetailsMessages.JoinColumnDialog_description;
+		return JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_DESCRIPTION;
 	}
 
 	@Override
 	protected String getDescriptionTitle() {
 		return (this.joinColumn == null) ?
-				JptJpaUiDetailsMessages.JoinColumnDialog_addJoinColumnDescriptionTitle :
-				JptJpaUiDetailsMessages.JoinColumnDialog_editJoinColumnDescriptionTitle;
+				JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_ADD_JOIN_COLUMN_DESCRIPTION_TITLE :
+				JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_EDIT_JOIN_COLUMN_DESCRIPTION_TITLE;
 	}
 
 	public C getJoinColumn() {

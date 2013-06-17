@@ -128,7 +128,7 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 
 			@Override
 			public String optionalButtonText() {
-				return JptJpaUiDetailsMessages.SecondaryTablesComposite_edit;
+				return JptJpaUiDetailsMessages.SECONDARY_TABLES_COMPOSITE_EDIT;
 			}
 
 			@Override

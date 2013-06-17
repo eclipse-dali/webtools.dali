@@ -36,7 +36,7 @@ public final class ElementCollectionValueOverridesComposite2_0
 	protected Composite addComposite(Composite container) {
 		return addTitledGroup(
 			container,
-			JptJpaUiDetailsMessages.OverridesComposite_attributeOverridesGroup);
+			JptJpaUiDetailsMessages.OVERRIDES_COMPOSITE_ATTRIBUTE_OVERRIDES_GROUP);
 	}
 	
 	@Override

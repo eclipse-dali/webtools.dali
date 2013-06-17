@@ -51,11 +51,11 @@ public class TransientMappingUiDefinition
 	}		
 
 	public String getLabel() {
-		return JptJpaUiDetailsMessages.TransientMappingUiProvider_label;
+		return JptJpaUiDetailsMessages.TRANSIENT_MAPPING_UI_PROVIDER_LABEL;
 	}
 
 	public String getLinkLabel() {
-		return JptJpaUiDetailsMessages.TransientMappingUiProvider_linkLabel;
+		return JptJpaUiDetailsMessages.TRANSIENT_MAPPING_UI_PROVIDER_LINK_LABEL;
 	}
 
 	@Override

@@ -125,7 +125,7 @@ public class QueryHintsComposite extends Pane<Query>
 	protected Composite addComposite(Composite parent) {
 		return this.addTitledGroup(
 			parent,
-			JptJpaUiDetailsMessages.NamedQueryPropertyComposite_queryHintsGroupBox
+			JptJpaUiDetailsMessages.NAMED_QUERY_PROPERTY_COMPOSITE_QUERY_HINTS_GROUP_BOX
 		);
 	}
 
@@ -183,11 +183,11 @@ public class QueryHintsComposite extends Pane<Query>
 
 			switch (columnIndex) {
 				case QueryHintColumnAdapter.NAME_COLUMN_INDEX: {
-					return JptJpaUiDetailsMessages.QueryHintsComposite_nameColumn;
+					return JptJpaUiDetailsMessages.QUERY_HINTS_COMPOSITE_NAME_COLUMN;
 				}
 
 				case QueryHintColumnAdapter.VALUE_COLUMN_INDEX: {
-					return JptJpaUiDetailsMessages.QueryHintsComposite_valueColumn;
+					return JptJpaUiDetailsMessages.QUERY_HINTS_COMPOSITE_VALUE_COLUMN;
 				}
 
 				default: {

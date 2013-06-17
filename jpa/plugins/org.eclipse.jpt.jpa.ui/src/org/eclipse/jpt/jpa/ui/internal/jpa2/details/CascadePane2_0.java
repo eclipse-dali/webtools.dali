@@ -36,7 +36,7 @@ public class CascadePane2_0
 	protected Composite addComposite(Composite container) {
 		return addTitledGroup(
 			container,
-			JptJpaUiDetailsMessages.CascadeComposite_cascadeTitle,
+			JptJpaUiDetailsMessages.CASCADE_COMPOSITE_CASCADE_TITLE,
 			6,
 			null);
 	}

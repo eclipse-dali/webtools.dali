@@ -52,7 +52,7 @@ public abstract class AbstractManyToOneMappingComposite<T extends ManyToOneMappi
 				ExpandableComposite.TWISTIE |
 				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiDetailsMessages.ManyToOneSection_title);
+		section.setText(JptJpaUiDetailsMessages.MANY_TO_ONE_SECTION_TITLE);
 		section.setClient(this.initializeManyToOneSection(section));
 	}
 

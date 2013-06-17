@@ -95,7 +95,7 @@ public class JoinColumnsComposite<T extends JpaModel>
 
 		if (joinColumn.isVirtual()) {
 			return NLS.bind(
-				JptJpaUiDetailsMessages.JoinColumnsComposite_mappingBetweenTwoParamsDefault,
+				JptJpaUiDetailsMessages.JOIN_COLUMNS_COMPOSITE_MAPPING_BETWEEN_TWO_PARAMS_DEFAULT,
 				joinColumn.getName(),
 				joinColumn.getReferencedColumnName()
 			);
@@ -104,14 +104,14 @@ public class JoinColumnsComposite<T extends JpaModel>
 
 			if (joinColumn.getSpecifiedReferencedColumnName() == null) {
 				return NLS.bind(
-					JptJpaUiDetailsMessages.JoinColumnsComposite_mappingBetweenTwoParamsBothDefault,
+					JptJpaUiDetailsMessages.JOIN_COLUMNS_COMPOSITE_MAPPING_BETWEEN_TWO_PARAMS_BOTH_DEFAULT,
 					joinColumn.getName(),
 					joinColumn.getReferencedColumnName()
 				);
 			}
 
 			return NLS.bind(
-				JptJpaUiDetailsMessages.JoinColumnsComposite_mappingBetweenTwoParamsFirstDefault,
+				JptJpaUiDetailsMessages.JOIN_COLUMNS_COMPOSITE_MAPPING_BETWEEN_TWO_PARAMS_FIRST_DEFAULT,
 				joinColumn.getName(),
 				joinColumn.getReferencedColumnName()
 			);
@@ -119,14 +119,14 @@ public class JoinColumnsComposite<T extends JpaModel>
 
 		if (joinColumn.getSpecifiedReferencedColumnName() == null) {
 			return NLS.bind(
-				JptJpaUiDetailsMessages.JoinColumnsComposite_mappingBetweenTwoParamsSecDefault,
+				JptJpaUiDetailsMessages.JOIN_COLUMNS_COMPOSITE_MAPPING_BETWEEN_TWO_PARAMS_SECOND_DEFAULT,
 				joinColumn.getName(),
 				joinColumn.getReferencedColumnName()
 			);
 		}
 
 		return NLS.bind(
-			JptJpaUiDetailsMessages.JoinColumnsComposite_mappingBetweenTwoParams,
+			JptJpaUiDetailsMessages.JOIN_COLUMNS_COMPOSITE_MAPPING_BETWEEN_TWO_PARAMS,
 			joinColumn.getName(),
 			joinColumn.getReferencedColumnName()
 		);
@@ -158,7 +158,7 @@ public class JoinColumnsComposite<T extends JpaModel>
 
 			@Override
 			public String optionalButtonText() {
-				return JptJpaUiDetailsMessages.JoinColumnsComposite_edit;
+				return JptJpaUiDetailsMessages.JOIN_COLUMNS_COMPOSITE_EDIT;
 			}
 
 			@Override

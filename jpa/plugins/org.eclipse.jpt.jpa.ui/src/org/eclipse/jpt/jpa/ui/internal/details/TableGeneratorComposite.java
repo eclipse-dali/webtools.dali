@@ -98,37 +98,37 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 	@Override
 	protected void initializeLayout(Composite container) {
 		// Name widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.TableGeneratorComposite_name);
+		this.addLabel(container, JptJpaUiDetailsMessages.TABLE_GENERATOR_COMPOSITE_NAME);
 		this.addText(container, this.buildGeneratorNameHolder(), JpaHelpContextIds.MAPPING_TABLE_GENERATOR_NAME);
 
 		// Table widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.TableGeneratorComposite_table);
+		this.addLabel(container, JptJpaUiDetailsMessages.TABLE_GENERATOR_COMPOSITE_TABLE);
 		this.addTableNameCombo(container);
 
 		// Schema widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.TableGeneratorComposite_schema);
+		this.addLabel(container, JptJpaUiDetailsMessages.TABLE_GENERATOR_COMPOSITE_SCHEMA);
 		this.addSchemaCombo(container);
 
 		// Catalog widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.TableGeneratorComposite_catalog);
+		this.addLabel(container, JptJpaUiDetailsMessages.TABLE_GENERATOR_COMPOSITE_CATALOG);
 		this.addCatalogCombo(container);
 
 		// Primary Key Column widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.TableGeneratorComposite_pkColumn);
+		this.addLabel(container, JptJpaUiDetailsMessages.TABLE_GENERATOR_COMPOSITE_PK_COLUMN);
 		this.addPkColumnCombo(container);
 
 		// Value Column widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.TableGeneratorComposite_valueColumn);
+		this.addLabel(container, JptJpaUiDetailsMessages.TABLE_GENERATOR_COMPOSITE_VALUE_COLUMN);
 		this.addValueColumnCombo(container);
 
 		// Primary Key Column Value widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.TableGeneratorComposite_pkColumnValue);
+		this.addLabel(container, JptJpaUiDetailsMessages.TABLE_GENERATOR_COMPOSITE_PK_COLUMN_VALUE);
 		this.addPkColumnValueCombo(container);
 
-		this.addLabel(container, JptJpaUiDetailsMessages.GeneratorComposite_allocationSize);
+		this.addLabel(container, JptJpaUiDetailsMessages.GENERATOR_COMPOSITE_ALLOCATION_SIZE);
 		this.addAllocationSizeCombo(container);
 
-		this.addLabel(container, JptJpaUiDetailsMessages.GeneratorComposite_initialValue);
+		this.addLabel(container, JptJpaUiDetailsMessages.GENERATOR_COMPOSITE_INITIAL_VALUE);
 		this.addInitialValueCombo(container);
 	}	
 

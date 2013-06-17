@@ -49,7 +49,7 @@ public class EclipseLinkJavaElementCollectionMappingComposite2_0
 		new TargetClassChooser2_0(this, container, hyperlink);
 
 		// Fetch type widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.BasicGeneralSection_fetchLabel);
+		this.addLabel(container, JptJpaUiDetailsMessages.BASIC_GENERAL_SECTION_FETCH_LABEL);
 		new FetchTypeComboViewer(this, container);
 
 		// Join fetch widgets

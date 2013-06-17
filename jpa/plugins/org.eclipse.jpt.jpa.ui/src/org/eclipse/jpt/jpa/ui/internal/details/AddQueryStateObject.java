@@ -75,16 +75,16 @@ public final class AddQueryStateObject extends AbstractNode
 
 	private void addNameProblemsTo(List<Problem> currentProblems) {
 		if (StringTools.isBlank(this.name)) {
-			currentProblems.add(buildProblem(JptJpaUiDetailsMessages.QueryStateObject_nameMustBeSpecified, IMessageProvider.ERROR));
+			currentProblems.add(buildProblem(JptJpaUiDetailsMessages.QUERYSTATEOBJECT_NAME_MUST_BE_SPECIFIED, IMessageProvider.ERROR));
 		}
 		else if (names().contains(this.name)){
-			currentProblems.add(buildProblem(JptJpaUiDetailsMessages.AddQueryDialog_nameExists, IMessageProvider.WARNING));
+			currentProblems.add(buildProblem(JptJpaUiDetailsMessages.ADD_QUERY_DIALOG_NAME_EXISTS, IMessageProvider.WARNING));
 		}
 	}
 
 	private void addQueryTypeProblemsTo(List<Problem> currentProblems) {
 		if (StringTools.isBlank(this.queryType)) {
-			currentProblems.add(buildProblem(JptJpaUiDetailsMessages.QueryStateObject_typeMustBeSpecified, IMessageProvider.ERROR));
+			currentProblems.add(buildProblem(JptJpaUiDetailsMessages.QUERYSTATEOBJECT_TYPE_MUST_BE_SPECIFIED, IMessageProvider.ERROR));
 		}
 	}
 

@@ -71,7 +71,7 @@ public abstract class EclipseLinkAbstractOrmMappedSuperclassComposite<T extends 
 		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);
 
 		// Id class widgets
-		Hyperlink hyperlink = this.addHyperlink(container,JptJpaUiDetailsMessages.IdClassComposite_label);
+		Hyperlink hyperlink = this.addHyperlink(container,JptJpaUiDetailsMessages.ID_CLASS_COMPOSITE_LABEL);
 		new IdClassChooser(this, this.buildIdClassReferenceModel(), container, hyperlink);
 
 		// Metadata complete widgets
@@ -170,7 +170,7 @@ public abstract class EclipseLinkAbstractOrmMappedSuperclassComposite<T extends 
 	protected void initializeGeneratorsCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiDetailsMessages.IdMappingComposite_primaryKeyGenerationSection);
+		section.setText(JptJpaUiDetailsMessages.ID_MAPPING_COMPOSITE_PRIMARY_KEY_GENERATION_SECTION);
 
 		section.addExpansionListener(new ExpansionAdapter() {
 			@Override

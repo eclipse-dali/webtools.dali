@@ -46,8 +46,8 @@ public class PersistentTypeMapAsComposite
 		public String getLabelText() {
 			String mappingKey = getMappingKey();
 			return (mappingKey != null) ?
-					JptJpaUiDetailsMessages.MapAsComposite_mappedTypeText :
-					JptJpaUiDetailsMessages.MapAsComposite_unmappedTypeText;
+					JptJpaUiDetailsMessages.MAP_AS_COMPOSITE_MAPPED_TYPE_TEXT :
+					JptJpaUiDetailsMessages.MAP_AS_COMPOSITE_UNMAPPED_TYPE_TEXT;
 		}
 
 		public String getMappingText() {

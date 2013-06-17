@@ -198,7 +198,7 @@ public class QueriesComposite2_1
 						index = IterableTools.indexOf(((QueryContainer2_1) getSubject()).getNamedStoredProcedureQueries(), query);
 					}
 
-					name = NLS.bind(JptJpaUiDetailsMessages.QueriesComposite_displayString, Integer.valueOf(index));
+					name = NLS.bind(JptJpaUiDetailsMessages.QUERIES_COMPOSITE_DISPLAY_STRING, Integer.valueOf(index));
 				}
 
 				return name;

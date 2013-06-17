@@ -51,11 +51,11 @@ public class VersionMappingUiDefinition
 	}
 
 	public String getLabel() {
-		return JptJpaUiDetailsMessages.VersionMappingUiProvider_label;
+		return JptJpaUiDetailsMessages.VERSION_MAPPING_UI_PROVIDER_LABEL;
 	}
 
 	public String getLinkLabel() {
-		return JptJpaUiDetailsMessages.VersionMappingUiProvider_linkLabel;
+		return JptJpaUiDetailsMessages.VERSION_MAPPING_UI_PROVIDER_LINK_LABEL;
 	}
 
 	@Override

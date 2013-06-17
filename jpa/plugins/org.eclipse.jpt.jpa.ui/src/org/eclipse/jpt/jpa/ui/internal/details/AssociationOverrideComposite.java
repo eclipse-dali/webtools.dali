@@ -64,7 +64,7 @@ public class AssociationOverrideComposite
 	protected Composite addComposite(Composite parent) {
 		return addTitledGroup(
 			parent,
-			JptJpaUiDetailsMessages.Joining_title);
+			JptJpaUiDetailsMessages.JOINING_TITLE);
 	}
 
 	@Override

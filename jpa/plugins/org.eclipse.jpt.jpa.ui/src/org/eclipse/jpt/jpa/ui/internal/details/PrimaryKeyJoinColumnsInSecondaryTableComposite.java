@@ -107,7 +107,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 
 		if (joinColumn.isVirtual()) {
 			return NLS.bind(
-				JptJpaUiDetailsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsDefault,
+				JptJpaUiDetailsMessages.PRIMARY_KEY_JOIN_COLUMNS_COMPOSITE_MAPPING_BETWEEN_TWO_PARAMS_DEFAULT,
 				joinColumn.getName(),
 				joinColumn.getReferencedColumnName()
 			);
@@ -116,14 +116,14 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 		if (joinColumn.getSpecifiedName() == null) {
 			if (joinColumn.getSpecifiedReferencedColumnName() == null) {
 				return NLS.bind(
-					JptJpaUiDetailsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsBothDefault,
+					JptJpaUiDetailsMessages.PRIMARY_KEY_JOIN_COLUMNS_COMPOSITE_MAPPING_BETWEEN_TWO_PARAMS_BOTH_DEFAULT,
 					joinColumn.getName(),
 					joinColumn.getReferencedColumnName()
 				);
 			}
 
 			return NLS.bind(
-				JptJpaUiDetailsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsFirstDefault,
+				JptJpaUiDetailsMessages.PRIMARY_KEY_JOIN_COLUMNS_COMPOSITE_MAPPING_BETWEEN_TWO_PARAMS_FIRST_DEFAULT,
 				joinColumn.getName(),
 				joinColumn.getReferencedColumnName()
 			);
@@ -131,14 +131,14 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 
 		if (joinColumn.getSpecifiedReferencedColumnName() == null) {
 			return NLS.bind(
-				JptJpaUiDetailsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsSecDefault,
+				JptJpaUiDetailsMessages.PRIMARY_KEY_JOIN_COLUMNS_COMPOSITE_MAPPING_BETWEEN_TWO_PARAMS_SECOND_DEFAULT,
 				joinColumn.getName(),
 				joinColumn.getReferencedColumnName()
 			);
 		}
 
 		return NLS.bind(
-			JptJpaUiDetailsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParams,
+			JptJpaUiDetailsMessages.PRIMARY_KEY_JOIN_COLUMNS_COMPOSITE_MAPPING_BETWEEN_TWO_PARAMS,
 			joinColumn.getName(),
 			joinColumn.getReferencedColumnName()
 		);
@@ -183,7 +183,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 
 			@Override
 			public String optionalButtonText() {
-				return JptJpaUiDetailsMessages.PrimaryKeyJoinColumnsComposite_edit;
+				return JptJpaUiDetailsMessages.PRIMARY_KEY_JOIN_COLUMNS_COMPOSITE_EDIT;
 			}
 
 			@Override
@@ -251,7 +251,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 	protected Composite addComposite(Composite parent) {
 		return addTitledGroup(
 			parent,
-			JptJpaUiDetailsMessages.PrimaryKeyJoinColumnsComposite_primaryKeyJoinColumn
+			JptJpaUiDetailsMessages.PRIMARY_KEY_JOIN_COLUMNS_COMPOSITE_PRIMARY_KEY_JOIN_COLUMN
 		);
 	}
 
@@ -260,7 +260,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 		// Override Default check box
 		Button overrideDefaultCheckBox = addCheckBox(
 			container,
-			JptJpaUiDetailsMessages.PrimaryKeyJoinColumnsComposite_overrideDefaultPrimaryKeyJoinColumns,
+			JptJpaUiDetailsMessages.PRIMARY_KEY_JOIN_COLUMNS_COMPOSITE_OVERRIDE_DEFAULT_PRIMARY_KEY_JOIN_COLUMNS,
 			buildOverrideDefaultJoinColumnHolder(),
 			null,
 			buildControlBooleanHolder()

@@ -44,7 +44,7 @@ public class JoiningStrategyJoinColumnsWithOverrideOptionComposite
 		// Override Default Join Columns check box
 		addCheckBox(
 			container,
-			JptJpaUiDetailsMessages.JoiningStrategyJoinColumnsComposite_overrideDefaultJoinColumns,
+			JptJpaUiDetailsMessages.JOINING_STRATEGY_JOIN_COLUMNS_COMPOSITE_OVERRIDE_DEFAULT_JOIN_COLUMNS,
 			buildOverrideDefaultJoinColumnHolder(),
 			null
 		);

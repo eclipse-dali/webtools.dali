@@ -55,13 +55,13 @@ public class PersistentAttributeMapAsComposite
 			String mappingKey = getMappingKey();
 
 			if (mappingKey != MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY) {
-				return JptJpaUiDetailsMessages.MapAsComposite_mappedAttributeText;
+				return JptJpaUiDetailsMessages.MAP_AS_COMPOSITE_MAPPED_ATTRIBUTE_TEXT;
 			}
 			if (getSubject().isVirtual()) {
-				return JptJpaUiDetailsMessages.MapAsComposite_virtualAttributeText;
+				return JptJpaUiDetailsMessages.MAP_AS_COMPOSITE_VIRTUAL_ATTRIBUTE_TEXT;
 			}
 
-			return JptJpaUiDetailsMessages.MapAsComposite_unmappedAttributeText;
+			return JptJpaUiDetailsMessages.MAP_AS_COMPOSITE_UNMAPPED_ATTRIBUTE_TEXT;
 		}
 
 		public String getMappingText() {

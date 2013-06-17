@@ -54,7 +54,7 @@ public class NullJavaTypeMappingUiDefinition
 	}
 
 	public String getLabel() {
-		return JptJpaUiDetailsMessages.NullTypeMappingUiProvider_label;
+		return JptJpaUiDetailsMessages.NULL_TYPE_MAPPING_UI_PROVIDER_LABEL;
 	}
 
 	/**
@@ -66,7 +66,7 @@ public class NullJavaTypeMappingUiDefinition
 	 * a link that they can click: 'click here'
 	 */
 	public String getLinkLabel() {
-		return JptJpaUiDetailsMessages.MapAsComposite_unmappedTypeText_linkLabel;
+		return JptJpaUiDetailsMessages.MAP_AS_COMPOSITE_UNMAPPED_TYPE_TEXT_LINK_LABEL;
 	}
 
 	@Override

@@ -67,9 +67,9 @@ public class FetchTypeComboViewer extends EnumFormComboViewer<FetchableMapping, 
 	protected String displayString(FetchType value) {
 		switch (value) {
 			case EAGER :
-				return JptJpaUiDetailsMessages.FetchTypeComposite_eager;
+				return JptJpaUiDetailsMessages.FETCH_TYPE_COMPOSITE_EAGER;
 			case LAZY :
-				return JptJpaUiDetailsMessages.FetchTypeComposite_lazy;
+				return JptJpaUiDetailsMessages.FETCH_TYPE_COMPOSITE_LAZY;
 			default :
 				throw new IllegalStateException();
 		}

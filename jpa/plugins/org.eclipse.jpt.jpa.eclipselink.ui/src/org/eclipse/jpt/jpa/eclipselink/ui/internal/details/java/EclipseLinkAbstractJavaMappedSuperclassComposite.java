@@ -130,7 +130,7 @@ public abstract class EclipseLinkAbstractJavaMappedSuperclassComposite<T extends
 	protected void initializeGeneratorsCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiDetailsMessages.IdMappingComposite_primaryKeyGenerationSection);
+		section.setText(JptJpaUiDetailsMessages.ID_MAPPING_COMPOSITE_PRIMARY_KEY_GENERATION_SECTION);
 
 		section.addExpansionListener(new ExpansionAdapter() {
 			@Override

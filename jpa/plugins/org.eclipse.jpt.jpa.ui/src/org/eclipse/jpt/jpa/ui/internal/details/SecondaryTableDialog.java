@@ -106,9 +106,9 @@ public class SecondaryTableDialog extends Dialog {
 
 	protected String getTitle() {
 		return (this.secondaryTable == null) ?
-						JptJpaUiDetailsMessages.SecondaryTableDialog_addSecondaryTable
+						JptJpaUiDetailsMessages.SECONDARY_TABLE_DIALOG_ADD_SECONDARY_TABLE
 					:
-						JptJpaUiDetailsMessages.SecondaryTableDialog_editSecondaryTable;
+						JptJpaUiDetailsMessages.SECONDARY_TABLE_DIALOG_EDIT_SECONDARY_TABLE;
 	}
 
 	@Override
@@ -119,7 +119,7 @@ public class SecondaryTableDialog extends Dialog {
 
 		// table
 		Label tableLabel = new Label(composite, SWT.LEFT);
-		tableLabel.setText(JptJpaUiDetailsMessages.SecondaryTableDialog_name);
+		tableLabel.setText(JptJpaUiDetailsMessages.SECONDARY_TABLE_DIALOG_NAME);
 		GridData gridData = new GridData();
 		tableLabel.setLayoutData(gridData);
 
@@ -131,7 +131,7 @@ public class SecondaryTableDialog extends Dialog {
 
 		// catalog
 		Label catalogLabel = new Label(composite, SWT.LEFT);
-		catalogLabel.setText(JptJpaUiDetailsMessages.SecondaryTableDialog_catalog);
+		catalogLabel.setText(JptJpaUiDetailsMessages.SECONDARY_TABLE_DIALOG_CATALOG);
 		gridData = new GridData();
 		catalogLabel.setLayoutData(gridData);
 
@@ -143,7 +143,7 @@ public class SecondaryTableDialog extends Dialog {
 
 		// schema
 		Label schemaLabel = new Label(composite, SWT.LEFT);
-		schemaLabel.setText(JptJpaUiDetailsMessages.SecondaryTableDialog_schema);
+		schemaLabel.setText(JptJpaUiDetailsMessages.SECONDARY_TABLE_DIALOG_SCHEMA);
 		gridData = new GridData();
 		schemaLabel.setLayoutData(gridData);
 
@@ -195,7 +195,7 @@ public class SecondaryTableDialog extends Dialog {
 
 		// add the default catalog first
 		if (this.defaultCatalog != null) {
-			this.catalogCombo.add(NLS.bind(JptJpaUiDetailsMessages.SecondaryTableDialog_defaultCatalog, this.defaultCatalog));
+			this.catalogCombo.add(NLS.bind(JptJpaUiDetailsMessages.SECONDARY_TABLE_DIALOG_DEFAULT_CATALOG, this.defaultCatalog));
 		}
 
 		if (database != null) {
@@ -224,7 +224,7 @@ public class SecondaryTableDialog extends Dialog {
 	protected void populateSchemaCombo() {
 		// add the default schema first
 		if (this.defaultSchema != null) {
-			this.schemaCombo.add(NLS.bind(JptJpaUiDetailsMessages.SecondaryTableDialog_defaultSchema, this.defaultSchema));
+			this.schemaCombo.add(NLS.bind(JptJpaUiDetailsMessages.SECONDARY_TABLE_DIALOG_DEFAULT_SCHEMA, this.defaultSchema));
 		}
 
 		SchemaContainer sc = this.getCurrentDbSchemaContainer();

@@ -53,7 +53,7 @@ public class EclipseLinkJavaBasicMappingComposite
 		columnComposite.getControl().setLayoutData(gridData);
 
 		// Fetch type widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.BasicGeneralSection_fetchLabel);
+		this.addLabel(container, JptJpaUiDetailsMessages.BASIC_GENERAL_SECTION_FETCH_LABEL);
 		new FetchTypeComboViewer(this, container);
 
 		// Optional widgets

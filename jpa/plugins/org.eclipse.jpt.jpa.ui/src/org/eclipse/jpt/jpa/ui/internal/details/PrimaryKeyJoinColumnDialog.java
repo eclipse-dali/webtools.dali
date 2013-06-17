@@ -43,8 +43,8 @@ public class PrimaryKeyJoinColumnDialog
 
 	private static String buildTitle(SpecifiedPrimaryKeyJoinColumn joinColumn) {
 		return (joinColumn == null) ?
-				JptJpaUiDetailsMessages.PrimaryKeyJoinColumnDialog_addTitle :
-				JptJpaUiDetailsMessages.PrimaryKeyJoinColumnDialog_editTitle;
+				JptJpaUiDetailsMessages.PRIMARY_KEY_JOIN_COLUMN_DIALOG_ADD_TITLE :
+				JptJpaUiDetailsMessages.PRIMARY_KEY_JOIN_COLUMN_DIALOG_EDIT_TITLE;
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class PrimaryKeyJoinColumnDialog
 	@Override
 	protected String getDescriptionTitle() {
 		return (this.getJoinColumn() == null) ?
-				JptJpaUiDetailsMessages.PrimaryKeyJoinColumnDialog_addDescriptionTitle :
-				JptJpaUiDetailsMessages.PrimaryKeyJoinColumnDialog_editDescriptionTitle;
+				JptJpaUiDetailsMessages.PRIMARY_KEY_JOIN_COLUMN_DIALOG_ADD_DESCRIPTION_TITLE :
+				JptJpaUiDetailsMessages.PRIMARY_KEY_JOIN_COLUMN_DIALOG_EDIT_DESCRIPTION_TITLE;
 	}
 }

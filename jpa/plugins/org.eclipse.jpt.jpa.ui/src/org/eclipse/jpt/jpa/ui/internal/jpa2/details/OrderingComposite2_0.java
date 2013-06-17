@@ -62,7 +62,7 @@ public class OrderingComposite2_0
 		// No Ordering radio button
 		addRadioButton(
 			container,
-			JptJpaUiDetailsMessages.OrderingComposite_none,
+			JptJpaUiDetailsMessages.ORDERING_COMPOSITE_NONE,
 			buildNoOrderingHolder(orderableHolder),
 			JpaHelpContextIds.MAPPING_ORDER_BY_NO_ORDERING
 		);
@@ -70,7 +70,7 @@ public class OrderingComposite2_0
 		// Order by Primary Key radio button
 		addRadioButton(
 			container,
-			JptJpaUiDetailsMessages.OrderingComposite_primaryKey,
+			JptJpaUiDetailsMessages.ORDERING_COMPOSITE_primary_Key,
 			buildPrimaryKeyOrderingHolder(orderableHolder),
 			JpaHelpContextIds.MAPPING_ORDER_BY_PRIMARY_KEY_ORDERING
 		);
@@ -78,7 +78,7 @@ public class OrderingComposite2_0
 		// Custom Ordering radio button
 		addRadioButton(
 			container,
-			JptJpaUiDetailsMessages.OrderingComposite_custom,
+			JptJpaUiDetailsMessages.ORDERING_COMPOSITE_CUSTOM,
 			buildCustomOrderingHolder(orderableHolder),
 			JpaHelpContextIds.MAPPING_ORDER_BY_CUSTOM_ORDERING
 		);

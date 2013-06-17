@@ -72,17 +72,17 @@ public class SequenceGeneratorComposite extends GeneratorComposite<SequenceGener
 	@Override
 	protected void initializeLayout(Composite container) {
 		// Name widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.SequenceGeneratorComposite_name);
+		this.addLabel(container, JptJpaUiDetailsMessages.SEQUENCE_GENERATOR_COMPOSITE_NAME);
 		this.addText(container, this.buildGeneratorNameHolder(), JpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_NAME);
 
 		// Sequence Generator widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.SequenceGeneratorComposite_sequence);
+		this.addLabel(container, JptJpaUiDetailsMessages.SEQUENCE_GENERATOR_COMPOSITE_SEQUENCE);
 		this.buildSequenceNameCombo(container);
 
-		this.addLabel(container, JptJpaUiDetailsMessages.GeneratorComposite_allocationSize);
+		this.addLabel(container, JptJpaUiDetailsMessages.GENERATOR_COMPOSITE_ALLOCATION_SIZE);
 		this.addAllocationSizeCombo(container);
 
-		this.addLabel(container, JptJpaUiDetailsMessages.GeneratorComposite_initialValue);
+		this.addLabel(container, JptJpaUiDetailsMessages.GENERATOR_COMPOSITE_INITIAL_VALUE);
 		this.addInitialValueCombo(container);
 	}
 

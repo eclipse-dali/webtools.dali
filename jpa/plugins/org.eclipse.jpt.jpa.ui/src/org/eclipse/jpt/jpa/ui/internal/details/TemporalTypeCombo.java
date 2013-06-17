@@ -126,11 +126,11 @@ public class TemporalTypeCombo extends Pane<BaseTemporalConverter> {
 	String displayString(TemporalType temporalType) {
 		switch (temporalType) {
 			case DATE :
-				return JptJpaUiDetailsMessages.TemporalTypeComposite_date;
+				return JptJpaUiDetailsMessages.TEMPORAL_TYPE_COMPOSITE_DATE;
 			case TIME :
-				return JptJpaUiDetailsMessages.TemporalTypeComposite_time;
+				return JptJpaUiDetailsMessages.TEMPORAL_TYPE_COMPOSITE_TIME;
 			case TIMESTAMP :
-				return JptJpaUiDetailsMessages.TemporalTypeComposite_timestamp;
+				return JptJpaUiDetailsMessages.TEMPORAL_TYPE_COMPOSITE_TIMESTAMP;
 			default :
 				throw new IllegalStateException();
 		}

@@ -46,10 +46,10 @@ public class DefaultEmbeddedMappingUiDefinition
 	}
 
 	public String getLabel() {
-		return JptJpaUiDetailsMessages.DefaultEmbeddedMappingUiProvider_label;
+		return JptJpaUiDetailsMessages.DEFAULT_EMBEDDED_MAPPING_UI_PROVIDER_LABEL;
 	}
 
 	public String getLinkLabel() {
-		return JptJpaUiDetailsMessages.DefaultEmbeddedMappingUiProvider_linkLabel;
+		return JptJpaUiDetailsMessages.DEFAULT_EMBEDDED_MAPPING_UI_PROVIDER_LINK_LABEL;
 	}
 }

@@ -62,7 +62,7 @@ public class EclipseLinkOrmElementCollectionMappingComposite2_0
 		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);
 
 		// Fetch type widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.BasicGeneralSection_fetchLabel);
+		this.addLabel(container, JptJpaUiDetailsMessages.BASIC_GENERAL_SECTION_FETCH_LABEL);
 		new FetchTypeComboViewer(this, container);
 
 		// Collection table widgets

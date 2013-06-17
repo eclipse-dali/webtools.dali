@@ -105,10 +105,10 @@ public class NamedQueryPropertyComposite<T extends NamedQuery> extends Pane<T> {
 	@Override
 	protected void initializeLayout(Composite container) {
 		// Name widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.NamedQueryComposite_nameTextLabel);
+		this.addLabel(container, JptJpaUiDetailsMessages.NAMED_QUERY_COMPOSITE_NAME_TEXT_LABEL);
 		this.addText(container, buildNameTextHolder());
 
-		Label queryLabel = this.addLabel(container, JptJpaUiDetailsMessages.NamedQueryPropertyComposite_query);
+		Label queryLabel = this.addLabel(container, JptJpaUiDetailsMessages.NAMED_QUERY_PROPERTY_COMPOSITE_QUERY);
 		GridData gridData = new GridData();
 		gridData.verticalAlignment = SWT.TOP;
 		queryLabel.setLayoutData(gridData);

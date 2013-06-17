@@ -74,10 +74,10 @@ public class AddQueryDialog2_1
 			@Override
 			public String transform(String value) {
 				if (value == NAMED_QUERY) {
-					return JptJpaUiDetailsMessages.AddQueryDialog_namedQuery;
+					return JptJpaUiDetailsMessages.ADD_QUERY_DIALOG_NAMED_QUERY;
 				}
 				if (value == NAMED_NATIVE_QUERY) {
-					return JptJpaUiDetailsMessages.AddQueryDialog_namedNativeQuery;
+					return JptJpaUiDetailsMessages.ADD_QUERY_DIALOG_NAMED_NATIVE_QUERY;
 				}
 				if (value == NAMED_STORED_PROCEDURE_QUERY) {
 					return JptJpaUiDetailsMessages2_1.ADD_QUERY_DIALOG__NAMED_STORED_PROCEDURE_QUERY;

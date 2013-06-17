@@ -64,7 +64,7 @@ public class MappedByPane
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		this.addLabel(container, JptJpaUiDetailsMessages.Joining_mappedByAttributeLabel);
+		this.addLabel(container, JptJpaUiDetailsMessages.JOINING_MAPPED_BY_ATTRIBUTE_LABEL);
 		this.addEditableCombo(
 			container,
 			buildCandidateAttributesListValueModel(),

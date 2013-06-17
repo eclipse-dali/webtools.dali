@@ -342,7 +342,7 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 	@Override
 	protected void initializeLayout(Composite container) {
 		// Name widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.JoinColumnDialog_name);
+		this.addLabel(container, JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_NAME);
 		Combo nameCombo = this.addEditableCombo(
 			container,
 			buildNamesListHolder(),
@@ -354,7 +354,7 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 		ComboTools.handleDefaultValue(nameCombo);
 
 		// Referenced Column Name widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.JoinColumnDialog_referencedColumnName);
+		this.addLabel(container, JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_REFERENCED_COLUMN_NAME);
 		Combo referencedColumnNameCombo = this.addEditableCombo(
 			container,
 			buildReferencedColumnNamesListHolder(),
@@ -367,7 +367,7 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 
 		// Table widgets
 		if (isTableEditable()) {
-			this.addLabel(container, JptJpaUiDetailsMessages.JoinColumnDialogPane_table);
+			this.addLabel(container, JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_TABLE);
 
 			Combo tableCombo = this.addEditableCombo(
 				container,
@@ -380,7 +380,7 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 			ComboTools.handleDefaultValue(tableCombo);
 		}
 		else {
-			this.addLabel(container, JptJpaUiDetailsMessages.JoinColumnDialogPane_table);
+			this.addLabel(container, JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_TABLE);
 			Combo tableCombo = addCombo(
 				container,
 				buildTablesListHolder(),
@@ -393,7 +393,7 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 		}
 
 		// Column Definition widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.JoinColumnDialogPane_columnDefinition);
+		this.addLabel(container, JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_COLUMN_DEFINITION);
 		this.addText(
 			container,
 			buildColumnDefinitionHolder()

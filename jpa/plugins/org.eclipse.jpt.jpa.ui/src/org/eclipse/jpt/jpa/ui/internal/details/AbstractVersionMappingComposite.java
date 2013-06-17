@@ -74,7 +74,7 @@ public abstract class AbstractVersionMappingComposite<T extends VersionMapping>
 				ExpandableComposite.TWISTIE |
 				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiDetailsMessages.VersionSection_title);
+		section.setText(JptJpaUiDetailsMessages.VERSION_SECTION_TITLE);
 		section.setClient(initializeVersionSection(section));
 	}
 
@@ -83,7 +83,7 @@ public abstract class AbstractVersionMappingComposite<T extends VersionMapping>
 	protected void initializeTypeCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiDetailsMessages.TypeSection_type);
+		section.setText(JptJpaUiDetailsMessages.TYPE_SECTION_TYPE);
 		section.addExpansionListener(new ExpansionAdapter() {
 			@Override
 			public void expansionStateChanging(ExpansionEvent e) {
@@ -100,7 +100,7 @@ public abstract class AbstractVersionMappingComposite<T extends VersionMapping>
 		// No converter
 		Button noConverterButton = addRadioButton(
 			container, 
-			JptJpaUiDetailsMessages.TypeSection_default, 
+			JptJpaUiDetailsMessages.TYPE_SECTION_DEFAULT, 
 			buildConverterBooleanHolder(null), 
 			null);
 		((GridData) noConverterButton.getLayoutData()).horizontalSpan = 2;
@@ -109,7 +109,7 @@ public abstract class AbstractVersionMappingComposite<T extends VersionMapping>
 		// Temporal
 		addRadioButton(
 			container, 
-			JptJpaUiDetailsMessages.TypeSection_temporal, 
+			JptJpaUiDetailsMessages.TYPE_SECTION_TEMPORAL, 
 			buildConverterBooleanHolder(BaseTemporalConverter.class), 
 			null);
 		new TemporalTypeCombo(this, this.buildTemporalConverterHolder(converterHolder), container);

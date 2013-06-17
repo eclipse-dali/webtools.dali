@@ -57,7 +57,7 @@ public class ManyToOneJoiningStrategyPane extends Pane<ManyToOneRelationship>
 				ExpandableComposite.TWISTIE | 
 				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiDetailsMessages.Joining_title);
+		section.setText(JptJpaUiDetailsMessages.JOINING_TITLE);
 
 		Composite client = this.getWidgetFactory().createComposite(section);
 		client.setLayout(new GridLayout(1, false));
@@ -71,7 +71,7 @@ public class ManyToOneJoiningStrategyPane extends Pane<ManyToOneRelationship>
 	protected void initializeLayout(Composite container) {
 		addRadioButton(
 			container,
-			JptJpaUiDetailsMessages.Joining_joinColumnJoiningLabel,
+			JptJpaUiDetailsMessages.JOINING_JOIN_COLUMN_JOINING_LABEL,
 			JoinColumnJoiningStrategyPane.buildUsesJoinColumnJoiningStrategyHolder(getSubjectHolder()),
 			null);
 

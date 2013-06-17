@@ -40,7 +40,7 @@ public class AddQueryDialog
 
 
 	public AddQueryDialog(Shell parentShell, ResourceManager resourceManager, PersistenceUnit pUnit) {
-		super(parentShell, resourceManager, JptJpaUiDetailsMessages.AddQueryDialog_title);
+		super(parentShell, resourceManager, JptJpaUiDetailsMessages.ADD_QUERY_DIALOG_TITLE);
 		this.pUnit = pUnit;
 	}
 
@@ -51,12 +51,12 @@ public class AddQueryDialog
 
 	@Override
 	protected String getDescriptionTitle() {
-		return JptJpaUiDetailsMessages.AddQueryDialog_descriptionTitle;
+		return JptJpaUiDetailsMessages.ADD_QUERY_DIALOG_DESCRIPTION_TITLE;
 	}
 	
 	@Override
 	protected String getDescription() {
-		return JptJpaUiDetailsMessages.AddQueryDialog_description;
+		return JptJpaUiDetailsMessages.ADD_QUERY_DIALOG_DESCRIPTION;
 	}
 	
 	@Override
@@ -111,10 +111,10 @@ public class AddQueryDialog
 
 		@Override
 		protected void initializeLayout(Composite container) {
-			this.addLabel(container, JptJpaUiDetailsMessages.AddQueryDialog_name);
+			this.addLabel(container, JptJpaUiDetailsMessages.ADD_QUERY_DIALOG_NAME);
 			this.nameText = addText(container, this.buildNameHolder());
 			
-			this.addLabel(container, JptJpaUiDetailsMessages.AddQueryDialog_queryType);
+			this.addLabel(container, JptJpaUiDetailsMessages.ADD_QUERY_DIALOG_QUERY_TYPE);
 			this.addCombo(
 				container, 
 				buildQueryTypeListHolder(), 
@@ -141,10 +141,10 @@ public class AddQueryDialog
 			@Override
 			public String transform(String value) {
 				if (value == NAMED_QUERY) {
-					return JptJpaUiDetailsMessages.AddQueryDialog_namedQuery;
+					return JptJpaUiDetailsMessages.ADD_QUERY_DIALOG_NAMED_QUERY;
 				}
 				if (value == NAMED_NATIVE_QUERY) {
-					return JptJpaUiDetailsMessages.AddQueryDialog_namedNativeQuery;
+					return JptJpaUiDetailsMessages.ADD_QUERY_DIALOG_NAMED_NATIVE_QUERY;
 				}
 				return value;
 			}

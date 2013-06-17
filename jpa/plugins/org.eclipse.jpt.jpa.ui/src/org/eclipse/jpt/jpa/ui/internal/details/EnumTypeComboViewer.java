@@ -82,9 +82,9 @@ public class EnumTypeComboViewer extends Pane<BaseEnumeratedConverter>
 			protected String displayString(EnumType value) {
 				switch (value) {
 					case ORDINAL :
-						return JptJpaUiDetailsMessages.EnumTypeComposite_ordinal;
+						return JptJpaUiDetailsMessages.ENUM_TYPE_COMPOSITE_ORDINAL;
 					case STRING :
-						return JptJpaUiDetailsMessages.EnumTypeComposite_string;
+						return JptJpaUiDetailsMessages.ENUM_TYPE_COMPOSITE_STRING;
 					default :
 						throw new IllegalStateException();
 				}

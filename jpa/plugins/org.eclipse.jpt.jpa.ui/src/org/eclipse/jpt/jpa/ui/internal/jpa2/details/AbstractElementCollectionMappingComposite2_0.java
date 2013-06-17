@@ -92,7 +92,7 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 		new TargetClassChooser2_0(this, container, hyperlink);
 
 		// Fetch type widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.BasicGeneralSection_fetchLabel);
+		this.addLabel(container, JptJpaUiDetailsMessages.BASIC_GENERAL_SECTION_FETCH_LABEL);
 		new FetchTypeComboViewer(this, container);
 
 		// Collection table widgets
@@ -107,7 +107,7 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 	protected void initializeOrderingCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiDetailsMessages.OrderingComposite_orderingGroup);
+		section.setText(JptJpaUiDetailsMessages.ORDERING_COMPOSITE_ORDERING_GROUP);
 		section.addExpansionListener(new ExpansionAdapter() {
 			@Override
 			public void expansionStateChanging(ExpansionEvent e) {
@@ -165,7 +165,7 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 		// type section
 		final Section section = this.getWidgetFactory().createSection(basicComposite, ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiDetailsMessages.TypeSection_type);
+		section.setText(JptJpaUiDetailsMessages.TYPE_SECTION_TYPE);
 		section.addExpansionListener(new ExpansionAdapter() {
 			@Override
 			public void expansionStateChanging(ExpansionEvent e) {
@@ -187,7 +187,7 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 		// No converter
 		Button noConverterButton = addRadioButton(
 			container, 
-			JptJpaUiDetailsMessages.TypeSection_default, 
+			JptJpaUiDetailsMessages.TYPE_SECTION_DEFAULT, 
 			buildNoConverterHolder(), 
 			null);
 		((GridData) noConverterButton.getLayoutData()).horizontalSpan = 2;
@@ -195,7 +195,7 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 		// Lob
 		Button lobButton = addRadioButton(
 			container, 
-			JptJpaUiDetailsMessages.TypeSection_lob, 
+			JptJpaUiDetailsMessages.TYPE_SECTION_LOB, 
 			buildLobConverterHolder(), 
 			null);
 		((GridData) lobButton.getLayoutData()).horizontalSpan = 2;
@@ -205,7 +205,7 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 		// Temporal
 		addRadioButton(
 			container, 
-			JptJpaUiDetailsMessages.TypeSection_temporal, 
+			JptJpaUiDetailsMessages.TYPE_SECTION_TEMPORAL, 
 			buildTemporalBooleanHolder(), 
 			null);
 		new TemporalTypeCombo(this, this.buildTemporalConverterHolder(converterHolder), container);
@@ -214,7 +214,7 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 		// Enumerated
 		addRadioButton(
 			container, 
-			JptJpaUiDetailsMessages.TypeSection_enumerated, 
+			JptJpaUiDetailsMessages.TYPE_SECTION_ENUMERATED, 
 			buildEnumeratedBooleanHolder(), 
 			null);
 		new EnumTypeComboViewer(this, this.buildEnumeratedConverterHolder(converterHolder), container);

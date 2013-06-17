@@ -369,7 +369,7 @@ public abstract class MapAsComposite<T extends JpaStructureNode>
 		String name = mappingChangeHandler.getName();
 
 		if (name == null) {
-			name = JptJpaUiDetailsMessages.NoNameSet;
+			name = JptJpaUiDetailsMessages.NO_NAME_SET;
 		}
 
 		String mappingType = mappingChangeHandler.getMappingText();
@@ -487,8 +487,8 @@ public abstract class MapAsComposite<T extends JpaStructureNode>
 		 */
 		protected MappingSelectionDialog(Shell shell, ResourceManager resourceManager) {
 			super(shell, false);
-			this.setMessage(JptJpaUiDetailsMessages.MapAsComposite_labelText);
-			this.setTitle(JptJpaUiDetailsMessages.MapAsComposite_dialogTitle);
+			this.setMessage(JptJpaUiDetailsMessages.MAP_AS_COMPOSITE_LABEL_TEXT);
+			this.setTitle(JptJpaUiDetailsMessages.MAP_AS_COMPOSITE_DIALOG_TITLE);
 			ILabelProvider labelProvider = this.buildLabelProvider(resourceManager);
 			this.setListLabelProvider(labelProvider);
 			this.setDetailsLabelProvider(labelProvider);

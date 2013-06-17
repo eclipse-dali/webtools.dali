@@ -152,9 +152,9 @@ public class ColumnComposite
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiDetailsMessages.ColumnComposite_insertableWithDefault, defaultStringValue);
+					return NLS.bind(JptJpaUiDetailsMessages.COLUMN_COMPOSITE_INSERTABLE_WITH_DEFAULT, defaultStringValue);
 				}
-				return JptJpaUiDetailsMessages.ColumnComposite_insertable;
+				return JptJpaUiDetailsMessages.COLUMN_COMPOSITE_INSERTABLE;
 			}
 		};
 	}
@@ -198,9 +198,9 @@ public class ColumnComposite
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiDetailsMessages.ColumnComposite_nullableWithDefault, defaultStringValue);
+					return NLS.bind(JptJpaUiDetailsMessages.COLUMN_COMPOSITE_NULLABLE_WITH_DEFAULT, defaultStringValue);
 				}
-				return JptJpaUiDetailsMessages.ColumnComposite_nullable;
+				return JptJpaUiDetailsMessages.COLUMN_COMPOSITE_NULLABLE;
 			}
 		};
 	}
@@ -298,9 +298,9 @@ public class ColumnComposite
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiDetailsMessages.ColumnComposite_uniqueWithDefault, defaultStringValue);
+					return NLS.bind(JptJpaUiDetailsMessages.COLUMN_COMPOSITE_UNIQUE_WITH_DEFAULT, defaultStringValue);
 				}
-				return JptJpaUiDetailsMessages.ColumnComposite_unique;
+				return JptJpaUiDetailsMessages.COLUMN_COMPOSITE_UNIQUE;
 			}
 		};
 	}
@@ -347,9 +347,9 @@ public class ColumnComposite
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiDetailsMessages.ColumnComposite_updatableWithDefault, defaultStringValue);
+					return NLS.bind(JptJpaUiDetailsMessages.COLUMN_COMPOSITE_UPDATABLE_WITH_DEFAULT, defaultStringValue);
 				}
-				return JptJpaUiDetailsMessages.ColumnComposite_updatable;
+				return JptJpaUiDetailsMessages.COLUMN_COMPOSITE_UPDATABLE;
 			}
 		};
 	}
@@ -374,7 +374,7 @@ public class ColumnComposite
 	protected Composite addComposite(Composite parent) {
 		return addTitledGroup(
 				parent,
-				JptJpaUiDetailsMessages.ColumnComposite_columnSection,
+				JptJpaUiDetailsMessages.COLUMN_COMPOSITE_COLUMN_SECTION,
 				2,
 				null);
 	}
@@ -382,11 +382,11 @@ public class ColumnComposite
 	@Override
 	protected void initializeLayout(Composite container) {
 		// Column widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.ColumnComposite_name);
+		this.addLabel(container, JptJpaUiDetailsMessages.COLUMN_COMPOSITE_NAME);
 		this.addColumnCombo(container);
 
 		// Table widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.ColumnComposite_table);
+		this.addLabel(container, JptJpaUiDetailsMessages.COLUMN_COMPOSITE_TABLE);
 		this.addTableCombo(container);
 
 
@@ -395,7 +395,7 @@ public class ColumnComposite
 				ExpandableComposite.TWISTIE |
 				ExpandableComposite.CLIENT_INDENT);
 		detailsSection.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		detailsSection.setText(JptJpaUiDetailsMessages.ColumnComposite_details);
+		detailsSection.setText(JptJpaUiDetailsMessages.COLUMN_COMPOSITE_DETAILS);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		detailsSection.setLayoutData(gridData);
@@ -416,7 +416,7 @@ public class ColumnComposite
 		// Insertable tri-state check box
 		TriStateCheckBox insertableCheckBox = addTriStateCheckBoxWithDefault(
 				detailsClient,
-				JptJpaUiDetailsMessages.ColumnComposite_insertable,
+				JptJpaUiDetailsMessages.COLUMN_COMPOSITE_INSERTABLE,
 				buildInsertableHolder(),
 				buildInsertableStringHolder(),
 				JpaHelpContextIds.MAPPING_COLUMN_INSERTABLE);
@@ -427,7 +427,7 @@ public class ColumnComposite
 		// Updatable tri-state check box
 		TriStateCheckBox updatableCheckBox = addTriStateCheckBoxWithDefault(
 				detailsClient,
-				JptJpaUiDetailsMessages.ColumnComposite_updatable,
+				JptJpaUiDetailsMessages.COLUMN_COMPOSITE_UPDATABLE,
 				buildUpdatableHolder(),
 				buildUpdatableStringHolder(),
 				JpaHelpContextIds.MAPPING_COLUMN_UPDATABLE);
@@ -438,7 +438,7 @@ public class ColumnComposite
 		// Unique tri-state check box
 		TriStateCheckBox uniqueCheckBox = addTriStateCheckBoxWithDefault(
 				detailsClient,
-				JptJpaUiDetailsMessages.ColumnComposite_unique,
+				JptJpaUiDetailsMessages.COLUMN_COMPOSITE_UNIQUE,
 				buildUniqueHolder(),
 				buildUniqueStringHolder(),
 				JpaHelpContextIds.MAPPING_COLUMN_UNIQUE);
@@ -449,7 +449,7 @@ public class ColumnComposite
 		// Nullable tri-state check box
 		TriStateCheckBox nullableCheckBox = addTriStateCheckBoxWithDefault(
 				detailsClient,
-				JptJpaUiDetailsMessages.ColumnComposite_nullable,
+				JptJpaUiDetailsMessages.COLUMN_COMPOSITE_NULLABLE,
 				buildNullableHolder(),
 				buildNullableStringHolder(),
 				JpaHelpContextIds.MAPPING_COLUMN_NULLABLE);
@@ -457,17 +457,17 @@ public class ColumnComposite
 		gridData.horizontalSpan = 2;
 		nullableCheckBox.getCheckBox().setLayoutData(gridData);
 
-		this.addLabel(detailsClient, JptJpaUiDetailsMessages.ColumnComposite_length);		
+		this.addLabel(detailsClient, JptJpaUiDetailsMessages.COLUMN_COMPOSITE_LENGTH);		
 		this.addLengthCombo(detailsClient);
 
-		this.addLabel(detailsClient, JptJpaUiDetailsMessages.ColumnComposite_precision);		
+		this.addLabel(detailsClient, JptJpaUiDetailsMessages.COLUMN_COMPOSITE_PRECISION);		
 		this.addPrecisionCombo(detailsClient);
 
-		this.addLabel(detailsClient, JptJpaUiDetailsMessages.ColumnComposite_scale);		
+		this.addLabel(detailsClient, JptJpaUiDetailsMessages.COLUMN_COMPOSITE_SCALE);		
 		this.addScaleCombo(detailsClient);
 
 		// Column Definition widgets
-		this.addLabel(detailsClient, JptJpaUiDetailsMessages.ColumnComposite_columnDefinition);
+		this.addLabel(detailsClient, JptJpaUiDetailsMessages.COLUMN_COMPOSITE_COLUMN_DEFINITION);
 		this.addText(detailsClient, buildColumnDefinitionHolder());
 
 		return detailsClient;

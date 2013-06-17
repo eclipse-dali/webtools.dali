@@ -75,7 +75,7 @@ public class TableComposite extends Pane<Entity>
 	protected Composite addComposite(Composite parent) {
 		Group tableGroupPane = this.addTitledGroup(
 			parent,
-			JptJpaUiDetailsMessages.TableComposite_tableSection,
+			JptJpaUiDetailsMessages.TABLE_COMPOSITE_TABLE_SECTION,
 			2,
 			null
 		);
@@ -88,15 +88,15 @@ public class TableComposite extends Pane<Entity>
 		PropertyValueModel<Boolean> enabledModel = buildTableEnabledModel();
 
 		// Table widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.TableChooser_label, enabledModel);
+		this.addLabel(container, JptJpaUiDetailsMessages.TABLE_CHOOSER_LABEL, enabledModel);
 		this.addTableCombo(subjectHolder, enabledModel, container);
 
 		// Catalog widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.CatalogChooser_label, enabledModel);
+		this.addLabel(container, JptJpaUiDetailsMessages.CATALOG_CHOOSER_LABEL, enabledModel);
 		this.addCatalogCombo(subjectHolder, enabledModel, container);
 
 		// Schema widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.SchemaChooser_label, enabledModel);
+		this.addLabel(container, JptJpaUiDetailsMessages.SCHEMA_CHOOSER_LABEL, enabledModel);
 		this.addSchemaCombo(subjectHolder, enabledModel, container);
 	}
 	

@@ -51,9 +51,9 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiDetailsMessages.JoinColumnDialogPane_insertableWithDefault, defaultStringValue);
+					return NLS.bind(JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_INSERTABLE_WITH_DEFAULT, defaultStringValue);
 				}
-				return JptJpaUiDetailsMessages.JoinColumnDialogPane_insertable;
+				return JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_INSERTABLE;
 			}
 		};
 	}
@@ -98,9 +98,9 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiDetailsMessages.JoinColumnDialogPane_nullableWithDefault, defaultStringValue);
+					return NLS.bind(JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_NULLABLE_WITH_DEFAULT, defaultStringValue);
 				}
-				return JptJpaUiDetailsMessages.JoinColumnDialogPane_nullable;
+				return JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_NULLABLE;
 			}
 		};
 	}
@@ -143,9 +143,9 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiDetailsMessages.JoinColumnDialogPane_uniqueWithDefault, defaultStringValue);
+					return NLS.bind(JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_UNIQUE_WITH_DEFAULT, defaultStringValue);
 				}
-				return JptJpaUiDetailsMessages.JoinColumnDialogPane_unique;
+				return JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_UNIQUE;
 			}
 		};
 	}
@@ -185,9 +185,9 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiDetailsMessages.JoinColumnDialogPane_updatableWithDefault, defaultStringValue);
+					return NLS.bind(JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_UPDATABLE_WITH_DEFAULT, defaultStringValue);
 				}
-				return JptJpaUiDetailsMessages.JoinColumnDialogPane_updatable;
+				return JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_UPDATABLE;
 			}
 		};
 	}
@@ -215,7 +215,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		// Insertable tri-state check box
 		addTriStateCheckBoxWithDefault(
 			container,
-			JptJpaUiDetailsMessages.JoinColumnDialogPane_insertable,
+			JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_INSERTABLE,
 			buildInsertableHolder(),
 			buildInsertableStringHolder(),
 			JpaHelpContextIds.MAPPING_COLUMN_INSERTABLE
@@ -224,7 +224,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		// Updatable tri-state check box
 		addTriStateCheckBoxWithDefault(
 			container,
-			JptJpaUiDetailsMessages.JoinColumnDialogPane_updatable,
+			JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_UPDATABLE,
 			buildUpdatableHolder(),
 			buildUpdatableStringHolder(),
 			JpaHelpContextIds.MAPPING_COLUMN_UPDATABLE
@@ -233,7 +233,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		// Unique tri-state check box
 		addTriStateCheckBoxWithDefault(
 			container,
-			JptJpaUiDetailsMessages.ColumnComposite_unique,
+			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_UNIQUE,
 			buildUniqueHolder(),
 			buildUniqueStringHolder(),
 			JpaHelpContextIds.MAPPING_COLUMN_UNIQUE
@@ -242,7 +242,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		// Nullable tri-state check box
 		addTriStateCheckBoxWithDefault(
 			container,
-			JptJpaUiDetailsMessages.ColumnComposite_nullable,
+			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_NULLABLE,
 			buildNullableHolder(),
 			buildNullableStringHolder(),
 			JpaHelpContextIds.MAPPING_COLUMN_NULLABLE

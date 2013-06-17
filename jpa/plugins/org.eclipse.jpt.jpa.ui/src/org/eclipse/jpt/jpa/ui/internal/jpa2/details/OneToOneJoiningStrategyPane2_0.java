@@ -79,7 +79,7 @@ public class OneToOneJoiningStrategyPane2_0
 				ExpandableComposite.TWISTIE | 
 				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiDetailsMessages.Joining_title);
+		section.setText(JptJpaUiDetailsMessages.JOINING_TITLE);
 
 		Composite client = this.getWidgetFactory().createComposite(section);
 		client.setLayout(new GridLayout(1, false));
@@ -93,7 +93,7 @@ public class OneToOneJoiningStrategyPane2_0
 	protected void initializeLayout(Composite container) {
 		addRadioButton(
 			container,
-			JptJpaUiDetailsMessages.Joining_mappedByLabel,
+			JptJpaUiDetailsMessages.JOINING_MAPPED_BY_LABEL,
 			MappedByJoiningStrategyPane.buildUsesMappedByJoiningStrategyHolder(getSubjectHolder()),
 			null);
 
@@ -101,7 +101,7 @@ public class OneToOneJoiningStrategyPane2_0
 		
 		addRadioButton(
 			container,
-			JptJpaUiDetailsMessages.Joining_primaryKeyJoinColumnJoiningLabel,
+			JptJpaUiDetailsMessages.JOINING_PRIMARY_KEY_JOIN_COLUMN_JOINING_LABEL,
 			PrimaryKeyJoinColumnJoiningStrategyPane.buildUsesPrimaryKeyJoinColumnJoiningStrategyHolder(getSubjectHolder()),
 			null);
 
@@ -109,7 +109,7 @@ public class OneToOneJoiningStrategyPane2_0
 		
 		addRadioButton(
 			container,
-			JptJpaUiDetailsMessages.Joining_joinColumnJoiningLabel,
+			JptJpaUiDetailsMessages.JOINING_JOIN_COLUMN_JOINING_LABEL,
 			JoinColumnJoiningStrategyPane.buildUsesJoinColumnJoiningStrategyHolder(getSubjectHolder()),
 			null);
 
@@ -118,7 +118,7 @@ public class OneToOneJoiningStrategyPane2_0
 		
 		addRadioButton(
 			container,
-			JptJpaUiDetailsMessages.Joining_joinTableJoiningLabel,
+			JptJpaUiDetailsMessages.JOINING_JOIN_TABLE_JOINING_LABEL,
 			JoinTableJoiningStrategyPane.buildUsesJoinTableJoiningStrategyHolder(getSubjectHolder()),
 			null);
 

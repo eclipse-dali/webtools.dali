@@ -58,7 +58,7 @@ public abstract class EclipseLinkBasicMappingComposite<T extends EclipseLinkBasi
 		// No converter
 		Button noConverterButton = addRadioButton(
 			container, 
-			JptJpaUiDetailsMessages.TypeSection_default, 
+			JptJpaUiDetailsMessages.TYPE_SECTION_DEFAULT, 
 			buildConverterBooleanHolder(null), 
 			null);
 		((GridData) noConverterButton.getLayoutData()).horizontalSpan = 2;
@@ -66,7 +66,7 @@ public abstract class EclipseLinkBasicMappingComposite<T extends EclipseLinkBasi
 		// Lob
 		Button lobButton = addRadioButton(
 			container, 
-			JptJpaUiDetailsMessages.TypeSection_lob, 
+			JptJpaUiDetailsMessages.TYPE_SECTION_LOB, 
 			buildConverterBooleanHolder(LobConverter.class), 
 			null);
 		((GridData) lobButton.getLayoutData()).horizontalSpan = 2;
@@ -75,7 +75,7 @@ public abstract class EclipseLinkBasicMappingComposite<T extends EclipseLinkBasi
 		// Temporal
 		addRadioButton(
 			container, 
-			JptJpaUiDetailsMessages.TypeSection_temporal, 
+			JptJpaUiDetailsMessages.TYPE_SECTION_TEMPORAL, 
 			buildConverterBooleanHolder(BaseTemporalConverter.class), 
 			null);
 		new TemporalTypeCombo(this, buildTemporalConverterHolder(converterHolder), container);
@@ -84,7 +84,7 @@ public abstract class EclipseLinkBasicMappingComposite<T extends EclipseLinkBasi
 		// Enumerated
 		addRadioButton(
 			container, 
-			JptJpaUiDetailsMessages.TypeSection_enumerated, 
+			JptJpaUiDetailsMessages.TYPE_SECTION_ENUMERATED, 
 			buildConverterBooleanHolder(BaseEnumeratedConverter.class), 
 			null);
 		new EnumTypeComboViewer(this, this.buildEnumeratedConverterHolder(converterHolder), container);

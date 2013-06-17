@@ -51,11 +51,11 @@ public class IdMappingUiDefinition
 	}
 
 	public String getLabel() {
-		return JptJpaUiDetailsMessages.IdMappingUiProvider_label;
+		return JptJpaUiDetailsMessages.ID_MAPPING_UI_PROVIDER_LABEL;
 	}
 
 	public String getLinkLabel() {
-		return JptJpaUiDetailsMessages.IdMappingUiProvider_linkLabel;
+		return JptJpaUiDetailsMessages.ID_MAPPING_UI_PROVIDER_LINK_LABEL;
 	}
 
 	@Override

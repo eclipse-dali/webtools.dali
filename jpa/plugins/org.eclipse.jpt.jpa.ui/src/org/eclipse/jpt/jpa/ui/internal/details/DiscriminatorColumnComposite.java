@@ -82,7 +82,7 @@ public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 	protected Composite addComposite(Composite parent) {
 		return addTitledGroup(
 			parent,
-			JptJpaUiDetailsMessages.InheritanceComposite_discriminatorColumnGroupBox,
+			JptJpaUiDetailsMessages.INHERITANCE_COMPOSITE_DISCRIMINATOR_COLUMN_GROUP_BOX,
 			2,
 			null
 		);
@@ -95,11 +95,11 @@ public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 		PropertyValueModel<Boolean> enabledModel = buildDiscriminatorColumnEnabledHolder();
 
 		// Name widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.DiscriminatorColumnComposite_name, enabledModel);
+		this.addLabel(container, JptJpaUiDetailsMessages.DISCRIMINATOR_COLUMN_COMPOSITE_NAME, enabledModel);
 		this.addDiscriminatorColumnCombo(container, discriminatorColumnHolder, enabledModel);
 
 		// Discriminator Type widgets
-		this.addLabel(container,JptJpaUiDetailsMessages.DiscriminatorColumnComposite_discriminatorType, enabledModel);
+		this.addLabel(container,JptJpaUiDetailsMessages.DISCRIMINATOR_COLUMN_COMPOSITE_DISCRIMINATOR_TYPE, enabledModel);
 		this.addDiscriminatorTypeCombo(container, discriminatorColumnHolder, enabledModel);
 
 
@@ -107,7 +107,7 @@ public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 				ExpandableComposite.TWISTIE |
 				ExpandableComposite.CLIENT_INDENT);
 		detailsSection.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		detailsSection.setText(JptJpaUiDetailsMessages.InheritanceComposite_detailsGroupBox);
+		detailsSection.setText(JptJpaUiDetailsMessages.INHERITANCE_COMPOSITE_DETAILS_GROUP_BOX);
 		detailsSection.setClient(this.initializeDetailsClient(detailsSection, discriminatorColumnHolder, enabledModel));
 	}
 
@@ -119,11 +119,11 @@ public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 		detailsSection.setLayoutData(gridData);
 
 		// Length widgets
-		this.addLabel(detailsClient, JptJpaUiDetailsMessages.ColumnComposite_length, enabledModel);
+		this.addLabel(detailsClient, JptJpaUiDetailsMessages.COLUMN_COMPOSITE_LENGTH, enabledModel);
 		this.addLengthCombo(detailsClient, discriminatorColumnHolder, enabledModel);
 
 		// Column Definition widgets
-		this.addLabel(detailsClient, JptJpaUiDetailsMessages.ColumnComposite_columnDefinition, enabledModel);
+		this.addLabel(detailsClient, JptJpaUiDetailsMessages.COLUMN_COMPOSITE_COLUMN_DEFINITION, enabledModel);
 		this.addText(detailsClient, this.buildColumnDefinitionHolder(discriminatorColumnHolder), null, enabledModel);
 
 		return detailsClient;
@@ -236,11 +236,11 @@ public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 			protected String displayString(DiscriminatorType value) {
 				switch (value) {
 					case CHAR :
-						return JptJpaUiDetailsMessages.DiscriminatorColumnComposite_char;
+						return JptJpaUiDetailsMessages.DISCRIMINATOR_COLUMN_COMPOSITE_CHAR;
 					case INTEGER :
-						return JptJpaUiDetailsMessages.DiscriminatorColumnComposite_integer;
+						return JptJpaUiDetailsMessages.DISCRIMINATOR_COLUMN_COMPOSITE_INTEGER;
 					case STRING :
-						return JptJpaUiDetailsMessages.DiscriminatorColumnComposite_string;
+						return JptJpaUiDetailsMessages.DISCRIMINATOR_COLUMN_COMPOSITE_STRING;
 					default :
 						throw new IllegalStateException();
 				}

@@ -128,7 +128,7 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 		// Override Define In XML check box
 		addCheckBox(
 			container,
-			JptJpaUiDetailsMessages.OrmSecondaryTablesComposite_defineInXml,
+			JptJpaUiDetailsMessages.ORM_SECONDARY_TABLES_COMPOSITE_DEFINE_IN_XML,
 			defineInXmlModel,
 			null
 		);

@@ -77,7 +77,7 @@ public class EclipseLinkTenantDiscriminatorColumnComposite extends Pane<EclipseL
 		this.addDiscriminatorTypeCombo(container);
 
 		// Length widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.ColumnComposite_length);
+		this.addLabel(container, JptJpaUiDetailsMessages.COLUMN_COMPOSITE_LENGTH);
 		this.addLengthCombo(container);
 
 		// Column Definition widgets
@@ -300,11 +300,11 @@ public class EclipseLinkTenantDiscriminatorColumnComposite extends Pane<EclipseL
 			protected String displayString(DiscriminatorType value) {
 				switch (value) {
 					case CHAR :
-						return JptJpaUiDetailsMessages.DiscriminatorColumnComposite_char;
+						return JptJpaUiDetailsMessages.DISCRIMINATOR_COLUMN_COMPOSITE_CHAR;
 					case INTEGER :
-						return JptJpaUiDetailsMessages.DiscriminatorColumnComposite_integer;
+						return JptJpaUiDetailsMessages.DISCRIMINATOR_COLUMN_COMPOSITE_INTEGER;
 					case STRING :
-						return JptJpaUiDetailsMessages.DiscriminatorColumnComposite_string;
+						return JptJpaUiDetailsMessages.DISCRIMINATOR_COLUMN_COMPOSITE_STRING;
 					default :
 						throw new IllegalStateException();
 				}
