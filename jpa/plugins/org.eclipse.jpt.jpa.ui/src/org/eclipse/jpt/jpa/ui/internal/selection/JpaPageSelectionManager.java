@@ -18,6 +18,8 @@ import org.eclipse.jpt.common.utility.internal.model.value.DoublePropertyValueMo
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
+import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -87,6 +89,18 @@ class JpaPageSelectionManager
 	private final ModifiablePropertyValueModel<JpaStructureNode> jpaSelectionModel;
 
 	/**
+	 * <strong>NB:</strong> We add a <strong>NOP</strong> listener to the
+	 * {@link #jpaSelectionModel JPA selection model} to force it to be active,
+	 * so any changes to it will be forwarded to the current
+	 * {@link JpaEditorManager#getJpaSelectionModel() editor manager's JPA
+	 * selection model}. This is necessary because there might be JPA views
+	 * interested in the <em>current editor's</em> JPA selection but
+	 * <em>not</em> the <em>page's</em> JPA selection. [398218.10.5]
+	 * @see DoubleModifiablePropertyValueModel
+	 */
+	private final PropertyChangeListener jpaSelectionListener = new PropertyChangeAdapter();
+
+	/**
 	 * Listen to {@link #page} to maintain {@link #editorManagers}.
 	 */
 	private final IPartListener2 partListener = new PartListener();
@@ -111,6 +125,7 @@ class JpaPageSelectionManager
 		this.page = page;
 		this.jpaFileModel = this.buildJpaFileModel();
 		this.jpaSelectionModel = this.buildJpaSelectionModel();
+		this.jpaSelectionModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.jpaSelectionListener);
 		this.page.addPartListener(this.partListener);
 		this.updateEditorManagerModel();
 	}
@@ -251,6 +266,7 @@ class JpaPageSelectionManager
 	private void dispose() {
 		this.disposed = true;
 		this.page.removePartListener(this.partListener);
+		this.jpaSelectionModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.jpaSelectionListener);
 		for (JpaEditorManager editorManager : this.editorManagers.values()) {
 			editorManager.dispose();
 		}
