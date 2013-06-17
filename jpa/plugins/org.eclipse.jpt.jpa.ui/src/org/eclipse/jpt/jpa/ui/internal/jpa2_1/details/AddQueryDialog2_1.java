@@ -80,7 +80,7 @@ public class AddQueryDialog2_1
 					return JptJpaUiDetailsMessages.AddQueryDialog_namedNativeQuery;
 				}
 				if (value == NAMED_STORED_PROCEDURE_QUERY) {
-					return JptJpaUiDetailsMessages2_1.AddQueryDialog_namedStoredProcedureQuery;
+					return JptJpaUiDetailsMessages2_1.ADD_QUERY_DIALOG__NAMED_STORED_PROCEDURE_QUERY;
 				}
 				return value;
 			}
