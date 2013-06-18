@@ -12,7 +12,9 @@ package org.eclipse.jpt.jaxb.eclipselink.core.tests.internal;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.eclipse.jpt.common.core.tests.BundleActivatorTest;
+import org.eclipse.jpt.common.core.tests.ValidationMessageClassTest;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
+import org.eclipse.jpt.jaxb.eclipselink.core.validation.JptJaxbEclipseLinkCoreValidationMessages;
 
 public class ELJaxbCoreMiscTests {
 
@@ -20,6 +22,7 @@ public class ELJaxbCoreMiscTests {
 		TestSuite suite = new TestSuite(ELJaxbCoreMiscTests.class.getName());
 
 		suite.addTest(new BundleActivatorTest(JaxbProject.class));
+		suite.addTest(new ValidationMessageClassTest(JptJaxbEclipseLinkCoreValidationMessages.class));
 
 		return suite;
 	}
