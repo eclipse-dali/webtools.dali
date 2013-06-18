@@ -59,7 +59,7 @@ public class JptJpaUiMessages {
 	public static String General_selectAll;
 	public static String General_refresh;
 	public static String GenerateDDLWizard_title;
-	public static String GenerateEntitiesWizard_generateEntities;
+	public static String GENERATE_ENTITIES_WIZARD_generateEntities;
 	public static String GenerateEntitiesWizardPage_chooseEntityTable;
 	public static String GenerateEntitiesWizardPage_entityNameColumn;
 	public static String GenerateEntitiesWizardPage_generateEntities;

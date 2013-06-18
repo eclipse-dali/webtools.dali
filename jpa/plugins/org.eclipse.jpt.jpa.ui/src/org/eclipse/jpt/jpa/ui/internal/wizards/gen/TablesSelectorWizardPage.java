@@ -109,8 +109,8 @@ public class TablesSelectorWizardPage extends WizardPage {
 		this.resourceManager = resourceManager;
 		this.schema = jpaProject.getDefaultDbSchema();
 		this.isDynamic = isDynamic;
-		this.setTitle(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_selectTable );
-		this.setMessage(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_chooseEntityTable );
+		this.setTitle(JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_TABLE_SELECT_PAGE_SELECT_TABLE );
+		this.setMessage(JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_TABLE_SELECT_PAGE_CHOOSE_ENTITY_TABLE );
 	}
 
 	// ********** IDialogPage implementation  **********
@@ -197,7 +197,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 		
 		Label tableLabel = new Label(parent, SWT.NONE);
 		tableLabel.setLayoutData(gridData);
-		tableLabel.setText(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_tables );
+		tableLabel.setText(JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_TABLE_SELECT_PAGE_TABLES );
 		
 		this.searchText = this.buildSearchText(parent);
 
@@ -343,7 +343,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 		org.eclipse.swt.widgets.Table table = new org.eclipse.swt.widgets.Table(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE | SWT.FULL_SELECTION | SWT.BORDER | SWT.CHECK);
 
 		TableColumn tableNameColumn = new TableColumn(table, SWT.NONE, TABLE_COLUMN_INDEX);
-		tableNameColumn.setText(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_tableColumn);
+		tableNameColumn.setText(JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_TABLE_SELECT_PAGE_TABLE_COLUMN);
 		tableNameColumn.setResizable(true);
 
 		table.addKeyListener(this.buildTableKeyListener());
@@ -386,7 +386,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 	
 	private Button buildUpdatePersistenceXmlCheckBox(Composite parent) {
 		Button checkBox = new Button(parent, SWT.CHECK);
-		checkBox.setText(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_updatePersistenceXml );
+		checkBox.setText(JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_TABLE_SELECT_PAGE_UPDATE_PERSISTENCE_XML );
 		checkBox.setSelection(this.updatePersistenceXml());
 		checkBox.addSelectionListener(this.buildUpdatePersistenceXmlSelectionListener());
 		
@@ -398,7 +398,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = SWT.END;
 		button.setLayoutData(gridData);
-		button.setText(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_Restore_Defaults);
+		button.setText(JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_TABLE_SELECT_PAGE_RESTORE_DEFAULTS);
 		button.addSelectionListener(this.buildRestoreDefaultsSelectionListener());
 		
 		return button;
@@ -472,7 +472,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 	private Text buildSearchText(Composite parent) {
 		GridData gridData = new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL);
 		Text text = new Text(parent, SWT.BORDER | SWT.SEARCH | SWT.ICON_SEARCH | SWT.ICON_CANCEL);
-		text.setMessage(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_tableSearch);
+		text.setMessage(JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_TABLE_SELECT_PAGE_TABLE_SEARCH);
 		text.setLayoutData(gridData);
 		text.addSelectionListener(this.buildClearSearchTextSelectionListener());
 		text.addKeyListener(this.buildSearchTextKeyListener());
@@ -622,7 +622,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 	private WorkspaceJob buildFetchTablesJob(final Schema schema) {
 		final Collection<Table> tables = new ArrayList<Table>();
 
-		WorkspaceJob workspaceJob = new WorkspaceJob(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_getTables_jobName) {
+		WorkspaceJob workspaceJob = new WorkspaceJob(JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_TABLE_SELECT_PAGE_GET_TABLES_JOB_NAME) {
 
 			@Override
 			public IStatus runInWorkspace(IProgressMonitor monitor) {
@@ -630,12 +630,12 @@ public class TablesSelectorWizardPage extends WizardPage {
 					return Status.CANCEL_STATUS;
 				}
 				SubMonitor subMonitor = SubMonitor.convert(monitor, 
-					JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_getTables_taskName, 75);
+					JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_TABLE_SELECT_PAGE_GET_TABLES_TASK_NAME, 75);
 				try {
 					subMonitor.beginTask(schema.getContainer().getName(), 100);
 					subMonitor.subTask(
 						NLS.bind(
-							JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_getTables_subTaskName, 
+							JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_TABLE_SELECT_PAGE_GET_TABLES_SUB_TASK_NAME, 
 							schema.getName()));
 					subMonitor.worked(20);
 
@@ -685,7 +685,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 					public void run( final IProgressMonitor monitor ) 
 				    	throws InvocationTargetException, InterruptedException
 				    {
-						monitor.beginTask(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_statusUpdate_taskName, 10);
+						monitor.beginTask(JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_TABLE_SELECT_PAGE_STATUS_UPDATE_TASK_NAME, 10);
 				
 						Collection<Table> ret = TablesSelectorWizardPage.this.getSelectedTables();
 						ArrayList<String> tableNames = new ArrayList<String>();

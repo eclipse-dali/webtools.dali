@@ -50,7 +50,7 @@ public class NewAssociationWizard extends Wizard {
 		this.jpaProject = jpaProject;
 		this.customizer = customizer;
 		this.resourceManager = resourceManager;
-		this.setWindowTitle( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_newAssoc_title);
+		this.setWindowTitle( JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_NEW_ASSOC_TITLE);
 		
 		this.associationDataModel.put( NewAssociationWizard.ASSOCIATION_SCHEMA, this.customizer.getSchema());
 		this.associationDataModel.put( NewAssociationWizard.ASSOCIATION_JOIN_COLUMNS1, new TreeMap<String, String>());

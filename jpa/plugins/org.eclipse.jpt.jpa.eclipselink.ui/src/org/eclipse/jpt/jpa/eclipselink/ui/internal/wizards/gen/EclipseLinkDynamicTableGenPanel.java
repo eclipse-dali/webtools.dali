@@ -29,7 +29,7 @@ public class EclipseLinkDynamicTableGenPanel
 	@Override
 	protected void createTableMappingPropertiesGroup(Composite composite, int columns) {
 		Group parent = new Group(composite, SWT.NONE );
-		parent.setText( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_tableMapping);
+		parent.setText( JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_DEFAULT_TABLE_PAGE_TABLE_MAPPING);
 		parent.setLayout(new GridLayout(columns, false));
 		GridData layoutData = new GridData();
 		layoutData.horizontalSpan = columns;

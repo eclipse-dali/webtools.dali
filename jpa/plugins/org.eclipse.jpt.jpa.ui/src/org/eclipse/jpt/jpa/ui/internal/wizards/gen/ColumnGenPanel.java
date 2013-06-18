@@ -232,7 +232,7 @@ public class ColumnGenPanel
 	//-------------------------------------------
 	private void createControls(Composite composite, int columns) {
 		mGeneratedCheckbox = new Button(composite, SWT.CHECK);
-		mGeneratedCheckbox.setText( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_colPanel_genProp);
+		mGeneratedCheckbox.setText( JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_COL_PANEL_GEN_PROP);
 		mGeneratedCheckbox.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {}
 			public void widgetSelected(SelectionEvent e) {
@@ -244,7 +244,7 @@ public class ColumnGenPanel
 		SWTUtil.fillColumns(mGeneratedCheckbox, columns);
 		
 		columnMappingGroup = new Group( composite, SWT.NONE);
-		columnMappingGroup.setText( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_colPanel_colMapping);
+		columnMappingGroup.setText( JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_COL_PANEL_COL_MAPPING);
 		columnMappingGroup.setLayout(new GridLayout(columns, false));
 		GridData layoutData = new GridData();
 		layoutData.horizontalSpan = columns;
@@ -255,7 +255,7 @@ public class ColumnGenPanel
 		layoutData.horizontalIndent = 20 ;
 		columnMappingGroup.setLayoutData(layoutData);
 		
-		SWTUtil.createLabel(columnMappingGroup, 1, JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_colPanel_propName );
+		SWTUtil.createLabel(columnMappingGroup, 1, JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_COL_PANEL_PROP_NAME );
 		mPropNameField = new Text(columnMappingGroup, SWT.BORDER | SWT.SINGLE );
 		mPropNameField.addModifyListener(new ModifyListener(){
 			@SuppressWarnings("restriction")
@@ -275,7 +275,7 @@ public class ColumnGenPanel
 		});
 		SWTUtil.fillColumns(mPropNameField ,3);
 		
-		SWTUtil.createLabel(columnMappingGroup, 1, JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_colPanel_propType );
+		SWTUtil.createLabel(columnMappingGroup, 1, JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_COL_PANEL_PROP_TYPE );
 		mPropTypeCombo = new Combo(columnMappingGroup, SWT.SINGLE | SWT.READ_ONLY);
 		mPropTypeCombo.setItems( this.customizer.getAllPropertyTypes());
 		mPropTypeCombo.addModifyListener( new ModifyListener(){
@@ -287,7 +287,7 @@ public class ColumnGenPanel
 		});
 		SWTUtil.fillColumns(mPropTypeCombo,3);
 		
-		SWTUtil.createLabel(columnMappingGroup, 1, JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_colPanel_mapKind );
+		SWTUtil.createLabel(columnMappingGroup, 1, JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_COL_PANEL_MAP_KIND );
 		mMappingKindCombo = new Combo(columnMappingGroup, SWT.SINGLE | SWT.READ_ONLY);
 		mMappingKindCombo.setItems( this.customizer.getAllMappingKinds());
 		mMappingKindCombo.addSelectionListener(new SelectionListener() {
@@ -301,7 +301,7 @@ public class ColumnGenPanel
 		SWTUtil.fillColumns(mMappingKindCombo ,3);
 		
 		mUpdateableCheckBox = new Button(columnMappingGroup, SWT.CHECK);
-		mUpdateableCheckBox.setText( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_colPanel_colUpdateable);
+		mUpdateableCheckBox.setText( JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_COL_PANEL_COL_UPDATEABLE);
 		mUpdateableCheckBox.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {}
 			public void widgetSelected(SelectionEvent e) {
@@ -312,7 +312,7 @@ public class ColumnGenPanel
 		SWTUtil.fillColumns(mUpdateableCheckBox ,4);
 		
 		mInsertableCheckBox = new Button(columnMappingGroup, SWT.CHECK);
-		mInsertableCheckBox.setText( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_colPanel_colInsertable);
+		mInsertableCheckBox.setText( JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_COL_PANEL_COL_INSERTABLE);
 		mInsertableCheckBox.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {}
 			public void widgetSelected(SelectionEvent e) {
@@ -331,7 +331,7 @@ public class ColumnGenPanel
 	void createJavaBeanPropertyControls(Composite composite, int columns){
 		//Java class generation properties 
 		domainClassGroup = new Group(composite, SWT.NONE);
-		domainClassGroup.setText( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_colPanel_beanProp );
+		domainClassGroup.setText( JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_COL_PANEL_BEAN_PROP );
 		domainClassGroup.setLayout(new GridLayout(columns, false));
 		GridData layoutData = new GridData();
 		layoutData.horizontalSpan = columns;
@@ -342,7 +342,7 @@ public class ColumnGenPanel
 		layoutData.horizontalIndent = 20;
 		domainClassGroup.setLayoutData(layoutData);
 
-		SWTUtil.createLabel(domainClassGroup, 1, JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_colPanel_getterScope );
+		SWTUtil.createLabel(domainClassGroup, 1, JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_COL_PANEL_GETTER_SCOPE );
 		mPropGetScopePanel = new ScopePanel(domainClassGroup, new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {}
 
@@ -354,7 +354,7 @@ public class ColumnGenPanel
 				
 			}});
 		
-		SWTUtil.createLabel(domainClassGroup, 1, JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_colPanel_setterScope );
+		SWTUtil.createLabel(domainClassGroup, 1, JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_COL_PANEL_SETTER_SCOPE );
 		mPropSetScopePanel = new ScopePanel(domainClassGroup, new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {}
 

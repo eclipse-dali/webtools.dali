@@ -87,11 +87,11 @@ public class DatabaseGroup
 		this.resourceManager = resourceManager;
 
 		// connection combo-box
-		this.buildLabel(parent, 1, JptJpaUiWizardsEntityGenMessages.connection);
+		this.buildLabel(parent, 1, JptJpaUiWizardsEntityGenMessages.CONNECTION);
 		this.connectionComboBox = this.buildConnectionComboBox(parent, widthHint);
 
 		// add connection button
-		Button addConnectionButton = this.buildButton(parent, JptJpaUiWizardsEntityGenMessages.addConnectionLink, this.resourceManager.createImage(JptCommonUiImages.ADD_CONNECTION_BUTTON), this.buildAddConnectionLinkSelectionListener());
+		Button addConnectionButton = this.buildButton(parent, JptJpaUiWizardsEntityGenMessages.ADD_CONNECTION_LINK, this.resourceManager.createImage(JptCommonUiImages.ADD_CONNECTION_BUTTON), this.buildAddConnectionLinkSelectionListener());
 		addConnectionButton.setLayoutData(new GridData());
 
 		// A composite holds the reconnect button & text
@@ -107,11 +107,11 @@ public class DatabaseGroup
 		comp.setLayout(gridLayout);
 
 		// reconnection button
-		this.reconnectButton = this.buildButton(comp, JptJpaUiWizardsEntityGenMessages.connectLink, this.resourceManager.createImage(JptCommonUiImages.RECONNECT_BUTTON),  this.buildReconnectLinkSelectionListener());
-		this.buildLabel(comp, 1, JptJpaUiWizardsEntityGenMessages.schemaInfo);
+		this.reconnectButton = this.buildButton(comp, JptJpaUiWizardsEntityGenMessages.CONNECT_LINK, this.resourceManager.createImage(JptCommonUiImages.RECONNECT_BUTTON),  this.buildReconnectLinkSelectionListener());
+		this.buildLabel(comp, 1, JptJpaUiWizardsEntityGenMessages.SCHEMA_INFO);
 
 		// schema combo-box
-		this.buildLabel(parent, 1, JptJpaUiWizardsEntityGenMessages.schema);
+		this.buildLabel(parent, 1, JptJpaUiWizardsEntityGenMessages.SCHEMA);
 		this.schemaComboBox = this.buildSchemaComboBox(parent);
 		// filler
 		new Label(parent, SWT.NULL);
@@ -337,7 +337,7 @@ public class DatabaseGroup
 				public void run(final IProgressMonitor monitor) 
 			    	throws InvocationTargetException, InterruptedException
 			    {
-					monitor.beginTask(JptJpaUiWizardsEntityGenMessages.connectingToDatabase, 10);
+					monitor.beginTask(JptJpaUiWizardsEntityGenMessages.CONNECTING_TO_DATABASE, 10);
 					final SynchronizedBoolean finished = new SynchronizedBoolean(false);
 					Thread t = new Thread() {
 						@Override

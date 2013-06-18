@@ -36,8 +36,8 @@ public class CardinalityPage extends NewAssociationWizardPage {
 	
 	protected CardinalityPage(ORMGenCustomizer customizer) {
 		super( customizer , "CardinalityPage" );
-		setTitle(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_newAssoc_cardinalityPage_title);
-		setDescription( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_newAssoc_cardinalityPage_desc);
+		setTitle(JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_NEW_ASSOC_CARDINALITY_PAGE_TITLE);
+		setDescription( JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_NEW_ASSOC_CARDINALITY_PAGE_DESC);
 	}
 
 	public void createControl(Composite parent) {
@@ -51,26 +51,26 @@ public class CardinalityPage extends NewAssociationWizardPage {
 		WorkbenchTools.setHelp(composite, JpaHelpContextIds.GENERATE_ENTITIES_WIZARD_ASSOCIATION_CARDINALITY);
 
 		CardinalitySelectionListener selectionListener = new CardinalitySelectionListener();
-		cardinalityButtons[0] = createRadioButton( composite, 1, JptJpaUiWizardsEntityGenMessages.manyToOne);
+		cardinalityButtons[0] = createRadioButton( composite, 1, JptJpaUiWizardsEntityGenMessages.MANY_TO_ONE);
 		cardinalityButtons[0].addSelectionListener( selectionListener );
 		//Default cardinality is MTO
 		cardinalityButtons[0].setSelection(true);
 		getWizardDataModel().put(NewAssociationWizard.ASSOCIATION_CADINALITY, Association.MANY_TO_ONE);		
 
-		mtoDescLabel = createLabel(composite,1, JptJpaUiWizardsEntityGenMessages.manyToOneDesc);
+		mtoDescLabel = createLabel(composite,1, JptJpaUiWizardsEntityGenMessages.MANY_TO_ONE_DESC);
 		
-		cardinalityButtons[1] = createRadioButton( composite, 1, JptJpaUiWizardsEntityGenMessages.oneToMany);
+		cardinalityButtons[1] = createRadioButton( composite, 1, JptJpaUiWizardsEntityGenMessages.ONE_TO_MANY);
 		cardinalityButtons[1].addSelectionListener( selectionListener );
 		
-		otmDescLabel = createLabel(composite,1, JptJpaUiWizardsEntityGenMessages.manyToOneDesc);
+		otmDescLabel = createLabel(composite,1, JptJpaUiWizardsEntityGenMessages.MANY_TO_ONE_DESC);
 
-		cardinalityButtons[2] = createRadioButton( composite, 1, JptJpaUiWizardsEntityGenMessages.oneToOne);
+		cardinalityButtons[2] = createRadioButton( composite, 1, JptJpaUiWizardsEntityGenMessages.ONE_TO_ONE);
 		cardinalityButtons[2].addSelectionListener( selectionListener );
 
-		otoDescLabel = createLabel(composite,1, JptJpaUiWizardsEntityGenMessages.oneToOneDesc);
+		otoDescLabel = createLabel(composite,1, JptJpaUiWizardsEntityGenMessages.ONE_TO_ONE_DESC);
 
-		cardinalityButtons[3] = createRadioButton( composite, 1, JptJpaUiWizardsEntityGenMessages.manyToMany);
-		mtmDescLabel= createLabel(composite,1, JptJpaUiWizardsEntityGenMessages.manyToManyDesc);
+		cardinalityButtons[3] = createRadioButton( composite, 1, JptJpaUiWizardsEntityGenMessages.MANY_TO_MANY);
+		mtmDescLabel= createLabel(composite,1, JptJpaUiWizardsEntityGenMessages.MANY_TO_MANY_DESC);
 		
 		setControl(composite);
 		this.setPageComplete( true );
@@ -106,14 +106,14 @@ public class CardinalityPage extends NewAssociationWizardPage {
 
 	private void updateDescriptionText(String s1, String s2) {
 		//MTO
-		String msg = String.format(JptJpaUiWizardsEntityGenMessages.manyToOneDesc, s2, s1);
+		String msg = String.format(JptJpaUiWizardsEntityGenMessages.MANY_TO_ONE_DESC, s2, s1);
 		mtoDescLabel.setText( msg );
 		//OTM
-		msg = String.format(JptJpaUiWizardsEntityGenMessages.manyToOneDesc, s1, s2);
+		msg = String.format(JptJpaUiWizardsEntityGenMessages.MANY_TO_ONE_DESC, s1, s2);
 		otmDescLabel.setText( msg );
-		msg = String.format(JptJpaUiWizardsEntityGenMessages.oneToOneDesc, s1, s2);
+		msg = String.format(JptJpaUiWizardsEntityGenMessages.ONE_TO_ONE_DESC, s1, s2);
 		otoDescLabel.setText( msg );
-		msg = String.format(JptJpaUiWizardsEntityGenMessages.manyToManyDesc, s1, s2, s2, s1);
+		msg = String.format(JptJpaUiWizardsEntityGenMessages.MANY_TO_MANY_DESC, s1, s2, s2, s1);
 		mtmDescLabel.setText( msg );
 	}
 

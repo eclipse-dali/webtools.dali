@@ -69,7 +69,7 @@ public class CascadeDialog extends TrayDialog {
      */
     protected void configureShell(Shell newShell) {
         super.configureShell(newShell);
-        newShell.setText(JptJpaUiWizardsEntityGenMessages.selectCascadeDlgTitle);
+        newShell.setText(JptJpaUiWizardsEntityGenMessages.SELECT_CASCADE_DLG_TITLE);
 		WorkbenchTools.setHelp(newShell, JpaHelpContextIds.GENERATE_ENTITIES_WIZARD_SELECT_CASCADE);
     }
 	
@@ -101,7 +101,7 @@ public class CascadeDialog extends TrayDialog {
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.widthHint = 275;
 		group.setLayoutData(gd);
-		group.setText(JptJpaUiWizardsEntityGenMessages.cascade);
+		group.setText(JptJpaUiWizardsEntityGenMessages.CASCADE);
 
 		for( int i=0; i< ALL_CASCADES.length; i ++ ){
 			Button checkbox = new Button(group, SWT.CHECK);

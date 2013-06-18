@@ -184,11 +184,11 @@ class AssociationFigure extends Button {
 		String referrerTableName = association.getReferrerTableName();
 		String referencedTable = association.getReferencedTableName();
 		if( cardinality.equals(Association.MANY_TO_ONE ) ){
-			text = String.format( JptJpaUiWizardsEntityGenMessages.manyToOneDesc, referencedTable , referrerTableName ); 
+			text = String.format( JptJpaUiWizardsEntityGenMessages.MANY_TO_ONE_DESC, referencedTable , referrerTableName ); 
 		}else if( cardinality.equals(Association.ONE_TO_ONE ) ){
-			text = String.format( JptJpaUiWizardsEntityGenMessages.oneToOneDesc, referrerTableName, referencedTable );
+			text = String.format( JptJpaUiWizardsEntityGenMessages.ONE_TO_ONE_DESC, referrerTableName, referencedTable );
 		}else if( cardinality.equals(Association.MANY_TO_MANY) ){
-			text = String.format( JptJpaUiWizardsEntityGenMessages.manyToManyDesc, referrerTableName, referencedTable, referencedTable, referrerTableName );			
+			text = String.format( JptJpaUiWizardsEntityGenMessages.MANY_TO_MANY_DESC, referrerTableName, referencedTable, referencedTable, referrerTableName );			
 		}
 		
 		if( association.isCustom() ){

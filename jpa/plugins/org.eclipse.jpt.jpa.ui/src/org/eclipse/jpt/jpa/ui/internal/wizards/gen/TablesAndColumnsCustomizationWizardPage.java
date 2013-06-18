@@ -69,8 +69,8 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 		super(true, "TablesAndColumnsCustomizationWizardPage"); //$NON-NLS-1$
 		this.jpaProject = jpaProject;
 		this.resourceManager = resourceManager;
-		setTitle( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_tablesAndColumnsPage_title );
-		setMessage( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_tablesAndColumnsPage_desc);
+		setTitle( JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_TABLES_AND_COLUMNS_PAGE_TITLE );
+		setMessage( JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_TABLES_AND_COLUMNS_PAGE_DESC);
 	}
 
 	// -------- Initialization ---------
@@ -118,7 +118,7 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 	 */
 	private void createTableAndColumnsListPanel(Composite parent, int columns) {
 		Label label = new Label(parent, columns );
-		label.setText( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_tablesAndColumnsPage_labelTableAndColumns );
+		label.setText( JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_TABLES_AND_COLUMNS_PAGE_LABEL_TABLE_AND_COLUMNS );
 		SWTUtil.fillColumns( label , columns);
 		
 		GridData data = new GridData();
@@ -215,7 +215,7 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 	
 	protected void createDomainJavaClassesPropertiesGroup(Composite composite, int columns) {
 		Group parent = new Group( composite, SWT.NONE);
-		parent.setText( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_domainJavaClass );
+		parent.setText( JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_DEFAULT_TABLE_PAGE_DOMAIN_JAVA_CLASS );
 		parent.setLayout(new GridLayout(columns, false));
 		SWTUtil.fillColumns( parent, columns);
 

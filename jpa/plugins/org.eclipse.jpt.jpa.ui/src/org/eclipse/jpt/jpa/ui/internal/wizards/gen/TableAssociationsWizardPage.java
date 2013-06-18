@@ -95,8 +95,8 @@ public class TableAssociationsWizardPage extends WizardPage {
 		super("Table Associations"); //$NON-NLS-1$
 		this.jpaProject = jpaProject;
 		this.resourceManager = resourceManager;
-		setTitle(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_assocPage_title);
-		setMessage(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_assocPage_desc);
+		setTitle(JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_ASSOC_PAGE_TITLE);
+		setMessage(JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_ASSOC_PAGE_DESC);
 		
 	}
 
@@ -111,7 +111,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 		WorkbenchTools.setHelp(composite, JpaHelpContextIds.GENERATE_ENTITIES_WIZARD_TABLE_ASSOCIATIONS);
 
 		Label label = new Label(composite, SWT.NONE);
-		label.setText( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_assocPage_label );
+		label.setText( JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_ASSOC_PAGE_LABEL );
 		GridData gd = new GridData();
 		gd.horizontalSpan = 2;
 		label.setLayoutData( gd );
@@ -135,7 +135,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 		c.setLayout( new GridLayout(1,true) );
 		
 		createAssociationLink = new Button(c, SWT.NONE);
-		createAssociationLink.setToolTipText( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_assocPage_newAssoc );
+		createAssociationLink.setToolTipText( JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_ASSOC_PAGE_NEW_ASSOC );
 		createAssociationLink.setImage(this.resourceManager.createImage(JptCommonUiImages.ADD_BUTTON));
 		createAssociationLink.addSelectionListener(new SelectionListener(){
 			public void widgetDefaultSelected(SelectionEvent e) {}	
@@ -150,7 +150,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 		deleteAssociationLink.setForeground(foreground);
 		foreground.dispose();
 		deleteAssociationLink.setImage(this.resourceManager.createImage(JptCommonUiImages.DELETE_BUTTON));
-		deleteAssociationLink.setToolTipText( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_assocPage_delAssoc );
+		deleteAssociationLink.setToolTipText( JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_ASSOC_PAGE_DEL_ASSOC );
 		deleteAssociationLink.addSelectionListener(new SelectionListener(){
 			public void widgetDefaultSelected(SelectionEvent e) {}	
 			public void widgetSelected(SelectionEvent e) {
@@ -175,7 +175,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 
 	private void createGenerateAssociationCheckbox(Composite composite,  int columns) {
 		generateAssociationCheckBox = new Button(composite, SWT.CHECK);
-		generateAssociationCheckBox.setText( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_assocEditor_genAssoc);
+		generateAssociationCheckBox.setText( JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_ASSOC_EDITOR_GEN_ASSOC);
 		generateAssociationCheckBox.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {}
 		
@@ -198,7 +198,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 	@SuppressWarnings("restriction")
 	private void createGenerateReferrerRoleControls(Composite parent,  int columns) {
 		referrerRoleCheckBox = new Button(parent, SWT.CHECK);
-		referrerRoleCheckBox.setText( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_assocEditor_entityRef );
+		referrerRoleCheckBox.setText( JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_ASSOC_EDITOR_ENTITY_REF );
 		referrerRoleCheckBox.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {}
 		
@@ -232,7 +232,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 		SWTUtil.fillColumnsWithIndent(referrerRoleCheckBox , columns-1, 20 );
 		newLabel(parent, "");//$NON-NLS-1$
 		
-		referrerRolePropertyLabel = newLabelWithIndent( parent,  JptJpaUiWizardsEntityGenMessages.property, 40 );
+		referrerRolePropertyLabel = newLabelWithIndent( parent,  JptJpaUiWizardsEntityGenMessages.PROPERTY, 40 );
 		referrerRolePropertyField = new Text( parent, SWT.BORDER);
 		fillColumns(referrerRolePropertyField, 2);
 		referrerRolePropertyField.addModifyListener(new ModifyListener(){
@@ -260,7 +260,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 				}
 			}	
 		}) ;
-		referrerRoleCascadeField.setLabelText( JptJpaUiWizardsEntityGenMessages.cascade );
+		referrerRoleCascadeField.setLabelText( JptJpaUiWizardsEntityGenMessages.CASCADE );
 		referrerRoleCascadeField.setButtonLabel(""); //$NON-NLS-1$
 		referrerRoleCascadeField.doFillIntoGrid(parent, 3);
 		referrerRoleCascadeField.getTextControl(parent).setEditable(false);
@@ -312,14 +312,14 @@ public class TableAssociationsWizardPage extends WizardPage {
 		
 		StatusUtil.applyToStatusLine(this, status);
 		if( status.getCode() == IStatus.OK ){
-			setMessage(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_assocPage_desc);
+			setMessage(JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_ASSOC_PAGE_DESC);
 		}
 	}
 	
 	@SuppressWarnings("restriction")
 	private void createGenerateReferencedRoleControls(Composite parent,  int columns) {
 		referencedRoleCheckBox = new Button(parent, SWT.CHECK);
-		referencedRoleCheckBox.setText( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_assocEditor_setRef );
+		referencedRoleCheckBox.setText( JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_ASSOC_EDITOR_SET_REF );
 		referencedRoleCheckBox.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {}
 		
@@ -347,7 +347,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 		SWTUtil.fillColumnsWithIndent( referencedRoleCheckBox , columns-1, 20 );
 		newLabel(parent, "");//$NON-NLS-1$
 		
-		referencedRolePropertyLabel = SWTUtil.newLabelWithIndent(parent,  JptJpaUiWizardsEntityGenMessages.property, 40 );
+		referencedRolePropertyLabel = SWTUtil.newLabelWithIndent(parent,  JptJpaUiWizardsEntityGenMessages.PROPERTY, 40 );
 		
 		referencedRolePropertyField = new Text( parent, SWT.BORDER);
 		fillColumns(referencedRolePropertyField, 2);
@@ -380,7 +380,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 				}
 			}	
 		}) ;
-		referencedRoleCascadeField.setLabelText( JptJpaUiWizardsEntityGenMessages.cascade );
+		referencedRoleCascadeField.setLabelText( JptJpaUiWizardsEntityGenMessages.CASCADE );
 		referencedRoleCascadeField.setButtonLabel(""); //$NON-NLS-1$
 		referencedRoleCascadeField.doFillIntoGrid(parent, 3);
 		referencedRoleCascadeField.getTextControl(parent).setEditable( false);
@@ -434,7 +434,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 
 		//Cardinality
 		cardinalityLabel = new Label(parent, SWT.NONE);
-		cardinalityLabel.setText( JptJpaUiWizardsEntityGenMessages.cardinality);
+		cardinalityLabel.setText( JptJpaUiWizardsEntityGenMessages.CARDINALITY);
 		GridData gd = new GridData();
 		gd.horizontalIndent = 20;
 		cardinalityLabel.setLayoutData( gd );
@@ -461,11 +461,11 @@ public class TableAssociationsWizardPage extends WizardPage {
 		label.setLayoutData(layoutData);
 		
 		//Table join condition
-		joinConditionLabel = newLabelWithIndent(parent, JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_assocEditor_tableJoin, 20 );
+		joinConditionLabel = newLabelWithIndent(parent, JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_ASSOC_EDITOR_TABLE_JOIN, 20 );
 		
 		joinConditionText = new Text( parent, SWT.MULTI | SWT.BORDER );
 		joinConditionText.setEditable(false);
-		joinConditionText.setText(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_assocEditor_joinedWhen);
+		joinConditionText.setText(JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_ASSOC_EDITOR_JOINED_WHEN);
 		layoutData = new GridData();
 		layoutData.horizontalSpan = 2;
 		layoutData.verticalAlignment = SWT.TOP;
@@ -618,17 +618,17 @@ public class TableAssociationsWizardPage extends WizardPage {
 		String text = null;
 		//if MTM
 		if( Association.MANY_TO_MANY.equals( cardinality ) ){
-			text = String.format( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_assocEditor_setRef, table2Name, table1Name);
+			text = String.format( JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_ASSOC_EDITOR_SET_REF, table2Name, table1Name);
 		}else{
-			text = String.format( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_assocEditor_entityRef, table2Name, table1Name);
+			text = String.format( JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_ASSOC_EDITOR_ENTITY_REF, table2Name, table1Name);
 		}
 		this.referrerRoleCheckBox.setText(text);
 
 		//if OTO
 		if( Association.ONE_TO_ONE.equals( cardinality ) ){
-			text = String.format( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_assocEditor_entityRef, table1Name, table2Name);
+			text = String.format( JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_ASSOC_EDITOR_ENTITY_REF, table1Name, table2Name);
 		}else{
-			text = String.format( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_assocEditor_setRef, table1Name, table2Name);
+			text = String.format( JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_ASSOC_EDITOR_SET_REF, table1Name, table2Name);
 		}
 		this.referencedRoleCheckBox.setText(text);
 
@@ -682,7 +682,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 		String text = "%s";
 		if( joinTableName == null ){
 			StringBuilder strText = new StringBuilder();
-			//text = JptUiEntityGenMessages.GenerateEntitiesWizard_assocEditor_joinedWhen;
+			//text = JptUiEntityGenMessages.GENERATE_ENTITIES_WIZARD_assocEditor_joinedWhen;
 			List<String> columnList1 = association.getReferrerColumnNames() ;
 			List<String> columnList2 = association.getReferencedColumnNames();
 			for( int i=0; i < columnList1.size(); i++){
@@ -695,7 +695,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 			joinConditionText.setText( String.format( text , strText.toString()) ); 
 		}else{
 			StringBuilder strText = new StringBuilder();
-			//text = JptUiEntityGenMessages.GenerateEntitiesWizard_assocEditor_joinedWhen;
+			//text = JptUiEntityGenMessages.GENERATE_ENTITIES_WIZARD_assocEditor_joinedWhen;
 			List<String> columnList1 = association.getReferrerColumnNames() ;
 			List<String> joinColumnList1 = association.getReferrerJoinColumnNames()  ;
 			for( int i=0; i < columnList1.size(); i++){

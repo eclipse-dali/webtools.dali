@@ -73,8 +73,8 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 	public DefaultTableGenerationWizardPage(JpaProject jpaProject) {
 		super(true, "DefaultTableGenerationWizardPage"); //$NON-NLS-1$
 		this.jpaProject = jpaProject;
-		setTitle(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_title);
-		setDescription( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_desc);
+		setTitle(JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_DEFAULT_TABLE_PAGE_TITLE);
+		setDescription( JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_DEFAULT_TABLE_PAGE_DESC);
 	}
 	
 	
@@ -198,7 +198,7 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 
 	protected void createDomainJavaClassesPropertiesGroup(Composite composite, int columns) {
 		Group parent = new Group( composite, SWT.NONE);
-		parent.setText( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_domainJavaClass);
+		parent.setText( JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_DEFAULT_TABLE_PAGE_DOMAIN_JAVA_CLASS);
 		parent.setLayout(new GridLayout( columns, false));
 		GridData layoutData = new GridData();
 		layoutData.horizontalSpan = columns;

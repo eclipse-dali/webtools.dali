@@ -90,7 +90,7 @@ public class GenerateEntitiesFromSchemaWizard
 	
 	public GenerateEntitiesFromSchemaWizard() {
 		this.resourceManager = this.buildResourceManager();
-		this.setWindowTitle( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_generateEntities);
+		this.setWindowTitle( JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_GENERATE_ENTITIES);
 	}
 	
 	public GenerateEntitiesFromSchemaWizard( JpaProject jpaProject, IStructuredSelection selection) {
@@ -98,7 +98,7 @@ public class GenerateEntitiesFromSchemaWizard
 		this.jpaProject = jpaProject;
 		this.selection = selection;
 		this.resourceManager = this.buildResourceManager();
-		this.setWindowTitle( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_generateEntities);
+		this.setWindowTitle( JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_GENERATE_ENTITIES);
 		this.setDefaultPageImageDescriptor(JptJpaUiImages.ENTITY_BANNER);
 	}
 
@@ -531,7 +531,7 @@ public class GenerateEntitiesFromSchemaWizard
 		}
 		
 		this.selection = selection;
-		this.setWindowTitle(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_generateEntities);
+		this.setWindowTitle(JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_GENERATE_ENTITIES);
 	}
 
 	protected JpaProject getJpaProjectFromSelection(IStructuredSelection selection) {
