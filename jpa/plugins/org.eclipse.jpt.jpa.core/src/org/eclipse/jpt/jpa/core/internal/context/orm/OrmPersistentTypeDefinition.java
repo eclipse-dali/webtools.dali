@@ -10,10 +10,10 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManagedType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManagedTypeDefinition;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlManagedType;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
@@ -38,11 +38,11 @@ public class OrmPersistentTypeDefinition
 		super();
 	}
 
-	public Class<? extends OrmPersistentType> getContextType() {
-		return OrmPersistentType.class;
+	public Class<PersistentType> getContextManagedTypeType() {
+		return PersistentType.class;
 	}
 
-	public Class<? extends XmlManagedType> getResourceType() {
+	public Class<XmlTypeMapping> getResourceManagedTypeType() {
 		return XmlTypeMapping.class;
 	}
 

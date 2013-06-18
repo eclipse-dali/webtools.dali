@@ -1041,8 +1041,8 @@ public abstract class SpecifiedOrmPersistentType
 		return new ContextType(this);
 	}
 
-	public Class<OrmPersistentType> getType() {
-		return OrmPersistentType.class;
+	public Class<PersistentType> getManagedTypeType() {
+		return PersistentType.class;
 	}
 
 	public Class<OrmPersistentType> getStructureType() {

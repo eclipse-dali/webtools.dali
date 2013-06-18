@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
+import org.eclipse.jpt.jpa.core.context.ManagedType;
 
 /**
  * Persistence resource UI definition.
@@ -23,9 +23,5 @@ import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
 public interface PersistenceResourceUiDefinition
 	extends ResourceUiDefinition
 {
-
-	// ********** managed types **********
-
-	JavaManagedTypeUiDefinition getJavaManagedTypeUiDefinition(Class<? extends JavaManagedType> type);
-
+	JavaManagedTypeUiDefinition getJavaManagedTypeUiDefinition(Class<? extends ManagedType> type);
 }

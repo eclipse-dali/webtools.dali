@@ -228,7 +228,7 @@ public class PersistenceUnitClassesComposite
 
 		private JavaManagedTypeUiDefinition getManagedTypeUiDefinition(ClassRef classRef) {
 			PersistenceResourceUiDefinition def = this.getPersistenceResourceUiDefinition(classRef);
-			return def == null ? null : def.getJavaManagedTypeUiDefinition(classRef.getJavaManagedType().getType());
+			return def == null ? null : def.getJavaManagedTypeUiDefinition(classRef.getJavaManagedType().getManagedTypeType());
 		}
 
 		private PersistenceResourceUiDefinition getPersistenceResourceUiDefinition(ClassRef classRef) {

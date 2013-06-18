@@ -188,7 +188,7 @@ public class GenericClassRef
 			if (this.javaManagedType == null) {
 				this.setJavaManagedType(this.buildJavaManagedType(jrt, def));
 			} else {
-				if ((this.javaManagedType.getJavaResourceType() == jrt) && (this.javaManagedType.getType() == def.getType())) {
+				if ((this.javaManagedType.getJavaResourceType() == jrt) && (this.javaManagedType.getManagedTypeType() == def.getManagedTypeType())) {
 					this.javaManagedType.update();
 				} else {
 					this.setJavaManagedType(this.buildJavaManagedType(jrt, def));
@@ -199,7 +199,7 @@ public class GenericClassRef
 
 	public JavaPersistentType getJavaPersistentType() {
 		return this.javaManagedType == null ? null : 
-			this.javaManagedType.getType() == JavaPersistentType.class ? (JavaPersistentType) this.javaManagedType : null;
+			(this.javaManagedType.getManagedTypeType() == PersistentType.class) ? (JavaPersistentType) this.javaManagedType : null;
 	}
 
 	protected JavaResourceAbstractType resolveJavaResourceType() {

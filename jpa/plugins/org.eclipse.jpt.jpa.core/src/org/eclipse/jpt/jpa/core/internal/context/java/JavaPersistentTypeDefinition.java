@@ -37,8 +37,8 @@ public class JavaPersistentTypeDefinition
 		super();
 	}
 
-	public Class<? extends JavaPersistentType> getType() {
-		return JavaPersistentType.class;
+	public Class<PersistentType> getManagedTypeType() {
+		return PersistentType.class;
 	}
 
 	public Iterable<String> getAnnotationNames(JpaProject jpaProject) {

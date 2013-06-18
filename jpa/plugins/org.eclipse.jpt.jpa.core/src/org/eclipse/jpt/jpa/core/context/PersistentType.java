@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.core.JpaStructureNode;
 public interface PersistentType
 	extends ManagedType, JpaStructureNode, SpecifiedAccessReference
 {
-	Class<? extends PersistentType> getType();
+	Class<PersistentType> getManagedTypeType();
 
 	// ********** mapping **********
 

@@ -186,23 +186,21 @@ public class GenericJarFile
 
 	public JavaPersistentType getPersistentType(String typeName) {
 		JavaManagedType managedType = this.getManagedType(typeName);
-		return managedType.getType() == JavaPersistentType.class ? (JavaPersistentType) managedType : null;
+		return (managedType.getManagedTypeType() == PersistentType.class) ? (JavaPersistentType) managedType : null;
 	}
 
 	public Iterable<JavaPersistentType> getPersistentTypes() {
-		return IterableTools.downCast(IterableTools.filter(
-										this.getManagedTypes(), 
-										TYPE_IS_JAVA_PERSISTENT_TYPE));
+		return IterableTools.downCast(IterableTools.filter(this.getManagedTypes(), TYPE_IS_PERSISTENT_TYPE));
 	}
 
-	protected static final Predicate<JavaManagedType> TYPE_IS_JAVA_PERSISTENT_TYPE = new TypeIsJavaPersistentType();
+	protected static final Predicate<JavaManagedType> TYPE_IS_PERSISTENT_TYPE = new TypeIsPersistentType();
 
-	public static class TypeIsJavaPersistentType
+	public static class TypeIsPersistentType
 		extends PredicateAdapter<JavaManagedType>
 	{
 		@Override
 		public boolean evaluate(JavaManagedType mt) {
-			return mt.getType() == JavaPersistentType.class;
+			return mt.getManagedTypeType() == PersistentType.class;
 		}
 	}
 

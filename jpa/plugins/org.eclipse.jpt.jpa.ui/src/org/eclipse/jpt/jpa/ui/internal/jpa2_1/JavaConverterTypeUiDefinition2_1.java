@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2_1;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
-import org.eclipse.jpt.jpa.core.jpa2_1.context.java.JavaConverterType2_1;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.ConverterType2_1;
 import org.eclipse.jpt.jpa.ui.JavaManagedTypeUiDefinition;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 
@@ -19,8 +19,7 @@ public class JavaConverterTypeUiDefinition2_1
 	implements JavaManagedTypeUiDefinition
 {
 	// singleton
-	private static final JavaConverterTypeUiDefinition2_1 INSTANCE = 
-			new JavaConverterTypeUiDefinition2_1();
+	private static final JavaConverterTypeUiDefinition2_1 INSTANCE = new JavaConverterTypeUiDefinition2_1();
 
 
 	/**
@@ -34,12 +33,12 @@ public class JavaConverterTypeUiDefinition2_1
 	/**
 	 * Ensure single instance.
 	 */
-	protected JavaConverterTypeUiDefinition2_1() {
+	private JavaConverterTypeUiDefinition2_1() {
 		super();
 	}
 
-	public Class<JavaConverterType2_1> getType() {
-		return JavaConverterType2_1.class;
+	public Class<ConverterType2_1> getManagedTypeType() {
+		return ConverterType2_1.class;
 	}
 
 	public ImageDescriptor getImageDescriptor(JavaManagedType managedType) {

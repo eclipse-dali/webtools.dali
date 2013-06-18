@@ -57,11 +57,6 @@ public interface OrmManagedType
 	XmlManagedType getXmlManagedType();
 
 	/**
-	 * Return the managed type's type.
-	 */
-	Class<? extends OrmManagedType> getType();
-
-	/**
 	 * Managed types are in a sequence in the orm schema. We must keep
 	 * the list of managed in the appropriate order so the wtp xml 
 	 * translators will write them to the xml in that order and they

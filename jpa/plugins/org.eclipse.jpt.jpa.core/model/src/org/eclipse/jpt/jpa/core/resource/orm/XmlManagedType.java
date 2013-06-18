@@ -94,10 +94,10 @@ public interface XmlManagedType extends EBaseObject
 
 
 	/**
-	 * Return the xml managed type's type.
-	 * @see org.eclipse.jpt.jpa.core.context.orm.OrmManagedTypeDefinition#getResourceType()
+	 * Return the XML managed type's type.
+	 * @see org.eclipse.jpt.jpa.core.context.orm.OrmManagedTypeDefinition#getResourceManagedTypeType()
 	 */
-	Class<? extends XmlManagedType> getType();
+	Class<? extends XmlManagedType> getManagedTypeType();
 	
 	TextRange getClassTextRange();
 

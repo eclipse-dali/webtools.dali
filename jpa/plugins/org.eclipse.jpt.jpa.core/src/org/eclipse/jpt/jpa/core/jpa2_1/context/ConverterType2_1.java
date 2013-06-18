@@ -26,6 +26,7 @@ import org.eclipse.jpt.jpa.core.context.ManagedType;
 public interface ConverterType2_1
 	extends ManagedType
 {
+	Class<ConverterType2_1> getManagedTypeType();
 
 	boolean isAutoApply();
 	String AUTO_APPLY_PROPERTY = "autoApply"; //$NON-NLS-1$

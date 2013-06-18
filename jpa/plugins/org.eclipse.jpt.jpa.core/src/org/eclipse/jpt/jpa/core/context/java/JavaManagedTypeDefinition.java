@@ -29,23 +29,23 @@ import org.eclipse.jpt.jpa.core.context.ManagedType;
  * @version 3.3
  * @since 3.3
  */
-public interface JavaManagedTypeDefinition
-{
-	/**
-	 * Return a class that corresponds to the managed type.
-	 * @see ManagedType#getType()
-	 */
-	Class<? extends JavaManagedType> getType();
+public interface JavaManagedTypeDefinition {
 
 	/**
-	 * Return the names of the annotations applicable to this managed type
+	 * Return a type that corresponds to the definition's managed type.
+	 * @see ManagedType#getManagedTypeType()
+	 */
+	Class<? extends ManagedType> getManagedTypeType();
+
+	/**
+	 * Return the names of the annotations applicable to this managed type.
 	 */
 	Iterable<String> getAnnotationNames(JpaProject jpaProject);
 
 	class AnnotationNamesTransformer
 		extends TransformerAdapter<JavaManagedTypeDefinition, Iterable<String>>
 	{
-		private JpaProject jpaProject;
+		private final JpaProject jpaProject;
 
 		public AnnotationNamesTransformer(JpaProject jpaProject) {
 			super();
@@ -58,7 +58,7 @@ public interface JavaManagedTypeDefinition
 	}
 
 	/**
-	 * Return a new <code>JavaManagedType</code>
+	 * Return a new Java managed type.
 	 */
 	JavaManagedType buildContextManagedType(JpaContextModel parent, JavaResourceType jrt, JpaFactory factory);
 }

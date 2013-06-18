@@ -16,6 +16,7 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition;
 import org.eclipse.jpt.jpa.core.jpa2_1.JpaFactory2_1;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.ConverterType2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.java.JavaConverterType2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.ConverterAnnotation2_1;
 
@@ -39,8 +40,8 @@ public class JavaConverterTypeDefinition2_1
 		super();
 	}
 
-	public Class<? extends JavaConverterType2_1> getType() {
-		return JavaConverterType2_1.class;
+	public Class<ConverterType2_1> getManagedTypeType() {
+		return ConverterType2_1.class;
 	}
 
 	public Iterable<String> getAnnotationNames(JpaProject jpaProject) {

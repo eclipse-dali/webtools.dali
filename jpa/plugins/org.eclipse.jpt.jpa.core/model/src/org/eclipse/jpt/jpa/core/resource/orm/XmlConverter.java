@@ -239,7 +239,7 @@ public class XmlConverter extends AbstractXmlManagedType implements XmlConverter
 	}
 
 
-	public Class<? extends XmlConverter> getType() {
+	public Class<XmlConverter> getManagedTypeType() {
 		return XmlConverter.class;
 	}
 	

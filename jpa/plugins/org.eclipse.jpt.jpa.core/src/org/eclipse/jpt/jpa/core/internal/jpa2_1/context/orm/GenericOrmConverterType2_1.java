@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmManagedType;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.ConverterType2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.EntityMappings2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.OrmConverterType2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlConverter;
@@ -95,8 +96,8 @@ public class GenericOrmConverterType2_1
 
 	// ********** JpaStructureNode implementation **********
 
-	public Class<OrmConverterType2_1> getType() {
-		return OrmConverterType2_1.class;
+	public Class<ConverterType2_1> getManagedTypeType() {
+		return ConverterType2_1.class;
 	}
 
 	public void dispose() {

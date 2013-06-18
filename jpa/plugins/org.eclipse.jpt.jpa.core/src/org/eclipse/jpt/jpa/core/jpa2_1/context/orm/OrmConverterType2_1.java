@@ -28,9 +28,6 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlConverter;
 public interface OrmConverterType2_1
 	extends ConverterType2_1, OrmManagedType
 {
-
-	Class<? extends OrmConverterType2_1> getType();
-
 	XmlConverter getXmlConverter();
 
 	XmlConverter getXmlManagedType();

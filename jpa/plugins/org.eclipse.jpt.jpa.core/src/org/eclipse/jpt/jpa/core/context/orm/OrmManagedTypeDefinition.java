@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.ManagedType;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlManagedType;
 
 /**
- * Map an orm managed type context type and resource type.
+ * Map an <code>orm.xml</code> context managed type and resource managed type.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -25,19 +25,19 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlManagedType;
  * @version 3.3
  * @since 3.3
  */
-public interface OrmManagedTypeDefinition
-{
+public interface OrmManagedTypeDefinition {
+
 	/**
 	 * Return a class that corresponds to the context managed type's type.
-	 * @see ManagedType#getType()
+	 * @see ManagedType#getManagedTypeType()
 	 */
-	Class<? extends OrmManagedType> getContextType();
+	Class<? extends ManagedType> getContextManagedTypeType();
 
 	/**
 	 * Return a class that corresponds to the resource managed type's type.
-	 * @see XmlManagedType#getType()
+	 * @see XmlManagedType#getManagedTypeType()
 	 */
-	Class<? extends XmlManagedType> getResourceType();
+	Class<? extends XmlManagedType> getResourceManagedTypeType();
 
 	/**
 	 * Build a context managed type for the specified parent 

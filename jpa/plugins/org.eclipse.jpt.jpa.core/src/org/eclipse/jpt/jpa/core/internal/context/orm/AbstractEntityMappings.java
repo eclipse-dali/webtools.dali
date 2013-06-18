@@ -64,6 +64,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.ConverterType2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.EntityMappings2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.OrmConverterType2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
@@ -544,25 +545,23 @@ public abstract class AbstractEntityMappings
 	// ********** persistent types **********
 
 	public Iterable<OrmPersistentType> getPersistentTypes() {
-		return IterableTools.downCast(IterableTools.filter(
-										this.getManagedTypes(), 
-										TYPE_IS_ORM_PERSISTENT_TYPE));
+		return IterableTools.downCast(IterableTools.filter(this.getManagedTypes(), TYPE_IS_PERSISTENT_TYPE));
 	}
 		
-	protected static final Predicate<OrmManagedType> TYPE_IS_ORM_PERSISTENT_TYPE = new TypeIsOrmPersistentType();
+	protected static final Predicate<OrmManagedType> TYPE_IS_PERSISTENT_TYPE = new TypeIsPersistentType();
 
-	public static class TypeIsOrmPersistentType
+	public static class TypeIsPersistentType
 		extends PredicateAdapter<OrmManagedType>
 	{
 		@Override
 		public boolean evaluate(OrmManagedType mt) {
-			return  mt.getType() == OrmPersistentType.class;
+			return mt.getManagedTypeType() == PersistentType.class;
 		}
 	}
 
 	public OrmPersistentType getPersistentType(String typeName) {
 		ManagedType mt = this.getManagedType(typeName);
-		if (mt != null && (mt.getType() == OrmPersistentType.class)) {
+		if ((mt != null) && (mt.getManagedTypeType() == PersistentType.class)) {
 			return (OrmPersistentType) mt;
 		}
 		return null;
@@ -830,7 +829,7 @@ public abstract class AbstractEntityMappings
 	}
 
 	protected OrmManagedType buildManagedType(XmlManagedType xmlManagedType) {
-		OrmManagedTypeDefinition md = this.getMappingFileDefinition().getManagedTypeDefinition(xmlManagedType.getType());
+		OrmManagedTypeDefinition md = this.getMappingFileDefinition().getManagedTypeDefinition(xmlManagedType.getManagedTypeType());
 		return md.buildContextManagedType(this, xmlManagedType, this.getContextModelFactory());
 	}
 
@@ -1096,25 +1095,23 @@ public abstract class AbstractEntityMappings
 	// ********** converter types **********
 
 	public Iterable<OrmConverterType2_1> getConverterTypes() {
-		return IterableTools.downCast(IterableTools.filter(
-										this.getManagedTypes(), 
-										TYPE_IS_ORM_CONVERTER_TYPE));
+		return IterableTools.downCast(IterableTools.filter(this.getManagedTypes(), TYPE_IS_CONVERTER_TYPE));
 	}
 
-	protected static final Predicate<OrmManagedType> TYPE_IS_ORM_CONVERTER_TYPE = new TypeIsOrmConverterType();
+	protected static final Predicate<OrmManagedType> TYPE_IS_CONVERTER_TYPE = new TypeIsConverterType();
 
-	public static class TypeIsOrmConverterType
+	public static class TypeIsConverterType
 		extends PredicateAdapter<OrmManagedType>
 	{
 		@Override
 		public boolean evaluate(OrmManagedType mt) {
-			return  mt.getType() == OrmConverterType2_1.class;
+			return mt.getManagedTypeType() == ConverterType2_1.class;
 		}
 	}
 
 	public OrmConverterType2_1 getConverterType(String typeName) {
 		ManagedType mt = this.getManagedType(typeName);
-		if (mt != null && (mt.getType() == OrmPersistentType.class)) {
+		if ((mt != null) && (mt.getManagedTypeType() == ConverterType2_1.class)) {
 			return (OrmConverterType2_1) mt;
 		}
 		return null;

@@ -43,7 +43,7 @@ public interface OrmXmlDefinition
 	/**
 	 * Return the OrmManagedTypeDefinition corresponding to the given resource type
 	 * @throws IllegalArgumentException if the resource type is not supported
-	 * @see OrmManagedTypeDefinition#getResourceType()
+	 * @see OrmManagedTypeDefinition#getResourceManagedTypeType()
 	 */
 	OrmManagedTypeDefinition getManagedTypeDefinition(Class<? extends XmlManagedType> resourceType);
 

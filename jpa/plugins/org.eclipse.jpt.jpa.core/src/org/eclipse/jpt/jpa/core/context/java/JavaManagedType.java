@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.context.java;
 import org.eclipse.jpt.jpa.core.context.ManagedType;
 
 /**
- * Context managed type.
+ * Context Java managed type.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -26,11 +26,5 @@ import org.eclipse.jpt.jpa.core.context.ManagedType;
 public interface JavaManagedType
 	extends ManagedType, JavaElementReference
 {
-	// ********** covariant overrides **********
-
-	/**
-	 * Return the managed type's type.
-	 */
-	Class<? extends JavaManagedType> getType();
-
+	// combine interfaces
 }

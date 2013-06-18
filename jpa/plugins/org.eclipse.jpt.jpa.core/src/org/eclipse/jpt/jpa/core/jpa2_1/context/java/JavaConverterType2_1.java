@@ -27,5 +27,5 @@ import org.eclipse.jpt.jpa.core.jpa2_1.context.ConverterType2_1;
 public interface JavaConverterType2_1
 	extends ConverterType2_1, JavaManagedType
 {
-	Class<? extends JavaConverterType2_1> getType();
+	// combine interfaces
 }

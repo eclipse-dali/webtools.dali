@@ -29,13 +29,18 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 public interface ManagedType
 	extends JpaContextModel
 {
-
 	/**
 	 * Return the managed type's type.
-	 * @see org.eclipse.jpt.jpa.core.context.orm.OrmManagedTypeDefinition#getContextType()
-	 * @see org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition#getType()
+	 * This is used to:<ul>
+	 * <li>select persistent (or converter) types from any list of types that
+	 *     contains both
+	 * <li>match a managed type with its managed type definition
+	 * <li>match a managed type with its managed type UI definition
+	 * </ul>
+	 * @see org.eclipse.jpt.jpa.core.context.orm.OrmManagedTypeDefinition#getContextManagedTypeType()
+	 * @see org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition#getManagedTypeType()
 	 */
-	Class<? extends ManagedType> getType();
+	Class<? extends ManagedType> getManagedTypeType();
 
 	
 	// ********** name **********

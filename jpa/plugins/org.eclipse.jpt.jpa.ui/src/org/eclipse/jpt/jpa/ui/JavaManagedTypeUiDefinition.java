@@ -10,11 +10,12 @@
 package org.eclipse.jpt.jpa.ui;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jpt.jpa.core.context.ManagedType;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
 
 /**
  * A managed type UI definition provides the labels and images for the 
- * managed type indicated by {@link #getType()}.
+ * managed type indicated by {@link #getManagedTypeType()}.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -28,15 +29,13 @@ import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
 public interface JavaManagedTypeUiDefinition {
 
 	/**
-	 * Return a class that corresponds to the managed type.
-	 * 
-	 * @see org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition#getType()
+	 * Return a type that corresponds to the definition's managed type.
+	 * @see org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition#getManagedTypeType()
 	 */
-	Class<? extends JavaManagedType> getType();
+	Class<? extends ManagedType> getManagedTypeType();
 
 	/**
 	 * Return an image descriptor corresponding to the managed type.
 	 */
 	ImageDescriptor getImageDescriptor(JavaManagedType managedType);
-
 }

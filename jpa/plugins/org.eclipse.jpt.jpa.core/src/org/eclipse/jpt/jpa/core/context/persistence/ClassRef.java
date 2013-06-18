@@ -99,7 +99,7 @@ public interface ClassRef
 	 * if it is a {@link JavaPersistentType Java persistent type}.
 	 * Return <code>null</code> if the Java managed type is <code>null</code>
 	 * or is not a {@link JavaPersistentType Java persistent type}.
-	 * @see org.eclipse.jpt.jpa.core.context.ManagedType#getType()
+	 * @see org.eclipse.jpt.jpa.core.context.ManagedType#getManagedTypeType()
 	 */
 	JavaPersistentType getJavaPersistentType();
 

@@ -1890,9 +1890,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	public Iterable<PersistentType> getPersistentTypes() {
-		return IterableTools.downCast(IterableTools.filter(
-										this.getManagedTypes(), 
-										TYPE_IS_PERSISTENT_TYPE));
+		return IterableTools.downCast(IterableTools.filter(this.getManagedTypes(), TYPE_IS_PERSISTENT_TYPE));
 	}
 
 	protected static final Predicate<ManagedType> TYPE_IS_PERSISTENT_TYPE = new TypeIsPersistentType();
@@ -1901,14 +1899,14 @@ public abstract class AbstractPersistenceUnit
 	{
 		@Override
 		public boolean evaluate(ManagedType mt) {
-			return PersistentType.class.isAssignableFrom(mt.getType());
+			return mt.getManagedTypeType() == PersistentType.class;
 		}
 	}
 
 
 	public PersistentType getPersistentType(String typeName) {
 		ManagedType mt = this.getManagedType(typeName);
-		if (mt != null && (mt.getType() == JavaPersistentType.class ||  mt.getType() == OrmPersistentType.class)) {
+		if ((mt != null) && (mt.getManagedTypeType() == PersistentType.class)) {
 			return (PersistentType) mt;
 		}
 		return null;

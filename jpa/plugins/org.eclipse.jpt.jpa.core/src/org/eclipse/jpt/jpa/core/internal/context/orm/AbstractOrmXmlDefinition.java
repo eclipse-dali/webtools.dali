@@ -60,7 +60,7 @@ public abstract class AbstractOrmXmlDefinition
 
 	public OrmManagedTypeDefinition getManagedTypeDefinition(Class<? extends XmlManagedType> resourceType) {
 		for (OrmManagedTypeDefinition definition : this.getManagedTypeDefinitions()) {
-			if (definition.getResourceType() == resourceType) {
+			if (definition.getResourceManagedTypeType() == resourceType) {
 				return definition;
 			}
 		}

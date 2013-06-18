@@ -267,7 +267,7 @@ public class EclipseLinkVirtualJavaPersistentType
 		throw new UnsupportedOperationException();
 	}
 
-	public Class<? extends JavaPersistentType> getType() {
+	public Class<PersistentType> getManagedTypeType() {
 		throw new UnsupportedOperationException();
 	}
 

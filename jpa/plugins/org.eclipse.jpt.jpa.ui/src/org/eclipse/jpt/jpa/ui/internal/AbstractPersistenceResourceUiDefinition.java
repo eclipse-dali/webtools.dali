@@ -13,8 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jpt.common.ui.internal.jface.SimpleItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
+import org.eclipse.jpt.jpa.core.context.ManagedType;
 import org.eclipse.jpt.jpa.ui.JavaManagedTypeUiDefinition;
 import org.eclipse.jpt.jpa.ui.PersistenceResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.structure.JpaFileStructureItemContentProviderFactory;
@@ -40,9 +39,9 @@ public abstract class AbstractPersistenceResourceUiDefinition
 
 	// ********** java managed types ui definitions **********
 
-	public JavaManagedTypeUiDefinition getJavaManagedTypeUiDefinition(Class<? extends JavaManagedType> type) {
+	public JavaManagedTypeUiDefinition getJavaManagedTypeUiDefinition(Class<? extends ManagedType> type) {
 		for (JavaManagedTypeUiDefinition definition : this.getJavaManagedTypeUiDefinitions()) {
-			if (ObjectTools.equals(definition.getType(), type)) {
+			if (definition.getManagedTypeType() == type) {
 				return definition;
 			}
 		}

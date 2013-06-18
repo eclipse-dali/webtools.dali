@@ -30,8 +30,6 @@ public interface JavaPersistentType
 {
 	// ********** covariant overrides **********
 
-	Class<? extends JavaPersistentType> getType();
-
 	JavaTypeMapping getMapping();
 	
 	ListIterable<JavaSpecifiedPersistentAttribute> getAttributes();

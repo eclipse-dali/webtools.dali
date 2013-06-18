@@ -415,7 +415,7 @@ public abstract class AbstractXmlTypeMapping extends AbstractXmlManagedType impl
 	}
 	
 
-	public Class<? extends XmlTypeMapping> getType() {
+	public Class<XmlTypeMapping> getManagedTypeType() {
 		return XmlTypeMapping.class;
 	}
 

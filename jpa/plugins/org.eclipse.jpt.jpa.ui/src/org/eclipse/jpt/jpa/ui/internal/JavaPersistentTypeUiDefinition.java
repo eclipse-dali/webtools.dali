@@ -10,10 +10,11 @@
 package org.eclipse.jpt.jpa.ui.internal;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.JavaManagedTypeUiDefinition;
+import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 
 //TODO NullManagedTypeUiDefinition or should it be a JavaPersistentType implementation if it doesn't match any of the ManagedType types
@@ -21,8 +22,7 @@ public class JavaPersistentTypeUiDefinition
 	implements JavaManagedTypeUiDefinition
 {
 	// singleton
-	private static final JavaPersistentTypeUiDefinition INSTANCE = 
-			new JavaPersistentTypeUiDefinition();
+	private static final JavaPersistentTypeUiDefinition INSTANCE = new JavaPersistentTypeUiDefinition();
 
 
 	/**
@@ -36,12 +36,12 @@ public class JavaPersistentTypeUiDefinition
 	/**
 	 * Ensure single instance.
 	 */
-	protected JavaPersistentTypeUiDefinition() {
+	private JavaPersistentTypeUiDefinition() {
 		super();
 	}
 
-	public Class<JavaPersistentType> getType() {
-		return JavaPersistentType.class;
+	public Class<PersistentType> getManagedTypeType() {
+		return PersistentType.class;
 	}
 
 	public ImageDescriptor getImageDescriptor(JavaManagedType managedType) {

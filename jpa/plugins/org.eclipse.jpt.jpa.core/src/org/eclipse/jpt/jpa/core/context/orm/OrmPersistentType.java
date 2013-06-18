@@ -33,8 +33,6 @@ public interface OrmPersistentType
 	
 	// ********** covariant overrides **********
 
-	Class<? extends OrmPersistentType> getType();
-
 	XmlTypeMapping getXmlManagedType();
 
 	OrmTypeMapping getMapping();

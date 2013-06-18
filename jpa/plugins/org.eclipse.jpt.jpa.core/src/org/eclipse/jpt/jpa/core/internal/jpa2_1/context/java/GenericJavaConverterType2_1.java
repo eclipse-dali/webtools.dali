@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaManagedType;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.ConverterType2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.java.JavaConverterType2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.ConverterAnnotation2_1;
 
@@ -93,8 +94,7 @@ public class GenericJavaConverterType2_1
 
 	// ********** ManagedType implementation **********
 
-	public Class<JavaConverterType2_1> getType() {
-		return JavaConverterType2_1.class;
+	public Class<ConverterType2_1> getManagedTypeType() {
+		return ConverterType2_1.class;
 	}
-
 }

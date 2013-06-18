@@ -774,8 +774,8 @@ public abstract class AbstractJavaPersistentType
 		return new ContextType(this);
 	}
 
-	public Class<JavaPersistentType> getType() {
-		return JavaPersistentType.class;
+	public Class<PersistentType> getManagedTypeType() {
+		return PersistentType.class;
 	}
 
 	public Class<JavaPersistentType> getStructureType() {
