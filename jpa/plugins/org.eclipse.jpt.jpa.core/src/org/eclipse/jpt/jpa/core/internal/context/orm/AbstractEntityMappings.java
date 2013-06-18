@@ -126,7 +126,7 @@ public abstract class AbstractEntityMappings
 	// Lookup of short class name to fully qualified class name for primitives, wrappers, array primitives
 	protected static Map<String, String> PRIMITIVE_CLASSES = null;
 
-	protected final Vector<OrmPersistentType> children = new Vector<OrmPersistentType>();
+	protected final Vector<OrmPersistentType> structureChildren = new Vector<OrmPersistentType>();
 
 
 	protected AbstractEntityMappings(OrmXml parent, XmlEntityMappings xmlEntityMappings) {
@@ -148,7 +148,7 @@ public abstract class AbstractEntityMappings
 		this.tableGeneratorContainer = this.buildTableGeneratorContainer();
 		this.queryContainer = this.buildQueryContainer();
 
-		this.initializeChildren();
+		this.initializeStructureChildren();
 	}
 
 
@@ -191,7 +191,7 @@ public abstract class AbstractEntityMappings
 		this.updateModels(this.getTableGenerators());
 
 		this.queryContainer.update();
-		this.updateChildren();
+		this.updateStructureChildren();
 	}
 
 	public void addRootStructureNodesTo(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
@@ -223,7 +223,7 @@ public abstract class AbstractEntityMappings
 		return new ContextType(this);
 	}
 
-	public Class<EntityMappings> getType() {
+	public Class<EntityMappings> getStructureType() {
 		return EntityMappings.class;
 	}
 
@@ -231,22 +231,23 @@ public abstract class AbstractEntityMappings
 		return this.xmlEntityMappings.getSelectionTextRange();
 	}
 
-	//for now I am making the children only PersistentTypes. If we decide
-	//we want Converters listed in the structure view for an orm.xml, we can change this.
-	protected void initializeChildren() {
-		CollectionTools.addAll(this.children, this.getPersistentTypes());
+	/**
+	 * For now, we exclude converter types.
+	 */
+	protected void initializeStructureChildren() {
+		CollectionTools.addAll(this.structureChildren, this.getPersistentTypes());
 	}
 
-	protected void updateChildren() {
-		this.synchronizeCollection(this.getPersistentTypes(), this.children, CHILDREN_COLLECTION);
+	protected void updateStructureChildren() {
+		this.synchronizeCollection(this.getPersistentTypes(), this.structureChildren, STRUCTURE_CHILDREN_COLLECTION);
 	}
 
-	public Iterable<OrmPersistentType> getChildren() {
-		return IterableTools.cloneLive(this.children);
+	public Iterable<OrmPersistentType> getStructureChildren() {
+		return IterableTools.cloneLive(this.structureChildren);
 	}
 
-	public int getChildrenSize() {
-		return this.children.size();
+	public int getStructureChildrenSize() {
+		return this.structureChildren.size();
 	}
 
 	public TextRange getFullTextRange() {
@@ -258,7 +259,7 @@ public abstract class AbstractEntityMappings
 	}
 
 	public JpaStructureNode getStructureNode(int textOffset) {
-		for (JpaStructureNode child : this.getChildren()) {
+		for (JpaStructureNode child : this.getStructureChildren()) {
 			if (child.containsOffset(textOffset)) {
 				return child.getStructureNode(textOffset);
 			}

@@ -92,7 +92,7 @@ public abstract class AbstractJpaPlatformUi
 
 	public JpaDetailsProvider getDetailsProvider(JpaStructureNode structureNode) {
 		for (JpaDetailsProvider provider : this.getDetailsProviders(structureNode.getResourceType())) {
-			if (ObjectTools.equals(structureNode.getType(), provider.getType())) {
+			if (structureNode.getStructureType() == provider.getStructureType()) {
 				return provider;
 			}
 		}

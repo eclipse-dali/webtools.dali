@@ -272,15 +272,15 @@ public class GenericClassRef
 		return new ContextType(this);
 	}
 
-	public Class<ClassRef> getType() {
+	public Class<ClassRef> getStructureType() {
 		return ClassRef.class;
 	}
 
-	public Iterable<JpaStructureNode> getChildren() {
+	public Iterable<JpaStructureNode> getStructureChildren() {
 		return EmptyIterable.instance();
 	}
 
-	public int getChildrenSize() {
+	public int getStructureChildrenSize() {
 		return 0;
 	}
 

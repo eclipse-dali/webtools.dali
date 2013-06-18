@@ -36,6 +36,7 @@ import org.eclipse.jpt.jpa.core.context.java.Accessor;
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
+import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -449,15 +450,15 @@ public abstract class AbstractJavaPersistentAttribute
 		return new ContextType(this);
 	}
 
-	public Class<JavaSpecifiedPersistentAttribute> getType() {
-		return JavaSpecifiedPersistentAttribute.class;
+	public Class<JavaPersistentAttribute> getStructureType() {
+		return JavaPersistentAttribute.class;
 	}
 
-	public Iterable<JpaStructureNode> getChildren() {
-		return EmptyIterable.instance();
+	public Iterable<JpaStructureNode> getStructureChildren() {
+		return IterableTools.emptyIterable();
 	}
 
-	public int getChildrenSize() {
+	public int getStructureChildrenSize() {
 		return 0;
 	}
 

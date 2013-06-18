@@ -98,7 +98,7 @@ public abstract class SpecifiedOrmPersistentType
 
 	protected final MetamodelSourceType2_0.Synchronizer metamodelSynchronizer;
 
-	protected final Vector<OrmPersistentAttribute> children = new Vector<OrmPersistentAttribute>();
+	protected final Vector<OrmPersistentAttribute> structureChildren = new Vector<OrmPersistentAttribute>();
 
 
 	protected SpecifiedOrmPersistentType(EntityMappings parent, XmlTypeMapping xmlTypeMapping) {
@@ -108,7 +108,7 @@ public abstract class SpecifiedOrmPersistentType
 		this.defaultAccess = AccessType.FIELD;  // keep this non-null
 		this.initializeSpecifiedAttributes();
 		this.metamodelSynchronizer = this.buildMetamodelSynchronizer();
-		this.initializeChildren();
+		this.initializeStructureChildren();
 	}
 
 
@@ -132,7 +132,7 @@ public abstract class SpecifiedOrmPersistentType
 		this.updateDefaultAttributes();
 		this.setSuperPersistentType(this.buildSuperPersistentType());
 		this.setDeclaringTypeName(this.buildDeclaringTypeName());
-		this.updateChildren();
+		this.updateStructureChildren();
 	}
 
 	@Override
@@ -1045,29 +1045,33 @@ public abstract class SpecifiedOrmPersistentType
 		return OrmPersistentType.class;
 	}
 
+	public Class<OrmPersistentType> getStructureType() {
+		return OrmPersistentType.class;
+	}
+
 	public void addRootStructureNodesTo(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
 		if (this.getJavaPersistentType() != null) {
 			this.getJavaPersistentType().addRootStructureNodesTo(jpaFile, rootStructureNodes);
 		}
 	}
 
-	protected void initializeChildren() {
-		this.children.addAll(this.specifiedAttributes); // default attributes haven't been built yet
+	protected void initializeStructureChildren() {
+		this.structureChildren.addAll(this.specifiedAttributes); // default attributes haven't been built yet
 	}
 
-	protected void updateChildren() {
+	protected void updateStructureChildren() {
 		ArrayList<OrmPersistentAttribute> newChildren = new ArrayList<OrmPersistentAttribute>(this.specifiedAttributes.size() + this.defaultAttributes.size());
 		CollectionTools.addAll(newChildren, this.getSpecifiedAttributes());
 		CollectionTools.addAll(newChildren, this.getDefaultAttributes());
-		this.synchronizeCollection(newChildren, this.children, CHILDREN_COLLECTION);
+		this.synchronizeCollection(newChildren, this.structureChildren, STRUCTURE_CHILDREN_COLLECTION);
 	}
 
-	public Iterable<OrmPersistentAttribute> getChildren() {
-		return IterableTools.cloneLive(this.children);
+	public Iterable<OrmPersistentAttribute> getStructureChildren() {
+		return IterableTools.cloneLive(this.structureChildren);
 	}
 
-	public int getChildrenSize() {
-		return this.children.size();
+	public int getStructureChildrenSize() {
+		return this.structureChildren.size();
 	}
 
 
@@ -1076,7 +1080,7 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	public JpaStructureNode getStructureNode(int textOffset) {
-		for (JpaStructureNode child : this.getChildren()) {
+		for (JpaStructureNode child : this.getStructureChildren()) {
 			if (child.containsOffset(textOffset)) {
 				return child;
 			}

@@ -271,11 +271,23 @@ public class EclipseLinkVirtualJavaPersistentType
 		throw new UnsupportedOperationException();
 	}
 
-	public ListIterable<JpaStructureNode> getChildren() {
+	/**
+	 * Virtual Java types will never show up in the JPA Structure view
+	 * or the JPA Details view because there is no corresponding source file
+	 * to be displayed in the editor.
+	 */
+	public Class<? extends JavaPersistentType> getStructureType() {
 		throw new UnsupportedOperationException();
 	}
 
-	public int getChildrenSize() {
+	/**
+	 * @see #getStructureType()
+	 */
+	public ListIterable<JpaStructureNode> getStructureChildren() {
+		throw new UnsupportedOperationException();
+	}
+
+	public int getStructureChildrenSize() {
 		throw new UnsupportedOperationException();
 	}
 

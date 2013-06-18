@@ -194,7 +194,7 @@ public abstract class AbstractPersistenceUnit
 	protected boolean defaultCascadePersist;
 	protected boolean defaultDelimitedIdentifiers;
 
-	protected final Vector<JpaStructureNode> children = new Vector<JpaStructureNode>();
+	protected final Vector<JpaStructureNode> structureChildren = new Vector<JpaStructureNode>();
 
 	//****** JPA 2.0 features
 	protected Connection2_0 connection;
@@ -243,7 +243,7 @@ public abstract class AbstractPersistenceUnit
 		this.specifiedValidationMode = this.buildSpecifiedValidationMode();
 
 		this.initializeMetamodelFiles();
-		this.initializeChildren();
+		this.initializeStructureChildren();
 	}
 
 
@@ -309,7 +309,7 @@ public abstract class AbstractPersistenceUnit
 		this.setDefaultSharedCacheMode(this.buildDefaultSharedCacheMode());
 		this.setDefaultValidationMode(this.buildDefaultValidationMode());
 
-		this.updateChildren();
+		this.updateStructureChildren();
 	}
 
 	public void addRootStructureNodesTo(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
@@ -339,7 +339,7 @@ public abstract class AbstractPersistenceUnit
 		return new ContextType(this);
 	}
 
-	public Class<PersistenceUnit> getType() {
+	public Class<PersistenceUnit> getStructureType() {
 		return PersistenceUnit.class;
 	}
 
@@ -347,27 +347,27 @@ public abstract class AbstractPersistenceUnit
 		return this.xmlPersistenceUnit.getSelectionTextRange();
 	}
 
-	protected void initializeChildren() {
-		CollectionTools.addAll(this.children, this.getMappingFileRefs());
-		CollectionTools.addAll(this.children, this.getClassRefs());
-		CollectionTools.addAll(this.children, this.getJarFileRefs());		
+	protected void initializeStructureChildren() {
+		CollectionTools.addAll(this.structureChildren, this.getMappingFileRefs());
+		CollectionTools.addAll(this.structureChildren, this.getClassRefs());
+		CollectionTools.addAll(this.structureChildren, this.getJarFileRefs());		
 	}
 
-	protected void updateChildren() {
+	protected void updateStructureChildren() {
 		Vector<JpaStructureNode> newChildren = new Vector<JpaStructureNode>();
 		CollectionTools.addAll(newChildren, this.getMappingFileRefs());
 		CollectionTools.addAll(newChildren, this.getClassRefs());
 		CollectionTools.addAll(newChildren, this.getJarFileRefs());
 
-		this.synchronizeCollection(newChildren, this.children, CHILDREN_COLLECTION);
+		this.synchronizeCollection(newChildren, this.structureChildren, STRUCTURE_CHILDREN_COLLECTION);
 	}
 
-	public Iterable<JpaStructureNode> getChildren() {
-		return IterableTools.cloneLive(this.children);
+	public Iterable<JpaStructureNode> getStructureChildren() {
+		return IterableTools.cloneLive(this.structureChildren);
 	}
 
-	public int getChildrenSize() {
-		return this.children.size();
+	public int getStructureChildrenSize() {
+		return this.structureChildren.size();
 	}
 
 	public TextRange getFullTextRange() {
@@ -379,7 +379,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	public JpaStructureNode getStructureNode(int textOffset) {
-		for (JpaStructureNode child : this.getChildren()) {
+		for (JpaStructureNode child : this.getStructureChildren()) {
 			if (child.containsOffset(textOffset)) {
 				return child;
 			}

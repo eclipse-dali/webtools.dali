@@ -51,13 +51,13 @@ public class GenericPersistence
 	// is for a list. We want to support multiple persistence units someday....
 	protected PersistenceUnit persistenceUnit;
 
-	protected final Vector<PersistenceUnit> children = new Vector<PersistenceUnit>();
+	protected final Vector<PersistenceUnit> structureChildren = new Vector<PersistenceUnit>();
 
 	public GenericPersistence(PersistenceXml parent, XmlPersistence xmlPersistence) {
 		super(parent);
 		this.xmlPersistence = xmlPersistence;
 		this.initializePersistenceUnits();
-		this.initializeChildren();
+		this.initializeStructureChildren();
 	}
 
 
@@ -73,7 +73,7 @@ public class GenericPersistence
 	public void update() {
 		super.update();
 		this.updateModels(this.getPersistenceUnits());
-		this.updateChildren();
+		this.updateStructureChildren();
 	}
 
 	public void addRootStructureNodesTo(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
@@ -245,7 +245,7 @@ public class GenericPersistence
 		return new ContextType(this);
 	}
 
-	public Class<Persistence> getType() {
+	public Class<Persistence> getStructureType() {
 		return Persistence.class;
 	}
 
@@ -262,7 +262,7 @@ public class GenericPersistence
 	}
 
 	public JpaStructureNode getStructureNode(int textOffset) {
-		for (JpaStructureNode child : this.getChildren()) {
+		for (JpaStructureNode child : this.getStructureChildren()) {
 			if (child.containsOffset(textOffset)) {
 				return child.getStructureNode(textOffset);
 			}
@@ -270,20 +270,20 @@ public class GenericPersistence
 		return this;
 	}
 
-	protected void initializeChildren() {
-		CollectionTools.addAll(this.children, this.getPersistenceUnits());
+	protected void initializeStructureChildren() {
+		CollectionTools.addAll(this.structureChildren, this.getPersistenceUnits());
 	}
 
-	protected void updateChildren() {
-		this.synchronizeCollection(this.getPersistenceUnits(), this.children, CHILDREN_COLLECTION);
+	protected void updateStructureChildren() {
+		this.synchronizeCollection(this.getPersistenceUnits(), this.structureChildren, STRUCTURE_CHILDREN_COLLECTION);
 	}
 
-	public Iterable<PersistenceUnit> getChildren() {
-		return IterableTools.cloneLive(this.children);
+	public Iterable<PersistenceUnit> getStructureChildren() {
+		return IterableTools.cloneLive(this.structureChildren);
 	}
 
-	public int getChildrenSize() {
-		return this.children.size();
+	public int getStructureChildrenSize() {
+		return this.structureChildren.size();
 	}
 
 	public void dispose() {

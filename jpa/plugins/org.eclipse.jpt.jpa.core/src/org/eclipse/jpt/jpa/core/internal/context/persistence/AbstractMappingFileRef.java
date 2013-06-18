@@ -180,7 +180,7 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 		return new ContextType(this);
 	}
 
-	public Class<MappingFileRef> getType() {
+	public Class<MappingFileRef> getStructureType() {
 		return MappingFileRef.class;
 	}
 
@@ -196,11 +196,11 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 		}
 	}
 
-	public Iterable<JpaStructureNode> getChildren() {
-		return EmptyIterable.instance();
+	public Iterable<JpaStructureNode> getStructureChildren() {
+		return IterableTools.emptyIterable();
 	}
 
-	public int getChildrenSize() {
+	public int getStructureChildrenSize() {
 		return 0;
 	}
 

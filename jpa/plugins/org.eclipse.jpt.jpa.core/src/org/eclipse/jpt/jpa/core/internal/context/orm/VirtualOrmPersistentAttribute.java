@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
-import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.jpa.core.JpaFile;
@@ -25,16 +25,16 @@ import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.Accessor;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.FieldAccessor;
 import org.eclipse.jpt.jpa.core.internal.context.java.PropertyAccessor;
-import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedPersistentAttribute2_0;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -308,15 +308,15 @@ public class VirtualOrmPersistentAttribute
 		return new ContextType(this);
 	}
 
-	public Class<OrmSpecifiedPersistentAttribute> getType() {
-		return OrmSpecifiedPersistentAttribute.class;
+	public Class<OrmPersistentAttribute> getStructureType() {
+		return OrmPersistentAttribute.class;
 	}
 
-	public Iterable<JpaStructureNode> getChildren() {
-		return EmptyIterable.instance();
+	public Iterable<JpaStructureNode> getStructureChildren() {
+		return IterableTools.emptyIterable();
 	}
 
-	public int getChildrenSize() {
+	public int getStructureChildrenSize() {
 		return 0;
 	}
 

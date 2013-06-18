@@ -21,6 +21,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
@@ -94,15 +95,15 @@ public abstract class AbstractJarFileRef
 		return new ContextType(this);
 	}
 
-	public Class<JarFileRef> getType() {
+	public Class<JarFileRef> getStructureType() {
 		return JarFileRef.class;
 	}
 
-	public Iterable<JpaStructureNode> getChildren() {
-		return EmptyIterable.instance();
+	public Iterable<JpaStructureNode> getStructureChildren() {
+		return IterableTools.emptyIterable();
 	}
 
-	public int getChildrenSize() {
+	public int getStructureChildrenSize() {
 		return 0;
 	}
 

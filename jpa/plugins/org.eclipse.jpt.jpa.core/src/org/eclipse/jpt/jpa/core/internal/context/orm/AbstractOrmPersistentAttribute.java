@@ -22,7 +22,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.JpaFile;
@@ -437,15 +436,15 @@ public abstract class AbstractOrmPersistentAttribute
 		return new ContextType(this);
 	}
 
-	public Class<OrmSpecifiedPersistentAttribute> getType() {
-		return OrmSpecifiedPersistentAttribute.class;
+	public Class<OrmPersistentAttribute> getStructureType() {
+		return OrmPersistentAttribute.class;
 	}
 
-	public Iterable<JpaStructureNode> getChildren() {
-		return EmptyIterable.instance();
+	public Iterable<JpaStructureNode> getStructureChildren() {
+		return IterableTools.emptyIterable();
 	}
 
-	public int getChildrenSize() {
+	public int getStructureChildrenSize() {
 		return 0;
 	}
 

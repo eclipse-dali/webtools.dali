@@ -164,15 +164,23 @@ public class EclipseLinkVirtualJavaPersistentAttribute
 		throw new UnsupportedOperationException();
 	}
 
-	public Class<? extends JpaStructureNode> getType() {
+	/**
+	 * Virtual Java attributes will never show up in the JPA Structure view
+	 * or the JPA Details view because there is no corresponding source file
+	 * to be displayed in the editor.
+	 */
+	public Class<? extends JpaStructureNode> getStructureType() {
 		throw new UnsupportedOperationException();
 	}
 
-	public Iterable<JpaStructureNode> getChildren() {
+	/**
+	 * @see #getStructureType()
+	 */
+	public Iterable<JpaStructureNode> getStructureChildren() {
 		throw new UnsupportedOperationException();
 	}
 
-	public int getChildrenSize() {
+	public int getStructureChildrenSize() {
 		throw new UnsupportedOperationException();
 	}
 

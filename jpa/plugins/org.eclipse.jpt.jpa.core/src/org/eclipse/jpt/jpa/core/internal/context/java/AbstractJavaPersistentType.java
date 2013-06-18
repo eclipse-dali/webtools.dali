@@ -68,7 +68,7 @@ public abstract class AbstractJavaPersistentType
 
 	protected final Vector<JavaSpecifiedPersistentAttribute> attributes = new Vector<JavaSpecifiedPersistentAttribute>();
 
-	protected final Vector<JavaSpecifiedPersistentAttribute> children = new Vector<JavaSpecifiedPersistentAttribute>();
+	protected final Vector<JavaSpecifiedPersistentAttribute> structureChildren = new Vector<JavaSpecifiedPersistentAttribute>();
 
 
 	protected AbstractJavaPersistentType(PersistentType.Parent parent, JavaResourceType resourceType) {
@@ -80,7 +80,7 @@ public abstract class AbstractJavaPersistentType
 
 		this.mapping = this.buildMapping();
 		this.initializeAttributes();
-		this.initializeChildren();
+		this.initializeStructureChildren();
 	}
 
 
@@ -101,7 +101,7 @@ public abstract class AbstractJavaPersistentType
 		this.setDefaultAccess(this.buildDefaultAccess());
 		this.mapping.update();
 		this.updateAttributes();
-		this.updateChildren();
+		this.updateStructureChildren();
 	}
 
 
@@ -778,6 +778,10 @@ public abstract class AbstractJavaPersistentType
 		return JavaPersistentType.class;
 	}
 
+	public Class<JavaPersistentType> getStructureType() {
+		return JavaPersistentType.class;
+	}
+
 	/**
 	 * This method is called by <code>JpaTextEditorManager</code> only when the
 	 * focus is <em>not</em> in the JPA Details view.
@@ -800,7 +804,7 @@ public abstract class AbstractJavaPersistentType
 	public JpaStructureNode getStructureNode(int offset) {
 		this.resourceType.getJavaResourceCompilationUnit().synchronizeWithJavaSourceIfNecessary();
 		if (this.containsOffset(offset)) {
-			for (JpaStructureNode child : this.getChildren()) {
+			for (JpaStructureNode child : this.getStructureChildren()) {
 				if (child.containsOffset(offset)) {
 					return child;
 				}
@@ -841,20 +845,20 @@ public abstract class AbstractJavaPersistentType
 		}
 	}
 
-	protected void initializeChildren() {
-		this.children.addAll(this.attributes);
+	protected void initializeStructureChildren() {
+		this.structureChildren.addAll(this.attributes);
 	}
 
-	protected void updateChildren() {
-		this.synchronizeCollection(this.attributes, this.children, CHILDREN_COLLECTION);
+	protected void updateStructureChildren() {
+		this.synchronizeCollection(this.getAttributes(), this.structureChildren, STRUCTURE_CHILDREN_COLLECTION);
 	}
 
-	public Iterable<JavaSpecifiedPersistentAttribute> getChildren() {
-		return IterableTools.cloneLive(this.children);
+	public Iterable<JavaSpecifiedPersistentAttribute> getStructureChildren() {
+		return IterableTools.cloneLive(this.structureChildren);
 	}
 
-	public int getChildrenSize() {
-		return this.children.size();
+	public int getStructureChildrenSize() {
+		return this.structureChildren.size();
 	}
 
 

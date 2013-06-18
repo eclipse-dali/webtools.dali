@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
  * @since 2.0
  */
 public interface JavaSpecifiedPersistentAttribute
-	extends SpecifiedPersistentAttribute, JavaElementReference
+	extends SpecifiedPersistentAttribute, JavaPersistentAttribute, JavaElementReference
 {
 	// ********** covariant overrides **********
 

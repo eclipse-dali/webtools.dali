@@ -89,18 +89,18 @@ public class JpaFileStructureItemContentProviderFactory
 		extends CollectionAspectAdapter<JpaStructureNode, JpaStructureNode>
 	{
 		public JpaStructureNodeChildrenModel(JpaStructureNode node) {
-			super(JpaStructureNode.CHILDREN_COLLECTION, node);
+			super(JpaStructureNode.STRUCTURE_CHILDREN_COLLECTION, node);
 		}
 
 		@SuppressWarnings("unchecked")
 		@Override
 		protected Iterable<JpaStructureNode> getIterable() {
-			return (Iterable<JpaStructureNode>) this.subject.getChildren();
+			return (Iterable<JpaStructureNode>) this.subject.getStructureChildren();
 		}
 
 		@Override
 		public int size_() {
-			return this.subject.getChildrenSize();
+			return this.subject.getStructureChildrenSize();
 		}
 	}
 }

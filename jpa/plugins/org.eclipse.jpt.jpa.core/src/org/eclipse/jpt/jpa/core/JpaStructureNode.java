@@ -67,16 +67,24 @@ public interface JpaStructureNode
 	 * 
 	 * @see #getJpaPlatform()
 	 * @see #getResourceType()
-	 * @see #getType()
+	 * @see #getStructureType()
 	 */
 	ContextType getContextType();
 
 	/**
 	 * Return the structure node's type.
 	 * This is used to find the appropriate UI provider for building the
-	 * structure node's JPA Details Page.
+	 * structure node's JPA Details page.
 	 */
-	Class<? extends JpaStructureNode> getType();
+	Class<? extends JpaStructureNode> getStructureType();
+
+	/**
+	 * Add the to the specified collection the specified JPA file's root
+	 * structure nodes (i.e. the nodes that will be the root elements in the
+	 * JPA Structure view when the JPA file is displayed by the active editor).
+	 * @see JpaFile#getRootStructureNodes()
+	 */
+	void addRootStructureNodesTo(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes);
 
 
 	// ********** children **********
@@ -85,26 +93,21 @@ public interface JpaStructureNode
 	 * String constant associated with changes to the structure
 	 * node's children.
 	 */
-	String CHILDREN_COLLECTION = "children"; //$NON-NLS-1$
+	String STRUCTURE_CHILDREN_COLLECTION = "structureChildren"; //$NON-NLS-1$
 
 	/**
-	 * Return the children structure nodes, to be displayed in the JpaStructureView
+	 * Return the node's children, as to be displayed in the JPA Structure view.
 	 */
-	Iterable<? extends JpaStructureNode> getChildren();
+	Iterable<? extends JpaStructureNode> getStructureChildren();
 
 	/**
-	 * Return the size of the children structure node collection
+	 * Return the number of the node's children.
+	 * @see #getStructureChildren()
 	 */
-	int getChildrenSize();
+	int getStructureChildrenSize();
 
 
-	/**
-	 * Add the appropriate root structure nodes to the collection that
-	 * correspond to the given JPA file.
-	 * @see JpaFile#getRootStructureNodes()
-	 */
-	void addRootStructureNodesTo(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes);
-
+	// ********** context type **********
 
 	/**
 	 * Type used to identify a JPA structure node's type with respect to the
@@ -134,7 +137,7 @@ public interface JpaStructureNode
 			ContextType other = (ContextType) obj;
 			return this.node.getJpaPlatform().equals(other.node.getJpaPlatform()) &&
 					this.node.getResourceType().equals(other.node.getResourceType()) &&
-					this.node.getType().equals(other.node.getType());
+					this.node.getStructureType().equals(other.node.getStructureType());
 		}
 
 		@Override
@@ -143,7 +146,7 @@ public interface JpaStructureNode
 			int hash = 17;
 			hash = hash * prime + this.node.getJpaPlatform().hashCode();
 			hash = hash * prime + this.node.getResourceType().hashCode();
-			hash = hash * prime + this.node.getType().hashCode();
+			hash = hash * prime + this.node.getStructureType().hashCode();
 			return hash;
 		}
 
