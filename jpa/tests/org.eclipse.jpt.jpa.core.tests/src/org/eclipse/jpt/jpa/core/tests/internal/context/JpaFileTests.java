@@ -347,7 +347,7 @@ public class JpaFileTests
 		JavaPersistentType javaPersistentType = ormPersistentType.getJavaPersistentType();
 		assertEquals(javaPersistentType, javaJpaFile.getRootStructureNodes().iterator().next());
 		
-		getJpaProject().getContextModelRoot().getPersistenceXml().getRoot().removePersistenceUnit(0);
+		getJpaProject().getContextRoot().getPersistenceXml().getRoot().removePersistenceUnit(0);
 
 		assertFalse(javaJpaFile.getRootStructureNodes().iterator().hasNext());
 		assertEquals(0, javaJpaFile.getRootStructureNodesSize());

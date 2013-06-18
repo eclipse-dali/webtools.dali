@@ -784,7 +784,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
 	public void setOriginalPersistentTypeColor(){
 		final Diagram d = getDiagram();
 		JpaProject project = ModelIntegrationUtil.getProjectByDiagram(d.getName());
-		PersistenceUnit unit = project.getContextModelRoot().getPersistenceXml().
+		PersistenceUnit unit = project.getContextRoot().getPersistenceXml().
 								getRoot().getPersistenceUnits().iterator().next();
 		for (ClassRef classRef : unit.getClassRefs()) {
 			if (classRef.getJavaPersistentType() != null) { // null if

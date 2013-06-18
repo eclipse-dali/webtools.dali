@@ -157,7 +157,7 @@ public class CreateJPAEntityFeature extends AbstractCreateFeature {
 			JPADiagramEditorPlugin.logError("Cannot refresh the project", e1);  //$NON-NLS-1$		 
 		}
 		
-		ListIterator<PersistenceUnit> lit = jpaProject.getContextModelRoot().getPersistenceXml().getRoot().getPersistenceUnits().iterator();		
+		ListIterator<PersistenceUnit> lit = jpaProject.getContextRoot().getPersistenceXml().getRoot().getPersistenceUnits().iterator();		
 		PersistenceUnit pu = lit.next();
 		PersistentType jpt = pu.getPersistentType(entityName);
 

@@ -13,7 +13,7 @@ import java.util.Iterator;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
-import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
+import org.eclipse.jpt.jpa.core.context.JpaContextRoot;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
@@ -67,8 +67,8 @@ public class GenericJpaDatabaseIdentifierAdapter2_0
 		// the root context node can be null during construction;
 		// this shouldn't be a problem since the default-delimiters flag
 		// is recalculated during the initial, post-project construction, "update"
-		JpaContextModelRoot rcn = this.dataSource.getJpaProject().getContextModelRoot();
-		return (rcn == null) ? null : rcn.getPersistenceXml();
+		JpaContextRoot root = this.dataSource.getJpaProject().getContextRoot();
+		return (root == null) ? null : root.getPersistenceXml();
 	}
 
 	@Override

@@ -209,7 +209,7 @@ public class JpaDeleteMappingFileParticipant
 	}
 
 	private PersistenceUnit getPersistenceUnit(JpaProject jpaProject) {
-		PersistenceXml persistenceXml = jpaProject.getContextModelRoot().getPersistenceXml();
+		PersistenceXml persistenceXml = jpaProject.getContextRoot().getPersistenceXml();
 		if (persistenceXml == null) {
 			return null;
 		}

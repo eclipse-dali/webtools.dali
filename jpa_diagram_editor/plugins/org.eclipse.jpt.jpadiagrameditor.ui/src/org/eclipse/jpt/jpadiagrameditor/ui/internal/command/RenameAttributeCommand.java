@@ -68,7 +68,7 @@ public class RenameAttributeCommand implements Command {
 			renameAttribute(jptCompilationUnit, oldName, newName, isMethodAnnotated);
 			
 			
-			jpt.getJpaProject().getContextModelRoot().synchronizeWithResourceModel();
+			jpt.getJpaProject().getContextRoot().synchronizeWithResourceModel();
 			JavaResourceType jrt = jpt.getJavaResourceType();
 			jrt.getJavaResourceCompilationUnit().synchronizeWithJavaSource();
 			jpt.update();

@@ -48,7 +48,7 @@ public class CreateEntityTypeHierarchy implements Command {
 
 	public void execute() {
 		buildHierarchy(superclass, subclass, shouldCreate);
-		subclass.getJpaProject().getContextModelRoot().synchronizeWithResourceModel();
+		subclass.getJpaProject().getContextRoot().synchronizeWithResourceModel();
 		JavaResourceType jrt = subclass.getJavaResourceType();
 		jrt.getJavaResourceCompilationUnit().synchronizeWithJavaSource();
 		subclass.update();

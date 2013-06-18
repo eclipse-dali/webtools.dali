@@ -116,7 +116,7 @@ public abstract class JavaMetadataConversionWizardPage
 	 * Return the JPA project's <em>first</em> persistence unit.
 	 */
 	protected PersistenceUnit buildPersistenceUnit() {
-		PersistenceXml persistenceXml = this.jpaProject.getContextModelRoot().getPersistenceXml();
+		PersistenceXml persistenceXml = this.jpaProject.getContextRoot().getPersistenceXml();
 		if (persistenceXml == null) {
 			return null;
 		}

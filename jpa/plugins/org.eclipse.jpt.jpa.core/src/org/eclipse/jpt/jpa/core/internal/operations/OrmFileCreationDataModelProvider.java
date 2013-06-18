@@ -97,7 +97,7 @@ public class OrmFileCreationDataModelProvider
 		if (jpaProject == null) {
 			return null;
 		}
-		PersistenceXml persistenceXml = jpaProject.getContextModelRoot().getPersistenceXml();
+		PersistenceXml persistenceXml = jpaProject.getContextRoot().getPersistenceXml();
 		if (persistenceXml == null) {
 			return null;
 		}
@@ -216,7 +216,7 @@ public class OrmFileCreationDataModelProvider
 		JpaProject jpaProject = 
 			(StringTools.isBlank(pUnitName)) ? null : getJpaProject();
 		PersistenceXml persistenceXml = 
-			(jpaProject == null) ? null : jpaProject.getContextModelRoot().getPersistenceXml();
+			(jpaProject == null) ? null : jpaProject.getContextRoot().getPersistenceXml();
 		Persistence persistence = 
 			(persistenceXml == null) ? null : persistenceXml.getRoot();
 		if (persistence != null) {
@@ -233,7 +233,7 @@ public class OrmFileCreationDataModelProvider
 		//only get the persistence units for the selected JpaProject, 
 		//if no jpa project is selected, then no persistence units will be listed in the combo
 		JpaProject jpaProject = getJpaProject();
-		PersistenceXml persistenceXml = (jpaProject == null) ? null : jpaProject.getContextModelRoot().getPersistenceXml();
+		PersistenceXml persistenceXml = (jpaProject == null) ? null : jpaProject.getContextRoot().getPersistenceXml();
 		Persistence persistence = (persistenceXml == null) ? null : persistenceXml.getRoot();
 		return (persistence == null) ? EmptyIterable.<PersistenceUnit>instance() : persistence.getPersistenceUnits();
 	}

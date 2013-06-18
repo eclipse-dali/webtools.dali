@@ -40,7 +40,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
+import org.eclipse.jpt.jpa.core.context.JpaContextRoot;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
@@ -677,11 +677,12 @@ public class EclipseLinkDynamicEntityDataModelProvider
 	}
 
 	protected PersistenceXml getPersistenceXml() {
-		if (this.getJpaProject() != null) {
-			JpaContextModelRoot rcn = this.getJpaProject().getContextModelRoot();
-			return (rcn == null) ? null : rcn.getPersistenceXml();
+		JpaProject jpaProject = this.getJpaProject();
+		if (jpaProject == null) {
+			return null;
 		}
-		return null;
+		JpaContextRoot root = jpaProject.getContextRoot();
+		return (root == null) ? null : root.getPersistenceXml();
 	}
 	
 	protected OrmAttributeMappingDefinition getAttributeMappingDefinition(String mappingKey) {

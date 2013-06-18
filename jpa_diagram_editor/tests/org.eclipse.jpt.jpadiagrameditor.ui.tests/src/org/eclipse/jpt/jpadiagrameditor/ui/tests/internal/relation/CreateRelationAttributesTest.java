@@ -112,7 +112,7 @@ public class CreateRelationAttributesTest {
 		PersistentAttribute attr = JpaArtifactFactory.instance().
 				addAttribute(t1, t2, null, "add", "add", false);
 		jpaProject.getProject().build(IncrementalProjectBuilder.CLEAN_BUILD, new NullProgressMonitor());
-		PersistenceUnit pu = jpaProject.getContextModelRoot().getPersistenceXml().getRoot().getPersistenceUnits().iterator().next();
+		PersistenceUnit pu = jpaProject.getContextRoot().getPersistenceXml().getRoot().getPersistenceUnits().iterator().next();
 		t1 = pu.getPersistentType("abc.Customer");
 		assertNotNull(attr);			
 

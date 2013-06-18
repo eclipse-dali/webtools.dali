@@ -109,7 +109,7 @@ public class JPAEditorDiagramTypeProvider extends AbstractDiagramTypeProvider {
     
 	public boolean hasToAdd() {
 		JpaProject project = getTargetJPAProject();
-		PersistenceUnit unit = project.getContextModelRoot().getPersistenceXml().
+		PersistenceUnit unit = project.getContextRoot().getPersistenceXml().
 								getRoot().getPersistenceUnits().iterator().next();
 		
 		for (ClassRef classRef : unit.getClassRefs()) {

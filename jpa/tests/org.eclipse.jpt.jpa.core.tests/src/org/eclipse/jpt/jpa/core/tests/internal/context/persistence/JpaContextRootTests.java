@@ -11,26 +11,26 @@ package org.eclipse.jpt.jpa.core.tests.internal.context.persistence;
 
 import org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
-import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
+import org.eclipse.jpt.jpa.core.context.JpaContextRoot;
 import org.eclipse.jpt.jpa.core.internal.operations.PersistenceFileCreationDataModelProvider;
 import org.eclipse.jpt.jpa.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 @SuppressWarnings("nls")
-public class ContextModelRootTests
+public class JpaContextRootTests
 	extends ContextModelTestCase
 {
-	public ContextModelRootTests(String name) {
+	public JpaContextRootTests(String name) {
 		super(name);
 	}
 	
 	public void testUpdateAddPersistenceXml() throws Exception {
 		deleteResource(getPersistenceXmlResource());
-		JpaContextModelRoot baseJpaContent = getJavaProject().getJpaProject().getContextModelRoot();
+		JpaContextRoot root = getJavaProject().getJpaProject().getContextRoot();
 		
 		assertFalse(getPersistenceXmlResource().fileExists());
-		assertNull(baseJpaContent.getPersistenceXml());
+		assertNull(root.getPersistenceXml());
 		
 		IDataModel config =
 			DataModelFactory.createDataModel(new PersistenceFileCreationDataModelProvider());
@@ -38,17 +38,17 @@ public class ContextModelRootTests
 				getJpaProject().getProject().getFolder("src/META-INF").getFullPath());
 		config.getDefaultOperation().execute(null, null);
 		
-		assertNotNull(baseJpaContent.getPersistenceXml());
+		assertNotNull(root.getPersistenceXml());
 	}
 	
 	public void testUpdateRemovePersistenceXml() throws Exception {
 		JptXmlResource pr = getPersistenceXmlResource();
-		JpaContextModelRoot baseJpaContent = getJavaProject().getJpaProject().getContextModelRoot();
+		JpaContextRoot root = getJavaProject().getJpaProject().getContextRoot();
 		
-		assertNotNull(baseJpaContent.getPersistenceXml());
+		assertNotNull(root.getPersistenceXml());
 		
 		deleteResource(pr);
 		
-		assertNull(baseJpaContent.getPersistenceXml());
+		assertNull(root.getPersistenceXml());
 	}
 }

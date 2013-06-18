@@ -33,7 +33,7 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
+import org.eclipse.jpt.jpa.core.context.JpaContextRoot;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.XmlFile;
 import org.eclipse.jpt.jpa.core.context.java.JarFile;
@@ -61,8 +61,8 @@ public abstract class AbstractNavigatorItemContentProviderFactory
 	}
 
 	public ItemStructuredContentProvider buildProvider(Object input, ItemStructuredContentProvider.Manager manager) {
-		if (input instanceof JpaContextModelRoot) {
-			return this.buildItemStructuredContentProvider(input, this.buildJpaContextModelRootChildrenModel((JpaContextModelRoot) input), manager);
+		if (input instanceof JpaContextRoot) {
+			return this.buildItemStructuredContentProvider(input, this.buildJpaContextRootChildrenModel((JpaContextRoot) input), manager);
 		}
 		if (input instanceof PersistenceXml) {
 			return this.buildItemStructuredContentProvider(input, this.buildPersistenceXmlChildrenModel((PersistenceXml) input), manager);
@@ -84,8 +84,8 @@ public abstract class AbstractNavigatorItemContentProviderFactory
 	}
 
 	public ItemTreeContentProvider buildProvider(Object item, Object parent, ItemTreeContentProvider.Manager manager) {
-		if (item instanceof JpaContextModelRoot) {
-			return this.buildItemTreeContentProvider(item, parent, this.buildJpaContextModelRootChildrenModel((JpaContextModelRoot) item), manager);
+		if (item instanceof JpaContextRoot) {
+			return this.buildItemTreeContentProvider(item, parent, this.buildJpaContextRootChildrenModel((JpaContextRoot) item), manager);
 		}
 		if (item instanceof PersistenceXml) {
 			return this.buildItemTreeContentProvider(item, parent, this.buildPersistenceXmlChildrenModel((PersistenceXml) item), manager);
@@ -109,19 +109,19 @@ public abstract class AbstractNavigatorItemContentProviderFactory
 
 	// ********** JPA context model root **********
 
-	protected CollectionValueModel<PersistenceXml> buildJpaContextModelRootChildrenModel(JpaContextModelRoot jpaContextModelRoot) {
-		return new PropertyCollectionValueModelAdapter<PersistenceXml>(this.buildJpaContextModelRootPersistenceXmlModel(jpaContextModelRoot));
+	protected CollectionValueModel<PersistenceXml> buildJpaContextRootChildrenModel(JpaContextRoot jpaContextRoot) {
+		return new PropertyCollectionValueModelAdapter<PersistenceXml>(this.buildJpaContextRootPersistenceXmlModel(jpaContextRoot));
 	}
 
-	protected PropertyValueModel<PersistenceXml> buildJpaContextModelRootPersistenceXmlModel(JpaContextModelRoot jpaContextModelRoot) {
-		return new JpaContextModelRootPersistenceXml(jpaContextModelRoot);
+	protected PropertyValueModel<PersistenceXml> buildJpaContextRootPersistenceXmlModel(JpaContextRoot jpaContextRoot) {
+		return new JpaContextRootPersistenceXml(jpaContextRoot);
 	}
 
-	public static class JpaContextModelRootPersistenceXml
-		extends PropertyAspectAdapter<JpaContextModelRoot, PersistenceXml>
+	public static class JpaContextRootPersistenceXml
+		extends PropertyAspectAdapter<JpaContextRoot, PersistenceXml>
 	{
-		public JpaContextModelRootPersistenceXml(JpaContextModelRoot jpaContextModelRoot) {
-			super(JpaContextModelRoot.PERSISTENCE_XML_PROPERTY, jpaContextModelRoot);
+		public JpaContextRootPersistenceXml(JpaContextRoot jpaContextModelRoot) {
+			super(JpaContextRoot.PERSISTENCE_XML_PROPERTY, jpaContextModelRoot);
 		}
 		@Override
 		protected PersistenceXml buildValue_() {

@@ -210,7 +210,7 @@ public class EmbedCollectionOfObjectsFeature extends AbstractCreateConnectionFea
 	private void disableUnvalidRelationTargets(){
 		Diagram d = getDiagram();
 		JpaProject project = ModelIntegrationUtil.getProjectByDiagram(d.getName());
-		PersistenceUnit unit = project.getContextModelRoot().getPersistenceXml().
+		PersistenceUnit unit = project.getContextRoot().getPersistenceXml().
 								getRoot().getPersistenceUnits().iterator().next();
 		if(JpaArtifactFactory.instance().isEntity(embeddingEntity) 
 				|| JpaArtifactFactory.instance().isEmbeddable(embeddingEntity)){
@@ -261,7 +261,7 @@ public class EmbedCollectionOfObjectsFeature extends AbstractCreateConnectionFea
 	private void disableAllMappedSuperclasses() {
 		Diagram d = getDiagram();
 		JpaProject project = ModelIntegrationUtil.getProjectByDiagram(d.getName());
-		PersistenceUnit unit = project.getContextModelRoot().getPersistenceXml().
+		PersistenceUnit unit = project.getContextRoot().getPersistenceXml().
 								getRoot().getPersistenceUnits().iterator().next();
 		for (ClassRef classRef : unit.getClassRefs()) {
 			if (classRef.getJavaPersistentType() != null) {

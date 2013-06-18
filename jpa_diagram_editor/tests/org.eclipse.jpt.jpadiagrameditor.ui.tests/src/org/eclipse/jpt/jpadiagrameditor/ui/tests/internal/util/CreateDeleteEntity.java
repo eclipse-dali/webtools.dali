@@ -21,7 +21,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
+import org.eclipse.jpt.jpa.core.context.JpaContextRoot;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
@@ -51,7 +51,7 @@ public class CreateDeleteEntity {
 		assertNotNull(jpaProject);
 //		SynchronousJpaProjectUpdater updater = new SynchronousJpaProjectUpdater(jpaProject);
 //		updater.start();
-		JpaContextModelRoot jpaProjectContent = jpaProject.getContextModelRoot();
+		JpaContextRoot jpaProjectContent = jpaProject.getContextRoot();
 		assertNotNull(jpaProjectContent);		
 //		if(jpaProjectContent.getPersistenceXml() == null) {		
 //			updater = new SynchronousJpaProjectUpdater(jpaProject);

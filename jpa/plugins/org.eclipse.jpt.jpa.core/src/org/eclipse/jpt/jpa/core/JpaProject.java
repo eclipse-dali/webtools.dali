@@ -27,7 +27,7 @@ import org.eclipse.jpt.common.utility.command.ExtendedCommandContext;
 import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
-import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
+import org.eclipse.jpt.jpa.core.context.JpaContextRoot;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
@@ -161,16 +161,16 @@ public interface JpaProject
 	/**
 	 * Return the root of the JPA project's context model.
 	 */
-	JpaContextModelRoot getContextModelRoot();
+	JpaContextRoot getContextRoot();
 
-	Transformer<JpaProject, JpaContextModelRoot> CONTEXT_MODEL_ROOT_TRANSFORMER = new ContextModelRootTransformer();
+	Transformer<JpaProject, JpaContextRoot> CONTEXT_ROOT_TRANSFORMER = new ContextRootTransformer();
 
-	class ContextModelRootTransformer
-		extends TransformerAdapter<JpaProject, JpaContextModelRoot>
+	class ContextRootTransformer
+		extends TransformerAdapter<JpaProject, JpaContextRoot>
 	{
 		@Override
-		public JpaContextModelRoot transform(JpaProject jpaProject) {
-			return jpaProject.getContextModelRoot();
+		public JpaContextRoot transform(JpaProject jpaProject) {
+			return jpaProject.getContextRoot();
 		}
 	}
 

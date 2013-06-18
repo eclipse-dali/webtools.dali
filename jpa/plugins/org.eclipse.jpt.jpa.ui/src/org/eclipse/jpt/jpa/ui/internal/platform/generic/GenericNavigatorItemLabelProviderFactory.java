@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaModel;
-import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
+import org.eclipse.jpt.jpa.core.context.JpaContextRoot;
 import org.eclipse.jpt.jpa.core.context.ManagedType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -56,8 +56,8 @@ public class GenericNavigatorItemLabelProviderFactory
 	}
 
 	public ItemExtendedLabelProvider buildProvider(Object item, ItemExtendedLabelProvider.Manager manager) {
-		if (item instanceof JpaContextModelRoot) {
-			return this.buildJpaContextModelRootProvider((JpaContextModelRoot) item, manager);
+		if (item instanceof JpaContextRoot) {
+			return this.buildJpaContextRootProvider((JpaContextRoot) item, manager);
 		}
 		if (item instanceof PersistenceXml) {
 			return this.buildPersistenceXmlProvider((PersistenceXml) item, manager);
@@ -83,7 +83,7 @@ public class GenericNavigatorItemLabelProviderFactory
 		return NullItemExtendedLabelProvider.instance();
 	}
 
-	protected ItemExtendedLabelProvider buildJpaContextModelRootProvider(JpaContextModelRoot item, ItemExtendedLabelProvider.Manager manager) {
+	protected ItemExtendedLabelProvider buildJpaContextRootProvider(JpaContextRoot item, ItemExtendedLabelProvider.Manager manager) {
 		return new StaticItemExtendedLabelProvider(
 				JptJpaUiImages.JPA_CONTENT,
 				JptJpaUiMessages.JpaContent_label,

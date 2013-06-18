@@ -147,7 +147,7 @@ public class ClickRemoveAttributeButtonFeature extends DefaultDeleteFeature {
 	 */
 	private Set<PersistentType> getAllJPTWithSameIDClassOrEmbeddedId(PersistentType jpt, String fqn){
 		HashSet<PersistentType> persistentTypes = new HashSet<PersistentType>();
-		ListIterator<PersistenceUnit> lit = jpt.getJpaProject().getContextModelRoot().getPersistenceXml().getRoot().getPersistenceUnits().iterator();		
+		ListIterator<PersistenceUnit> lit = jpt.getJpaProject().getContextRoot().getPersistenceXml().getRoot().getPersistenceUnits().iterator();		
 		PersistenceUnit pu = lit.next();
 		for(PersistentType persistentType : pu.getPersistentTypes()){
 			if(!persistentType.getName().equals(jpt.getName())  && ((hasSameEmbeddedId(persistentType, fqn)) || hasSameIdClass(persistentType, fqn))){

@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
+import org.eclipse.jpt.jpa.core.context.JpaContextRoot;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
@@ -89,7 +89,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.JavaNullTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.jpa1.GenericJpaDataSource;
 import org.eclipse.jpt.jpa.core.internal.jpa1.GenericJpaFile;
 import org.eclipse.jpt.jpa.core.internal.jpa1.GenericJpaProject;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericContextModelRoot;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericContextRoot;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaBaseEnumeratedConverter;
@@ -187,14 +187,14 @@ public abstract class AbstractJpaFactory
 
 	// ********** Context Nodes **********
 	
-	public JpaContextModelRoot buildContextModelRoot(JpaProject parent) {
-		return new GenericContextModelRoot(parent);
+	public JpaContextRoot buildContextRoot(JpaProject parent) {
+		return new GenericContextRoot(parent);
 	}
 
 
 	// ********** XML Context Model **********
 
-	public PersistenceXml buildPersistenceXml(JpaContextModelRoot parent, JptXmlResource resource) {
+	public PersistenceXml buildPersistenceXml(JpaContextRoot parent, JptXmlResource resource) {
 		return new GenericPersistenceXml(parent, resource);
 	}
 	

@@ -665,7 +665,7 @@ public class JpaArtifactFactory {
 		HashSet<PersistentType> embeddingEntities = new HashSet<PersistentType>();
 		if(!isEmbeddable(embeddable))
 			return embeddingEntities;
-		ListIterator<PersistenceUnit> lit = embeddable.getJpaProject().getContextModelRoot().getPersistenceXml().getRoot().getPersistenceUnits().iterator();		
+		ListIterator<PersistenceUnit> lit = embeddable.getJpaProject().getContextRoot().getPersistenceXml().getRoot().getPersistenceUnits().iterator();		
 		PersistenceUnit pu = lit.next();
 		for(PersistentType jpt : pu.getPersistentTypes()){
 			if(!jpt.getName().equals(embeddable.getName())){
@@ -741,7 +741,7 @@ public class JpaArtifactFactory {
 		
 		if(attributeType == null) {
 			PersistentType jpt = (PersistentType) attribute.getParent();
-			jpt.getJpaProject().getContextModelRoot().synchronizeWithResourceModel();
+			jpt.getJpaProject().getContextRoot().synchronizeWithResourceModel();
 			JavaResourceType jrt = jpt.getJavaResourceType();
 			jrt.getJavaResourceCompilationUnit().synchronizeWithJavaSource();
 			jpt.update();
@@ -1121,7 +1121,7 @@ public class JpaArtifactFactory {
 	 * @return the {@link PersistentType} registered in the {@link PersistenceUnit} with the given name.
 	 */
 	public PersistentType getJPT(String name, PersistenceUnit pu) {
-		pu.getJpaProject().getContextModelRoot().synchronizeWithResourceModel();
+		pu.getJpaProject().getContextRoot().synchronizeWithResourceModel();
 		pu.synchronizeWithResourceModel();
 		pu.update();
 		PersistentType jpt = pu.getPersistentType(name);
@@ -1652,9 +1652,9 @@ public class JpaArtifactFactory {
 	}
 	
 	public PersistenceUnit getPersistenceUnit(JpaProject project) {
-		if(project.getContextModelRoot().getPersistenceXml() == null)
+		if(project.getContextRoot().getPersistenceXml() == null)
 			return null;
-		return project.getContextModelRoot().getPersistenceXml().getRoot()
+		return project.getContextRoot().getPersistenceXml().getRoot()
 				.getPersistenceUnits().iterator().next();
 	}
 	

@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
+import org.eclipse.jpt.jpa.core.context.JpaContextRoot;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -158,17 +158,17 @@ public interface JpaFactory {
 	// ********** Context Nodes **********
 	
 	/**
-	 * Build a (/an updated) context model root for the
+	 * Build a (/an updated) context root for the
 	 * specified JPA project.
 	 * The root will be built once, but updated many times.
 	 * @see org.eclipse.jpt.jpa.core.internal.AbstractJpaProject#update(org.eclipse.core.runtime.IProgressMonitor)
 	 */
-	JpaContextModelRoot buildContextModelRoot(JpaProject jpaProject);
+	JpaContextRoot buildContextRoot(JpaProject jpaProject);
 
 
 	// ********** XML Context Model **********
 
-	PersistenceXml buildPersistenceXml(JpaContextModelRoot parent, JptXmlResource resource);
+	PersistenceXml buildPersistenceXml(JpaContextRoot parent, JptXmlResource resource);
 
 	MappingFile buildMappingFile(MappingFileRef parent, Object resourceMappingFile);
 

@@ -67,7 +67,7 @@ import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
+import org.eclipse.jpt.jpa.core.context.JpaContextRoot;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
@@ -897,8 +897,8 @@ public class JpaMakePersistentWizardPage
 		}
 
 		protected PersistenceXml getPersistenceXml() {
-			JpaContextModelRoot rcn = this.jpaProject.getContextModelRoot();
-			return (rcn == null) ? null : rcn.getPersistenceXml();
+			JpaContextRoot root = this.jpaProject.getContextRoot();
+			return (root == null) ? null : root.getPersistenceXml();
 		}
 
 

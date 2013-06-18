@@ -46,7 +46,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
+import org.eclipse.jpt.jpa.core.context.JpaContextRoot;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
@@ -224,7 +224,7 @@ public class JPACreateFactory {
 		String name = nameElements.get(Math.max(0, nameElements.size()-1));
 //		SynchronousJpaProjectUpdater updater = new SynchronousJpaProjectUpdater(jpaProject);
 //		updater.start();
-		JpaContextModelRoot jpaProjectContent = jpaProject.getContextModelRoot();
+		JpaContextRoot jpaProjectContent = jpaProject.getContextRoot();
 		PersistenceXml persXML = jpaProjectContent.getPersistenceXml();
 		int cnt = 0;
 		while ((persXML == null) && (cnt < 100)) {		

@@ -18,7 +18,7 @@ public class JptCorePersistenceContextModelTests
 {
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JptCorePersistenceContextModelTests.class.getPackage().getName());
-		suite.addTestSuite(ContextModelRootTests.class);
+		suite.addTestSuite(JpaContextRootTests.class);
 		suite.addTestSuite(PersistenceXmlTests.class);
 		suite.addTestSuite(PersistenceTests.class);
 		suite.addTestSuite(PersistenceUnitTests.class);

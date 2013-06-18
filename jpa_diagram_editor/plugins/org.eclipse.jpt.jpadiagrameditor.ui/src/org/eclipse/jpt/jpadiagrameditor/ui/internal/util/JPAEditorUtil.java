@@ -1283,7 +1283,7 @@ public class JPAEditorUtil {
 	
 	static private HashSet<String> getEntityNames(JpaProject jpaProject) {
 		HashSet<String> names = new HashSet<String>();
-		ListIterator<PersistenceUnit> lit = jpaProject.getContextModelRoot().getPersistenceXml().
+		ListIterator<PersistenceUnit> lit = jpaProject.getContextRoot().getPersistenceXml().
 												getRoot().getPersistenceUnits().iterator();
 		PersistenceUnit pu = lit.next();
 		for (ClassRef cf : pu.getClassRefs()) {
@@ -1294,7 +1294,7 @@ public class JPAEditorUtil {
 	
 	static private HashSet<String> getEntitySimpleNames(JpaProject jpaProject) {
 		HashSet<String> names = new HashSet<String>();
-		ListIterator<PersistenceUnit> lit = jpaProject.getContextModelRoot().getPersistenceXml().
+		ListIterator<PersistenceUnit> lit = jpaProject.getContextRoot().getPersistenceXml().
 												getRoot().getPersistenceUnits().iterator();
 		PersistenceUnit pu = lit.next();			
 		for (ClassRef cf : pu.getClassRefs()) {

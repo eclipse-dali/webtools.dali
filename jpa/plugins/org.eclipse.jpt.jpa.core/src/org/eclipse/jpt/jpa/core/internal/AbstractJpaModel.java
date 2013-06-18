@@ -115,7 +115,7 @@ public abstract class AbstractJpaModel<P extends JpaModel>
 	/**
 	 * Overridden in:<ul>
 	 * <li>{@link AbstractJpaProject#getResource() AbstractJpaProject}
-	 * <li>{@link org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericContextModelRoot#getResource() GenericContextModelRoot}
+	 * <li>{@link org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericContextRoot#getResource() GenericContextModelRoot}
 	 * <li>{@link org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJarFile#getResource() GenericJarFile}
 	 * <li>{@link org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmXml#getResource() GenericOrmXml}
 	 * <li>{@link org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.GenericPersistenceXml#getResource() GenericPersistenceXml}
@@ -285,7 +285,7 @@ public abstract class AbstractJpaModel<P extends JpaModel>
 	/**
 	 * @see #aspectChanged(String)
 	 * @see AbstractJpaProject#stateChanged()
-	 * @see org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericContextModelRoot#stateChanged()
+	 * @see org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericContextRoot#stateChanged()
 	 */
 	public void stateChanged() {
 		this.fireStateChanged();

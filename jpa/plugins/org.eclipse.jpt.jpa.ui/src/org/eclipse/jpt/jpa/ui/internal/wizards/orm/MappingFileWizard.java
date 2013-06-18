@@ -121,7 +121,7 @@ public class MappingFileWizard extends Wizard
 		// also get the persistence unit for a given jpa project selection
 		JpaProject jpaProject = this.getJpaProject(selection);
 		if (jpaProject != null) {
-			PersistenceXml persistenceXml = jpaProject.getContextModelRoot().getPersistenceXml();
+			PersistenceXml persistenceXml = jpaProject.getContextRoot().getPersistenceXml();
 			if (persistenceXml != null){
 				Persistence persistence = persistenceXml.getRoot();
 				if ((persistence != null) && (persistence.getPersistenceUnitsSize() > 0)) {

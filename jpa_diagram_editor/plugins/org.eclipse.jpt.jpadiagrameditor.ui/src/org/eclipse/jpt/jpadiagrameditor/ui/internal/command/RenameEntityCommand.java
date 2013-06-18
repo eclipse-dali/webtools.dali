@@ -43,7 +43,7 @@ public class RenameEntityCommand implements Command {
 
 	public void execute() {
 		renameEntityClass(JPAEditorUtil.getCompilationUnit(jpt), newEntityName);
-		jpt.getJpaProject().getContextModelRoot().synchronizeWithResourceModel();
+		jpt.getJpaProject().getContextRoot().synchronizeWithResourceModel();
 		JavaResourceType jrt = jpt.getJavaResourceType();
 		jrt.getJavaResourceCompilationUnit().synchronizeWithJavaSource();
 		jpt.update();

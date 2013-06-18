@@ -245,7 +245,7 @@ public abstract class AbstractJpaRenameJavaElementParticipant
 	protected abstract String getMappingFileChangeName();
 
 	private PersistenceUnit getPersistenceUnit(JpaProject jpaProject) {
-		PersistenceXml persistenceXml = jpaProject.getContextModelRoot().getPersistenceXml();
+		PersistenceXml persistenceXml = jpaProject.getContextRoot().getPersistenceXml();
 		if (persistenceXml == null) {
 			return null;
 		}

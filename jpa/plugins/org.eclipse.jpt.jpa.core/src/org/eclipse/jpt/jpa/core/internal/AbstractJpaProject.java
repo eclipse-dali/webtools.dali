@@ -82,13 +82,13 @@ import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JptJpaCoreMessages;
-import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
+import org.eclipse.jpt.jpa.core.context.JpaContextRoot;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.jpa2.JpaMetamodelSynchronizer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.JpaContextModelRoot2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.JpaContextRoot2_0;
 import org.eclipse.jpt.jpa.core.jpa2_1.JpaProject2_1;
 import org.eclipse.jpt.jpa.core.libprov.JpaLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jpa.core.resource.ResourceMappingFile;
@@ -177,7 +177,7 @@ public abstract class AbstractJpaProject
 	 * The root of the model representing the collated resources associated with
 	 * the JPA project.
 	 */
-	protected final JpaContextModelRoot contextModelRoot;
+	protected final JpaContextRoot contextRoot;
 
 	/**
 	 * A repeating command that keeps the JPA project's context model
@@ -259,7 +259,7 @@ public abstract class AbstractJpaProject
 			}
 		}
 
-		this.contextModelRoot = this.buildContextModelRoot();
+		this.contextRoot = this.buildContextRoot();
 
 		this.updateCommandListener = this.buildUpdateCommandListener();
 		this.initializeContextModel();
@@ -294,8 +294,8 @@ public abstract class AbstractJpaProject
 		return new BinaryTypeCache(this.jpaPlatform.getAnnotationProvider());
 	}
 
-	protected JpaContextModelRoot buildContextModelRoot() {
-		return this.getJpaFactory().buildContextModelRoot(this);
+	protected JpaContextRoot buildContextRoot() {
+		return this.getJpaFactory().buildContextRoot(this);
 	}
 
 	/**
@@ -777,8 +777,8 @@ public abstract class AbstractJpaProject
 
 	// ********** context model **********
 
-	public JpaContextModelRoot getContextModelRoot() {
-		return this.contextModelRoot;
+	public JpaContextRoot getContextRoot() {
+		return this.contextRoot;
 	}
 
 
@@ -1053,7 +1053,7 @@ public abstract class AbstractJpaProject
 	}
 
 	protected void initializeMetamodel() {
-		((JpaContextModelRoot2_0) this.contextModelRoot).initializeMetamodel();
+		((JpaContextRoot2_0) this.contextRoot).initializeMetamodel();
 	}
 
 	/**
@@ -1121,11 +1121,11 @@ public abstract class AbstractJpaProject
 	 * Called by the {@link SynchronizeMetamodelJob#runInWorkspace(IProgressMonitor)}.
 	 */
 	protected IStatus synchronizeMetamodel_(IProgressMonitor monitor) {
-		return ((JpaContextModelRoot2_0) this.contextModelRoot).synchronizeMetamodel(monitor);
+		return ((JpaContextRoot2_0) this.contextRoot).synchronizeMetamodel(monitor);
 	}
 
 	protected void disposeMetamodel() {
-		((JpaContextModelRoot2_0) this.contextModelRoot).disposeMetamodel();
+		((JpaContextRoot2_0) this.contextRoot).disposeMetamodel();
 	}
 
 	public IPackageFragmentRoot getMetamodelPackageFragmentRoot() {
@@ -1464,7 +1464,7 @@ public abstract class AbstractJpaProject
 		}
 		this.validateLibraryProvider(messages);
 		this.validateConnection(messages);
-		this.contextModelRoot.validate(messages, reporter);
+		this.contextRoot.validate(messages, reporter);
 	}
 
 	protected void validateLibraryProvider(List<IMessage> messages) {
@@ -1921,7 +1921,7 @@ public abstract class AbstractJpaProject
 	 */
 	// TODO pass the monitor down
 	protected IStatus synchronizeContextModel(@SuppressWarnings("unused") IProgressMonitor monitor) {
-		this.contextModelRoot.synchronizeWithResourceModel();
+		this.contextRoot.synchronizeWithResourceModel();
 		return Status.OK_STATUS;
 	}
 
@@ -1999,7 +1999,7 @@ public abstract class AbstractJpaProject
 	 */
 	// TODO pass the monitor down
 	protected IStatus update(@SuppressWarnings("unused") IProgressMonitor monitor) {
-		this.contextModelRoot.update();
+		this.contextRoot.update();
 		this.updateRootStructureNodes();
 		return Status.OK_STATUS;
 	}

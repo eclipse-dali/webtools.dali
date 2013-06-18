@@ -27,7 +27,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
+import org.eclipse.jpt.jpa.core.context.JpaContextRoot;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.JpaProjectModel;
 
@@ -93,12 +93,12 @@ public class JpaNavigatorItemContentProviderFactory
 
 	// ********** project **********
 
-	protected CollectionValueModel<JpaContextModelRoot> buildProjectChildrenModel(IProject project) {
-		return new PropertyCollectionValueModelAdapter<JpaContextModelRoot>(this.buildProjectJpaContextModelRootModel(project));
+	protected CollectionValueModel<JpaContextRoot> buildProjectChildrenModel(IProject project) {
+		return new PropertyCollectionValueModelAdapter<JpaContextRoot>(this.buildProjectJpaContextRootModel(project));
 	}
 
-	protected PropertyValueModel<JpaContextModelRoot> buildProjectJpaContextModelRootModel(IProject project) {
-		return new TransformationPropertyValueModel<JpaProject, JpaContextModelRoot>(this.buildProjectJpaProjectModel(project), TransformerTools.nullCheck(JpaProject.CONTEXT_MODEL_ROOT_TRANSFORMER));
+	protected PropertyValueModel<JpaContextRoot> buildProjectJpaContextRootModel(IProject project) {
+		return new TransformationPropertyValueModel<JpaProject, JpaContextRoot>(this.buildProjectJpaProjectModel(project), TransformerTools.nullCheck(JpaProject.CONTEXT_ROOT_TRANSFORMER));
 	}
 
 	protected PropertyValueModel<JpaProject> buildProjectJpaProjectModel(IProject project) {

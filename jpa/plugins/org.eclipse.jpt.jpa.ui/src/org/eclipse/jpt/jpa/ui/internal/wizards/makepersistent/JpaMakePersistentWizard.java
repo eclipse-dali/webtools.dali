@@ -28,7 +28,7 @@ import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.jpa.core.JpaEntityGeneratorDatabaseAnnotationNameBuilder;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
+import org.eclipse.jpt.jpa.core.context.JpaContextRoot;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
@@ -135,8 +135,8 @@ public class JpaMakePersistentWizard
 	
 	protected PersistenceUnit getPersistenceUnit()
 	{
-		JpaContextModelRoot rcn = this.jpaProject.getContextModelRoot();
-		PersistenceXml pxml = (rcn == null) ? null : rcn.getPersistenceXml();
+		JpaContextRoot root = this.jpaProject.getContextRoot();
+		PersistenceXml pxml = (root == null) ? null : root.getPersistenceXml();
 		Persistence persistence = (pxml == null) ? null : pxml.getRoot();
 		if (persistence == null) 
 		{
