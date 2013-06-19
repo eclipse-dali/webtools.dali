@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.db.SchemaContainer;
 /**
  * Java sequence or table generator
  */
-public abstract class AbstractJavaDbGenerator<A extends DatabaseGeneratorAnnotation>
+public abstract class AbstractJavaDatabaseGenerator<A extends DatabaseGeneratorAnnotation>
 	extends AbstractJavaGenerator<JavaGeneratorContainer, A>
 	implements JavaDatabaseGenerator
 {
@@ -33,7 +33,7 @@ public abstract class AbstractJavaDbGenerator<A extends DatabaseGeneratorAnnotat
 	protected int defaultAllocationSize;
 
 
-	protected AbstractJavaDbGenerator(JavaGeneratorContainer parent, A generatorAnnotation) {
+	protected AbstractJavaDatabaseGenerator(JavaGeneratorContainer parent, A generatorAnnotation) {
 		super(parent, generatorAnnotation);
 		this.specifiedInitialValue = generatorAnnotation.getInitialValue();
 		this.specifiedAllocationSize = generatorAnnotation.getAllocationSize();

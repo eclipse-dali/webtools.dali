@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.db.Schema;
  * Java sequence generator
  */
 public abstract class AbstractJavaSequenceGenerator<A extends SequenceGeneratorAnnotation>
-	extends AbstractJavaDbGenerator<A>
+	extends AbstractJavaDatabaseGenerator<A>
 	implements JavaSequenceGenerator
 {
 	protected String specifiedSequenceName;

@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaTableGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaDbGenerator;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaDatabaseGenerator;
 import org.eclipse.jpt.jpa.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
 import org.eclipse.jpt.jpa.db.Database;
@@ -37,7 +37,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * Java table generator
  */
 public class GenericJavaTableGenerator
-	extends AbstractJavaDbGenerator<TableGeneratorAnnotation>
+	extends AbstractJavaDatabaseGenerator<TableGeneratorAnnotation>
 	implements JavaTableGenerator, SpecifiedUniqueConstraint.Parent
 {
 	protected String specifiedTableName;
