@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.jpa.core.context.DbGenerator;
+import org.eclipse.jpt.jpa.core.context.DatabaseGenerator;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.java.JavaDbGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
@@ -26,7 +26,6 @@ public abstract class AbstractJavaDbGenerator<A extends DatabaseGeneratorAnnotat
 	extends AbstractJavaGenerator<JavaGeneratorContainer, A>
 	implements JavaDbGenerator
 {
-
 	protected Integer specifiedInitialValue;
 	protected int defaultInitialValue;
 
@@ -132,10 +131,10 @@ public abstract class AbstractJavaDbGenerator<A extends DatabaseGeneratorAnnotat
 	@Override
 	protected boolean isEquivalentTo_(Generator other) {
 		return super.isEquivalentTo_(other) &&
-				this.isEquivalentTo_((DbGenerator) other);
+				this.isEquivalentTo_((DatabaseGenerator) other);
 	}
 
-	protected boolean isEquivalentTo_(DbGenerator other) {
+	protected boolean isEquivalentTo_(DatabaseGenerator other) {
 		return ObjectTools.equals(this.specifiedAllocationSize, other.getSpecifiedAllocationSize()) &&
 				ObjectTools.equals(this.specifiedInitialValue, other.getSpecifiedInitialValue());
 	}
@@ -169,5 +168,4 @@ public abstract class AbstractJavaDbGenerator<A extends DatabaseGeneratorAnnotat
 	}
 
 	protected abstract String getCatalog();
-
 }

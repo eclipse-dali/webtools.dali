@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.As
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
-import org.eclipse.jpt.jpa.core.context.DbGenerator;
+import org.eclipse.jpt.jpa.core.context.DatabaseGenerator;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
@@ -23,7 +23,8 @@ import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.jpa.core.tests.internal.context.ContextModelTestCase;
 
 @SuppressWarnings("nls")
-public class JavaSequenceGeneratorTests extends ContextModelTestCase
+public class JavaSequenceGeneratorTests
+	extends ContextModelTestCase
 {
 	private static final String SEQUENCE_GENERATOR_NAME = "MY_SEQUENCE_GENERATOR";
 	
@@ -139,7 +140,7 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
 		
-		assertEquals(DbGenerator.DEFAULT_ALLOCATION_SIZE, idMapping.getGeneratorContainer().getSequenceGenerator().getAllocationSize());
+		assertEquals(DatabaseGenerator.DEFAULT_ALLOCATION_SIZE, idMapping.getGeneratorContainer().getSequenceGenerator().getAllocationSize());
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -158,11 +159,11 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
 
-		assertEquals(DbGenerator.DEFAULT_ALLOCATION_SIZE, idMapping.getGeneratorContainer().getSequenceGenerator().getDefaultAllocationSize());
+		assertEquals(DatabaseGenerator.DEFAULT_ALLOCATION_SIZE, idMapping.getGeneratorContainer().getSequenceGenerator().getDefaultAllocationSize());
 		
 		idMapping.getGeneratorContainer().getSequenceGenerator().setSpecifiedAllocationSize(Integer.valueOf(20));
 		
-		assertEquals(DbGenerator.DEFAULT_ALLOCATION_SIZE, idMapping.getGeneratorContainer().getSequenceGenerator().getDefaultAllocationSize());
+		assertEquals(DatabaseGenerator.DEFAULT_ALLOCATION_SIZE, idMapping.getGeneratorContainer().getSequenceGenerator().getDefaultAllocationSize());
 		assertEquals(Integer.valueOf(20), idMapping.getGeneratorContainer().getSequenceGenerator().getSpecifiedAllocationSize());
 	}
 	
@@ -232,5 +233,4 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		generatorAnnotation = (SequenceGeneratorAnnotation) resourceField.getAnnotation(JPA.SEQUENCE_GENERATOR);
 		assertNull(generatorAnnotation.getName());
 	}
-
 }

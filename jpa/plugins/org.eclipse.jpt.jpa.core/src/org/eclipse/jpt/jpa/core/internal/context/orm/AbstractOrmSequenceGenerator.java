@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.jpa.core.context.DbGenerator;
+import org.eclipse.jpt.jpa.core.context.DatabaseGenerator;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaSequenceGenerator;
@@ -103,7 +103,7 @@ public abstract class AbstractOrmSequenceGenerator
 	// ********** validation **********
 	
 	@Override
-	protected boolean isEquivalentTo_(DbGenerator other) {
+	protected boolean isEquivalentTo_(DatabaseGenerator other) {
 		return super.isEquivalentTo_(other)
 				&& this.isEquivalentTo_((SequenceGenerator) other);
 	}
@@ -145,5 +145,4 @@ public abstract class AbstractOrmSequenceGenerator
 		Schema dbSchema = this.getDbSchema();
 		return (dbSchema != null) ? dbSchema.getSortedSequenceIdentifiers() : EmptyIterable.<String> instance();
 	}
-
 }

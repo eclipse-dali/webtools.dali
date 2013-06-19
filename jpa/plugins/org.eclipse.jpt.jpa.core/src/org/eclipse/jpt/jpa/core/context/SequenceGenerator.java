@@ -22,7 +22,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 2.0
  */
 public interface SequenceGenerator
-	extends DbGenerator
+	extends DatabaseGenerator
 {
 	int DEFAULT_INITIAL_VALUE = 1;
 

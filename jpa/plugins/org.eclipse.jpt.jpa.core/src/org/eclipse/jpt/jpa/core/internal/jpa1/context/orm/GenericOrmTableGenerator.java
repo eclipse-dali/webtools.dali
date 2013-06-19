@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.DbGenerator;
+import org.eclipse.jpt.jpa.core.context.DatabaseGenerator;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.TableGenerator;
@@ -424,7 +424,7 @@ public class GenericOrmTableGenerator
 	// ********** validation **********
 
 	@Override
-	protected boolean isEquivalentTo_(DbGenerator other) {
+	protected boolean isEquivalentTo_(DatabaseGenerator other) {
 		return super.isEquivalentTo_(other)
 				&& this.isEquivalentTo_((TableGenerator) other);
 	}

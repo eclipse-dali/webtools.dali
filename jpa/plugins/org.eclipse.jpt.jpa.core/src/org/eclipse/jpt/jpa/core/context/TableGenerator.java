@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * @since 2.0
  */
 public interface TableGenerator
-	extends DbGenerator
+	extends DatabaseGenerator
 {
 	int DEFAULT_INITIAL_VALUE = 0;
 
@@ -134,5 +134,4 @@ public interface TableGenerator
 	 * Return null if the generator's table (name) is invalid.
 	 */
 	Table getDbTable();
-
 }

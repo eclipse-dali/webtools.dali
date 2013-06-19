@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
-import org.eclipse.jpt.jpa.core.context.DbGenerator;
+import org.eclipse.jpt.jpa.core.context.DatabaseGenerator;
 import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaSequenceGenerator;
@@ -138,7 +138,7 @@ public abstract class AbstractJavaSequenceGenerator<A extends SequenceGeneratorA
 	// ********** validation **********
 	
 	@Override
-	protected boolean isEquivalentTo_(DbGenerator other) {
+	protected boolean isEquivalentTo_(DatabaseGenerator other) {
 		return super.isEquivalentTo_(other)
 				&& this.isEquivalentTo_((SequenceGenerator) other);
 	}

@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.jpa.core.context.DbGenerator;
+import org.eclipse.jpt.jpa.core.context.DatabaseGenerator;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaDbGenerator;
@@ -26,9 +26,8 @@ import org.eclipse.jpt.jpa.db.SchemaContainer;
  */
 public abstract class AbstractOrmDbGenerator<X extends XmlGenerator>
 	extends AbstractOrmGenerator<X>
-	implements DbGenerator
+	implements DatabaseGenerator
 {
-
 	protected Integer specifiedInitialValue;
 	protected int defaultInitialValue;
 
@@ -133,10 +132,10 @@ public abstract class AbstractOrmDbGenerator<X extends XmlGenerator>
 	@Override
 	protected boolean isEquivalentTo_(Generator other) {
 		return super.isEquivalentTo_(other) &&
-				this.isEquivalentTo_((DbGenerator) other);
+				this.isEquivalentTo_((DatabaseGenerator) other);
 	}
 
-	protected boolean isEquivalentTo_(DbGenerator other) {
+	protected boolean isEquivalentTo_(DatabaseGenerator other) {
 		return ObjectTools.equals(this.specifiedAllocationSize, other.getSpecifiedAllocationSize()) &&
 				ObjectTools.equals(this.specifiedInitialValue, other.getSpecifiedInitialValue());
 	}
@@ -221,5 +220,4 @@ public abstract class AbstractOrmDbGenerator<X extends XmlGenerator>
 		this.setSpecifiedInitialValue(javaGenerator.getSpecifiedInitialValue());
 		this.setSpecifiedAllocationSize(javaGenerator.getSpecifiedAllocationSize());
 	}
-
 }
