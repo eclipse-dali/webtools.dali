@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.db.SchemaContainer;
 /**
  * <code>orm.xml</code> sequence or table generator
  */
-public abstract class AbstractOrmDbGenerator<X extends XmlGenerator>
+public abstract class AbstractOrmDatabaseGenerator<X extends XmlGenerator>
 	extends AbstractOrmGenerator<X>
 	implements DatabaseGenerator
 {
@@ -35,7 +35,7 @@ public abstract class AbstractOrmDbGenerator<X extends XmlGenerator>
 	protected int defaultAllocationSize;
 
 
-	protected AbstractOrmDbGenerator(JpaContextModel parent, X xmlGenerator) {
+	protected AbstractOrmDatabaseGenerator(JpaContextModel parent, X xmlGenerator) {
 		super(parent, xmlGenerator);
 		this.specifiedInitialValue = xmlGenerator.getInitialValue();
 		this.specifiedAllocationSize = xmlGenerator.getAllocationSize();

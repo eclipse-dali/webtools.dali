@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaTableGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTableGenerator;
-import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmDbGenerator;
+import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmDatabaseGenerator;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlUniqueConstraint;
@@ -34,7 +34,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * <code>orm.xml</code> table generator
  */
 public class GenericOrmTableGenerator
-	extends AbstractOrmDbGenerator<XmlTableGenerator>
+	extends AbstractOrmDatabaseGenerator<XmlTableGenerator>
 	implements OrmTableGenerator, SpecifiedUniqueConstraint.Parent
 {
 	protected String specifiedTableName;

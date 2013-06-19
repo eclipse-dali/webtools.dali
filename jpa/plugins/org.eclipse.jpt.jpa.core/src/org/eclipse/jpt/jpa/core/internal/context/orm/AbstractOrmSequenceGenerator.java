@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.db.Schema;
  * <code>orm.xml</code> sequence generator
  */
 public abstract class AbstractOrmSequenceGenerator
-	extends AbstractOrmDbGenerator<XmlSequenceGenerator>
+	extends AbstractOrmDatabaseGenerator<XmlSequenceGenerator>
 	implements OrmSequenceGenerator
 {
 	protected String specifiedSequenceName;
