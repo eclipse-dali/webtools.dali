@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.resource.java.DbGeneratorAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.DatabaseGeneratorAnnotation;
 
 /**
  * <ul>
@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.resource.java.DbGeneratorAnnotation;
  */
 abstract class BinaryDbGeneratorAnnotation
 	extends BinaryGeneratorAnnotation
-	implements DbGeneratorAnnotation
+	implements DatabaseGeneratorAnnotation
 {
 	Integer initialValue;
 	Integer allocationSize;

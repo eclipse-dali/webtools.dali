@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.java;
 
 import org.eclipse.jpt.jpa.core.context.DbGenerator;
-import org.eclipse.jpt.jpa.core.resource.java.DbGeneratorAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.DatabaseGeneratorAnnotation;
 
 /**
  * Java sequence and table generators
@@ -27,6 +27,6 @@ import org.eclipse.jpt.jpa.core.resource.java.DbGeneratorAnnotation;
 public interface JavaDbGenerator 
 	extends JavaGenerator, DbGenerator
 {
-	DbGeneratorAnnotation getGeneratorAnnotation();
+	DatabaseGeneratorAnnotation getGeneratorAnnotation();
 
 }

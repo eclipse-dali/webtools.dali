@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.DbGenerator;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.java.JavaDbGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
-import org.eclipse.jpt.jpa.core.resource.java.DbGeneratorAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.DatabaseGeneratorAnnotation;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.db.SchemaContainer;
 /**
  * Java sequence or table generator
  */
-public abstract class AbstractJavaDbGenerator<A extends DbGeneratorAnnotation>
+public abstract class AbstractJavaDbGenerator<A extends DatabaseGeneratorAnnotation>
 	extends AbstractJavaGenerator<JavaGeneratorContainer, A>
 	implements JavaDbGenerator
 {
