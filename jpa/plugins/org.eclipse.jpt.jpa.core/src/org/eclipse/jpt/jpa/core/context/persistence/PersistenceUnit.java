@@ -58,6 +58,8 @@ public interface PersistenceUnit
 	 */
 	Persistence getParent();
 
+	Class<PersistenceUnit> getStructureType();
+
 
 	// ********** name **********
 

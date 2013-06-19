@@ -14,12 +14,12 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.SpecifiedAccessReference;
 import org.eclipse.jpt.jpa.core.context.DeleteTypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.Query;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAccessReference;
 import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.XmlFile;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
@@ -43,9 +43,17 @@ import org.eclipse.jpt.jpa.db.SchemaContainer;
  * @since 2.0
 */
 public interface EntityMappings
-	extends MappingFile.Root, XmlFile.Root, PersistentType.Parent, SpecifiedAccessReference, DeleteTypeRefactoringParticipant, TypeRefactoringParticipant
+	extends
+		MappingFile.Root,
+		XmlFile.Root,
+		PersistentType.Parent,
+		SpecifiedAccessReference,
+		DeleteTypeRefactoringParticipant,
+		TypeRefactoringParticipant
 {
 	OrmXml getParent();
+
+	Class<EntityMappings> getStructureType();
 
 	OrmXml getOrmXml();
 

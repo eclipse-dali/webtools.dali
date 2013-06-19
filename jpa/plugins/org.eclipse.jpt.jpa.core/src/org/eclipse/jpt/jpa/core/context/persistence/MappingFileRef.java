@@ -43,12 +43,19 @@ import org.eclipse.jpt.jpa.core.resource.persistence.XmlMappingFileRef;
  * @since 2.0
  */
 public interface MappingFileRef
-	extends JpaStructureNode, PersistentTypeContainer, MappingFileRefactoringParticipant, DeleteTypeRefactoringParticipant, TypeRefactoringParticipant
+	extends
+		JpaStructureNode,
+		PersistentTypeContainer,
+		MappingFileRefactoringParticipant,
+		DeleteTypeRefactoringParticipant,
+		TypeRefactoringParticipant
 {
 	/**
 	 * Covariant override.
 	 */
 	PersistenceUnit getParent();
+
+	Class<MappingFileRef> getStructureType();
 
 
 	// ********** file name **********

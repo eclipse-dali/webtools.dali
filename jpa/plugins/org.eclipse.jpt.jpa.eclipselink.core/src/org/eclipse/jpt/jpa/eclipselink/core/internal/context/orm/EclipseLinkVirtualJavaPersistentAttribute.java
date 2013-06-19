@@ -13,8 +13,8 @@ import java.util.Collection;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jpt.common.core.internal.utility.TypeTools;
 import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
+import org.eclipse.jpt.common.core.internal.utility.TypeTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
@@ -29,6 +29,7 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.Accessor;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
@@ -169,7 +170,7 @@ public class EclipseLinkVirtualJavaPersistentAttribute
 	 * or the JPA Details view because there is no corresponding source file
 	 * to be displayed in the editor.
 	 */
-	public Class<? extends JpaStructureNode> getStructureType() {
+	public Class<JavaPersistentAttribute> getStructureType() {
 		throw new UnsupportedOperationException();
 	}
 

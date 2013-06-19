@@ -36,8 +36,13 @@ import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
  * @since 2.0
  */
 public interface ClassRef
-	extends JpaStructureNode, DeleteTypeRefactoringParticipant, TypeRefactoringParticipant
+	extends
+		JpaStructureNode,
+		DeleteTypeRefactoringParticipant,
+		TypeRefactoringParticipant
 {
+	Class<ClassRef> getStructureType();
+
 	/**
 	 * Return whether the class ref is a reference to the specified type.
 	 */

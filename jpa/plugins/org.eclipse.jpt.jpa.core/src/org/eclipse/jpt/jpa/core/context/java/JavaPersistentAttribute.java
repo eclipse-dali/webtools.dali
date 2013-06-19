@@ -23,5 +23,5 @@ import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 public interface JavaPersistentAttribute
 	extends PersistentAttribute
 {
-	// nothing yet
+	Class<JavaPersistentAttribute> getStructureType();
 }

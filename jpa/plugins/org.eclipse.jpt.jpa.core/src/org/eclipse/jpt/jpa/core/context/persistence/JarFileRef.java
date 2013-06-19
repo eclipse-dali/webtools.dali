@@ -36,6 +36,8 @@ import org.eclipse.text.edits.ReplaceEdit;
 public interface JarFileRef
 	extends JpaStructureNode, PersistentTypeContainer
 {
+	Class<JarFileRef> getStructureType();
+
 	// ********** file name **********
 
 	/**

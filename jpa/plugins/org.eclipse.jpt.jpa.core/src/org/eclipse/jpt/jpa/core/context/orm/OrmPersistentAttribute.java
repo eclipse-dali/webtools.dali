@@ -30,6 +30,8 @@ import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 public interface OrmPersistentAttribute
 	extends PersistentAttribute
 {
+	Class<OrmPersistentAttribute> getStructureType();
+
 	/**
 	 * A <em>specified</em> <code>orm.xml</code> attribute will return an
 	 * <code>orm.xml</code> mapping, while a <em>virtual</em> attribute will

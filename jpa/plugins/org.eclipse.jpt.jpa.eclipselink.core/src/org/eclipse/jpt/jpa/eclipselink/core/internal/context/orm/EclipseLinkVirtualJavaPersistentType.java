@@ -276,7 +276,7 @@ public class EclipseLinkVirtualJavaPersistentType
 	 * or the JPA Details view because there is no corresponding source file
 	 * to be displayed in the editor.
 	 */
-	public Class<? extends JavaPersistentType> getStructureType() {
+	public Class<JavaPersistentType> getStructureType() {
 		throw new UnsupportedOperationException();
 	}
 

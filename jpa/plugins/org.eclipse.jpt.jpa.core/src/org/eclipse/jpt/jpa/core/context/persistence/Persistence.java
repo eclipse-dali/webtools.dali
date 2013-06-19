@@ -40,6 +40,8 @@ public interface Persistence
 	 */
 	PersistenceXml getParent();
 
+	Class<Persistence> getStructureType();
+
 	PersistenceXml getPersistenceXml();
 
 

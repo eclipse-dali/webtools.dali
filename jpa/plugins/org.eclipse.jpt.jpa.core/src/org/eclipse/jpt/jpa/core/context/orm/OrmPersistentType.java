@@ -30,8 +30,9 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
 public interface OrmPersistentType
 	extends OrmManagedType, PersistentType
 {
-	
 	// ********** covariant overrides **********
+
+	Class<OrmPersistentType> getStructureType();
 
 	XmlTypeMapping getXmlManagedType();
 
