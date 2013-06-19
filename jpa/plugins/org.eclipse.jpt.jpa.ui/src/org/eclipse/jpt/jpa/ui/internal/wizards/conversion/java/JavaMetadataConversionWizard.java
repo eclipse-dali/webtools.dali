@@ -24,7 +24,7 @@ public class JavaMetadataConversionWizard
 			throw new NullPointerException();
 		}
 		this.page = page;
-		this.setWindowTitle(JptJpaUiMessages.JavaMetadataConversionWizard_title);
+		this.setWindowTitle(JptJpaUiMessages.JAVA_METADATA_CONVERSION_WIZARD_TITLE);
 		this.setDefaultPageImageDescriptor(JptJpaUiImages.JPA_FILE_BANNER);
 	}
 

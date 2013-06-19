@@ -39,8 +39,8 @@ public abstract class JpaFacetActionPage
 
 	protected JpaFacetActionPage(String pageName) {
 		super(pageName);
-		setTitle(JptJpaUiMessages.JpaFacetWizardPage_title);
-		setDescription(JptJpaUiMessages.JpaFacetWizardPage_description);
+		setTitle(JptJpaUiMessages.JPA_FACET_WIZARD_PAGE_TITLE);
+		setDescription(JptJpaUiMessages.JPA_FACET_WIZARD_PAGE_DESCRIPTION);
 		setImageDescriptor(JptJpaUiImages.JPA_PROJECT_BANNER);
 	}
 	
@@ -155,7 +155,7 @@ public abstract class JpaFacetActionPage
 		
 		public PlatformGroup(Composite composite) {
 			Group group = new Group(composite, SWT.NONE);
-			group.setText(JptJpaUiMessages.JpaFacetWizardPage_platformLabel);
+			group.setText(JptJpaUiMessages.JPA_FACET_WIZARD_PAGE_PLATFORM_LABEL);
 			group.setLayout(new GridLayout());
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			WorkbenchTools.setHelp(group, JpaHelpContextIds.DIALOG_JPA_PLATFORM);
@@ -176,7 +176,7 @@ public abstract class JpaFacetActionPage
 			final Composite librariesComposite 
 				= (Composite) LibraryProviderFrameworkUi.createInstallLibraryPanel(
 					composite, librariesInstallDelegate, 
-					JptJpaUiMessages.JpaFacetWizardPage_jpaImplementationLabel );
+					JptJpaUiMessages.JPA_FACET_WIZARD_PAGE_JPA_IMPLEMENTATION_LABEL );
 			librariesComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			WorkbenchTools.setHelp(librariesComposite, JpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_CLASSPATH);			
 		}
@@ -192,15 +192,15 @@ public abstract class JpaFacetActionPage
 		
 		public PersistentClassManagementGroup(Composite composite) {
 			Group group = new Group(composite, SWT.NONE);
-			group.setText(JptJpaUiMessages.JpaFacetWizardPage_persistentClassManagementLabel);
+			group.setText(JptJpaUiMessages.JPA_FACET_WIZARD_PAGE_PERSISTENT_CLASS_MANAGEMENT_LABEL);
 			group.setLayout(new GridLayout());
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			WorkbenchTools.setHelp(group, JpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_CLASSPATH);
 			
-			discoverClassesButton = createButton(group, 1, JptJpaUiMessages.JpaFacetWizardPage_discoverClassesButton, SWT.RADIO);
+			discoverClassesButton = createButton(group, 1, JptJpaUiMessages.JPA_FACET_WIZARD_PAGE_DISCOVER_CLASSES_BUTTON, SWT.RADIO);
 			synchHelper.synchRadio(discoverClassesButton, DISCOVER_ANNOTATED_CLASSES, null);
 			
-			listClassesButton = createButton(group, 1, JptJpaUiMessages.JpaFacetWizardPage_listClassesButton, SWT.RADIO);
+			listClassesButton = createButton(group, 1, JptJpaUiMessages.JPA_FACET_WIZARD_PAGE_LIST_CLASSES_BUTTON, SWT.RADIO);
 			synchHelper.synchRadio(listClassesButton, LIST_ANNOTATED_CLASSES, null);
 		}
 	}

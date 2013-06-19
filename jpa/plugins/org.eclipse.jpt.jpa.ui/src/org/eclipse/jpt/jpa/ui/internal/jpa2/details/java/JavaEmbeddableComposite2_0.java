@@ -36,7 +36,7 @@ public class JavaEmbeddableComposite2_0
 		Composite sectionClient = this.addSubPane(embeddableSection, 2, 0, 0, 0, 0);
 
 		// Access type widgets
-		this.addLabel(sectionClient, JptJpaUiMessages.AccessTypeComposite_access);
+		this.addLabel(sectionClient, JptJpaUiMessages.ACCESS_TYPE_COMPOSITE_ACCESS);
 		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), sectionClient);
 
 		return sectionClient;

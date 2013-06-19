@@ -61,7 +61,7 @@ public class JavaMappedSuperclassComposite2_0
 	protected Control initializeMappedSuperclassSection(Composite container) {
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
-		this.addLabel(container, JptJpaUiMessages.AccessTypeComposite_access);
+		this.addLabel(container, JptJpaUiMessages.ACCESS_TYPE_COMPOSITE_ACCESS);
 		new AccessTypeComboViewer(this, buildAccessReferenceModel(), container);
 
 		// Id class widgets

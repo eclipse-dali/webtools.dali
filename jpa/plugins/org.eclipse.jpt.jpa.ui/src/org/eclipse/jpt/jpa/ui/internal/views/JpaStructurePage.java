@@ -255,7 +255,7 @@ public class JpaStructurePage
 
 	private void setTreeViewerJpaFile(JpaFile jpaFile) {
 		if (jpaFile == null || jpaFile.getResourceModel().getResourceType() == null) {
-			this.setTreeViewerMessage(JptJpaUiMessages.JpaStructureView_structureNotAvailable);
+			this.setTreeViewerMessage(JptJpaUiMessages.JPA_STRUCTURE_VIEW_STRUCTURE_NOT_AVAILABLE);
 		} 
 		else if (! jpaFile.getJpaProject().getJpaPlatform().supportsResourceType(jpaFile.getResourceModel().getResourceType())) {
 			this.setTreeViewerMessage(this.buildMissingStructureProviderMessage(jpaFile));
@@ -276,7 +276,7 @@ public class JpaStructurePage
 	}
 
 	private String buildMissingStructureProviderMessage(JpaFile jpaFile) {
-		return NLS.bind(JptJpaUiMessages.JpaStructureView_structureProviderNotAvailable, jpaFile.getResourceModel().getResourceType());
+		return NLS.bind(JptJpaUiMessages.JPA_STRUCTURE_VIEW_STRUCTURE_PROVIDER_NOT_AVAILABLE, jpaFile.getResourceModel().getResourceType());
 	}
 
 	private void setTreeViewerJpaFile(JpaFile jpaFile, ItemTreeStateProviderFactoryProvider factoryProvider) {
@@ -450,7 +450,7 @@ public class JpaStructurePage
 		} else {
 			if (selection.size() > 1) {
 				Integer size = Integer.valueOf(selection.size());
-				String msg = NLS.bind(JptJpaUiMessages.JpaStructureView_numItemsSelected, size);
+				String msg = NLS.bind(JptJpaUiMessages.JPA_STRUCTURE_VIEW_NUM_ITEMS_SELECTED, size);
 				this.getStatusLineManager().setMessage(msg);
 			} else {
 				Object first = selection.getFirstElement();

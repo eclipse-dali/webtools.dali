@@ -78,7 +78,7 @@ public class MappingFileOptionsWizardPage
 		composite.setLayoutData(data);
 		
 		this.accessLabel = new Label(composite, SWT.NONE);
-		this.accessLabel.setText(JptJpaUiMessages.MappingFileWizardPage_accessLabel);
+		this.accessLabel.setText(JptJpaUiMessages.MAPPING_FILE_WIZARD_PAGE_ACCESS_LABEL);
 		data = new GridData();
 		this.accessLabel.setLayoutData(data);
 		
@@ -91,7 +91,7 @@ public class MappingFileOptionsWizardPage
 		new Label(composite, SWT.NONE);
 		
 		this.addToPersistenceUnitButton = new Button(composite, SWT.CHECK | SWT.BEGINNING);
-		this.addToPersistenceUnitButton.setText(JptJpaUiMessages.MappingFileWizardPage_addToPersistenceUnitButton);
+		this.addToPersistenceUnitButton.setText(JptJpaUiMessages.MAPPING_FILE_WIZARD_PAGE_ADD_TO_PERSISTENCE_UNIT_BUTTON);
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		data.horizontalSpan = 3;
 		data.verticalIndent = 10;
@@ -99,7 +99,7 @@ public class MappingFileOptionsWizardPage
 		this.synchHelper.synchCheckbox(this.addToPersistenceUnitButton, ADD_TO_PERSISTENCE_UNIT, null);
 		
 		this.persistenceUnitLabel = new Label(composite, SWT.NONE);
-		this.persistenceUnitLabel.setText(JptJpaUiMessages.MappingFileWizardPage_persistenceUnitLabel);
+		this.persistenceUnitLabel.setText(JptJpaUiMessages.MAPPING_FILE_WIZARD_PAGE_PERSISTENCE_UNIT_LABEL);
 		data = new GridData();
 		data.horizontalIndent = 10;
 		this.persistenceUnitLabel.setLayoutData(data);

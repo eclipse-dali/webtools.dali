@@ -18,7 +18,7 @@ public class GenericJavaQueryConversionWizardPage
 	extends GenericJavaMetadataConversionWizardPage
 {
 	public GenericJavaQueryConversionWizardPage(JpaProject jpaProject) {
-		super(jpaProject, JptJpaUiMessages.JavaQueryConversionWizardPage_title, JptJpaUiMessages.JavaQueryConversionWizardPage_description);
+		super(jpaProject, JptJpaUiMessages.JAVA_QUERY_CONVERSION_WIZARD_PAGE_TITLE, JptJpaUiMessages.JAVA_QUERY_CONVERSION_WIZARD_PAGE_DESCRIPTION);
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class GenericJavaQueryConversionWizardPage
 
 	@Override
 	protected String getMissingJavaMetadataWarningMessage() {
-		return JptJpaUiMessages.JAVA_METADATA_CONVERSION_noQueriesToConvert;
+		return JptJpaUiMessages.JAVA_METADATA_CONVERSION_NO_QUERIES_TO_CONVERT;
 	}
 
 	@Override

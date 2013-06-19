@@ -58,7 +58,7 @@ public class EclipseLinkJpaProblemSeveritiesPage
 
 	@Override
 	public void init(IWorkbench workbench) {
-		this.setDescription(JptJpaUiMessages.JpaProblemSeveritiesPage_Description);
+		this.setDescription(JptJpaUiMessages.JPA_PROBLEM_SEVERITIES_PAGE_DESCRIPTION);
 	}
 
 	@Override

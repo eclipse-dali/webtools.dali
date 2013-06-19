@@ -169,7 +169,7 @@ public class InternalJpaPlatformUiManager
 	// ********** logging **********
 
 	private void logMissingJpaPlatform(IConfigurationElement element, String jpaPlatformID) {
-		this.logError(JptJpaUiMessages.JpaPlatformUi_missingJpaPlatform,
+		this.logError(JptJpaUiMessages.JPA_PLATFORM_UI_MISSING_JPA_PLATFORM,
 				jpaPlatformID,
 				element.getDeclaringExtension().getExtensionPointUniqueIdentifier(),
 				element.getContributor().getName()

@@ -56,7 +56,7 @@ public class EclipseLinkGenerateDDLWizard extends Wizard {
 		super();
 		this.jpaProject = jpaProject;
 		this.puName = puName;
-		this.setWindowTitle(JptJpaUiMessages.GenerateDDLWizard_title); 
+		this.setWindowTitle(JptJpaUiMessages.GENERATE_DDL_WIZARD_TITLE); 
 	}
 
 	// ********** IWizard implementation  **********

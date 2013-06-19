@@ -69,7 +69,7 @@ public abstract class AbstractOrmEntityComposite<T extends OrmEntity>
 		new EntityNameCombo(this, container);
 
 		// Access type widgets
-		this.addLabel(container, JptJpaUiMessages.AccessTypeComposite_access);
+		this.addLabel(container, JptJpaUiMessages.ACCESS_TYPE_COMPOSITE_ACCESS);
 		new AccessTypeComboViewer(this, buildAccessReferenceModel(), container);
 
 		// Id class widgets

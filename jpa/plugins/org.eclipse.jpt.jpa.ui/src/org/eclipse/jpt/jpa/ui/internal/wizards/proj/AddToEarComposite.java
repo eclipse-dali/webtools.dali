@@ -49,20 +49,20 @@ public class AddToEarComposite {
 		Group group = new Group(parent, SWT.NONE);
 		group.setLayoutData(gdhfill());
 		group.setLayout(new GridLayout(3, false));
-		group.setText(JptJpaUiMessages.AddToEarComposite_earMemberShip);
+		group.setText(JptJpaUiMessages.ADD_TO_EAR_COMPOSITE_EAR_MEMBER_SHIP);
 		
 		this.addToEar = new Button(group, SWT.CHECK);
-		this.addToEar.setText(JptJpaUiMessages.AddToEarComposite_addToEarLabel);
+		this.addToEar.setText(JptJpaUiMessages.ADD_TO_EAR_COMPOSITE_ADD_TO_EAR_LABEL);
 		GridDataFactory.defaultsFor(this.addToEar).span(3, 1).applyTo(this.addToEar);
 		this.synchhelper.synchCheckbox(addToEar, ADD_TO_EAR, null);
 		
 		this.label = new Label(group, SWT.NULL);
-		this.label.setText(JptJpaUiMessages.AddToEarComposite_earProjectLabel);
+		this.label.setText(JptJpaUiMessages.ADD_TO_EAR_COMPOSITE_EAR_PROJECT_LABEL);
 		this.combo = new Combo(group, SWT.NONE);
 		this.combo.setLayoutData(gdhfill());
 		
 		this.newButton = new Button(group, SWT.PUSH);
-		this.newButton.setText(JptJpaUiMessages.AddToEarComposite_newButtonLabel);
+		this.newButton.setText(JptJpaUiMessages.ADD_TO_EAR_COMPOSITE_NEW_BUTTON_LABEL);
 		GridDataFactory.defaultsFor(this.newButton).applyTo(this.newButton);
 		
 		this.newButton.addSelectionListener(

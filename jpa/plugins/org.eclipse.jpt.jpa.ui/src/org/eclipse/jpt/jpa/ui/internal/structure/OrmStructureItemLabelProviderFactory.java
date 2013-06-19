@@ -48,7 +48,7 @@ public class OrmStructureItemLabelProviderFactory
 	protected ItemExtendedLabelProvider buildEntityMappingsProvider(EntityMappings entityMappings, ItemExtendedLabelProvider.Manager manager) {
 		return new StaticItemExtendedLabelProvider(
 					JptJpaUiImages.ENTITY_MAPPINGS,
-					JptJpaUiMessages.OrmItemLabelProviderFactory_entityMappingsLabel,
+					JptJpaUiMessages.ORM_ITEM_LABEL_PROVIDER_FACTORY_ENTITY_MAPPINGS_LABEL,
 					this.buildEntityMappingsDescription(entityMappings),
 					manager
 				);
@@ -56,7 +56,7 @@ public class OrmStructureItemLabelProviderFactory
 
 	protected String buildEntityMappingsDescription(EntityMappings entityMappings) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(JptJpaUiMessages.OrmItemLabelProviderFactory_entityMappingsLabel);
+		sb.append(JptJpaUiMessages.ORM_ITEM_LABEL_PROVIDER_FACTORY_ENTITY_MAPPINGS_LABEL);
 		sb.append(" - ");  //$NON-NLS-1$
 		sb.append(entityMappings.getResource().getFullPath().makeRelative());
 		return sb.toString();

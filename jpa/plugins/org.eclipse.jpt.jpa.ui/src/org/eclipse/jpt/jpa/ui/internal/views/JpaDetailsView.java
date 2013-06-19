@@ -162,7 +162,7 @@ public class JpaDetailsView
 	}
 
 	private Control buildDefaultPage() {
-		return this.widgetFactory.createLabel(this.pageBook, JptJpaUiMessages.JpaDetailsView_viewNotAvailable);
+		return this.widgetFactory.createLabel(this.pageBook, JptJpaUiMessages.JPA_DETAILS_VIEW_VIEW_NOT_AVAILABLE);
 	}
 
 	private Manager buildManager() {

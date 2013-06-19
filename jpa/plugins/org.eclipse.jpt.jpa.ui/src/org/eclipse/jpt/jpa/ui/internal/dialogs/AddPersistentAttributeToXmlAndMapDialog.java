@@ -46,7 +46,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 	public AddPersistentAttributeToXmlAndMapDialog(Shell parentShell, OrmPersistentAttribute unmappedPersistentAttribute) {
 		super(parentShell);
 		this.unmappedPersistentAttribute = unmappedPersistentAttribute;
-		setTitle(JptJpaUiMessages.AddPersistentAttributeDialog_title);
+		setTitle(JptJpaUiMessages.ADD_PERSISTENT_ATTRIBUTE_DIALOG_TITLE);
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		composite.setLayout(new GridLayout(2, false));
 
-		createLabel(composite, 1, JptJpaUiMessages.AddPersistentAttributeDialog_attributeLabel);
+		createLabel(composite, 1, JptJpaUiMessages.ADD_PERSISTENT_ATTRIBUTE_DIALOG_ATTRIBUTE_LABEL);
 
 		attributeText = createText(composite, 1);
 //		attributeText.addModifyListener(
@@ -70,7 +70,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 		attributeText.setText(unmappedPersistentAttribute.getName());
 		attributeText.setEditable(false);
 
-		createLabel(composite, 1, JptJpaUiMessages.AddPersistentClassDialog_mappingLabel);
+		createLabel(composite, 1, JptJpaUiMessages.ADD_PERSISTENT_CLASS_DIALOG_MAPPING_LABEL);
 
 		mappingCombo = new ComboViewer(createCombo(composite, 1));
 		mappingCombo.getCombo().setFocus();
@@ -164,13 +164,13 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 //			updateStatus(
 //				new Status(
 //					IStatus.WARNING, JptJpaUiPlugin.PLUGIN_ID,
-//					JptUiMessages.AddPersistentClassDialog_duplicateClassWarning));
+//					JptUiMessages.ADD_PERSISTENT_CLASS_DIALOG_duplicateClassWarning));
 //			return;
 //		}
 //
 		String mappingKey = getMappingKey();
 		if (mappingKey == null) {
-			updateStatus(JptJpaUiPlugin.instance().buildErrorStatus(JptJpaUiMessages.AddPersistentAttributeDialog_noMappingKeyError));
+			updateStatus(JptJpaUiPlugin.instance().buildErrorStatus(JptJpaUiMessages.ADD_PERSISTENT_ATTRIBUTE_DIALOG_NO_MAPPING_KEY_ERROR));
 			return;
 		}
 

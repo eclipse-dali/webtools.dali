@@ -134,8 +134,8 @@ public class EclipseLinkDynamicDefaultTableGenerationWizardPage
 		ITreeContentProvider contentProvider = new WorkbenchContentProvider();
 		ILabelProvider labelProvider = new WorkbenchLabelProvider();
 		SelectMappingFileDialog dialog = new EclipseLinkSelectMappingFileDialog(getShell(), this.jpaProject.getProject(), labelProvider, contentProvider);
-		dialog.setTitle(JptJpaUiMessages.SelectMappingFileDialog_title);
-		dialog.setMessage(JptJpaUiMessages.SelectMappingFileDialog_message);
+		dialog.setTitle(JptJpaUiMessages.SELECT_MAPPING_FILE_DIALOG_TITLE);
+		dialog.setMessage(JptJpaUiMessages.SELECT_MAPPING_FILE_DIALOG_MESSAGE);
 		dialog.addFilter(filter);
 			
 		String ormFileName = this.xmlMappingFileText.getText();
@@ -170,7 +170,7 @@ public class EclipseLinkDynamicDefaultTableGenerationWizardPage
 //		String errorMessage = null;
 //		JptXmlResource ormXmlResource = getOrmXmlResource();
 //		if (ormXmlResource == null) {
-//			errorMessage = JptUiMessages.JpaMakePersistentWizardPage_mappingFileDoesNotExistError;
+//			errorMessage = JptUiMessages.JPA_MAKE_PERSISTENT_WIZARD_PAGE_mappingFileDoesNotExistError;
 //		}
 //		setErrorMessage(errorMessage);
 //		setPageComplete(errorMessage == null);

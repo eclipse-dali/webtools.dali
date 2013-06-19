@@ -406,7 +406,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 
 	private Button buildSelectAllButton(Composite parent) {
 		Button button = this.buildSelectionButton(parent,
-			JptJpaUiMessages.General_selectAll,
+			JptJpaUiMessages.GENERAL_SELECT_ALL,
 			this.resourceManager.createImage(JptCommonUiImages.SELECT_ALL_BUTTON));
 		
 		button.addSelectionListener(this.buildSelectAllSelectionListener());
@@ -415,7 +415,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 
 	private Button buildDeselectAllButton(Composite parent) {
 		Button button = this.buildSelectionButton(parent,
-			JptJpaUiMessages.General_deselectAll,
+			JptJpaUiMessages.GENERAL_DESELECT_ALL,
 			this.resourceManager.createImage(JptCommonUiImages.DESELECT_ALL_BUTTON));
 		
 		button.addSelectionListener(this.buildDeselectAllSelectionListener());
@@ -424,7 +424,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 
 	private Button buildRefreshTablesButton(Composite parent) {
 		Button button = this.buildSelectionButton(parent,
-			JptJpaUiMessages.General_refresh,
+			JptJpaUiMessages.GENERAL_REFRESH,
 			this.resourceManager.createImage(JptCommonUiImages.REFRESH_BUTTON));
 		
 		button.addSelectionListener(this.buildRefreshTablesSelectionListener());

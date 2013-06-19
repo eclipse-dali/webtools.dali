@@ -73,7 +73,7 @@ public class AddPersistentClassDialog extends StatusDialog
 	public AddPersistentClassDialog(Shell parentShell, EntityMappings entityMappings) {
 		super(parentShell);
 		this.entityMappings = entityMappings;
-		setTitle(JptJpaUiMessages.AddPersistentClassDialog_title);
+		setTitle(JptJpaUiMessages.ADD_PERSISTENT_CLASS_DIALOG_TITLE);
 	}
 	
 	@Override
@@ -84,7 +84,7 @@ public class AddPersistentClassDialog extends StatusDialog
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		composite.setLayout(new GridLayout(3, false));
 		
-		createLabel(composite, JptJpaUiMessages.AddPersistentClassDialog_classLabel);
+		createLabel(composite, JptJpaUiMessages.ADD_PERSISTENT_CLASS_DIALOG_CLASS_LABEL);
 			
 		this.classText = createText(composite);
 		this.classText.addModifyListener(
@@ -95,7 +95,7 @@ public class AddPersistentClassDialog extends StatusDialog
 				}
 			);
 		
-		this.classBrowseButton = createButton(composite, JptJpaUiMessages.General_browse);
+		this.classBrowseButton = createButton(composite, JptJpaUiMessages.GENERAL_BROWSE);
 		this.classBrowseButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				IType type = chooseType();
@@ -108,7 +108,7 @@ public class AddPersistentClassDialog extends StatusDialog
 			}
 		});
 		
-		createLabel(composite, JptJpaUiMessages.AddPersistentClassDialog_mappingLabel);
+		createLabel(composite, JptJpaUiMessages.ADD_PERSISTENT_CLASS_DIALOG_MAPPING_LABEL);
 		
 		this.mappingCombo = new ComboViewer(createCombo(composite, 2));
 		this.mappingCombo.setContentProvider(
@@ -250,8 +250,8 @@ public class AddPersistentClassDialog extends StatusDialog
 			return null;
 		}
 
-		dialog.setTitle(JptJpaUiMessages.AddPersistentClassDialog_classDialog_title); 
-		dialog.setMessage(JptJpaUiMessages.AddPersistentClassDialog_classDialog_message); 
+		dialog.setTitle(JptJpaUiMessages.ADD_PERSISTENT_CLASS_DIALOG_CLASS_DIALOG_TITLE); 
+		dialog.setMessage(JptJpaUiMessages.ADD_PERSISTENT_CLASS_DIALOG_CLASS_DIALOG_MESSAGE); 
 
 		return (dialog.open() == Window.OK) ? (IType) dialog.getResult()[0] : null;
 	}
@@ -260,7 +260,7 @@ public class AddPersistentClassDialog extends StatusDialog
 		String className = getClassName();
 		
 		if (StringTools.isBlank(className)) {
-			updateStatus(JptJpaUiPlugin.instance().buildErrorStatus(JptJpaUiMessages.AddPersistentClassDialog_noClassError));
+			updateStatus(JptJpaUiPlugin.instance().buildErrorStatus(JptJpaUiMessages.ADD_PERSISTENT_CLASS_DIALOG_NO_CLASS_ERROR));
 			return;
 		}
 		className = className.replace('$', '.');
@@ -274,18 +274,18 @@ public class AddPersistentClassDialog extends StatusDialog
 		}
 		
 		if (type == null) {
-			updateStatus(JptJpaUiPlugin.instance().buildWarningStatus(JptJpaUiMessages.AddPersistentClassDialog_classNotFoundWarning));
+			updateStatus(JptJpaUiPlugin.instance().buildWarningStatus(JptJpaUiMessages.ADD_PERSISTENT_CLASS_DIALOG_CLASS_NOT_FOUND_WARNING));
 			return;
 		}
 		
 		if (this.entityMappings.containsManagedType(className)) {
-			updateStatus(JptJpaUiPlugin.instance().buildWarningStatus(JptJpaUiMessages.AddPersistentClassDialog_duplicateClassWarning));
+			updateStatus(JptJpaUiPlugin.instance().buildWarningStatus(JptJpaUiMessages.ADD_PERSISTENT_CLASS_DIALOG_DUPLICATE_CLASS_WARNING));
 			return;
 		}
 		
 		String mappingKey = getMappingKey();
 		if (mappingKey == null) {
-			updateStatus(JptJpaUiPlugin.instance().buildErrorStatus(JptJpaUiMessages.AddPersistentClassDialog_noMappingKeyError));
+			updateStatus(JptJpaUiPlugin.instance().buildErrorStatus(JptJpaUiMessages.ADD_PERSISTENT_CLASS_DIALOG_NO_MAPPING_KEY_ERROR));
 			return;
 		}
 		

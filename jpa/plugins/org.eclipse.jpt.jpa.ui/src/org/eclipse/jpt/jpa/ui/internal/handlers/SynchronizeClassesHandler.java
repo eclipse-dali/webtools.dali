@@ -133,7 +133,7 @@ public class SynchronizeClassesHandler extends AbstractHandler
 			if (monitor.isCanceled()) {
 				return;
 			}
-			SubMonitor sm = SubMonitor.convert(monitor, JptJpaUiMessages.SynchronizingClasses_TaskName, 20);
+			SubMonitor sm = SubMonitor.convert(monitor, JptJpaUiMessages.SYNCHRONIZING_CLASSES_TASK_NAME, 20);
 
 			JpaProject jpaProject = this.getJpaProject();
 			if (jpaProject == null) {

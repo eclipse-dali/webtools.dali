@@ -146,7 +146,7 @@ public class ConvertJavaProjectToJpaCommandHandler
 		public void run(IProgressMonitor monitor)
 				throws InvocationTargetException, InterruptedException {
 			
-			monitor.beginTask(JptJpaUiMessages.convertToJpa_convertingProject, 1000);
+			monitor.beginTask(JptJpaUiMessages.CONVERT_TO_JPA_CONVERTING_PROJECT, 1000);
 			try {
 				IProgressMonitor createProgressMonitor = new SubProgressMonitor(monitor, 100);
 				IFacetedProject fproj = ProjectFacetsManager.create(this.project, true, createProgressMonitor);
@@ -155,12 +155,12 @@ public class ConvertJavaProjectToJpaCommandHandler
 					throw new InterruptedException();
 				}
 				
-				monitor.setTaskName(JptJpaUiMessages.convertToJpa_detectingTechnologies);				
+				monitor.setTaskName(JptJpaUiMessages.CONVERT_TO_JPA_DETECTING_TECHNOLOGIES);				
 				IProgressMonitor detectProgressMonitor = new SubProgressMonitor(monitor, 400);
 				this.fprojwc = fproj.createWorkingCopy();
 				this.fprojwc.detect(detectProgressMonitor);
 
-				monitor.setTaskName(JptJpaUiMessages.convertToJpa_installingJpaFacet);
+				monitor.setTaskName(JptJpaUiMessages.CONVERT_TO_JPA_INSTALLING_JPA_FACET);
 				this.fprojwc.addProjectFacet(JpaProject.FACET.getDefaultVersion());
 			}
 			catch (CoreException e) {

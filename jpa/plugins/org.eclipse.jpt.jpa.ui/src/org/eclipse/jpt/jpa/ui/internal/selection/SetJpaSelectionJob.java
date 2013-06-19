@@ -56,7 +56,7 @@ class SetJpaSelectionJob
 
 
 	SetJpaSelectionJob(Manager manager, JpaStructureNode selection) {
-		super(JptJpaUiMessages.SetJpaSelection_jobName);
+		super(JptJpaUiMessages.SET_JPA_SELECTION_JOB_NAME);
 		this.setJpaSelectionRunnable = new SetJpaSelectionRunnable(manager, selection);
 		// if the selection is null we don't need a scheduling rule -
 		// the JPA selection can be set to null at any time

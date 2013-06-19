@@ -135,7 +135,7 @@ public class EclipseLinkAddVirtualAttributeDialog extends StatusDialog {
 		this.attributeTypeText = createTypeText(composite);
 		this.attributeTypeText.addModifyListener(getTextModifyListener());
 
-		this.attributeTypeBrowseButton = createButton(composite, JptJpaUiMessages.General_browse);
+		this.attributeTypeBrowseButton = createButton(composite, JptJpaUiMessages.GENERAL_BROWSE);
 		this.attributeTypeBrowseButton.addSelectionListener(addButtonSelectionListener(attributeTypeText));
 
 		createLabel(composite, 1, JptJpaEclipseLinkUiMessages.ADD_VIRTUAL_ATTRIBUTE_DIALOG_TARGET_TYPE_LABEL);
@@ -144,7 +144,7 @@ public class EclipseLinkAddVirtualAttributeDialog extends StatusDialog {
 		this.targetTypeText.addModifyListener(getTextModifyListener());
 		this.targetTypeText.setEnabled(false);
 
-		this.targetTypeBrowserButton = createButton(composite, JptJpaUiMessages.General_browse);
+		this.targetTypeBrowserButton = createButton(composite, JptJpaUiMessages.GENERAL_BROWSE);
 		this.targetTypeBrowserButton.addSelectionListener(addButtonSelectionListener(targetTypeText));
 		this.targetTypeBrowserButton.setEnabled(false);
 
@@ -340,8 +340,8 @@ public class EclipseLinkAddVirtualAttributeDialog extends StatusDialog {
 			return null;
 		}
 
-		dialog.setTitle(JptJpaUiMessages.AddPersistentClassDialog_classDialog_title); 
-		dialog.setMessage(JptJpaUiMessages.AddPersistentClassDialog_classDialog_message); 
+		dialog.setTitle(JptJpaUiMessages.ADD_PERSISTENT_CLASS_DIALOG_CLASS_DIALOG_TITLE); 
+		dialog.setMessage(JptJpaUiMessages.ADD_PERSISTENT_CLASS_DIALOG_CLASS_DIALOG_MESSAGE); 
 
 		return (dialog.open() == Window.OK) ? (IType) dialog.getResult()[0] : null;
 	}

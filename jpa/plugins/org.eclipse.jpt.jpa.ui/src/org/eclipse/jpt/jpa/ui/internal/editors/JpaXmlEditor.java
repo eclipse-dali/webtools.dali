@@ -202,7 +202,7 @@ public class JpaXmlEditor
 	private void addXMLSourceEditorPage() {
 		try {
 			int index = this.addPage(this.structuredTextEditor, this.getEditorInput());
-			this.setPageText(index, JptJpaUiMessages.JpaXmlEditor_sourcePage);
+			this.setPageText(index, JptJpaUiMessages.JPA_XML_EDITOR_SOURCE_PAGE);
 		}
 		catch (PartInitException e) {
 			JptJpaUiPlugin.instance().logError(e);
@@ -551,7 +551,7 @@ public class JpaXmlEditor
 			final String helpID;
 
 			HelpAction(String helpID) {
-				super(JptJpaUiMessages.JpaXmlEditor_page_help);
+				super(JptJpaUiMessages.JPA_XML_EDITOR_PAGE_HELP);
 				this.helpID = helpID;
 			}
 

@@ -40,7 +40,7 @@ public class OpenJpaResourceAction
 
 
 	public OpenJpaResourceAction() {
-		super(JptJpaUiMessages.OpenJpaResourceAction_open);
+		super(JptJpaUiMessages.OPEN_JPA_RESOURCE_ACTION_OPEN);
 	}
 
 	@Override
@@ -93,7 +93,7 @@ public class OpenJpaResourceAction
 		try {
 			page.openEditor(new FileEditorInput(file), editorDescriptor.getId());
 		} catch (Exception ex) {
-			MessageDialog.openError(page.getWorkbenchWindow().getShell(), JptJpaUiMessages.OpenJpaResourceAction_error, ex.getMessage());
+			MessageDialog.openError(page.getWorkbenchWindow().getShell(), JptJpaUiMessages.OPEN_JPA_RESOURCE_ACTION_ERROR, ex.getMessage());
 		}
 	}
 

@@ -41,7 +41,7 @@ public class EclipseLinkJavaEmbeddableComposite1_2
 		Composite container = this.addSubPane(embeddableSection, 2, 0, 0, 0, 0);
 
 		// Access type widgets
-		this.addLabel(container, JptJpaUiMessages.AccessTypeComposite_access);
+		this.addLabel(container, JptJpaUiMessages.ACCESS_TYPE_COMPOSITE_ACCESS);
 		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);
 
 		return container;

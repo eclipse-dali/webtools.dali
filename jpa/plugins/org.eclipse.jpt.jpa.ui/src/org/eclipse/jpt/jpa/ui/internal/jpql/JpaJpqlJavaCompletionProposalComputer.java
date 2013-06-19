@@ -119,7 +119,7 @@ public final class JpaJpqlJavaCompletionProposalComputer extends JpqlCompletionP
 				return computeCompletionProposals((JavaContentAssistInvocationContext) context, monitor);
 			}
 			catch (Exception ex) {
-				JptJpaUiPlugin.instance().logError(ex, JptJpaUiMessages.JpaJpqlJavaCompletionProposalComputer_Error);
+				JptJpaUiPlugin.instance().logError(ex, JptJpaUiMessages.JPA_JPQL_JAVA_COMPLETION_PROPOSAL_COMPUTER_ERROR);
 			}
 			finally {
 				monitor.done();

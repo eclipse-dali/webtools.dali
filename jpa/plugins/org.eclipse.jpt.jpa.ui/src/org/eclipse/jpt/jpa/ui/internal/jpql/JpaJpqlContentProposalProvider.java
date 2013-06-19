@@ -486,7 +486,7 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 
 		// Add the context assist icon at the top left corner of the StyledText
 		ControlDecoration decoration = new ControlDecoration(styledText, SWT.LEFT | SWT.TOP);
-		decoration.setDescriptionText(NLS.bind(JptJpaUiMessages.JpqlContentProposalProvider_Description, key));
+		decoration.setDescriptionText(NLS.bind(JptJpaUiMessages.JPQL_CONTENT_PROPOSAL_PROVIDER_DESCRIPTION, key));
 		decoration.setImage(contentAssistImage());
 		decoration.setShowOnlyOnFocus(true);
 	}

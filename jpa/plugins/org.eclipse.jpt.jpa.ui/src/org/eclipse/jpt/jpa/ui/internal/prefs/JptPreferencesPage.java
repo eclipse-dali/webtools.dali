@@ -57,16 +57,16 @@ public class JptPreferencesPage extends PreferencePage implements IWorkbenchPref
 		Group dontAskGroup = new Group(container, SWT.NONE);
 		dontAskGroup.setLayout(layout);
 		dontAskGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		dontAskGroup.setText(JptJpaUiMessages.JptPreferencesPage_DoNotShowDialogs);
+		dontAskGroup.setText(JptJpaUiMessages.JPT_PREFERENCES_PAGE_DO_NOT_SHOW_DIALOGS);
 
 		Label label = new Label(dontAskGroup, SWT.WRAP);
-		label.setText(JptJpaUiMessages.JptPreferencesPage_DoNotShowText);
+		label.setText(JptJpaUiMessages.JPT_PREFERENCES_PAGE_DO_NOT_SHOW_TEXT);
 		GridData data= new GridData(GridData.FILL, GridData.CENTER, true, false);
 		data.widthHint= convertVerticalDLUsToPixels(50);
 		label.setLayoutData(data);
 		
 		Button button = new Button(dontAskGroup, SWT.PUSH);
-		button.setText(JptJpaUiMessages.JptPreferencesPage_ClearButtonText);
+		button.setText(JptJpaUiMessages.JPT_PREFERENCES_PAGE_CLEAR_BUTTON_TEXT);
 		button.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 		button.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {

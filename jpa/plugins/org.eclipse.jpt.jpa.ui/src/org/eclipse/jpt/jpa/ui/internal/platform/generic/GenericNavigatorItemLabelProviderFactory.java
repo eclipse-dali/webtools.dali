@@ -86,8 +86,8 @@ public class GenericNavigatorItemLabelProviderFactory
 	protected ItemExtendedLabelProvider buildJpaContextRootProvider(JpaContextRoot item, ItemExtendedLabelProvider.Manager manager) {
 		return new StaticItemExtendedLabelProvider(
 				JptJpaUiImages.JPA_CONTENT,
-				JptJpaUiMessages.JpaContent_label,
-				JptJpaUiMessages.JpaContent_label + " - " + item.getResource().getFullPath().makeRelative(), //$NON-NLS-1$
+				JptJpaUiMessages.JPA_CONTENT_LABEL,
+				JptJpaUiMessages.JPA_CONTENT_LABEL + " - " + item.getResource().getFullPath().makeRelative(), //$NON-NLS-1$
 				manager
 			);
 	}

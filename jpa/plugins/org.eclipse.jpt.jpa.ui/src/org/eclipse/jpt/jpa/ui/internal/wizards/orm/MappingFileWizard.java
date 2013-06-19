@@ -83,7 +83,7 @@ public class MappingFileWizard extends Wizard
 	public MappingFileWizard(IDataModel dataModel) {
 		super();
 		this.dataModel = dataModel;
-		setWindowTitle(JptJpaUiMessages.MappingFileWizard_title);
+		setWindowTitle(JptJpaUiMessages.MAPPING_FILE_WIZARD_TITLE);
 		setDefaultPageImageDescriptor(JptJpaUiImages.JPA_FILE_BANNER);
 	}
 	
@@ -201,15 +201,15 @@ public class MappingFileWizard extends Wizard
 	protected NewJptFileWizardPage buildMappingFileNewFileWizardPage() {
 		return new NewJptFileWizardPage(
 				"Page_1", this.mungedSelection, getDataModel(),
-				JptJpaUiMessages.MappingFileWizardPage_newFile_title, 
-				JptJpaUiMessages.MappingFileWizardPage_newFile_desc);
+				JptJpaUiMessages.MAPPING_FILE_WIZARD_PAGE_NEW_FILE_TITLE, 
+				JptJpaUiMessages.MAPPING_FILE_WIZARD_PAGE_newFile_desc);
 	}
 	
 	protected MappingFileOptionsWizardPage buildMappingFileOptionsWizardPage() {
 		return new MappingFileOptionsWizardPage(
 				"Page_2", getDataModel(),
-				JptJpaUiMessages.MappingFileWizardPage_options_title, 
-				JptJpaUiMessages.MappingFileWizardPage_options_desc);
+				JptJpaUiMessages.MAPPING_FILE_WIZARD_PAGE_OPTIONS_TITLE, 
+				JptJpaUiMessages.MAPPING_FILE_WIZARD_PAGE_OPTIONS_DESC);
 	}
 	
 	@Override

@@ -30,8 +30,8 @@ public class JpaProjectWizardFirstPage
 	
 	public JpaProjectWizardFirstPage(IDataModel dataModel, String pageName) {
 		super(dataModel, pageName);
-		setTitle(JptJpaUiMessages.NewJpaProjectWizard_firstPage_title);
-		setDescription(JptJpaUiMessages.NewJpaProjectWizard_firstPage_description);
+		setTitle(JptJpaUiMessages.NEW_JPA_PROJECT_WIZARD_FIRST_PAGE_TITLE);
+		setDescription(JptJpaUiMessages.NEW_JPA_PROJECT_WIZARD_FIRST_PAGE_DESCRIPTION);
 		setInfopopID(JpaHelpContextIds.NEW_JPA_PROJECT);
 	}
 	

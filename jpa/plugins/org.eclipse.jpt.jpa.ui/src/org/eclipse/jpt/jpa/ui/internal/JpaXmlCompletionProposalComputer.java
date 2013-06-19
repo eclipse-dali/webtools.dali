@@ -116,11 +116,11 @@ public class JpaXmlCompletionProposalComputer extends DefaultJpaXmlCompletionPro
 						if (matchString.startsWith("\"") && newMatchString.startsWith("\"")) { //$NON-NLS-1$ //$NON-NLS-2$
 							proposal = new CompletionProposal(
 									convertedPossibleValue, rOffset, rLength + 1, convertedPossibleValue.length(), null, 
-									possibleValue, null, JptJpaUiMessages.JpaXmlCompletionProposalComputer_SpecialNameMsg);
+									possibleValue, null, JptJpaUiMessages.JPA_XML_COMPLETION_PROPOSAL_COMPUTER_SPECIAL_NAME_MSG);
 						} else {
 							proposal = new CompletionProposal(
 									convertedPossibleValue, rOffset, rLength, convertedPossibleValue.length(), null, 
-									possibleValue, null, JptJpaUiMessages.JpaXmlCompletionProposalComputer_SpecialNameMsg);
+									possibleValue, null, JptJpaUiMessages.JPA_XML_COMPLETION_PROPOSAL_COMPUTER_SPECIAL_NAME_MSG);
 						}
 					} else {
 						// do not give the addition message with normal values
@@ -191,7 +191,7 @@ public class JpaXmlCompletionProposalComputer extends DefaultJpaXmlCompletionPro
 						proposal = new CompletionProposal(
 								convertedProposedValue, begin, length, convertedProposedValue.length(), 
 								this.getImage(context, JptJpaUiImages.JPA_CONTENT), proposedValue, null, 
-								JptJpaUiMessages.JpaXmlCompletionProposalComputer_SpecialNameMsg);
+								JptJpaUiMessages.JPA_XML_COMPLETION_PROPOSAL_COMPUTER_SPECIAL_NAME_MSG);
 					} else {
 						proposal = new CompletionProposal(
 								convertedProposedValue, begin, length, convertedProposedValue.length(), 

@@ -69,7 +69,7 @@ public class JpaMakePersistentWizard
 		this.selectedTypes = selectedTypes;
 		this.resourceManager = this.buildResourceManager();
 		this.javaClassMappings = this.buildJavaClassMappings(this.selectedTypes);
-		this.setWindowTitle(JptJpaUiMessages.JpaMakePersistentWizardPage_title);
+		this.setWindowTitle(JptJpaUiMessages.JPA_MAKE_PERSISTENT_WIZARD_PAGE_TITLE);
 		this.setDefaultPageImageDescriptor(JptJpaUiImages.ENTITY_BANNER);
 		this.databaseAnnotationNameBuilder = new LocalDatabaseAnnotationNameBuilder(this.jpaProject.getJpaPlatform().getEntityGeneratorDatabaseAnnotationNameBuilder());
 	}

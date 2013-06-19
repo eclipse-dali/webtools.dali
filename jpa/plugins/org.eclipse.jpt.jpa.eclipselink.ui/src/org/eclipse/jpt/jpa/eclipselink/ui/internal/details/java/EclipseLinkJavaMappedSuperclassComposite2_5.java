@@ -58,7 +58,7 @@ public class EclipseLinkJavaMappedSuperclassComposite2_5
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
 		// Access type widgets
-		this.addLabel(container, JptJpaUiMessages.AccessTypeComposite_access);
+		this.addLabel(container, JptJpaUiMessages.ACCESS_TYPE_COMPOSITE_ACCESS);
 		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);
 
 		// Id class widgets

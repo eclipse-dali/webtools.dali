@@ -119,7 +119,7 @@ public abstract class JpaJpqlHyperlinkBuilder extends AbstractExpressionVisitor 
 				parentType,
 				element,
 				region,
-				JptJpaUiMessages.JpaJpqlHyperlinkBuilder_OpenDeclaration
+				JptJpaUiMessages.JPA_JPQL_HYPERLINK_BUILDER_OPEN_DECLARATION
 			);
 		}
 
@@ -128,7 +128,7 @@ public abstract class JpaJpqlHyperlinkBuilder extends AbstractExpressionVisitor 
 			addOpenDeclarationHyperlink(
 				fieldType,
 				region,
-				JptJpaUiMessages.JpaJpqlHyperlinkBuilder_OpenDeclaredType
+				JptJpaUiMessages.JPA_JPQL_HYPERLINK_BUILDER_OPEN_DECLARED_TYPE
 			);
 		}
 	}
@@ -222,7 +222,7 @@ public abstract class JpaJpqlHyperlinkBuilder extends AbstractExpressionVisitor 
 		return buildOpenDeclarationHyperlink(
 			type,
 			region,
-			JptJpaUiMessages.JpaJpqlHyperlinkBuilder_OpenDeclaration
+			JptJpaUiMessages.JPA_JPQL_HYPERLINK_BUILDER_OPEN_DECLARATION
 		);
 	}
 

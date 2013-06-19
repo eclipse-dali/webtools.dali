@@ -32,7 +32,7 @@ public class JpaEntityGenPreferencePage extends PropertyPage {
 	
 	public JpaEntityGenPreferencePage() {
 		super();
-		this.setDescription(JptJpaUiMessages.JpaEntityGenPreferencePage_Description); 
+		this.setDescription(JptJpaUiMessages.JPA_ENTITY_GEN_PREFERENCE_PAGE_DESCRIPTION); 
 	}
 	
 	// ********** overrides **********
@@ -94,12 +94,12 @@ public class JpaEntityGenPreferencePage extends PropertyPage {
 			super();
 			// Entity Gen group box
 			Group group = new Group(parent, SWT.NONE);
-			group.setText(JptJpaUiMessages.JpaEntityGenPreferencePage_generalGroup_title);
+			group.setText(JptJpaUiMessages.JPA_ENTITY_GEN_PREFERENCE_PAGE_GENERAL_GROUP_TITLE);
 			group.setLayout(new GridLayout(2, false));
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 			// default package
-			this.buildLabel(group, 1, JptJpaUiMessages.JpaEntityGenPreferencePage_defaultPackageLabel);
+			this.buildLabel(group, 1, JptJpaUiMessages.JPA_ENTITY_GEN_PREFERENCE_PAGE_DEFAULT_PACKAGE_LABEL);
 			this.defaultPackageText = this.buildText(group, 1);
 			
 			this.initializeFromPreferences();

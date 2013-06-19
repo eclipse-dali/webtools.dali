@@ -200,7 +200,7 @@ public class SelectOrderByDialog extends Dialog
 		
 		Button selectAllButton = new Button(buttonComposite, SWT.PUSH);
 		selectAllButton.setImage(resourceManager.createImage(JptCommonUiImages.SELECT_ALL_BUTTON));		
-		selectAllButton.setToolTipText(JptJpaUiMessages.General_selectAll);
+		selectAllButton.setToolTipText(JptJpaUiMessages.GENERAL_SELECT_ALL);
 		GridData gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		selectAllButton.setLayoutData(gridData);
@@ -216,7 +216,7 @@ public class SelectOrderByDialog extends Dialog
 		
 		Button deselectAllButton = new Button(buttonComposite, SWT.PUSH);
 		deselectAllButton.setImage(resourceManager.createImage(JptCommonUiImages.DESELECT_ALL_BUTTON));		
-		deselectAllButton.setToolTipText(JptJpaUiMessages.General_deselectAll);
+		deselectAllButton.setToolTipText(JptJpaUiMessages.GENERAL_DESELECT_ALL);
 		gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		deselectAllButton.setLayoutData(gridData);

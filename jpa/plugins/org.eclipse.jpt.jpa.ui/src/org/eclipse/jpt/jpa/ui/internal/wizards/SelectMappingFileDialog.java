@@ -60,10 +60,10 @@ public class SelectMappingFileDialog
 	protected Control createDialogArea(Composite parent) {
 		Composite composite = (Composite) super.createDialogArea(parent);
 		Button newButton = new Button(composite, SWT.PUSH);
-		newButton.setText(JptJpaUiMessages.SelectMappingFileDialog_newButton);
+		newButton.setText(JptJpaUiMessages.SELECT_MAPPING_FILE_DIALOG_NEW_BUTTON);
 		GridData browseButtonData = new GridData(GridData.HORIZONTAL_ALIGN_END);
 		newButton.setLayoutData(browseButtonData);		
-		newButton.setToolTipText(JptJpaUiMessages.SelectMappingFileDialog_newButtonToolTip);
+		newButton.setToolTipText(JptJpaUiMessages.SELECT_MAPPING_FILE_DIALOG_NEW_BUTTON_TOOL_TIP);
 		newButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				openNewMappingFileWizard();

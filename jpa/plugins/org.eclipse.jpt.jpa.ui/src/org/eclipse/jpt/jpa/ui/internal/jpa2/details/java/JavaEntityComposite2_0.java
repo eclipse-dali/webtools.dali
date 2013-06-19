@@ -58,7 +58,7 @@ public class JavaEntityComposite2_0
 		new EntityNameCombo(this, container);
 
 		// Access type widgets
-		this.addLabel(container, JptJpaUiMessages.AccessTypeComposite_access);
+		this.addLabel(container, JptJpaUiMessages.ACCESS_TYPE_COMPOSITE_ACCESS);
 		new AccessTypeComboViewer(this, buildAccessReferenceModel(), container);
 
 		// Id class widgets

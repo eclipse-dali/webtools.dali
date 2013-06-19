@@ -251,7 +251,7 @@ public class JpaStructureView
 			this.composite = new Composite(parent, SWT.NULL);
 			this.composite.setLayout(new FillLayout());
 			Label label = new Label(this.composite, SWT.LEFT | SWT.TOP | SWT.WRAP);
-			label.setText(JptJpaUiMessages.JpaStructureView_structureNotAvailable);
+			label.setText(JptJpaUiMessages.JPA_STRUCTURE_VIEW_STRUCTURE_NOT_AVAILABLE);
 		}
 
 		@Override

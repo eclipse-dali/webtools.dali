@@ -78,7 +78,7 @@ public class PersistenceStructureItemLabelProviderFactory
 	protected ItemExtendedLabelProvider buildPersistenceProvider(Persistence item, ItemExtendedLabelProvider.Manager manager) {
 		return new StaticItemExtendedLabelProvider(
 					JptJpaUiImages.PERSISTENCE,
-					JptJpaUiMessages.PersistenceItemLabelProviderFactory_persistenceLabel,
+					JptJpaUiMessages.PERSISTENCE_ITEM_LABEL_PROVIDER_FACTORY_PERSISTENCE_LABEL,
 					this.buildPersistenceDescription(item),
 					manager
 				);
@@ -86,7 +86,7 @@ public class PersistenceStructureItemLabelProviderFactory
 
 	protected String buildPersistenceDescription(Persistence item) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(JptJpaUiMessages.PersistenceItemLabelProviderFactory_persistenceLabel);
+		sb.append(JptJpaUiMessages.PERSISTENCE_ITEM_LABEL_PROVIDER_FACTORY_PERSISTENCE_LABEL);
 		sb.append(" - ");  //$NON-NLS-1$
 		sb.append(item.getResource().getFullPath().makeRelative());
 		return sb.toString();

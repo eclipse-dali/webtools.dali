@@ -60,7 +60,7 @@ public class EclipseLinkOrmOneToManyMappingComposite1_1
 		new EclipseLinkOrmAttributeTypeClassChooser(this, getSubjectHolder(), container, attributeTypeHyperlink);
 
 		// Access type widgets
-		this.addLabel(container, JptJpaUiMessages.AccessTypeComposite_access);
+		this.addLabel(container, JptJpaUiMessages.ACCESS_TYPE_COMPOSITE_ACCESS);
 		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);
 
 		// Fetch type widgets

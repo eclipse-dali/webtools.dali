@@ -198,7 +198,7 @@ public abstract class JavaMetadataConversionWizardPage
 		composite.setLayout(new GridLayout());
 
 		Label pageLabel = new Label(composite, SWT.NONE);
-		pageLabel.setText(JptJpaUiMessages.JavaMetadataConversionWizardPage_label);
+		pageLabel.setText(JptJpaUiMessages.JAVA_METADATA_CONVERSION_WIZARD_PAGE_LABEL);
 		pageLabel.setBounds(3, 230, 150, 12);
 
 		Control mappingFileControl = this.createMappingFileControl(composite);
@@ -208,7 +208,7 @@ public abstract class JavaMetadataConversionWizardPage
 		mappingFileControl.setLayoutData(data);
 
 		Text noteTextField = new Text(composite, SWT.READ_ONLY | SWT.MULTI | SWT.WRAP);
-		noteTextField.setText(JptJpaUiMessages.JAVA_METADATA_CONVERSION_warning);
+		noteTextField.setText(JptJpaUiMessages.JAVA_METADATA_CONVERSION_WARNING);
 		noteTextField.setFont(new Font(composite.getDisplay(), "Arial", 10, SWT.EMBEDDED)); //$NON-NLS-1$
 		noteTextField.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, true, 1, 1));
 
@@ -224,8 +224,8 @@ public abstract class JavaMetadataConversionWizardPage
 		composite.setLayout(new GridLayout(3, false));
 
 		Link link = new Link(composite, SWT.LEFT);
-		link.setText(JptJpaUiMessages.JavaMetadataConversionWizardPage_newMappingFileLink);
-		link.setToolTipText(JptJpaUiMessages.JavaMetadataConversionWizardPage_newMappingFileLinkToolTip);
+		link.setText(JptJpaUiMessages.JAVA_METADATA_CONVERSION_WIZARD_PAGE_NEW_MAPPING_FILE_LINK);
+		link.setToolTipText(JptJpaUiMessages.JAVA_METADATA_CONVERSION_WIZARD_PAGE_NEW_MAPPING_FILE_LINK_TOOL_TIP);
 		link.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
 		link.addSelectionListener(this.buildMappingFileLinkListener());
 
@@ -240,9 +240,9 @@ public abstract class JavaMetadataConversionWizardPage
 		SWTBindingTools.bind(this.mappingFileNameModel, nameTextField);
 
 		Button browseButton = new Button(composite, SWT.CENTER);
-		browseButton.setToolTipText(JptJpaUiMessages.JavaMetadataConversionWizardPage_mappingFileBrowseButtonToolTip);
+		browseButton.setToolTipText(JptJpaUiMessages.JAVA_METADATA_CONVERSION_WIZARD_PAGE_MAPPING_FILE_BROWSE_BUTTON_TOOL_TIP);
 		browseButton.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
-		browseButton.setText(JptJpaUiMessages.JavaMetadataConversionWizardPage_mappingFileBrowseButton);
+		browseButton.setText(JptJpaUiMessages.JAVA_METADATA_CONVERSION_WIZARD_PAGE_MAPPING_FILE_BROWSE_BUTTON);
 		browseButton.addSelectionListener(this.buildMappingFileBrowseButtonListener());
 
 		return composite;
@@ -273,15 +273,15 @@ public abstract class JavaMetadataConversionWizardPage
 	protected String buildErrorMessage() {
 		JptXmlResource ormXmlResource = this.getOrmXmlResource();
 		if (ormXmlResource == null) {
-			return JptJpaUiMessages.JAVA_METADATA_CONVERSION_mappingFileDoesNotExist;
+			return JptJpaUiMessages.JAVA_METADATA_CONVERSION_MAPPING_FILE_DOES_NOT_EXIST;
 		}
 		String mappingFileVersion = ormXmlResource.getVersion();
 		String jpaProjectVersion = this.getJpaProjectVersion();
 		if (ObjectTools.notEquals(mappingFileVersion, jpaProjectVersion)) {
-			return NLS.bind(JptJpaUiMessages.JAVA_METADATA_CONVERSION_mappingFileVersionIsInvalid, mappingFileVersion, jpaProjectVersion);
+			return NLS.bind(JptJpaUiMessages.JAVA_METADATA_CONVERSION_MAPPING_FILE_VERSION_IS_INVALID, mappingFileVersion, jpaProjectVersion);
 		}
 		if (this.getEntityMappings(ormXmlResource) == null) {
-			return JptJpaUiMessages.JAVA_METADATA_CONVERSION_mappingFileNotListedInPersistenceXml;
+			return JptJpaUiMessages.JAVA_METADATA_CONVERSION_MAPPING_FILE_NOT_LISTED_IN_PERSISTENCE_XML;
 		}
 		if (this.noConvertibleJavaMetadata) {
 			this.setMessage(this.getMissingJavaMetadataWarningMessage(), IMessageProvider.WARNING);
@@ -371,8 +371,8 @@ public abstract class JavaMetadataConversionWizardPage
 	protected void mappingFileBrowseButtonPressed() {
 		IProject project = this.jpaProject.getProject();
 		SelectMappingFileDialog dialog = this.buildSelectMappingFileDialog();
-		dialog.setTitle(JptJpaUiMessages.SelectMappingFileDialog_title);
-		dialog.setMessage(JptJpaUiMessages.SelectMappingFileDialog_message);
+		dialog.setTitle(JptJpaUiMessages.SELECT_MAPPING_FILE_DIALOG_TITLE);
+		dialog.setMessage(JptJpaUiMessages.SELECT_MAPPING_FILE_DIALOG_MESSAGE);
 		dialog.addFilter(this.buildSelectMappingFileDialogViewerFilter());
 		dialog.setInput(project);
 

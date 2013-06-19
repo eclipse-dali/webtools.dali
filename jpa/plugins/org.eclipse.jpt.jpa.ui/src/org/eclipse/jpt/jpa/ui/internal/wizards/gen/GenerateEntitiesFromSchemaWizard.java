@@ -271,7 +271,7 @@ public class GenerateEntitiesFromSchemaWizard
 		final OverwriteConfirmer confirmer;
 		final boolean generateXml;
 		public GenerateEntitiesJob(JpaProject jpaProject, ORMGenCustomizer customizer, OverwriteConfirmer confirmer, boolean generateXml) {
-			super(JptJpaUiMessages.EntitiesGenerator_jobName);
+			super(JptJpaUiMessages.ENTITIES_GENERATOR_JOB_NAME);
 			this.customizer = customizer;
 			this.jpaProject = jpaProject;
 			this.confirmer = confirmer;
@@ -357,8 +357,8 @@ public class GenerateEntitiesFromSchemaWizard
 
 		OverwriteConfirmerDialog(Shell parent, String className) {
 			super(ID, parent,
-					JptJpaUiMessages.OverwriteConfirmerDialog_title,
-					NLS.bind(JptJpaUiMessages.OverwriteConfirmerDialog_text, className),
+					JptJpaUiMessages.OVERWRITE_CONFIRMER_DIALOG_TITLE,
+					NLS.bind(JptJpaUiMessages.OVERWRITE_CONFIRMER_DIALOG_TEXT, className),
 					MessageDialog.WARNING,
 					new String[] {IDialogConstants.YES_LABEL, 
 									IDialogConstants.YES_TO_ALL_LABEL, 

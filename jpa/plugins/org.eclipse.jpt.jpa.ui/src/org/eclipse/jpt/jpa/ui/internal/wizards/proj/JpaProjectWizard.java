@@ -34,12 +34,12 @@ public class JpaProjectWizard
 	
 	public JpaProjectWizard() {
 		super();
-		setWindowTitle(JptJpaUiMessages.JpaProjectWizard_title);
+		setWindowTitle(JptJpaUiMessages.JPA_PROJECT_WIZARD_TITLE);
 	}
 	
 	public JpaProjectWizard(IDataModel dataModel) {
 		super(dataModel);
-		setWindowTitle(JptJpaUiMessages.JpaProjectWizard_title);
+		setWindowTitle(JptJpaUiMessages.JPA_PROJECT_WIZARD_TITLE);
 	}
 	
 	

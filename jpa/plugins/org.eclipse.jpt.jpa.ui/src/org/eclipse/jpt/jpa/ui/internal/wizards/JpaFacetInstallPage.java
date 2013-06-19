@@ -96,7 +96,7 @@ public class JpaFacetInstallPage
 		
 		public ConnectionGroup(Composite composite) {
 			Group group = new Group(composite, SWT.NONE);
-			group.setText(JptJpaUiMessages.JpaFacetWizardPage_connectionLabel);
+			group.setText(JptJpaUiMessages.JPA_FACET_WIZARD_PAGE_CONNECTION_LABEL);
 			group.setLayout(new GridLayout(3, false));
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			WorkbenchTools.setHelp(group, JpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_DATABASE);
@@ -115,7 +115,7 @@ public class JpaFacetInstallPage
 			GridData data = new GridData(GridData.END, GridData.CENTER, false, false);
 			data.horizontalSpan = 2;
 			connectionLink.setLayoutData(data);
-			connectionLink.setText(JptJpaUiMessages.JpaFacetWizardPage_connectionLink);
+			connectionLink.setText(JptJpaUiMessages.JPA_FACET_WIZARD_PAGE_CONNECTION_LINK);
 			connectionLink.addSelectionListener(
 				new SelectionAdapter() {
 					@Override
@@ -129,7 +129,7 @@ public class JpaFacetInstallPage
 			data = new GridData(GridData.END, GridData.CENTER, false, false);
 			data.horizontalSpan = 2;
 			connectLink.setLayoutData(data);
-			connectLink.setText(JptJpaUiMessages.JpaFacetWizardPage_connectLink);
+			connectLink.setText(JptJpaUiMessages.JPA_FACET_WIZARD_PAGE_CONNECT_LINK);
 			connectLink.setEnabled(false);
 			connectLink.addSelectionListener(
 				new SelectionAdapter() {
@@ -139,12 +139,12 @@ public class JpaFacetInstallPage
 					}
 				});
 			
-			addDriverLibraryButton = createButton(group, 3, JptJpaUiMessages.JpaFacetWizardPage_addDriverLibraryLabel, SWT.CHECK);
+			addDriverLibraryButton = createButton(group, 3, JptJpaUiMessages.JPA_FACET_WIZARD_PAGE_ADD_DRIVER_LIBRARY_LABEL, SWT.CHECK);
 			addDriverLibraryButton.setSelection(false);
 			synchHelper.synchCheckbox(addDriverLibraryButton, USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH, null);
 			
 			driverLibraryLabel = new Label(group, SWT.LEFT);
-			driverLibraryLabel.setText(JptJpaUiMessages.JpaFacetWizardPage_driverLibraryLabel);
+			driverLibraryLabel.setText(JptJpaUiMessages.JPA_FACET_WIZARD_PAGE_DRIVER_LIBRARY_LABEL);
 			GridData gd = new GridData();
 			gd.horizontalSpan = 1;
 			driverLibraryLabel.setLayoutData(gd);
@@ -154,12 +154,12 @@ public class JpaFacetInstallPage
 				driverLibraryCombo, DB_DRIVER_NAME, 
 				new Control[] {driverLibraryLabel});
 			
-			overrideDefaultCatalogButton = createButton(group, 3, JptJpaUiMessages.JpaFacetWizardPage_overrideDefaultCatalogLabel, SWT.CHECK);
+			overrideDefaultCatalogButton = createButton(group, 3, JptJpaUiMessages.JPA_FACET_WIZARD_PAGE_OVERRIDE_DEFAULT_CATALOG_LABEL, SWT.CHECK);
 			overrideDefaultCatalogButton.setSelection(false);
 			synchHelper.synchCheckbox(overrideDefaultCatalogButton, USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG, null);
 			
 			defaultCatalogLabel = new Label(group, SWT.LEFT);
-			defaultCatalogLabel.setText(JptJpaUiMessages.JpaFacetWizardPage_defaultCatalogLabel);
+			defaultCatalogLabel.setText(JptJpaUiMessages.JPA_FACET_WIZARD_PAGE_DEFAULT_CATALOG_LABEL);
 			gd = new GridData();
 			gd.horizontalSpan = 1;
 			defaultCatalogLabel.setLayoutData(gd);
@@ -169,12 +169,12 @@ public class JpaFacetInstallPage
 				defaultCatalogCombo, USER_OVERRIDE_DEFAULT_CATALOG, 
 				new Control[] {defaultCatalogLabel});
 			
-			overrideDefaultSchemaButton = createButton(group, 3, JptJpaUiMessages.JpaFacetWizardPage_overrideDefaultSchemaLabel, SWT.CHECK);
+			overrideDefaultSchemaButton = createButton(group, 3, JptJpaUiMessages.JPA_FACET_WIZARD_PAGE_OVERRIDE_DEFAULT_SCHEMA_LABEL, SWT.CHECK);
 			overrideDefaultSchemaButton.setSelection(false);
 			synchHelper.synchCheckbox(overrideDefaultSchemaButton, USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA, null);
 			
 			defaultSchemaLabel = new Label(group, SWT.LEFT);
-			defaultSchemaLabel.setText(JptJpaUiMessages.JpaFacetWizardPage_defaultSchemaLabel);
+			defaultSchemaLabel.setText(JptJpaUiMessages.JPA_FACET_WIZARD_PAGE_DEFAULT_SCHEMA_LABEL);
 			gd = new GridData();
 			gd.horizontalSpan = 1;
 			defaultSchemaLabel.setLayoutData(gd);
@@ -231,10 +231,10 @@ public class JpaFacetInstallPage
 		private void updateConnectLink(ConnectionProfile cp) {
 			connectLink.setEnabled((cp != null) && cp.isDisconnected());
 			if (cp != null && cp.isConnected()) {
-				updateConnectLinkText(JptJpaUiMessages.JpaFacetWizardPage_connectedText);
+				updateConnectLinkText(JptJpaUiMessages.JPA_FACET_WIZARD_PAGE_CONNECTED_TEXT);
 			}
 			else {
-				updateConnectLinkText(JptJpaUiMessages.JpaFacetWizardPage_connectLink);
+				updateConnectLinkText(JptJpaUiMessages.JPA_FACET_WIZARD_PAGE_CONNECT_LINK);
 			}
 		}
 		

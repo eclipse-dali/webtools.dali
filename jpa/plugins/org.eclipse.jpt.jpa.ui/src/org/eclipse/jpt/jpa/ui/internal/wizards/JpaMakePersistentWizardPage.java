@@ -144,8 +144,8 @@ public class JpaMakePersistentWizardPage
 		this.annotateInJavaModel = new SimplePropertyValueModel<Boolean>(Boolean.TRUE);
 		this.mappingFileModel = new SimplePropertyValueModel<String>();
 		this.listInPersistenceXmlModel = new SimplePropertyValueModel<Boolean>(Boolean.valueOf(!this.jpaProject.discoversAnnotatedClasses()));
-		this.setTitle(JptJpaUiMessages.JpaMakePersistentWizardPage_title);
-		this.setMessage(JptJpaUiMessages.JpaMakePersistentWizardPage_message);
+		this.setTitle(JptJpaUiMessages.JPA_MAKE_PERSISTENT_WIZARD_PAGE_TITLE);
+		this.setMessage(JptJpaUiMessages.JPA_MAKE_PERSISTENT_WIZARD_PAGE_MESSAGE);
 	}
 
 	protected TypeConfig[] buildSelectedTypes(Set<IType> selectedJdtTypes) {
@@ -200,7 +200,7 @@ public class JpaMakePersistentWizardPage
 		layout.numColumns = nColumns;
 		composite.setLayout(layout);
 		Button javaAnnotationButton = new Button(composite, SWT.RADIO);
-		javaAnnotationButton.setText(JptJpaUiMessages.JpaMakePersistentWizardPage_annotateInJavaRadioButton);
+		javaAnnotationButton.setText(JptJpaUiMessages.JPA_MAKE_PERSISTENT_WIZARD_PAGE_ANNOTATE_IN_JAVA_RADIO_BUTTON);
 		javaAnnotationButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				JpaMakePersistentWizardPage.this.annotateInJavaModel.setValue(Boolean.TRUE);
@@ -214,7 +214,7 @@ public class JpaMakePersistentWizardPage
 		});
 		
 		Button mappingFileButton = new Button(composite, SWT.RADIO);
-		mappingFileButton.setText(JptJpaUiMessages.JpaMakePersistentWizardPage_mappingFileRadioButton);
+		mappingFileButton.setText(JptJpaUiMessages.JPA_MAKE_PERSISTENT_WIZARD_PAGE_MAPPING_FILE_RADIO_BUTTON);
 		Composite mappingFileComposite = this.createMappingFileControl(composite);
 		GridData data = new GridData(GridData.FILL_HORIZONTAL);
 		data.grabExcessHorizontalSpace = true;
@@ -251,7 +251,7 @@ public class JpaMakePersistentWizardPage
 		this.classTableViewer.getTable().setLayoutData(data);
 	
 		final Button persistenceXmlCheckBox = new Button(composite, SWT.CHECK);
-		persistenceXmlCheckBox.setText(JptJpaUiMessages.JpaMakePersistentWizardPage_listInPersistenceXmlCheckBox);
+		persistenceXmlCheckBox.setText(JptJpaUiMessages.JPA_MAKE_PERSISTENT_WIZARD_PAGE_LIST_IN_PERSISTENCE_XML_CHECK_BOX);
 		SWTBindingTools.bind(this.listInPersistenceXmlModel, persistenceXmlCheckBox);
 		SWTBindingTools.controlVisibleState(this.annotateInJavaModel, persistenceXmlCheckBox);
 		
@@ -266,7 +266,7 @@ public class JpaMakePersistentWizardPage
 		composite.setLayout(layout);
 
 		Link mappingFileLink = new Link(composite, SWT.LEFT);
-		mappingFileLink.setText(JptJpaUiMessages.JpaMakePersistentWizardPage_mappingFileLink);
+		mappingFileLink.setText(JptJpaUiMessages.JPA_MAKE_PERSISTENT_WIZARD_PAGE_MAPPING_FILE_LINK);
 		mappingFileLink.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
 		mappingFileLink.addSelectionListener(
 			new SelectionAdapter() {
@@ -293,7 +293,7 @@ public class JpaMakePersistentWizardPage
 		});
 		
 		Button browseButton = new Button(composite, SWT.PUSH);
-		browseButton.setText(JptJpaUiMessages.JpaMakePersistentWizardPage_mappingFileBrowseButton);
+		browseButton.setText(JptJpaUiMessages.JPA_MAKE_PERSISTENT_WIZARD_PAGE_MAPPING_FILE_BROWSE_BUTTON);
 		browseButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				mappingFileBrowseButtonPressed();
@@ -363,7 +363,7 @@ public class JpaMakePersistentWizardPage
 	protected void createTypeTableColumn() {
 		TableViewerColumn column = new TableViewerColumn(this.classTableViewer, SWT.NONE);
 		column.getColumn().setWidth(200);
-		column.getColumn().setText(JptJpaUiMessages.JpaMakePersistentWizardPage_typeTableColumn);
+		column.getColumn().setText(JptJpaUiMessages.JPA_MAKE_PERSISTENT_WIZARD_PAGE_TYPE_TABLE_COLUMN);
 		column.setLabelProvider(this.buildTypeColumnLabelProvider());
 	}
 
@@ -375,7 +375,7 @@ public class JpaMakePersistentWizardPage
 		TableViewerColumn column;
 		column = new TableViewerColumn(this.classTableViewer, SWT.NONE);
 		column.getColumn().setWidth(200);
-		column.getColumn().setText(JptJpaUiMessages.JpaMakePersistentWizardPage_mappingTableColumn);
+		column.getColumn().setText(JptJpaUiMessages.JPA_MAKE_PERSISTENT_WIZARD_PAGE_MAPPING_TABLE_COLUMN);
 
 		column.setEditingSupport(new EditingSupport(this.classTableViewer) {
 			@Override
@@ -479,15 +479,15 @@ public class JpaMakePersistentWizardPage
 	protected void validate() {
 		String errorMessage = null;
 		if (this.selectedTypes.length == 0) {
-			errorMessage = JptJpaUiMessages.JpaMakePersistentWizardPage_selectedTypesPersistentError;
+			errorMessage = JptJpaUiMessages.JPA_MAKE_PERSISTENT_WIZARD_PAGE_SELECTED_TYPES_PERSISTENT_ERROR;
 		}
 		else if (this.isAddToOrmMappingFile()) {
 			JptXmlResource ormXmlResource = getOrmXmlResource();
 			if (ormXmlResource == null) {
-				errorMessage = JptJpaUiMessages.JpaMakePersistentWizardPage_mappingFileDoesNotExistError;
+				errorMessage = JptJpaUiMessages.JPA_MAKE_PERSISTENT_WIZARD_PAGE_MAPPING_FILE_DOES_NOT_EXIST_ERROR;
 			}
 			else if (this.jpaProject.getJpaFile(ormXmlResource.getFile()).getRootStructureNodesSize() == 0) {
-				errorMessage = JptJpaUiMessages.JpaMakePersistentWizardPage_mappingFileNotListedInPersistenceXmlError;
+				errorMessage = JptJpaUiMessages.JPA_MAKE_PERSISTENT_WIZARD_PAGE_MAPPING_FILE_NOT_LISTED_IN_PERSISTENCE_XML_ERROR;
 			}
 		}
 		setErrorMessage(errorMessage);

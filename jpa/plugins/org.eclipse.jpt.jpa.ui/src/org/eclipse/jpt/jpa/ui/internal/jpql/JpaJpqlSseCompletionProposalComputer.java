@@ -136,7 +136,7 @@ public final class JpaJpqlSseCompletionProposalComputer extends JpqlCompletionPr
 			return buildProposals(namedQuery, jpqlQuery, tokenStart, tokenEnd, position[0], resourceManager);
 		}
 		catch (Exception ex) {
-			JptJpaUiPlugin.instance().logError(ex, JptJpaUiMessages.JpaJpqlSseCompletionProposalComputer_Error);
+			JptJpaUiPlugin.instance().logError(ex, JptJpaUiMessages.JPA_JPQL_SSE_COMPLETION_PROPOSAL_COMPUTER_ERROR);
 		}
 		finally {
 			monitor.done();

@@ -31,7 +31,7 @@ public class GenericJpaPlatformUi
 	// ********** DDL generation **********
 
 	public void generateDDL(JpaProject project, IStructuredSelection selection) {
-		this.displayMessage(JptJpaUiMessages.GenericPlatformUiDialog_notSupportedMessageTitle, JptJpaUiMessages.GenericPlatformUiDialog_notSupportedMessageText);
+		this.displayMessage(JptJpaUiMessages.GENERIC_PLATFORM_UI_DIALOG_NOT_SUPPORTED_MESSAGE_TITLE, JptJpaUiMessages.GENERIC_PLATFORM_UI_DIALOG_NOT_SUPPORTED_MESSAGE_TEXT);
 	}
 	
 	// ********** metadata conversion **********
