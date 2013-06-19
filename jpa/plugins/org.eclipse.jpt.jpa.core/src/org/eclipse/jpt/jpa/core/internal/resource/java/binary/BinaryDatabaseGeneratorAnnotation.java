@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.resource.java.DatabaseGeneratorAnnotation;
  * <li>javax.persistence.TableGenerator
  * </ul>
  */
-abstract class BinaryDbGeneratorAnnotation
+abstract class BinaryDatabaseGeneratorAnnotation
 	extends BinaryGeneratorAnnotation
 	implements DatabaseGeneratorAnnotation
 {
@@ -28,7 +28,7 @@ abstract class BinaryDbGeneratorAnnotation
 	Integer allocationSize;
 
 
-	BinaryDbGeneratorAnnotation(JavaResourceModel parent, IAnnotation jdtAnnotation) {
+	BinaryDatabaseGeneratorAnnotation(JavaResourceModel parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.initialValue = this.buildInitialValue();
 		this.allocationSize = this.buildAllocationSize();

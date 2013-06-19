@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
  * <code>javax.persistence.TableGenerator</code>
  */
 public final class BinaryTableGeneratorAnnotation
-	extends BinaryDbGeneratorAnnotation
+	extends BinaryDatabaseGeneratorAnnotation
 	implements TableGeneratorAnnotation
 {
 	private String table;
