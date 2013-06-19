@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.resource.java.DatabaseGeneratorAnnotation;
  * <li>javax.persistence.TableGenerator
  * </ul>
  */
-abstract class SourceDbGeneratorAnnotation
+abstract class SourceDatabaseGeneratorAnnotation
 	extends SourceGeneratorAnnotation
 	implements DatabaseGeneratorAnnotation
 {
@@ -44,7 +44,7 @@ abstract class SourceDbGeneratorAnnotation
 	TextRange allocationSizeTextRange;
 
 
-	SourceDbGeneratorAnnotation(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
+	SourceDatabaseGeneratorAnnotation(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
 		super(parent, element, daa);
 		this.initialValueDeclarationAdapter = this.getInitialValueAdapter();
 		this.initialValueAdapter = this.buildIntegerAdapter(this.initialValueDeclarationAdapter);
