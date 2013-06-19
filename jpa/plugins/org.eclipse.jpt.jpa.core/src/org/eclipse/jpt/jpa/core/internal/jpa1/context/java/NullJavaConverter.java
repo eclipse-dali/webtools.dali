@@ -24,7 +24,7 @@ public class NullJavaConverter
 		super(parent);
 	}
 
-	public Class<? extends Converter> getType() {
+	public Class<? extends Converter> getConverterType() {
 		return null;
 	}
 

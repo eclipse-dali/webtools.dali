@@ -128,7 +128,7 @@ public class EclipseLinkJavaVersionMappingTests extends EclipseLinkContextModelT
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 
-		assertEquals(EclipseLinkConvert.class, versionMapping.getConverter().getType());
+		assertEquals(EclipseLinkConvert.class, versionMapping.getConverter().getConverterType());
 	}
 	
 	public void testGetConvert2() throws Exception {
@@ -138,7 +138,7 @@ public class EclipseLinkJavaVersionMappingTests extends EclipseLinkContextModelT
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 
-		assertEquals(EclipseLinkConvert.class, versionMapping.getConverter().getType());
+		assertEquals(EclipseLinkConvert.class, versionMapping.getConverter().getConverterType());
 		assertEquals(EclipseLinkConvert.CLASS_INSTANCE_CONVERTER, ((EclipseLinkConvert) versionMapping.getConverter()).getConverterName());
 	}
 
@@ -148,7 +148,7 @@ public class EclipseLinkJavaVersionMappingTests extends EclipseLinkContextModelT
 		
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
-		assertNull(versionMapping.getConverter().getType());
+		assertNull(versionMapping.getConverter().getConverterType());
 		
 		versionMapping.setConverter(BaseTemporalConverter.class);
 		((BaseTemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
@@ -170,7 +170,7 @@ public class EclipseLinkJavaVersionMappingTests extends EclipseLinkContextModelT
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 
-		assertNull(versionMapping.getConverter().getType());
+		assertNull(versionMapping.getConverter().getConverterType());
 		
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
@@ -179,13 +179,13 @@ public class EclipseLinkJavaVersionMappingTests extends EclipseLinkContextModelT
 		convert.setValue("foo");
 		getJpaProject().synchronizeContextModel();
 		
-		assertEquals(EclipseLinkConvert.class, versionMapping.getConverter().getType());
+		assertEquals(EclipseLinkConvert.class, versionMapping.getConverter().getConverterType());
 		assertEquals("foo", ((EclipseLinkConvert) versionMapping.getConverter()).getConverterName());
 		
 		resourceField.removeAnnotation(ConvertAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		
-		assertNull(versionMapping.getConverter().getType());
+		assertNull(versionMapping.getConverter().getConverterType());
 		assertFalse(versionMapping.isDefault());
 		assertSame(versionMapping, persistentAttribute.getMapping());
 	}

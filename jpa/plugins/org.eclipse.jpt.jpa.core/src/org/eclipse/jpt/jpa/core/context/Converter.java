@@ -31,7 +31,7 @@ public interface Converter
 	/**
 	 * Return the converter's type.
 	 */
-	Class<? extends Converter> getType();
+	Class<? extends Converter> getConverterType();
 
 
 	// ********** parent adapter **********

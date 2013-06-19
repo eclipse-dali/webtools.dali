@@ -958,7 +958,7 @@ public class GenericOrmManyToManyMapping2_0Tests
 		OrmCollectionMapping2_0 ormManyToManyMapping = (OrmCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlManyToMany_2_0 manyToManyResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 		
-		assertNull(ormManyToManyMapping.getMapKeyConverter().getType());
+		assertNull(ormManyToManyMapping.getMapKeyConverter().getConverterType());
 		assertNull(manyToManyResource.getMapKeyEnumerated());
 				
 		//set enumerated in the resource model, verify context model updated
@@ -972,7 +972,7 @@ public class GenericOrmManyToManyMapping2_0Tests
 
 		//set enumerated to null in the resource model
 		manyToManyResource.setMapKeyEnumerated(null);
-		assertNull(ormManyToManyMapping.getMapKeyConverter().getType());
+		assertNull(ormManyToManyMapping.getMapKeyConverter().getConverterType());
 		assertNull(manyToManyResource.getMapKeyEnumerated());
 	}
 	
@@ -983,7 +983,7 @@ public class GenericOrmManyToManyMapping2_0Tests
 		OrmCollectionMapping2_0 ormManyToManyMapping = (OrmCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlManyToMany_2_0 manyToManyResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 		
-		assertNull(ormManyToManyMapping.getMapKeyConverter().getType());
+		assertNull(ormManyToManyMapping.getMapKeyConverter().getConverterType());
 		assertNull(manyToManyResource.getMapKeyEnumerated());
 				
 		//set enumerated in the context model, verify resource model updated
@@ -999,7 +999,7 @@ public class GenericOrmManyToManyMapping2_0Tests
 		//set enumerated to null in the context model
 		ormManyToManyMapping.setMapKeyConverter(null);
 		assertNull(manyToManyResource.getMapKeyEnumerated());
-		assertNull(ormManyToManyMapping.getMapKeyConverter().getType());
+		assertNull(ormManyToManyMapping.getMapKeyConverter().getConverterType());
 	}
 	
 	public void testUpdateSpecifiedTemporal() throws Exception {
@@ -1009,7 +1009,7 @@ public class GenericOrmManyToManyMapping2_0Tests
 		OrmCollectionMapping2_0 ormManyToManyMapping = (OrmCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlManyToMany_2_0 manyToManyResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 		
-		assertNull(ormManyToManyMapping.getMapKeyConverter().getType());
+		assertNull(ormManyToManyMapping.getMapKeyConverter().getConverterType());
 		assertNull(manyToManyResource.getMapKeyTemporal());
 				
 		//set temporal in the resource model, verify context model updated
@@ -1027,7 +1027,7 @@ public class GenericOrmManyToManyMapping2_0Tests
 
 		//set temporal to null in the resource model
 		manyToManyResource.setMapKeyTemporal(null);
-		assertNull(ormManyToManyMapping.getMapKeyConverter().getType());
+		assertNull(ormManyToManyMapping.getMapKeyConverter().getConverterType());
 		assertNull(manyToManyResource.getMapKeyTemporal());
 	}
 	
@@ -1038,7 +1038,7 @@ public class GenericOrmManyToManyMapping2_0Tests
 		OrmCollectionMapping2_0 ormManyToManyMapping = (OrmCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlManyToMany_2_0 manyToManyResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 		
-		assertNull(ormManyToManyMapping.getMapKeyConverter().getType());
+		assertNull(ormManyToManyMapping.getMapKeyConverter().getConverterType());
 		assertNull(manyToManyResource.getMapKeyTemporal());
 				
 		//set temporal in the context model, verify resource model updated
@@ -1054,7 +1054,7 @@ public class GenericOrmManyToManyMapping2_0Tests
 		//set temporal to null in the context model
 		ormManyToManyMapping.setMapKeyConverter(null);
 		assertNull(manyToManyResource.getMapKeyTemporal());
-		assertNull(ormManyToManyMapping.getMapKeyConverter().getType());
+		assertNull(ormManyToManyMapping.getMapKeyConverter().getConverterType());
 	}
 	
 	public void testAddSpecifiedMapKeyJoinColumn() throws Exception {

@@ -63,8 +63,7 @@ public interface JavaConverter
 	 * This interface allows a convertible mapping to interact with various
 	 * Java converters via the same protocol.
 	 */
-	public interface Adapter
-	{
+	public interface Adapter {
 		/**
 		 * Return the type of converter handled by the adapter.
 		 */

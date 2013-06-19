@@ -317,26 +317,26 @@ public class EclipseLinkOrmVersionMappingTests
 		XmlConvert xmlConvert = (XmlConvert) versionResource.getConvert();
 		JavaVersionMapping javaVersionMapping = (JavaVersionMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("id").getMapping();
 		
-		assertNull(ormVersionMapping.getConverter().getType());
+		assertNull(ormVersionMapping.getConverter().getConverterType());
 		assertEquals(null, xmlConvert);
 				
 		//set lob in the resource model, verify context model updated
 		xmlConvert = EclipseLinkOrmFactory.eINSTANCE.createXmlConvert();
 		xmlConvert.setConvert("myConvert");
 		versionResource.setConvert(xmlConvert);
-		assertEquals(EclipseLinkConvert.class, ormVersionMapping.getConverter().getType());
+		assertEquals(EclipseLinkConvert.class, ormVersionMapping.getConverter().getConverterType());
 		assertEquals("myConvert", ((EclipseLinkConvert) ormVersionMapping.getConverter()).getConverterName());
 
 		//set lob to null in the resource model
 		versionResource.setConvert(null);
-		assertNull(ormVersionMapping.getConverter().getType());
+		assertNull(ormVersionMapping.getConverter().getConverterType());
 		assertEquals(null, versionResource.getConvert());
 		
 		
 		javaVersionMapping.setConverter(EclipseLinkConvert.class);
 		((EclipseLinkConvert) javaVersionMapping.getConverter()).setSpecifiedConverterName("foo");
 		
-		assertNull(ormVersionMapping.getConverter().getType());
+		assertNull(ormVersionMapping.getConverter().getConverterType());
 		assertEquals(null, versionResource.getConvert());
 		assertEquals("foo", ((EclipseLinkConvert) javaVersionMapping.getConverter()).getSpecifiedConverterName());
 		
@@ -345,21 +345,21 @@ public class EclipseLinkOrmVersionMappingTests
 		OrmPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("id");
 		VersionMapping virtualVersionMapping = (VersionMapping) ormPersistentAttribute2.getMapping();
 		
-		assertEquals(EclipseLinkConvert.class, virtualVersionMapping.getConverter().getType());
+		assertEquals(EclipseLinkConvert.class, virtualVersionMapping.getConverter().getConverterType());
 		assertEquals("foo", ((EclipseLinkConvert) virtualVersionMapping.getConverter()).getSpecifiedConverterName());
 		assertEquals(null, versionResource.getConvert());
 		assertEquals("foo", ((EclipseLinkConvert) javaVersionMapping.getConverter()).getSpecifiedConverterName());
 		
 		((EclipseLinkConvert) javaVersionMapping.getConverter()).setSpecifiedConverterName("bar");
-		assertEquals(EclipseLinkConvert.class, virtualVersionMapping.getConverter().getType());
+		assertEquals(EclipseLinkConvert.class, virtualVersionMapping.getConverter().getConverterType());
 		assertEquals("bar", ((EclipseLinkConvert) virtualVersionMapping.getConverter()).getSpecifiedConverterName());
 		assertEquals(null, versionResource.getConvert());
 		assertEquals("bar", ((EclipseLinkConvert) javaVersionMapping.getConverter()).getSpecifiedConverterName());
 
 		javaVersionMapping.setConverter(null);
-		assertNull(virtualVersionMapping.getConverter().getType());
+		assertNull(virtualVersionMapping.getConverter().getConverterType());
 		assertNull(versionResource.getConvert());
-		assertNull(javaVersionMapping.getConverter().getType());
+		assertNull(javaVersionMapping.getConverter().getConverterType());
 	}
 	
 	public void testModifyConvert() throws Exception {
@@ -372,28 +372,28 @@ public class EclipseLinkOrmVersionMappingTests
 		XmlVersion versionResource = (XmlVersion) getXmlEntityMappings().getEntities().get(0).getAttributes().getVersions().get(0);
 		XmlConvert xmlConvert = (XmlConvert) versionResource.getConvert();
 	
-		assertNull(ormVersionMapping.getConverter().getType());
+		assertNull(ormVersionMapping.getConverter().getConverterType());
 		assertNull(xmlConvert);
 				
 		//set lob in the context model, verify resource model updated
 		ormVersionMapping.setConverter(EclipseLinkConvert.class);
 		xmlConvert = (XmlConvert) versionResource.getConvert();
 		assertEquals("none", xmlConvert.getConvert());
-		assertEquals(EclipseLinkConvert.class, ormVersionMapping.getConverter().getType());
+		assertEquals(EclipseLinkConvert.class, ormVersionMapping.getConverter().getConverterType());
 	
 		((EclipseLinkConvert) ormVersionMapping.getConverter()).setSpecifiedConverterName("bar");
 		assertEquals("bar", xmlConvert.getConvert());
-		assertEquals(EclipseLinkConvert.class, ormVersionMapping.getConverter().getType());
+		assertEquals(EclipseLinkConvert.class, ormVersionMapping.getConverter().getConverterType());
 		assertEquals("bar", ((EclipseLinkConvert) ormVersionMapping.getConverter()).getSpecifiedConverterName());
 
 		((EclipseLinkConvert) ormVersionMapping.getConverter()).setSpecifiedConverterName(null);
 
-		assertNull(ormVersionMapping.getConverter().getType());
+		assertNull(ormVersionMapping.getConverter().getConverterType());
 		assertEquals(null, versionResource.getConvert());
 
 		//set lob to false in the context model
 		ormVersionMapping.setConverter(null);
-		assertNull(ormVersionMapping.getConverter().getType());
+		assertNull(ormVersionMapping.getConverter().getConverterType());
 		assertNull(versionResource.getConvert());
 	}
 }

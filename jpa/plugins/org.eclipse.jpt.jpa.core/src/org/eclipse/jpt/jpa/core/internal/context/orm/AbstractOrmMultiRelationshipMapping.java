@@ -580,7 +580,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	}
 
 	public void setMapKeyConverter(Class<? extends Converter> converterType) {
-		if (this.mapKeyConverter.getType() != converterType) {
+		if (this.mapKeyConverter.getConverterType() != converterType) {
 			// Make the old value is the real old one when firing property changed event below
 			OrmConverter old = this.mapKeyConverter;
 			// Set the new value of the map key converter to a NullOrmConverter to prevent the following 
@@ -629,11 +629,11 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	protected void syncMapKeyConverter() {
 		OrmConverter.Adapter adapter = this.getXmlMapKeyConverterAdapter();
 		if (adapter == null) {
-			if (this.mapKeyConverter.getType() != null) {
+			if (this.mapKeyConverter.getConverterType() != null) {
 				this.setMapKeyConverter_(this.nullConverter);
 			}
 		} else {
-			if (this.mapKeyConverter.getType() == adapter.getConverterType()) {
+			if (this.mapKeyConverter.getConverterType() == adapter.getConverterType()) {
 				this.mapKeyConverter.synchronizeWithResourceModel();
 			} else {
 				this.setMapKeyConverter_(adapter.buildNewConverter(this, this.getContextModelFactory()));

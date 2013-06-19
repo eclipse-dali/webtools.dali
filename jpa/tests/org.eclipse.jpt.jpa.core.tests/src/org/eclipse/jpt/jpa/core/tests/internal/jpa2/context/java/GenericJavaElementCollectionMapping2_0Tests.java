@@ -2198,7 +2198,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
-		assertNull(elementCollectionMapping.getMapKeyConverter().getType());
+		assertNull(elementCollectionMapping.getMapKeyConverter().getConverterType());
 		
 		elementCollectionMapping.setMapKeyConverter(BaseEnumeratedConverter.class);
 		
@@ -2227,7 +2227,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
-		assertNull(elementCollectionMapping.getMapKeyConverter().getType());
+		assertNull(elementCollectionMapping.getMapKeyConverter().getConverterType());
 		
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
@@ -2252,7 +2252,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
-		assertNull(elementCollectionMapping.getMapKeyConverter().getType());
+		assertNull(elementCollectionMapping.getMapKeyConverter().getConverterType());
 		
 		elementCollectionMapping.setMapKeyConverter(BaseTemporalConverter.class);
 		
@@ -2277,7 +2277,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
-		assertNull(elementCollectionMapping.getMapKeyConverter().getType());
+		assertNull(elementCollectionMapping.getMapKeyConverter().getConverterType());
 		
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);

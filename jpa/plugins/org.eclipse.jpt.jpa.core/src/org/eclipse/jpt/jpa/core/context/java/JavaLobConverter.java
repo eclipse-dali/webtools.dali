@@ -41,7 +41,7 @@ public interface JavaLobConverter
 			super();
 		}
 
-		public Class<? extends Converter> getConverterType() {
+		public Class<LobConverter> getConverterType() {
 			return LobConverter.class;
 		}
 

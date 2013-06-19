@@ -93,7 +93,7 @@ public class EclipseLinkOrmConvert
 		return ((XmlConvert) this.getXmlConvertibleMapping().getConvert());
 	}
 	
-	public Class<? extends Converter> getType() {
+	public Class<EclipseLinkConvert> getConverterType() {
 		return EclipseLinkConvert.class;
 	}
 
@@ -159,7 +159,7 @@ public class EclipseLinkOrmConvert
 			super();
 		}
 
-		public Class<? extends Converter> getConverterType() {
+		public Class<EclipseLinkConvert> getConverterType() {
 			return EclipseLinkConvert.class;
 		}
 

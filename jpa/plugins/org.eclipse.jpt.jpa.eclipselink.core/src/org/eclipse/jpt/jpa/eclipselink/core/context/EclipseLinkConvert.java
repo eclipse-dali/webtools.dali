@@ -29,6 +29,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersi
 public interface EclipseLinkConvert
 	extends Converter
 {
+	Class<EclipseLinkConvert> getConverterType();
 
 	EclipseLinkPersistenceUnit getPersistenceUnit();
 
@@ -80,7 +81,7 @@ public interface EclipseLinkConvert
 	{
 		@Override
 		public EclipseLinkConvert transform(Converter converter) {
-			return (converter.getType() == EclipseLinkConvert.class) ? (EclipseLinkConvert) converter : null;
+			return (converter.getConverterType() == EclipseLinkConvert.class) ? (EclipseLinkConvert) converter : null;
 		}
 	}
 }

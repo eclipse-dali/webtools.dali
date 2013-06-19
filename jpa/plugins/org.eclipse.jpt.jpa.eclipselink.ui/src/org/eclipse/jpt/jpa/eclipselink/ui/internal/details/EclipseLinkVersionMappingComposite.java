@@ -137,7 +137,7 @@ public abstract class EclipseLinkVersionMappingComposite<T extends EclipseLinkVe
 		return new TransformationPropertyValueModel<Converter, BaseTemporalConverter>(converterHolder) {
 			@Override
 			protected BaseTemporalConverter transform_(Converter converter) {
-				return converter.getType() == BaseTemporalConverter.class ? (BaseTemporalConverter) converter : null;
+				return converter.getConverterType() == BaseTemporalConverter.class ? (BaseTemporalConverter) converter : null;
 			}
 		};
 	}

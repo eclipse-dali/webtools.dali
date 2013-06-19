@@ -1491,7 +1491,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlElementCollection_2_0 elementCollectionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
 		
-		assertNull(ormElementCollectionMapping.getMapKeyConverter().getType());
+		assertNull(ormElementCollectionMapping.getMapKeyConverter().getConverterType());
 		assertNull(elementCollectionResource.getMapKeyEnumerated());
 				
 		//set enumerated in the resource model, verify context model updated
@@ -1505,7 +1505,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 
 		//set enumerated to null in the resource model
 		elementCollectionResource.setMapKeyEnumerated(null);
-		assertNull(ormElementCollectionMapping.getMapKeyConverter().getType());
+		assertNull(ormElementCollectionMapping.getMapKeyConverter().getConverterType());
 		assertNull(elementCollectionResource.getMapKeyEnumerated());
 	}
 	
@@ -1516,7 +1516,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlElementCollection_2_0 elementCollectionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
 		
-		assertNull(ormElementCollectionMapping.getMapKeyConverter().getType());
+		assertNull(ormElementCollectionMapping.getMapKeyConverter().getConverterType());
 		assertNull(elementCollectionResource.getMapKeyEnumerated());
 				
 		//set enumerated in the context model, verify resource model updated
@@ -1532,7 +1532,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		//set enumerated to null in the context model
 		ormElementCollectionMapping.setMapKeyConverter(null);
 		assertNull(elementCollectionResource.getMapKeyEnumerated());
-		assertNull(ormElementCollectionMapping.getMapKeyConverter().getType());
+		assertNull(ormElementCollectionMapping.getMapKeyConverter().getConverterType());
 	}
 	
 	public void testUpdateSpecifiedTemporal() throws Exception {
@@ -1542,7 +1542,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlElementCollection_2_0 elementCollectionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
 		
-		assertNull(ormElementCollectionMapping.getMapKeyConverter().getType());
+		assertNull(ormElementCollectionMapping.getMapKeyConverter().getConverterType());
 		assertNull(elementCollectionResource.getMapKeyTemporal());
 				
 		//set temporal in the resource model, verify context model updated
@@ -1560,7 +1560,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 
 		//set temporal to null in the resource model
 		elementCollectionResource.setMapKeyTemporal(null);
-		assertNull(ormElementCollectionMapping.getMapKeyConverter().getType());
+		assertNull(ormElementCollectionMapping.getMapKeyConverter().getConverterType());
 		assertNull(elementCollectionResource.getMapKeyTemporal());
 	}
 	
@@ -1571,7 +1571,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlElementCollection_2_0 elementCollectionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
 		
-		assertNull(ormElementCollectionMapping.getMapKeyConverter().getType());
+		assertNull(ormElementCollectionMapping.getMapKeyConverter().getConverterType());
 		assertNull(elementCollectionResource.getMapKeyTemporal());
 				
 		//set temporal in the context model, verify resource model updated
@@ -1587,7 +1587,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		//set temporal to null in the context model
 		ormElementCollectionMapping.setMapKeyConverter(null);
 		assertNull(elementCollectionResource.getMapKeyTemporal());
-		assertNull(ormElementCollectionMapping.getMapKeyConverter().getType());
+		assertNull(ormElementCollectionMapping.getMapKeyConverter().getConverterType());
 	}
 
 	public void testAddSpecifiedMapKeyJoinColumn() throws Exception {

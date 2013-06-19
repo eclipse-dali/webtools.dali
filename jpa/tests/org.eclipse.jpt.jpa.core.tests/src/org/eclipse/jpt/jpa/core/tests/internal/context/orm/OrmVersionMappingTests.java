@@ -125,7 +125,7 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();
 		XmlVersion versionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getVersions().get(0);
 		
-		assertNull(ormVersionMapping.getConverter().getType());
+		assertNull(ormVersionMapping.getConverter().getConverterType());
 		assertNull(versionResource.getTemporal());
 				
 		//set temporal in the resource model, verify context model updated
@@ -143,7 +143,7 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 
 		//set temporal to null in the resource model
 		versionResource.setTemporal(null);
-		assertNull(ormVersionMapping.getConverter().getType());
+		assertNull(ormVersionMapping.getConverter().getConverterType());
 		assertNull(versionResource.getTemporal());
 	}
 	
@@ -154,7 +154,7 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();
 		XmlVersion versionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getVersions().get(0);
 		
-		assertNull(ormVersionMapping.getConverter().getType());
+		assertNull(ormVersionMapping.getConverter().getConverterType());
 		assertNull(versionResource.getTemporal());
 				
 		//set temporal in the context model, verify resource model updated
@@ -174,7 +174,7 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		//set temporal to null in the context model
 		ormVersionMapping.setConverter(null);
 		assertNull(versionResource.getTemporal());
-		assertNull(ormVersionMapping.getConverter().getType());
+		assertNull(ormVersionMapping.getConverter().getConverterType());
 	}
 	
 	//TODO test defaults
@@ -191,7 +191,7 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();
 		ormVersionMapping.setName("foo");
 		assertEquals("foo", ormVersionMapping.getName());
-		assertNull(ormVersionMapping.getConverter().getType());
+		assertNull(ormVersionMapping.getConverter().getConverterType());
 
 		
 		OrmSpecifiedColumn ormColumn = ormVersionMapping.getColumn();
@@ -233,7 +233,7 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		
 		VersionMapping versionMapping = (VersionMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("id", versionMapping.getName());
-		assertEquals(BaseTemporalConverter.class, versionMapping.getConverter().getType());
+		assertEquals(BaseTemporalConverter.class, versionMapping.getConverter().getConverterType());
 		assertEquals(TemporalType.TIMESTAMP, ((BaseTemporalConverter) versionMapping.getConverter()).getTemporalType());
 		
 		SpecifiedColumn column = versionMapping.getColumn();
@@ -265,7 +265,7 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("id", ormVersionMapping.getName());
 		assertFalse(ormPersistentAttribute.isVirtual());
-		assertNull(ormVersionMapping.getConverter().getType());
+		assertNull(ormVersionMapping.getConverter().getConverterType());
 		
 		OrmSpecifiedColumn ormColumn = ormVersionMapping.getColumn();
 		assertEquals("id", ormColumn.getName());
@@ -291,7 +291,7 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();
 		
 		assertEquals("id", ormVersionMapping.getName());
-		assertNull(ormVersionMapping.getConverter().getType());
+		assertNull(ormVersionMapping.getConverter().getConverterType());
 		
 		OrmSpecifiedColumn ormColumn = ormVersionMapping.getColumn();
 		assertNull(ormColumn.getSpecifiedName());

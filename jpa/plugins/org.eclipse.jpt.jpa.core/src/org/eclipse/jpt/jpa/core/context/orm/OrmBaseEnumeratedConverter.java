@@ -58,7 +58,7 @@ public interface OrmBaseEnumeratedConverter
 			super();
 		}
 
-		public Class<? extends Converter> getConverterType() {
+		public Class<BaseEnumeratedConverter> getConverterType() {
 			return BaseEnumeratedConverter.class;
 		}
 
@@ -125,7 +125,7 @@ public interface OrmBaseEnumeratedConverter
 			super();
 		}
 
-		public Class<? extends Converter> getConverterType() {
+		public Class<BaseEnumeratedConverter> getConverterType() {
 			return BaseEnumeratedConverter.class;
 		}
 

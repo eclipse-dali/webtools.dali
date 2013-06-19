@@ -487,7 +487,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	public void setConverter(Class<? extends Converter> converterType) {
-		if (this.converter.getType() != converterType) {
+		if (this.converter.getConverterType() != converterType) {
 			this.converter.dispose();
 			JavaConverter.Adapter converterAdapter = this.getConverterAdapter(converterType);
 			this.retainConverterAnnotation(converterAdapter);
@@ -535,13 +535,13 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	protected void syncConverter() {
 		Association<JavaConverter.Adapter, Annotation> assoc = this.getConverterAnnotation();
 		if (assoc == null) {
-			if (this.converter.getType() != null) {
+			if (this.converter.getConverterType() != null) {
 				this.setConverter_(this.buildNullConverter());
 			}
 		} else {
 			JavaConverter.Adapter adapter = assoc.getKey();
 			Annotation annotation = assoc.getValue();
-			if ((this.converter.getType() == adapter.getConverterType()) &&
+			if ((this.converter.getConverterType() == adapter.getConverterType()) &&
 					(this.converter.getConverterAnnotation() == annotation)) {
 				this.converter.synchronizeWithResourceModel();
 			} else {
@@ -941,7 +941,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	public void setMapKeyConverter(Class<? extends Converter> converterType) {
-		if (this.mapKeyConverter.getType() != converterType) {
+		if (this.mapKeyConverter.getConverterType() != converterType) {
 			this.mapKeyConverter.dispose();
 			JavaConverter.Adapter converterAdapter = this.getMapKeyConverterAdapter(converterType);
 			this.retainMapKeyConverterAnnotation(converterAdapter);
@@ -989,13 +989,13 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	protected void syncMapKeyConverter() {
 		Association<JavaConverter.Adapter, Annotation> assoc = this.getMapKeyConverterAnnotation();
 		if (assoc == null) {
-			if (this.mapKeyConverter.getType() != null) {
+			if (this.mapKeyConverter.getConverterType() != null) {
 				this.setMapKeyConverter_(this.buildNullConverter());
 			}
 		} else {
 			JavaConverter.Adapter adapter = assoc.getKey();
 			Annotation annotation = assoc.getValue();
-			if ((this.mapKeyConverter.getType() == adapter.getConverterType()) &&
+			if ((this.mapKeyConverter.getConverterType() == adapter.getConverterType()) &&
 					(this.mapKeyConverter.getConverterAnnotation() == annotation)) {
 				this.mapKeyConverter.synchronizeWithResourceModel();
 			} else {

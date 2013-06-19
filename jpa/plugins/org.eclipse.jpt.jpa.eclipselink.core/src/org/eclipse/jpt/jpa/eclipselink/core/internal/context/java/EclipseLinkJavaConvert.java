@@ -98,7 +98,7 @@ public class EclipseLinkJavaConvert
 
 	// ********** misc **********
 
-	public Class<? extends Converter> getType() {
+	public Class<EclipseLinkConvert> getConverterType() {
 		return EclipseLinkConvert.class;
 	}
 
@@ -160,7 +160,7 @@ public class EclipseLinkJavaConvert
 			super();
 		}
 
-		public Class<? extends Converter> getConverterType() {
+		public Class<EclipseLinkConvert> getConverterType() {
 			return EclipseLinkConvert.class;
 		}
 

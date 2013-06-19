@@ -419,7 +419,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getMapping();
-		assertNull(idMapping.getConverter().getType());
+		assertNull(idMapping.getConverter().getConverterType());
 		
 		idMapping.setConverter(BaseTemporalConverter.class);
 		((BaseTemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
@@ -441,7 +441,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getMapping();
 
-		assertNull(idMapping.getConverter().getType());
+		assertNull(idMapping.getConverter().getConverterType());
 		
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
@@ -455,7 +455,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		resourceField.removeAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		
-		assertNull(idMapping.getConverter().getType());
+		assertNull(idMapping.getConverter().getConverterType());
 		assertFalse(idMapping.isDefault());
 		assertSame(idMapping, persistentAttribute.getMapping());
 	}

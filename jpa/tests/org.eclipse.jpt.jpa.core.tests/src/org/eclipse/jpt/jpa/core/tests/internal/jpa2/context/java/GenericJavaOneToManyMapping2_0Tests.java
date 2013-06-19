@@ -1798,7 +1798,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
-		assertNull(oneToManyMapping.getMapKeyConverter().getType());
+		assertNull(oneToManyMapping.getMapKeyConverter().getConverterType());
 		
 		oneToManyMapping.setMapKeyConverter(BaseEnumeratedConverter.class);
 		
@@ -1827,7 +1827,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 
-		assertNull(oneToManyMapping.getMapKeyConverter().getType());
+		assertNull(oneToManyMapping.getMapKeyConverter().getConverterType());
 		
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
@@ -1852,7 +1852,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
-		assertNull(oneToManyMapping.getMapKeyConverter().getType());
+		assertNull(oneToManyMapping.getMapKeyConverter().getConverterType());
 		
 		oneToManyMapping.setMapKeyConverter(BaseTemporalConverter.class);
 		
@@ -1877,7 +1877,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 
-		assertNull(oneToManyMapping.getMapKeyConverter().getType());
+		assertNull(oneToManyMapping.getMapKeyConverter().getConverterType());
 		
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);

@@ -581,7 +581,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	}
 
 	public void setMapKeyConverter(Class<? extends Converter> converterType) {
-		if (this.mapKeyConverter.getType() != converterType) {
+		if (this.mapKeyConverter.getConverterType() != converterType) {
 			this.mapKeyConverter.dispose();
 			JavaConverter.Adapter converterAdapter = this.getKeyConverterAdapter(converterType);
 			this.retainMapKeyConverterAnnotation(converterAdapter);
@@ -631,13 +631,13 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	protected void syncMapKeyConverter() {
 		Association<JavaConverter.Adapter, Annotation> assoc = this.getMapKeyConverterAnnotation();
 		if (assoc == null) {
-			if (this.mapKeyConverter.getType() != null) {
+			if (this.mapKeyConverter.getConverterType() != null) {
 				this.setMapKeyConverter_(this.buildNullMapKeyConverter());
 			}
 		} else {
 			JavaConverter.Adapter adapter = assoc.getKey();
 			Annotation annotation = assoc.getValue();
-			if ((this.mapKeyConverter.getType() == adapter.getConverterType()) &&
+			if ((this.mapKeyConverter.getConverterType() == adapter.getConverterType()) &&
 					(this.mapKeyConverter.getConverterAnnotation() == annotation)) {
 				this.mapKeyConverter.synchronizeWithResourceModel();
 			} else {

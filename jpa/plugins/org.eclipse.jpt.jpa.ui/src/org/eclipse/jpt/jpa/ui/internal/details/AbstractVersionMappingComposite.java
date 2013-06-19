@@ -131,7 +131,7 @@ public abstract class AbstractVersionMappingComposite<T extends VersionMapping>
 			@Override
 			protected Boolean buildValue_() {
 				Converter converter = this.subject.getConverter();
-				return Boolean.valueOf(converter.getType() == converterType);
+				return Boolean.valueOf(converter.getConverterType() == converterType);
 			}
 
 			@Override
@@ -156,7 +156,7 @@ public abstract class AbstractVersionMappingComposite<T extends VersionMapping>
 		return new TransformationPropertyValueModel<Converter, BaseTemporalConverter>(converterHolder) {
 			@Override
 			protected BaseTemporalConverter transform_(Converter converter) {
-				return converter.getType() == BaseTemporalConverter.class ? (BaseTemporalConverter) converter : null;
+				return converter.getConverterType() == BaseTemporalConverter.class ? (BaseTemporalConverter) converter : null;
 			}
 		};
 	}

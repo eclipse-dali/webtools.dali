@@ -148,7 +148,7 @@ public class EclipseLinkJavaConvertTests extends EclipseLinkContextModelTestCase
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
 
-		assertNull(basicMapping.getConverter().getType());
+		assertNull(basicMapping.getConverter().getConverterType());
 		
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
@@ -157,13 +157,13 @@ public class EclipseLinkJavaConvertTests extends EclipseLinkContextModelTestCase
 		convert.setValue("foo");
 		getJpaProject().synchronizeContextModel();
 		
-		assertEquals(EclipseLinkConvert.class, basicMapping.getConverter().getType());
+		assertEquals(EclipseLinkConvert.class, basicMapping.getConverter().getConverterType());
 		assertEquals("foo", ((EclipseLinkConvert) basicMapping.getConverter()).getConverterName());
 		
 		resourceField.removeAnnotation(ConvertAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		
-		assertNull(basicMapping.getConverter().getType());
+		assertNull(basicMapping.getConverter().getConverterType());
 		assertFalse(basicMapping.isDefault());
 		assertSame(basicMapping, persistentAttribute.getMapping());
 	}

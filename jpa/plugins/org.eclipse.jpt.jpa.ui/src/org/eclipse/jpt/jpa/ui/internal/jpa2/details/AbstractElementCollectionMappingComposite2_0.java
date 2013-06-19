@@ -305,7 +305,7 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.getConverter().getType() == null);
+				return Boolean.valueOf(this.subject.getConverter().getConverterType() == null);
 			}
 
 			@Override
@@ -322,7 +322,7 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 			@Override
 			protected Boolean buildValue_() {
 				Converter converter = this.subject.getConverter();
-				return Boolean.valueOf(converter.getType() == LobConverter.class);
+				return Boolean.valueOf(converter.getConverterType() == LobConverter.class);
 			}
 
 			@Override
@@ -347,7 +347,7 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 		return new TransformationPropertyValueModel<Converter, BaseTemporalConverter>(converterHolder) {
 			@Override
 			protected BaseTemporalConverter transform_(Converter converter) {
-				return converter.getType() == BaseTemporalConverter.class ? (BaseTemporalConverter) converter : null;
+				return converter.getConverterType() == BaseTemporalConverter.class ? (BaseTemporalConverter) converter : null;
 			}
 		};
 	}
@@ -356,7 +356,7 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 		return new TransformationPropertyValueModel<Converter, BaseEnumeratedConverter>(converterHolder) {
 			@Override
 			protected BaseEnumeratedConverter transform_(Converter converter) {
-				return converter.getType() == BaseEnumeratedConverter.class ? (BaseEnumeratedConverter) converter : null;
+				return converter.getConverterType() == BaseEnumeratedConverter.class ? (BaseEnumeratedConverter) converter : null;
 			}
 		};
 	}
@@ -366,7 +366,7 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 			@Override
 			protected Boolean buildValue_() {
 				Converter converter = this.subject.getConverter();
-				return Boolean.valueOf(converter.getType() == BaseTemporalConverter.class);
+				return Boolean.valueOf(converter.getConverterType() == BaseTemporalConverter.class);
 			}
 
 			@Override
@@ -383,7 +383,7 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 			@Override
 			protected Boolean buildValue_() {
 				Converter converter = this.subject.getConverter();
-				return Boolean.valueOf(converter.getType() == BaseEnumeratedConverter.class);
+				return Boolean.valueOf(converter.getConverterType() == BaseEnumeratedConverter.class);
 			}
 
 			@Override

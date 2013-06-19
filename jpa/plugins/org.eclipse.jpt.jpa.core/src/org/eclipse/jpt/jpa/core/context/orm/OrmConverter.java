@@ -57,8 +57,7 @@ public interface OrmConverter
 	 * This interface allows a convertible mapping to interact with various
 	 * <code>orm.xml</code> converters via the same protocol.
 	 */
-	public interface Adapter
-	{
+	public interface Adapter {
 		/**
 		 * Return the type of converter handled by the adapter.
 		 */

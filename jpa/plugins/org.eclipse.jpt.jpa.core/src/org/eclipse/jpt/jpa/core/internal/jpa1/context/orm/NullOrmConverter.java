@@ -27,7 +27,7 @@ public class NullOrmConverter
 		// NOP
 	}
 
-	public Class<? extends Converter> getType() {
+	public Class<? extends Converter> getConverterType() {
 		return null;
 	}
 

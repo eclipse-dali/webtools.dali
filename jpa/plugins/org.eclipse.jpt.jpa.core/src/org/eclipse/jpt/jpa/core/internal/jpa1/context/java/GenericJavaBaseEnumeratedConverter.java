@@ -90,7 +90,7 @@ public class GenericJavaBaseEnumeratedConverter
 
 	// ********** misc **********
 
-	public Class<? extends Converter> getType() {
+	public Class<BaseEnumeratedConverter> getConverterType() {
 		return BaseEnumeratedConverter.class;
 	}
 

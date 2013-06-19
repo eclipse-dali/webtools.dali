@@ -119,7 +119,7 @@ public abstract class EclipseLinkElementCollectionMappingComposite2_0<T extends 
 			@Override
 			protected Boolean buildValue_() {
 				Converter converter = this.subject.getConverter();
-				return Boolean.valueOf(converter.getType() == converterType);
+				return Boolean.valueOf(converter.getConverterType() == converterType);
 			}
 
 			@Override

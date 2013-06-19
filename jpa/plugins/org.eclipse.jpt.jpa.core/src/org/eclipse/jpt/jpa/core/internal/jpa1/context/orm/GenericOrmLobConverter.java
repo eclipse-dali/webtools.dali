@@ -32,7 +32,7 @@ public class GenericOrmLobConverter
 
 	// ********** misc **********
 
-	public Class<? extends Converter> getType() {
+	public Class<LobConverter> getConverterType() {
 		return LobConverter.class;
 	}
 

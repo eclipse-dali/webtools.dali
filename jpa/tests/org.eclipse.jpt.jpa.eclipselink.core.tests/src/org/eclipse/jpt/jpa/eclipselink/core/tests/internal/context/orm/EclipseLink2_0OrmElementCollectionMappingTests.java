@@ -1518,7 +1518,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlElementCollection_2_0 elementCollectionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
 		
-		assertNull(ormElementCollectionMapping.getMapKeyConverter().getType());
+		assertNull(ormElementCollectionMapping.getMapKeyConverter().getConverterType());
 		assertNull(elementCollectionResource.getMapKeyEnumerated());
 				
 		//set enumerated in the resource model, verify context model updated
@@ -1532,7 +1532,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 
 		//set enumerated to null in the resource model
 		elementCollectionResource.setMapKeyEnumerated(null);
-		assertNull(ormElementCollectionMapping.getMapKeyConverter().getType());
+		assertNull(ormElementCollectionMapping.getMapKeyConverter().getConverterType());
 		assertNull(elementCollectionResource.getMapKeyEnumerated());
 	}
 	
@@ -1544,7 +1544,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlElementCollection_2_0 elementCollectionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
 		
-		assertNull(ormElementCollectionMapping.getMapKeyConverter().getType());
+		assertNull(ormElementCollectionMapping.getMapKeyConverter().getConverterType());
 		assertNull(elementCollectionResource.getMapKeyEnumerated());
 				
 		//set enumerated in the context model, verify resource model updated
@@ -1560,7 +1560,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		//set enumerated to null in the context model
 		ormElementCollectionMapping.setMapKeyConverter(null);
 		assertNull(elementCollectionResource.getMapKeyEnumerated());
-		assertNull(ormElementCollectionMapping.getMapKeyConverter().getType());
+		assertNull(ormElementCollectionMapping.getMapKeyConverter().getConverterType());
 	}
 	
 	public void testUpdateSpecifiedTemporal() throws Exception {
@@ -1571,7 +1571,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlElementCollection_2_0 elementCollectionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
 		
-		assertNull(ormElementCollectionMapping.getMapKeyConverter().getType());
+		assertNull(ormElementCollectionMapping.getMapKeyConverter().getConverterType());
 		assertNull(elementCollectionResource.getMapKeyTemporal());
 				
 		//set temporal in the resource model, verify context model updated
@@ -1589,7 +1589,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 
 		//set temporal to null in the resource model
 		elementCollectionResource.setMapKeyTemporal(null);
-		assertNull(ormElementCollectionMapping.getMapKeyConverter().getType());
+		assertNull(ormElementCollectionMapping.getMapKeyConverter().getConverterType());
 		assertNull(elementCollectionResource.getMapKeyTemporal());
 	}
 	
@@ -1601,7 +1601,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlElementCollection_2_0 elementCollectionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
 		
-		assertNull(ormElementCollectionMapping.getMapKeyConverter().getType());
+		assertNull(ormElementCollectionMapping.getMapKeyConverter().getConverterType());
 		assertNull(elementCollectionResource.getMapKeyTemporal());
 				
 		//set temporal in the context model, verify resource model updated
@@ -1617,7 +1617,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		//set temporal to null in the context model
 		ormElementCollectionMapping.setMapKeyConverter(null);
 		assertNull(elementCollectionResource.getMapKeyTemporal());
-		assertNull(ormElementCollectionMapping.getMapKeyConverter().getType());
+		assertNull(ormElementCollectionMapping.getMapKeyConverter().getConverterType());
 	}
 
 	public void testUpdateConvert() throws Exception {
@@ -1630,26 +1630,26 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		XmlConvert xmlConvert = (XmlConvert) elementCollectionResource.getConvert();
 		JavaElementCollectionMapping2_0 javaElementCollectionMapping = (JavaElementCollectionMapping2_0) ormPersistentType.getJavaPersistentType().getAttributeNamed("address").getMapping();
 		
-		assertNull(ormElementCollectionMapping.getConverter().getType());
+		assertNull(ormElementCollectionMapping.getConverter().getConverterType());
 		assertEquals(null, xmlConvert);
 				
 		//set lob in the resource model, verify context model updated
 		xmlConvert = EclipseLinkOrmFactory.eINSTANCE.createXmlConvert();
 		xmlConvert.setConvert("myConvert");
 		elementCollectionResource.setConvert(xmlConvert);
-		assertEquals(EclipseLinkConvert.class, ormElementCollectionMapping.getConverter().getType());
+		assertEquals(EclipseLinkConvert.class, ormElementCollectionMapping.getConverter().getConverterType());
 		assertEquals("myConvert", ((EclipseLinkConvert) ormElementCollectionMapping.getConverter()).getConverterName());
 
 		//set lob to null in the resource model
 		elementCollectionResource.setConvert(null);
-		assertNull(ormElementCollectionMapping.getConverter().getType());
+		assertNull(ormElementCollectionMapping.getConverter().getConverterType());
 		assertEquals(null, elementCollectionResource.getConvert());
 		
 		
 		javaElementCollectionMapping.setConverter(EclipseLinkConvert.class);
 		((EclipseLinkConvert) javaElementCollectionMapping.getConverter()).setSpecifiedConverterName("foo");
 		
-		assertNull(ormElementCollectionMapping.getConverter().getType());
+		assertNull(ormElementCollectionMapping.getConverter().getConverterType());
 		assertEquals(null, elementCollectionResource.getConvert());
 		assertEquals("foo", ((EclipseLinkConvert) javaElementCollectionMapping.getConverter()).getSpecifiedConverterName());
 		
@@ -1658,21 +1658,21 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		OrmPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("address");
 		EclipseLinkElementCollectionMapping2_0 virtualElementCollectionMapping = (EclipseLinkElementCollectionMapping2_0) ormPersistentAttribute2.getMapping();
 		
-		assertEquals(EclipseLinkConvert.class, virtualElementCollectionMapping.getConverter().getType());
+		assertEquals(EclipseLinkConvert.class, virtualElementCollectionMapping.getConverter().getConverterType());
 		assertEquals("foo", ((EclipseLinkConvert) virtualElementCollectionMapping.getConverter()).getSpecifiedConverterName());
 		assertEquals(null, elementCollectionResource.getConvert());
 		assertEquals("foo", ((EclipseLinkConvert) javaElementCollectionMapping.getConverter()).getSpecifiedConverterName());
 		
 		((EclipseLinkConvert) javaElementCollectionMapping.getConverter()).setSpecifiedConverterName("bar");
-		assertEquals(EclipseLinkConvert.class, virtualElementCollectionMapping.getConverter().getType());
+		assertEquals(EclipseLinkConvert.class, virtualElementCollectionMapping.getConverter().getConverterType());
 		assertEquals("bar", ((EclipseLinkConvert) virtualElementCollectionMapping.getConverter()).getSpecifiedConverterName());
 		assertEquals(null, elementCollectionResource.getConvert());
 		assertEquals("bar", ((EclipseLinkConvert) javaElementCollectionMapping.getConverter()).getSpecifiedConverterName());
 
 		javaElementCollectionMapping.setConverter(null);
-		assertNull(virtualElementCollectionMapping.getConverter().getType());
+		assertNull(virtualElementCollectionMapping.getConverter().getConverterType());
 		assertEquals(null, elementCollectionResource.getConvert());
-		assertNull(javaElementCollectionMapping.getConverter().getType());
+		assertNull(javaElementCollectionMapping.getConverter().getConverterType());
 	}
 	
 	public void testModifyConvert() throws Exception {
@@ -1683,28 +1683,28 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlConvertibleMapping elementCollectionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
 		XmlConvert xmlConvert = (XmlConvert) elementCollectionResource.getConvert();
-		assertNull(ormElementCollectionMapping.getConverter().getType());
+		assertNull(ormElementCollectionMapping.getConverter().getConverterType());
 		assertEquals(null, xmlConvert);
 				
 		//set lob in the context model, verify resource model updated
 		ormElementCollectionMapping.setConverter(EclipseLinkConvert.class);
 		xmlConvert = (XmlConvert) elementCollectionResource.getConvert();
 		assertEquals("none", xmlConvert.getConvert());
-		assertEquals(EclipseLinkConvert.class, ormElementCollectionMapping.getConverter().getType());
+		assertEquals(EclipseLinkConvert.class, ormElementCollectionMapping.getConverter().getConverterType());
 	
 		((EclipseLinkConvert) ormElementCollectionMapping.getConverter()).setSpecifiedConverterName("bar");
 		assertEquals("bar", xmlConvert.getConvert());
-		assertEquals(EclipseLinkConvert.class, ormElementCollectionMapping.getConverter().getType());
+		assertEquals(EclipseLinkConvert.class, ormElementCollectionMapping.getConverter().getConverterType());
 		assertEquals("bar", ((EclipseLinkConvert) ormElementCollectionMapping.getConverter()).getSpecifiedConverterName());
 
 		((EclipseLinkConvert) ormElementCollectionMapping.getConverter()).setSpecifiedConverterName(null);
 
-		assertNull(ormElementCollectionMapping.getConverter().getType());
+		assertNull(ormElementCollectionMapping.getConverter().getConverterType());
 		assertEquals(null, elementCollectionResource.getConvert());
 
 		//set lob to false in the context model
 		ormElementCollectionMapping.setConverter(null);
-		assertNull(ormElementCollectionMapping.getConverter().getType());
+		assertNull(ormElementCollectionMapping.getConverter().getConverterType());
 		assertEquals(null, elementCollectionResource.getConvert());
 	}
 }

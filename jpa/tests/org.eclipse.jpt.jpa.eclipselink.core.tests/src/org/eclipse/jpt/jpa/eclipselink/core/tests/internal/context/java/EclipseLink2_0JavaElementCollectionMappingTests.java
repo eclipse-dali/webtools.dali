@@ -2100,7 +2100,7 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 		
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
-		assertNull(elementCollectionMapping.getMapKeyConverter().getType());
+		assertNull(elementCollectionMapping.getMapKeyConverter().getConverterType());
 		
 		elementCollectionMapping.setMapKeyConverter(BaseEnumeratedConverter.class);
 		
@@ -2129,7 +2129,7 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
-		assertNull(elementCollectionMapping.getMapKeyConverter().getType());
+		assertNull(elementCollectionMapping.getMapKeyConverter().getConverterType());
 		
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
@@ -2154,7 +2154,7 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 		
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
-		assertNull(elementCollectionMapping.getMapKeyConverter().getType());
+		assertNull(elementCollectionMapping.getMapKeyConverter().getConverterType());
 		
 		elementCollectionMapping.setMapKeyConverter(BaseTemporalConverter.class);
 		
@@ -2179,7 +2179,7 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
-		assertNull(elementCollectionMapping.getMapKeyConverter().getType());
+		assertNull(elementCollectionMapping.getMapKeyConverter().getConverterType());
 		
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
@@ -2211,7 +2211,7 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
-		assertEquals(EclipseLinkConvert.class, elementCollectionMapping.getConverter().getType());
+		assertEquals(EclipseLinkConvert.class, elementCollectionMapping.getConverter().getConverterType());
 	}
 	
 	public void testGetConvert2() throws Exception {
@@ -2221,7 +2221,7 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
-		assertEquals(EclipseLinkConvert.class, elementCollectionMapping.getConverter().getType());
+		assertEquals(EclipseLinkConvert.class, elementCollectionMapping.getConverter().getConverterType());
 		assertEquals(EclipseLinkConvert.CLASS_INSTANCE_CONVERTER, ((EclipseLinkConvert) elementCollectionMapping.getConverter()).getConverterName());
 	}
 
@@ -2231,7 +2231,7 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 		
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
-		assertNull(elementCollectionMapping.getConverter().getType());
+		assertNull(elementCollectionMapping.getConverter().getConverterType());
 		
 		elementCollectionMapping.setConverter(EclipseLinkConvert.class);
 		((EclipseLinkConvert) elementCollectionMapping.getConverter()).setSpecifiedConverterName("foo");
@@ -2253,7 +2253,7 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
-		assertNull(elementCollectionMapping.getConverter().getType());
+		assertNull(elementCollectionMapping.getConverter().getConverterType());
 		
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
@@ -2262,13 +2262,13 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 		convert.setValue("foo");
 		getJpaProject().synchronizeContextModel();
 		
-		assertEquals(EclipseLinkConvert.class, elementCollectionMapping.getConverter().getType());
+		assertEquals(EclipseLinkConvert.class, elementCollectionMapping.getConverter().getConverterType());
 		assertEquals("foo", ((EclipseLinkConvert) elementCollectionMapping.getConverter()).getConverterName());
 		
 		resourceField.removeAnnotation(ConvertAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		
-		assertNull(elementCollectionMapping.getConverter().getType());
+		assertNull(elementCollectionMapping.getConverter().getConverterType());
 		assertFalse(elementCollectionMapping.isDefault());
 		assertSame(elementCollectionMapping, persistentAttribute.getMapping());
 	}

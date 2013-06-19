@@ -128,7 +128,7 @@ public class EclipseLinkOrmArrayMapping2_3
 	}
 
 	public void setConverter(Class<? extends Converter> converterType) {
-		if (this.converter.getType() != converterType) {
+		if (this.converter.getConverterType() != converterType) {
 			// Make the old value is the real old one when firing property changed event below
 			OrmConverter old = this.converter;
 			// Set the new value of the converter to a NullOrmConverter to prevent the following
@@ -177,11 +177,11 @@ public class EclipseLinkOrmArrayMapping2_3
 	protected void syncConverter() {
 		OrmConverter.Adapter adapter = this.getXmlConverterAdapter();
 		if (adapter == null) {
-			if (this.converter.getType() != null) {
+			if (this.converter.getConverterType() != null) {
 				this.setConverter_(this.nullConverter);
 			}
 		} else {
-			if (this.converter.getType() == adapter.getConverterType()) {
+			if (this.converter.getConverterType() == adapter.getConverterType()) {
 				this.converter.synchronizeWithResourceModel();
 			} else {
 				this.setConverter_(adapter.buildNewConverter(this, this.getContextModelFactory()));

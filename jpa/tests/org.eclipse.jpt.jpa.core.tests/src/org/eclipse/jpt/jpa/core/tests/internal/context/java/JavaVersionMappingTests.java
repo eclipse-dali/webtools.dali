@@ -337,7 +337,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
-		assertNull(versionMapping.getConverter().getType());
+		assertNull(versionMapping.getConverter().getConverterType());
 		
 		versionMapping.setConverter(BaseTemporalConverter.class);
 		((BaseTemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
@@ -359,7 +359,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 
-		assertNull(versionMapping.getConverter().getType());
+		assertNull(versionMapping.getConverter().getConverterType());
 		
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
@@ -373,7 +373,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		resourceField.removeAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		
-		assertNull(versionMapping.getConverter().getType());
+		assertNull(versionMapping.getConverter().getConverterType());
 		assertFalse(versionMapping.isDefault());
 		assertSame(versionMapping, persistentAttribute.getMapping());
 	}

@@ -40,12 +40,11 @@ public interface JavaBaseTemporalConverter
 	abstract static class AbstractAdapter
 		extends JavaConverter.AbstractAdapter
 	{
-	
 		AbstractAdapter() {
 			super();
 		}
 
-		public Class<? extends Converter> getConverterType() {
+		public Class<BaseTemporalConverter> getConverterType() {
 			return BaseTemporalConverter.class;
 		}
 
@@ -134,7 +133,7 @@ public interface JavaBaseTemporalConverter
 			super();
 		}
 
-		public Class<? extends Converter> getConverterType() {
+		public Class<BaseTemporalConverter> getConverterType() {
 			return BaseTemporalConverter.class;
 		}
 

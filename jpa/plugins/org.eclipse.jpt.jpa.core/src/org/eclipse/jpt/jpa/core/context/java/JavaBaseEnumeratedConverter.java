@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.core.context.java;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
-import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumeratedAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.EnumeratedAnnotation;
 
@@ -44,7 +43,7 @@ public interface JavaBaseEnumeratedConverter
 			super();
 		}
 
-		public Class<? extends Converter> getConverterType() {
+		public Class<BaseEnumeratedConverter> getConverterType() {
 			return BaseEnumeratedConverter.class;
 		}
 
@@ -72,7 +71,7 @@ public interface JavaBaseEnumeratedConverter
 			super();
 		}
 
-		public Class<? extends Converter> getConverterType() {
+		public Class<BaseEnumeratedConverter> getConverterType() {
 			return BaseEnumeratedConverter.class;
 		}
 

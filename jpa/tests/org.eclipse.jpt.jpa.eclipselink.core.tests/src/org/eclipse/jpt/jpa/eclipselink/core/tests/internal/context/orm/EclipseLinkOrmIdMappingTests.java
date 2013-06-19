@@ -317,26 +317,26 @@ public class EclipseLinkOrmIdMappingTests
 		XmlConvert xmlConvert = (XmlConvert) idResource.getConvert();
 		JavaIdMapping javaIdMapping = (JavaIdMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("id").getMapping();
 		
-		assertNull(ormIdMapping.getConverter().getType());
+		assertNull(ormIdMapping.getConverter().getConverterType());
 		assertEquals(null, xmlConvert);
 				
 		//set lob in the resource model, verify context model updated
 		xmlConvert = EclipseLinkOrmFactory.eINSTANCE.createXmlConvert();
 		xmlConvert.setConvert("myConvert");
 		idResource.setConvert(xmlConvert);
-		assertEquals(EclipseLinkConvert.class, ormIdMapping.getConverter().getType());
+		assertEquals(EclipseLinkConvert.class, ormIdMapping.getConverter().getConverterType());
 		assertEquals("myConvert", ((EclipseLinkConvert) ormIdMapping.getConverter()).getConverterName());
 
 		//set lob to null in the resource model
 		idResource.setConvert(null);
-		assertNull(ormIdMapping.getConverter().getType());
+		assertNull(ormIdMapping.getConverter().getConverterType());
 		assertEquals(null, idResource.getConvert());
 		
 		
 		javaIdMapping.setConverter(EclipseLinkConvert.class);
 		((EclipseLinkConvert) javaIdMapping.getConverter()).setSpecifiedConverterName("foo");
 		
-		assertNull(ormIdMapping.getConverter().getType());
+		assertNull(ormIdMapping.getConverter().getConverterType());
 		assertEquals(null, idResource.getConvert());
 		assertEquals("foo", ((EclipseLinkConvert) javaIdMapping.getConverter()).getSpecifiedConverterName());
 		
@@ -345,21 +345,21 @@ public class EclipseLinkOrmIdMappingTests
 		OrmPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("id");
 		IdMapping virtualIdMapping = (IdMapping) ormPersistentAttribute2.getMapping();
 		
-		assertEquals(EclipseLinkConvert.class, virtualIdMapping.getConverter().getType());
+		assertEquals(EclipseLinkConvert.class, virtualIdMapping.getConverter().getConverterType());
 		assertEquals("foo", ((EclipseLinkConvert) virtualIdMapping.getConverter()).getSpecifiedConverterName());
 		assertEquals(null, idResource.getConvert());
 		assertEquals("foo", ((EclipseLinkConvert) javaIdMapping.getConverter()).getSpecifiedConverterName());
 		
 		((EclipseLinkConvert) javaIdMapping.getConverter()).setSpecifiedConverterName("bar");
-		assertEquals(EclipseLinkConvert.class, virtualIdMapping.getConverter().getType());
+		assertEquals(EclipseLinkConvert.class, virtualIdMapping.getConverter().getConverterType());
 		assertEquals("bar", ((EclipseLinkConvert) virtualIdMapping.getConverter()).getSpecifiedConverterName());
 		assertEquals(null, idResource.getConvert());
 		assertEquals("bar", ((EclipseLinkConvert) javaIdMapping.getConverter()).getSpecifiedConverterName());
 
 		javaIdMapping.setConverter(null);
-		assertNull(virtualIdMapping.getConverter().getType());
+		assertNull(virtualIdMapping.getConverter().getConverterType());
 		assertNull(idResource.getConvert());
-		assertNull(javaIdMapping.getConverter().getType());
+		assertNull(javaIdMapping.getConverter().getConverterType());
 	}
 	
 	public void testModifyConvert() throws Exception {
@@ -371,28 +371,28 @@ public class EclipseLinkOrmIdMappingTests
 		XmlId idResource = (XmlId) getXmlEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		XmlConvert xmlConvert = (XmlConvert) idResource.getConvert();
 	
-		assertNull(ormIdMapping.getConverter().getType());
+		assertNull(ormIdMapping.getConverter().getConverterType());
 		assertNull(xmlConvert);
 				
 		//set lob in the context model, verify resource model updated
 		ormIdMapping.setConverter(EclipseLinkConvert.class);
 		xmlConvert = (XmlConvert) idResource.getConvert();
 		assertEquals("none", xmlConvert.getConvert());
-		assertEquals(EclipseLinkConvert.class, ormIdMapping.getConverter().getType());
+		assertEquals(EclipseLinkConvert.class, ormIdMapping.getConverter().getConverterType());
 	
 		((EclipseLinkConvert) ormIdMapping.getConverter()).setSpecifiedConverterName("bar");
 		assertEquals("bar", xmlConvert.getConvert());
-		assertEquals(EclipseLinkConvert.class, ormIdMapping.getConverter().getType());
+		assertEquals(EclipseLinkConvert.class, ormIdMapping.getConverter().getConverterType());
 		assertEquals("bar", ((EclipseLinkConvert) ormIdMapping.getConverter()).getSpecifiedConverterName());
 
 		((EclipseLinkConvert) ormIdMapping.getConverter()).setSpecifiedConverterName(null);
 
-		assertNull(ormIdMapping.getConverter().getType());
+		assertNull(ormIdMapping.getConverter().getConverterType());
 		assertNull(idResource.getConvert());
 
 		//set lob to false in the context model
 		ormIdMapping.setConverter(null);
-		assertNull(ormIdMapping.getConverter().getType());
+		assertNull(ormIdMapping.getConverter().getConverterType());
 		assertNull(idResource.getConvert());
 	}
 }

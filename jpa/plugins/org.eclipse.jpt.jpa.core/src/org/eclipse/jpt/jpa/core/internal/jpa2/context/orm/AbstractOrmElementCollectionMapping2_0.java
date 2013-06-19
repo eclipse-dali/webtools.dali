@@ -489,7 +489,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	public void setConverter(Class<? extends Converter> converterType) {
-		if (this.converter.getType() != converterType) {
+		if (this.converter.getConverterType() != converterType) {
 			// Make the old value is the real old one when firing property changed event below
 			OrmConverter old = this.converter;
 			// Set the new value of the converter to a NullOrmConverter to prevent the following
@@ -538,11 +538,11 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	protected void syncConverter() {
 		OrmConverter.Adapter adapter = this.getXmlConverterAdapter();
 		if (adapter == null) {
-			if (this.converter.getType() != null) {
+			if (this.converter.getConverterType() != null) {
 				this.setConverter_(this.nullConverter);
 			}
 		} else {
-			if (this.converter.getType() == adapter.getConverterType()) {
+			if (this.converter.getConverterType() == adapter.getConverterType()) {
 				this.converter.synchronizeWithResourceModel();
 			} else {
 				this.setConverter_(adapter.buildNewConverter(this, this.getContextModelFactory()));
@@ -930,7 +930,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	public void setMapKeyConverter(Class<? extends Converter> converterType) {
-		if (this.mapKeyConverter.getType() != converterType) {
+		if (this.mapKeyConverter.getConverterType() != converterType) {
 			// Make the old value is the real old one when firing property changed event below
 			OrmConverter old = this.mapKeyConverter;
 			// Set the new value of the map key converter to a NullOrmConverter to prevent the following 
@@ -979,11 +979,11 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	protected void syncMapKeyConverter() {
 		OrmConverter.Adapter adapter = this.getXmlMapKeyConverterAdapter();
 		if (adapter == null) {
-			if (this.mapKeyConverter.getType() != null) {
+			if (this.mapKeyConverter.getConverterType() != null) {
 				this.setMapKeyConverter_(this.nullConverter);
 			}
 		} else {
-			if (this.mapKeyConverter.getType() == adapter.getConverterType()) {
+			if (this.mapKeyConverter.getConverterType() == adapter.getConverterType()) {
 				this.mapKeyConverter.synchronizeWithResourceModel();
 			} else {
 				this.setMapKeyConverter_(adapter.buildNewConverter(this, this.getContextModelFactory()));

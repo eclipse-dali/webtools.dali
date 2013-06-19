@@ -55,7 +55,7 @@ public interface OrmBaseTemporalConverter
 			super();
 		}
 
-		public Class<? extends Converter> getConverterType() {
+		public Class<BaseTemporalConverter> getConverterType() {
 			return BaseTemporalConverter.class;
 		}
 
@@ -177,7 +177,7 @@ public interface OrmBaseTemporalConverter
 			super();
 		}
 
-		public Class<? extends Converter> getConverterType() {
+		public Class<BaseTemporalConverter> getConverterType() {
 			return BaseTemporalConverter.class;
 		}
 

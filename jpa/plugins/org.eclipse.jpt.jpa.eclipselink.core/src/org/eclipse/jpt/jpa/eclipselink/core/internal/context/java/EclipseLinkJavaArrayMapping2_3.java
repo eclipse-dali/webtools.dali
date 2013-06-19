@@ -110,7 +110,7 @@ public class EclipseLinkJavaArrayMapping2_3
 	}
 
 	public void setConverter(Class<? extends Converter> converterType) {
-		if (this.converter.getType() != converterType) {
+		if (this.converter.getConverterType() != converterType) {
 			this.converter.dispose();
 			JavaConverter.Adapter converterAdapter = this.getConverterAdapter(converterType);
 			this.retainConverterAnnotation(converterAdapter);
@@ -158,13 +158,13 @@ public class EclipseLinkJavaArrayMapping2_3
 	protected void syncConverter() {
 		Association<JavaConverter.Adapter, Annotation> assoc = this.getConverterAnnotation();
 		if (assoc == null) {
-			if (this.converter.getType() != null) {
+			if (this.converter.getConverterType() != null) {
 				this.setConverter_(this.buildNullConverter());
 			}
 		} else {
 			JavaConverter.Adapter adapter = assoc.getKey();
 			Annotation annotation = assoc.getValue();
-			if ((this.converter.getType() == adapter.getConverterType()) &&
+			if ((this.converter.getConverterType() == adapter.getConverterType()) &&
 					(this.converter.getConverterAnnotation() == annotation)) {
 				this.converter.synchronizeWithResourceModel();
 			} else {

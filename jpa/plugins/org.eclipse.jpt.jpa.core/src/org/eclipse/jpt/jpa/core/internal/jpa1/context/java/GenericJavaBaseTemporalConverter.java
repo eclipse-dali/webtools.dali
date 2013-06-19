@@ -69,7 +69,7 @@ public class GenericJavaBaseTemporalConverter
 
 	// ********** misc **********
 
-	public Class<? extends Converter> getType() {
+	public Class<BaseTemporalConverter> getConverterType() {
 		return BaseTemporalConverter.class;
 	}
 
