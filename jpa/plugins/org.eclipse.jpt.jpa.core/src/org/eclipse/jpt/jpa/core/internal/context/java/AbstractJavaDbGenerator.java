@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.DatabaseGenerator;
 import org.eclipse.jpt.jpa.core.context.Generator;
-import org.eclipse.jpt.jpa.core.context.java.JavaDbGenerator;
+import org.eclipse.jpt.jpa.core.context.java.JavaDatabaseGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.resource.java.DatabaseGeneratorAnnotation;
 import org.eclipse.jpt.jpa.db.Catalog;
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.db.SchemaContainer;
  */
 public abstract class AbstractJavaDbGenerator<A extends DatabaseGeneratorAnnotation>
 	extends AbstractJavaGenerator<JavaGeneratorContainer, A>
-	implements JavaDbGenerator
+	implements JavaDatabaseGenerator
 {
 	protected Integer specifiedInitialValue;
 	protected int defaultInitialValue;

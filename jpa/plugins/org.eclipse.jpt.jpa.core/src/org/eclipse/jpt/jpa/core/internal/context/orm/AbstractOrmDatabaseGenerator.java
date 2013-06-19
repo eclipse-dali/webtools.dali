@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.DatabaseGenerator;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.java.JavaDbGenerator;
+import org.eclipse.jpt.jpa.core.context.java.JavaDatabaseGenerator;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlGenerator;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Database;
@@ -215,7 +215,7 @@ public abstract class AbstractOrmDatabaseGenerator<X extends XmlGenerator>
 
 	// ********** metadata conversion **********
 
-	public void convertFrom(JavaDbGenerator javaGenerator) {
+	public void convertFrom(JavaDatabaseGenerator javaGenerator) {
 		super.convertFrom(javaGenerator);
 		this.setSpecifiedInitialValue(javaGenerator.getSpecifiedInitialValue());
 		this.setSpecifiedAllocationSize(javaGenerator.getSpecifiedAllocationSize());

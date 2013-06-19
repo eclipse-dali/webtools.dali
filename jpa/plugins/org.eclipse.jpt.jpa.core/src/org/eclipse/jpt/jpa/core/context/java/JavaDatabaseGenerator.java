@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.resource.java.DatabaseGeneratorAnnotation;
  * @version 3.3
  * @since 3.3
  */
-public interface JavaDbGenerator 
+public interface JavaDatabaseGenerator 
 	extends JavaGenerator, DatabaseGenerator
 {
 	DatabaseGeneratorAnnotation getGeneratorAnnotation();
