@@ -176,26 +176,26 @@ public class GenericJavaNamedQuery
 	}
 
 	@Override
-	protected boolean isEquivalentTo(Query other) {
-		return super.isEquivalentTo(other)
-				&& this.isEquivalentTo((NamedQuery) other);
+	protected boolean isEquivalentTo_(Query other) {
+		return super.isEquivalentTo_(other)
+				&& this.isEquivalentTo_((NamedQuery) other);
 	}
 
-	protected boolean isEquivalentTo(NamedQuery other) {
+	protected boolean isEquivalentTo_(NamedQuery other) {
 		boolean queriesEquivalent = ObjectTools.equals(this.query, other.getQuery());
 		if (this.isJpa2_0Compatible()) {
-			return queriesEquivalent && this.isEquivalentTo((NamedQuery2_0) other); 
+			return queriesEquivalent && this.isEquivalentTo_((NamedQuery2_0) other); 
 		}
 		return queriesEquivalent;
 	}
 
-	protected boolean isEquivalentTo(NamedQuery2_0 other) {
+	protected boolean isEquivalentTo_(NamedQuery2_0 other) {
 		return this.specifiedLockMode == other.getSpecifiedLockMode();
 	}
 
 	// ********** misc **********
 
-	public Class<NamedQuery> getType() {
+	public Class<NamedQuery> getQueryType() {
 		return NamedQuery.class;
 	}
 }

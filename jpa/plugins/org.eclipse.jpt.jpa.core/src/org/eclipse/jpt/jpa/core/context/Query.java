@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core.context;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -37,16 +36,18 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public interface Query
 	extends JpaNamedContextModel
 {
+	/**
+	 * Return the query's type.
+	 */
+	Class<? extends Query> getQueryType();
 
 	/**
-	 * Return the generator's type.
+	 * Return whether the specified query has the same state as this
+	 * query but is <em>not</em> this query.
+	 * @see #getQueryType()
 	 */
-	Class<? extends Query> getType();
-		@SuppressWarnings("unchecked")
-		Iterable<Class<? extends Query>> TYPES = IterableTools.iterable(
-			NamedQuery.class,
-			NamedNativeQuery.class
-		);
+	boolean isEquivalentTo(Query query);
+
 
 	// ********** hints **********
 

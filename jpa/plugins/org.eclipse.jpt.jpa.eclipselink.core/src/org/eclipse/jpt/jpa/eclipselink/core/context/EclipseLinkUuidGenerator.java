@@ -24,5 +24,5 @@ import org.eclipse.jpt.jpa.core.context.Generator;
 public interface EclipseLinkUuidGenerator
 	extends Generator
 {
-	// nothing new...
+	Class<EclipseLinkUuidGenerator> getGeneratorType();
 }

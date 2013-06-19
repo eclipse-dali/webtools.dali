@@ -24,6 +24,7 @@ package org.eclipse.jpt.jpa.core.context;
 public interface NamedNativeQuery
 	extends Query
 {
+	Class<NamedNativeQuery> getQueryType();
 
 	// ********** query **********
 

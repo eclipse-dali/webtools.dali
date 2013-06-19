@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,7 +21,10 @@ package org.eclipse.jpt.jpa.eclipselink.core.context;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkStructConverter extends EclipseLinkConverterClassConverter
+public interface EclipseLinkStructConverter
+	extends EclipseLinkConverterClassConverter
 {
-		String ECLIPSELINK_STRUCT_CONVERTER_CLASS_NAME = "org.eclipse.persistence.platform.database.converters.StructConverter"; //$NON-NLS-1$
+	String ECLIPSELINK_STRUCT_CONVERTER_CLASS_NAME = "org.eclipse.persistence.platform.database.converters.StructConverter"; //$NON-NLS-1$
+
+	Class<EclipseLinkStructConverter> getConverterType();
 }

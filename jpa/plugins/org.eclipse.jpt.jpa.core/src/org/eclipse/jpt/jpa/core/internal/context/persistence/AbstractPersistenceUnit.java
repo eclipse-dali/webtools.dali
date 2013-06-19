@@ -75,11 +75,9 @@ import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.JarFileRef;
@@ -1588,8 +1586,8 @@ public abstract class AbstractPersistenceUnit
 		ArrayList<Generator> result = ListTools.list(this.getMappingFileGenerators());
 
 		HashSet<String> mappingFileGeneratorNames = this.convertToNames(result);
-		HashMap<String, ArrayList<JavaGenerator>> allJavaGenerators = this.mapByName(this.getAllJavaGenerators());
-		for (Map.Entry<String, ArrayList<JavaGenerator>> entry : allJavaGenerators.entrySet()) {
+		HashMap<String, ArrayList<Generator>> allJavaGenerators = this.mapByName(this.getAllJavaGenerators());
+		for (Map.Entry<String, ArrayList<Generator>> entry : allJavaGenerators.entrySet()) {
 			if ( ! mappingFileGeneratorNames.contains(entry.getKey())) {
 				result.addAll(entry.getValue());
 			}
@@ -1605,11 +1603,9 @@ public abstract class AbstractPersistenceUnit
 	/**
 	 * Include "overridden" Java generators.
 	 */
-	protected Iterable<JavaGenerator> getAllJavaGenerators() {
-		return IterableTools.children(this.getAllJavaTypeMappingsUnique(), TYPE_MAPPING_JAVA_GENERATORS_TRANSFORMER);
+	protected Iterable<Generator> getAllJavaGenerators() {
+		return IterableTools.children(this.getAllJavaTypeMappingsUnique(), TypeMapping.GENERATORS_TRANSFORMER);
 	}
-
-	protected static final Transformer<TypeMapping, Iterable<JavaGenerator>> TYPE_MAPPING_JAVA_GENERATORS_TRANSFORMER = TransformerTools.cast(TypeMapping.GENERATORS_TRANSFORMER);
 
 	// ***** metadata conversion
 	public boolean hasConvertibleJavaGenerators() {
@@ -1617,10 +1613,10 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	public void convertJavaGenerators(EntityMappings entityMappings, IProgressMonitor monitor) {
-		ArrayList<JavaGenerator> convertibleJavaGenerators = this.getConvertibleJavaGenerators();
+		ArrayList<Generator> convertibleJavaGenerators = this.getConvertibleJavaGenerators();
 		SubMonitor subMonitor = SubMonitor.convert(monitor, JptJpaCoreMessages.JAVA_METADATA_CONVERSION_IN_PROGRESS, convertibleJavaGenerators.size());
-		for (JavaGenerator generator : convertibleJavaGenerators) {
-			this.convertJavaGenerator(entityMappings, generator, subMonitor.newChild(1));
+		for (Generator generator : convertibleJavaGenerators) {
+			this.convertJavaGenerator(entityMappings, (JavaGenerator) generator, subMonitor.newChild(1));
 		}
 		subMonitor.setTaskName(JptJpaCoreMessages.JAVA_METADATA_CONVERSION_COMPLETE);
 	}
@@ -1634,7 +1630,7 @@ public abstract class AbstractPersistenceUnit
 		generator.delete();  // delete any converted generators
 	}
 
-	protected ArrayList<JavaGenerator> getConvertibleJavaGenerators() {
+	protected ArrayList<Generator> getConvertibleJavaGenerators() {
 		return this.extractConvertibleJavaModels(this.getAllJavaGenerators(), this.getMappingFileGenerators());
 	}
 
@@ -1670,8 +1666,8 @@ public abstract class AbstractPersistenceUnit
 		ArrayList<Query> result = ListTools.list(this.getMappingFileQueries());
 
 		HashSet<String> mappingFileQueryNames = this.convertToNames(result);
-		HashMap<String, ArrayList<JavaQuery>> allJavaQueries = this.mapByName(this.getAllJavaQueries());
-		for (Map.Entry<String, ArrayList<JavaQuery>> entry : allJavaQueries.entrySet()) {
+		HashMap<String, ArrayList<Query>> allJavaQueries = this.mapByName(this.getAllJavaQueries());
+		for (Map.Entry<String, ArrayList<Query>> entry : allJavaQueries.entrySet()) {
 			if ( ! mappingFileQueryNames.contains(entry.getKey())) {
 				result.addAll(entry.getValue());
 			}
@@ -1687,11 +1683,9 @@ public abstract class AbstractPersistenceUnit
 	/**
 	 * Include "overridden" Java queries.
 	 */
-	protected Iterable<JavaQuery> getAllJavaQueries() {
-		return IterableTools.children(this.getAllJavaTypeMappingsUnique(), TYPE_MAPPING_JAVA_QUERIES_TRANSFORMER);
+	protected Iterable<Query> getAllJavaQueries() {
+		return IterableTools.children(this.getAllJavaTypeMappingsUnique(), TypeMapping.QUERIES_TRANSFORMER);
 	}
-
-	protected static final Transformer<TypeMapping, Iterable<JavaQuery>> TYPE_MAPPING_JAVA_QUERIES_TRANSFORMER = TransformerTools.cast(TypeMapping.QUERIES_TRANSFORMER);
 
 	protected Iterable<TypeMapping> getAllJavaTypeMappingsUnique() {
 		return IterableTools.transform(this.getAllJavaPersistentTypesUnique(), PersistentType.MAPPING_TRANSFORMER);
@@ -1704,10 +1698,10 @@ public abstract class AbstractPersistenceUnit
 
 	public void convertJavaQueries(EntityMappings entityMappings, IProgressMonitor monitor) {
 		OrmQueryContainer queryContainer = entityMappings.getQueryContainer();
-		ArrayList<JavaQuery> convertibleJavaQueries = this.getConvertibleJavaQueries();
+		ArrayList<Query> convertibleJavaQueries = this.getConvertibleJavaQueries();
 		SubMonitor subMonitor = SubMonitor.convert(monitor, JptJpaCoreMessages.JAVA_METADATA_CONVERSION_IN_PROGRESS, convertibleJavaQueries.size());
-		for (JavaQuery query : convertibleJavaQueries) {
-			this.convertJavaQuery(queryContainer, query, subMonitor.newChild(1));
+		for (Query query : convertibleJavaQueries) {
+			this.convertJavaQuery(queryContainer, (JavaQuery) query, subMonitor.newChild(1));
 		}
 		subMonitor.setTaskName(JptJpaCoreMessages.JAVA_METADATA_CONVERSION_COMPLETE);
 	}
@@ -1721,7 +1715,7 @@ public abstract class AbstractPersistenceUnit
 		query.delete();  // delete any converted queries
 	}
 
-	protected ArrayList<JavaQuery> getConvertibleJavaQueries() {
+	protected ArrayList<Query> getConvertibleJavaQueries() {
 		return this.extractConvertibleJavaModels(this.getAllJavaQueries(), this.getMappingFileQueries());
 	}
 
@@ -2211,20 +2205,20 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	/**
-	 * Return the Java nodes that are neither overridden nor duplicated
-	 * (by default any Java nodes with the same name are "duplicates").
+	 * Return the Java models that are neither overridden nor duplicated
+	 * (by default any Java models with the same name are "duplicates").
 	 */
-	protected <N extends JpaNamedContextModel> ArrayList<N> extractConvertibleJavaModels(Iterable<N> allJavaModels, Iterable<? extends JpaNamedContextModel> mappingFileModels) {
-		ArrayList<N> convertibleModels = new ArrayList<N>();
+	protected <M extends JpaNamedContextModel> ArrayList<M> extractConvertibleJavaModels(Iterable<M> allJavaModels, Iterable<M> mappingFileModels) {
+		ArrayList<M> convertibleModels = new ArrayList<M>();
 
 		HashSet<String> mappingFileModelNames = this.convertToNames(ListTools.list(mappingFileModels));
-		HashMap<String, ArrayList<N>> allJavaModelsByName = this.mapByName(allJavaModels);
-		for (Map.Entry<String, ArrayList<N>> entry : allJavaModelsByName.entrySet()) {
+		HashMap<String, ArrayList<M>> allJavaModelsByName = this.mapByName(allJavaModels);
+		for (Map.Entry<String, ArrayList<M>> entry : allJavaModelsByName.entrySet()) {
 			String javaModelName = entry.getKey();
 			if (StringTools.isBlank(javaModelName)) {
 				continue;  // ignore any nodes with an empty name(?)
 			}
-			ArrayList<N> javaModelsWithSameName = entry.getValue();
+			ArrayList<M> javaModelsWithSameName = entry.getValue();
 			if ((javaModelsWithSameName.size() == 1) && ! mappingFileModelNames.contains(javaModelName)) {
 				convertibleModels.add(javaModelsWithSameName.get(0));
 			}
@@ -2938,14 +2932,14 @@ public abstract class AbstractPersistenceUnit
 
 
 	// ***** Metamodel source for non-persistent types
-	protected static class NonPersistentMetamodelSourceType
+	public static class NonPersistentMetamodelSourceType
 		implements MetamodelSourceType2_0
 	{
 		protected final String name;
 		protected final JpaProject jpaProject;
 		protected final MetamodelSourceType2_0.Synchronizer metamodelSynchronizer;
 
-		protected NonPersistentMetamodelSourceType(String name, JpaProject jpaProject) {
+		public NonPersistentMetamodelSourceType(String name, JpaProject jpaProject) {
 			super();
 			this.name = name;
 			this.jpaProject = jpaProject;

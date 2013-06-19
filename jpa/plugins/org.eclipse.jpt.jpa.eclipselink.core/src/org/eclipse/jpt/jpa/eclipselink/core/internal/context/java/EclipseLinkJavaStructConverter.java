@@ -44,7 +44,7 @@ public class EclipseLinkJavaStructConverter
 
 	// ********** misc **********
 
-	public Class<EclipseLinkStructConverter> getType() {
+	public Class<EclipseLinkStructConverter> getConverterType() {
 		return EclipseLinkStructConverter.class;
 	}
 

@@ -27,6 +27,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 public interface NamedQuery
 	extends Query
 {
+	Class<NamedQuery> getQueryType();
 
 	// ********** query **********
 

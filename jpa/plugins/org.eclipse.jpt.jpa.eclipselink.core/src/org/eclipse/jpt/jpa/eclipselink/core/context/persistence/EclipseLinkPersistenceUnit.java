@@ -26,13 +26,13 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.core.internal.utility.TypeTools;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
@@ -463,8 +463,8 @@ public class EclipseLinkPersistenceUnit
 		ArrayList<EclipseLinkConverter> result = ListTools.list(this.getMappingFileConverters());
 
 		HashSet<String> mappingFileConverterNames = this.convertToNames(result);
-		HashMap<String, ArrayList<EclipseLinkJavaConverter<?>>> javaConverters = this.mapByName(this.getAllJavaConverters());
-		for (Map.Entry<String, ArrayList<EclipseLinkJavaConverter<?>>> entry : javaConverters.entrySet()) {
+		HashMap<String, ArrayList<EclipseLinkConverter>> javaConverters = this.mapByName(this.getAllJavaConverters());
+		for (Map.Entry<String, ArrayList<EclipseLinkConverter>> entry : javaConverters.entrySet()) {
 			if ( ! mappingFileConverterNames.contains(entry.getKey())) {
 				result.addAll(entry.getValue());
 			}
@@ -494,20 +494,17 @@ public class EclipseLinkPersistenceUnit
 	/**
 	 * Include "overridden" Java converters.
 	 */
-	public Iterable<EclipseLinkJavaConverter<?>> getAllJavaConverters() {
-		return IterableTools.children(this.getAllJavaTypeMappingsUnique(), TYPE_MAPPING_CONVERTER_TRANSFORMER);
+	public Iterable<EclipseLinkConverter> getAllJavaConverters() {
+		return IterableTools.children(this.getAllJavaTypeMappingsUnique(), TYPE_MAPPING_CONVERTERS_TRANSFORMER);
 	}
 
-	public static final Transformer<TypeMapping, Iterable<EclipseLinkJavaConverter<?>>> TYPE_MAPPING_CONVERTER_TRANSFORMER = new TypeMappingConverterTransformer();
+	public static final Transformer<TypeMapping, Iterable<EclipseLinkConverter>> TYPE_MAPPING_CONVERTERS_TRANSFORMER = new TypeMappingConvertersTransformer();
 
-	public static class TypeMappingConverterTransformer
-		extends TransformerAdapter<TypeMapping, Iterable<EclipseLinkJavaConverter<?>>>
+	public static class TypeMappingConvertersTransformer
+		extends TransformerAdapter<TypeMapping, Iterable<EclipseLinkConverter>>
 	{
 		@Override
-		public Iterable<EclipseLinkJavaConverter<?>> transform(TypeMapping typeMapping) {
-			return new SubIterableWrapper<EclipseLinkConverter, EclipseLinkJavaConverter<?>>(this.transform_(typeMapping));
-		}
-		protected Iterable<EclipseLinkConverter> transform_(TypeMapping typeMapping) {
+		public Iterable<EclipseLinkConverter> transform(TypeMapping typeMapping) {
 			// Java "null" type mappings are not EclipseLink mappings
 			return (typeMapping instanceof EclipseLinkTypeMapping) ?
 					((EclipseLinkTypeMapping) typeMapping).getConverters() :
@@ -999,7 +996,7 @@ public class EclipseLinkPersistenceUnit
 	 * because they cannot be "portable" (since only EclipseLink has converters).
 	 */
 	protected void validateConvertersWithSameName(String converterName, ArrayList<EclipseLinkConverter> dups, List<IMessage> messages) {
-		if (this.anyModelsAreInequivalent(dups)) {
+		if (this.allAreEquivalent(dups, CONVERTER_EQUIVALENCY_ADAPTER)) {
 			for (EclipseLinkConverter dup : dups) {
 				if (dup.supportsValidationMessages()) {
 					messages.add(
@@ -1015,26 +1012,47 @@ public class EclipseLinkPersistenceUnit
 		}
 	}
 
-	/**
-	 * Return whether all the specified nodes are "equivalent"
-	 * (i.e. they all have the same state).
-	 */
-	protected boolean allModelsAreEquivalent(ArrayList<? extends JpaNamedContextModel> models) {
-		return ! this.anyModelsAreInequivalent(models);
+	protected static final EquivalencyAdapter<EclipseLinkConverter> CONVERTER_EQUIVALENCY_ADAPTER = new ConverterEquivalencyAdapter();
+
+	public static class ConverterEquivalencyAdapter
+		implements EquivalencyAdapter<EclipseLinkConverter>
+	{
+		public boolean valuesAreEquivalent(EclipseLinkConverter converter1, EclipseLinkConverter converter2) {
+			return converter1.isEquivalentTo(converter2);
+		}
+		@Override
+		public String toString() {
+			return ObjectTools.singletonToString(this);
+		}
 	}
 
-	protected boolean anyModelsAreInequivalent(ArrayList<? extends JpaNamedContextModel> models) {
-		if (models.size() < 2) {
+	/**
+	 * Using the specified adapter, return whether all the specified objects
+	 * are "equivalent" (i.e. they all have the same state).
+	 */
+	protected <T> boolean allAreEquivalent(ArrayList<T> collection, EquivalencyAdapter<T> adapter) {
+		return ! this.anyAreInequivalent(collection, adapter);
+	}
+
+	protected <T> boolean anyAreInequivalent(ArrayList<T> collection, EquivalencyAdapter<T> adapter) {
+		if (collection.size() < 2) {
 			throw new IllegalArgumentException();
 		}
-		Iterator<? extends JpaNamedContextModel> stream = models.iterator();
-		JpaNamedContextModel first = stream.next();
+		Iterator<T> stream = collection.iterator();
+		T first = stream.next();
 		while (stream.hasNext()) {
-			if ( ! stream.next().isEquivalentTo(first)) {
+			if ( ! adapter.valuesAreEquivalent(stream.next(), first)) {
 				return true;
 			}
 		}
 		return false;
+	}
+
+	public interface EquivalencyAdapter<T> {
+		/**
+		 * Return whether the two objects are "equivalent".
+		 */
+		boolean valuesAreEquivalent(T o1, T o2);
 	}
 
 	protected void validate(EclipseLinkConverter converter, List<IMessage> messages, IReporter reporter) {
@@ -1049,7 +1067,7 @@ public class EclipseLinkPersistenceUnit
 	 */
 	@Override
 	protected void validateGeneratorsWithSameName(String generatorName, ArrayList<Generator> dups, List<IMessage> messages) {
-		if (this.allModelsAreEquivalent(dups)) {
+		if (this.allAreEquivalent(dups, GENERATOR_EQUIVALENCY_ADAPTER)) {
 			for (Generator dup : dups) {
 				if (dup.supportsValidationMessages()) {
 					messages.add(
@@ -1067,12 +1085,26 @@ public class EclipseLinkPersistenceUnit
 		}
 	}
 
+	protected static final EquivalencyAdapter<Generator> GENERATOR_EQUIVALENCY_ADAPTER = new GeneratorEquivalencyAdapter();
+
+	public static class GeneratorEquivalencyAdapter
+		implements EquivalencyAdapter<Generator>
+	{
+		public boolean valuesAreEquivalent(Generator generator1, Generator generator2) {
+			return generator1.isEquivalentTo(generator2);
+		}
+		@Override
+		public String toString() {
+			return ObjectTools.singletonToString(this);
+		}
+	}
+
 	/**
 	 * @see #validateGeneratorsWithSameName(String, ArrayList, List)
 	 */
 	@Override
 	protected void validateQueriesWithSameName(String queryName, ArrayList<Query> dups, List<IMessage> messages) {
-		if (this.allModelsAreEquivalent(dups)) {
+		if (this.allAreEquivalent(dups, QUERY_EQUIVALENCY_ADAPTER)) {
 			for (Query dup : dups) {
 				if (dup.supportsValidationMessages()) {
 					messages.add(
@@ -1087,6 +1119,20 @@ public class EclipseLinkPersistenceUnit
 			}
 		} else {
 			super.validateQueriesWithSameName(queryName, dups, messages);
+		}
+	}
+
+	protected static final EquivalencyAdapter<Query> QUERY_EQUIVALENCY_ADAPTER = new QueryEquivalencyAdapter();
+
+	public static class QueryEquivalencyAdapter
+		implements EquivalencyAdapter<Query>
+	{
+		public boolean valuesAreEquivalent(Query query1, Query query2) {
+			return query1.isEquivalentTo(query2);
+		}
+		@Override
+		public String toString() {
+			return ObjectTools.singletonToString(this);
 		}
 	}
 
@@ -1141,7 +1187,7 @@ public class EclipseLinkPersistenceUnit
 	 * Return whether the persistence unit has any equivalent Java generators.
 	 */
 	public boolean hasAnyEquivalentJavaQueries() {
-		return this.hasAnyEquivalentJavaModels(this.getAllJavaQueries(), this.getMappingFileQueries());
+		return this.hasAnyEquivalentJavaModels(this.getAllJavaQueries(), this.getMappingFileQueries(), QUERY_EQUIVALENCY_ADAPTER);
 	}
 
 	/**
@@ -1151,38 +1197,38 @@ public class EclipseLinkPersistenceUnit
 	@Override
 	public void convertJavaQueries(EntityMappings entityMappings, IProgressMonitor monitor) {
 		OrmQueryContainer queryContainer = entityMappings.getQueryContainer();
-		HashMap<String, ArrayList<JavaQuery>> convertibleJavaQueries = this.getEclipseLinkConvertibleJavaQueries();
+		HashMap<String, ArrayList<Query>> convertibleJavaQueries = this.getEclipseLinkConvertibleJavaQueries();
 		int work = this.calculateCumulativeSize(convertibleJavaQueries.values());
 		SubMonitor sm = SubMonitor.convert(monitor, JptJpaCoreMessages.JAVA_METADATA_CONVERSION_IN_PROGRESS, work);
-		for (Map.Entry<String, ArrayList<JavaQuery>> entry : convertibleJavaQueries.entrySet()) {
+		for (Map.Entry<String, ArrayList<Query>> entry : convertibleJavaQueries.entrySet()) {
 			this.convertJavaQueriesWithSameName(queryContainer, entry, sm.newChild(entry.getValue().size()));
 		}
 		sm.setTaskName(JptJpaCoreMessages.JAVA_METADATA_CONVERSION_COMPLETE);
 	}
 
-	protected void convertJavaQueriesWithSameName(OrmQueryContainer queryContainer, Map.Entry<String, ArrayList<JavaQuery>> entry, SubMonitor monitor) {
+	protected void convertJavaQueriesWithSameName(OrmQueryContainer queryContainer, Map.Entry<String, ArrayList<Query>> entry, SubMonitor monitor) {
 		if (monitor.isCanceled()) {
 			throw new OperationCanceledException(JptJpaCoreMessages.JAVA_METADATA_CONVERSION_CANCELED);
 		}
 		monitor.setTaskName(NLS.bind(JptJpaCoreMessages.JAVA_METADATA_CONVERSION_CONVERT_QUERY, entry.getKey()));
 
-		ArrayList<JavaQuery> javaQueriesWithSameName = entry.getValue();
-		JavaQuery first = javaQueriesWithSameName.get(0);
+		ArrayList<Query> javaQueriesWithSameName = entry.getValue();
+		JavaQuery first = (JavaQuery) javaQueriesWithSameName.get(0);
 		first.convertTo(queryContainer);
 		first.delete();  // delete any converted queries
 		monitor.worked(1);
 
 		for (int i = 1; i < javaQueriesWithSameName.size(); i++) {  // NB: start with 1!
-			javaQueriesWithSameName.get(i).delete();
+			((JavaQuery) javaQueriesWithSameName.get(i)).delete();
 			monitor.worked(1);
 		}
 	}
 	
 	/**
-	 * @see #extractEclipseLinkConvertibleJavaModels(Iterable, Iterable)
+	 * @see #extractEclipseLinkConvertibleJavaModels(Iterable, Iterable, EquivalencyAdapter)
 	 */
-	protected HashMap<String, ArrayList<JavaQuery>> getEclipseLinkConvertibleJavaQueries() {
-		return this.extractEclipseLinkConvertibleJavaModels(this.getAllJavaQueries(), this.getMappingFileQueries());
+	protected HashMap<String, ArrayList<Query>> getEclipseLinkConvertibleJavaQueries() {
+		return this.extractEclipseLinkConvertibleJavaModels(this.getAllJavaQueries(), this.getMappingFileQueries(), QUERY_EQUIVALENCY_ADAPTER);
 	}
 
 	// ***** generators
@@ -1199,7 +1245,7 @@ public class EclipseLinkPersistenceUnit
 	 * Return whether the persistence unit has any equivalent Java generators.
 	 */
 	public boolean hasAnyEquivalentJavaGenerators() {
-		return this.hasAnyEquivalentJavaModels(this.getAllJavaGenerators(), this.getMappingFileGenerators());
+		return this.hasAnyEquivalentJavaModels(this.getAllJavaGenerators(), this.getMappingFileGenerators(), GENERATOR_EQUIVALENCY_ADAPTER);
 	}
 
 	/**
@@ -1208,38 +1254,38 @@ public class EclipseLinkPersistenceUnit
 	 */
 	@Override
 	public void convertJavaGenerators(EntityMappings entityMappings, IProgressMonitor monitor) {
-		HashMap<String, ArrayList<JavaGenerator>> convertibleJavaGenerators = this.getEclipseLinkConvertibleJavaGenerators();
+		HashMap<String, ArrayList<Generator>> convertibleJavaGenerators = this.getEclipseLinkConvertibleJavaGenerators();
 		int work = this.calculateCumulativeSize(convertibleJavaGenerators.values());
 		SubMonitor sm = SubMonitor.convert(monitor, JptJpaCoreMessages.JAVA_METADATA_CONVERSION_IN_PROGRESS, work);
-		for (Map.Entry<String, ArrayList<JavaGenerator>> entry : convertibleJavaGenerators.entrySet()) {
+		for (Map.Entry<String, ArrayList<Generator>> entry : convertibleJavaGenerators.entrySet()) {
 			this.convertJavaGeneratorsWithSameName(entityMappings, entry, sm.newChild(entry.getValue().size()));
 		}
 		sm.setTaskName(JptJpaCoreMessages.JAVA_METADATA_CONVERSION_COMPLETE);
 	}
 
-	protected void convertJavaGeneratorsWithSameName(EntityMappings entityMappings, Map.Entry<String, ArrayList<JavaGenerator>> entry, SubMonitor monitor) {
+	protected void convertJavaGeneratorsWithSameName(EntityMappings entityMappings, Map.Entry<String, ArrayList<Generator>> entry, SubMonitor monitor) {
 		if (monitor.isCanceled()) {
 			throw new OperationCanceledException(JptJpaCoreMessages.JAVA_METADATA_CONVERSION_CANCELED);
 		}
 		monitor.setTaskName(NLS.bind(JptJpaCoreMessages.JAVA_METADATA_CONVERSION_CONVERT_GENERATOR, entry.getKey()));
 
-		ArrayList<JavaGenerator> javaGeneratorsWithSameName = entry.getValue();
-		JavaGenerator first = javaGeneratorsWithSameName.get(0);
+		ArrayList<Generator> javaGeneratorsWithSameName = entry.getValue();
+		JavaGenerator first = (JavaGenerator) javaGeneratorsWithSameName.get(0);
 		first.convertTo(entityMappings);
 		first.delete();  // delete any converted generators
 		monitor.worked(1);
 
 		for (int i = 1; i < javaGeneratorsWithSameName.size(); i++) {  // NB: start with 1!
-			javaGeneratorsWithSameName.get(i).delete();
+			((JavaGenerator) javaGeneratorsWithSameName.get(i)).delete();
 			monitor.worked(1);
 		}
 	}
 	
 	/**
-	 * @see #extractEclipseLinkConvertibleJavaModels(Iterable, Iterable)
+	 * @see #extractEclipseLinkConvertibleJavaModels(Iterable, Iterable, EquivalencyAdapter)
 	 */
-	protected HashMap<String, ArrayList<JavaGenerator>> getEclipseLinkConvertibleJavaGenerators() {
-		return this.extractEclipseLinkConvertibleJavaModels(this.getAllJavaGenerators(), this.getMappingFileGenerators());
+	protected HashMap<String, ArrayList<Generator>> getEclipseLinkConvertibleJavaGenerators() {
+		return this.extractEclipseLinkConvertibleJavaModels(this.getAllJavaGenerators(), this.getMappingFileGenerators(), GENERATOR_EQUIVALENCY_ADAPTER);
 	}
 
 	// ***** converters
@@ -1255,7 +1301,7 @@ public class EclipseLinkPersistenceUnit
 	 * Return whether the persistence unit has any equivalent Java generators.
 	 */
 	public boolean hasAnyEquivalentJavaConverters() {
-		return this.hasAnyEquivalentJavaModels(this.getAllJavaConverters(), this.getMappingFileConverters());
+		return this.hasAnyEquivalentJavaModels(this.getAllJavaConverters(), this.getMappingFileConverters(), CONVERTER_EQUIVALENCY_ADAPTER);
 	}
 
 	/**
@@ -1264,38 +1310,38 @@ public class EclipseLinkPersistenceUnit
 	 */
 	public void convertJavaConverters(EclipseLinkEntityMappings entityMappings, IProgressMonitor monitor) {
 		EclipseLinkOrmConverterContainer ormConverterContainer = entityMappings.getConverterContainer();
-		HashMap<String, ArrayList<EclipseLinkJavaConverter<?>>> convertibleJavaConverters = this.getEclipseLinkConvertibleJavaConverters();
+		HashMap<String, ArrayList<EclipseLinkConverter>> convertibleJavaConverters = this.getEclipseLinkConvertibleJavaConverters();
 		int work = this.calculateCumulativeSize(convertibleJavaConverters.values());
 		SubMonitor sm = SubMonitor.convert(monitor, JptJpaCoreMessages.JAVA_METADATA_CONVERSION_IN_PROGRESS, work);
-		for (Map.Entry<String, ArrayList<EclipseLinkJavaConverter<?>>> entry : convertibleJavaConverters.entrySet()) {
+		for (Map.Entry<String, ArrayList<EclipseLinkConverter>> entry : convertibleJavaConverters.entrySet()) {
 			this.convertJavaConvertersWithSameName(ormConverterContainer, entry, sm.newChild(entry.getValue().size()));
 		}
 		sm.setTaskName(JptJpaCoreMessages.JAVA_METADATA_CONVERSION_COMPLETE);
 	}
 
-	protected void convertJavaConvertersWithSameName(EclipseLinkOrmConverterContainer ormConverterContainer, Map.Entry<String, ArrayList<EclipseLinkJavaConverter<?>>> entry, SubMonitor monitor) {
+	protected void convertJavaConvertersWithSameName(EclipseLinkOrmConverterContainer ormConverterContainer, Map.Entry<String, ArrayList<EclipseLinkConverter>> entry, SubMonitor monitor) {
 		if (monitor.isCanceled()) {
 			throw new OperationCanceledException(JptJpaCoreMessages.JAVA_METADATA_CONVERSION_CANCELED);
 		}
 		monitor.setTaskName(NLS.bind(JptJpaEclipseLinkCoreMessages.JAVA_METADATA_CONVERSION_CONVERT_CONVERTER, entry.getKey()));
 
-		ArrayList<EclipseLinkJavaConverter<?>> javaConvertersWithSameName = entry.getValue();
-		EclipseLinkJavaConverter<?> first = javaConvertersWithSameName.get(0);
+		ArrayList<EclipseLinkConverter> javaConvertersWithSameName = entry.getValue();
+		EclipseLinkJavaConverter<?> first = (EclipseLinkJavaConverter<?>) javaConvertersWithSameName.get(0);
 		first.convertTo(ormConverterContainer);
 		first.delete();  // delete any converted generators
 		monitor.worked(1);
 
 		for (int i = 1; i < javaConvertersWithSameName.size(); i++) {  // NB: start with 1!
-			javaConvertersWithSameName.get(i).delete();
+			((EclipseLinkJavaConverter<?>) javaConvertersWithSameName.get(i)).delete();
 			monitor.worked(1);
 		}
 	}
 	
 	/**
-	 * @see #extractEclipseLinkConvertibleJavaModels(Iterable, Iterable)
+	 * @see #extractEclipseLinkConvertibleJavaModels(Iterable, Iterable, EquivalencyAdapter)
 	 */
-	protected HashMap<String, ArrayList<EclipseLinkJavaConverter<?>>> getEclipseLinkConvertibleJavaConverters() {
-		return this.extractEclipseLinkConvertibleJavaModels(this.getAllJavaConverters(), this.getMappingFileConverters());
+	protected HashMap<String, ArrayList<EclipseLinkConverter>> getEclipseLinkConvertibleJavaConverters() {
+		return this.extractEclipseLinkConvertibleJavaModels(this.getAllJavaConverters(), this.getMappingFileConverters(), CONVERTER_EQUIVALENCY_ADAPTER);
 	}
 
 	protected int calculateCumulativeSize(Collection<? extends Collection<?>> collections) {
@@ -1306,9 +1352,9 @@ public class EclipseLinkPersistenceUnit
 		return cumulativeSize;
 	}
 
-	protected <N extends JpaNamedContextModel> boolean hasAnyEquivalentJavaModels(Iterable<N> allJavaModels, Iterable<? extends JpaNamedContextModel> mappingFileModels) {
-		HashMap<String, ArrayList<N>> convertibleJavaModels = this.extractEclipseLinkConvertibleJavaModels(allJavaModels, mappingFileModels);
-		for (Map.Entry<String, ArrayList<N>> entry : convertibleJavaModels.entrySet()) {
+	protected <M extends JpaNamedContextModel> boolean hasAnyEquivalentJavaModels(Iterable<M> allJavaModels, Iterable<M> mappingFileModels, EquivalencyAdapter<M> adapter) {
+		HashMap<String, ArrayList<M>> convertibleJavaModels = this.extractEclipseLinkConvertibleJavaModels(allJavaModels, mappingFileModels, adapter);
+		for (Map.Entry<String, ArrayList<M>> entry : convertibleJavaModels.entrySet()) {
 			if (entry.getValue().size() > 1) {
 				return true;
 			}
@@ -1321,12 +1367,12 @@ public class EclipseLinkPersistenceUnit
 	 * (by default any Java nodes with the same name are "duplicates");
 	 * but, in EclipseLink we return any "equivalent" nodes also.
 	 */
-	protected <N extends JpaNamedContextModel> HashMap<String, ArrayList<N>> extractEclipseLinkConvertibleJavaModels(Iterable<N> allJavaModels, Iterable<? extends JpaNamedContextModel> mappingFileModels) {
-		HashMap<String, ArrayList<N>> convertibleModels = new HashMap<String, ArrayList<N>>();
+	protected <M extends JpaNamedContextModel> HashMap<String, ArrayList<M>> extractEclipseLinkConvertibleJavaModels(Iterable<M> allJavaModels, Iterable<M> mappingFileModels, EquivalencyAdapter<M> adapter) {
+		HashMap<String, ArrayList<M>> convertibleModels = new HashMap<String, ArrayList<M>>();
 
 		HashSet<String> mappingFileModelNames = this.convertToNames(ListTools.list(mappingFileModels));
-		HashMap<String, ArrayList<N>> allJavaModelsByName = this.mapByName(allJavaModels);
-		for (Map.Entry<String, ArrayList<N>> entry : allJavaModelsByName.entrySet()) {
+		HashMap<String, ArrayList<M>> allJavaModelsByName = this.mapByName(allJavaModels);
+		for (Map.Entry<String, ArrayList<M>> entry : allJavaModelsByName.entrySet()) {
 			String javaModelName = entry.getKey();
 			if (StringTools.isBlank(javaModelName)) {
 				continue;  // ignore any nodes with an empty name(?)
@@ -1334,8 +1380,8 @@ public class EclipseLinkPersistenceUnit
 			if (mappingFileModelNames.contains(javaModelName)) {
 				continue;  // ignore any Java nodes overridden in the mapping file
 			}
-			ArrayList<N> javaModelsWithSameName = entry.getValue();
-			if ((javaModelsWithSameName.size() == 1) || this.allModelsAreEquivalent(javaModelsWithSameName)) {
+			ArrayList<M> javaModelsWithSameName = entry.getValue();
+			if ((javaModelsWithSameName.size() == 1) || this.allAreEquivalent(javaModelsWithSameName, adapter)) {
 				convertibleModels.put(javaModelName, javaModelsWithSameName);
 			} else {
 				// ignore multiple Java nodes with the same name but that are not all "equivalent"

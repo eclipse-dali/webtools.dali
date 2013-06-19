@@ -30,7 +30,7 @@ public class EclipseLinkJavaUuidGeneratorImpl
 
 	// ********** misc **********
 	
-	public Class<EclipseLinkUuidGenerator> getType() {
+	public Class<EclipseLinkUuidGenerator> getGeneratorType() {
 		return EclipseLinkUuidGenerator.class;
 	}
 

@@ -16,8 +16,8 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
@@ -238,7 +238,7 @@ public class EclipseLinkJavaObjectTypeConverter
 
 	// ********** misc **********
 
-	public Class<EclipseLinkObjectTypeConverter> getType() {
+	public Class<EclipseLinkObjectTypeConverter> getConverterType() {
 		return EclipseLinkObjectTypeConverter.class;
 	}
 
@@ -285,16 +285,16 @@ public class EclipseLinkJavaObjectTypeConverter
 	}
 
 	@Override
-	public boolean isEquivalentTo(JpaNamedContextModel node) {
-		return super.isEquivalentTo(node)
-				&& this.isEquivalentTo((EclipseLinkObjectTypeConverter) node);
+	protected boolean isEquivalentTo_(EclipseLinkConverter other) {
+		return super.isEquivalentTo_(other) &&
+				this.isEquivalentTo_((EclipseLinkObjectTypeConverter) other);
 	}
 
-	protected boolean isEquivalentTo(EclipseLinkObjectTypeConverter converter) {
-		return ObjectTools.equals(this.fullyQualifiedObjectType, converter.getFullyQualifiedObjectType()) &&
-				ObjectTools.equals(this.fullyQualifiedDataType, converter.getFullyQualifiedDataType()) &&
-				ObjectTools.equals(this.defaultObjectValue, converter.getDefaultObjectValue()) &&
-				this.conversionValuesAreEquivalentTo(converter);
+	protected boolean isEquivalentTo_(EclipseLinkObjectTypeConverter other) {
+		return ObjectTools.equals(this.fullyQualifiedObjectType, other.getFullyQualifiedObjectType()) &&
+				ObjectTools.equals(this.fullyQualifiedDataType, other.getFullyQualifiedDataType()) &&
+				ObjectTools.equals(this.defaultObjectValue, other.getDefaultObjectValue()) &&
+				this.conversionValuesAreEquivalentTo(other);
 	}
 
 	protected boolean conversionValuesAreEquivalentTo(EclipseLinkObjectTypeConverter converter) {

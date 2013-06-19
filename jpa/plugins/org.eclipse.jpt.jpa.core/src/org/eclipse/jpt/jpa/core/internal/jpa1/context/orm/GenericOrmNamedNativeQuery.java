@@ -168,12 +168,12 @@ public class GenericOrmNamedNativeQuery
 	}
 
 	@Override
-	protected boolean isEquivalentTo(Query other) {
-		return super.isEquivalentTo(other)
-				&& this.isEquivalentTo((NamedNativeQuery) other);
+	protected boolean isEquivalentTo_(Query other) {
+		return super.isEquivalentTo_(other)
+				&& this.isEquivalentTo_((NamedNativeQuery) other);
 	}
 	
-	protected boolean isEquivalentTo(NamedNativeQuery other) {
+	protected boolean isEquivalentTo_(NamedNativeQuery other) {
 		return ObjectTools.equals(this.query, other.getQuery()) &&
 				ObjectTools.equals(this.resultClass, other.getResultClass()) &&
 				ObjectTools.equals(this.resultSetMapping, other.getResultSetMapping());
@@ -181,7 +181,7 @@ public class GenericOrmNamedNativeQuery
 
 	// ********** misc **********
 
-	public Class<NamedNativeQuery> getType() {
+	public Class<NamedNativeQuery> getQueryType() {
 		return NamedNativeQuery.class;
 	}
 }

@@ -132,8 +132,17 @@ public class EclipseLinkConverterDialog
 		}
 
 		protected ListValueModel<Class<? extends EclipseLinkConverter>> buildConverterTypeListHolder() {
-			return new StaticListValueModel<Class<? extends EclipseLinkConverter>>(EclipseLinkConverter.TYPES);
+			return new StaticListValueModel<Class<? extends EclipseLinkConverter>>(CONVERTER_TYPES);
 		}
+
+		@SuppressWarnings("unchecked")
+		private static final Class<? extends EclipseLinkConverter>[] CONVERTER_TYPES =
+			new Class[] {
+				EclipseLinkCustomConverter.class,
+				EclipseLinkObjectTypeConverter.class,
+				EclipseLinkStructConverter.class,
+				EclipseLinkTypeConverter.class
+			};
 		
 		private Transformer<Class<? extends EclipseLinkConverter>, String> buildConverterTypeLabelTransformer() {
 			return new ConverterTypeLabelTransformer();

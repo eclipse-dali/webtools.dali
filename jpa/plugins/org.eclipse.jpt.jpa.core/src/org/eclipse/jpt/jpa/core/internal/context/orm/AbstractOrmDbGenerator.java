@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -131,14 +131,14 @@ public abstract class AbstractOrmDbGenerator<X extends XmlGenerator>
 
 
 	@Override
-	protected boolean isEquivalentTo(Generator generator) {
-		return super.isEquivalentTo(generator) &&
-				this.isEquivalentTo((DbGenerator) generator);
+	protected boolean isEquivalentTo_(Generator other) {
+		return super.isEquivalentTo_(other) &&
+				this.isEquivalentTo_((DbGenerator) other);
 	}
 
-	protected boolean isEquivalentTo(DbGenerator generator) {
-		return ObjectTools.equals(this.specifiedAllocationSize, generator.getSpecifiedAllocationSize()) &&
-				ObjectTools.equals(this.specifiedInitialValue, generator.getSpecifiedInitialValue());
+	protected boolean isEquivalentTo_(DbGenerator other) {
+		return ObjectTools.equals(this.specifiedAllocationSize, other.getSpecifiedAllocationSize()) &&
+				ObjectTools.equals(this.specifiedInitialValue, other.getSpecifiedInitialValue());
 	}
 
 	// ************* completion proposals *************

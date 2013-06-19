@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.context;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 
 /**
@@ -35,15 +34,14 @@ public interface EclipseLinkConverter
 	/**
 	 * Return the converter's type.
 	 */
-	Class<? extends EclipseLinkConverter> getType();
-		@SuppressWarnings("unchecked")
-		Iterable<Class<? extends EclipseLinkConverter>> TYPES = IterableTools.iterable(
-			EclipseLinkCustomConverter.class,
-			EclipseLinkObjectTypeConverter.class,
-			EclipseLinkStructConverter.class,
-			EclipseLinkTypeConverter.class
-		);
-		
+	Class<? extends EclipseLinkConverter> getConverterType();
+
+	/**
+	 * Return whether the specified converter has the same state as this
+	 * converter but is <em>not</em> this converter.
+	 * @see #getConverterType()
+	 */
+	boolean isEquivalentTo(EclipseLinkConverter converter);
 
 	/**
 	 * Return the character to be used for browsing or creating the converter
@@ -52,12 +50,13 @@ public interface EclipseLinkConverter
 	 */
 	char getEnclosingTypeSeparator();
 
+
+	// ********** validation **********
+
 	/**
 	 * Return whether this query should be validated and have validation messages displayed
 	 */
 	boolean supportsValidationMessages();
 
 	TextRange getNameTextRange();
-
 }
-

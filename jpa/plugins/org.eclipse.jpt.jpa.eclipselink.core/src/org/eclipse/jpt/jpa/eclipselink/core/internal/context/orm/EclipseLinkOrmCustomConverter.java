@@ -44,7 +44,7 @@ public class EclipseLinkOrmCustomConverter
 
 	// ********** misc **********
 
-	public Class<EclipseLinkCustomConverter> getType() {
+	public Class<EclipseLinkCustomConverter> getConverterType() {
 		return EclipseLinkCustomConverter.class;
 	}
 

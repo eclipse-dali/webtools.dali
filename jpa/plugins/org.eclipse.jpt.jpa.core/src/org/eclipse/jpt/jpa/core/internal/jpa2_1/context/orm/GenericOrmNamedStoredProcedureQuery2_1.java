@@ -295,12 +295,12 @@ public class GenericOrmNamedStoredProcedureQuery2_1
 	// ********** validation **********
 
 	@Override
-	protected boolean isEquivalentTo(Query other) {
-		return super.isEquivalentTo(other)
-				&& this.isEquivalentTo((NamedStoredProcedureQuery2_1) other);
+	protected boolean isEquivalentTo_(Query other) {
+		return super.isEquivalentTo_(other)
+				&& this.isEquivalentTo_((NamedStoredProcedureQuery2_1) other);
 	}
 
-	protected boolean isEquivalentTo(NamedStoredProcedureQuery2_1 other) {
+	protected boolean isEquivalentTo_(NamedStoredProcedureQuery2_1 other) {
 		return ObjectTools.equals(this.procedureName, other.getProcedureName()) &&
 				this.parametersAreEquivalentTo(other) &&
 				IterableTools.elementsAreEqual(this.getResultClasses(), other.getResultClasses()) &&
@@ -324,7 +324,7 @@ public class GenericOrmNamedStoredProcedureQuery2_1
 
 	// ********** misc **********
 
-	public Class<NamedStoredProcedureQuery2_1> getType() {
+	public Class<NamedStoredProcedureQuery2_1> getQueryType() {
 		return NamedStoredProcedureQuery2_1.class;
 	}
 

@@ -71,7 +71,7 @@ public class EclipseLinkJavaCustomConverter
 
 	// ********** misc **********
 
-	public Class<EclipseLinkCustomConverter> getType() {
+	public Class<EclipseLinkCustomConverter> getConverterType() {
 		return EclipseLinkCustomConverter.class;
 	}
 

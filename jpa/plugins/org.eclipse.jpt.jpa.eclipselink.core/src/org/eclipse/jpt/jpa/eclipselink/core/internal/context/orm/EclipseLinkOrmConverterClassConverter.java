@@ -12,8 +12,8 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.common.core.internal.utility.TypeTools;
 import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
+import org.eclipse.jpt.common.core.internal.utility.TypeTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterClassConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
@@ -170,13 +170,13 @@ public abstract class EclipseLinkOrmConverterClassConverter<X extends XmlNamedCo
 
 
 	@Override
-	public boolean isEquivalentTo(JpaNamedContextModel node) {
-		return super.isEquivalentTo(node)
-				&& this.isEquivalentTo((EclipseLinkConverterClassConverter) node);
+	protected boolean isEquivalentTo_(EclipseLinkConverter other) {
+		return super.isEquivalentTo_(other) &&
+				this.isEquivalentTo_((EclipseLinkConverterClassConverter) other);
 	}
 
-	protected boolean isEquivalentTo(EclipseLinkConverterClassConverter converter) {
-		return ObjectTools.equals(this.getFullyQualifiedConverterClass(), converter.getFullyQualifiedConverterClass());
+	protected boolean isEquivalentTo_(EclipseLinkConverterClassConverter other) {
+		return ObjectTools.equals(this.getFullyQualifiedConverterClass(), other.getFullyQualifiedConverterClass());
 	}
 
 	// ********** refactoring **********

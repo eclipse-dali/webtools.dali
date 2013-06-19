@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,6 +26,7 @@ public interface SequenceGenerator
 {
 	int DEFAULT_INITIAL_VALUE = 1;
 
+	Class<SequenceGenerator> getGeneratorType();
 
 	// ********** sequence name **********
 
@@ -39,5 +40,4 @@ public interface SequenceGenerator
 		String SPECIFIED_SEQUENCE_NAME_PROPERTY = "specifiedSequenceName"; //$NON-NLS-1$
 	String getDefaultSequenceName();
 		String DEFAULT_SEQUENCE_NAME_PROPERTY = "defaultSequenceName"; //$NON-NLS-1$
-
 }

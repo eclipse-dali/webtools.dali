@@ -184,16 +184,16 @@ public class EclipseLinkConvertersComposite
 			public void removeSelectedItems(CollectionValueModel<EclipseLinkConverter> selectedItemsModel) {
 				//assume only 1 item since remove button is disabled otherwise
 				EclipseLinkConverter item = selectedItemsModel.iterator().next();
-				if (item.getType() == EclipseLinkCustomConverter.class) {
+				if (item.getConverterType() == EclipseLinkCustomConverter.class) {
 					getSubject().removeCustomConverter((EclipseLinkCustomConverter) item);
 				}
-				else if (item.getType() == EclipseLinkObjectTypeConverter.class) {
+				else if (item.getConverterType() == EclipseLinkObjectTypeConverter.class) {
 					getSubject().removeObjectTypeConverter((EclipseLinkObjectTypeConverter) item);
 				}
-				else if (item.getType() == EclipseLinkStructConverter.class) {
+				else if (item.getConverterType() == EclipseLinkStructConverter.class) {
 					getSubject().removeStructConverter((EclipseLinkStructConverter) item);
 				}
-				else if (item.getType() == EclipseLinkTypeConverter.class) {
+				else if (item.getConverterType() == EclipseLinkTypeConverter.class) {
 					getSubject().removeTypeConverter((EclipseLinkTypeConverter) item);
 				}
 			}
@@ -249,16 +249,16 @@ public class EclipseLinkConvertersComposite
 
 		@Override
 		public Control transform_(EclipseLinkConverter converter) {
-			if (converter.getType() == EclipseLinkCustomConverter.class) {
+			if (converter.getConverterType() == EclipseLinkCustomConverter.class) {
 				return EclipseLinkConvertersComposite.this.getCustomConverterComposite(this.pageBook).getControl();
 			}
-			if (converter.getType() == EclipseLinkObjectTypeConverter.class) {
+			if (converter.getConverterType() == EclipseLinkObjectTypeConverter.class) {
 				return EclipseLinkConvertersComposite.this.getObjectTypeConverterComposite(this.pageBook).getControl();
 			}
-			if (converter.getType() == EclipseLinkStructConverter.class) {
+			if (converter.getConverterType() == EclipseLinkStructConverter.class) {
 				return EclipseLinkConvertersComposite.this.getStructConverterComposite(this.pageBook).getControl();
 			}
-			if (converter.getType() == EclipseLinkTypeConverter.class) {
+			if (converter.getConverterType() == EclipseLinkTypeConverter.class) {
 				return EclipseLinkConvertersComposite.this.getTypeConverterComposite(this.pageBook).getControl();
 			}
 			return null;
@@ -353,7 +353,7 @@ public class EclipseLinkConvertersComposite
 		return new TransformationPropertyValueModel<EclipseLinkConverter, EclipseLinkCustomConverter>(this.selectedConverterModel) {
 			@Override
 			protected EclipseLinkCustomConverter transform_(EclipseLinkConverter value) {
-				return value.getType() == EclipseLinkCustomConverter.class ? (EclipseLinkCustomConverter) value : null;
+				return value.getConverterType() == EclipseLinkCustomConverter.class ? (EclipseLinkCustomConverter) value : null;
 			}
 		};
 	}
@@ -362,7 +362,7 @@ public class EclipseLinkConvertersComposite
 		return new TransformationPropertyValueModel<EclipseLinkConverter, EclipseLinkObjectTypeConverter>(this.selectedConverterModel) {
 			@Override
 			protected EclipseLinkObjectTypeConverter transform_(EclipseLinkConverter value) {
-				return value.getType() == EclipseLinkObjectTypeConverter.class ? (EclipseLinkObjectTypeConverter) value : null;
+				return value.getConverterType() == EclipseLinkObjectTypeConverter.class ? (EclipseLinkObjectTypeConverter) value : null;
 			}
 		};
 	}
@@ -371,7 +371,7 @@ public class EclipseLinkConvertersComposite
 		return new TransformationPropertyValueModel<EclipseLinkConverter, EclipseLinkStructConverter>(this.selectedConverterModel) {
 			@Override
 			protected EclipseLinkStructConverter transform_(EclipseLinkConverter value) {
-				return value.getType() == EclipseLinkStructConverter.class ? (EclipseLinkStructConverter) value : null;
+				return value.getConverterType() == EclipseLinkStructConverter.class ? (EclipseLinkStructConverter) value : null;
 			}
 		};
 	}
@@ -380,7 +380,7 @@ public class EclipseLinkConvertersComposite
 		return new TransformationPropertyValueModel<EclipseLinkConverter, EclipseLinkTypeConverter>(this.selectedConverterModel) {
 			@Override
 			protected EclipseLinkTypeConverter transform_(EclipseLinkConverter value) {
-				return value.getType() == EclipseLinkTypeConverter.class ? (EclipseLinkTypeConverter) value : null;
+				return value.getConverterType() == EclipseLinkTypeConverter.class ? (EclipseLinkTypeConverter) value : null;
 			}
 		};
 	}

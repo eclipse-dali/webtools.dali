@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterClassConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.NamedConverterAnnotation;
@@ -168,12 +168,12 @@ public abstract class EclipseLinkJavaConverterClassConverter<A extends NamedConv
 	protected abstract TextRange getAnnotationConverterClassTextRange();
 
 	@Override
-	public boolean isEquivalentTo(JpaNamedContextModel node) {
-		return super.isEquivalentTo(node)
-				&& this.isEquivalentTo((EclipseLinkConverterClassConverter) node);
+	protected boolean isEquivalentTo_(EclipseLinkConverter other) {
+		return super.isEquivalentTo_(other) &&
+				this.isEquivalentTo_((EclipseLinkConverterClassConverter) other);
 	}
 
-	protected boolean isEquivalentTo(EclipseLinkConverterClassConverter converter) {
+	protected boolean isEquivalentTo_(EclipseLinkConverterClassConverter converter) {
 		return ObjectTools.equals(this.getFullyQualifiedConverterClass(), converter.getFullyQualifiedConverterClass());
 	}
 }

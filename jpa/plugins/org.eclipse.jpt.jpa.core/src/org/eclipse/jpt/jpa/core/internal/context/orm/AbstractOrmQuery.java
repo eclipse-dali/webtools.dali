@@ -206,13 +206,13 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 		return this.getValidationTextRange(this.xmlQuery.getNameTextRange());
 	}
 
-	public boolean isEquivalentTo(JpaNamedContextModel node) {
-		return (this != node) &&
-				(this.getType() == node.getType()) &&
-				this.isEquivalentTo((Query) node);
+	public boolean isEquivalentTo(Query other) {
+		return (this != other) &&
+				(this.getQueryType() == other.getQueryType()) &&
+				this.isEquivalentTo_(other);
 	}
 
-	protected boolean isEquivalentTo(Query other) {
+	protected boolean isEquivalentTo_(Query other) {
 		return ObjectTools.equals(this.name, other.getName()) &&
 				this.hintsAreEquivalentTo(other);
 	}

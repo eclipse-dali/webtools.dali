@@ -190,7 +190,7 @@ public final class JpaJpqlJavaCompletionProposalComputer extends JpqlCompletionP
 			JavaTypeMapping typeMapping = persistentType.getMapping();
 
 			for (Query query : typeMapping.getQueries()){
-				if (query.getType().equals(NamedQuery.class)){
+				if (query.getQueryType().equals(NamedQuery.class)){
 					JavaNamedQuery namedQuery = (JavaNamedQuery) query;
 					for (TextRange textRange : namedQuery.getQueryAnnotation().getQueryTextRanges()) {
 						if ((textRange != null) && textRange.includes(tokenStart)) {

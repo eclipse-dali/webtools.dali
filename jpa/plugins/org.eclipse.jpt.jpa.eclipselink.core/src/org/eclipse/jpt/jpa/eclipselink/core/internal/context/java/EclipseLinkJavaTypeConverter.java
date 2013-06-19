@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
@@ -118,7 +118,7 @@ public class EclipseLinkJavaTypeConverter
 
 	// ********** misc **********
 
-	public Class<EclipseLinkTypeConverter> getType() {
+	public Class<EclipseLinkTypeConverter> getConverterType() {
 		return EclipseLinkTypeConverter.class;
 	}
 
@@ -126,14 +126,14 @@ public class EclipseLinkJavaTypeConverter
 	// ********** validation *********
 
 	@Override
-	public boolean isEquivalentTo(JpaNamedContextModel node) {
-		return super.isEquivalentTo(node)
-				&& this.isEquivalentTo((EclipseLinkTypeConverter) node);
+	protected boolean isEquivalentTo_(EclipseLinkConverter other) {
+		return super.isEquivalentTo_(other) &&
+				this.isEquivalentTo_((EclipseLinkTypeConverter) other);
 	}
 
-	protected boolean isEquivalentTo(EclipseLinkTypeConverter converter) {
-		return ObjectTools.equals(this.fullyQualifiedDataType, converter.getFullyQualifiedDataType()) &&
-				ObjectTools.equals(this.fullyQualifiedObjectType, converter.getFullyQualifiedObjectType());
+	protected boolean isEquivalentTo_(EclipseLinkTypeConverter other) {
+		return ObjectTools.equals(this.fullyQualifiedDataType, other.getFullyQualifiedDataType()) &&
+				ObjectTools.equals(this.fullyQualifiedObjectType, other.getFullyQualifiedObjectType());
 	}
 
 

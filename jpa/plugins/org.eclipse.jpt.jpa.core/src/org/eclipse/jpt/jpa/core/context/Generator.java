@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.context;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 
 /**
@@ -35,6 +34,20 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 public interface Generator
 	extends JpaNamedContextModel
 {
+	/**
+	 * Return the generator's type.
+	 */
+	Class<? extends Generator> getGeneratorType();
+
+	/**
+	 * Return whether the specified generator has the same state as this
+	 * generator but is <em>not</em> this generator.
+	 * @see #getGeneratorType()
+	 */
+	boolean isEquivalentTo(Generator generator);
+
+
+	// ********** validation **********
 
 	/**
 	 * Return the (best guess) text location of the name.
@@ -45,14 +58,4 @@ public interface Generator
 	 * Return whether this generator should be validated and have validation messages displayed
 	 */
 	boolean supportsValidationMessages();
-
-	/**
-	 * Return the generator's type.
-	 */
-	Class<? extends Generator> getType();
-		@SuppressWarnings("unchecked")
-		Iterable<Class<? extends Generator>> TYPES = IterableTools.<Class<? extends Generator>>iterable(
-			SequenceGenerator.class,
-			TableGenerator.class
-		);
 }

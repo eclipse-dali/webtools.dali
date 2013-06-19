@@ -417,29 +417,29 @@ public class GenericOrmTableGenerator
 
 	// ********** misc **********
 
-	public Class<TableGenerator> getType() {
+	public Class<TableGenerator> getGeneratorType() {
 		return TableGenerator.class;
 	}
 
 	// ********** validation **********
 
 	@Override
-	protected boolean isEquivalentTo(DbGenerator generator) {
-		return super.isEquivalentTo(generator)
-				&& this.isEquivalentTo((TableGenerator) generator);
+	protected boolean isEquivalentTo_(DbGenerator other) {
+		return super.isEquivalentTo_(other)
+				&& this.isEquivalentTo_((TableGenerator) other);
 	}
 
-	protected boolean isEquivalentTo(TableGenerator generator) {
-		return ObjectTools.equals(this.specifiedTableName, generator.getSpecifiedTableName()) &&
-				ObjectTools.equals(this.specifiedSchema, generator.getSpecifiedSchema()) &&
-				ObjectTools.equals(this.specifiedCatalog, generator.getSpecifiedCatalog()) &&
-				ObjectTools.equals(this.specifiedPkColumnName, generator.getSpecifiedPkColumnName()) &&
-				ObjectTools.equals(this.specifiedValueColumnName, generator.getSpecifiedValueColumnName()) &&
-				ObjectTools.equals(this.specifiedPkColumnValue, generator.getSpecifiedPkColumnValue()) &&
-				this.uniqueConstrainsAreEquivalentTo(generator);
+	protected boolean isEquivalentTo_(TableGenerator other) {
+		return ObjectTools.equals(this.specifiedTableName, other.getSpecifiedTableName()) &&
+				ObjectTools.equals(this.specifiedSchema, other.getSpecifiedSchema()) &&
+				ObjectTools.equals(this.specifiedCatalog, other.getSpecifiedCatalog()) &&
+				ObjectTools.equals(this.specifiedPkColumnName, other.getSpecifiedPkColumnName()) &&
+				ObjectTools.equals(this.specifiedValueColumnName, other.getSpecifiedValueColumnName()) &&
+				ObjectTools.equals(this.specifiedPkColumnValue, other.getSpecifiedPkColumnValue()) &&
+				this.uniqueConstraintsAreEquivalentTo(other);
 	}
 
-	protected boolean uniqueConstrainsAreEquivalentTo(TableGenerator generator) {
+	protected boolean uniqueConstraintsAreEquivalentTo(TableGenerator generator) {
 		// get fixed lists of the unique constraints
 		ArrayList<OrmSpecifiedUniqueConstraint> uniqueConstraints1 = ListTools.list(this.getUniqueConstraints());
 		ArrayList<SpecifiedUniqueConstraint> uniqueConstraints2 = ListTools.list(generator.getUniqueConstraints());

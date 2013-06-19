@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -131,20 +131,20 @@ public abstract class AbstractJavaSequenceGenerator<A extends SequenceGeneratorA
 
 	// ********** misc **********
 	
-	public Class<SequenceGenerator> getType() {
+	public Class<SequenceGenerator> getGeneratorType() {
 		return SequenceGenerator.class;
 	}
 
 	// ********** validation **********
 	
 	@Override
-	protected boolean isEquivalentTo(DbGenerator generator) {
-		return super.isEquivalentTo(generator)
-				&& this.isEquivalentTo((SequenceGenerator) generator);
+	protected boolean isEquivalentTo_(DbGenerator other) {
+		return super.isEquivalentTo_(other)
+				&& this.isEquivalentTo_((SequenceGenerator) other);
 	}
 	
-	protected boolean isEquivalentTo(SequenceGenerator generator) {
-		return ObjectTools.equals(this.specifiedSequenceName, generator.getSpecifiedSequenceName());
+	protected boolean isEquivalentTo_(SequenceGenerator other) {
+		return ObjectTools.equals(this.specifiedSequenceName, other.getSpecifiedSequenceName());
 	}
 	
 	// ********** metadata conversion **********

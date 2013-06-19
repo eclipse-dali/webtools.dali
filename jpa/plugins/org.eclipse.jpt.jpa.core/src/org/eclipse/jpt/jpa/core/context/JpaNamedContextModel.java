@@ -36,14 +36,4 @@ public interface JpaNamedContextModel
 			return node.getName();
 		}
 	}
-
-	Class<? extends JpaNamedContextModel> getType();
-
-	/**
-	 * Return whether the specified model is <em>not</em> this model and it has
-	 * the same state. Typically the specified model would be the same type as
-	 * this model.
-	 * @see #getType()
-	 */
-	boolean isEquivalentTo(JpaNamedContextModel node);
 }

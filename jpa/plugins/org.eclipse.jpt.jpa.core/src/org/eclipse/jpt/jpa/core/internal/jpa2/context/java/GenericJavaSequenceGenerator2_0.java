@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2010 Oracle. All rights reserved.
+* Copyright (c) 2009, 2013 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -132,9 +132,9 @@ public class GenericJavaSequenceGenerator2_0
 	// ********** validation **********
 
 	@Override
-	protected boolean isEquivalentTo(SequenceGenerator generator) {
-		return super.isEquivalentTo(generator) &&
-				ObjectTools.equals(this.specifiedSchema, ((SequenceGenerator2_0) generator).getSpecifiedSchema()) &&
-				ObjectTools.equals(this.specifiedCatalog, ((SequenceGenerator2_0) generator).getSpecifiedCatalog());
+	protected boolean isEquivalentTo_(SequenceGenerator other) {
+		return super.isEquivalentTo_(other) &&
+				ObjectTools.equals(this.specifiedSchema, ((SequenceGenerator2_0) other).getSpecifiedSchema()) &&
+				ObjectTools.equals(this.specifiedCatalog, ((SequenceGenerator2_0) other).getSpecifiedCatalog());
 	}
 }
