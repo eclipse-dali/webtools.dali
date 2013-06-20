@@ -185,6 +185,13 @@ public abstract class AbstractModelItemLabelProvider<M extends ItemLabelProvider
 	// ********** misc **********
 
 	/**
+	 * @see org.eclipse.jface.viewers.StructuredViewer#update(Object, String[])
+	 */
+	public boolean isLabelProperty(String property) {
+		return true;  // since the updates are triggered by this provider, this is probably always true
+	}
+
+	/**
 	 * Check whether the provider was disposed between the time an event was
 	 * fired and the time the event is handled on the UI thread.
 	 */

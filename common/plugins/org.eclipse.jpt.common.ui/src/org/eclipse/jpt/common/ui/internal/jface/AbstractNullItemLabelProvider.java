@@ -28,6 +28,10 @@ abstract class AbstractNullItemLabelProvider
 		return null;
 	}
 
+	public boolean isLabelProperty(String property) {
+		return false;  // the label does not change
+	}
+
 	public void dispose() {
 		// NOP
 	}

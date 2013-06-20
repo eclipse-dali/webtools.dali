@@ -30,21 +30,26 @@ import org.eclipse.swt.graphics.Image;
 public interface ItemLabelProvider {
 	/**
 	 * Return the image for the provider's item.
-	 * 
 	 * @see org.eclipse.jface.viewers.ILabelProvider#getImage(Object)
 	 */
 	Image getImage();
-	
+
 	/**
 	 * Return the text for the provider's item.
-	 * 
 	 * @see org.eclipse.jface.viewers.ILabelProvider#getText(Object)
 	 */
-	public String getText();
-	
+	String getText();
+
+	/**
+	 * Return whether the label for the provider's item would be affected by a
+	 * change to the specified property.
+	 */
+	boolean isLabelProperty(String property);
+
 	/**
 	 * Dispose the item label provider.
 	 * Remove any item listeners as appropriate.
+	 * @see org.eclipse.jface.viewers.IBaseLabelProvider#dispose()
 	 */
 	void dispose();
 

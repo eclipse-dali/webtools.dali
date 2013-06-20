@@ -326,7 +326,7 @@ abstract class AbstractItemStructuredStateProviderManager<V extends StructuredVi
 	}
 
 	public boolean isLabelProperty(Object element, String property) {
-		return true;
+		return this.itemLabelProviders.get(element).isLabelProperty(property);
 	}
 
 	/* private-protected */ void fireLabelProviderChanged(LabelProviderChangedEvent event) {

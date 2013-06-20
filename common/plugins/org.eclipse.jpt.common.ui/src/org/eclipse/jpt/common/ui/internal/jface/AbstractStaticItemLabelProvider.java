@@ -68,6 +68,10 @@ public abstract class AbstractStaticItemLabelProvider<M extends ItemLabelProvide
 		return this.text;
 	}
 
+	public boolean isLabelProperty(String property) {
+		return false;  // the label does not change
+	}
+
 	public void dispose() {
 		if (this.image != null) {
 			this.manager.getResourceManager().destroyImage(this.imageDescriptor);
