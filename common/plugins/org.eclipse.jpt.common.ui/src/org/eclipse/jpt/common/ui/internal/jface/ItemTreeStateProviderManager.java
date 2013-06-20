@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
 import org.eclipse.jpt.common.ui.jface.TreeStateProvider;
 import org.eclipse.jpt.common.utility.ExceptionHandler;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import com.ibm.icu.text.MessageFormat;
 
 /**
@@ -100,7 +101,8 @@ public class ItemTreeStateProviderManager
 	private void childrenChanged_(Object item, Iterable<?> addedChildren, Iterable<?> removedChildren) {
 		this.addAll(item, addedChildren);
 		this.removeAll(removedChildren);
-		this.viewer.refresh(item, false);
+		this.viewer.add(item, ArrayTools.array(addedChildren));
+		this.viewer.remove(item, ArrayTools.array(removedChildren));
 	}
 
 	@Override

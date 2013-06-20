@@ -209,7 +209,7 @@ abstract class AbstractItemStructuredStateProviderManager<V extends StructuredVi
 	private void elementsChanged_(Object parent, Iterable<?> addedElements, Iterable<?> removedElements) {
 		this.addAll(parent, addedElements);
 		this.removeAll(removedElements);
-		this.viewer.refresh();
+		this.viewer.refresh(false);  // not much else we can do here...
 	}
 
 	/**
