@@ -84,7 +84,7 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 		);
 		IntegerCombo<?> combo = addCacheStatementsSizeCombo(client);
 
-		this.controlEnabledState(cacheStatementsHolder, combo.getControl());
+		this.bindEnabledState(cacheStatementsHolder, combo.getControl());
 
 
 		TriStateCheckBox nativeSqlCheckBox = this.addTriStateCheckBoxWithDefault(

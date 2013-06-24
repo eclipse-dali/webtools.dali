@@ -245,7 +245,7 @@ public abstract class MapAsComposite<T extends JpaStructureNode>
 	@Override
 	protected Composite addComposite(Composite parent) {
 		this.styledText = new StyledText(parent, SWT.WRAP | SWT.READ_ONLY);
-		this.controlEnabledState(this.styledText);
+		this.bindEnabledState(this.styledText);
 		this.styledText.addMouseListener(buildMouseListener());
 		this.styledText.addMouseMoveListener(buildMouseMoveListener());
 		this.styledText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));

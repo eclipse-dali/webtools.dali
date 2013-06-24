@@ -42,13 +42,13 @@ final class PageBookModelBinding<T> {
 	 * A listener that allows us to synchronize the page book's current page
 	 * with the value model.
 	 */
-	private final PropertyChangeListener valueModelListener;
+	private final PropertyChangeListener valueListener;
 
 	// ***** transformer
 	/**
 	 * The transformer that converts the model's value to the control
 	 * to be displayed by the page book. If the transformer returns
-	 * <code>null</code>, the page book will display the null page.
+	 * <code>null</code>, the page book will display the <em>null</em> page.
 	 */
 	private final Transformer<? super T, Control> transformer;
 
@@ -90,8 +90,8 @@ final class PageBookModelBinding<T> {
 			throw new IllegalArgumentException("The null page's parent must be the page book: " + defaultPage); //$NON-NLS-1$
 		}
 
-		this.valueModelListener = this.buildValueModelListener();
-		this.valueModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.valueModelListener);
+		this.valueListener = this.buildValueListener();
+		this.valueModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.valueListener);
 
 		this.pageBookDisposeListener = this.buildPageBookDisposeListener();
 		this.pageBook.addDisposeListener(this.pageBookDisposeListener);
@@ -104,17 +104,16 @@ final class PageBookModelBinding<T> {
 		return new Label(this.pageBook, SWT.SEPARATOR | SWT.SHADOW_NONE | SWT.HORIZONTAL);
 	}
 
-	private PropertyChangeListener buildValueModelListener() {
-		return SWTListenerWrapperTools.wrap(new ValueModelListener(), this.pageBook);
+	private PropertyChangeListener buildValueListener() {
+		return SWTListenerWrapperTools.wrap(new ValueListener(), this.pageBook);
 	}
 
-	/* CU private */ class ValueModelListener
+	/* CU private */ class ValueListener
 		extends PropertyChangeAdapter
 	{
 		@Override
-		@SuppressWarnings("unchecked")
 		public void propertyChanged(PropertyChangeEvent event) {
-			PageBookModelBinding.this.showPage((T) event.getNewValue());
+			PageBookModelBinding.this.valueChanged(event);
 		}
 	}
 
@@ -134,13 +133,18 @@ final class PageBookModelBinding<T> {
 
 	// ********** model events **********
 
+	/* CU private */ void valueChanged(PropertyChangeEvent event) {
+		if ( ! this.pageBook.isDisposed()) {
+			@SuppressWarnings("unchecked")
+			T value = (T) event.getNewValue();
+			this.showPage(value);
+		}
+	}
+
 	/**
 	 * Show the page corresponding to the specified model value.
 	 */
-	/* CU private */ void showPage(T value) {
-		if (this.pageBook.isDisposed()) {
-			return;
-		}
+	private void showPage(T value) {
 		Control page = this.transformer.transform(value);
 		this.pageBook.showPage((page != null) ? page : this.defaultPage);
 		ControlTools.reflow(this.pageBook);
@@ -153,7 +157,7 @@ final class PageBookModelBinding<T> {
 		// the page book is not yet "disposed" when we receive this event
 		// so we can still remove our listener
 		this.pageBook.removeDisposeListener(this.pageBookDisposeListener);
-		this.valueModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.valueModelListener);
+		this.valueModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.valueListener);
 	}
 
 

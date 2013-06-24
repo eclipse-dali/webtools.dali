@@ -9,23 +9,31 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.swt.bindings;
 
+import java.util.ArrayList;
+import org.eclipse.jpt.common.ui.internal.swt.bindings.ListWidgetModelBinding.SelectionBinding;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Combo;
 
 /**
- * Adapt an SWT {@link Combo} to the list widget expected by
- * {@link ListWidgetModelBinding} and the
- * drop-down list box expected by {@link DropDownListBoxSelectionBinding}.
+ * Adapt an SWT {@link Combo} to the {@link ListWidgetModelBinding.ListWidget
+ * list widget} expected by {@link ListWidgetModelBinding} and the
+ * {@link DropDownListBoxSelectionBinding.DropDownListBox drop-down list box}
+ * expected by {@link DropDownListBoxSelectionBinding}.
  */
-final class SWTComboAdapter
-	extends AbstractListWidgetAdapter<Combo>
+final class SWTComboListWidgetAdapter<E>
+	extends AbstractListWidgetAdapter<E, Combo>
 	implements DropDownListBoxSelectionBinding.DropDownListBox
 {
-	SWTComboAdapter(Combo combo) {
+	SWTComboListWidgetAdapter(Combo combo) {
 		super(combo);
 	}
 
 	// ********** ListWidgetModelBinding.ListWidget implementation **********
+	@SuppressWarnings("unchecked")
+	public SelectionBinding buildSelectionBinding(ArrayList<E> list, Object selectionModel) {
+		return new DropDownListBoxSelectionBinding<E>(list, (ModifiablePropertyValueModel<E>) selectionModel, new SWTComboListWidgetAdapter<E>(this.widget));
+	}
 	public String[] getItems() {
 		return this.widget.getItems();
 	}
@@ -45,7 +53,7 @@ final class SWTComboAdapter
 		this.widget.removeAll();
 	}
 
-	// ********** ComboBoxSelectionBinding.ComboBox implementation **********
+	// ********** DropDownListBoxSelectionBinding.DropDownListBox implementation **********
 	public void addSelectionListener(SelectionListener listener) {
 		this.widget.addSelectionListener(listener);
 	}

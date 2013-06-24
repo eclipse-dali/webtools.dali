@@ -11,11 +11,12 @@ package org.eclipse.jpt.common.ui.internal.swt.bindings;
 
 import java.util.Arrays;
 import org.eclipse.jpt.common.utility.internal.BitTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.value.ModifiablePropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.NullPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
-import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -340,7 +341,7 @@ public final class SWTBindingTools {
 	 * to be displayed in the list box.
 	 */
 	public static <E> void bind(ListValueModel<E> listModel, List listBox, Transformer<E, String> transformer) {
-		bind(listModel, new SWTListAdapter(listBox), transformer);
+		bind(listModel, new SWTListListWidgetAdapter<E>(listBox), transformer);
 	}
 
 	/**
@@ -381,9 +382,9 @@ public final class SWTBindingTools {
 	public static <E> void bind(ListValueModel<E> listModel, ModifiableCollectionValueModel<E> selectedItemsModel, List listBox, Transformer<E, String> transformer) {
 		bind(
 			listModel,
-			new SWTListAdapter(listBox),
-			transformer,
-			new ListBoxSelectionBinding<E>(listModel, selectedItemsModel, listBox)
+			selectedItemsModel,
+			new SWTListListWidgetAdapter<E>(listBox),
+			transformer
 		);
 	}
 
@@ -413,12 +414,11 @@ public final class SWTBindingTools {
 	 */
 	public static <E> void bind(ListValueModel<E> listModel, ModifiablePropertyValueModel<E> selectedItemModel, Combo dropDownListBox, Transformer<E, String> transformer) {
 		checkForReadOnlyStyle(dropDownListBox);
-		SWTComboAdapter comboAdapter = new SWTComboAdapter(dropDownListBox);
 		bind(
 			listModel,
-			comboAdapter,
-			transformer,
-			new DropDownListBoxSelectionBinding<E>(listModel, selectedItemModel, comboAdapter)
+			selectedItemModel,
+			new SWTComboListWidgetAdapter<E>(dropDownListBox),
+			transformer
 		);
 	}
 
@@ -437,20 +437,19 @@ public final class SWTBindingTools {
 	 * Use the specified string converter to convert the model items to strings
 	 * to be displayed in the list box.
 	 */
-	private static <E> void bind(ListValueModel<E> listModel, ListWidgetModelBinding.ListWidget listWidget, Transformer<E, String> transformer) {
-		bind(listModel, listWidget, transformer, ListWidgetModelBinding.SelectionBinding.Null.instance());
+	private static <E> void bind(ListValueModel<E> listModel, ListWidgetModelBinding.ListWidget<E> listWidget, Transformer<E, String> transformer) {
+		bind(listModel, new SimpleCollectionValueModel<E>(), listWidget, transformer);
 	}
 
 	/**
-	 * Bind the specified model list to the specified list widget.
-	 * Use the specified selection binding to control the list widget's selection.
+	 * Bind the specified model list and selectedions to the specified list widget.
 	 * Use the specified string converter to convert the model items to strings
 	 * to be displayed in the list box.
 	 */
 	@SuppressWarnings("unused")
-	private static <E> void bind(ListValueModel<E> listModel, ListWidgetModelBinding.ListWidget listWidget, Transformer<E, String> transformer, ListWidgetModelBinding.SelectionBinding selectionBinding) {
+	private static <E> void bind(ListValueModel<E> listModel, Object selectionModel, ListWidgetModelBinding.ListWidget<E> listWidget, Transformer<E, String> transformer) {
 		// the new binding will add itself as a listener to the value models and the list box
-		new ListWidgetModelBinding<E>(listModel, listWidget, transformer, selectionBinding);
+		new ListWidgetModelBinding<E>(listModel, selectionModel, listWidget, transformer);
 	}
 
 
@@ -501,214 +500,203 @@ public final class SWTBindingTools {
 	// ********** 'enabled' state **********
 
 	/**
-	 * Control the <em>enabled</em> state of the specified controls with the
+	 * Bind the <em>enabled</em> state of the specified controls with the
 	 * specified boolean. If the boolean is <code>null<code>, the controls'
 	 * <em>enabled</em> states will be <code>false<code>.
 	 */
-	public static void controlEnabledState(PropertyValueModel<Boolean> booleanModel, Control... controls) {
-		controlEnabledState(booleanModel, controls, false);
+	public static void bindEnabledState(PropertyValueModel<Boolean> booleanModel, Control... controls) {
+		bindEnabledState(booleanModel, controls, false);
 	}
 
 	/**
-	 * Control the <em>enabled</em> state of the specified controls with the
+	 * Bind the <em>enabled</em> state of the specified controls with the
 	 * specified boolean. If the boolean is <code>null<code>, the controls'
 	 * <em>enabled</em> states will be the specified default value.
 	 */
-	public static void controlEnabledState(PropertyValueModel<Boolean> booleanModel, Control[] controls, boolean defaultValue) {
+	public static void bindEnabledState(PropertyValueModel<Boolean> booleanModel, Control[] controls, boolean defaultValue) {
 		switch (controls.length) {
 			case 0:
 				throw new IllegalArgumentException("empty controls array: " + Arrays.toString(controls));
 			case 1:
-				controlEnabledState(booleanModel, controls[0], defaultValue);
+				bindEnabledState(booleanModel, controls[0], defaultValue);
 				break;
 			default:
-				controlEnabledState(booleanModel, new StaticCollectionValueModel<Control>(controls), defaultValue);
+				bindEnabledState(booleanModel, new StaticCollectionValueModel<Control>(controls), defaultValue);
 				break;
 		}
 	}
 
 	/**
-	 * Control the <em>enabled</em> state of the specified controls with the
+	 * Bind the <em>enabled</em> state of the specified controls with the
 	 * specified boolean. If the boolean is <code>null<code>, the controls'
 	 * <em>enabled</em> states will be <code>false<code>.
 	 */
-	public static void controlEnabledState(PropertyValueModel<Boolean> booleanModel, Iterable<? extends Control> controls) {
-		controlEnabledState(booleanModel, controls, false);
+	public static void bindEnabledState(PropertyValueModel<Boolean> booleanModel, Iterable<? extends Control> controls) {
+		bindEnabledState(booleanModel, controls, false);
 	}
 
 	/**
-	 * Control the <em>enabled</em> state of the specified controls with the
+	 * Bind the <em>enabled</em> state of the specified controls with the
 	 * specified boolean. If the boolean is <code>null<code>, the controls'
 	 * <em>enabled</em> states will be the specified default value.
 	 */
-	public static void controlEnabledState(PropertyValueModel<Boolean> booleanModel, Iterable<? extends Control> controls, boolean defaultValue) {
-		controlEnabledState(booleanModel, new StaticCollectionValueModel<Control>(controls), defaultValue);
+	public static <C extends Control> void bindEnabledState(PropertyValueModel<Boolean> booleanModel, Iterable<C> controls, boolean defaultValue) {
+		BooleanControlStateModelBinding.Adapter<C> adapter = enabledAdapter();
+		bindState(booleanModel, controls, defaultValue, adapter);
 	}
 
 	/**
-	 * Control the <em>enabled</em> state of the specified controls with the
-	 * specified boolean. If the boolean is <code>null<code>, the controls'
-	 * <em>enabled</em> states will be <code>false<code>.
-	 */
-	public static void controlEnabledState(PropertyValueModel<Boolean> booleanModel, CollectionValueModel<? extends Control> controlsModel) {
-		controlEnabledState(booleanModel, controlsModel, false);
-	}
-
-	/**
-	 * Control the <em>enabled</em> state of the specified controls with the
-	 * specified boolean. If the boolean is <code>null<code>, the controls'
-	 * <em>enabled</em> states will be the specified default value.
-	 */
-	public static void controlEnabledState(PropertyValueModel<Boolean> booleanModel, CollectionValueModel<? extends Control> controlsModel, boolean defaultValue) {
-		control(booleanModel, controlsModel, defaultValue, ENABLED_ADAPTER);
-	}
-
-	/**
-	 * Control the <em>enabled</em> state of the specified control with the
+	 * Bind the <em>enabled</em> state of the specified control with the
 	 * specified boolean. If the boolean is <code>null<code>, the control's
 	 * <em>enabled</em> state will be the specified default value.
 	 */
-	public static void controlEnabledState(PropertyValueModel<Boolean> booleanModel, Control control, boolean defaultValue) {
-		control(booleanModel, control, defaultValue, ENABLED_ADAPTER);
+	public static void bindEnabledState(PropertyValueModel<Boolean> booleanModel, Control control, boolean defaultValue) {
+		bindState(booleanModel, control, defaultValue, enabledAdapter());
 	}
 
-	private static final BooleanStateController.Adapter ENABLED_ADAPTER =
-			new BooleanStateController.Adapter() {
-				public void setState(Control control, boolean b) {
-					control.setEnabled(b);
-				}
-			};
+	@SuppressWarnings("unchecked")
+	private static <C extends Control> BooleanControlStateModelBinding.Adapter<C> enabledAdapter() {
+		return ENABLED_ADAPTER;
+	}
+	@SuppressWarnings("rawtypes")
+	private static final BooleanControlStateModelBinding.Adapter ENABLED_ADAPTER = new EnabledAdapter();
+	/** CU private */ static class EnabledAdapter<C extends Control>
+		implements BooleanControlStateModelBinding.Adapter<C>
+	{
+		public void setState(Control control, boolean b) {
+			control.setEnabled(b);
+		}
+		@Override
+		public String toString() {
+			return ObjectTools.singletonToString(this);
+		}
+	}
    
 
 	// ********** 'visible' state **********
 
 	/**
-	 * Control the <em>visible</em> state of the specified controls with the
+	 * Bind the <em>visible</em> state of the specified controls with the
 	 * specified boolean. If the boolean is <code>null<code>, the controls'
 	 * <em>visible</em> states will be <code>false<code>.
 	 */
-	public static void controlVisibleState(PropertyValueModel<Boolean> booleanModel, Control... controls) {
-		controlVisibleState(booleanModel, controls, false);
+	public static void bindVisibleState(PropertyValueModel<Boolean> booleanModel, Control... controls) {
+		bindVisibleState(booleanModel, controls, false);
 	}
 
 	/**
-	 * Control the <em>visible</em> state of the specified controls with the
+	 * Bind the <em>visible</em> state of the specified controls with the
 	 * specified boolean. If the boolean is <code>null<code>, the controls'
 	 * <em>visible</em> states will be the specified default value.
 	 */
-	public static void controlVisibleState(PropertyValueModel<Boolean> booleanModel, Control[] controls, boolean defaultValue) {
+	public static void bindVisibleState(PropertyValueModel<Boolean> booleanModel, Control[] controls, boolean defaultValue) {
 		switch (controls.length) {
 			case 0:
 				throw new IllegalArgumentException("empty controls array: " + Arrays.toString(controls));
 			case 1:
-				controlVisibleState(booleanModel, controls[0], defaultValue);
+				bindVisibleState(booleanModel, controls[0], defaultValue);
 				break;
 			default:
-				controlVisibleState(booleanModel, new StaticCollectionValueModel<Control>(controls), defaultValue);
+				bindVisibleState(booleanModel, new StaticCollectionValueModel<Control>(controls), defaultValue);
 				break;
 		}
 	}
 
 	/**
-	 * Control the <em>visible</em> state of the specified controls with the
+	 * Bind the <em>visible</em> state of the specified controls with the
 	 * specified boolean. If the boolean is <code>null<code>, the controls'
 	 * <em>visible</em> states will be <code>false<code>.
 	 */
-	public static void controlVisibleState(PropertyValueModel<Boolean> booleanModel, Iterable<? extends Control> controls) {
-		controlVisibleState(booleanModel, controls, false);
+	public static void bindVisibleState(PropertyValueModel<Boolean> booleanModel, Iterable<? extends Control> controls) {
+		bindVisibleState(booleanModel, controls, false);
 	}
 
 	/**
-	 * Control the <em>visible</em> state of the specified controls with the
+	 * Bind the <em>visible</em> state of the specified controls with the
 	 * specified boolean. If the boolean is <code>null<code>, the controls'
 	 * <em>visible</em> states will be the specified default value.
 	 */
-	public static void controlVisibleState(PropertyValueModel<Boolean> booleanModel, Iterable<? extends Control> controls, boolean defaultValue) {
-		controlVisibleState(booleanModel, new StaticCollectionValueModel<Control>(controls), defaultValue);
+	public static <C extends Control> void bindVisibleState(PropertyValueModel<Boolean> booleanModel, Iterable<C> controls, boolean defaultValue) {
+		BooleanControlStateModelBinding.Adapter<C> adapter = visibleAdapter();
+		bindState(booleanModel, controls, defaultValue, adapter);
 	}
 
 	/**
-	 * Control the <em>visible</em> state of the specified controls with the
-	 * specified boolean. If the boolean is <code>null<code>, the controls'
-	 * <em>visible</em> states will be <code>false<code>.
-	 */
-	public static void controlVisibleState(PropertyValueModel<Boolean> booleanModel, CollectionValueModel<? extends Control> controlsModel) {
-		controlVisibleState(booleanModel, controlsModel, false);
-	}
-
-	/**
-	 * Control the <em>visible</em> state of the specified controls with the
-	 * specified boolean. If the boolean is <code>null<code>, the controls'
-	 * <em>visible</em> states will be the specified default value.
-	 */
-	public static void controlVisibleState(PropertyValueModel<Boolean> booleanModel, CollectionValueModel<? extends Control> controlsModel, boolean defaultValue) {
-		control(booleanModel, controlsModel, defaultValue, VISIBLE_ADAPTER);
-	}
-
-	/**
-	 * Control the <em>visible</em> state of the specified control with the
+	 * Bind the <em>visible</em> state of the specified control with the
 	 * specified boolean. If the boolean is <code>null<code>, the control's
 	 * <em>visible</em> state will be the specified default value.
 	 */
-	public static void controlVisibleState(PropertyValueModel<Boolean> booleanModel, Control control, boolean defaultValue) {
-		control(booleanModel, control, defaultValue, VISIBLE_ADAPTER);
+	public static void bindVisibleState(PropertyValueModel<Boolean> booleanModel, Control control, boolean defaultValue) {
+		bindState(booleanModel, control, defaultValue, visibleAdapter());
 	}
 
-	private static final BooleanStateController.Adapter VISIBLE_ADAPTER =
-			new BooleanStateController.Adapter() {
-				public void setState(Control control, boolean b) {
-					control.setVisible(b);
-				}
-			};
-   
+	@SuppressWarnings("unchecked")
+	private static <C extends Control> BooleanControlStateModelBinding.Adapter<C> visibleAdapter() {
+		return VISIBLE_ADAPTER;
+	}
+	@SuppressWarnings("rawtypes")
+	private static final BooleanControlStateModelBinding.Adapter VISIBLE_ADAPTER = new VisibleAdapter();
+  	/** CU private */ static class VisibleAdapter<C extends Control>
+		implements BooleanControlStateModelBinding.Adapter<C>
+	{
+		public void setState(C control, boolean b) {
+			control.setVisible(b);
+		}
+		@Override
+		public String toString() {
+			return ObjectTools.singletonToString(this);
+		}
+	}
 
-	// ********** boolean state controller **********
+
+	// ********** boolean state **********
 
 	@SuppressWarnings("unused")
-	private static void control(PropertyValueModel<Boolean> booleanModel, CollectionValueModel<? extends Control> controlsModel, boolean defaultValue, BooleanStateController.Adapter adapter) {
-		// the new controller will add itself as a listener to the value model and the controls
-		new MultiControlBooleanStateController(booleanModel, controlsModel, defaultValue, adapter);
+	private static <C extends Control> void bindState(PropertyValueModel<Boolean> booleanModel, Iterable<C> controls, boolean defaultValue, BooleanControlStateModelBinding.Adapter<C> adapter) {
+		// the new binding will add itself as a listener to the value model and the controls
+		new CompositeBooleanControlStateModelBinding<C>(booleanModel, controls, defaultValue, adapter);
 	}
 
 	@SuppressWarnings("unused")
-	private static void control(PropertyValueModel<Boolean> booleanModel, Control control, boolean defaultValue, BooleanStateController.Adapter adapter) {
-		// the new controller will add itself as a listener to the value model and the controls
-		new SimpleBooleanStateController(booleanModel, control, defaultValue, adapter);
+	private static <C extends Control> void bindState(PropertyValueModel<Boolean> booleanModel, C control, boolean defaultValue, BooleanControlStateModelBinding.Adapter<C> adapter) {
+		// the new binding will add itself as a listener to the value model and the controls
+		new SimpleBooleanControlStateModelBinding<C>(booleanModel, control, defaultValue, adapter);
 	}
 
 
 	// ********** 'expanded' state **********
 
 	/**
-	 * Control the <em>expanded</em> state of the specified section with the
+	 * Bind the <em>expanded</em> state of the specified section with the
 	 * specified boolean model. If the boolean is <code>null<code>, the section's
-	 * <em>expanded</em> state will be false.
+	 * <em>expanded</em> state will be <code>false</code>.
 	 */
-	public static void controlExpandedState(PropertyValueModel<Boolean> booleanModel, Section section) {
-		controlExpandedState(booleanModel, section, false);
+	public static void bindExpandedState(PropertyValueModel<Boolean> booleanModel, Section section) {
+		bindExpandedState(booleanModel, section, false);
 	}
 
 	/**
-	 * Control the <em>expanded</em> state of the specified section with the
+	 * Bind the <em>expanded</em> state of the specified section with the
 	 * specified boolean model. If the boolean is <code>null<code>, the section's
 	 * <em>expanded</em> state will be the specified default value.
 	 */
-	public static void controlExpandedState(PropertyValueModel<Boolean> booleanModel, Section section, boolean defaultValue) {
-		control(booleanModel, section, defaultValue, EXPANDED_ADAPTER);
+	public static void bindExpandedState(PropertyValueModel<Boolean> booleanModel, Section section, boolean defaultValue) {
+		bindState(booleanModel, section, defaultValue, EXPANDED_ADAPTER);
 	}
 
-	private static final BooleanStateController.Adapter EXPANDED_ADAPTER =
-			new BooleanStateController.Adapter() {
-				public void setState(Control section, boolean b) {
-					((Section) section).setExpanded(b);
-				}
-			};
-
-	@SuppressWarnings("unused")
-	private static void control(PropertyValueModel<Boolean> booleanModel, Section section, boolean defaultValue, BooleanStateController.Adapter adapter) {
-		// the new controller will add itself as a listener to the value model and the section
-		new SimpleBooleanStateController(booleanModel, section, defaultValue, adapter);
+	private static final BooleanControlStateModelBinding.Adapter<Section> EXPANDED_ADAPTER = new ExpandedAdapter();
+	/** CU private */ static class ExpandedAdapter
+		implements BooleanControlStateModelBinding.Adapter<Section>
+	{
+		public void setState(Section section, boolean b) {
+			section.setExpanded(b);
+		}
+		@Override
+		public String toString() {
+			return ObjectTools.singletonToString(this);
+		}
 	}
+
 
 	// ********** constructor **********
 
@@ -719,5 +707,4 @@ public final class SWTBindingTools {
 		super();
 		throw new UnsupportedOperationException();
 	}
-
 }

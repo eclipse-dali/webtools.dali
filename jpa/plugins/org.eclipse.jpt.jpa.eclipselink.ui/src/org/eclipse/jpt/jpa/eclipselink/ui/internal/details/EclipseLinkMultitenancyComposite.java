@@ -104,7 +104,7 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		includeCriteriaCheckBox.getCheckBox().setLayoutData(gridData);
-		SWTBindingTools.controlVisibleState(this.buildIncludeCriteriaCheckBoxIsVisibleModel(), includeCriteriaCheckBox.getCheckBox());
+		SWTBindingTools.bindVisibleState(this.buildIncludeCriteriaCheckBoxIsVisibleModel(), includeCriteriaCheckBox.getCheckBox());
 
 		// Tenant discriminator columns group pane
 		Group tenantDiscriminatorColumnGroupPane = addTitledGroup(

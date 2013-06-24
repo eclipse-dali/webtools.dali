@@ -134,7 +134,7 @@ public class EclipseLinkPersistenceUnitMetadataComposite2_3 extends PersistenceU
 		gridData.horizontalSpan = 2;
 		diCheckBox.setLayoutData(gridData);
 
-		SWTBindingTools.controlVisibleState(this.buildDelimitedIdentifiersCheckBoxIsVisibleModel(), diCheckBox);
+		SWTBindingTools.bindVisibleState(this.buildDelimitedIdentifiersCheckBoxIsVisibleModel(), diCheckBox);
 
 
 		// Tenant discriminator columns group pane

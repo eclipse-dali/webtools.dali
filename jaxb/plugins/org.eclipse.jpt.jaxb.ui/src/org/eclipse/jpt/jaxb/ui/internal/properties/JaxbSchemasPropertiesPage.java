@@ -257,7 +257,7 @@ public class JaxbSchemasPropertiesPage
 						editSelectedSchema();
 					}
 				});
-		SWTBindingTools.controlEnabledState(buildEditEnabledModel(), editButton);
+		SWTBindingTools.bindEnabledState(buildEditEnabledModel(), editButton);
 		setButtonLayoutData(editButton);
 		
 		Button removeButton = new Button(groupComponent, SWT.PUSH);
@@ -269,7 +269,7 @@ public class JaxbSchemasPropertiesPage
 						removeSelectedSchemas();
 					}
 				});
-		SWTBindingTools.controlEnabledState(buildRemoveEnabledModel(), removeButton);
+		SWTBindingTools.bindEnabledState(buildRemoveEnabledModel(), removeButton);
         setButtonLayoutData(removeButton);
 	}
 	

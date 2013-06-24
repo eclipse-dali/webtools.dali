@@ -222,7 +222,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 	protected Section initializeSequenceGeneratorCollapsibleSection(Composite container, PropertyValueModel<GeneratorContainer> generatorHolder) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE);
 		section.setText(JptJpaUiDetailsMessages.ID_MAPPING_COMPOSITE_SEQUENCE_GENERATOR_SECTION);
-		SWTBindingTools.controlExpandedState(this.sequenceGeneratorExpansionStateHolder, section);
+		SWTBindingTools.bindExpandedState(this.sequenceGeneratorExpansionStateHolder, section);
 
 		section.setClient(this.initializeSequenceGeneratorPane(section, generatorHolder));
 
@@ -315,7 +315,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 	protected Section initializeTableGeneratorCollapsibleSection(Composite container, PropertyValueModel<GeneratorContainer> generatorHolder) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE);
 		section.setText(JptJpaUiDetailsMessages.ID_MAPPING_COMPOSITE_TABLE_GENERATOR_SECTION);
-		SWTBindingTools.controlExpandedState(this.tableGeneratorExpansionStateHolder, section);
+		SWTBindingTools.bindExpandedState(this.tableGeneratorExpansionStateHolder, section);
 
 		section.setClient(this.initializeTableGeneratorPane(section, generatorHolder));
 

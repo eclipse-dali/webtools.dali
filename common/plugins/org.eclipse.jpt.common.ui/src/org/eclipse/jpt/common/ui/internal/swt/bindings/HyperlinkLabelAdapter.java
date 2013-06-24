@@ -24,7 +24,7 @@ final class HyperlinkLabelAdapter
 	}
 
 	@Override
-	public void setImage_(Image image) {
+	protected void setImage_(Image image) {
 		// NOP
 	}
 

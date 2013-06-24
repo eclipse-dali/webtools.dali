@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.ui.tests.internal.utility.swt;
+package org.eclipse.jpt.common.ui.tests.internal.swt.bindings;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
@@ -41,10 +41,10 @@ public class CheckBoxModelBindingUITest
 	extends ApplicationWindow
 {
 	private final TestModel testModel;
-	private final ModifiablePropertyValueModel<TestModel> testModelHolder;
-	private final ModifiablePropertyValueModel<Boolean> flag1Holder;
-	private final ModifiablePropertyValueModel<Boolean> flag2Holder;
-	private final ModifiablePropertyValueModel<Boolean> notFlag2Holder;
+	private final ModifiablePropertyValueModel<TestModel> testModelModel;
+	private final ModifiablePropertyValueModel<Boolean> flag1Model;
+	private final ModifiablePropertyValueModel<Boolean> flag2Model;
+	private final ModifiablePropertyValueModel<Boolean> notFlag2Model;
 
 	public static void main(String[] args) throws Exception {
 		Window window = new CheckBoxModelBindingUITest(args);
@@ -57,14 +57,14 @@ public class CheckBoxModelBindingUITest
 	private CheckBoxModelBindingUITest(@SuppressWarnings("unused") String[] args) {
 		super(null);
 		this.testModel = new TestModel(true, true);
-		this.testModelHolder = new SimplePropertyValueModel<TestModel>(this.testModel);
-		this.flag1Holder = this.buildFlag1Holder(this.testModelHolder);
-		this.flag2Holder = this.buildFlag2Holder(this.testModelHolder);
-		this.notFlag2Holder = this.buildNotFlag2Holder(this.testModelHolder);
+		this.testModelModel = new SimplePropertyValueModel<TestModel>(this.testModel);
+		this.flag1Model = this.buildFlag1Model(this.testModelModel);
+		this.flag2Model = this.buildFlag2Model(this.testModelModel);
+		this.notFlag2Model = this.buildNotFlag2Model(this.testModelModel);
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildFlag1Holder(PropertyValueModel<TestModel> subjectHolder) {
-		return new PropertyAspectAdapter<TestModel, Boolean>(subjectHolder, TestModel.FLAG1_PROPERTY) {
+	private ModifiablePropertyValueModel<Boolean> buildFlag1Model(PropertyValueModel<TestModel> subjectModel) {
+		return new PropertyAspectAdapter<TestModel, Boolean>(subjectModel, TestModel.FLAG1_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isFlag1());
@@ -76,8 +76,8 @@ public class CheckBoxModelBindingUITest
 		};
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildFlag2Holder(PropertyValueModel<TestModel> subjectHolder) {
-		return new PropertyAspectAdapter<TestModel, Boolean>(subjectHolder, TestModel.FLAG2_PROPERTY) {
+	private ModifiablePropertyValueModel<Boolean> buildFlag2Model(PropertyValueModel<TestModel> subjectModel) {
+		return new PropertyAspectAdapter<TestModel, Boolean>(subjectModel, TestModel.FLAG2_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isFlag2());
@@ -89,8 +89,8 @@ public class CheckBoxModelBindingUITest
 		};
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildNotFlag2Holder(PropertyValueModel<TestModel> subjectHolder) {
-		return new PropertyAspectAdapter<TestModel, Boolean>(subjectHolder, TestModel.NOT_FLAG2_PROPERTY) {
+	private ModifiablePropertyValueModel<Boolean> buildNotFlag2Model(PropertyValueModel<TestModel> subjectModel) {
+		return new PropertyAspectAdapter<TestModel, Boolean>(subjectModel, TestModel.NOT_FLAG2_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isNotFlag2());
@@ -135,19 +135,19 @@ public class CheckBoxModelBindingUITest
 	private void buildFlag1CheckBox(Composite parent) {
 		Button checkBox = new Button(parent, SWT.CHECK);
 		checkBox.setText("flag 1");
-		SWTBindingTools.bind(this.flag1Holder, checkBox);
+		SWTBindingTools.bind(this.flag1Model, checkBox);
 	}
 
 	private void buildFlag2CheckBox(Composite parent) {
 		Button checkBox = new Button(parent, SWT.CHECK);
 		checkBox.setText("flag 2");
-		SWTBindingTools.bind(this.flag2Holder, checkBox);
+		SWTBindingTools.bind(this.flag2Model, checkBox);
 	}
 
 	private void buildNotFlag2CheckBox(Composite parent) {
 		Button checkBox = new Button(parent, SWT.CHECK);
 		checkBox.setText("not flag 2");
-		SWTBindingTools.bind(this.notFlag2Holder, checkBox);
+		SWTBindingTools.bind(this.notFlag2Model, checkBox);
 	}
 
 	private void buildUnattachedCheckBox(Composite parent) {
@@ -206,7 +206,7 @@ public class CheckBoxModelBindingUITest
 	private void buildNotFlag2ToggleButton(Composite parent) {
 		Button checkBox = new Button(parent, SWT.TOGGLE);
 		checkBox.setText("not flag 2");
-		SWTBindingTools.bind(this.notFlag2Holder, checkBox);
+		SWTBindingTools.bind(this.notFlag2Model, checkBox);
 	}
 
 	private void buildClearModelButton(Composite parent) {
@@ -225,7 +225,7 @@ public class CheckBoxModelBindingUITest
 	}
 
 	void clearModel() {
-		this.testModelHolder.setValue(null);
+		this.testModelModel.setValue(null);
 	}
 
 	private void buildRestoreModelButton(Composite parent) {
@@ -244,7 +244,7 @@ public class CheckBoxModelBindingUITest
 	}
 
 	void restoreModel() {
-		this.testModelHolder.setValue(this.testModel);
+		this.testModelModel.setValue(this.testModel);
 	}
 
 	private void buildPrintModelButton(Composite parent) {
@@ -314,5 +314,4 @@ public class CheckBoxModelBindingUITest
 			return "TestModel(" + this.isFlag1() + " - " + this.isFlag2() + ")";
 		}
 	}
-
 }

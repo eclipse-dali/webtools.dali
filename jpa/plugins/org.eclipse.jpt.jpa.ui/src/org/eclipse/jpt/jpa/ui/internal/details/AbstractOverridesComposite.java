@@ -95,7 +95,7 @@ public abstract class AbstractOverridesComposite<T extends JpaContextModel>
 				JptJpaUiDetailsMessages.OVERRIDES_COMPOSITE_OVERRIDE_DEFAULT,
 				getOverrideVirtualOverrideHolder(),
 				null);
-		SWTBindingTools.controlVisibleState(buildSelectedOverrideBooleanHolder(), overrideCheckBox);
+		SWTBindingTools.bindVisibleState(buildSelectedOverrideBooleanHolder(), overrideCheckBox);
 		
 		// Property pane
 		PageBook pageBook = addPageBook(container);

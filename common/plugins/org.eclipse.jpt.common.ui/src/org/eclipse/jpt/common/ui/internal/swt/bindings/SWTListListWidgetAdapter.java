@@ -9,18 +9,25 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.swt.bindings;
 
+import java.util.ArrayList;
+import org.eclipse.jpt.common.ui.internal.swt.bindings.ListWidgetModelBinding.SelectionBinding;
+import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.List;
 
 /**
- * Adapt an SWT {@link List} to the list widget expected by
- * {@link ListWidgetModelBinding}.
+ * Adapt an SWT {@link List} to the {@link ListWidgetModelBinding.ListWidget
+ * list widget} expected by {@link ListWidgetModelBinding}.
  */
-final class SWTListAdapter
-	extends AbstractListWidgetAdapter<List>
+final class SWTListListWidgetAdapter<E>
+	extends AbstractListWidgetAdapter<E, List>
 {
-	SWTListAdapter(List list) {
+	SWTListListWidgetAdapter(List list) {
 		super(list);
+	}
+	@SuppressWarnings("unchecked")
+	public SelectionBinding buildSelectionBinding(ArrayList<E> list, Object selectionModel) {
+		return new ListBoxSelectionBinding<E>(list, (ModifiableCollectionValueModel<E>) selectionModel, this.widget);
 	}
 	public void addSelectionListener(SelectionListener listener) {
 		this.widget.addSelectionListener(listener);

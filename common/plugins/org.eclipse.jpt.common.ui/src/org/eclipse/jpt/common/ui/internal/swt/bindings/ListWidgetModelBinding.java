@@ -11,24 +11,31 @@ package org.eclipse.jpt.common.ui.internal.swt.bindings;
 
 import java.util.ArrayList;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
+import org.eclipse.jpt.common.ui.internal.swt.events.DisposeAdapter;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.ListClearEvent;
 import org.eclipse.jpt.common.utility.model.event.ListMoveEvent;
 import org.eclipse.jpt.common.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.common.utility.model.event.ListReplaceEvent;
+import org.eclipse.jpt.common.utility.model.listener.ListChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.widgets.Display;
 
 /**
- * This binding can be used to keep a list widget's contents
+ * This binding can be used to keep a list widget's contents and selection
  * synchronized with a model. The list widget never alters
  * its contents directly; all changes are driven by the model.
+ * <p>
+ * <strong>NB:</strong> The selection binding is bi-directional.
  * 
  * @see ListValueModel
  * @see Transformer
@@ -36,7 +43,6 @@ import org.eclipse.swt.events.DisposeListener;
  * @see SelectionBinding
  * @see SWTBindingTools
  */
-@SuppressWarnings("nls")
 final class ListWidgetModelBinding<E> {
 
 	// ***** model
@@ -49,7 +55,12 @@ final class ListWidgetModelBinding<E> {
 	 * A listener that allows us to synchronize the list widget's contents with
 	 * the model list.
 	 */
-	private final ListChangeListener listChangeListener;
+	private final ListChangeListener listListener;
+
+	/**
+	 * Cache of model list. Shared with the {@link #selectionBinding}.
+	 */
+	final ArrayList<E> list = new ArrayList<E>();
 
 	/**
 	 * A transformer that converts items in the model list
@@ -59,9 +70,10 @@ final class ListWidgetModelBinding<E> {
 
 	// ***** UI
 	/**
-	 * An adapter on the list widget we keep synchronized with the model list.
+	 * An adapter on the SWT list widget we keep synchronized
+	 * with the model list.
 	 */
-	private final ListWidget listWidget;
+	private final ListWidget<E> listWidget;
 
 	/**
 	 * A listener that allows us to stop listening to stuff when the list widget
@@ -76,108 +88,106 @@ final class ListWidgetModelBinding<E> {
 	private final SelectionBinding selectionBinding;
 
 
-	// ********** constructor **********
-
 	/**
 	 * Constructor - all parameters are required.
 	 */
 	ListWidgetModelBinding(
 			ListValueModel<E> listModel,
-			ListWidget listWidget,
-			Transformer<E, String> transformer,
-			SelectionBinding selectionBinding
+			Object selectionModel,
+			ListWidget<E> listWidget,
+			Transformer<E, String> transformer
 	) {
 		super();
-		if ((listModel == null) || (listWidget == null) || (transformer == null) || (selectionBinding == null)) {
+		if ((listModel == null) || (selectionModel == null) || (listWidget == null) || (transformer == null)) {
 			throw new NullPointerException();
 		}
 		this.listModel = listModel;
 		this.listWidget = listWidget;
 		this.transformer = transformer;
-		this.selectionBinding = selectionBinding;
+		this.selectionBinding = listWidget.buildSelectionBinding(this.list, selectionModel);
 
-		this.listChangeListener = this.buildListChangeListener();
-		this.listModel.addListChangeListener(ListValueModel.LIST_VALUES, this.listChangeListener);
+		this.listListener = this.buildListListener();
+		this.listModel.addListChangeListener(ListValueModel.LIST_VALUES, this.listListener);
 
 		this.listWidgetDisposeListener = this.buildListWidgetDisposeListener();
 		this.listWidget.addDisposeListener(this.listWidgetDisposeListener);
 
+		this.list.ensureCapacity(this.listModel.size());
+		CollectionTools.addAll(this.list, this.listModel);
 		this.synchronizeListWidget();
 	}
 
 
 	// ********** initialization **********
 
-	private ListChangeListener buildListChangeListener() {
-		return SWTListenerWrapperTools.wrap(this.buildListChangeListener_());
+	private ListChangeListener buildListListener() {
+		return SWTListenerWrapperTools.wrap(new ListListener(), this.listWidget.getDisplay());
 	}
 
-	private ListChangeListener buildListChangeListener_() {
-		return new ListChangeListener() {
-			public void itemsAdded(ListAddEvent event) {
-				ListWidgetModelBinding.this.listItemsAdded(event);
-			}
-			public void itemsRemoved(ListRemoveEvent event) {
-				ListWidgetModelBinding.this.listItemsRemoved(event);
-			}
-			public void itemsMoved(ListMoveEvent event) {
-				ListWidgetModelBinding.this.listItemsMoved(event);
-			}
-			public void itemsReplaced(ListReplaceEvent event) {
-				ListWidgetModelBinding.this.listItemsReplaced(event);
-			}
-			public void listCleared(ListClearEvent event) {
-				ListWidgetModelBinding.this.listCleared(event);
-			}
-			public void listChanged(ListChangeEvent event) {
-				ListWidgetModelBinding.this.listChanged(event);
-			}
-			@Override
-			public String toString() {
-				return "list listener";
-			}
-		};
+	/* CU private */ class ListListener
+		extends ListChangeAdapter
+	{
+		@Override
+		public void itemsAdded(ListAddEvent event) {
+			ListWidgetModelBinding.this.listItemsAdded(event);
+		}
+		@Override
+		public void itemsRemoved(ListRemoveEvent event) {
+			ListWidgetModelBinding.this.listItemsRemoved(event);
+		}
+		@Override
+		public void itemsMoved(ListMoveEvent event) {
+			ListWidgetModelBinding.this.listItemsMoved(event);
+		}
+		@Override
+		public void itemsReplaced(ListReplaceEvent event) {
+			ListWidgetModelBinding.this.listItemsReplaced(event);
+		}
+		@Override
+		public void listCleared(ListClearEvent event) {
+			ListWidgetModelBinding.this.listCleared();
+		}
+		@Override
+		public void listChanged(ListChangeEvent event) {
+			ListWidgetModelBinding.this.listChanged(event);
+		}
 	}
 
 	private DisposeListener buildListWidgetDisposeListener() {
-		return new DisposeListener() {
-			public void widgetDisposed(DisposeEvent event) {
-				ListWidgetModelBinding.this.listWidgetDisposed(event);
-			}
-			@Override
-			public String toString() {
-				return "list widget dispose listener";
-			}
-		};
+		return new ListWidgetDisposeListener();
+	}
+
+	/* CU private */ class ListWidgetDisposeListener
+		extends DisposeAdapter
+	{
+		@Override
+		public void widgetDisposed(DisposeEvent event) {
+			ListWidgetModelBinding.this.listWidgetDisposed();
+		}
 	}
 
 
 	// ********** list **********
 
 	/**
-	 * Brute force synchronization of list widget with the model list.
+	 * Brute force synchronization of list widget with the list.
 	 */
 	private void synchronizeListWidget() {
-		if ( ! this.listWidget.isDisposed()) {
-			this.synchronizeListWidget_();
+		String[] items = new String[this.list.size()];
+		int i = 0;
+		for (E item : this.list) {
+			items[i++] = this.transformer.transform(item);
 		}
-	}
+		this.listWidget.setItems(items);
 
-	private void synchronizeListWidget_() {
-		ArrayList<String> items = new ArrayList<String>(this.listModel.size());
-		for (E item : this.listModel) {
-			items.add(this.transform(item));
-		}
-		this.listWidget.setItems(items.toArray(new String[items.size()]));
-
-		// now that the list has changed, we need to synch the selection
+		// now that the list has changed, we need to synchronize the selection
 		this.selectionBinding.synchronizeListWidgetSelection();
 	}
 
 	/**
 	 * The model has changed - synchronize the list widget.
 	 */
-	void listItemsAdded(ListAddEvent event) {
+	/* CU private */ void listItemsAdded(ListAddEvent event) {
 		if ( ! this.listWidget.isDisposed()) {
 			this.listItemsAdded_(event);
 		}
@@ -185,40 +195,42 @@ final class ListWidgetModelBinding<E> {
 
 	private void listItemsAdded_(ListAddEvent event) {
 		int i = event.getIndex();
-		for (E item : this.getItems(event)) {
-			this.listWidget.add(this.transform(item), i++);
+		this.list.ensureCapacity(this.list.size() + event.getItemsSize());
+		@SuppressWarnings("unchecked")
+		Iterable<E> items = (Iterable<E>) event.getItems();
+		for (E item : items) {
+			this.list.add(i, item);
+			this.listWidget.add(this.transformer.transform(item), i);
+			i++;
 		}
 
-		// now that the list has changed, we need to synch the selection
+		// now that the list has changed, we need to synchronize the selection
 		this.selectionBinding.synchronizeListWidgetSelection();
-	}
-
-	// minimized scope of suppressed warnings
-	@SuppressWarnings("unchecked")
-	private Iterable<E> getItems(ListAddEvent event) {
-		return (Iterable<E>) event.getItems();
 	}
 
 	/**
 	 * The model has changed - synchronize the list widget.
 	 */
-	void listItemsRemoved(ListRemoveEvent event) {
+	/* CU private */ void listItemsRemoved(ListRemoveEvent event) {
 		if ( ! this.listWidget.isDisposed()) {
 			this.listItemsRemoved_(event);
 		}
 	}
 
 	private void listItemsRemoved_(ListRemoveEvent event) {
-		this.listWidget.remove(event.getIndex(), event.getIndex() + event.getItemsSize() - 1);
+		int start = event.getIndex();
+		int end = start + event.getItemsSize();
+		this.list.subList(start, end).clear();
+		this.listWidget.remove(start, end - 1);  // widget range is *inclusive*
 
-		// now that the list has changed, we need to synch the selection
+		// now that the list has changed, we need to synchronize the selection
 		this.selectionBinding.synchronizeListWidgetSelection();
 	}
 
 	/**
 	 * The model has changed - synchronize the list widget.
 	 */
-	void listItemsMoved(ListMoveEvent event) {
+	/* CU private */ void listItemsMoved(ListMoveEvent event) {
 		if ( ! this.listWidget.isDisposed()) {
 			this.listItemsMoved_(event);
 		}
@@ -230,24 +242,31 @@ final class ListWidgetModelBinding<E> {
 		int len = event.getLength();
 		int loStart = Math.min(target, source);
 		int hiStart = Math.max(target, source);
+		int hiEnd = hiStart + len;
 		// make a copy of the affected items...
-		String[] subArray = ArrayTools.subArray(this.listWidget.getItems(), loStart, hiStart + len);
+		ArrayList<E> subList = new ArrayList<E>(this.list.subList(loStart, hiEnd));
+		String[] subArray = ArrayTools.subArray(this.listWidget.getItems(), loStart, hiEnd);
 		// ...move them around...
-		subArray = ArrayTools.move(subArray, target - loStart, source - loStart, len);
+		int subTarget = target - loStart;
+		int subSource = source - loStart;
+		subList = ListTools.move(subList, subTarget, subSource, len);
+		subArray = ArrayTools.move(subArray, subTarget, subSource, len);
 		// ...and then put them back
-		int i = loStart;
-		for (String item : subArray) {
-			this.listWidget.setItem(i++, item);
+		int subIndex = 0;
+		for (int i = loStart; i < hiEnd; i++) {
+			this.list.set(i, subList.get(subIndex));
+			this.listWidget.setItem(i, subArray[subIndex]);
+			subIndex++;
 		}
 
-		// now that the list has changed, we need to synch the selection
+		// now that the list has changed, we need to synchronize the selection
 		this.selectionBinding.synchronizeListWidgetSelection();
 	}
 
 	/**
 	 * The model has changed - synchronize the list widget.
 	 */
-	void listItemsReplaced(ListReplaceEvent event) {
+	/* CU private */ void listItemsReplaced(ListReplaceEvent event) {
 		if ( ! this.listWidget.isDisposed()) {
 			this.listItemsReplaced_(event);
 		}
@@ -255,63 +274,60 @@ final class ListWidgetModelBinding<E> {
 
 	private void listItemsReplaced_(ListReplaceEvent event) {
 		int i = event.getIndex();
-		for (E item : this.getNewItems(event)) {
-			this.listWidget.setItem(i++, this.transform(item));
+		@SuppressWarnings("unchecked")
+		Iterable<E> newItems = (Iterable<E>) event.getNewItems();
+		for (E item : newItems) {
+			this.list.set(i, item);
+			this.listWidget.setItem(i, this.transformer.transform(item));
+			i++;
 		}
 
-		// now that the list has changed, we need to synch the selection
+		// now that the list has changed, we need to synchronize the selection
 		this.selectionBinding.synchronizeListWidgetSelection();
-	}
-
-	// minimized scope of suppressed warnings
-	@SuppressWarnings("unchecked")
-	private Iterable<E> getNewItems(ListReplaceEvent event) {
-		return (Iterable<E>) event.getNewItems();
 	}
 
 	/**
 	 * The model has changed - synchronize the list widget.
 	 */
-	void listCleared(ListClearEvent event) {
+	/* CU private */ void listCleared() {
 		if ( ! this.listWidget.isDisposed()) {
-			this.listCleared_(event);
+			this.listCleared_();
 		}
 	}
 
-	private void listCleared_(@SuppressWarnings("unused") ListClearEvent event) {
+	private void listCleared_() {
+		this.list.clear();
 		this.listWidget.removeAll();
 	}
 
 	/**
 	 * The model has changed - synchronize the list widget.
 	 */
-	void listChanged(ListChangeEvent event) {
+	/* CU private */ void listChanged(ListChangeEvent event) {
 		if ( ! this.listWidget.isDisposed()) {
 			this.listChanged_(event);
 		}
 	}
 
-	private void listChanged_(@SuppressWarnings("unused") ListChangeEvent event) {
-		this.synchronizeListWidget_();
-	}
-
-	/**
-	 * Use the {@link #transformer} to convert the specified item to a
-	 * string that can be added to the list widget.
-	 */
-	private String transform(E item) {
-		return this.transformer.transform(item);
+	private void listChanged_(ListChangeEvent event) {
+		this.list.clear();
+		this.list.ensureCapacity(event.getListSize());
+		@SuppressWarnings("unchecked")
+		Iterable<E> eventList = (Iterable<E>) event.getList();
+		CollectionTools.addAll(this.list, eventList);
+		this.synchronizeListWidget();
 	}
 
 
 	// ********** list widget events **********
 
-	void listWidgetDisposed(@SuppressWarnings("unused") DisposeEvent event) {
+	/* CU private */ void listWidgetDisposed() {
 		// the list widget is not yet "disposed" when we receive this event
 		// so we can still remove our listeners
 		this.listWidget.removeDisposeListener(this.listWidgetDisposeListener);
-		this.listModel.removeListChangeListener(ListValueModel.LIST_VALUES, this.listChangeListener);
+		this.listModel.removeListChangeListener(ListValueModel.LIST_VALUES, this.listListener);
 		this.selectionBinding.dispose();
+		this.list.clear();
 	}
 
 
@@ -319,20 +335,28 @@ final class ListWidgetModelBinding<E> {
 
 	@Override
 	public String toString() {
-		return ObjectTools.toString(this, this.listModel);
+		return ObjectTools.toString(this, this.list);
 	}
 
 
 	// ********** adapter interfaces **********
 
 	/**
-	 * Adapter used by the list widget model binding to query and manipulate
-	 * the widget.
+	 * Adapter used by the binding to query and manipulate the SWT widget.
 	 */
-	interface ListWidget {
+	interface ListWidget<E> {
+		/**
+		 * Build a selection binding for the widget.
+		 */
+		SelectionBinding buildSelectionBinding(ArrayList<E> list, Object selectionModel);
 
 		/**
-		 * Return whether the list widget is "disposed".
+		 * Return the list widget's display.
+		 */
+		Display getDisplay();
+
+		/**
+		 * Return whether the list widget is <em>disposed</em>.
 		 */
 		boolean isDisposed();
 
@@ -368,6 +392,7 @@ final class ListWidgetModelBinding<E> {
 
 		/**
 		 * Remove the specified range of items from the list widget's items.
+		 * Both indices are <em>inclusive</em>.
 		 */
 		void remove(int start, int end);
 
@@ -379,11 +404,9 @@ final class ListWidgetModelBinding<E> {
 
 
 	/**
-	 * Widget-specific selection binding that is controlled by the list widget
-	 * model binding.
+	 * Widget-specific selection binding that is controlled by the binding.
 	 */
 	interface SelectionBinding {
-
 		/**
 		 * Synchronize the selection binding's widget with the selection model.
 		 * <p>
@@ -395,30 +418,5 @@ final class ListWidgetModelBinding<E> {
 		 * The widget has been disposed; dispose the selection binding.
 		 */
 		void dispose();
-
-
-		/**
-		 * Useful for list boxes that ignore the selection.
-		 */
-		final class Null implements SelectionBinding {
-			public static final SelectionBinding INSTANCE = new Null();
-			public static SelectionBinding instance() {
-				return INSTANCE;
-			}
-			// ensure single instance
-			private Null() {
-				super();
-			}
-			public void synchronizeListWidgetSelection() {
-				// do nothing
-			}
-			public void dispose() {
-				// do nothing
-			}
-			@Override
-			public String toString() {
-				return "SelectionBinding.Null"; //$NON-NLS-1$
-			}
-		}
 	}
 }

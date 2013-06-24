@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.ui.tests.internal.utility.swt;
+package org.eclipse.jpt.common.ui.tests.internal.swt.bindings;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
@@ -32,7 +32,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * Play around with boolean state controllers ('enabled' and 'visible').
+ * Play around with <code>boolean</code> state controllers
+ * (<em>enabled</em> and <em>visible</em>).
  * <p>
  * Note the behavior of composites:<ul>
  * <li>When a composite is disabled, its children are disabled but <em>not</em>
@@ -45,10 +46,10 @@ import org.eclipse.swt.widgets.Shell;
 public class BooleanStateControllerUITest
 	extends ApplicationWindow
 {
-	private final ModifiablePropertyValueModel<Boolean> enabledHolder;
-	private final ModifiablePropertyValueModel<Boolean> visibleHolder;
-	private final SimpleListValueModel<String> listHolder;
-	private final ModifiablePropertyValueModel<String> listSelectionHolder;
+	private final ModifiablePropertyValueModel<Boolean> enabledModel;
+	private final ModifiablePropertyValueModel<Boolean> visibleModel;
+	private final SimpleListValueModel<String> listModel;
+	private final ModifiablePropertyValueModel<String> listSelectionModel;
 
 	public static void main(String[] args) throws Exception {
 		Window window = new BooleanStateControllerUITest(args);
@@ -60,13 +61,13 @@ public class BooleanStateControllerUITest
 
 	private BooleanStateControllerUITest(@SuppressWarnings("unused") String[] args) {
 		super(null);
-		this.enabledHolder = new SimplePropertyValueModel<Boolean>(Boolean.TRUE);
-		this.visibleHolder = new SimplePropertyValueModel<Boolean>(Boolean.TRUE);
-		this.listHolder = this.buildListHolder();
-		this.listSelectionHolder = new SimplePropertyValueModel<String>(null);
+		this.enabledModel = new SimplePropertyValueModel<Boolean>(Boolean.TRUE);
+		this.visibleModel = new SimplePropertyValueModel<Boolean>(Boolean.TRUE);
+		this.listModel = this.buildListModel();
+		this.listSelectionModel = new SimplePropertyValueModel<String>(null);
 	}
 
-	private SimpleListValueModel<String> buildListHolder() {
+	private SimpleListValueModel<String> buildListModel() {
 		SimpleListValueModel<String> result = new SimpleListValueModel<String>();
 		result.add("zero");
 		result.add("one");
@@ -113,16 +114,16 @@ public class BooleanStateControllerUITest
 		panel.setLayout(new FillLayout(SWT.HORIZONTAL));
 
 		Button enabledComboBoxCheckBox = this.buildEnabledComboBoxCheckBox(panel);
-		SWTBindingTools.bind(this.enabledHolder, enabledComboBoxCheckBox);
+		SWTBindingTools.bind(this.enabledModel, enabledComboBoxCheckBox);
 
 		Button visibleComboBoxCheckBox = this.buildVisibleComboBoxCheckBox(panel);
-		SWTBindingTools.bind(this.visibleHolder, visibleComboBoxCheckBox);
+		SWTBindingTools.bind(this.visibleModel, visibleComboBoxCheckBox);
 
 		Label comboBoxLabel = this.buildComboBoxLabel(panel);
 		Combo comboBox = this.buildComboBox(panel);
-		SWTBindingTools.bind(this.listHolder, this.listSelectionHolder, comboBox);
-		SWTBindingTools.controlEnabledState(this.enabledHolder, comboBoxLabel, comboBox);
-		SWTBindingTools.controlVisibleState(this.visibleHolder, comboBoxLabel, comboBox);
+		SWTBindingTools.bind(this.listModel, this.listSelectionModel, comboBox);
+		SWTBindingTools.bindEnabledState(this.enabledModel, comboBoxLabel, comboBox);
+		SWTBindingTools.bindVisibleState(this.visibleModel, comboBoxLabel, comboBox);
 	}
 
 	private Button buildEnabledComboBoxCheckBox(Composite parent) {
@@ -158,8 +159,8 @@ public class BooleanStateControllerUITest
 		this.buildCheckBox(panel, "three");
 		this.buildCheckBox(panel, "four");
 
-		SWTBindingTools.controlEnabledState(this.enabledHolder, panel, checkBox1);
-		SWTBindingTools.controlVisibleState(this.visibleHolder, panel);
+		SWTBindingTools.bindEnabledState(this.enabledModel, panel, checkBox1);
+		SWTBindingTools.bindVisibleState(this.visibleModel, panel);
 	}
 
 	private void buildControlPanel(Composite parent, Control widgetPanel) {
@@ -194,7 +195,7 @@ public class BooleanStateControllerUITest
 	}
 
 	void clearEnabledModel() {
-		this.enabledHolder.setValue(null);
+		this.enabledModel.setValue(null);
 	}
 
 	private void buildClearVisibleModelButton(Composite parent) {
@@ -213,7 +214,7 @@ public class BooleanStateControllerUITest
 	}
 
 	void clearVisibleModel() {
-		this.visibleHolder.setValue(null);
+		this.visibleModel.setValue(null);
 	}
 
 	private void buildNullSelectionModelButton(Composite parent) {
@@ -232,7 +233,7 @@ public class BooleanStateControllerUITest
 	}
 
 	void setSelectionModelNull() {
-		this.listSelectionHolder.setValue(null);
+		this.listSelectionModel.setValue(null);
 	}
 
 	private void buildNextButton(Composite parent) {
@@ -251,11 +252,11 @@ public class BooleanStateControllerUITest
 	}
 
 	void next() {
-		this.listSelectionHolder.setValue(this.getNextListSelection());
+		this.listSelectionModel.setValue(this.getNextListSelection());
 	}
 
 	private String getNextListSelection() {
-		return this.listHolder.get(this.getNextListSelectionIndex());
+		return this.listModel.get(this.getNextListSelectionIndex());
 	}
 
 	private int getNextListSelectionIndex() {
@@ -264,15 +265,14 @@ public class BooleanStateControllerUITest
 			return 0;
 		}
 		index++;
-		return (index == this.listHolder.size()) ? 0 : index;
+		return (index == this.listModel.size()) ? 0 : index;
 	}
 
 	private int getListSelectionIndex() {
-		return this.listHolder.indexOf(this.getListSelection());
+		return this.listModel.indexOf(this.getListSelection());
 	}
 
 	private String getListSelection() {
-		return this.listSelectionHolder.getValue();
+		return this.listSelectionModel.getValue();
 	}
-
 }

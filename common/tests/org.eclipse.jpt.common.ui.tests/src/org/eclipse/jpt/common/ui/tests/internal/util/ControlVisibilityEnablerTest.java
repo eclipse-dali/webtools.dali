@@ -47,7 +47,7 @@ public final class ControlVisibilityEnablerTest {
 
 		Combo combo = new Combo(parent, SWT.BORDER);
 
-		SWTBindingTools.controlVisibleState(booleanHolder, combo);
+		SWTBindingTools.bindVisibleState(booleanHolder, combo);
 
 		assertTrue(
 			"The Combo should be visible",

@@ -507,7 +507,7 @@ public abstract class Pane<T extends Model> {
 	                                   final Runnable buttonAction) {
 
 		Button button = addUnmanagedButton(container, text, helpId, buttonAction);
-		this.controlEnabledState(button);
+		this.bindEnabledState(button);
 
 		return button;
 	}
@@ -519,7 +519,7 @@ public abstract class Pane<T extends Model> {
 								        PropertyValueModel<Boolean> enabledModel) {
 
 		Button button = addUnmanagedButton(container, text, helpId, buttonAction);
-		this.controlEnabledState(enabledModel, button);
+		this.bindEnabledState(enabledModel, button);
 
 		return button;
 	}
@@ -611,7 +611,7 @@ public abstract class Pane<T extends Model> {
 			PropertyValueModel<Boolean> enabledModel) {
 
 		Button button = this.addUnmanagedToggleButton(parent, buttonText, booleanHolder, helpId, SWT.CHECK);
-		this.controlEnabledState(enabledModel, button);
+		this.bindEnabledState(enabledModel, button);
 		return button;
 	}
 
@@ -625,7 +625,7 @@ public abstract class Pane<T extends Model> {
 	 */
 	protected final Combo addCombo(Composite container) {
 		Combo combo = this.addUnmanagedCombo(container);
-		this.controlEnabledState(combo);
+		this.bindEnabledState(combo);
 		return combo;
 	}
 
@@ -644,7 +644,7 @@ public abstract class Pane<T extends Model> {
 			this.setHelp(combo, helpId);
 		}
 
-		this.controlEnabledState(combo);
+		this.bindEnabledState(combo);
 		return combo;
 	}
 
@@ -729,7 +729,7 @@ public abstract class Pane<T extends Model> {
 			PropertyValueModel<Boolean> enabledModel) {
 
 		Combo combo = this.addUnmanagedCombo(container, listHolder, selectedItemHolder, stringConverter);
-		this.controlEnabledState(enabledModel, combo);
+		this.bindEnabledState(enabledModel, combo);
 		return combo;
 	}
 
@@ -804,7 +804,7 @@ public abstract class Pane<T extends Model> {
 			String helpId) {
 
 		Combo combo = this.addUnmanagedEditableCombo(container, listHolder, selectedItemHolder, stringConverter, helpId);
-		this.controlEnabledState(enabledModel, combo);
+		this.bindEnabledState(enabledModel, combo);
 		return combo;
 	}
 
@@ -820,7 +820,7 @@ public abstract class Pane<T extends Model> {
 		}
 
 		combo.setLayoutData(getFieldGridData());
-		this.controlEnabledState(combo);
+		this.bindEnabledState(combo);
 		return combo;
 	}
 
@@ -902,7 +902,7 @@ public abstract class Pane<T extends Model> {
 	                                         final Runnable hyperLinkAction) {
 
 		Hyperlink link = this.getWidgetFactory().createHyperlink(parent, text);
-		this.controlEnabledState(link);
+		this.bindEnabledState(link);
 
 		link.addMouseListener(new MouseAdapter() {
 			@Override
@@ -923,7 +923,7 @@ public abstract class Pane<T extends Model> {
 											String text) {
 
 		Hyperlink link = this.getWidgetFactory().createHyperlink(parent, text);
-		this.controlEnabledState(link);
+		this.bindEnabledState(link);
 		
 		return link;
 	}
@@ -940,7 +940,7 @@ public abstract class Pane<T extends Model> {
 	                                 String labelText) {
 
 		Label label = this.addUnmanagedLabel(container, labelText);
-		this.controlEnabledState(label);
+		this.bindEnabledState(label);
 		return label;
 	}
 
@@ -950,7 +950,7 @@ public abstract class Pane<T extends Model> {
 			PropertyValueModel<Boolean> enabledModel
 	) {
 		Label label = this.addUnmanagedLabel(container, labelText);
-		this.controlEnabledState(enabledModel, label);
+		this.bindEnabledState(enabledModel, label);
 		return label;
 	}
 
@@ -992,7 +992,7 @@ public abstract class Pane<T extends Model> {
 	                                     String helpId) {
 
 		Spinner spinner = addUnmanagedSpinner(parent, numberHolder, defaultValue, minimumValue, maximumValue, helpId);
-		this.controlEnabledState(spinner);
+		this.bindEnabledState(spinner);
 		return spinner;
 	}
 
@@ -1054,7 +1054,7 @@ public abstract class Pane<T extends Model> {
 											String helpId) {
 
 		DateTime dateTime = this.addUnmanagedDateTime(parent, hoursHolder, minutesHolder, secondsHolder, helpId);
-		this.controlEnabledState(dateTime);
+		this.bindEnabledState(dateTime);
 
 		return dateTime;
 	}
@@ -1068,7 +1068,7 @@ public abstract class Pane<T extends Model> {
 			PropertyValueModel<Boolean> enabledModel
 	) {
 		DateTime dateTime = this.addUnmanagedDateTime(parent, hoursHolder, minutesHolder, secondsHolder, helpId);
-		this.controlEnabledState(enabledModel, dateTime);
+		this.bindEnabledState(enabledModel, dateTime);
 		return dateTime;
 	}
 
@@ -1192,7 +1192,7 @@ public abstract class Pane<T extends Model> {
 	                               String helpId) {
 
 		List list = this.addUnmanagedList(container, selectionHolder, helpId);
-		this.controlEnabledState(list);
+		this.bindEnabledState(list);
 
 		return list;
 	}
@@ -1241,7 +1241,7 @@ public abstract class Pane<T extends Model> {
 
 		Text text = this.getWidgetFactory().createMultiLineText(container);
 		text.setLayoutData(getFieldGridData());
-		this.controlEnabledState(text);
+		this.bindEnabledState(text);
 
 		return text;
 	}
@@ -1399,7 +1399,7 @@ public abstract class Pane<T extends Model> {
 		Text text = this.getWidgetFactory().createPasswordText(container);
 		text.setLayoutData(getFieldGridData());
 
-		this.controlEnabledState(text);
+		this.bindEnabledState(text);
 		return text;
 	}
 
@@ -1437,7 +1437,7 @@ public abstract class Pane<T extends Model> {
 	                                       final Runnable buttonAction) {
 
 		Button button = this.getWidgetFactory().createPushButton(parent, buttonText);
-		controlEnabledState(button);
+		bindEnabledState(button);
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -1672,7 +1672,7 @@ public abstract class Pane<T extends Model> {
 	                                 String helpId) {
 
 		Table table = addUnmanagedTable(container, style, helpId);
-		this.controlEnabledState(table);
+		this.bindEnabledState(table);
 
 		return table;
 	}
@@ -1758,7 +1758,7 @@ public abstract class Pane<T extends Model> {
 	 */
 	protected final Text addText(Composite container) {
 		Text text = this.addUnmanagedText(container);
-		this.controlEnabledState(text);
+		this.bindEnabledState(text);
 		return text;
 	}
 
@@ -1862,7 +1862,7 @@ public abstract class Pane<T extends Model> {
 			PropertyValueModel<Boolean> enabledModel
 	) {
 		Text text = this.addUnmanagedText(container, textHolder, helpId);
-		this.controlEnabledState(enabledModel, text);
+		this.bindEnabledState(enabledModel, text);
 		return text;
 	}
 
@@ -2025,7 +2025,7 @@ public abstract class Pane<T extends Model> {
 				booleanHolder,
 				helpId,
 				toggleButtonType);
-		this.controlEnabledState(button);
+		this.bindEnabledState(button);
 		return button;
 	}
 
@@ -2049,7 +2049,7 @@ public abstract class Pane<T extends Model> {
 
 		TriStateCheckBox checkBox = this.addUnmanagedTriStateCheckBox(parent, text, booleanHolder, helpId);
 
-		this.controlEnabledState(checkBox.getCheckBox());
+		this.bindEnabledState(checkBox.getCheckBox());
 
 		return checkBox;
 	}
@@ -2119,7 +2119,7 @@ public abstract class Pane<T extends Model> {
 			
 		TriStateCheckBox checkBox = this.addUnmanagedTriStateCheckBox(parent, text, booleanHolder, helpId);
 		
-		this.controlEnabledState(enabledModel, checkBox.getCheckBox());
+		this.bindEnabledState(enabledModel, checkBox.getCheckBox());
 		
 		SWTBindingTools.bindTextLabel(textModel, checkBox.getCheckBox());
 		
@@ -2146,11 +2146,11 @@ public abstract class Pane<T extends Model> {
 	 * Control the <em>enabled</em> state of the specified controls with the
 	 * pane's {@link #enabledModel}.
 	 * <p>
-	 * Use {@link #controlEnabledState(PropertyValueModel, Control...)} if the
+	 * Use {@link #bindEnabledState(PropertyValueModel, Control...)} if the
 	 * controls might be disabled when the pane is enabled.
 	 */
-	protected void controlEnabledState(Control... controls) {
-		SWTBindingTools.controlEnabledState(this.enabledModel, controls);
+	protected void bindEnabledState(Control... controls) {
+		SWTBindingTools.bindEnabledState(this.enabledModel, controls);
 	}
 
 	/**
@@ -2159,11 +2159,11 @@ public abstract class Pane<T extends Model> {
 	 * If the specified boolean model returns <code>null</code> (which is
 	 * typical of aspect adapters), the controls will be disabled.
 	 * <p>
-	 * Use {@link #controlEnabledState(Control...)} if the
+	 * Use {@link #bindEnabledState(Control...)} if the
 	 * controls are only enabled when the pane is enabled.
 	 */
-	protected void controlEnabledState(PropertyValueModel<Boolean> controlsEnabledModel, Control... controls) {
-		SWTBindingTools.controlEnabledState(this.andEnabledModel(controlsEnabledModel), controls);
+	protected void bindEnabledState(PropertyValueModel<Boolean> controlsEnabledModel, Control... controls) {
+		SWTBindingTools.bindEnabledState(this.andEnabledModel(controlsEnabledModel), controls);
 	}
 
 	/**

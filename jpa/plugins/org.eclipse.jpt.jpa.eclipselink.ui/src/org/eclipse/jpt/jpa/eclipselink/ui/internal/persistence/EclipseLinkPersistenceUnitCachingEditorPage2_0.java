@@ -86,7 +86,7 @@ public class EclipseLinkPersistenceUnitCachingEditorPage2_0
 		Label flushClearCacheLabel = this.addLabel(client, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CACHING_TAB_FLUSH_CLEAR_CACHE_LABEL);
 		Combo flushClearCacheCombo = this.addFlushClearCacheCombo(client).getControl();
 
-		this.controlEnabledState(
+		this.bindEnabledState(
 			this.buildSharedCacheModeEnabledModel(persistenceUnitModel),
 			cacheTypeLabel,
 			cacheTypeCombo,

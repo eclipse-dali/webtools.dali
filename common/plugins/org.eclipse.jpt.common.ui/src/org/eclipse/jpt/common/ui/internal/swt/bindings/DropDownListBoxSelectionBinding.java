@@ -9,32 +9,37 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.swt.bindings;
 
+import java.util.ArrayList;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
+import org.eclipse.jpt.common.ui.internal.swt.events.SelectionAdapter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * This binding can be used to keep a drop-down list box's selection
- * synchronized with a model. The selection can be modified by either the
- * drop-down list box or the model, so changes must be coordinated.
+ * synchronized with a model.
  * <p>
- * <strong>NB:</strong> A selected item value of <code>null</code> can be used
+ * <strong>NB:</strong> This binding is bi-directional.
+ * <p>
+ * <strong>NB2:</strong> A selected item value of <code>null</code> can be used
  * to clear the drop-down list box's selection. If <code>null</code> is a
  * valid item in the model list, an invalid selected item can be used to clear
  * the selection.
+ * <p>
+ * <strong>NB3:</strong> See the class comment for
+ * {@link ListBoxSelectionBinding}.
  * 
- * @see ListValueModel
  * @see ModifiablePropertyValueModel
  * @see DropDownListBox
  * @see SWTBindingTools
  */
-@SuppressWarnings("nls")
 final class DropDownListBoxSelectionBinding<E>
 	implements ListWidgetModelBinding.SelectionBinding
 {
@@ -42,18 +47,23 @@ final class DropDownListBoxSelectionBinding<E>
 	/**
 	 * The underlying list model.
 	 */
-	private final ListValueModel<E> listModel;
+	private final ArrayList<E> list;
 
 	/**
-	 * A writable value model on the underlying model selection.
+	 * A modifiable value model on the underlying model selection.
 	 */
 	private final ModifiablePropertyValueModel<E> selectedItemModel;
+
+	/**
+	 * Cache of model selection.
+	 */
+	private E selectedItem;
 
 	/**
 	 * A listener that allows us to synchronize the drop-down list box's
 	 * selection with the model selection.
 	 */
-	private final PropertyChangeListener selectedItemChangeListener;
+	private final PropertyChangeListener selectedItemListener;
 
 	// ***** UI
 	/**
@@ -63,91 +73,94 @@ final class DropDownListBoxSelectionBinding<E>
 	private final DropDownListBox dropdownListBox;
 
 	/**
-	 * A listener that allows us to synchronize our selected item holder
+	 * A listener that allows us to synchronize our selected item model
 	 * with the drop-down list box's selection.
 	 */
 	private final SelectionListener dropdownListBoxSelectionListener;
 
 
-	// ********** constructor **********
-
 	/**
 	 * Constructor - all parameters are required.
 	 */
 	DropDownListBoxSelectionBinding(
-			ListValueModel<E> listModel,
+			ArrayList<E> list,
 			ModifiablePropertyValueModel<E> selectedItemModel,
 			DropDownListBox dropdownListBox
 	) {
 		super();
-		if ((listModel == null) || (selectedItemModel == null) || (dropdownListBox == null)) {
+		if ((list == null) || (selectedItemModel == null) || (dropdownListBox == null)) {
 			throw new NullPointerException();
 		}
-		this.listModel = listModel;
+		this.list = list;
 		this.selectedItemModel = selectedItemModel;
 		this.dropdownListBox = dropdownListBox;
 
-		this.selectedItemChangeListener = this.buildSelectedItemChangeListener();
-		this.selectedItemModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.selectedItemChangeListener);
+		this.selectedItemListener = this.buildSelectedItemListener();
+		this.selectedItemModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.selectedItemListener);
 
 		this.dropdownListBoxSelectionListener = this.buildDropDownListBoxSelectionListener();
 		this.dropdownListBox.addSelectionListener(this.dropdownListBoxSelectionListener);
+
+		this.selectedItem = this.selectedItemModel.getValue();
 	}
 
 
 	// ********** initialization **********
 
-	private PropertyChangeListener buildSelectedItemChangeListener() {
-		return SWTListenerWrapperTools.wrap(this.buildSelectedItemChangeListener_());
+	private PropertyChangeListener buildSelectedItemListener() {
+		return SWTListenerWrapperTools.wrap(new SelectedItemListener(), this.dropdownListBox.getDisplay());
 	}
 
-	private PropertyChangeListener buildSelectedItemChangeListener_() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent event) {
-				DropDownListBoxSelectionBinding.this.selectedItemChanged(event);
-			}
-			@Override
-			public String toString() {
-				return "selected item listener";
-			}
-		};
+	/* CU private */ class SelectedItemListener
+		extends PropertyChangeAdapter
+	{
+		@Override
+		public void propertyChanged(PropertyChangeEvent event) {
+			DropDownListBoxSelectionBinding.this.selectedItemChanged(event);
+		}
 	}
 
 	private SelectionListener buildDropDownListBoxSelectionListener() {
-		return new SelectionListener() {
-			public void widgetSelected(SelectionEvent event) {
-				DropDownListBoxSelectionBinding.this.dropDownListBoxSelectionChanged(event);
-			}
-			public void widgetDefaultSelected(SelectionEvent event) {
-				DropDownListBoxSelectionBinding.this.dropDownListBoxDoubleClicked(event);
-			}
-			@Override
-			public String toString() {
-				return "drop-down list box selection listener";
-			}
-		};
+		return new DropDownListBoxSelectionListener();
+	}
+
+	/* CU private */ class DropDownListBoxSelectionListener
+		extends SelectionAdapter
+	{
+		@Override
+		public void widgetSelected(SelectionEvent event) {
+			DropDownListBoxSelectionBinding.this.dropDownListBoxSelectionChanged();
+		}
+		@Override
+		public void widgetDefaultSelected(SelectionEvent event) {
+			DropDownListBoxSelectionBinding.this.dropDownListBoxDoubleClicked();
+		}
 	}
 
 
 	// ********** ListWidgetModelBinding.SelectionBinding implementation **********
 
 	/**
-	 * Modifying the drop-down lisb box's selected item programmatically does
-	 * not trigger a SelectionEvent.
+	 * <strong>NB:</strong> The elements in the selection model may be out of
+	 * sync with the underlying list model. (See the class comment.)
+	 * <p>
+	 * Modifying the drop-down list box's selected item programmatically does
+	 * not trigger a {@link SelectionEvent}.
 	 * <p>
 	 * Pre-condition: The drop-down list box is not disposed.
 	 */
 	public void synchronizeListWidgetSelection() {
 		int oldIndex = this.dropdownListBox.getSelectionIndex();
-		E value = this.selectedItemModel.getValue();
-		int newIndex = this.indexOf(value);
-		if ((oldIndex != -1) && (newIndex != -1) && (newIndex != oldIndex)) {
-			this.dropdownListBox.deselect(oldIndex);
-		}
+		int newIndex = this.indexOf(this.selectedItem);
 		if (newIndex == -1) {
-			this.dropdownListBox.deselectAll();
+			if (oldIndex != -1) {
+				this.dropdownListBox.deselectAll();
+			}
 		} else {
 			if (newIndex != oldIndex) {
+				if (oldIndex != -1) {
+					this.dropdownListBox.deselect(oldIndex);
+				}
 				this.dropdownListBox.select(newIndex);
 			}
 		}
@@ -155,7 +168,8 @@ final class DropDownListBoxSelectionBinding<E>
 
 	public void dispose() {
 		this.dropdownListBox.removeSelectionListener(this.dropdownListBoxSelectionListener);
-		this.selectedItemModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.selectedItemChangeListener);
+		this.selectedItemModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.selectedItemListener);
+		this.selectedItem = null;
 	}
 
 
@@ -169,60 +183,44 @@ final class DropDownListBoxSelectionBinding<E>
 
 	/**
 	 * Modifying the drop-down list box's selected item programmatically does
-	 * not trigger a SelectionEvent.
+	 * not trigger a {@link SelectionEvent}.
 	 */
-	private void selectedItemChanged_(@SuppressWarnings("unused") PropertyChangeEvent event) {
+	private void selectedItemChanged_(PropertyChangeEvent event) {
+		@SuppressWarnings("unchecked")
+		E item = (E) event.getNewValue();
+		this.selectedItem = item;
 		this.synchronizeListWidgetSelection();
 	}
 
+	/**
+	 * <strong>NB:</strong> an index of <code>-1</code> is ignored by
+	 * {@link org.eclipse.swt.widgets.Combo} (lucky for us).
+	 */
 	private int indexOf(E item) {
-		int len = this.listModel.size();
-		for (int i = 0; i < len; i++) {
-			if (ObjectTools.equals(this.listModel.get(i), item)) {
+		int i = 0;
+		for (E each : this.list) {
+			if (ObjectTools.equals(each, item)) {
 				return i;
 			}
+			i++;
 		}
-		// if 'null' is not in the list, use it to clear the selection
-		if (item == null) {
-			return -1;
-		}
-		// We can get here via one of the following:
-		// 1. The selected item model is invalid and not in sync with the list
-		//    model. This is not good and we don't make this (programming
-		//    error) obvious (e.g. via an exception). :-(
-		// 2. If both the selected item model and the list model are dependent
-		//    on the same underlying model, the selected item model may receive
-		//    its event first, resulting in a missing item. This will resolve
-		//    itself once the list model receives its event and synchronizes
-		//    with the same underlying model. This situation is acceptable.
 		return -1;
-
-// This is what we used to do:
-//		throw new IllegalStateException("selected item not found: " + item);
 	}
 
 
 	// ********** combo-box events **********
 
-	void dropDownListBoxSelectionChanged(SelectionEvent event) {
-		if ( ! this.dropdownListBox.isDisposed()) {
-			this.dropDownListBoxSelectionChanged_(event);
-		}
-	}
-
-	void dropDownListBoxDoubleClicked(SelectionEvent event) {
-		if ( ! this.dropdownListBox.isDisposed()) {
-			this.dropDownListBoxSelectionChanged_(event);
-		}
-	}
-
-	private void dropDownListBoxSelectionChanged_(@SuppressWarnings("unused") SelectionEvent event) {
+	void dropDownListBoxSelectionChanged() {
 		this.selectedItemModel.setValue(this.getDropDownListBoxSelectedItem());
 	}
 
+	void dropDownListBoxDoubleClicked() {
+		this.dropDownListBoxSelectionChanged();
+	}
+
 	private E getDropDownListBoxSelectedItem() {
-		int selectionIndex = this.dropdownListBox.getSelectionIndex();
-		return (selectionIndex == -1) ? null : this.listModel.get(selectionIndex);
+		int index = this.dropdownListBox.getSelectionIndex();
+		return (index == -1) ? null : this.list.get(index);
 	}
 
 
@@ -230,7 +228,7 @@ final class DropDownListBoxSelectionBinding<E>
 
 	@Override
 	public String toString() {
-		return ObjectTools.toString(this, this.selectedItemModel);
+		return ObjectTools.toString(this, this.selectedItem);
 	}
 
 
@@ -241,39 +239,43 @@ final class DropDownListBoxSelectionBinding<E>
 	 * the drop-down list box.
 	 */
 	interface DropDownListBox {
+		/**
+		 * Return the list widget's display.
+		 */
+		Display getDisplay();
 
 		/**
-		 * Return whether the combo-box is "disposed".
+		 * Return whether the drop-down list box is <em>disposed</em>.
 		 */
 		boolean isDisposed();
 
 		/**
-		 * Add the specified selection listener to the combo-box.
+		 * Add the specified selection listener to the drop-down list box.
 		 */
 		void addSelectionListener(SelectionListener listener);
 
 		/**
-		 * Remove the specified selection listener from the combo-box.
+		 * Remove the specified selection listener from the drop-down list box.
 		 */
 		void removeSelectionListener(SelectionListener listener);
 
 		/**
-		 * Return the index of the combo-box's selection.
+		 * Return the index of the drop-down list box's selection.
 		 */
 		int getSelectionIndex();
 
 		/**
-		 * Select the item at the specified index in the combo-box.
+		 * Select the item at the specified index in the drop-down list box.
 		 */
 		void select(int index);
 
 		/**
-		 * Deselect the item at the specified index in the combo-box.
+		 * Deselect the item at the specified index in the drop-down list box.
 		 */
 		void deselect(int index);
 
 		/**
-		 * Clear the combo-box's selection.
+		 * Clear the drop-down list box's selection.
 		 */
 		void deselectAll();
 	}

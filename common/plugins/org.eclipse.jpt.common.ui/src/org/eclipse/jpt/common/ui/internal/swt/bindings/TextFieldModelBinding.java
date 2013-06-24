@@ -10,8 +10,11 @@
 package org.eclipse.jpt.common.ui.internal.swt.bindings;
 
 import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
+import org.eclipse.jpt.common.ui.internal.swt.events.DisposeAdapter;
+import org.eclipse.jpt.common.ui.internal.swt.events.ModifyAdapter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -24,6 +27,8 @@ import org.eclipse.swt.widgets.Text;
 /**
  * This binding can be used to keep a text field
  * synchronized with a model text/string.
+ * <p>
+ * <strong>NB:</strong> This binding is bi-directional.
  * 
  * @see ModifiablePropertyValueModel
  * @see Text
@@ -40,7 +45,7 @@ class TextFieldModelBinding {
 	 * A listener that allows us to synchronize the text field's contents with
 	 * the text model.
 	 */
-	private final PropertyChangeListener textModelChangeListener;
+	private final PropertyChangeListener textListener;
 
 	/**
 	 * The text field we keep synchronized with the text model.
@@ -59,11 +64,6 @@ class TextFieldModelBinding {
 	 */
 	private final DisposeListener textFieldDisposeListener;
 
-	/**
-	 * Hmm...
-	 */
-	private boolean settingTextFieldText = false;
-
 
 	// ********** constructor **********
 
@@ -78,8 +78,8 @@ class TextFieldModelBinding {
 		this.textModel = textModel;
 		this.textField = textField;
 
-		this.textModelChangeListener = this.buildTextModelChangeListener();
-		this.textModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.textModelChangeListener);
+		this.textListener = this.buildTextListener();
+		this.textModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.textListener);
 
 		this.textFieldModifyListener = this.buildTextFieldModifyListener();
 		this.textField.addModifyListener(this.textFieldModifyListener);
@@ -93,51 +93,50 @@ class TextFieldModelBinding {
 
 	// ********** initialization **********
 
-	private PropertyChangeListener buildTextModelChangeListener() {
-		return SWTListenerWrapperTools.wrap(this.buildTextModelChangeListener_(), this.textField);
+	private PropertyChangeListener buildTextListener() {
+		return SWTListenerWrapperTools.wrap(new TextListener(), this.textField);
 	}
 
-	private PropertyChangeListener buildTextModelChangeListener_() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent event) {
-				TextFieldModelBinding.this.textModelChanged(event);
-			}
-			@Override
-			public String toString() {
-				return "text listener";
-			}
-		};
+	/* CU private */ class TextListener
+		extends PropertyChangeAdapter
+	{
+		@Override
+		public void propertyChanged(PropertyChangeEvent event) {
+			TextFieldModelBinding.this.textChanged(event);
+		}
 	}
 
 	private ModifyListener buildTextFieldModifyListener() {
-		return new ModifyListener() {
-			public void modifyText(ModifyEvent event) {
-				TextFieldModelBinding.this.textFieldModified();
-			}
-			@Override
-			public String toString() {
-				return "text field modify listener";
-			}
-		};
+		return new TextFieldModifyListener();
+	}
+
+	/* CU private */ class TextFieldModifyListener
+		extends ModifyAdapter
+	{
+		@Override
+		public void modifyText(ModifyEvent event) {
+			TextFieldModelBinding.this.textFieldModified();
+		}
 	}
 
 	private DisposeListener buildTextFieldDisposeListener() {
-		return new DisposeListener() {
-			public void widgetDisposed(DisposeEvent event) {
-				TextFieldModelBinding.this.textFieldDisposed();
-			}
-			@Override
-			public String toString() {
-				return "text field dispose listener";
-			}
-		};
+		return new TextFieldDisposeListener();
+	}
+
+	/* CU private */ class TextFieldDisposeListener
+		extends DisposeAdapter
+	{
+		@Override
+		public void widgetDisposed(DisposeEvent event) {
+			TextFieldModelBinding.this.textFieldDisposed();
+		}
 	}
 
 
 	// ********** text model events **********
 
-	/* CU private */ void textModelChanged(PropertyChangeEvent event) {
-		if ( ! this.textField.isDisposed()) {  // ???
+	/* CU private */ void textChanged(PropertyChangeEvent event) {
+		if ( ! this.textField.isDisposed()) {
 			this.setTextFieldText((String) event.getNewValue());
 		}
 	}
@@ -148,17 +147,8 @@ class TextFieldModelBinding {
 	}
 
 	private void setTextFieldText_(String text) {
-		if ( ! text.equals(this.textField.getText())) {  // ???
-			this.setTextFieldText__(text);
-		}
-	}
-
-	private void setTextFieldText__(String text) {
-		this.settingTextFieldText = true;
-		try {
+		if ( ! text.equals(this.textField.getText())) {  // text field does not short-circuit
 			this.textField.setText(text);
-		} finally {
-			this.settingTextFieldText = false;
 		}
 	}
 
@@ -166,15 +156,7 @@ class TextFieldModelBinding {
 	// ********** text field events **********
 
 	/* CU private */ void textFieldModified() {
-		if ( ! this.settingTextFieldText) {
-			this.setTextModelText(this.textField.getText());
-		}
-	}
-
-	private void setTextModelText(String text) {
-		if ( ! text.equals(this.textModel.getValue())) {  // ???
-			this.textModel.setValue(text);
-		}
+		this.textModel.setValue(this.textField.getText());
 	}
 
 	/* CU private */ void textFieldDisposed() {
@@ -182,7 +164,7 @@ class TextFieldModelBinding {
 		// so we can still remove our listeners
 		this.textField.removeDisposeListener(this.textFieldDisposeListener);
 		this.textField.removeModifyListener(this.textFieldModifyListener);
-		this.textModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.textModelChangeListener);
+		this.textModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.textListener);
 	}
 
 

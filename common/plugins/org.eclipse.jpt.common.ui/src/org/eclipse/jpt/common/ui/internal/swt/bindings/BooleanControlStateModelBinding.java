@@ -11,9 +11,7 @@ package org.eclipse.jpt.common.ui.internal.swt.bindings;
 
 import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
 import org.eclipse.jpt.common.ui.internal.swt.events.DisposeAdapter;
-import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.RunnableAdapter;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -23,30 +21,50 @@ import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Control;
 
 /**
- * This controller enables a boolean model to control either the
+ * This binding enables a <code>boolean</code> model to control either the
  * <em>enabled</em> or <em>visible</em> properties of SWT controls; i.e. the
- * controls' properties are kept in synch with the boolean model,
+ * controls' properties are kept in sync with the <code>boolean</code> model,
  * but <em>not</em> vice-versa.
  * <p>
  * Subclasses must manage the listeners; i.e. the engaging and disengaging of
- * the boolean model and the control(s).
+ * the <code>boolean</code> model and the control(s).
+ * 
+ * @param <C> the type of the control
  * 
  * @see PropertyValueModel
  * @see Control#setEnabled(boolean)
  * @see Control#setVisible(boolean)
  */
-abstract class BooleanStateController {
+abstract class BooleanControlStateModelBinding<C extends Control> {
 
 	/**
-	 * The controlling boolean model.
+	 * The controlling <code>boolean</code> model.
 	 */
 	private final PropertyValueModel<Boolean> booleanModel;
 
 	/**
 	 * A listener that allows us to synchronize the control states with
-	 * changes in the value of the boolean model.
+	 * changes in the value of the <code>boolean</code> model.
 	 */
-	private final PropertyChangeListener booleanChangeListener;
+	private final PropertyChangeListener booleanListener;
+
+	/**
+	 * Cache the <code>boolean</code> value.
+	 */
+	boolean booleanValue;
+
+	/**
+	 * The default setting for the state; for when the underlying
+	 * <code>boolean</code> model is <code>null</code>.
+	 * The default [default value] is <code>false<code>.
+	 */
+	private final boolean defaultValue;
+
+	/**
+	 * The adapter determines whether the <em>enabled</em> or <em>visible</em>
+	 * property is controlled.
+	 */
+	private final Adapter<C> adapter;
 
 	/**
 	 * A listener that allows us to stop listening to stuff when all the
@@ -54,54 +72,37 @@ abstract class BooleanStateController {
 	 */
 	private final DisposeListener controlDisposeListener;
 
-	/**
-	 * The default setting for the state; for when the underlying boolean model is
-	 * <code>null</code>. The default [default value] is <code>false<code>.
-	 */
-	private final boolean defaultValue;
 
 	/**
-	 * The adapter determines whether the 'enabled' or 'visible' property is
-	 * controlled.
+	 * Constructor - the <code>boolean</code> model and the adapter are required.
 	 */
-	private final Adapter adapter;
-
-
-	// ********** constructor **********
-
-	/**
-	 * Constructor - the boolean model and the adapter are required.
-	 */
-	BooleanStateController(PropertyValueModel<Boolean> booleanModel, boolean defaultValue, Adapter adapter) {
+	BooleanControlStateModelBinding(PropertyValueModel<Boolean> booleanModel, boolean defaultValue, Adapter<C> adapter) {
 		super();
 		if ((booleanModel == null) || (adapter == null)) {
 			throw new NullPointerException();
 		}
 		this.booleanModel = booleanModel;
 		this.defaultValue = defaultValue;
+		this.booleanValue = this.booleanValue(null);
 		this.adapter = adapter;
 
-		this.booleanChangeListener = this.buildBooleanChangeListener();
+		this.booleanListener = this.buildBooleanListener();
 		this.controlDisposeListener = this.buildControlDisposeListener();
 	}
 
 
 	// ********** initialization **********
 
-	private PropertyChangeListener buildBooleanChangeListener() {
-		return SWTListenerWrapperTools.wrap(this.buildBooleanChangeListener_());
+	private PropertyChangeListener buildBooleanListener() {
+		return SWTListenerWrapperTools.wrap(new BooleanListener());
 	}
 
-	private PropertyChangeListener buildBooleanChangeListener_() {
-		return new BooleanChangeListener();
-	}
-
-	/* CU private */ class BooleanChangeListener
+	/* CU private */ class BooleanListener
 		extends PropertyChangeAdapter
 	{
 		@Override
 		public void propertyChanged(PropertyChangeEvent event) {
-			BooleanStateController.this.booleanChanged(event);
+			BooleanControlStateModelBinding.this.booleanChanged(event);
 		}
 	}
 
@@ -116,7 +117,9 @@ abstract class BooleanStateController {
 		public void widgetDisposed(DisposeEvent event) {
 			// the control is not yet "disposed" when we receive this event
 			// so we can still remove our listener
-			BooleanStateController.this.controlDisposed((Control) event.widget);
+			@SuppressWarnings("unchecked")
+			C control = (C) event.widget;
+			BooleanControlStateModelBinding.this.controlDisposed(control);
 		}
 	}
 
@@ -124,25 +127,29 @@ abstract class BooleanStateController {
 	// ********** boolean model **********
 
 	void engageBooleanModel() {
-		this.booleanModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.booleanChangeListener);
+		this.booleanModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.booleanListener);
+		this.booleanValue = this.booleanValue(this.booleanModel.getValue());
 	}
 
 	void disengageBooleanModel() {
-		this.booleanModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.booleanChangeListener);
+		this.booleanModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.booleanListener);
+		this.booleanValue = this.booleanValue(null);
 	}
 
 	/**
-	 * The boolean model has changed - synchronize the controls.
-	 * If the new boolean model value is <code>null</code>, use the controller's
-	 * default value (which is typically false).
+	 * The <code>boolean</code> model has changed - synchronize the controls.
+	 * If the new <code>boolean</code> model value is <code>null</code>, use
+	 * the controller's default value (which is typically <code>false</code>).
 	 */
 	/* CU private */ void booleanChanged(PropertyChangeEvent event) {
-		this.setControlState((Boolean) event.getNewValue());
+		if ( ! this.controlIsDisposed()) {
+			this.booleanChanged((Boolean) event.getNewValue());
+		}
 	}
 
-
-	boolean getBooleanValue() {
-		return this.booleanValue(this.booleanModel.getValue());
+	private void booleanChanged(Boolean b) {
+		this.booleanValue = this.booleanValue(b);
+		this.setControlState();
 	}
 
 	private boolean booleanValue(Boolean b) {
@@ -152,52 +159,34 @@ abstract class BooleanStateController {
 
 	// ********** control **********
 
-	void engageControl(Control control) {
+	void engageControl(C control) {
 		control.addDisposeListener(this.controlDisposeListener);
 	}
 
-	void disengageControl(Control control) {
+	void disengageControl(C control) {
 		control.removeDisposeListener(this.controlDisposeListener);
 	}
 
-	private void setControlState(Boolean controlState) {
-		this.setControlState(this.booleanValue(controlState));
-	}
+	/**
+	 * Set the state of the control(s).
+	 * @see #setControlState(Control)
+	 */
+	abstract void setControlState();
 
-	abstract void setControlState(boolean controlState);
-
-	void setControlState(Control control, boolean controlState) {
-		DisplayTools.execute(new SetControlStateRunnable(control, controlState));
-	}
-
-	/* CU private */ class SetControlStateRunnable
-		extends RunnableAdapter
-	{
-		private final Control control;
-		private final boolean controlState;
-		SetControlStateRunnable(Control control, boolean controlState) {
-			super();
-			this.control = control;
-			this.controlState = controlState;
-		}
-		@Override
-		public void run() {
-			BooleanStateController.this.setControlState_(this.control, this.controlState);
-		}
-	}
-
-	/* CU private */ void setControlState_(Control control, boolean controlState) {
+	void setControlState(C control) {
 		if ( ! control.isDisposed()) {
-			this.adapter.setState(control, controlState);
+			this.adapter.setState(control, this.booleanValue);
 		}
 	}
 
-	void controlDisposed(Control control) {
+	void controlDisposed(C control) {
 		this.disengageControl(control);
 	}
 
 
 	// ********** misc **********
+
+	abstract boolean controlIsDisposed();
 
 	@Override
 	public String toString() {
@@ -207,7 +196,7 @@ abstract class BooleanStateController {
 
 	// ********** adapter interface **********
 
-	interface Adapter {
-		void setState(Control control, boolean controlState);
+	interface Adapter<C extends Control> {
+		void setState(C control, boolean controlState);
 	}
 }

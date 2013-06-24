@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.ui.tests.internal.utility.swt;
+package org.eclipse.jpt.common.ui.tests.internal.swt.bindings;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ public class DropDownListBoxModelBindingUITest
 	extends ApplicationWindow
 {
 	final TaskList taskList;
-	private final ModifiablePropertyValueModel<TaskList> taskListHolder;
+	private final ModifiablePropertyValueModel<TaskList> taskListModel;
 	private Text taskTextField;
 
 	public static void main(String[] args) throws Exception {
@@ -64,7 +64,7 @@ public class DropDownListBoxModelBindingUITest
 	private DropDownListBoxModelBindingUITest(@SuppressWarnings("unused") String[] args) {
 		super(null);
 		this.taskList = new TaskList();
-		this.taskListHolder = new SimplePropertyValueModel<TaskList>(this.taskList);
+		this.taskListModel = new SimplePropertyValueModel<TaskList>(this.taskList);
 		this.taskList.addTask("swim");
 		this.taskList.addTask("bike");
 		this.taskList.addTask("run");
@@ -247,7 +247,7 @@ public class DropDownListBoxModelBindingUITest
 	}
 
 	private ListValueModel<String> buildPrimitiveTaskListAdapter() {
-		return new ListAspectAdapter<TaskList, String>(this.taskListHolder, TaskList.TASK_NAMES_LIST) {
+		return new ListAspectAdapter<TaskList, String>(this.taskListModel, TaskList.TASK_NAMES_LIST) {
 			@Override
 			protected ListIterator<String> listIterator_() {
 				return this.subject.taskNames();
@@ -256,7 +256,7 @@ public class DropDownListBoxModelBindingUITest
 	}
 
 	private ListValueModel<Task> buildObjectTaskListAdapter() {
-		return new ListAspectAdapter<TaskList, Task>(this.taskListHolder, TaskList.TASKS_LIST) {
+		return new ListAspectAdapter<TaskList, Task>(this.taskListModel, TaskList.TASKS_LIST) {
 			@Override
 			protected ListIterator<Task> listIterator_() {
 				return this.subject.tasks();
@@ -265,14 +265,14 @@ public class DropDownListBoxModelBindingUITest
 	}
 
 	private ModifiablePropertyValueModel<Task> buildPriorityTaskAdapter() {
-		return new PriorityTaskAdapter(this.taskListHolder);
+		return new PriorityTaskAdapter(this.taskListModel);
 	}
 
 	static class PriorityTaskAdapter
 		extends PropertyAspectAdapter<TaskList, Task>
 	{
-		PriorityTaskAdapter(ModifiablePropertyValueModel<TaskList> taskListHolder) {
-			super(taskListHolder, TaskList.PRIORITY_TASK_PROPERTY);
+		PriorityTaskAdapter(ModifiablePropertyValueModel<TaskList> taskListModel) {
+			super(taskListModel, TaskList.PRIORITY_TASK_PROPERTY);
 		}
 		@Override
 		protected Task buildValue_() {
@@ -285,14 +285,14 @@ public class DropDownListBoxModelBindingUITest
 	}
 
 	private ModifiablePropertyValueModel<String> buildPriorityTaskNameAdapter() {
-		return new PriorityTaskNameAdapter(this.taskListHolder);
+		return new PriorityTaskNameAdapter(this.taskListModel);
 	}
 
 	static class PriorityTaskNameAdapter
 		extends PropertyAspectAdapter<TaskList, String>
 	{
-		PriorityTaskNameAdapter(ModifiablePropertyValueModel<TaskList> taskListHolder) {
-			super(taskListHolder, TaskList.PRIORITY_TASK_NAME_PROPERTY);
+		PriorityTaskNameAdapter(ModifiablePropertyValueModel<TaskList> taskListModel) {
+			super(taskListModel, TaskList.PRIORITY_TASK_NAME_PROPERTY);
 		}
 		@Override
 		protected String buildValue_() {
@@ -492,11 +492,11 @@ public class DropDownListBoxModelBindingUITest
 	}
 
 	void clearModel() {
-		this.taskListHolder.setValue(null);
+		this.taskListModel.setValue(null);
 	}
 
 	void restoreModel() {
-		this.taskListHolder.setValue(this.taskList);
+		this.taskListModel.setValue(this.taskList);
 	}
 
 	void changePriorityTask() {

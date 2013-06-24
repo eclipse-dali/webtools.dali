@@ -102,7 +102,7 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		section.setText(JptJpaUiDetailsMessages.GENERATORS_COMPOSITE_SEQUENCE_GENERATOR_SECTION);
-		SWTBindingTools.controlExpandedState(this.sequenceGeneratorExpansionStateHolder, section);
+		SWTBindingTools.bindExpandedState(this.sequenceGeneratorExpansionStateHolder, section);
 
 		section.setClient(GenerationComposite.this.initializeSequenceGeneratorPane(section));
 	}
@@ -182,7 +182,7 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		section.setText(JptJpaUiDetailsMessages.GENERATORS_COMPOSITE_TABLE_GENERATOR_SECTION);
-		SWTBindingTools.controlExpandedState(this.tableGeneratorExpansionStateHolder, section);
+		SWTBindingTools.bindExpandedState(this.tableGeneratorExpansionStateHolder, section);
 
 		section.setClient(GenerationComposite.this.initializeTableGeneratorPane(section));
 	}

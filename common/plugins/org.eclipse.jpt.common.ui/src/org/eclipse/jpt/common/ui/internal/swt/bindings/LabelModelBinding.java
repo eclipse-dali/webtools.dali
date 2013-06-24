@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Widget;
 
 /**
  * This binding can be used to keep a <em>label</em>
- * synchronized with a image and text models.
+ * synchronized with image and text models.
  * 
  * @see PropertyValueModel
  * @see WidgetLabelAdapter
@@ -97,7 +97,7 @@ class LabelModelBinding {
 	{
 		@Override
 		public void propertyChanged(PropertyChangeEvent event) {
-			LabelModelBinding.this.setImage((Image) event.getNewValue());
+			LabelModelBinding.this.imageChanged(event);
 		}
 	}
 
@@ -110,7 +110,7 @@ class LabelModelBinding {
 	{
 		@Override
 		public void propertyChanged(PropertyChangeEvent event) {
-			LabelModelBinding.this.setText((String) event.getNewValue());
+			LabelModelBinding.this.textChanged(event);
 		}
 	}
 
@@ -130,16 +130,24 @@ class LabelModelBinding {
 
 	// ********** model events **********
 
-	/* CU private */ void setImage(Image image) {
+	/* CU private */ void imageChanged(PropertyChangeEvent event) {
 		if ( ! this.getWidget().isDisposed()) {
-			this.labelAdapter.setImage(image);
+			this.setImage((Image) event.getNewValue());
 		}
 	}
 
-	/* CU private */ void setText(String text) {
+	private void setImage(Image image) {
+		this.labelAdapter.setImage(image);
+	}
+
+	/* CU private */ void textChanged(PropertyChangeEvent event) {
 		if ( ! this.getWidget().isDisposed()) {
-			this.labelAdapter.setText((text != null) ? text : StringTools.EMPTY_STRING);
+			this.setText((String) event.getNewValue());
 		}
+	}
+
+	private void setText(String text) {
+		this.labelAdapter.setText((text != null) ? text : StringTools.EMPTY_STRING);
 	}
 
 	private Widget getWidget() {

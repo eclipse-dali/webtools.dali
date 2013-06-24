@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.ui.tests.internal.utility.swt;
+package org.eclipse.jpt.common.ui.tests.internal.swt.bindings;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
@@ -40,9 +40,9 @@ public class TextFieldModelBindingUITest
 {
 	private final TestModel testModel;
 		private static final String DEFAULT_NAME = "Scooby Doo";
-	private final ModifiablePropertyValueModel<TestModel> testModelHolder;
-	private final ModifiablePropertyValueModel<String> nameHolder;
-	private final ModifiablePropertyValueModel<String> allCapsNameHolder;
+	private final ModifiablePropertyValueModel<TestModel> testModelModel;
+	private final ModifiablePropertyValueModel<String> nameModel;
+	private final ModifiablePropertyValueModel<String> allCapsNameModel;
 
 
 	public static void main(String[] args) throws Exception {
@@ -56,12 +56,12 @@ public class TextFieldModelBindingUITest
 	private TextFieldModelBindingUITest() {
 		super(null);
 		this.testModel = new TestModel(DEFAULT_NAME);
-		this.testModelHolder = new SimplePropertyValueModel<TestModel>(this.testModel);
-		this.nameHolder = this.buildNameHolder(this.testModelHolder);
-		this.allCapsNameHolder = this.buildAllCapsNameHolder(this.testModelHolder);
+		this.testModelModel = new SimplePropertyValueModel<TestModel>(this.testModel);
+		this.nameModel = this.buildNameModel(this.testModelModel);
+		this.allCapsNameModel = this.buildAllCapsNameModel(this.testModelModel);
 	}
 
-	private ModifiablePropertyValueModel<String> buildNameHolder(PropertyValueModel<TestModel> vm) {
+	private ModifiablePropertyValueModel<String> buildNameModel(PropertyValueModel<TestModel> vm) {
 		return new PropertyAspectAdapter<TestModel, String>(vm, TestModel.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -74,7 +74,7 @@ public class TextFieldModelBindingUITest
 		};
 	}
 
-	private ModifiablePropertyValueModel<String> buildAllCapsNameHolder(PropertyValueModel<TestModel> vm) {
+	private ModifiablePropertyValueModel<String> buildAllCapsNameModel(PropertyValueModel<TestModel> vm) {
 		return new PropertyAspectAdapter<TestModel, String>(vm, TestModel.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -118,19 +118,19 @@ public class TextFieldModelBindingUITest
 
 	private void buildNameTextField(Composite parent) {
 		Text textField = new Text(parent, SWT.SINGLE);
-		SWTBindingTools.bind(this.nameHolder, textField);
+		SWTBindingTools.bind(this.nameModel, textField);
 	}
 
 	private void buildReadOnlyNameTextField(Composite parent) {
 		Text textField = new Text(parent, SWT.SINGLE);
 		textField.setEnabled(false);
-		SWTBindingTools.bind(this.nameHolder, textField);
+		SWTBindingTools.bind(this.nameModel, textField);
 	}
 
 	private void buildAllCapsNameTextField(Composite parent) {
 		Text textField = new Text(parent, SWT.SINGLE);
 		textField.setEnabled(false);
-		SWTBindingTools.bind(this.allCapsNameHolder, textField);
+		SWTBindingTools.bind(this.allCapsNameModel, textField);
 	}
 
 	private void buildControlPanel(Composite parent, Control checkBoxPanel) {
@@ -184,7 +184,7 @@ public class TextFieldModelBindingUITest
 	}
 
 	void clearModel() {
-		this.testModelHolder.setValue(null);
+		this.testModelModel.setValue(null);
 	}
 
 	private void buildRestoreModelButton(Composite parent) {
@@ -203,7 +203,7 @@ public class TextFieldModelBindingUITest
 	}
 
 	void restoreModel() {
-		this.testModelHolder.setValue(this.testModel);
+		this.testModelModel.setValue(this.testModel);
 	}
 
 	private void buildPrintModelButton(Composite parent) {

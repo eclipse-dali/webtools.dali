@@ -47,7 +47,7 @@ public final class ControlEnablerTest {
 
 		Combo combo = new Combo(parent, SWT.BORDER);
 
-		SWTBindingTools.controlEnabledState(booleanHolder, combo);
+		SWTBindingTools.bindEnabledState(booleanHolder, combo);
 
 		assertTrue(
 			"The Combo should be enabled",

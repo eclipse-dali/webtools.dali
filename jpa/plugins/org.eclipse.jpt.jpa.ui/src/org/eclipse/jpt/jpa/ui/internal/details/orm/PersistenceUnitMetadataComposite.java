@@ -309,7 +309,7 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 		gridData.horizontalSpan = 2;
 		diCheckBox.setLayoutData(gridData);
 		
-		SWTBindingTools.controlVisibleState(this.buildResourceTypeIsKindOfOrmXml2_0Model(), diCheckBox);
+		SWTBindingTools.bindVisibleState(this.buildResourceTypeIsKindOfOrmXml2_0Model(), diCheckBox);
 	}
 
 	protected PropertyValueModel<Boolean> buildResourceTypeIsKindOfOrmXml2_0Model() {

@@ -10,37 +10,40 @@
 package org.eclipse.jpt.common.ui.internal.swt.bindings;
 
 import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
+import org.eclipse.jpt.common.ui.internal.swt.events.DisposeAdapter;
+import org.eclipse.jpt.common.ui.internal.swt.events.SelectionAdapter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 
 /**
  * This binding can be used to keep a check-box, toggle button, or radio button
- * "selection" synchronized with a model boolean.
+ * <em>selection</em> synchronized with a model <code>boolean</code>.
+ * <p>
+ * <strong>NB:</strong> This binding is bi-directional.
  * 
  * @see ModifiablePropertyValueModel
  * @see Button
  */
-@SuppressWarnings("nls")
 final class BooleanButtonModelBinding {
 
 	// ***** model
-	/** A value model on the underlying model boolean. */
+	/** A value model on the underlying model <code>boolean</code>. */
 	private final ModifiablePropertyValueModel<Boolean> booleanModel;
 
 	/**
 	 * A listener that allows us to synchronize the button's selection state with
-	 * the model boolean.
+	 * the model <code>boolean</code>.
 	 */
-	private final PropertyChangeListener booleanChangeListener;
+	private final PropertyChangeListener booleanListener;
 
 	/**
 	 * The default setting for the check-box/toggle button/radio button;
@@ -51,11 +54,14 @@ final class BooleanButtonModelBinding {
 	private final boolean defaultValue;
 
 	// ***** UI
-	/** The check-box/toggle button/radio button we synchronize with the model boolean. */
+	/**
+	 * The check-box/toggle button/radio button we synchronize with
+	 * the model <code>boolean</code>.
+	 */
 	private final Button button;
 
 	/**
-	 * A listener that allows us to synchronize the model boolean with
+	 * A listener that allows us to synchronize the model <code>boolean</code> with
 	 * the button's selection state.
 	 */
 	private final SelectionListener buttonSelectionListener;
@@ -70,7 +76,7 @@ final class BooleanButtonModelBinding {
 	// ********** constructor **********
 
 	/**
-	 * Constructor - the boolean model and button are required.
+	 * Constructor - the boolean <code>boolean</code> and button are required.
 	 */
 	BooleanButtonModelBinding(ModifiablePropertyValueModel<Boolean> booleanModel, Button button, boolean defaultValue) {
 		super();
@@ -81,8 +87,8 @@ final class BooleanButtonModelBinding {
 		this.button = button;
 		this.defaultValue = defaultValue;
 
-		this.booleanChangeListener = this.buildBooleanChangeListener();
-		this.booleanModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.booleanChangeListener);
+		this.booleanListener = this.buildBooleanListener();
+		this.booleanModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.booleanListener);
 
 		this.buttonSelectionListener = this.buildButtonSelectionListener();
 		this.button.addSelectionListener(this.buttonSelectionListener);
@@ -96,45 +102,43 @@ final class BooleanButtonModelBinding {
 
 	// ********** initialization **********
 
-	private PropertyChangeListener buildBooleanChangeListener() {
-		return SWTListenerWrapperTools.wrap(this.buildBooleanChangeListener_(), this.button);
+	private PropertyChangeListener buildBooleanListener() {
+		return SWTListenerWrapperTools.wrap(new BooleanListener(), this.button);
 	}
 
-	private PropertyChangeListener buildBooleanChangeListener_() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent event) {
-				BooleanButtonModelBinding.this.booleanChanged(event);
-			}
-		    @Override
-			public String toString() {
-				return "boolean listener";
-			}
-		};
+	/* CU private */ class BooleanListener
+		extends PropertyChangeAdapter
+	{
+		@Override
+		public void propertyChanged(PropertyChangeEvent event) {
+			BooleanButtonModelBinding.this.booleanChanged(event);
+		}
 	}
 
 	private SelectionListener buildButtonSelectionListener() {
-		return new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent event) {
-				BooleanButtonModelBinding.this.buttonSelected();
-			}
-		    @Override
-			public String toString() {
-				return "button selection listener";
-			}
-		};
+		return new ButtonSelectionListener();
+	}
+
+	/* CU private */ class ButtonSelectionListener
+		extends SelectionAdapter
+	{
+		@Override
+		public void widgetSelected(SelectionEvent event) {
+			BooleanButtonModelBinding.this.buttonSelected();
+		}
 	}
 
 	private DisposeListener buildButtonDisposeListener() {
-		return new DisposeListener() {
-			public void widgetDisposed(DisposeEvent event) {
-				BooleanButtonModelBinding.this.buttonDisposed();
-			}
-		    @Override
-			public String toString() {
-				return "button dispose listener";
-			}
-		};
+		return new ButtonDisposeListener();
+	}
+
+	/* CU private */ class ButtonDisposeListener
+		extends DisposeAdapter
+	{
+		@Override
+		public void widgetDisposed(DisposeEvent event) {
+			BooleanButtonModelBinding.this.buttonDisposed();
+		}
 	}
 
 
@@ -142,17 +146,17 @@ final class BooleanButtonModelBinding {
 
 	/**
 	 * The model has changed - synchronize the button.
-	 * If the new model value is null, use the binding's default value
-	 * (which is typically false).
+	 * If the new model value is <code>null</code>, use the binding's <em>default value</em>
+	 * (which is typically <code>false</code>).
 	 */
 	/* CU private */ void booleanChanged(PropertyChangeEvent event) {
-		this.setButtonSelection((Boolean) event.getNewValue());
+		if ( ! this.button.isDisposed()) {
+			this.setButtonSelection((Boolean) event.getNewValue());
+		}
 	}
 
 	private void setButtonSelection(Boolean b) {
-		if ( ! this.button.isDisposed()) {
-			this.button.setSelection(this.booleanValue(b));
-		}
+		this.button.setSelection(this.booleanValue(b));
 	}
 
 	private boolean booleanValue(Boolean b) {
@@ -166,9 +170,7 @@ final class BooleanButtonModelBinding {
 	 * The button has been "selected" - synchronize the model.
 	 */
 	/* CU private */ void buttonSelected() {
-		if ( ! this.button.isDisposed()) {
-			this.booleanModel.setValue(Boolean.valueOf(this.button.getSelection()));
-		}
+		this.booleanModel.setValue(Boolean.valueOf(this.button.getSelection()));
 	}
 
 	/* CU private */ void buttonDisposed() {
@@ -176,7 +178,7 @@ final class BooleanButtonModelBinding {
 		// so we can still remove our listeners
 		this.button.removeSelectionListener(this.buttonSelectionListener);
 		this.button.removeDisposeListener(this.buttonDisposeListener);
-		this.booleanModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.booleanChangeListener);
+		this.booleanModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.booleanListener);
 	}
 
 

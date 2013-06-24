@@ -22,5 +22,5 @@ Require-Bundle:
 Export-Package: org.eclipse.jpt.common.ui.tests;x-internal:=true,
  org.eclipse.jpt.common.ui.tests.internal.jface;x-internal:=true,
  org.eclipse.jpt.common.ui.tests.internal.swt;x-internal:=true,
- org.eclipse.jpt.common.ui.tests.internal.util;x-internal:=true,
- org.eclipse.jpt.common.ui.tests.internal.utility.swt;x-internal:=true
+ org.eclipse.jpt.common.ui.tests.internal.swt.bindings;x-internal:=true,
+ org.eclipse.jpt.common.ui.tests.internal.util;x-internal:=true

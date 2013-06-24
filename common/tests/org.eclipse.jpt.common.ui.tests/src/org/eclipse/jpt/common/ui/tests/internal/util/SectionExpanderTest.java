@@ -49,7 +49,7 @@ public final class SectionExpanderTest {
 
 		Section section = new Section(this.parent, ExpandableComposite.TWISTIE);
 
-		SWTBindingTools.controlExpandedState(booleanModel, section);
+		SWTBindingTools.bindExpandedState(booleanModel, section);
 
 		assertFalse(
 			"The Section should not be expanded",

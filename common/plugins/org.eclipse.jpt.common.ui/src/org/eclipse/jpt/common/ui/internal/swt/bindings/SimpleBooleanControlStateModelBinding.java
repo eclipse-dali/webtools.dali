@@ -13,9 +13,9 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Control;
 
 /**
- * This controller enables a boolean model to control either the
+ * This controller enables a <code>boolean</code> model to control either the
  * <em>enabled</em> or <em>visible</em> properties of an SWT control; i.e. the
- * control's property is kept in synch with the boolean model,
+ * control's property is kept in sync with the <code>boolean</code> model,
  * but <em>not</em> vice-versa.
  * <p>
  * Once the control is disposed, this controller is kaput.
@@ -24,22 +24,21 @@ import org.eclipse.swt.widgets.Control;
  * @see Control#setEnabled(boolean)
  * @see Control#setVisible(boolean)
  */
-final class SimpleBooleanStateController
-	extends BooleanStateController
+final class SimpleBooleanControlStateModelBinding<C extends Control>
+	extends BooleanControlStateModelBinding<C>
 {
-	private final Control control;
+	private final C control;
 
-
-	// ********** constructor **********
 
 	/**
-	 * Constructor - the boolean model, the control, and the adapter are required.
+	 * Constructor - the <code>boolean</code> model, the control,
+	 * and the adapter are required.
 	 */
-	SimpleBooleanStateController(
+	SimpleBooleanControlStateModelBinding(
 			PropertyValueModel<Boolean> booleanModel,
-			Control control,
+			C control,
 			boolean defaultValue,
-			Adapter adapter
+			Adapter<C> adapter
 	) {
 		super(booleanModel, defaultValue, adapter);
 		if (control == null) {
@@ -48,20 +47,23 @@ final class SimpleBooleanStateController
 		this.control = control;
 		this.engageBooleanModel();
 		this.engageControl(control);
-		this.setControlState(control, this.getBooleanValue());
+		this.setControlState();
 	}
 
 
-	// ********** controls **********
-
 	@Override
-	void setControlState(boolean controlState) {
-		this.setControlState(this.control, controlState);
+	void setControlState() {
+		this.setControlState(this.control);
 	}
 
 	@Override
-	void controlDisposed(Control c) {
+	void controlDisposed(C c) {
 		super.controlDisposed(c);
 		this.disengageBooleanModel();
+	}
+
+	@Override
+	boolean controlIsDisposed() {
+		return this.control.isDisposed();
 	}
 }

@@ -519,7 +519,7 @@ public class JpaProjectPropertiesPage
 				JptJpaUiMessages.JPA_FACET_WIZARD_PAGE_JPA_IMPLEMENTATION_LABEL);
 
  		libraryProviderComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		SWTBindingTools.controlEnabledState(this.jpaProjectIsNotNullFlagModel, libraryProviderComposite);
+		SWTBindingTools.bindEnabledState(this.jpaProjectIsNotNullFlagModel, libraryProviderComposite);
 
 		this.buildConnectionGroup(parent);
 		this.buildPersistentClassManagementGroup(parent);
@@ -560,7 +560,7 @@ public class JpaProjectPropertiesPage
 
 		Link facetsPageLink = this.buildFacetsPageLink(group, JptJpaUiMessages.JPA_FACET_WIZARD_PAGE_FACETS_PAGE_LINK);
 
-		SWTBindingTools.controlEnabledState(this.jpaProjectIsNotNullFlagModel, group, jpaPlatformDropDown, facetsPageLink);
+		SWTBindingTools.bindEnabledState(this.jpaProjectIsNotNullFlagModel, group, jpaPlatformDropDown, facetsPageLink);
 	}
 
 	/**
@@ -686,7 +686,7 @@ public class JpaProjectPropertiesPage
 		addConnectionLink.addSelectionListener(new AddConnectionLinkListener());  // the link will be GCed
 
 		this.connectLink = this.buildLink(group, this.buildConnectLinkText());
-		SWTBindingTools.controlEnabledState(this.disconnectedModel, this.connectLink);
+		SWTBindingTools.bindEnabledState(this.disconnectedModel, this.connectLink);
 		this.connectLink.addSelectionListener(new ConnectLinkListener());  // the link will be GCed
 
 		// override default catalog
@@ -697,7 +697,7 @@ public class JpaProjectPropertiesPage
 		Combo defaultCatalogDropDown = this.buildDropDown(group);
 		SWTBindingTools.bind(this.catalogChoicesModel, this.defaultCatalogModel, defaultCatalogDropDown);
 
-		SWTBindingTools.controlEnabledState(this.userOverrideDefaultCatalogFlagModel, defaultCatalogLabel, defaultCatalogDropDown);
+		SWTBindingTools.bindEnabledState(this.userOverrideDefaultCatalogFlagModel, defaultCatalogLabel, defaultCatalogDropDown);
 
 		// override default schema
 		Button overrideDefaultSchemaButton = this.buildCheckBox(group, 3, JptJpaUiMessages.JPA_FACET_WIZARD_PAGE_OVERRIDE_DEFAULT_SCHEMA_LABEL);
@@ -707,9 +707,9 @@ public class JpaProjectPropertiesPage
 		Combo defaultSchemaDropDown = this.buildDropDown(group);
 		SWTBindingTools.bind(this.schemaChoicesModel, this.defaultSchemaModel, defaultSchemaDropDown);
 
-		SWTBindingTools.controlEnabledState(this.userOverrideDefaultSchemaFlagModel, defaultSchemaLabel, defaultSchemaDropDown);
+		SWTBindingTools.bindEnabledState(this.userOverrideDefaultSchemaFlagModel, defaultSchemaLabel, defaultSchemaDropDown);
 
-		SWTBindingTools.controlEnabledState(this.jpaProjectIsNotNullFlagModel, group, connectionDropDown, addConnectionLink, overrideDefaultCatalogCheckBox, overrideDefaultSchemaButton);
+		SWTBindingTools.bindEnabledState(this.jpaProjectIsNotNullFlagModel, group, connectionDropDown, addConnectionLink, overrideDefaultCatalogCheckBox, overrideDefaultSchemaButton);
 	}
 
 	private static final Transformer<String, String> SIMPLE_STRING_TRANSFORMER = TransformerTools.passThruTransformer(JptJpaUiMessages.JPA_FACET_WIZARD_PAGE_NONE);
@@ -801,7 +801,7 @@ public class JpaProjectPropertiesPage
 		Button listClassesRadioButton = this.buildRadioButton(group, 1, JptJpaUiMessages.JPA_FACET_WIZARD_PAGE_LIST_CLASSES_BUTTON);
 		SWTBindingTools.bind(this.listAnnotatedClassesModel, listClassesRadioButton);
 
-		SWTBindingTools.controlEnabledState(this.jpaProjectIsNotNullFlagModel, group, discoverClassesRadioButton, listClassesRadioButton);
+		SWTBindingTools.bindEnabledState(this.jpaProjectIsNotNullFlagModel, group, discoverClassesRadioButton, listClassesRadioButton);
 	}
 
 
@@ -825,7 +825,7 @@ public class JpaProjectPropertiesPage
 
 		WorkbenchTools.setHelp(group, JpaHelpContextIds.PROPERTIES_JAVA_PERSISTENCE_METAMODEL);
 
-		SWTBindingTools.controlVisibleState(this.jpa2_0ProjectFlagModel, group, metamodelSourceFolderLink, metamodelSourceFolderDropDown);
+		SWTBindingTools.bindVisibleState(this.jpa2_0ProjectFlagModel, group, metamodelSourceFolderLink, metamodelSourceFolderDropDown);
 	}
 
 	/* CU private */ class MetamodelSourceFolderLinkListener

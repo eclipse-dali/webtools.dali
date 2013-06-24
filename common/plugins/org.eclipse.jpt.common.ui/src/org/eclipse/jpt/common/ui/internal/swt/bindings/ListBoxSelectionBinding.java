@@ -12,15 +12,17 @@ package org.eclipse.jpt.common.ui.internal.swt.bindings;
 import java.util.ArrayList;
 import java.util.Arrays;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
+import org.eclipse.jpt.common.ui.internal.swt.events.SelectionAdapter;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionRemoveEvent;
+import org.eclipse.jpt.common.utility.model.listener.CollectionChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
-import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -28,139 +30,181 @@ import org.eclipse.swt.widgets.List;
 
 /**
  * This binding can be used to keep a list box's selection
- * synchronized with a model. The selection can be modified by either the list
- * box or the model, so changes must be coordinated.
+ * synchronized with a model.
+ * <p>
+ * <strong>NB:</strong> This binding is bi-directional. As a result, we modify
+ * our {@link #selectedItems cached list} <em>only</em> via
+ * the {@link #selectedItemsModel model collection} change events;
+ * and we {@link #listBoxSelectionChanged() simply pass through} the list box
+ * selection events (by calling
+ * {@link ModifiableCollectionValueModel#setValues(Iterable)},
+ * which will loop back to us as a collection change event).
+ * <p>
+ * <strong>NB2:</strong> Changes to the underlying list model can imply changes
+ * to the selection collection model. But these changes occur
+ * <em>asynchronously</em> (as do their resulting events).
+ * If the models are designed correctly, the selection model will be modified,
+ * if necessary, whenever the underlying list model changes
+ * (typically when elements are removed from the underlying list model).
+ * But <em>all</em> changes to the underlying list model can cause changes to
+ * the <em>indices</em> of the selected items; so all changes to the underlying
+ * list model result in calls to {@link #synchronizeListWidgetSelection()}.
+ * Unfortunately, since the <em>selection</em> change event might not have
+ * arrived yet, the selection item list can contain elements that are not in
+ * the underlying list. So we must gracefully handle missing elements, even
+ * though this may hide coding errors (i.e. something that should <em>not</em>
+ * happen and should trigger an exception). Likewise, we can receive
+ * <em>selection</em> change events before the underlying list model is updated,
+ * resulting, again, in temporarily invalid state (which will be rectified once
+ * the underlying list model is updated and the binding calls
+ * {@link #synchronizeListWidgetSelection()}).
  * 
- * @see ListValueModel
  * @see ModifiableCollectionValueModel
  * @see List
  * @see SWTBindingTools
  */
-@SuppressWarnings("nls")
 final class ListBoxSelectionBinding<E>
 	implements ListWidgetModelBinding.SelectionBinding
 {
 	// ***** model
 	/**
-	 * The underlying list model.
+	 * The underlying list (maintained by {@link ListWidgetModelBinding}).
 	 */
-	private final ListValueModel<E> listModel;
+	private final ArrayList<E> list;
 
 	/**
-	 * A writable value model on the underlying model selections.
+	 * A modifiable value model on the underlying model selections.
 	 */
 	private final ModifiableCollectionValueModel<E> selectedItemsModel;
+
+	/**
+	 * Cache of model selections.
+	 */
+	private final ArrayList<E> selectedItems = new ArrayList<E>();
 
 	/**
 	 * A listener that allows us to synchronize the list box's selection with
 	 * the model selections.
 	 */
-	private final CollectionChangeListener selectedItemsChangeListener;
+	private final CollectionChangeListener selectedItemsListener;
 
 	// ***** UI
 	/**
-	 * The list box whose selection we keep synchronized with the model selections.
+	 * The list box whose selection we keep synchronized
+	 * with the model selections.
 	 */
 	private final List listBox;
 
 	/**
-	 * A listener that allows us to synchronize our selected items holder
+	 * A listener that allows us to synchronize our selected items model
 	 * with the list box's selection.
 	 */
 	private final SelectionListener listBoxSelectionListener;
 
 
-	// ********** constructor **********
-
 	/**
 	 * Constructor - all parameters are required.
 	 */
 	ListBoxSelectionBinding(
-			ListValueModel<E> listModel,
+			ArrayList<E> list,
 			ModifiableCollectionValueModel<E> selectedItemsModel,
 			List listBox
 	) {
 		super();
-		if ((listModel == null) || (selectedItemsModel == null) || (listBox == null)) {
+		if ((list == null) || (selectedItemsModel == null) || (listBox == null)) {
 			throw new NullPointerException();
 		}
-		this.listModel = listModel;
+		this.list = list;
 		this.selectedItemsModel = selectedItemsModel;
 		this.listBox = listBox;
 
-		this.selectedItemsChangeListener = this.buildSelectedItemsChangeListener();
-		this.selectedItemsModel.addCollectionChangeListener(CollectionValueModel.VALUES, this.selectedItemsChangeListener);
+		this.selectedItemsListener = this.buildSelectedItemsListener();
+		this.selectedItemsModel.addCollectionChangeListener(CollectionValueModel.VALUES, this.selectedItemsListener);
 
 		this.listBoxSelectionListener = this.buildListBoxSelectionListener();
 		this.listBox.addSelectionListener(this.listBoxSelectionListener);
+
+		this.selectedItems.ensureCapacity(this.selectedItemsModel.size());
+		CollectionTools.addAll(this.selectedItems, this.selectedItemsModel);
 	}
 
 
 	// ********** initialization **********
 
-	private CollectionChangeListener buildSelectedItemsChangeListener() {
-		return SWTListenerWrapperTools.wrap(this.buildSelectedItemsChangeListener_(), this.listBox);
+	private CollectionChangeListener buildSelectedItemsListener() {
+		return SWTListenerWrapperTools.wrap(new SelectedItemsListener(), this.listBox);
 	}
 
-	private CollectionChangeListener buildSelectedItemsChangeListener_() {
-		return new CollectionChangeListener() {
-			public void itemsAdded(CollectionAddEvent event) {
-				ListBoxSelectionBinding.this.selectedItemsAdded(event);
-			}
-			public void itemsRemoved(CollectionRemoveEvent event) {
-				ListBoxSelectionBinding.this.selectedItemsRemoved(event);
-			}
-			public void collectionCleared(CollectionClearEvent event) {
-				ListBoxSelectionBinding.this.selectedItemsCleared(event);
-			}
-			public void collectionChanged(CollectionChangeEvent event) {
-				ListBoxSelectionBinding.this.selectedItemsChanged(event);
-			}
-			@Override
-			public String toString() {
-				return "selected items listener";
-			}
-		};
+	/* CU private */ class SelectedItemsListener
+		extends CollectionChangeAdapter
+	{
+		@Override
+		public void itemsAdded(CollectionAddEvent event) {
+			ListBoxSelectionBinding.this.selectedItemsAdded(event);
+		}
+		@Override
+		public void itemsRemoved(CollectionRemoveEvent event) {
+			ListBoxSelectionBinding.this.selectedItemsRemoved(event);
+		}
+		@Override
+		public void collectionCleared(CollectionClearEvent event) {
+			ListBoxSelectionBinding.this.selectedItemsCleared();
+		}
+		@Override
+		public void collectionChanged(CollectionChangeEvent event) {
+			ListBoxSelectionBinding.this.selectedItemsChanged(event);
+		}
 	}
 
 	private SelectionListener buildListBoxSelectionListener() {
-		return new SelectionListener() {
-			public void widgetSelected(SelectionEvent event) {
-				ListBoxSelectionBinding.this.listBoxSelectionChanged(event);
-			}
-			public void widgetDefaultSelected(SelectionEvent event) {
-				ListBoxSelectionBinding.this.listBoxDoubleClicked(event);
-			}
-			@Override
-			public String toString() {
-				return "list box selection listener";
-			}
-		};
+		return new ListBoxSelectionListener();
+	}
+
+	/* CU private */ class ListBoxSelectionListener
+		extends SelectionAdapter
+	{
+		@Override
+		public void widgetSelected(SelectionEvent event) {
+			ListBoxSelectionBinding.this.listBoxSelectionChanged();
+		}
+		@Override
+		public void widgetDefaultSelected(SelectionEvent event) {
+			ListBoxSelectionBinding.this.listBoxDoubleClicked();
+		}
 	}
 
 
 	// ********** ListWidgetModelBinding.SelectionBinding implementation **********
 
 	/**
+	 * <strong>NB:</strong> The elements in the selection model may be out of
+	 * sync with the underlying list model. (See the class comment.)
+	 * <p>
 	 * Modifying the list box's selected items programmatically does not
-	 * trigger a SelectionEvent.
-	 * 
+	 * trigger a {@link SelectionEvent}.
+	 * <p>
 	 * Pre-condition: The list-box is not disposed.
 	 */
 	public void synchronizeListWidgetSelection() {
-		int selectedItemsSize = this.selectedItemsModel.size();
-		int[] select = new int[selectedItemsSize];
-		int i = 0;
-		for (E item : this.selectedItemsModel) {
-			select[i++] = this.indexOf(item);
+		int selectedItemsSize = this.selectedItems.size();
+		int[] select = ArrayTools.EMPTY_INT_ARRAY;
+		if (selectedItemsSize > 0) {
+			select = new int[selectedItemsSize];
+			int i = 0;
+			for (E item : this.selectedItems) {
+				select[i++] = this.indexOf(item);
+			}
 		}
 
-		int listSize = this.listModel.size();
-		int[] deselect = new int[listSize - selectedItemsSize];
-		i = 0;
-		for (int j = 0; j < listSize; j++) {
-			if ( ! ArrayTools.contains(select, j)) {
-				deselect[i++] = j;
+		int listSize = this.list.size();
+		int[] deselect = ArrayTools.EMPTY_INT_ARRAY;
+		if (listSize > 0) {
+			deselect = ArrayTools.fill(new int[listSize], -1);
+			int i = 0;
+			for (int j = 0; j < listSize; j++) {
+				if ( ! ArrayTools.contains(select, j)) {
+					deselect[i++] = j;
+				}
 			}
 		}
 
@@ -174,13 +218,14 @@ final class ListBoxSelectionBinding<E>
 
 	public void dispose() {
 		this.listBox.removeSelectionListener(this.listBoxSelectionListener);
-		this.selectedItemsModel.removeCollectionChangeListener(CollectionValueModel.VALUES, this.selectedItemsChangeListener);
+		this.selectedItemsModel.removeCollectionChangeListener(CollectionValueModel.VALUES, this.selectedItemsListener);
+		this.selectedItems.clear();
 	}
 
 
 	// ********** selected items **********
 
-	void selectedItemsAdded(CollectionAddEvent event) {
+	/* CU private */ void selectedItemsAdded(CollectionAddEvent event) {
 		if ( ! this.listBox.isDisposed()) {
 			this.selectedItemsAdded_(event);
 		}
@@ -188,24 +233,23 @@ final class ListBoxSelectionBinding<E>
 
 	/**
 	 * Modifying the list box's selected items programmatically does not
-	 * trigger a SelectionEvent.
+	 * trigger a {@link SelectionEvent}.
 	 */
 	private void selectedItemsAdded_(CollectionAddEvent event) {
+		@SuppressWarnings("unchecked")
+		Iterable<E> items = (Iterable<E>) event.getItems();
+		this.selectedItems.ensureCapacity(this.selectedItems.size() + event.getItemsSize());
+		CollectionTools.addAll(this.selectedItems, items);
+
 		int[] indices = new int[event.getItemsSize()];
 		int i = 0;
-		for (E item : this.getItems(event)) {
+		for (E item : items) {
 			indices[i++] = this.indexOf(item);
 		}
 		this.listBox.select(indices);
 	}
 
-	// minimized scope of suppressed warnings
-	@SuppressWarnings("unchecked")
-	private Iterable<E> getItems(CollectionAddEvent event) {
-		return (Iterable<E>) event.getItems();
-	}
-
-	void selectedItemsRemoved(CollectionRemoveEvent event) {
+	/* CU private */ void selectedItemsRemoved(CollectionRemoveEvent event) {
 		if ( ! this.listBox.isDisposed()) {
 			this.selectedItemsRemoved_(event);
 		}
@@ -213,83 +257,83 @@ final class ListBoxSelectionBinding<E>
 
 	/**
 	 * Modifying the list box's selected items programmatically does not
-	 * trigger a SelectionEvent.
+	 * trigger a {@link SelectionEvent}.
 	 */
 	private void selectedItemsRemoved_(CollectionRemoveEvent event) {
+		@SuppressWarnings("unchecked")
+		Iterable<E> items = (Iterable<E>) event.getItems();
+		CollectionTools.removeAll(this.selectedItems, items);
+
 		int[] indices = new int[event.getItemsSize()];
 		int i = 0;
-		for (E item : this.getItems(event)) {
+		for (E item : items) {
 			indices[i++] = this.indexOf(item);
 		}
 		this.listBox.deselect(indices);
 	}
 
-	// minimized scope of suppressed warnings
-	@SuppressWarnings("unchecked")
-	private Iterable<E> getItems(CollectionRemoveEvent event) {
-		return (Iterable<E>) event.getItems();
-	}
-
-	void selectedItemsCleared(CollectionClearEvent event) {
+	/* CU private */ void selectedItemsCleared() {
 		if ( ! this.listBox.isDisposed()) {
-			this.selectedItemsCleared_(event);
+			this.selectedItemsCleared_();
 		}
 	}
 
 	/**
 	 * Modifying the list box's selected items programmatically does not
-	 * trigger a SelectionEvent.
+	 * trigger a {@link SelectionEvent}.
 	 */
-	private void selectedItemsCleared_(@SuppressWarnings("unused") CollectionClearEvent event) {
+	private void selectedItemsCleared_() {
+		this.selectedItems.clear();
 		this.listBox.deselectAll();
 	}
 
-	void selectedItemsChanged(CollectionChangeEvent event) {
+	/* CU private */ void selectedItemsChanged(CollectionChangeEvent event) {
 		if ( ! this.listBox.isDisposed()) {
 			this.selectedItemsChanged_(event);
 		}
 	}
 
-	private void selectedItemsChanged_(@SuppressWarnings("unused") CollectionChangeEvent event) {
+	private void selectedItemsChanged_(CollectionChangeEvent event) {
+		this.selectedItems.clear();
+		this.selectedItems.ensureCapacity(event.getCollectionSize());
+		@SuppressWarnings("unchecked")
+		Iterable<E> eventCollection = (Iterable<E>) event.getCollection();
+		CollectionTools.addAll(this.selectedItems, eventCollection);
 		this.synchronizeListWidgetSelection();
 	}
 
+	/**
+	 * <strong>NB:</strong> an index of <code>-1</code> is ignored by
+	 * {@link List} (lucky for us).
+	 */
 	private int indexOf(E item) {
-		int len = this.listModel.size();
-		for (int i = 0; i < len; i++) {
-			if (ObjectTools.equals(this.listModel.get(i), item)) {
+		int i = 0;
+		for (E each : this.list) {
+			if (ObjectTools.equals(each, item)) {
 				return i;
 			}
+			i++;
 		}
-		// see comment in DropDownListBoxSelectionBinding.indexOf(E)
 		return -1;
 	}
 
 
 	// ********** list box events **********
 
-	void listBoxSelectionChanged(SelectionEvent event) {
-		if ( ! this.listBox.isDisposed()) {
-			this.listBoxSelectionChanged_(event);
-		}
-	}
-
-	void listBoxDoubleClicked(SelectionEvent event) {
-		if ( ! this.listBox.isDisposed()) {
-			this.listBoxSelectionChanged_(event);
-		}
-	}
-
-	private void listBoxSelectionChanged_(@SuppressWarnings("unused") SelectionEvent event) {
+	/* CU private */ void listBoxSelectionChanged() {
 		this.selectedItemsModel.setValues(this.getListBoxSelectedItems());
 	}
 
+	/* CU private */ void listBoxDoubleClicked() {
+		this.listBoxSelectionChanged();
+	}
+
 	private Iterable<E> getListBoxSelectedItems() {
-		ArrayList<E> selectedItems = new ArrayList<E>(this.listBox.getSelectionCount());
+		ArrayList<E> lbSelectedItems = new ArrayList<E>(this.listBox.getSelectionCount());
 		for (int selectionIndex : this.listBox.getSelectionIndices()) {
-			selectedItems.add(this.listModel.get(selectionIndex));
+			lbSelectedItems.add(this.list.get(selectionIndex));
 		}
-		return selectedItems;
+		return lbSelectedItems;
 	}
 
 
@@ -297,6 +341,6 @@ final class ListBoxSelectionBinding<E>
 
 	@Override
 	public String toString() {
-		return ObjectTools.toString(this, this.selectedItemsModel);
+		return ObjectTools.toString(this, this.selectedItems);
 	}
 }

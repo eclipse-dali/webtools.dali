@@ -212,11 +212,11 @@ public final class ListTools {
 	 * Return a new list with the filtered
 	 * elements of the specified list.
 	 */
-	public static <E> ArrayList<E> filter(Collection<? extends E> list, Predicate<E> filter) {
+	public static <E> ArrayList<E> filter(Collection<? extends E> list, Predicate<? super E> predicate) {
 		ArrayList<E> result = new ArrayList<E>(list.size());
-		for (E e : list) {
-			if (filter.evaluate(e)) {
-				result.add(e);
+		for (E each : list) {
+			if (predicate.evaluate(each)) {
+				result.add(each);
 			}
 		}
 		return result;
@@ -347,7 +347,7 @@ public final class ListTools {
 	 * Move the specified element from its current position to the specified
 	 * index. Return the altered list.
 	 */
-	public static <E> List<E> move(List<E> list, int index, E element) {
+	public static <E, L extends List<E>> L move(L list, int index, E element) {
 		return move(list, index, list.indexOf(element));
 	}
 
@@ -355,14 +355,14 @@ public final class ListTools {
 	 * Move an element from the specified source index to the specified target
 	 * index. Return the altered list.
 	 */
-	public static <E> List<E> move(List<E> list, int targetIndex, int sourceIndex) {
+	public static <E, L extends List<E>> L move(L list, int targetIndex, int sourceIndex) {
 		return (targetIndex == sourceIndex) ? list : move_(list, targetIndex, sourceIndex);
 	}
 
 	/**
 	 * assume targetIndex != sourceIndex
 	 */
-	private static <E> List<E> move_(List<E> list, int targetIndex, int sourceIndex) {
+	private static <E, L extends List<E>> L move_(L list, int targetIndex, int sourceIndex) {
 		if (list instanceof RandomAccess) {
 			// move elements, leaving the list in place
 			E temp = list.get(sourceIndex);
@@ -387,7 +387,7 @@ public final class ListTools {
 	 * Move elements from the specified source index to the specified target
 	 * index. Return the altered list.
 	 */
-	public static <E> List<E> move(List<E> list, int targetIndex, int sourceIndex, int length) {
+	public static <E, L extends List<E>> L move(L list, int targetIndex, int sourceIndex, int length) {
 		if ((targetIndex == sourceIndex) || (length == 0)) {
 			return list;
 		}
@@ -423,8 +423,8 @@ public final class ListTools {
 	 * Remove the elements at the specified index.
 	 * Return the removed elements.
 	 */
-	public static <E> ArrayList<E> removeElementsAtIndex(List<E> list, int index, int length) {
-		List<E> subList = list.subList(index, index + length);
+	public static <E> ArrayList<E> removeElementsAtIndex(List<? extends E> list, int index, int length) {
+		List<? extends E> subList = list.subList(index, index + length);
 		ArrayList<E> removed = new ArrayList<E>(subList);
 		subList.clear();
 		return removed;
@@ -479,10 +479,10 @@ public final class ListTools {
 	 * Return a new list with transformations of the
 	 * elements in the specified list.
 	 */
-	public static <E1, E2> ArrayList<E2> transform(List<E1> list, Transformer<E1, ? extends E2> transformer) {
-		ArrayList<E2> result = new ArrayList<E2>(list.size());
-		for (E1 e : list) {
-			result.add(transformer.transform(e));
+	public static <I, O> ArrayList<O> transform(List<I> list, Transformer<? super I, ? extends O> transformer) {
+		ArrayList<O> result = new ArrayList<O>(list.size());
+		for (I each : list) {
+			result.add(transformer.transform(each));
 		}
 		return result;
 	}

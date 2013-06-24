@@ -222,7 +222,7 @@ public class JpaMakePersistentWizardPage
 		final Button persistenceXmlCheckBox = new Button(composite, SWT.CHECK);
 		persistenceXmlCheckBox.setText(JptJpaUiMessages.JPA_MAKE_PERSISTENT_WIZARD_PAGE_LIST_IN_PERSISTENCE_XML_CHECK_BOX);
 		SWTBindingTools.bind(this.listInPersistenceXmlModel, persistenceXmlCheckBox);
-		SWTBindingTools.controlVisibleState(this.annotateInJavaModel, persistenceXmlCheckBox);
+		SWTBindingTools.bindVisibleState(this.annotateInJavaModel, persistenceXmlCheckBox);
 		
 		setControl(composite);
 	}
@@ -315,7 +315,7 @@ public class JpaMakePersistentWizardPage
 			}
 		});
 
-		SWTBindingTools.controlEnabledState(new ListInOrmMappingFileModel(this.annotateInJavaModel), mappingFileLink, mappingFileText, browseButton);
+		SWTBindingTools.bindEnabledState(new ListInOrmMappingFileModel(this.annotateInJavaModel), mappingFileLink, mappingFileText, browseButton);
 		
 		return composite;
 	}

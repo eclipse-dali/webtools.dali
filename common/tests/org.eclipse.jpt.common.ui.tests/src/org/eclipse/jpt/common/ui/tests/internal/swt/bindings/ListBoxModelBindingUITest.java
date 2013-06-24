@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.ui.tests.internal.utility.swt;
+package org.eclipse.jpt.common.ui.tests.internal.swt.bindings;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -23,6 +23,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
+import org.eclipse.jpt.common.utility.internal.ComparatorAdapter;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
@@ -54,7 +55,7 @@ public class ListBoxModelBindingUITest
 	extends ApplicationWindow
 {
 	final TaskList taskList;
-	private final ModifiablePropertyValueModel<TaskList> taskListHolder;
+	private final ModifiablePropertyValueModel<TaskList> taskListModel;
 	private Text taskTextField;
 
 	public static void main(String[] args) throws Exception {
@@ -68,7 +69,7 @@ public class ListBoxModelBindingUITest
 	private ListBoxModelBindingUITest(@SuppressWarnings("unused") String[] args) {
 		super(null);
 		this.taskList = new TaskList();
-		this.taskListHolder = new SimplePropertyValueModel<TaskList>(this.taskList);
+		this.taskListModel = new SimplePropertyValueModel<TaskList>(this.taskList);
 		this.taskList.addTask("swim");
 		this.taskList.addTask("bike");
 		this.taskList.addTask("run");
@@ -227,7 +228,7 @@ public class ListBoxModelBindingUITest
 	}
 
 	private ListValueModel<String> buildPrimitiveTaskListAdapter() {
-		return new ListAspectAdapter<TaskList, String>(this.taskListHolder, TaskList.TASK_NAMES_LIST) {
+		return new ListAspectAdapter<TaskList, String>(this.taskListModel, TaskList.TASK_NAMES_LIST) {
 			@Override
 			protected ListIterator<String> listIterator_() {
 				return this.subject.taskNames();
@@ -236,7 +237,7 @@ public class ListBoxModelBindingUITest
 	}
 
 	private ListValueModel<Task> buildObjectTaskListAdapter() {
-		return new ListAspectAdapter<TaskList, Task>(this.taskListHolder, TaskList.TASKS_LIST) {
+		return new ListAspectAdapter<TaskList, Task>(this.taskListModel, TaskList.TASKS_LIST) {
 			@Override
 			protected ListIterator<Task> listIterator_() {
 				return this.subject.tasks();
@@ -245,15 +246,15 @@ public class ListBoxModelBindingUITest
 	}
 
 	private ModifiableCollectionValueModel<Task> buildPriorityTaskListAdapter() {
-		return new PriorityTaskListAdapter(this.taskListHolder);
+		return new PriorityTaskListAdapter(this.taskListModel);
 	}
 
 	static class PriorityTaskListAdapter
 		extends CollectionAspectAdapter<TaskList, Task>
 		implements ModifiableCollectionValueModel<Task>
 	{
-		PriorityTaskListAdapter(ModifiablePropertyValueModel<TaskList> taskListHolder) {
-			super(taskListHolder, TaskList.PRIORITY_TASKS_COLLECTION);
+		PriorityTaskListAdapter(ModifiablePropertyValueModel<TaskList> taskListModel) {
+			super(taskListModel, TaskList.PRIORITY_TASKS_COLLECTION);
 		}
 		@Override
 		protected Iterator<Task> iterator_() {
@@ -464,11 +465,11 @@ public class ListBoxModelBindingUITest
 	}
 
 	void clearModel() {
-		this.taskListHolder.setValue(null);
+		this.taskListModel.setValue(null);
 	}
 
 	void restoreModel() {
-		this.taskListHolder.setValue(this.taskList);
+		this.taskListModel.setValue(this.taskList);
 	}
 
 	void addPriorityTask() {
@@ -553,7 +554,10 @@ public class ListBoxModelBindingUITest
 
 	// ********** Task **********
 
-	public static class Task extends AbstractModel implements Displayable {
+	public static class Task
+		extends AbstractModel
+		implements Displayable
+	{
 		private String name;
 		private int instanceCount;
 		private static int INSTANCE_COUNT = 1;
@@ -581,8 +585,9 @@ public class ListBoxModelBindingUITest
 		}
 	}
 
-	public interface Displayable extends Model, Comparable<Displayable> {
-	
+	public interface Displayable
+		extends Model, Comparable<Displayable>
+	{
 		String displayString();
 			String DISPLAY_STRING_PROPERTY = "displayString";
 	
@@ -591,36 +596,34 @@ public class ListBoxModelBindingUITest
 	
 		Collator DEFAULT_COLLATOR = Collator.getInstance();
 	
-		Comparator<Displayable> DEFAULT_COMPARATOR =
-			new Comparator<Displayable>() {
-				public int compare(Displayable d1, Displayable d2) {
-					// disallow duplicates based on object identity
-					if (d1 == d2) {
-						return 0;
-					}
-	
-					// first compare display strings using the default collator
-					int result = DEFAULT_COLLATOR.compare(d1.displayString(), d2.displayString());
-					if (result != 0) {
-						return result;
-					}
-	
-					// then compare using object-id
-					result = System.identityHashCode(d1) - System.identityHashCode(d2);
-					if (result != 0) {
-						return result;
-					}
-	
-					// It's unlikely that we get to this point; but, just in case, we will return -1.
-					// Unfortunately, this introduces some mild unpredictability to the sort order
-					// (unless the objects are always passed into this method in the same order).
-					return -1;		// if all else fails, indicate that o1 < o2
+		Comparator<Displayable> DEFAULT_COMPARATOR = new DefaultComparator();
+		class DefaultComparator
+			extends ComparatorAdapter<Displayable>
+		{
+			@Override
+			public int compare(Displayable d1, Displayable d2) {
+				// disallow duplicates based on object identity
+				if (d1 == d2) {
+					return 0;
 				}
-				@Override
-				public String toString() {
-					return "Displayable.DEFAULT_COMPARATOR";
+
+				// first compare display strings using the default collator
+				int result = DEFAULT_COLLATOR.compare(d1.displayString(), d2.displayString());
+				if (result != 0) {
+					return result;
 				}
-			};
-	
+
+				// then compare using object-id
+				result = System.identityHashCode(d1) - System.identityHashCode(d2);
+				if (result != 0) {
+					return result;
+				}
+
+				// It's unlikely that we get to this point; but, just in case, we will return -1.
+				// Unfortunately, this introduces some mild unpredictability to the sort order
+				// (unless the objects are always passed into this method in the same order).
+				return -1;		// if all else fails, indicate that o1 < o2
+			}
+		}
 	}
 }
