@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * 
  * @param <K> the type of the association's key
  * @param <V> the type of the association's value
- * @see org.eclipse.jpt.common.utility.internal.Pair
+ * @see org.eclipse.jpt.common.utility.Pair
  */
 public interface Association<K, V> {
 

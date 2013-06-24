@@ -7,8 +7,9 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.internal;
+package org.eclipse.jpt.common.utility;
 
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**

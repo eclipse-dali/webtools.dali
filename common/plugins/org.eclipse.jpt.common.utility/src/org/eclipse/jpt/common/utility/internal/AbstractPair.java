@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal;
 
+import org.eclipse.jpt.common.utility.Pair;
+
 /**
  * Implement some of the methods in {@link Pair} that can
  * be defined in terms of the other methods.

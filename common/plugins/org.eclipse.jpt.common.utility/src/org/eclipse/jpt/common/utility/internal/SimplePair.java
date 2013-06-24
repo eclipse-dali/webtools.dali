@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal;
 
+import org.eclipse.jpt.common.utility.Pair;
+
 /**
  * Straightforward implementation of the {@link Pair} interface.
  * 
