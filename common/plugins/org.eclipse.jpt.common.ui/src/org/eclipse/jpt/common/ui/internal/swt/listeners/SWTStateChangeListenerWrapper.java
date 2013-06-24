@@ -7,30 +7,30 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.ui.internal.listeners;
+package org.eclipse.jpt.common.ui.internal.swt.listeners;
 
 import org.eclipse.jpt.common.utility.ExceptionHandler;
-import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
+import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 import org.eclipse.swt.widgets.Display;
 
 /**
- * Wrap another property change listener and forward events to it on the SWT
+ * Wrap another state change listener and forward events to it on the SWT
  * UI thread, asynchronously if necessary.
  */
-public class SWTPropertyChangeListenerWrapper
-	extends AbstractSWTListenerWrapper<PropertyChangeEvent, PropertyChangeListener>
-	implements PropertyChangeListener
+class SWTStateChangeListenerWrapper
+	extends AbstractSWTListenerWrapper<StateChangeEvent, StateChangeListener>
+	implements StateChangeListener
 {
-	public SWTPropertyChangeListenerWrapper(PropertyChangeListener listener, Display display, ExceptionHandler exceptionHandler) {
+	SWTStateChangeListenerWrapper(StateChangeListener listener, Display display, ExceptionHandler exceptionHandler) {
 		super(listener, display, exceptionHandler);
 	}
 
-	public void propertyChanged(PropertyChangeEvent event) {
+	public void stateChanged(StateChangeEvent event) {
 		this.delegate.handle(event);
 	}
 
-	public void forward(PropertyChangeEvent event) {
-		this.listener.propertyChanged(event);
+	public void forward(StateChangeEvent event) {
+		this.listener.stateChanged(event);
 	}
 }

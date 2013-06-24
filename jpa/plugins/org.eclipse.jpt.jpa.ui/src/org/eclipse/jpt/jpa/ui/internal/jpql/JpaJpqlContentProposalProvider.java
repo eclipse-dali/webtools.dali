@@ -59,7 +59,7 @@ import org.eclipse.jface.text.source.AnnotationModel;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
-import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
+import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -371,7 +371,7 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 	}
 
 	private PropertyChangeListener buildTextListener() {
-		return SWTListenerWrapperTools.wrap(new PropertyChangeListener() {
+		return SWTListenerTools.wrap(new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent event) {
 				String text = (String) event.getNewValue();
 				if (text == null) {

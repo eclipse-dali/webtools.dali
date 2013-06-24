@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.swt;
 
-import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
+import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -146,7 +146,7 @@ public class DateTimeModelAdapter {
 	// ********** initialization **********
 
 	protected PropertyChangeListener buildHoursPropertyChangeListener() {
-		return SWTListenerWrapperTools.wrap(this.buildHoursPropertyChangeListener_(), this.dateTime);
+		return SWTListenerTools.wrap(this.buildHoursPropertyChangeListener_(), this.dateTime);
 	}
 
 	protected PropertyChangeListener buildHoursPropertyChangeListener_() {
@@ -162,7 +162,7 @@ public class DateTimeModelAdapter {
 	}
 	
 	protected PropertyChangeListener buildMinutesPropertyChangeListener() {
-		return SWTListenerWrapperTools.wrap(this.buildMinutesPropertyChangeListener_(), this.dateTime);
+		return SWTListenerTools.wrap(this.buildMinutesPropertyChangeListener_(), this.dateTime);
 	}
 
 	protected PropertyChangeListener buildMinutesPropertyChangeListener_() {
@@ -178,7 +178,7 @@ public class DateTimeModelAdapter {
 	}
 	
 	protected PropertyChangeListener buildSecondsPropertyChangeListener() {
-		return SWTListenerWrapperTools.wrap(this.buildSecondsPropertyChangeListener_(), this.dateTime);
+		return SWTListenerTools.wrap(this.buildSecondsPropertyChangeListener_(), this.dateTime);
 	}
 
 	protected PropertyChangeListener buildSecondsPropertyChangeListener_() {

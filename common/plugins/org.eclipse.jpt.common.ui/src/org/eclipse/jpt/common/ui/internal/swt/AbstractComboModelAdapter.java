@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.ui.internal.swt;
 import java.util.EventListener;
 import java.util.EventObject;
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
+import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -173,7 +173,7 @@ public abstract class AbstractComboModelAdapter<E> {
 	// ********** initialization **********
 
 	protected ListChangeListener buildListChangeListener() {
-		return SWTListenerWrapperTools.wrap(this.buildListChangeListener_());
+		return SWTListenerTools.wrap(this.buildListChangeListener_());
 	}
 
 	protected ListChangeListener buildListChangeListener_() {
@@ -204,7 +204,7 @@ public abstract class AbstractComboModelAdapter<E> {
 	}
 
 	protected PropertyChangeListener buildSelectedItemChangeListener() {
-		return SWTListenerWrapperTools.wrap(this.buildSelectedItemChangeListener_());
+		return SWTListenerTools.wrap(this.buildSelectedItemChangeListener_());
 	}
 
 	protected PropertyChangeListener buildSelectedItemChangeListener_() {

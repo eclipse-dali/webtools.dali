@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.ui.internal.swt;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
+import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
@@ -97,7 +97,7 @@ public class TriStateCheckBoxModelAdapter {
 	// ********** initialization **********
 
 	protected PropertyChangeListener buildBooleanChangeListener() {
-		return SWTListenerWrapperTools.wrap(this.buildBooleanChangeListener_(), this.button.getCheckBox());
+		return SWTListenerTools.wrap(this.buildBooleanChangeListener_(), this.button.getCheckBox());
 	}
 
 	protected PropertyChangeListener buildBooleanChangeListener_() {

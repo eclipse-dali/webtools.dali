@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.swt.bindings;
 
-import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
 import org.eclipse.jpt.common.ui.internal.swt.events.DisposeAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.events.ModifyAdapter;
+import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
@@ -94,7 +94,7 @@ class TextFieldModelBinding {
 	// ********** initialization **********
 
 	private PropertyChangeListener buildTextListener() {
-		return SWTListenerWrapperTools.wrap(new TextListener(), this.textField);
+		return SWTListenerTools.wrap(new TextListener(), this.textField);
 	}
 
 	/* CU private */ class TextListener

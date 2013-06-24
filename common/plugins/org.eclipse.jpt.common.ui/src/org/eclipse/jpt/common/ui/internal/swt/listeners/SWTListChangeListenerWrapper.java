@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.ui.internal.listeners;
+package org.eclipse.jpt.common.ui.internal.swt.listeners;
 
 import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
@@ -24,11 +24,11 @@ import org.eclipse.swt.widgets.Display;
  * Wrap another list change listener and forward events to it on the SWT
  * UI thread, asynchronously if necessary.
  */
-public class SWTListChangeListenerWrapper
+class SWTListChangeListenerWrapper
 	extends AbstractSWTListenerWrapper<ListEvent, ListChangeListener>
 	implements ListChangeListener
 {
-	public SWTListChangeListenerWrapper(ListChangeListener listener, Display display, ExceptionHandler exceptionHandler) {
+	SWTListChangeListenerWrapper(ListChangeListener listener, Display display, ExceptionHandler exceptionHandler) {
 		super(listener, display, exceptionHandler);
 	}
 

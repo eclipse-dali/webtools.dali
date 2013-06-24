@@ -10,8 +10,8 @@
 package org.eclipse.jpt.common.ui.internal.swt.bindings;
 
 import java.util.ArrayList;
-import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
 import org.eclipse.jpt.common.ui.internal.swt.events.DisposeAdapter;
+import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
@@ -121,7 +121,7 @@ final class ListWidgetModelBinding<E> {
 	// ********** initialization **********
 
 	private ListChangeListener buildListListener() {
-		return SWTListenerWrapperTools.wrap(new ListListener(), this.listWidget.getDisplay());
+		return SWTListenerTools.wrap(new ListListener(), this.listWidget.getDisplay());
 	}
 
 	/* CU private */ class ListListener

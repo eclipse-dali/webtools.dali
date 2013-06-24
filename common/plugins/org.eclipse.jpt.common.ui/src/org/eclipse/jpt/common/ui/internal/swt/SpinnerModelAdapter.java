@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.swt;
 
-import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
+import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -115,7 +115,7 @@ public class SpinnerModelAdapter {
 	// ********** initialization **********
 
 	protected PropertyChangeListener buildPropertyChangeListener() {
-		return SWTListenerWrapperTools.wrap(this.buildPropertyChangeListener_(), this.spinner);
+		return SWTListenerTools.wrap(this.buildPropertyChangeListener_(), this.spinner);
 	}
 
 	protected PropertyChangeListener buildPropertyChangeListener_() {

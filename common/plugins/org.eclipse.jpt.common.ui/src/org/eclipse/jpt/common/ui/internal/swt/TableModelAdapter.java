@@ -16,7 +16,7 @@ import java.util.EventListener;
 import java.util.EventObject;
 import java.util.List;
 import org.eclipse.jface.viewers.ITableLabelProvider;
-import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
+import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -229,7 +229,7 @@ public class TableModelAdapter<E> {
 	// ********** initialization **********
 
 	protected ListChangeListener buildListChangeListener() {
-		return SWTListenerWrapperTools.wrap(this.buildListChangeListener_(), this.table);
+		return SWTListenerTools.wrap(this.buildListChangeListener_(), this.table);
 	}
 
 	protected ListChangeListener buildListChangeListener_() {
@@ -260,7 +260,7 @@ public class TableModelAdapter<E> {
 	}
 
 	protected CollectionChangeListener buildSelectedItemsChangeListener() {
-		return SWTListenerWrapperTools.wrap(this.buildSelectedItemsChangeListener_(), this.table);
+		return SWTListenerTools.wrap(this.buildSelectedItemsChangeListener_(), this.table);
 	}
 
 	protected CollectionChangeListener buildSelectedItemsChangeListener_() {

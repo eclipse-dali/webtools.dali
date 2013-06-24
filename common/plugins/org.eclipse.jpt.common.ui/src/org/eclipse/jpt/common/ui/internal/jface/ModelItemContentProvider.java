@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.ui.internal.jface;
 
 import java.util.ConcurrentModificationException;
-import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
+import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
 import org.eclipse.jpt.common.ui.jface.ItemContentProvider;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -77,7 +77,7 @@ abstract class ModelItemContentProvider<M extends ItemContentProvider.Manager>
 	}
 
 	private CollectionChangeListener buildChildrenListener() {
-		return SWTListenerWrapperTools.wrap(this.buildChildrenListener_(), this.manager.getViewer());
+		return SWTListenerTools.wrap(this.buildChildrenListener_(), this.manager.getViewer());
 	}
 
 	private CollectionChangeListener buildChildrenListener_() {

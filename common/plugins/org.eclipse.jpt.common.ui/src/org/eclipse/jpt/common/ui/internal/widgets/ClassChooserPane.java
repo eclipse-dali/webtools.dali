@@ -30,8 +30,8 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.ui.JptCommonUiMessages;
-import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
 import org.eclipse.jpt.common.ui.internal.plugin.JptCommonUiPlugin;
+import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
 import org.eclipse.jpt.common.utility.internal.ClassNameTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.model.Model;
@@ -198,7 +198,7 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	}
 
 	private PropertyChangeListener buildSubjectChangeListener() {
-		return SWTListenerWrapperTools.wrap(this.buildSubjectChangeListener_());
+		return SWTListenerTools.wrap(this.buildSubjectChangeListener_());
 	}
 
 	private PropertyChangeListener buildSubjectChangeListener_() {

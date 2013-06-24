@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.ui.internal.jface;
 
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
+import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
@@ -64,7 +64,7 @@ public class ModelItemExtendedLabelProvider
 	}
 
 	private PropertyChangeListener buildDescriptionListener() {
-		return SWTListenerWrapperTools.wrap(this.buildDescriptionListener_(), this.manager.getViewer());
+		return SWTListenerTools.wrap(this.buildDescriptionListener_(), this.manager.getViewer());
 	}
 
 	private PropertyChangeListener buildDescriptionListener_() {

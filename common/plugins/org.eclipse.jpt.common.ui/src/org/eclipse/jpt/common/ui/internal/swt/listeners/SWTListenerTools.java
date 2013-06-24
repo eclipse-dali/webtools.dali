@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.ui.internal.listeners;
+package org.eclipse.jpt.common.ui.internal.swt.listeners;
 
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.common.ui.internal.plugin.JptCommonUiPlugin;
@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Widget;
 
-public final class SWTListenerWrapperTools {
+public final class SWTListenerTools {
 
 	// ********** property **********
 
@@ -275,7 +275,7 @@ public final class SWTListenerWrapperTools {
 	/**
 	 * Suppress default constructor, ensuring non-instantiability.
 	 */
-	private SWTListenerWrapperTools() {
+	private SWTListenerTools() {
 		super();
 		throw new UnsupportedOperationException();
 	}

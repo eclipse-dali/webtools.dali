@@ -10,8 +10,8 @@
 package org.eclipse.jpt.common.ui.internal.swt.bindings;
 
 import java.util.ArrayList;
-import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
 import org.eclipse.jpt.common.ui.internal.swt.events.SelectionAdapter;
+import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
@@ -108,7 +108,7 @@ final class DropDownListBoxSelectionBinding<E>
 	// ********** initialization **********
 
 	private PropertyChangeListener buildSelectedItemListener() {
-		return SWTListenerWrapperTools.wrap(new SelectedItemListener(), this.dropdownListBox.getDisplay());
+		return SWTListenerTools.wrap(new SelectedItemListener(), this.dropdownListBox.getDisplay());
 	}
 
 	/* CU private */ class SelectedItemListener

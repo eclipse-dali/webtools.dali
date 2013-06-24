@@ -20,8 +20,8 @@ import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.ui.JptCommonUiMessages;
-import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
 import org.eclipse.jpt.common.ui.internal.plugin.JptCommonUiPlugin;
+import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -98,7 +98,7 @@ public abstract class PackageChooserPane<T extends Model> extends ChooserPane<T>
 	}
 
 	private PropertyChangeListener buildSubjectChangeListener() {
-		return SWTListenerWrapperTools.wrap(this.buildSubjectChangeListener_());
+		return SWTListenerTools.wrap(this.buildSubjectChangeListener_());
 	}
 
 	private PropertyChangeListener buildSubjectChangeListener_() {

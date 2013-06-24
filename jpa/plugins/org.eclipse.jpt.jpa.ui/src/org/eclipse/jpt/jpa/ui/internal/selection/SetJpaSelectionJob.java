@@ -38,7 +38,7 @@ import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
  * executes in a job that locks the corresponding project. This <em>update</em> will
  * modify other parts of the model, resulting in events that will modify the UI.
  * These UI modifications must be dispatched to the UI thread (via something like
- * {@link org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper
+ * {@link org.eclipse.jpt.common.ui.internal.swt.listeners.SWTPropertyChangeListenerWrapper
  * SWTPropertyChangeListenerWrapper}).
  * <p>
  * As a result, the setting of the JPA selection (which, itself, also modifies

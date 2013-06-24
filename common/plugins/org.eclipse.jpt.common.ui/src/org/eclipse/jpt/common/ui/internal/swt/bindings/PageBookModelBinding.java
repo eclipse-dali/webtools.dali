@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.swt.bindings;
 
-import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
 import org.eclipse.jpt.common.ui.internal.swt.events.DisposeAdapter;
+import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
 import org.eclipse.jpt.common.ui.internal.swt.widgets.ControlTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
@@ -105,7 +105,7 @@ final class PageBookModelBinding<T> {
 	}
 
 	private PropertyChangeListener buildValueListener() {
-		return SWTListenerWrapperTools.wrap(new ValueListener(), this.pageBook);
+		return SWTListenerTools.wrap(new ValueListener(), this.pageBook);
 	}
 
 	/* CU private */ class ValueListener

@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details.db;
 
-import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
+import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
 import org.eclipse.jpt.common.ui.internal.widgets.ComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -101,7 +101,7 @@ public abstract class DatabaseObjectCombo<T extends JpaModel>
 	}
 	
 	protected PropertyChangeListener buildConnectionProfileListener() {
-		return SWTListenerWrapperTools.wrap(this.buildConnectionProfileListener_());
+		return SWTListenerTools.wrap(this.buildConnectionProfileListener_());
 	}
 	
 	protected PropertyChangeListener buildConnectionProfileListener_() {

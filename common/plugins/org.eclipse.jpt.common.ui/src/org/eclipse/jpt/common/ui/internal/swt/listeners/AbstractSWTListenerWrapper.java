@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.ui.internal.listeners;
+package org.eclipse.jpt.common.ui.internal.swt.listeners;
 
 import java.util.EventListener;
 import java.util.EventObject;
@@ -19,14 +19,14 @@ import org.eclipse.swt.widgets.Display;
  * UI thread, asynchronously if necessary.
  * @see SWTListenerWrapperDelegate
  */
-public abstract class AbstractSWTListenerWrapper<E extends EventObject, L extends EventListener>
+abstract class AbstractSWTListenerWrapper<E extends EventObject, L extends EventListener>
 	implements SWTListenerWrapperDelegate.Wrapper<E>
 {
 	/* private-*/ protected final L listener;
 	/* private-*/ protected final SWTListenerWrapperDelegate<E> delegate;
 
 
-	protected AbstractSWTListenerWrapper(L listener, Display display, ExceptionHandler exceptionHandler) {
+	AbstractSWTListenerWrapper(L listener, Display display, ExceptionHandler exceptionHandler) {
 		super();
 		if (listener == null) {
 			throw new NullPointerException();

@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.ui.internal.listeners;
+package org.eclipse.jpt.common.ui.internal.swt.listeners;
 
 import java.util.EventObject;
 import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Display;
  * Any events received earlier (on a non-UI thread) will be
  * forwarded, in the order received, before the current event is forwarded.
  */
-public class SWTListenerWrapperDelegate<E extends EventObject> {
+class SWTListenerWrapperDelegate<E extends EventObject> {
 	private final Wrapper<E> wrapper;
 	private final Display display;
 	private final Runnable forwardEventsRunnable = new ForwardEventsRunnable();
@@ -39,7 +39,7 @@ public class SWTListenerWrapperDelegate<E extends EventObject> {
 	private final SynchronizedQueue<E> events = new SynchronizedQueue<E>();
 
 
-	public SWTListenerWrapperDelegate(Wrapper<E> wrapper, Display display, ExceptionHandler exceptionHandler) {
+	SWTListenerWrapperDelegate(Wrapper<E> wrapper, Display display, ExceptionHandler exceptionHandler) {
 		super();
 		if (wrapper == null) {
 			throw new NullPointerException();

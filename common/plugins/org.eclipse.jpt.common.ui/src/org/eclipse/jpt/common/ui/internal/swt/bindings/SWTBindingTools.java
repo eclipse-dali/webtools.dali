@@ -13,8 +13,8 @@ import java.util.Arrays;
 import org.eclipse.jpt.common.utility.internal.BitTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.value.ModifiablePropertyCollectionValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.NullCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.NullPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -341,7 +341,7 @@ public final class SWTBindingTools {
 	 * to be displayed in the list box.
 	 */
 	public static <E> void bind(ListValueModel<E> listModel, List listBox, Transformer<E, String> transformer) {
-		bind(listModel, new SWTListListWidgetAdapter<E>(listBox), transformer);
+		bind(listModel, new NullCollectionValueModel<E>(), new SWTListListWidgetAdapter<E>(listBox), transformer);
 	}
 
 	/**
@@ -430,16 +430,6 @@ public final class SWTBindingTools {
 
 
 	// ********** list "widget" **********
-
-	/**
-	 * Bind the specified model list to the specified list widget.
-	 * The list widget's selection is ignored.
-	 * Use the specified string converter to convert the model items to strings
-	 * to be displayed in the list box.
-	 */
-	private static <E> void bind(ListValueModel<E> listModel, ListWidgetModelBinding.ListWidget<E> listWidget, Transformer<E, String> transformer) {
-		bind(listModel, new SimpleCollectionValueModel<E>(), listWidget, transformer);
-	}
 
 	/**
 	 * Bind the specified model list and selectedions to the specified list widget.

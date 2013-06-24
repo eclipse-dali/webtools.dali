@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.swt.bindings;
 
-import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
 import org.eclipse.jpt.common.ui.internal.swt.events.DisposeAdapter;
+import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
@@ -89,7 +89,7 @@ class LabelModelBinding {
 	}
 
 	private PropertyChangeListener buildImageListener() {
-		return SWTListenerWrapperTools.wrap(new ImageListener(), this.labelAdapter.getWidget());
+		return SWTListenerTools.wrap(new ImageListener(), this.labelAdapter.getWidget());
 	}
 
 	/* CU private */ class ImageListener
@@ -102,7 +102,7 @@ class LabelModelBinding {
 	}
 
 	private PropertyChangeListener buildTextListener() {
-		return SWTListenerWrapperTools.wrap(new TextListener(), this.labelAdapter.getWidget());
+		return SWTListenerTools.wrap(new TextListener(), this.labelAdapter.getWidget());
 	}
 
 	/* CU private */ class TextListener

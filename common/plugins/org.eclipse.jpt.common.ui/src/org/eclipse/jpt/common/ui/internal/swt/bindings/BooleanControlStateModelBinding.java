@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.swt.bindings;
 
-import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
 import org.eclipse.jpt.common.ui.internal.swt.events.DisposeAdapter;
+import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
@@ -94,7 +94,7 @@ abstract class BooleanControlStateModelBinding<C extends Control> {
 	// ********** initialization **********
 
 	private PropertyChangeListener buildBooleanListener() {
-		return SWTListenerWrapperTools.wrap(new BooleanListener());
+		return SWTListenerTools.wrap(new BooleanListener());
 	}
 
 	/* CU private */ class BooleanListener

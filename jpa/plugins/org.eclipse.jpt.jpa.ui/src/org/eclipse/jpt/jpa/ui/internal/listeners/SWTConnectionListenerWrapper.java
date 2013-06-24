@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * <strong>NB:</strong> <em>All</em> the events are handled asynchronously
  * so they arrive in the same order in which they are fired. This is different
  * from our typical model listeners, which may handle an event synchronously
- * (see {@link org.eclipse.jpt.common.ui.internal.listeners.AbstractSWTListenerWrapper});
+ * (see {@link org.eclipse.jpt.common.ui.internal.swt.listeners.AbstractSWTListenerWrapper});
  * but that is OK, as no connection changes are initiated by the UI, they
  * are all triggered by a user "refresh".
  */

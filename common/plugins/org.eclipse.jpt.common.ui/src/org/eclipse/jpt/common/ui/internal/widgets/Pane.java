@@ -19,7 +19,6 @@ import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
-import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
 import org.eclipse.jpt.common.ui.internal.plugin.JptCommonUiPlugin;
 import org.eclipse.jpt.common.ui.internal.swt.ComboModelAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.DateTimeModelAdapter;
@@ -27,6 +26,7 @@ import org.eclipse.jpt.common.ui.internal.swt.SpinnerModelAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.TriStateCheckBoxModelAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.ui.internal.swt.events.DisposeAdapter;
+import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeBooleanPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.NullCheckPropertyValueModelWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.PredicatePropertyValueModel;
@@ -375,7 +375,7 @@ public abstract class Pane<T extends Model> {
 	}
 
 	private PropertyChangeListener buildSubjectChangeListener() {
-		return SWTListenerWrapperTools.wrap(this.buildSubjectChangeListener_());
+		return SWTListenerTools.wrap(this.buildSubjectChangeListener_());
 	}
 
 	private PropertyChangeListener buildSubjectChangeListener_() {
@@ -431,7 +431,7 @@ public abstract class Pane<T extends Model> {
 	}
 
 	private PropertyChangeListener buildAspectChangeListener() {
-		return SWTListenerWrapperTools.wrap(buildAspectChangeListener_());
+		return SWTListenerTools.wrap(buildAspectChangeListener_());
 	}
 
 	private PropertyChangeListener buildAspectChangeListener_() {

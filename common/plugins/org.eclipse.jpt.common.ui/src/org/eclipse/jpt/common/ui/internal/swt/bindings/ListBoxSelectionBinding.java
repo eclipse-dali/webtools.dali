@@ -11,8 +11,8 @@ package org.eclipse.jpt.common.ui.internal.swt.bindings;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import org.eclipse.jpt.common.ui.internal.listeners.SWTListenerWrapperTools;
 import org.eclipse.jpt.common.ui.internal.swt.events.SelectionAdapter;
+import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
@@ -132,7 +132,7 @@ final class ListBoxSelectionBinding<E>
 	// ********** initialization **********
 
 	private CollectionChangeListener buildSelectedItemsListener() {
-		return SWTListenerWrapperTools.wrap(new SelectedItemsListener(), this.listBox);
+		return SWTListenerTools.wrap(new SelectedItemsListener(), this.listBox);
 	}
 
 	/* CU private */ class SelectedItemsListener

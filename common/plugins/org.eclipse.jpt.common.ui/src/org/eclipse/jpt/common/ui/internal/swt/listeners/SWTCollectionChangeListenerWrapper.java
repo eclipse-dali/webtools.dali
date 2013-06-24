@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.ui.internal.listeners;
+package org.eclipse.jpt.common.ui.internal.swt.listeners;
 
 import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
@@ -22,11 +22,11 @@ import org.eclipse.swt.widgets.Display;
  * Wrap another collection change listener and forward events to it on the SWT
  * UI thread, asynchronously if necessary.
  */
-public class SWTCollectionChangeListenerWrapper
+class SWTCollectionChangeListenerWrapper
 	extends AbstractSWTListenerWrapper<CollectionEvent, CollectionChangeListener>
 	implements CollectionChangeListener
 {
-	public SWTCollectionChangeListenerWrapper(CollectionChangeListener listener, Display display, ExceptionHandler exceptionHandler) {
+	SWTCollectionChangeListenerWrapper(CollectionChangeListener listener, Display display, ExceptionHandler exceptionHandler) {
 		super(listener, display, exceptionHandler);
 	}
 
