@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Widget;
  * @see PropertyValueModel
  * @see WidgetLabelAdapter
  */
-class LabelModelBinding {
+final class LabelModelBinding {
 
 	// ***** model
 	/** A value model on the underlying model image. */

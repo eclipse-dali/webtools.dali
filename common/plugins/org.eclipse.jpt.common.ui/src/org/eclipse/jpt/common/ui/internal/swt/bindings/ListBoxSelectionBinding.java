@@ -48,7 +48,7 @@ import org.eclipse.swt.widgets.List;
  * (typically when elements are removed from the underlying list model).
  * But <em>all</em> changes to the underlying list model can cause changes to
  * the <em>indices</em> of the selected items; so all changes to the underlying
- * list model result in calls to {@link #synchronizeListWidgetSelection()}.
+ * list model result in calls to {@link #listChanged()}.
  * Unfortunately, since the <em>selection</em> change event might not have
  * arrived yet, the selection item list can contain elements that are not in
  * the underlying list. So we must gracefully handle missing elements, even
@@ -57,7 +57,7 @@ import org.eclipse.swt.widgets.List;
  * <em>selection</em> change events before the underlying list model is updated,
  * resulting, again, in temporarily invalid state (which will be rectified once
  * the underlying list model is updated and the binding calls
- * {@link #synchronizeListWidgetSelection()}).
+ * {@link #listChanged()}).
  * 
  * @see ModifiableCollectionValueModel
  * @see List
@@ -185,7 +185,11 @@ final class ListBoxSelectionBinding<E>
 	 * <p>
 	 * Pre-condition: The list-box is not disposed.
 	 */
-	public void synchronizeListWidgetSelection() {
+	public void listChanged() {
+		this.setListSelection();
+	}
+
+	private void setListSelection() {
 		int selectedItemsSize = this.selectedItems.size();
 		int[] select = ArrayTools.EMPTY_INT_ARRAY;
 		if (selectedItemsSize > 0) {
@@ -299,7 +303,7 @@ final class ListBoxSelectionBinding<E>
 		@SuppressWarnings("unchecked")
 		Iterable<E> eventCollection = (Iterable<E>) event.getCollection();
 		CollectionTools.addAll(this.selectedItems, eventCollection);
-		this.synchronizeListWidgetSelection();
+		this.setListSelection();
 	}
 
 	/**

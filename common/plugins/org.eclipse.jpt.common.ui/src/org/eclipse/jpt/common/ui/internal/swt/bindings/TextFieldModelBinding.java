@@ -13,6 +13,7 @@ import org.eclipse.jpt.common.ui.internal.swt.events.DisposeAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.events.ModifyAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -33,8 +34,7 @@ import org.eclipse.swt.widgets.Text;
  * @see ModifiablePropertyValueModel
  * @see Text
  */
-@SuppressWarnings("nls")
-class TextFieldModelBinding {
+final class TextFieldModelBinding {
 
 	/**
 	 * The text model we keep synchronized with the text field.
@@ -143,7 +143,7 @@ class TextFieldModelBinding {
 
 	private void setTextFieldText(String text) {
 		// the text model can be null, but the text field cannot
-		this.setTextFieldText_((text == null) ? "" : text);
+		this.setTextFieldText_((text == null) ? StringTools.EMPTY_STRING : text);
 	}
 
 	private void setTextFieldText_(String text) {

@@ -195,7 +195,7 @@ public class JaxbProjectPropertiesPage
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
 		Combo platformDropDown = this.buildDropDown(group);
-		SWTBindingTools.bind(
+		SWTBindingTools.bindDropDownListBox(
 				buildPlatformChoicesModel(),
 				this.platformModel,
 				platformDropDown,

@@ -12,7 +12,6 @@ package org.eclipse.jpt.common.ui.internal.swt.bindings;
 import java.util.ArrayList;
 import org.eclipse.jpt.common.ui.internal.swt.bindings.ListWidgetModelBinding.SelectionBinding;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Combo;
 
 /**
@@ -21,48 +20,21 @@ import org.eclipse.swt.widgets.Combo;
  * {@link DropDownListBoxSelectionBinding.DropDownListBox drop-down list box}
  * expected by {@link DropDownListBoxSelectionBinding}.
  */
-final class SWTComboListWidgetAdapter<E>
-	extends AbstractListWidgetAdapter<E, Combo>
+final class DropDownListBoxListWidgetAdapter<E>
+	extends AbstractComboListWidgetAdapter<E>
 	implements DropDownListBoxSelectionBinding.DropDownListBox
 {
-	SWTComboListWidgetAdapter(Combo combo) {
+	DropDownListBoxListWidgetAdapter(Combo combo) {
 		super(combo);
 	}
 
-	// ********** ListWidgetModelBinding.ListWidget implementation **********
+	// ********** ListWidgetModelBinding.ListWidget **********
 	@SuppressWarnings("unchecked")
 	public SelectionBinding buildSelectionBinding(ArrayList<E> list, Object selectionModel) {
-		return new DropDownListBoxSelectionBinding<E>(list, (ModifiablePropertyValueModel<E>) selectionModel, new SWTComboListWidgetAdapter<E>(this.widget));
-	}
-	public String[] getItems() {
-		return this.widget.getItems();
-	}
-	public void setItem(int index, String item) {
-		this.widget.setItem(index, item);
-	}
-	public void setItems(String[] items) {
-		this.widget.setItems(items);
-	}
-	public void add(String item, int index) {
-		this.widget.add(item, index);
-	}
-	public void remove(int start, int end) {
-		this.widget.remove(start, end);
-	}
-	public void removeAll() {
-		this.widget.removeAll();
+		return new DropDownListBoxSelectionBinding<E>(list, (ModifiablePropertyValueModel<E>) selectionModel, this);
 	}
 
-	// ********** DropDownListBoxSelectionBinding.DropDownListBox implementation **********
-	public void addSelectionListener(SelectionListener listener) {
-		this.widget.addSelectionListener(listener);
-	}
-	public void removeSelectionListener(SelectionListener listener) {
-		this.widget.removeSelectionListener(listener);
-	}
-	public int getSelectionIndex() {
-		return this.widget.getSelectionIndex();
-	}
+	// ********** DropDownListBoxSelectionBinding.DropDownListBox **********
 	public void select(int index) {
 		this.widget.select(index);
 	}

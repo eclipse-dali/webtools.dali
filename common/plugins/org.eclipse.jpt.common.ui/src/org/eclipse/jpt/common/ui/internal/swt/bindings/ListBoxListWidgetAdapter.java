@@ -19,10 +19,10 @@ import org.eclipse.swt.widgets.List;
  * Adapt an SWT {@link List} to the {@link ListWidgetModelBinding.ListWidget
  * list widget} expected by {@link ListWidgetModelBinding}.
  */
-final class SWTListListWidgetAdapter<E>
+final class ListBoxListWidgetAdapter<E>
 	extends AbstractListWidgetAdapter<E, List>
 {
-	SWTListListWidgetAdapter(List list) {
+	ListBoxListWidgetAdapter(List list) {
 		super(list);
 	}
 	@SuppressWarnings("unchecked")

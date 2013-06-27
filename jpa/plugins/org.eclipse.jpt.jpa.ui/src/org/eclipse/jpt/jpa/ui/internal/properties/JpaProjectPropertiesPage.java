@@ -552,7 +552,7 @@ public class JpaProjectPropertiesPage
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		Combo jpaPlatformDropDown = this.buildDropDown(group);
-		SWTBindingTools.bind(
+		SWTBindingTools.bindDropDownListBox(
 				this.buildJpaPlatformConfigChoicesModel(),
 				this.jpaPlatformConfigModel,
 				jpaPlatformDropDown,
@@ -675,7 +675,7 @@ public class JpaProjectPropertiesPage
 		WorkbenchTools.setHelp(group, JpaHelpContextIds.PROPERTIES_JAVA_PERSISTENCE_CONNECTION);
 
 		Combo connectionDropDown = this.buildDropDown(group, 3);
-		SWTBindingTools.bind(
+		SWTBindingTools.bindDropDownListBox(
 				CONNECTION_CHOICES_MODEL,
 				this.connectionModel,
 				connectionDropDown,
@@ -695,7 +695,7 @@ public class JpaProjectPropertiesPage
 
 		Label defaultCatalogLabel = this.buildLabel(group, JptJpaUiMessages.JPA_FACET_WIZARD_PAGE_DEFAULT_CATALOG_LABEL);
 		Combo defaultCatalogDropDown = this.buildDropDown(group);
-		SWTBindingTools.bind(this.catalogChoicesModel, this.defaultCatalogModel, defaultCatalogDropDown);
+		SWTBindingTools.bindDropDownListBox(this.catalogChoicesModel, this.defaultCatalogModel, defaultCatalogDropDown);
 
 		SWTBindingTools.bindEnabledState(this.userOverrideDefaultCatalogFlagModel, defaultCatalogLabel, defaultCatalogDropDown);
 
@@ -705,7 +705,7 @@ public class JpaProjectPropertiesPage
 
 		Label defaultSchemaLabel = this.buildLabel(group, JptJpaUiMessages.JPA_FACET_WIZARD_PAGE_DEFAULT_SCHEMA_LABEL);
 		Combo defaultSchemaDropDown = this.buildDropDown(group);
-		SWTBindingTools.bind(this.schemaChoicesModel, this.defaultSchemaModel, defaultSchemaDropDown);
+		SWTBindingTools.bindDropDownListBox(this.schemaChoicesModel, this.defaultSchemaModel, defaultSchemaDropDown);
 
 		SWTBindingTools.bindEnabledState(this.userOverrideDefaultSchemaFlagModel, defaultSchemaLabel, defaultSchemaDropDown);
 
@@ -816,7 +816,7 @@ public class JpaProjectPropertiesPage
 		Link metamodelSourceFolderLink = this.buildLink(group, JptJpaUiMessages.JPA_FACET_WIZARD_PAGE_METAMODEL_SOURCE_FOLDER_LINK);
 		metamodelSourceFolderLink.addSelectionListener(new MetamodelSourceFolderLinkListener());  // the link will be GCed
 		Combo metamodelSourceFolderDropDown = this.buildDropDown(group);
-		SWTBindingTools.bind(
+		SWTBindingTools.bindDropDownListBox(
 				this.javaSourceFolderChoicesModel,
 				this.metamodelSourceFolderModel,
 				metamodelSourceFolderDropDown,

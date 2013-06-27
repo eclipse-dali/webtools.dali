@@ -228,7 +228,9 @@ public class TextFieldModelBindingUITest
 
 	// ********** model class **********
 
-	class TestModel extends AbstractModel {
+	class TestModel
+		extends AbstractModel
+	{
 		private String name;
 			public static final String NAME_PROPERTY = "name";
 
@@ -248,5 +250,4 @@ public class TextFieldModelBindingUITest
 			return "TestModel(" + this.name + ")";
 		}
 	}
-
 }

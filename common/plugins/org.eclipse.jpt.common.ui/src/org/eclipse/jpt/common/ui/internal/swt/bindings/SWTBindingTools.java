@@ -13,8 +13,8 @@ import java.util.Arrays;
 import org.eclipse.jpt.common.utility.internal.BitTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.value.ModifiablePropertyCollectionValueModelAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.NullCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.NullPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -341,7 +341,7 @@ public final class SWTBindingTools {
 	 * to be displayed in the list box.
 	 */
 	public static <E> void bind(ListValueModel<E> listModel, List listBox, Transformer<E, String> transformer) {
-		bind(listModel, new NullCollectionValueModel<E>(), new SWTListListWidgetAdapter<E>(listBox), transformer);
+		bind(listModel, new SimpleCollectionValueModel<E>(), listBox, transformer);
 	}
 
 	/**
@@ -383,7 +383,7 @@ public final class SWTBindingTools {
 		bind(
 			listModel,
 			selectedItemsModel,
-			new SWTListListWidgetAdapter<E>(listBox),
+			new ListBoxListWidgetAdapter<E>(listBox),
 			transformer
 		);
 	}
@@ -402,22 +402,24 @@ public final class SWTBindingTools {
 	 * Use the default string converter to convert the model items to strings
 	 * to be displayed in the drop-down list box, which calls {@link Object#toString()}
 	 * on the items in the model list.
+	 * @see #bindComboBox(ListValueModel, ModifiablePropertyValueModel, Combo)
 	 */
-	public static <E> void bind(ListValueModel<E> listModel, ModifiablePropertyValueModel<E> selectedItemModel, Combo dropDownListBox) {
-		bind(listModel, selectedItemModel, dropDownListBox, TransformerTools.<E>objectToStringTransformer());
+	public static <E> void bindDropDownListBox(ListValueModel<E> listModel, ModifiablePropertyValueModel<E> selectedItemModel, Combo dropDownListBox) {
+		bindDropDownListBox(listModel, selectedItemModel, dropDownListBox, TransformerTools.<E>objectToStringTransformer());
 	}
 
 	/**
 	 * Adapt the specified model list and selection to the specified drop-down list box.
 	 * Use the specified string converter to convert the model items to strings
 	 * to be displayed in the drop-down list box.
+	 * @see #bindComboBox(ListValueModel, ModifiablePropertyValueModel, Combo)
 	 */
-	public static <E> void bind(ListValueModel<E> listModel, ModifiablePropertyValueModel<E> selectedItemModel, Combo dropDownListBox, Transformer<E, String> transformer) {
+	public static <E> void bindDropDownListBox(ListValueModel<E> listModel, ModifiablePropertyValueModel<E> selectedItemModel, Combo dropDownListBox, Transformer<E, String> transformer) {
 		checkForReadOnlyStyle(dropDownListBox);
 		bind(
 			listModel,
 			selectedItemModel,
-			new SWTComboListWidgetAdapter<E>(dropDownListBox),
+			new DropDownListBoxListWidgetAdapter<E>(dropDownListBox),
 			transformer
 		);
 	}
@@ -425,6 +427,31 @@ public final class SWTBindingTools {
 	private static void checkForReadOnlyStyle(Widget comboBox) {
 		if ( ! BitTools.flagIsSet(comboBox.getStyle(), SWT.READ_ONLY)) {
 			throw new IllegalStateException("combo-box must be read-only: " + comboBox);
+		}
+	}
+
+
+	// ********** combo-box **********
+
+	/**
+	 * Bind the specified model list of strings and selection to the specified
+	 * combo-box. None of the items in the model list can be <code>null</code>.
+	 * @see #bindDropDownListBox(ListValueModel, ModifiablePropertyValueModel, Combo)
+	 * @see #bindDropDownListBox(ListValueModel, ModifiablePropertyValueModel, Combo, Transformer)
+	 */
+	public static void bindComboBox(ListValueModel<String> listModel, ModifiablePropertyValueModel<String> valueModel, Combo comboBox) {
+		checkForReadWriteStyle(comboBox);
+		bind(
+			listModel,
+			valueModel,
+			new ComboBoxListWidgetAdapter(comboBox),
+			TransformerTools.<String>passThruTransformer()
+		);
+	}
+
+	private static void checkForReadWriteStyle(Widget comboBox) {
+		if (BitTools.flagIsSet(comboBox.getStyle(), SWT.READ_ONLY)) {
+			throw new IllegalStateException("combo-box must be read-write: " + comboBox);
 		}
 	}
 

@@ -121,7 +121,7 @@ public class BooleanStateControllerUITest
 
 		Label comboBoxLabel = this.buildComboBoxLabel(panel);
 		Combo comboBox = this.buildComboBox(panel);
-		SWTBindingTools.bind(this.listModel, this.listSelectionModel, comboBox);
+		SWTBindingTools.bindDropDownListBox(this.listModel, this.listSelectionModel, comboBox);
 		SWTBindingTools.bindEnabledState(this.enabledModel, comboBoxLabel, comboBox);
 		SWTBindingTools.bindVisibleState(this.visibleModel, comboBoxLabel, comboBox);
 	}

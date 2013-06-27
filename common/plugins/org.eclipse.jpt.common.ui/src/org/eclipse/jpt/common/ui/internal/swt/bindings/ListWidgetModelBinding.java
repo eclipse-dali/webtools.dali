@@ -180,8 +180,8 @@ final class ListWidgetModelBinding<E> {
 		}
 		this.listWidget.setItems(items);
 
-		// now that the list has changed, we need to synchronize the selection
-		this.selectionBinding.synchronizeListWidgetSelection();
+		// now that the list has changed, notify the selection binding
+		this.selectionBinding.listChanged();
 	}
 
 	/**
@@ -205,7 +205,7 @@ final class ListWidgetModelBinding<E> {
 		}
 
 		// now that the list has changed, we need to synchronize the selection
-		this.selectionBinding.synchronizeListWidgetSelection();
+		this.selectionBinding.listChanged();
 	}
 
 	/**
@@ -224,7 +224,7 @@ final class ListWidgetModelBinding<E> {
 		this.listWidget.remove(start, end - 1);  // widget range is *inclusive*
 
 		// now that the list has changed, we need to synchronize the selection
-		this.selectionBinding.synchronizeListWidgetSelection();
+		this.selectionBinding.listChanged();
 	}
 
 	/**
@@ -260,7 +260,7 @@ final class ListWidgetModelBinding<E> {
 		}
 
 		// now that the list has changed, we need to synchronize the selection
-		this.selectionBinding.synchronizeListWidgetSelection();
+		this.selectionBinding.listChanged();
 	}
 
 	/**
@@ -283,7 +283,7 @@ final class ListWidgetModelBinding<E> {
 		}
 
 		// now that the list has changed, we need to synchronize the selection
-		this.selectionBinding.synchronizeListWidgetSelection();
+		this.selectionBinding.listChanged();
 	}
 
 	/**
@@ -408,11 +408,9 @@ final class ListWidgetModelBinding<E> {
 	 */
 	interface SelectionBinding {
 		/**
-		 * Synchronize the selection binding's widget with the selection model.
-		 * <p>
-		 * Pre-condition: The widget is not disposed.
+		 * The list has changed; update the selection if necessary.
 		 */
-		void synchronizeListWidgetSelection();
+		void listChanged();
 
 		/**
 		 * The widget has been disposed; dispose the selection binding.

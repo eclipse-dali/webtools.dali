@@ -21,6 +21,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
+import org.eclipse.jpt.common.utility.internal.ComparatorAdapter;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
@@ -223,7 +224,7 @@ public class DropDownListBoxModelBindingUITest
 			fd.left = new FormAttachment(0);
 			fd.right = new FormAttachment(100);
 		comboBox.setLayoutData(fd);
-		SWTBindingTools.bind(model, selectedItemModel, comboBox);  // use #toString()
+		SWTBindingTools.bindDropDownListBox(model, selectedItemModel, comboBox);  // use #toString()
 	}
 
 	private Combo buildComboBox(Composite parent) {
@@ -525,7 +526,9 @@ public class DropDownListBoxModelBindingUITest
 	// ********** TaskList **********
 
 	// note absence of validation...
-	public static class TaskList extends AbstractModel {
+	public static class TaskList
+		extends AbstractModel
+	{
 		private final List<String> taskNames = new ArrayList<String>();
 			public static final String TASK_NAMES_LIST = "taskNames";
 		private final List<Task> tasks = new ArrayList<Task>();
@@ -591,7 +594,10 @@ public class DropDownListBoxModelBindingUITest
 
 	// ********** Task **********
 
-	public static class Task extends AbstractModel implements Displayable {
+	public static class Task
+		extends AbstractModel
+		implements Displayable
+	{
 		private String name;
 		private int instanceCount;
 		private static int INSTANCE_COUNT = 1;
@@ -619,8 +625,9 @@ public class DropDownListBoxModelBindingUITest
 		}
 	}
 
-	public interface Displayable extends Model, Comparable<Displayable> {
-	
+	public interface Displayable
+		extends Model, Comparable<Displayable>
+	{
 		String displayString();
 			String DISPLAY_STRING_PROPERTY = "displayString";
 	
@@ -629,36 +636,34 @@ public class DropDownListBoxModelBindingUITest
 	
 		Collator DEFAULT_COLLATOR = Collator.getInstance();
 	
-		Comparator<Displayable> DEFAULT_COMPARATOR =
-			new Comparator<Displayable>() {
-				public int compare(Displayable d1, Displayable d2) {
-					// disallow duplicates based on object identity
-					if (d1 == d2) {
-						return 0;
-					}
-	
-					// first compare display strings using the default collator
-					int result = DEFAULT_COLLATOR.compare(d1.displayString(), d2.displayString());
-					if (result != 0) {
-						return result;
-					}
-	
-					// then compare using object-id
-					result = System.identityHashCode(d1) - System.identityHashCode(d2);
-					if (result != 0) {
-						return result;
-					}
-	
-					// It's unlikely that we get to this point; but, just in case, we will return -1.
-					// Unfortunately, this introduces some mild unpredictability to the sort order
-					// (unless the objects are always passed into this method in the same order).
-					return -1;		// if all else fails, indicate that o1 < o2
+		Comparator<Displayable> DEFAULT_COMPARATOR = new DefaultComparator();
+		class DefaultComparator
+			extends ComparatorAdapter<Displayable>
+		{
+			@Override
+			public int compare(Displayable d1, Displayable d2) {
+				// disallow duplicates based on object identity
+				if (d1 == d2) {
+					return 0;
 				}
-				@Override
-				public String toString() {
-					return "Displayable.DEFAULT_COMPARATOR";
+
+				// first compare display strings using the default collator
+				int result = DEFAULT_COLLATOR.compare(d1.displayString(), d2.displayString());
+				if (result != 0) {
+					return result;
 				}
-			};
-	
+
+				// then compare using object-id
+				result = System.identityHashCode(d1) - System.identityHashCode(d2);
+				if (result != 0) {
+					return result;
+				}
+
+				// It's unlikely that we get to this point; but, just in case, we will return -1.
+				// Unfortunately, this introduces some mild unpredictability to the sort order
+				// (unless the objects are always passed into this method in the same order).
+				return -1;		// if all else fails, indicate that o1 < o2
+			}
+		}
 	}
 }

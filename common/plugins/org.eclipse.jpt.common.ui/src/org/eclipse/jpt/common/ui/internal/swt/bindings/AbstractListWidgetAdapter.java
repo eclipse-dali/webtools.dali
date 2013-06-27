@@ -25,6 +25,9 @@ abstract class AbstractListWidgetAdapter<E, W extends Widget>
 
 	AbstractListWidgetAdapter(W widget) {
 		super();
+		if (widget == null) {
+			throw new NullPointerException();
+		}
 		this.widget = widget;
 	}
 
