@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Display;
  * Wrap another collection change listener and forward events to it on the SWT
  * UI thread, asynchronously if necessary.
  */
-class SWTCollectionChangeListenerWrapper
+final class SWTCollectionChangeListenerWrapper
 	extends AbstractSWTListenerWrapper<CollectionEvent, CollectionChangeListener>
 	implements CollectionChangeListener
 {

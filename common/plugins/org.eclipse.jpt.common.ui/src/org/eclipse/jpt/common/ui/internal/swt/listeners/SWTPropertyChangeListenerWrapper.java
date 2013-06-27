@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Display;
  * Wrap another property change listener and forward events to it on the SWT
  * UI thread, asynchronously if necessary.
  */
-class SWTPropertyChangeListenerWrapper
+final class SWTPropertyChangeListenerWrapper
 	extends AbstractSWTListenerWrapper<PropertyChangeEvent, PropertyChangeListener>
 	implements PropertyChangeListener
 {

@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Display;
  * Any events received earlier (on a non-UI thread) will be
  * forwarded, in the order received, before the current event is forwarded.
  */
-class SWTListenerWrapperDelegate<E extends EventObject> {
+final class SWTListenerWrapperDelegate<E extends EventObject> {
 	private final Wrapper<E> wrapper;
 	private final Display display;
 	private final Runnable forwardEventsRunnable = new ForwardEventsRunnable();

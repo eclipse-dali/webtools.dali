@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Display;
  * Wrap another list change listener and forward events to it on the SWT
  * UI thread, asynchronously if necessary.
  */
-class SWTListChangeListenerWrapper
+final class SWTListChangeListenerWrapper
 	extends AbstractSWTListenerWrapper<ListEvent, ListChangeListener>
 	implements ListChangeListener
 {

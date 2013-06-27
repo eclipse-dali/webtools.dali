@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Display;
  * Wrap another state change listener and forward events to it on the SWT
  * UI thread, asynchronously if necessary.
  */
-class SWTStateChangeListenerWrapper
+final class SWTStateChangeListenerWrapper
 	extends AbstractSWTListenerWrapper<StateChangeEvent, StateChangeListener>
 	implements StateChangeListener
 {
