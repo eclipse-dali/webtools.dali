@@ -175,7 +175,7 @@ public class JpaStructurePage
 		menuManager.addMenuListener(new MenuListener());  // no need to remove listener(?)
 		Tree tree = this.treeViewer.getTree();
 		tree.setMenu(menuManager.createContextMenu(tree));
-		this.structureView.getSite().registerContextMenu(menuManager, this.treeViewer);
+		this.getSite().registerContextMenu(this.structureView.getSite().getId(), menuManager, this.selectionProvider);
 	}
 
 	/* CU private */ class MenuListener

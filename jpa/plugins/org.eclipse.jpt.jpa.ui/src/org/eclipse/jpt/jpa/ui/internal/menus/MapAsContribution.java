@@ -82,7 +82,7 @@ public abstract class MapAsContribution<T extends JpaStructureNode>
 	}
 
 	protected IStructuredSelection getSelection() {
-		return (IStructuredSelection) this.getHandlerService().getCurrentState().getVariable(ISources.ACTIVE_CURRENT_SELECTION_NAME);
+		return (IStructuredSelection) this.getHandlerService().getCurrentState().getVariable(ISources.ACTIVE_MENU_SELECTION_NAME);
 	}
 
 	protected IHandlerService getHandlerService() {
