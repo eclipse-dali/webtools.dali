@@ -1104,7 +1104,12 @@ class InternalJpaProjectManager
 		this.execute(command, null);
 	}
 
-	public void execute(Command command, ExtendedCommandContext threadLocalModifySharedDocumentCommandContext) throws InterruptedException {
+	/**
+	 * <strong>NB:</strong>
+	 * This method is <code>synchronized</code> so only a single thread can
+	 * execute it at a time.
+	 */
+	public synchronized void execute(Command command, ExtendedCommandContext threadLocalModifySharedDocumentCommandContext) throws InterruptedException {
 		this.setThreadLocalModifySharedDocumentCommandContext(threadLocalModifySharedDocumentCommandContext);
 		this.executeCommandsSynchronously();
 		try {
@@ -1124,11 +1129,7 @@ class InternalJpaProjectManager
 	 *
 	 * @see #executeCommandsAsynchronously()
 	 */
-	private synchronized void executeCommandsSynchronously() throws InterruptedException {
-		if ( ! (this.commandContext instanceof SimpleJobCommandContext)) {
-			throw new IllegalStateException();
-		}
-
+	private void executeCommandsSynchronously() throws InterruptedException {
 		// de-activate Java events
 		this.addJavaEventListenerFlag(FalseBooleanReference.instance());
 		// save the current context
@@ -1147,11 +1148,10 @@ class InternalJpaProjectManager
 		return new SingleUseQueueingExtendedJobCommandContext();
 	}
 
-	private synchronized void executeCommandsAsynchronously() {
-		if ( ! (this.commandContext instanceof SingleUseQueueingExtendedJobCommandContext)) {
-			throw new IllegalStateException();
-		}
-
+	/**
+	 * @see #executeCommandsSynchronously()
+	 */
+	private void executeCommandsAsynchronously() {
 		// no need to wait on a synchronous context...
 		this.commandContext = this.buildAsynchronousCommandContext();
 		// re-activate Java events
