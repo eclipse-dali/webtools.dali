@@ -12,6 +12,7 @@ package org.eclipse.jpt.common.core.internal.resource.xml;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
@@ -30,12 +31,12 @@ import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.jem.util.emf.workbench.EMFWorkbenchContextBase;
 import org.eclipse.jem.util.emf.workbench.FlexibleProjectResourceSet;
 import org.eclipse.jem.util.emf.workbench.IEMFContextContributor;
-import org.eclipse.jem.util.emf.workbench.ProjectResourceSet;
 import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.utility.WorkspaceRunnableAdapter;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
-import org.eclipse.jpt.common.core.resource.xml.JptXmlResourceProvider;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResourceProvider;
 import org.eclipse.wst.common.componentcore.internal.impl.WTPResourceFactoryRegistry;
 import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 import org.eclipse.wst.common.internal.emfworkbench.validateedit.ResourceStateInputProvider;
@@ -97,66 +98,60 @@ public abstract class AbstractJptXmlResourceProvider
 	}
 	
 	/**
-	 * Return the resource, if it exists.  If no file exists for this resource, 
-	 * this will return a stub resource.  You must call #createResource() to 
-	 * create the file on the file system.
+	 * Return the resource, if it exists. If no file exists for this resource, 
+	 * this will return a stub resource.
+	 * @see #createFileAndResource(Object, IProgressMonitor)
 	 */
 	public JptXmlResource getXmlResource() {
 		if (this.resource == null) {
-			JptXmlResource newResource = (JptXmlResource) WorkbenchResourceHelper.getOrCreateResource(this.fileUri, getResourceSet());
-			if (newResource == null) {
-				//ResourceSet "isReleasing", deleting the project causes this
-				return null;
-			}
-			//EMF caches resources based on URI.  If the resource has changed content types (say the schema was changed
-			//from orm to eclipselink-orm), then the resource will be of the wrong type and we need to create a new one.
-			if (newResource.getContentType().equals(this.contentType)) {
-				this.resource = newResource;
-			}
-			else {
-				this.createResourceAndLoad();
-			}
+			this.resource = this.buildXmlResource();
 		}
 		return this.resource;
 	}
-	
-	protected JptXmlResource createResourceAndLoad() {
-		this.resource = createResource();
-		this.loadResource();
-		return this.resource;
+
+	protected JptXmlResource buildXmlResource() {
+		Resource temp = WorkbenchResourceHelper.getOrCreateResource(this.fileUri, this.getResourceSet());
+		// the resource can be null if the resource set is "releasing";
+		if (temp == null) {
+			return null;
+		}
+		// the resource can be a ReferencedComponentXMIResourceImpl if the resource is out of sync with file system
+//		if ( ! (temp instanceof JptXmlResource)) {
+//			return null;
+//		}
+		JptXmlResource result = (JptXmlResource) temp;
+		// EMF caches resources based on URI. If the resource's content type has changed
+		// (e.g. the schema was changed from orm to eclipselink-orm),
+		// the resource will be the wrong type and we need to create a new one.
+		if (result.getContentType().equals(this.contentType)) {
+			return result;
+		}
+		result = this.createResource();
+		this.load(result);
+		return result;
 	}
 	
 	protected JptXmlResource createResource() {
-		Resource.Factory resourceFactory = 
-			WTPResourceFactoryRegistry.INSTANCE.getFactory(this.fileUri, this.contentType.getDefaultDescription());
-		return (JptXmlResource) getResourceSet().createResource(this.fileUri, resourceFactory);		
+		return (JptXmlResource) this.getResourceSet().createResource(this.fileUri, this.getResourceFactory());		
 	}
 	
-	protected void loadResource() {
+
+	protected Resource.Factory getResourceFactory() {
+		return WTPResourceFactoryRegistry.INSTANCE.getFactory(this.fileUri, this.contentType.getDefaultDescription());
+	}
+	
+	protected void load(JptXmlResource jptXmlResource) {
 		try {
-			this.resource.load(((ProjectResourceSet) getResourceSet()).getLoadOptions());
-		}
-		catch (IOException e) {
-			JptCommonCorePlugin.instance().logError(e);
-		}
-	}
-	
-	protected void createResourceAndUnderlyingFile(Object config) {
-		this.resource = createResource();
-		if (this.resource.fileExists()) { //always possible that the file already exists when the jpa facet is added
-			loadResource();
-		}
-		else {
-			populateRoot(config);
-			try {
-				this.resource.saveIfNecessary(); //this writes out the file
-			}
-			catch (Exception e) {
-				JptCommonCorePlugin.instance().logError(e);
-			}
+			jptXmlResource.load(this.getLoadOptions());
+		} catch (IOException ex) {
+			JptCommonCorePlugin.instance().logError(ex);
 		}
 	}
-	
+
+	protected Map<Object, Object> getLoadOptions() {
+		return this.getResourceSet().getLoadOptions();
+	}
+
 	/**
 	 * This will actually create the underlying file and the JptXmlResource that corresponds to it.
 	 * It also populates the root of the file.
@@ -164,30 +159,49 @@ public abstract class AbstractJptXmlResourceProvider
 	 */
 	public JptXmlResource createFileAndResource(Object config, IProgressMonitor monitor) throws CoreException {
 		IWorkspace workspace = this.project.getWorkspace();
-		IWorkspaceRunnable runnable = new CreateFileAndResourceWorkspaceRunnable(config);
+		IWorkspaceRunnable runnable = this.buildCreateFileAndResourceRunnable(config);
 		workspace.run(runnable, this.project, IWorkspace.AVOID_UPDATE, monitor);
-		return this.resource;	
+		return this.resource;
 	}
 
-	class CreateFileAndResourceWorkspaceRunnable
-		implements IWorkspaceRunnable
+	protected IWorkspaceRunnable buildCreateFileAndResourceRunnable(Object config) {
+		return new CreateFileAndResourceWorkspaceRunnable(config);
+	}
+
+	protected class CreateFileAndResourceWorkspaceRunnable
+		extends WorkspaceRunnableAdapter
 	{
 		private final Object config;
 		CreateFileAndResourceWorkspaceRunnable(Object config) {
 			super();
 			this.config = config;
 		}
+		@Override
 		public void run(IProgressMonitor monitor) {
-			AbstractJptXmlResourceProvider.this.createResourceAndUnderlyingFile(this.config);
+			AbstractJptXmlResourceProvider.this.createFileAndResource_(this.config);
 		}
 	}
 	
+	protected void createFileAndResource_(Object config) {
+		this.resource = this.createResource();
+		if (this.resource.fileExists()) {
+			// the file may already exist when the JPA facet is added
+			this.load(this.resource);
+		} else {
+			this.populateRoot(config);
+			try {
+				this.resource.saveIfNecessary(); //this writes out the file
+			} catch (Exception ex) {
+				JptCommonCorePlugin.instance().logError(ex);
+			}
+		}
+	}
+
 	/**
-	 * Used to optionally fill in the root information of a resource if it does not 
-	 * exist as a file
+	 * Populate a newly-created resource (when there is not an existing file).
 	 */
 	protected void populateRoot(@SuppressWarnings("unused") Object config) {
-		//TODO potentially call resource.populateRoot() instead of the resourceProvider doing this
+		// TODO call this.resource.populateRoot() instead of the resource provider doing this
 	}
 	
 
