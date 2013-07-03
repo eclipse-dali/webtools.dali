@@ -49,7 +49,7 @@ public class JavaElementAdapterFactory
 	private Object getJpaPlatformConfig(IJavaElement javaElement) {
 		IJavaProject javaProject = javaElement.getJavaProject();
 		if (javaProject == null) {
-			return null;  // IJavaModel does not have an IProject
+			return null;  // IJavaModel does not have an IJavaProject
 		}
 		IProject project = javaProject.getProject();
 		// not sure an IJavaProject can have no IProject...
