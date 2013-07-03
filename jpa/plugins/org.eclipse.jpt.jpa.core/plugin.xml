@@ -19,38 +19,67 @@
 		name="%JPA_PLATFORM"
 		schema="schema/jpaPlatforms.exsd"/>
 
-	<!-- ***** expressions ***** -->
 
-	<extension point="org.eclipse.core.expressions.definitions">
-		<!-- A test for determining whether an IProject has the JPA facet.
-			Force activation of the wst facet plug-in containing the property tester.
-			Possible usage:
-			<adapt type="org.eclipse.core.resources.IProject">
-				<reference definitionId="org.eclipse.jpt.jpa.reference.hasJpaFacet"/>
-			</adapt>
-		-->			
-		<definition id="org.eclipse.jpt.jpa.reference.hasJpaFacet">
-			<test
-				property="org.eclipse.wst.common.project.facet.core.projectFacet"
-				value="jpt.jpa"
-				forcePluginActivation="true"/>
-		</definition>
-		<!-- A test for determining whether an IResource's project or any referencing projects has the JPA facet.
-			Force activation of the org.eclipse.jpt.common.core plug-in containing the property tester.
-			Though in this case the property tester class is in a package that does not cause the plug-in to load.
-			So the class will be loaded, but the plug-in will not.
-			Possible usage:
+	<!-- ***** expression definitions ***** -->
+
+	<extension
+		point="org.eclipse.core.expressions.definitions">
+
+		<!--
+			Return whether a resource's project has the JPA facet
+			(or a project facet version matches the JPA facet).
+			Force activation of the WST facet plug-in containing the property tester.
+			Example usage:
 			<adapt type="org.eclipse.core.resources.IResource">
-				<reference definitionId="org.eclipse.jpt.jpa.reference.anyJpaFacetedReferencingProjects"/>
+				<reference definitionId="org.eclipse.jpt.jpa.expression.hasJpaFacet"/>
 			</adapt>
-		-->			
-		<definition id="org.eclipse.jpt.jpa.reference.anyJpaFacetedReferencingProjects">
-			<test
-				property="org.eclipse.jpt.common.core.anyFacetedReferencingProjects" 
+		-->
+		<definition id="org.eclipse.jpt.jpa.expression.hasJpaFacet">
+			<test property="org.eclipse.wst.common.project.facet.core.projectFacet"
 				value="jpt.jpa"
 				forcePluginActivation="true"/>
 		</definition>
+
+		<!-- Return whether a resource's project has the JPA 1.0 facet. -->
+		<definition id="org.eclipse.jpt.jpa.expression.hasJpa1_0Facet">
+			<test property="org.eclipse.wst.common.project.facet.core.projectFacet"
+				value="jpt.jpa:1.0"
+				forcePluginActivation="true"/>
+		</definition>
+
+		<!-- Return whether a resource's project has the JPA 2.0 facet. -->
+		<definition id="org.eclipse.jpt.jpa.expression.hasJpa2_0Facet">
+			<test property="org.eclipse.wst.common.project.facet.core.projectFacet"
+				value="jpt.jpa:2.0"
+				forcePluginActivation="true"/>
+		</definition>
+
+		<!-- Return whether a resource's project has the JPA 2.1 facet. -->
+		<definition id="org.eclipse.jpt.jpa.expression.hasJpa2_1Facet">
+			<test property="org.eclipse.wst.common.project.facet.core.projectFacet"
+				value="jpt.jpa:2.1"
+				forcePluginActivation="true"/>
+		</definition>
+
+		<!--
+			Return whether a resource's project (or any project referencing the resource's project)
+			has the JPA facet.
+			Force activation of the Dali common core plug-in containing the property tester.
+			But note: The property tester class is in a package that does not cause the plug-in to load;
+			so the class will be loaded, but the plug-in will not.
+			Example usage:
+			<adapt type="org.eclipse.core.resources.IResource">
+				<reference definitionId="org.eclipse.jpt.jpa.expression.anyReferencingProjectHasJpaFacet"/>
+			</adapt>
+		-->
+		<definition id="org.eclipse.jpt.jpa.expression.anyReferencingProjectHasJpaFacet">
+			<test property="org.eclipse.jpt.common.core.anyReferencingProjectHasFacet"
+				value="jpt.jpa"
+				forcePluginActivation="true"/>
+		</definition>
+
 	</extension>
+
 
 	<!-- ***** adapters ***** -->
 
@@ -127,7 +156,7 @@
 
 	<extension
 		point="org.eclipse.core.contenttype.contentTypes">
-		
+
 		<!-- JPA XML file ("abstract") -->
 		<content-type
 			id="org.eclipse.jpt.jpa.core.content.jpaXmlContent"
@@ -135,24 +164,22 @@
 			base-type="org.eclipse.core.runtime.xml"
 			describer="org.eclipse.jpt.common.core.internal.bundleexclude.IndeterminateContentDescriber">
 		</content-type>
-		
+
 		<!-- persistence.xml -->
-  		<content-type
+		<content-type
 			id="org.eclipse.jpt.jpa.core.content.persistence"
 			name="%PERSISTENCE_XML_CONTENT"
 			base-type="org.eclipse.jpt.jpa.core.content.jpaXmlContent"
 			file-names="persistence.xml">
 			<describer
 				class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber2">
-				<parameter 
-					name="element" 
+				<parameter name="element" 
 					value="{http://java.sun.com/xml/ns/persistence}persistence"/>
-    			<parameter
-          			name="element"
-          			value="{http://xmlns.jcp.org/xml/ns/persistence}persistence"/>
+				<parameter name="element"
+					value="{http://xmlns.jcp.org/xml/ns/persistence}persistence"/>
 			</describer>
 		</content-type>
-		
+
 		<!-- mapping file ("abstract") -->
 		<!--
 			NB: because multiple inheritance of content types is unsupported,
@@ -163,7 +190,7 @@
 			name="%MAPPING_FILE_CONTENT"
 			base-type="org.eclipse.jpt.jpa.core.content.jpaXmlContent">
 		</content-type>
-		
+
 		<!-- orm.xml -->
 		<content-type
 			id="org.eclipse.jpt.jpa.core.content.orm"
@@ -171,15 +198,13 @@
 			base-type="org.eclipse.jpt.jpa.core.content.mappingFile">
 			<describer
 				class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber2">
-				<parameter 
-					name="element" 
+				<parameter name="element" 
 					value="{http://java.sun.com/xml/ns/persistence/orm}entity-mappings"/>
-   				<parameter
-         			name="element"
-          			value="{http://xmlns.jcp.org/xml/ns/persistence/orm}entity-mappings"/>
+				<parameter name="element"
+					value="{http://xmlns.jcp.org/xml/ns/persistence/orm}entity-mappings"/>
 			</describer>
 		</content-type>
-		
+
 	</extension>
 
 
@@ -197,11 +222,11 @@
 			id="org.eclipse.jpt.jpa.core.resource.persistence_2_0"
 			content-type="org.eclipse.jpt.jpa.core.content.persistence"
 			version="2.0"/>
-  <resource-type
-        content-type="org.eclipse.jpt.jpa.core.content.persistence"
-        id="org.eclipse.jpt.jpa.core.resource.persistence_2_1"
-        version="2.1">
-  </resource-type>
+
+		<resource-type
+			content-type="org.eclipse.jpt.jpa.core.content.persistence"
+			id="org.eclipse.jpt.jpa.core.resource.persistence_2_1"
+			version="2.1"/>
 
 		<resource-type
 			id="org.eclipse.jpt.jpa.core.resource.orm_1_0"
@@ -279,25 +304,25 @@
 		name="%JPA_PROBLEM">
 
 		<persistent value="true"/>
-		
+
 		<!-- Can't use text marker until we have specific models for each input type (XML, java)
 		<super type="org.eclipse.core.resources.textmarker"/>
 		-->
-		
 		<super type="org.eclipse.wst.validation.problemmarker2"/>
 		<super type="org.eclipse.jdt.core.problem"/>
+
 	</extension>
 
 
-	<!-- ***** Dali extensions (eat our own dogfood) ***** -->
+	<!-- ***** JPA platforms (eat our own dogfood) ***** -->
 
 	<extension
 		point="org.eclipse.jpt.jpa.core.jpaPlatforms">
 		
 		<jpaPlatformGroup
-        	id="generic"
-        	label="%GENERIC_PLATFORM_GROUP_LABEL"/>
-		
+			id="generic"
+			label="%GENERIC_PLATFORM_GROUP_LABEL"/>
+
 		<jpaPlatform
 			id="generic"
 			label="%GENERIC_1_0_PLATFORM_LABEL"
@@ -305,45 +330,49 @@
 			group="generic"
 			jpaFacetVersion="1.0"
 			default="false"/>
-			
-	  <jpaPlatform
-	        id="generic2_0"
-	        label="%GENERIC_2_0_PLATFORM_LABEL"
-	        factoryClass="org.eclipse.jpt.jpa.core.internal.jpa2.GenericJpaPlatformFactory2_0"
-	        group="generic"
-	        jpaFacetVersion="2.0"
-	        default="false"/>
 
-	  <jpaPlatform
-	        id="generic2_1"
-	        label="%GENERIC_2_1_PLATFORM_LABEL"
-	        factoryClass="org.eclipse.jpt.jpa.core.internal.jpa2_1.GenericJpaPlatformFactory2_1"
-	        group="generic"
-	        jpaFacetVersion="2.1"
-	        default="false"/>
-		
+		<jpaPlatform
+			id="generic2_0"
+			label="%GENERIC_2_0_PLATFORM_LABEL"
+			factoryClass="org.eclipse.jpt.jpa.core.internal.jpa2.GenericJpaPlatformFactory2_0"
+			group="generic"
+			jpaFacetVersion="2.0"
+			default="false"/>
+
+		<jpaPlatform
+			id="generic2_1"
+			label="%GENERIC_2_1_PLATFORM_LABEL"
+			factoryClass="org.eclipse.jpt.jpa.core.internal.jpa2_1.GenericJpaPlatformFactory2_1"
+			group="generic"
+			jpaFacetVersion="2.1"
+			default="false"/>
+
 	</extension>
-	
-	
-	 <extension
-	 	point="org.eclipse.emf.ecore.generated_package">
-		
+
+
+	<!-- ***** EMF ecore package registry ***** -->
+
+	<extension
+		point="org.eclipse.emf.ecore.generated_package">
+
 		<package
 			uri="http://www.eclipse.org/dali/persistence"
 			class="org.eclipse.jpt.jpa.core.resource.persistence.PersistencePackage"
 			genModel="model/jpaResourceModels.genmodel"/>
-		
+
 		<package
 			uri="http://www.eclipse.org/dali/orm"
 			class="org.eclipse.jpt.jpa.core.resource.orm.OrmPackage"
 			genModel="model/jpaResourceModels.genmodel"/>
-		
+
 	</extension>
-	
-	
+
+
+	<!-- ***** library validators ***** -->
+
 	<extension
 		point="org.eclipse.jpt.common.core.libraryValidators">
-		
+
 		<libraryValidator
 			id="genericUserLibraryValidator"
 			class="org.eclipse.jpt.jpa.core.internal.libval.GenericJpaUserLibraryValidator">
@@ -354,7 +383,7 @@
 				</with>
 			</enablement>
 		</libraryValidator>
-		
+
 		<libraryValidator
 			id="genericEclipselinkBundlesLibraryValidator"
 			class="org.eclipse.jpt.jpa.core.internal.libval.GenericEclipseLinkBundlesLibraryValidator">
@@ -365,25 +394,24 @@
 				</with>
 			</enablement>
 		</libraryValidator>
-		
+
 	</extension>
 
 
-	<!-- ***** WTP Library Provider Framework Integration ***** -->
+	<!-- ***** WTP library providers ***** -->
 
 	<extension
 		point="org.eclipse.jst.common.project.facet.core.legacyLibraryProviderDetectors">
 		
-		<detector
-			class="org.eclipse.jpt.jpa.core.internal.libprov.LegacyJpaLibraryProviderDetector"/>
-		
+		<detector class="org.eclipse.jpt.jpa.core.internal.libprov.LegacyJpaLibraryProviderDetector"/>
+
 	</extension>
-	
-	
-	<extension 
+
+
+	<extension
 		point="org.eclipse.jst.common.project.facet.core.libraryProviders">
-		
-		<provider 
+
+		<provider
 			id="jpa-legacy-library-provider" 
 			extends="legacy-library-provider"
 			hidden="true">
@@ -391,25 +419,24 @@
 				<operation class="org.eclipse.jpt.jpa.core.internal.libprov.LegacyJpaLibraryProviderUninstallOperation"/>
 			</action>
 		</provider>
-		
+
 		<provider
 			id="jpa-no-op-library-provider"
 			extends="jpt-no-op-library-provider">
 			<param name="message" value="%NO_OP_LIBRARY_PROVIDER_MESSAGE"/>
 			<enablement>
 				<with variable="requestingProjectFacet">
-					<test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa" forcePluginActivation="true"/>
+					<reference definitionId="org.eclipse.jpt.jpa.expression.hasJpaFacet"/>
 				</with>
 			</enablement>
 		</provider>
-		
+
 		<provider
 			id="jpa-user-library-provider"
 			extends="wtp-user-library-provider">
 			<enablement>
 				<with variable="requestingProjectFacet">
-					<test property="org.eclipse.wst.common.project.facet.core.projectFacet" 
-						value="jpt.jpa" forcePluginActivation="true"/>
+					<reference definitionId="org.eclipse.jpt.jpa.expression.hasJpaFacet"/>
 				</with>
 			</enablement>
 			<action type="INSTALL">
@@ -417,7 +444,7 @@
 				<operation class="org.eclipse.jst.j2ee.internal.common.classpath.WtpUserLibraryProviderInstallOperation"/>
 			</action>
 		</provider>
-		
+
 		<provider
 			id="jpa-deprecated-user-library-provider"
 			extends="user-library-provider"
@@ -428,26 +455,26 @@
 				<operation class="org.eclipse.jst.common.project.facet.core.libprov.NoOpLibraryProviderOperation"/>
 			</action>
 		</provider>
-		
-		<provider 
+
+		<provider
 			id="jpa-generic1_0-user-library-provider" 
 			extends="jpa-deprecated-user-library-provider"
 			hidden="true">
 		</provider>
-		
+
 		<provider 
 			id="jpa-generic2_0-user-library-provider" 
 			extends="jpa-deprecated-user-library-provider"
 			hidden="true">
 		</provider>
-		
-		<provider 
+
+		<provider
 			id="jpa-osgi-bundles-library-provider"
 			extends="wtp-osgi-bundles-library-provider"
 			abstract="true">
 			<enablement>
 				<with variable="requestingProjectFacet">
-					<test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa" forcePluginActivation="true"/>
+					<reference definitionId="org.eclipse.jpt.jpa.expression.hasJpaFacet"/>
 				</with>
 			</enablement>
 			<action type="INSTALL">
@@ -455,7 +482,7 @@
 				<operation class="org.eclipse.jst.j2ee.internal.common.classpath.WtpOsgiBundlesLibraryProviderInstallOperation"/>
 			</action>
 		</provider>
-		
+
 		<!-- 
 			All OSGi library providers that point to EclipseLink bundles extend this.
 			It exists purely as an identifier for library validation.
@@ -464,8 +491,8 @@
 			id="eclipselink-bundles-library-provider"
 			extends="jpa-osgi-bundles-library-provider"
 			abstract="true"/>
-		
-		<provider 
+
+		<provider
 			id="eclipselink-102-osgi-bundles-library-provider"
 			extends="eclipselink-bundles-library-provider">
 			<label>EclipseLink 1.0.x</label>
@@ -477,12 +504,12 @@
 			<param name="bundle.4" value="org.eclipse.persistence.antlr:[1.0.0, 1.1.0)"/>
 			<enablement>
 				<with variable="requestingProjectFacet">
-					<test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa:1.0"/>
+					<reference definitionId="org.eclipse.jpt.jpa.expression.hasJpa1_0Facet"/>
 				</with>
 			</enablement>
 		</provider>
-		
-		<provider 
+
+		<provider
 			id="eclipselink-110-osgi-bundles-library-provider" 
 			extends="eclipselink-bundles-library-provider">
 			<label>EclipseLink 1.1.x</label>
@@ -494,12 +521,12 @@
 			<param name="bundle.4" value="org.eclipse.persistence.antlr:[1.1.0, 1.2.0)"/>
 			<enablement>
 				<with variable="requestingProjectFacet">
-					<test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa:1.0"/>
+					<reference definitionId="org.eclipse.jpt.jpa.expression.hasJpa1_0Facet"/>
 				</with>
 			</enablement>
 		</provider>
-		
-		<provider 
+
+		<provider
 			id="eclipselink-120-osgi-bundles-library-provider" 
 			extends="eclipselink-bundles-library-provider">
 			<label>EclipseLink 1.2.x</label>
@@ -511,12 +538,12 @@
 			<param name="bundle.4" value="org.eclipse.persistence.antlr:[1.2.0, 1.3.0)"/>
 			<enablement>
 				<with variable="requestingProjectFacet">
-					<test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa:1.0"/>
+					<reference definitionId="org.eclipse.jpt.jpa.expression.hasJpa1_0Facet"/>
 				</with>
 			</enablement>
 		</provider>
-		
-		<provider 
+
+		<provider
 			id="eclipselink-200-osgi-bundles-library-provider" 
 			extends="eclipselink-bundles-library-provider">
 			<label>EclipseLink 2.0.x</label>
@@ -527,7 +554,7 @@
 			<param name="bundle.3" value="org.eclipse.persistence.asm:[2.0.0, 2.1.0)"/>
 			<param name="bundle.4" value="org.eclipse.persistence.antlr:[2.0.0, 2.1.0)"/>
 		</provider>
-		
+
 		<provider
 			id="eclipselink-210-osgi-bundles-library-provider"
 			extends="eclipselink-bundles-library-provider">
@@ -539,10 +566,10 @@
 			<param name="bundle.3" value="org.eclipse.persistence.asm:[2.1.0, 2.2.0)"/>
 			<param name="bundle.4" value="org.eclipse.persistence.antlr:[2.1.0, 2.2.0)"/>
 		</provider>
-		
+
 	</extension>
-	
-	
+
+
 	<!-- ***** WTP resource factories ***** -->
 
 	<extension
@@ -551,118 +578,114 @@
 		<resourceFactory
 			class="org.eclipse.jpt.jpa.core.resource.persistence.PersistenceXmlResourceFactory"
 			isDefault="true">
-			<contentTypeBinding
-				contentTypeId="org.eclipse.jpt.jpa.core.content.persistence">
-			</contentTypeBinding>
+			<contentTypeBinding contentTypeId="org.eclipse.jpt.jpa.core.content.persistence"/>
 		</resourceFactory>
-		
+
 		<resourceFactory
 			class="org.eclipse.jpt.jpa.core.resource.orm.OrmXmlResourceFactory"
 			isDefault="true">
-			<contentTypeBinding
-				contentTypeId="org.eclipse.jpt.jpa.core.content.orm">
-			</contentTypeBinding>
+			<contentTypeBinding contentTypeId="org.eclipse.jpt.jpa.core.content.orm"/>
 		</resourceFactory>
-		
+
 	</extension>
-	
-	
-	<!-- ***** WTP facet framework ***** -->
+
+
+	<!-- ***** WTP facets ***** -->
 
 	<extension
 		point="org.eclipse.wst.common.project.facet.core.facets">
-		
+
 		<project-facet id="jpt.jpa">
 			<label>%JPA_FACET_LABEL</label>
 			<description>%JPA_FACET_DESCRIPTION</description>
 		</project-facet>
-		
+
 		<project-facet-version facet="jpt.jpa" version="1.0">
 			<constraint>
 				<requires facet="java" version="[5.0"/>
 			</constraint>
 		</project-facet-version>
-		
+
 		<project-facet-version facet="jpt.jpa" version="2.0">
 			<constraint>
 				<requires facet="java" version="[5.0"/>
 			</constraint>
 		</project-facet-version>
-		
+
 		<project-facet-version facet="jpt.jpa" version="2.1">
 			<constraint>
 				<requires facet="java" version="[5.0"/>
 			</constraint>
 		</project-facet-version>
-		
+
 		<template id="jpt.jpa.template">
 			<label>%JPA_TEMPLATE_LABEL</label>
 			<fixed facet="jpt.jpa"/>
 			<fixed facet="java"/>
 		</template>
-		
+
 		<action facet="jpt.jpa" type="install" id="jpt.jpa.install">
 			<config-factory class="org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProvider"/>
 			<delegate class="org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDelegate"/>
 		</action>
-		
+
 		<action facet="jpt.jpa" type="uninstall" id="jpt.jpa.uninstall">
 			<delegate class="org.eclipse.jpt.jpa.core.internal.facet.JpaFacetUninstallDelegate"/>
 		</action>
-		
+
 		<action facet="jpt.jpa" type="version-change" id="jpt.jpa.version-change">
 			<config-factory class="org.eclipse.jpt.jpa.core.internal.facet.JpaFacetVersionChangeDataModelProvider"/>
 			<delegate class="org.eclipse.jpt.jpa.core.internal.facet.JpaFacetVersionChangeDelegate"/>
 		</action>
-		
+
 	</extension>
-	
-	
+
+
 	<extension
 		point="org.eclipse.wst.common.project.facet.core.listeners">
-		
+
 		<listener
 			class="org.eclipse.jpt.jpa.core.internal.facet.RuntimeChangedListener"
 			eventTypes="TARGETED_RUNTIMES_CHANGED"/>
-		
+
 	</extension>
-	
-	
+
+
 	<extension 
 		point="org.eclipse.wst.common.project.facet.core.presets">
-		
+
 		<dynamic-preset id="basic.jpa.se.configuration">
 			<factory class="org.eclipse.jpt.jpa.core.internal.facet.BasicJpaSEConfigurationPresetFactory"/>
 		</dynamic-preset>
-		
+
 		<dynamic-preset id="basic.jpa.ee.configuration">
 			<factory class="org.eclipse.jpt.jpa.core.internal.facet.BasicJpaEEConfigurationPresetFactory"/>
 		</dynamic-preset>
-		
+
 	</extension>
-	
-	
+
+
 	<extension 
 		point="org.eclipse.wst.common.project.facet.core.runtimes">
-		
+
 		<supported>
 			<facet id="jpt.jpa"/>
 			<runtime-component any="true"/>
 		</supported>
-		
-	</extension>
-	
 
-	<!-- ***** WTP validation framework ***** -->
+	</extension>
+
+
+	<!-- ***** WTP validation ***** -->
 
 	<extension
 		point="org.eclipse.wst.validation.validatorV2"
 		id="jpaValidator"
 		name="%JPA_VALIDATOR">
-		
+
 		<validator
-        	class="org.eclipse.jpt.jpa.core.internal.validation.JpaValidator"
-        	markerId="org.eclipse.jpt.jpa.core.problem">
+			class="org.eclipse.jpt.jpa.core.internal.validation.JpaValidator"
+			markerId="org.eclipse.jpt.jpa.core.problem">
 			<include>
 				<rules>
 					<facet id="jpt.jpa"/>
@@ -671,190 +694,191 @@
 			<include>
 				<rules>
 					<contentType id="org.eclipse.jdt.core.javaSource" exactMatch="false"/>
-					<contentType id="org.eclipse.jpt.common.core.content.jar"/>
+					<contentType id="org.eclipse.jpt.common.core.content.jar" exactMatch="true"/>
 					<contentType id="org.eclipse.jpt.jpa.core.content.jpaXmlContent" exactMatch="false"/>
 					<contentType id="org.eclipse.jpt.common.core.content.projectFacet" exactMatch="true"/>
 				</rules>
 			</include>
 		</validator>
-		
+
 	</extension>
-	
-	
+
+
 	<!-- ***** refactoring ***** -->
 
- 	<extension
- 		point="org.eclipse.ltk.core.refactoring.deleteParticipants">
-    	
-    	<deleteParticipant
-    		class="org.eclipse.jpt.jpa.core.internal.refactoring.JpaDeleteTypeParticipant"
-    		id="org.eclipse.jpt.jpa.core.refactoring.jpaDeleteTypeParticipant"
-    		name="%JPA_DELETE_TYPE_PARTICIPANT_NAME">
-    		<enablement>
-    			<with variable="element">
- 	   				<instanceof value="org.eclipse.jdt.core.IType"/>
+	<extension
+		point="org.eclipse.ltk.core.refactoring.deleteParticipants">
+
+		<deleteParticipant
+			class="org.eclipse.jpt.jpa.core.internal.refactoring.JpaDeleteTypeParticipant"
+			id="org.eclipse.jpt.jpa.core.refactoring.jpaDeleteTypeParticipant"
+			name="%JPA_DELETE_TYPE_PARTICIPANT_NAME">
+			<enablement>
+				<with variable="element">
+					<instanceof value="org.eclipse.jdt.core.IType"/>
 					<adapt type="org.eclipse.core.resources.IResource">
-						<reference definitionId="org.eclipse.jpt.jpa.reference.anyJpaFacetedReferencingProjects"/>
+						<reference definitionId="org.eclipse.jpt.jpa.expression.anyReferencingProjectHasJpaFacet"/>
 					</adapt>
-    			</with>
-    		</enablement>
-    	</deleteParticipant>
-    	
-     	<deleteParticipant
-           	class="org.eclipse.jpt.jpa.core.internal.refactoring.JpaDeletePackageOrFolderParticipant"
-           	id="org.eclipse.jpt.jpa.core.refactoring.jpaDeletePackageOrFolderParticipant"
-    		name="%JPA_DELETE_PACKAGE_OR_FOLDER_PARTICIPANT_NAME">
-        	<enablement>
-           		<with variable="element">
-                	<or>
-                   		<instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
-                   		<instanceof value="org.eclipse.core.resources.IFolder"/>
-                	</or>
+				</with>
+			</enablement>
+		</deleteParticipant>
+
+		<deleteParticipant
+			class="org.eclipse.jpt.jpa.core.internal.refactoring.JpaDeletePackageOrFolderParticipant"
+			id="org.eclipse.jpt.jpa.core.refactoring.jpaDeletePackageOrFolderParticipant"
+			name="%JPA_DELETE_PACKAGE_OR_FOLDER_PARTICIPANT_NAME">
+			<enablement>
+				<with variable="element">
+					<or>
+						<instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
+						<instanceof value="org.eclipse.core.resources.IFolder"/>
+					</or>
 					<adapt type="org.eclipse.core.resources.IResource">
-						<reference definitionId="org.eclipse.jpt.jpa.reference.anyJpaFacetedReferencingProjects"/>
+						<reference definitionId="org.eclipse.jpt.jpa.expression.anyReferencingProjectHasJpaFacet"/>
 					</adapt>
-           		</with>
-        	</enablement>
-     	</deleteParticipant>
-     	
-     	<deleteParticipant
-           	class="org.eclipse.jpt.jpa.core.internal.refactoring.JpaDeleteMappingFileParticipant"
-           	id="org.eclipse.jpt.jpa.core.refactoring.jpaDeleteMappingFileParticipant"
-    		name="%JPA_DELETE_MAPPING_FILE_PARTICIPANT_NAME">
-        	<enablement>
- 	           	<with variable="element">
-              		<instanceof value="org.eclipse.core.resources.IFile"/>
-  					<test
-        				args="kindOf"
-        	 			property="org.eclipse.core.resources.contentTypeId"
-         				value="org.eclipse.jpt.jpa.core.content.mappingFile"/>
+				</with>
+			</enablement>
+		</deleteParticipant>
+
+		<deleteParticipant
+			class="org.eclipse.jpt.jpa.core.internal.refactoring.JpaDeleteMappingFileParticipant"
+			id="org.eclipse.jpt.jpa.core.refactoring.jpaDeleteMappingFileParticipant"
+			name="%JPA_DELETE_MAPPING_FILE_PARTICIPANT_NAME">
+			<enablement>
+				<with variable="element">
+					<instanceof value="org.eclipse.core.resources.IFile"/>
+					<test property="org.eclipse.core.resources.contentTypeId"
+						value="org.eclipse.jpt.jpa.core.content.mappingFile"
+						args="kindOf"/>
 					<adapt type="org.eclipse.core.resources.IResource">
-						<reference definitionId="org.eclipse.jpt.jpa.reference.anyJpaFacetedReferencingProjects"/>
+						<reference definitionId="org.eclipse.jpt.jpa.expression.anyReferencingProjectHasJpaFacet"/>
 					</adapt>
-	           	</with>
-        	</enablement>
-     	</deleteParticipant>
-    </extension>
-    
-    
-  	<extension
-        point="org.eclipse.ltk.core.refactoring.moveParticipants">
-        
-     	<moveParticipant
-    		class="org.eclipse.jpt.jpa.core.internal.refactoring.JpaMoveTypeParticipant"
-    		id="org.eclipse.jpt.jpa.core.ltk.jpaMoveTypeParticipant"
-    		name="%JPA_MOVE_TYPE_PARTICIPANT_NAME">
-        	<enablement>
-     			<with variable="element">
-    				<instanceof value="org.eclipse.jdt.core.IType"/>
-					<adapt type="org.eclipse.core.resources.IResource">
-						<reference definitionId="org.eclipse.jpt.jpa.reference.anyJpaFacetedReferencingProjects"/>
-					</adapt>
-    			</with>
-        	</enablement>
-     	</moveParticipant>
-  	</extension>
+				</with>
+			</enablement>
+		</deleteParticipant>
+
+	</extension>
 
 
-    <extension
-        point="org.eclipse.ltk.core.refactoring.renameParticipants">
+	<extension
+		point="org.eclipse.ltk.core.refactoring.moveParticipants">
 
-        <renameParticipant
-    		class="org.eclipse.jpt.jpa.core.internal.refactoring.JpaRenameTypeParticipant"
-    		id="org.eclipse.jpt.jpa.core.ltk.jpaRenameTypeParticipant"
-    		name="%JPA_RENAME_TYPE_PARTICIPANT_NAME">
-    		<enablement>
-    			<with variable="element">
-    				<instanceof value="org.eclipse.jdt.core.IType"/>
+		<moveParticipant
+			class="org.eclipse.jpt.jpa.core.internal.refactoring.JpaMoveTypeParticipant"
+			id="org.eclipse.jpt.jpa.core.ltk.jpaMoveTypeParticipant"
+			name="%JPA_MOVE_TYPE_PARTICIPANT_NAME">
+			<enablement>
+				<with variable="element">
+					<instanceof value="org.eclipse.jdt.core.IType"/>
 					<adapt type="org.eclipse.core.resources.IResource">
-						<reference definitionId="org.eclipse.jpt.jpa.reference.anyJpaFacetedReferencingProjects"/>
+						<reference definitionId="org.eclipse.jpt.jpa.expression.anyReferencingProjectHasJpaFacet"/>
 					</adapt>
-   				</with>
-    		</enablement>
-        </renameParticipant>
+				</with>
+			</enablement>
+		</moveParticipant>
 
-        <renameParticipant
-    		class="org.eclipse.jpt.jpa.core.internal.refactoring.JpaRenamePackageParticipant"
-    		id="org.eclipse.jpt.jpa.core.ltk.jpaRenamePackageParticipant"
-    		name="%JPA_RENAME_PACKAGE_PARTICIPANT_NAME">
-    		<enablement>
-    			<with variable="element">
-    				<instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
+	</extension>
+
+
+	<extension
+		point="org.eclipse.ltk.core.refactoring.renameParticipants">
+
+		<renameParticipant
+			class="org.eclipse.jpt.jpa.core.internal.refactoring.JpaRenameTypeParticipant"
+			id="org.eclipse.jpt.jpa.core.ltk.jpaRenameTypeParticipant"
+			name="%JPA_RENAME_TYPE_PARTICIPANT_NAME">
+			<enablement>
+				<with variable="element">
+					<instanceof value="org.eclipse.jdt.core.IType"/>
 					<adapt type="org.eclipse.core.resources.IResource">
-						<reference definitionId="org.eclipse.jpt.jpa.reference.anyJpaFacetedReferencingProjects"/>
+						<reference definitionId="org.eclipse.jpt.jpa.expression.anyReferencingProjectHasJpaFacet"/>
 					</adapt>
-    			</with>
-    		</enablement>
-        </renameParticipant>
+				</with>
+			</enablement>
+		</renameParticipant>
 
-        <renameParticipant
-    		class="org.eclipse.jpt.jpa.core.internal.refactoring.JpaRenameFolderParticipant"
-    		id="org.eclipse.jpt.jpa.core.ltk.jpaRenameFolderParticipant"
-    		name="%JPA_RENAME_FOLDER_PARTICIPANT_NAME">
-    		<enablement>
-    			<with variable="element">
-                   	<instanceof value="org.eclipse.core.resources.IFolder"/>
+		<renameParticipant
+			class="org.eclipse.jpt.jpa.core.internal.refactoring.JpaRenamePackageParticipant"
+			id="org.eclipse.jpt.jpa.core.ltk.jpaRenamePackageParticipant"
+			name="%JPA_RENAME_PACKAGE_PARTICIPANT_NAME">
+			<enablement>
+				<with variable="element">
+					<instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
 					<adapt type="org.eclipse.core.resources.IResource">
-						<reference definitionId="org.eclipse.jpt.jpa.reference.anyJpaFacetedReferencingProjects"/>
+						<reference definitionId="org.eclipse.jpt.jpa.expression.anyReferencingProjectHasJpaFacet"/>
 					</adapt>
-    			</with>
-    		</enablement>
-        </renameParticipant>
+				</with>
+			</enablement>
+		</renameParticipant>
 
-        <renameParticipant
-    		class="org.eclipse.jpt.jpa.core.internal.refactoring.JpaRenameMappingFileParticipant"
-    		id="org.eclipse.jpt.jpa.core.ltk.jpaRenameMappingFileParticipant"
-    		name="%JPA_RENAME_MAPPING_FILE_PARTICIPANT_NAME">
-        	<enablement>
- 	           	<with variable="element">
-              		<instanceof value="org.eclipse.core.resources.IFile"/>
-  					<test
-        				args="kindOf"
-        	 			property="org.eclipse.core.resources.contentTypeId"
-         				value="org.eclipse.jpt.jpa.core.content.mappingFile"/>
+		<renameParticipant
+			class="org.eclipse.jpt.jpa.core.internal.refactoring.JpaRenameFolderParticipant"
+			id="org.eclipse.jpt.jpa.core.ltk.jpaRenameFolderParticipant"
+			name="%JPA_RENAME_FOLDER_PARTICIPANT_NAME">
+			<enablement>
+				<with variable="element">
+					<instanceof value="org.eclipse.core.resources.IFolder"/>
 					<adapt type="org.eclipse.core.resources.IResource">
-						<reference definitionId="org.eclipse.jpt.jpa.reference.anyJpaFacetedReferencingProjects"/>
+						<reference definitionId="org.eclipse.jpt.jpa.expression.anyReferencingProjectHasJpaFacet"/>
 					</adapt>
-	           	</with>
-        	</enablement>
-        </renameParticipant>
-    </extension>
+				</with>
+			</enablement>
+		</renameParticipant>
 
-
-    <extension
-        point="org.eclipse.ltk.core.refactoring.moveParticipants">
-
-        <moveParticipant
-    		class="org.eclipse.jpt.jpa.core.internal.refactoring.JpaMoveMappingFileParticipant"
-    		id="org.eclipse.jpt.jpa.core.ltk.jpaMoveMappingFileParticipant"
-    		name="%JPA_MOVE_MAPPING_FILE_PARTICIPANT_NAME">
-        	<enablement>
- 	           	<with variable="element">
-              		<instanceof value="org.eclipse.core.resources.IFile"/>
-  					<test
-        				args="kindOf"
-        	 			property="org.eclipse.core.resources.contentTypeId"
-         				value="org.eclipse.jpt.jpa.core.content.mappingFile"/>
+		<renameParticipant
+			class="org.eclipse.jpt.jpa.core.internal.refactoring.JpaRenameMappingFileParticipant"
+			id="org.eclipse.jpt.jpa.core.ltk.jpaRenameMappingFileParticipant"
+			name="%JPA_RENAME_MAPPING_FILE_PARTICIPANT_NAME">
+			<enablement>
+				<with variable="element">
+					<instanceof value="org.eclipse.core.resources.IFile"/>
+					<test property="org.eclipse.core.resources.contentTypeId"
+						value="org.eclipse.jpt.jpa.core.content.mappingFile"
+						args="kindOf"/>
 					<adapt type="org.eclipse.core.resources.IResource">
-						<reference definitionId="org.eclipse.jpt.jpa.reference.anyJpaFacetedReferencingProjects"/>
+						<reference definitionId="org.eclipse.jpt.jpa.expression.anyReferencingProjectHasJpaFacet"/>
 					</adapt>
-	           	</with>
-        	</enablement>
-        </moveParticipant>
+				</with>
+			</enablement>
+		</renameParticipant>
 
-        <moveParticipant
-    		class="org.eclipse.jpt.jpa.core.internal.refactoring.JpaMoveFolderParticipant"
-    		id="org.eclipse.jpt.jpa.core.ltk.jpaMoveFolderParticipant"
-    		name="%JPA_MOVE_FOLDER_PARTICIPANT_NAME">
-        	<enablement>
-    			<with variable="element">
-                   	<instanceof value="org.eclipse.core.resources.IFolder"/>
+	</extension>
+
+
+	<extension
+		point="org.eclipse.ltk.core.refactoring.moveParticipants">
+
+		<moveParticipant
+			class="org.eclipse.jpt.jpa.core.internal.refactoring.JpaMoveMappingFileParticipant"
+			id="org.eclipse.jpt.jpa.core.ltk.jpaMoveMappingFileParticipant"
+			name="%JPA_MOVE_MAPPING_FILE_PARTICIPANT_NAME">
+			<enablement>
+				<with variable="element">
+					<instanceof value="org.eclipse.core.resources.IFile"/>
+					<test property="org.eclipse.core.resources.contentTypeId"
+						value="org.eclipse.jpt.jpa.core.content.mappingFile"
+						args="kindOf"/>
 					<adapt type="org.eclipse.core.resources.IResource">
-						<reference definitionId="org.eclipse.jpt.jpa.reference.anyJpaFacetedReferencingProjects"/>
+						<reference definitionId="org.eclipse.jpt.jpa.expression.anyReferencingProjectHasJpaFacet"/>
 					</adapt>
-    			</with>
-        	</enablement>
-        </moveParticipant>
-    </extension>
-	
+				</with>
+			</enablement>
+		</moveParticipant>
+
+		<moveParticipant
+			class="org.eclipse.jpt.jpa.core.internal.refactoring.JpaMoveFolderParticipant"
+			id="org.eclipse.jpt.jpa.core.ltk.jpaMoveFolderParticipant"
+			name="%JPA_MOVE_FOLDER_PARTICIPANT_NAME">
+			<enablement>
+				<with variable="element">
+					<instanceof value="org.eclipse.core.resources.IFolder"/>
+					<adapt type="org.eclipse.core.resources.IResource">
+						<reference definitionId="org.eclipse.jpt.jpa.expression.anyReferencingProjectHasJpaFacet"/>
+					</adapt>
+				</with>
+			</enablement>
+		</moveParticipant>
+
+	</extension>
+
 </plugin>

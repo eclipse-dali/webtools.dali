@@ -11,33 +11,38 @@
  -->
 
 <plugin>
-	
+
 	<!-- ***** extension points ***** -->
-	
+
 	<extension-point
 		id="jaxbPlatforms"
 		name="%JAXB_PLATFORMS"
 		schema="schema/jaxbPlatforms.exsd"/>
-	
-	<!-- ***** expressions ***** -->
 
-	<extension point="org.eclipse.core.expressions.definitions">
-		<!-- A test for determining whether something adapts to an IProject and has the JAXB facet.
-			Force activation of the wst facet plug-in containing the property tester.
-			Possible usage:
-			<adapt type="org.eclipse.core.resources.IProject">
-				<reference definitionId="org.eclipse.jpt.jaxb.reference.hasJaxbFacet"/>
+
+	<!-- ***** expression definitions ***** -->
+
+	<extension
+		point="org.eclipse.core.expressions.definitions">
+
+		<!--
+			Return whether a resource's project has the JAXB facet
+			(or a project facet version matches the JAXB facet).
+			Force activation of the WST facet plug-in containing the property tester.
+			Example usage:
+			<adapt type="org.eclipse.core.resources.IResource">
+				<reference definitionId="org.eclipse.jpt.jaxb.expression.hasJaxbFacet"/>
 			</adapt>
-		-->			
-		<definition id="org.eclipse.jpt.jaxb.reference.hasJaxbFacet">
-			<test
-				property="org.eclipse.wst.common.project.facet.core.projectFacet"
+		-->
+		<definition id="org.eclipse.jpt.jaxb.expression.hasJaxbFacet">
+			<test property="org.eclipse.wst.common.project.facet.core.projectFacet"
 				value="jpt.jaxb"
 				forcePluginActivation="true"/>
 		</definition>
-		
+
 	</extension>
-	
+
+
 	<!-- ***** adapters ***** -->
 
 	<extension
@@ -187,7 +192,7 @@
 	</extension>
 
 
-	<!-- ***** Dali extensions (eat our own dogfood) ***** -->
+	<!-- ***** JAXB platforms (eat our own dogfood) ***** -->
 
 	<extension
 		point="org.eclipse.jpt.jaxb.core.jaxbPlatforms">
@@ -215,6 +220,8 @@
 	</extension>
 	
 	
+	<!-- ***** library validators ***** -->
+
 	<extension
 		point="org.eclipse.jpt.common.core.libraryValidators">
 		
@@ -256,7 +263,9 @@
 	</extension>
 	
 	
-	<extension 
+	<!-- ***** WTP library providers ***** -->
+
+	<extension
 		point="org.eclipse.jst.common.project.facet.core.libraryProviders">
 		
 		<provider
@@ -265,9 +274,7 @@
 			<param name="message" value="%JAXB_NO_OP_LIBRARY_PROVIDER_MESSAGE"/>
 			<enablement>
 				<with variable="requestingProjectFacet">
-					<test 
-						property="org.eclipse.wst.common.project.facet.core.projectFacet" 
-						value="jpt.jaxb" forcePluginActivation="true"/>
+					<reference definitionId="org.eclipse.jpt.jaxb.expression.hasJaxbFacet"/>
 				</with>
 			</enablement>
 		</provider>
@@ -280,8 +287,7 @@
       		<enablement>
       			<and>
 					<with variable="requestingProjectFacet">
-						<test property="org.eclipse.wst.common.project.facet.core.projectFacet" 
-							value="jpt.jaxb" forcePluginActivation="true"/>
+						<reference definitionId="org.eclipse.jpt.jaxb.expression.hasJaxbFacet"/>
 					</with>
 				</and>
 			</enablement>
@@ -299,8 +305,7 @@
 			extends="wtp-user-library-provider">
 			<enablement>
 				<with variable="requestingProjectFacet">
-					<test property="org.eclipse.wst.common.project.facet.core.projectFacet" 
-						value="jpt.jaxb" forcePluginActivation="true"/>
+					<reference definitionId="org.eclipse.jpt.jaxb.expression.hasJaxbFacet"/>
 				</with>
 			</enablement>
 			<action type="INSTALL">
@@ -316,8 +321,7 @@
 			abstract="true">
 			<enablement>
 				<with variable="requestingProjectFacet">
-					<test property="org.eclipse.wst.common.project.facet.core.projectFacet" 
-						value="jpt.jaxb" forcePluginActivation="true"/>
+					<reference definitionId="org.eclipse.jpt.jaxb.expression.hasJaxbFacet"/>
 				</with>
 			</enablement>
 			<action type="INSTALL">
@@ -335,7 +339,7 @@
 	</extension>
 
 
-	<!-- ***** WTP facet framework ***** -->
+	<!-- ***** WTP facets ***** -->
 
 	<extension 
 		point="org.eclipse.wst.common.project.facet.core.runtimes">
@@ -391,7 +395,7 @@
 	</extension>
 	
 
-	<!-- ***** WTP validation framework ***** -->
+	<!-- ***** WTP validation ***** -->
 
 	<extension
 		point="org.eclipse.wst.validation.validatorV2"

@@ -55,7 +55,7 @@
           nameFilter="*"
           objectClass="org.eclipse.core.resources.IProject">
 		<enablement>
-			<test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa"/>
+			<reference definitionId="org.eclipse.jpt.jpa.expression.hasJpaFacet"/>
 		</enablement>
        <action
              class="org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.ui.OpenJpaDiagramActionDelegate"
@@ -88,20 +88,12 @@
          id="org.eclipse.jpt.jpadiagrameditor.ui.propertypage"
          name="%diagrameditor.prefpage">
 			<enabledWhen>
-				<adapt type="org.eclipse.core.resources.IProject"> 		        
-		          <or>
-				    <test
-					     forcePluginActivation="true"
-					     property="org.eclipse.wst.common.project.facet.core.projectFacet"
-					     value="jpt.jpa:1.0">
-					</test>
-					<test
-					     forcePluginActivation="true"
-					     property="org.eclipse.wst.common.project.facet.core.projectFacet"
-					     value="jpt.jpa:2.0">
-					</test>
-				  </or>	
-		        </adapt> 
+				<adapt type="org.eclipse.core.resources.IProject">
+					<or>
+						<reference definitionId="org.eclipse.jpt.jpa.expression.hasJpa1_0Facet"/>
+						<reference definitionId="org.eclipse.jpt.jpa.expression.hasJpa2_0Facet"/>
+					</or>	
+				</adapt> 
 			</enabledWhen>         
    </page>
 </extension>

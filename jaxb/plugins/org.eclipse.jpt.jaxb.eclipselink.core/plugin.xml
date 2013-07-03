@@ -12,6 +12,28 @@
 
 <plugin>
 	
+	<!-- ***** expression definitions ***** -->
+
+	<extension
+		point="org.eclipse.core.expressions.definitions">
+
+		<!--
+			Return whether a JAXB platform config's JAXB platform is EclipseLink.
+			Example usage:
+			<adapt type="org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig">
+				<reference definitionId="org.eclipse.jpt.jaxb.eclipselink.expression.jaxbPlatformIsEclipseLink"/>
+			</adapt>
+		-->
+		<definition id="org.eclipse.jpt.jaxb.eclipselink.expression.jaxbPlatformIsEclipseLink">
+			<test property="org.eclipse.jpt.jaxb.core.jaxbPlatformGroup"
+				value="eclipselink"/>
+		</definition>
+		
+	</extension>
+
+
+	<!-- ***** content types ***** -->
+
 	<extension
 		point="org.eclipse.core.contenttype.contentTypes">
 		
@@ -31,27 +53,8 @@
 	</extension>
 	
 	
-	<!-- ***** expressions ***** -->
+	<!-- ***** property testers ***** -->
 
-	<extension point="org.eclipse.core.expressions.definitions">
-		<!-- A test for determining whether something adapts to a JaxbPlatformConfig 
-			and has an eclipselink platform.
-			Force activation of the wst facet plug-in containing the property tester.
-			Possible usage:
-			<adapt type="org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig">
-				<reference definitionId="org.eclipse.jpt.jaxb.eclipselink.reference.hasEclipseLinkPlatform"/>
-			</adapt>
-		-->			
-		<definition id="org.eclipse.jpt.jaxb.eclipselink.reference.hasEclipseLinkPlatform">
-			<test
-				property="org.eclipse.jpt.jaxb.core.jaxbPlatformGroup"
-				value="eclipselink"
-				forcePluginActivation="true"/>
-		</definition>
-		
-	</extension>
-	
-	
 	<extension 
 		point="org.eclipse.core.expressions.propertyTesters">
 		
@@ -65,6 +68,8 @@
 	</extension>
 	
 	
+	<!-- ***** JAXB platforms ***** -->
+
 	<extension
 		point="org.eclipse.jpt.jaxb.core.jaxbPlatforms">
 		
@@ -115,6 +120,8 @@
 	</extension>
 	
 	
+	<!-- ***** EMF ecore package registry ***** -->
+
 	 <extension
 	 	point="org.eclipse.emf.ecore.generated_package">
 		
@@ -126,6 +133,8 @@
 	</extension>
 	
 	
+	<!-- ***** library validators ***** -->
+
 	<extension
 		point="org.eclipse.jpt.common.core.libraryValidators">
 		
@@ -151,6 +160,8 @@
 	</extension>
 	
 	
+	<!-- ***** resource types ***** -->
+
 	<extension 
 		point="org.eclipse.jpt.common.core.resourceTypes">
 		

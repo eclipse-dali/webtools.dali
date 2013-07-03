@@ -110,10 +110,10 @@
 						<instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
 					</or>
 					<adapt type="org.eclipse.core.resources.IResource">
-						<reference definitionId="org.eclipse.jpt.jaxb.reference.hasJaxbFacet"/>
+						<reference definitionId="org.eclipse.jpt.jaxb.expression.hasJaxbFacet"/>
 					</adapt>
 					<adapt type="org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig">
-						<reference definitionId="org.eclipse.jpt.jaxb.eclipselink.reference.hasEclipseLinkPlatform"/>
+						<reference definitionId="org.eclipse.jpt.jaxb.eclipselink.expression.jaxbPlatformIsEclipseLink"/>
 					</adapt>
 				</and>
 			</enablement>

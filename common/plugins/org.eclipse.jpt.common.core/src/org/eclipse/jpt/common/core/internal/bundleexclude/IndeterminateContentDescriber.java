@@ -18,7 +18,8 @@ import org.eclipse.core.runtime.content.ITextContentDescriber;
 /**
  * This describer returns {@link #INDETERMINATE} for any content.
  * <p>
- * This is in its own package so it can be excluded from bundle
+ * <strong>NB:</strong>
+ * This class is in a package that is excluded from bundle
  * activation in the <code>META-INF/MANIFEST.MF</code> file.
  * To be excluded, content describers must be self-contained and
  * not trigger bundle auto-activation.

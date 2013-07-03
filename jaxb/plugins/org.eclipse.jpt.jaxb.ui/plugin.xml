@@ -103,7 +103,7 @@
 			<enablement>
 				<with variable="project">
 					<adapt type="org.eclipse.core.resources.IProject">
-						<reference definitionId="org.eclipse.jpt.jaxb.reference.hasJaxbFacet"/>
+						<reference definitionId="org.eclipse.jpt.jaxb.expression.hasJaxbFacet"/>
 					</adapt>
 				</with>
 			</enablement>
@@ -240,7 +240,7 @@
 							     the JaxbPackage AdapterFactory will not be called and the expression evaluates to true,
 							     that causes the JAXB menu to appear for JPA project packages -->
 	        				<adapt type="org.eclipse.core.resources.IResource">
-								<reference definitionId="org.eclipse.jpt.jaxb.reference.hasJaxbFacet"/>
+								<reference definitionId="org.eclipse.jpt.jaxb.expression.hasJaxbFacet"/>
         					</adapt>
  							<adapt type="org.eclipse.jpt.jaxb.core.context.JaxbPackage"/>
 						</iterate>
@@ -304,7 +304,7 @@
 				<or>
 					<instanceof value="org.eclipse.jpt.jaxb.core.context.JaxbContextNode"/>
 					<adapt type="org.eclipse.core.resources.IProject"> 
-						<reference definitionId="org.eclipse.jpt.jaxb.reference.hasJaxbFacet"/>
+						<reference definitionId="org.eclipse.jpt.jaxb.expression.hasJaxbFacet"/>
 					</adapt>
 				</or>
 			</triggerPoints>
@@ -387,7 +387,7 @@
 			class="org.eclipse.jpt.jaxb.ui.internal.properties.JaxbProjectPropertiesPage">
 			<enabledWhen>
 				<adapt type="org.eclipse.core.resources.IProject">
-					<reference definitionId="org.eclipse.jpt.jaxb.reference.hasJaxbFacet"/>
+					<reference definitionId="org.eclipse.jpt.jaxb.expression.hasJaxbFacet"/>
 				</adapt>
 			</enabledWhen>
 		</page>
@@ -399,7 +399,7 @@
 			class="org.eclipse.jpt.jaxb.ui.internal.properties.JaxbSchemasPropertiesPage">
 			<enabledWhen>
 				<adapt type="org.eclipse.core.resources.IProject">
-					<reference definitionId="org.eclipse.jpt.jaxb.reference.hasJaxbFacet"/>
+					<reference definitionId="org.eclipse.jpt.jaxb.expression.hasJaxbFacet"/>
 				</adapt>
 			</enabledWhen>
 		</page>
@@ -412,10 +412,7 @@
 			class="org.eclipse.jpt.jaxb.ui.internal.preferences.JaxbProblemSeveritiesPage">
 			<enabledWhen>
 				<adapt type="org.eclipse.core.resources.IProject">
-					<test
-						forcePluginActivation="true"
-						property="org.eclipse.wst.common.project.facet.core.projectFacet"
-						value="jpt.jaxb"/>
+					<reference definitionId="org.eclipse.jpt.jaxb.expression.hasJaxbFacet"/>
 				</adapt>
 			</enabledWhen>
 		</page>

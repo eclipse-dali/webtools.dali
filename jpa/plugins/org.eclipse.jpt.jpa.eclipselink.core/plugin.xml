@@ -12,17 +12,21 @@
 
 <plugin>
 
-	<!-- ***** expressions ***** -->
+	<!-- ***** expression definitions ***** -->
 
-	<extension point="org.eclipse.core.expressions.definitions">
-		<!-- A test for determining whether something has an EclipseLink JPA platform.
-			Typical usage:
+	<extension
+		point="org.eclipse.core.expressions.definitions">
+
+		<!--
+			Return whether a JPA platform config's JPA platform is EclipseLink.
+			Example usage:
 			<adapt type="org.eclipse.jpt.jpa.core.JpaPlatform$Config">
-				<reference definitionId="org.eclipse.jpt.jpa.eclipselink.reference.hasEclipseLinkJpaPlatform"/>
+				<reference definitionId="org.eclipse.jpt.jpa.eclipselink.expression.jpaPlatformIsEclipseLink"/>
 			</adapt>
 		 -->
-		<definition id="org.eclipse.jpt.jpa.eclipselink.reference.hasEclipseLinkJpaPlatform">
-			<test property="org.eclipse.jpt.jpa.core.jpaPlatformGroup" value="eclipselink"/>
+		<definition id="org.eclipse.jpt.jpa.eclipselink.expression.jpaPlatformIsEclipseLink">
+			<test property="org.eclipse.jpt.jpa.core.jpaPlatformGroup"
+				value="eclipselink"/>
 		</definition>
 		
 	</extension>
@@ -38,8 +42,7 @@
 			base-type="org.eclipse.jpt.jpa.core.content.mappingFile">
 			<describer
 				class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber2">
-				<parameter 
-					name="element" 
+				<parameter name="element" 
 					value="{http://www.eclipse.org/eclipselink/xsds/persistence/orm}entity-mappings"/>
 			</describer>
 		</content-type>
@@ -124,74 +127,74 @@
 		point="org.eclipse.jpt.jpa.core.jpaPlatforms">
 		
 		<jpaPlatformGroup
-        	id="eclipselink"
-        	label="%ECLIPSELINK_PLATFORM_GROUP_LABEL"/>
-		
+			id="eclipselink"
+			label="%ECLIPSELINK_PLATFORM_GROUP_LABEL"/>
+
 		<jpaPlatform
 			id="org.eclipse.eclipselink.platform"
-            label="%ECLIPSELINK1_0_x_PLATFORM"
+			label="%ECLIPSELINK1_0_x_PLATFORM"
 			factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory"
 			group="eclipselink"
 			jpaFacetVersion="1.0"/>
-	    
-	    <jpaPlatform
-	        id="eclipselink1_1"
-	        label="%ECLIPSELINK1_1_x_PLATFORM"
-	        factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory1_1"
-	        group="eclipselink"
+
+		<jpaPlatform
+			id="eclipselink1_1"
+			label="%ECLIPSELINK1_1_x_PLATFORM"
+			factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory1_1"
+			group="eclipselink"
 			jpaFacetVersion="1.0"/>
-	    
-	    <jpaPlatform
+
+		<jpaPlatform
 			id="eclipselink1_2"
 			label="%ECLIPSELINK1_2_x_PLATFORM"
 			factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory1_2"
 			group="eclipselink"
 			jpaFacetVersion="1.0"/>
-		
-	    <jpaPlatform
-	        id="eclipselink2_0"
-	        label="%ECLIPSELINK2_0_x_PLATFORM"
-	        factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_0"
-	        group="eclipselink"
-			jpaFacetVersion="2.0"/>
-		
+
 		<jpaPlatform
-	        id="eclipselink2_1"
-	        label="%ECLIPSELINK2_1_x_PLATFORM"
-	        factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_1"
-	        group="eclipselink"
+			id="eclipselink2_0"
+			label="%ECLIPSELINK2_0_x_PLATFORM"
+			factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_0"
+			group="eclipselink"
 			jpaFacetVersion="2.0"/>
-		
+
 		<jpaPlatform
-	        id="eclipselink2_2"
-	        label="%ECLIPSELINK2_2_x_PLATFORM"
-	        factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_2"
-	        group="eclipselink"
+			id="eclipselink2_1"
+			label="%ECLIPSELINK2_1_x_PLATFORM"
+			factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_1"
+			group="eclipselink"
 			jpaFacetVersion="2.0"/>
-		
+
 		<jpaPlatform
-	        id="eclipselink2_3"
-	        label="%ECLIPSELINK2_3_x_PLATFORM"
-	        factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_3"
-	        group="eclipselink"
+			id="eclipselink2_2"
+			label="%ECLIPSELINK2_2_x_PLATFORM"
+			factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_2"
+			group="eclipselink"
 			jpaFacetVersion="2.0"/>
-		
+
 		<jpaPlatform
-	        id="eclipselink2_4"
-	        label="%ECLIPSELINK2_4_x_PLATFORM"
-	        factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_4"
-	        group="eclipselink"
+			id="eclipselink2_3"
+			label="%ECLIPSELINK2_3_x_PLATFORM"
+			factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_3"
+			group="eclipselink"
 			jpaFacetVersion="2.0"/>
-		
+
 		<jpaPlatform
-	        id="eclipselink2_5"
-	        label="%ECLIPSELINK2_5_x_PLATFORM"
-	        factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_5"
-	        group="eclipselink"
+			id="eclipselink2_4"
+			label="%ECLIPSELINK2_4_x_PLATFORM"
+			factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_4"
+			group="eclipselink"
+			jpaFacetVersion="2.0"/>
+
+		<jpaPlatform
+			id="eclipselink2_5"
+			label="%ECLIPSELINK2_5_x_PLATFORM"
+			factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_5"
+			group="eclipselink"
 			jpaFacetVersion="2.1"/>
 	</extension>
-	
-	
+
+
 	<!-- ***** library validators ***** -->
 
 	<extension
@@ -208,14 +211,13 @@
 					</with>
 					<with variable="config">
 						<adapt type = "org.eclipse.jpt.jpa.core.JpaPlatform$Config">
-							<test property="org.eclipse.jpt.jpa.core.jpaPlatformGroup"
-								value="eclipselink"/>
+							<reference definitionId="org.eclipse.jpt.jpa.eclipselink.expression.jpaPlatformIsEclipseLink"/>
 						</adapt>
 					</with>
 				</and>
 			</enablement>
 		</libraryValidator>
-		
+
 		<libraryValidator
 			id="eclipselinkEclipselinkBundlesLibraryValidator"
 			class="org.eclipse.jpt.jpa.eclipselink.core.internal.libval.EclipseLinkEclipseLinkBundlesLibraryValidator">
@@ -227,18 +229,17 @@
 					</with>
 					<with variable="config">
 						<adapt type = "org.eclipse.jpt.jpa.core.JpaPlatform$Config">
-							<test property="org.eclipse.jpt.jpa.core.jpaPlatformGroup"
-								value="eclipselink"/>
+							<reference definitionId="org.eclipse.jpt.jpa.eclipselink.expression.jpaPlatformIsEclipseLink"/>
 						</adapt>
 					</with>
 				</and>
 			</enablement>
 		</libraryValidator>
-		
+
 	</extension>
 
 
-	<!-- ***** WTP Library Provider Framework Integration ***** -->
+	<!-- ***** WTP library providers ***** -->
 
 	<extension 
 		point="org.eclipse.jst.common.project.facet.core.libraryProviders">
@@ -248,34 +249,34 @@
 			extends="jpa-deprecated-user-library-provider"
 			hidden="true">
 		</provider>
-		
+
 		<provider 
 			id="jpa-eclipselink1_1-user-library-provider" 
 			extends="jpa-deprecated-user-library-provider"
 			hidden="true">
 		</provider>
-		
+
 		<provider 
 			id="jpa-eclipselink1_2-user-library-provider" 
 			extends="jpa-deprecated-user-library-provider"
 			hidden="true">
 		</provider>
-		
+
 		<provider 
 			id="eclipselink2_0-user-library-provider" 
 			extends="jpa-deprecated-user-library-provider"
 			hidden="true">
 		</provider>
-		
+
 		<provider 
 			id="jpa-eclipselink2_1-user-library-provider" 
 			extends="jpa-deprecated-user-library-provider"
 			hidden="true">
 		</provider>
-		
+
 	</extension>
-	
-	
+
+
 	<!-- ***** builders ***** -->
 
 	<extension
@@ -298,9 +299,7 @@
 		<resourceFactory
 			class="org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmXmlResourceFactory"
 			isDefault="true">
-			<contentTypeBinding
-				contentTypeId="org.eclipse.jpt.jpa.eclipselink.core.content.orm">
-			</contentTypeBinding>
+			<contentTypeBinding contentTypeId="org.eclipse.jpt.jpa.eclipselink.core.content.orm"/>
 		</resourceFactory>
 
 	</extension>

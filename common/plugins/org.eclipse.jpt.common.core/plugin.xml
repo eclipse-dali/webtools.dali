@@ -30,6 +30,43 @@
 		schema="schema/resourceTypes.exsd"/>
 
 
+	<!-- ***** expression definitions ***** -->
+
+	<extension
+		point="org.eclipse.core.expressions.definitions">
+
+		<!--
+			Return whether a resource's project has the Java facet
+			(or a project facet version matches the Java facet).
+			Force activation of the WST facet plug-in containing the property tester.
+			Example usage:
+			<adapt type="org.eclipse.core.resources.IResource">
+				<reference definitionId="org.eclipse.jpt.expression.hasJavaFacet"/>
+			</adapt>
+		-->
+		<definition id="org.eclipse.jpt.expression.hasJavaFacet">
+			<test property="org.eclipse.wst.common.project.facet.core.projectFacet"
+				value="java"
+				forcePluginActivation="true"/>
+		</definition>
+
+		<!-- Return whether a resource's project has the Static Web facet. -->
+		<definition id="org.eclipse.jpt.expression.hasStaticWebFacet">
+			<test property="org.eclipse.wst.common.project.facet.core.projectFacet"
+				value="wst.web"
+				forcePluginActivation="true"/>
+		</definition>
+
+		<!-- Return whether a resource's project has the Dynamic Web facet. -->
+		<definition id="org.eclipse.jpt.expression.hasDynamicWebFacet">
+			<test property="org.eclipse.wst.common.project.facet.core.projectFacet"
+				value="jst.web"
+				forcePluginActivation="true"/>
+		</definition>
+
+	</extension>
+
+
 	<!-- ***** adapters ***** -->
 
 	<extension
@@ -50,13 +87,13 @@
 		</factory>
 
 	</extension>
-	
-	
+
+
 	<!-- ***** content types ***** -->
-	
+
 	<extension
 		point="org.eclipse.core.contenttype.contentTypes">
-	
+
 		<!-- JAR content type -->
 		<content-type
 			id="org.eclipse.jpt.common.core.content.jar"
@@ -67,16 +104,16 @@
 				<parameter name="signature" value="50 4B 03 04"/>
 			</describer>
 		</content-type>
-		
-  		<!-- package-info.java content type (for package annotations) -->
+
+		<!-- package-info.java content type (for package annotations) -->
 		<content-type
-       		id="org.eclipse.jpt.common.core.content.javaPackageInfo"
-        	name="%JAVA_PACKAGE_INFO_CONTENT"
-        	base-type="org.eclipse.jdt.core.javaSource"
-       	 	file-names="package-info.java"
-        	priority="normal">
-  		</content-type>
-		
+			id="org.eclipse.jpt.common.core.content.javaPackageInfo"
+			name="%JAVA_PACKAGE_INFO_CONTENT"
+			base-type="org.eclipse.jdt.core.javaSource"
+			file-names="package-info.java"
+			priority="normal">
+		</content-type>
+
 		<!-- faceted project file -->
 		<content-type
 			id="org.eclipse.jpt.common.core.content.projectFacet"
@@ -85,12 +122,10 @@
 			base-type="org.eclipse.core.runtime.xml">
 			<describer
 				class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber2">
-				<parameter 
-					name="element" 
-					value="faceted-project"/>
+				<parameter name="element" value="faceted-project"/>
 			</describer>
 		</content-type>
-		
+
 	</extension>
 
 
@@ -118,61 +153,60 @@
 
 	<extension 
 		point="org.eclipse.core.expressions.propertyTesters">
-		
+
 		<propertyTester
 			id="org.eclipse.jpt.common.core.propertyTester.LibraryProvider"
 			type="org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider"
 			namespace="org.eclipse.jpt.common.core"
 			properties="id, extendsId"
 			class="org.eclipse.jpt.common.core.internal.LibraryProviderPropertyTester"/>
-		
+
 		<propertyTester
 			id="org.eclipse.jpt.common.core.propertyTester.JptResourceTypeReference"
 			type="org.eclipse.jpt.common.core.JptResourceTypeReference"
 			namespace="org.eclipse.jpt.common.core"
 			properties="resourceTypeIsKindOf"
 			class="org.eclipse.jpt.common.core.internal.JptResourceTypeReferencePropertyTester"/>
-		
+
 		<propertyTester
-			id="org.eclipse.jpt.common.core.propertyTester.FacetedReferencingProjectsPropertyTester"
+			id="org.eclipse.jpt.common.core.propertyTester.Resource"
 			type="org.eclipse.core.resources.IResource"
 			namespace="org.eclipse.jpt.common.core"
-			properties="anyFacetedReferencingProjects"
-			class="org.eclipse.jpt.common.core.internal.bundleexclude.FacetedReferencingProjectsPropertyTester"/>
+			properties="anyReferencingProjectHasFacet"
+			class="org.eclipse.jpt.common.core.internal.bundleexclude.ResourcePropertyTester"/>
 
 	</extension>
-	
-	
-	 <extension
-	 	point="org.eclipse.emf.ecore.generated_package">
-		
+
+
+	<!-- ***** EMF ecore package registry ***** -->
+
+	<extension
+		point="org.eclipse.emf.ecore.generated_package">
+
 		<package
 			uri="http://www.eclipse.org/dali/common"
 			class="org.eclipse.jpt.common.core.resource.xml.CommonPackage"
 			genModel="model/common.genmodel"/>
 		
 	</extension>
-	
-	
-	<!-- ***** Dali extensions (eat our own dogfood) ***** -->
-	
+
+
+	<!-- ***** resource locators (eat our own dogfood) ***** -->
+
 	<extension
 		point="org.eclipse.jpt.common.core.resourceLocators">
-		
+
 		<resourceLocator
 			id="simpleJavaResourceLocator"
 			class="org.eclipse.jpt.common.core.internal.resource.SimpleJavaResourceLocator"
 			priority="lowest">
 			<enablement>
 				<with variable="project">
-					<test 
-						property="org.eclipse.wst.common.project.facet.core.projectFacet" 
-						value="java" 
-						forcePluginActivation="true"/>
+					<reference definitionId="org.eclipse.jpt.expression.hasJavaFacet"/>
 				</with>
 			</enablement>
 		</resourceLocator>
-		
+
 		<resourceLocator
 			id="moduleResourceLocator"
 			class="org.eclipse.jpt.common.core.internal.resource.ModuleResourceLocator"
@@ -180,64 +214,54 @@
 			<enablement>
 				<with variable="project">
 					<and>
-						<test 
-							property="org.eclipse.core.resources.projectNature" 
+						<test property="org.eclipse.core.resources.projectNature" 
 							value="org.eclipse.wst.common.modulecore.ModuleCoreNature" 
 							forcePluginActivation="true"/>
-						<not>
-							<test
-								property="org.eclipse.wst.common.project.facet.core.projectFacet"
-								value="wst.web"
-								forcePluginActivation="true"/>
-						</not>
+						<not><reference definitionId="org.eclipse.jpt.expression.hasStaticWebFacet"/></not>
 					</and>
 				</with>
 			</enablement>
 		</resourceLocator>
-		
+
 		<resourceLocator
 			id="webModuleResourceLocator"
 			class="org.eclipse.jpt.common.core.internal.resource.WebModuleResourceLocator"
 			priority="low">
 			<enablement>
 				<with variable="project">
-					<test 
-						property="org.eclipse.wst.common.project.facet.core.projectFacet" 
-						value="jst.web" 
-						forcePluginActivation="true"/>
+					<reference definitionId="org.eclipse.jpt.expression.hasDynamicWebFacet"/>
 				</with>
 			</enablement>
 		</resourceLocator>
-		
+
 		<resourceLocator
 			id="pluginResourceLocator"
 			class="org.eclipse.jpt.common.core.internal.resource.PluginResourceLocator"
 			priority="normal">
 			<enablement>
 				<with variable="project">
-					<test 
-						property="org.eclipse.core.resources.projectNature" 
+					<test property="org.eclipse.core.resources.projectNature" 
 						value="org.eclipse.pde.PluginNature" 
 						forcePluginActivation="true"/>
 				</with>
 			</enablement>
 		</resourceLocator>
-		
+
 	</extension>
-	
-	
-	<!-- ***** WTP Library Provider Framework Integration ***** -->
+
+
+	<!-- ***** WTP library providers ***** -->
 
 	<extension 
 		point="org.eclipse.jst.common.project.facet.core.libraryProviders">
-		
+
 		<provider 
 			id="jpt-no-op-library-provider" 
 			extends="no-op-library-provider"
 			abstract="true">
 			<param name="warning" value="%NO_OP_LIBRARY_PROVIDER_WARNING"/>
 		</provider>
-	
+
 	</extension>
-	
+
 </plugin>
