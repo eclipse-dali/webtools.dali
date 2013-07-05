@@ -252,7 +252,7 @@ public abstract class EBaseObjectImpl
 	}
 
 	public boolean containsOffset(int textOffset) {
-		return this.node.contains(textOffset);
+		return (this.node != null) && this.node.contains(textOffset);
 	}
 
 
