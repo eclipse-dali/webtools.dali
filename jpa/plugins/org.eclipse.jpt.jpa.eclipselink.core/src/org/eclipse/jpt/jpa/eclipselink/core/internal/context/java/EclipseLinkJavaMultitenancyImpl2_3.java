@@ -607,15 +607,13 @@ public class EclipseLinkJavaMultitenancyImpl2_3
 	}
 
 	protected EclipseLinkMappedSuperclass getSuperMappedSuperclass(TypeMapping typeMapping) {
-		TypeMapping superTypeMapping = typeMapping.getSuperTypeMapping();
-		if (superTypeMapping == null) {
-			return null;
+		for (TypeMapping superTypeMapping : typeMapping.getAncestors()) {
+			//instanceof check in case the mapped superclass is in an orm.xml instead of an eclipselinkorm.xml file.
+			if (superTypeMapping instanceof EclipseLinkMappedSuperclass) {
+				return (EclipseLinkMappedSuperclass) superTypeMapping;
+			}
 		}
-		//instanceof check in case the mapped superclass is in an orm.xml instead of an eclipselinkorm.xml file.
-		if (superTypeMapping instanceof EclipseLinkMappedSuperclass) {
-			return (EclipseLinkMappedSuperclass) superTypeMapping;
-		}
-		return this.getSuperMappedSuperclass(superTypeMapping);
+		return null;
 	}
 
 	public boolean usesPrimaryKeyTenantDiscriminatorColumns() {

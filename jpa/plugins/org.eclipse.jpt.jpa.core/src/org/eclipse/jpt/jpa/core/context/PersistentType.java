@@ -25,39 +25,44 @@ import org.eclipse.jpt.jpa.core.JpaStructureNode;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.3
+ * @version 3.6
  * @since 2.0
  */
 public interface PersistentType
-	extends ManagedType, JpaStructureNode, SpecifiedAccessReference
-{
+		extends ManagedType, JpaStructureNode, SpecifiedAccessReference {
+	
 	Class<PersistentType> getManagedTypeType();
-
-	// ********** mapping **********
-
+	
+	
+	// ***** mapping *****
+	
+	/**
+	 * String associated with changes to the "mapping" property
+	 */
+	String MAPPING_PROPERTY = "mapping"; //$NON-NLS-1$
+	
 	/**
 	 * Return the persistent type's mapping.
 	 * Set the mapping via {@link #setMappingKey(String)}.
 	 */
 	TypeMapping getMapping();
-		String MAPPING_PROPERTY = "mapping"; //$NON-NLS-1$
+	
 	Transformer<PersistentType, TypeMapping> MAPPING_TRANSFORMER = new MappingTransformer();
 	class MappingTransformer
-		extends TransformerAdapter<PersistentType, TypeMapping>
-	{
+			extends TransformerAdapter<PersistentType, TypeMapping> {
 		@Override
 		public TypeMapping transform(PersistentType pt) {
 			return pt.getMapping();
 		}
 	}
-
+	
 	String getMappingKey();
-
+	
 	void setMappingKey(String key);
-
+	
 	boolean isMapped();
-
-
+	
+	
 	// ********** attributes **********
 
 	/**
@@ -116,57 +121,28 @@ public interface PersistentType
 
 
 	// ********** inheritance **********
-
+	
 	/**
-	 * Return the "super" {@link PersistentType} from the "persistence"
-	 * inheritance hierarchy.
-	 * If the Java inheritance parent is not a {@link PersistentType}, then continue
-	 * up the hierarchy (the JPA spec allows non-persistent types to be part of the hierarchy.)
-	 * Return <code>null</code> if the persistent type is the root persistent type.
-	 * <p>
-	 * Example:
-	 * <pre>
-	 * &#64;Entity
-	 * public abstract class Model {}
-	 * 
-	 * public abstract class Animal extends Model {}
-	 * 
-	 * &#64;Entity
-	 * public class Cat extends Animal {}
-	 * </pre>
-	 * The "super" persistent type of the <code>Cat</code> persistent type is
-	 * the <code>Model</code> persistent type. The "super" persistent type can
-	 * be either a Java annotated class or declared in the XML files.
+	 * Return the persistent type of the super type mapping
+	 * @see TypeMapping#getSuperTypeMapping()
 	 */
 	PersistentType getSuperPersistentType();
-		String SUPER_PERSISTENT_TYPE_PROPERTY = "superPersistentType"; //$NON-NLS-1$
-	Transformer<PersistentType, PersistentType> SUPER_PERSISTENT_TYPE_TRANSFORMER = new SuperPersistentTypeTransformer();
-	class SuperPersistentTypeTransformer
-		extends TransformerAdapter<PersistentType, PersistentType>
-	{
-		@Override
-		public PersistentType transform(PersistentType persistentType) {
-			return persistentType.getSuperPersistentType();
-		}
-	}
-
+	
 	/**
 	 * Return the persistent type's "persistence" inheritance hierarchy,
 	 * <em>including</em> the persistent type itself.
-	 * The returned iterator will return elements infinitely if the hierarchy
-	 * has a loop.
+	 * @see TypeMapping#getTypeMappingInheritanceHierarchy()
 	 */
 	Iterable<PersistentType> getInheritanceHierarchy();
-
+	
 	/**
 	 * Return the persistent type's "persistence" inheritance hierarchy,
 	 * <em>excluding</em> the persistent type itself.
-	 * The returned iterator will return elements infinitely if the hierarchy
-	 * has a loop.
+	 * @see TypeMapping#getAncesors()
 	 */
 	Iterable<PersistentType> getAncestors();
-
-
+	
+	
 	// ********** misc **********
 
 	/**

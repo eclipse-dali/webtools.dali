@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,20 +31,12 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.XmlMappedSuperclass#isExcludeDefaultListeners <em>Exclude Default Listeners</em>}</li>
- *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.XmlMappedSuperclass#isExcludeSuperclassListeners <em>Exclude Superclass Listeners</em>}</li>
- *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.XmlMappedSuperclass#getEntityListeners <em>Entity Listeners</em>}</li>
- * </ul>
- * </p>
  *
  * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlMappedSuperclass()
  * @model kind="class"
  * @generated
  */
-public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlIdClassContainer
+public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlIdTypeMapping
 {
 
 	/**
@@ -206,7 +198,7 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlId
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Exclude Default Listeners</em>' attribute.
 	 * @see #setExcludeDefaultListeners(boolean)
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlMappedSuperclass_ExcludeDefaultListeners()
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlIdTypeMapping_ExcludeDefaultListeners()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
 	 * @generated
 	 */
@@ -241,7 +233,7 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlId
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Exclude Superclass Listeners</em>' attribute.
 	 * @see #setExcludeSuperclassListeners(boolean)
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlMappedSuperclass_ExcludeSuperclassListeners()
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlIdTypeMapping_ExcludeSuperclassListeners()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
 	 * @generated
 	 */
@@ -276,7 +268,7 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlId
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Entity Listeners</em>' containment reference.
 	 * @see #setEntityListeners(EntityListeners)
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlMappedSuperclass_EntityListeners()
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlIdTypeMapping_EntityListeners()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -456,6 +448,16 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlId
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlIdTypeMapping.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_LISTENERS: return OrmPackage.XML_ID_TYPE_MAPPING__EXCLUDE_DEFAULT_LISTENERS;
+				case OrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_SUPERCLASS_LISTENERS: return OrmPackage.XML_ID_TYPE_MAPPING__EXCLUDE_SUPERCLASS_LISTENERS;
+				case OrmPackage.XML_MAPPED_SUPERCLASS__ENTITY_LISTENERS: return OrmPackage.XML_ID_TYPE_MAPPING__ENTITY_LISTENERS;
+				default: return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -472,6 +474,16 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlId
 			switch (baseFeatureID)
 			{
 				case OrmPackage.XML_ID_CLASS_CONTAINER__ID_CLASS: return OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlIdTypeMapping.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_ID_TYPE_MAPPING__EXCLUDE_DEFAULT_LISTENERS: return OrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_LISTENERS;
+				case OrmPackage.XML_ID_TYPE_MAPPING__EXCLUDE_SUPERCLASS_LISTENERS: return OrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_SUPERCLASS_LISTENERS;
+				case OrmPackage.XML_ID_TYPE_MAPPING__ENTITY_LISTENERS: return OrmPackage.XML_MAPPED_SUPERCLASS__ENTITY_LISTENERS;
 				default: return -1;
 			}
 		}
@@ -529,15 +541,15 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlId
 	}
 	
 	protected static Translator buildExcludeDefaultListenersTranslator() {
-		return new EmptyTagBooleanTranslator(JPA.EXCLUDE_DEFAULT_LISTENERS, OrmPackage.eINSTANCE.getXmlMappedSuperclass_ExcludeDefaultListeners());
+		return new EmptyTagBooleanTranslator(JPA.EXCLUDE_DEFAULT_LISTENERS, OrmPackage.eINSTANCE.getXmlIdTypeMapping_ExcludeDefaultListeners());
 	}
 	
 	protected static Translator buildExcludeSuperclassListenersTranslator() {
-		return new EmptyTagBooleanTranslator(JPA.EXCLUDE_SUPERCLASS_LISTENERS, OrmPackage.eINSTANCE.getXmlMappedSuperclass_ExcludeSuperclassListeners());
+		return new EmptyTagBooleanTranslator(JPA.EXCLUDE_SUPERCLASS_LISTENERS, OrmPackage.eINSTANCE.getXmlIdTypeMapping_ExcludeSuperclassListeners());
 	}
 	
 	protected static Translator buildEntityListenersTranslator() {
-		return EntityListeners.buildTranslator(JPA.ENTITY_LISTENERS, OrmPackage.eINSTANCE.getXmlMappedSuperclass_EntityListeners());
+		return EntityListeners.buildTranslator(JPA.ENTITY_LISTENERS, OrmPackage.eINSTANCE.getXmlIdTypeMapping_EntityListeners());
 	}
 	
 	protected static Translator buildPrePersistTranslator() {

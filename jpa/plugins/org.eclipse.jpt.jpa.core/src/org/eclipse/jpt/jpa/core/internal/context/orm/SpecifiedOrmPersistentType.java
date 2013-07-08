@@ -44,6 +44,7 @@ import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -91,9 +92,7 @@ public abstract class SpecifiedOrmPersistentType
 	protected final SpecifiedAttributeContainerAdapter specifiedAttributeContainerAdapter = new SpecifiedAttributeContainerAdapter();
 
 	protected final Vector<OrmPersistentAttribute> defaultAttributes = new Vector<OrmPersistentAttribute>();
-
-	protected PersistentType superPersistentType;
-
+	
 	protected String declaringTypeName;
 
 	protected final MetamodelSourceType2_0.Synchronizer metamodelSynchronizer;
@@ -130,7 +129,6 @@ public abstract class SpecifiedOrmPersistentType
 		this.setDefaultAccess(this.buildDefaultAccess());
 		this.updateModels(this.getSpecifiedAttributes());
 		this.updateDefaultAttributes();
-		this.setSuperPersistentType(this.buildSuperPersistentType());
 		this.setDeclaringTypeName(this.buildDeclaringTypeName());
 		this.updateStructureChildren();
 	}
@@ -236,8 +234,8 @@ public abstract class SpecifiedOrmPersistentType
 					return this.getJavaPersistentType().getAccess();
 				}
 			}
-			if (this.superPersistentType != null) {
-				return this.superPersistentType.getAccess();
+			if (getSuperPersistentType() != null) {
+				return getSuperPersistentType().getAccess();
 			}
 		}
 		AccessType access = this.getMappingFileRoot().getAccess();
@@ -292,7 +290,7 @@ public abstract class SpecifiedOrmPersistentType
 			return attributes.hasNext() ? null /* more than one */: attribute;
 		}
 		// recurse
-		return (this.superPersistentType == null) ? null : this.superPersistentType.resolveAttribute(attributeName);
+		return (getSuperPersistentType() == null) ? null : getSuperPersistentType().resolveAttribute(attributeName);
 	}
 
 	protected Iterable<String> convertToNames(Iterable<? extends PersistentAttribute> attributes) {
@@ -907,52 +905,24 @@ public abstract class SpecifiedOrmPersistentType
 		defaultAttribute.dispose();
 		this.removeItemFromList(defaultAttribute, this.defaultAttributes, DEFAULT_ATTRIBUTES_LIST);
 	}
-
-
-	// ********** super persistent type **********
-
+	
+	
+	// ***** inheritance *****
+	
 	public PersistentType getSuperPersistentType() {
-		return this.superPersistentType;
+		TypeMapping superTypeMapping = this.mapping.getSuperTypeMapping();
+		return (superTypeMapping == null) ? null : superTypeMapping.getPersistentType();
 	}
-
-	protected void setSuperPersistentType(PersistentType persistentType) {
-		PersistentType old = this.superPersistentType;
-		this.superPersistentType = persistentType;
-		this.firePropertyChanged(SUPER_PERSISTENT_TYPE_PROPERTY, old, persistentType);
-	}
-
-	protected PersistentType buildSuperPersistentType() {
-		PersistentType spt = this.buildSuperPersistentType_();
-		if (spt == null) {
-			return null;
-		}
-		// check for circular inheritance
-		return IterableTools.contains(spt.getInheritanceHierarchy(), this) ? null : spt;
-	}
-
-	protected PersistentType buildSuperPersistentType_() {
-		return (this.getJavaPersistentType() == null) ? null : this.getJavaPersistentType().getSuperPersistentType();
-	}
-
-
-	// ********** inheritance **********
-
+	
 	public Iterable<PersistentType> getInheritanceHierarchy() {
-		return this.buildInheritanceHierarchy(this);
+		return IterableTools.insert(this, getAncestors());
 	}
-
+	
 	public Iterable<PersistentType> getAncestors() {
-		return (this.superPersistentType == null) ?
-				IterableTools.<PersistentType>emptyIterable() :
-				this.buildInheritanceHierarchy(this.superPersistentType);
+		return IterableTools.transform(getMapping().getAncestors(), TypeMapping.PERSISTENT_TYPE_TRANSFORMER);
 	}
-
-	protected Iterable<PersistentType> buildInheritanceHierarchy(PersistentType start) {
-		// using a chain iterable to traverse up the inheritance tree
-		return ObjectTools.chain(start, SUPER_PERSISTENT_TYPE_TRANSFORMER);
-	}
-
-
+	
+	
 	// ********** declaring type name **********
 
 	public String getDeclaringTypeName() {
@@ -1102,8 +1072,8 @@ public abstract class SpecifiedOrmPersistentType
 			return this.specifiedAccess;
 		}
 
-		if (this.superPersistentType instanceof OrmPersistentType) {
-			AccessType accessType = ((OrmPersistentType) this.superPersistentType).getSpecifiedAccess();
+		if (getSuperPersistentType() instanceof OrmPersistentType) {
+			AccessType accessType = ((OrmPersistentType) getSuperPersistentType()).getSpecifiedAccess();
 			if (accessType != null) {
 				return accessType;
 			}
@@ -1121,8 +1091,8 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	public AccessType getDefaultPersistentTypeAccess() {
-		if (this.superPersistentType instanceof OrmPersistentType) {
-			AccessType accessType = ((OrmPersistentType) this.superPersistentType).getDefaultAccess();
+		if (getSuperPersistentType() instanceof OrmPersistentType) {
+			AccessType accessType = ((OrmPersistentType) getSuperPersistentType()).getDefaultAccess();
 			if (accessType != null) {
 				return accessType;
 			}

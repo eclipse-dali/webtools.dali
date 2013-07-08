@@ -29,11 +29,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlCacheable_2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlEntity_2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.JPA2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
-import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConvert_2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlEntity_2_1;
-import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlForeignKey_2_1;
-import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlNamedEntityGraph_2_1;
-import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlNamedStoredProcedureQuery_2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlQueryContainer_2_1;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -59,9 +55,6 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.XmlEntity#getDiscriminatorValue <em>Discriminator Value</em>}</li>
  *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.XmlEntity#getDiscriminatorColumn <em>Discriminator Column</em>}</li>
  *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.XmlEntity#getSqlResultSetMappings <em>Sql Result Set Mappings</em>}</li>
- *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.XmlEntity#isExcludeDefaultListeners <em>Exclude Default Listeners</em>}</li>
- *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.XmlEntity#isExcludeSuperclassListeners <em>Exclude Superclass Listeners</em>}</li>
- *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.XmlEntity#getEntityListeners <em>Entity Listeners</em>}</li>
  * </ul>
  * </p>
  *
@@ -69,8 +62,68 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContainer, XmlGeneratorContainer, XmlEventMethodContainer, XmlAttributeOverrideContainer, XmlAssociationOverrideContainer, XmlEntity_2_0, XmlIdClassContainer, XmlEntity_2_1
+public class XmlEntity extends AbstractXmlTypeMapping implements XmlIdTypeMapping, XmlQueryContainer, XmlGeneratorContainer, XmlEventMethodContainer, XmlAttributeOverrideContainer, XmlAssociationOverrideContainer, XmlEntity_2_0, XmlEntity_2_1
 {
+
+	/**
+	 * The cached value of the '{@link #getIdClass() <em>Id Class</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getIdClass()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlClassReference idClass;
+
+	/**
+	 * The default value of the '{@link #isExcludeDefaultListeners() <em>Exclude Default Listeners</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isExcludeDefaultListeners()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean EXCLUDE_DEFAULT_LISTENERS_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isExcludeDefaultListeners() <em>Exclude Default Listeners</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isExcludeDefaultListeners()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean excludeDefaultListeners = EXCLUDE_DEFAULT_LISTENERS_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isExcludeSuperclassListeners() <em>Exclude Superclass Listeners</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isExcludeSuperclassListeners()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean EXCLUDE_SUPERCLASS_LISTENERS_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isExcludeSuperclassListeners() <em>Exclude Superclass Listeners</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isExcludeSuperclassListeners()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean excludeSuperclassListeners = EXCLUDE_SUPERCLASS_LISTENERS_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getEntityListeners() <em>Entity Listeners</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getEntityListeners()
+	 * @generated
+	 * @ordered
+	 */
+	protected EntityListeners entityListeners;
 
 	/**
 	 * The cached value of the '{@link #getNamedStoredProcedureQueries() <em>Named Stored Procedure Queries</em>}' containment reference list.
@@ -233,16 +286,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	protected Boolean cacheable = CACHEABLE_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getIdClass() <em>Id Class</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getIdClass()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlClassReference idClass;
-
-	/**
 	 * The cached value of the '{@link #getPrimaryKeyForeignKey() <em>Primary Key Foreign Key</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -371,56 +414,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * @ordered
 	 */
 	protected EList<XmlSqlResultSetMapping> sqlResultSetMappings;
-
-	/**
-	 * The default value of the '{@link #isExcludeDefaultListeners() <em>Exclude Default Listeners</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isExcludeDefaultListeners()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean EXCLUDE_DEFAULT_LISTENERS_EDEFAULT = false;
-
-	/**
-	 * The cached value of the '{@link #isExcludeDefaultListeners() <em>Exclude Default Listeners</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isExcludeDefaultListeners()
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean excludeDefaultListeners = EXCLUDE_DEFAULT_LISTENERS_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #isExcludeSuperclassListeners() <em>Exclude Superclass Listeners</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isExcludeSuperclassListeners()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean EXCLUDE_SUPERCLASS_LISTENERS_EDEFAULT = false;
-
-	/**
-	 * The cached value of the '{@link #isExcludeSuperclassListeners() <em>Exclude Superclass Listeners</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isExcludeSuperclassListeners()
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean excludeSuperclassListeners = EXCLUDE_SUPERCLASS_LISTENERS_EDEFAULT;
-
-	/**
-	 * The cached value of the '{@link #getEntityListeners() <em>Entity Listeners</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getEntityListeners()
-	 * @generated
-	 * @ordered
-	 */
-	protected EntityListeners entityListeners;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1135,7 +1128,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Exclude Default Listeners</em>' attribute.
 	 * @see #setExcludeDefaultListeners(boolean)
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlEntity_ExcludeDefaultListeners()
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlIdTypeMapping_ExcludeDefaultListeners()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
 	 * @generated
 	 */
@@ -1170,7 +1163,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Exclude Superclass Listeners</em>' attribute.
 	 * @see #setExcludeSuperclassListeners(boolean)
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlEntity_ExcludeSuperclassListeners()
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlIdTypeMapping_ExcludeSuperclassListeners()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
 	 * @generated
 	 */
@@ -1205,7 +1198,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Entity Listeners</em>' containment reference.
 	 * @see #setEntityListeners(EntityListeners)
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlEntity_EntityListeners()
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlIdTypeMapping_EntityListeners()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -1766,6 +1759,10 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ENTITY__ID_CLASS:
+				return basicSetIdClass(null, msgs);
+			case OrmPackage.XML_ENTITY__ENTITY_LISTENERS:
+				return basicSetEntityListeners(null, msgs);
 			case OrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES:
 				return ((InternalEList<?>)getNamedStoredProcedureQueries()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ENTITY__NAMED_QUERIES:
@@ -1794,8 +1791,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return ((InternalEList<?>)getAttributeOverrides()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES:
 				return ((InternalEList<?>)getAssociationOverrides()).basicRemove(otherEnd, msgs);
-			case OrmPackage.XML_ENTITY__ID_CLASS:
-				return basicSetIdClass(null, msgs);
 			case OrmPackage.XML_ENTITY__PRIMARY_KEY_FOREIGN_KEY:
 				return basicSetPrimaryKeyForeignKey(null, msgs);
 			case OrmPackage.XML_ENTITY__CONVERTS:
@@ -1814,8 +1809,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return basicSetDiscriminatorColumn(null, msgs);
 			case OrmPackage.XML_ENTITY__SQL_RESULT_SET_MAPPINGS:
 				return ((InternalEList<?>)getSqlResultSetMappings()).basicRemove(otherEnd, msgs);
-			case OrmPackage.XML_ENTITY__ENTITY_LISTENERS:
-				return basicSetEntityListeners(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -1830,6 +1823,14 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ENTITY__ID_CLASS:
+				return getIdClass();
+			case OrmPackage.XML_ENTITY__EXCLUDE_DEFAULT_LISTENERS:
+				return isExcludeDefaultListeners();
+			case OrmPackage.XML_ENTITY__EXCLUDE_SUPERCLASS_LISTENERS:
+				return isExcludeSuperclassListeners();
+			case OrmPackage.XML_ENTITY__ENTITY_LISTENERS:
+				return getEntityListeners();
 			case OrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES:
 				return getNamedStoredProcedureQueries();
 			case OrmPackage.XML_ENTITY__NAMED_QUERIES:
@@ -1860,8 +1861,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return getAssociationOverrides();
 			case OrmPackage.XML_ENTITY__CACHEABLE:
 				return getCacheable();
-			case OrmPackage.XML_ENTITY__ID_CLASS:
-				return getIdClass();
 			case OrmPackage.XML_ENTITY__PRIMARY_KEY_FOREIGN_KEY:
 				return getPrimaryKeyForeignKey();
 			case OrmPackage.XML_ENTITY__CONVERTS:
@@ -1884,12 +1883,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return getDiscriminatorColumn();
 			case OrmPackage.XML_ENTITY__SQL_RESULT_SET_MAPPINGS:
 				return getSqlResultSetMappings();
-			case OrmPackage.XML_ENTITY__EXCLUDE_DEFAULT_LISTENERS:
-				return isExcludeDefaultListeners();
-			case OrmPackage.XML_ENTITY__EXCLUDE_SUPERCLASS_LISTENERS:
-				return isExcludeSuperclassListeners();
-			case OrmPackage.XML_ENTITY__ENTITY_LISTENERS:
-				return getEntityListeners();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -1905,6 +1898,18 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ENTITY__ID_CLASS:
+				setIdClass((XmlClassReference)newValue);
+				return;
+			case OrmPackage.XML_ENTITY__EXCLUDE_DEFAULT_LISTENERS:
+				setExcludeDefaultListeners((Boolean)newValue);
+				return;
+			case OrmPackage.XML_ENTITY__EXCLUDE_SUPERCLASS_LISTENERS:
+				setExcludeSuperclassListeners((Boolean)newValue);
+				return;
+			case OrmPackage.XML_ENTITY__ENTITY_LISTENERS:
+				setEntityListeners((EntityListeners)newValue);
+				return;
 			case OrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES:
 				getNamedStoredProcedureQueries().clear();
 				getNamedStoredProcedureQueries().addAll((Collection<? extends XmlNamedStoredProcedureQuery>)newValue);
@@ -1955,9 +1960,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 			case OrmPackage.XML_ENTITY__CACHEABLE:
 				setCacheable((Boolean)newValue);
 				return;
-			case OrmPackage.XML_ENTITY__ID_CLASS:
-				setIdClass((XmlClassReference)newValue);
-				return;
 			case OrmPackage.XML_ENTITY__PRIMARY_KEY_FOREIGN_KEY:
 				setPrimaryKeyForeignKey((XmlForeignKey)newValue);
 				return;
@@ -1996,15 +1998,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				getSqlResultSetMappings().clear();
 				getSqlResultSetMappings().addAll((Collection<? extends XmlSqlResultSetMapping>)newValue);
 				return;
-			case OrmPackage.XML_ENTITY__EXCLUDE_DEFAULT_LISTENERS:
-				setExcludeDefaultListeners((Boolean)newValue);
-				return;
-			case OrmPackage.XML_ENTITY__EXCLUDE_SUPERCLASS_LISTENERS:
-				setExcludeSuperclassListeners((Boolean)newValue);
-				return;
-			case OrmPackage.XML_ENTITY__ENTITY_LISTENERS:
-				setEntityListeners((EntityListeners)newValue);
-				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -2019,6 +2012,18 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ENTITY__ID_CLASS:
+				setIdClass((XmlClassReference)null);
+				return;
+			case OrmPackage.XML_ENTITY__EXCLUDE_DEFAULT_LISTENERS:
+				setExcludeDefaultListeners(EXCLUDE_DEFAULT_LISTENERS_EDEFAULT);
+				return;
+			case OrmPackage.XML_ENTITY__EXCLUDE_SUPERCLASS_LISTENERS:
+				setExcludeSuperclassListeners(EXCLUDE_SUPERCLASS_LISTENERS_EDEFAULT);
+				return;
+			case OrmPackage.XML_ENTITY__ENTITY_LISTENERS:
+				setEntityListeners((EntityListeners)null);
+				return;
 			case OrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES:
 				getNamedStoredProcedureQueries().clear();
 				return;
@@ -2064,9 +2069,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 			case OrmPackage.XML_ENTITY__CACHEABLE:
 				setCacheable(CACHEABLE_EDEFAULT);
 				return;
-			case OrmPackage.XML_ENTITY__ID_CLASS:
-				setIdClass((XmlClassReference)null);
-				return;
 			case OrmPackage.XML_ENTITY__PRIMARY_KEY_FOREIGN_KEY:
 				setPrimaryKeyForeignKey((XmlForeignKey)null);
 				return;
@@ -2100,15 +2102,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 			case OrmPackage.XML_ENTITY__SQL_RESULT_SET_MAPPINGS:
 				getSqlResultSetMappings().clear();
 				return;
-			case OrmPackage.XML_ENTITY__EXCLUDE_DEFAULT_LISTENERS:
-				setExcludeDefaultListeners(EXCLUDE_DEFAULT_LISTENERS_EDEFAULT);
-				return;
-			case OrmPackage.XML_ENTITY__EXCLUDE_SUPERCLASS_LISTENERS:
-				setExcludeSuperclassListeners(EXCLUDE_SUPERCLASS_LISTENERS_EDEFAULT);
-				return;
-			case OrmPackage.XML_ENTITY__ENTITY_LISTENERS:
-				setEntityListeners((EntityListeners)null);
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -2123,6 +2116,14 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ENTITY__ID_CLASS:
+				return idClass != null;
+			case OrmPackage.XML_ENTITY__EXCLUDE_DEFAULT_LISTENERS:
+				return excludeDefaultListeners != EXCLUDE_DEFAULT_LISTENERS_EDEFAULT;
+			case OrmPackage.XML_ENTITY__EXCLUDE_SUPERCLASS_LISTENERS:
+				return excludeSuperclassListeners != EXCLUDE_SUPERCLASS_LISTENERS_EDEFAULT;
+			case OrmPackage.XML_ENTITY__ENTITY_LISTENERS:
+				return entityListeners != null;
 			case OrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES:
 				return namedStoredProcedureQueries != null && !namedStoredProcedureQueries.isEmpty();
 			case OrmPackage.XML_ENTITY__NAMED_QUERIES:
@@ -2153,8 +2154,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return associationOverrides != null && !associationOverrides.isEmpty();
 			case OrmPackage.XML_ENTITY__CACHEABLE:
 				return CACHEABLE_EDEFAULT == null ? cacheable != null : !CACHEABLE_EDEFAULT.equals(cacheable);
-			case OrmPackage.XML_ENTITY__ID_CLASS:
-				return idClass != null;
 			case OrmPackage.XML_ENTITY__PRIMARY_KEY_FOREIGN_KEY:
 				return primaryKeyForeignKey != null;
 			case OrmPackage.XML_ENTITY__CONVERTS:
@@ -2177,12 +2176,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return discriminatorColumn != null;
 			case OrmPackage.XML_ENTITY__SQL_RESULT_SET_MAPPINGS:
 				return sqlResultSetMappings != null && !sqlResultSetMappings.isEmpty();
-			case OrmPackage.XML_ENTITY__EXCLUDE_DEFAULT_LISTENERS:
-				return excludeDefaultListeners != EXCLUDE_DEFAULT_LISTENERS_EDEFAULT;
-			case OrmPackage.XML_ENTITY__EXCLUDE_SUPERCLASS_LISTENERS:
-				return excludeSuperclassListeners != EXCLUDE_SUPERCLASS_LISTENERS_EDEFAULT;
-			case OrmPackage.XML_ENTITY__ENTITY_LISTENERS:
-				return entityListeners != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -2195,6 +2188,24 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlIdClassContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ENTITY__ID_CLASS: return OrmPackage.XML_ID_CLASS_CONTAINER__ID_CLASS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlIdTypeMapping.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ENTITY__EXCLUDE_DEFAULT_LISTENERS: return OrmPackage.XML_ID_TYPE_MAPPING__EXCLUDE_DEFAULT_LISTENERS;
+				case OrmPackage.XML_ENTITY__EXCLUDE_SUPERCLASS_LISTENERS: return OrmPackage.XML_ID_TYPE_MAPPING__EXCLUDE_SUPERCLASS_LISTENERS;
+				case OrmPackage.XML_ENTITY__ENTITY_LISTENERS: return OrmPackage.XML_ID_TYPE_MAPPING__ENTITY_LISTENERS;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlQueryContainer_2_1.class)
 		{
 			switch (derivedFeatureID)
@@ -2266,14 +2277,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlIdClassContainer.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case OrmPackage.XML_ENTITY__ID_CLASS: return OrmPackage.XML_ID_CLASS_CONTAINER__ID_CLASS;
-				default: return -1;
-			}
-		}
 		if (baseClass == XmlEntity_2_1.class)
 		{
 			switch (derivedFeatureID)
@@ -2295,6 +2298,24 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlIdClassContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_ID_CLASS_CONTAINER__ID_CLASS: return OrmPackage.XML_ENTITY__ID_CLASS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlIdTypeMapping.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_ID_TYPE_MAPPING__EXCLUDE_DEFAULT_LISTENERS: return OrmPackage.XML_ENTITY__EXCLUDE_DEFAULT_LISTENERS;
+				case OrmPackage.XML_ID_TYPE_MAPPING__EXCLUDE_SUPERCLASS_LISTENERS: return OrmPackage.XML_ENTITY__EXCLUDE_SUPERCLASS_LISTENERS;
+				case OrmPackage.XML_ID_TYPE_MAPPING__ENTITY_LISTENERS: return OrmPackage.XML_ENTITY__ENTITY_LISTENERS;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlQueryContainer_2_1.class)
 		{
 			switch (baseFeatureID)
@@ -2366,14 +2387,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlIdClassContainer.class)
-		{
-			switch (baseFeatureID)
-			{
-				case OrmPackage.XML_ID_CLASS_CONTAINER__ID_CLASS: return OrmPackage.XML_ENTITY__ID_CLASS;
-				default: return -1;
-			}
-		}
 		if (baseClass == XmlEntity_2_1.class)
 		{
 			switch (baseFeatureID)
@@ -2398,16 +2411,16 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (cacheable: ");
+		result.append(" (excludeDefaultListeners: ");
+		result.append(excludeDefaultListeners);
+		result.append(", excludeSuperclassListeners: ");
+		result.append(excludeSuperclassListeners);
+		result.append(", cacheable: ");
 		result.append(cacheable);
 		result.append(", name: ");
 		result.append(name);
 		result.append(", discriminatorValue: ");
 		result.append(discriminatorValue);
-		result.append(", excludeDefaultListeners: ");
-		result.append(excludeDefaultListeners);
-		result.append(", excludeSuperclassListeners: ");
-		result.append(excludeSuperclassListeners);
 		result.append(')');
 		return result.toString();
 	}
@@ -2531,15 +2544,15 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	}
 	
 	protected static Translator buildExcludeDefaultListenersTranslator() {
-		return new EmptyTagBooleanTranslator(JPA.EXCLUDE_DEFAULT_LISTENERS, OrmPackage.eINSTANCE.getXmlEntity_ExcludeDefaultListeners());
+		return new EmptyTagBooleanTranslator(JPA.EXCLUDE_DEFAULT_LISTENERS, OrmPackage.eINSTANCE.getXmlIdTypeMapping_ExcludeDefaultListeners());
 	}
 	
 	protected static Translator buildExcludeSuperclassListenersTranslator() {
-		return new EmptyTagBooleanTranslator(JPA.EXCLUDE_SUPERCLASS_LISTENERS, OrmPackage.eINSTANCE.getXmlEntity_ExcludeSuperclassListeners());
+		return new EmptyTagBooleanTranslator(JPA.EXCLUDE_SUPERCLASS_LISTENERS, OrmPackage.eINSTANCE.getXmlIdTypeMapping_ExcludeSuperclassListeners());
 	}
 	
 	protected static Translator buildEntityListenersTranslator() {
-		return EntityListeners.buildTranslator(JPA.ENTITY_LISTENERS, OrmPackage.eINSTANCE.getXmlEntity_EntityListeners());
+		return EntityListeners.buildTranslator(JPA.ENTITY_LISTENERS, OrmPackage.eINSTANCE.getXmlIdTypeMapping_EntityListeners());
 	}
 
 	protected static Translator buildPrePersistTranslator() {

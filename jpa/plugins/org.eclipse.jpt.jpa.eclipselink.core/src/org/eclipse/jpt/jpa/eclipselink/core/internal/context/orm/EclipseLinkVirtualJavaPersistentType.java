@@ -10,20 +10,16 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.BodySourceWriter;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -33,6 +29,7 @@ import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
@@ -47,14 +44,13 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class EclipseLinkVirtualJavaPersistentType
-	extends AbstractJavaContextModel<EclipseLinkOrmPersistentType>
-	implements JavaPersistentType, PersistentType2_0
-{
+		extends AbstractJavaContextModel<EclipseLinkOrmPersistentType>
+		implements JavaPersistentType, PersistentType2_0 {
+	
 	private final XmlTypeMapping xmlTypeMapping;
 
 	protected final JavaTypeMapping mapping;
-	protected PersistentType superPersistentType;
-
+	
 
 	public EclipseLinkVirtualJavaPersistentType(EclipseLinkOrmPersistentType parent, XmlTypeMapping xmlTypeMapping) {
 		super(parent);
@@ -76,7 +72,6 @@ public class EclipseLinkVirtualJavaPersistentType
 	@Override
 	public void update() {
 		super.update();
-		this.setSuperPersistentType(this.buildSuperPersistentType());
 	}
 
 	public void addRootStructureNodesTo(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
@@ -141,64 +136,22 @@ public class EclipseLinkVirtualJavaPersistentType
 	}
 
 
-	// ********** super persistent type **********
-
+	// ***** super persistent type *****
+	
 	public PersistentType getSuperPersistentType() {
-		return this.superPersistentType;
+		TypeMapping superTypeMapping = this.mapping.getSuperTypeMapping();
+		return (superTypeMapping == null) ? null : superTypeMapping.getPersistentType();
 	}
-
-	protected void setSuperPersistentType(PersistentType superPersistentType) {
-		PersistentType old = this.superPersistentType;
-		this.superPersistentType = superPersistentType;
-		this.firePropertyChanged(SUPER_PERSISTENT_TYPE_PROPERTY, old, superPersistentType);
+	
+	public Iterable<PersistentType> getAncestors() {
+		return IterableTools.transform(getMapping().getAncestors(), TypeMapping.PERSISTENT_TYPE_TRANSFORMER);
 	}
-
-	protected PersistentType buildSuperPersistentType() {
-		HashSet<JavaResourceType> visited = new HashSet<JavaResourceType>();
-		PersistentType spt = this.resolveSuperPersistentType(this.xmlTypeMapping.getParentClass(), visited);
-		if (spt == null) {
-			return null;
-		}
-		if (IterableTools.contains(spt.getInheritanceHierarchy(), this)) {
-			return null;  // short-circuit in this case, we have circular inheritance
-		}
-		return spt.isMapped() ? spt : spt.getSuperPersistentType();
+	
+	public Iterable<PersistentType> getInheritanceHierarchy() {
+		return IterableTools.transform(getMapping().getInheritanceHierarchy(), TypeMapping.PERSISTENT_TYPE_TRANSFORMER);
 	}
-
-	/**
-	 * The JPA spec allows non-persistent types in a persistent type's
-	 * inheritance hierarchy. We check for a persistent type with the
-	 * specified name in the persistence unit (Use the EntityMapping
-	 * API for this because it will append the package name if unqualified).
-	 * If it is not found we use java resource type and look for <em>its</em> super type.
-	 * <p>
-	 * The <code>visited</code> collection is used to detect a cycle in the
-	 * <em>resource</em> type inheritance hierarchy and prevent the resulting
-	 * stack overflow. Any cycles in the <em>context</em> type inheritance
-	 * hierarchy are handled in {@link #buildSuperPersistentType()}.
-	 */
-	protected PersistentType resolveSuperPersistentType(String typeName, Collection<JavaResourceType> visited) {
-		if (StringTools.isBlank(typeName)) {
-			return null;
-		}
-		PersistentType spt = this.resolvePersistentType(typeName);
-		if (spt != null) {
-			return spt;
-		}
-		JavaResourceType resourceType = this.resolveJavaResourceType(typeName);
-		visited.add(resourceType);
-		return (resourceType == null) ? null : this.resolveSuperPersistentType(resourceType.getSuperclassQualifiedName(), visited);  // recurse
-	}
-
-	protected PersistentType resolvePersistentType(String typeName) {
-		return this.getEntityMappings().resolvePersistentType(typeName);
-	}
-
-	protected JavaResourceType resolveJavaResourceType(String typeName) {
-		return (JavaResourceType) this.getEntityMappings().resolveJavaResourceType(typeName, JavaResourceAnnotatedElement.AstNodeType.TYPE);
-	}
-
-
+	
+	
 	// ********** attributes **********
 	//The VirtualJavaPersistentAttributes are built by the OrmEclipseLinkPersistentAttribute, no attributes here
 
@@ -240,24 +193,6 @@ public class EclipseLinkVirtualJavaPersistentType
 
 	public TypeBinding getAttributeTypeBinding(PersistentAttribute attribute) {
 		return null;
-	}
-
-
-	// ********** inheritance **********
-
-	public Iterable<PersistentType> getInheritanceHierarchy() {
-		return this.buildInheritanceHierarchy(this);
-	}
-
-	public Iterable<PersistentType> getAncestors() {
-		return (this.superPersistentType == null) ?
-				IterableTools.<PersistentType>emptyIterable() :
-				this.buildInheritanceHierarchy(this.superPersistentType);
-	}
-
-	protected Iterable<PersistentType> buildInheritanceHierarchy(PersistentType start) {
-		// using a chain iterable to traverse up the inheritance tree
-		return ObjectTools.chain(start, SUPER_PERSISTENT_TYPE_TRANSFORMER);
 	}
 
 

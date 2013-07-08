@@ -48,7 +48,6 @@ import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.Override_;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.Relationship;
@@ -65,7 +64,6 @@ import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.TableColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
-import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
 import org.eclipse.jpt.jpa.core.context.java.JavaOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
@@ -75,7 +73,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratorContainer;
-import org.eclipse.jpt.jpa.core.context.orm.OrmIdClassReference;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
@@ -113,7 +110,6 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
-import org.eclipse.jpt.jpa.core.resource.orm.XmlIdClassContainer;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlSecondaryTable;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
@@ -126,16 +122,14 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>orm.xml</code> entity
  */
 public abstract class AbstractOrmEntity<X extends XmlEntity>
-	extends AbstractOrmTypeMapping<X>
-	implements OrmEntity2_0
-{
+		extends AbstractOrmIdTypeMapping<X>
+		implements OrmEntity2_0 {
+	
 	protected String specifiedName;
 	protected String defaultName;
 
 	protected Entity rootEntity;
 	protected final Vector<Entity> descendants = new Vector<Entity>();
-
-	protected final OrmIdClassReference idClassReference;
 
 	protected final OrmSpecifiedTable table;
 	protected boolean specifiedTableIsAllowed;
@@ -179,7 +173,6 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	protected AbstractOrmEntity(OrmPersistentType parent, X xmlEntity) {
 		super(parent, xmlEntity);
 		this.specifiedName = xmlEntity.getName();
-		this.idClassReference = this.buildIdClassReference();
 		this.table = this.buildTable();
 		// start with the entity as the root - it will be recalculated in update()
 		this.rootEntity = this;
@@ -198,72 +191,68 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 
-	// ********** synchronize/update **********
-
+	// ***** sync/update *****
+	
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-
+		
 		this.setSpecifiedName_(this.xmlTypeMapping.getName());
-
-		this.idClassReference.synchronizeWithResourceModel();
-
+		
 		this.table.synchronizeWithResourceModel();
-
+		
 		this.syncSpecifiedSecondaryTables();
-
+		
 		this.syncSpecifiedPrimaryKeyJoinColumns();
-
+		
 		this.setSpecifiedInheritanceStrategy_(this.buildSpecifiedInheritanceStrategy());
 		this.setSpecifiedDiscriminatorValue_(this.xmlTypeMapping.getDiscriminatorValue());
 		this.discriminatorColumn.synchronizeWithResourceModel();
-
+		
 		this.attributeOverrideContainer.synchronizeWithResourceModel();
 		this.associationOverrideContainer.synchronizeWithResourceModel();
-
+		
 		this.generatorContainer.synchronizeWithResourceModel();
 		this.queryContainer.synchronizeWithResourceModel();
 	}
-
+	
 	@Override
 	public void update() {
 		super.update();
-
+		
 		this.setDefaultName(this.buildDefaultName());
-
+		
 		// calculate root entity early - other things depend on it
 		this.setRootEntity(this.buildRootEntity());
 		this.updateDescendants();
-
-		this.idClassReference.update();
-
+		
 		this.setDefaultInheritanceStrategy(this.buildDefaultInheritanceStrategy());
-
+		
 		this.table.update();
 		this.setSpecifiedTableIsAllowed(this.buildSpecifiedTableIsAllowed());
 		this.setTableIsUndefined(this.buildTableIsUndefined());
-
+		
 		this.updateVirtualSecondaryTables();
 		this.updateModels(this.getSecondaryTables());
-
+		
 		this.updateDefaultPrimaryKeyJoinColumns();
 		this.updateModels(this.getPrimaryKeyJoinColumns());
-
+		
 		this.discriminatorColumn.update();
 		this.setSpecifiedDiscriminatorColumnIsAllowed(this.buildSpecifiedDiscriminatorColumnIsAllowed());
 		this.setDiscriminatorColumnIsUndefined(this.buildDiscriminatorColumnIsUndefined());
-
+		
 		this.setDefaultDiscriminatorValue(this.buildDefaultDiscriminatorValue());
 		this.setSpecifiedDiscriminatorValueIsAllowed(this.buildSpecifiedDiscriminatorValueIsAllowed());
 		this.setDiscriminatorValueIsUndefined(this.buildDiscriminatorValueIsUndefined());
-
+		
 		this.attributeOverrideContainer.update();
 		this.associationOverrideContainer.update();
-
+		
 		this.generatorContainer.update();
 		this.queryContainer.update();
 	}
-
+	
 
 	// ********** name **********
 
@@ -356,30 +345,6 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		String rootEntityTypeName = entity.getRootEntity().getPersistentType().getName();
 		return ObjectTools.notEquals(typeName, entityTypeName) &&
 				ObjectTools.equals(typeName, rootEntityTypeName);
-	}
-
-
-	// ********** id class **********
-
-	public OrmIdClassReference getIdClassReference() {
-		return this.idClassReference;
-	}
-
-	protected OrmIdClassReference buildIdClassReference() {
-		return new GenericOrmIdClassReference(this);
-	}
-
-	public XmlIdClassContainer getXmlIdClassContainer() {
-		return this.getXmlTypeMapping();
-	}
-
-	public JavaIdClassReference getJavaIdClassReferenceForDefaults() {
-		JavaEntity javaEntity = this.getJavaTypeMappingForDefaults();
-		return (javaEntity == null) ? null : javaEntity.getIdClassReference();
-	}
-
-	public JavaPersistentType getIdClass() {
-		return this.idClassReference.getIdClass();
 	}
 
 
@@ -1276,8 +1241,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected TypeMapping getOverridableTypeMapping() {
-		PersistentType superPersistentType = this.getPersistentType().getSuperPersistentType();
-		return (superPersistentType == null) ? null : superPersistentType.getMapping();
+		return getSuperTypeMapping();
 	}
 
 	protected Column resolveOverriddenColumnForAttributeOverride(String attributeName) {
@@ -1381,7 +1345,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	// TODO eliminate duplicate tables?
 	public Iterable<Table> getAllAssociatedTables() {
-		return IterableTools.children(this.getInheritanceHierarchy(), TypeMappingTools.ASSOCIATED_TABLES_TRANSFORMER);
+		return IterableTools.children(getInheritanceHierarchy(), TypeMappingTools.ASSOCIATED_TABLES_TRANSFORMER);
 	}
 
 	public Iterable<String> getAllAssociatedTableNames() {
@@ -1704,7 +1668,6 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 
-		this.validatePrimaryKey(messages, reporter);
 		this.validateTable(messages, reporter);
 		for (OrmSpecifiedSecondaryTable secondaryTable : this.getSpecifiedSecondaryTables()) {
 			secondaryTable.validate(messages, reporter);
@@ -1740,11 +1703,8 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	public TextRange getNameTextRange() {
 		return this.getXmlTypeMapping().getNameTextRange();
 	}
-
-	protected void validatePrimaryKey(List<IMessage> messages, IReporter reporter) {
-		this.buildPrimaryKeyValidator().validate(messages, reporter);
-	}
-
+	
+	@Override
 	protected JpaValidator buildPrimaryKeyValidator() {
 		return new GenericEntityPrimaryKeyValidator(this);
 		// TODO - JPA 2.0 validation

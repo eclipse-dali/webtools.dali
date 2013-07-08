@@ -18,8 +18,8 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceModel;
-import org.eclipse.jpt.common.core.internal.utility.TypeTools;
 import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
+import org.eclipse.jpt.common.core.internal.utility.TypeTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ClassNameTools;
@@ -430,7 +430,7 @@ public final class MappingTools {
 		}
 		return null;
 	}
-
+	
 	// TODO move to TypeMapping? may need different name (or may need to rename existing #resolve...)
 	public static SpecifiedRelationship resolveOverriddenRelationship(TypeMapping overridableTypeMapping, String attributeName) {
 		// convenience null check to simplify client code
@@ -446,7 +446,7 @@ public final class MappingTools {
 		}
 		return null;
 	}
-
+	
 	public static String getPrimaryKeyColumnName(Entity entity) {
 		String pkColumnName = null;
 		for (PersistentAttribute attribute : entity.getPersistentType().getAllAttributes()) {

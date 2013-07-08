@@ -1991,15 +1991,15 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		}
 
 		public SpecifiedColumn resolveOverriddenColumn(String attributeName) {
-			return MappingTools.resolveOverriddenColumn(this.getOverridableTypeMapping(), attributeName);
+			return MappingTools.resolveOverriddenColumn(getOverridableTypeMapping(), attributeName);
 		}
 
 		public JpaValidator buildOverrideValidator(Override_ override, OverrideContainer container) {
-			return new AttributeOverrideValidator(this.getPersistentAttribute(), (AttributeOverride) override, (AttributeOverrideContainer) container, new EmbeddableOverrideDescriptionProvider());
+			return new AttributeOverrideValidator(getPersistentAttribute(), (AttributeOverride) override, (AttributeOverrideContainer) container, new EmbeddableOverrideDescriptionProvider());
 		}
 
 		public JpaValidator buildColumnValidator(Override_ override, BaseColumn column, TableColumn.ParentAdapter columnParentAdapter) {
-			return new AttributeOverrideColumnValidator(this.getPersistentAttribute(), (AttributeOverride) override, column, new CollectionTableTableDescriptionProvider());
+			return new AttributeOverrideColumnValidator(getPersistentAttribute(), (AttributeOverride) override, column, new CollectionTableTableDescriptionProvider());
 		}
 	}
 

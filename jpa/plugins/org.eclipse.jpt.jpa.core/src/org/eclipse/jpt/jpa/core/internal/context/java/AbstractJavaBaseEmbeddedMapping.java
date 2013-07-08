@@ -91,24 +91,28 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 	protected abstract JavaAttributeOverrideContainer.ParentAdapter buildAttributeOverrideContainerParentAdapter();
 
 
-	// ********** target embeddable **********
-
+	// ***** target embeddable *****
+	
+	public String getTargetEmbeddableName() {
+		return getPersistentAttribute().getSingleReferenceTargetTypeName();
+	}
+	
 	public Embeddable getTargetEmbeddable() {
 		return this.targetEmbeddable;
 	}
-
+	
 	protected void setTargetEmbeddable(Embeddable embeddable) {
 		Embeddable old = this.targetEmbeddable;
 		this.targetEmbeddable = embeddable;
 		this.firePropertyChanged(TARGET_EMBEDDABLE_PROPERTY, old, embeddable);
 	}
-
+	
 	protected Embeddable buildTargetEmbeddable() {
-		String typeName = this.getPersistentAttribute().getSingleReferenceTargetTypeName();
-		return (typeName == null) ? null : this.getPersistenceUnit().getEmbeddable(typeName);
+		String typeName = getTargetEmbeddableName();
+		return (typeName == null) ? null : getPersistenceUnit().getEmbeddable(typeName);
 	}
-
-
+	
+	
 	// ********** embedded mappings **********
 
 	@Override

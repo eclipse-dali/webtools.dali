@@ -10,9 +10,12 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.jpa.core.MappingKeys;
+import org.eclipse.jpt.jpa.core.context.IdTypeMapping;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.Table;
+import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddable;
@@ -98,8 +101,23 @@ public abstract class AbstractOrmEmbeddable<X extends XmlEmbeddable>
 	public Iterable<Query> getQueries() {
 		return EmptyIterable.instance();
 	}
-
-
+	
+	
+	// ***** (no) inheritance *****
+	
+	public IdTypeMapping getSuperTypeMapping() {
+		return null;
+	}
+	
+	public Iterable<IdTypeMapping> getAncestors() {
+		return EmptyIterable.instance();
+	}
+	
+	public Iterable<? extends TypeMapping> getInheritanceHierarchy() {
+		return new SingleElementIterable(this);
+	}
+	
+	
 	// ********** validation **********
 
 	@Override

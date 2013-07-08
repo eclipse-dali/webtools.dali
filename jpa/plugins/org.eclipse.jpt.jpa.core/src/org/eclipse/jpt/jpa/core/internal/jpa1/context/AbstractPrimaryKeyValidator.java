@@ -20,8 +20,6 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
-import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -419,8 +417,8 @@ public abstract class AbstractPrimaryKeyValidator
 	/**
 	 * Return whether an ancestor class has defined any aspect of the primary key
 	 */
-	protected boolean definesPrimaryKeyOnAncestor(TypeMapping typeMapping) {
-		for (TypeMapping each : typeMapping.getInheritanceHierarchy()) {
+	protected boolean definesPrimaryKeyOnAncestor(IdTypeMapping typeMapping) {
+		for (IdTypeMapping each : typeMapping.getInheritanceHierarchy()) {
 			if (each != typeMapping && definesPrimaryKey(each)) {
 				return true;
 			}
@@ -431,7 +429,7 @@ public abstract class AbstractPrimaryKeyValidator
 	/**
 	 * Return whether the type mapping has defined any aspect of the primary key
 	 */
-	protected boolean definesPrimaryKey(TypeMapping typeMapping) {
+	protected boolean definesPrimaryKey(IdTypeMapping typeMapping) {
 		return getIdClass(typeMapping) != null
 				|| ! IterableTools.isEmpty(getPrimaryKeyMappings(typeMapping));
 	}
@@ -439,7 +437,7 @@ public abstract class AbstractPrimaryKeyValidator
 	/**
 	 * Return true if the type mapping has defined any aspect of a complex primary key
 	 */
-	protected boolean definesComplexPrimaryKey(TypeMapping typeMapping) {
+	protected boolean definesComplexPrimaryKey(IdTypeMapping typeMapping) {
 		return definesIdClass(typeMapping)
 				|| getEmbeddedIdMapping(typeMapping) != null;
 	}
@@ -453,7 +451,7 @@ public abstract class AbstractPrimaryKeyValidator
 	 * - null if none of the above are coherent (i.e. there are multiple possibilities, or the 
 	 * 		primary key is invalid)
 	 */
-	protected String getPrimaryKeyTypeName(TypeMapping typeMapping) {
+	protected String getPrimaryKeyTypeName(IdTypeMapping typeMapping) {
 		JavaPersistentType idClass = getIdClass(typeMapping);
 		if (idClass != null) {
 			return idClass.getName();
@@ -519,15 +517,15 @@ public abstract class AbstractPrimaryKeyValidator
 	 * NOTE: this is different from whether an id class is *specified*.  If a specified id class
 	 * 		is not resolved, it is not defined.  There will be a validation error to that effect.
 	 */
-	protected boolean definesIdClass(TypeMapping typeMapping) {
+	protected boolean definesIdClass(IdTypeMapping typeMapping) {
 		return getIdClass(typeMapping) != null;
 	}
 	
 	/**
 	 * Return whether an ancestor class has defined an id class
 	 */
-	protected boolean definesIdClassOnAncestor(TypeMapping typeMapping) {
-		for (TypeMapping each : typeMapping.getInheritanceHierarchy()) {
+	protected boolean definesIdClassOnAncestor(IdTypeMapping typeMapping) {
+		for (IdTypeMapping each : typeMapping.getInheritanceHierarchy()) {
 			if (each != typeMapping && definesIdClass(each)) {
 				return true;
 			}
@@ -539,10 +537,10 @@ public abstract class AbstractPrimaryKeyValidator
 	 * Return the id class to be used for the type mapping, whether that be locally
 	 * or on an ancestor
 	 */
-	protected JavaPersistentType getIdClass(TypeMapping typeMapping) {
-		for (TypeMapping each : typeMapping.getInheritanceHierarchy()) {
-			if (each.getIdClass() != null) {
-				return each.getIdClass();
+	protected JavaPersistentType getIdClass(IdTypeMapping typeMapping) {
+		for (IdTypeMapping each : typeMapping.getInheritanceHierarchy()) {
+			if (each.getIdClassReference().getIdClass() != null) {
+				return each.getIdClassReference().getIdClass();
 			}
 		}
 		return null;

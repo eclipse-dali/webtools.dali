@@ -21,6 +21,7 @@ import org.eclipse.jpt.jpa.core.context.DeleteTypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.Generator;
+import org.eclipse.jpt.jpa.core.context.IdTypeMapping;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.PersistentTypeContainer;
@@ -42,7 +43,7 @@ import org.eclipse.jpt.jpa.core.resource.persistence.XmlProperty;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  *
- * @version 3.3
+ * @version 3.6
  * @since 2.0
  */
 public interface PersistenceUnit
@@ -797,7 +798,15 @@ public interface PersistenceUnit
 	 * @see org.eclipse.jpt.jpa.core.MappingKeys#EMBEDDABLE_TYPE_MAPPING_KEY
 	 */
 	Embeddable getEmbeddable(String typeName);
-
+	
+	/**
+	 * Return the ID type mapping (entity or mapped superclass) in the persistence unit 
+	 * with the specified type name. Return null if there is no persistent type with 
+	 * the specified name or if the persistent type is not mapped as an entity or
+	 * mapped superclass.
+	 */
+	IdTypeMapping getIdTypeMapping(String typeName);
+	
 	/**
 	 * Synchronize the persistence unit's list of specified classes with the
 	 * types in the project currently annotated.

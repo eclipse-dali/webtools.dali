@@ -16,7 +16,6 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.MappingKeys;
@@ -35,115 +34,123 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
+/*
+ * Currently, it does not look as though default values (maps-id="")
+ * are supported in XML.  Therefore there is only a specified value
+ * and the alternative is an error specifying the value.
+ */
 public class GenericOrmMapsIdDerivedIdentityStrategy2_0
-	extends AbstractOrmXmlContextModel<OrmDerivedIdentity2_0>
-	implements OrmMapsIdDerivedIdentityStrategy2_0
-{
+		extends AbstractOrmXmlContextModel<OrmDerivedIdentity2_0>
+		implements OrmMapsIdDerivedIdentityStrategy2_0 {
+	
 	protected String specifiedIdAttributeName;
-	// no default
-
-
+	
+	
 	public GenericOrmMapsIdDerivedIdentityStrategy2_0(OrmDerivedIdentity2_0 parent) {
 		super(parent);
-		this.specifiedIdAttributeName = this.getXmlMapping().getMapsId();
+		this.specifiedIdAttributeName = buildSpecifiedIdAttributeName();
 	}
-
-
+	
+	
 	// ********** synchronize/update **********
-
+	
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.setSpecifiedIdAttributeName_(this.getXmlMapping().getMapsId());
+		this.setSpecifiedIdAttributeName_(buildSpecifiedIdAttributeName());
 	}
-
-
+	
+	
 	// ********** ID attribute name **********
-
+	
 	public String getIdAttributeName() {
-		// there is no default
 		return this.specifiedIdAttributeName;
 	}
-
+	
 	public String getSpecifiedIdAttributeName() {
 		return this.specifiedIdAttributeName;
 	}
-
+	
 	public void setSpecifiedIdAttributeName(String idAttributeName) {
 		this.setSpecifiedIdAttributeName_(idAttributeName);
 		this.getXmlMapping().setMapsId(idAttributeName);
 	}
-
+	
 	protected void setSpecifiedIdAttributeName_(String idAttributeName) {
 		String old = this.specifiedIdAttributeName;
 		this.specifiedIdAttributeName = idAttributeName;
 		this.firePropertyChanged(SPECIFIED_ID_ATTRIBUTE_NAME_PROPERTY, old, idAttributeName);
 	}
-
+	
+	protected String buildSpecifiedIdAttributeName() {
+		return getXmlMapping().getMapsId();
+	}
+	
 	public String getDefaultIdAttributeName() {
-		// there is no way to have a default in xml
+		// see class comment
 		return null;
 	}
-
+	
 	public boolean defaultIdAttributeNameIsPossible() {
+		// see class comment
 		return false;
 	}
-
-
+	
+	
 	// ********** misc **********
-
+	
 	protected OrmDerivedIdentity2_0 getDerivedIdentity() {
 		return this.parent;
 	}
-
+	
 	public OrmSingleRelationshipMapping2_0 getMapping() {
 		return this.getDerivedIdentity().getMapping();
 	}
-
+	
 	protected OrmSpecifiedPersistentAttribute getPersistentAttribute() {
 		return this.getMapping().getPersistentAttribute();
 	}
-
+	
 	protected XmlSingleRelationshipMapping_2_0 getXmlMapping() {
 		return this.getMapping().getXmlAttributeMapping();
 	}
-
+	
 	protected Iterable<AttributeMapping> getAllAttributeMappings() {
 		return this.getPersistentAttribute().getDeclaringTypeMapping().getAllAttributeMappings();
 	}
-
+	
 	public Iterable<String> getSortedCandidateIdAttributeNames() {
 		return IterableTools.sort(this.getNonNullCandidateIdAttributeNames());
 	}
-
+	
 	protected Iterable<String> getNonNullCandidateIdAttributeNames() {
 		return IterableTools.removeNulls(this.getCandidateIdAttributeNames());
 	}
-
+	
 	protected Iterable<String> getCandidateIdAttributeNames() {
 		return IterableTools.transform(this.getCandidateIdAttributeMappings(), AttributeMapping.NAME_TRANSFORMER);
 	}
-
+	
 	protected Iterable<AttributeMapping> getCandidateIdAttributeMappings() {
 		return this.buildCandidateIdAttributeMappings(this.getAllAttributeMappings());
 	}
-
+	
 	protected Iterable<AttributeMapping> buildCandidateIdAttributeMappings(Iterable<AttributeMapping> attributeMappings) {
 		return IterableTools.children(attributeMappings, CANDIDATE_ID_ATTRIBUTE_MAPPING_LISTS_TRANSFORMER);
 	}
-
+	
 	protected static final Transformer<AttributeMapping, Iterable<AttributeMapping>> CANDIDATE_ID_ATTRIBUTE_MAPPING_LISTS_TRANSFORMER = new CandidateIdAttributeMappingListsTransformer();
-
+	
 	protected static class CandidateIdAttributeMappingListsTransformer
-		extends TransformerAdapter<AttributeMapping, Iterable<AttributeMapping>>
-	{
+			extends TransformerAdapter<AttributeMapping, Iterable<AttributeMapping>> {
+		
 		@Override
 		public Iterable<AttributeMapping> transform(AttributeMapping attributeMapping) {
 			return ObjectTools.equals(attributeMapping.getKey(), MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY) ?
 					this.getEmbeddedIdMappingChoiceIterable((EmbeddedIdMapping) attributeMapping) :
 					new SingleElementIterable<AttributeMapping>(attributeMapping);
 		}
-
+		
 		/**
 		 * Convert the specified mapping into a collection of its "mappings".
 		 * Typically, this collection will include just the mapping itself;
@@ -159,7 +166,7 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 					IterableTools.insert(mapping, embeddable.getAllAttributeMappings());
 		}
 	}
-
+	
 	public AttributeMapping getDerivedIdAttributeMapping() {
 		String idAttributeName = this.getIdAttributeName();
 		if (idAttributeName != null) {
@@ -171,69 +178,38 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 		}
 		return null;
 	}
-
+	
 	public boolean isSpecified() {
 		return this.getXmlMapping().getMapsId() != null;
 	}
-
+	
 	public void addStrategy() {
 		this.getXmlMapping().setMapsId(""); //$NON-NLS-1$
 	}
-
+	
 	public void removeStrategy() {
 		this.getXmlMapping().setMapsId(null);
 	}
-
+	
 	public void initializeFrom(OrmMapsIdDerivedIdentityStrategy2_0 oldStrategy) {
 		this.setSpecifiedIdAttributeName(oldStrategy.getSpecifiedIdAttributeName());
 	}
-
-
-	// ********** ID mappings **********
-
-	protected Iterable<AttributeMapping> getIdAttributeMappings() {
-		return IterableTools.filter(this.getAllAttributeMappings(), new MappingIsIdMapping());
-	}
-
-	public class MappingIsIdMapping
-		extends PredicateAdapter<AttributeMapping>
-	{
-		@Override
-		public boolean evaluate(AttributeMapping mapping) {
-			return GenericOrmMapsIdDerivedIdentityStrategy2_0.this.mappingIsIdMapping(mapping);
-		}
-	}
-
-	protected boolean mappingIsIdMapping(AttributeMapping mapping) {
-		return IterableTools.contains(this.getIdMappingKeys(), mapping.getKey());
-	}
-
-	protected Iterable<String> getIdMappingKeys() {
-		return ID_MAPPING_KEYS;
-	}
-
-	protected static final String[] ID_MAPPING_KEYS_ARRAY = new String[] {
-		MappingKeys.ID_ATTRIBUTE_MAPPING_KEY,
-		MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY
-	};
 	
-	protected static final Iterable<String> ID_MAPPING_KEYS = IterableTools.iterable(ID_MAPPING_KEYS_ARRAY);
-
-
+	
 	// ********** validation **********
-
+	
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		this.validateMapsId(messages);
 	}
-
+	
 	protected void validateMapsId(List<IMessage> messages) {
 		if (this.getDerivedIdentity().usesMapsIdDerivedIdentityStrategy()) {
 			this.validateMapsId_(messages);
 		}
 	}
-
+	
 	protected void validateMapsId_(List<IMessage> messages) {
 		// test whether id attribute name can be resolved
 		AttributeMapping attributeMapping = this.getDerivedIdAttributeMapping();
@@ -247,17 +223,17 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 			}
 		}
 	}
-
+	
 	protected Iterable<AttributeMapping> getValidAttributeMappingChoices() {
-		return this.buildCandidateIdAttributeMappings(this.getIdAttributeMappings());
+		return this.buildCandidateIdAttributeMappings(getPersistentAttribute().getDeclaringTypeMapping().getIdAttributeMappings());
 	}
-
+	
 	protected IMessage buildMessage(ValidationMessage msg, Object[] args) {
 		String attributeDescription = NLS.bind(JptJpaCoreValidationArgumentMessages.ATTRIBUTE_DESC, this.getPersistentAttribute().getName());
 		args = ArrayTools.add(args, 0, attributeDescription);
 		return this.buildValidationMessage(this.getValidationTextRange(), msg, args);
 	}
-
+	
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.getXmlMapping().getMapsIdTextRange();
 		return (textRange != null) ? textRange : this.getDerivedIdentity().getValidationTextRange();

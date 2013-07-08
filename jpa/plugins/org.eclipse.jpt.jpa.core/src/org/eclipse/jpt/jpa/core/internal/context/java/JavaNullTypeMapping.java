@@ -13,8 +13,11 @@ import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.jpa.core.MappingKeys;
+import org.eclipse.jpt.jpa.core.context.IdTypeMapping;
 import org.eclipse.jpt.jpa.core.context.Query;
+import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -24,18 +27,15 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Java null type mapping
  */
 public class JavaNullTypeMapping
-	extends AbstractJavaTypeMapping<Annotation>
-{
+		extends AbstractJavaTypeMapping<Annotation> {
+	
 	public JavaNullTypeMapping(JavaPersistentType parent) {
 		super(parent, null);
 	}
-
+	
+	
 	public String getKey() {
 		return MappingKeys.NULL_TYPE_MAPPING_KEY;
-	}
-
-	public JavaPersistentType getIdClass() {
-		return null;
 	}
 	
 	public boolean isMapped() {
@@ -49,10 +49,22 @@ public class JavaNullTypeMapping
 	public Iterable<Query> getQueries() {
 		return EmptyIterable.instance();
 	}
-
-
+	
+	public IdTypeMapping getSuperTypeMapping() {
+		return null;
+	}
+	
+	public Iterable<IdTypeMapping> getAncestors() {
+		return EmptyIterable.instance();
+	}
+	
+	public Iterable<? extends TypeMapping> getInheritanceHierarchy() {
+		return new SingleElementIterable(this);
+	}
+	
+	
 	// ********** validation **********
-
+	
 	/**
 	 * We added this message here because the most likely solution is to add
 	 * an annotation to the .java file.
@@ -77,7 +89,7 @@ public class JavaNullTypeMapping
 	public boolean validatesAgainstDatabase() {
 		return false;
 	}
-
+	
 	@Override
 	public TextRange getValidationTextRange() {
 		return this.getPersistentType().getValidationTextRange();

@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.AccessType;
+import org.eclipse.jpt.jpa.core.context.IdTypeMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -29,18 +30,24 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Java ID class reference
  */
 public class GenericJavaIdClassReference
-	extends AbstractJavaContextModel<JavaTypeMapping>
-	implements JavaIdClassReference, PersistentType.Parent
-{
+		extends AbstractJavaContextModel<JavaTypeMapping>
+		implements JavaIdClassReference, PersistentType.Parent {
+	
+	protected String specifiedIdClassName;
+	
+	protected String defaultIdClassName;
+	
 	protected String idClassName;
+	
 	protected String fullyQualifiedIdClassName;
+	
 	// the ref holds the type directly because the ref is the type's parent
 	protected JavaPersistentType idClass;
-
-
+	
+	
 	public GenericJavaIdClassReference(JavaTypeMapping parent) {
 		super(parent);
-		this.idClassName = this.buildIdClassName();
+		this.specifiedIdClassName = buildSpecifiedIdClassName();
 		// 'idClass' is resolved in the update
 	}
 
@@ -50,55 +57,78 @@ public class GenericJavaIdClassReference
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.setIdClassName_(this.buildIdClassName());
+		setSpecifiedIdClassName_(buildSpecifiedIdClassName());
 		if (this.idClass != null) {
 			this.idClass.synchronizeWithResourceModel();
 		}
 	}
-
+	
 	@Override
 	public void update() {
 		super.update();
-		this.setFullyQualifiedIdClassName(this.buildFullyQualifiedIdClassName());
-		this.updateIdClass();
+		setDefaultIdClassName_(buildDefaultIdClassName());
+		setIdClassName_(buildIdClassName());
+		setFullyQualifiedIdClassName(buildFullyQualifiedIdClassName());
+		updateIdClass();
 	}
 
 
-	// ********** id class name **********
-
+	// ***** id class name *****
+	
 	public String getIdClassName() {
 		return this.getSpecifiedIdClassName();
 	}
-
-	public String getSpecifiedIdClassName() {
-		return this.idClassName;
-	}
-
-	public void setSpecifiedIdClassName(String name) {
-		if (ObjectTools.notEquals(name, this.idClassName)) {
-			this.getIdClassAnnotationForUpdate().setValue(name);
-			this.removeIdClassAnnotationIfUnset();
-			this.setIdClassName_(name);
-		}
-	}
-
+	
 	protected void setIdClassName_(String name) {
 		String old = this.idClassName;
 		this.idClassName = name;
+		firePropertyChanged(ID_CLASS_NAME_PROPERTY, old, name);
+	}
+	
+	protected String buildIdClassName() {
+		return (this.specifiedIdClassName != null) ? this.specifiedIdClassName : this.defaultIdClassName;
+	}
+	
+	public String getSpecifiedIdClassName() {
+		return this.specifiedIdClassName;
+	}
+	
+	public void setSpecifiedIdClassName(String name) {
+		if (ObjectTools.notEquals(name, this.specifiedIdClassName)) {
+			getIdClassAnnotationForUpdate().setValue(name);
+			removeIdClassAnnotationIfUnset();
+			setSpecifiedIdClassName_(name);
+		}
+	}
+	
+	protected void setSpecifiedIdClassName_(String name) {
+		String old = this.specifiedIdClassName;
+		this.specifiedIdClassName = name;
 		this.firePropertyChanged(SPECIFIED_ID_CLASS_NAME_PROPERTY, old, name);
 	}
-
-	protected String buildIdClassName() {
+	
+	protected String buildSpecifiedIdClassName() {
 		IdClassAnnotation annotation = this.getIdClassAnnotation();
 		return (annotation == null) ? null : annotation.getValue();
 	}
-
+	
 	public String getDefaultIdClassName() {
-		return null;
+		return this.defaultIdClassName;
 	}
-
+	
+	protected void setDefaultIdClassName_(String name) {
+		String old = this.defaultIdClassName;
+		this.defaultIdClassName = name;
+		this.firePropertyChanged(DEFAULT_ID_CLASS_NAME_PROPERTY, old, name);
+	}
+	
+	protected String buildDefaultIdClassName() {
+		IdTypeMapping superType = getParent().getSuperTypeMapping();
+		return (superType == null) ? null : superType.getIdClassReference().getFullyQualifiedIdClassName();
+	}
+	
 	public boolean isSpecified() {
-		return this.idClassName != null;
+		return this.specifiedIdClassName != null;
 	}
 
 

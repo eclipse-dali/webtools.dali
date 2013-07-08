@@ -12,8 +12,8 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.common.core.internal.utility.TypeTools;
 import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
+import org.eclipse.jpt.common.core.internal.utility.TypeTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -21,6 +21,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.AccessType;
+import org.eclipse.jpt.jpa.core.context.IdTypeMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -41,9 +42,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>orm.xml</code> ID class reference
  */
 public class GenericOrmIdClassReference
-	extends AbstractOrmXmlContextModel<OrmIdTypeMapping>
-	implements OrmIdClassReference, PersistentType.Parent
-{
+		extends AbstractOrmXmlContextModel<OrmIdTypeMapping>
+		implements OrmIdClassReference, PersistentType.Parent {
+	
 	protected String specifiedIdClassName;
 	protected String defaultIdClassName;
 	protected String fullyQualifiedIdClassName;
@@ -147,7 +148,11 @@ public class GenericOrmIdClassReference
 
 	protected String buildDefaultIdClassName() {
 		JavaIdClassReference javaRef = this.parent.getJavaIdClassReferenceForDefaults();
-		return (javaRef == null) ? null : javaRef.getFullyQualifiedIdClassName();
+		if (javaRef != null && javaRef.isSpecified()) {
+			return javaRef.getFullyQualifiedIdClassName();
+		}
+		IdTypeMapping superType = getParent().getSuperTypeMapping();
+		return (superType == null) ? null : superType.getIdClassReference().getFullyQualifiedIdClassName();
 	}
 
 	public boolean isSpecified() {

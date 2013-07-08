@@ -27,8 +27,8 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
  * @since 2.0
  */
 public interface Entity
-	extends IdTypeMapping
-{
+		extends IdTypeMapping {
+	
 	// ********** name **********
 
 	String getSpecifiedName();

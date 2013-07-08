@@ -37,6 +37,7 @@ import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.Generator;
+import org.eclipse.jpt.jpa.core.context.IdTypeMapping;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
@@ -45,7 +46,6 @@ import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.Override_;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
@@ -63,7 +63,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
-import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedDiscriminatorColumn;
@@ -108,16 +107,14 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Java entity
  */
 public abstract class AbstractJavaEntity
-	extends AbstractJavaTypeMapping<EntityAnnotation>
-	implements JavaEntity2_0, JavaGeneratorContainer.Parent, JavaQueryContainer.Parent
-{
+		extends AbstractJavaIdTypeMapping<EntityAnnotation>
+		implements JavaEntity2_0, JavaGeneratorContainer.Parent, JavaQueryContainer.Parent {
+	
 	protected String specifiedName;
 	protected String defaultName;
 
 	protected Entity rootEntity;
 	protected final Vector<Entity> descendants = new Vector<Entity>();
-
-	protected final JavaIdClassReference idClassReference;
 
 	protected final JavaSpecifiedTable table;
 	protected boolean specifiedTableIsAllowed;
@@ -154,7 +151,6 @@ public abstract class AbstractJavaEntity
 	protected AbstractJavaEntity(JavaPersistentType parent, EntityAnnotation mappingAnnotation) {
 		super(parent, mappingAnnotation);
 		this.specifiedName = this.mappingAnnotation.getName();
-		this.idClassReference = this.buildIdClassReference();
 		this.table = this.buildTable();
 		// start with the entity as the root - it will be recalculated in update()
 		this.rootEntity = this;
@@ -178,7 +174,6 @@ public abstract class AbstractJavaEntity
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		this.setSpecifiedName_(this.mappingAnnotation.getName());
-		this.idClassReference.synchronizeWithResourceModel();
 		this.table.synchronizeWithResourceModel();
 		this.syncSpecifiedSecondaryTables();
 		this.syncSpecifiedPrimaryKeyJoinColumns();
@@ -190,45 +185,43 @@ public abstract class AbstractJavaEntity
 		this.generatorContainer.synchronizeWithResourceModel();
 		this.queryContainer.synchronizeWithResourceModel();
 	}
-
+	
 	@Override
 	public void update() {
 		super.update();
-
+		
 		this.setDefaultName(this.buildDefaultName());
-
+		
 		// calculate root entity early - other things depend on it
 		this.setRootEntity(this.buildRootEntity());
 		this.updateDescendants();
-
-		this.idClassReference.update();
-
+		
 		this.setDefaultInheritanceStrategy(this.buildDefaultInheritanceStrategy());
-
+		
 		this.table.update();
 		this.setSpecifiedTableIsAllowed(this.buildSpecifiedTableIsAllowed());
 		this.setTableIsUndefined(this.buildTableIsUndefined());
-
+		
 		this.updateModels(this.getSecondaryTables());
-
+		
 		this.updateDefaultPrimaryKeyJoinColumn();
 		this.updateModels(this.getPrimaryKeyJoinColumns());
-
+		
 		this.discriminatorColumn.update();
 		this.setSpecifiedDiscriminatorColumnIsAllowed(this.buildSpecifiedDiscriminatorColumnIsAllowed());
 		this.setDiscriminatorColumnIsUndefined(this.buildDiscriminatorColumnIsUndefined());
-
+		
 		this.setDefaultDiscriminatorValue(this.buildDefaultDiscriminatorValue());
 		this.setSpecifiedDiscriminatorValueIsAllowed(this.buildSpecifiedDiscriminatorValueIsAllowed());
 		this.setDiscriminatorValueIsUndefined(this.buildDiscriminatorValueIsUndefined());
-
+		
 		this.attributeOverrideContainer.update();
 		this.associationOverrideContainer.update();
-
+		
 		this.generatorContainer.update();
 		this.queryContainer.update();
 	}
-
+	
 
 	// ********** name **********
 
@@ -269,7 +262,6 @@ public abstract class AbstractJavaEntity
 
 	// ********** root entity **********
 
-	@Override
 	public Entity getRootEntity() {
 		return this.rootEntity;
 	}
@@ -305,21 +297,6 @@ public abstract class AbstractJavaEntity
 		return this.isRootEntity() ?
 				IterableTools.filter(this.getPersistenceUnit().getEntities(), new Entity.IsDescendant(this)) :
 				IterableTools.<Entity>emptyIterable();
-	}
-
-
-	// ********** id class **********
-
-	public JavaIdClassReference getIdClassReference() {
-		return this.idClassReference;
-	}
-
-	protected JavaIdClassReference buildIdClassReference() {
-		return new GenericJavaIdClassReference(this);
-	}
-
-	public JavaPersistentType getIdClass() {
-		return this.idClassReference.getIdClass();
 	}
 
 
@@ -659,7 +636,6 @@ public abstract class AbstractJavaEntity
 
 	// ********** inheritance strategy **********
 
-	@Override
 	public InheritanceType getInheritanceStrategy() {
 		return (this.specifiedInheritanceStrategy != null) ? this.specifiedInheritanceStrategy : this.defaultInheritanceStrategy;
 	}
@@ -885,11 +861,6 @@ public abstract class AbstractJavaEntity
 		return this.getJpaFactory().buildJavaAttributeOverrideContainer(new AttributeOverrideContainerParentAdapter());
 	}
 
-	public TypeMapping getOverridableTypeMapping() {
-		PersistentType superPersistentType = this.getPersistentType().getSuperPersistentType();
-		return (superPersistentType == null) ? null : superPersistentType.getMapping();
-	}
-
 
 	// ********** association override container **********
 
@@ -966,7 +937,7 @@ public abstract class AbstractJavaEntity
 	// TODO eliminate duplicate tables?
 	@Override
 	public Iterable<Table> getAllAssociatedTables() {
-		return IterableTools.children(this.getInheritanceHierarchy(), TypeMappingTools.ASSOCIATED_TABLES_TRANSFORMER);
+		return IterableTools.children(getInheritanceHierarchy(), TypeMappingTools.ASSOCIATED_TABLES_TRANSFORMER);
 	}
 
 	@Override
@@ -1112,7 +1083,6 @@ public abstract class AbstractJavaEntity
 		return null;
 	}
 
-	@Override
 	public boolean isRootEntity() {
 		return this == this.rootEntity;
 	}
@@ -1246,8 +1216,7 @@ public abstract class AbstractJavaEntity
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-
-		this.validatePrimaryKey(messages, reporter);
+		
 		this.validateTable(messages, reporter);
 		for (JavaSpecifiedSecondaryTable secondaryTable : this.getSecondaryTables()) {
 			secondaryTable.validate(messages, reporter);
@@ -1261,7 +1230,6 @@ public abstract class AbstractJavaEntity
 		this.attributeOverrideContainer.validate(messages, reporter);
 		this.associationOverrideContainer.validate(messages, reporter);
 		this.validateEntityName(messages);
-		this.idClassReference.validate(messages, reporter);
 	}
 
 	@Override
@@ -1288,11 +1256,8 @@ public abstract class AbstractJavaEntity
 	public TextRange getNameTextRange() {
 		return this.getMappingAnnotation().getNameTextRange();
 	}
-
-	protected void validatePrimaryKey(List<IMessage> messages, IReporter reporter) {
-		this.buildPrimaryKeyValidator().validate(messages, reporter);
-	}
-
+	
+	@Override
 	protected JpaValidator buildPrimaryKeyValidator() {
 		return new GenericEntityPrimaryKeyValidator(this);
 	}
@@ -1453,8 +1418,8 @@ public abstract class AbstractJavaEntity
 			return AbstractJavaEntity.this.getValidationTextRange();
 		}
 
-		public TypeMapping getOverridableTypeMapping() {
-			return AbstractJavaEntity.this.getOverridableTypeMapping();
+		public IdTypeMapping getOverridableTypeMapping() {
+			return AbstractJavaEntity.this.getSuperTypeMapping();
 		}
 
 		public Iterable<String> getAllOverridableNames() {

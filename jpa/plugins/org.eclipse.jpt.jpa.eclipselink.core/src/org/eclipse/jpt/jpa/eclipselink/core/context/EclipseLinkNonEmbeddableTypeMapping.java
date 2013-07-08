@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.context;
 
 import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
+import org.eclipse.jpt.jpa.core.context.IdTypeMapping;
 
 
 /**
@@ -20,10 +21,13 @@ import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @version 3.6
+ * @since 3.3
  */
 public interface EclipseLinkNonEmbeddableTypeMapping
-	extends EclipseLinkTypeMapping
-{
+		extends IdTypeMapping, EclipseLinkTypeMapping {
+	
 	EclipseLinkCaching getCaching();
 
 	EclipseLinkReadOnly getReadOnly();

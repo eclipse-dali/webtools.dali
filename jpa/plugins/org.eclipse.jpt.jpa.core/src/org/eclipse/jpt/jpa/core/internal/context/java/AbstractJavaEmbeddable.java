@@ -10,8 +10,11 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.jpa.core.MappingKeys;
+import org.eclipse.jpt.jpa.core.context.IdTypeMapping;
 import org.eclipse.jpt.jpa.core.context.Query;
+import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.EmbeddableAnnotation;
@@ -20,21 +23,17 @@ import org.eclipse.jpt.jpa.core.resource.java.EmbeddableAnnotation;
  * Java embeddable type mapping
  */
 public abstract class AbstractJavaEmbeddable
-	extends AbstractJavaTypeMapping<EmbeddableAnnotation>
-	implements JavaEmbeddable
-{
+		extends AbstractJavaTypeMapping<EmbeddableAnnotation>
+		implements JavaEmbeddable {
+	
 	protected AbstractJavaEmbeddable(JavaPersistentType parent, EmbeddableAnnotation mappingAnnotation) {
 		super(parent, mappingAnnotation);
 	}
-
+	
 	public String getKey() {
 		return MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY;
 	}
-
-	public JavaPersistentType getIdClass() {
-		return null;
-	}
-
+	
 	public boolean isMapped() {
 		return true;
 	}
@@ -47,8 +46,23 @@ public abstract class AbstractJavaEmbeddable
 	public boolean validatesAgainstDatabase() {
 		return false;
 	}
-
+	
 	public Iterable<Query> getQueries() {
 		return EmptyIterable.instance();
+	}
+	
+	
+	// ***** (no) inheritance *****
+	
+	public IdTypeMapping getSuperTypeMapping() {
+		return null;
+	}
+	
+	public Iterable<IdTypeMapping> getAncestors() {
+		return EmptyIterable.instance();
+	}
+	
+	public Iterable<? extends TypeMapping> getInheritanceHierarchy() {
+		return new SingleElementIterable(this);
 	}
 }

@@ -12,8 +12,9 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.jpa.core.MappingKeys;
+import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.Query;
-import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
@@ -27,105 +28,93 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Java mapped superclass
  */
 public abstract class AbstractJavaMappedSuperclass
-	extends AbstractJavaTypeMapping<MappedSuperclassAnnotation>
-	implements JavaMappedSuperclass, JavaQueryContainer.Parent
-{
-	protected final JavaIdClassReference idClassReference;
+		extends AbstractJavaIdTypeMapping<MappedSuperclassAnnotation>
+		implements JavaMappedSuperclass, JavaQueryContainer.Parent {
+	
 	protected final JavaQueryContainer queryContainer;
-
-
+	
+	
 	protected AbstractJavaMappedSuperclass(JavaPersistentType parent, MappedSuperclassAnnotation mappingAnnotation) {
 		super(parent, mappingAnnotation);
-		this.idClassReference = this.buildIdClassReference();
 		this.queryContainer = this.buildQueryContainer();
 	}
-
-
-	// ********** synchronize/update **********
-
+	
+	
+	// ***** synchronize/update *****
+	
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.idClassReference.synchronizeWithResourceModel();
 		this.queryContainer.synchronizeWithResourceModel();
 	}
-
+	
 	@Override
 	public void update() {
 		super.update();
-		this.idClassReference.update();
 		this.queryContainer.update();
 	}
-
-
-	// ********** id class **********
-
-	public JavaIdClassReference getIdClassReference() {
-		return this.idClassReference;
-	}
-
-	protected JavaIdClassReference buildIdClassReference() {
-		return new GenericJavaIdClassReference(this);
-	}
-
-	public JavaPersistentType getIdClass() {
-		return this.idClassReference.getIdClass();
-	}
-
-
+	
+	
 	// ********** query container **********
-
+	
 	public JavaQueryContainer getQueryContainer() {
 		return this.queryContainer;
 	}
-
+	
 	protected JavaQueryContainer buildQueryContainer() {
 		return this.getJpaFactory().buildJavaQueryContainer(this);
 	}
-
+	
 	public JavaResourceMember getResourceAnnotatedElement() {
 		return this.getJavaResourceType();
 	}
-
+	
 	public Iterable<Query> getQueries() {
 		return this.queryContainer.getQueries();
 	}
-
-
+	
+	
 	// ********** misc **********
-
+	
 	public String getKey() {
 		return MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY;
 	}
-
+	
 	public boolean isMapped() {
 		return true;
 	}
-
+	
 	public boolean tableNameIsInvalid(String tableName) {
 		return false;
 	}
-
-
-	// ********** validation **********
-
+	
+	public Entity getRootEntity() {
+		return null;
+	}
+	
+	public boolean isRootEntity() {
+		return false;
+	}
+	
+	public InheritanceType getInheritanceStrategy() {
+		return null;
+	}
+	
+	
+	// ***** validation *****
+	
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		this.validatePrimaryKey(messages, reporter);
-		this.idClassReference.validate(messages, reporter);
 		this.queryContainer.validate(messages, reporter);
 	}
-
+	
 	@Override
 	public boolean validatesAgainstDatabase() {
 		return false;
 	}
-
-	protected void validatePrimaryKey(List<IMessage> messages, IReporter reporter) {
-		this.buildPrimaryKeyValidator().validate(messages, reporter);
-	}
-
+	
+	@Override
 	protected JpaValidator buildPrimaryKeyValidator() {
 		return new GenericMappedSuperclassPrimaryKeyValidator(this);
 		// TODO - JPA 2.0 validation

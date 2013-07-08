@@ -10,10 +10,10 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context;
 
 import java.util.List;
-import org.eclipse.jpt.jpa.core.context.TypeMapping;
+import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
+import org.eclipse.jpt.jpa.core.context.IdTypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AbstractEntityPrimaryKeyValidator;
-import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeMapping;
@@ -52,7 +52,7 @@ public class EclipseLinkEntityPrimaryKeyValidator
 	}
 	
 	@Override
-	protected boolean definesPrimaryKey(TypeMapping typeMapping) {
+	protected boolean definesPrimaryKey(IdTypeMapping typeMapping) {
 		return super.definesPrimaryKey(typeMapping)
 			|| ((EclipseLinkTypeMapping) typeMapping).usesPrimaryKeyColumns()
 			|| ((EclipseLinkTypeMapping) typeMapping).usesPrimaryKeyTenantDiscriminatorColumns();

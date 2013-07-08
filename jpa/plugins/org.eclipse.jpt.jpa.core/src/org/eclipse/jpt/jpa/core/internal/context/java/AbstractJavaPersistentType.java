@@ -35,6 +35,7 @@ import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
@@ -56,11 +57,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * </ul>
  */
 public abstract class AbstractJavaPersistentType
-	extends AbstractJavaManagedType<PersistentType.Parent>
-	implements JavaPersistentType
-{
-	protected PersistentType superPersistentType;
-
+		extends AbstractJavaManagedType<PersistentType.Parent>
+		implements JavaPersistentType {
+	
 	protected AccessType specifiedAccess;
 	protected AccessType defaultAccess;  // never null
 
@@ -97,68 +96,21 @@ public abstract class AbstractJavaPersistentType
 	@Override
 	public void update() {
 		super.update();
-		this.setSuperPersistentType(this.buildSuperPersistentType());
 		this.setDefaultAccess(this.buildDefaultAccess());
 		this.mapping.update();
 		this.updateAttributes();
 		this.updateStructureChildren();
 	}
-
-
-	// ********** super persistent type **********
-
+	
+	
+	// ***** inheritance *****
+	
 	public PersistentType getSuperPersistentType() {
-		return this.superPersistentType;
+		TypeMapping superTypeMapping = this.mapping.getSuperTypeMapping();
+		return (superTypeMapping == null) ? null : superTypeMapping.getPersistentType();
 	}
-
-	protected void setSuperPersistentType(PersistentType superPersistentType) {
-		PersistentType old = this.superPersistentType;
-		this.superPersistentType = superPersistentType;
-		this.firePropertyChanged(SUPER_PERSISTENT_TYPE_PROPERTY, old, superPersistentType);
-	}
-
-	protected PersistentType buildSuperPersistentType() {
-		HashSet<JavaResourceType> visited = new HashSet<JavaResourceType>();
-		visited.add(this.resourceType);
-		PersistentType spt = this.resolveSuperPersistentType(this.resourceType.getSuperclassQualifiedName(), visited);
-		if (spt == null) {
-			return null;
-		}
-		if (IterableTools.contains(spt.getInheritanceHierarchy(), this)) {
-			return null;  // short-circuit in this case, we have circular inheritance
-		}
-		return spt.isMapped() ? spt : spt.getSuperPersistentType();
-	}
-
-	/**
-	 * The JPA spec allows non-persistent types in a persistent type's
-	 * inheritance hierarchy. We check for a persistent type with the
-	 * specified name in the persistence unit. If it is not found we use
-	 * resource persistent type and look for <em>its</em> super type.
-	 * <p>
-	 * The <code>visited</code> collection is used to detect a cycle in the
-	 * <em>resource</em> type inheritance hierarchy and prevent the resulting
-	 * stack overflow. Any cycles in the <em>context</em> type inheritance
-	 * hierarchy are handled in {@link #buildSuperPersistentType()}.
-	 */
-	protected PersistentType resolveSuperPersistentType(String typeName, Collection<JavaResourceType> visited) {
-		if (typeName == null) {
-			return null;
-		}
-		JavaResourceType rType = (JavaResourceType) this.getJpaProject().getJavaResourceType(typeName, JavaResourceAnnotatedElement.AstNodeType.TYPE);
-		if ((rType == null) || visited.contains(rType)) {
-			return null;
-		}
-		visited.add(rType);
-		PersistentType superType = this.resolvePersistentType(typeName);
-		return (superType != null) ? superType : this.resolveSuperPersistentType(rType.getSuperclassQualifiedName(), visited);  // recurse
-	}
-
-	protected PersistentType resolvePersistentType(String typeName) {
-		return this.getPersistenceUnit().getPersistentType(typeName);
-	}
-
-
+	
+	
 	// ********** access annotation **********
 
 	protected AccessAnnotation2_0 getAccessAnnotation() {
@@ -242,8 +194,8 @@ public abstract class AbstractJavaPersistentType
 			return accessType;
 		}
 
-		if (this.superPersistentType != null) {
-			accessType = this.superPersistentType.getAccess();
+		if (getSuperPersistentType() != null) {
+			accessType = getSuperPersistentType().getAccess();
 			if (accessType != null) {
 				return accessType;
 			}
@@ -428,7 +380,7 @@ public abstract class AbstractJavaPersistentType
 			return stream.hasNext() ? null : attribute;
 		}
 		// recurse
-		return (this.superPersistentType == null) ? null : this.superPersistentType.resolveAttribute(attributeName);
+		return (getSuperPersistentType() == null) ? null : getSuperPersistentType().resolveAttribute(attributeName);
 	}
 
 	protected Iterable<String> convertToNames(Iterable<? extends PersistentAttribute> attrs) {
@@ -700,35 +652,27 @@ public abstract class AbstractJavaPersistentType
 
 
 	// ********** inheritance **********
-
+	
 	public Iterable<PersistentType> getInheritanceHierarchy() {
-		return this.buildInheritanceHierarchy(this);
+		return IterableTools.insert(this, getAncestors());
 	}
-
+	
 	public Iterable<PersistentType> getAncestors() {
-		return (this.superPersistentType == null) ?
-				IterableTools.<PersistentType>emptyIterable() :
-				this.buildInheritanceHierarchy(this.superPersistentType);
+		return IterableTools.transform(getMapping().getAncestors(), TypeMapping.PERSISTENT_TYPE_TRANSFORMER);
 	}
-
-	protected Iterable<PersistentType> buildInheritanceHierarchy(PersistentType start) {
-		// using a chain iterable to traverse up the inheritance tree
-		return ObjectTools.chain(start, SUPER_PERSISTENT_TYPE_TRANSFORMER);
-	}
-
+	
 	protected Iterable<JavaResourceType> getResourceInheritanceHierarchy() {
 		return (this.resourceType == null) ?
 				IterableTools.<JavaResourceType>emptyIterable() :
 				ObjectTools.chain(this.resourceType, new SuperJavaResourceTypeTransformer());
 	}
-
-
+	
 	/**
 	 * Transform a Java resource type into its super Java resource type.
 	 */
 	protected class SuperJavaResourceTypeTransformer
-		extends TransformerAdapter<JavaResourceType, JavaResourceType>
-	{
+			extends TransformerAdapter<JavaResourceType, JavaResourceType> {
+		
 		// keep track of visited resource types to prevent cyclical inheritance
 		private final HashSet<JavaResourceType> visitedResourceTypes = new HashSet<JavaResourceType>();
 

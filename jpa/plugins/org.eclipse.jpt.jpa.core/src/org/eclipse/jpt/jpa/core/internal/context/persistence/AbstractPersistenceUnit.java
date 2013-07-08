@@ -61,6 +61,7 @@ import org.eclipse.jpt.jpa.core.context.DeleteTypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.Generator;
+import org.eclipse.jpt.jpa.core.context.IdTypeMapping;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 import org.eclipse.jpt.jpa.core.context.ManagedType;
 import org.eclipse.jpt.jpa.core.context.ManagedTypeContainer;
@@ -1940,13 +1941,18 @@ public abstract class AbstractPersistenceUnit
 		TypeMapping typeMapping = this.getTypeMapping(typeName);
 		return (typeMapping instanceof Embeddable) ? (Embeddable) typeMapping : null;
 	}
-
+	
+	public IdTypeMapping getIdTypeMapping(String typeName) {
+		TypeMapping typeMapping = this.getTypeMapping(typeName);
+		return (typeMapping instanceof IdTypeMapping) ? (IdTypeMapping) typeMapping : null;
+	}
+	
 	// TODO bjv - this should probably *not* return Java type mappings when PU is "metadata complete"...
 	protected TypeMapping getTypeMapping(String typeName) {
 		PersistentType persistentType = this.getPersistentType(typeName);
 		return (persistentType == null) ? null : persistentType.getMapping();
 	}
-
+	
 	public Iterable<Entity> getEntities() {
 		return this.filterToEntities(this.getTypeMappings());
 	}

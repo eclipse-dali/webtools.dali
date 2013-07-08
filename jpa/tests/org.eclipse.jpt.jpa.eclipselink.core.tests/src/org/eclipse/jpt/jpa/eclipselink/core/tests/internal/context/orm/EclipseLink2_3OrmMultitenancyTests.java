@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.Sourc
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
+import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
@@ -423,20 +424,21 @@ public class EclipseLink2_3OrmMultitenancyTests
 
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
-
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
+		
 		EclipseLinkOrmMultitenancy2_3 multitenancy = ((EclipseLinkOrmEntity) ormPersistentType.getMapping()).getMultitenancy();
 		assertTrue(multitenancy.isMultitenant()); //multitenant by default from root entity
 		assertFalse(multitenancy.isSpecifiedMultitenant());
 		assertEquals(1, multitenancy.getTenantDiscriminatorColumnsSize());
 		assertEquals("ROOT_ENTITY_TENANT_ID", multitenancy.getTenantDiscriminatorColumns().iterator().next().getName());
 
-		ormPersistentType.getMapping().getRootEntity().setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
+		ormEntity.getRootEntity().setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
 		assertTrue(multitenancy.isMultitenant()); //multitenant by default from root entity
 		assertFalse(multitenancy.isSpecifiedMultitenant());
 		assertEquals(1, multitenancy.getTenantDiscriminatorColumnsSize());
 		assertEquals("ROOT_ENTITY_TENANT_ID", multitenancy.getTenantDiscriminatorColumns().iterator().next().getName());
 
-		ormPersistentType.getMapping().getRootEntity().setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
+		ormEntity.getRootEntity().setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
 		assertFalse(multitenancy.isMultitenant()); //not multitenant since inheritance strategy is table per class
 		assertFalse(multitenancy.isSpecifiedMultitenant());
 		assertEquals(0, multitenancy.getTenantDiscriminatorColumnsSize());
@@ -457,7 +459,7 @@ public class EclipseLink2_3OrmMultitenancyTests
 		assertEquals(1, multitenancy.getTenantDiscriminatorColumnsSize());
 		assertEquals("CHILD_TENANT_ID", multitenancy.getTenantDiscriminatorColumns().iterator().next().getName());		
 
-		ormPersistentType.getMapping().getRootEntity().setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
+		ormEntity.getRootEntity().setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
 		assertEquals(1, multitenancy.getTenantDiscriminatorColumnsSize());
 		assertEquals("CHILD_TENANT_ID", multitenancy.getTenantDiscriminatorColumns().iterator().next().getName());		
 	}

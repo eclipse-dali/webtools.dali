@@ -24,7 +24,6 @@ import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.Override_;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.TableColumn;
@@ -93,27 +92,27 @@ public abstract class AbstractOrmBaseEmbeddedMapping<X extends AbstractXmlEmbedd
 
 
 	// ********** target embeddable **********
-
+	
+	public String getTargetEmbeddableName() {
+		return getFullyQualifiedAttributeType();
+	}
+	
 	public Embeddable getTargetEmbeddable() {
 		return this.targetEmbeddable;
 	}
-
+	
 	protected void setTargetEmbeddable(Embeddable embeddable) {
 		Embeddable old = this.targetEmbeddable;
 		this.targetEmbeddable = embeddable;
 		this.firePropertyChanged(TARGET_EMBEDDABLE_PROPERTY, old, embeddable);
 	}
-
+	
 	protected Embeddable buildTargetEmbeddable() {
-		TypeMapping typeMapping = this.getResolvedTargetTypeMapping();
-		return (typeMapping instanceof Embeddable) ? (Embeddable) typeMapping : null;
+		String typeName = getTargetEmbeddableName();
+		return (typeName == null) ? null : getPersistenceUnit().getEmbeddable(typeName);
 	}
-
-	protected TypeMapping getResolvedTargetTypeMapping() {
-		PersistentType resolvedTargetType = this.getResolvedAttributeType();
-		return (resolvedTargetType == null) ? null : resolvedTargetType.getMapping();
-	}
-
+	
+	
 	// ********** embedded mappings **********
 
 	@Override

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * <copyright>
  *
- * Copyright (c) 2005, 2012 SAP AG and others.
+ * Copyright (c) 2005, 2013 SAP AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -1839,7 +1838,7 @@ public class JpaArtifactFactory {
 		JavaPersistentType idClassType = null;
 		TypeMapping mapping = getTypeMapping(jpt);
 		if(mapping instanceof Entity){
-			idClassType = ((Entity)mapping).getIdClass();
+			idClassType = ((Entity)mapping).getIdClassReference().getIdClass();
 			if(idClassType == null) {
 				String idClassFqn = ((Entity)mapping).getIdClassReference().getFullyQualifiedIdClassName();
 				PersistentType idClassPersistentType = jpt.getPersistenceUnit().getPersistentType(idClassFqn);

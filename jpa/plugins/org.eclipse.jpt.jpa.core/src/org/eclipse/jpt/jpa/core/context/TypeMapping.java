@@ -10,9 +10,11 @@
 package org.eclipse.jpt.jpa.core.context;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.db.Schema;
 
 /**
@@ -27,14 +29,24 @@ import org.eclipse.jpt.jpa.db.Schema;
  * adopters on the understanding that any code that uses this API will almost
  * certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.1
+ * @version 3.6
  * @since 2.0
  */
 public interface TypeMapping
-	extends JpaContextModel
-{
+		extends JpaContextModel {
+	
 	PersistentType getPersistentType();
-
+	
+	Transformer<TypeMapping, PersistentType> PERSISTENT_TYPE_TRANSFORMER = new PersistentTypeTransformer();
+	
+	class PersistentTypeTransformer
+			extends TransformerAdapter<TypeMapping, PersistentType> {
+		@Override
+		public PersistentType transform(TypeMapping tm) {
+			return tm.getPersistentType();
+		}
+	}
+	
 	/**
 	 * Return the corresponding java resource type, this can be null
 	 */
@@ -54,11 +66,6 @@ public interface TypeMapping
 
 	boolean isMapped();
 	
-	/**
-	 * Return the resolved id class specified on this type mapping, null otherwise
-	 */
-	JavaPersistentType getIdClass();
-
 	Iterable<Query> getQueries();
 	Transformer<TypeMapping, Iterable<Query>> QUERIES_TRANSFORMER = new QueriesTransformer();
 	class QueriesTransformer
@@ -80,39 +87,56 @@ public interface TypeMapping
 			return mapping.getGenerators();
 		}
 	}
-
-
+	
+	
 	// ********** inheritance **********
 
 	/**
-	 * Return the type mapping of this type mapping's super type.
-	 * Return null if this is the root.
+	 * String associated with changes to the super type mapping property
 	 */
-	TypeMapping getSuperTypeMapping();
+	String SUPER_TYPE_MAPPING_PROPERTY = "superTypeMapping"; //$NON-NLS-1$
+	
+	/**
+	 * Return the "super" {@link TypeMapping} from the "persistence" 
+	 * inheritance hierarchy.
+	 * If the Java inheritance parent is not persistent, then continue
+	 * up the hierarchy (the JPA spec allows non-persistent types to be 
+	 * part of the hierarchy.)
+	 * Return <code>null</code> if the type mapping is the root.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 * &#64;Entity
+	 * public abstract class Model {}
+	 * 
+	 * public abstract class Animal extends Model {}
+	 * 
+	 * &#64;Entity
+	 * public class Cat extends Animal {}
+	 * </pre>
+	 * The "super" type mapping of the <code>Cat</code> type mapping is
+	 * the <code>Model</code> type mapping. The "super" type mapping can
+	 * either come from a Java annotated class from an XML mapping file.
+	 */
+	IdTypeMapping getSuperTypeMapping();
+	
+	/**
+	 * Return the type mapping's "persistence" inheritance hierarchy,
+	 * <em>excluding</em> the type mapping itself.
+	 * If there is an inheritance loop, the iterable will terminate before including
+	 * this type mapping.
+	 */
+	Iterable<IdTypeMapping> getAncestors();
 	
 	/**
 	 * Return the type mapping's "persistence" inheritance hierarchy,
 	 * <em>including</em> the type mapping itself.
-	 * The returned iterator will return elements infinitely if the hierarchy
-	 * has a loop.
+	 * If there is an inheritance loop, the iterable will terminate before including
+	 * this type mapping.
 	 */
-	Iterable<TypeMapping> getInheritanceHierarchy();
+	Iterable<? extends TypeMapping> getInheritanceHierarchy();
 	
-	/**
-	 * Return the inheritance strategy or null
-	 */
-	InheritanceType getInheritanceStrategy();
-
-	/**
-	 * Return whether this type mapping is a root entity in an inheritance hierarchy.
-	 */
-	boolean isRootEntity();
-
-	/**
-	 * Return the root entity of the inheritance hierarchy or null.
-	 */
-	Entity getRootEntity();
-
+	
 	// ********** tables **********
 
 	/**
@@ -168,9 +192,9 @@ public interface TypeMapping
 	 */
 	boolean tableNameIsInvalid(String tableName);
 	
-
+	
 	// ********** attribute mappings **********
-
+	
 	/**
 	 * A convenience method for getting the attribute mappings from PersistentType.attributes()
 	 */
@@ -205,7 +229,31 @@ public interface TypeMapping
 	 * embeddable type mapping)
 	 */
 	boolean attributeMappingKeyAllowed(String attributeMappingKey);
-
+	
+	/**
+	 * Return all mappings that are mapped as id mappings
+	 * @see MappingIsIdMapping
+	 */
+	Iterable<AttributeMapping> getIdAttributeMappings();
+	
+	/**
+	 * Return the (single) mapping used as the id mapping for this type mapping.
+	 * If there is more than one, return null.
+	 * @see MappingIsIdMapping
+	 */
+	AttributeMapping getIdAttributeMapping();
+	
+	static String[] ID_ATTRIBUTE_MAPPING_KEYS 
+			= new String[] { MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY };
+	
+	static class MappingIsIdMapping
+			extends PredicateAdapter<AttributeMapping> {
+		@Override
+		public boolean evaluate(AttributeMapping mapping) {
+			return ArrayTools.contains(ID_ATTRIBUTE_MAPPING_KEYS, mapping.getKey());
+		}
+	}
+	
 	/**
 	 * Return whether the attribute with the specified name is a derived ID.
 	 */

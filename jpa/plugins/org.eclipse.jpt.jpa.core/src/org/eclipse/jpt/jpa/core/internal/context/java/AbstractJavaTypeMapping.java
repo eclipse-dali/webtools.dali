@@ -17,15 +17,12 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.Generator;
-import org.eclipse.jpt.jpa.core.context.InheritanceType;
+import org.eclipse.jpt.jpa.core.context.IdTypeMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.Table;
-import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
@@ -40,19 +37,19 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Java type mapping
  */
 public abstract class AbstractJavaTypeMapping<A extends Annotation>
-	extends AbstractJavaContextModel<JavaPersistentType>
-	implements JavaTypeMapping
-{
+		extends AbstractJavaContextModel<JavaPersistentType>
+		implements JavaTypeMapping {
+	
 	// this can be null for a "null" type mapping
 	protected final A mappingAnnotation;
-
-
+	
+	
 	protected AbstractJavaTypeMapping(JavaPersistentType parent, A mappingAnnotation) {
 		super(parent);
 		this.mappingAnnotation = mappingAnnotation;
 	}
-
-
+	
+	
 	// ********** misc **********
 
 	public JavaPersistentType getPersistentType() {
@@ -110,62 +107,24 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 	public org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName) {
 		return null;
 	}
-
-
-	// ********** inheritance **********
-
-	public TypeMapping getSuperTypeMapping() {
-		PersistentType superPersistentType = this.getPersistentType().getSuperPersistentType();
-		return (superPersistentType == null) ? null : superPersistentType.getMapping();
-	}
-
-	public Iterable<TypeMapping> getInheritanceHierarchy() {
-		return IterableTools.transform(this.getPersistentType().getInheritanceHierarchy(), PersistentType.MAPPING_TRANSFORMER);
-	}
-
-	/**
-	 * Return the type mapping's "persistence" ancestors,
-	 * <em>excluding</em> the type mapping itself.
-	 * The returned iterator will return elements infinitely if the hierarchy
-	 * has a loop.
-	 */
-	protected Iterable<TypeMapping> getAncestors() {
-		return IterableTools.transform(this.getPersistentType().getAncestors(), PersistentType.MAPPING_TRANSFORMER);
-	}
-
-	public InheritanceType getInheritanceStrategy() {
-		return null;
-	}
-
-	public boolean isRootEntity() {
-		return false;
-	}
-
-	public Entity getRootEntity() {
-		return null;
-	}
-
-
+	
+	
 	// ********** attribute mappings **********
 
 	public Iterable<JavaAttributeMapping> getAttributeMappings() {
-		return IterableTools.downCast(IterableTools.transform(this.getPersistentType().getAttributes(), PersistentAttribute.MAPPING_TRANSFORMER));
+		return IterableTools.downCast(IterableTools.transform(getPersistentType().getAttributes(), PersistentAttribute.MAPPING_TRANSFORMER));
 	}
 
 	public Iterable<JavaAttributeMapping> getAttributeMappings(String mappingKey) {
-		return IterableTools.filter(this.getAttributeMappings(), new AttributeMapping.KeyEquals(mappingKey));
+		return IterableTools.filter(getAttributeMappings(), new AttributeMapping.KeyEquals(mappingKey));
 	}
 
 	public Iterable<AttributeMapping> getAllAttributeMappings() {
-		return IterableTools.children(this.getNonNullInheritanceHierarchy(), TypeMappingTools.ATTRIBUTE_MAPPINGS_TRANSFORMER);
+		return IterableTools.transform(getPersistentType().getAllAttributes(), PersistentAttribute.MAPPING_TRANSFORMER);
 	}
-
-	protected Iterable<TypeMapping> getNonNullInheritanceHierarchy() {
-		return IterableTools.removeNulls(this.getInheritanceHierarchy());
-	}
-
+	
 	public Iterable<AttributeMapping> getAllAttributeMappings(final String mappingKey) {
-		return IterableTools.filter(this.getAllAttributeMappings(), new AttributeMapping.KeyEquals(mappingKey));
+		return IterableTools.filter(getAllAttributeMappings(), new AttributeMapping.KeyEquals(mappingKey));
 	}
 
 	public boolean attributeMappingKeyAllowed(String attributeMappingKey) {
@@ -173,18 +132,30 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 	}
 
 	public Iterable<AttributeMapping> getNonTransientAttributeMappings() {
-		return new FilteringIterable<AttributeMapping>(this.getAllAttributeMappings(), AttributeMapping.IS_NOT_TRANSIENT);
+		return new FilteringIterable<AttributeMapping>(getAllAttributeMappings(), AttributeMapping.IS_NOT_TRANSIENT);
 	}
-
-
+	
+	public Iterable<AttributeMapping> getIdAttributeMappings() {
+		return IterableTools.filter(getAllAttributeMappings(), new IdTypeMapping.MappingIsIdMapping());
+	}
+	
+	public AttributeMapping getIdAttributeMapping() {
+		Iterable<AttributeMapping> idMappings = getIdAttributeMappings();
+		if (IterableTools.size(idMappings) == 1) {
+			return IterableTools.get(idMappings, 0);
+		}
+		return null;
+	}
+	
+	
 	// ********** attribute overrides **********
 
 	public Iterable<String> getOverridableAttributeNames() {
-		return IterableTools.children(this.getAttributeMappings(), AttributeMapping.ALL_OVERRIDABLE_ATTRIBUTE_MAPPING_NAMES_TRANSFORMER);
+		return IterableTools.children(getAttributeMappings(), AttributeMapping.ALL_OVERRIDABLE_ATTRIBUTE_MAPPING_NAMES_TRANSFORMER);
 	}
 
 	public Iterable<String> getAllOverridableAttributeNames() {
-		return IterableTools.children(this.getInheritanceHierarchy(), TypeMappingTools.OVERRIDABLE_ATTRIBUTE_NAMES_TRANSFORMER);
+		return IterableTools.children(getInheritanceHierarchy(), TypeMappingTools.OVERRIDABLE_ATTRIBUTE_NAMES_TRANSFORMER);
 	}
 
 	public SpecifiedColumn resolveOverriddenColumn(String attributeName) {
@@ -199,17 +170,17 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 
 
 	// ********** association overrides **********
-
+	
 	public Iterable<String> getOverridableAssociationNames() {
-		return IterableTools.children(this.getAttributeMappings(), AttributeMapping.ALL_OVERRIDABLE_ASSOCIATION_MAPPING_NAMES_TRANSFORMER);
+		return IterableTools.children(getAttributeMappings(), AttributeMapping.ALL_OVERRIDABLE_ASSOCIATION_MAPPING_NAMES_TRANSFORMER);
 	}
-
+	
 	public Iterable<String> getAllOverridableAssociationNames() {
-		return IterableTools.children(this.getInheritanceHierarchy(), TypeMappingTools.OVERRIDABLE_ASSOCIATION_NAMES_TRANSFORMER);
+		return IterableTools.children(getInheritanceHierarchy(), TypeMappingTools.OVERRIDABLE_ASSOCIATION_NAMES_TRANSFORMER);
 	}
-
+	
 	public SpecifiedRelationship resolveOverriddenRelationship(String attributeName) {
-		for (AttributeMapping attributeMapping : this.getAttributeMappings()) {
+		for (AttributeMapping attributeMapping : getAttributeMappings()) {
 			SpecifiedRelationship relationship = attributeMapping.resolveOverriddenRelationship(attributeName);
 			if (relationship != null) {
 				return relationship;
@@ -217,15 +188,15 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 		}
 		return null;
 	}
-
-
+	
+	
 	// ********** generators **********
-
+	
 	public Iterable<Generator> getGenerators() {
-		return IterableTools.children(this.getAttributeMappings(), AttributeMapping.GENERATORS_TRANSFORMER);
+		return IterableTools.children(getAttributeMappings(), AttributeMapping.GENERATORS_TRANSFORMER);
 	}
-
-
+	
+	
 	// ********** validation **********
 
 	@Override

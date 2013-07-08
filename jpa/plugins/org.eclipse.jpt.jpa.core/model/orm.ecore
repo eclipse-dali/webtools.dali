@@ -150,7 +150,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddable" eSuperTypes="#//AbstractXmlTypeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEmbedded" eSuperTypes="#//AbstractXmlEmbedded #//v2_0/XmlEmbedded_2_0 #//v2_1/XmlEmbedded_2_1"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddedId" eSuperTypes="#//AbstractXmlEmbedded"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" eSuperTypes="#//AbstractXmlTypeMapping #//XmlQueryContainer #//XmlGeneratorContainer #//XmlEventMethodContainer #//XmlAttributeOverrideContainer #//XmlAssociationOverrideContainer #//v2_0/XmlEntity_2_0 #//XmlIdClassContainer #//v2_1/XmlEntity_2_1">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" eSuperTypes="#//AbstractXmlTypeMapping #//XmlIdTypeMapping #//XmlQueryContainer #//XmlGeneratorContainer #//XmlEventMethodContainer #//XmlAttributeOverrideContainer #//XmlAssociationOverrideContainer #//v2_0/XmlEntity_2_0 #//v2_1/XmlEntity_2_1">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="table" eType="#//XmlTable"
         containment="true" resolveProxies="false"/>
@@ -165,12 +165,6 @@
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="sqlResultSetMappings" upperBound="-1"
         eType="#//XmlSqlResultSetMapping" containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="excludeDefaultListeners"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="excludeSuperclassListeners"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="entityListeners" eType="#//EntityListeners"
-        containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EntityListener" eSuperTypes="#//XmlEventMethodContainer #//v2_0/XmlEntityListener_2_0">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="className" lowerBound="1"
@@ -261,6 +255,15 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="idClass" eType="#//XmlClassReference"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlIdTypeMapping" abstract="true" interface="true"
+      eSuperTypes="#//XmlTypeMapping #//XmlIdClassContainer">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="excludeDefaultListeners"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="excludeSuperclassListeners"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="entityListeners" eType="#//EntityListeners"
+        containment="true" resolveProxies="false"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlIndex" eSuperTypes="#//v2_1/XmlIndex_2_1"/>
   <eClassifiers xsi:type="ecore:EClass" name="Inheritance">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="strategy" eType="#//InheritanceType"
@@ -296,14 +299,7 @@
       interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="mappedBy" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="#//AbstractXmlTypeMapping #//XmlIdClassContainer">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="excludeDefaultListeners"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="excludeSuperclassListeners"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="entityListeners" eType="#//EntityListeners"
-        containment="true" resolveProxies="false"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="#//AbstractXmlTypeMapping #//XmlIdTypeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlNamedAttributeNode" eSuperTypes="#//v2_1/XmlNamedAttributeNode_2_1"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlNamedEntityGraph" eSuperTypes="#//v2_1/XmlNamedEntityGraph_2_1"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlNamedSubgraph" eSuperTypes="#//v2_1/XmlNamedSubgraph_2_1"/>

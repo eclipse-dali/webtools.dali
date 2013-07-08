@@ -43,27 +43,27 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Java mapped superclass
  */
 public class EclipseLinkJavaMappedSuperclassImpl
-	extends AbstractJavaMappedSuperclass
-	implements 
-		EclipseLinkJavaMappedSuperclass, 
-		JavaCacheableReference2_0, 
-		EclipseLinkJavaConverterContainer.Parent,
-		JavaGeneratorContainer.Parent
-{
+		extends AbstractJavaMappedSuperclass
+		implements 
+				EclipseLinkJavaMappedSuperclass, 
+				JavaCacheableReference2_0, 
+				EclipseLinkJavaConverterContainer.Parent,
+				JavaGeneratorContainer.Parent {
+	
 	protected final EclipseLinkJavaCaching caching;
-
+	
 	protected final EclipseLinkJavaReadOnly readOnly;
-
+	
 	protected final EclipseLinkJavaConverterContainer converterContainer;
-
+	
 	protected final EclipseLinkJavaChangeTracking changeTracking;
-
+	
 	protected final EclipseLinkJavaCustomizer customizer;
-
+	
 	protected final EclipseLinkJavaMultitenancy2_3 multitenancy;
-
+	
 	protected final JavaGeneratorContainer generatorContainer;
-
+	
 	public EclipseLinkJavaMappedSuperclassImpl(JavaPersistentType parent, MappedSuperclassAnnotation mappingAnnotation) {
 		super(parent, mappingAnnotation);
 		this.caching = this.buildCaching();

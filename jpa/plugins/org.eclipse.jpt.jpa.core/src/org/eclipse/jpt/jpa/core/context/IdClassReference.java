@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,14 +20,19 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.2
+ * @version 3.6
  * @since 2.3
  */
 public interface IdClassReference
-	extends JpaContextModel
-{
-	// ********** id class name **********
-
+		extends JpaContextModel {
+	
+	// ***** id class name *****
+	
+	/**
+	 * Property string associated with changes to the ID class name
+	 */
+	String ID_CLASS_NAME_PROPERTY = "idClassName"; //$NON-NLS-1$
+	
 	/**
 	 * Return the name of the id class, taking into consideration the default value if applicable
 	 */
@@ -65,16 +70,20 @@ public interface IdClassReference
 	 * applies, this should also return true.
 	 */
 	boolean isSpecified();
-
+	
+	/**
+	 * Property string associated with changes to the fully qualified ID class name
+	 */
+	String FULLY_QUALIFIED_ID_CLASS_PROPERTY = "fullyQualifiedIdClass"; //$NON-NLS-1$
+	
 	/**
 	 * Return the fully qualified name of the id class, taking into consideration the default value if applicable
 	 */
 	String getFullyQualifiedIdClassName();
-		String FULLY_QUALIFIED_ID_CLASS_PROPERTY = "fullyQualifiedIdClass"; //$NON-NLS-1$
 	
-
-	// ********** id class **********
-
+	
+	// ***** id class *****
+	
 	/**
 	 * Property string associated with changes to the ID class.
 	 * This will change (potentially) if the id class name changes, or if other changes result
@@ -94,5 +103,4 @@ public interface IdClassReference
 	 * @see org.eclipse.jdt.core.IType#getFullyQualifiedName(char)
 	 */
 	char getIdClassEnclosingTypeSeparator();
-
 }
