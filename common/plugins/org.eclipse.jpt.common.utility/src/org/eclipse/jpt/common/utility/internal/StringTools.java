@@ -708,7 +708,7 @@ public final class StringTools {
 	 * Return the length of the common prefix shared by the specified strings.
 	 */
 	public static int commonPrefixLength(String s1, String s2) {
-		return commonPrefixLength(s1, s2, Math.min(s1.length(), s2.length()));
+		return commonPrefixLength_(s1, s2, Math.min(s1.length(), s2.length()));
 	}
 
 	/**
@@ -716,6 +716,13 @@ public final class StringTools {
 	 * but limit the length to the specified maximum.
 	 */
 	public static int commonPrefixLength(String s1, String s2, int max) {
+		return commonPrefixLength_(s1, s2, Math.min(max, Math.min(s1.length(), s2.length())));
+	}
+
+	/**
+	 * no max check
+	 */
+	private static int commonPrefixLength_(String s1, String s2, int max) {
 		for (int i = 0; i < max; i++) {
 			if (s1.charAt(i) != s2.charAt(i)) {
 				return i;
