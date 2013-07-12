@@ -615,6 +615,58 @@ public final class CollectionTools {
 	}
 
 
+	// ********** identity bag factory methods **********
+
+	/**
+	 * Return an identity bag corresponding to the specified iterable.
+	 */
+	public static <E> IdentityHashBag<E> identityBag(Iterable<? extends E> iterable) {
+		return identityBag(iterable.iterator());
+	}
+
+	/**
+	 * Return an identity bag corresponding to the specified iterable.
+	 * The specified iterable size is a performance hint.
+	 */
+	public static <E> IdentityHashBag<E> identityBag(Iterable<? extends E> iterable, int iterableSize) {
+		return identityBag(iterable.iterator(), iterableSize);
+	}
+
+	/**
+	 * Return an identity bag corresponding to the specified iterator.
+	 */
+	public static <E> IdentityHashBag<E> identityBag(Iterator<? extends E> iterator) {
+		return identityBag(iterator, new IdentityHashBag<E>());
+	}
+
+	/**
+	 * Return an identity bag corresponding to the specified iterator.
+	 * The specified iterator size is a performance hint.
+	 */
+	public static <E> IdentityHashBag<E> identityBag(Iterator<? extends E> iterator, int iteratorSize) {
+		return identityBag(iterator, new IdentityHashBag<E>(iteratorSize));
+	}
+
+	private static <E> IdentityHashBag<E> identityBag(Iterator<? extends E> iterator, IdentityHashBag<E> bag) {
+		while (iterator.hasNext()) {
+			bag.add(iterator.next());
+		}
+		return bag;
+	}
+
+	/**
+	 * Return an identity bag corresponding to the specified array.
+	 */
+	public static <E> IdentityHashBag<E> identityBag(E... array) {
+		int len = array.length;
+		IdentityHashBag<E> bag = new IdentityHashBag<E>(len);
+		for (E item : array) {
+			bag.add(item);
+		}
+		return bag;
+	}
+
+
 	// ********** collection factory methods **********
 
 	/**
