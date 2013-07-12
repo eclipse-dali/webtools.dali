@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,6 +25,7 @@ import org.eclipse.jpt.common.utility.reference.ObjectReference;
  * <li>If the value calculated during lazy initialization is <code>null</code>,
  *     access will be <code>synchronized</code> <em>every</em> time.
  * </ul>
+ * @param <V> the type of the reference's value
  * @see SimpleObjectReference
  * @see SynchronizedObject
  */
