@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -92,7 +92,8 @@ public class UrlUtil
 			return null;
 		}
 		String file = url.getFile(); //file:/C:/testapps/example/WEB-INF/lib/struts.jar!/META-INF/tlds/struts-bean.tld
-		int index = file.indexOf('!');
+		String jarFileEnding = ".jar!"; //$NON-NLS-1$
+		int index = file.indexOf(jarFileEnding) + jarFileEnding.length() - 1;
 		if (index < 0) {
 			return null;
 		}
