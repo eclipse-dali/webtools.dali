@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Vector;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.StringBuilderTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
@@ -456,6 +457,11 @@ public abstract class AbstractOrmOverrideContainer<
 		return null;
 	}
 
+	@Override
+	public void toString(StringBuilder sb) {
+		StringBuilderTools.append(sb, this.getOverrides());
+	}
+
 
 	// ********** validation **********
 
@@ -472,6 +478,7 @@ public abstract class AbstractOrmOverrideContainer<
 				this.specifiedOverrides.get(0).getValidationTextRange() :
 				this.parentAdapter.getValidationTextRange();
 	}
+
 
 	// ********** completion proposals **********
 

@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.StringBuilderTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
@@ -536,6 +537,11 @@ public abstract class AbstractJavaOverrideContainer<
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		StringBuilderTools.append(sb, this.getOverrides());
 	}
 
 
