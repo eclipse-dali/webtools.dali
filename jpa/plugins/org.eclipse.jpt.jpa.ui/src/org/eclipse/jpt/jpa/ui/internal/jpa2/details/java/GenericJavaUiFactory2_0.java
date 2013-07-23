@@ -35,7 +35,6 @@ import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaEntity2_0;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.java.AbstractJavaUiFactory;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.ElementCollectionMappingComposite2_0;
 import org.eclipse.jpt.jpa.ui.jpa2.details.JpaUiFactory2_0;
 import org.eclipse.swt.widgets.Composite;
 
@@ -161,6 +160,6 @@ public class GenericJavaUiFactory2_0
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new ElementCollectionMappingComposite2_0(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaElementCollectionMappingComposite2_0(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 }
