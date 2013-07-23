@@ -36,12 +36,6 @@ import org.eclipse.ui.forms.widgets.Section;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see {@link OneToManyMapping}
- * @see {@link OneToManyRelationship}
- * @see {@link OneToManyMappingComposite}
- * @see {@link MappedByStrategyPane}
- * @see {@link JoinTableStrategyPane}
- *
  * @version 2.3
  * @since 2.1
  */
