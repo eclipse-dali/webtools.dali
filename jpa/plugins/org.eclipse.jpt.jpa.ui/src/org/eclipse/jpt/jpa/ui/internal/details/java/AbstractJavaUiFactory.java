@@ -30,7 +30,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.details.JpaUiFactory;
-import org.eclipse.jpt.jpa.ui.internal.details.ManyToOneMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.OneToManyMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.OneToOneMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.TransientMappingComposite;
@@ -114,7 +113,7 @@ public abstract class AbstractJavaUiFactory
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new ManyToOneMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaManyToOneMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	public JpaComposite createOneToManyMappingComposite(

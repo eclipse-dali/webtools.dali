@@ -32,11 +32,6 @@ import org.eclipse.ui.forms.widgets.Section;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see {@link ManyToOneMapping}
- * @see {@link ManyToOneRelationship}
- * @see {@link ManyToOneMappingComposite}
- * @see {@link JoinColumnStrategyPane}
- *
  * @version 2.3
  * @since 2.1
  */
