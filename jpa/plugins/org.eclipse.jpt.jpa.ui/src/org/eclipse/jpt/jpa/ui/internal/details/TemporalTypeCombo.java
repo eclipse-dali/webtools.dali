@@ -21,7 +21,6 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
-import org.eclipse.jpt.jpa.core.context.ColumnMapping;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.swt.widgets.Composite;
@@ -36,12 +35,6 @@ import com.ibm.icu.text.Collator;
  * | Temporal: |                                                           |v| |
  * |           --------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
- *
- * @see ColumnMapping
- * @see TemporalType
- * @see BasicMappingComposite - A container of this pane
- * @see IdMappingComposite - A container of this pane
- * @see VersionMappingComposite - A container of this pane
  *
  * @version 2.0
  * @since 1.0

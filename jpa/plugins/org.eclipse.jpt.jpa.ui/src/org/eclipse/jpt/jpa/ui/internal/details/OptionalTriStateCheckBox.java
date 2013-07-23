@@ -26,11 +26,6 @@ import org.eclipse.swt.widgets.Control;
 /**
  * This composite simply shows a tri-state check box for the Optional option.
  *
- * @see BasicMapping
- * @see BasicMappingComposite - A container of this pane
- * @see ManyToOneMappingComposite - A container of this pane
- * @see OneToOneMappingComposite - A container of this pane
- *
  * @version 1.0
  * @since 2.0
  */

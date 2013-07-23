@@ -30,8 +30,6 @@ import org.eclipse.swt.widgets.Control;
  * |            -------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see BasicMappingComposite - A container of this widget
- *
  * @version 2.0
  * @since 1.0
  */

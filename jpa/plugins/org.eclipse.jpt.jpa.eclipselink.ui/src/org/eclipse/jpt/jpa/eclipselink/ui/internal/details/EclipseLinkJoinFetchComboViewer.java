@@ -14,15 +14,9 @@ import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.FetchableMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetchType;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
-import org.eclipse.jpt.jpa.ui.internal.details.BasicMappingComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmManyToOneMappingComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmOneToManyMappingComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmOneToOneMappingComposite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.java.JavaManyToManyMappingComposite2_0;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -33,13 +27,6 @@ import org.eclipse.swt.widgets.Composite;
  * | Join Fetch:    |                                                      |v| |
  * |                ---------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
- *
- * @see FetchableMapping
- * @see BasicMappingComposite - A container of this widget
- * @see JavaManyToManyMappingComposite2_0 - A container of this widget
- * @see OrmManyToOneMappingComposite - A container of this widget
- * @see OrmOneToManyMappingComposite - A container of this widget
- * @see OrmOneToOneMappingComposite - A container of this widget
  *
  * @version 2.3
  * @since 2.1
