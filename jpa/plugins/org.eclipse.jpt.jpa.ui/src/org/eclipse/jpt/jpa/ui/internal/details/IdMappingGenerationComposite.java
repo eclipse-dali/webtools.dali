@@ -84,12 +84,6 @@ import org.eclipse.ui.forms.widgets.Section;
  * |     --------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see IdMapping
- * @see GeneratedValueComposite
- * @see TableGeneratorComposite
- * @see SequenceGeneratorComposite
- * @see IdMappingComposite - The parent container
- *
  * @version 2.2
  * @since 1.0
  */

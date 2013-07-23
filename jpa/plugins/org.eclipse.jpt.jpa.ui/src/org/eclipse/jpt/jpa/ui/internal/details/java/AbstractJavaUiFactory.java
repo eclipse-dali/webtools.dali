@@ -30,7 +30,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.details.JpaUiFactory;
-import org.eclipse.jpt.jpa.ui.internal.details.IdMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.ManyToManyMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.ManyToOneMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.OneToManyMappingComposite;
@@ -80,7 +79,7 @@ public abstract class AbstractJavaUiFactory
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new IdMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaIdMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	public JpaComposite createEmbeddedIdMappingComposite(
