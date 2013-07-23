@@ -10,8 +10,11 @@
 package org.eclipse.jpt.common.utility.internal;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.Locale;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -51,34 +54,42 @@ public final class CharArrayTools {
 	/**
 	 * Return a concatenation of the specified strings.
 	 */
-	public static String concatenate(char[]... strings) {
+	public static char[] concatenate(char[]... strings) {
 		int stringLength = 0;
 		for (char[] string : strings) {
 			stringLength += string.length;
 		}
-		StringBuilder sb = new StringBuilder(stringLength);
-		for (char[] string : strings) {
-			sb.append(string);
+		if (stringLength == 0) {
+			return EMPTY_CHAR_ARRAY;
 		}
-		return sb.toString();
+		char[] buffer = new char[stringLength];
+		int i = 0;
+		for (char[] string : strings) {
+			int len = string.length;
+			if (len > 0) {
+				System.arraycopy(string, 0, buffer, i, len);
+				i += len;
+			}
+		}
+		return buffer;
 	}
 
 	/**
 	 * Return a concatenation of the specified strings.
 	 */
-	public static String concatenate(Iterable<char[]> strings) {
+	public static char[] concatenate(Iterable<char[]> strings) {
 		return concatenate(strings.iterator());
 	}
 
 	/**
 	 * Return a concatenation of the specified strings.
 	 */
-	public static String concatenate(Iterator<char[]> strings) {
+	public static char[] concatenate(Iterator<char[]> strings) {
 		StringBuilder sb = new StringBuilder();
 		while (strings.hasNext()) {
 			sb.append(strings.next());
 		}
-		return sb.toString();
+		return sb.toString().toCharArray();
 	}
 
 
@@ -1293,6 +1304,602 @@ public final class CharArrayTools {
 			// replace this object with the singleton
 			return XML_ELEMENT_CDATA_CONTENT_TRANSFORMER;
 		}
+	}
+
+
+	// ********** String methods **********
+
+	/**
+	 * @see String#codePointAt(int)
+	 */
+	public static int codePointAt(char[] string, int index) {
+		return Character.codePointAt(string, index);
+	}
+
+	/**
+	 * @see String#codePointBefore(int)
+	 */
+	public static int codePointBefore(char[] string, int index) {
+		return Character.codePointBefore(string, index);
+	}
+
+	/**
+	 * @see String#codePointCount(int, int)
+	 */
+	public static int codePointCount(char[] string, int beginIndex, int endIndex) {
+		return Character.codePointCount(string, beginIndex, endIndex - beginIndex);
+	}
+
+	/**
+	 * @see String#compareTo(String)
+	 */
+	public static int compareTo(char[] s1, char[] s2) {
+		int len1 = s1.length;
+		int len2 = s2.length;
+		int lim = Math.min(len1, len2);
+		for (int i = 0; i < lim; i++) {
+			char c1 = s1[i];
+			char c2 = s2[i];
+			if (c1 != c2) {
+				return c1 - c2;
+			}
+		}
+		return len1 - len2;
+	}
+
+	/**
+	 * @see String#compareToIgnoreCase(String)
+	 * @see #CASE_INSENSITIVE_ORDER
+	 */
+	public static int compareToIgnoreCase(char[] s1, char[] s2) {
+		return CASE_INSENSITIVE_ORDER.compare(s1, s2);
+	}
+
+	/**
+	 * @see String#CASE_INSENSITIVE_ORDER
+	 */
+	public static final Comparator<char[]> CASE_INSENSITIVE_ORDER = new CaseInsensitiveComparator();
+	private static class CaseInsensitiveComparator
+		implements Comparator<char[]>, java.io.Serializable
+	{
+		private static final long serialVersionUID = 1;
+
+		CaseInsensitiveComparator() {
+			super();
+		}
+
+		public int compare(char[] s1, char[] s2) {
+			int len1 = s1.length;
+			int len2 = s2.length;
+			for (int i1 = 0, i2 = 0; (i1 < len1) && (i2 < len2); i1++, i2++) {
+				char c1 = s1[i1];
+				char c2 = s2[i2];
+				if (c1 != c2) {
+					c1 = Character.toUpperCase(c1);
+					c2 = Character.toUpperCase(c2);
+					if (c1 != c2) {
+						c1 = Character.toLowerCase(c1);
+						c2 = Character.toLowerCase(c2);
+						if (c1 != c2) {
+							return c1 - c2;
+						}
+					}
+				}
+			}
+			return len1 - len2;
+		}
+	}
+
+	/**
+	 * @see String#concat(String)
+	 * @see #concatenate(char[][])
+	 */
+	public static char[] concat(char[] s1, char[] s2) {
+		int len1 = s1.length;
+		if (len1 == 0) {
+			return s2;
+		}
+		int len2 = s2.length;
+		if (len2 == 0) {
+			return s1;
+		}
+
+		char[] buffer = new char[len1 + len2];
+		System.arraycopy(s1, 0, buffer, 0, len1);
+		System.arraycopy(s2, 0, buffer, len1, len2);
+		return buffer;
+	}
+
+	/**
+	 * @see String#contains(CharSequence)
+	 */
+	public static boolean contains(char[] string, CharSequence cs) {
+		return indexOf(string, cs) > -1;
+	}
+
+	/**
+	 * @see String#contains(CharSequence)
+	 */
+	public static boolean contains(char[] s1, char[] s2) {
+		return indexOf(s1, s2) > -1;
+	}
+
+	/**
+	 * @see String#contentEquals(CharSequence)
+	 */
+	public static boolean contentEquals(char[] string, CharSequence cs) {
+		int len = string.length;
+		if (len != cs.length()) {
+			return false;
+		}
+		for (int i = len; i-- > 0; ) {
+			if (string[i] != cs.charAt(i)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * @see String#contentEquals(StringBuffer)
+	 */
+	public static boolean contentEquals(char[] string, StringBuffer sb) {
+		synchronized(sb) {
+			return contentEquals(string, (CharSequence) sb);
+		}
+	}
+
+	/**
+	 * @see String#endsWith(String)
+	 */
+	public static boolean endsWith(char[] string, char[] suffix) {
+		return startsWith(string, suffix, string.length - suffix.length);
+	}
+
+	/**
+	 * @see String#getBytes()
+	 */
+	public static byte[] getBytes(char[] string) {
+		return String.valueOf(string).getBytes(); // delegate 'bytes' stuff...
+	}
+
+	/**
+	 * @see String#getBytes(String)
+	 */
+	public static byte[] getBytes(char[] string, String charsetName) throws UnsupportedEncodingException {
+		return String.valueOf(string).getBytes(charsetName); // delegate 'bytes' stuff...
+	}
+
+	/**
+	 * @see String#getChars(int, int, char[], int)
+	 */
+	public static void getChars(char[] string, int srcBegin, int srcEnd, char[] dest, int destBegin) {
+		System.arraycopy(string, srcBegin, dest, destBegin, srcEnd - srcBegin);
+	}
+
+	/**
+	 * @see String#indexOf(int)
+	 */
+	public static int indexOf(char[] string, int c) {
+		return indexOf(string, c, 0);
+	}
+
+	/**
+	 * @see String#indexOf(int, int)
+	 */
+	public static int indexOf(char[] string, int c, int fromIndex) {
+		return String.valueOf(string).indexOf(c, fromIndex); // delegate 'int' stuff...
+	}
+
+	/**
+	 * @see String#indexOf(String)
+	 */
+	public static int indexOf(char[] string, CharSequence cs) {
+		return indexOf(string, cs, 0);
+	}
+
+	/**
+	 * @see String#indexOf(String)
+	 */
+	public static int indexOf(char[] s1, char[] s2) {
+		return indexOf(s1, s2, 0);
+	}
+
+	/**
+	 * @see String#indexOf(String, int)
+	 */
+	public static int indexOf(char[] string, CharSequence cs, int fromIndex) {
+		int len1 = string.length;
+		int len2 = cs.length();
+		if (fromIndex >= len1) {
+			return (len2 == 0) ? len1 : -1;
+		}
+		if (fromIndex < 0) {
+			fromIndex = 0;
+		}
+		if (len2 == 0) {
+			return fromIndex;
+		}
+
+		char first = cs.charAt(0);
+		int max = len1 - len2;
+
+		for (int i = fromIndex; i <= max; i++) {
+			// look for first character
+			if (string[i] != first) {
+				while ((++i <= max) && (string[i] != first)) {/* NOP */}
+			}
+			// found first character - now look at the rest of cs
+			if (i <= max) {
+				int j = i + 1;
+				int end = j + len2 - 1;
+				for (int k = 1; j < end && string[j] == cs.charAt(k); j++, k++) {/* NOP */}
+				if (j == end) {
+					return i;  // found the entire string
+				}
+			}
+		}
+		return -1;
+	}
+
+	/**
+	 * @see String#indexOf(String, int)
+	 */
+	public static int indexOf(char[] s1, char[] s2, int fromIndex) {
+		int len1 = s1.length;
+		int len2 = s2.length;
+		if (fromIndex >= len1) {
+			return (len2 == 0) ? len1 : -1;
+		}
+		if (fromIndex < 0) {
+			fromIndex = 0;
+		}
+		if (len2 == 0) {
+			return fromIndex;
+		}
+
+		char first = s2[0];
+		int max = len1 - len2;
+
+		for (int i = fromIndex; i <= max; i++) {
+			// look for first character
+			if (s1[i] != first) {
+				while ((++i <= max) && (s1[i] != first)) {/* NOP */}
+			}
+			// found first character - now look at the rest of s2
+			if (i <= max) {
+				int j = i + 1;
+				int end = j + len2 - 1;
+				for (int k = 1; j < end && s1[j] == s2[k]; j++, k++) {/* NOP */}
+				if (j == end) {
+					return i;  // found the entire string
+				}
+			}
+		}
+		return -1;
+	}
+
+	/**
+	 * @see String#lastIndexOf(int)
+	 */
+	public static int lastIndexOf(char[] string, int c) {
+		return indexOf(string, c, string.length - 1);
+	}
+
+	/**
+	 * @see String#lastIndexOf(int, int)
+	 */
+	public static int lastIndexOf(char[] string, int c, int fromIndex) {
+		return String.valueOf(string).lastIndexOf(c, fromIndex); // delegate 'int' stuff...
+	}
+
+	/**
+	 * @see String#lastIndexOf(String)
+	 */
+	public static int lastIndexOf(char[] s1, char[] s2) {
+		return lastIndexOf(s1, s2, s1.length);
+	}
+
+	/**
+	 * @see String#lastIndexOf(String, int)
+	 */
+	public static int lastIndexOf(char[] s1, char[] s2, int fromIndex) {
+		if (fromIndex < 0) {
+			return -1;
+		}
+		int len1 = s1.length;
+		int len2 = s2.length;
+		int rightIndex = len1 - len2;
+		if (fromIndex > rightIndex) {
+			fromIndex = rightIndex;
+		}
+		// empty string always matches
+		if (len2 == 0) {
+			return fromIndex;
+		}
+
+		int strLastIndex = len2 - 1;
+		char strLastChar = s2[strLastIndex];
+		int min = len2 - 1;
+		int i = min + fromIndex;
+
+		startSearchForLastChar:
+		while (true) {
+			while ((i >= min) && (s1[i] != strLastChar)) {
+				i--;
+			}
+			if (i < min) {
+				return -1;
+			}
+			int j = i - 1;
+			int start = j - (len2 - 1);
+			int k = strLastIndex - 1;
+
+			while (j > start) {
+				if (s1[j--] != s2[k--]) {
+					i--;
+					continue startSearchForLastChar;
+				}
+			}
+			return start + 1;
+		}
+	}
+
+	/**
+	 * @see String#matches(String)
+	 */
+	public static boolean matches(char[] string, char[] regex) {
+		return matches(string, String.valueOf(regex)); // delegate regex stuff...
+	}
+
+	/**
+	 * @see String#matches(String)
+	 */
+	public static boolean matches(char[] string, String regex) {
+		return String.valueOf(string).matches(regex); // delegate regex stuff...
+	}
+
+	/**
+	 * @see String#offsetByCodePoints(int, int)
+	 */
+	public static int offsetByCodePoints(char[] string, int index, int codePointOffset) {
+		return Character.offsetByCodePoints(string, 0, string.length, index, codePointOffset);
+	}
+
+	/**
+	 * @see String#regionMatches(boolean, int, String, int, int)
+	 */
+	public static boolean regionMatches(char[] s1, boolean ignoreCase, int offset1, char[] s2, int offset2, int len) {
+		// NB: offset1, offset2, or len might be near -1 >>> 1
+		if ((offset1 < 0) || (offset2 < 0) || (offset1 > (long) s1.length - len) || (offset2 > (long) s2.length - len)) {
+			return false;
+		}
+		while (len-- > 0) {
+			char c1 = s1[offset1++];
+			char c2 = s2[offset2++];
+			if (c1 == c2) {
+				continue;
+			}
+			if (ignoreCase) {
+				char u1 = Character.toUpperCase(c1);
+				char u2 = Character.toUpperCase(c2);
+				if (u1 == u2) {
+					continue;
+				}
+				if (Character.toLowerCase(u1) == Character.toLowerCase(u2)) {
+					continue;
+				}
+			}
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * @see String#regionMatches(int, String, int, int)
+	 */
+	public static boolean regionMatches(char[] s1, int offset1, char[] s2, int offset2, int len) {
+		// NB: offset1, offset2, or len might be near -1 >>> 1
+		if ((offset2 < 0) || (offset1 < 0) || (offset1 > (long) s1.length - len) || (offset2 > (long) s2.length - len)) {
+			return false;
+		}
+		while (len-- > 0) {
+			if (s1[offset1++] != s2[offset2++]) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * @see String#replace(char, char)
+	 */
+	public static char[] replace(char[] string, char oldChar, char newChar) {
+		if (oldChar == newChar) {
+			return string;
+		}
+		int len = string.length;
+		int i = -1;
+		while (++i < len) {
+			if (string[i] == oldChar) {
+				break;
+			}
+		}
+		if (i == len) {
+			return string;
+		}
+		char[] result = new char[len];
+		for (int j = 0; j < i ; j++) {
+			result[j] = string[j];
+		}
+		for ( ; i < len; i++) {
+			char c = string[i];
+			result[i] = (c == oldChar) ? newChar : c;
+		}
+		return result;
+	}
+
+	/**
+	 * @see String#replace(CharSequence, CharSequence)
+	 */
+	public static char[] replace(char[] string, CharSequence target, CharSequence replacement) {
+		return String.valueOf(string).replace(target, replacement).toCharArray(); // delegate regex stuff...
+	}
+
+	/**
+	 * @see String#replace(CharSequence, CharSequence)
+	 */
+	public static char[] replace(char[] string, char[] target, char[] replacement) {
+		return replace(string, String.valueOf(target), String.valueOf(replacement)); // delegate regex stuff...
+	}
+
+	/**
+	 * @see String#replaceAll(String, String)
+	 */
+	public static char[] replaceAll(char[] string, char[] regex, char[] replacement) {
+		return replaceAll(string, String.valueOf(regex), replacement); // delegate regex stuff...
+	}
+
+	/**
+	 * @see String#replaceAll(String, String)
+	 */
+	public static char[] replaceAll(char[] string, String regex, char[] replacement) {
+		return String.valueOf(string).replaceAll(regex, String.valueOf(replacement)).toCharArray(); // delegate regex stuff...
+	}
+
+	/**
+	 * @see String#replaceFirst(String, String)
+	 */
+	public static char[] replaceFirst(char[] string, char[] regex, char[] replacement) {
+		return replaceFirst(string, String.valueOf(regex), replacement); // delegate regex stuff...
+	}
+
+	/**
+	 * @see String#replaceFirst(String, String)
+	 */
+	public static char[] replaceFirst(char[] string, String regex, char[] replacement) {
+		return String.valueOf(string).replaceFirst(regex, String.valueOf(replacement)).toCharArray(); // delegate regex stuff...
+	}
+
+	/**
+	 * @see String#split(String)
+	 */
+	public static char[][] split(char[] string, char[] regex) {
+		return split(string, regex, 0);
+	}
+
+	/**
+	 * @see String#split(String)
+	 */
+	public static char[][] split(char[] string, String regex) {
+		return split(string, regex, 0);
+	}
+
+	/**
+	 * @see String#split(String, int)
+	 */
+	public static char[][] split(char[] string, char[] regex, int limit) {
+		return split(string, String.valueOf(regex), limit); // delegate regex stuff...
+	}
+
+	/**
+	 * @see String#split(String, int)
+	 */
+	public static char[][] split(char[] string, String regex, int limit) {
+		String[] strings = String.valueOf(string).split(regex, limit); // delegate regex stuff...
+		char[][] result = new char[strings.length][];
+		for (int i = result.length; i-- > 0;) {
+			result[i] = strings[i].toCharArray();
+		}
+		return result;
+	}
+
+	/**
+	 * @see String#startsWith(String)
+	 */
+	public static boolean startsWith(char[] string, char[] prefix) {
+		return startsWith(string, prefix, 0);
+	}
+
+	/**
+	 * @see String#startsWith(String, int)
+	 */
+	public static boolean startsWith(char[] string, char[] prefix, int offset) {
+		int len = prefix.length;
+		// NB: offset might be near -1 >>> 1
+		if ((offset < 0) || (offset > string.length - len)) {
+			return false;
+		}
+		for (int i = 0; i < len; i++) {
+			if (prefix[i] != string[offset++]) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * @see String#subSequence(int, int)
+	 */
+	public static char[] subSequence(char[] string, int beginIndex, int endIndex) {
+		return substring(string, beginIndex, endIndex);
+	}
+
+	/**
+	 * @see String#substring(int)
+	 */
+	public static char[] substring(char[] string, int beginIndex) {
+		return substring(string, beginIndex, string.length);
+	}
+
+	/**
+	 * @see String#substring(int, int)
+	 */
+	public static char[] substring(char[] string, int beginIndex, int endIndex) {
+		return ArrayTools.subArray(string, beginIndex, endIndex);
+	}
+
+	/**
+	 * @see String#toLowerCase()
+	 */
+	public static char[] toLowerCase(char[] string) {
+		return toLowerCase(string, Locale.getDefault());
+	}
+
+	/**
+	 * @see String#toLowerCase(Locale)
+	 */
+	public static char[] toLowerCase(char[] string, Locale locale) {
+		return String.valueOf(string).toLowerCase(locale).toCharArray(); // delegate case stuff...
+	}
+
+	/**
+	 * @see String#toUpperCase()
+	 */
+	public static char[] toUpperCase(char[] string) {
+		return toLowerCase(string, Locale.getDefault());
+	}
+
+	/**
+	 * @see String#toUpperCase(Locale)
+	 */
+	public static char[] toUpperCase(char[] string, Locale locale) {
+		return String.valueOf(string).toUpperCase(locale).toCharArray(); // delegate case stuff...
+	}
+
+	/**
+	 * @see String#trim()
+	 */
+	public static char[] trim(char[] string) {
+		int end = string.length;
+		int start = 0;
+		while ((start < end) && (string[start] <= ' ')) {
+			start++;
+		}
+		while ((start < end) && (string[end - 1] <= ' ')) {
+			end--;
+		}
+		return ((start > 0) || (end < string.length)) ? substring(string, start, end) : string;
 	}
 
 

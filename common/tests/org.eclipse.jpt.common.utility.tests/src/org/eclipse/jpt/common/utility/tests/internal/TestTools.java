@@ -111,6 +111,22 @@ public final class TestTools {
 	}
 
 	/**
+	 * Check whether the specified char array contains the same characters as
+	 * the expected string. Throw an exception if they do not.
+	 */
+	public static void assertEquals(CharSequence expected, char[] actual) {
+		assertEquals(expected.toString(), actual);
+	}
+
+	/**
+	 * Check whether the specified byte array contains the same characters as
+	 * the expected string. Throw an exception if they do not.
+	 */
+	public static void assertEquals(CharSequence expected, byte[] actual) {
+		assertEquals(expected.toString(), actual);
+	}
+
+	/**
 	 * Test an object's implementation of {@link java.io.Serializable} by serializing the
 	 * specified object to a byte array; then de-serializing the byte array and
 	 * returning the resultant object.

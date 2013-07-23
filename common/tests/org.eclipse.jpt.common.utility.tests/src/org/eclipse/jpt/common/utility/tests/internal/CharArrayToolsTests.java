@@ -10,10 +10,12 @@
 package org.eclipse.jpt.common.utility.tests.internal;
 
 import java.util.Arrays;
+import junit.framework.TestCase;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ByteArrayTools;
 import org.eclipse.jpt.common.utility.internal.CharArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import junit.framework.TestCase;
+import org.junit.Assert;
 
 @SuppressWarnings("nls")
 public class CharArrayToolsTests
@@ -581,5 +583,309 @@ public class CharArrayToolsTests
 
 	private void verifyConvertToXmlElementCDATA(String s, String expected) {
 		TestTools.assertEquals(expected, CharArrayTools.convertToXmlElementCDATA(s.toCharArray()));
+	}
+
+	// ********** String methods **********
+
+	public void testCodePointAtInt() {
+		this.verifyCodePointAtInt("foo-bar-baz", 7);
+		this.verifyCodePointAtInt("caf\u00E9", 3);
+	}
+
+	private void verifyCodePointAtInt(String s, int index) {
+		assertEquals(s.codePointAt(index), CharArrayTools.codePointAt(s.toCharArray(), index));
+	}
+
+	public void testCodePointBeforeInt() {
+		this.verifyCodePointBeforeInt("foo-bar-baz", 7);
+		this.verifyCodePointBeforeInt("caf\u00E9", 4);
+	}
+
+	private void verifyCodePointBeforeInt(String s, int index) {
+		assertEquals(s.codePointBefore(index), CharArrayTools.codePointBefore(s.toCharArray(), index));
+	}
+
+	public void testCodePointCountIntInt() {
+		this.verifyCodePointCountIntInt("foo-bar-baz");
+		this.verifyCodePointCountIntInt("caf\u00E9");
+	}
+
+	private void verifyCodePointCountIntInt(String s) {
+		assertEquals(s.codePointCount(0, s.length()), CharArrayTools.codePointCount(s.toCharArray(), 0, s.length()));
+	}
+
+	public void testCompareTo() {
+		this.verifyCompareTo("foo", "bar");
+		this.verifyCompareTo("foo", "foo");
+		this.verifyCompareTo("foo", "zoo");
+	}
+
+	private void verifyCompareTo(String s1, String s2) {
+		assertEquals(s1.compareTo(s2), CharArrayTools.compareTo(s1.toCharArray(), s2.toCharArray()));
+	}
+
+	public void testCompareToIgnoreCase() {
+		this.verifyCompareToIgnoreCase("foo", "bar");
+		this.verifyCompareToIgnoreCase("foo", "BAR");
+		this.verifyCompareToIgnoreCase("foo", "foo");
+		this.verifyCompareToIgnoreCase("foo", "FOO");
+		this.verifyCompareToIgnoreCase("foo", "zoo");
+		this.verifyCompareToIgnoreCase("foo", "ZOO");
+	}
+
+	private void verifyCompareToIgnoreCase(String s1, String s2) {
+		assertEquals(s1.compareToIgnoreCase(s2), CharArrayTools.compareToIgnoreCase(s1.toCharArray(), s2.toCharArray()));
+	}
+
+	public void testConcat() {
+		this.verifyConcat("foo", "bar");
+		this.verifyConcat("foo", "foo");
+		this.verifyConcat("foo", "zoo");
+		this.verifyConcat("foo", "");
+		this.verifyConcat("", "zoo");
+	}
+
+	private void verifyConcat(String s1, String s2) {
+		TestTools.assertEquals(s1.concat(s2), CharArrayTools.concat(s1.toCharArray(), s2.toCharArray()));
+	}
+
+	public void testContainsCharSequence() {
+		this.verifyContainsCharSequence("foo", "bar");
+		this.verifyContainsCharSequence("foo", "foo");
+		this.verifyContainsCharSequence("foo", "zoo");
+		this.verifyContainsCharSequence("foo", "");
+		this.verifyContainsCharSequence("", "zoo");
+		this.verifyContainsCharSequence("foo", "f");
+		this.verifyContainsCharSequence("foo", "o");
+		this.verifyContainsCharSequence("foo", "z");
+		this.verifyContainsCharSequence("foo", "oo");
+	}
+
+	private void verifyContainsCharSequence(String s1, String s2) {
+		StringBuilder sb = new StringBuilder(s2);
+		assertEquals(s1.contains(sb), CharArrayTools.contains(s1.toCharArray(), sb));
+	}
+
+	public void testContainsCharArray() {
+		this.verifyContainsCharArray("foo", "bar");
+		this.verifyContainsCharArray("foo", "foo");
+		this.verifyContainsCharArray("foo", "zoo");
+		this.verifyContainsCharArray("foo", "");
+		this.verifyContainsCharArray("", "zoo");
+		this.verifyContainsCharArray("foo", "f");
+		this.verifyContainsCharArray("foo", "o");
+		this.verifyContainsCharArray("foo", "z");
+		this.verifyContainsCharArray("foo", "oo");
+	}
+
+	private void verifyContainsCharArray(String s1, String s2) {
+		StringBuilder sb = new StringBuilder(s2);
+		assertEquals(s1.contains(sb), CharArrayTools.contains(s1.toCharArray(), s2));
+	}
+
+	public void testContentEqualsCharSequence() {
+		this.verifyContentEqualsCharSequence("foo", "bar");
+		this.verifyContentEqualsCharSequence("foo", "foo");
+		this.verifyContentEqualsCharSequence("foo", "zoo");
+		this.verifyContentEqualsCharSequence("foo", "");
+		this.verifyContentEqualsCharSequence("", "zoo");
+		this.verifyContentEqualsCharSequence("foo", "f");
+		this.verifyContentEqualsCharSequence("foo", "o");
+		this.verifyContentEqualsCharSequence("foo", "z");
+		this.verifyContentEqualsCharSequence("foo", "oo");
+	}
+
+	private void verifyContentEqualsCharSequence(String s1, String s2) {
+		StringBuilder sb = new StringBuilder(s2);
+		assertEquals(s1.contentEquals(sb), CharArrayTools.contentEquals(s1.toCharArray(), sb));
+	}
+
+	public void testContentEqualsStringBuffer() {
+		this.verifyContentEqualsStringBuffer("foo", "bar");
+		this.verifyContentEqualsStringBuffer("foo", "foo");
+		this.verifyContentEqualsStringBuffer("foo", "zoo");
+		this.verifyContentEqualsStringBuffer("foo", "");
+		this.verifyContentEqualsStringBuffer("", "zoo");
+		this.verifyContentEqualsStringBuffer("foo", "f");
+		this.verifyContentEqualsStringBuffer("foo", "o");
+		this.verifyContentEqualsStringBuffer("foo", "z");
+		this.verifyContentEqualsStringBuffer("foo", "oo");
+	}
+
+	private void verifyContentEqualsStringBuffer(String s1, String s2) {
+		StringBuffer sb = new StringBuffer(s2);
+		assertEquals(s1.contentEquals(sb), CharArrayTools.contentEquals(s1.toCharArray(), sb));
+	}
+
+	public void testEndsWith() {
+		this.verifyEndsWith("foo", "bar");
+		this.verifyEndsWith("foo", "foo");
+		this.verifyEndsWith("foo", "zoo");
+		this.verifyEndsWith("foo", "");
+		this.verifyEndsWith("", "zoo");
+		this.verifyEndsWith("foo", "f");
+		this.verifyEndsWith("foo", "o");
+		this.verifyEndsWith("foo", "z");
+		this.verifyEndsWith("foo", "oo");
+	}
+
+	private void verifyEndsWith(String s1, String s2) {
+		assertEquals(s1.endsWith(s2), CharArrayTools.endsWith(s1.toCharArray(), s2.toCharArray()));
+	}
+
+	public void testGetChars() {
+		this.verifyGetChars("foo-bar-baz", 0, 11, 0);
+		this.verifyGetChars("foo-bar-baz", 11, 11, 11);
+		this.verifyGetChars("foo-bar-baz", 4, 5, 0);
+		this.verifyGetChars("foo-bar-baz", 4, 11, 0);
+	}
+
+	private void verifyGetChars(String s, int srcBegin, int srcEnd, int destBegin) {
+		char[] a1 = ArrayTools.fill(new char[42], 'x');
+		s.getChars(srcBegin, srcEnd, a1, destBegin);
+		char[] a2 = ArrayTools.fill(new char[42], 'x');
+		CharArrayTools.getChars(s.toCharArray(), srcBegin, srcEnd, a2, destBegin);
+		Assert.assertArrayEquals(a1, a2);
+	}
+
+	public void testIndexOfCharSequence() {
+		this.verifyIndexOfCharSequence("foo-bar-baz", "");
+		this.verifyIndexOfCharSequence("foo-bar-baz", "foo-bar-baz");
+		this.verifyIndexOfCharSequence("foo-bar-baz", "bar");
+		this.verifyIndexOfCharSequence("foo-bar-baz", "bbb");
+
+		this.verifyIndexOfCharSequence("", "");
+		this.verifyIndexOfCharSequence("", "foo-bar-baz");
+		this.verifyIndexOfCharSequence("", "bar");
+		this.verifyIndexOfCharSequence("", "bbb");
+	}
+
+	private void verifyIndexOfCharSequence(String s1, String s2) {
+		assertEquals(s1.indexOf(s2), CharArrayTools.indexOf(s1.toCharArray(), s2));
+	}
+
+	public void testIndexOfCharArray() {
+		this.verifyIndexOfCharArray("foo-bar-baz", "");
+		this.verifyIndexOfCharArray("foo-bar-baz", "foo-bar-baz");
+		this.verifyIndexOfCharArray("foo-bar-baz", "bar");
+		this.verifyIndexOfCharArray("foo-bar-baz", "bbb");
+
+		this.verifyIndexOfCharArray("", "");
+		this.verifyIndexOfCharArray("", "foo-bar-baz");
+		this.verifyIndexOfCharArray("", "bar");
+		this.verifyIndexOfCharArray("", "bbb");
+	}
+
+	private void verifyIndexOfCharArray(String s1, String s2) {
+		assertEquals(s1.indexOf(s2), CharArrayTools.indexOf(s1.toCharArray(), s2.toCharArray()));
+	}
+
+	public void testLastIndexOf() {
+		this.verifyLastIndexOf("foo-bar-baz", "");
+		this.verifyLastIndexOf("foo-bar-baz", "foo-bar-baz");
+		this.verifyLastIndexOf("foo-bar-baz", "bar");
+		this.verifyLastIndexOf("foo-bar-baz", "bbb");
+
+		this.verifyLastIndexOf("", "");
+		this.verifyLastIndexOf("", "foo-bar-baz");
+		this.verifyLastIndexOf("", "bar");
+		this.verifyLastIndexOf("", "bbb");
+	}
+
+	private void verifyLastIndexOf(String s1, String s2) {
+		assertEquals(s1.lastIndexOf(s2), CharArrayTools.lastIndexOf(s1.toCharArray(), s2.toCharArray()));
+	}
+
+	public void testMatches() {
+		this.verifyMatches("foo-bar-baz", "");
+		this.verifyMatches("aaaaab", "a*b");
+	}
+
+	private void verifyMatches(String s1, String s2) {
+		assertEquals(s1.matches(s2), CharArrayTools.matches(s1.toCharArray(), s2.toCharArray()));
+	}
+
+	public void testRegionMatchesIgnoreCase() {
+		this.verifyRegionMatchesBoolean("foo-bar-baz", "", true, 0, 0, 5);
+		this.verifyRegionMatchesBoolean("foo-bar-baz", "foo", true, 0, 0, 3);
+		this.verifyRegionMatchesBoolean("foo-bar-baz", "FOO", true, 0, 0, 3);
+		this.verifyRegionMatchesBoolean("foo-bar-baz", "XXX", true, 0, 0, 3);
+	}
+
+	public void testRegionMatchesCaseSensitive() {
+		this.verifyRegionMatchesBoolean("foo-bar-baz", "", false, 0, 0, 5);
+		this.verifyRegionMatchesBoolean("foo-bar-baz", "foo", false, 0, 0, 3);
+		this.verifyRegionMatchesBoolean("foo-bar-baz", "xxx", false, 0, 0, 3);
+	}
+
+	private void verifyRegionMatchesBoolean(String s1, String s2, boolean ignoreCase, int offset1, int offset2, int len) {
+		assertEquals(s1.regionMatches(ignoreCase, offset1, s2, offset2, len), CharArrayTools.regionMatches(s1.toCharArray(), ignoreCase, offset1, s2.toCharArray(), offset2, len));
+	}
+
+	public void testRegionMatches() {
+		this.verifyRegionMatches("foo-bar-baz", "", 0, 0, 5);
+		this.verifyRegionMatches("foo-bar-baz", "foo", 0, 0, 3);
+		this.verifyRegionMatches("foo-bar-baz", "xxx", 0, 0, 3);
+	}
+
+	private void verifyRegionMatches(String s1, String s2, int offset1, int offset2, int len) {
+		assertEquals(s1.regionMatches(offset1, s2, offset2, len), CharArrayTools.regionMatches(s1.toCharArray(), offset1, s2.toCharArray(), offset2, len));
+	}
+
+	public void testReplace() {
+		this.verifyReplace("foo-bar-baz", 'b', 'x');
+		this.verifyReplace("foo-bar-baz", 'X', 'T');
+	}
+
+	private void verifyReplace(String string, char oldChar, char newChar) {
+		char[] array = CharArrayTools.replace(string.toCharArray(), oldChar, newChar);
+		TestTools.assertEquals(string.replace(oldChar, newChar), array);
+	}
+
+	public void testStartsWith() {
+		this.verifyStartsWith("foo-bar-baz", "foo");
+		this.verifyStartsWith("foo-bar-baz", "FOO");
+		this.verifyStartsWith("foo-bar-baz", "bar");
+	}
+
+	private void verifyStartsWith(String s1, String s2) {
+		assertEquals(s1.startsWith(s2), CharArrayTools.startsWith(s1.toCharArray(), s2.toCharArray()));
+	}
+
+	public void testStartsWithOffset() {
+		this.verifyStartsWithOffset("foo-bar-baz", "foo", 0);
+		this.verifyStartsWithOffset("foo-bar-baz", "foo", 4);
+		this.verifyStartsWithOffset("foo-bar-baz", "bar", 0);
+		this.verifyStartsWithOffset("foo-bar-baz", "bar", 4);
+		this.verifyStartsWithOffset("foo-bar-baz", "bar", 22);
+		this.verifyStartsWithOffset("foo-bar-baz", "bar", -3);
+	}
+
+	private void verifyStartsWithOffset(String s1, String s2, int offset) {
+		assertEquals(s1.startsWith(s2, offset), CharArrayTools.startsWith(s1.toCharArray(), s2.toCharArray(), offset));
+	}
+
+	public void testSubSequence() {
+		this.verifySubSequence("foo-bar-baz", 0, 11);
+		this.verifySubSequence("foo-bar-baz", 0, 3);
+		this.verifySubSequence("foo-bar-baz", 0, 0);
+		this.verifySubSequence("foo-bar-baz", 2, 11);
+		this.verifySubSequence("foo-bar-baz", 2, 3);
+		this.verifySubSequence("foo-bar-baz", 2, 2);
+	}
+
+	private void verifySubSequence(String string, int beginIndex, int endIndex) {
+		char[] array = CharArrayTools.subSequence(string.toCharArray(), beginIndex, endIndex);
+		TestTools.assertEquals(string.subSequence(beginIndex, endIndex), array);
+	}
+
+	public void testTrim() {
+		this.verifyTrim("foo-bar-baz");
+		this.verifyTrim(" foo-bar-baz ");
+		this.verifyTrim("     foo-bar-baz ");
+	}
+
+	private void verifyTrim(String string) {
+		TestTools.assertEquals(string.trim(), CharArrayTools.trim(string.toCharArray()));
 	}
 }
