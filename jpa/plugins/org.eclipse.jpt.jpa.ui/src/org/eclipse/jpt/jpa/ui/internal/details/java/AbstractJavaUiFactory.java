@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,7 +32,6 @@ import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.details.JpaUiFactory;
 import org.eclipse.jpt.jpa.ui.internal.details.BasicMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.EmbeddedIdMappingComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.EmbeddedMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.IdMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.ManyToManyMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.ManyToOneMappingComposite;
@@ -155,7 +154,7 @@ public abstract class AbstractJavaUiFactory
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new EmbeddedMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaEmbeddedMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	public JpaComposite createTransientMappingComposite(
