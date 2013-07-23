@@ -11,14 +11,11 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
-import org.eclipse.jpt.jpa.core.context.OneToOneRelationship;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneRelationship2_0;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.JoinColumnJoiningStrategyPane;
 import org.eclipse.jpt.jpa.ui.internal.details.JoinTableJoiningStrategyPane;
 import org.eclipse.jpt.jpa.ui.internal.details.MappedByJoiningStrategyPane;
-import org.eclipse.jpt.jpa.ui.internal.details.OneToOneMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.PrimaryKeyJoinColumnJoiningStrategyPane;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -50,13 +47,6 @@ import org.eclipse.ui.forms.widgets.Section;
  * | | --------------------------------------------------------------------- | |
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
- *
- * @see {@link OneToOneMapping}
- * @see {@link OneToOneRelationship}
- * @see {@link OneToOneMappingComposite}
- * @see {@link MappedByStrategyPane}
- * @see {@link JoinColumnStrategyPane}
- * @see {@link PrimaryKeyJoinColumnStrategyPane}
  *
  * @version 2.3
  * @since 2.1

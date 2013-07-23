@@ -40,13 +40,6 @@ import org.eclipse.ui.forms.widgets.Section;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see {@link OneToOneMapping}
- * @see {@link OneToOneRelationship}
- * @see {@link OneToOneMappingComposite}
- * @see {@link MappedByStrategyPane}
- * @see {@link JoinColumnStrategyPane}
- * @see {@link PrimaryKeyJoinColumnStrategyPane}
- *
  * @version 2.3
  * @since 2.1
  */
