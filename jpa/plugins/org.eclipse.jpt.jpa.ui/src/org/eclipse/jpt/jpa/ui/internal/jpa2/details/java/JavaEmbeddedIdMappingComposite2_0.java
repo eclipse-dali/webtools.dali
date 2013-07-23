@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
+package org.eclipse.jpt.jpa.ui.internal.jpa2.details.java;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
@@ -15,13 +15,14 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.EmbeddedIdMapping2_0;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEmbeddedIdMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.EmbeddedMappingOverridesComposite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.EmbeddedIdMappingMappedByRelationshipPane2_0;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-public class EmbeddedIdMappingComposite2_0
+public class JavaEmbeddedIdMappingComposite2_0
 	extends AbstractEmbeddedIdMappingComposite<EmbeddedIdMapping2_0>
 {
-	public EmbeddedIdMappingComposite2_0(
+	public JavaEmbeddedIdMappingComposite2_0(
 			PropertyValueModel<? extends EmbeddedIdMapping2_0> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
