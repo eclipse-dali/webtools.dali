@@ -11,8 +11,8 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Cascade;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
@@ -28,13 +28,6 @@ import org.eclipse.swt.widgets.Composite;
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
- *
- * @see Cascade
- * @see RelationshipMapping
- * @see ManyToManyMappingComposite
- * @see ManyToOneMappingComposite
- * @see OneToManyMappingComposite
- * @see OneToOneMappingComposite
  */
 public abstract class AbstractCascadePane<T extends Cascade>
 	extends Pane<T>

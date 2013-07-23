@@ -32,10 +32,6 @@ import org.eclipse.swt.widgets.Composite;
  * |            -------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see ManyToManyMappingComposite - A container of this pane
- * @see OneToManyMappingComposite - A container of this pane
- * @see OneToOneMappingComposite - A container of this pane
- *
  * @version 2.0
  * @since 1.0
  */

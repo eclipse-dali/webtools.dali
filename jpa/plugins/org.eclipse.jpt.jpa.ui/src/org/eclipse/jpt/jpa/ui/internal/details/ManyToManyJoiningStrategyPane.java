@@ -11,13 +11,12 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTableRelationship;
-import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.ManyToManyRelationship;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
 import org.eclipse.jpt.jpa.core.context.Relationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTableRelationship;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -41,12 +40,6 @@ import org.eclipse.ui.forms.widgets.Section;
  * | | --------------------------------------------------------------------- | |
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
- *
- * @see {@link ManyToManyMapping}
- * @see {@link ManyToManyRelationship}
- * @see {@link ManyToManyMappingComposite}
- * @see {@link MappedByStrategyPane}
- * @see {@link JoinTableStrategyPane}
  *
  * @version 2.3
  * @since 2.1

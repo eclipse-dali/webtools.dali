@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.ui.internal.details;
+package org.eclipse.jpt.jpa.ui.internal.details.java;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
@@ -16,15 +16,19 @@ import org.eclipse.jpt.jpa.core.context.Cascade;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.ManyToManyRelationship;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.internal.details.AbstractManyToManyMappingComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.CascadePane;
+import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
+import org.eclipse.jpt.jpa.ui.internal.details.TargetEntityClassChooser;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
-public class ManyToManyMappingComposite 
+public class JavaManyToManyMappingComposite
 	extends AbstractManyToManyMappingComposite<ManyToManyMapping, ManyToManyRelationship, Cascade>
 {
-	public ManyToManyMappingComposite(
+	public JavaManyToManyMappingComposite(
 			PropertyValueModel<? extends ManyToManyMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
