@@ -13,6 +13,7 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
+import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
@@ -22,6 +23,7 @@ import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.EmbeddedIdMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.EmbeddedMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkIdMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkManyToManyMapping2_0;
@@ -32,6 +34,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.EmbeddedIdMappingComposite2_0;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.java.JavaEmbeddedMappingComposite2_0;
 import org.eclipse.jpt.jpa.ui.jpa2.details.JpaUiFactory2_0;
 import org.eclipse.swt.widgets.Composite;
 
@@ -84,6 +87,17 @@ public class EclipseLinkJavaUiFactory2_0
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
 		return new EmbeddedIdMappingComposite2_0((PropertyValueModel<? extends EmbeddedIdMapping2_0>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public JpaComposite createEmbeddedMappingComposite(
+			PropertyValueModel<? extends EmbeddedMapping> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new JavaEmbeddedMappingComposite2_0((PropertyValueModel<? extends EmbeddedMapping2_0>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 	@SuppressWarnings("unchecked")
