@@ -33,7 +33,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEmbeddab
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkOneToManyMappingComposite;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkOneToOneMappingComposite;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.java.AbstractJavaUiFactory;
 import org.eclipse.swt.widgets.Composite;
@@ -140,7 +139,7 @@ public class EclipseLinkJavaUiFactory
 			Composite parentComposite, 
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new EclipseLinkOneToOneMappingComposite((PropertyValueModel<? extends EclipseLinkOneToOneMapping>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new EclipseLinkJavaOneToOneMappingComposite((PropertyValueModel<? extends EclipseLinkOneToOneMapping>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 	@SuppressWarnings("unchecked")
