@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.handlers;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
@@ -46,7 +47,8 @@ public class GenerateDDLHandler extends AbstractHandler
 	}
 
 	private JpaProject adaptSelection(Object selectedObject) {
-		return PlatformTools.getAdapter(selectedObject, JpaProject.class);
+		IProject project = PlatformTools.getAdapter(selectedObject, IProject.class);
+		return project == null ? null : PlatformTools.getAdapter(project, JpaProject.class);
 	}
 
 	private JpaPlatformUi getJpaPlatformUi(JpaProject project) {
