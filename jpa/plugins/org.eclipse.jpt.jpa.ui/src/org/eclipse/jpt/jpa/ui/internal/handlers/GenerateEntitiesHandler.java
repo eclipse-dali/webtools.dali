@@ -13,7 +13,6 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
@@ -47,18 +46,8 @@ public class GenerateEntitiesHandler extends AbstractHandler
 		}
 	}
 
-	protected IProject projectFromSelection(Object selection) {
-		if (selection instanceof IProject) { //IProject when selecting in the Project Explorer
-			return (IProject) selection;
-		}
-		if (selection instanceof IJavaProject) { //IJavaProject when selecting in the Package Explorer
-			return ((IJavaProject) selection).getProject();
-		}
-		return null;
-	}
-
 	private JpaProject jpaProjectFromSelection(Object selectedObject) {
-		IProject project = this.projectFromSelection(selectedObject);
+		IProject project = PlatformTools.getAdapter(selectedObject, IProject.class);
 		return project == null ? null : PlatformTools.getAdapter(project, JpaProject.class);
 	}
 
