@@ -80,13 +80,13 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.AssociationOverrideValidat
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AttributeOverrideColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AttributeOverrideValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.DiscriminatorColumnValidator;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityPrimaryKeyJoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericEntityPrimaryKeyValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.JoinTableTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.MappedSuperclassOverrideDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.SecondaryTableValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.TableValidator;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.JavaEntityPrimaryKeyJoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.resource.java.NullPrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAssociationOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAttributeOverrideContainer2_0;
@@ -517,16 +517,15 @@ public abstract class AbstractJavaEntity
 	}
 
 	public void convertDefaultPrimaryKeyJoinColumnsToSpecified() {
-		if (this.defaultPrimaryKeyJoinColumn == null) {
-			throw new IllegalStateException("default PK join column is null"); //$NON-NLS-1$
-		}
-		// Add a PK join column by creating a specified one using the default one
-		String columnName = this.defaultPrimaryKeyJoinColumn.getDefaultName();
-		String referencedColumnName = this.defaultPrimaryKeyJoinColumn.getDefaultReferencedColumnName();
-
-		SpecifiedPrimaryKeyJoinColumn pkJoinColumn = this.addSpecifiedPrimaryKeyJoinColumn(0);
-		pkJoinColumn.setSpecifiedName(columnName);
-		pkJoinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
+		// This is for root entities which have no default PK join column
+		 SpecifiedPrimaryKeyJoinColumn pkJoinColumn = this.addSpecifiedPrimaryKeyJoinColumn(0);
+		 // Add a PK join column by creating a specified one using the default one
+		 if (this.defaultPrimaryKeyJoinColumn != null) {
+			 String columnName = this.defaultPrimaryKeyJoinColumn.getDefaultName();
+			 String referencedColumnName = this.defaultPrimaryKeyJoinColumn.getDefaultReferencedColumnName();
+			 pkJoinColumn.setSpecifiedName(columnName);
+			 pkJoinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
+		 }
 	}
 
 	public void clearSpecifiedPrimaryKeyJoinColumns() {
@@ -626,7 +625,7 @@ public abstract class AbstractJavaEntity
 	}
 
 	protected boolean buildsDefaultPrimaryKeyJoinColumn() {
-		return ! this.hasSpecifiedPrimaryKeyJoinColumns();
+		return ! this.isRootEntity() && ! this.hasSpecifiedPrimaryKeyJoinColumns();
 	}
 
 	protected JavaSpecifiedPrimaryKeyJoinColumn buildDefaultPrimaryKeyJoinColumn() {
@@ -1222,14 +1221,30 @@ public abstract class AbstractJavaEntity
 			secondaryTable.validate(messages, reporter);
 		}
 		this.validateInheritance(messages, reporter);
-		for (JavaSpecifiedPrimaryKeyJoinColumn pkJoinColumn : this.getPrimaryKeyJoinColumns()) {
-			pkJoinColumn.validate(messages, reporter);
-		}
+		this.validatePrimaryKeyJoinColumns(messages, reporter);
 		this.generatorContainer.validate(messages, reporter);
 		this.queryContainer.validate(messages, reporter);
 		this.attributeOverrideContainer.validate(messages, reporter);
 		this.associationOverrideContainer.validate(messages, reporter);
 		this.validateEntityName(messages);
+	}
+
+	protected void validatePrimaryKeyJoinColumns(List<IMessage> messages, IReporter reporter) {
+		if (this.getPrimaryKeyJoinColumnsSize() > 0) {
+			if (this.getParentEntity() == null) {
+				messages.add(
+						this.buildValidationMessage(
+								this.getMappingAnnotation().getNameTextRange(),
+								JptJpaCoreValidationMessages.ROOT_ENTITY_HAS_PK_JOIN_COLUMN_DEFINED,
+								this.getPersistentType().getName()
+						)
+				);
+			} else {
+				for (JavaSpecifiedPrimaryKeyJoinColumn pkJoinColumn : this.getPrimaryKeyJoinColumns()) {
+					pkJoinColumn.validate(messages, reporter);
+				}
+			}
+		}
 	}
 
 	@Override
@@ -1585,7 +1600,7 @@ public abstract class AbstractJavaEntity
 		}
 
 		public JpaValidator buildColumnValidator(NamedColumn column) {
-			return new JavaEntityPrimaryKeyJoinColumnValidator((BaseJoinColumn) column, this, AbstractJavaEntity.this);
+			return new EntityPrimaryKeyJoinColumnValidator((BaseJoinColumn) column, this);
 		}
 	}
 

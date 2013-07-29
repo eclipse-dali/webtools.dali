@@ -117,10 +117,11 @@ public class JpaProblemSeveritiesPage
 		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.ENTITY_NO_PK);
 		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.ENTITY_NON_ROOT_ID_ATTRIBUTE_SPECIFIED); //3.0 M7
 		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.ENTITY_NON_ROOT_ID_CLASS_SPECIFIED); //3.0 M7
-		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_ANNOTATED_BUT_NOT_LISTED_IN_PERSISTENCE_XML);
-		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MANAGED_BUT_NOT_LISTED_IN_PERSISTENCE_XML);
 		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.MANAGED_TYPE_UNRESOLVED_CLASS);
 		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.MANAGED_TYPE_UNSPECIFIED_CLASS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.ROOT_ENTITY_HAS_PK_JOIN_COLUMN_DEFINED);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_ANNOTATED_BUT_NOT_LISTED_IN_PERSISTENCE_XML);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MANAGED_BUT_NOT_LISTED_IN_PERSISTENCE_XML);
 		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_CLASS_MISSING_NO_ARG_CONSTRUCTOR);
 		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_CLASS_PRIVATE_NO_ARG_CONSTRUCTOR);
 		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_FINAL_CLASS);

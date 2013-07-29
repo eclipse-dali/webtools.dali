@@ -20,9 +20,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
-import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
@@ -30,30 +28,32 @@ import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
-import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
+import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
-import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.VirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.VirtualAttributeOverride;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAssociationOverride;
@@ -1453,7 +1453,9 @@ public class JavaEntityTests extends ContextModelTestCase
 	}
 
 	public void testPrimaryKeyJoinColumnsSize() throws Exception {
-		createTestEntityWithSecondaryTable();
+		createTestEntity();
+		createTestSubType();
+		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		//just the default pkJoinColumn, so 1
@@ -1468,7 +1470,9 @@ public class JavaEntityTests extends ContextModelTestCase
 	}
 
 	public void testGetDefaultPrimaryKeyJoinColumn() throws Exception {
-		createTestEntityWithSecondaryTable();
+		createTestEntity();
+		createTestSubType();
+		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		assertNotNull(getJavaEntity().getDefaultPrimaryKeyJoinColumn());
@@ -1650,7 +1654,9 @@ public class JavaEntityTests extends ContextModelTestCase
 	}
 	
 	public void testPrimaryKeyJoinColumnIsVirtual() throws Exception {
-		createTestEntityWithSecondaryTable();
+		createTestEntity();
+		createTestSubType();
+		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		assertTrue(getJavaEntity().getDefaultPrimaryKeyJoinColumn().isVirtual());

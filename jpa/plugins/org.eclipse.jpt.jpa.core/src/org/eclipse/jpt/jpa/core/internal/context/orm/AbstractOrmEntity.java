@@ -764,6 +764,11 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	public void convertDefaultPrimaryKeyJoinColumnsToSpecified() {
+		// This is necessary for root entities which have no default PK join column
+		if (this.getPrimaryKeyJoinColumnsSize() == 0) {
+			this.addSpecifiedPrimaryKeyJoinColumn();
+		}
+		
 		for (PrimaryKeyJoinColumn defaultJoinColumn : this.getDefaultPrimaryKeyJoinColumns()) {
 			String columnName = defaultJoinColumn.getName();
 			String referencedColumnName = defaultJoinColumn.getReferencedColumnName();
@@ -868,7 +873,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 				if (this.javaPrimaryKeyJoinColumnsWillBeDefaults()) {
 					// specified => java
 					this.initializeVirtualPrimaryKeyJoinColumns();
-				} else {
+				} else if (this.getParentEntity() != null) {
 					// specified => default
 					this.addDefaultPrimaryKeyJoinColumn();
 				}
@@ -1673,15 +1678,32 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			secondaryTable.validate(messages, reporter);
 		}
 		this.validateInheritance(messages, reporter);
-		for (OrmSpecifiedPrimaryKeyJoinColumn pkJoinColumn : this.getSpecifiedPrimaryKeyJoinColumns()) {
-			pkJoinColumn.validate(messages, reporter);
-		}
+		this.validatePrimaryKeyJoinColumns(messages, reporter);
 		this.attributeOverrideContainer.validate(messages, reporter);
 		this.associationOverrideContainer.validate(messages, reporter);
 		this.generatorContainer.validate(messages, reporter);
 		this.queryContainer.validate(messages, reporter);
 		this.validateEntityName(messages);
 		this.idClassReference.validate(messages, reporter);
+	}
+
+	protected void validatePrimaryKeyJoinColumns(List<IMessage> messages, IReporter reporter) {
+		if (this.getPrimaryKeyJoinColumnsSize() > 0) {
+			if (this.getParentEntity() == null) {
+				messages.add(
+						this.buildValidationMessage(
+								this.getNameTextRange(),
+								JptJpaCoreValidationMessages.ROOT_ENTITY_HAS_PK_JOIN_COLUMN_DEFINED,
+								this.getPersistentType().getName()
+						)
+				);
+			} else {
+				for (OrmSpecifiedPrimaryKeyJoinColumn pkJoinColumn : this.getSpecifiedPrimaryKeyJoinColumns()) {
+					pkJoinColumn.validate(messages, reporter);
+				}
+			}
+		}
+		
 	}
 
 	protected void validateEntityName(List<IMessage> messages) {
