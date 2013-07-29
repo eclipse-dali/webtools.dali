@@ -72,6 +72,7 @@ public class JptJpaCoreValidationMessages {
 	public static ValidationMessage TYPE_MANAGED_BUT_NOT_LISTED_IN_PERSISTENCE_XML;
 	public static ValidationMessage MANAGED_TYPE_UNRESOLVED_CLASS;
 	public static ValidationMessage MANAGED_TYPE_UNSPECIFIED_CLASS;
+	public static ValidationMessage ROOT_ENTITY_HAS_PK_JOIN_COLUMN_DEFINED;
 	public static ValidationMessage TARGET_NOT_AN_EMBEDDABLE;
 	public static ValidationMessage TYPE_MAPPING_CLASS_MISSING_NO_ARG_CONSTRUCTOR;
 	public static ValidationMessage TYPE_MAPPING_CLASS_PRIVATE_NO_ARG_CONSTRUCTOR;
