@@ -969,8 +969,11 @@ public class JpaProjectPropertiesPage
         	return;
         }
 
+        JpaPlatform.Config jpaPlatformConfig = this.jpaPlatformConfigModel.getValue();
+        String jpaPlatformID = (jpaPlatformConfig == null) ? "" : jpaPlatformConfig.getId(); //$NON-NLS-1$
+
         Map<String, Object> enablementVariables = new HashMap<String, Object>();
-		enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_ENABLEMENT_EXP, this.jpaPlatformConfigModel.getValue());
+		enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_ENABLEMENT_EXP, jpaPlatformID);
 		enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_DESCRIPTION_ENABLEMENT_EXP, this.jpaProjectModel.getValue().getJpaPlatform().getConfig());
 
 		if ( ! libInstallDelegate.getLibraryProvider().isEnabledFor(
