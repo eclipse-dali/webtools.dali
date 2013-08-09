@@ -58,8 +58,16 @@ public class ItemTreeStateProviderManager
 
 	// ********** tree content provider **********
 
+	/**
+	 * We need a <code>null</code> check here because, when a project is
+	 * renamed, the common viewer can be refreshed <em>before</em> we get the
+	 * various change events, and the common viewer will call this method,
+	 * passing the new project,* and we do not have the provider for the
+	 * project yet.
+	 */
 	public boolean hasChildren(Object element) {
-		return this.getItemContentProvider(element).hasChildren();
+		ItemTreeContentProvider provider = this.getItemContentProvider(element);
+		return (provider != null) && provider.hasChildren();
 	}
 
 	public Object[] getChildren(Object parentElement) {
