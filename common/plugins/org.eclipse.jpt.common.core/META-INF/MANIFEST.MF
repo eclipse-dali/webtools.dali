@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.common.core;singleton:=true
-Bundle-Version: 1.3.0.qualifier
+Bundle-Version: 1.4.0.qualifier
 Bundle-Activator: org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin
 Bundle-ActivationPolicy: lazy;exclude:="org.eclipse.jpt.common.core.internal.bundleexclude"
 Bundle-ClassPath: .
