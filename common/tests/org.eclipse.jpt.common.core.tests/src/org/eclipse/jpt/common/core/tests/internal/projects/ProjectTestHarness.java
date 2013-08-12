@@ -15,7 +15,6 @@ import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.tests.internal.TestCommand;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
@@ -26,19 +25,6 @@ import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 public class ProjectTestHarness {
 	private final IProject project;
 
-	/** carriage return */
-	public static final String CR = StringTools.CR;
-
-	
-	// ********** builders **********
-	
-	public static ProjectTestHarness buildPlatformProject(String baseProjectName, boolean autoBuild)
-			throws CoreException {
-		return new ProjectTestHarness(baseProjectName, autoBuild);
-	}
-	
-	
-	// ********** constructors/initialization **********
 	
 	public ProjectTestHarness(String projectName, boolean autoBuild) throws CoreException {
 		super();

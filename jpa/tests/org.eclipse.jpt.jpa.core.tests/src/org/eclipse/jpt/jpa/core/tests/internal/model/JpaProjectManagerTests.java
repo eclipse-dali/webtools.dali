@@ -111,8 +111,8 @@ public class JpaProjectManagerTests
 		return tjp;
 	}	
 
-	private IFile getFile(ProjectTestHarness p, String path) {
-		return p.getProject().getFile(new Path(path));
+	private IFile getFile(ProjectTestHarness harness, String path) {
+		return harness.getProject().getFile(new Path(path));
 	}
 
 	public void testJpaProjectManager() {
