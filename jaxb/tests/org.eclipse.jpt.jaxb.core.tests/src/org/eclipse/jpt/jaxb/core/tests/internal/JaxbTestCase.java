@@ -41,13 +41,13 @@ public class JaxbTestCase
 	
 	@Override
 	protected JavaProjectTestHarness buildJavaProjectTestHarness(boolean autoBuild) throws Exception {
-		return buildJaxbProject(BASE_PROJECT_NAME, autoBuild, buildJaxbFacetInstallConfig());
+		return buildJaxbProjectTestHarness(BASE_PROJECT_NAME, autoBuild, buildJaxbFacetInstallConfig());
 	}
 	
-	protected JaxbProjectTestHarness buildJaxbProject(
+	protected JaxbProjectTestHarness buildJaxbProjectTestHarness(
 			String projectName, boolean autoBuild, IDataModel jaxbConfig) 
 			throws Exception {
-		return JaxbProjectTestHarness.buildJaxbProject(projectName, autoBuild, jaxbConfig);
+		return JaxbProjectTestHarness.buildJaxbProjectTestHarness(projectName, autoBuild, jaxbConfig);
 	}
 	
 	protected IDataModel buildJaxbFacetInstallConfig() {

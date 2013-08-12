@@ -34,7 +34,7 @@ public abstract class JaxbContextModelTestCase
 	
 	@Override
 	protected JavaProjectTestHarness buildJavaProjectTestHarness(boolean autoBuild) throws Exception {
-		return buildJaxbProject(BASE_PROJECT_NAME, autoBuild, buildJaxbFacetInstallConfig());
+		return buildJaxbProjectTestHarness(BASE_PROJECT_NAME, autoBuild, buildJaxbFacetInstallConfig());
 	}
 	
 	protected JaxbContextRoot getContextRoot() {

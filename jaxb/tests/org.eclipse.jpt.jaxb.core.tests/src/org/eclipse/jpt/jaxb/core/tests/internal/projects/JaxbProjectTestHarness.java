@@ -59,7 +59,7 @@ public class JaxbProjectTestHarness
 	
 	// ********** builders **********
 	
-	public static JaxbProjectTestHarness buildJaxbProject(
+	public static JaxbProjectTestHarness buildJaxbProjectTestHarness(
 			String baseProjectName, boolean autoBuild, IDataModel config)
 			throws CoreException {
 		return new JaxbProjectTestHarness(baseProjectName, autoBuild, config);
