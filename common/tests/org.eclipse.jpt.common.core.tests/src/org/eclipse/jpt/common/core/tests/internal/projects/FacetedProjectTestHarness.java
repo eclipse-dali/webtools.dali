@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,25 +18,27 @@ import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
  * This builds and holds a "faceted" project.
  * Support for installing facets.
  */
-public class TestFacetedProject extends ProjectTestHarness {
+public class FacetedProjectTestHarness
+	extends ProjectTestHarness
+{
 	private final IFacetedProject facetedProject;
 
 
 	// ********** builders *****************************
 	
-	public static TestFacetedProject buildFacetedProject(String baseProjectName, boolean autoBuild)
+	public static FacetedProjectTestHarness buildFacetedProject(String baseProjectName, boolean autoBuild)
 			throws CoreException {
-		return new TestFacetedProject(baseProjectName, autoBuild);
+		return new FacetedProjectTestHarness(baseProjectName, autoBuild);
 	}
 	
 	
 	// ********** constructors/initialization **********
 
-	public TestFacetedProject(String projectName) throws CoreException {
+	public FacetedProjectTestHarness(String projectName) throws CoreException {
 		this(projectName, true);
 	}
 	
-	public TestFacetedProject(String projectName, boolean autoBuild) throws CoreException {
+	public FacetedProjectTestHarness(String projectName, boolean autoBuild) throws CoreException {
 		super(projectName, autoBuild);
 		this.facetedProject = this.createFacetedProject();
 	}

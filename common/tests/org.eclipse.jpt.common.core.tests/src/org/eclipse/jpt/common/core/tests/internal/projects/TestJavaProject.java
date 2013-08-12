@@ -28,7 +28,7 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
  * testing they are.
  */
 @SuppressWarnings("nls")
-public class TestJavaProject extends TestFacetedProject {
+public class TestJavaProject extends FacetedProjectTestHarness {
 	private final IJavaProject javaProject;
 	private final IPackageFragmentRoot sourceFolder;
 

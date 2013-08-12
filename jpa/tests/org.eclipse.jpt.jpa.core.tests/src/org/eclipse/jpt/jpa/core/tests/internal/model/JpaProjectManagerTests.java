@@ -21,7 +21,7 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties;
 import org.eclipse.jpt.common.core.internal.utility.JptPlugin;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
-import org.eclipse.jpt.common.core.tests.internal.projects.TestFacetedProject;
+import org.eclipse.jpt.common.core.tests.internal.projects.FacetedProjectTestHarness;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.common.core.tests.internal.projects.ProjectTestHarness;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
@@ -42,7 +42,7 @@ public class JpaProjectManagerTests
 	/** carriage return */
 	public static final String CR = System.getProperty("line.separator");
 
-	private TestFacetedProject testProjectHarness;
+	private FacetedProjectTestHarness testProjectHarness;
 
 
 	public JpaProjectManagerTests(String name) {
@@ -104,7 +104,7 @@ public class JpaProjectManagerTests
 	 * Builds a project with the java and utility facets installed, and with
 	 * pre-existing entities added.
 	 */
-	private TestFacetedProject buildTestProjectHarness() throws Exception {
+	private FacetedProjectTestHarness buildTestProjectHarness() throws Exception {
 		TestJavaProject tjp = TestJavaProject.buildJavaProject(this.getClass().getSimpleName(), true);
 		tjp.createCompilationUnit("test.pkg", "TestEntity.java", "@Entity public class TestEntity {}");
 		tjp.createCompilationUnit("test.pkg", "TestEntity2.java", "@Entity public class TestEntity2 {}");
