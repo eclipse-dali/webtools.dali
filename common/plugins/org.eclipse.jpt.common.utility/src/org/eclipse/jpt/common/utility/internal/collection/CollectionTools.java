@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.Vector;
+import org.eclipse.jpt.common.utility.collection.Bag;
 import org.eclipse.jpt.common.utility.collection.Queue;
 import org.eclipse.jpt.common.utility.collection.Stack;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
@@ -662,6 +663,15 @@ public final class CollectionTools {
 			set.add(stack.pop());
 		}
 		return set;
+	}
+
+	/**
+	 * Return a bag corresponding to the specified stack, draining the stack
+	 * in the process.
+	 * The specified stack size is a performance hint.
+	 */
+	public static <E> Bag<E> emptyBag() {
+		return EmptyBag.<E>instance();
 	}
 
 
