@@ -43,7 +43,7 @@ import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
-import org.eclipse.jpt.jpa.core.tests.internal.projects.TestJpaProject;
+import org.eclipse.jpt.jpa.core.tests.internal.projects.JpaProjectTestHarness;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -85,9 +85,9 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 		return buildJpaProject(BASE_PROJECT_NAME, autoBuild, this.buildJpaConfigDataModel());
 	}
 	
-	protected TestJpaProject buildJpaProject(String projectName, boolean autoBuild, IDataModel jpaConfig) 
+	protected JpaProjectTestHarness buildJpaProject(String projectName, boolean autoBuild, IDataModel jpaConfig) 
 			throws Exception {
-		TestJpaProject testJpaProject =TestJpaProject.buildJpaProject(projectName, autoBuild, jpaConfig);
+		JpaProjectTestHarness testJpaProject =JpaProjectTestHarness.buildJpaProject(projectName, autoBuild, jpaConfig);
 
 		if (createOrmXml()) {
 			OrmFileCreationOperation operation = 
@@ -105,7 +105,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 		return dataModel;
 	}
 	
-	protected IDataModel buildGenericOrmConfig(TestJpaProject testJpaProject) {
+	protected IDataModel buildGenericOrmConfig(JpaProjectTestHarness testJpaProject) {
 		IDataModel config =
 				DataModelFactory.createDataModel(new OrmFileCreationDataModelProvider());
 			config.setProperty(JptFileCreationDataModelProperties.CONTAINER_PATH, 
@@ -254,8 +254,8 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	}
 	
 	@Override
-	protected TestJpaProject getJavaProjectTestHarness() {
-		return (TestJpaProject) super.getJavaProjectTestHarness();
+	protected JpaProjectTestHarness getJavaProjectTestHarness() {
+		return (JpaProjectTestHarness) super.getJavaProjectTestHarness();
 	}
 	
 	protected void deleteResource(Resource resource) throws CoreException {

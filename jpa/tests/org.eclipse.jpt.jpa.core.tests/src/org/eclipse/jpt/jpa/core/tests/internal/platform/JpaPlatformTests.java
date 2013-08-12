@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.core.tests.extension.resource.TestJavaEntity;
 import org.eclipse.jpt.jpa.core.tests.extension.resource.TestJpaFactory;
 import org.eclipse.jpt.jpa.core.tests.extension.resource.TestJpaPlatformProvider;
 import org.eclipse.jpt.jpa.core.tests.internal.context.ContextModelTestCase;
-import org.eclipse.jpt.jpa.core.tests.internal.projects.TestJpaProject;
+import org.eclipse.jpt.jpa.core.tests.internal.projects.JpaProjectTestHarness;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.IActionConfigFactory;
@@ -41,7 +41,7 @@ import org.eclipse.wst.common.project.facet.core.IActionConfigFactory;
 public class JpaPlatformTests
 	extends ContextModelTestCase
 {
-	protected TestJpaProject testProject;
+	protected JpaProjectTestHarness testProject;
 	
 	public static final String TEST_PLUGIN_CLASS = TestExtensionPlugin.class.getName();
 	public static final String TEST_PLUGIN_ID = "org.eclipse.jpt.jpa.core.tests.extension.resource";

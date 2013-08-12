@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.jpa.core.internal.operations.JpaFileCreationDataModelProperties;
 import org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProperties;
 import org.eclipse.jpt.jpa.core.tests.internal.context.ContextModelTestCase;
-import org.eclipse.jpt.jpa.core.tests.internal.projects.TestJpaProject;
+import org.eclipse.jpt.jpa.core.tests.internal.projects.JpaProjectTestHarness;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkJpaProject;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEmbeddable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEntity;
@@ -51,8 +51,8 @@ public abstract class EclipseLinkContextModelTestCase
 	}
 
 	@Override
-	protected TestJpaProject buildJpaProject(String projectName, boolean autoBuild, IDataModel jpaConfig) throws Exception {
-		TestJpaProject testJpaProject = super.buildJpaProject(projectName, autoBuild, jpaConfig);
+	protected JpaProjectTestHarness buildJpaProject(String projectName, boolean autoBuild, IDataModel jpaConfig) throws Exception {
+		JpaProjectTestHarness testJpaProject = super.buildJpaProject(projectName, autoBuild, jpaConfig);
 
 		if (createEclipseLinkOrmXml()) {
 			EclipseLinkOrmFileCreationOperation operation = 
@@ -72,7 +72,7 @@ public abstract class EclipseLinkContextModelTestCase
 		return true;
 	}
 
-	protected IDataModel buildEclipseLinkOrmConfig(TestJpaProject testJpaProject) {
+	protected IDataModel buildEclipseLinkOrmConfig(JpaProjectTestHarness testJpaProject) {
 		IDataModel dataModel = 
 			DataModelFactory.createDataModel(new EclipseLinkOrmFileCreationDataModelProvider());		
 		dataModel.setProperty(JptFileCreationDataModelProperties.CONTAINER_PATH, 

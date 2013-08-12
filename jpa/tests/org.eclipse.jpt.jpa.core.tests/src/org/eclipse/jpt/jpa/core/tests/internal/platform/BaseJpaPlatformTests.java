@@ -11,12 +11,12 @@
 package org.eclipse.jpt.jpa.core.tests.internal.platform;
 
 import junit.framework.TestCase;
-import org.eclipse.jpt.jpa.core.tests.internal.projects.TestJpaProject;
+import org.eclipse.jpt.jpa.core.tests.internal.projects.JpaProjectTestHarness;
 
 @SuppressWarnings("nls")
 public class BaseJpaPlatformTests extends TestCase
 {
-	protected TestJpaProject jpaProject;
+	protected JpaProjectTestHarness jpaProject;
 
 	protected static final String PROJECT_NAME = "PlatformTestProject";
 	protected static final String PACKAGE_NAME = "platform.test";
@@ -34,8 +34,8 @@ public class BaseJpaPlatformTests extends TestCase
 		this.jpaProject = this.buildJpaProject(PROJECT_NAME, false);  // false = no auto-build
 	}
 
-	protected TestJpaProject buildJpaProject(String projectName, boolean autoBuild) throws Exception {
-		return new TestJpaProject(projectName, autoBuild);  // false = no auto-build
+	protected JpaProjectTestHarness buildJpaProject(String projectName, boolean autoBuild) throws Exception {
+		return new JpaProjectTestHarness(projectName, autoBuild);  // false = no auto-build
 	}
 
 	@Override

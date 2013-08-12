@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.tests.extension.resource.TestExtensionPlugin;
 import org.eclipse.jpt.jpa.core.tests.extension.resource.TestJpaPlatformProvider;
 import org.eclipse.jpt.jpa.core.tests.internal.context.ContextModelTestCase;
-import org.eclipse.jpt.jpa.core.tests.internal.projects.TestJpaProject;
+import org.eclipse.jpt.jpa.core.tests.internal.projects.JpaProjectTestHarness;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.IActionConfigFactory;
@@ -36,7 +36,7 @@ public class JpaPlatformExtensionTests
 	public static final String TEST_PLATFORM_ID = TestJpaPlatformProvider.ID;
 	public static final String TEST_PLATFORM_LABEL = "Test Jpa Platform";
 	
-	protected TestJpaProject testProject;
+	protected JpaProjectTestHarness testProject;
 
 	public JpaPlatformExtensionTests(String name) {
 		super(name);

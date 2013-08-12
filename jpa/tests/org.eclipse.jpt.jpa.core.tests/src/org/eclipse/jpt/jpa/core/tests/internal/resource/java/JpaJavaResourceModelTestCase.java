@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.core.tests.internal.resource.java.JavaResourceMode
 import org.eclipse.jpt.jpa.core.JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
-import org.eclipse.jpt.jpa.core.tests.internal.projects.TestJpaProject;
+import org.eclipse.jpt.jpa.core.tests.internal.projects.JpaProjectTestHarness;
 
 @SuppressWarnings("nls")
 public class JpaJavaResourceModelTestCase
@@ -34,9 +34,9 @@ public class JpaJavaResourceModelTestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.javaProjectTestHarness.addJar(TestJpaProject.jpaJarName());
-		if (TestJpaProject.eclipseLinkJarName() != null) {
-			this.javaProjectTestHarness.addJar(TestJpaProject.eclipseLinkJarName());
+		this.javaProjectTestHarness.addJar(JpaProjectTestHarness.jpaJarName());
+		if (JpaProjectTestHarness.eclipseLinkJarName() != null) {
+			this.javaProjectTestHarness.addJar(JpaProjectTestHarness.eclipseLinkJarName());
 		}
 	}
 	

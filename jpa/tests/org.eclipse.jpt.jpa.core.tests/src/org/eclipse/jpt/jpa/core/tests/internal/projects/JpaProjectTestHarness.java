@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,7 +23,7 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
  * controlled by building a data model and passing it into the constructor.
  */
 @SuppressWarnings("nls")
-public class TestJpaProject
+public class JpaProjectTestHarness
 	extends JavaProjectTestHarness
 {
 	public static final String JPA_JAR_NAME_SYSTEM_PROPERTY = "org.eclipse.jpt.jpa.jar";
@@ -32,27 +32,27 @@ public class TestJpaProject
 
 	// ********** builders **********
 
-	public static TestJpaProject buildJpaProject(String baseProjectName, boolean autoBuild, IDataModel jpaConfig)
+	public static JpaProjectTestHarness buildJpaProject(String baseProjectName, boolean autoBuild, IDataModel jpaConfig)
 			throws CoreException {
-		return new TestJpaProject(baseProjectName, autoBuild, jpaConfig);
+		return new JpaProjectTestHarness(baseProjectName, autoBuild, jpaConfig);
 	}
 
-	public static TestJpaProject buildJpaProject(String baseProjectName, boolean autoBuild)
+	public static JpaProjectTestHarness buildJpaProject(String baseProjectName, boolean autoBuild)
 			throws CoreException {
 		return buildJpaProject(baseProjectName, autoBuild, null);
 	}
 
 	// ********** constructors/initialization **********
 
-	public TestJpaProject(String projectName) throws CoreException {
+	public JpaProjectTestHarness(String projectName) throws CoreException {
 		this(projectName, false);
 	}
 
-	public TestJpaProject(String projectName, boolean autoBuild) throws CoreException {
+	public JpaProjectTestHarness(String projectName, boolean autoBuild) throws CoreException {
 		this(projectName, autoBuild, null);
 	}
 
-	public TestJpaProject(String projectName, boolean autoBuild, IDataModel jpaConfig) throws CoreException {
+	public JpaProjectTestHarness(String projectName, boolean autoBuild, IDataModel jpaConfig) throws CoreException {
 		super(projectName, autoBuild);
 		String jpaFacetVersion = JpaProject.FACET_VERSION_STRING;
 		if (jpaConfig != null) {

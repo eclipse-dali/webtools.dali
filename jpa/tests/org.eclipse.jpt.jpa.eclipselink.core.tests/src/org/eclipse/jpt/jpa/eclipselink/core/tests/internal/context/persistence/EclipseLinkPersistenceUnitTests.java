@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
-import org.eclipse.jpt.jpa.core.tests.internal.projects.TestJpaProject;
+import org.eclipse.jpt.jpa.core.tests.internal.projects.JpaProjectTestHarness;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.operations.EclipseLinkOrmFileCreationDataModelProvider;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
@@ -65,7 +65,7 @@ public class EclipseLinkPersistenceUnitTests
 	}
 
 	@Override
-	protected IDataModel buildEclipseLinkOrmConfig(TestJpaProject testJpaProject) {
+	protected IDataModel buildEclipseLinkOrmConfig(JpaProjectTestHarness testJpaProject) {
 		IDataModel dataModel = 
 			DataModelFactory.createDataModel(new EclipseLinkOrmFileCreationDataModelProvider());		
 		dataModel.setProperty(JptFileCreationDataModelProperties.CONTAINER_PATH, 

@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.tests.internal;
 import java.io.File;
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import org.eclipse.jpt.jpa.core.tests.internal.projects.TestJpaProject;
+import org.eclipse.jpt.jpa.core.tests.internal.projects.JpaProjectTestHarness;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.JptJpaEclipseLinkCoreContextModelTests;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.resource.JptJpaEclipseLinkCoreResourceModelTests;
 
@@ -27,8 +27,8 @@ import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.resource.JptJpaEclips
 @SuppressWarnings("nls")
 public class JptJpaEclipseLinkCoreTests {
 
-	private static final String JPA_JAR_PROPERTY = TestJpaProject.JPA_JAR_NAME_SYSTEM_PROPERTY;
-	private static final String ECLIPSELINK_JAR_PROPERTY = TestJpaProject.ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY;
+	private static final String JPA_JAR_PROPERTY = JpaProjectTestHarness.JPA_JAR_NAME_SYSTEM_PROPERTY;
+	private static final String ECLIPSELINK_JAR_PROPERTY = JpaProjectTestHarness.ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY;
 
 	public static Test suite() {
 		// ***** keep test.xml in sync with this list *****
