@@ -50,7 +50,8 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 
 @SuppressWarnings("nls")
-public abstract class ContextModelTestCase extends AnnotationTestCase
+public abstract class ContextModelTestCase
+	extends AnnotationTestCase
 {
 	protected static final String BASE_PROJECT_NAME = "ContextModelTestProject";
 	
@@ -82,20 +83,20 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	
 	@Override
 	protected JavaProjectTestHarness buildJavaProjectTestHarness(boolean autoBuild) throws Exception {
-		return buildJpaProject(BASE_PROJECT_NAME, autoBuild, this.buildJpaConfigDataModel());
+		return buildJpaProjectTestHarness(BASE_PROJECT_NAME, autoBuild, this.buildJpaConfigDataModel());
 	}
 	
-	protected JpaProjectTestHarness buildJpaProject(String projectName, boolean autoBuild, IDataModel jpaConfig) 
+	protected JpaProjectTestHarness buildJpaProjectTestHarness(String projectName, boolean autoBuild, IDataModel jpaConfig) 
 			throws Exception {
-		JpaProjectTestHarness testJpaProject =JpaProjectTestHarness.buildJpaProject(projectName, autoBuild, jpaConfig);
+		JpaProjectTestHarness harness = new JpaProjectTestHarness(projectName, autoBuild, jpaConfig);
 
 		if (createOrmXml()) {
 			OrmFileCreationOperation operation = 
-					new OrmFileCreationOperation(buildGenericOrmConfig(testJpaProject));
+					new OrmFileCreationOperation(buildGenericOrmConfig(harness));
 			operation.execute(null, null);
 		}
 
-		return testJpaProject;
+		return harness;
 	}
 	
 	protected IDataModel buildJpaConfigDataModel() {
@@ -105,11 +106,11 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 		return dataModel;
 	}
 	
-	protected IDataModel buildGenericOrmConfig(JpaProjectTestHarness testJpaProject) {
+	protected IDataModel buildGenericOrmConfig(JpaProjectTestHarness harness) {
 		IDataModel config =
 				DataModelFactory.createDataModel(new OrmFileCreationDataModelProvider());
 			config.setProperty(JptFileCreationDataModelProperties.CONTAINER_PATH, 
-					testJpaProject.getProject().getFolder("src/META-INF").getFullPath());
+					harness.getProject().getFolder("src/META-INF").getFullPath());
 			return config;
 	}
 

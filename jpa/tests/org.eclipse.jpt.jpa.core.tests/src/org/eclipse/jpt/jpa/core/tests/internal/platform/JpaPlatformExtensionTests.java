@@ -36,7 +36,7 @@ public class JpaPlatformExtensionTests
 	public static final String TEST_PLATFORM_ID = TestJpaPlatformProvider.ID;
 	public static final String TEST_PLATFORM_LABEL = "Test Jpa Platform";
 	
-	protected JpaProjectTestHarness testProject;
+	protected JpaProjectTestHarness jpaProjectTestHarness;
 
 	public JpaPlatformExtensionTests(String name) {
 		super(name);
@@ -50,7 +50,7 @@ public class JpaPlatformExtensionTests
 	
 	@Override
 	protected JavaProjectTestHarness buildJavaProjectTestHarness(boolean autoBuild) throws Exception {
-		return super.buildJpaProject(PROJECT_NAME, autoBuild, this.buildConfig());
+		return super.buildJpaProjectTestHarness(PROJECT_NAME, autoBuild, this.buildConfig());
 	}
 
 	protected IDataModel buildConfig() throws Exception {
@@ -95,6 +95,6 @@ public class JpaPlatformExtensionTests
 	}
 
 	protected JpaPlatform getJpaPlatform() {
-		return this.getJpaPlatformManager().getJpaPlatform(JpaPreferences.getJpaPlatformID(this.testProject.getProject()));
+		return this.getJpaPlatformManager().getJpaPlatform(JpaPreferences.getJpaPlatformID(this.jpaProjectTestHarness.getProject()));
 	}
 }

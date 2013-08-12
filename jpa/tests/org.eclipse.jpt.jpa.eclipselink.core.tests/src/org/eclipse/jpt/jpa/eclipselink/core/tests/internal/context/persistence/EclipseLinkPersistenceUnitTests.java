@@ -65,11 +65,11 @@ public class EclipseLinkPersistenceUnitTests
 	}
 
 	@Override
-	protected IDataModel buildEclipseLinkOrmConfig(JpaProjectTestHarness testJpaProject) {
+	protected IDataModel buildEclipseLinkOrmConfig(JpaProjectTestHarness harness) {
 		IDataModel dataModel = 
 			DataModelFactory.createDataModel(new EclipseLinkOrmFileCreationDataModelProvider());		
 		dataModel.setProperty(JptFileCreationDataModelProperties.CONTAINER_PATH, 
-				testJpaProject.getProject().getFolder("src/META-INF").getFullPath());
+				harness.getProject().getFolder("src/META-INF").getFullPath());
 		dataModel.setProperty(OrmFileCreationDataModelProperties.ADD_TO_PERSISTENCE_UNIT, Boolean.FALSE);
 		return dataModel;
 	}

@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.tests.internal.projects.JpaProjectTestHarness;
 @SuppressWarnings("nls")
 public class JpaPlatformUiExtensionTests extends TestCase
 {
-	protected JpaProjectTestHarness testProject;
+	protected JpaProjectTestHarness jpaProjectTestHarness;
 
 	protected static final String PROJECT_NAME = "ExtensionTestProject";
 	protected static final String PACKAGE_NAME = "extension.test";
@@ -44,22 +44,22 @@ public class JpaPlatformUiExtensionTests extends TestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.testProject = this.buildJpaProject(PROJECT_NAME, false);  // false = no auto-build
+		this.jpaProjectTestHarness = this.buildJpaProjectTestHarness(PROJECT_NAME, false);  // false = no auto-build
 	}
 
-	protected JpaProjectTestHarness buildJpaProject(String projectName, boolean autoBuild) throws Exception {
+	protected JpaProjectTestHarness buildJpaProjectTestHarness(String projectName, boolean autoBuild) throws Exception {
 		return new JpaProjectTestHarness(projectName, autoBuild);  // false = no auto-build
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		this.testProject.getProject().delete(true, true, null);
-		this.testProject = null;
+		this.jpaProjectTestHarness.getProject().delete(true, true, null);
+		this.jpaProjectTestHarness = null;
 		super.tearDown();
 	}
 
 	protected JpaProject jpaProject() {
-		return this.testProject.getJpaProject();
+		return this.jpaProjectTestHarness.getJpaProject();
 	}
 
 	public void testJpaPlatform() {
@@ -71,7 +71,7 @@ public class JpaPlatformUiExtensionTests extends TestCase
 	}
 
 	protected String getJpaPlatformID() {
-		return JpaPreferences.getJpaPlatformID(this.testProject.getProject());
+		return JpaPreferences.getJpaPlatformID(this.jpaProjectTestHarness.getProject());
 	}
 
 	protected JpaPlatformManager getJpaPlatformManager() {

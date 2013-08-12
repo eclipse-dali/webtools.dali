@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.tests.internal.projects.JpaProjectTestHarness;
 @SuppressWarnings("nls")
 public class BaseJpaPlatformTests extends TestCase
 {
-	protected JpaProjectTestHarness jpaProject;
+	protected JpaProjectTestHarness jpaProjectTestHarness;
 
 	protected static final String PROJECT_NAME = "PlatformTestProject";
 	protected static final String PACKAGE_NAME = "platform.test";
@@ -31,17 +31,17 @@ public class BaseJpaPlatformTests extends TestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.jpaProject = this.buildJpaProject(PROJECT_NAME, false);  // false = no auto-build
+		this.jpaProjectTestHarness = this.buildJpaProjectTestHarness(PROJECT_NAME, false);  // false = no auto-build
 	}
 
-	protected JpaProjectTestHarness buildJpaProject(String projectName, boolean autoBuild) throws Exception {
+	protected JpaProjectTestHarness buildJpaProjectTestHarness(String projectName, boolean autoBuild) throws Exception {
 		return new JpaProjectTestHarness(projectName, autoBuild);  // false = no auto-build
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		this.jpaProject.getProject().delete(true, true, null);
-		this.jpaProject = null;
+		this.jpaProjectTestHarness.getProject().delete(true, true, null);
+		this.jpaProjectTestHarness = null;
 		super.tearDown();
 	}
 	

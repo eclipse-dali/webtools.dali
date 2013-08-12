@@ -30,20 +30,6 @@ public class JpaProjectTestHarness
 	public static final String ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY = "org.eclipse.jpt.eclipselink.jar";
 
 
-	// ********** builders **********
-
-	public static JpaProjectTestHarness buildJpaProject(String baseProjectName, boolean autoBuild, IDataModel jpaConfig)
-			throws CoreException {
-		return new JpaProjectTestHarness(baseProjectName, autoBuild, jpaConfig);
-	}
-
-	public static JpaProjectTestHarness buildJpaProject(String baseProjectName, boolean autoBuild)
-			throws CoreException {
-		return buildJpaProject(baseProjectName, autoBuild, null);
-	}
-
-	// ********** constructors/initialization **********
-
 	public JpaProjectTestHarness(String projectName) throws CoreException {
 		this(projectName, false);
 	}

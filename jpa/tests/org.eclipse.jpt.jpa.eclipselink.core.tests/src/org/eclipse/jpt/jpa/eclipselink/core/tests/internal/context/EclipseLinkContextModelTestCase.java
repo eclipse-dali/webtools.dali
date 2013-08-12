@@ -51,16 +51,16 @@ public abstract class EclipseLinkContextModelTestCase
 	}
 
 	@Override
-	protected JpaProjectTestHarness buildJpaProject(String projectName, boolean autoBuild, IDataModel jpaConfig) throws Exception {
-		JpaProjectTestHarness testJpaProject = super.buildJpaProject(projectName, autoBuild, jpaConfig);
+	protected JpaProjectTestHarness buildJpaProjectTestHarness(String projectName, boolean autoBuild, IDataModel jpaConfig) throws Exception {
+		JpaProjectTestHarness harness = super.buildJpaProjectTestHarness(projectName, autoBuild, jpaConfig);
 
 		if (createEclipseLinkOrmXml()) {
 			EclipseLinkOrmFileCreationOperation operation = 
-				new EclipseLinkOrmFileCreationOperation(buildEclipseLinkOrmConfig(testJpaProject));
+				new EclipseLinkOrmFileCreationOperation(buildEclipseLinkOrmConfig(harness));
 			operation.execute(null, null);
 		}
 
-		return testJpaProject;
+		return harness;
 	}
 
 	@Override
@@ -72,11 +72,11 @@ public abstract class EclipseLinkContextModelTestCase
 		return true;
 	}
 
-	protected IDataModel buildEclipseLinkOrmConfig(JpaProjectTestHarness testJpaProject) {
+	protected IDataModel buildEclipseLinkOrmConfig(JpaProjectTestHarness harness) {
 		IDataModel dataModel = 
 			DataModelFactory.createDataModel(new EclipseLinkOrmFileCreationDataModelProvider());		
 		dataModel.setProperty(JptFileCreationDataModelProperties.CONTAINER_PATH, 
-				testJpaProject.getProject().getFolder("src/META-INF").getFullPath()); //$NON-NLS-1$
+				harness.getProject().getFolder("src/META-INF").getFullPath()); //$NON-NLS-1$
 		dataModel.setProperty(JpaFileCreationDataModelProperties.VERSION, this.getEclipseLinkSchemaVersion());
 		dataModel.setProperty(OrmFileCreationDataModelProperties.ADD_TO_PERSISTENCE_UNIT, Boolean.TRUE);
 		return dataModel;

@@ -41,7 +41,7 @@ import org.eclipse.wst.common.project.facet.core.IActionConfigFactory;
 public class JpaPlatformTests
 	extends ContextModelTestCase
 {
-	protected JpaProjectTestHarness testProject;
+	protected JpaProjectTestHarness jpaProjectTestHarness;
 	
 	public static final String TEST_PLUGIN_CLASS = TestExtensionPlugin.class.getName();
 	public static final String TEST_PLUGIN_ID = "org.eclipse.jpt.jpa.core.tests.extension.resource";
@@ -64,7 +64,7 @@ public class JpaPlatformTests
 
 	@Override
 	protected JavaProjectTestHarness buildJavaProjectTestHarness(boolean autoBuild) throws Exception {
-		return super.buildJpaProject(PROJECT_NAME, autoBuild, this.buildConfig());
+		return super.buildJpaProjectTestHarness(PROJECT_NAME, autoBuild, this.buildConfig());
 	}
 
 	protected IDataModel buildConfig() throws Exception {
