@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.tests.internal.projects;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
+import org.eclipse.jpt.common.core.tests.internal.projects.JavaProjectTestHarness;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -24,7 +24,7 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
  */
 @SuppressWarnings("nls")
 public class TestJpaProject
-	extends TestJavaProject
+	extends JavaProjectTestHarness
 {
 	public static final String JPA_JAR_NAME_SYSTEM_PROPERTY = "org.eclipse.jpt.jpa.jar";
 	public static final String ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY = "org.eclipse.jpt.eclipselink.jar";

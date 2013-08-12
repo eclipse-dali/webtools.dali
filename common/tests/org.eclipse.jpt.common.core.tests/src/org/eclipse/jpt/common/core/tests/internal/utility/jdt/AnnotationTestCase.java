@@ -46,8 +46,8 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.JDTFieldAttribute;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JDTMethodAttribute;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JDTType;
 import org.eclipse.jpt.common.core.tests.CoreTestTools;
-import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
-import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
+import org.eclipse.jpt.common.core.tests.internal.projects.JavaProjectTestHarness;
+import org.eclipse.jpt.common.core.tests.internal.projects.JavaProjectTestHarness.SourceWriter;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.core.utility.jdt.Type;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
@@ -67,7 +67,7 @@ import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 public abstract class AnnotationTestCase
 	extends TestCase
 {
-	protected TestJavaProject javaProject;
+	protected JavaProjectTestHarness javaProject;
 
 	public static final String CR = System.getProperty("line.separator");
 	public static final String SEP = File.separator;
@@ -96,12 +96,12 @@ public abstract class AnnotationTestCase
 		this.javaProject = this.buildJavaProject(false);  // false = no auto-build
 	}
 	
-	protected TestJavaProject buildJavaProject(boolean autoBuild) throws Exception {
+	protected JavaProjectTestHarness buildJavaProject(boolean autoBuild) throws Exception {
 		return this.buildJavaProject(PROJECT_NAME, autoBuild);
 	}
 	
-	protected TestJavaProject buildJavaProject(String projectName, boolean autoBuild) throws Exception {
-		return new TestJavaProject(projectName, autoBuild);
+	protected JavaProjectTestHarness buildJavaProject(String projectName, boolean autoBuild) throws Exception {
+		return new JavaProjectTestHarness(projectName, autoBuild);
 	}
 
 	@Override
@@ -378,7 +378,7 @@ public abstract class AnnotationTestCase
 
 	// ********** queries **********
 
-	protected TestJavaProject getJavaProject() {
+	protected JavaProjectTestHarness getJavaProject() {
 		return this.javaProject;
 	}
 

@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
-import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
+import org.eclipse.jpt.common.core.tests.internal.projects.JavaProjectTestHarness;
 import org.eclipse.jpt.common.core.tests.internal.utility.jdt.AnnotationTestCase;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
@@ -81,7 +81,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	}
 	
 	@Override
-	protected TestJavaProject buildJavaProject(boolean autoBuild) throws Exception {
+	protected JavaProjectTestHarness buildJavaProject(boolean autoBuild) throws Exception {
 		return buildJpaProject(BASE_PROJECT_NAME, autoBuild, this.buildJpaConfigDataModel());
 	}
 	

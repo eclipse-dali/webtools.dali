@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.core.tests.internal;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
+import org.eclipse.jpt.common.core.tests.internal.projects.JavaProjectTestHarness;
 import org.eclipse.jpt.common.core.tests.internal.utility.jdt.AnnotationTestCase;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
@@ -40,7 +40,7 @@ public class JaxbTestCase
 	
 	
 	@Override
-	protected TestJavaProject buildJavaProject(boolean autoBuild) throws Exception {
+	protected JavaProjectTestHarness buildJavaProject(boolean autoBuild) throws Exception {
 		return buildJaxbProject(BASE_PROJECT_NAME, autoBuild, buildJaxbFacetInstallConfig());
 	}
 	

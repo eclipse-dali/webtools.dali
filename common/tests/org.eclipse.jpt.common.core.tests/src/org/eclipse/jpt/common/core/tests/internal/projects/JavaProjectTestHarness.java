@@ -28,26 +28,28 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
  * testing they are.
  */
 @SuppressWarnings("nls")
-public class TestJavaProject extends FacetedProjectTestHarness {
+public class JavaProjectTestHarness
+	extends FacetedProjectTestHarness
+{
 	private final IJavaProject javaProject;
 	private final IPackageFragmentRoot sourceFolder;
 
 
 	// ********** builders *****************************
 	
-	public static TestJavaProject buildJavaProject(String baseProjectName, boolean autoBuild)
+	public static JavaProjectTestHarness buildJavaProject(String baseProjectName, boolean autoBuild)
 			throws CoreException {
-		return new TestJavaProject(baseProjectName, autoBuild);
+		return new JavaProjectTestHarness(baseProjectName, autoBuild);
 	}
 	
 	
 	// ********** constructors/initialization **********
 
-	public TestJavaProject(String projectName) throws CoreException {
+	public JavaProjectTestHarness(String projectName) throws CoreException {
 		this(projectName, false);
 	}
 
-	public TestJavaProject(String projectName, boolean autoBuild) throws CoreException {
+	public JavaProjectTestHarness(String projectName, boolean autoBuild) throws CoreException {
 		super(projectName, autoBuild);
 		this.installFacet("jst.java", "5.0");
 		this.javaProject = JavaCore.create(this.getProject());

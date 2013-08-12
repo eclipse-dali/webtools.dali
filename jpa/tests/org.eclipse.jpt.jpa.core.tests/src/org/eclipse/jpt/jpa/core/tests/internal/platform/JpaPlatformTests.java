@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.tests.internal.platform;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
+import org.eclipse.jpt.common.core.tests.internal.projects.JavaProjectTestHarness;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -63,7 +63,7 @@ public class JpaPlatformTests
 	}
 
 	@Override
-	protected TestJavaProject buildJavaProject(boolean autoBuild) throws Exception {
+	protected JavaProjectTestHarness buildJavaProject(boolean autoBuild) throws Exception {
 		return super.buildJpaProject(PROJECT_NAME, autoBuild, this.buildConfig());
 	}
 

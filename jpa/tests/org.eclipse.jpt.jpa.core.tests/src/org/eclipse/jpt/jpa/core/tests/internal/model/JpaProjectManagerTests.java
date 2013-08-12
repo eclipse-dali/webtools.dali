@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.core.internal.utility.JptPlugin;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.core.tests.internal.projects.FacetedProjectTestHarness;
 import org.eclipse.jpt.common.core.tests.internal.projects.ProjectTestHarness;
-import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
+import org.eclipse.jpt.common.core.tests.internal.projects.JavaProjectTestHarness;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -103,7 +103,7 @@ public class JpaProjectManagerTests
 	 * pre-existing entities added.
 	 */
 	private FacetedProjectTestHarness buildProjectTestHarness() throws Exception {
-		TestJavaProject tjp = TestJavaProject.buildJavaProject(this.getClass().getSimpleName(), true);
+		JavaProjectTestHarness tjp = JavaProjectTestHarness.buildJavaProject(this.getClass().getSimpleName(), true);
 		tjp.createCompilationUnit("test.pkg", "TestEntity.java", "@Entity public class TestEntity {}");
 		tjp.createCompilationUnit("test.pkg", "TestEntity2.java", "@Entity public class TestEntity2 {}");
 		return tjp;

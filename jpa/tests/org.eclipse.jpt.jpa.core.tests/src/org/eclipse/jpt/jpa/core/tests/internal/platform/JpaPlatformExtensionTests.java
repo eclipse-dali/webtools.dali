@@ -13,7 +13,7 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.RegistryFactory;
-import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
+import org.eclipse.jpt.common.core.tests.internal.projects.JavaProjectTestHarness;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
@@ -49,7 +49,7 @@ public class JpaPlatformExtensionTests
 	}
 	
 	@Override
-	protected TestJavaProject buildJavaProject(boolean autoBuild) throws Exception {
+	protected JavaProjectTestHarness buildJavaProject(boolean autoBuild) throws Exception {
 		return super.buildJpaProject(PROJECT_NAME, autoBuild, this.buildConfig());
 	}
 

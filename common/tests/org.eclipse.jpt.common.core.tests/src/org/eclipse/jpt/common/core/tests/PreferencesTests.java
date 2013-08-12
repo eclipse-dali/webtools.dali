@@ -17,7 +17,7 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jpt.common.core.internal.utility.JptPlugin;
-import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
+import org.eclipse.jpt.common.core.tests.internal.projects.JavaProjectTestHarness;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
@@ -30,7 +30,7 @@ import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 public abstract class PreferencesTests
 	extends TestCase
 {
-	private TestJavaProject javaProjectHarness;
+	private JavaProjectTestHarness javaProjectHarness;
 	private String workspacePrefsFilePath;
 	private String projectPrefsFilePath;
 
@@ -56,12 +56,12 @@ public abstract class PreferencesTests
 
 	protected abstract String getProjectPrefsFileName();
 
-	private TestJavaProject buildJavaProjectHarness(boolean autoBuild) throws Exception {
+	private JavaProjectTestHarness buildJavaProjectHarness(boolean autoBuild) throws Exception {
 		return this.buildJavaProjectHarness(this.getName(), autoBuild);
 	}
 
-	private TestJavaProject buildJavaProjectHarness(String projectName, boolean autoBuild) throws Exception {
-		return new TestJavaProject(projectName, autoBuild);
+	private JavaProjectTestHarness buildJavaProjectHarness(String projectName, boolean autoBuild) throws Exception {
+		return new JavaProjectTestHarness(projectName, autoBuild);
 	}
 
 	@Override

@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.core.tests.internal.projects;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
+import org.eclipse.jpt.common.core.tests.internal.projects.JavaProjectTestHarness;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
@@ -34,7 +34,7 @@ import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
  */
 @SuppressWarnings("nls")
 public class TestJaxbProject
-		extends TestJavaProject {
+		extends JavaProjectTestHarness {
 	
 	private final JaxbProject jaxbProject;
 	
