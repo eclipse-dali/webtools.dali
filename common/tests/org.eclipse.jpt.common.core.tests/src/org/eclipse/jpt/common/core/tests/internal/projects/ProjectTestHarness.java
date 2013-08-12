@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.utility.tests.internal.TestTools;
  * This builds and holds a "general" Eclipse project.
  * Support for adding natures, folders, and files.
  */
-public class TestPlatformProject {
+public class ProjectTestHarness {
 	private final IProject project;
 
 	/** carriage return */
@@ -32,15 +32,15 @@ public class TestPlatformProject {
 	
 	// ********** builders **********
 	
-	public static TestPlatformProject buildPlatformProject(String baseProjectName, boolean autoBuild)
+	public static ProjectTestHarness buildPlatformProject(String baseProjectName, boolean autoBuild)
 			throws CoreException {
-		return new TestPlatformProject(baseProjectName, autoBuild);
+		return new ProjectTestHarness(baseProjectName, autoBuild);
 	}
 	
 	
 	// ********** constructors/initialization **********
 	
-	public TestPlatformProject(String projectName, boolean autoBuild) throws CoreException {
+	public ProjectTestHarness(String projectName, boolean autoBuild) throws CoreException {
 		super();
 		this.setAutoBuild(autoBuild);  // workspace-wide setting
 		this.project = this.buildPlatformProject(projectName);

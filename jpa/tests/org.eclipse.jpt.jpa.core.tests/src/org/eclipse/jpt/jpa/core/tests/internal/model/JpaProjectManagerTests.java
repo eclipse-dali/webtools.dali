@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.core.internal.utility.JptPlugin;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestFacetedProject;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
-import org.eclipse.jpt.common.core.tests.internal.projects.TestPlatformProject;
+import org.eclipse.jpt.common.core.tests.internal.projects.ProjectTestHarness;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -111,7 +111,7 @@ public class JpaProjectManagerTests
 		return tjp;
 	}	
 
-	private IFile getFile(TestPlatformProject p, String path) {
+	private IFile getFile(ProjectTestHarness p, String path) {
 		return p.getProject().getFile(new Path(path));
 	}
 

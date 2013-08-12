@@ -18,7 +18,7 @@ import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
  * This builds and holds a "faceted" project.
  * Support for installing facets.
  */
-public class TestFacetedProject extends TestPlatformProject {
+public class TestFacetedProject extends ProjectTestHarness {
 	private final IFacetedProject facetedProject;
 
 
