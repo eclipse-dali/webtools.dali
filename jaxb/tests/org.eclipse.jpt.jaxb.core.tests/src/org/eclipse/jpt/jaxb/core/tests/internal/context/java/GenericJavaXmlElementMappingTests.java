@@ -79,7 +79,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 				sb.append("}").append(CR);
 			}
 		};
-		return this.javaProject.createCompilationUnit(PACKAGE_NAME, TYPE_NAME + ".java", sourceWriter);
+		return this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, TYPE_NAME + ".java", sourceWriter);
 	}
 	
 	private void createXmlTypeWithVariousAttributes() throws CoreException {
@@ -97,7 +97,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 				sb.append("}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, TYPE_NAME + ".java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, TYPE_NAME + ".java", sourceWriter);
 	}
 	
 	public void testModifyName() throws Exception {

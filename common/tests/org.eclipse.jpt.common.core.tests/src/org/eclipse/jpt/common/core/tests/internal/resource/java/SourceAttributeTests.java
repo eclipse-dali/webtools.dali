@@ -59,7 +59,7 @@ public class SourceAttributeTests
 				sb.append("}").append(CR);
 			}
 		};
-		return this.javaProject.createCompilationUnit(PACKAGE_NAME, TEST_CLASS_NAME + ".java", sourceWriter);
+		return this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, TEST_CLASS_NAME + ".java", sourceWriter);
 	}
 	
 	

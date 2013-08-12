@@ -70,7 +70,7 @@ public class EclipseLinkOrmOneToManyMappingTests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Department.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Department.java", sourceWriter);
 	}
 
 	private void createTestEmployee() throws Exception {
@@ -92,7 +92,7 @@ public class EclipseLinkOrmOneToManyMappingTests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Employee.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Employee.java", sourceWriter);
 	}
 	
 	private void createTestTargetEntityAddress() throws Exception {
@@ -125,7 +125,7 @@ public class EclipseLinkOrmOneToManyMappingTests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
 	
 	private void createTestEntityWithOneToManyMapping() throws Exception {
@@ -214,7 +214,7 @@ public class EclipseLinkOrmOneToManyMappingTests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
 	}
 
 	private ICompilationUnit createTestEntityOneToManyMapping() throws Exception {

@@ -240,7 +240,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
 
 	private void createTestTargetEntityAddress() throws Exception {
@@ -270,7 +270,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
 	
 	private void createTestEmbeddableState() throws Exception {
@@ -293,7 +293,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
 	}
 
 	private ICompilationUnit createTestEntityWithEmbeddableKeyAndValueElementCollectionMapping() throws Exception {
@@ -370,7 +370,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "PropertyInfo.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "PropertyInfo.java", sourceWriter);
 	}
 
 	private void createSelfReferentialElementCollection() throws Exception {
@@ -395,7 +395,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Foo.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Foo.java", sourceWriter);
 	}
 
 	public GenericJavaElementCollectionMapping2_0Tests(String name) {

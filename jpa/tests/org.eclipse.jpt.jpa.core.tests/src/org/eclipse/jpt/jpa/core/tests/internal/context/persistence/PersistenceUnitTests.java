@@ -719,7 +719,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testRenamePersistentTypeImpliedClassRefs() throws Exception {
-		getJavaProject().getJpaProject().setDiscoversAnnotatedClasses(true);
+		getJavaProjectTestHarness().getJpaProject().setDiscoversAnnotatedClasses(true);
 		ICompilationUnit testType = createTestEntity();
 		@SuppressWarnings("unused")
 		ICompilationUnit otherTestType = this.createTestOtherTypeEntity();

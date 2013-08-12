@@ -73,7 +73,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 				sb.append("{}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, FILE_NAME, sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, FILE_NAME, sourceWriter);
 	}
 	
 	private void createTestSubType() throws Exception {
@@ -91,7 +91,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 				sb.append("{}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
 	}
 
 		

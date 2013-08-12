@@ -35,11 +35,11 @@ public class JaxbIndexResourceTests
 	
 	@SuppressWarnings("resource")
 	private IFile createJaxbIndex(IPath projectRelativePath, String... classNames) throws Exception {
-		IFolder folder = getJavaProject().getProject().getFolder(projectRelativePath);
+		IFolder folder = getProject().getFolder(projectRelativePath);
 		if (! folder.exists()) {
 			folder.create(true, false, null);
 		}
-		IFile jaxbIndex = getJavaProject().getProject().getFile(projectRelativePath.append(new Path(JAXB_INDEX)));
+		IFile jaxbIndex = getProject().getFile(projectRelativePath.append(new Path(JAXB_INDEX)));
 		// stream is closed by IFile.create(...)
 		InputStream stream = inputStream(classNames);
 		jaxbIndex.create(stream, true, null);

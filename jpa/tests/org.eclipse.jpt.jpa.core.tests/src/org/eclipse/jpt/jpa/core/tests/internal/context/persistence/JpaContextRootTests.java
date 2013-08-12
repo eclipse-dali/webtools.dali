@@ -27,7 +27,7 @@ public class JpaContextRootTests
 	
 	public void testUpdateAddPersistenceXml() throws Exception {
 		deleteResource(getPersistenceXmlResource());
-		JpaContextRoot root = getJavaProject().getJpaProject().getContextRoot();
+		JpaContextRoot root = getJavaProjectTestHarness().getJpaProject().getContextRoot();
 		
 		assertFalse(getPersistenceXmlResource().fileExists());
 		assertNull(root.getPersistenceXml());
@@ -43,7 +43,7 @@ public class JpaContextRootTests
 	
 	public void testUpdateRemovePersistenceXml() throws Exception {
 		JptXmlResource pr = getPersistenceXmlResource();
-		JpaContextRoot root = getJavaProject().getJpaProject().getContextRoot();
+		JpaContextRoot root = getJavaProjectTestHarness().getJpaProject().getContextRoot();
 		
 		assertNotNull(root.getPersistenceXml());
 		

@@ -30,7 +30,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 	}
 
 	private void createAnnotationAndMembers(String annotationName, String annotationBody) throws Exception {
-		this.javaProject.createCompilationUnit("annot", annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
+		this.javaProjectTestHarness.createCompilationUnit("annot", annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
 	}
 
 	public void testAnnotation1() throws Exception {

@@ -25,7 +25,7 @@ public class TypeTests extends AnnotationTestCase {
 	}
 
 	protected ICompilationUnit createCompilationUnit(String source) throws CoreException {
-		return this.javaProject.createCompilationUnit(PACKAGE_NAME, FILE_NAME, source);
+		return this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, FILE_NAME, source);
 	}
 
 	@Override

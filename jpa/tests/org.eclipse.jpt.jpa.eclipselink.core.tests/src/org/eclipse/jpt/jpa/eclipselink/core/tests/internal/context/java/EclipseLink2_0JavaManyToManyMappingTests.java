@@ -189,7 +189,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
 
 	private void createTestTargetEntityAddressWithElementCollection() throws Exception {
@@ -226,7 +226,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
 
 	private void createTestEmbeddableState() throws Exception {
@@ -249,7 +249,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
 	}
 
 	private ICompilationUnit createTestEntityWithEmbeddableKeyManyToManyMapping() throws Exception {
@@ -305,7 +305,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
 
 	private void createTestEntityPropertyInfo() throws Exception {
@@ -339,7 +339,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "PropertyInfo.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "PropertyInfo.java", sourceWriter);
 	}
 	
 	public void testGetJoinFetchValue() throws Exception {
@@ -824,7 +824,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "PrintQueue.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "PrintQueue.java", sourceWriter);
 	}
 	
 	private void createTestEntityPrintJob() throws Exception {
@@ -862,7 +862,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "PrintJob.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "PrintJob.java", sourceWriter);
 	}
 
 	public void testGetMapKeyColumnMappedByStrategy() throws Exception {

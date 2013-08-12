@@ -56,7 +56,7 @@ public class OrmDiscriminatorColumnTests extends ContextModelTestCase
 				sb.append("{}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, FILE_NAME, sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, FILE_NAME, sourceWriter);
 	}
 	
 	
@@ -75,7 +75,7 @@ public class OrmDiscriminatorColumnTests extends ContextModelTestCase
 				sb.append("{}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
 	}
 	
 	public void testUpdateSpecifiedName() throws Exception {

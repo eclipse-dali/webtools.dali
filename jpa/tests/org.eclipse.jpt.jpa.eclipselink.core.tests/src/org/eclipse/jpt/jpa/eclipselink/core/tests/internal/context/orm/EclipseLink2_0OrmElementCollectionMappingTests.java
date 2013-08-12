@@ -123,7 +123,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
 	
 	private ICompilationUnit createTestEntityWithEmbeddableElementCollectionMapping() throws Exception {
@@ -236,7 +236,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
 	}	
 	
 	private ICompilationUnit createTestEntityWithValidNonGenericMapElementCollectionMapping() throws Exception {
@@ -283,7 +283,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Foo.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Foo.java", sourceWriter);
 	}
 
 	private ICompilationUnit createTestTypeWithCollection() throws Exception {		

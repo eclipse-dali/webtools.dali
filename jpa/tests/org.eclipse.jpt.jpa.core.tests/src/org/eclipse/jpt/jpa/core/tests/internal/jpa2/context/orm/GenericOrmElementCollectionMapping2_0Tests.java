@@ -128,7 +128,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
 	
 	private ICompilationUnit createTestEntityWithEmbeddableElementCollectionMapping() throws Exception {
@@ -241,7 +241,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
 	}	
 	
 	private ICompilationUnit createTestEntityWithValidNonGenericMapElementCollectionMapping() throws Exception {
@@ -288,7 +288,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Foo.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Foo.java", sourceWriter);
 	}
 	
 	public void testUpdateName() throws Exception {

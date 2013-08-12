@@ -91,7 +91,7 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
 
 	private void createTestEmbeddableState() throws Exception {
@@ -114,7 +114,7 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
 	}
 
 	private ICompilationUnit createTestEntityWithOneToManyMapping() throws Exception {
@@ -269,7 +269,7 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Department.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Department.java", sourceWriter);
 	}
 
 	private void createTestEmployee() throws Exception {
@@ -291,7 +291,7 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Employee.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Employee.java", sourceWriter);
 	}
 	
 	public JavaOneToManyMappingTests(String name) {

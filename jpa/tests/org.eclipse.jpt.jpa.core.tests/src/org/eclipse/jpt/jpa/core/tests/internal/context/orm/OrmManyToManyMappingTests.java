@@ -198,7 +198,7 @@ public class OrmManyToManyMappingTests extends ContextModelTestCase
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
 	
 	private void createTestEmbeddableState() throws Exception {
@@ -221,7 +221,7 @@ public class OrmManyToManyMappingTests extends ContextModelTestCase
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
 	}
 
 	private ICompilationUnit createTestEntityManyToManyMapping() throws Exception {

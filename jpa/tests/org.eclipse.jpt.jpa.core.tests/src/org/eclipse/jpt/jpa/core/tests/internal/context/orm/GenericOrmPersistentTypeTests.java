@@ -74,7 +74,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 				sb.append("}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, MODEL_TYPE_NAME + ".java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, MODEL_TYPE_NAME + ".java", sourceWriter);
 	}
 	
 	private void createEmployeeType() throws Exception {
@@ -91,7 +91,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 				sb.append("}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, EMPLOYEE_TYPE_NAME + ".java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, EMPLOYEE_TYPE_NAME + ".java", sourceWriter);
 	}
 	
 //	public void testUpdateXmlTypeMapping() throws Exception {

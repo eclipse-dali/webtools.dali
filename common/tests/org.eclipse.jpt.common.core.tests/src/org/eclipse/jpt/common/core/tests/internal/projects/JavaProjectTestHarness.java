@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
 /**
  * This builds and holds a "Java" project.
  * Support for adding packages and types.
- * 
+ * <p>
  * "Java" projects aren't required to be "faceted" projects, but for JPA
  * testing they are.
  */
@@ -34,16 +34,6 @@ public class JavaProjectTestHarness
 	private final IJavaProject javaProject;
 	private final IPackageFragmentRoot sourceFolder;
 
-
-	// ********** builders *****************************
-	
-	public static JavaProjectTestHarness buildJavaProject(String baseProjectName, boolean autoBuild)
-			throws CoreException {
-		return new JavaProjectTestHarness(baseProjectName, autoBuild);
-	}
-	
-	
-	// ********** constructors/initialization **********
 
 	public JavaProjectTestHarness(String projectName) throws CoreException {
 		this(projectName, false);

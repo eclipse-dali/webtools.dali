@@ -127,7 +127,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 				sb.append("}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}	
 
 //	public void testUpdateName() throws Exception {

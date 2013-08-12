@@ -787,7 +787,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 				sb.append("extends Entity2<Integer> {}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Entity1.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Entity1.java", sourceWriter);
 	}
 	
 	private void createTestGenericMappedSuperclass() throws Exception {
@@ -803,7 +803,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 				sb.append("public class Entity2<K> {}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Entity2.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Entity2.java", sourceWriter);
 	}
 
 

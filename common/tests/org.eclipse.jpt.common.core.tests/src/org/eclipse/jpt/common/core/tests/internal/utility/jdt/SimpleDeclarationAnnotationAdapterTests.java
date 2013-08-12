@@ -37,7 +37,7 @@ public class SimpleDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 	}
 
 	private void createAnnotation(String packageName, String annotationName) throws Exception {
-		this.javaProject.createCompilationUnit(packageName, annotationName + ".java", "public @interface " + annotationName + " {}");
+		this.javaProjectTestHarness.createCompilationUnit(packageName, annotationName + ".java", "public @interface " + annotationName + " {}");
 	}
 
 	public void testAnnotation1() throws Exception {

@@ -81,7 +81,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	}
 	
 	@Override
-	protected JavaProjectTestHarness buildJavaProject(boolean autoBuild) throws Exception {
+	protected JavaProjectTestHarness buildJavaProjectTestHarness(boolean autoBuild) throws Exception {
 		return buildJpaProject(BASE_PROJECT_NAME, autoBuild, this.buildJpaConfigDataModel());
 	}
 	
@@ -141,7 +141,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	}
 
 	protected JpaProject getJpaProject() {
-		return getJavaProject().getJpaProject();
+		return getJavaProjectTestHarness().getJpaProject();
 	}
 	
 	protected void waitForWorkspaceJobsToFinish() throws InterruptedException {
@@ -250,12 +250,12 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	}
 
 	protected JpaContextRoot getContextModelRoot() {
-		return getJavaProject().getJpaProject().getContextRoot();
+		return getJavaProjectTestHarness().getJpaProject().getContextRoot();
 	}
 	
 	@Override
-	protected TestJpaProject getJavaProject() {
-		return (TestJpaProject) super.getJavaProject();
+	protected TestJpaProject getJavaProjectTestHarness() {
+		return (TestJpaProject) super.getJavaProjectTestHarness();
 	}
 	
 	protected void deleteResource(Resource resource) throws CoreException {

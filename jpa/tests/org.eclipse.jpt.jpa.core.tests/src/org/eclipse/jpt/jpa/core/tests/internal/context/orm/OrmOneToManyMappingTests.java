@@ -85,7 +85,7 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
 	
 	private void createTestEntityWithOneToManyMapping() throws Exception {
@@ -196,7 +196,7 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
 	}	
 
 	private ICompilationUnit createTestEntityOneToManyMapping() throws Exception {

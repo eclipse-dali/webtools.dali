@@ -24,7 +24,7 @@ public class MiscTests extends AnnotationTestCase {
 	 * Signature.toString(...) returns a dot-qualified name for member types
 	 */
 	public void testSignature() throws Exception {
-		IType hashTableType = this.getJavaProject().getJavaProject().findType("java.util.Hashtable");
+		IType hashTableType = this.getJavaProject().findType("java.util.Hashtable");
 		IField tableField = hashTableType.getField("table");
 		String tableFieldTypeSignature = tableField.getTypeSignature();
 		String tableFieldTypeName = Signature.toString(tableFieldTypeSignature);
@@ -36,12 +36,12 @@ public class MiscTests extends AnnotationTestCase {
 	 * (but the lookup on IJavaProject takes a dot-qualified name!)
 	 */
 	public void testITypeName() throws Exception {
-		IType hashTableEntryType = this.getJavaProject().getJavaProject().findType("java.util.Hashtable.Entry");
+		IType hashTableEntryType = this.getJavaProject().findType("java.util.Hashtable.Entry");
 		assertEquals(hashTableEntryType.getFullyQualifiedName(), "java.util.Hashtable$Entry");
 	}
 
 	public void testITypeParameterizedName() throws Exception {
-		IType mapType = this.getJavaProject().getJavaProject().findType("java.util.Map");
+		IType mapType = this.getJavaProject().findType("java.util.Map");
 		assertEquals(mapType.getFullyQualifiedParameterizedName(), "java.util.Map<K extends java.lang.Object, V extends java.lang.Object>");
 	}
 

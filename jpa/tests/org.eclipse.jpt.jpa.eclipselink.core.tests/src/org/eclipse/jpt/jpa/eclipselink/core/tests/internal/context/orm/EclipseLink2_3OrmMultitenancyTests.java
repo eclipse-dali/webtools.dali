@@ -113,7 +113,7 @@ public class EclipseLink2_3OrmMultitenancyTests
 				sb.append("{}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
 	}
 
 	public void testUpdateSpecifiedType() throws Exception {

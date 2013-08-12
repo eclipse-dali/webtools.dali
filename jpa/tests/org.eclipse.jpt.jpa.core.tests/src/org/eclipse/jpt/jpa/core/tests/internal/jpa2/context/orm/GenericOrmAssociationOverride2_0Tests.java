@@ -105,7 +105,7 @@ public class GenericOrmAssociationOverride2_0Tests extends Generic2_0ContextMode
 				sb.append("{}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
 	}
 
 

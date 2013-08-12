@@ -33,7 +33,7 @@ public abstract class JaxbContextModelTestCase
 	}
 	
 	@Override
-	protected JavaProjectTestHarness buildJavaProject(boolean autoBuild) throws Exception {
+	protected JavaProjectTestHarness buildJavaProjectTestHarness(boolean autoBuild) throws Exception {
 		return buildJaxbProject(BASE_PROJECT_NAME, autoBuild, buildJaxbFacetInstallConfig());
 	}
 	

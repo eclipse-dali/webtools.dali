@@ -34,9 +34,9 @@ public class JpaJavaResourceModelTestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.javaProject.addJar(TestJpaProject.jpaJarName());
+		this.javaProjectTestHarness.addJar(TestJpaProject.jpaJarName());
 		if (TestJpaProject.eclipseLinkJarName() != null) {
-			this.javaProject.addJar(TestJpaProject.eclipseLinkJarName());
+			this.javaProjectTestHarness.addJar(TestJpaProject.eclipseLinkJarName());
 		}
 	}
 	

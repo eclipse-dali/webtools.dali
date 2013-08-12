@@ -136,7 +136,7 @@ public class GenericOrmOneToOneMapping2_0Tests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
 	private void createTestTargetEntityAddressWithElementCollection() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {
@@ -172,7 +172,7 @@ public class GenericOrmOneToOneMapping2_0Tests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
 	
 	private ICompilationUnit createTestEntityWithValidOneToOneMapping() throws Exception {
@@ -217,7 +217,7 @@ public class GenericOrmOneToOneMapping2_0Tests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
 	}
 
 	private void createTestEntityWithOneToOneMapping() throws Exception {

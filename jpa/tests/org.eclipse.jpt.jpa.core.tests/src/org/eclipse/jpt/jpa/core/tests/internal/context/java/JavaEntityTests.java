@@ -137,7 +137,7 @@ public class JavaEntityTests extends ContextModelTestCase
 				sb.append("{}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, FILE_NAME, sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, FILE_NAME, sourceWriter);
 	}
 
 	private ICompilationUnit createTestEntityAnnotationOnProperty() throws Exception {	
@@ -297,7 +297,7 @@ public class JavaEntityTests extends ContextModelTestCase
 				sb.append("{}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
 	}
 
 	private ICompilationUnit createTestEntityWithInheritance() throws Exception {	
@@ -379,7 +379,7 @@ public class JavaEntityTests extends ContextModelTestCase
 				sb.append("{}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "TestTypeId.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "TestTypeId.java", sourceWriter);
 	}
 
 	public void testMorphToMappedSuperclass() throws Exception {

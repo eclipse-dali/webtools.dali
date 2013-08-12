@@ -138,7 +138,7 @@ public class EclipseLink2_0OrmOneToOneMappingTests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
 
 	private void createTestTargetEntityAddressWithElementCollection() throws Exception {
@@ -175,7 +175,7 @@ public class EclipseLink2_0OrmOneToOneMappingTests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
 	
 	private ICompilationUnit createTestEntityWithValidOneToOneMapping() throws Exception {
@@ -220,7 +220,7 @@ public class EclipseLink2_0OrmOneToOneMappingTests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
 	}
 
 	private void createTestEntityWithOneToOneMapping() throws Exception {

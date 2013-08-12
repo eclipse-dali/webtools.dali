@@ -190,7 +190,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 				sb.append("}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
 
 	private void createTestEmbeddableState() throws Exception {
@@ -213,7 +213,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 				sb.append("}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
 	}
 
 	private ICompilationUnit createTestEntityWithEmbeddableKeyOneToManyMapping() throws Exception {
@@ -269,7 +269,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 				sb.append("}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
 
 	private void createTestEntityPropertyInfo() throws Exception {
@@ -303,7 +303,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "PropertyInfo.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "PropertyInfo.java", sourceWriter);
 	}			
 	private ICompilationUnit createTestEntityWithValidOneToManyMappingOrphanRemovalSpecified() throws Exception {
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -754,7 +754,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "PrintQueue.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "PrintQueue.java", sourceWriter);
 	}
 	
 	private void createTestEntityPrintJob() throws Exception {
@@ -787,7 +787,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "PrintJob.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "PrintJob.java", sourceWriter);
 	}
 
 	public void testGetMapKeyColumnMappedByStrategy() throws Exception {

@@ -26,13 +26,13 @@ public class OxmContextModelTestCase
 	
 	
 	protected void addOxmFile(String fileName, StringBuffer contents) throws Exception {
-		IFile oxmFile = getJavaProject().getProject().getFolder("src").getFile(fileName);
+		IFile oxmFile = getJavaProjectTestHarness().getProject().getFolder("src").getFile(fileName);
 		oxmFile.create(new ByteArrayInputStream(contents.toString().getBytes()), true, null);
 	}
 	
 	protected void assertFileContentsContains(String fileName, String stringToTest, boolean doesContain) throws Exception {
 		StringBuilder sb = new StringBuilder();
-	    IFile oxmFile = getJavaProject().getProject().getFolder("src").getFile(fileName);
+	    IFile oxmFile = getJavaProjectTestHarness().getProject().getFolder("src").getFile(fileName);
 		InputStream is = oxmFile.getContents();
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		

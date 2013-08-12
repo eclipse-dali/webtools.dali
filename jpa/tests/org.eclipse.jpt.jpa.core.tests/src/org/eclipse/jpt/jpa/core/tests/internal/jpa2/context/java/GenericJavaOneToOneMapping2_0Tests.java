@@ -225,7 +225,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
 
 	private void createTestTargetEntityAddressWithElementCollection() throws Exception {
@@ -262,7 +262,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
 	
 	private void createTestEmbeddableState() throws Exception {
@@ -285,7 +285,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
 	}
 	
 	public void testMorphToBasicMapping() throws Exception {

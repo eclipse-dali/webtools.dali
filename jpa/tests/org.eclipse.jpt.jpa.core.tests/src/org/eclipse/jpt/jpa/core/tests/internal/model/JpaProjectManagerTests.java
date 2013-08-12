@@ -103,10 +103,10 @@ public class JpaProjectManagerTests
 	 * pre-existing entities added.
 	 */
 	private FacetedProjectTestHarness buildProjectTestHarness() throws Exception {
-		JavaProjectTestHarness tjp = JavaProjectTestHarness.buildJavaProject(this.getClass().getSimpleName(), true);
-		tjp.createCompilationUnit("test.pkg", "TestEntity.java", "@Entity public class TestEntity {}");
-		tjp.createCompilationUnit("test.pkg", "TestEntity2.java", "@Entity public class TestEntity2 {}");
-		return tjp;
+		JavaProjectTestHarness harness = new JavaProjectTestHarness(this.getClass().getSimpleName(), true);
+		harness.createCompilationUnit("test.pkg", "TestEntity.java", "@Entity public class TestEntity {}");
+		harness.createCompilationUnit("test.pkg", "TestEntity2.java", "@Entity public class TestEntity2 {}");
+		return harness;
 	}	
 
 	private IFile getFile(ProjectTestHarness harness, String path) {

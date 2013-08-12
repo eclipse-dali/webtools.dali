@@ -127,7 +127,7 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 				sb.append("}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}	
 	private void createTestEntityCustomer() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {
@@ -161,7 +161,7 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 			sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Customer.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Customer.java", sourceWriter);
 	}
 
 	private void createTestEmbeddableAddress2() throws Exception {
@@ -193,7 +193,7 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 			sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
 	
 	private void createTestEmbeddableZipCode() throws Exception {
@@ -216,7 +216,7 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 			sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "ZipCode.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "ZipCode.java", sourceWriter);
 	}
 
 	public void testUpdateName() throws Exception {

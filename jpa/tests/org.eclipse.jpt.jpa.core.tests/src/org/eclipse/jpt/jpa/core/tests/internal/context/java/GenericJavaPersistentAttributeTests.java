@@ -348,7 +348,7 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 			}
 		};
 		addXmlClassRef(PACKAGE_NAME_ + GENERIC_SUPERCLASS);
-		return this.javaProject.createCompilationUnit(PACKAGE_NAME, GENERIC_SUPERCLASS + ".java", sourceWriter);
+		return this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, GENERIC_SUPERCLASS + ".java", sourceWriter);
 	}
 	
 	private static String GENERIC_SUBCLASS = "GenericSubclass";
@@ -363,6 +363,6 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 			}
 		};
 		addXmlClassRef(PACKAGE_NAME_ + GENERIC_SUBCLASS);
-		return this.javaProject.createCompilationUnit(PACKAGE_NAME, GENERIC_SUBCLASS + ".java", sourceWriter);
+		return this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, GENERIC_SUBCLASS + ".java", sourceWriter);
 	}
 }

@@ -65,7 +65,7 @@ public class EclipseLinkOrmOneToOneMappingTests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Department.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Department.java", sourceWriter);
 	}
 
 	private void createTestEmployee() throws Exception {
@@ -87,7 +87,7 @@ public class EclipseLinkOrmOneToOneMappingTests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Employee.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Employee.java", sourceWriter);
 	}
 
 	private ICompilationUnit createTestEntityOneToOneMapping() throws Exception {
@@ -149,7 +149,7 @@ public class EclipseLinkOrmOneToOneMappingTests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
 
 	private ICompilationUnit createTestTypeWithOneToOneAttribute() throws Exception {		

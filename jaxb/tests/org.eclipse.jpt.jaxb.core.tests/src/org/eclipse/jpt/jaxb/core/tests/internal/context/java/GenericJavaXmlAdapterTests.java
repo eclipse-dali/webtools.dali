@@ -60,7 +60,7 @@ public class GenericJavaXmlAdapterTests
 				sb.append("}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "ObjObjAdapter.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "ObjObjAdapter.java", sourceWriter);
 	}
 	
 	private void createMapCalendarXmlAdapter() throws CoreException {
@@ -78,7 +78,7 @@ public class GenericJavaXmlAdapterTests
 				sb.append("}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "MapCalendarAdapter.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "MapCalendarAdapter.java", sourceWriter);
 	}
 	
 	

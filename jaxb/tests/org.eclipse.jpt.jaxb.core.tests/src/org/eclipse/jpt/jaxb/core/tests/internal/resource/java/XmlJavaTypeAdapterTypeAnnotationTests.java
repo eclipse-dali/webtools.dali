@@ -61,7 +61,7 @@ public class XmlJavaTypeAdapterTypeAnnotationTests extends JaxbJavaResourceModel
 				sb.append("{}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "MyAdapterClass.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "MyAdapterClass.java", sourceWriter);
 	}
 
 	public void testGetNull() throws Exception {

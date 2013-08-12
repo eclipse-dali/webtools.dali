@@ -39,7 +39,7 @@ public class XmlJavaTypeAdapterPackageAnnotationTests
 				sb.append("{}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, TEST_CLASS + ".java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, TEST_CLASS + ".java", sourceWriter);
 	}
 	
 	private void createTestClass2() throws CoreException {
@@ -50,7 +50,7 @@ public class XmlJavaTypeAdapterPackageAnnotationTests
 				sb.append("{}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, TEST_CLASS_2 + ".java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, TEST_CLASS_2 + ".java", sourceWriter);
 	}
 	
 	private ICompilationUnit createPackageInfoWithJavaTypeAdapter() throws CoreException {

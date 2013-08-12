@@ -32,7 +32,7 @@ public class JDTToolsTests
 	
 	
 	public void testTypeIsSubtype() throws Exception {		
-		IJavaProject jProj = getJavaProject().getJavaProject();
+		IJavaProject jProj = this.getJavaProject();
 		
 		// same type
 		assertTrue(TypeTools.isSubType(ArrayList.class.getName(), ArrayList.class.getName(), jProj));

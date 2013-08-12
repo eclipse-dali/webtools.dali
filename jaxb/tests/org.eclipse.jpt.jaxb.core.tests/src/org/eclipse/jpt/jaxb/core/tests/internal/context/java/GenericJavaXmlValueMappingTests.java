@@ -69,7 +69,7 @@ public class GenericJavaXmlValueMappingTests extends JaxbContextModelTestCase
 				sb.append("}").append(CR);
 			}
 		};
-		return this.javaProject.createCompilationUnit(PACKAGE_NAME, TYPE_NAME + ".java", sourceWriter);
+		return this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, TYPE_NAME + ".java", sourceWriter);
 	}
 
 	public void testChangeMappingType() throws Exception {

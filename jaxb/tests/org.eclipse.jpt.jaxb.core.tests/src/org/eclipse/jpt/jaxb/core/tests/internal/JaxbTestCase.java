@@ -40,7 +40,7 @@ public class JaxbTestCase
 	
 	
 	@Override
-	protected JavaProjectTestHarness buildJavaProject(boolean autoBuild) throws Exception {
+	protected JavaProjectTestHarness buildJavaProjectTestHarness(boolean autoBuild) throws Exception {
 		return buildJaxbProject(BASE_PROJECT_NAME, autoBuild, buildJaxbFacetInstallConfig());
 	}
 	
@@ -78,12 +78,12 @@ public class JaxbTestCase
 	}
 	
 	@Override
-	protected TestJaxbProject getJavaProject() {
-		return (TestJaxbProject) super.getJavaProject();
+	protected TestJaxbProject getJavaProjectTestHarness() {
+		return (TestJaxbProject) super.getJavaProjectTestHarness();
 	}
 	
 	protected JaxbProject getJaxbProject() {
-		return this.getJavaProject().getJaxbProject();
+		return this.getJavaProjectTestHarness().getJaxbProject();
 	}
 	
 	protected JavaResourceAttribute getFieldNamed(JavaResourceType resourceType, String attributeName) {

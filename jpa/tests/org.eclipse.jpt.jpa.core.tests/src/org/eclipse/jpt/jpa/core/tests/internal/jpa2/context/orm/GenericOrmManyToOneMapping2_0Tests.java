@@ -177,7 +177,7 @@ public class GenericOrmManyToOneMapping2_0Tests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
 
 	private ICompilationUnit createTestEntityManyToOneMapping() throws Exception {

@@ -41,7 +41,7 @@ public class OxmResourceTests
 	}
 	
 	public void testMultiObjectTranslators() throws Exception {
-		IFile oxmFile = getJavaProject().getProject().getFile("oxm.xml");
+		IFile oxmFile = this.getProject().getFile("oxm.xml");
 		StringBuffer sb = new StringBuffer();
 		sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>").append(CR);
 		sb.append("<xml-bindings").append(CR);

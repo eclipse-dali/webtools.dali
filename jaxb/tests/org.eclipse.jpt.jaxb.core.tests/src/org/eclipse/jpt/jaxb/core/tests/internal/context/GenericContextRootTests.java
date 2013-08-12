@@ -478,7 +478,7 @@ public class GenericContextRootTests
 		assertNotNull(getContextRoot().getJavaType(FULLY_QUALIFIED_TYPE_NAME));
 		
 		// add a jaxb.index with one class
-		IFile jaxbIndex = getJavaProject().getProject().getFile(new Path("src/test/jaxb.index"));
+		IFile jaxbIndex = getJavaProjectTestHarness().getProject().getFile(new Path("src/test/jaxb.index"));
 		InputStream stream = new ByteArrayInputStream(otherClassName.getBytes());
 		jaxbIndex.create(stream, true, null);
 		

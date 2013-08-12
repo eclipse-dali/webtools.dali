@@ -97,7 +97,7 @@ public class EclipseLink2_0OrmOneToManyMappingTests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
 	
 	private void createTestEntityWithValidOneToManyMapping() throws Exception {
@@ -190,7 +190,7 @@ public class EclipseLink2_0OrmOneToManyMappingTests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
 	}		
 	
 	private ICompilationUnit createTestEntityWithValidGenericMapOneToManyMapping() throws Exception {
@@ -600,7 +600,7 @@ public class EclipseLink2_0OrmOneToManyMappingTests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "PrintQueue.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "PrintQueue.java", sourceWriter);
 	}
 	
 	private void createTestEntityPrintJob() throws Exception {
@@ -633,7 +633,7 @@ public class EclipseLink2_0OrmOneToManyMappingTests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "PrintJob.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "PrintJob.java", sourceWriter);
 	}
 
 	public void testVirtualMapKeyColumnDefaults() throws Exception {

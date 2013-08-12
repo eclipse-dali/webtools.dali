@@ -97,7 +97,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 				sb.append("}");
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Project.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Project.java", sourceWriter);
 	}
 
 	private void createTargetEntityWithBackPointer() throws Exception {
@@ -129,7 +129,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 				sb.append("}");
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Project.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Project.java", sourceWriter);
 	}
 
 	public void testUpdateSpecifiedName() throws Exception {

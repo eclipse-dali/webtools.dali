@@ -30,7 +30,7 @@ import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 public abstract class PreferencesTests
 	extends TestCase
 {
-	private JavaProjectTestHarness javaProjectHarness;
+	private JavaProjectTestHarness javaProjectTestHarness;
 	private String workspacePrefsFilePath;
 	private String projectPrefsFilePath;
 
@@ -47,7 +47,7 @@ public abstract class PreferencesTests
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.javaProjectHarness = this.buildJavaProjectHarness(false); // false = no auto-build
+		this.javaProjectTestHarness = this.buildJavaProjectTestHarness(false); // false = no auto-build
 		this.workspacePrefsFilePath = this.getWorkspaceRoot().getLocation().toString() + WORKSPACE_PREFS_DIR_NAME + this.getWorkspacePrefsFileName();
 		this.projectPrefsFilePath = this.getProject().getLocation().toString() + PROJECT_PREFS_DIR_NAME + this.getProjectPrefsFileName();
 	}
@@ -56,11 +56,11 @@ public abstract class PreferencesTests
 
 	protected abstract String getProjectPrefsFileName();
 
-	private JavaProjectTestHarness buildJavaProjectHarness(boolean autoBuild) throws Exception {
-		return this.buildJavaProjectHarness(this.getName(), autoBuild);
+	private JavaProjectTestHarness buildJavaProjectTestHarness(boolean autoBuild) throws Exception {
+		return this.buildJavaProjectTestHarness(this.getName(), autoBuild);
 	}
 
-	private JavaProjectTestHarness buildJavaProjectHarness(String projectName, boolean autoBuild) throws Exception {
+	private JavaProjectTestHarness buildJavaProjectTestHarness(String projectName, boolean autoBuild) throws Exception {
 		return new JavaProjectTestHarness(projectName, autoBuild);
 	}
 
@@ -82,7 +82,7 @@ public abstract class PreferencesTests
 	}
 
 	protected IProject getProject() {
-		return this.javaProjectHarness.getProject();
+		return this.javaProjectTestHarness.getProject();
 	}
 
 	protected Properties readProjectPrefs() throws Exception {

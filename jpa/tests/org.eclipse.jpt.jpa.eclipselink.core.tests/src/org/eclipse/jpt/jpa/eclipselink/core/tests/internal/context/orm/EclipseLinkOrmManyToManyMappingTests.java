@@ -72,7 +72,7 @@ public class EclipseLinkOrmManyToManyMappingTests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Department.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Department.java", sourceWriter);
 	}
 
 	private void createTestEmployee() throws Exception {
@@ -94,7 +94,7 @@ public class EclipseLinkOrmManyToManyMappingTests
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Employee.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Employee.java", sourceWriter);
 	}	
 
 	private ICompilationUnit createTestEntityManyToManyMapping() throws Exception {
@@ -154,7 +154,7 @@ public class EclipseLinkOrmManyToManyMappingTests
 				sb.append("}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
 
 	private ICompilationUnit createTestTypeWithCollection() throws Exception {		

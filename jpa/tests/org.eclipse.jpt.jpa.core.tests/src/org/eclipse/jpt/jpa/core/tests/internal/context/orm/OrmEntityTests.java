@@ -148,7 +148,7 @@ public class OrmEntityTests extends ContextModelTestCase
 				sb.append("{}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
 	}
 	
 	private void createTestSubTypeUnmapped() throws Exception {
@@ -160,7 +160,7 @@ public class OrmEntityTests extends ContextModelTestCase
 				sb.append("{}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
 	}
 	
 	private ICompilationUnit createTestMappedSuperclass() throws Exception {
@@ -238,7 +238,7 @@ public class OrmEntityTests extends ContextModelTestCase
 				sb.append("{}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, FILE_NAME, sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, FILE_NAME, sourceWriter);
 	}
 
 	private ICompilationUnit createAbstractTestEntity() throws Exception {
@@ -294,7 +294,7 @@ public class OrmEntityTests extends ContextModelTestCase
 				sb.append("{}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "TestTypeId.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "TestTypeId.java", sourceWriter);
 	}
 	
 	public void testUpdateSpecifiedName() throws Exception {

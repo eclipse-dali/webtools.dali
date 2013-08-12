@@ -32,15 +32,15 @@ public class ASTToolsTests
 	
 	
 	private void createClassAndMembers(String className, String classBody) throws Exception {
-		this.javaProject.createCompilationUnit("clazz", className + ".java", "public class " + className + " { " + classBody + " }");
+		this.javaProjectTestHarness.createCompilationUnit("clazz", className + ".java", "public class " + className + " { " + classBody + " }");
 	}
 	
 	private void createEnumAndMembers(String enumName, String enumBody) throws Exception {
-		this.javaProject.createCompilationUnit("enums", enumName + ".java", "public enum " + enumName + " { " + enumBody + " }");
+		this.javaProjectTestHarness.createCompilationUnit("enums", enumName + ".java", "public enum " + enumName + " { " + enumBody + " }");
 	}
 	
 	private void createAnnotationAndMembers(String annotationName, String annotationBody) throws Exception {
-		this.javaProject.createCompilationUnit("annot", annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
+		this.javaProjectTestHarness.createCompilationUnit("annot", annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
 	}
 	
 	private ICompilationUnit createTestType(final Iterator<String> imports, final String idFieldAnnotation)

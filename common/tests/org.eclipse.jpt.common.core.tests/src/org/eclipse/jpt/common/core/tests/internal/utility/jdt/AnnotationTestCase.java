@@ -14,10 +14,12 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import junit.framework.TestCase;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
@@ -50,9 +52,10 @@ import org.eclipse.jpt.common.core.tests.internal.projects.JavaProjectTestHarnes
 import org.eclipse.jpt.common.core.tests.internal.projects.JavaProjectTestHarness.SourceWriter;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.core.utility.jdt.Type;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.iterator.SingleElementIterator;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
@@ -67,9 +70,9 @@ import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 public abstract class AnnotationTestCase
 	extends TestCase
 {
-	protected JavaProjectTestHarness javaProject;
+	protected JavaProjectTestHarness javaProjectTestHarness;
 
-	public static final String CR = System.getProperty("line.separator");
+	public static final String CR = StringTools.CR;
 	public static final String SEP = File.separator;
 	public static final String PROJECT_NAME = "AnnotationTestProject";
 	public static final String PACKAGE_NAME = "test";
@@ -81,10 +84,6 @@ public abstract class AnnotationTestCase
 	public static final String FILE_NAME = TYPE_NAME + ".java";
 	public static final IPath FILE_PATH = new Path("src" + SEP + PACKAGE_NAME + SEP + FILE_NAME);
 
-	public static final String[] EMPTY_STRING_ARRAY = new String[0];
-
-
-	// ********** TestCase behavior **********
 
 	protected AnnotationTestCase(String name) {
 		super(name);
@@ -93,21 +92,21 @@ public abstract class AnnotationTestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.javaProject = this.buildJavaProject(false);  // false = no auto-build
+		this.javaProjectTestHarness = this.buildJavaProjectTestHarness(false);  // false = no auto-build
 	}
 	
-	protected JavaProjectTestHarness buildJavaProject(boolean autoBuild) throws Exception {
-		return this.buildJavaProject(PROJECT_NAME, autoBuild);
+	protected JavaProjectTestHarness buildJavaProjectTestHarness(boolean autoBuild) throws Exception {
+		return this.buildJavaProjectTestHarness(PROJECT_NAME, autoBuild);
 	}
 	
-	protected JavaProjectTestHarness buildJavaProject(String projectName, boolean autoBuild) throws Exception {
+	protected JavaProjectTestHarness buildJavaProjectTestHarness(String projectName, boolean autoBuild) throws Exception {
 		return new JavaProjectTestHarness(projectName, autoBuild);
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
 //		this.dumpSource();
-		CoreTestTools.delete(this.javaProject.getProject());
+		CoreTestTools.delete(this.javaProjectTestHarness.getProject());
 		TestTools.clear(this);
 		super.tearDown();
 	}
@@ -161,7 +160,7 @@ public abstract class AnnotationTestCase
 	}
 	
 	protected ICompilationUnit createTestPackageInfo(String packageName, AnnotationWriter annotationWriter) throws CoreException {
-		return this.javaProject.createCompilationUnit(
+		return this.javaProjectTestHarness.createCompilationUnit(
 			packageName, PACKAGE_INFO_FILE_NAME, this.createSourceWriter(annotationWriter, packageName, null));
 	}
 	
@@ -201,15 +200,15 @@ public abstract class AnnotationTestCase
 	}
 	
 	protected ICompilationUnit createTestType(AnnotationWriter annotationWriter) throws CoreException {
-		return this.javaProject.createCompilationUnit(PACKAGE_NAME, FILE_NAME, this.createSourceWriter(annotationWriter));
+		return this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, FILE_NAME, this.createSourceWriter(annotationWriter));
 	}
 	
 	protected ICompilationUnit createTestType(String typeName, AnnotationWriter annotationWriter) throws CoreException {
-		return this.javaProject.createCompilationUnit(PACKAGE_NAME, typeName + ".java", createSourceWriter(annotationWriter, typeName));
+		return this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, typeName + ".java", createSourceWriter(annotationWriter, typeName));
 	}
 	
 	protected ICompilationUnit createTestType(String packageName, String fileName, String typeName, AnnotationWriter annotationWriter) throws CoreException {
-		return this.javaProject.createCompilationUnit(packageName, fileName, this.createSourceWriter(annotationWriter, typeName));
+		return this.javaProjectTestHarness.createCompilationUnit(packageName, fileName, this.createSourceWriter(annotationWriter, typeName));
 	}
 	
 	protected SourceWriter createSourceWriter(AnnotationWriter annotationWriter) {
@@ -225,11 +224,11 @@ public abstract class AnnotationTestCase
 	}
 	
 	protected ICompilationUnit createTestEnum(EnumAnnotationWriter annotationWriter) throws CoreException {
-		return this.javaProject.createCompilationUnit(PACKAGE_NAME, FILE_NAME, this.createEnumSourceWriter(annotationWriter));
+		return this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, FILE_NAME, this.createEnumSourceWriter(annotationWriter));
 	}
 	
 	protected ICompilationUnit createTestEnum(String packageName, String fileName, String enumName, EnumAnnotationWriter annotationWriter) throws CoreException {
-		return this.javaProject.createCompilationUnit(packageName, fileName, this.createEnumSourceWriter(annotationWriter, enumName));
+		return this.javaProjectTestHarness.createCompilationUnit(packageName, fileName, this.createEnumSourceWriter(annotationWriter, enumName));
 	}
 	
 	protected SourceWriter createEnumSourceWriter(EnumAnnotationWriter annotationWriter) {
@@ -255,7 +254,7 @@ public abstract class AnnotationTestCase
 		sb.append(CR);
 		sb.append("public enum ").append(enumName).append(" { ").append(enumBody).append(" }");
 		
-		return this.javaProject.createCompilationUnit(PACKAGE_NAME, enumName + ".java", sb.toString());
+		return this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, enumName + ".java", sb.toString());
 	}
 	
 	/**
@@ -378,8 +377,16 @@ public abstract class AnnotationTestCase
 
 	// ********** queries **********
 
-	protected JavaProjectTestHarness getJavaProject() {
-		return this.javaProject;
+	protected JavaProjectTestHarness getJavaProjectTestHarness() {
+		return this.javaProjectTestHarness;
+	}
+
+	protected IProject getProject() {
+		return this.javaProjectTestHarness.getProject();
+	}
+
+	protected IJavaProject getJavaProject() {
+		return this.javaProjectTestHarness.getJavaProject();
 	}
 
 	protected JDTType testType(ICompilationUnit cu) {
@@ -431,7 +438,7 @@ public abstract class AnnotationTestCase
 	}
 
 	protected JDTMethodAttribute buildMethod(String name, ICompilationUnit cu) {
-		return this.buildMethod(name, EMPTY_STRING_ARRAY, cu);
+		return this.buildMethod(name, StringTools.EMPTY_STRING_ARRAY, cu);
 	}
 
 	protected JDTMethodAttribute buildMethod(String name, String[] parameterTypeNames, ICompilationUnit cu) {

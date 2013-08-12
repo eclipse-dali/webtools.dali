@@ -63,7 +63,7 @@ public class JpaPlatformTests
 	}
 
 	@Override
-	protected JavaProjectTestHarness buildJavaProject(boolean autoBuild) throws Exception {
+	protected JavaProjectTestHarness buildJavaProjectTestHarness(boolean autoBuild) throws Exception {
 		return super.buildJpaProject(PROJECT_NAME, autoBuild, this.buildConfig());
 	}
 

@@ -26,7 +26,7 @@ public class JaxbJavaResourceModelTestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.javaProject.addJar(TestJaxbProject.jaxbJarName());
+		this.javaProjectTestHarness.addJar(TestJaxbProject.jaxbJarName());
 	}
 	
 	@Override

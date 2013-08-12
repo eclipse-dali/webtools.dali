@@ -76,7 +76,7 @@ public class GenericJavaClassMappingTests
 				sb.append("{}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
 	}
 	
 	private ICompilationUnit createXmlTypeWithAccessorType() throws CoreException {
@@ -139,7 +139,7 @@ public class GenericJavaClassMappingTests
 				sb.append(CR).append("}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "AnnotationTestType.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "AnnotationTestType.java", sourceWriter);
 	}
 
 	private void createTestXmlTypeWithPropertyAndPublicMemberAccess() throws Exception {
@@ -170,7 +170,7 @@ public class GenericJavaClassMappingTests
 				sb.append(CR).append("}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "AnnotationTestType.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "AnnotationTestType.java", sourceWriter);
 	}
 
 	private void createTestXmlTypeWithPropertyGetterAndPublicMemberAccess() throws Exception {
@@ -200,7 +200,7 @@ public class GenericJavaClassMappingTests
 				sb.append(CR).append("}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "AnnotationTestType.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "AnnotationTestType.java", sourceWriter);
 	}
 
 	private void createTestXmlTypeWithPropertyGetterListAndPublicMemberAccess() throws Exception {
@@ -230,7 +230,7 @@ public class GenericJavaClassMappingTests
 				sb.append(CR).append("}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "AnnotationTestType.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "AnnotationTestType.java", sourceWriter);
 	}
 
 	private void createTestXmlTypeWithPropertySetterAndPublicMemberAccess() throws Exception {
@@ -259,7 +259,7 @@ public class GenericJavaClassMappingTests
 				sb.append(CR).append("}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "AnnotationTestType.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "AnnotationTestType.java", sourceWriter);
 	}
 	
 	private void createXmlTypeWithVariousFieldsAndProperties() throws Exception {
@@ -278,7 +278,7 @@ public class GenericJavaClassMappingTests
 				sb.append("}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "AnnotationTestType.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "AnnotationTestType.java", sourceWriter);
 	}
 	
 	protected void addXmlTypeMemberValuePair(ModifiedDeclaration declaration, String name, String value) {

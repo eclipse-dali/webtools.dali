@@ -104,7 +104,7 @@ public class XmlTypeAnnotationTests extends JaxbJavaResourceModelTestCase {
 				sb.append("{}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "MyFactoryClass.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "MyFactoryClass.java", sourceWriter);
 	}
 
 	private ICompilationUnit createTestXmlTypeWithPropOrder() throws Exception {

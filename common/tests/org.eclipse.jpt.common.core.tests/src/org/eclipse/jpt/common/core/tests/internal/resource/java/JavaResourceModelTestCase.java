@@ -128,11 +128,11 @@ public abstract class JavaResourceModelTestCase
 	}
 	
 	protected ICompilationUnit createAnnotationAndMembers(String packageName, String annotationName, String annotationBody) throws Exception {
-		return this.javaProject.createCompilationUnit(packageName, annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
+		return this.javaProjectTestHarness.createCompilationUnit(packageName, annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
 	}
 	
 	protected ICompilationUnit createEnumAndMembers(String packageName, String enumName, String enumBody) throws Exception {
-		return this.javaProject.createCompilationUnit(packageName, enumName + ".java", "public enum " + enumName + " { " + enumBody + " }");
+		return this.javaProjectTestHarness.createCompilationUnit(packageName, enumName + ".java", "public enum " + enumName + " { " + enumBody + " }");
 	}
 	
 	protected JavaResourcePackage buildJavaResourcePackage(ICompilationUnit cu) throws JavaModelException {
@@ -204,7 +204,7 @@ public abstract class JavaResourceModelTestCase
 
 	private void verifyAnnotationClassesExist(AnnotationProvider annotationProvider) throws JavaModelException  {
 		for (String annotationName : this.getAllAnnotationNames(annotationProvider)) {
-			if (getJavaProject().getJavaProject().findType(annotationName) == null) {
+			if (this.getJavaProject().findType(annotationName) == null) {
 				//if running the tests with jre 1.5, the javax.annotation.Generated class will not be found
 				if (!annotationName.equals("javax.annotation.Generated")) {
 					fail(errorMissingAnnotationClass(annotationName));			

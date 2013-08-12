@@ -659,7 +659,7 @@ public class JavaResourceAttributeTests extends JpaJavaResourceModelTestCase {
 		assertEquals("foo", resourceAttribute.getName());
 		assertEquals("test.Foo", resourceAttribute.getTypeBinding().getQualifiedName()); //bug 196200 changed this
 
-		this.javaProject.createCompilationUnit("test", "Foo.java", "public class Foo {}");
+		this.javaProjectTestHarness.createCompilationUnit("test", "Foo.java", "public class Foo {}");
 		
 		assertEquals("test.Foo", resourceAttribute.getTypeBinding().getQualifiedName());
 	}

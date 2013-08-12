@@ -83,7 +83,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 				sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
 
 	private ICompilationUnit createTestEntityWithManyToOneMapping() throws Exception {

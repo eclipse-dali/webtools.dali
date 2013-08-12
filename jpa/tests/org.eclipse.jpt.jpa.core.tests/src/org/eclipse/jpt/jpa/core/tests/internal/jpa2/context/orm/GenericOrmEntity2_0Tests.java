@@ -166,7 +166,7 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 				sb.append("{}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
 	}
 	
 	private void createTestMappedSuperclassCustomer() throws Exception {
@@ -201,7 +201,7 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 			sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Customer.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Customer.java", sourceWriter);
 	}
 	private void createTestMappedSuperclassCustomerWithElementCollection() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {
@@ -235,7 +235,7 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 			sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Customer.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Customer.java", sourceWriter);
 	}
 	
 	private void createTestEntityLongTimeCustomer() throws Exception {
@@ -260,7 +260,7 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 				sb.append("{}");
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "LongTimeCustomer.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "LongTimeCustomer.java", sourceWriter);
 	}
 
 
@@ -299,7 +299,7 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 			sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
 	
 	private void createTestEmbeddableZipCode() throws Exception {
@@ -322,7 +322,7 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 			sb.append("}").append(CR);
 		}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "ZipCode.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "ZipCode.java", sourceWriter);
 	}
 	
 	private LockModeType2_0 lockModeOf(XmlNamedQuery resourceQuery) {

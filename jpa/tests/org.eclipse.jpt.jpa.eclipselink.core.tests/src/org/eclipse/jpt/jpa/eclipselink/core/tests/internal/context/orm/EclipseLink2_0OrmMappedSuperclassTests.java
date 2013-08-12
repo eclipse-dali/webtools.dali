@@ -128,7 +128,7 @@ public class EclipseLink2_0OrmMappedSuperclassTests
 				sb.append("{}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
 	}
 
 	private ICompilationUnit createTestMappedSuperclassForConverters() throws Exception {

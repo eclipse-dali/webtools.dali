@@ -52,7 +52,7 @@ public class OrmMappedSuperclassTests extends ContextModelTestCase
 				sb.append("{}").append(CR);
 			}
 		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "TestTypeId.java", sourceWriter);
+		this.javaProjectTestHarness.createCompilationUnit(PACKAGE_NAME, "TestTypeId.java", sourceWriter);
 	}
 	
 	public void testUpdateClass() throws Exception {

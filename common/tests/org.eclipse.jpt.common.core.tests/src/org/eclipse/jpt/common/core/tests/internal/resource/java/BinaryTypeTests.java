@@ -49,15 +49,15 @@ public class BinaryTypeTests
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		getJavaProject().addJar(new File(FileLocator.resolve(JAR_URL).toURI()).getAbsolutePath());
+		getJavaProjectTestHarness().addJar(new File(FileLocator.resolve(JAR_URL).toURI()).getAbsolutePath());
 	}
 	
 	public void testInheritedAttributeTypes() throws Exception {
 		BinaryTypeCache typeCache = new BinaryTypeCache(buildAnnotationProvider());
 		JavaResourceType superclassType = 
-				(JavaResourceType) typeCache.addType(getJavaProject().getJavaProject().findType(SUPERCLASS_CLASS_NAME));
+				(JavaResourceType) typeCache.addType(this.getJavaProject().findType(SUPERCLASS_CLASS_NAME));
 		JavaResourceType subclassType = 
-				(JavaResourceType) typeCache.addType(getJavaProject().getJavaProject().findType(SUBCLASS_CLASS_NAME));
+				(JavaResourceType) typeCache.addType(this.getJavaProject().findType(SUBCLASS_CLASS_NAME));
 		
 		// generic field 1 -> Object, String
 		JavaResourceField genericField1 = superclassType.getField("genericField1");
@@ -83,9 +83,9 @@ public class BinaryTypeTests
 	public void testGeneralTypeAPI() throws Exception {
 		BinaryTypeCache typeCache = new BinaryTypeCache(buildAnnotationProvider());
 		JavaResourceType superclassType = 
-				(JavaResourceType) typeCache.addType(getJavaProject().getJavaProject().findType(SUPERCLASS_CLASS_NAME));
+				(JavaResourceType) typeCache.addType(this.getJavaProject().findType(SUPERCLASS_CLASS_NAME));
 		JavaResourceType subclassType = 
-				(JavaResourceType) typeCache.addType(getJavaProject().getJavaProject().findType(SUBCLASS_CLASS_NAME));
+				(JavaResourceType) typeCache.addType(this.getJavaProject().findType(SUBCLASS_CLASS_NAME));
 		
 		// superclass qualified name
 		assertEquals("java.lang.Object", superclassType.getSuperclassQualifiedName());

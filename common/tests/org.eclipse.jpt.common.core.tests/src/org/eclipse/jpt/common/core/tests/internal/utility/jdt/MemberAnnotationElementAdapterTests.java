@@ -42,7 +42,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 	}
 
 	private void createAnnotationAndMembers(String annotationName, String annotationBody) throws Exception {
-		this.javaProject.createCompilationUnit("annot", annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
+		this.javaProjectTestHarness.createCompilationUnit("annot", annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
 	}
 
 	private void createEnum(String enumName, String enumBody) throws Exception {
@@ -50,7 +50,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 	}
 
 	private void createEnum(String packageName, String enumName, String enumBody) throws Exception {
-		this.javaProject.createCompilationUnit(packageName, enumName + ".java", "public enum " + enumName + " { " + enumBody + " }");
+		this.javaProjectTestHarness.createCompilationUnit(packageName, enumName + ".java", "public enum " + enumName + " { " + enumBody + " }");
 	}
 
 	public void testValue1() throws Exception {

@@ -23,7 +23,7 @@ public class ELJaxbContextRootTests
 	
 	
 	protected void addOxmFile(String fileName, String packageName) throws Exception {
-		IFile oxmFile = getJavaProject().getProject().getFolder("src").getFile(fileName);
+		IFile oxmFile = getJavaProjectTestHarness().getProject().getFolder("src").getFile(fileName);
 		StringBuffer sb = new StringBuffer();
 		sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>").append(CR);
 		sb.append("<xml-bindings package-name=\"").append(packageName).append("\"").append(CR);
@@ -54,17 +54,17 @@ public class ELJaxbContextRootTests
 		assertEquals(3, root.getOxmFilesSize());
 		assertNotNull(root.getOxmFile("test.oxm2"));
 		
-		getJavaProject().getProject().getFolder("src").getFile("oxm.xml").delete(true, null);
+		getJavaProjectTestHarness().getProject().getFolder("src").getFile("oxm.xml").delete(true, null);
 		
 		assertEquals(2, root.getOxmFilesSize());
 		assertNotNull(root.getOxmFile("test.oxm"));
 		
-		getJavaProject().getProject().getFolder("src").getFile("oxm2.xml").delete(true, null);
+		getJavaProjectTestHarness().getProject().getFolder("src").getFile("oxm2.xml").delete(true, null);
 		
 		assertEquals(1, root.getOxmFilesSize());
 		assertNull(root.getOxmFile("test.oxm"));
 		
-		getJavaProject().getProject().getFolder("src").getFile("oxm3.xml").delete(true, null);
+		getJavaProjectTestHarness().getProject().getFolder("src").getFile("oxm3.xml").delete(true, null);
 		
 		assertEquals(0, root.getOxmFilesSize());
 	}

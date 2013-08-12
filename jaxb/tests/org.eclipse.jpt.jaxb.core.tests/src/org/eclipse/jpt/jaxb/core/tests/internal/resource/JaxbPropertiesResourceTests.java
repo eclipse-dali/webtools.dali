@@ -33,11 +33,11 @@ public class JaxbPropertiesResourceTests
 	
 	
 	private IFile createJaxbProperties(IPath projectRelativePath, String[] ... propertyValuePairs) throws Exception {
-		IFolder folder = getJavaProject().getProject().getFolder(projectRelativePath);
+		IFolder folder = this.getProject().getFolder(projectRelativePath);
 		if (! folder.exists()) {
 			folder.create(true, false, null);
 		}
-		IFile jaxbProperties = getJavaProject().getProject().getFile(projectRelativePath.append(new Path(JAXB_PROPERTIES)));
+		IFile jaxbProperties = this.getProject().getFile(projectRelativePath.append(new Path(JAXB_PROPERTIES)));
 		InputStream stream = inputStream(propertyValuePairs);
 		jaxbProperties.create(stream, true, null);
 		return jaxbProperties;
