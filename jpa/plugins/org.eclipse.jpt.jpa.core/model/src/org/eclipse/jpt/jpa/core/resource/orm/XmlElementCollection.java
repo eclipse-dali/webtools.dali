@@ -34,10 +34,8 @@ import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlMapKeyConvertibleMapping_2_
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlOrderable_2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.JPA2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
-import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConvert_2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConvertibleMapping_2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlElementCollection_2_1;
-import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlForeignKey_2_1;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -1925,7 +1923,7 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	}
 	
 	protected static Translator buildOrderByTranslator() {
-		return new Translator(JPA.ORDER_BY, OrmPackage.eINSTANCE.getXmlOrderable_OrderBy());
+		return XmlOrderBy.buildTranslator();
 	}
 	
 	protected static Translator buildOrderColumnTranslator() {
