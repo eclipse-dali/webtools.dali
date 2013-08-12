@@ -13,7 +13,7 @@ import java.io.File;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbCoreContextModelTests;
-import org.eclipse.jpt.jaxb.core.tests.internal.projects.TestJaxbProject;
+import org.eclipse.jpt.jaxb.core.tests.internal.projects.JaxbProjectTestHarness;
 import org.eclipse.jpt.jaxb.core.tests.internal.resource.JaxbCoreResourceModelTests;
 import org.eclipse.jpt.jaxb.core.tests.internal.utility.JaxbCoreUtilityTests;
 
@@ -37,18 +37,18 @@ public class JaxbCoreTests {
 	}
 	
 	public static boolean jaxbJarPropertyExists() {
-		return getSystemProperty(TestJaxbProject.JAXB_JAR_NAME_SYSTEM_PROPERTY) != null;
+		return getSystemProperty(JaxbProjectTestHarness.JAXB_JAR_NAME_SYSTEM_PROPERTY) != null;
 	}
 	
 	public static boolean jaxbJarFileExists() {
-		return (new File(getSystemProperty(TestJaxbProject.JAXB_JAR_NAME_SYSTEM_PROPERTY))).exists();
+		return (new File(getSystemProperty(JaxbProjectTestHarness.JAXB_JAR_NAME_SYSTEM_PROPERTY))).exists();
 	}
 	
 	public static String buildMissingJarErrorMessage() {
 		if( ! jaxbJarPropertyExists()) {
-			return errorMissingProperty(TestJaxbProject.JAXB_JAR_NAME_SYSTEM_PROPERTY);
+			return errorMissingProperty(JaxbProjectTestHarness.JAXB_JAR_NAME_SYSTEM_PROPERTY);
 		}
-		return errorJarFileDoesNotExist(getSystemProperty(TestJaxbProject.JAXB_JAR_NAME_SYSTEM_PROPERTY));
+		return errorJarFileDoesNotExist(getSystemProperty(JaxbProjectTestHarness.JAXB_JAR_NAME_SYSTEM_PROPERTY));
 	}
 	
 	/*********** private **********/

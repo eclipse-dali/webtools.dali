@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.core.tests.internal.resource.java.JavaResourceModelTestCase;
 import org.eclipse.jpt.jaxb.core.internal.jaxb21.GenericJaxb_2_1_PlatformDefinition;
-import org.eclipse.jpt.jaxb.core.tests.internal.projects.TestJaxbProject;
+import org.eclipse.jpt.jaxb.core.tests.internal.projects.JaxbProjectTestHarness;
 
 public class JaxbJavaResourceModelTestCase
 		extends JavaResourceModelTestCase {	
@@ -26,7 +26,7 @@ public class JaxbJavaResourceModelTestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.javaProjectTestHarness.addJar(TestJaxbProject.jaxbJarName());
+		this.javaProjectTestHarness.addJar(JaxbProjectTestHarness.jaxbJarName());
 	}
 	
 	@Override

@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.eclipselink.core.tests.internal;
 import java.io.File;
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import org.eclipse.jpt.jaxb.core.tests.internal.projects.TestJaxbProject;
+import org.eclipse.jpt.jaxb.core.tests.internal.projects.JaxbProjectTestHarness;
 import org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.context.ELJaxbCoreContextModelTests;
 import org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.resource.ELJaxbCoreResourceModelTests;
 
@@ -38,32 +38,32 @@ public class ELJaxbCoreTests {
 	}
 	
 	public static boolean jaxbJarPropertyExists() {
-		return getSystemProperty(TestJaxbProject.JAXB_JAR_NAME_SYSTEM_PROPERTY) != null;
+		return getSystemProperty(JaxbProjectTestHarness.JAXB_JAR_NAME_SYSTEM_PROPERTY) != null;
 	}
 	
 	public static boolean jaxbJarFileExists() {
-		return (new File(getSystemProperty(TestJaxbProject.JAXB_JAR_NAME_SYSTEM_PROPERTY))).exists();
+		return (new File(getSystemProperty(JaxbProjectTestHarness.JAXB_JAR_NAME_SYSTEM_PROPERTY))).exists();
 	}
 	
 	public static boolean eclipselinkJarPropertyExists() {
-		return getSystemProperty(TestJaxbProject.ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY) != null;
+		return getSystemProperty(JaxbProjectTestHarness.ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY) != null;
 	}
 	
 	public static boolean eclipselinkJarFileExists() {
-		return (new File(getSystemProperty(TestJaxbProject.ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY))).exists();
+		return (new File(getSystemProperty(JaxbProjectTestHarness.ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY))).exists();
 	}
 	
 	public static String buildMissingJarErrorMessage() {
 		if( ! jaxbJarPropertyExists()) {
-			return errorMissingProperty(TestJaxbProject.JAXB_JAR_NAME_SYSTEM_PROPERTY);
+			return errorMissingProperty(JaxbProjectTestHarness.JAXB_JAR_NAME_SYSTEM_PROPERTY);
 		}
 		else if( ! jaxbJarFileExists()) {
-			return errorJarFileDoesNotExist(getSystemProperty(TestJaxbProject.JAXB_JAR_NAME_SYSTEM_PROPERTY));
+			return errorJarFileDoesNotExist(getSystemProperty(JaxbProjectTestHarness.JAXB_JAR_NAME_SYSTEM_PROPERTY));
 		}
 		else if( ! eclipselinkJarPropertyExists()) {
-			return errorMissingProperty(TestJaxbProject.ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY);
+			return errorMissingProperty(JaxbProjectTestHarness.ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY);
 		}
-		return errorJarFileDoesNotExist(getSystemProperty(TestJaxbProject.ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY));
+		return errorJarFileDoesNotExist(getSystemProperty(JaxbProjectTestHarness.ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY));
 	}
 	
 	/*********** private **********/

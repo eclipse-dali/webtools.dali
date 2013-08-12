@@ -21,7 +21,7 @@ import org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetInstallDataModelProvide
 import org.eclipse.jpt.jaxb.core.internal.libval.JaxbLibraryValidatorTools;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformManager;
-import org.eclipse.jpt.jaxb.core.tests.internal.projects.TestJaxbProject;
+import org.eclipse.jpt.jaxb.core.tests.internal.projects.JaxbProjectTestHarness;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -44,10 +44,10 @@ public class JaxbTestCase
 		return buildJaxbProject(BASE_PROJECT_NAME, autoBuild, buildJaxbFacetInstallConfig());
 	}
 	
-	protected TestJaxbProject buildJaxbProject(
+	protected JaxbProjectTestHarness buildJaxbProject(
 			String projectName, boolean autoBuild, IDataModel jaxbConfig) 
 			throws Exception {
-		return TestJaxbProject.buildJaxbProject(projectName, autoBuild, jaxbConfig);
+		return JaxbProjectTestHarness.buildJaxbProject(projectName, autoBuild, jaxbConfig);
 	}
 	
 	protected IDataModel buildJaxbFacetInstallConfig() {
@@ -78,8 +78,8 @@ public class JaxbTestCase
 	}
 	
 	@Override
-	protected TestJaxbProject getJavaProjectTestHarness() {
-		return (TestJaxbProject) super.getJavaProjectTestHarness();
+	protected JaxbProjectTestHarness getJavaProjectTestHarness() {
+		return (JaxbProjectTestHarness) super.getJavaProjectTestHarness();
 	}
 	
 	protected JaxbProject getJaxbProject() {

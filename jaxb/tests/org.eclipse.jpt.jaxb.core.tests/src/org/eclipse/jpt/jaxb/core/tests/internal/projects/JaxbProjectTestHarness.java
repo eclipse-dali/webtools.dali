@@ -33,7 +33,7 @@ import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
  * controlled by building a data model and passing it into the constructor.
  */
 @SuppressWarnings("nls")
-public class TestJaxbProject
+public class JaxbProjectTestHarness
 		extends JavaProjectTestHarness {
 	
 	private final JaxbProject jaxbProject;
@@ -59,24 +59,24 @@ public class TestJaxbProject
 	
 	// ********** builders **********
 	
-	public static TestJaxbProject buildJaxbProject(
+	public static JaxbProjectTestHarness buildJaxbProject(
 			String baseProjectName, boolean autoBuild, IDataModel config)
 			throws CoreException {
-		return new TestJaxbProject(baseProjectName, autoBuild, config);
+		return new JaxbProjectTestHarness(baseProjectName, autoBuild, config);
 	}
 	
 	
 	// ********** constructors/initialization **********
 	
-	public TestJaxbProject(String projectName) throws CoreException {
+	public JaxbProjectTestHarness(String projectName) throws CoreException {
 		this(projectName, false);
 	}
 	
-	public TestJaxbProject(String projectName, boolean autoBuild) throws CoreException {
+	public JaxbProjectTestHarness(String projectName, boolean autoBuild) throws CoreException {
 		this(projectName, autoBuild, null);
 	}
 	
-	public TestJaxbProject(String projectName, boolean autoBuild, IDataModel config) throws CoreException {
+	public JaxbProjectTestHarness(String projectName, boolean autoBuild, IDataModel config) throws CoreException {
 		super(projectName, autoBuild);
 		String jaxbFacetVersion = 
 				((IProjectFacetVersion) config.getProperty(IFacetDataModelProperties.FACET_VERSION)).getVersionString();
@@ -110,7 +110,7 @@ public class TestJaxbProject
 
 	protected class SynchronousContextModelSynchronizerCommand implements Command {
 		public void execute() {
-			TestJaxbProject.this.jaxbProject.synchronizeContextModel(new NullProgressMonitor());
+			JaxbProjectTestHarness.this.jaxbProject.synchronizeContextModel(new NullProgressMonitor());
 		}
 	}
 	
@@ -124,7 +124,7 @@ public class TestJaxbProject
 
 	protected class SynchronousUpdateSynchronizerCommand implements Command {
 		public void execute() {
-			TestJaxbProject.this.jaxbProject.update(new NullProgressMonitor());
+			JaxbProjectTestHarness.this.jaxbProject.update(new NullProgressMonitor());
 		}
 	}
 	
