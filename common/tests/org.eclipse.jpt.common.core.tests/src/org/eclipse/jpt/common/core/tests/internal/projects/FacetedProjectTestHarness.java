@@ -24,16 +24,6 @@ public class FacetedProjectTestHarness
 	private final IFacetedProject facetedProject;
 
 
-	// ********** builders *****************************
-	
-	public static FacetedProjectTestHarness buildFacetedProject(String baseProjectName, boolean autoBuild)
-			throws CoreException {
-		return new FacetedProjectTestHarness(baseProjectName, autoBuild);
-	}
-	
-	
-	// ********** constructors/initialization **********
-
 	public FacetedProjectTestHarness(String projectName) throws CoreException {
 		this(projectName, true);
 	}
@@ -46,9 +36,6 @@ public class FacetedProjectTestHarness
 	private IFacetedProject createFacetedProject() throws CoreException {
 		return ProjectFacetsManager.create(this.getProject(), true, null);		// true = "convert if necessary"
 	}
-
-
-	// ********** public methods **********
 
 	public IFacetedProject getFacetedProject() {
 		return this.facetedProject;
@@ -63,19 +50,17 @@ public class FacetedProjectTestHarness
 	}
 
 	/**
-	 * if 'config' is null (and 'facetName' is "jpt.jpa"), the JPA project will be built with the defaults
-	 * defined in JpaFacetInstallDataModelProvider#getDefaultProperty(String)
-	 * In JPA the config object will be an IDataModel
-	 * In JAXB the config object will be a JaxbFacetInstallConfig
+	 * If <code>config</code> is <code>null</code>
+	 * (and <code>facetName</code> is <code>"jpt.jpa"</code>),
+	 * the JPA project will be built with the defaults defined in
+	 * {@code org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProvider.getDefaultProperty(String)}.
+	 * <p>
+	 * <code>config</code> will be an org.eclipse.wst.common.frameworks.datamodel.IDataModel
 	 */
 	public void installFacet(String facetName, String versionName, Object config) throws CoreException {
 		this.facetedProject.installProjectFacet(this.facetVersion(facetName, versionName), config, null);
 	}
 
-	/**
-	 * In JPA the config object will be an IDataModel
-	 * In JAXB the config object will be a JaxbFacetUninstallConfig
-	 */
 	public void uninstallFacet(String facetName, String versionName, Object config) throws CoreException {
 		this.facetedProject.uninstallProjectFacet(this.facetVersion(facetName, versionName), config, null);
 	}
@@ -83,5 +68,4 @@ public class FacetedProjectTestHarness
 	private IProjectFacetVersion facetVersion(String facetName, String versionName) {
 		return ProjectFacetsManager.getProjectFacet(facetName).getVersion(versionName);
 	}
-
 }
