@@ -56,9 +56,9 @@ public abstract class AbstractPrimaryKeyValidator
 		return this.typeMapping;
 	}
 	
+	 // Return the id class ref that is to be validated
 	protected IdClassReference idClassReference() {
 		return typeMapping().getIdClassReference();
-
 	}
 
 	protected TextRange getAttributeMappingTextRange(AttributeMapping attributeMapping) {
@@ -77,7 +77,7 @@ public abstract class AbstractPrimaryKeyValidator
 				messages.add(
 						ValidationMessageTools.buildValidationMessage(
 							typeMapping().getResource(),
-							idClassReference().getValidationTextRange(),
+							getIdClassRefValidationTextRange(),
 							JptJpaCoreValidationMessages.TYPE_MAPPING_PK_REDEFINED_ID_CLASS
 						)
 					);
@@ -97,7 +97,7 @@ public abstract class AbstractPrimaryKeyValidator
 	
 	// if a primary key defining class has multiple primary keys, it must use an id class
 	protected void validateIdClassIsUsedIfNecessary(List<IMessage> messages, IReporter reporter) {
-		if (! specifiesIdClass() && idClassIsRequired()) {
+		if (! declaresIdClassInHierarchy() && idClassIsRequired()) {
 			messages.add(
 					ValidationMessageTools.buildValidationMessage(
 						typeMapping().getResource(),
@@ -110,7 +110,7 @@ public abstract class AbstractPrimaryKeyValidator
 	
 	// only one composite primary key strategy may be used
 	protected void validateOneOfIdClassOrEmbeddedIdIsUsed(List<IMessage> messages, IReporter reporter) {
-		if (idClassReference().isSpecified()
+		if (declaresIdClassLocally()
 				&& IterableTools.size(typeMapping().getAllAttributeMappings(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY)) > 0) {
 			messages.add(
 					ValidationMessageTools.buildValidationMessage(
@@ -202,7 +202,7 @@ public abstract class AbstractPrimaryKeyValidator
 						messages.add(
 								ValidationMessageTools.buildValidationMessage(
 									typeMapping().getResource(),
-									idClassReference().getValidationTextRange(),
+									getIdClassRefValidationTextRange(),
 									JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_NOT_PRIMARY_KEY,
 									idClassAttribute.getName()
 								)
@@ -218,7 +218,7 @@ public abstract class AbstractPrimaryKeyValidator
 						messages.add(
 								ValidationMessageTools.buildValidationMessage(
 									typeMapping().getResource(),
-									idClassReference().getValidationTextRange(),
+									getIdClassRefValidationTextRange(),
 									JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_TYPE_DOES_NOT_AGREE,
 									idClassAttribute.getName(),
 									idClassAttributeTypeName
@@ -232,7 +232,7 @@ public abstract class AbstractPrimaryKeyValidator
 				messages.add(
 						ValidationMessageTools.buildValidationMessage(
 							typeMapping().getResource(),
-							idClassReference().getValidationTextRange(),
+							getIdClassRefValidationTextRange(),
 							JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_NO_MATCH,
 							idClassAttribute.getName()
 						)
@@ -253,7 +253,7 @@ public abstract class AbstractPrimaryKeyValidator
 					messages.add(
 							ValidationMessageTools.buildValidationMessage(
 								typeMapping().getResource(),
-								idClassReference().getValidationTextRange(),
+								getIdClassRefValidationTextRange(),
 								JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_DOES_NOT_EXIST,
 								attributeMapping.getName()
 							)
@@ -273,13 +273,17 @@ public abstract class AbstractPrimaryKeyValidator
 		validateIdClassConstructor(idClass, messages, reporter);
 	}
 
+	protected TextRange getIdClassRefValidationTextRange() {
+		return idClassReference().getValidationTextRange();
+	}
+
 	protected void checkMissingAttribute(JavaPersistentType idClass,
 			AttributeMapping attributeMapping, List<IMessage> messages, IReporter reporter) {
 		if (!IterableTools.contains(getIdClassAttributeNames(idClass), attributeMapping.getName())) {
 			messages.add(
 					ValidationMessageTools.buildValidationMessage(
 						typeMapping().getResource(),
-						idClassReference().getValidationTextRange(),
+						getIdClassRefValidationTextRange(),
 						JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_DOES_NOT_EXIST,
 						attributeMapping.getName()
 					)
@@ -297,7 +301,7 @@ public abstract class AbstractPrimaryKeyValidator
 			messages.add(
 					ValidationMessageTools.buildValidationMessage(
 						typeMapping().getResource(),
-						idClassReference().getValidationTextRange(),
+						getIdClassRefValidationTextRange(),
 						JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_NO_ARG_CONSTRUCTOR,
 						idClass.getName()
 					)
@@ -342,7 +346,7 @@ public abstract class AbstractPrimaryKeyValidator
 		messages.add(
 				ValidationMessageTools.buildValidationMessage(
 					typeMapping().getResource(),
-					idClassReference().getValidationTextRange(),
+					getIdClassRefValidationTextRange(),
 					JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_MAPPING_NO_MATCH,
 					attributeMapping.getName()
 				)
@@ -353,7 +357,7 @@ public abstract class AbstractPrimaryKeyValidator
 		messages.add(
 				ValidationMessageTools.buildValidationMessage(
 					typeMapping().getResource(),
-					idClassReference().getValidationTextRange(),
+					getIdClassRefValidationTextRange(),
 					JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_MAPPING_DUPLICATE_MATCH,
 					attributeMapping.getName()
 				)
@@ -389,7 +393,7 @@ public abstract class AbstractPrimaryKeyValidator
 			messages.add(
 					ValidationMessageTools.buildValidationMessage(
 						typeMapping().getResource(), 
-						idClassReference().getValidationTextRange(),
+						getIdClassRefValidationTextRange(),
 						JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_PROPERTY_METHOD_NOT_PUBLIC,
 						idClass.getJavaResourceType().getTypeBinding().getQualifiedName(),
 						methodName
@@ -508,7 +512,18 @@ public abstract class AbstractPrimaryKeyValidator
 	
 	// **************** id class **********************************************
 	
-	protected boolean specifiesIdClass() {
+	/**
+	 * Return whether an id class is specified on the class locally
+	 */
+	protected boolean declaresIdClassLocally() {
+		return typeMapping().getIdClassReference().isSpecified();
+	}
+		 
+	/**
+	 * Return whether an id class is specified in the class hierarchy
+	 * either on current class or on the super class
+	 */
+	protected boolean declaresIdClassInHierarchy() {
 		return idClassReference().isSpecified();
 	}
 	

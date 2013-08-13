@@ -39,7 +39,7 @@ public abstract class AbstractMappedSuperclassPrimaryKeyValidator
 		// ... and not both id and embedded id
 		validateOneOfEmbeddedOrIdIsUsed(messages, reporter);
 		
-		if (specifiesIdClass()) {
+		if (declaresIdClassInHierarchy()) {
 			validateIdClass(idClassReference().getIdClass(), messages, reporter);
 		}
 		return true;

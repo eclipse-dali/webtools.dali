@@ -9,8 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.jpa.core.context.IdClassReference;
 import org.eclipse.jpt.jpa.core.context.IdTypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AbstractEntityPrimaryKeyValidator;
@@ -40,11 +43,11 @@ public class EclipseLinkEntityPrimaryKeyValidator
 	// However, the id class may only be defined on one class in the hierarchy.
 	@Override
 	protected void validatePrimaryKeyIsNotRedefined(List<IMessage> messages, IReporter reporter) {
-		if (idClassReference().isSpecified() && definesIdClassOnAncestor(typeMapping())) {
+		if (declaresIdClassLocally() && definesIdClassOnAncestor(typeMapping())) {
 			messages.add(
 					ValidationMessageTools.buildValidationMessage(
 						typeMapping().getResource(),
-						idClassReference().getValidationTextRange(),
+						getIdClassRefValidationTextRange(),
 						JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_REDEFINED
 					)
 				);
@@ -58,9 +61,10 @@ public class EclipseLinkEntityPrimaryKeyValidator
 			|| ((EclipseLinkTypeMapping) typeMapping).usesPrimaryKeyTenantDiscriminatorColumns();
 	}
 	
+	 // in EclipseLink, an id class is regarded as specified when it is defined on the class locally or on the super class
 	@Override
-	protected boolean specifiesIdClass() {
-		return super.specifiesIdClass() || definesIdClass(typeMapping());
+	protected boolean declaresIdClassInHierarchy() {
+		return super.declaresIdClassInHierarchy() || definesIdClass(typeMapping());
 	}
 
 
@@ -69,5 +73,22 @@ public class EclipseLinkEntityPrimaryKeyValidator
 			JavaPersistentType idClass, List<IMessage> messages,
 			IReporter reporter) {
 		//do nothing - Eclipselink does not care about the existence status of property methods
+	}
+	
+	@Override
+	protected IdClassReference idClassReference() {
+		return IterableTools.size(getIdClassReferencesOnInheritanceHierarchy(typeMapping())) >= 1 ? 
+				IterableTools.first(getIdClassReferencesOnInheritanceHierarchy(typeMapping())) : super.idClassReference(); // multiple id class case is already handled somewhere else
+	}
+
+	
+	private Iterable<IdClassReference> getIdClassReferencesOnInheritanceHierarchy(IdTypeMapping typeMapping) {
+		ArrayList<IdClassReference> refs = new ArrayList<IdClassReference>();
+		for (IdTypeMapping each : typeMapping.getInheritanceHierarchy()) {
+			if (each.getIdClassReference().isSpecified()) {
+				refs.add(each.getIdClassReference());
+			}
+		}
+		return refs;
 	}
 }

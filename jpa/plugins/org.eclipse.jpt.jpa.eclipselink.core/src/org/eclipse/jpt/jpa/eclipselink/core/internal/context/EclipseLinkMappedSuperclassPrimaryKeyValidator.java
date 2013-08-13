@@ -40,7 +40,7 @@ public class EclipseLinkMappedSuperclassPrimaryKeyValidator
 	// However, the id class may only be defined on one class in the hierarchy.
 	@Override
 	protected void validatePrimaryKeyIsNotRedefined(List<IMessage> messages, IReporter reporter) {
-		if (idClassReference().isSpecified() && definesIdClassOnAncestor(typeMapping())) {
+		if (declaresIdClassLocally() && definesIdClassOnAncestor(typeMapping())) {
 			messages.add(
 					ValidationMessageTools.buildValidationMessage(
 						typeMapping().getResource(),
