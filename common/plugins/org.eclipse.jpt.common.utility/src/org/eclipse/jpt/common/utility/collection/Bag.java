@@ -70,6 +70,9 @@ public interface Bag<E>
 	 * Return an iterator that returns each item in the bag
 	 * once and only once, irrespective of how many times
 	 * the item was added to the bag.
+	 * Calling {@link java.util.Iterator#remove() remove} on the
+	 * returned iterator will remove from the bag <em>all</em> copies of
+	 * the iterator's current item.
 	 */
 	java.util.Iterator<E> uniqueIterator();
 
@@ -83,6 +86,9 @@ public interface Bag<E>
 	 * once and only once, irrespective of how many times
 	 * the item was added to the bag. The entry will indicate the item's
 	 * count.
+	 * Calling {@link java.util.Iterator#remove() remove} on the
+	 * returned iterator will remove from the bag <em>all</em> copies of
+	 * the item associated with the iterator's current entry.
 	 */
 	java.util.Iterator<Entry<E>> entries();
 
