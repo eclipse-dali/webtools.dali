@@ -1992,6 +1992,19 @@ public final class StringBuilderTools {
 		ClassTools.appendToStringNameTo(javaClass, sb);
 	}
 
+	/**
+	 * Append a "Java standard" {@link Object#toString() toString()} result for
+	 * the specified object to the specified string builder:<pre>
+	 *     package.ClassName@F3EE42
+	 * </pre>
+	 * @see Object#toString()
+	 */
+	public static void appendIdentityToString(StringBuilder sb, Object object) {
+		sb.append(object.getClass().getName());
+		sb.append('@');
+		sb.append(Integer.toHexString(object.hashCode()));
+	}
+
 
 	// ********** constructor **********
 

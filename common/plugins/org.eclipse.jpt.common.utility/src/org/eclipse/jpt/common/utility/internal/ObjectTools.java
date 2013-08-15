@@ -269,6 +269,19 @@ public final class ObjectTools {
 	}
 
 	/**
+	 * Build a "Java standard" {@link Object#toString() toString()} result for
+	 * the specified object:<pre>
+	 *     package.ClassName@F3EE42
+	 * </pre>
+	 * @see Object#toString()
+	 */
+	public static String identityToString(Object object) {
+		StringBuilder sb = new StringBuilder();
+		StringBuilderTools.appendIdentityToString(sb, object);
+		return sb.toString();
+	}
+
+	/**
 	 * Return a string suitable for a <em>singleton</em>; which is the simple
 	 * name of the object's class, since there should only be one.
 	 * 
