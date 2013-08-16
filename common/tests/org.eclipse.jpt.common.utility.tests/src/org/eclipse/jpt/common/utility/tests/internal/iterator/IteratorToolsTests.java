@@ -309,6 +309,15 @@ public class IteratorToolsTests
 		assertEquals(1, IteratorTools.indexOf(list.iterator(), "one"));
 	}
 
+	public void testIndexOfIteratorObjectInt() {
+		List<String> list = this.buildStringList1();
+		assertEquals(1, IteratorTools.indexOf(list.iterator(), "one", -1));
+		assertEquals(1, IteratorTools.indexOf(list.iterator(), "one", 1));
+		assertEquals(2, IteratorTools.indexOf(list.iterator(), "two", 1));
+		assertEquals(-1, IteratorTools.indexOf(list.iterator(), "one", 2));
+		assertEquals(-1, IteratorTools.indexOf(list.iterator(), "one", 22));
+	}
+
 	public void testIndexOfIteratorObject_String_Not() {
 		List<String> list = this.buildStringList1();
 		assertEquals(-1, IteratorTools.indexOf(list.iterator(), null));
@@ -319,6 +328,15 @@ public class IteratorToolsTests
 		List<String> list = this.buildStringList1();
 		list.add(null);
 		assertEquals(list.size() - 1, IteratorTools.indexOf(list.iterator(), null));
+	}
+
+	public void testIndexOfIteratorObjectInt_Null() {
+		List<String> list = this.buildStringList1();
+		list.add(null);
+		assertEquals(list.size() - 1, IteratorTools.indexOf(list.iterator(), null, -1));
+		assertEquals(list.size() - 1, IteratorTools.indexOf(list.iterator(), null, 2));
+		assertEquals(list.size() - 1, IteratorTools.indexOf(list.iterator(), null, list.size() - 1));
+		assertEquals(-1, IteratorTools.indexOf(list.iterator(), null, 22));
 	}
 
 	public void testIndexOfIteratorObject_Object() {
@@ -385,8 +403,26 @@ public class IteratorToolsTests
 		assertEquals(list.size() - 1, IteratorTools.lastIndexOf(list.iterator(), null));
 	}
 
+	public void testLastIndexOfIteratorObjectInt() {
+		List<String> list = this.buildStringList1();
+		assertEquals(-1, IteratorTools.lastIndexOf(list.iterator(), "one", -1));
+		assertEquals(1, IteratorTools.lastIndexOf(list.iterator(), "one", 1));
+		assertEquals(-1, IteratorTools.lastIndexOf(list.iterator(), "two", 1));
+		assertEquals(1, IteratorTools.lastIndexOf(list.iterator(), "one", 2));
+		assertEquals(1, IteratorTools.lastIndexOf(list.iterator(), "one", 22));
+	}
+
 	public void testLastIndexOfIteratorObject_Empty() {
 		assertEquals(-1, IteratorTools.lastIndexOf(EmptyIterator.instance(), "foo"));
+	}
+
+	public void testLastIndexOfIteratorObjectInt_Null() {
+		List<String> list = this.buildStringList1();
+		list.add(null);
+		assertEquals(-1, IteratorTools.lastIndexOf(list.iterator(), null, -1));
+		assertEquals(-1, IteratorTools.lastIndexOf(list.iterator(), null, 2));
+		assertEquals(list.size() - 1, IteratorTools.lastIndexOf(list.iterator(), null, list.size() - 1));
+		assertEquals(list.size() - 1, IteratorTools.lastIndexOf(list.iterator(), null, 22));
 	}
 
 
@@ -444,8 +480,8 @@ public class IteratorToolsTests
 	public void testSizeIterator() {
 		assertEquals(3, IteratorTools.size(this.buildObjectList1().iterator()));
 	}
-	
-	
+
+
 	// ********** sort **********
 
 	public void testSortIterator() {
@@ -507,6 +543,9 @@ public class IteratorToolsTests
 		Iterator<String> iterator2 = IteratorTools.<String>sort(iterator1, new ReverseComparator<String>(), 77);
 		assertTrue(IteratorTools.elementsAreEqual(ss.iterator(), iterator2));
 	}
+
+
+	// ********** constructor **********
 
 	public void testConstructor() {
 		boolean exCaught = false;

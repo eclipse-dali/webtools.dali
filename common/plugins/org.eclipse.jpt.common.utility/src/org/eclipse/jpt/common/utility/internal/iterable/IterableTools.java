@@ -254,6 +254,15 @@ public final class IterableTools {
 	}
 
 	/**
+	 * Return the index of the first occurrence of the
+	 * specified element in the specified iterable, starting at the specified index;
+	 * return -1 if there is no such element.
+	 */
+	public static int indexOf(Iterable<?> iterable, Object value, int startIndex) {
+		return IteratorTools.indexOf(iterable.iterator(), value, startIndex);
+	}
+
+	/**
 	 * Return whether the specified iterable is empty.
 	 * (Shortcut the iterator rather than calculating the entire size.)
 	 */
@@ -284,6 +293,15 @@ public final class IterableTools {
 	 */
 	public static int lastIndexOf(Iterable<?> iterable, Object value) {
 		return IteratorTools.lastIndexOf(iterable.iterator(), value);
+	}
+
+	/**
+	 * Return the index of the last occurrence of the
+	 * specified element in the specified iterable, starting at the specified index;
+	 * return -1 if there is no such element.
+	 */
+	public static int lastIndexOf(Iterable<?> iterable, Object value, int startIndex) {
+		return IteratorTools.lastIndexOf(iterable.iterator(), value, startIndex);
 	}
 
 	/**

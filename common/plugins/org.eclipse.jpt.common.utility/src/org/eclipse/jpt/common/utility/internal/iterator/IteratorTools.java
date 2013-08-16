@@ -286,14 +286,38 @@ public final class IteratorTools {
 	 * return -1 if there is no such element.
 	 */
 	public static int indexOf(Iterator<?> iterator, Object value) {
+		return iterator.hasNext() ? indexOf_(iterator, value, 0) : -1;
+	}
+
+	/**
+	 * Return the index of the first occurrence of the
+	 * specified element in the specified iterator, starting at the specified index;
+	 * return -1 if there is no such element.
+	 */
+	public static int indexOf(Iterator<?> iterator, Object value, int startIndex) {
+		if (startIndex < 0) {
+			startIndex = 0;
+		} else {
+			for (int i = 0; iterator.hasNext() && (i < startIndex); i++) {
+				iterator.next();
+			}
+		}
+		return iterator.hasNext() ? indexOf_(iterator, value, startIndex) : -1;
+	}
+
+	/**
+	 * assume iterator has more elements and is positioned at the start index
+	 * and start index >= 0
+	 */
+	private static int indexOf_(Iterator<?> iterator, Object value, int startIndex) {
 		if (value == null) {
-			for (int i = 0; iterator.hasNext(); i++) {
+			for (int i = startIndex; iterator.hasNext(); i++) {
 				if (iterator.next() == null) {
 					return i;
 				}
 			}
 		} else {
-			for (int i = 0; iterator.hasNext(); i++) {
+			for (int i = startIndex; iterator.hasNext(); i++) {
 				if (value.equals(iterator.next())) {
 					return i;
 				}
@@ -317,6 +341,45 @@ public final class IteratorTools {
 			}
 		} else {
 			for (int i = 0; iterator.hasNext(); i++) {
+				if (value.equals(iterator.next())) {
+					last = i;
+				}
+			}
+		}
+		return last;
+	}
+
+	/**
+	 * Return the index of the last occurrence of the
+	 * specified element in the specified iterator, starting at the specified index;
+	 * return -1 if there is no such element.
+	 */
+	public static int lastIndexOf(Iterator<?> iterator, Object value, int startIndex) {
+		if (startIndex < 0) {
+			return -1;
+		}
+		return iterator.hasNext() ? lastIndexOf_(iterator, value, startIndex) : -1;
+	}
+
+	/**
+	 * assume iterator has more elements and start index >= 0
+	 */
+	private static int lastIndexOf_(Iterator<?> iterator, Object value, int startIndex) {
+		int last = -1;
+		if (value == null) {
+			for (int i = 0; iterator.hasNext(); i++) {
+				if (i > startIndex) {
+					return last;
+				}
+				if (iterator.next() == null) {
+					last = i;
+				}
+			}
+		} else {
+			for (int i = 0; iterator.hasNext(); i++) {
+				if (i > startIndex) {
+					return last;
+				}
 				if (value.equals(iterator.next())) {
 					last = i;
 				}

@@ -286,6 +286,61 @@ public final class ListTools {
 	}
 
 
+	// ********** index of **********
+
+	/**
+	 * Return the index of the first occurrence of the
+	 * specified element in the specified list, starting at the specified index;
+	 * or return -1 if there is no such element.
+	 */
+	public static <E> int indexOf(List<E> list, Object value, int startIndex) {
+		int size = list.size();
+		return (size == 0) ? -1 : (startIndex >= size) ? -1 : indexOf(list, value, (startIndex < 0) ? 0 : startIndex, size);
+	}
+
+	/**
+	 * assume 0 <= start index < list size
+	 */
+	private static <E> int indexOf(List<E> list, Object value, int startIndex, int listSize) {
+		if (value == null) {
+			for (int i = startIndex; i < listSize; i++) {
+				if (list.get(i) == null) {
+					return i;
+				}
+			}
+		} else {
+			for (int i = startIndex; i < listSize; i++) {
+				if (value.equals(list.get(i))) {
+					return i;
+				}
+			}
+		}
+		return -1;
+	}
+
+	/**
+	 * Return the index of the first occurrence of the
+	 * specified element in the specified list, starting at the specified index;
+	 * or return -1 if there is no such element.
+	 */
+	public static <E> int identityIndexOf(List<E> list, Object value, int startIndex) {
+		int size = list.size();
+		return (size == 0) ? -1 : (startIndex >= size) ? -1 : identityIndexOf(list, value, (startIndex < 0) ? 0 : startIndex, size);
+	}
+
+	/**
+	 * assume 0 <= start index < list size
+	 */
+	private static <E> int identityIndexOf(List<E> list, Object value, int startIndex, int listSize) {
+		for (int i = startIndex; i < listSize; i++) {
+			if (list.get(i) == value) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+
 	// ********** insertion index **********
 
 	/**
@@ -338,6 +393,67 @@ public final class ListTools {
 			i++;
 		}
 		return i;
+	}
+
+
+	// ********** last index of **********
+
+	/**
+	 * Return the index of the last occurrence of the
+	 * specified element in the specified array, starting at the specified index;
+	 * or return -1 if there is no such element.
+	 */
+	public static <E> int lastIndexOf(List<E> list, Object value, int startIndex) {
+		if (startIndex < 0) {
+			return -1;
+		}
+		int size = list.size();
+		return (size == 0) ? -1 : lastIndexOf_(list, value, (startIndex >= size) ? size - 1 : startIndex);
+	}
+
+	/**
+	 * assume 0 <= start index < list size
+	 */
+	private static <E> int lastIndexOf_(List<E> list, Object value, int startIndex) {
+		if (value == null) {
+			for (int i = startIndex; i >= 0; i--) {
+				if (list.get(i) == null) {
+					return i;
+				}
+			}
+		} else {
+			for (int i = startIndex; i >= 0; i--) {
+				if (value.equals(list.get(i))) {
+					return i;
+				}
+			}
+		}
+		return -1;
+	}
+
+	/**
+	 * Return the index of the last occurrence of the
+	 * specified element in the specified array, starting at the specified index;
+	 * or return -1 if there is no such element.
+	 */
+	public static <E> int lastIdentityIndexOf(List<E> list, Object value, int startIndex) {
+		if (startIndex < 0) {
+			return -1;
+		}
+		int size = list.size();
+		return (size == 0) ? -1 : lastIdentityIndexOf_(list, value, (startIndex >= size) ? size - 1 : startIndex);
+	}
+
+	/**
+	 * assume 0 <= start index < list size
+	 */
+	private static <E> int lastIdentityIndexOf_(List<E> list, Object value, int startIndex) {
+		for (int i = startIndex; i >= 0; i--) {
+			if (list.get(i) == value) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 

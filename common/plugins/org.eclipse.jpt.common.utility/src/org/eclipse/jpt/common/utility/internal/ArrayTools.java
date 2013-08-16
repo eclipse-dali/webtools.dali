@@ -1234,19 +1234,36 @@ public final class ArrayTools {
 
 	/**
 	 * Return the index of the first occurrence of the
-	 * specified element in the specified array,
-	 * or return -1 if there is no such index.
+	 * specified element in the specified array;
+	 * or return -1 if there is no such element.
 	 */
 	public static int indexOf(Object[] array, Object value) {
 		int len = array.length;
+		return (len == 0) ? -1 : indexOf(array, value, 0, len);
+	}
+
+	/**
+	 * Return the index of the first occurrence of the
+	 * specified element in the specified array, starting at the specified index;
+	 * or return -1 if there is no such element.
+	 */
+	public static int indexOf(Object[] array, Object value, int startIndex) {
+		int len = array.length;
+		return (len == 0) ? -1 : (startIndex >= len) ? -1 : indexOf(array, value, (startIndex < 0) ? 0 : startIndex, len);
+	}
+
+	/**
+	 * assume 0 <= start index < array length
+	 */
+	private static int indexOf(Object[] array, Object value, int startIndex, int arrayLength) {
 		if (value == null) {
-			for (int i = 0; i < len; i++) {
+			for (int i = startIndex; i < arrayLength; i++) {
 				if (array[i] == null) {
 					return i;
 				}
 			}
 		} else {
-			for (int i = 0; i < len; i++) {
+			for (int i = startIndex; i < arrayLength; i++) {
 				if (value.equals(array[i])) {
 					return i;
 				}
@@ -1257,27 +1274,29 @@ public final class ArrayTools {
 
 	/**
 	 * Return the index of the first occurrence of the
-	 * specified element in the specified array,
-	 * or return -1 if there is no such index.
-	 */
-	public static int identityIndexOf(Object[] array, Object value) {
-		int len = array.length;
-		for (int i = 0; i < len; i++) {
-			if (array[i] == value) {
-				return i;
-			}
-		}
-		return -1;
-	}
-
-	/**
-	 * Return the index of the first occurrence of the
-	 * specified element in the specified array,
-	 * or return -1 if there is no such index.
+	 * specified element in the specified array;
+	 * or return -1 if there is no such element.
 	 */
 	public static int indexOf(char[] array, char value) {
 		int len = array.length;
-		for (int i = 0; i < len; i++) {
+		return (len == 0) ? -1 : indexOf(array, value, 0, len);
+	}
+
+	/**
+	 * Return the index of the first occurrence of the
+	 * specified element in the specified array, starting at the specified index;
+	 * or return -1 if there is no such element.
+	 */
+	public static int indexOf(char[] array, char value, int startIndex) {
+		int len = array.length;
+		return (len == 0) ? -1 : (startIndex >= len) ? -1 : indexOf(array, value, (startIndex < 0) ? 0 : startIndex, len);
+	}
+
+	/**
+	 * assume 0 <= start index < array length
+	 */
+	private static int indexOf(char[] array, char value, int startIndex, int arrayLength) {
+		for (int i = startIndex; i < arrayLength; i++) {
 			if (array[i] == value) {
 				return i;
 			}
@@ -1287,12 +1306,61 @@ public final class ArrayTools {
 
 	/**
 	 * Return the index of the first occurrence of the
-	 * specified element in the specified array,
-	 * or return -1 if there is no such index.
+	 * specified element in the specified array;
+	 * or return -1 if there is no such element.
 	 */
 	public static int indexOf(int[] array, int value) {
 		int len = array.length;
-		for (int i = 0; i < len; i++) {
+		return (len == 0) ? -1 : indexOf(array, value, 0, len);
+	}
+
+	/**
+	 * Return the index of the first occurrence of the
+	 * specified element in the specified array, starting at the specified index;
+	 * or return -1 if there is no such element.
+	 */
+	public static int indexOf(int[] array, int value, int startIndex) {
+		int len = array.length;
+		return (len == 0) ? -1 : (startIndex >= len) ? -1 : indexOf(array, value, (startIndex < 0) ? 0 : startIndex, len);
+	}
+
+	/**
+	 * assume 0 <= start index < array length
+	 */
+	private static int indexOf(int[] array, int value, int startIndex, int arrayLength) {
+		for (int i = startIndex; i < arrayLength; i++) {
+			if (array[i] == value) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	/**
+	 * Return the index of the first occurrence of the
+	 * specified element in the specified array;
+	 * or return -1 if there is no such element.
+	 */
+	public static int identityIndexOf(Object[] array, Object value) {
+		int len = array.length;
+		return (len == 0) ? -1 : identityIndexOf(array, value, 0, len);
+	}
+
+	/**
+	 * Return the index of the first occurrence of the
+	 * specified element in the specified array, starting at the specified index;
+	 * or return -1 if there is no such element.
+	 */
+	public static int identityIndexOf(Object[] array, Object value, int startIndex) {
+		int len = array.length;
+		return (len == 0) ? -1 : (startIndex >= len) ? -1 : identityIndexOf(array, value, (startIndex < 0) ? 0 : startIndex, len);
+	}
+
+	/**
+	 * assume 0 <= start index < array length
+	 */
+	private static int identityIndexOf(Object[] array, Object value, int startIndex, int arrayLength) {
+		for (int i = startIndex; i < arrayLength; i++) {
 			if (array[i] == value) {
 				return i;
 			}
@@ -1428,18 +1496,38 @@ public final class ArrayTools {
 	/**
 	 * Return the index of the last occurrence of the
 	 * specified element in the specified array;
-	 * return -1 if there is no such index.
+	 * return -1 if there is no such element.
 	 */
 	public static int lastIndexOf(Object[] array, Object value) {
 		int len = array.length;
+		return (len == 0) ? -1 : lastIndexOf_(array, value, len - 1);
+	}
+
+	/**
+	 * Return the index of the last occurrence of the
+	 * specified element in the specified array, starting at the specified index;
+	 * return -1 if there is no such element.
+	 */
+	public static int lastIndexOf(Object[] array, Object value, int startIndex) {
+		if (startIndex < 0) {
+			return -1;
+		}
+		int len = array.length;
+		return (len == 0) ? -1 : lastIndexOf_(array, value, (startIndex >= len) ? len - 1 : startIndex);
+	}
+
+	/**
+	 * assume 0 <= start index < length of array
+	 */
+	private static int lastIndexOf_(Object[] array, Object value, int startIndex) {
 		if (value == null) {
-			for (int i = len; i-- > 0; ) {
+			for (int i = startIndex; i >= 0; i--) {
 				if (array[i] == null) {
 					return i;
 				}
 			}
 		} else {
-			for (int i = len; i-- > 0; ) {
+			for (int i = startIndex; i >= 0; i--) {
 				if (value.equals(array[i])) {
 					return i;
 				}
@@ -1450,11 +1538,32 @@ public final class ArrayTools {
 
 	/**
 	 * Return the index of the last occurrence of the
-	 * specified element in the specified array,
-	 * or return -1 if there is no such index.
+	 * specified element in the specified array;
+	 * or return -1 if there is no such element.
 	 */
 	public static int lastIndexOf(char[] array, char value) {
-		for (int i = array.length; i-- > 0; ) {
+		int len = array.length;
+		return (len == 0) ? -1 : lastIndexOf_(array, value, len - 1);
+	}
+
+	/**
+	 * Return the index of the last occurrence of the
+	 * specified element in the specified array, starting at the specified index;
+	 * return -1 if there is no such element.
+	 */
+	public static int lastIndexOf(char[] array, char value, int startIndex) {
+		if (startIndex < 0) {
+			return -1;
+		}
+		int len = array.length;
+		return (len == 0) ? -1 : lastIndexOf_(array, value, (startIndex >= len) ? len - 1 : startIndex);
+	}
+
+	/**
+	 * assume 0 <= start index < length of array
+	 */
+	private static int lastIndexOf_(char[] array, char value, int startIndex) {
+		for (int i = startIndex; i >= 0; i--) {
 			if (array[i] == value) {
 				return i;
 			}
@@ -1464,11 +1573,67 @@ public final class ArrayTools {
 
 	/**
 	 * Return the index of the last occurrence of the
-	 * specified element in the specified array,
-	 * or return -1 if there is no such index.
+	 * specified element in the specified array;
+	 * or return -1 if there is no such element.
 	 */
 	public static int lastIndexOf(int[] array, int value) {
-		for (int i = array.length; i-- > 0; ) {
+		int len = array.length;
+		return (len == 0) ? -1 : lastIndexOf_(array, value, len - 1);
+	}
+
+	/**
+	 * Return the index of the last occurrence of the
+	 * specified element in the specified array, starting at the specified index;
+	 * return -1 if there is no such element.
+	 */
+	public static int lastIndexOf(int[] array, int value, int startIndex) {
+		if (startIndex < 0) {
+			return -1;
+		}
+		int len = array.length;
+		return (len == 0) ? -1 : lastIndexOf_(array, value, (startIndex >= len) ? len - 1 : startIndex);
+	}
+
+	/**
+	 * assume 0 <= start index < length of array
+	 */
+	private static int lastIndexOf_(int[] array, int value, int startIndex) {
+		for (int i = startIndex; i >= 0; i--) {
+			if (array[i] == value) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	/**
+	 * Return the index of the last occurrence of the
+	 * specified element in the specified array;
+	 * return -1 if there is no such element.
+	 */
+	public static int lastIdentityIndexOf(Object[] array, Object value) {
+		int len = array.length;
+		return (len == 0) ? -1 : lastIdentityIndexOf_(array, value, len - 1);
+	}
+
+	/**
+	 * Return the index of the last occurrence of the
+	 * specified element in the specified array, starting at the specified index;
+	 * return -1 if there is no such element.
+	 */
+	public static int lastIdentityIndexOf(Object[] array, Object value, int startIndex) {
+		if (startIndex < 0) {
+			return -1;
+		}
+		int len = array.length;
+		return (len == 0) ? -1 : lastIdentityIndexOf_(array, value, (startIndex >= len) ? len - 1 : startIndex);
+	}
+
+	/**
+	 * assume 0 <= start index < length of array
+	 */
+	private static int lastIdentityIndexOf_(Object[] array, Object value, int startIndex) {
+		for (int i = startIndex; i >= 0; i--) {
 			if (array[i] == value) {
 				return i;
 			}

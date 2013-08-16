@@ -1480,9 +1480,25 @@ public class ArrayToolsTests
 		assertEquals(1, ArrayTools.indexOf(a, "one"));
 	}
 
+	public void testIndexOfObjectArrayObjectInt() {
+		Object[] a = this.buildObjectArray1();
+		assertEquals(1, ArrayTools.indexOf(a, "one", -11));
+		assertEquals(1, ArrayTools.indexOf(a, "one", 1));
+		assertEquals(-1, ArrayTools.indexOf(a, "one", 2));
+		assertEquals(-1, ArrayTools.indexOf(a, "one", 22));
+	}
+
 	public void testIndexOfObjectArrayObject_NotFound() {
 		Object[] a = this.buildObjectArray1();
 		assertEquals(-1, ArrayTools.indexOf(a, "twenty"));
+	}
+
+	public void testIndexOfObjectArrayObjectInt_NotFound() {
+		Object[] a = this.buildObjectArray1();
+		assertEquals(-1, ArrayTools.indexOf(a, "twenty", -11));
+		assertEquals(-1, ArrayTools.indexOf(a, "twenty", 1));
+		assertEquals(-1, ArrayTools.indexOf(a, "twenty", 2));
+		assertEquals(-1, ArrayTools.indexOf(a, "twenty", 22));
 	}
 
 	public void testIndexOfObjectArrayObject_Null() {
@@ -1491,9 +1507,29 @@ public class ArrayToolsTests
 		assertEquals(a.length - 1, ArrayTools.indexOf(a, null));
 	}
 
+	public void testIndexOfObjectArrayObjectInt_Null() {
+		Object[] a = this.buildObjectArray1();
+		a = ArrayTools.add(a, null);
+		assertEquals(a.length - 1, ArrayTools.indexOf(a, null, -11));
+		assertEquals(a.length - 1, ArrayTools.indexOf(a, null, 2));
+		assertEquals(a.length - 1, ArrayTools.indexOf(a, null, 3));
+		assertEquals(-1, ArrayTools.indexOf(a, null, 4));
+		a = ArrayTools.add(a, "");
+		assertEquals(-1, ArrayTools.indexOf(a, null, 4));
+		assertEquals(-1, ArrayTools.indexOf(a, null, 22));
+	}
+
 	public void testIndexOfObjectArrayObject_Null_NotFound() {
 		Object[] a = this.buildObjectArray1();
 		assertEquals(-1, ArrayTools.indexOf(a, null));
+	}
+
+	public void testIndexOfObjectArrayObjectInt_Null_NotFound() {
+		Object[] a = this.buildObjectArray1();
+		assertEquals(-1, ArrayTools.indexOf(a, null, -11));
+		assertEquals(-1, ArrayTools.indexOf(a, null, 1));
+		assertEquals(-1, ArrayTools.indexOf(a, null, 2));
+		assertEquals(-1, ArrayTools.indexOf(a, null, 22));
 	}
 
 	public void testIdentityIndexOfObjectArrayObject() {
@@ -1507,6 +1543,20 @@ public class ArrayToolsTests
 		assertEquals(1, ArrayTools.identityIndexOf(a, bar));
 	}
 
+	public void testIdentityIndexOfObjectArrayObjectInt() {
+		String foo = "foo";
+		String bar = "bar";
+		String baz = "baz";
+		Object[] a = new Object[3];
+		a[0] = foo;
+		a[1] = bar;
+		a[2] = baz;
+		assertEquals(1, ArrayTools.identityIndexOf(a, bar, -11));
+		assertEquals(1, ArrayTools.identityIndexOf(a, bar, 1));
+		assertEquals(-1, ArrayTools.identityIndexOf(a, bar, 2));
+		assertEquals(-1, ArrayTools.identityIndexOf(a, bar, 22));
+	}
+
 	public void testIdentityIndexOfObjectArrayObject_NotFound() {
 		String foo = "foo";
 		String bar = "bar";
@@ -1518,6 +1568,20 @@ public class ArrayToolsTests
 		assertEquals(-1, ArrayTools.identityIndexOf(a, new String("bar")));
 	}
 
+	public void testIdentityIndexOfObjectArrayObjectInt_NotFound() {
+		String foo = "foo";
+		String bar = "bar";
+		String baz = "baz";
+		Object[] a = new Object[3];
+		a[0] = foo;
+		a[1] = bar;
+		a[2] = baz;
+		assertEquals(-1, ArrayTools.identityIndexOf(a, new String("bar"), -11));
+		assertEquals(-1, ArrayTools.identityIndexOf(a, new String("bar"), 1));
+		assertEquals(-1, ArrayTools.identityIndexOf(a, new String("bar"), 2));
+		assertEquals(-1, ArrayTools.identityIndexOf(a, new String("bar"), 22));
+	}
+
 	public void testIndexOfCharArrayChar() {
 		char[] a = this.buildCharArray();
 		assertEquals(1, ArrayTools.indexOf(a, 'b'));
@@ -1525,9 +1589,30 @@ public class ArrayToolsTests
 		assertEquals(a.length - 1, ArrayTools.indexOf(a, 'd'));
 	}
 
+	public void testIndexOfCharArrayCharInt() {
+		char[] a = this.buildCharArray();
+		assertEquals(1, ArrayTools.indexOf(a, 'b', -11));
+		assertEquals(1, ArrayTools.indexOf(a, 'b', 1));
+		assertEquals(-1, ArrayTools.indexOf(a, 'b', 2));
+		assertEquals(-1, ArrayTools.indexOf(a, 'b', 22));
+		a = ArrayTools.add(a, 'd');
+		assertEquals(a.length - 1, ArrayTools.indexOf(a, 'd', -11));
+		assertEquals(a.length - 1, ArrayTools.indexOf(a, 'd', 1));
+		assertEquals(-1, ArrayTools.indexOf(a, 'd', 4));
+		assertEquals(-1, ArrayTools.indexOf(a, 'd', 22));
+	}
+
 	public void testIndexOfCharArrayChar_NotFound() {
 		char[] a = this.buildCharArray();
 		assertEquals(-1, ArrayTools.indexOf(a, 'z'));
+	}
+
+	public void testIndexOfCharArrayCharInt_NotFound() {
+		char[] a = this.buildCharArray();
+		assertEquals(-1, ArrayTools.indexOf(a, 'z', -11));
+		assertEquals(-1, ArrayTools.indexOf(a, 'z', 1));
+		assertEquals(-1, ArrayTools.indexOf(a, 'z', 2));
+		assertEquals(-1, ArrayTools.indexOf(a, 'z', 22));
 	}
 
 	public void testIndexOfIntArrayInt() {
@@ -1537,9 +1622,30 @@ public class ArrayToolsTests
 		assertEquals(a.length - 1, ArrayTools.indexOf(a, 30));
 	}
 
+	public void testIndexOfIntArrayIntInt() {
+		int[] a = this.buildIntArray();
+		assertEquals(1, ArrayTools.indexOf(a, 10, -11));
+		assertEquals(1, ArrayTools.indexOf(a, 10, 1));
+		assertEquals(-1, ArrayTools.indexOf(a, 10, 2));
+		assertEquals(-1, ArrayTools.indexOf(a, 10, 22));
+		a = ArrayTools.add(a, 30);
+		assertEquals(a.length - 1, ArrayTools.indexOf(a, 30, -11));
+		assertEquals(a.length - 1, ArrayTools.indexOf(a, 30, 1));
+		assertEquals(-1, ArrayTools.indexOf(a, 30, 4));
+		assertEquals(-1, ArrayTools.indexOf(a, 30, 22));
+	}
+
 	public void testIndexOfIntArrayInt_NotFound() {
 		int[] a = this.buildIntArray();
 		assertEquals(-1, ArrayTools.indexOf(a, 1000));
+	}
+
+	public void testIndexOfIntArrayIntInt_NotFound() {
+		int[] a = this.buildIntArray();
+		assertEquals(-1, ArrayTools.indexOf(a, 1000, -11));
+		assertEquals(-1, ArrayTools.indexOf(a, 1000, 1));
+		assertEquals(-1, ArrayTools.indexOf(a, 1000, 2));
+		assertEquals(-1, ArrayTools.indexOf(a, 1000, 22));
 	}
 
 
@@ -1638,9 +1744,25 @@ public class ArrayToolsTests
 		assertEquals(1, ArrayTools.lastIndexOf(a, "one"));
 	}
 
+	public void testLastIndexOfObjectArrayObjectInt() {
+		Object[] a = this.buildObjectArray1();
+		assertEquals(1, ArrayTools.lastIndexOf(a, "one", 22));
+		assertEquals(1, ArrayTools.lastIndexOf(a, "one", 2));
+		assertEquals(1, ArrayTools.lastIndexOf(a, "one", 1));
+		assertEquals(-1, ArrayTools.lastIndexOf(a, "one", -11));
+	}
+
 	public void testLastIndexOfObjectArrayObject_NotFound() {
 		Object[] a = this.buildObjectArray1();
 		assertEquals(-1, ArrayTools.lastIndexOf(a, "twenty"));
+	}
+
+	public void testLastIndexOfObjectArrayObjectInt_NotFound() {
+		Object[] a = this.buildObjectArray1();
+		assertEquals(-1, ArrayTools.lastIndexOf(a, "twenty", 22));
+		assertEquals(-1, ArrayTools.lastIndexOf(a, "twenty", 2));
+		assertEquals(-1, ArrayTools.lastIndexOf(a, "twenty", 1));
+		assertEquals(-1, ArrayTools.lastIndexOf(a, "twenty", -11));
 	}
 
 	public void testLastIndexOfObjectArrayObject_Null() {
@@ -1649,9 +1771,26 @@ public class ArrayToolsTests
 		assertEquals(a.length - 1, ArrayTools.lastIndexOf(a, null));
 	}
 
+	public void testLastIndexOfObjectArrayObjectInt_Null() {
+		Object[] a = this.buildObjectArray1();
+		a = ArrayTools.add(a, null);
+		assertEquals(a.length - 1, ArrayTools.lastIndexOf(a, null, 22));
+		assertEquals(a.length - 1, ArrayTools.lastIndexOf(a, null, a.length - 1));
+		assertEquals(-1, ArrayTools.lastIndexOf(a, null, 1));
+		assertEquals(-1, ArrayTools.lastIndexOf(a, null, -11));
+	}
+
 	public void testLastIndexOfObjectArrayObject_Null_NotFound() {
 		Object[] a = this.buildObjectArray1();
 		assertEquals(-1, ArrayTools.lastIndexOf(a, null));
+	}
+
+	public void testLastIndexOfObjectArrayObjectInt_Null_NotFound() {
+		Object[] a = this.buildObjectArray1();
+		assertEquals(-1, ArrayTools.lastIndexOf(a, null, 22));
+		assertEquals(-1, ArrayTools.lastIndexOf(a, null, 2));
+		assertEquals(-1, ArrayTools.lastIndexOf(a, null, 1));
+		assertEquals(-1, ArrayTools.lastIndexOf(a, null, -11));
 	}
 
 	public void testLastIndexOfCharArrayChar() {
@@ -1661,9 +1800,30 @@ public class ArrayToolsTests
 		assertEquals(a.length - 1, ArrayTools.lastIndexOf(a, 'd'));
 	}
 
+	public void testLastIndexOfCharArrayIntChar() {
+		char[] a = this.buildCharArray();
+		assertEquals(1, ArrayTools.lastIndexOf(a, 'b', 22));
+		assertEquals(1, ArrayTools.lastIndexOf(a, 'b', a.length - 1));
+		assertEquals(1, ArrayTools.lastIndexOf(a, 'b', 1));
+		assertEquals(-1, ArrayTools.lastIndexOf(a, 'b', -11));
+		a = ArrayTools.add(a, 'd');
+		assertEquals(a.length - 1, ArrayTools.lastIndexOf(a, 'd', 22));
+		assertEquals(a.length - 1, ArrayTools.lastIndexOf(a, 'd', a.length - 1));
+		assertEquals(-1, ArrayTools.lastIndexOf(a, 'd', 1));
+		assertEquals(-1, ArrayTools.lastIndexOf(a, 'd', -11));
+	}
+
 	public void testLastIndexOfCharArrayChar_NotFound() {
 		char[] a = this.buildCharArray();
 		assertEquals(-1, ArrayTools.lastIndexOf(a, 'z'));
+	}
+
+	public void testLastIndexOfCharArrayCharInt_NotFound() {
+		char[] a = this.buildCharArray();
+		assertEquals(-1, ArrayTools.lastIndexOf(a, 'z', 22));
+		assertEquals(-1, ArrayTools.lastIndexOf(a, 'z', 2));
+		assertEquals(-1, ArrayTools.lastIndexOf(a, 'z', 1));
+		assertEquals(-1, ArrayTools.lastIndexOf(a, 'z', -11));
 	}
 
 	public void testLastIndexOfIntArrayInt() {
@@ -1673,9 +1833,30 @@ public class ArrayToolsTests
 		assertEquals(a.length - 1, ArrayTools.lastIndexOf(a, 30));
 	}
 
+	public void testLastIndexOfIntArrayIntInt() {
+		int[] a = this.buildIntArray();
+		assertEquals(1, ArrayTools.lastIndexOf(a, 10, 22));
+		assertEquals(1, ArrayTools.lastIndexOf(a, 10, 2));
+		assertEquals(1, ArrayTools.lastIndexOf(a, 10, 1));
+		assertEquals(-1, ArrayTools.lastIndexOf(a, 10, -11));
+		a = ArrayTools.add(a, 30);
+		assertEquals(a.length - 1, ArrayTools.lastIndexOf(a, 30, 22));
+		assertEquals(a.length - 1, ArrayTools.lastIndexOf(a, 30, a.length - 1));
+		assertEquals(-1, ArrayTools.lastIndexOf(a, 30, 1));
+		assertEquals(-1, ArrayTools.lastIndexOf(a, 30, -11));
+	}
+
 	public void testLastIndexOfIntArrayInt_NotFound() {
 		int[] a = this.buildIntArray();
 		assertEquals(-1, ArrayTools.lastIndexOf(a, 1000));
+	}
+
+	public void testLastIndexOfIntArrayIntInt_NotFound() {
+		int[] a = this.buildIntArray();
+		assertEquals(-1, ArrayTools.lastIndexOf(a, 1000, 22));
+		assertEquals(-1, ArrayTools.lastIndexOf(a, 1000, 2));
+		assertEquals(-1, ArrayTools.lastIndexOf(a, 1000, 1));
+		assertEquals(-1, ArrayTools.lastIndexOf(a, 1000, -11));
 	}
 
 

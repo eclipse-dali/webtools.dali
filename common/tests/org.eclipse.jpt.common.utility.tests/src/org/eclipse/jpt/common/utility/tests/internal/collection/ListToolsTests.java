@@ -265,6 +265,44 @@ public class ListToolsTests
 	}
 
 
+	// ********** index of **********
+
+	public void testIndexOfListObjectInt() {
+		List<String> list = Arrays.asList(new String[] { "A", "B", "C", "D" });
+		assertEquals(1, ListTools.indexOf(list, "B", -11));
+		assertEquals(1, ListTools.indexOf(list, "B", 1));
+		assertEquals(-1, ListTools.indexOf(list, "B", 2));
+		assertEquals(-1, ListTools.indexOf(list, "B", 22));
+	}
+
+	public void testIndexOfListObjectInt_Null() {
+		List<String> list = Arrays.asList(new String[] { "A", null, "C", "D" });
+		assertEquals(1, ListTools.indexOf(list, null, -11));
+		assertEquals(1, ListTools.indexOf(list, null, 1));
+		assertEquals(-1, ListTools.indexOf(list, null, 2));
+		assertEquals(-1, ListTools.indexOf(list, null, 22));
+	}
+
+	public void testIdentityIndexOfListObjectInt() {
+		String s = "B";
+		List<String> list = Arrays.asList(new String[] { "A", s, "C", "D" });
+		assertEquals(1, ListTools.identityIndexOf(list, s, -11));
+		assertEquals(1, ListTools.identityIndexOf(list, s, 1));
+		assertEquals(-1, ListTools.identityIndexOf(list, s, 2));
+		assertEquals(-1, ListTools.identityIndexOf(list, s, 22));
+	}
+
+	public void testIdentityIndexOfListObjectInt_NotFound() {
+		String s = "B";
+		List<String> list = Arrays.asList(new String[] { "A", s, "C", "D" });
+		String s2 = new String("B");
+		assertEquals(-1, ListTools.identityIndexOf(list, s2, -11));
+		assertEquals(-1, ListTools.identityIndexOf(list, s2, 1));
+		assertEquals(-1, ListTools.identityIndexOf(list, s2, 2));
+		assertEquals(-1, ListTools.identityIndexOf(list, s2, 22));
+	}
+
+
 	// ********** insertion index of **********
 
 	public void testInsertionIndexOfListComparableRandomAccess() {
@@ -347,6 +385,44 @@ public class ListToolsTests
 
 		list = new LinkedList<String>(Arrays.asList(new String[] { "D", "C", "B", "B", "A", "A" }));
 		assertEquals(4, ListTools.insertionIndexOf(list, "A", c));
+	}
+
+
+	// ********** last index of **********
+
+	public void testLastIndexOfListObjectInt() {
+		List<String> list = Arrays.asList(new String[] { "A", "B", "C", "D" });
+		assertEquals(-1, ListTools.lastIndexOf(list, "B", -11));
+		assertEquals(1, ListTools.lastIndexOf(list, "B", 1));
+		assertEquals(1, ListTools.lastIndexOf(list, "B", 2));
+		assertEquals(1, ListTools.lastIndexOf(list, "B", 22));
+	}
+
+	public void testLastIndexOfListObjectInt_Null() {
+		List<String> list = Arrays.asList(new String[] { "A", null, "C", "D" });
+		assertEquals(-1, ListTools.lastIndexOf(list, null, -11));
+		assertEquals(1, ListTools.lastIndexOf(list, null, 1));
+		assertEquals(1, ListTools.lastIndexOf(list, null, 2));
+		assertEquals(1, ListTools.lastIndexOf(list, null, 22));
+	}
+
+	public void testLastIdentityIndexOfListObjectInt() {
+		String s = "B";
+		List<String> list = Arrays.asList(new String[] { "A", s, "C", "D" });
+		assertEquals(-1, ListTools.lastIdentityIndexOf(list, s, -11));
+		assertEquals(1, ListTools.lastIdentityIndexOf(list, s, 1));
+		assertEquals(1, ListTools.lastIdentityIndexOf(list, s, 2));
+		assertEquals(1, ListTools.lastIdentityIndexOf(list, s, 22));
+	}
+
+	public void testLastIdentityIndexOfListObjectInt_NotFound() {
+		String s = "B";
+		List<String> list = Arrays.asList(new String[] { "A", s, "C", "D" });
+		String s2 = new String("B");
+		assertEquals(-1, ListTools.lastIdentityIndexOf(list, s2, -11));
+		assertEquals(-1, ListTools.lastIdentityIndexOf(list, s2, 1));
+		assertEquals(-1, ListTools.lastIdentityIndexOf(list, s2, 2));
+		assertEquals(-1, ListTools.lastIdentityIndexOf(list, s2, 22));
 	}
 
 

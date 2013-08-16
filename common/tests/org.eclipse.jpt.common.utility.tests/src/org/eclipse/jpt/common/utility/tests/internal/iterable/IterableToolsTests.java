@@ -195,6 +195,14 @@ public class IterableToolsTests
 		assertEquals(1, IterableTools.indexOf(iterable, "one"));
 	}
 
+	public void testIndexOfIterableObjectInt() {
+		Iterable<String> iterable = this.buildStringList1();
+		assertEquals(1, IterableTools.indexOf(iterable, "one", -11));
+		assertEquals(1, IterableTools.indexOf(iterable, "one", 1));
+		assertEquals(-1, IterableTools.indexOf(iterable, "one", 2));
+		assertEquals(-1, IterableTools.indexOf(iterable, "one", 22));
+	}
+
 	public void testIsEmptyIterable() {
 		assertFalse(IterableTools.isEmpty(buildObjectList1()));
 		assertTrue(IterableTools.isEmpty(EmptyIterable.instance()));
@@ -234,6 +242,14 @@ public class IterableToolsTests
 		assertEquals(1, IterableTools.lastIndexOf(iterable, "one"));
 		list.add(null);
 		assertEquals(list.size() - 1, IterableTools.lastIndexOf(iterable, null));
+	}
+
+	public void testLastIndexOfIterableObjectInt() {
+		Iterable<String> iterable = this.buildStringList1();
+		assertEquals(-1, IterableTools.lastIndexOf(iterable, "one", -11));
+		assertEquals(1, IterableTools.lastIndexOf(iterable, "one", 1));
+		assertEquals(1, IterableTools.lastIndexOf(iterable, "one", 2));
+		assertEquals(1, IterableTools.lastIndexOf(iterable, "one", 22));
 	}
 
 	public void testSizeIterable() {

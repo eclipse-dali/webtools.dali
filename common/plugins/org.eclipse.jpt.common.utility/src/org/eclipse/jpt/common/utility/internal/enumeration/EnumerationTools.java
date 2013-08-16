@@ -165,6 +165,13 @@ public final class EnumerationTools {
 	}
 
 	/**
+	 * Adapt the specified iterable to the {@link Enumeration} interface.
+	 */
+	public static <E> Enumeration<E> enumeration(Iterable<E> iterable) {
+		return enumeration(iterable.iterator());
+	}
+
+	/**
 	 * Adapt the specified iterator to the {@link Enumeration} interface.
 	 */
 	public static <E> Enumeration<E> enumeration(Iterator<E> iterator) {
@@ -204,14 +211,38 @@ public final class EnumerationTools {
 	 * return -1 if there is no such element.
 	 */
 	public static int indexOf(Enumeration<?> enumeration, Object value) {
+		return enumeration.hasMoreElements() ? indexOf_(enumeration, value, 0) : -1;
+	}
+
+	/**
+	 * Return the index of the first occurrence of the
+	 * specified element in the specified enumeration, starting at the specified index;
+	 * return -1 if there is no such element.
+	 */
+	public static int indexOf(Enumeration<?> enumeration, Object value, int startIndex) {
+		if (startIndex < 0) {
+			startIndex = 0;
+		} else {
+			for (int i = 0; enumeration.hasMoreElements() && (i < startIndex); i++) {
+				enumeration.nextElement();
+			}
+		}
+		return enumeration.hasMoreElements() ? indexOf_(enumeration, value, startIndex) : -1;
+	}
+
+	/**
+	 * assume enumeration has more elements and is positioned at the start index
+	 * and start index >= 0
+	 */
+	private static int indexOf_(Enumeration<?> enumeration, Object value, int startIndex) {
 		if (value == null) {
-			for (int i = 0; enumeration.hasMoreElements(); i++) {
+			for (int i = startIndex; enumeration.hasMoreElements(); i++) {
 				if (enumeration.nextElement() == null) {
 					return i;
 				}
 			}
 		} else {
-			for (int i = 0; enumeration.hasMoreElements(); i++) {
+			for (int i = startIndex; enumeration.hasMoreElements(); i++) {
 				if (value.equals(enumeration.nextElement())) {
 					return i;
 				}
@@ -235,6 +266,45 @@ public final class EnumerationTools {
 			}
 		} else {
 			for (int i = 0; enumeration.hasMoreElements(); i++) {
+				if (value.equals(enumeration.nextElement())) {
+					last = i;
+				}
+			}
+		}
+		return last;
+	}
+
+	/**
+	 * Return the index of the last occurrence of the
+	 * specified element in the specified enumeration, starting at the specified index;
+	 * return -1 if there is no such element.
+	 */
+	public static int lastIndexOf(Enumeration<?> enumeration, Object value, int startIndex) {
+		if (startIndex < 0) {
+			return -1;
+		}
+		return enumeration.hasMoreElements() ? lastIndexOf_(enumeration, value, startIndex) : -1;
+	}
+
+	/**
+	 * assume enumeration has more elements and start index >= 0
+	 */
+	private static int lastIndexOf_(Enumeration<?> enumeration, Object value, int startIndex) {
+		int last = -1;
+		if (value == null) {
+			for (int i = 0; enumeration.hasMoreElements(); i++) {
+				if (i > startIndex) {
+					return last;
+				}
+				if (enumeration.nextElement() == null) {
+					last = i;
+				}
+			}
+		} else {
+			for (int i = 0; enumeration.hasMoreElements(); i++) {
+				if (i > startIndex) {
+					return last;
+				}
 				if (value.equals(enumeration.nextElement())) {
 					last = i;
 				}
