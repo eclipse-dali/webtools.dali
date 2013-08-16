@@ -11,6 +11,7 @@ package org.eclipse.jpt.common.utility.tests.internal;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Iterator;
 import java.util.Vector;
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
@@ -53,6 +54,38 @@ public class ClassToolsTests
 //	private static String munge(String className) {
 //		return compilerDependentClassNameFor(className);
 //	}
+
+	public void testAllSuperclasses() {
+		Iterator<Class<?>> superclasses = ClassTools.allSuperclasses(java.util.Vector.class).iterator();
+		assertEquals(superclasses.next(), java.util.AbstractList.class);
+		assertEquals(superclasses.next(), java.util.AbstractCollection.class);
+		assertEquals(superclasses.next(), java.lang.Object.class);
+	}
+
+	public void testAllSuperclasses_Object() {
+		Iterator<Class<?>> superclasses = ClassTools.allSuperclasses(java.lang.Object.class).iterator();
+		assertFalse(superclasses.hasNext());
+	}
+
+	public void testAllInterfaces() {
+		int count = 0;
+		count += java.util.Vector.class.getInterfaces().length;
+		count += java.util.AbstractList.class.getInterfaces().length;
+		count += java.util.AbstractCollection.class.getInterfaces().length;
+		count += java.lang.Object.class.getInterfaces().length;
+		Iterable<Class<?>> interfaces = ClassTools.allInterfaces(java.util.Vector.class);
+		assertEquals(count, IterableTools.size(interfaces));
+		assertTrue(IterableTools.contains(interfaces, java.util.List.class));
+		assertTrue(IterableTools.contains(interfaces, java.util.RandomAccess.class));
+		assertTrue(IterableTools.contains(interfaces, java.util.Collection.class));
+		assertTrue(IterableTools.contains(interfaces, java.lang.Cloneable.class));
+		assertTrue(IterableTools.contains(interfaces, java.io.Serializable.class));
+	}
+
+	public void testAllInterfaces_Object() {
+		Iterator<Class<?>> interfaces = ClassTools.allInterfaces(java.lang.Object.class).iterator();
+		assertFalse(interfaces.hasNext());
+	}
 
 	public void testAllFields() {
 		int fieldCount = 0;

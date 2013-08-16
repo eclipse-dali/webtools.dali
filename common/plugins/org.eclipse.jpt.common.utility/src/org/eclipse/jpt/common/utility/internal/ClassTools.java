@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -42,6 +42,8 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 public final class ClassTools {
 
 	public static final Class<?>[] EMPTY_ARRAY = new Class[0];
+
+	public static final Class<?> OBJECT = java.lang.Object.class;
 
 	public static final Class<?> VOID = void.class;
 	public static final Class<java.lang.Void> VOID_WRAPPER = java.lang.Void.class;
@@ -157,6 +159,44 @@ public final class ClassTools {
 		} else {
 			sb.append(fullName, dot + 1, fullName.length());  // NB: end index is exclusive
 		}
+	}
+
+
+	// ********** superclasses **********
+
+	/**
+	 * Return all the superclasses for the
+	 * specified class, in order from the class's immediate superclass to
+	 * {@link Object}.
+	 * @see Class#getSuperclass()
+	 */
+	public static Iterable<Class<?>> allSuperclasses(Class<?> javaClass) {
+		javaClass = javaClass.getSuperclass();
+		if (javaClass == null) {
+			return IterableTools.emptyIterable();
+		}
+		ArrayList<Class<?>> classes = new ArrayList<Class<?>>();
+		do {
+			classes.add(javaClass);
+			javaClass = javaClass.getSuperclass();
+		} while (javaClass != null);
+		return classes;
+	}
+
+
+	// ********** interfaces **********
+
+	/**
+	 * Return all the interfaces for the
+	 * specified class, including inherited interfaces.
+	 * @see Class#getInterfaces()
+	 */
+	public static Iterable<Class<?>> allInterfaces(Class<?> javaClass) {
+		ArrayList<Class<?>> interfaces = new ArrayList<Class<?>>();
+		for (Class<?> tempClass = javaClass; tempClass != null; tempClass = tempClass.getSuperclass()) {
+			CollectionTools.<Class<?>>addAll(interfaces, tempClass.getInterfaces());
+		}
+		return interfaces;
 	}
 
 
