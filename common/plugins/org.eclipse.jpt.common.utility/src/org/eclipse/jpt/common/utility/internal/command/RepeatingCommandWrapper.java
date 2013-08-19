@@ -10,10 +10,10 @@
 package org.eclipse.jpt.common.utility.internal.command;
 
 import java.util.ArrayList;
-import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.CommandContext;
 import org.eclipse.jpt.common.utility.command.RepeatingCommand;
+import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.StackTrace;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 

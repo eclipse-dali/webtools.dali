@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.ui.internal.swt.listeners;
 
 import java.util.EventListener;
 import java.util.EventObject;
-import org.eclipse.jpt.common.utility.ExceptionHandler;
+import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
 import org.eclipse.swt.widgets.Display;
 
 /**

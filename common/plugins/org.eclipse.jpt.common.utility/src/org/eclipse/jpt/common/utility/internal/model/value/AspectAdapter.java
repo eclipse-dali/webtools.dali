@@ -11,8 +11,8 @@ package org.eclipse.jpt.common.utility.internal.model.value;
 
 import java.util.EventListener;
 
-import org.eclipse.jpt.common.utility.ExceptionHandler;
-import org.eclipse.jpt.common.utility.internal.DefaultExceptionHandler;
+import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
+import org.eclipse.jpt.common.utility.internal.exception.DefaultExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.common.utility.internal.model.SingleAspectChangeSupport;

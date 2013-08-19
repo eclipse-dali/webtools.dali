@@ -7,30 +7,34 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.internal;
+package org.eclipse.jpt.common.utility.internal.exception;
 
 import java.io.Serializable;
-import org.eclipse.jpt.common.utility.ExceptionHandler;
+import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
- * Singleton exception handler that does
- * nothing with the exception.
+ * Singleton exception handler that,
+ * like what happens with an unhandled exception
+ * (see {@link ThreadGroup#uncaughtException(Thread, Throwable)}),
+ * prints the exception's stack trace to {@link System#err the
+ * "standard" error output stream}.
  */
-public final class NullExceptionHandler
+public final class DefaultExceptionHandler
 	implements ExceptionHandler, Serializable
 {
-	public static final ExceptionHandler INSTANCE = new NullExceptionHandler();
+	public static final ExceptionHandler INSTANCE = new DefaultExceptionHandler();
 	public static ExceptionHandler instance() {
 		return INSTANCE;
 	}
 
 	// ensure single instance
-	private NullExceptionHandler() {
+	private DefaultExceptionHandler() {
 		super();
 	}
 
 	public void handleException(Throwable t) {
-		// do nothing
+		t.printStackTrace();
 	}
 
 	@Override

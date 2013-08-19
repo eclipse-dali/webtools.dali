@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility;
+package org.eclipse.jpt.common.utility.exception;
 
 /**
  * Simple interface for allowing clients to pass an exception handler to a

@@ -7,9 +7,9 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.internal;
+package org.eclipse.jpt.common.utility.internal.exception;
 
-import org.eclipse.jpt.common.utility.MultiThreadExceptionHandler;
+import org.eclipse.jpt.common.utility.exception.MultiThreadExceptionHandler;
 
 /**
  * This thread group overrides {@link #uncaughtException(Thread, Throwable)}

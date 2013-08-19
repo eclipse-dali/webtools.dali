@@ -7,12 +7,12 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.tests.internal;
+package org.eclipse.jpt.common.utility.tests.internal.exception;
 
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.ExceptionHandler;
-import org.eclipse.jpt.common.utility.internal.NullExceptionHandler;
-import org.eclipse.jpt.common.utility.internal.RuntimeExceptionHandler;
+import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
+import org.eclipse.jpt.common.utility.internal.exception.NullExceptionHandler;
+import org.eclipse.jpt.common.utility.internal.exception.RuntimeExceptionHandler;
 
 public class ExceptionHandlerTests extends TestCase {
 

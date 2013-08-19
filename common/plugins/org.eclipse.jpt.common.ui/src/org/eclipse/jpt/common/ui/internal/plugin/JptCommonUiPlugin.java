@@ -11,8 +11,8 @@ package org.eclipse.jpt.common.ui.internal.plugin;
 
 import org.eclipse.jpt.common.core.internal.utility.JptPlugin;
 import org.eclipse.jpt.common.ui.internal.JptUIPlugin;
-import org.eclipse.jpt.common.utility.ExceptionHandler;
-import org.eclipse.jpt.common.utility.internal.RuntimeExceptionHandler;
+import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
+import org.eclipse.jpt.common.utility.internal.exception.RuntimeExceptionHandler;
 
 /**
  * Dali UI plug-in.

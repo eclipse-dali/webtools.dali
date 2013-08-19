@@ -10,14 +10,14 @@
 package org.eclipse.jpt.common.utility.internal.command;
 
 import java.util.concurrent.ThreadFactory;
-import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.StatefulCommandContext;
+import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.ConsumerThreadCoordinator;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.RuntimeExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.SimpleThreadFactory;
 import org.eclipse.jpt.common.utility.internal.collection.SynchronizedQueue;
+import org.eclipse.jpt.common.utility.internal.exception.RuntimeExceptionHandler;
 
 /**
  * This command context will dispatch commands to be executed in a separate

@@ -11,8 +11,8 @@ package org.eclipse.jpt.common.utility.tests.internal.command;
 
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.StatefulCommandContext;
-import org.eclipse.jpt.common.utility.internal.RuntimeExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.command.AsynchronousExtendedCommandContext;
+import org.eclipse.jpt.common.utility.internal.exception.RuntimeExceptionHandler;
 import org.eclipse.jpt.common.utility.tests.internal.MultiThreadedTestCase;
 
 public class AsynchronousCommandContextTests

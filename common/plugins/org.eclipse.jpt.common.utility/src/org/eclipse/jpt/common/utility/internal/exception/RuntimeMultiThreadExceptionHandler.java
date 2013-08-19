@@ -7,35 +7,41 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.internal;
+package org.eclipse.jpt.common.utility.internal.exception;
 
 import java.io.Serializable;
-import org.eclipse.jpt.common.utility.ExceptionHandler;
-import org.eclipse.jpt.common.utility.MultiThreadExceptionHandler;
+import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
+import org.eclipse.jpt.common.utility.exception.MultiThreadExceptionHandler;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * Singleton multi-thread exception handler
- * that does nothing with the exception.
+ * that wraps the exception in a runtime exception and
+ * throws the runtime exception.
  */
-public final class NullMultiThreadExceptionHandler
+public final class RuntimeMultiThreadExceptionHandler
 	implements MultiThreadExceptionHandler, Serializable
 {
-	public static final ExceptionHandler INSTANCE = new NullMultiThreadExceptionHandler();
+	public static final ExceptionHandler INSTANCE = new RuntimeMultiThreadExceptionHandler();
 	public static ExceptionHandler instance() {
 		return INSTANCE;
 	}
 
 	// ensure single instance
-	private NullMultiThreadExceptionHandler() {
+	private RuntimeMultiThreadExceptionHandler() {
 		super();
 	}
 
 	public void handleException(Thread thread, Throwable t) {
-		// do nothing
+		this.handleException(t);
 	}
 
 	public void handleException(Throwable t) {
-		// do nothing
+		// re-throw the exception unchecked
+		if (t instanceof RuntimeException) {
+			throw (RuntimeException) t;
+		}
+		throw new RuntimeException(t);
 	}
 
 	@Override

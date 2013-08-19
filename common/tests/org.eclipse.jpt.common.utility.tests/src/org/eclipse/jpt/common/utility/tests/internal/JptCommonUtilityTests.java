@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,6 +14,7 @@ import junit.framework.TestSuite;
 import org.eclipse.jpt.common.utility.tests.internal.collection.JptCommonUtilityCollectionTests;
 import org.eclipse.jpt.common.utility.tests.internal.command.JptCommonUtilityCommandTests;
 import org.eclipse.jpt.common.utility.tests.internal.enumeration.JptCommonUtilityEnumerationTests;
+import org.eclipse.jpt.common.utility.tests.internal.exception.JptCommonUtilityExceptionTests;
 import org.eclipse.jpt.common.utility.tests.internal.io.JptCommonUtilityIOTests;
 import org.eclipse.jpt.common.utility.tests.internal.iterable.JptCommonUtilityIterableTests;
 import org.eclipse.jpt.common.utility.tests.internal.iterator.JptCommonUtilityIteratorTests;
@@ -35,6 +36,7 @@ public class JptCommonUtilityTests {
 		suite.addTest(JptCommonUtilityCollectionTests.suite());
 		suite.addTest(JptCommonUtilityCommandTests.suite());
 		suite.addTest(JptCommonUtilityEnumerationTests.suite());
+		suite.addTest(JptCommonUtilityExceptionTests.suite());
 		suite.addTest(JptCommonUtilityIOTests.suite());
 		suite.addTest(JptCommonUtilityIterableTests.suite());
 		suite.addTest(JptCommonUtilityIteratorTests.suite());
@@ -49,23 +51,15 @@ public class JptCommonUtilityTests {
 		suite.addTestSuite(BitToolsTests.class);
 		suite.addTestSuite(BooleanToolsTests.class);
 		suite.addTestSuite(ByteArrayToolsTests.class);
-		suite.addTestSuite(CancelExceptionTests.class);
 		suite.addTestSuite(CharacterToolsTests.class);
 		suite.addTestSuite(CharArrayToolsTests.class);
 		suite.addTestSuite(ClassToolsTests.class);
 		suite.addTestSuite(ClassNameToolsTests.class);
 		suite.addTestSuite(ClasspathTests.class);
-		suite.addTestSuite(CollectingExceptionHandlerTests.class);
-		suite.addTestSuite(CompositeExceptionHandlerTests.class);
-		suite.addTestSuite(CompositeExceptionTests.class);
-		suite.addTestSuite(CompositeMultiThreadedExceptionHandlerTests.class);
-		suite.addTestSuite(ExceptionHandlerTests.class);
 		suite.addTestSuite(ListenerListTests.class);
 		suite.addTestSuite(MapKeyAssociationTests.class);
 		suite.addTestSuite(NameToolsTests.class);
 		suite.addTestSuite(ObjectToolsTests.class);
-		suite.addTestSuite(PrintStreamExceptionHandlerTests.class);
-		suite.addTestSuite(PrintWriterExceptionHandlerTests.class);
 		suite.addTestSuite(RangeTests.class);
 		suite.addTestSuite(ReverseComparatorTests.class);
 		suite.addTestSuite(SimpleAssociationTests.class);

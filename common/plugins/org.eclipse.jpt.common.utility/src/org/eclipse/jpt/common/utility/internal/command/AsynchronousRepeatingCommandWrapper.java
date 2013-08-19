@@ -11,14 +11,14 @@ package org.eclipse.jpt.common.utility.internal.command;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadFactory;
-import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.RepeatingCommand;
+import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.ConsumerThreadCoordinator;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.RuntimeExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.SimpleThreadFactory;
 import org.eclipse.jpt.common.utility.internal.StackTrace;
+import org.eclipse.jpt.common.utility.internal.exception.RuntimeExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.reference.SynchronizedBoolean;
 
 /**

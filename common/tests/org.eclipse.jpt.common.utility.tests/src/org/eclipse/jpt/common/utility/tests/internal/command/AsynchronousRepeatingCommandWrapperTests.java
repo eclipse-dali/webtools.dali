@@ -11,12 +11,12 @@ package org.eclipse.jpt.common.utility.tests.internal.command;
 
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.RepeatingCommand;
-import org.eclipse.jpt.common.utility.internal.CollectingExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.ConsumerThreadCoordinator;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.RuntimeExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.command.AsynchronousRepeatingCommandWrapper;
 import org.eclipse.jpt.common.utility.internal.command.NullRepeatingCommand;
+import org.eclipse.jpt.common.utility.internal.exception.CollectingExceptionHandler;
+import org.eclipse.jpt.common.utility.internal.exception.RuntimeExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.tests.internal.MultiThreadedTestCase;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;

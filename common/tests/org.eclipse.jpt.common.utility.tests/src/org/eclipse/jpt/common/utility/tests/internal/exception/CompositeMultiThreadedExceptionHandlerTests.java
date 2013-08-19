@@ -7,12 +7,12 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.tests.internal;
+package org.eclipse.jpt.common.utility.tests.internal.exception;
 
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.MultiThreadExceptionHandler;
-import org.eclipse.jpt.common.utility.internal.CompositeMultiThreadedExceptionHandler;
-import org.eclipse.jpt.common.utility.tests.internal.CompositeExceptionHandlerTests.TestExceptionHandler;
+import org.eclipse.jpt.common.utility.exception.MultiThreadExceptionHandler;
+import org.eclipse.jpt.common.utility.internal.exception.CompositeMultiThreadedExceptionHandler;
+import org.eclipse.jpt.common.utility.tests.internal.exception.CompositeExceptionHandlerTests.TestExceptionHandler;
 
 public class CompositeMultiThreadedExceptionHandlerTests
 	extends TestCase

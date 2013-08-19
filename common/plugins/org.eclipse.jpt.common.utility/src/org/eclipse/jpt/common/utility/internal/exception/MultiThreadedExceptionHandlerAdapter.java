@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,18 +7,18 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.internal;
+package org.eclipse.jpt.common.utility.internal.exception;
+
+import org.eclipse.jpt.common.utility.exception.MultiThreadExceptionHandler;
 
 /**
- * This exception can be used to interrupt a process
- * (such as in a UI dialog process).
+ * Convenience exception handler that does nothing.
  */
-public class CancelException
-	extends RuntimeException
+public class MultiThreadedExceptionHandlerAdapter
+	extends ExceptionHandlerAdapter
+	implements MultiThreadExceptionHandler
 {
-	private static final long serialVersionUID = 1L;
-
-	public CancelException() {
-		super();
+	public void handleException(Thread thread, Throwable t) {
+		// NOP
 	}
 }

@@ -14,7 +14,7 @@ import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jpt.common.ui.internal.plugin.JptCommonUiPlugin;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemStructuredContentProvider;
-import org.eclipse.jpt.common.utility.ExceptionHandler;
+import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
 
 /**
  * @see AbstractItemStructuredStateProviderManager

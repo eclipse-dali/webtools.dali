@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.utility.tests.internal.model;
 
 import java.util.EventListener;
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.internal.RuntimeExceptionHandler;
+import org.eclipse.jpt.common.utility.internal.exception.RuntimeExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
