@@ -25,7 +25,7 @@ public class StringToolsTests
 		super(name);
 	}
 
-	// ********** padding/truncating/centering **********
+	// ********** padding/truncating/centering/repeating **********
 
 	public void testCenter() {
 		assertEquals("fred", StringTools.center("fred", 4));
@@ -69,6 +69,19 @@ public class StringToolsTests
 		assertEquals("1234", StringTools.zeroFit("1234", 4));
 		assertEquals("001234", StringTools.zeroFit("1234", 6));
 		assertEquals("34", StringTools.zeroFit("1234", 2));
+	}
+
+	public void testRepeat() {
+		this.verifyRepeat("", "1234", 0);
+		this.verifyRepeat("12", "1234", 2);
+		this.verifyRepeat("1234", "1234", 4);
+		this.verifyRepeat("123412", "1234", 6);
+		this.verifyRepeat("12341234", "1234", 8);
+		this.verifyRepeat("123412341234123412341", "1234", 21);
+	}
+
+	private void verifyRepeat(String expected, String string, int length) {
+		assertEquals(expected, StringTools.repeat(string, length));
 	}
 
 	// ********** separating **********

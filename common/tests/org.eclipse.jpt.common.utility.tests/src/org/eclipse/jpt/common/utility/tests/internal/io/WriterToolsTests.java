@@ -23,7 +23,7 @@ public class WriterToolsTests
 		super(name);
 	}
 
-	// ********** padding/truncating/centering **********
+	// ********** padding/truncating/centering/repeating **********
 
 	public void testCenter() throws Exception {
 		this.verifyCenter("fred", "fred", 4);
@@ -107,6 +107,36 @@ public class WriterToolsTests
 	private void verifyZeroFit(String expected, String string, int length) throws Exception {
 		Writer writer = new StringWriter();
 		WriterTools.zeroFit(writer, string, length);
+		assertEquals(expected, writer.toString());
+	}
+
+	public void testRepeat() throws Exception {
+		this.verifyRepeat("", "1234", 0);
+		this.verifyRepeat("12", "1234", 2);
+		this.verifyRepeat("1234", "1234", 4);
+		this.verifyRepeat("123412", "1234", 6);
+		this.verifyRepeat("12341234", "1234", 8);
+		this.verifyRepeat("123412341234123412341", "1234", 21);
+	}
+
+	private void verifyRepeat(String expected, String string, int length) throws Exception {
+		Writer writer = new StringWriter();
+		WriterTools.repeat(writer, string, length);
+		assertEquals(expected, writer.toString());
+	}
+
+	public void testRepeatCharArray() throws Exception {
+		this.verifyRepeatCharArray("", "1234", 0);
+		this.verifyRepeatCharArray("12", "1234", 2);
+		this.verifyRepeatCharArray("1234", "1234", 4);
+		this.verifyRepeatCharArray("123412", "1234", 6);
+		this.verifyRepeatCharArray("12341234", "1234", 8);
+		this.verifyRepeatCharArray("123412341234123412341", "1234", 21);
+	}
+
+	private void verifyRepeatCharArray(String expected, String string, int length) throws Exception {
+		Writer writer = new StringWriter();
+		WriterTools.repeat(writer, string.toCharArray(), length);
 		assertEquals(expected, writer.toString());
 	}
 

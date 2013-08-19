@@ -38,7 +38,7 @@ public final class StringBuilderTools {
 	}
 
 
-	// ********** padding/truncating/centering **********
+	// ********** padding/truncating/centering/repeating **********
 
 	/**
 	 * Center the specified string in the specified length.
@@ -371,6 +371,70 @@ public final class StringBuilderTools {
 	private static void frontPad_(StringBuilder sb, char[] string, int stringLength, int length, char c) {
 		fill(sb, stringLength, length, c);
 		sb.append(string);
+	}
+
+	/**
+	 * Repeat the specified string to the specified length.
+	 * If the string is already the specified length, append it unchanged.
+	 * If the string is longer than the specified length, truncate it.
+	 * If the string is shorter than the specified length, repeat it to the
+	 * specified length, truncating the last iteration if necessary.
+	 */
+	public static void repeat(StringBuilder sb, String string, int length) {
+		if (length == 0) {
+			return;
+		}
+		int stringLength = string.length();
+		if (stringLength == length) {
+			sb.append(string);
+		} else if (stringLength > length) {
+			sb.append(string, 0, length);  // NB: end index is exclusive
+		} else {
+			repeat(sb, string, length, stringLength);
+		}
+	}
+
+	/**
+	 * assume the string must, indeed, be repeated
+	 */
+	static void repeat(StringBuilder sb, String string, int length, int stringLength) {
+		do {
+			sb.append(string);
+			length = length - stringLength;
+		} while (stringLength <= length);
+		if (length > 0) {
+			sb.append(string, 0, length);  // NB: end index is exclusive
+		}
+	}
+
+	/**
+	 * @see #repeat(StringBuilder, String, int)
+	 */
+	public static void repeat(StringBuilder sb, char[] string, int length) {
+		if (length == 0) {
+			return;
+		}
+		int stringLength = string.length;
+		if (stringLength == length) {
+			sb.append(string);
+		} else if (stringLength > length) {
+			sb.append(string, 0, length);  // NB: end index is exclusive
+		} else {
+			repeat(sb, string, length, stringLength);
+		}
+	}
+
+	/**
+	 * assume the string must, indeed, be repeated
+	 */
+	static void repeat(StringBuilder sb, char[] string, int length, int stringLength) {
+		do {
+			sb.append(string);
+			length = length - stringLength;
+		} while (stringLength <= length);
+		if (length > 0) {
+			sb.append(string, 0, length);  // NB: end index is exclusive
+		}
 	}
 
 

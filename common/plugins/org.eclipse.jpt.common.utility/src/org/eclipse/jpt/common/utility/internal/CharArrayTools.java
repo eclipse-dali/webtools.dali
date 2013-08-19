@@ -93,7 +93,7 @@ public final class CharArrayTools {
 	}
 
 
-	// ********** padding/truncating/centering **********
+	// ********** padding/truncating/centering/repeating **********
 
 	/**
 	 * @see StringTools#center(String, int)
@@ -234,6 +234,25 @@ public final class CharArrayTools {
 		System.arraycopy(string, 0, result, padLength, stringLength);
 		Arrays.fill(result, 0, padLength, c);
 		return result;
+	}
+
+	/**
+	 * @see StringTools#repeat(String, int)
+	 */
+	public static char[] repeat(char[] string, int length) {
+		if (length == 0) {
+			return EMPTY_CHAR_ARRAY;
+		}
+		int stringLength = string.length;
+		if (stringLength == length) {
+			return string;
+		}
+		if (stringLength > length) {
+			return ArrayTools.subArrayLength(string, 0, length);
+		}
+		StringBuilder sb = new StringBuilder(length);
+		StringBuilderTools.repeat(sb, string, length, stringLength);
+		return StringBuilderTools.convertToCharArray(sb);
 	}
 
 

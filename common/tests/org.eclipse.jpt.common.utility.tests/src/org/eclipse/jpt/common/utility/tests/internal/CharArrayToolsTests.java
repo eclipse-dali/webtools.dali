@@ -21,7 +21,7 @@ import org.junit.Assert;
 public class CharArrayToolsTests
 	extends TestCase
 {
-	// ********** padding/truncating/centering **********
+	// ********** padding/truncating/centering/repeating **********
 
 	public void testCenter() {
 		TestTools.assertEquals("fred", CharArrayTools.center("fred".toCharArray(), 4));
@@ -65,6 +65,19 @@ public class CharArrayToolsTests
 		TestTools.assertEquals("1234", CharArrayTools.zeroFit(new char[] { '1', '2', '3', '4' }, 4));
 		TestTools.assertEquals("001234", CharArrayTools.zeroFit(new char[] { '1', '2', '3', '4' }, 6));
 		TestTools.assertEquals("34", CharArrayTools.zeroFit(new char[] { '1', '2', '3', '4' }, 2));
+	}
+
+	public void testRepeat() {
+		this.verifyRepeat("", "1234", 0);
+		this.verifyRepeat("12", "1234", 2);
+		this.verifyRepeat("1234", "1234", 4);
+		this.verifyRepeat("123412", "1234", 6);
+		this.verifyRepeat("12341234", "1234", 8);
+		this.verifyRepeat("123412341234123412341", "1234", 21);
+	}
+
+	private void verifyRepeat(String expected, String string, int length) {
+		TestTools.assertEquals(expected, CharArrayTools.repeat(string.toCharArray(), length));
 	}
 
 	// ********** separating **********

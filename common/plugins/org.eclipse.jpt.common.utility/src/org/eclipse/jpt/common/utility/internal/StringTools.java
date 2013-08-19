@@ -123,7 +123,7 @@ public final class StringTools {
 	}
 
 
-	// ********** padding/truncating/centering **********
+	// ********** padding/truncating/centering/repeating **********
 
 	/**
 	 * Center the specified string in the specified length.
@@ -153,7 +153,7 @@ public final class StringTools {
 		}
 		if (stringLength > length) {
 			int begin = (stringLength - length) >> 1; // take fewer characters off the front
-			return string.substring(begin, begin + length);
+			return string.substring(begin, begin + length);  // NB: end index is exclusive
 		}
 		// stringLength < length
 		char[] result = new char[length];
@@ -222,7 +222,7 @@ public final class StringTools {
 			return string;
 		}
 		if (stringLength > length) {
-			return string.substring(0, length);
+			return string.substring(0, length);  // NB: end index is exclusive
 		}
 		return pad(string, length, c, stringLength);
 	}
@@ -311,6 +311,29 @@ public final class StringTools {
 		string.getChars(0, stringLength, result, padLength);
 		Arrays.fill(result, 0, padLength, c);
 		return new String(result);
+	}
+
+	/**
+	 * Pad or truncate the specified string to the specified length.
+	 * If the string is already the specified length, return it unchanged.
+	 * If the string is longer than the specified length, truncate it.
+	 * If the string is shorter than the specified length, repeat it to the
+	 * specified length, truncating the last iteration if necessary.
+	 */
+	public static String repeat(String string, int length) {
+		if (length == 0) {
+			return EMPTY_STRING;
+		}
+		int stringLength = string.length();
+		if (stringLength == length) {
+			return string;
+		}
+		if (stringLength > length) {
+			return string.substring(0, length);  // NB: end index is exclusive
+		}
+		StringBuilder sb = new StringBuilder(length);
+		StringBuilderTools.repeat(sb, string, length, stringLength);
+		return sb.toString();
 	}
 
 
@@ -611,7 +634,7 @@ public final class StringTools {
 		int last = stringLength - 1;
 		if (index == last) {
 			// character found at the end of string
-			return string.substring(0, last);
+			return string.substring(0, last);  // NB: end index is exclusive
 		}
 		// character found somewhere in the middle of the string
 		StringBuilder sb = new StringBuilder(last);

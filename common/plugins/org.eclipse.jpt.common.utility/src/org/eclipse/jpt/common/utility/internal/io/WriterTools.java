@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
  */
 public final class WriterTools {
 
-	// ********** padding/truncating/centering **********
+	// ********** padding/truncating/centering/repeating **********
 
 	/**
 	 * Center the specified string in the specified length.
@@ -364,6 +364,70 @@ public final class WriterTools {
 	private static void frontPad_(Writer writer, char[] string, int stringLength, int length, char c) throws IOException {
 		fill(writer, stringLength, length, c);
 		writer.write(string);
+	}
+
+	/**
+	 * Repeat the specified string to the specified length.
+	 * If the string is already the specified length, append it unchanged.
+	 * If the string is longer than the specified length, truncate it.
+	 * If the string is shorter than the specified length, repeat it to the
+	 * specified length, truncating the last iteration if necessary.
+	 */
+	public static void repeat(Writer writer, String string, int length) throws IOException {
+		if (length == 0) {
+			return;
+		}
+		int stringLength = string.length();
+		if (stringLength == length) {
+			writer.write(string);
+		} else if (stringLength > length) {
+			writer.write(string, 0, length);
+		} else {
+			repeat(writer, string, length, stringLength);
+		}
+	}
+
+	/**
+	 * assume the string must, indeed, be repeated
+	 */
+	private static void repeat(Writer writer, String string, int length, int stringLength) throws IOException {
+		do {
+			writer.write(string);
+			length = length - stringLength;
+		} while (stringLength <= length);
+		if (length > 0) {
+			writer.write(string, 0, length);
+		}
+	}
+
+	/**
+	 * @see #repeat(Writer, String, int)
+	 */
+	public static void repeat(Writer writer, char[] string, int length) throws IOException {
+		if (length == 0) {
+			return;
+		}
+		int stringLength = string.length;
+		if (stringLength == length) {
+			writer.write(string);
+		} else if (stringLength > length) {
+			writer.write(string, 0, length);
+		} else {
+			repeat(writer, string, length, stringLength);
+		}
+	}
+
+	/**
+	 * assume the string must, indeed, be repeated
+	 */
+	private static void repeat(Writer writer, char[] string, int length, int stringLength) throws IOException {
+		do {
+			writer.write(string);
+			length = length - stringLength;
+		} while (stringLength <= length);
+		if (length > 0) {
+			writer.write(string, 0, length);
+		}
 	}
 
 
