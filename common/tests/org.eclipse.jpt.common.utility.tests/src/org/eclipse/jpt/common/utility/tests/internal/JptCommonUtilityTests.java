@@ -13,6 +13,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.eclipse.jpt.common.utility.tests.internal.collection.JptCommonUtilityCollectionTests;
 import org.eclipse.jpt.common.utility.tests.internal.command.JptCommonUtilityCommandTests;
+import org.eclipse.jpt.common.utility.tests.internal.comparator.JptCommonUtilityComparatorTests;
 import org.eclipse.jpt.common.utility.tests.internal.enumeration.JptCommonUtilityEnumerationTests;
 import org.eclipse.jpt.common.utility.tests.internal.exception.JptCommonUtilityExceptionTests;
 import org.eclipse.jpt.common.utility.tests.internal.io.JptCommonUtilityIOTests;
@@ -35,6 +36,7 @@ public class JptCommonUtilityTests {
 
 		suite.addTest(JptCommonUtilityCollectionTests.suite());
 		suite.addTest(JptCommonUtilityCommandTests.suite());
+		suite.addTest(JptCommonUtilityComparatorTests.suite());
 		suite.addTest(JptCommonUtilityEnumerationTests.suite());
 		suite.addTest(JptCommonUtilityExceptionTests.suite());
 		suite.addTest(JptCommonUtilityIOTests.suite());
@@ -61,7 +63,6 @@ public class JptCommonUtilityTests {
 		suite.addTestSuite(NameToolsTests.class);
 		suite.addTestSuite(ObjectToolsTests.class);
 		suite.addTestSuite(RangeTests.class);
-		suite.addTestSuite(ReverseComparatorTests.class);
 		suite.addTestSuite(SimpleAssociationTests.class);
 		suite.addTestSuite(SimpleJavaTypeTests.class);
 		suite.addTestSuite(SimpleMethodSignatureTests.class);
@@ -71,7 +72,6 @@ public class JptCommonUtilityTests {
 		suite.addTestSuite(StringToolsTests.class);
 		suite.addTestSuite(SystemToolsTests.class);
 		suite.addTestSuite(TypeDeclarationToolsTests.class);
-		suite.addTestSuite(VersionComparatorTests.class);
 		suite.addTestSuite(XMLToolsReadTests.class);
 		suite.addTestSuite(XMLToolsWriteTests.class);
 

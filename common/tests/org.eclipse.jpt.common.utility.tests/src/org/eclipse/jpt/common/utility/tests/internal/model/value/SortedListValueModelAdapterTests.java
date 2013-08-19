@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,10 +19,10 @@ import java.util.TreeSet;
 import junit.framework.TestCase;
 
 import org.eclipse.jpt.common.utility.collection.Bag;
-import org.eclipse.jpt.common.utility.internal.ReverseComparator;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.comparator.ReverseComparator;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;

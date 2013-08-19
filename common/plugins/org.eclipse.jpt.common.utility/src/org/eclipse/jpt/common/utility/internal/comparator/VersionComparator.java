@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,12 +7,13 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.internal;
+package org.eclipse.jpt.common.utility.internal.comparator;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.StringTokenizer;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * This comparator can be used to compare version strings

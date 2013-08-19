@@ -14,7 +14,7 @@ import java.util.Comparator;
 import java.util.Map;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.common.core.utility.BodySourceWriter;
-import org.eclipse.jpt.common.utility.internal.ComparatorAdapter;
+import org.eclipse.jpt.common.utility.internal.comparator.ComparatorAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;

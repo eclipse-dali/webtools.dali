@@ -13,7 +13,7 @@ import java.util.HashSet;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.JptResourceTypeManager;
-import org.eclipse.jpt.common.utility.internal.VersionComparator;
+import org.eclipse.jpt.common.utility.internal.comparator.VersionComparator;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperIterableWrapper;
 import com.ibm.icu.text.Collator;
 

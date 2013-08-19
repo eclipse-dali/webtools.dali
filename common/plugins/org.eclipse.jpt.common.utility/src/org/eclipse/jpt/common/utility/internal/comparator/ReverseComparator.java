@@ -7,10 +7,11 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.internal;
+package org.eclipse.jpt.common.utility.internal.comparator;
 
 import java.io.Serializable;
 import java.util.Comparator;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * This comparator will reverse the order of the specified comparator.

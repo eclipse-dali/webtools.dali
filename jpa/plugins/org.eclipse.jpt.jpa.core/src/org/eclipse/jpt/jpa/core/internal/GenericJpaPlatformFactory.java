@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal;
 
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.common.utility.internal.VersionComparator;
+import org.eclipse.jpt.common.utility.internal.comparator.VersionComparator;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPlatformFactory;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;

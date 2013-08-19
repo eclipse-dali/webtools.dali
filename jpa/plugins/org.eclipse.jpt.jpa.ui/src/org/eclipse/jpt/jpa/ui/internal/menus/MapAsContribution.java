@@ -15,7 +15,7 @@ import java.util.Map;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.ComparatorAdapter;
+import org.eclipse.jpt.common.utility.internal.comparator.ComparatorAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;

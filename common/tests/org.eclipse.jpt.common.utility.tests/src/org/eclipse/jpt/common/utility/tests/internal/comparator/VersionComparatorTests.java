@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.tests.internal;
+package org.eclipse.jpt.common.utility.tests.internal.comparator;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -15,8 +15,8 @@ import java.util.Comparator;
 import junit.framework.TestCase;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.VersionComparator;
-import org.eclipse.jpt.common.utility.internal.VersionComparator.SegmentParser;
+import org.eclipse.jpt.common.utility.internal.comparator.VersionComparator;
+import org.eclipse.jpt.common.utility.internal.comparator.VersionComparator.SegmentParser;
 
 @SuppressWarnings("nls")
 public class VersionComparatorTests

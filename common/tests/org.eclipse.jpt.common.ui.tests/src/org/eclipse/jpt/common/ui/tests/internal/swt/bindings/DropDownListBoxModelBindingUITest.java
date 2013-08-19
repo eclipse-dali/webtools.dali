@@ -21,7 +21,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
-import org.eclipse.jpt.common.utility.internal.ComparatorAdapter;
+import org.eclipse.jpt.common.utility.internal.comparator.ComparatorAdapter;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;

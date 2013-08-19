@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.internal;
+package org.eclipse.jpt.common.utility.internal.comparator;
 
 import java.io.Serializable;
 import java.util.Comparator;
