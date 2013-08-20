@@ -235,7 +235,7 @@ public final class CollectionTools {
 	 * Return a new collection with the filtered
 	 * elements of the specified collection.
 	 */
-	public static <E> HashBag<E> filter(Collection<? extends E> collection, Predicate<E> filter) {
+	public static <E> HashBag<E> filter(Collection<? extends E> collection, Predicate<? super E> filter) {
 		HashBag<E> result = new HashBag<E>(collection.size());
 		for (E e : collection) {
 			if (filter.evaluate(e)) {
@@ -506,7 +506,7 @@ public final class CollectionTools {
 	 * Return a new collection with transformations of the
 	 * elements in the specified collection.
 	 */
-	public static <E1, E2> HashBag<E2> transform(Collection<E1> collection, Transformer<E1, ? extends E2> transformer) {
+	public static <E1, E2> HashBag<E2> transform(Collection<E1> collection, Transformer<? super E1, ? extends E2> transformer) {
 		HashBag<E2> result = new HashBag<E2>(collection.size());
 		for (E1 e : collection) {
 			result.add(transformer.transform(e));
