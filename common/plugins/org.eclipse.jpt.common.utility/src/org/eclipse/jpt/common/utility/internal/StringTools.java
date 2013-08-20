@@ -37,6 +37,16 @@ public final class StringTools {
 	public static final String[] EMPTY_STRING_ARRAY = new String[0];
 
 
+	// ********** reverse **********
+
+	/**
+	 * Reverse the characters of the specified string.
+	 */
+	public static String reverse(String string) {
+		return (string.length() == 0) ? string : new String(ArrayTools.reverse(string.toCharArray()));
+	}
+
+
 	// ********** last **********
 
 	/**

@@ -39,6 +39,16 @@ public final class CharArrayTools {
 	public static final char[][] EMPTY_CHAR_ARRAY_ARRAY = new char[0][0];
 
 
+	// ********** reverse **********
+
+	/**
+	 * Return a new string with the reverse the characters of the specified string.
+	 */
+	public static char[] reverse(char[] string) {
+		return (string.length == 0) ? string : ArrayTools.reverse(string.clone());
+	}
+
+
 	// ********** last **********
 
 	/**
