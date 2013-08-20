@@ -193,8 +193,8 @@ public class FactoryTools {
 	 * @param <T> the type of the object returned by the factory
 	 * @see InstantiationFactory
 	 */
-	public static <T> Factory<T> instantiationFactory(Class<T> javaClass, Class<?> parameterType, Object argument) {
-		return instantiationFactory(javaClass, new Class[] {parameterType}, new Object[] {argument});
+	public static <T> Factory<T> instantiationFactory(Class<T> clazz, Class<?> parameterType, Object argument) {
+		return instantiationFactory(clazz, new Class[] {parameterType}, new Object[] {argument});
 	}
 
 	/**

@@ -30,6 +30,7 @@ public class JptCommonUtilityCollectionTests {
 		suite.addTestSuite(LinkedQueueTests.class);
 		suite.addTestSuite(LinkedStackTests.class);
 		suite.addTestSuite(ListToolsTests.class);
+		suite.addTestSuite(MapToolsTests.class);
 		suite.addTestSuite(NullElementListTests.class);
 		suite.addTestSuite(RepeatingElementListTests.class);
 		suite.addTestSuite(SynchronizedQueueTests.class);
