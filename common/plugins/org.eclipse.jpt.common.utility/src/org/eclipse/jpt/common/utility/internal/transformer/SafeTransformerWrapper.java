@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
- * Tranformer wrapper that will handle any exceptions thrown by the wrapped
+ * Transformer wrapper that will handle any exceptions thrown by the wrapped
  * transformer with an {@link ExceptionHandler exception handler}. If the
  * wrapped transformer throws an exception, the safe transformer will handle
  * the exception and return a client-configured output.

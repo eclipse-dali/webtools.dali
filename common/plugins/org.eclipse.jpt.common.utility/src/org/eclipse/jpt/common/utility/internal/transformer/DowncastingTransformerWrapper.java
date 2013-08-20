@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * Wrap a transformer that takes an object of type <code>I</code> and returns
- * an object of type <code>X</code>, converting it into a transformer
+ * an object of type <code>X</code>, converting it into a transformer that
  * takes an object of type <code>I</code> and returns
  * an object of type <code>O</code>. <em>Assume</em> the wrapped
  * transformer returns only objects of type <code>O</code>. The result is a

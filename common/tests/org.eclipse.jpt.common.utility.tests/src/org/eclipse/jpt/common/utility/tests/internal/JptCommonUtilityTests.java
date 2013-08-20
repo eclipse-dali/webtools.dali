@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.utility.tests.internal.command.JptCommonUtilityCom
 import org.eclipse.jpt.common.utility.tests.internal.comparator.JptCommonUtilityComparatorTests;
 import org.eclipse.jpt.common.utility.tests.internal.enumeration.JptCommonUtilityEnumerationTests;
 import org.eclipse.jpt.common.utility.tests.internal.exception.JptCommonUtilityExceptionTests;
+import org.eclipse.jpt.common.utility.tests.internal.factory.JptCommonUtilityFactoryTests;
 import org.eclipse.jpt.common.utility.tests.internal.io.JptCommonUtilityIOTests;
 import org.eclipse.jpt.common.utility.tests.internal.iterable.JptCommonUtilityIterableTests;
 import org.eclipse.jpt.common.utility.tests.internal.iterator.JptCommonUtilityIteratorTests;
@@ -39,6 +40,7 @@ public class JptCommonUtilityTests {
 		suite.addTest(JptCommonUtilityComparatorTests.suite());
 		suite.addTest(JptCommonUtilityEnumerationTests.suite());
 		suite.addTest(JptCommonUtilityExceptionTests.suite());
+		suite.addTest(JptCommonUtilityFactoryTests.suite());
 		suite.addTest(JptCommonUtilityIOTests.suite());
 		suite.addTest(JptCommonUtilityIterableTests.suite());
 		suite.addTest(JptCommonUtilityIteratorTests.suite());

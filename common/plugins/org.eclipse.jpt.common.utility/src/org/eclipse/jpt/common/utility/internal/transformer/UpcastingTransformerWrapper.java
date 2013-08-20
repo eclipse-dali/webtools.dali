@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * Wrap a transformer that takes an object of type <code>I</code> and returns
- * an object of type <code>X</code>, converting it into a transformer
+ * an object of type <code>X</code>, converting it into a transformer that
  * takes an object of type <code>I</code> and returns
  * an object of type <code>O</code>.
  * <p>
@@ -30,7 +30,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  *   transformer
  * 
  * @see CastingTransformerWrapper
- * @see UpcastingTransformerWrapper
+ * @see DowncastingTransformerWrapper
  */
 public class UpcastingTransformerWrapper<I, O, X extends O>
 	implements Transformer<I, O>

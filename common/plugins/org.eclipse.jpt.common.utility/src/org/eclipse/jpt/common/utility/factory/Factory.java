@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,11 +7,10 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.command;
+package org.eclipse.jpt.common.utility.factory;
 
 /**
- * Simple interface for implementing a command that takes a single argument
- * and allows for the command to throw an {@link InterruptedException}.
+ * Simple interface for implementing the Factory design pattern.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -19,22 +18,18 @@ package org.eclipse.jpt.common.utility.command;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @see org.eclipse.jpt.common.utility.command.ParameterizedCommand
+ * @param <T> the type of the object created by the factory
  * 
- * @param <A> the type of the object passed to the command
- * 
- * @see ParameterizedCommand
- * @see org.eclipse.jpt.common.utility.command.InterruptibleCommand
  * @see org.eclipse.jpt.common.utility.command.Command
- * @see org.eclipse.jpt.common.utility.factory.InterruptibleFactory
- * @see org.eclipse.jpt.common.utility.factory.Factory
+ * @see org.eclipse.jpt.common.utility.command.ParameterizedCommand
  * @see org.eclipse.jpt.common.utility.transformer.Transformer
  */
-public interface InterruptibleParameterizedCommand<A> {
-
+public interface Factory<T>
+	extends InterruptibleFactory<T>
+{
 	/**
-	 * Execute the command. The semantics of the command
+	 * Create a new object. The semantics of the factory
 	 * is determined by the contract between the client and server.
 	 */
-	void execute(A argument) throws InterruptedException;
+	T create();
 }

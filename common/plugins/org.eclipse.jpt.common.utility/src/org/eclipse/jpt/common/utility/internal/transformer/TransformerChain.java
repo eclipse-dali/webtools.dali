@@ -34,7 +34,7 @@ public class TransformerChain<I, O>
 
 	public TransformerChain(@SuppressWarnings("rawtypes") Transformer[] transformers) {
 		super();
-		if ((transformers == null) || ArrayTools.contains(transformers, null)) {
+		if (ArrayTools.isOrContainsNull(transformers)) {
 			throw new NullPointerException();
 		}
 		this.transformers = transformers;

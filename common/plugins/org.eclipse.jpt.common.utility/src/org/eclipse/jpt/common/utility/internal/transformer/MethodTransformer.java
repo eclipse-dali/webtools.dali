@@ -43,7 +43,7 @@ public class MethodTransformer<I, O>
 
 	public MethodTransformer(String methodName, Class<?>[] parameterTypes, Object[] arguments) {
 		super();
-		if ((methodName == null) || (parameterTypes == null) || ArrayTools.contains(parameterTypes, null) || (arguments == null)) {
+		if ((methodName == null) || ArrayTools.isOrContainsNull(parameterTypes) || (arguments == null)) {
 			throw new NullPointerException();
 		}
 		this.methodName = methodName;

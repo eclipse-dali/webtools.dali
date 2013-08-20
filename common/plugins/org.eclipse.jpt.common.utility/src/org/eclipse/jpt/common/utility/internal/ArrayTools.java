@@ -898,6 +898,22 @@ public final class ArrayTools {
 	// ********** contains **********
 
 	/**
+	 * Return whether the specified array is <code>null</code>
+	 * or, if it is not <code>null</code>, contains a <code>null</code>.
+	 * Convenient for argument checking.
+	 */
+	public static boolean isOrContainsNull(Object[] array) {
+		return (array == null) || contains(array, null, array.length);
+	}
+
+	/**
+	 * Return whether the specified array contains a <code>null</code>.
+	 */
+	public static boolean containsNull(Object[] array) {
+		return contains(array, null, array.length);
+	}
+
+	/**
 	 * Return whether the specified array contains the
 	 * specified element.
 	 */

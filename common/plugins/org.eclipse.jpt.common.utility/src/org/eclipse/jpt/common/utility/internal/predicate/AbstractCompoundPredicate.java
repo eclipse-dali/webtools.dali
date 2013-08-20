@@ -32,7 +32,7 @@ public abstract class AbstractCompoundPredicate<V>
 	 */
 	protected AbstractCompoundPredicate(Predicate<? super V>... predicates) {
 		super();
-		if ((predicates == null) || ArrayTools.contains(predicates, null)) {
+		if (ArrayTools.isOrContainsNull(predicates)) {
 			throw new NullPointerException();
 		}
 		this.predicates = predicates;

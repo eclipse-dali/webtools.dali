@@ -905,6 +905,16 @@ public class ArrayToolsTests
 
 	// ********** contains **********
 
+	public void testIsOrContainsNullObjectArray() {
+		Object[] a = this.buildObjectArray1();
+		assertFalse(ArrayTools.isOrContainsNull(a));
+		assertFalse(ArrayTools.contains(a, null));
+		Object[] a2 = ArrayTools.add(a, null);
+		assertTrue(ArrayTools.isOrContainsNull(a2));
+		a2 = null;
+		assertTrue(ArrayTools.isOrContainsNull(a2));
+	}
+
 	public void testContainsObjectArrayObject() {
 		Object[] a = this.buildObjectArray1();
 		assertTrue(ArrayTools.contains(a, "one"));
