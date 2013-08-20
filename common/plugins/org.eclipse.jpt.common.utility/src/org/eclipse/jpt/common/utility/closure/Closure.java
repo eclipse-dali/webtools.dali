@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.command;
+package org.eclipse.jpt.common.utility.closure;
 
 /**
  * Simple interface for implementing a command that takes a single argument.
@@ -24,8 +24,8 @@ package org.eclipse.jpt.common.utility.command;
  * @see org.eclipse.jpt.common.utility.factory.Factory
  * @see org.eclipse.jpt.common.utility.transformer.Transformer
  */
-public interface ParameterizedCommand<A>
-	extends InterruptibleParameterizedCommand<A>
+public interface Closure<A>
+	extends InterruptibleClosure<A>
 {
 	/**
 	 * Execute the command. The semantics of the command

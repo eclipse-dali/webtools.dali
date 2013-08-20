@@ -22,6 +22,10 @@ package org.eclipse.jpt.common.utility.transformer;
  * 
  * @param <I> input: the type of the object passed to the transformer
  * @param <O> output: the type of the object returned by the transformer
+ * 
+ * @see org.eclipse.jpt.common.utility.closure.Closure
+ * @see org.eclipse.jpt.common.utility.command.Command
+ * @see org.eclipse.jpt.common.utility.factory.Factory
  */
 public interface Transformer<I, O>
 	extends InterruptibleTransformer<I, O>

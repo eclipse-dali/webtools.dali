@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.utility.internal.iterable;
 
 import java.util.Collection;
 import java.util.Iterator;
-import org.eclipse.jpt.common.utility.command.ParameterizedCommand;
+import org.eclipse.jpt.common.utility.closure.Closure;
 import org.eclipse.jpt.common.utility.internal.iterator.CloneIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 
@@ -29,7 +29,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
  * By default, the iterator returned by a <code>LiveCloneIterable</code> does not
  * support the {@link Iterator#remove()} operation; this is because it does not
  * have access to the original collection. But if the <code>LiveCloneIterable</code>
- * is supplied with an {@link ParameterizedCommand remove command} it will delegate the
+ * is supplied with an {@link Closure remove closure} it will delegate the
  * {@link Iterator#remove()} operation to the command.
  * 
  * @param <E> the type of elements returned by the iterable's iterator
@@ -49,8 +49,8 @@ public class LiveCloneIterable<E>
 	 * The specified command will be used by any generated iterators to
 	 * remove objects from the original collection.
 	 */
-	public LiveCloneIterable(Collection<? extends E> collection, ParameterizedCommand<? super E> removeCommand) {
-		super(removeCommand);
+	public LiveCloneIterable(Collection<? extends E> collection, Closure<? super E> removeClosure) {
+		super(removeClosure);
 		if (collection == null) {
 			throw new NullPointerException();
 		}
@@ -61,7 +61,7 @@ public class LiveCloneIterable<E>
 	// ********** Iterable implementation **********
 
 	public Iterator<E> iterator() {
-		return IteratorTools.clone(this.collection, this.removeCommand);
+		return IteratorTools.clone(this.collection, this.removeClosure);
 	}
 
 	@Override

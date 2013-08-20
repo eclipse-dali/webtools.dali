@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.command.ParameterizedCommand;
+import org.eclipse.jpt.common.utility.closure.Closure;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.exception.RuntimeExceptionHandler;
@@ -244,7 +244,7 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 			return new ChangeSupport(this, RuntimeExceptionHandler.instance());
 		}
 		Iterator<String> strings() {
-			return IteratorTools.clone(this.strings, new ParameterizedCommand<String>() {
+			return IteratorTools.clone(this.strings, new Closure<String>() {
 				public void execute(String s) {
 					TestModel.this.removeString(s);
 				}

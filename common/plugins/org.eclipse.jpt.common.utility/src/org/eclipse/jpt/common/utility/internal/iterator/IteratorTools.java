@@ -16,16 +16,16 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.closure.Closure;
+import org.eclipse.jpt.common.utility.closure.InterruptibleClosure;
 import org.eclipse.jpt.common.utility.collection.Queue;
 import org.eclipse.jpt.common.utility.collection.Stack;
-import org.eclipse.jpt.common.utility.command.InterruptibleParameterizedCommand;
-import org.eclipse.jpt.common.utility.command.ParameterizedCommand;
 import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.closure.DisabledClosure;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.command.DisabledParameterizedCommand;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator.Adapter;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
@@ -201,24 +201,24 @@ public final class IteratorTools {
 	}
 
 	/**
-	 * Execute the specified command for each element in the specified iterator.
+	 * Execute the specified closure for each element in the specified iterator.
 	 */
-	public static <E> void execute(Iterator<? extends E> iterator, ParameterizedCommand<E> command) {
+	public static <E> void execute(Iterator<? extends E> iterator, Closure<E> closure) {
 		while (iterator.hasNext()) {
-			command.execute(iterator.next());
+			closure.execute(iterator.next());
 		}
 	}
 
 	/**
-	 * Execute the specified command for each element in the specified iterator.
-	 * If the command throws an exception for an element, the exception will be
+	 * Execute the specified closure for each element in the specified iterator.
+	 * If the closure throws an exception for an element, the exception will be
 	 * handled by the specified exception handler and processing of the
 	 * remaining elements will continue.
 	 */
-	public static <E> void execute(Iterator<? extends E> iterator, ParameterizedCommand<E> command, ExceptionHandler exceptionHandler) {
+	public static <E> void execute(Iterator<? extends E> iterator, Closure<E> closure, ExceptionHandler exceptionHandler) {
 		while (iterator.hasNext()) {
 			try {
-				command.execute(iterator.next());
+				closure.execute(iterator.next());
 			} catch (Throwable ex) {
 				exceptionHandler.handleException(ex);
 			}
@@ -226,25 +226,25 @@ public final class IteratorTools {
 	}
 
 	/**
-	 * Execute the specified command for each element in the specified iterator.
+	 * Execute the specified closure for each element in the specified iterator.
 	 */
-	public static <E> void execute(Iterator<? extends E> iterator, InterruptibleParameterizedCommand<E> command) throws InterruptedException {
+	public static <E> void execute(Iterator<? extends E> iterator, InterruptibleClosure<E> closure) throws InterruptedException {
 		while (iterator.hasNext()) {
-			command.execute(iterator.next());
+			closure.execute(iterator.next());
 		}
 	}
 
 	/**
-	 * Execute the specified command for each element in the specified iterator.
-	 * If the command throws an exception (other than an
+	 * Execute the specified closure for each element in the specified iterator.
+	 * If the closure throws an exception (other than an
 	 * {@link InterruptedException}) for an element, the exception will be
 	 * handled by the specified exception handler and processing of the
 	 * remaining elements will continue.
 	 */
-	public static <E> void execute(Iterator<? extends E> iterator, InterruptibleParameterizedCommand<E> command, ExceptionHandler exceptionHandler) throws InterruptedException {
+	public static <E> void execute(Iterator<? extends E> iterator, InterruptibleClosure<E> closure, ExceptionHandler exceptionHandler) throws InterruptedException {
 		while (iterator.hasNext()) {
 			try {
-				command.execute(iterator.next());
+				closure.execute(iterator.next());
 			} catch (InterruptedException ex) {
 				throw ex;
 			} catch (Throwable ex) {
@@ -627,16 +627,16 @@ public final class IteratorTools {
 	 * @see CloneIterator
 	 */
 	public static <E> CloneIterator<E> clone(Collection<? extends E> collection) {
-		return clone(collection, DisabledParameterizedCommand.instance());
+		return clone(collection, DisabledClosure.instance());
 	}
 
 	/**
 	 * Return an iterator that clones the specified collection before returning
-	 * elements and uses the specified {@link ParameterizedCommand remove command}.
+	 * elements and uses the specified {@link Closure remove closure}.
 	 * @see CloneIterator
 	 */
-	public static <E> CloneIterator<E> clone(Collection<? extends E> collection, ParameterizedCommand<? super E> removeCommand) {
-		return new CloneIterator<E>(collection, removeCommand);
+	public static <E> CloneIterator<E> clone(Collection<? extends E> collection, Closure<? super E> removeClosure) {
+		return new CloneIterator<E>(collection, removeClosure);
 	}
 
 	/**

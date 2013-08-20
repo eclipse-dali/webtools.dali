@@ -7,30 +7,31 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.internal.command;
+package org.eclipse.jpt.common.utility.internal.closure;
 
 import java.io.Serializable;
-import org.eclipse.jpt.common.utility.command.InterruptibleParameterizedCommand;
+import org.eclipse.jpt.common.utility.closure.InterruptibleClosure;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
- * Singleton implementation of the interruptible parameterized command
- * interface that will throw an {@link InterruptedException exception}
+ * Closure that will throw an {@link InterruptedException exception}
  * when executed.
+ * 
+ * @param <A> the type of the object passed to the closure
  */
-public final class InterruptedParameterizedCommand<A>
-	implements InterruptibleParameterizedCommand<A>, Serializable
+public final class InterruptedClosure<A>
+	implements InterruptibleClosure<A>, Serializable
 {
 	@SuppressWarnings("rawtypes")
-	public static final InterruptibleParameterizedCommand INSTANCE = new InterruptedParameterizedCommand();
+	public static final InterruptibleClosure INSTANCE = new InterruptedClosure();
 
 	@SuppressWarnings("unchecked")
-	public static <A> InterruptibleParameterizedCommand<A> instance() {
+	public static <A> InterruptibleClosure<A> instance() {
 		return INSTANCE;
 	}
 
 	// ensure single instance
-	private InterruptedParameterizedCommand() {
+	private InterruptedClosure() {
 		super();
 	}
 

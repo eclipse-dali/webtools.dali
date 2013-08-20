@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.command.ParameterizedCommand;
+import org.eclipse.jpt.common.utility.closure.Closure;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.node.AbstractNode;
@@ -405,7 +405,7 @@ public class AbstractNodeTests
 		}
 	
 		public Iterator<TestWorkbenchModel> testChildren() {
-			return IteratorTools.clone(this.testChildren, new ParameterizedCommand<TestWorkbenchModel>() {
+			return IteratorTools.clone(this.testChildren, new Closure<TestWorkbenchModel>() {
 				public void execute(TestWorkbenchModel current) {
 					TestWorkbenchModel.this.removeTestChild(current);
 				}

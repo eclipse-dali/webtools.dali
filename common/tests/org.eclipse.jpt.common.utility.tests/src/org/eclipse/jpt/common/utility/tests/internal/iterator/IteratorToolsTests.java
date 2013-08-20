@@ -265,16 +265,16 @@ public class IteratorToolsTests
 
 	public void testExecuteParmCommand() {
 		List<String> list = this.buildStringList1();
-		ArrayToolsTests.ConcatenateCommand command = new ArrayToolsTests.ConcatenateCommand();
-		IteratorTools.execute(list.iterator(), command);
-		assertEquals("zeroonetwo", command.string);
+		ArrayToolsTests.ConcatenateClosure closure = new ArrayToolsTests.ConcatenateClosure();
+		IteratorTools.execute(list.iterator(), closure);
+		assertEquals("zeroonetwo", closure.string);
 	}
 
 	public void testExecuteInterruptibleParmCommand() throws Exception {
 		List<String> list = this.buildStringList1();
-		ArrayToolsTests.InterruptibleConcatenateCommand command = new ArrayToolsTests.InterruptibleConcatenateCommand();
-		IteratorTools.execute(list.iterator(), command);
-		assertEquals("zeroonetwo", command.string);
+		ArrayToolsTests.InterruptibleConcatenateClosure closure = new ArrayToolsTests.InterruptibleConcatenateClosure();
+		IteratorTools.execute(list.iterator(), closure);
+		assertEquals("zeroonetwo", closure.string);
 	}
 
 

@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.utility.internal.iterable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-import org.eclipse.jpt.common.utility.command.ParameterizedCommand;
+import org.eclipse.jpt.common.utility.closure.Closure;
 import org.eclipse.jpt.common.utility.internal.iterator.CloneIterator;
 
 /**
@@ -29,7 +29,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.CloneIterator;
  * By default, the iterator returned by a <code>SnapshotCloneIterable</code> does not
  * support the {@link Iterator#remove()} operation; this is because it does not
  * have access to the original collection. But if the <code>SnapshotCloneIterable</code>
- * is supplied with an {@link ParameterizedCommand remove command} it will delegate the
+ * is supplied with an {@link Closure remove closure} it will delegate the
  * {@link Iterator#remove()} operation to the command.
  * <p>
  * This iterable is useful for multiple passes over a collection that should not
@@ -52,13 +52,13 @@ public class SnapshotCloneIterable<E>
 	 * The specified command will be used by any generated iterators to
 	 * remove objects from the original collection.
 	 */
-	public SnapshotCloneIterable(Collection<? extends E> collection, ParameterizedCommand<? super E> removeCommand) {
-		super(removeCommand);
+	public SnapshotCloneIterable(Collection<? extends E> collection, Closure<? super E> removeClosure) {
+		super(removeClosure);
 		this.array = collection.toArray();
 	}
 
 	public Iterator<E> iterator() {
-		return new LocalCloneIterator<E>(this.array, this.removeCommand);
+		return new LocalCloneIterator<E>(this.array, this.removeClosure);
 	}
 
 	@Override
@@ -73,8 +73,8 @@ public class SnapshotCloneIterable<E>
 	 * provide access to "internal" constructor
 	 */
 	protected static class LocalCloneIterator<E> extends CloneIterator<E> {
-		protected LocalCloneIterator(Object[] array, ParameterizedCommand<? super E> removeCommand) {
-			super(array, removeCommand);
+		protected LocalCloneIterator(Object[] array, Closure<? super E> removeClosure) {
+			super(array, removeClosure);
 		}
 	}
 }

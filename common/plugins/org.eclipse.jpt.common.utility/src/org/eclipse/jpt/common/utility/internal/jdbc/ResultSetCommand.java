@@ -13,7 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Much like a standard {@link org.eclipse.jpt.common.utility.command.ParameterizedCommand command}
+ * Much like a standard {@link org.eclipse.jpt.common.utility.closure.Closure closure}
  * but with a pre-defined argument and allows SQL exceptions.
  */
 public interface ResultSetCommand {

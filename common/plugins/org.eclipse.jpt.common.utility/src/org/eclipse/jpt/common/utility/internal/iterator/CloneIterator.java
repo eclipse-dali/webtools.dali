@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.utility.internal.iterator;
 
 import java.util.Collection;
 import java.util.Iterator;
-import org.eclipse.jpt.common.utility.command.ParameterizedCommand;
+import org.eclipse.jpt.common.utility.closure.Closure;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
@@ -25,22 +25,22 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * By default, a <code>CloneIterator</code> does not support the
  * {@link #remove()} operation; this is because it does not have
  * access to the original collection. But if the <code>CloneIterator</code>
- * is supplied with an {@link ParameterizedCommand} it will delegate the
- * {@link #remove()} operation to the {@link ParameterizedCommand}.
+ * is supplied with an {@link Closure} it will delegate the
+ * {@link #remove()} operation to the {@link Closure}.
  * 
  * @param <E> the type of elements returned by the iterator
  * 
  * @see org.eclipse.jpt.common.utility.internal.iterable.IterableTools#cloneLive(Collection)
- * @see org.eclipse.jpt.common.utility.internal.iterable.IterableTools#cloneLive(Collection, ParameterizedCommand)
+ * @see org.eclipse.jpt.common.utility.internal.iterable.IterableTools#cloneLive(Collection, Closure)
  * @see org.eclipse.jpt.common.utility.internal.iterable.IterableTools#cloneSnapshot(Collection)
- * @see org.eclipse.jpt.common.utility.internal.iterable.IterableTools#cloneSnapshot(Collection, ParameterizedCommand)
+ * @see org.eclipse.jpt.common.utility.internal.iterable.IterableTools#cloneSnapshot(Collection, Closure)
  */
 public class CloneIterator<E>
 	implements Iterator<E>
 {
 	private final Iterator<Object> iterator;
 	private E current;
-	private final ParameterizedCommand<? super E> removeCommand;
+	private final Closure<? super E> removeClosure;
 	private boolean removeAllowed;
 
 
@@ -49,21 +49,21 @@ public class CloneIterator<E>
 	 * Use the specified command to remove objects from the
 	 * original collection.
 	 */
-	public CloneIterator(Collection<? extends E> collection, ParameterizedCommand<? super E> removeCommand) {
-		this(collection.toArray(), removeCommand);
+	public CloneIterator(Collection<? extends E> collection, Closure<? super E> removeClosure) {
+		this(collection.toArray(), removeClosure);
 	}
 
 	/**
 	 * Internal constructor used by subclasses.
 	 */
-	protected CloneIterator(Object[] array, ParameterizedCommand<? super E> removeCommand) {
+	protected CloneIterator(Object[] array, Closure<? super E> removeClosure) {
 		super();
-		if (removeCommand == null) {
+		if (removeClosure == null) {
 			throw new NullPointerException();
 		}
 		this.iterator = IteratorTools.iterator(array);
 		this.current = null;
-		this.removeCommand = removeCommand;
+		this.removeClosure = removeClosure;
 		this.removeAllowed = false;
 	}
 
@@ -89,7 +89,7 @@ public class CloneIterator<E>
 		if ( ! this.removeAllowed) {
 			throw new IllegalStateException();
 		}
-		this.removeCommand.execute(this.current);
+		this.removeClosure.execute(this.current);
 		this.removeAllowed = false;
 	}
 

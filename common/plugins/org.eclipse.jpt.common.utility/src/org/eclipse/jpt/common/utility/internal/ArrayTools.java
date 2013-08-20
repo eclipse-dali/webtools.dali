@@ -17,8 +17,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Random;
-import org.eclipse.jpt.common.utility.command.InterruptibleParameterizedCommand;
-import org.eclipse.jpt.common.utility.command.ParameterizedCommand;
+import org.eclipse.jpt.common.utility.closure.Closure;
+import org.eclipse.jpt.common.utility.closure.InterruptibleClosure;
 import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
@@ -3071,24 +3071,24 @@ public final class ArrayTools {
 	// ********** execute **********
 
 	/**
-	 * Execute the specified command for each element in the specified array.
+	 * Execute the specified closure for each element in the specified array.
 	 */
-	public static <E> void execute(E[] array, ParameterizedCommand<E> command) {
+	public static <E> void execute(E[] array, Closure<E> closure) {
 		for (E e : array) {
-			command.execute(e);
+			closure.execute(e);
 		}
 	}
 
 	/**
-	 * Execute the specified command for each element in the specified array.
-	 * If the command throws an exception for an element, the exception will be
+	 * Execute the specified closure for each element in the specified array.
+	 * If the closure throws an exception for an element, the exception will be
 	 * handled by the specified exception handler and processing of the
 	 * remaining elements will continue.
 	 */
-	public static <E> void execute(E[] array, ParameterizedCommand<E> command, ExceptionHandler exceptionHandler) {
+	public static <E> void execute(E[] array, Closure<E> closure, ExceptionHandler exceptionHandler) {
 		for (E e : array) {
 			try {
-				command.execute(e);
+				closure.execute(e);
 			} catch (Throwable ex) {
 				exceptionHandler.handleException(ex);
 			}
@@ -3096,25 +3096,25 @@ public final class ArrayTools {
 	}
 
 	/**
-	 * Execute the specified command for each element in the specified array.
+	 * Execute the specified closure for each element in the specified array.
 	 */
-	public static <E> void execute(E[] array, InterruptibleParameterizedCommand<E> command) throws InterruptedException {
+	public static <E> void execute(E[] array, InterruptibleClosure<E> closure) throws InterruptedException {
 		for (E e : array) {
-			command.execute(e);
+			closure.execute(e);
 		}
 	}
 
 	/**
-	 * Execute the specified command for each element in the specified array.
-	 * If the command throws an exception (other than an
+	 * Execute the specified closure for each element in the specified array.
+	 * If the closure throws an exception (other than an
 	 * {@link InterruptedException}) for an element, the exception will be
 	 * handled by the specified exception handler and processing of the
 	 * remaining elements will continue.
 	 */
-	public static <E> void execute(E[] array, InterruptibleParameterizedCommand<E> command, ExceptionHandler exceptionHandler) throws InterruptedException {
+	public static <E> void execute(E[] array, InterruptibleClosure<E> closure, ExceptionHandler exceptionHandler) throws InterruptedException {
 		for (E e : array) {
 			try {
-				command.execute(e);
+				closure.execute(e);
 			} catch (InterruptedException ex) {
 				throw ex;
 			} catch (Throwable ex) {

@@ -7,29 +7,30 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.internal.command;
+package org.eclipse.jpt.common.utility.internal.closure;
 
 import java.io.Serializable;
-import org.eclipse.jpt.common.utility.command.ParameterizedCommand;
+import org.eclipse.jpt.common.utility.closure.Closure;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
- * Singleton implementation of the command interface that will do nothing
- * when executed.
+ * Closure that will do nothing when executed.
+ * 
+ * @param <A> the type of the object passed to the closure
  */
-public final class NullParameterizedCommand<A>
-	implements ParameterizedCommand<A>, Serializable
+public final class NullClosure<A>
+	implements Closure<A>, Serializable
 {
 	@SuppressWarnings("rawtypes")
-	public static final ParameterizedCommand INSTANCE = new NullParameterizedCommand();
+	public static final Closure INSTANCE = new NullClosure();
 
 	@SuppressWarnings("unchecked")
-	public static <A> ParameterizedCommand<A> instance() {
+	public static <A> Closure<A> instance() {
 		return INSTANCE;
 	}
 
 	// ensure single instance
-	private NullParameterizedCommand() {
+	private NullClosure() {
 		super();
 	}
 

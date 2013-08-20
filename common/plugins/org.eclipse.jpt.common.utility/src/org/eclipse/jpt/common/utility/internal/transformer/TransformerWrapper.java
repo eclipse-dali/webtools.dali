@@ -19,6 +19,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * 
  * @param <I> input: the type of the object passed to the transformer
  * @param <O> output: the type of the object returned by the transformer
+ * 
  * @see #setTransformer(Transformer)
  */
 public class TransformerWrapper<I, O>

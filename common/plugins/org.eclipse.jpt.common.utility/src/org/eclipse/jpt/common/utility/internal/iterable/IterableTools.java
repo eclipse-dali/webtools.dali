@@ -16,15 +16,15 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.closure.Closure;
+import org.eclipse.jpt.common.utility.closure.InterruptibleClosure;
 import org.eclipse.jpt.common.utility.collection.Queue;
 import org.eclipse.jpt.common.utility.collection.Stack;
-import org.eclipse.jpt.common.utility.command.InterruptibleParameterizedCommand;
-import org.eclipse.jpt.common.utility.command.ParameterizedCommand;
 import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
+import org.eclipse.jpt.common.utility.internal.closure.DisabledClosure;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.command.DisabledParameterizedCommand;
 import org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
@@ -188,38 +188,38 @@ public final class IterableTools {
 	}
 
 	/**
-	 * Execute the specified command for each element in the specified iterable.
+	 * Execute the specified closure for each element in the specified iterable.
 	 */
-	public static <E> void execute(Iterable<? extends E> iterable, ParameterizedCommand<E> command) {
-		IteratorTools.execute(iterable.iterator(), command);
+	public static <E> void execute(Iterable<? extends E> iterable, Closure<E> closure) {
+		IteratorTools.execute(iterable.iterator(), closure);
 	}
 
 	/**
-	 * Execute the specified command for each element in the specified iterable.
-	 * If the command throws an exception for an element, the exception will be
+	 * Execute the specified closure for each element in the specified iterable.
+	 * If the closure throws an exception for an element, the exception will be
 	 * handled by the specified exception handler and processing of the
 	 * remaining elements will continue.
 	 */
-	public static <E> void execute(Iterable<? extends E> iterable, ParameterizedCommand<E> command, ExceptionHandler exceptionHandler) {
-		IteratorTools.execute(iterable.iterator(), command, exceptionHandler);
+	public static <E> void execute(Iterable<? extends E> iterable, Closure<E> closure, ExceptionHandler exceptionHandler) {
+		IteratorTools.execute(iterable.iterator(), closure, exceptionHandler);
 	}
 
 	/**
-	 * Execute the specified command for each element in the specified iterable.
+	 * Execute the specified closure for each element in the specified iterable.
 	 */
-	public static <E> void execute(Iterable<? extends E> iterable, InterruptibleParameterizedCommand<E> command) throws InterruptedException {
-		IteratorTools.execute(iterable.iterator(), command);
+	public static <E> void execute(Iterable<? extends E> iterable, InterruptibleClosure<E> closure) throws InterruptedException {
+		IteratorTools.execute(iterable.iterator(), closure);
 	}
 
 	/**
-	 * Execute the specified command for each element in the specified iterable.
-	 * If the command throws an exception (other than an
+	 * Execute the specified closure for each element in the specified iterable.
+	 * If the closure throws an exception (other than an
 	 * {@link InterruptedException}) for an element, the exception will be
 	 * handled by the specified exception handler and processing of the
 	 * remaining elements will continue.
 	 */
-	public static <E> void execute(Iterable<? extends E> iterable, InterruptibleParameterizedCommand<E> command, ExceptionHandler exceptionHandler) throws InterruptedException {
-		IteratorTools.execute(iterable.iterator(), command, exceptionHandler);
+	public static <E> void execute(Iterable<? extends E> iterable, InterruptibleClosure<E> closure, ExceptionHandler exceptionHandler) throws InterruptedException {
+		IteratorTools.execute(iterable.iterator(), closure, exceptionHandler);
 	}
 
 	/**
@@ -510,16 +510,16 @@ public final class IterableTools {
 	 * @see LiveCloneIterable
 	 */
 	public static <E> LiveCloneIterable<E> cloneLive(Collection<? extends E> collection) {
-		return cloneLive(collection, DisabledParameterizedCommand.instance());
+		return cloneLive(collection, DisabledClosure.instance());
 	}
 
 	/**
 	 * Return an iterable that clones the specified collection before returning
-	 * elements and uses the specified remove command.
+	 * elements and uses the specified remove closure.
 	 * @see LiveCloneIterable
 	 */
-	public static <E> LiveCloneIterable<E> cloneLive(Collection<? extends E> collection, ParameterizedCommand<? super E> removeCommand) {
-		return new LiveCloneIterable<E>(collection, removeCommand);
+	public static <E> LiveCloneIterable<E> cloneLive(Collection<? extends E> collection, Closure<? super E> removeClosure) {
+		return new LiveCloneIterable<E>(collection, removeClosure);
 	}
 
 	/**
@@ -546,16 +546,16 @@ public final class IterableTools {
 	 * @see SnapshotCloneIterable
 	 */
 	public static <E> SnapshotCloneIterable<E> cloneSnapshot(Collection<? extends E> collection) {
-		return cloneSnapshot(collection, DisabledParameterizedCommand.instance());
+		return cloneSnapshot(collection, DisabledClosure.instance());
 	}
 
 	/**
 	 * Return an iterable that clones the specified collection before returning
-	 * elements and uses the specified remove command.
+	 * elements and uses the specified remove closure.
 	 * @see LiveCloneIterable
 	 */
-	public static <E> SnapshotCloneIterable<E> cloneSnapshot(Collection<? extends E> collection, ParameterizedCommand<? super E> removeCommand) {
-		return new SnapshotCloneIterable<E>(collection, removeCommand);
+	public static <E> SnapshotCloneIterable<E> cloneSnapshot(Collection<? extends E> collection, Closure<? super E> removeClosure) {
+		return new SnapshotCloneIterable<E>(collection, removeClosure);
 	}
 
 	/**

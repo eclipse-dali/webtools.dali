@@ -7,29 +7,31 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.internal.command;
+package org.eclipse.jpt.common.utility.internal.closure;
 
 import java.io.Serializable;
-import org.eclipse.jpt.common.utility.command.ParameterizedCommand;
+import org.eclipse.jpt.common.utility.closure.Closure;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
- * Singleton implementation of the command interface that will throw an
+ * Closure that will throw an
  * {@link UnsupportedOperationException exception} when executed.
+ * 
+ * @param <A> the type of the object passed to the closure
  */
-public final class DisabledParameterizedCommand<A>
-	implements ParameterizedCommand<A>, Serializable
+public final class DisabledClosure<A>
+	implements Closure<A>, Serializable
 {
 	@SuppressWarnings("rawtypes")
-	public static final ParameterizedCommand INSTANCE = new DisabledParameterizedCommand();
+	public static final Closure INSTANCE = new DisabledClosure();
 
 	@SuppressWarnings("unchecked")
-	public static <A> ParameterizedCommand<A> instance() {
+	public static <A> Closure<A> instance() {
 		return INSTANCE;
 	}
 
 	// ensure single instance
-	private DisabledParameterizedCommand() {
+	private DisabledClosure() {
 		super();
 	}
 

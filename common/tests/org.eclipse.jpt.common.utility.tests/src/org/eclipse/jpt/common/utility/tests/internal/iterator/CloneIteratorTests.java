@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import org.eclipse.jpt.common.utility.command.ParameterizedCommand;
+import org.eclipse.jpt.common.utility.closure.Closure;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.tests.internal.MultiThreadedTestCase;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
@@ -87,7 +87,7 @@ public class CloneIteratorTests
 	}
 
 	public void testRemoveRemover() {
-		ParameterizedCommand<String> remover = new ParameterizedCommand<String>() {
+		Closure<String> remover = new Closure<String>() {
 			public void execute(String element) {
 				CloneIteratorTests.this.originalCollection.remove(element);
 			}
@@ -96,7 +96,7 @@ public class CloneIteratorTests
 	}
 
 	public void testRemoveRemover_super() {
-		ParameterizedCommand<Object> remover = new ParameterizedCommand<Object>() {
+		Closure<Object> remover = new Closure<Object>() {
 			public void execute(Object element) {
 				CloneIteratorTests.this.originalCollection.remove(element);
 			}

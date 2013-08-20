@@ -21,7 +21,7 @@ package org.eclipse.jpt.common.utility.factory;
  * @param <T> the type of the object created by the factory
  * 
  * @see org.eclipse.jpt.common.utility.command.Command
- * @see org.eclipse.jpt.common.utility.command.ParameterizedCommand
+ * @see org.eclipse.jpt.common.utility.closure.Closure
  * @see org.eclipse.jpt.common.utility.transformer.Transformer
  */
 public interface Factory<T>

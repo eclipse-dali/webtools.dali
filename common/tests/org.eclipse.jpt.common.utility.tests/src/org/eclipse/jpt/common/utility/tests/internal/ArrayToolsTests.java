@@ -22,8 +22,8 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.Range;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.command.InterruptibleParameterizedCommandAdapter;
-import org.eclipse.jpt.common.utility.internal.command.ParameterizedCommandAdapter;
+import org.eclipse.jpt.common.utility.internal.closure.ClosureAdapter;
+import org.eclipse.jpt.common.utility.internal.closure.InterruptibleClosureAdapter;
 import org.eclipse.jpt.common.utility.internal.comparator.ReverseComparator;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
@@ -3165,13 +3165,13 @@ public class ArrayToolsTests
 
 	public void testExecuteObjectArrayParmCommand() {
 		String[] a = this.buildStringArray1();
-		ConcatenateCommand command = new ConcatenateCommand();
+		ConcatenateClosure command = new ConcatenateClosure();
 		ArrayTools.execute(a, command);
 		assertEquals("zeroonetwo", command.string);
 	}
 
-	public static class ConcatenateCommand
-		extends ParameterizedCommandAdapter<String>
+	public static class ConcatenateClosure
+		extends ClosureAdapter<String>
 	{
 		public String string = StringTools.EMPTY_STRING;
 
@@ -3183,13 +3183,13 @@ public class ArrayToolsTests
 
 	public void testExecuteObjectArrayInterruptibleParmCommand() throws Exception {
 		String[] a = this.buildStringArray1();
-		InterruptibleConcatenateCommand command = new InterruptibleConcatenateCommand();
+		InterruptibleConcatenateClosure command = new InterruptibleConcatenateClosure();
 		ArrayTools.execute(a, command);
 		assertEquals("zeroonetwo", command.string);
 	}
 
-	public static class InterruptibleConcatenateCommand
-		extends InterruptibleParameterizedCommandAdapter<String>
+	public static class InterruptibleConcatenateClosure
+		extends InterruptibleClosureAdapter<String>
 	{
 		public String string = StringTools.EMPTY_STRING;
 

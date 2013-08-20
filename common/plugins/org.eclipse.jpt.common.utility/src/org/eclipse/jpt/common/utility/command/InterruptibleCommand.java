@@ -20,7 +20,7 @@ package org.eclipse.jpt.common.utility.command;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
  * @see Command
- * @see org.eclipse.jpt.common.utility.command.InterruptibleParameterizedCommand
+ * @see org.eclipse.jpt.common.utility.closure.InterruptibleClosure
  * @see org.eclipse.jpt.common.utility.factory.InterruptibleFactory
  * @see org.eclipse.jpt.common.utility.transformer.InterruptibleTransformer
  */

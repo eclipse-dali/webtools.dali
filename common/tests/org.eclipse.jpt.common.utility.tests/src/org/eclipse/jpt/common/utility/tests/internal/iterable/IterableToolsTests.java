@@ -152,16 +152,16 @@ public class IterableToolsTests
 
 	public void testExecuteParmCommand() {
 		List<String> list = this.buildStringList1();
-		ArrayToolsTests.ConcatenateCommand command = new ArrayToolsTests.ConcatenateCommand();
-		IterableTools.execute(list, command);
-		assertEquals("zeroonetwo", command.string);
+		ArrayToolsTests.ConcatenateClosure closure = new ArrayToolsTests.ConcatenateClosure();
+		IterableTools.execute(list, closure);
+		assertEquals("zeroonetwo", closure.string);
 	}
 
 	public void testExecuteInterruptibleParmCommand() throws Exception {
 		List<String> list = this.buildStringList1();
-		ArrayToolsTests.InterruptibleConcatenateCommand command = new ArrayToolsTests.InterruptibleConcatenateCommand();
-		IterableTools.execute(list, command);
-		assertEquals("zeroonetwo", command.string);
+		ArrayToolsTests.InterruptibleConcatenateClosure closure = new ArrayToolsTests.InterruptibleConcatenateClosure();
+		IterableTools.execute(list, closure);
+		assertEquals("zeroonetwo", closure.string);
 	}
 
 	public void testGetIterableInt() {

@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.command.ParameterizedCommand;
+import org.eclipse.jpt.common.utility.closure.Closure;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator;
 
@@ -90,8 +90,8 @@ public abstract class CloneIterableTests
 
 	abstract Iterable<String> buildIterableWithRemover(List<String> c);
 
-	ParameterizedCommand<String> buildRemoveCommand(final Collection<String> c) {
-		return new ParameterizedCommand<String>() {
+	Closure<String> buildRemoveCommand(final Collection<String> c) {
+		return new Closure<String>() {
 			public void execute(String current) {
 				c.remove(current);
 			}

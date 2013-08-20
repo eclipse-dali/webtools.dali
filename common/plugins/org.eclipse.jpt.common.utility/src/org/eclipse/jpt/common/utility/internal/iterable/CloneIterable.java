@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.iterable;
 
-import org.eclipse.jpt.common.utility.command.ParameterizedCommand;
+import org.eclipse.jpt.common.utility.closure.Closure;
 
 /**
  * Pull together remover state and behavior for subclasses.
@@ -22,14 +22,14 @@ import org.eclipse.jpt.common.utility.command.ParameterizedCommand;
 public abstract class CloneIterable<E>
 	implements Iterable<E>
 {
-	final ParameterizedCommand<? super E> removeCommand;
+	final Closure<? super E> removeClosure;
 
 
-	protected CloneIterable(ParameterizedCommand<? super E> removeCommand) {
+	protected CloneIterable(Closure<? super E> removeClosure) {
 		super();
-		if (removeCommand == null) {
+		if (removeClosure == null) {
 			throw new NullPointerException();
 		}
-		this.removeCommand = removeCommand;
+		this.removeClosure = removeClosure;
 	}
 }

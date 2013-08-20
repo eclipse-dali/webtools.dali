@@ -25,7 +25,7 @@ package org.eclipse.jpt.common.utility.transformer;
  * @param <O> output: the type of the object returned by the transformer
  * 
  * @see Transformer
- * @see org.eclipse.jpt.common.utility.command.InterruptibleParameterizedCommand
+ * @see org.eclipse.jpt.common.utility.closure.InterruptibleClosure
  * @see org.eclipse.jpt.common.utility.command.InterruptibleCommand
  * @see org.eclipse.jpt.common.utility.factory.InterruptibleFactory
  */
