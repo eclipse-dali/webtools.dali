@@ -22,11 +22,9 @@ package org.eclipse.jpt.common.utility.factory;
  * @param <T> the type of the object created by the factory
  * 
  * @see Factory
- * @see org.eclipse.jpt.common.utility.command.InterruptibleCommand
- * @see org.eclipse.jpt.common.utility.command.Command
  * @see org.eclipse.jpt.common.utility.command.InterruptibleParameterizedCommand
- * @see org.eclipse.jpt.common.utility.command.ParameterizedCommand
- * @see org.eclipse.jpt.common.utility.transformer.Transformer
+ * @see org.eclipse.jpt.common.utility.command.InterruptibleCommand
+ * @see org.eclipse.jpt.common.utility.transformer.InterruptibleTransformer
  */
 public interface InterruptibleFactory<T> {
 

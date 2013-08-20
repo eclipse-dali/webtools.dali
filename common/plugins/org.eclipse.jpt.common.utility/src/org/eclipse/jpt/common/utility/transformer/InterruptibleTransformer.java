@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,11 +7,13 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.command;
+package org.eclipse.jpt.common.utility.transformer;
 
 /**
- * Simple interface for implementing the GOF Command design pattern
- * and allows for the command to throw an {@link InterruptedException}.
+ * Used by various "pluggable" classes to transform objects.
+ * Transform an <em>input</em> object of type <code>I</code>
+ * to an <em>output</em> object of type <code>O</code>.
+ * Allow for the transformer to throw an {@link InterruptedException}.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -19,16 +21,19 @@ package org.eclipse.jpt.common.utility.command;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @see Command
+ * @param <I> input: the type of the object passed to the transformer
+ * @param <O> output: the type of the object returned by the transformer
+ * 
+ * @see Transformer
  * @see org.eclipse.jpt.common.utility.command.InterruptibleParameterizedCommand
+ * @see org.eclipse.jpt.common.utility.command.InterruptibleCommand
  * @see org.eclipse.jpt.common.utility.factory.InterruptibleFactory
- * @see org.eclipse.jpt.common.utility.transformer.InterruptibleTransformer
  */
-public interface InterruptibleCommand {
-
+public interface InterruptibleTransformer<I, O> {
 	/**
-	 * Execute the command. The semantics of the command
-	 * is determined by the contract between the client and server.
+	 * Return the transformed object.
+	 * The semantics of "transform" is determined by the
+	 * contract between the client and the server.
 	 */
-	void execute() throws InterruptedException;
+	O transform(I input) throws InterruptedException;
 }

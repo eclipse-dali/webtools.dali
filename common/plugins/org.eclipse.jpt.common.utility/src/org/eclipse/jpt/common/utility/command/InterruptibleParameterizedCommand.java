@@ -19,16 +19,12 @@ package org.eclipse.jpt.common.utility.command;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @see org.eclipse.jpt.common.utility.command.ParameterizedCommand
- * 
  * @param <A> the type of the object passed to the command
  * 
  * @see ParameterizedCommand
  * @see org.eclipse.jpt.common.utility.command.InterruptibleCommand
- * @see org.eclipse.jpt.common.utility.command.Command
  * @see org.eclipse.jpt.common.utility.factory.InterruptibleFactory
- * @see org.eclipse.jpt.common.utility.factory.Factory
- * @see org.eclipse.jpt.common.utility.transformer.Transformer
+ * @see org.eclipse.jpt.common.utility.transformer.InterruptibleTransformer
  */
 public interface InterruptibleParameterizedCommand<A> {
 

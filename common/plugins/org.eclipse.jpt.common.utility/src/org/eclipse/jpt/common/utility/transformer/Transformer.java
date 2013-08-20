@@ -23,7 +23,9 @@ package org.eclipse.jpt.common.utility.transformer;
  * @param <I> input: the type of the object passed to the transformer
  * @param <O> output: the type of the object returned by the transformer
  */
-public interface Transformer<I, O> {
+public interface Transformer<I, O>
+	extends InterruptibleTransformer<I, O>
+{
 	/**
 	 * Return the transformed object.
 	 * The semantics of "transform" is determined by the
