@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,24 +11,35 @@ package org.eclipse.jpt.common.utility.internal.closure;
 
 import org.eclipse.jpt.common.utility.closure.Closure;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 
 /**
- * Convenience closure that does nothing.
+ * A composite of closures. Pass the composite's argument to each closure,
+ * in sequence.
  * 
  * @param <A> the type of the object passed to the closure
- * 
- * @see AbstractClosure
- * @see NullClosure
  */
-public class ClosureAdapter<A>
+public class CompositeClosure<A>
 	implements Closure<A>
 {
+	private final Iterable<Closure<? super A>> closures;
+
+	public CompositeClosure(Iterable<Closure<? super A>> closures) {
+		super();
+		if (IterableTools.isOrContainsNull(closures)) {
+			throw new NullPointerException();
+		}
+		this.closures = closures;
+	}
+
 	public void execute(A argument) {
-		// NOP
+		for (Closure<? super A> closure : this.closures) {
+			closure.execute(argument);
+		}
 	}
 
 	@Override
 	public String toString() {
-		return ObjectTools.toString(this);
+		return ObjectTools.toString(this, this.closures);
 	}
 }

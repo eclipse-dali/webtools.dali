@@ -9,14 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.transformer;
 
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
+import org.eclipse.jpt.common.utility.Association;
+import org.eclipse.jpt.common.utility.closure.Closure;
 import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.exception.DefaultExceptionHandler;
-import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -349,7 +350,6 @@ public final class TransformerTools {
 	 * Wrap the specified transformer converting it
 	 * into one that converts the same input object into an <em>iterator</em>
 	 * of objects of the same type as the input object.
-	 * 
 	 * @param <I> input: the type of the object passed to the transformer; also the
 	 *   type of object returned by the output iterator
 	 * @see IterableTransformerWrapper
@@ -555,7 +555,6 @@ public final class TransformerTools {
 	 * Return a transformer that transforms a {@link Class} into an instance
 	 * by calling {@link Class#newInstance()}. Checked exceptions are converted
 	 * to {@link RuntimeException}s.
-	 * 
 	 * @param <O> output: the type of the object returned by the transformer (and
 	 *   the class, or superclass of the class, passed to the transformer)
 	 * @see InstantiationTransformer
@@ -631,17 +630,10 @@ public final class TransformerTools {
 	// ********** chain **********
 
 	/**
-	 * @see #chain(Transformer[])
+	 * @see #chain(Iterable)
 	 */
-	public static <I, O> Transformer<I, O> chain(@SuppressWarnings("rawtypes") Iterable<Transformer> transformers) {
-		return chain(transformers.iterator());
-	}
-
-	/**
-	 * @see #chain(Transformer[])
-	 */
-	public static <I, O> Transformer<I, O> chain(@SuppressWarnings("rawtypes") Iterator<Transformer> transformers) {
-		return chain(IteratorTools.toArray(transformers, EMPTY_ARRAY));
+	public static <I, O> Transformer<I, O> chain(@SuppressWarnings("rawtypes") Transformer... transformers) {
+		return chain(ArrayTools.<Transformer<?, ?>>iterable(transformers));
 	}
 
 	/**
@@ -652,44 +644,95 @@ public final class TransformerTools {
 	 * <p>
 	 * <strong>NB:</strong> The transformer's generic types are for convenience only
 	 * and cannot be enforced on the transformers in the chain.
-	 * 
 	 * @param <I> input: the type of the object passed to the transformer
 	 * @param <O> output: the type of the object returned by the transformer
 	 * @see TransformerChain
 	 */
-	public static <I, O> Transformer<I, O> chain(@SuppressWarnings("rawtypes") Transformer[] transformers) {
+	public static <I, O> Transformer<I, O> chain(Iterable<Transformer<?, ?>> transformers) {
 		return new TransformerChain<I, O>(transformers);
 	}
 
 
-	// ********** comparator **********
+	// ********** closure **********
 
 	/**
-	 * Return a comparator will transform the elements to be compared and
-	 * compare the resulting outputs (i.e. assume the outputs
-	 * implement the {@link Comparable} interface).
-	 * @param <E> the type of elements to be compared
-	 * @param <O> the type of the result of transforming the elements and the type
-	 *   of the elements to be compared by the wrapped comaparator, if present
-	 * @see TransformationComparator
+	 * Adapt the specified {@link Closure} to the {@link Transformer} interface.
+	 * The returned transformer will always return <code>null</code>.
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 * @see ClosureTransformer
 	 */
-	public static <E, O> Comparator<E> comparator(Transformer<? super E, ? extends O> transformer) {
-		return new TransformationComparator<E, O>(transformer, null);
+	public static <I, O> Transformer<I, O> adapt(Closure<? super I> closure) {
+		return new ClosureTransformer<I, O>(closure);
+	}
+
+
+	// ********** conditional **********
+
+	/**
+	 * Return a transformer that passes its input to the specified predicate to
+	 * determine whether to forward the input to the specified transformer.
+	 * If the predicate evaluates to <code>false</code>, the transformer returns
+	 * <code>null</code>.
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 * @see ClosureTransformer
+	 */
+	public static <I, O> Transformer<I, O> conditionalTransformer(Predicate<? super I> predicate, Transformer<? super I, ? extends O> transformer) {
+		return conditionalTransformer(predicate, transformer, NullOutputTransformer.<I, O>instance());
 	}
 
 	/**
-	 * Return a comparator will transform the elements to be compared and pass the
-	 * resulting outputs to a specified transformer.
-	 * If the specified comparator is <code>null</code>,
-	 * the natural ordering of the outputs will be used (i.e. assume the outputs
-	 * implement the {@link Comparable} interface).
-	 * @param <E> the type of elements to be compared
-	 * @param <O> the type of the result of transforming the elements and the type
-	 *   of the elements to be compared by the wrapped comaparator, if present
-	 * @see TransformationComparator
+	 * Return a transformer that passes its input to the specified predicate to
+	 * determine which of the two specified transformers to execute.
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 * @see ClosureTransformer
 	 */
-	public static <E, O> Comparator<E> comparator(Transformer<? super E, ? extends O> transformer, Comparator<O> comparator) {
-		return new TransformationComparator<E, O>(transformer, comparator);
+	public static <I, O> Transformer<I, O> conditionalTransformer(Predicate<? super I> predicate, Transformer<? super I, ? extends O> trueTransformer, Transformer<? super I, ? extends O> falseTransformer) {
+		return new ConditionalTransformer<I, O>(predicate, trueTransformer, falseTransformer);
+	}
+
+
+	// ********** switch **********
+
+	/**
+	 * @see #switchTransformer(Iterable)
+	 */
+	public static <I, O> Transformer<I, O> switchTransformer(Association<Predicate<? super I>, Transformer<? super I, ? extends O>>... transformers) {
+		return switchTransformer(ArrayTools.iterable(transformers));
+	}
+
+	/**
+	 * Return a transformer that loops over the specified set of
+	 * predicate/transformer pairs, passing its input to each predicate to
+	 * determine which of the transformers to execute. Only the first
+	 * transformer whose predicate evaluates to <code>true</code> is executed,
+	 * even if other, following, predicates would evaluate to <code>true</code>.
+	 * If none of the predicates evaluates to <code>true</code>, the transformer
+	 * returns <code>null</code>.
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 * @see SwitchTransformer
+	 */
+	public static <I, O> Transformer<I, O> switchTransformer(Iterable<Association<Predicate<? super I>, Transformer<? super I, ? extends O>>> transformers) {
+		return switchTransformer(transformers, NullOutputTransformer.<I, O>instance());
+	}
+
+	/**
+	 * Return a transformer that loops over the specified set of
+	 * predicate/transformer pairs, passing its input to each predicate to
+	 * determine which of the transformers to execute. Only the first
+	 * transformer whose predicate evaluates to <code>true</code> is executed,
+	 * even if other, following, predicates would evaluate to <code>true</code>.
+	 * If none of the predicates evaluates to <code>true</code>, the default transformer
+	 * is executed.
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 * @see SwitchTransformer
+	 */
+	public static <I, O> Transformer<I, O> switchTransformer(Iterable<Association<Predicate<? super I>, Transformer<? super I, ? extends O>>> transformers, Transformer<? super I, ? extends O> defaultTransformer) {
+		return new SwitchTransformer<I, O>(transformers, defaultTransformer);
 	}
 
 
@@ -750,8 +793,7 @@ public final class TransformerTools {
 
 	// ********** empty array **********
 
-	@SuppressWarnings("unchecked")
-	public static <I, O> Transformer<I, O>[] emptyArray() {
+	public static Transformer<?, ?>[] emptyArray() {
 		return EMPTY_ARRAY;
 	}
 

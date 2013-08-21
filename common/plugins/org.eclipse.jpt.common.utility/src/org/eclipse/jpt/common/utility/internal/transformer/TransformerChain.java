@@ -9,9 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.transformer;
 
-import java.util.Arrays;
-import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
@@ -29,12 +28,11 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 public class TransformerChain<I, O>
 	implements Transformer<I, O>
 {
-	@SuppressWarnings("rawtypes")
-	private final Transformer[] transformers;
+	private final Iterable<Transformer<?, ?>> transformers;
 
-	public TransformerChain(@SuppressWarnings("rawtypes") Transformer[] transformers) {
+	public TransformerChain(Iterable<Transformer<?, ?>> transformers) {
 		super();
-		if (ArrayTools.isOrContainsNull(transformers)) {
+		if (IterableTools.isOrContainsNull(transformers)) {
 			throw new NullPointerException();
 		}
 		this.transformers = transformers;
@@ -51,6 +49,6 @@ public class TransformerChain<I, O>
 
 	@Override
 	public String toString() {
-		return ObjectTools.toString(this, Arrays.toString(this.transformers));
+		return ObjectTools.toString(this, this.transformers);
 	}
 }

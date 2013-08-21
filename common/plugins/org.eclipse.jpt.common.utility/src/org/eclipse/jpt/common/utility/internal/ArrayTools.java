@@ -925,7 +925,7 @@ public final class ArrayTools {
 	 * check array length
 	 */
 	private static boolean contains(Object[] array, Object value, int arrayLength) {
-		return (arrayLength == 0) ? false : contains_(array, value, arrayLength);
+		return (arrayLength != 0) && contains_(array, value, arrayLength);
 	}
 
 	/**
@@ -960,7 +960,7 @@ public final class ArrayTools {
 	 * check array length
 	 */
 	private static boolean contains(char[] array, char value, int arrayLength) {
-		return (arrayLength == 0) ? false : contains_(array, value, arrayLength);
+		return (arrayLength != 0) && contains_(array, value, arrayLength);
 	}
 
 	/**
@@ -987,7 +987,7 @@ public final class ArrayTools {
 	 * check array length
 	 */
 	private static boolean contains(int[] array, int value, int arrayLength) {
-		return (arrayLength == 0) ? false : contains_(array, value, arrayLength);
+		return (arrayLength != 0) && contains_(array, value, arrayLength);
 	}
 
 	/**

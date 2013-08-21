@@ -71,6 +71,22 @@ public final class IterableTools {
 	}
 
 	/**
+	 * Return whether the specified iterable is <code>null</code>
+	 * or, if it is not <code>null</code>, contains a <code>null</code>.
+	 * Convenient for argument checking.
+	 */
+	public static boolean isOrContainsNull(Iterable<?> iterable) {
+		return (iterable == null) || contains(iterable, null);
+	}
+
+	/**
+	 * Return whether the specified array contains a <code>null</code>.
+	 */
+	public static boolean containsNull(Iterable<?> iterable) {
+		return contains(iterable, null);
+	}
+
+	/**
 	 * Return whether the specified iterable contains the
 	 * specified element.
 	 */
