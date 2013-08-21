@@ -7,43 +7,46 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.internal.closure;
+package org.eclipse.jpt.common.utility.internal.factory;
 
-import org.eclipse.jpt.common.utility.closure.InterruptibleClosure;
 import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.factory.InterruptibleFactory;
 
 /**
- * @see SafeClosureWrapper
+ * @see SafeFactoryWrapper
  */
-public class SafeInterruptibleClosureWrapper<A>
-	implements InterruptibleClosure<A>
+public class SafeInterruptibleFactoryWrapper<T>
+	implements InterruptibleFactory<T>
 {
-	private final InterruptibleClosure<? super A> closure;
+	private final InterruptibleFactory<? extends T> factory;
 	private final ExceptionHandler exceptionHandler;
+	private final T exceptionValue;
 
 
-	public SafeInterruptibleClosureWrapper(InterruptibleClosure<? super A> closure, ExceptionHandler exceptionHandler) {
+	public SafeInterruptibleFactoryWrapper(InterruptibleFactory<? extends T> factory, ExceptionHandler exceptionHandler, T exceptionOutput) {
 		super();
-		if ((closure == null) || (exceptionHandler == null)) {
+		if ((factory == null) || (exceptionHandler == null)) {
 			throw new NullPointerException();
 		}
-		this.closure = closure;
+		this.factory = factory;
 		this.exceptionHandler = exceptionHandler;
+		this.exceptionValue = exceptionOutput;
 	}
 
-	public void execute(A argument) throws InterruptedException {
+	public T create() throws InterruptedException {
 		try {
-			this.closure.execute(argument);
+			return this.factory.create();
 		} catch (InterruptedException ex) {
 			throw ex;
 		} catch (Throwable ex) {
 			this.exceptionHandler.handleException(ex);
+			return this.exceptionValue;
 		}
 	}
 
 	@Override
 	public String toString() {
-		return ObjectTools.toString(this, this.closure);
+		return ObjectTools.toString(this, this.factory);
 	}
 }

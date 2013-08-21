@@ -25,6 +25,11 @@ import org.eclipse.jpt.common.utility.predicate.Predicate;
  * is executed.
  * 
  * @param <A> the type of the object passed to the closure
+ * 
+ * @see ConditionalClosure
+ * @see RepeatingClosure
+ * @see UntilClosure
+ * @see WhileClosure
  */
 public class SwitchClosure<A>
 	implements Closure<A>

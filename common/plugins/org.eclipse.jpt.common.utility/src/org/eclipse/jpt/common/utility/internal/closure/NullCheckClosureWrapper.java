@@ -19,6 +19,10 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * the closure will execute the configured command.
  * 
  * @param <A> the type of the object passed to the closure
+ * 
+ * @see AbstractClosure
+ * @see NullClosure
+ * @see ClosureAdapter
  */
 public class NullCheckClosureWrapper<A>
 	implements Closure<A>

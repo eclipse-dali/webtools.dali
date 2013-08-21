@@ -13,9 +13,11 @@ import org.eclipse.jpt.common.utility.closure.InterruptibleClosure;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
- * InterruptibleClosure that executes another closure a specified number of times.
- * 
- * @param <A> the type of the object passed to the closure
+ * @see RepeatingClosure
+ * @see ConditionalInterruptibleClosure
+ * @see SwitchInterruptibleClosure
+ * @see UntilInterruptibleClosure
+ * @see WhileInterruptibleClosure
  */
 public class RepeatingInterruptibleClosure<A>
 	implements InterruptibleClosure<A>

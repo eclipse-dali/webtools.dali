@@ -13,12 +13,7 @@ import org.eclipse.jpt.common.utility.closure.InterruptibleClosure;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
- * closure wrapper that can have its wrapped closure changed,
- * allowing a client to change a previously-supplied closure's
- * behavior mid-stream.
- * 
- * @param <A> the type of the object passed to the closure
- * 
+ * @see ClosureWrapper
  * @see #setClosure(InterruptibleClosure)
  */
 public class InterruptibleClosureWrapper<A>

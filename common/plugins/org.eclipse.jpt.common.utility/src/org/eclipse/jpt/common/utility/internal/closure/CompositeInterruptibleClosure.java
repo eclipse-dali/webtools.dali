@@ -14,10 +14,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 
 /**
- * A composite of closures. Pass the chain's argument to each closure,
- * in sequence.
- * 
- * @param <A> the type of the object passed to the closure
+ * @see CompositeClosure
  */
 public class CompositeInterruptibleClosure<A>
 	implements InterruptibleClosure<A>

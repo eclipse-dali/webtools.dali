@@ -10,12 +10,7 @@
 package org.eclipse.jpt.common.utility.internal.closure;
 
 /**
- * Convenience superclass that does nothing if the argument
- * is <code>null</code>; otherwise it calls {@link #execute_(Object)},
- * which is to be implemented by subclasses.
- * 
- * @param <A> the type of the object passed to the closure
- * 
+ * @see AbstractClosure
  * @see NullClosure
  * @see InterruptibleClosureAdapter
  * @see NullCheckInterruptibleClosureWrapper

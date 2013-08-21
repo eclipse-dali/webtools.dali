@@ -14,10 +14,11 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
- * InterruptibleClosure that executes another closure while a predicate evaluates to
- * <code>true</code> when passed the argument.
- * 
- * @param <A> the type of the object passed to the closure
+ * @see WhileClosure
+ * @see ConditionalInterruptibleClosure
+ * @see RepeatingInterruptibleClosure
+ * @see SwitchInterruptibleClosure
+ * @see UntilInterruptibleClosure
  */
 public class WhileInterruptibleClosure<A>
 	implements InterruptibleClosure<A>

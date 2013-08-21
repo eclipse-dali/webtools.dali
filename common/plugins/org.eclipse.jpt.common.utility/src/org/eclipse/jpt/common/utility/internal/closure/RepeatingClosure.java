@@ -16,6 +16,11 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * Closure that executes another closure a specified number of times.
  * 
  * @param <A> the type of the object passed to the closure
+ * 
+ * @see ConditionalClosure
+ * @see SwitchClosure
+ * @see UntilClosure
+ * @see WhileClosure
  */
 public class RepeatingClosure<A>
 	implements Closure<A>

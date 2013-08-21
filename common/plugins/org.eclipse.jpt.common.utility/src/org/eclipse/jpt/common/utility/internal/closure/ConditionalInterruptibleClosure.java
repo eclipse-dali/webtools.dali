@@ -14,10 +14,11 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
- * Closure that passes its argument to a configured predicate to determine
- * which of its two closures to execute.
- * 
- * @param <A> the type of the object passed to the closure
+ * @see ConditionalClosure
+ * @see RepeatingInterruptibleClosure
+ * @see SwitchInterruptibleClosure
+ * @see UntilInterruptibleClosure
+ * @see WhileInterruptibleClosure
  */
 public class ConditionalInterruptibleClosure<A>
 	implements InterruptibleClosure<A>

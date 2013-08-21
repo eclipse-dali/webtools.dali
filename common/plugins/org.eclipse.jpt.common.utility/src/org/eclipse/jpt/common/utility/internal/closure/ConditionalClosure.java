@@ -18,6 +18,11 @@ import org.eclipse.jpt.common.utility.predicate.Predicate;
  * which of its two closures to execute.
  * 
  * @param <A> the type of the object passed to the closure
+ * 
+ * @see RepeatingClosure
+ * @see SwitchClosure
+ * @see UntilClosure
+ * @see WhileClosure
  */
 public class ConditionalClosure<A>
 	implements Closure<A>

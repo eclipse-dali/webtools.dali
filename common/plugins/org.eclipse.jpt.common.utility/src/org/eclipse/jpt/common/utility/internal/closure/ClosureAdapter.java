@@ -19,6 +19,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * 
  * @see AbstractClosure
  * @see NullClosure
+ * @see NullCheckClosureWrapper
  */
 public class ClosureAdapter<A>
 	implements Closure<A>

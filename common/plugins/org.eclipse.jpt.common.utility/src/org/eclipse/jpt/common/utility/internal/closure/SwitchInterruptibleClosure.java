@@ -16,15 +16,11 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
- * Interruptible closure that loops over a configured set of predicate/closure pairs,
- * passing its argument to each predicate to determine
- * which of the closures to execute. Only the first closure whose predicate
- * evaluates to <code>true</code> is executed, even if other, following,
- * predicates would evaluate to <code>true</code>.
- * If none of the predicates evaluates to <code>true</code>, the default closure
- * is executed.
- * 
- * @param <A> the type of the object passed to the closure
+ * @see SwitchClosure
+ * @see ConditionalInterruptibleClosure
+ * @see RepeatingInterruptibleClosure
+ * @see UntilInterruptibleClosure
+ * @see WhileInterruptibleClosure
  */
 public class SwitchInterruptibleClosure<A>
 	implements InterruptibleClosure<A>

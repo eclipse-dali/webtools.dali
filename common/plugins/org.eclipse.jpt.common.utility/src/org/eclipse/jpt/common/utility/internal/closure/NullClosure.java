@@ -17,6 +17,10 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * Closure that will do nothing when executed.
  * 
  * @param <A> the type of the object passed to the closure
+ * 
+ * @see AbstractClosure
+ * @see ClosureAdapter
+ * @see NullCheckClosureWrapper
  */
 public final class NullClosure<A>
 	implements Closure<A>, Serializable

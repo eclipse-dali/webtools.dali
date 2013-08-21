@@ -14,11 +14,10 @@ import org.eclipse.jpt.common.utility.command.InterruptibleCommand;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
- * Closure wrapper that checks for a <code>null</code> argument before forwarding
- * the argument to the wrapped closure. If the argument is <code>null</code>,
- * the closer will execute the configured command.
- * 
- * @param <A> the type of the object passed to the closure
+ * @see NullCheckClosureWrapper
+ * @see AbstractInterruptibleClosure
+ * @see NullClosure
+ * @see InterruptibleClosureAdapter
  */
 public class NullCheckInterruptibleClosureWrapper<A>
 	implements InterruptibleClosure<A>

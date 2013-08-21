@@ -14,12 +14,8 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.transformer.InterruptibleTransformer;
 
 /**
- * Adapt an {@link InterruptibleTransformer} to the {@link InterruptibleClosure}
- * interface. The transformer's output is ignored. This really only useful for a
- * transformer that has side-effects.
- * 
- * @param <A> the type of the object passed to the closure and forwarded to the
- *     transformer
+ * @see TransformerClosure
+ * @see org.eclipse.jpt.common.utility.internal.transformer.InterruptibleClosureTransformer
  */
 public class InterruptibleTransformerClosure<A>
 	implements InterruptibleClosure<A>

@@ -14,15 +14,11 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
- * Interruptible closure that executes another closure until a predicate evaluates to
- * <code>true</code> when passed the argument. The
- * <p>
- * <strong>NB:</strong> This is the inverse of the Java <code>do-while</code>
- * statement (i.e. it executes until the predicate evaluates to
- * <strong><code>true</code></strong>,
- * <em>not</em> <code>false</code>).
- * 
- * @param <A> the type of the object passed to the closure
+ * @see UntilClosure
+ * @see ConditionalInterruptibleClosure
+ * @see RepeatingInterruptibleClosure
+ * @see SwitchInterruptibleClosure
+ * @see WhileInterruptibleClosure
  */
 public class UntilInterruptibleClosure<A>
 	implements InterruptibleClosure<A>

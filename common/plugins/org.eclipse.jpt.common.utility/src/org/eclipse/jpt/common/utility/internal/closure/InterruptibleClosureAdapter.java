@@ -13,11 +13,10 @@ import org.eclipse.jpt.common.utility.closure.InterruptibleClosure;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
- * Convenience closure that does nothing.
- * 
- * @param <A> the type of the object passed to the closure
- * 
+ * @see ClosureAdapter
  * @see NullClosure
+ * @see AbstractInterruptibleClosure
+ * @see NullCheckInterruptibleClosureWrapper
  */
 public class InterruptibleClosureAdapter<A>
 	implements InterruptibleClosure<A>

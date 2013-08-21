@@ -18,6 +18,11 @@ import org.eclipse.jpt.common.utility.predicate.Predicate;
  * <code>true</code> when passed the argument.
  * 
  * @param <A> the type of the object passed to the closure
+ * 
+ * @see ConditionalClosure
+ * @see RepeatingClosure
+ * @see SwitchClosure
+ * @see UntilClosure
  */
 public class WhileClosure<A>
 	implements Closure<A>

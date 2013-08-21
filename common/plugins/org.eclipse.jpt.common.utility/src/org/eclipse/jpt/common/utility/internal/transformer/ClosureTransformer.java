@@ -21,6 +21,8 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  *     to the closure
  * @param <O> output: the type of the object returned by the transformer; always
  *     <code>null</code>
+ * 
+ * @see org.eclipse.jpt.common.utility.internal.closure.TransformerClosure
  */
 public class ClosureTransformer<I, O>
 	implements Transformer<I, O>
