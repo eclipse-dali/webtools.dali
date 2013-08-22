@@ -73,7 +73,7 @@ public class BasicAnnotationDialog extends Dialog
 		gd.widthHint = 400;
 		composite.setLayoutData(gd);
 		createBasicGroup(composite);
-		columnGroupCtl = new DbColumnAnnotationCtl(resourceManager, entityProp, table);
+		columnGroupCtl = new DbColumnAnnotationCtl(resourceManager, entityProp, table, project);
 		columnGroupCtl.createColumnGroup(composite, SWT.NONE);
 		initFields();
 		addListeners();

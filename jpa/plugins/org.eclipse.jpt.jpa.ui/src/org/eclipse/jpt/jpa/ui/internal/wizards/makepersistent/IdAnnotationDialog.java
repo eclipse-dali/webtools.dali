@@ -10,6 +10,7 @@
 
 package org.eclipse.jpt.jpa.ui.internal.wizards.makepersistent;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.jpa.annotate.mapping.AnnotationAttrConverter;
@@ -34,17 +35,19 @@ public class IdAnnotationDialog extends Dialog
 	private ResourceManager resourceManager;
 	private EntityPropertyElem entityProp;
 	private Table table;
+	private IProject project;
 	private Text propNameText;
 	private Text propTypeText;
 	private Combo genStrategyCombo;
 	private DbColumnAnnotationCtl columnGroupCtl;
 	
-	public IdAnnotationDialog(Shell parentShell, ResourceManager resourceManager, Table table, EntityPropertyElem entityProp)
+	public IdAnnotationDialog(Shell parentShell, ResourceManager resourceManager, Table table, EntityPropertyElem entityProp, IProject project)
 	{
 		super(parentShell);
 		this.resourceManager = resourceManager;
 		this.table = table;
 		this.entityProp = entityProp;
+		this.project = project;
 	}
 
 	@Override
@@ -67,7 +70,7 @@ public class IdAnnotationDialog extends Dialog
 		gd.widthHint = 400;
 		composite.setLayoutData(gd);
 		createIdGroup(composite);
-		columnGroupCtl = new DbColumnAnnotationCtl(resourceManager, entityProp, table);
+		columnGroupCtl = new DbColumnAnnotationCtl(resourceManager, entityProp, table, project);
 		columnGroupCtl.createColumnGroup(composite, SWT.NONE);
 		initFields();
 		addListeners();

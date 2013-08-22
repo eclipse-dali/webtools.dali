@@ -75,9 +75,22 @@ public interface Column
 	 * Return whether the column's type is numeric.
 	 */
 	boolean isNumeric();
+	
+	/**
+	 * Return whether the column's type is a date type.
+	 * (i.e. DATE, CALENDAR)
+	 */
+	boolean isDateDataType();
+	
+	/**
+	 * Return whether the column's type is time type.
+	 * (i.e. TIME, TIMESTAMP)
+	 */
+	boolean isTimeDataType();
+	
 
 	/**
-	 * Return the column's precision if it is a NumericalDataType;
+	 * Return the column's precision if it is a NumericalDataType or a TimeDataType;
 	 * otherwise, return -1.
 	 */
 	public int getPrecision();

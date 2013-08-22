@@ -98,7 +98,12 @@ public class JavaMapper
 			if (col.getScale() != 0)
 				colAttrs.setScale(col.getScale());
 		}
-		else
+		else if (col.isTimeDataType()) 
+		{
+			if (col.getPrecision() != 0)
+				colAttrs.setPrecision(col.getPrecision());
+		}
+		else if (!col.isDateDataType())
 		{
 			colAttrs.setLength(col.getLength());
 		}	

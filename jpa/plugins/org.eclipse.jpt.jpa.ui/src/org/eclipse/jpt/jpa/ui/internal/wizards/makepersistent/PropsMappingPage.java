@@ -238,7 +238,7 @@ public class PropsMappingPage extends WizardPage
 			IdEntityPropertyElement idEntityPropCopy = new IdEntityPropertyElement(idEntityProp);
 			IdAnnotationDialog dlg = new IdAnnotationDialog(
 					Display.getDefault().getActiveShell(), this.resourceManager,
-					idEntityProp.getDBTable(), idEntityPropCopy);
+					idEntityProp.getDBTable(), idEntityPropCopy, this.jpaProject.getProject());
 			if (dlg.open() == Dialog.OK && index != -1)
 			{
 				classMapping.getPropertyMappings().remove(index);

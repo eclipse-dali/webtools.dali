@@ -12,10 +12,12 @@ package org.eclipse.jpt.jpa.db.internal;
 import org.eclipse.datatools.modelbase.dbdefinition.PredefinedDataTypeDefinition;
 import org.eclipse.datatools.modelbase.sql.datatypes.CharacterStringDataType;
 import org.eclipse.datatools.modelbase.sql.datatypes.DataType;
+import org.eclipse.datatools.modelbase.sql.datatypes.DateDataType;
 import org.eclipse.datatools.modelbase.sql.datatypes.ExactNumericDataType;
 import org.eclipse.datatools.modelbase.sql.datatypes.NumericalDataType;
 import org.eclipse.datatools.modelbase.sql.datatypes.PredefinedDataType;
 import org.eclipse.datatools.modelbase.sql.datatypes.PrimitiveType;
+import org.eclipse.datatools.modelbase.sql.datatypes.TimeDataType;
 import org.eclipse.jpt.common.utility.JavaType;
 import org.eclipse.jpt.common.utility.internal.TypeDeclarationTools;
 import org.eclipse.jpt.common.utility.internal.SimpleJavaType;
@@ -72,12 +74,24 @@ final class DTPColumnWrapper
 	public boolean isNumeric() {
 		return this.dtpObject.getDataType() instanceof NumericalDataType;
 	}	
+	
+	public boolean isDateDataType() {
+		return this.dtpObject.getDataType() instanceof DateDataType;
+	}	
+	
+	public boolean isTimeDataType() {
+		return this.dtpObject.getDataType() instanceof TimeDataType;
+	}	
 
 	public int getPrecision() {
 		DataType dataType = this.dtpObject.getDataType();
-		return (dataType instanceof NumericalDataType) ?
-						((NumericalDataType) dataType).getPrecision() :
-						-1;
+		if (dataType instanceof NumericalDataType) {
+			return ((NumericalDataType) dataType).getPrecision();
+		} else if (dataType instanceof TimeDataType) {
+			return ((TimeDataType) dataType).getFractionalSecondsPrecision();
+		} else {
+			return -1;
+		}
 	}
 
 	public int getScale(){

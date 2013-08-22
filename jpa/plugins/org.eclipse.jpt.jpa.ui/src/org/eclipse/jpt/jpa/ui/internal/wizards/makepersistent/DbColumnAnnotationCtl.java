@@ -10,6 +10,8 @@
 
 package org.eclipse.jpt.jpa.ui.internal.wizards.makepersistent;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.jpa.annotate.mapping.ColumnAttributes;
@@ -18,6 +20,7 @@ import org.eclipse.jpt.jpa.annotate.util.AnnotateMappingUtil;
 import org.eclipse.jpt.jpa.core.resource.orm.JPA;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -38,6 +41,7 @@ public class DbColumnAnnotationCtl
 	private ResourceManager resourceManager;
 	private EntityPropertyElem entityProp;
 	private Table table;
+	private IProject project;
 	private Text colNameText;
 	private Button colNameBrowseBtn;
 	private Combo nullableCombo;
@@ -48,14 +52,17 @@ public class DbColumnAnnotationCtl
 	private Combo insertableCombo;
 	private Combo updatableCombo;
 	private boolean isNumeric;
+	private boolean isTimeDataType;
+	private boolean isDateDataType;
 	private boolean isBasicMapping;
 
 	public DbColumnAnnotationCtl(ResourceManager resourceManager, EntityPropertyElem entityProp,
-			Table table)
+			Table table, IProject project)
 	{
 		this.resourceManager = resourceManager;
 		this.entityProp = entityProp;
 		this.table = table;
+		this.project = project;
 	}
 
 	Composite createColumnGroup(Composite parent, int style)
@@ -110,17 +117,17 @@ public class DbColumnAnnotationCtl
 					SWT.BORDER | SWT.READ_ONLY | SWT.DROP_DOWN, -1);
 			new Label(colGroup, SWT.NULL);			
 		}
-		// length if field type is not numeric
+
 		isNumeric = AnnotateMappingUtil.isNumeric(entityProp.getPropertyType());
-		if (!isNumeric)
+		isTimeDataType = AnnotateMappingUtil.isTime(entityProp.getPropertyType());
+		try 
 		{
-			AssociationAnnotationWizard.createLabel(colGroup, 1, 
-					JptJpaUiMakePersistentMessages.LENGTH, 
-					-1);
-			lengthText = AssociationAnnotationWizard.createText(colGroup, true, 1, SWT.BORDER);	
-			new Label(colGroup, SWT.NULL);
+			isDateDataType = AnnotateMappingUtil.isDate(entityProp.getPropertyType(), project);
+		} catch (JavaModelException je) 
+		{
+			JptJpaUiPlugin.instance().logError(je);
 		}
-		else
+		if (isNumeric) 
 		{
 			// precision and scale if the filed is numeric
 			AssociationAnnotationWizard.createLabel(colGroup, 1, 
@@ -133,6 +140,24 @@ public class DbColumnAnnotationCtl
 					JptJpaUiMakePersistentMessages.SCALE, 
 					-1);
 			scaleText = AssociationAnnotationWizard.createText(colGroup, true, 1, SWT.BORDER);
+			new Label(colGroup, SWT.NULL);
+		}
+		else if (isTimeDataType) 
+		{
+			// precision if the filed is a time data type
+			AssociationAnnotationWizard.createLabel(colGroup, 1, 
+					JptJpaUiMakePersistentMessages.PRECISION, 
+					-1);
+			precisionText = AssociationAnnotationWizard.createText(colGroup, true, 1, SWT.BORDER);
+			new Label(colGroup, SWT.NULL);
+		}
+		else if (!isDateDataType) 
+		{
+			// length if the field is not numeric or time data type or date data type
+			AssociationAnnotationWizard.createLabel(colGroup, 1, 
+					JptJpaUiMakePersistentMessages.LENGTH, 
+					-1);
+			lengthText = AssociationAnnotationWizard.createText(colGroup, true, 1, SWT.BORDER);	
 			new Label(colGroup, SWT.NULL);
 		}
 		return colGroup;
@@ -164,15 +189,7 @@ public class DbColumnAnnotationCtl
 				else
 					nullableCombo.select(1);
 			}
-			// length
-			if (!isNumeric)
-			{
-				if (colAttrs.isSetLength())
-				{
-					lengthText.setText(String.valueOf(colAttrs.getLength()));
-				}
-			}
-			else
+			if (isNumeric) 
 			{
 				// precision and scale
 				if (colAttrs.isSetPrecision())
@@ -182,8 +199,25 @@ public class DbColumnAnnotationCtl
 				if (colAttrs.isSetScale())
 				{
 					scaleText.setText(String.valueOf(colAttrs.getScale()));
-				}				
+				}
 			}
+			else if (isTimeDataType) 
+			{
+				// precision
+				if (colAttrs.isSetPrecision())
+				{
+					precisionText.setText(String.valueOf(colAttrs.getPrecision()));
+				}
+			}
+			else if (!isDateDataType) 
+			{
+				// length
+				if (colAttrs.isSetLength())
+				{
+					lengthText.setText(String.valueOf(colAttrs.getLength()));
+				}
+			}
+		
 			if (isBasicMapping)
 			{
 				// insertable

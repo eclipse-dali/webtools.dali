@@ -11,6 +11,8 @@
 package org.eclipse.jpt.jpa.annotate.util;
 
 import java.math.BigDecimal;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -172,6 +174,11 @@ public class AnnotateMappingUtil
 	{
 		return isAssignableFrom(type, Date.class.getName(), proj) ||
 			isAssignableFrom(type, Calendar.class.getName(), proj);
+	}
+	
+	public static boolean isTime(String type)
+	{
+		return (type.equals(Time.class.getName()) || type.equals(Timestamp.class.getName()));
 	}
 	
 	public static boolean isBoolean(String type)
