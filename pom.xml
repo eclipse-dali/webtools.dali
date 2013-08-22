@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2012, 2013 Eclipse Foundation and others.
+  All rights reserved. This program and the accompanying materials
+  are made available under the terms of the Eclipse Distribution License v1.0
+  which accompanies this distribution, and is available at
+  http://www.eclipse.org/org/documents/edl-v10.php
+ 
+  Contributors:
+    Thanh Ha (Eclipse Foundation) - initial implementation
+-->
+
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.eclipse</groupId>
+    <artifactId>wtp-parent</artifactId>
+    <version>3.5.0-SNAPSHOT</version>
+    <relativePath>../wtp-parent</relativePath>
+  </parent>
+
+  <groupId>org.eclipse.webtools.dali</groupId>
+  <artifactId>org.eclipse.webtools.dali</artifactId>
+  <version>3.5.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <modules>
+    <!-- assembly -->
+    <module>assembly/features/org.eclipse.jpt.assembly.feature</module>
+    <module>assembly/features/org.eclipse.jpt_sdk.assembly.feature</module>
+    <module>assembly/features/org.eclipse.jpt.tests.assembly.feature</module>
+
+    <!-- common -->
+    <module>common/features/org.eclipse.jpt.common.eclipselink.feature</module>
+    <module>common/features/org.eclipse.jpt.common.eclipselink_sdk.feature</module>
+    <module>common/features/org.eclipse.jpt.common.feature</module>
+    <module>common/features/org.eclipse.jpt.common_sdk.feature</module>
+    <module>common/features/org.eclipse.jpt.common.tests.feature</module>
+
+    <module>common/plugins/org.eclipse.jpt.common.branding</module>
+    <module>common/plugins/org.eclipse.jpt.common.core</module>
+    <module>common/plugins/org.eclipse.jpt.common.eclipselink.branding</module>
+    <module>common/plugins/org.eclipse.jpt.common.eclipselink.core</module>
+    <module>common/plugins/org.eclipse.jpt.common.ui</module>
+    <module>common/plugins/org.eclipse.jpt.common.utility</module>
+
+    <module>common/tests/org.eclipse.jpt.common.core.tests</module>
+    <module>common/tests/org.eclipse.jpt.common.utility.tests</module>
+
+    <!-- jaxb -->
+    <module>jaxb/features/org.eclipse.jpt.dbws.eclipselink.feature</module>
+    <module>jaxb/features/org.eclipse.jpt.dbws.eclipselink_sdk.feature</module>
+    <module>jaxb/features/org.eclipse.jpt.jaxb.eclipselink.feature</module>
+    <module>jaxb/features/org.eclipse.jpt.jaxb.eclipselink_sdk.feature</module>
+    <module>jaxb/features/org.eclipse.jpt.jaxb.eclipselink.tests.feature</module>
+    <module>jaxb/features/org.eclipse.jpt.jaxb.feature</module>
+    <module>jaxb/features/org.eclipse.jpt.jaxb_sdk.feature</module>
+    <module>jaxb/features/org.eclipse.jpt.jaxb.tests.feature</module>
+
+    <module>jaxb/plugins/org.eclipse.jpt.dbws.eclipselink.branding</module>
+    <module>jaxb/plugins/org.eclipse.jpt.dbws.eclipselink.core.gen</module>
+    <module>jaxb/plugins/org.eclipse.jpt.dbws.eclipselink.ui</module>
+    <module>jaxb/plugins/org.eclipse.jpt.jaxb.branding</module>
+    <module>jaxb/plugins/org.eclipse.jpt.jaxb.core</module>
+    <module>jaxb/plugins/org.eclipse.jpt.jaxb.core.schemagen</module>
+    <module>jaxb/plugins/org.eclipse.jpt.jaxb.eclipselink.branding</module>
+    <module>jaxb/plugins/org.eclipse.jpt.jaxb.eclipselink.core</module>
+    <module>jaxb/plugins/org.eclipse.jpt.jaxb.eclipselink.core.schemagen</module>
+    <module>jaxb/plugins/org.eclipse.jpt.jaxb.eclipselink.ui</module>
+    <module>jaxb/plugins/org.eclipse.jpt.jaxb.ui</module>
+
+    <module>jaxb/tests/org.eclipse.jpt.jaxb.core.tests</module>
+    <module>jaxb/tests/org.eclipse.jpt.jaxb.eclipselink.core.tests</module>
+
+    <!-- jpa -->
+    <module>jpa/features/org.eclipse.jpt.jpa.eclipselink.feature</module>
+    <module>jpa/features/org.eclipse.jpt.jpa.eclipselink_sdk.feature</module>
+    <module>jpa/features/org.eclipse.jpt.jpa.eclipselink.tests.feature</module>
+    <module>jpa/features/org.eclipse.jpt.jpa.feature</module>
+    <module>jpa/features/org.eclipse.jpt.jpa_sdk.feature</module>
+    <module>jpa/features/org.eclipse.jpt.jpa.tests.feature</module>
+
+    <module>jpa/plugins/org.eclipse.jpt.doc.isv</module>
+    <module>jpa/plugins/org.eclipse.jpt.doc.user</module>
+    <module>jpa/plugins/org.eclipse.jpt.jpa.annotate</module>
+    <module>jpa/plugins/org.eclipse.jpt.jpa.branding</module>
+    <module>jpa/plugins/org.eclipse.jpt.jpa.core</module>
+    <module>jpa/plugins/org.eclipse.jpt.jpa.db</module>
+    <module>jpa/plugins/org.eclipse.jpt.jpa.db.ui</module>
+    <module>jpa/plugins/org.eclipse.jpt.jpa.eclipselink.branding</module>
+    <module>jpa/plugins/org.eclipse.jpt.jpa.eclipselink.core</module>
+    <module>jpa/plugins/org.eclipse.jpt.jpa.eclipselink.core.ddlgen</module>
+    <module>jpa/plugins/org.eclipse.jpt.jpa.eclipselink.ui</module>
+    <module>jpa/plugins/org.eclipse.jpt.jpa.gen</module>
+    <module>jpa/plugins/org.eclipse.jpt.jpa.ui</module>
+
+    <module>jpa/tests/org.eclipse.jpt.jpa.core.tests</module>
+    <module>jpa/tests/org.eclipse.jpt.jpa.core.tests.extension.resource</module>
+    <module>jpa/tests/org.eclipse.jpt.jpa.eclipselink.core.tests</module>
+
+    <!-- jpa_diagram_editor -->
+    <module>jpa_diagram_editor/development/org.eclipse.jpt.jpadiagrameditor.repository</module>
+
+    <module>jpa_diagram_editor/features/org.eclipse.jpt.jpadiagrameditor.feature</module>
+    <module>jpa_diagram_editor/features/org.eclipse.jpt.jpadiagrameditor_sdk.feature</module>
+    <module>jpa_diagram_editor/features/org.eclipse.jpt.jpadiagrameditor.tests.feature</module>
+
+    <module>jpa_diagram_editor/plugins/org.eclipse.jpt.jpadiagrameditor.branding</module>
+    <module>jpa_diagram_editor/plugins/org.eclipse.jpt.jpadiagrameditor.doc.user</module>
+    <module>jpa_diagram_editor/plugins/org.eclipse.jpt.jpadiagrameditor.ui</module>
+
+    <module>jpa_diagram_editor/tests/org.eclipse.jpt.jpadiagrameditor.ui.tests</module>
+  </modules>
+</project>
