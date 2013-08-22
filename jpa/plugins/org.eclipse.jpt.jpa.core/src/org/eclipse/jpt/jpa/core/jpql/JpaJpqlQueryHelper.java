@@ -192,7 +192,8 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 	                                       String jpqlQuery,
 	                                       String actualJpqlQuery,
 	                                       int offset,
-	                                       EscapeType escapeType) {
+	                                       EscapeType escapeType,
+	                                       int severity) {
 
 		// Convert the positions from the parsed JPQL query to the actual JPQL query
 		int[] positions = buildPositions(problem, parsedJpqlQuery, jpqlQuery, actualJpqlQuery, offset, escapeType);
@@ -229,7 +230,7 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 				// Create the validation message
 				IMessage message = new Message(
 					"jpt_jpa_core_jpql_validation",
-					IMessage.HIGH_SEVERITY,
+					severity,
 					problem.getMessageKey(),
 					problem.getMessageArguments(),
 					namedQuery.getResource()
@@ -303,10 +304,6 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 		super.setQuery(query);
 	}
 
-	protected boolean shouldValidate(NamedQuery namedQuery) {
-		return this.getValidationSeverity(namedQuery) != ValidationMessage.IGNORE_SEVERITY;
-	}
-
 	/**
 	 * Validates the given {@link NamedQuery} by validating the JPQL query.
 	 *
@@ -330,8 +327,9 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 	                     List<IMessage> messages) {
 
 		try {
+			int severity = this.getValidationSeverity(namedQuery);
 			// Make this quick check so we don't validate the query, which is time consuming
-			if (shouldValidate(namedQuery)) {
+			if (severity != ValidationMessage.IGNORE_SEVERITY) {
 
 				setQuery(namedQuery, jpqlQuery);
 				String parsedJpqlQuery = getParsedJPQLQuery();
@@ -346,7 +344,8 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 						jpqlQuery,
 						actualJpqlQuery,
 						offset,
-						escapeType
+						escapeType,
+						severity
 					);
 
 					messages.addAll(results);
