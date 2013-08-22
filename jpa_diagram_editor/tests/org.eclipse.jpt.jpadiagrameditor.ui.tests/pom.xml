@@ -1,24 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2011, 2013 Eclipse Foundation and others.
+  All rights reserved. This program and the accompanying materials
+  are made available under the terms of the Eclipse Distribution License v1.0
+  which accompanies this distribution, and is available at
+  http://www.eclipse.org/org/documents/edl-v10.php
+
+  Contributors:
+    Stefan Dimov (SAP) - Initial Implementation
+    Petya Sabeva (SAP) - Initial Implementation
+    Thanh Ha (Eclipse Foundation) - CBI Webtools Implementation
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	
 	<parent>
-		<artifactId>org.eclipse.jpt.jpadiagrameditor_parent</artifactId>
-		<groupId>org.eclipse.jpt.jpadiagrameditor</groupId>
-		<version>1.2.0-SNAPSHOT</version>
-		<relativePath>../../development/org.eclipse.jpt.jpadiagrameditor.releng/pom.xml</relativePath>
+		<groupId>org.eclipse.webtools.dali</groupId>
+		<artifactId>org.eclipse.webtools.dali</artifactId>
+		<version>3.5.0-SNAPSHOT</version>
+        <relativePath>../../../</relativePath>
 	</parent>
 	
+    <groupId>org.eclipse.webtools.dali</groupId>
 	<artifactId>org.eclipse.jpt.jpadiagrameditor.ui.tests</artifactId>
+    <version>1.2.0-SNAPSHOT</version>
 	<packaging>eclipse-test-plugin</packaging>
 	<name>JPA Diagram Editor Test Plug-in</name>
+
+    <properties>
+        <org.eclipse.jpt.jpa.jar>../../development/org.eclipse.jpt.jpadiagrameditor.releng/resources/javax.persistence_2.0.4.v201112161009.jar</org.eclipse.jpt.jpa.jar>
+    </properties>
 	
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
-				<version>${tycho-version}</version>
+				<version>${tycho.version}</version>
 				<configuration>
 					<testSuite>org.eclipse.jpt.jpadiagrameditor.ui.tests</testSuite>
 					<testClass>org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.AllJpaEditorTests</testClass>
@@ -33,6 +52,11 @@
 					<dependencies>
 						<dependency>
 							<type>p2-installable-unit</type>
+							<artifactId>javax.persistence</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
 							<artifactId>org.eclipse.sdk.ide</artifactId>
 							<version>0.0.0</version>
 						</dependency>
@@ -41,5 +65,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	
 </project>

@@ -7,27 +7,24 @@
   http://www.eclipse.org/org/documents/edl-v10.php
  
   Contributors:
-    Stefan Dimov (SAP) - Initial Implementation
-    Petya Sabeva (SAP) - Initial Implementation
-    Thanh Ha (Eclipse Foundation) - CBI Webtools Implementation
+    Thanh Ha (Eclipse Foundation) - initial implementation
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	
-	<parent>
-		<groupId>org.eclipse.webtools.dali</groupId>
-		<artifactId>org.eclipse.webtools.dali</artifactId>
-		<version>3.5.0-SNAPSHOT</version>
-        <relativePath>../../../</relativePath>
-	</parent>
-	
+
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
     <groupId>org.eclipse.webtools.dali</groupId>
-	<artifactId>org.eclipse.jpt.jpadiagrameditor.feature</artifactId>
-    <version>1.2.0-SNAPSHOT</version>
-	<packaging>eclipse-feature</packaging>
-	<name>JPA Diagram Editor Feature</name>
-	
+    <artifactId>org.eclipse.webtools.dali</artifactId>
+    <version>3.5.0-SNAPSHOT</version>
+    <relativePath>../../../</relativePath>
+  </parent>
+
+  <groupId>org.eclipse.webtools.dali</groupId>
+  <artifactId>org.eclipse.jpt.common.eclipselink.feature</artifactId>
+  <version>1.3.0-SNAPSHOT</version>
+  <packaging>eclipse-feature</packaging>
+
   <build>
     <plugins>
       <plugin>
@@ -43,7 +40,7 @@
             </goals>
             <configuration>
               <excludes>
-                <plugin id="org.eclipse.jpt.jpadiagrameditor.branding"/>
+                <plugin id="org.eclipse.jpt.common.eclipselink.branding"/>
               </excludes>
             </configuration>
           </execution>
