@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,24 +7,27 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.internal.command;
+package org.eclipse.jpt.common.utility.internal.factory;
 
 import org.eclipse.jpt.common.utility.command.Command;
+import org.eclipse.jpt.common.utility.factory.Factory;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
- * Command wrapper that can have its wrapped command changed,
- * allowing a client to change a previously-supplied command's
- * behavior mid-stream.
+ * Adapt a {@link Command} to the {@link Factory} interface.
+ * The factory always returns <code>null</code>.
  * 
- * @see #setCommand(Command)
+ * @param <T> the type of the object returned by the factory
+ * 
+ * @see org.eclipse.jpt.common.utility.internal.command.FactoryCommand
  */
-public class CommandWrapper
-	implements Command
+public class CommandFactory<T>
+	implements Factory<T>
 {
-	protected volatile Command command;
+	private final Command command;
 
-	public CommandWrapper(Command command) {
+
+	public CommandFactory(Command command) {
 		super();
 		if (command == null) {
 			throw new NullPointerException();
@@ -32,15 +35,9 @@ public class CommandWrapper
 		this.command = command;
 	}
 
-	public void execute() {
+	public T create() {
 		this.command.execute();
-	}
-
-	public void setCommand(Command command) {
-		if (command == null) {
-			throw new NullPointerException();
-		}
-		this.command = command;
+		return null;
 	}
 
 	@Override

@@ -7,21 +7,27 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.internal.closure;
+package org.eclipse.jpt.common.utility.internal.command;
 
-import org.eclipse.jpt.common.utility.closure.InterruptibleClosure;
+import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.transformer.InterruptibleTransformer;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
- * @see TransformerClosure
+ * Adapt a {@link Transformer} to the {@link Command} interface.
+ * The transformer is passed <code>null</code> for input and its output is
+ * ignored. This really only useful for a transformer that accepts
+ * <code>null</code> input and has side-effects.
+ * 
+ * @see org.eclipse.jpt.common.utility.internal.transformer.CommandTransformer
  */
-public class InterruptibleTransformerClosure<A>
-	implements InterruptibleClosure<A>
+public class TransformerCommand
+	implements Command
 {
-	private final InterruptibleTransformer<? super A, ?> transformer;
+	private final Transformer<?, ?> transformer;
 
-	public InterruptibleTransformerClosure(InterruptibleTransformer<? super A, ?> transformer) {
+
+	public TransformerCommand(Transformer<?, ?> transformer) {
 		super();
 		if (transformer == null) {
 			throw new NullPointerException();
@@ -29,8 +35,8 @@ public class InterruptibleTransformerClosure<A>
 		this.transformer = transformer;
 	}
 
-	public void execute(A argument) throws InterruptedException {
-		this.transformer.transform(argument);
+	public void execute() {
+		this.transformer.transform(null);
 	}
 
 	@Override

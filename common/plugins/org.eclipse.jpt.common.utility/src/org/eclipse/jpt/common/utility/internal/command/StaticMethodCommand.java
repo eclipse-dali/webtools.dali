@@ -7,31 +7,28 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.internal.factory;
+package org.eclipse.jpt.common.utility.internal.command;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import org.eclipse.jpt.common.utility.factory.Factory;
+import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
- * A factory that uses Java reflection to return the value returned by a static
- * method. Checked exceptions are converted to {@link RuntimeException}s.
+ * A command that uses Java reflection to execute a static method.
+ * Checked exceptions are converted to {@link RuntimeException}s.
  * 
- * @param <T> the type of objects returned by the factory
- * 
- * @see StaticFieldFactory
  * @see java.lang.reflect.Method#invoke(Object, Object...)
  */
-public class StaticMethodFactory<T>
-	implements Factory<T>
+public class StaticMethodCommand
+	implements Command
 {
 	private final Method method;
 	private final Object[] arguments;
 
 
-	public StaticMethodFactory(Method method, Object[] arguments) {
+	public StaticMethodCommand(Method method, Object[] arguments) {
 		super();
 		if ((method == null) || (arguments == null)) {
 			throw new NullPointerException();
@@ -46,10 +43,9 @@ public class StaticMethodFactory<T>
 		this.arguments = arguments;
 	}
 
-	@SuppressWarnings("unchecked")
-	public T create() {
+	public void execute() {
 		try {
-			return (T) this.method.invoke(null, this.arguments);
+			this.method.invoke(null, this.arguments);
 		} catch (IllegalArgumentException ex) {
 			throw new RuntimeException(ex);
 		} catch (IllegalAccessException ex) {

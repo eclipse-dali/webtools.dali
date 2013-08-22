@@ -9,41 +9,41 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.transformer;
 
-import org.eclipse.jpt.common.utility.closure.Closure;
+import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
- * Adapt a {@link Closure} to the {@link Transformer} interface.
+ * Adapt a {@link Command} to the {@link Transformer} interface.
  * The transformer will always return <code>null</code>.
  * 
- * @param <I> input: the type of the object passed to the transformer and
- *     forwarded to the closure
+ * @param <I> input: the type of the object passed to the transformer;
+ *     ignored
  * @param <O> output: the type of the object returned by the transformer;
  *     always <code>null</code>
  * 
- * @see org.eclipse.jpt.common.utility.internal.closure.TransformerClosure
+ * @see org.eclipse.jpt.common.utility.internal.command.TransformerCommand
  */
-public class ClosureTransformer<I, O>
+public class CommandTransformer<I, O>
 	implements Transformer<I, O>
 {
-	private final Closure<? super I> closure;
+	private final Command command;
 
-	public ClosureTransformer(Closure<? super I> closure) {
+	public CommandTransformer(Command command) {
 		super();
-		if (closure == null) {
+		if (command == null) {
 			throw new NullPointerException();
 		}
-		this.closure = closure;
+		this.command = command;
 	}
 
 	public O transform(I input) {
-		this.closure.execute(input);
+		this.command.execute();
 		return null;
 	}
 
 	@Override
 	public String toString() {
-		return ObjectTools.toString(this, this.closure);
+		return ObjectTools.toString(this, this.command);
 	}
 }

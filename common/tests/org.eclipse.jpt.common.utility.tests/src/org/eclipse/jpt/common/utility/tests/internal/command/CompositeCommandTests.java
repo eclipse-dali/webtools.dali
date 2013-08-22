@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,10 +10,9 @@
 package org.eclipse.jpt.common.utility.tests.internal.command;
 
 import junit.framework.TestCase;
-
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.internal.command.CommandRunnable;
-import org.eclipse.jpt.common.utility.internal.command.CompositeCommand;
+import org.eclipse.jpt.common.utility.internal.command.CommandTools;
 
 public class CompositeCommandTests extends TestCase {
 	boolean command1Executed = false;
@@ -36,7 +35,7 @@ public class CompositeCommandTests extends TestCase {
 	}
 
 	private Command buildCompositeCommand() {
-		return new CompositeCommand(
+		return CommandTools.composite(
 					this.buildCommand1(),
 					this.buildCommand2()
 				);

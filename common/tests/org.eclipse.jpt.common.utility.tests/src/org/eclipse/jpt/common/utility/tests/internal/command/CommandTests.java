@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.common.utility.tests.internal.command;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.CommandContext;
 import org.eclipse.jpt.common.utility.internal.command.CommandRunnable;
+import org.eclipse.jpt.common.utility.internal.command.CommandTools;
 import org.eclipse.jpt.common.utility.internal.command.DisabledCommand;
 import org.eclipse.jpt.common.utility.internal.command.NullCommand;
 import org.eclipse.jpt.common.utility.internal.command.RunnableCommand;
@@ -96,7 +97,7 @@ public class CommandTests
 	}
 
 	public void testThreadLocalCommand() throws Exception {
-		ThreadLocalCommand threadLocalCommand = new ThreadLocalCommand();
+		ThreadLocalCommand threadLocalCommand = CommandTools.threadLocalCommand();
 		TestRunnable testRunnable1 = new TestRunnable(threadLocalCommand, 1);
 		Thread thread1 = this.buildThread(testRunnable1);
 		thread1.run();

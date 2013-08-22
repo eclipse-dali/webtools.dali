@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,33 +11,36 @@ package org.eclipse.jpt.common.utility.internal.command;
 
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 
 /**
- * Command that provides support for treating a collection of
- * commands as a single command.
+ * Command that executes another command a specified number of times.
  */
-public class CompositeCommand
+public class RepeatingCommand
 	implements Command
 {
-	private final Iterable<Command> commands;
+	private final int count;
+	private final Command command;
 
-	public CompositeCommand(Iterable<Command> commands) {
+	public RepeatingCommand(Command command, int count) {
 		super();
-		if (IterableTools.isOrContainsNull(commands)) {
+		if (command == null) {
 			throw new NullPointerException();
 		}
-		this.commands = commands;
+		if (count <= 0) {
+			throw new IndexOutOfBoundsException("invalid count: " + count); //$NON-NLS-1$
+		}
+		this.command = command;
+		this.count = count;
 	}
 
 	public void execute() {
-		for (Command command : this.commands) {
-			command.execute();
+		for (int i = this.count; i-- > 0;) {
+			this.command.execute();
 		}
 	}
 
 	@Override
 	public String toString() {
-		return ObjectTools.toString(this, this.commands);
+		return ObjectTools.toString(this, this.command);
 	}
 }

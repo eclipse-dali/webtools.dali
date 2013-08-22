@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,30 +7,33 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.internal.closure;
+package org.eclipse.jpt.common.utility.internal.transformer;
 
-import org.eclipse.jpt.common.utility.closure.InterruptibleClosure;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.transformer.InterruptibleTransformer;
 
 /**
- * @see TransformerClosure
+ * @see TransformerWrapper
  */
-public class InterruptibleTransformerClosure<A>
-	implements InterruptibleClosure<A>
+public class InterruptibleTransformerWrapper<I, O>
+	implements InterruptibleTransformer<I, O>
 {
-	private final InterruptibleTransformer<? super A, ?> transformer;
+	protected volatile InterruptibleTransformer<? super I, ? extends O> transformer;
 
-	public InterruptibleTransformerClosure(InterruptibleTransformer<? super A, ?> transformer) {
+	public InterruptibleTransformerWrapper(InterruptibleTransformer<? super I, ? extends O> transformer) {
 		super();
+		this.setInterruptibleTransformer(transformer);
+	}
+
+	public O transform(I input) throws InterruptedException {
+		return this.transformer.transform(input);
+	}
+
+	public void setInterruptibleTransformer(InterruptibleTransformer<? super I, ? extends O> transformer) {
 		if (transformer == null) {
 			throw new NullPointerException();
 		}
 		this.transformer = transformer;
-	}
-
-	public void execute(A argument) throws InterruptedException {
-		this.transformer.transform(argument);
 	}
 
 	@Override

@@ -9,20 +9,19 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.command;
 
-import org.eclipse.jpt.common.utility.command.Command;
+import org.eclipse.jpt.common.utility.command.InterruptibleCommand;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 
 /**
- * Command that provides support for treating a collection of
- * commands as a single command.
+ * @see CompositeCommand
  */
-public class CompositeCommand
-	implements Command
+public class CompositeInterruptibleCommand
+	implements InterruptibleCommand
 {
-	private final Iterable<Command> commands;
+	private final Iterable<InterruptibleCommand> commands;
 
-	public CompositeCommand(Iterable<Command> commands) {
+	public CompositeInterruptibleCommand(Iterable<InterruptibleCommand> commands) {
 		super();
 		if (IterableTools.isOrContainsNull(commands)) {
 			throw new NullPointerException();
@@ -30,8 +29,8 @@ public class CompositeCommand
 		this.commands = commands;
 	}
 
-	public void execute() {
-		for (Command command : this.commands) {
+	public void execute() throws InterruptedException {
+		for (InterruptibleCommand command : this.commands) {
 			command.execute();
 		}
 	}

@@ -10,39 +10,39 @@
 package org.eclipse.jpt.common.utility.internal.closure;
 
 import org.eclipse.jpt.common.utility.closure.Closure;
+import org.eclipse.jpt.common.utility.factory.Factory;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
- * Adapt a {@link Transformer} to the {@link Closure} interface.
- * The closure's argument is forwarded to the the transformer and the
- * transformer's output is ignored. This really only useful for a
- * transformer that has side-effects.
+ * Adapt a {@link Factory} to the {@link Closure} interface.
+ * The closure's argument and the factory's output are ignored.
+ * This really only useful for a factory that has side-effects.
  * 
- * @param <A> the type of the object passed to the closure and forwarded to the
- *     transformer
+ * @param <A> the type of the object passed to the closure;
+ *     ignored
  * 
- * @see org.eclipse.jpt.common.utility.internal.transformer.ClosureTransformer
+ * @see org.eclipse.jpt.common.utility.internal.factory.ClosureFactory
  */
-public class TransformerClosure<A>
+public class FactoryClosure<A>
 	implements Closure<A>
 {
-	private final Transformer<? super A, ?> transformer;
+	private final Factory<?> factory;
 
-	public TransformerClosure(Transformer<? super A, ?> transformer) {
+
+	public FactoryClosure(Factory<?> factory) {
 		super();
-		if (transformer == null) {
+		if (factory == null) {
 			throw new NullPointerException();
 		}
-		this.transformer = transformer;
+		this.factory = factory;
 	}
 
 	public void execute(A argument) {
-		this.transformer.transform(argument);
+		this.factory.create();
 	}
 
 	@Override
 	public String toString() {
-		return ObjectTools.toString(this, this.transformer);
+		return ObjectTools.toString(this, this.factory);
 	}
 }

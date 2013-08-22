@@ -7,29 +7,29 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.internal.closure;
+package org.eclipse.jpt.common.utility.internal.factory;
 
-import org.eclipse.jpt.common.utility.closure.Closure;
+import org.eclipse.jpt.common.utility.factory.Factory;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
- * Adapt a {@link Transformer} to the {@link Closure} interface.
- * The closure's argument is forwarded to the the transformer and the
- * transformer's output is ignored. This really only useful for a
- * transformer that has side-effects.
+ * Adapt a {@link Transformer} to the {@link Factory} interface.
+ * The transformer is passed <code>null</code> for input and its output is
+ * returned by the factory. This really only useful for a transformer that
+ * accepts <code>null</code> input.
  * 
- * @param <A> the type of the object passed to the closure and forwarded to the
- *     transformer
+ * @param <T> the type of the object returned by the factory
  * 
- * @see org.eclipse.jpt.common.utility.internal.transformer.ClosureTransformer
+ * @see org.eclipse.jpt.common.utility.internal.transformer.FactoryTransformer
  */
-public class TransformerClosure<A>
-	implements Closure<A>
+public class TransformerFactory<T>
+	implements Factory<T>
 {
-	private final Transformer<? super A, ?> transformer;
+	private final Transformer<?, ? extends T> transformer;
 
-	public TransformerClosure(Transformer<? super A, ?> transformer) {
+
+	public TransformerFactory(Transformer<?, ? extends T> transformer) {
 		super();
 		if (transformer == null) {
 			throw new NullPointerException();
@@ -37,8 +37,8 @@ public class TransformerClosure<A>
 		this.transformer = transformer;
 	}
 
-	public void execute(A argument) {
-		this.transformer.transform(argument);
+	public T create() {
+		return this.transformer.transform(null);
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,38 +9,34 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.command;
 
-import org.eclipse.jpt.common.utility.command.Command;
+import org.eclipse.jpt.common.utility.command.InterruptibleCommand;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
- * Command wrapper that can have its wrapped command changed,
- * allowing a client to change a previously-supplied command's
- * behavior mid-stream.
- * 
- * @see #setCommand(Command)
+ * @see RepeatingCommand
  */
-public class CommandWrapper
-	implements Command
+public class RepeatingInterruptibleCommand
+	implements InterruptibleCommand
 {
-	protected volatile Command command;
+	private final int count;
+	private final InterruptibleCommand command;
 
-	public CommandWrapper(Command command) {
+	public RepeatingInterruptibleCommand(InterruptibleCommand command, int count) {
 		super();
 		if (command == null) {
 			throw new NullPointerException();
 		}
-		this.command = command;
-	}
-
-	public void execute() {
-		this.command.execute();
-	}
-
-	public void setCommand(Command command) {
-		if (command == null) {
-			throw new NullPointerException();
+		if (count <= 0) {
+			throw new IndexOutOfBoundsException("invalid count: " + count); //$NON-NLS-1$
 		}
 		this.command = command;
+		this.count = count;
+	}
+
+	public void execute() throws InterruptedException {
+		for (int i = this.count; i-- > 0;) {
+			this.command.execute();
+		}
 	}
 
 	@Override

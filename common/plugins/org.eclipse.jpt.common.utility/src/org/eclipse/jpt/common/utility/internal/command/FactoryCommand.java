@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,34 +10,36 @@
 package org.eclipse.jpt.common.utility.internal.command;
 
 import org.eclipse.jpt.common.utility.command.Command;
+import org.eclipse.jpt.common.utility.factory.Factory;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 
 /**
- * Command that provides support for treating a collection of
- * commands as a single command.
+ * Adapt a {@link Factory} to the {@link Command} interface.
+ * The factory's output is ignored.
+ * This really only useful for a factory that has side-effects.
+ * 
+ * @see org.eclipse.jpt.common.utility.internal.factory.CommandFactory
  */
-public class CompositeCommand
+public class FactoryCommand
 	implements Command
 {
-	private final Iterable<Command> commands;
+	private final Factory<?> factory;
 
-	public CompositeCommand(Iterable<Command> commands) {
+
+	public FactoryCommand(Factory<?> factory) {
 		super();
-		if (IterableTools.isOrContainsNull(commands)) {
+		if (factory == null) {
 			throw new NullPointerException();
 		}
-		this.commands = commands;
+		this.factory = factory;
 	}
 
 	public void execute() {
-		for (Command command : this.commands) {
-			command.execute();
-		}
+		this.factory.create();
 	}
 
 	@Override
 	public String toString() {
-		return ObjectTools.toString(this, this.commands);
+		return ObjectTools.toString(this, this.factory);
 	}
 }

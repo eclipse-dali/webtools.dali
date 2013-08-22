@@ -7,29 +7,27 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.internal.transformer;
+package org.eclipse.jpt.common.utility.internal.command;
 
 import org.eclipse.jpt.common.utility.closure.Closure;
+import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
- * Adapt a {@link Closure} to the {@link Transformer} interface.
- * The transformer will always return <code>null</code>.
+ * Adapt a {@link Closure} to the {@link Command} interface.
+ * The closure is passed <code>null</code> for an argument.
+ * This really only useful for a closure that accepts a
+ * <code>null</code> argument.
  * 
- * @param <I> input: the type of the object passed to the transformer and
- *     forwarded to the closure
- * @param <O> output: the type of the object returned by the transformer;
- *     always <code>null</code>
- * 
- * @see org.eclipse.jpt.common.utility.internal.closure.TransformerClosure
+ * @see org.eclipse.jpt.common.utility.internal.closure.CommandClosure
  */
-public class ClosureTransformer<I, O>
-	implements Transformer<I, O>
+public class ClosureCommand
+	implements Command
 {
-	private final Closure<? super I> closure;
+	private final Closure<?> closure;
 
-	public ClosureTransformer(Closure<? super I> closure) {
+
+	public ClosureCommand(Closure<?> closure) {
 		super();
 		if (closure == null) {
 			throw new NullPointerException();
@@ -37,9 +35,8 @@ public class ClosureTransformer<I, O>
 		this.closure = closure;
 	}
 
-	public O transform(I input) {
-		this.closure.execute(input);
-		return null;
+	public void execute() {
+		this.closure.execute(null);
 	}
 
 	@Override

@@ -9,21 +9,19 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.command;
 
-import org.eclipse.jpt.common.utility.command.Command;
+import org.eclipse.jpt.common.utility.command.InterruptibleCommand;
 
 /**
- * This command allows the client to specify a different command for each
- * thread. If there is no command for the current thread, the configured default
- * command is executed.
- * @see #set(Command)
+ * @see ThreadLocalCommand
+ * @see #set(InterruptibleCommand)
  */
-public class ThreadLocalCommand
-	implements Command
+public class ThreadLocalInterruptibleCommand
+	implements InterruptibleCommand
 {
-	private final ThreadLocal<Command> threadLocal;
-	private final Command defaultCommand;
+	private final ThreadLocal<InterruptibleCommand> threadLocal;
+	private final InterruptibleCommand defaultCommand;
 
-	public ThreadLocalCommand(Command defaultCommand) {
+	public ThreadLocalInterruptibleCommand(InterruptibleCommand defaultCommand) {
 		super();
 		if (defaultCommand == null) {
 			throw new NullPointerException();
@@ -32,23 +30,23 @@ public class ThreadLocalCommand
 		this.threadLocal = this.buildThreadLocal();
 	}
 
-	private ThreadLocal<Command> buildThreadLocal() {
-		return new ThreadLocal<Command>();
+	private ThreadLocal<InterruptibleCommand> buildThreadLocal() {
+		return new ThreadLocal<InterruptibleCommand>();
 	}
 
-	public void execute() {
+	public void execute() throws InterruptedException {
 		this.get().execute();
 	}
 
-	private Command get() {
-		Command command = this.threadLocal.get();
+	private InterruptibleCommand get() {
+		InterruptibleCommand command = this.threadLocal.get();
 		return (command != null) ? command : this.defaultCommand;
 	}
 
 	/**
 	 * Set the current thread's command to the specified value.
 	 */
-	public void set(Command command) {
+	public void set(InterruptibleCommand command) {
 		this.threadLocal.set(command);
 	}
 

@@ -7,21 +7,20 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.internal.closure;
+package org.eclipse.jpt.common.utility.internal.transformer;
 
-import org.eclipse.jpt.common.utility.closure.InterruptibleClosure;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.transformer.InterruptibleTransformer;
 
 /**
- * @see TransformerClosure
+ * @see UpcastingTransformerWrapper
  */
-public class InterruptibleTransformerClosure<A>
-	implements InterruptibleClosure<A>
+public class UpcastingInterruptibleTransformerWrapper<I, O, X extends O>
+	implements InterruptibleTransformer<I, O>
 {
-	private final InterruptibleTransformer<? super A, ?> transformer;
+	private final InterruptibleTransformer<? super I, ? extends X> transformer;
 
-	public InterruptibleTransformerClosure(InterruptibleTransformer<? super A, ?> transformer) {
+	public UpcastingInterruptibleTransformerWrapper(InterruptibleTransformer<? super I, ? extends X> transformer) {
 		super();
 		if (transformer == null) {
 			throw new NullPointerException();
@@ -29,8 +28,12 @@ public class InterruptibleTransformerClosure<A>
 		this.transformer = transformer;
 	}
 
-	public void execute(A argument) throws InterruptedException {
-		this.transformer.transform(argument);
+	/**
+	 * No need for casting as the type is guaranteed by the generic type
+	 * argument.
+	 */
+	public O transform(I input) throws InterruptedException {
+		return this.transformer.transform(input);
 	}
 
 	@Override

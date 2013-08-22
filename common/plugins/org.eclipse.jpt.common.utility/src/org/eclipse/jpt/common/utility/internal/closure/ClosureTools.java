@@ -13,6 +13,7 @@ import org.eclipse.jpt.common.utility.Association;
 import org.eclipse.jpt.common.utility.closure.Closure;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
+import org.eclipse.jpt.common.utility.factory.Factory;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -25,6 +26,64 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * {@link Closure} utility methods.
  */
 public final class ClosureTools {
+
+	// ********** adapters **********
+
+	/**
+	 * Adapt the specified {@link Command} to the {@link Closure} interface.
+	 * The closure's argument is ignored.
+	 * @param <A> the type of the object passed to the closure
+	 */
+	public static <A> Closure<A> adapt(Command command) {
+		return new CommandClosure<A>(command);
+	}
+
+	/**
+	 * Adapt the specified {@link Factory} to the {@link Closure} interface.
+	 * The closure's argument and the factory's output are ignored. This really
+	 * only useful for a factory that has side-effects.
+	 * @param <A> the type of the object passed to the closure
+	 */
+	public static <A> Closure<A> adapt(Factory<?> factory) {
+		return new FactoryClosure<A>(factory);
+	}
+
+	/**
+	 * Adapt the specified {@link Transformer} to the {@link Closure} interface.
+	 * The transformer's output is ignored. This really only useful for a
+	 * transformer that has side-effects.
+	 * @param <A> the type of the object passed to the closure and forwarded to
+	 *     the transformer
+	 */
+	public static <A> Closure<A> adapt(Transformer<? super A, ?> transformer) {
+		return new TransformerClosure<A>(transformer);
+	}
+
+
+	// ********** thread local **********
+
+	/**
+	 * Return a closure that allows the client to specify a different closure
+	 * for each thread. If there is no closure for the current thread, the
+	 * closure will do nothing.
+	 * @param <A> the type of the object passed to the closure
+	 * @see ThreadLocalClosure
+	 */
+	public static <A> ThreadLocalClosure<A> threadLocalClosure() {
+		return threadLocalClosure(NullClosure.instance());
+	}
+
+	/**
+	 * Return a closure that allows the client to specify a different closure
+	 * for each thread. If there is no closure for the current thread, the
+	 * specified default closure is executed.
+	 * @param <A> the type of the object passed to the closure
+	 * @see ThreadLocalClosure
+	 */
+	public static <A> ThreadLocalClosure<A> threadLocalClosure(Closure<? super A> defaultClosure) {
+		return new ThreadLocalClosure<A>(defaultClosure);
+	}
+
 
 	// ********** wrappers **********
 
@@ -57,8 +116,9 @@ public final class ClosureTools {
 	 * allowing a client to change a previously-supplied closure's
 	 * behavior mid-stream.
 	 * @param <A> the type of the object passed to the closure
+	 * @see ClosureWrapper
 	 */
-	public static <A> Closure<A> wrap(Closure<? super A> closure) {
+	public static <A> ClosureWrapper<A> wrap(Closure<? super A> closure) {
 		return new ClosureWrapper<A>(closure);
 	}
 
@@ -66,7 +126,7 @@ public final class ClosureTools {
 	// ********** safe **********
 
 	/**
-	 * Return closure will handle any exceptions thrown by the specified
+	 * Return closure that will handle any exceptions thrown by the specified
 	 * closure. If the wrapped closure throws an exception,
 	 * the exception's stack trace will be printed to {@link System#err
 	 * the "standard" error output stream}.
@@ -78,8 +138,8 @@ public final class ClosureTools {
 	}
 
 	/**
-	 * Return closure will handle any exceptions thrown by the specified
-	 * closure with an {@link ExceptionHandler exception handler}. If the
+	 * Return closure that will handle any exceptions thrown by the specified
+	 * closure with the specified exception handler. If the
 	 * wrapped closure throws an exception, the safe closure will handle
 	 * the exception and return.
 	 * @param <A> the type of the object passed to the closure
@@ -150,21 +210,6 @@ public final class ClosureTools {
 	 */
 	public static <A> Closure<A> composite(Iterable<Closure<? super A>> closures) {
 		return new CompositeClosure<A>(closures);
-	}
-
-
-	// ********** transformer **********
-
-	/**
-	 * Adapt the specified {@link Transformer} to the {@link Closure} interface.
-	 * The transformer's output is ignored. This really only useful for a
-	 * transformer that has side-effects.
-	 * @param <A> the type of the object passed to the closure and forwarded to the
-	 *     transformer
-	 * @see TransformerClosure
-	 */
-	public static <A, O> Closure<A> adapt(Transformer<? super A, ? extends O> transformer) {
-		return new TransformerClosure<A>(transformer);
 	}
 
 

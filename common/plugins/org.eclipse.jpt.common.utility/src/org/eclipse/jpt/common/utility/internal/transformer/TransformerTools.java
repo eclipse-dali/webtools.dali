@@ -13,7 +13,9 @@ import java.util.Iterator;
 import java.util.Map;
 import org.eclipse.jpt.common.utility.Association;
 import org.eclipse.jpt.common.utility.closure.Closure;
+import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
+import org.eclipse.jpt.common.utility.factory.Factory;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -25,6 +27,41 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * {@link Transformer} utility methods.
  */
 public final class TransformerTools {
+
+	// ********** adapters **********
+
+	/**
+	 * Adapt the specified {@link Closure} to the {@link Transformer} interface.
+	 * The returned transformer will always return <code>null</code>.
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 */
+	public static <I, O> Transformer<I, O> adapt(Closure<? super I> closure) {
+		return new ClosureTransformer<I, O>(closure);
+	}
+
+	/**
+	 * Adapt the specified {@link Command} to the {@link Transformer} interface.
+	 * The returned transformer will always return <code>null</code> and its
+	 * input will be ignored.
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 */
+	public static <I, O> Transformer<I, O> adapt(Command command) {
+		return new CommandTransformer<I, O>(command);
+	}
+
+	/**
+	 * Adapt the specified {@link Factory} to the {@link Transformer} interface.
+	 * The returned transformer will return the factory's output and its
+	 * input will be ignored.
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 */
+	public static <I, O> Transformer<I, O> adapt(Factory<? extends O> factory) {
+		return new FactoryTransformer<I, O>(factory);
+	}
+
 
 	// ********** object to string **********
 
@@ -344,6 +381,33 @@ public final class TransformerTools {
 	}
 
 
+	// ********** thread local **********
+
+	/**
+	 * Return a transformer that allows the client to specify a different transformer
+	 * for each thread. If there is no transformer for the current thread, the
+	 * transformer will return <code>null</code>.
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 * @see ThreadLocalTransformer
+	 */
+	public static <I, O> ThreadLocalTransformer<I, O> threadLocalTransformer() {
+		return threadLocalTransformer(NullOutputTransformer.<I, O>instance());
+	}
+
+	/**
+	 * Return a transformer that allows the client to specify a different transformer
+	 * for each thread. If there is no transformer for the current thread, the
+	 * specified default transformer is used.
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 * @see ThreadLocalTransformer
+	 */
+	public static <I, O> ThreadLocalTransformer<I, O> threadLocalTransformer(Transformer<? super I, ? extends O> defaultTransformer) {
+		return new ThreadLocalTransformer<I, O>(defaultTransformer);
+	}
+
+
 	// ********** wrappers **********
 
 	/**
@@ -394,7 +458,7 @@ public final class TransformerTools {
 	 * @param <O> output: the type of the object returned by the transformer
 	 * @see TransformerWrapper
 	 */
-	public static <I, O> Transformer<I, O> wrap(Transformer<? super I, ? extends O> transformer) {
+	public static <I, O> TransformerWrapper<I, O> wrap(Transformer<? super I, ? extends O> transformer) {
 		return new TransformerWrapper<I, O>(transformer);
 	}
 
@@ -650,20 +714,6 @@ public final class TransformerTools {
 	 */
 	public static <I, O> Transformer<I, O> chain(Iterable<Transformer<?, ?>> transformers) {
 		return new TransformerChain<I, O>(transformers);
-	}
-
-
-	// ********** closure **********
-
-	/**
-	 * Adapt the specified {@link Closure} to the {@link Transformer} interface.
-	 * The returned transformer will always return <code>null</code>.
-	 * @param <I> input: the type of the object passed to the transformer
-	 * @param <O> output: the type of the object returned by the transformer
-	 * @see ClosureTransformer
-	 */
-	public static <I, O> Transformer<I, O> adapt(Closure<? super I> closure) {
-		return new ClosureTransformer<I, O>(closure);
 	}
 
 

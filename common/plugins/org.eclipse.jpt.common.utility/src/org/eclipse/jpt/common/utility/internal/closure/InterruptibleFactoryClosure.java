@@ -10,31 +10,32 @@
 package org.eclipse.jpt.common.utility.internal.closure;
 
 import org.eclipse.jpt.common.utility.closure.InterruptibleClosure;
+import org.eclipse.jpt.common.utility.factory.InterruptibleFactory;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.transformer.InterruptibleTransformer;
 
 /**
- * @see TransformerClosure
+ * @see FactoryClosure
  */
-public class InterruptibleTransformerClosure<A>
+public class InterruptibleFactoryClosure<A>
 	implements InterruptibleClosure<A>
 {
-	private final InterruptibleTransformer<? super A, ?> transformer;
+	private final InterruptibleFactory<?> factory;
 
-	public InterruptibleTransformerClosure(InterruptibleTransformer<? super A, ?> transformer) {
+
+	public InterruptibleFactoryClosure(InterruptibleFactory<?> factory) {
 		super();
-		if (transformer == null) {
+		if (factory == null) {
 			throw new NullPointerException();
 		}
-		this.transformer = transformer;
+		this.factory = factory;
 	}
 
 	public void execute(A argument) throws InterruptedException {
-		this.transformer.transform(argument);
+		this.factory.create();
 	}
 
 	@Override
 	public String toString() {
-		return ObjectTools.toString(this, this.transformer);
+		return ObjectTools.toString(this, this.factory);
 	}
 }

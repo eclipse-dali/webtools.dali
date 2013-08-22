@@ -7,29 +7,30 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.internal.transformer;
+package org.eclipse.jpt.common.utility.internal.factory;
 
 import org.eclipse.jpt.common.utility.closure.Closure;
+import org.eclipse.jpt.common.utility.factory.Factory;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
- * Adapt a {@link Closure} to the {@link Transformer} interface.
- * The transformer will always return <code>null</code>.
+ * Adapt a {@link Closure} to the {@link Factory} interface.
+ * The closure is passed <code>null</code> for an argument and the factory
+ * always returns <code>null</code>.
+ * This really only useful for a closure that accepts a
+ * <code>null</code> argument.
  * 
- * @param <I> input: the type of the object passed to the transformer and
- *     forwarded to the closure
- * @param <O> output: the type of the object returned by the transformer;
- *     always <code>null</code>
+ * @param <T> the type of the object returned by the factory
  * 
- * @see org.eclipse.jpt.common.utility.internal.closure.TransformerClosure
+ * @see org.eclipse.jpt.common.utility.internal.closure.FactoryClosure
  */
-public class ClosureTransformer<I, O>
-	implements Transformer<I, O>
+public class ClosureFactory<T>
+	implements Factory<T>
 {
-	private final Closure<? super I> closure;
+	private final Closure<?> closure;
 
-	public ClosureTransformer(Closure<? super I> closure) {
+
+	public ClosureFactory(Closure<?> closure) {
 		super();
 		if (closure == null) {
 			throw new NullPointerException();
@@ -37,8 +38,8 @@ public class ClosureTransformer<I, O>
 		this.closure = closure;
 	}
 
-	public O transform(I input) {
-		this.closure.execute(input);
+	public T create() {
+		this.closure.execute(null);
 		return null;
 	}
 

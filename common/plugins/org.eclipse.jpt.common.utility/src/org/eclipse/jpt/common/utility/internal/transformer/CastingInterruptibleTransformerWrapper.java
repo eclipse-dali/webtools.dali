@@ -7,21 +7,21 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.internal.closure;
+package org.eclipse.jpt.common.utility.internal.transformer;
 
-import org.eclipse.jpt.common.utility.closure.InterruptibleClosure;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.transformer.InterruptibleTransformer;
 
 /**
- * @see TransformerClosure
+ * @see CastingTransformerWrapper
  */
-public class InterruptibleTransformerClosure<A>
-	implements InterruptibleClosure<A>
+public class CastingInterruptibleTransformerWrapper<I, X, O>
+	implements InterruptibleTransformer<I, O>
 {
-	private final InterruptibleTransformer<? super A, ?> transformer;
+	private final InterruptibleTransformer<? super I, ? extends X> transformer;
 
-	public InterruptibleTransformerClosure(InterruptibleTransformer<? super A, ?> transformer) {
+
+	public CastingInterruptibleTransformerWrapper(InterruptibleTransformer<? super I, ? extends X> transformer) {
 		super();
 		if (transformer == null) {
 			throw new NullPointerException();
@@ -29,8 +29,12 @@ public class InterruptibleTransformerClosure<A>
 		this.transformer = transformer;
 	}
 
-	public void execute(A argument) throws InterruptedException {
-		this.transformer.transform(argument);
+	/**
+	 * Cast the output and hope for the best.
+	 */
+	@SuppressWarnings("unchecked")
+	public O transform(I input) throws InterruptedException {
+		return (O) this.transformer.transform(input);
 	}
 
 	@Override

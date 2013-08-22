@@ -9,32 +9,39 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.closure;
 
-import org.eclipse.jpt.common.utility.closure.InterruptibleClosure;
+import org.eclipse.jpt.common.utility.closure.Closure;
+import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.transformer.InterruptibleTransformer;
 
 /**
- * @see TransformerClosure
+ * Adapt a {@link Command} to the {@link Closure} interface.
+ * The closure's argument is ignored.
+ * 
+ * @param <A> the type of the object passed to the closure;
+ *     ignored
+ * 
+ * @see org.eclipse.jpt.common.utility.internal.command.ClosureCommand
  */
-public class InterruptibleTransformerClosure<A>
-	implements InterruptibleClosure<A>
+public class CommandClosure<A>
+	implements Closure<A>
 {
-	private final InterruptibleTransformer<? super A, ?> transformer;
+	private final Command command;
 
-	public InterruptibleTransformerClosure(InterruptibleTransformer<? super A, ?> transformer) {
+
+	public CommandClosure(Command command) {
 		super();
-		if (transformer == null) {
+		if (command == null) {
 			throw new NullPointerException();
 		}
-		this.transformer = transformer;
+		this.command = command;
 	}
 
-	public void execute(A argument) throws InterruptedException {
-		this.transformer.transform(argument);
+	public void execute(A argument) {
+		this.command.execute();
 	}
 
 	@Override
 	public String toString() {
-		return ObjectTools.toString(this, this.transformer);
+		return ObjectTools.toString(this, this.command);
 	}
 }

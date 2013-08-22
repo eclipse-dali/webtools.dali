@@ -7,21 +7,22 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.internal.closure;
+package org.eclipse.jpt.common.utility.internal.command;
 
-import org.eclipse.jpt.common.utility.closure.InterruptibleClosure;
+import org.eclipse.jpt.common.utility.command.InterruptibleCommand;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.transformer.InterruptibleTransformer;
 
 /**
- * @see TransformerClosure
+ * @see TransformerCommand
  */
-public class InterruptibleTransformerClosure<A>
-	implements InterruptibleClosure<A>
+public class InterruptibleTransformerCommand
+	implements InterruptibleCommand
 {
-	private final InterruptibleTransformer<? super A, ?> transformer;
+	private final InterruptibleTransformer<?, ?> transformer;
 
-	public InterruptibleTransformerClosure(InterruptibleTransformer<? super A, ?> transformer) {
+
+	public InterruptibleTransformerCommand(InterruptibleTransformer<?, ?> transformer) {
 		super();
 		if (transformer == null) {
 			throw new NullPointerException();
@@ -29,8 +30,8 @@ public class InterruptibleTransformerClosure<A>
 		this.transformer = transformer;
 	}
 
-	public void execute(A argument) throws InterruptedException {
-		this.transformer.transform(argument);
+	public void execute() throws InterruptedException {
+		this.transformer.transform(null);
 	}
 
 	@Override

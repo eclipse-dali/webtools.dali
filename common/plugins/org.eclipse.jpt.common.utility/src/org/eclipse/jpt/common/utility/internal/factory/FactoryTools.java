@@ -12,11 +12,14 @@ package org.eclipse.jpt.common.utility.internal.factory;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Iterator;
+import org.eclipse.jpt.common.utility.closure.Closure;
+import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
 import org.eclipse.jpt.common.utility.factory.Factory;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.exception.DefaultExceptionHandler;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * {@link Factory} utility methods.
@@ -47,6 +50,60 @@ public class FactoryTools {
 	 */
 	public static <T> Factory<T> adapt(Iterator<? extends T> iterator) {
 		return new IteratorFactory<T>(iterator);
+	}
+
+	/**
+	 * Adapt the specified {@link Closure} to the {@link Factory} interface.
+	 * The closure will always passed a <code>null</code> argument.
+	 * The factory will always return <code>null</code>.
+	 * @param <T> the type of the object returned by the factory
+	 */
+	public static <T> Factory<T> adapt(Closure<?> closure) {
+		return new ClosureFactory<T>(closure);
+	}
+
+	/**
+	 * Adapt the specified {@link Command} to the {@link Factory} interface.
+	 * The factory will always return <code>null</code>.
+	 * @param <T> the type of the object returned by the factory
+	 */
+	public static <T> Factory<T> adapt(Command command) {
+		return new CommandFactory<T>(command);
+	}
+
+	/**
+	 * Adapt the specified {@link Transformer} to the {@link Factory} interface.
+	 * The transformer will always passed a <code>null</code> input and its
+	 * output will be returned as the factory's output.
+	 * @param <T> the type of the object returned by the factory
+	 */
+	public static <T> Factory<T> adapt(Transformer<?, ? extends T> transformer) {
+		return new TransformerFactory<T>(transformer);
+	}
+
+
+	// ********** thread local **********
+
+	/**
+	 * Return a factory that allows the client to specify a different factory
+	 * for each thread. If there is no factory for the current thread, the
+	 * factory will return <code>null</code>.
+	 * @param <T> the type of the object returned by the factory
+	 * @see ThreadLocalFactory
+	 */
+	public static <T> ThreadLocalFactory<T> threadLocalFactory() {
+		return threadLocalFactory(NullFactory.<T>instance());
+	}
+
+	/**
+	 * Return a factory that allows the client to specify a different factory
+	 * for each thread. If there is no factory for the current thread, the
+	 * specified default factory is used.
+	 * @param <T> the type of the object returned by the factory
+	 * @see ThreadLocalFactory
+	 */
+	public static <T> ThreadLocalFactory<T> threadLocalFactory(Factory<? extends T> defaultFactory) {
+		return new ThreadLocalFactory<T>(defaultFactory);
 	}
 
 
