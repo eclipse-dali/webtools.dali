@@ -362,6 +362,86 @@ public class CollectionToolsTests
 		assertNotSame(expected, actual);
 	}
 
+	// ********** partition **********
+
+	public void testPartitionCollectionInt_1() {
+		Collection<String> c = Arrays.asList(new String[] { "zero", "one", "two", "three", "four" });
+		ArrayList<ArrayList<String>> actual = CollectionTools.partition(c, 1);
+		List<String> p0 = Arrays.asList(new String[] { "zero", "one", "two", "three", "four" });
+		assertEquals(1, actual.size());
+		assertEquals(p0, actual.get(0));
+	}
+
+	public void testPartitionCollectionInt_2() {
+		Collection<String> c = Arrays.asList(new String[] { "zero", "one", "two", "three", "four" });
+		ArrayList<ArrayList<String>> actual = CollectionTools.partition(c, 2);
+		List<String> p0 = Arrays.asList(new String[] { "zero", "one", "two" });
+		List<String> p1 = Arrays.asList(new String[] { "three", "four" });
+		assertEquals(2, actual.size());
+		assertEquals(p0, actual.get(0));
+		assertEquals(p1, actual.get(1));
+	}
+
+	public void testPartitionCollectionInt_3() {
+		Collection<String> c = Arrays.asList(new String[] { "zero", "one", "two", "three", "four" });
+		ArrayList<ArrayList<String>> actual = CollectionTools.partition(c, 3);
+		List<String> p0 = Arrays.asList(new String[] { "zero", "one" });
+		List<String> p1 = Arrays.asList(new String[] { "two", "three" });
+		List<String> p2 = Arrays.asList(new String[] { "four" });
+		assertEquals(3, actual.size());
+		assertEquals(p0, actual.get(0));
+		assertEquals(p1, actual.get(1));
+		assertEquals(p2, actual.get(2));
+	}
+
+	public void testPartitionCollectionInt_4() {
+		Collection<String> c = Arrays.asList(new String[] { "zero", "one", "two", "three", "four" });
+		ArrayList<ArrayList<String>> actual = CollectionTools.partition(c, 4);
+		List<String> p0 = Arrays.asList(new String[] { "zero", "one" });
+		List<String> p1 = Arrays.asList(new String[] { "two" });
+		List<String> p2 = Arrays.asList(new String[] { "three" });
+		List<String> p3 = Arrays.asList(new String[] { "four" });
+		assertEquals(4, actual.size());
+		assertEquals(p0, actual.get(0));
+		assertEquals(p1, actual.get(1));
+		assertEquals(p2, actual.get(2));
+		assertEquals(p3, actual.get(3));
+	}
+
+	public void testPartitionCollectionInt_5() {
+		Collection<String> c = Arrays.asList(new String[] { "zero", "one", "two", "three", "four" });
+		ArrayList<ArrayList<String>> actual = CollectionTools.partition(c, 5);
+		List<String> p0 = Arrays.asList(new String[] { "zero" });
+		List<String> p1 = Arrays.asList(new String[] { "one" });
+		List<String> p2 = Arrays.asList(new String[] { "two" });
+		List<String> p3 = Arrays.asList(new String[] { "three" });
+		List<String> p4 = Arrays.asList(new String[] { "four" });
+		assertEquals(5, actual.size());
+		assertEquals(p0, actual.get(0));
+		assertEquals(p1, actual.get(1));
+		assertEquals(p2, actual.get(2));
+		assertEquals(p3, actual.get(3));
+		assertEquals(p4, actual.get(4));
+	}
+
+	public void testPartitionCollectionInt_6() {
+		Collection<String> c = Arrays.asList(new String[] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" });
+		ArrayList<ArrayList<String>> actual = CollectionTools.partition(c, 6);
+		List<String> p0 = Arrays.asList(new String[] { "zero", "one" });
+		List<String> p1 = Arrays.asList(new String[] { "two", "three" });
+		List<String> p2 = Arrays.asList(new String[] { "four", "five" });
+		List<String> p3 = Arrays.asList(new String[] { "six", "seven" });
+		List<String> p4 = Arrays.asList(new String[] { "eight" });
+		List<String> p5 = Arrays.asList(new String[] { "nine" });
+		assertEquals(6, actual.size());
+		assertEquals(p0, actual.get(0));
+		assertEquals(p1, actual.get(1));
+		assertEquals(p2, actual.get(2));
+		assertEquals(p3, actual.get(3));
+		assertEquals(p4, actual.get(4));
+		assertEquals(p5, actual.get(5));
+	}
+
 	// ********** remove all **********
 
 	public void testRemoveAllCollectionIterable() {

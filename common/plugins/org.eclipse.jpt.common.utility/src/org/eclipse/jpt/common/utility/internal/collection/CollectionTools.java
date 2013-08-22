@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.collection;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
@@ -241,6 +242,52 @@ public final class CollectionTools {
 			if (filter.evaluate(e)) {
 				result.add(e);
 			}
+		}
+		return result;
+	}
+
+
+	// ********** partition **********
+
+	/**
+	 * Divide the specified collection into the specified number of partitions.
+	 * If the collection does not split evenly into the specified number of
+	 * partitions, all the partitions will be one of two sizes; the first
+	 * partions will be of size <code>collection.size()/count+1</code>,
+	 * while the last partions will be of size <code>collection.size()/count</code>.
+	 */
+	public static <E> ArrayList<ArrayList<E>> partition(Collection<? extends E> collection, int count) {
+		if (count <= 0) {
+			throw new IllegalArgumentException("count must be greater than zero: " + count); //$NON-NLS-1$
+		}
+		int collectionSize = collection.size();
+		if (collectionSize < count) {
+			throw new IllegalArgumentException("collection size (" + collectionSize + ") must be greater than or equal to count: " + count); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		int partitionSize = collectionSize / count;
+		int remainder = collectionSize % count;
+
+		Iterator<? extends E> stream = collection.iterator();
+		ArrayList<ArrayList<E>> result = new ArrayList<ArrayList<E>>(count);
+		if (remainder != 0) {
+			// spread the remainder elements across the first partitions
+			partitionSize++;
+			for (int i = remainder; i-- > 0; ) {
+				ArrayList<E> partition = new ArrayList<E>(partitionSize);
+				for (int j = partitionSize; j-- > 0;) {
+					partition.add(stream.next());
+				}
+				result.add(partition);
+			}
+			partitionSize--;
+			count = count - remainder;
+		}
+		for (int i = count; i-- > 0; ) {
+			ArrayList<E> partition = new ArrayList<E>(partitionSize);
+			for (int j = partitionSize; j-- > 0;) {
+				partition.add(stream.next());
+			}
+			result.add(partition);
 		}
 		return result;
 	}
