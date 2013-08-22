@@ -77,7 +77,6 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -608,11 +607,17 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 		 */
 		public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer, int offset) {
 
+			NamedQuery namedQuery = query();
+
+			if (namedQuery == null) {
+				return new ICompletionProposal[0];
+			}
+
 			JpaJpqlContentProposalProvider.this.position = offset;
 			String jpqlQuery = viewer.getDocument().get();
 
 			List<ICompletionProposal> proposals = buildProposals(
-				query(),
+				namedQuery,
 				jpqlQuery,
 				0,
 				jpqlQuery.length(),
