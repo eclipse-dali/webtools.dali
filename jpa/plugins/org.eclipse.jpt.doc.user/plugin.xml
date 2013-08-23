@@ -27,25 +27,25 @@
 		<category name="JPA Development"
 			id="org.eclipse.jpt.jpa.category"/>
 
-		<cheatsheet name="Create a JPA Project"
+		<cheatsheet name="%createAJpaProject"
 			id="org.eclipse.jpt.jpa.cheatsheet.CreateJpaProject"
 			contentFile="$nl$/cheatsheets/add_persistence.xml"
 			category="org.eclipse.jpt.jpa.category">
-			<description>Learn how to create a JPA project.</description>
+			<description>%createAJpaProjectDescription</description>
 		</cheatsheet>
 
-		<cheatsheet name="Create a Persistent Entity"
+		<cheatsheet name="%createAPersistentEntity"
 			id="org.eclipse.jpt.jpa.cheatsheet.AddEntity"
 			contentFile="$nl$/cheatsheets/create_entity.xml"
 			category="org.eclipse.jpt.jpa.category">
-			<description>Learn how to add a persistent entity to a Java project.</description>
+			<description>%createAPersistentEntityDescription</description>
 		</cheatsheet>
 
-		<cheatsheet name="Map a Persistent Entity"
+		<cheatsheet name="%MapAPersistentEntity"
 			id="org.eclipse.jpt.jpa.cheatsheet.MapEntity"
 			contentFile="$nl$/cheatsheets/map_entity.xml"
 			category="org.eclipse.jpt.jpa.category">
-			<description>Learn how to map a persistent entity to a database.</description>
+			<description>%MapAPersistentEntityDescription</description>
 		</cheatsheet>
 
 	</extension>
