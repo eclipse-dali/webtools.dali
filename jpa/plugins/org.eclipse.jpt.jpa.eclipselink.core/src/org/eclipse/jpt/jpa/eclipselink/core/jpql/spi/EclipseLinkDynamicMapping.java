@@ -16,8 +16,8 @@ package org.eclipse.jpt.jpa.eclipselink.core.jpql.spi;
 import java.lang.annotation.Annotation;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaTypeDeclaration;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaTypeRepository;
 import org.eclipse.persistence.jpa.jpql.tools.spi.IEntity;
@@ -34,7 +34,7 @@ import org.eclipse.persistence.jpa.jpql.tools.spi.ITypeDeclaration;
  * to solicit feedback from pioneering adopters on the understanding that any code that uses this
  * API will almost certainly be broken (repeatedly) as the API evolves.
  *
- * @version 3.2
+ * @version 3.3
  * @since 3.2
  * @author Pascal Filion
  */
@@ -106,6 +106,7 @@ public class EclipseLinkDynamicMapping implements IMapping {
 	 */
 	protected IType buildType() {
 
+		// TODO: This section might not be required anymore if getTypeName() works correctly
 		if (delegate.isCollection() ||
 		    delegate.isRelationship()) {
 
@@ -200,6 +201,14 @@ public class EclipseLinkDynamicMapping implements IMapping {
 	 * @return The fully qualified type name
 	 */
 	public String getTypeName() {
+
+		if (delegate.isCollection() ||
+		    delegate.isRelationship()) {
+
+			RelationshipMapping mapping = (RelationshipMapping) getAttribute().getMapping();
+			return mapping.getFullyQualifiedTargetEntity();
+		}
+
 		return getAttribute().getTypeName();
 	}
 
