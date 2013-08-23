@@ -27,6 +27,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.tests.internal.ArrayToolsTests;
+import org.eclipse.jpt.common.utility.tests.internal.collection.MapToolsTests;
 
 @SuppressWarnings("nls")
 public class IteratorToolsTests
@@ -58,6 +59,50 @@ public class IteratorToolsTests
 		assertFalse(IteratorTools.contains(c.iterator(), null));
 		c.add(null);
 		assertTrue(IteratorTools.contains(c.iterator(), null));
+	}
+
+
+	// ********** count **********
+
+	public void testCountIteratorObject() {
+		Collection<Object> c = new HashBag<Object>();
+		c.add("zero");
+		c.add("one");
+		c.add("two");
+		c.add("three");
+		String one = "one";
+		assertEquals(1, IteratorTools.count(c.iterator(), one));
+		c.add("one");
+		assertEquals(2, IteratorTools.count(c.iterator(), one));
+		assertEquals(0, IteratorTools.count(c.iterator(), null));
+		c.add(null);
+		assertEquals(1, IteratorTools.count(c.iterator(), null));
+		c.add(null);
+		assertEquals(2, IteratorTools.count(c.iterator(), null));
+	}
+
+	public void testCountFalseIteratorPredicate() {
+		Collection<String> c = new HashBag<String>();
+		c.add("zero");
+		c.add("one");
+		c.add("two");
+		c.add("three");
+		assertEquals(4, IteratorTools.countFalse(c.iterator(), new MapToolsTests.StringLengthPredicate(0)));
+		assertEquals(2, IteratorTools.countFalse(c.iterator(), new MapToolsTests.StringLengthPredicate(3)));
+		c.add("foo");
+		assertEquals(2, IteratorTools.countFalse(c.iterator(), new MapToolsTests.StringLengthPredicate(3)));
+	}
+
+	public void testCountTrueIteratorPredicate() {
+		Collection<String> c = new HashBag<String>();
+		c.add("zero");
+		c.add("one");
+		c.add("two");
+		c.add("three");
+		assertEquals(0, IteratorTools.countTrue(c.iterator(), new MapToolsTests.StringLengthPredicate(0)));
+		assertEquals(2, IteratorTools.countTrue(c.iterator(), new MapToolsTests.StringLengthPredicate(3)));
+		c.add("foo");
+		assertEquals(3, IteratorTools.countTrue(c.iterator(), new MapToolsTests.StringLengthPredicate(3)));
 	}
 
 
@@ -369,6 +414,28 @@ public class IteratorToolsTests
 		for (Iterator<String> stream = IteratorTools.iterator(a); stream.hasNext(); i++) {
 			assertEquals(a[i], stream.next());
 		}
+	}
+
+
+	// ********** first **********
+
+	public void testFirstIterator1() {
+		List<String> list = this.buildStringList1();
+		assertEquals("zero", IteratorTools.first(list.iterator()));
+		list.add(0, null);
+		assertEquals(null, IteratorTools.first(list.iterator()));
+	}
+
+	public void testFirstIterator2() {
+		List<String> list = new ArrayList<String>();
+		boolean exCaught = false;
+		try {
+			IteratorTools.first(list.iterator());
+			fail();
+		} catch (NoSuchElementException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
 	}
 
 

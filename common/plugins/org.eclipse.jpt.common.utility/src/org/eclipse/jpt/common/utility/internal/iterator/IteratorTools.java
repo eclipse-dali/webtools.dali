@@ -71,6 +71,13 @@ public final class IteratorTools {
 	}
 
 	/**
+	 * Return whether the specified iterator contains a <code>null</code>.
+	 */
+	public static boolean containsNull(Iterator<?> iterator) {
+		return contains(iterator, null);
+	}
+
+	/**
 	 * Return whether the specified iterator contains the
 	 * specified element.
 	 */
@@ -89,6 +96,56 @@ public final class IteratorTools {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Return the number of times the specified element occurs in the specified
+	 * iterator.
+	 */
+	public static int count(Iterator<?> iterator, Object value) {
+		int count = 0;
+		if (value == null) {
+			while (iterator.hasNext()) {
+				if (iterator.next() == null) {
+					count++;
+				}
+			}
+		} else {
+			while (iterator.hasNext()) {
+				if (value.equals(iterator.next())) {
+					count++;
+				}
+			}
+		}
+		return count;
+	}
+
+	/**
+	 * Return the number of times the specified predicate evaluates to
+	 * <code>false</code> with the elements in the specified iterator.
+	 */
+	public static <E> int countFalse(Iterator<? extends E> iterator, Predicate<? super E> predicate) {
+		int count = 0;
+		while (iterator.hasNext()) {
+			if ( ! predicate.evaluate(iterator.next())) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	/**
+	 * Return the number of times the specified predicate evaluates to
+	 * <code>true</code> with the elements in the specified iterator.
+	 */
+	public static <E> int countTrue(Iterator<? extends E> iterator, Predicate<? super E> predicate) {
+		int count = 0;
+		while (iterator.hasNext()) {
+			if (predicate.evaluate(iterator.next())) {
+				count++;
+			}
+		}
+		return count;
 	}
 
 	/**
@@ -386,6 +443,14 @@ public final class IteratorTools {
 			}
 		}
 		return last;
+	}
+
+	/**
+	 * Return the specified iterator's last element.
+	 * @exception java.util.NoSuchElementException iterator is empty.
+	 */
+	public static <E> E first(Iterator<E> iterator) {
+		return iterator.next();
 	}
 
 	/**

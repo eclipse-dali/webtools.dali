@@ -19,10 +19,12 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
+import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.internal.comparator.ReverseComparator;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.tests.internal.ArrayToolsTests;
+import org.eclipse.jpt.common.utility.tests.internal.collection.MapToolsTests;
 
 @SuppressWarnings("nls")
 public class IterableToolsTests
@@ -39,6 +41,47 @@ public class IterableToolsTests
 		assertFalse(IterableTools.contains(iterable, null));
 		c.add(null);
 		assertTrue(IterableTools.contains(iterable, null));
+	}
+
+	public void testCountIterableObject() {
+		Collection<Object> c = new HashBag<Object>();
+		c.add("zero");
+		c.add("one");
+		c.add("two");
+		c.add("three");
+		String one = "one";
+		assertEquals(1, IterableTools.count(c, one));
+		c.add("one");
+		assertEquals(2, IterableTools.count(c, one));
+		assertEquals(0, IterableTools.count(c, null));
+		c.add(null);
+		assertEquals(1, IterableTools.count(c, null));
+		c.add(null);
+		assertEquals(2, IterableTools.count(c, null));
+	}
+
+	public void testCountFalseIteratorPredicate() {
+		Collection<String> c = new HashBag<String>();
+		c.add("zero");
+		c.add("one");
+		c.add("two");
+		c.add("three");
+		assertEquals(4, IterableTools.countFalse(c, new MapToolsTests.StringLengthPredicate(0)));
+		assertEquals(2, IterableTools.countFalse(c, new MapToolsTests.StringLengthPredicate(3)));
+		c.add("foo");
+		assertEquals(2, IterableTools.countFalse(c, new MapToolsTests.StringLengthPredicate(3)));
+	}
+
+	public void testCountTrueIteratorPredicate() {
+		Collection<String> c = new HashBag<String>();
+		c.add("zero");
+		c.add("one");
+		c.add("two");
+		c.add("three");
+		assertEquals(0, IterableTools.countTrue(c, new MapToolsTests.StringLengthPredicate(0)));
+		assertEquals(2, IterableTools.countTrue(c, new MapToolsTests.StringLengthPredicate(3)));
+		c.add("foo");
+		assertEquals(3, IterableTools.countTrue(c, new MapToolsTests.StringLengthPredicate(3)));
 	}
 
 	public void testContainsAllIterableCollection() {

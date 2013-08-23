@@ -80,10 +80,10 @@ public final class IterableTools {
 	}
 
 	/**
-	 * Return whether the specified array contains a <code>null</code>.
+	 * Return whether the specified iterable contains a <code>null</code>.
 	 */
 	public static boolean containsNull(Iterable<?> iterable) {
-		return contains(iterable, null);
+		return IteratorTools.containsNull(iterable.iterator());
 	}
 
 	/**
@@ -92,6 +92,30 @@ public final class IterableTools {
 	 */
 	public static boolean contains(Iterable<?> iterable, Object value) {
 		return IteratorTools.contains(iterable.iterator(), value);
+	}
+
+	/**
+	 * Return the number of times the specified element occurs in the specified
+	 * iterable.
+	 */
+	public static int count(Iterable<?> iterable, Object value) {
+		return IteratorTools.count(iterable.iterator(), value);
+	}
+
+	/**
+	 * Return the number of times the specified predicate evaluates to
+	 * <code>false</code> with the elements in the specified iterable.
+	 */
+	public static <E> int countFalse(Iterable<? extends E> iterable, Predicate<? super E> predicate) {
+		return IteratorTools.countFalse(iterable.iterator(), predicate);
+	}
+
+	/**
+	 * Return the number of times the specified predicate evaluates to
+	 * <code>true</code> with the elements in the specified iterable.
+	 */
+	public static <E> int countTrue(Iterable<? extends E> iterable, Predicate<? super E> predicate) {
+		return IteratorTools.countTrue(iterable.iterator(), predicate);
 	}
 
 	/**
@@ -239,10 +263,11 @@ public final class IterableTools {
 	}
 
 	/**
-	 * Return the first element corresponding in the specified iterable.
+	 * Return the specified iterable's first element.
+	 * @exception java.util.NoSuchElementException iterable is empty.
 	 */
-	public static <E> E first(Iterable<? extends E> iterable) {
-		return iterable.iterator().next();
+	public static <E> E first(Iterable<E> iterable) {
+		return IteratorTools.first(iterable.iterator());
 	}
 
 	/**
