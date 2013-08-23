@@ -20,8 +20,6 @@ If you already have (and are connected to) a database connection, you  may skip 
 
 The Database Connection dialog automatically appears when you click the &quot;Click to Perform&quot; button.
       </description>
-      <command serialization="org.eclipse.datatools.sqltools.sqleditor.attachProfileAction" confirm="false">
-      </command>
    </item>
    <item title="Create a JPA Project" dialog="false" skip="true" href="/org.eclipse.jpt.doc.user/task_create_new_project.htm">
       <description>
@@ -34,8 +32,7 @@ The &quot;New JPA Project&quot; wizard is automatically displayed when you click
 
 If you already have a JPA project, you  may skip this step by clicking the &quot;Click to Skip&quot; button.
       </description>
-      <action class="org.eclipse.jdt.internal.ui.wizards.OpenProjectWizardAction" pluginId="org.eclipse.jdt.ui" confirm="false">
-      </action>
+
    </item>
    <item title="Open the JPA Development Perspective" dialog="false" skip="true" href="/org.eclipse.jpt.doc.user/ref_persistence_perspective.htm">
       <description>
@@ -43,8 +40,6 @@ If you already have a JPA project, you  may skip this step by clicking the &quot
 If not, select <b>Window-&gt;Open Perspective-&gt;Other</b> in the menubar at the top of the workbench. In the Select Perspectives dialog, select <b>JPA Development</b> and click OK. This step changes the perspective to set up the Eclipse workbench for JPA development.
 You can click the &quot;Click to Perform&quot; button to have the &quot;Persistence&quot; perspective opened automatically.
       </description>
-      <action class="org.eclipse.ui.internal.cheatsheets.actions.OpenPerspective" pluginId="org.eclipse.ui.cheatsheets" confirm="false" param1="org.eclipse.jpt.ui.PersistencePerspective">
-      </action>
    </item>
    <item title="Create a Java Class" dialog="false" skip="false">
       <description>
@@ -66,8 +61,6 @@ Use the Table, Catalog, and Schema fields to associate the entity with a specifi
 
 If your persistent entity already has fields to map, you may skip this step by clicking the &quot;Click to Skip&quot; button. If not, use the Java editor to add fields to the entity.
       </description>
-      <action class="org.eclipse.ui.internal.cheatsheets.actions.OpenPerspective" pluginId="org.eclipse.ui.cheatsheets" confirm="false" param1="org.eclipse.dali.ui.PersistencePerspective">
-      </action>
    </item>
    <item title="Create the Mapping" dialog="false" skip="false" href="/org.eclipse.dali.doc.user/ref_entity_page.htm">
       <description>
@@ -77,8 +70,6 @@ In the JPA Structure view, expand the persistent entity to display the fields. S
 
 The JPA Details view displays the information for the field. Use the Map As field to select the Basic mapping. Use the Column field to select a column from the database table.
       </description>
-      <action class="org.eclipse.ui.internal.cheatsheets.actions.OpenPerspective" pluginId="org.eclipse.ui.cheatsheets" confirm="false" param1="org.eclipse.dali.ui.PersistencePerspective">
-      </action>
    </item>
    <item title="Finish" dialog="false" skip="false">
       <description>

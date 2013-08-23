@@ -18,8 +18,6 @@ Create a database profile and connect to the database.
 
 The Database Connection dialog automatically appears when you click the &quot;Click to Perform&quot; button.
       </description>
-      <command serialization="org.eclipse.datatools.sqltools.sqleditor.attachProfileAction" confirm="false">
-      </command>
    </item>
    <item title="Create a JPA Project" dialog="false" skip="false" href="/org.eclipse.jpt.doc.user/task_create_new_project.htm">
       <description>
@@ -32,8 +30,6 @@ Click <b>Next</b> to display the next page of the wizard.
 
 The &quot;New JPA Project&quot; wizard is automatically displayed when you click the &quot;Click to Perform&quot; button.
       </description>
-      <action class="org.eclipse.jdt.internal.ui.wizards.OpenProjectWizardAction" pluginId="org.eclipse.jdt.ui" confirm="false">
-      </action>
    </item>
    <item title="Select Project Facet" dialog="false" skip="false" href="/org.eclipse.jst.j2ee.doc.user/topics/ph-projects.html">
       <description>
