@@ -9,43 +9,37 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.comparator;
 
-import java.io.Serializable;
 import java.util.Comparator;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
- * This comparator compares elements that implement the
- * {@link Comparable} interface.
+ * This comparator sort <code>null</code>s <em>after</em> any
+ * non-<code>null</code> elements. Non-<code>null</code> elements will be
+ * compared by the configured comparator.
  * 
  * @param <E> the type of elements to be compared
  */
-public final class ComparableComparator<E extends Comparable<E>>
-	implements Comparator<E>, Serializable
+public class NullsLastComparator<E>
+	implements Comparator<E>
 {
-	@SuppressWarnings("rawtypes")
-	public static final Comparator INSTANCE = new ComparableComparator();
+	private final Comparator<? super E> comparator;
 
-	@SuppressWarnings("unchecked")
-	public static <E extends Comparable<E>> Comparator<E> instance() {
-		return INSTANCE;
-	}
-
-	// ensure single instance
-	private ComparableComparator() {
+	public NullsLastComparator(Comparator<? super E> comparator) {
 		super();
+		if (comparator == null) {
+			throw new NullPointerException();
+		}
+		this.comparator = comparator;
 	}
 
 	public int compare(E e1, E e2) {
-		return e1.compareTo(e2);
+		return (e1 == null) ?
+				((e2 == null) ? 0 : 1) :
+				((e2 == null) ? -1 : this.comparator.compare(e1, e2));
 	}
 
 	@Override
 	public String toString() {
-		return this.getClass().getSimpleName();
-	}
-
-	private static final long serialVersionUID = 1L;
-	private Object readResolve() {
-		// replace this object with the singleton
-		return INSTANCE;
+		return ObjectTools.toString(this, this.comparator);
 	}
 }

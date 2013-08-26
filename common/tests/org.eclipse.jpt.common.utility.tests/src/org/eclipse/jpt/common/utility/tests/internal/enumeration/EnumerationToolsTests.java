@@ -20,7 +20,7 @@ import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.comparator.ReverseComparator;
+import org.eclipse.jpt.common.utility.internal.comparator.ComparatorTools;
 import org.eclipse.jpt.common.utility.internal.enumeration.EnumerationTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 
@@ -410,11 +410,11 @@ public class EnumerationToolsTests
 		list.add("3");
 		list.add("1");
 
-		SortedSet<String> ss = new TreeSet<String>(new ReverseComparator<String>());
+		SortedSet<String> ss = new TreeSet<String>(ComparatorTools.<String>reverseComparator());
 		ss.addAll(list);
 
 		Enumeration<String> enumeration1 = list.elements();
-		Enumeration<String> enumeration2 = EnumerationTools.<String>sort(enumeration1, new ReverseComparator<String>());
+		Enumeration<String> enumeration2 = EnumerationTools.<String>sort(enumeration1, ComparatorTools.<String>reverseComparator());
 		assertTrue(EnumerationTools.elementsAreEqual(EnumerationTools.enumeration(ss), enumeration2));
 	}
 
@@ -425,11 +425,11 @@ public class EnumerationToolsTests
 		list.add("3");
 		list.add("1");
 
-		SortedSet<String> ss = new TreeSet<String>(new ReverseComparator<String>());
+		SortedSet<String> ss = new TreeSet<String>(ComparatorTools.<String>reverseComparator());
 		ss.addAll(list);
 
 		Enumeration<String> enumeration1 = list.elements();
-		Enumeration<String> enumeration2 = EnumerationTools.<String>sort(enumeration1, new ReverseComparator<String>(), 77);
+		Enumeration<String> enumeration2 = EnumerationTools.<String>sort(enumeration1, ComparatorTools.<String>reverseComparator(), 77);
 		assertTrue(EnumerationTools.elementsAreEqual(EnumerationTools.enumeration(ss), enumeration2));
 	}
 

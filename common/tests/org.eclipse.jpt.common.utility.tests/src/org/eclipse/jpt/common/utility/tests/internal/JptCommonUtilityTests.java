@@ -61,7 +61,7 @@ public class JptCommonUtilityTests {
 		suite.addTestSuite(ClassNameToolsTests.class);
 		suite.addTestSuite(ClasspathTests.class);
 		suite.addTestSuite(ListenerListTests.class);
-		suite.addTestSuite(MapKeyAssociationTests.class);
+		suite.addTestSuite(MapEntryAssociationTests.class);
 		suite.addTestSuite(NameToolsTests.class);
 		suite.addTestSuite(ObjectToolsTests.class);
 		suite.addTestSuite(RangeTests.class);

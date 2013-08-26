@@ -17,6 +17,8 @@ public class JptCommonUtilityComparatorTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JptCommonUtilityComparatorTests.class.getPackage().getName());
 
+		suite.addTestSuite(BooleanComparatorTests.class);
+		suite.addTestSuite(ComparatorToolsTests.class);
 		suite.addTestSuite(ReverseComparatorTests.class);
 		suite.addTestSuite(VersionComparatorTests.class);
 

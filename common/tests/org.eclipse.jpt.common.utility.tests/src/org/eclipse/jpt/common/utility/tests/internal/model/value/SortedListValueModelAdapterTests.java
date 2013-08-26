@@ -15,14 +15,12 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
-
 import junit.framework.TestCase;
-
 import org.eclipse.jpt.common.utility.collection.Bag;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.comparator.ReverseComparator;
+import org.eclipse.jpt.common.utility.internal.comparator.ComparatorTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
@@ -166,8 +164,8 @@ public class SortedListValueModelAdapterTests extends TestCase {
 		assertEquals(this.wrappedCollection, CollectionTools.collection(synchList.iterator()));
 		assertEquals(this.wrappedCollection, synchCollection);
 
-		this.adapter.setComparator(new ReverseComparator<String>());
-		this.verifyList(this.wrappedCollection, this.adapter, new ReverseComparator<String>());
+		this.adapter.setComparator(ComparatorTools.<String>reverseComparator());
+		this.verifyList(this.wrappedCollection, this.adapter, ComparatorTools.<String>reverseComparator());
 		assertEquals(this.wrappedCollection, CollectionTools.collection(synchList.iterator()));
 		assertEquals(this.wrappedCollection, synchCollection);
 	}

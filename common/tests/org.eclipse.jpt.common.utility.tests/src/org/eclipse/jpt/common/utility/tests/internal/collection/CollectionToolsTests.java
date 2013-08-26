@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.utility.collection.Bag;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.EmptyBag;
-import org.eclipse.jpt.common.utility.internal.comparator.ReverseComparator;
+import org.eclipse.jpt.common.utility.internal.comparator.ComparatorTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
@@ -884,11 +884,11 @@ public class CollectionToolsTests
 		list.add("3");
 		list.add("1");
 
-		SortedSet<String> ss1 = new TreeSet<String>(new ReverseComparator<String>());
+		SortedSet<String> ss1 = new TreeSet<String>(ComparatorTools.<String>reverseComparator());
 		ss1.addAll(list);
 
 		Iterable<String> iterable = list;
-		SortedSet<String> ss2 = CollectionTools.<String>sortedSet(iterable, new ReverseComparator<String>());
+		SortedSet<String> ss2 = CollectionTools.<String>sortedSet(iterable, ComparatorTools.<String>reverseComparator());
 		assertEquals(ss1, ss2);
 	}
 
@@ -899,11 +899,11 @@ public class CollectionToolsTests
 		list.add("3");
 		list.add("1");
 
-		SortedSet<String> ss1 = new TreeSet<String>(new ReverseComparator<String>());
+		SortedSet<String> ss1 = new TreeSet<String>(ComparatorTools.<String>reverseComparator());
 		ss1.addAll(list);
 
 		Iterable<String> iterable = list;
-		SortedSet<String> ss2 = CollectionTools.<String>sortedSet(iterable, new ReverseComparator<String>(), 5);
+		SortedSet<String> ss2 = CollectionTools.<String>sortedSet(iterable, ComparatorTools.<String>reverseComparator(), 5);
 		assertEquals(ss1, ss2);
 	}
 
@@ -937,11 +937,11 @@ public class CollectionToolsTests
 		list.add("3");
 		list.add("1");
 
-		SortedSet<String> ss1 = new TreeSet<String>(new ReverseComparator<String>());
+		SortedSet<String> ss1 = new TreeSet<String>(ComparatorTools.<String>reverseComparator());
 		ss1.addAll(list);
 
 		String[] array = list.toArray(new String[list.size()]);
-		SortedSet<String> ss2 = CollectionTools.<String>sortedSet(array, new ReverseComparator<String>());
+		SortedSet<String> ss2 = CollectionTools.<String>sortedSet(array, ComparatorTools.<String>reverseComparator());
 		assertEquals(ss1, ss2);
 	}
 

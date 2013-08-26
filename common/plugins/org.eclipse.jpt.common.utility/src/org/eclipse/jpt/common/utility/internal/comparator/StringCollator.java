@@ -11,7 +11,6 @@ package org.eclipse.jpt.common.utility.internal.comparator;
 
 import java.text.Collator;
 import java.util.Comparator;
-import java.util.Locale;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
@@ -26,23 +25,6 @@ public class StringCollator
 	implements Comparator<String>
 {
 	private final Collator collator;
-
-
-	/**
-	 * Wrap the default collator.
-	 * @see Collator#getInstance()
-	 */
-	public StringCollator() {
-		this(Collator.getInstance());
-	}
-
-	/**
-	 * Wrap the collator for the specified locale.
-	 * @see Collator#getInstance(Locale)
-	 */
-	public StringCollator(Locale locale) {
-		this(Collator.getInstance(locale));
-	}
 
 	/**
 	 * Wrap the specified collator.

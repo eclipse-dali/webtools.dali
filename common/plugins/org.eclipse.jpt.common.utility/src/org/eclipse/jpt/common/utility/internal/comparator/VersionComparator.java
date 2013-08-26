@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * <em>segments</em> as well as a parser to be used for parsing each
  * <em>segment</em>.
  * 
- * @see #INTEGER_VERSION_COMPARATOR
+ * @param <T> the type of comparable returned by the comparator's segment parser
  */
 public class VersionComparator<T extends Comparable<T>>
 	implements Comparator<String>
@@ -31,42 +31,6 @@ public class VersionComparator<T extends Comparable<T>>
 	private final SegmentParser<T> segmentParser;
 
 
-	/**
-	 * Static implementation of the version comparator interface that converts
-	 * each version into a series of integers and compares them.
-	 * <p>
-	 * <strong>NB:</strong> With this comparator
-	 * <code>"2.<strong>14</strong>" > "2.<strong>2</strong>"</code>
-	 * is <code>true</code>.
-	 */
-	public static final Comparator<String> INTEGER_VERSION_COMPARATOR = new VersionComparator<Integer>(SegmentParser.IntegerSegmentParser.instance());
-
-
-	/**
-	 * Use the specified segment parser.
-	 * The default delimiter is <code>'.'</code>.
-	 */
-	public VersionComparator(SegmentParser<T> segmentParser) {
-		this(".", segmentParser); //$NON-NLS-1$
-	}
-
-	/**
-	 * Use the specified delimiters and segment parser.
-	 */
-	public VersionComparator(char delimiter, SegmentParser<T> segmentParser) {
-		this(new char[] {delimiter}, segmentParser);
-	}
-
-	/**
-	 * Use the specified delimiters and segment parser.
-	 */
-	public VersionComparator(char[] delimiters, SegmentParser<T> segmentParser) {
-		this(new String(delimiters), segmentParser);
-	}
-
-	/**
-	 * Use the specified delimiters and segment parser.
-	 */
 	public VersionComparator(String delimiters, SegmentParser<T> segmentParser) {
 		super();
 		if ((delimiters == null) || (segmentParser == null)) {
@@ -76,11 +40,10 @@ public class VersionComparator<T extends Comparable<T>>
 		this.segmentParser = segmentParser;
 	}
 
-
 	/**
 	 * <strong>NB:</strong> Callers must handle any runtime exceptions thrown by the
 	 * segment parser supplied to the comparator. In particular, the pre-built
-	 * integer segment parser {@link #INTEGER_VERSION_COMPARATOR} can throw a
+	 * integer segment parser {@link ComparatorTools#INTEGER_VERSION_COMPARATOR} can throw a
 	 * {@link NumberFormatException} if any segement string contains non-numeric
 	 * characters.
 	 */
@@ -184,41 +147,6 @@ public class VersionComparator<T extends Comparable<T>>
 				return ZERO;
 			}
 			private static final Integer ZERO = Integer.valueOf(0);
-			@Override
-			public String toString() {
-				return ObjectTools.singletonToString(this);
-			}
-			private static final long serialVersionUID = 1L;
-			private Object readResolve() {
-				// replace this object with the singleton
-				return INSTANCE;
-			}
-		}
-
-		/**
-		 * Singleton implementation of the segment parser interface that throws
-		 * an exception if called.
-		 */
-		final class Disabled<S extends Comparable<S>>
-			implements SegmentParser<S>, Serializable
-		{
-			@SuppressWarnings("rawtypes")
-			public static final SegmentParser INSTANCE = new Disabled();
-			@SuppressWarnings("unchecked")
-			public static <R extends Comparable<R>> SegmentParser<R> instance() {
-				return INSTANCE;
-			}
-			// ensure single instance
-			private Disabled() {
-				super();
-			}
-			// throw an exception
-			public S parse(int segmentIndex, String segment) {
-				throw new UnsupportedOperationException();
-			}
-			public S getZero() {
-				throw new UnsupportedOperationException();
-			}
 			@Override
 			public String toString() {
 				return ObjectTools.singletonToString(this);

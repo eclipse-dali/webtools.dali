@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal;
 
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.common.utility.internal.comparator.VersionComparator;
+import org.eclipse.jpt.common.utility.internal.comparator.ComparatorTools;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPlatformFactory;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
@@ -100,7 +100,7 @@ public class GenericJpaPlatformFactory
 		 * For now, generic platforms are backward-compatible.
 		 */
 		public boolean isCompatibleWithJpaVersion(String version) {
-			return VersionComparator.INTEGER_VERSION_COMPARATOR.compare(this.jpaVersion, version) >= 0;
+			return ComparatorTools.integerVersionComparator().compare(this.jpaVersion, version) >= 0;
 		}
 
 		@Override

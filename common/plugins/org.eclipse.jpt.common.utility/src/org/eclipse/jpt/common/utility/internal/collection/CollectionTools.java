@@ -255,6 +255,9 @@ public final class CollectionTools {
 	 * partitions, all the partitions will be one of two sizes; the first
 	 * partions will be of size <code>collection.size()/count+1</code>,
 	 * while the last partions will be of size <code>collection.size()/count</code>.
+	 * The partitions will maintain the order of elements returned by the
+	 * collection's iterator (i.e. the first elements returned by the iterator
+	 * will be in the first partition, first element first).
 	 */
 	public static <E> ArrayList<ArrayList<E>> partition(Collection<? extends E> collection, int count) {
 		if (count <= 0) {

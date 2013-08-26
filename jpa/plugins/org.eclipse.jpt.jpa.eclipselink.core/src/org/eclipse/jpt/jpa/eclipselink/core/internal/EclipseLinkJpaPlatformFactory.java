@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal;
 
 import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.common.utility.internal.comparator.VersionComparator;
+import org.eclipse.jpt.common.utility.internal.comparator.ComparatorTools;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPlatformFactory;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
@@ -119,7 +119,7 @@ public class EclipseLinkJpaPlatformFactory
 		 * @see EclipseLinkJpaPlatformFactory2_5#VERSION
 		 */
 		public boolean isCompatibleWithEclipseLinkVersion(String version) {
-			return VersionComparator.INTEGER_VERSION_COMPARATOR.compare(this.eclipseLinkVersion, version) >= 0;
+			return ComparatorTools.integerVersionComparator().compare(this.eclipseLinkVersion, version) >= 0;
 		}
 
 		@Override

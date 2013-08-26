@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.utility.internal;
 
 import java.io.PrintStream;
 import java.util.Map;
-import org.eclipse.jpt.common.utility.internal.comparator.VersionComparator;
+import org.eclipse.jpt.common.utility.internal.comparator.ComparatorTools;
 
 /**
  * Various system utility methods.
@@ -75,7 +75,7 @@ public final class SystemTools {
 	 * developers. :-)
 	 */
 	public static boolean javaSpecificationVersionIsGreaterThan(String version) {
-		return VersionComparator.INTEGER_VERSION_COMPARATOR.compare(javaSpecificationVersion(), version) > 0;
+		return ComparatorTools.integerVersionComparator().compare(javaSpecificationVersion(), version) > 0;
 	}
 
 	/**
@@ -91,7 +91,7 @@ public final class SystemTools {
 	 * is less than the specified version (e.g. <code>"1.5"</code>).
 	 */
 	public static boolean javaSpecificationVersionIsLessThan(String version) {
-		return VersionComparator.INTEGER_VERSION_COMPARATOR.compare(javaSpecificationVersion(), version) < 0;
+		return ComparatorTools.integerVersionComparator().compare(javaSpecificationVersion(), version) < 0;
 	}
 
 	/**

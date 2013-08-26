@@ -27,7 +27,7 @@ import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.Range;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.comparator.ReverseComparator;
+import org.eclipse.jpt.common.utility.internal.comparator.ComparatorTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
@@ -346,7 +346,7 @@ public class ListToolsTests
 	}
 
 	public void testInsertionIndexOfListObjectComparatorRandomAccess() {
-		Comparator<String> c = new ReverseComparator<String>();
+		Comparator<String> c = ComparatorTools.reverseComparator();
 		List<String> list = Arrays.asList(new String[] { "D", "C", "A" });
 		assertEquals(2, ListTools.insertionIndexOf(list, "B", c));
 
@@ -367,7 +367,7 @@ public class ListToolsTests
 	}
 
 	public void testInsertionIndexOfListObjectComparatorNonRandomAccess() {
-		Comparator<String> c = new ReverseComparator<String>();
+		Comparator<String> c = ComparatorTools.reverseComparator();
 		List<String> list = new LinkedList<String>(Arrays.asList(new String[] { "D", "C", "A" }));
 		assertEquals(2, ListTools.insertionIndexOf(list, "B", c));
 

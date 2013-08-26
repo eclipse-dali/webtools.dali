@@ -15,11 +15,9 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
-
 import junit.framework.TestCase;
-
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.comparator.ReverseComparator;
+import org.eclipse.jpt.common.utility.internal.comparator.ComparatorTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelWrapper;
@@ -183,8 +181,8 @@ public class SortedListValueModelWrapperTests extends TestCase {
 		assertEquals(this.list, synchList);
 		assertEquals(ListTools.list(this.sortedListModel), sortedSynchList);
 
-		this.sortedListModel.setComparator(new ReverseComparator<String>());
-		this.verifyList(this.list, this.sortedListModel, new ReverseComparator<String>());
+		this.sortedListModel.setComparator(ComparatorTools.<String>reverseComparator());
+		this.verifyList(this.list, this.sortedListModel, ComparatorTools.<String>reverseComparator());
 		assertEquals(this.list, synchList);
 	}
 

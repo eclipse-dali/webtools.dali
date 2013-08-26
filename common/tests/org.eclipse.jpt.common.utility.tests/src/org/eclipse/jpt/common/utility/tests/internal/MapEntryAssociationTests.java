@@ -16,12 +16,12 @@ import org.eclipse.jpt.common.utility.Association;
 import org.eclipse.jpt.common.utility.internal.MapEntryAssociation;
 
 @SuppressWarnings("nls")
-public class MapKeyAssociationTests
+public class MapEntryAssociationTests
 	extends TestCase
 {
 	private MapEntryAssociation<String, String> assoc;
 
-	public MapKeyAssociationTests(String name) {
+	public MapEntryAssociationTests(String name) {
 		super(name);
 	}
 

@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.utility.internal.Range;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.closure.ClosureAdapter;
 import org.eclipse.jpt.common.utility.internal.closure.InterruptibleClosureAdapter;
-import org.eclipse.jpt.common.utility.internal.comparator.ReverseComparator;
+import org.eclipse.jpt.common.utility.internal.comparator.ComparatorTools;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
@@ -1682,7 +1682,7 @@ public class ArrayToolsTests
 	}
 
 	public void testInsertionIndexOfObjectArrayObjectComparator() {
-		Comparator<String> c = new ReverseComparator<String>();
+		Comparator<String> c = ComparatorTools.reverseComparator();
 		String[] a = new String[] { "D", "C", "A" };
 		assertEquals(2, ArrayTools.insertionIndexOf(a, "B", c));
 
@@ -1726,7 +1726,7 @@ public class ArrayToolsTests
 	}
 
 	public void testLastInsertionIndexOfObjectArrayObjectComparator() {
-		Comparator<String> c = new ReverseComparator<String>();
+		Comparator<String> c = ComparatorTools.reverseComparator();
 		String[] a = new String[] { "D", "C", "A" };
 		assertEquals(2, ArrayTools.lastInsertionIndexOf(a, "B", c));
 
@@ -3712,7 +3712,7 @@ public class ArrayToolsTests
 		a1[0] = "y";
 		a1[1] = "b";
 		a1[2] = "m";
-		String[] a2 = ArrayTools.sort(a1, new ReverseComparator<String>());
+		String[] a2 = ArrayTools.sort(a1, ComparatorTools.<String>reverseComparator());
 		String last = "z";
 		for (String x : a1) {
 			assertTrue(last.compareTo(x) > 0);
@@ -3752,7 +3752,7 @@ public class ArrayToolsTests
 		a2[5] = "m";
 		int from = 3;
 		int to = 6;
-		String[] a3 = ArrayTools.sort(a2, from, to, new ReverseComparator<String>());
+		String[] a3 = ArrayTools.sort(a2, from, to, ComparatorTools.<String>reverseComparator());
 		String last = "z";
 		for (int i = 0; i < a1.length; i++) {
 			String x = a1[i];

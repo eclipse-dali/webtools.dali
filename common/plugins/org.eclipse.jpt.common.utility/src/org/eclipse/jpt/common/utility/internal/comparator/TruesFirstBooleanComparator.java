@@ -13,29 +13,27 @@ import java.io.Serializable;
 import java.util.Comparator;
 
 /**
- * This comparator compares elements that implement the
- * {@link Comparable} interface.
- * 
- * @param <E> the type of elements to be compared
+ * This comparator will compare {@link Boolean}s and can be configured to sort
+ * either boolean first.
  */
-public final class ComparableComparator<E extends Comparable<E>>
-	implements Comparator<E>, Serializable
+public final class TruesFirstBooleanComparator
+	implements Comparator<Boolean>, Serializable
 {
-	@SuppressWarnings("rawtypes")
-	public static final Comparator INSTANCE = new ComparableComparator();
+	public static final Comparator<Boolean> INSTANCE = new TruesFirstBooleanComparator();
 
-	@SuppressWarnings("unchecked")
-	public static <E extends Comparable<E>> Comparator<E> instance() {
+	public static Comparator<Boolean> instance() {
 		return INSTANCE;
 	}
 
 	// ensure single instance
-	private ComparableComparator() {
+	private TruesFirstBooleanComparator() {
 		super();
 	}
 
-	public int compare(E e1, E e2) {
-		return e1.compareTo(e2);
+	public int compare(Boolean b1, Boolean b2) {
+		return b1.booleanValue() ? 
+				(b2.booleanValue() ? 0 : -1) :
+				(b2.booleanValue() ? 1 :  0);
 	}
 
 	@Override

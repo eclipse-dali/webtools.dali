@@ -15,12 +15,12 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 /**
  * Convenience comparator that always returns 0;
  * 
- * @param <T> the type of objects to be compared
+ * @param <E> the type of objects to be compared
  */
-public class ComparatorAdapter<T>
-	implements Comparator<T>
+public class ComparatorAdapter<E>
+	implements Comparator<E>
 {
-	public int compare(T o1, T o2) {
+	public int compare(E o1, E o2) {
 		return 0;
 	}
 

@@ -13,7 +13,7 @@ import java.util.HashSet;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.JptResourceTypeManager;
-import org.eclipse.jpt.common.utility.internal.comparator.VersionComparator;
+import org.eclipse.jpt.common.utility.internal.comparator.ComparatorTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperIterableWrapper;
 import com.ibm.icu.text.Collator;
 
@@ -112,7 +112,7 @@ public class InternalJptResourceType
 		if (v.equals(UNDETERMINED_VERSION)) {
 			return 1;
 		}
-		return VersionComparator.INTEGER_VERSION_COMPARATOR.compare(this.version, v);
+		return ComparatorTools.integerVersionComparator().compare(this.version, v);
 	}
 
 	@Override

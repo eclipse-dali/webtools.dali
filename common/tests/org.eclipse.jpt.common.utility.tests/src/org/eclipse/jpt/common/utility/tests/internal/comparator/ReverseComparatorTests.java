@@ -15,6 +15,7 @@ import java.util.Comparator;
 import java.util.List;
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.comparator.ComparatorTools;
 import org.eclipse.jpt.common.utility.internal.comparator.ReverseComparator;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
@@ -33,7 +34,7 @@ public class ReverseComparatorTests
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.naturalReverseComparator = new ReverseComparator<String>();
+		this.naturalReverseComparator = ComparatorTools.reverseComparator();
 		this.customComparator = this.buildCustomComparator();
 		this.customReverseComparator = new ReverseComparator<String>(this.customComparator);
 	}

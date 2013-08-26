@@ -9,43 +9,29 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.comparator;
 
-import java.io.Serializable;
 import java.util.Comparator;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
- * This comparator will reverse the order of the specified comparator.
- * If the specified comparator is <code>null</code>,
- * the natural ordering of the objects will be used (i.e. assume the elements
- * implement the {@link Comparable} interface.
+ * This comparator will reverse the order of the configured comparator.
+ * 
  * @param <E> the type of elements to be compared
  */
 public class ReverseComparator<E>
-	implements Comparator<E>, Serializable
+	implements Comparator<E>
 {
-	private final Comparator<E> comparator;
-	private static final long serialVersionUID = 1L;
+	private final Comparator<? super E> comparator;
 
-	/**
-	 * Construct a reverse comparator that will reverse the natural order of
-	 * the compared elements.
-	 */
-	public ReverseComparator() {
-		this(null);
-	}
-
-	/**
-	 * Construct a reverse comparator that will reverse the order of
-	 * the compared elements as calculated by the specified comparator.
-	 */
-	public ReverseComparator(Comparator<E> comparator) {
+	public ReverseComparator(Comparator<? super E> comparator) {
 		super();
+		if (comparator == null) {
+			throw new NullPointerException();
+		}
 		this.comparator = comparator;
 	}
 
-	@SuppressWarnings("unchecked")
 	public int compare(E e1, E e2) {
-		return (this.comparator != null) ? this.comparator.compare(e2, e1) : ((Comparable<E>) e2).compareTo(e1);
+		return this.comparator.compare(e2, e1);
 	}
 
 	@Override

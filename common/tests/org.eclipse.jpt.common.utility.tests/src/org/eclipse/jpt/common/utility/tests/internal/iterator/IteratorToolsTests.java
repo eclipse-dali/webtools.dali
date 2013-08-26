@@ -22,7 +22,7 @@ import java.util.TreeSet;
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
-import org.eclipse.jpt.common.utility.internal.comparator.ReverseComparator;
+import org.eclipse.jpt.common.utility.internal.comparator.ComparatorTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
@@ -588,11 +588,11 @@ public class IteratorToolsTests
 		list.add("3");
 		list.add("1");
 
-		SortedSet<String> ss = new TreeSet<String>(new ReverseComparator<String>());
+		SortedSet<String> ss = new TreeSet<String>(ComparatorTools.<String>reverseComparator());
 		ss.addAll(list);
 
 		Iterator<String> iterator1 = list.iterator();
-		Iterator<String> iterator2 = IteratorTools.<String>sort(iterator1, new ReverseComparator<String>());
+		Iterator<String> iterator2 = IteratorTools.<String>sort(iterator1, ComparatorTools.<String>reverseComparator());
 		assertTrue(IteratorTools.elementsAreEqual(ss.iterator(), iterator2));
 	}
 
@@ -603,11 +603,11 @@ public class IteratorToolsTests
 		list.add("3");
 		list.add("1");
 
-		SortedSet<String> ss = new TreeSet<String>(new ReverseComparator<String>());
+		SortedSet<String> ss = new TreeSet<String>(ComparatorTools.<String>reverseComparator());
 		ss.addAll(list);
 
 		Iterator<String> iterator1 = list.iterator();
-		Iterator<String> iterator2 = IteratorTools.<String>sort(iterator1, new ReverseComparator<String>(), 77);
+		Iterator<String> iterator2 = IteratorTools.<String>sort(iterator1, ComparatorTools.<String>reverseComparator(), 77);
 		assertTrue(IteratorTools.elementsAreEqual(ss.iterator(), iterator2));
 	}
 

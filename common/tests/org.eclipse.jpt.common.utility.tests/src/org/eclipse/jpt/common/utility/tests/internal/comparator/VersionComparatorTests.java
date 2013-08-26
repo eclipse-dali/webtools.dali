@@ -13,8 +13,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Comparator;
 import junit.framework.TestCase;
-
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.comparator.ComparatorTools;
 import org.eclipse.jpt.common.utility.internal.comparator.VersionComparator;
 import org.eclipse.jpt.common.utility.internal.comparator.VersionComparator.SegmentParser;
 
@@ -27,28 +27,28 @@ public class VersionComparatorTests
 	}
 
 	public void testVersionIsEqual_integer() {
-		assertTrue(VersionComparator.INTEGER_VERSION_COMPARATOR.compare("2.0.0", "2.0.0") == 0);
-		assertTrue(VersionComparator.INTEGER_VERSION_COMPARATOR.compare("2.0.0", "2.0.0.0") == 0);
-		assertTrue(VersionComparator.INTEGER_VERSION_COMPARATOR.compare("2.0.0.0.0.0.0000", "2.0") == 0);
-		assertTrue(VersionComparator.INTEGER_VERSION_COMPARATOR.compare("2.0.-1", "2.0.-1") == 0);
+		assertTrue(ComparatorTools.integerVersionComparator().compare("2.0.0", "2.0.0") == 0);
+		assertTrue(ComparatorTools.integerVersionComparator().compare("2.0.0", "2.0.0.0") == 0);
+		assertTrue(ComparatorTools.integerVersionComparator().compare("2.0.0.0.0.0.0000", "2.0") == 0);
+		assertTrue(ComparatorTools.integerVersionComparator().compare("2.0.-1", "2.0.-1") == 0);
 	}
 
 	public void testVersionIsLess_integer() {
-		assertTrue(VersionComparator.INTEGER_VERSION_COMPARATOR.compare("2.0.0", "2.0.1") < 0);
-		assertTrue(VersionComparator.INTEGER_VERSION_COMPARATOR.compare("2.5.0", "2.14") < 0);
-		assertTrue(VersionComparator.INTEGER_VERSION_COMPARATOR.compare("2.5.0", "2.5.0.0.1.0") < 0);
-		assertTrue(VersionComparator.INTEGER_VERSION_COMPARATOR.compare("2.5.0.0.0.-1", "2.5") < 0);
-		assertTrue(VersionComparator.INTEGER_VERSION_COMPARATOR.compare("2.0.-1", "2.0.0") < 0);
-		assertTrue(VersionComparator.INTEGER_VERSION_COMPARATOR.compare("2.0.-1", "2") < 0);
+		assertTrue(ComparatorTools.integerVersionComparator().compare("2.0.0", "2.0.1") < 0);
+		assertTrue(ComparatorTools.integerVersionComparator().compare("2.5.0", "2.14") < 0);
+		assertTrue(ComparatorTools.integerVersionComparator().compare("2.5.0", "2.5.0.0.1.0") < 0);
+		assertTrue(ComparatorTools.integerVersionComparator().compare("2.5.0.0.0.-1", "2.5") < 0);
+		assertTrue(ComparatorTools.integerVersionComparator().compare("2.0.-1", "2.0.0") < 0);
+		assertTrue(ComparatorTools.integerVersionComparator().compare("2.0.-1", "2") < 0);
 	}
 
 	public void testVersionIsGreater_integer() {
-		assertTrue(VersionComparator.INTEGER_VERSION_COMPARATOR.compare("2.0.2", "2.0.1") > 0);
-		assertTrue(VersionComparator.INTEGER_VERSION_COMPARATOR.compare("2.0.2", "2.0.1") > 0);
-		assertTrue(VersionComparator.INTEGER_VERSION_COMPARATOR.compare("2.5.0.0.1.0", "2.5.0") > 0);
-		assertTrue(VersionComparator.INTEGER_VERSION_COMPARATOR.compare("2.5", "2.5.0.0.0.-1") > 0);
-		assertTrue(VersionComparator.INTEGER_VERSION_COMPARATOR.compare("2.0.0", "2.0.-1") > 0);
-		assertTrue(VersionComparator.INTEGER_VERSION_COMPARATOR.compare("2", "2.0.-1") > 0);
+		assertTrue(ComparatorTools.integerVersionComparator().compare("2.0.2", "2.0.1") > 0);
+		assertTrue(ComparatorTools.integerVersionComparator().compare("2.0.2", "2.0.1") > 0);
+		assertTrue(ComparatorTools.integerVersionComparator().compare("2.5.0.0.1.0", "2.5.0") > 0);
+		assertTrue(ComparatorTools.integerVersionComparator().compare("2.5", "2.5.0.0.0.-1") > 0);
+		assertTrue(ComparatorTools.integerVersionComparator().compare("2.0.0", "2.0.-1") > 0);
+		assertTrue(ComparatorTools.integerVersionComparator().compare("2", "2.0.-1") > 0);
 	}
 
 	public void testVersionIsEqual_integer_comma() {
@@ -68,7 +68,7 @@ public class VersionComparatorTests
 	}
 
 	public void testVersionIsGreater_integer_comma() {
-		Comparator<String> versionComparator = new VersionComparator<BigDecimal>(',', DecimalSegmentParser.instance());
+		Comparator<String> versionComparator = ComparatorTools.versionComparator(',', DecimalSegmentParser.instance());
 		assertTrue(versionComparator.compare("2,0,2", "2,0,1") > 0);
 		assertTrue(versionComparator.compare("2,0,2.1", "2,0,1") > 0);
 		assertTrue(versionComparator.compare("2,0,2", "2,0,1.9") > 0);
@@ -76,7 +76,7 @@ public class VersionComparatorTests
 	}
 
 	public void testVersionIsEqual_subclass() {
-		Comparator<String> versionComparator = VersionComparator.INTEGER_VERSION_COMPARATOR;
+		Comparator<String> versionComparator = ComparatorTools.integerVersionComparator();
 		assertTrue(versionComparator.compare("2.0.0", "2.0.0") == 0);
 		assertTrue(versionComparator.compare("2.0.0", "2.0.0.0") == 0);
 		assertTrue(versionComparator.compare("2.0.0.0", "2.0") == 0);
@@ -84,7 +84,7 @@ public class VersionComparatorTests
 	}
 
 	public void testVersionIsLess_subclass() {
-		Comparator<String> versionComparator = VersionComparator.INTEGER_VERSION_COMPARATOR;
+		Comparator<String> versionComparator = ComparatorTools.integerVersionComparator();
 		assertTrue(versionComparator.compare("2.0.0", "2.0.1") < 0);
 		assertTrue(versionComparator.compare("2.5.0", "2.14") < 0);
 		assertTrue(versionComparator.compare("2.5.0", "2.5.0.0.1.0") < 0);
@@ -93,7 +93,7 @@ public class VersionComparatorTests
 	}
 
 	public void testVersionIsGreater_subclass() {
-		Comparator<String> versionComparator = VersionComparator.INTEGER_VERSION_COMPARATOR;
+		Comparator<String> versionComparator = ComparatorTools.integerVersionComparator();
 		assertTrue(versionComparator.compare("2.0.2", "2.0.1") > 0);
 		assertTrue(versionComparator.compare("2.0.2", "2.0.1") > 0);
 		assertTrue(versionComparator.compare("2.5.0.0.1.0", "2.5.0") > 0);
@@ -105,7 +105,7 @@ public class VersionComparatorTests
 		boolean exCaught = false;
 		try {
 			// note the letter 'O' instead of the numeral '0'
-			assertTrue(VersionComparator.INTEGER_VERSION_COMPARATOR.compare("2.0.0", "2.O.O") == 0);
+			assertTrue(ComparatorTools.integerVersionComparator().compare("2.0.0", "2.O.O") == 0);
 		} catch (NumberFormatException ex) {
 			exCaught = true;
 		}
