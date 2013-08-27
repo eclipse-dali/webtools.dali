@@ -46,6 +46,7 @@ Export-Package: org.eclipse.jpt.jaxb.eclipselink.core,
  org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_2;x-internal:=true,
  org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_3;x-internal:=true,
  org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_4;x-internal:=true,
+ org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_5;x-internal:=true,
  org.eclipse.jpt.jaxb.eclipselink.core.resource.java,
  org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm,
  org.eclipse.jpt.jaxb.eclipselink.core.validation

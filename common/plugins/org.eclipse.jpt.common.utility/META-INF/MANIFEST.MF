@@ -11,6 +11,7 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Dali-Comment-1: *NO* EclipseLink friends!
 Dali-Comment-2: the UI-related packages are friends with only UI plug-ins
 Export-Package: org.eclipse.jpt.common.utility,
+ org.eclipse.jpt.common.utility.closure,
  org.eclipse.jpt.common.utility.collection,
  org.eclipse.jpt.common.utility.command,
  org.eclipse.jpt.common.utility.exception,
@@ -27,6 +28,18 @@ Export-Package: org.eclipse.jpt.common.utility,
    org.eclipse.jpt.jpa.annotate,
    org.eclipse.jpt.jpa.ui",
  org.eclipse.jpt.common.utility.internal.collection;
+  x-friends:="org.eclipse.jpt.jpa.core,
+   org.eclipse.jpt.common.core,
+   org.eclipse.jpt.common.ui,
+   org.eclipse.jpt.jaxb.core,
+   org.eclipse.jpt.jaxb.ui,
+   org.eclipse.jpt.jpa.db,
+   org.eclipse.jpt.jpa.db.ui,
+   org.eclipse.jpt.jpa.gen,
+   org.eclipse.jpt.jpa.annotate,
+   org.eclipse.jpt.jpa.ui,
+   org.eclipse.jpt.jaxb.core.schemagen",
+ org.eclipse.jpt.common.utility.internal.closure;
   x-friends:="org.eclipse.jpt.jpa.core,
    org.eclipse.jpt.common.core,
    org.eclipse.jpt.common.ui,

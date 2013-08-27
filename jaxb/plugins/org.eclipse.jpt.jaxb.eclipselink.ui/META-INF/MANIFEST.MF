@@ -33,4 +33,5 @@ Export-Package: org.eclipse.jpt.jaxb.eclipselink.ui,
  org.eclipse.jpt.jaxb.eclipselink.ui.internal.v2_2;x-internal:=true,
  org.eclipse.jpt.jaxb.eclipselink.ui.internal.v2_3;x-internal:=true,
  org.eclipse.jpt.jaxb.eclipselink.ui.internal.v2_4;x-internal:=true,
+ org.eclipse.jpt.jaxb.eclipselink.ui.internal.v2_5;x-internal:=true,
  org.eclipse.jpt.jaxb.eclipselink.ui.internal.wizards.oxm
