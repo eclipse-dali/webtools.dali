@@ -404,6 +404,8 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 				return JptJpaEclipseLinkUiMessages.TARGET_DATABASE_COMPOSITE_HSQL;
 			case informix :
 				return JptJpaEclipseLinkUiMessages.TARGET_DATABASE_COMPOSITE_INFORMIX;
+			case informix11 :
+				return JptJpaEclipseLinkUiMessages.TARGET_DATABASE_COMPOSITE_INFORMIX11;
 			case javadb :
 				return JptJpaEclipseLinkUiMessages.TARGET_DATABASE_COMPOSITE_JAVADB;
 			case maxdb :

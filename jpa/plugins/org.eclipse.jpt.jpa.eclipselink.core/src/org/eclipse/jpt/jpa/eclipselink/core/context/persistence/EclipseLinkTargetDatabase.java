@@ -25,6 +25,7 @@ public enum EclipseLinkTargetDatabase implements PersistenceXmlEnumValue {
 	derby("Derby"), //$NON-NLS-1$
 	hsql("HSQL"), //$NON-NLS-1$
 	informix("Informix"), //$NON-NLS-1$
+	informix11("Informix11"), //$NON-NLS-1$
 	javadb("JavaDB"), //$NON-NLS-1$
 	maxdb("MaxDB"), //$NON-NLS-1$
 	mysql("MySQL"), //$NON-NLS-1$

@@ -351,6 +351,7 @@ public class JptJpaEclipseLinkUiMessages {
 	public static String TARGET_DATABASE_COMPOSITE_DERBY;
 	public static String TARGET_DATABASE_COMPOSITE_HSQL;
 	public static String TARGET_DATABASE_COMPOSITE_INFORMIX;
+	public static String TARGET_DATABASE_COMPOSITE_INFORMIX11;
 	public static String TARGET_DATABASE_COMPOSITE_JAVADB;
 	public static String TARGET_DATABASE_COMPOSITE_MAXDB;
 	public static String TARGET_DATABASE_COMPOSITE_MYSQL;
