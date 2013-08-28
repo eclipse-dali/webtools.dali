@@ -2181,6 +2181,34 @@ public abstract class AbstractPersistenceUnit
 		}
 		throw new IllegalArgumentException("Illegal type mapping key: " + key); //$NON-NLS-1$
 	}
+	
+	
+	// ********** add classes to persistence unit **********
+
+	public void addClasses(Iterable<String> classNames, IProgressMonitor monitor) {
+		SubMonitor sm = SubMonitor.convert(monitor, IterableTools.size(classNames));
+		for (String className : classNames) {
+			if(!classRefExists(className)) {
+				this.addSpecifiedClassRef(className);
+			}
+			sm.worked(1);
+		}
+		if (sm.isCanceled()) {
+			return;
+		}
+		
+		this.getXmlPersistenceUnit().sortClasses();
+		sm.worked(1);
+	}
+	
+	private boolean classRefExists(String className) {
+		for (ClassRef classRef : this.getSpecifiedClassRefs()) {
+			if( classRef.getClassName().equals(className)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	// ********** misc **********
 

@@ -360,6 +360,11 @@
 			categoryId="org.eclipse.jpt.jpa.ui.jpaMetadataConversionCommands">
 		</command>
 
+  <command
+        id="org.eclipse.jpt.jpa.ui.addToPersistenceUnit"
+        name="%addToPersistenceUnit">
+  </command>
+
 	</extension>
 
 
@@ -636,6 +641,27 @@
 			</activeWhen>
 		</handler>
 
+		<handler
+			commandId="org.eclipse.jpt.jpa.ui.addToPersistenceUnit"
+			class="org.eclipse.jpt.jpa.ui.internal.handlers.AddToPersistenceUnitHandler">
+			<enabledWhen>
+				<with variable="selection">
+					<count value="+"/>
+					<iterate>
+						<and>
+							<adapt type="org.eclipse.jdt.core.IJavaElement" />
+							<or>
+								<instanceof value="org.eclipse.jdt.core.ICompilationUnit"/>
+								<instanceof value="org.eclipse.jdt.core.IType"/>
+								<instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
+								<instanceof value="org.eclipse.jdt.core.IPackageFragmentRoot"/>
+							</or>
+						</and>
+					</iterate>
+				</with>
+			</enabledWhen>
+		</handler>
+		
 	</extension>
 
 
@@ -825,6 +851,12 @@
 
 		<menuContribution locationURI="popup:org.eclipse.jpt.jpa.ui.menu.JpaTools">
 			<command commandId="org.eclipse.jpt.jpa.core.synchronizeClasses">
+				<visibleWhen checkEnabled="true"/>
+			</command>
+		</menuContribution>
+		
+		<menuContribution locationURI="popup:org.eclipse.jpt.jpa.ui.menu.JpaTools">
+			<command commandId="org.eclipse.jpt.jpa.ui.addToPersistenceUnit">
 				<visibleWhen checkEnabled="true"/>
 			</command>
 		</menuContribution>

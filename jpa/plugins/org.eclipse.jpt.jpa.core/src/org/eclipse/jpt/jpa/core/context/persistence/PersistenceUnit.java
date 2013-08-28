@@ -827,6 +827,11 @@ public interface PersistenceUnit
 	 */
 	int findInsertLocationForMappingFileRef();
 	
+	/**
+	 * Add the given list of class names to the persistence.xml excluding 
+	 * those that already exist.
+	 */
+	void addClasses(Iterable<String> classNames, IProgressMonitor monitor);
 
 	// ********** validation **********
 

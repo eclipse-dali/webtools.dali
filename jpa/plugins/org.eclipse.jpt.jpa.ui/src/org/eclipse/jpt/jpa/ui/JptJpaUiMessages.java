@@ -23,6 +23,10 @@ public class JptJpaUiMessages {
 	}
 
 	public static String ACCESS_TYPE_COMPOSITE_ACCESS;
+	public static String ADD_CLASSES_TO_PERSISTENCE_UNIT_MESSAGE_TEXT;
+	public static String ADD_CLASSES_TO_PERSISTENCE_UNIT_MESSAGE_TITLE;
+	public static String ADD_CLASSES_TO_PERSISTENCE_UNIT_TASK_NAME;
+
 	public static String ADD_TO_EAR_COMPOSITE_EAR_MEMBER_SHIP;
 	public static String ADD_TO_EAR_COMPOSITE_ADD_TO_EAR_LABEL;
 	public static String ADD_TO_EAR_COMPOSITE_EAR_PROJECT_LABEL;
