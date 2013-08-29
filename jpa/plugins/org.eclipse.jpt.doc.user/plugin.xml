@@ -24,7 +24,7 @@
 	<extension
 		point="org.eclipse.ui.cheatsheets.cheatSheetContent">
 
-		<category name="JPA Development"
+		<category name="%jpaDevelopment"
 			id="org.eclipse.jpt.jpa.category"/>
 
 		<cheatsheet name="%createAJpaProject"
