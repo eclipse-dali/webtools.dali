@@ -23,19 +23,28 @@ import java.util.logging.Logger;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.log.JdkLogChute;
+import org.eclipse.core.filebuffers.FileBuffers;
+import org.eclipse.core.filebuffers.ITextFileBufferManager;
+import org.eclipse.core.filebuffers.manipulation.ConvertLineDelimitersOperation;
+import org.eclipse.core.filebuffers.manipulation.FileBufferOperationRunner;
+import org.eclipse.core.filebuffers.manipulation.TextFileBufferOperation;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -334,7 +343,9 @@ public class PackageGenerator {
 		} else {
 			byte[] content = fileContent.getBytes(javaFile.getCharset());
 			createFile(javaFile, new ByteArrayInputStream(content));
-		}		
+		}
+		
+		convertLineDelimiter(javaFile);
 	}
 	
 	
@@ -507,6 +518,21 @@ public class PackageGenerator {
 		ve.mergeTemplate(templateName, context, w);
 		
 		return w.toString();
+	}
+	
+	private static void convertLineDelimiter(IFile file) {
+		IPath[] paths = new IPath[] {file.getFullPath()};
+		ITextFileBufferManager buffManager = FileBuffers.getTextFileBufferManager();
+		String lineDelimiter = PlatformTools.getNewTextFileLineDelimiter();
+		TextFileBufferOperation convertOperation = new ConvertLineDelimitersOperation(lineDelimiter);
+		FileBufferOperationRunner runner = new FileBufferOperationRunner(buffManager, null);
+		try {
+			runner.execute(paths, convertOperation, new NullProgressMonitor());
+		} catch (OperationCanceledException oce) {
+			JptJpaGenPlugin.instance().logError(oce);
+		} catch (CoreException ce) {
+			JptJpaGenPlugin.instance().logError(ce);
+		}
 	}
 	
 }
