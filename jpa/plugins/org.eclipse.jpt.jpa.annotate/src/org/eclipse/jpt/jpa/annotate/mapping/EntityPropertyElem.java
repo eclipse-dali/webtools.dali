@@ -49,6 +49,7 @@ public class EntityPropertyElem
 		_propertyType = another._propertyType;
 		_tagName = another._tagName;
 		_unmapped = another._unmapped;
+		_column = another._column;
 		if (another._columnAnnotationAttrs != null)
 			_columnAnnotationAttrs = new ColumnAttributes(another._columnAnnotationAttrs);
 		if (another._annotationAttrs != null)
