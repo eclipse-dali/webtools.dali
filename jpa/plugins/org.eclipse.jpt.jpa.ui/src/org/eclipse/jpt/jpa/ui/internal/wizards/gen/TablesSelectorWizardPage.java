@@ -10,7 +10,6 @@
 
 package org.eclipse.jpt.jpa.ui.internal.wizards.gen;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -25,7 +24,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ColumnWeightData;
@@ -56,7 +54,6 @@ import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.wizards.gen.JptJpaUiWizardsEntityGenMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -680,32 +677,18 @@ public class TablesSelectorWizardPage extends WizardPage {
 		}
 		else {
 			this.setPageComplete(true);
-			try{
-				this.getContainer().run(false, false, new IRunnableWithProgress() {
-					public void run( final IProgressMonitor monitor ) 
-				    	throws InvocationTargetException, InterruptedException
-				    {
-						monitor.beginTask(JptJpaUiWizardsEntityGenMessages.GENERATE_ENTITIES_WIZARD_TABLE_SELECT_PAGE_STATUS_UPDATE_TASK_NAME, 10);
-				
-						Collection<Table> ret = TablesSelectorWizardPage.this.getSelectedTables();
-						ArrayList<String> tableNames = new ArrayList<String>();
-						for(Table t : ret) {
-							tableNames.add(t.getName());
-						}
-						Schema schema = getSchema();
-						if(schema == null) {
-							return;
-						}
-						customizer.setSchema(schema);
-						customizer.setTableNames(tableNames);
-						customizer.setUpdatePersistenceXml(updatePersistenceXml);
-						monitor.done();
-				    }
-				});
-			} 
-			catch (Exception e) {
-				JptJpaUiPlugin.instance().logError(e);
+			Collection<Table> ret = TablesSelectorWizardPage.this.getSelectedTables();
+			ArrayList<String> tableNames = new ArrayList<String>();
+			for(Table t : ret) {
+				tableNames.add(t.getName()); 
 			}
+			Schema schema = getSchema();
+			if(schema == null) {
+				return;
+			}
+			customizer.setSchema(schema);
+			customizer.setTableNames(tableNames);
+			customizer.setUpdatePersistenceXml(updatePersistenceXml);
 		}
 	}
 
