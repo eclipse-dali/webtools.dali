@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.annotate.mapping;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
-
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.annotate.internal.plugin.JptJpaAnnotatePlugin;
 
 public class ColumnAttributes extends AnnotationAttributes
@@ -207,7 +207,8 @@ public class ColumnAttributes extends AnnotationAttributes
 
 	public boolean isSetLength()
 	{
-		return getAnnotationAttribute(AnnotationAttributeNames.LENGTH) != null;
+		AnnotationAttribute attr = getAnnotationAttribute(AnnotationAttributeNames.LENGTH);
+		return attr != null && !StringTools.isBlank(attr.attrValue);
 	}
 	
 	public int getLength()
