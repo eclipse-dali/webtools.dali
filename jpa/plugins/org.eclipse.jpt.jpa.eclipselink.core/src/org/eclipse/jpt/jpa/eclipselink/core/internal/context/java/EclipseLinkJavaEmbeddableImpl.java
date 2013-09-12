@@ -11,10 +11,13 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaEmbeddable;
+import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.core.resource.java.EmbeddableAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
@@ -151,4 +154,23 @@ public class EclipseLinkJavaEmbeddableImpl
 	protected JpaValidator buildTypeMappingValidator() {
 		return new EclipseLinkTypeMappingValidator(this);
 	}
+	
+	// ********** attribute mappings ******
+	
+	@Override
+	public boolean attributeMappingKeyAllowed(String attributeMappingKey) {
+		return ArrayTools.contains(ALLOWED_ATTRIBUTE_MAPPING_KEYS, attributeMappingKey);
+	}
+
+	public static final String[] ALLOWED_ATTRIBUTE_MAPPING_KEYS =
+		new String[] {
+			MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY,
+			MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY,
+			MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY,
+			MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY,
+			MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY,
+			MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY,
+			MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
+			MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY
+		};
 }

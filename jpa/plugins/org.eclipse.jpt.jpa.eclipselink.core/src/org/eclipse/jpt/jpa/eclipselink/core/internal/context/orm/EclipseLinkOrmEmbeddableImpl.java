@@ -14,6 +14,7 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
@@ -23,11 +24,12 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEmbeddable;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmEmbeddable;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkTypeMappingValidator;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaEmbeddableImpl;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -291,5 +293,12 @@ public class EclipseLinkOrmEmbeddableImpl
 				this.getCandidateClassNames(),
 				IterableTools.sort(((EclipseLinkPersistenceUnit) this.getPersistenceUnit()).getEclipseLinkDynamicPersistentTypeNames())
 				);
+	}
+	
+	// *********** attribtue mappings ************
+	
+	@Override
+	public boolean attributeMappingKeyAllowed(String attributeMappingKey) {
+		return ArrayTools.contains(EclipseLinkJavaEmbeddableImpl.ALLOWED_ATTRIBUTE_MAPPING_KEYS, attributeMappingKey);
 	}
 }
