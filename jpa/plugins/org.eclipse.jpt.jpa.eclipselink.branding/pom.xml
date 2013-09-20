@@ -22,6 +22,6 @@
 
   <groupId>org.eclipse.webtools.dali</groupId>
   <artifactId>org.eclipse.jpt.jpa.eclipselink.branding</artifactId>
-  <version>3.3.0-SNAPSHOT</version>
+  <version>3.4.0-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 </project>
