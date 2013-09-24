@@ -16,13 +16,13 @@
   <parent>
     <groupId>org.eclipse.webtools.dali</groupId>
     <artifactId>org.eclipse.webtools.dali</artifactId>
-    <version>3.5.0-SNAPSHOT</version>
+    <version>3.6.0-SNAPSHOT</version>
     <relativePath>../../../</relativePath>
   </parent>
 
   <groupId>org.eclipse.webtools.dali</groupId>
   <artifactId>org.eclipse.jpt.common.feature</artifactId>
-  <version>1.3.0-SNAPSHOT</version>
+  <version>1.4.0-SNAPSHOT</version>
   <packaging>eclipse-feature</packaging>
 
   <build>
