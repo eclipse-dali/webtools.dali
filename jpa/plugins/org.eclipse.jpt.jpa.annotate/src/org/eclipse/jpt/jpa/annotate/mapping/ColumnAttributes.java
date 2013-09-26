@@ -248,7 +248,8 @@ public class ColumnAttributes extends AnnotationAttributes
 
 	public boolean isSetPrecision()
 	{
-		return getAnnotationAttribute(AnnotationAttributeNames.PRECISION) != null;
+		AnnotationAttribute attr = getAnnotationAttribute(AnnotationAttributeNames.PRECISION);
+		return attr != null && !StringTools.isBlank(attr.attrValue);
 	}
 	
 	public int getPrecision()
@@ -288,7 +289,8 @@ public class ColumnAttributes extends AnnotationAttributes
 	
 	public boolean isSetScale()
 	{
-		return getAnnotationAttribute(AnnotationAttributeNames.SCALE) != null;
+		AnnotationAttribute attr = getAnnotationAttribute(AnnotationAttributeNames.SCALE);
+		return attr != null && !StringTools.isBlank(attr.attrValue);
 	}
 	
 	public int getScale()
