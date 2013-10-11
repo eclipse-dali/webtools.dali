@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -42,11 +42,16 @@ class FauxCatalogStrategy
 		return Collections.emptyList();
 	}
 
+	@SuppressWarnings("unchecked") 
 	public List<Schema> getSchemas() {
-		Catalog fauxCatalog = this.getFauxCatalog();
-		@SuppressWarnings("unchecked")
-		List<Schema> schemas = fauxCatalog.getSchemas();
-		return schemas;
+		// 308947 - hack to support old IBM DTP/RDB extension for Oracle
+		List<Catalog> catalogs = database.getCatalogs();
+		// if there are no catalogs, the database must hold the schemata directly
+		if ((catalogs == null) || catalogs.isEmpty()) {
+			return database.getSchemas();
+		}
+
+		return this.getFauxCatalog().getSchemas();
 	}
 
 	private Catalog getFauxCatalog() {
