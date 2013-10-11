@@ -14,7 +14,6 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.SharedScrolledComposite;
 
 /**
@@ -146,7 +145,7 @@ public final class ControlTools {
 			c.layout(true);
 			c = c.getParent();
 			if (c instanceof SharedScrolledComposite) {
-				((ScrolledForm) c).reflow(true);
+				((SharedScrolledComposite) c).reflow(true);
 				break;
 			}
 		}
