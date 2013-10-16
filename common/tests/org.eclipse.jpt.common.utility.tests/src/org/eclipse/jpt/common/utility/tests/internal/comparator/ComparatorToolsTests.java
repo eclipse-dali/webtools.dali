@@ -69,12 +69,12 @@ public class ComparatorToolsTests
 	public void testComparatorChain() throws Exception {
 		@SuppressWarnings("unchecked")
 		Comparator<Person> comparator = ComparatorTools.chain(Person.LAST_NAME_COMPARATOR, Person.FIRST_NAME_COMPARATOR, Person.BIRTH_DATE_COMPARATOR);
-		Person john = new Person("John", "Smith", DateFormat.getDateInstance(DateFormat.SHORT).parse("10/11/55"));
-		Person jane = new Person("Jane", "Smith", DateFormat.getDateInstance(DateFormat.SHORT).parse("10/11/55"));
+		Person john = new Person("John", "Smith", DateFormat.getDateInstance(DateFormat.SHORT).parse("10/11/1955"));
+		Person jane = new Person("Jane", "Smith", DateFormat.getDateInstance(DateFormat.SHORT).parse("10/11/1955"));
 		assertTrue(comparator.compare(john, john) == 0);
 		assertTrue(comparator.compare(jane, john) < 0);
 		assertTrue(comparator.compare(john, jane) > 0);
-		Person oldJohn = new Person("John", "Smith", DateFormat.getDateInstance(DateFormat.SHORT).parse("10/11/33"));
+		Person oldJohn = new Person("John", "Smith", DateFormat.getDateInstance(DateFormat.SHORT).parse("10/11/1933"));
 		assertTrue(comparator.compare(oldJohn, oldJohn) == 0);
 		assertTrue(comparator.compare(oldJohn, john) < 0);
 		assertTrue(comparator.compare(john, oldJohn) > 0);
