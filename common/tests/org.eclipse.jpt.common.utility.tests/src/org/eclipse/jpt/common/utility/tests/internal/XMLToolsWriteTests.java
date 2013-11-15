@@ -56,10 +56,13 @@ public class XMLToolsWriteTests
 		stream.close();
 		StringBuffer sb = new StringBuffer(2000);
 		sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"");
-		if (SystemTools.jvmIsOracle() && SystemTools.javaSpecificationVersionIsGreaterThan("1.5")) {
+		if ((SystemTools.jvmIsOracle() || SystemTools.jvmIsApple()) && SystemTools.javaSpecificationVersionIsGreaterThan("1.5")) {
 			sb.append(" standalone=\"no\"");
 		}
 		sb.append("?>");
+		if (SystemTools.osIsMac()) {
+			sb.append(' ');
+		}
 		if (SystemTools.jvmIsOracle() || (SystemTools.jvmIsIBM() && SystemTools.javaSpecificationVersionIsLessThanOrEqualTo("1.5"))) {
 			sb.append(CR);
 		}
@@ -71,6 +74,9 @@ public class XMLToolsWriteTests
 		sb.append(CR);
 		sb.append(string);
 		sb.append("</root-element>");
+		if (SystemTools.osIsMac()) {
+			sb.append(' ');
+		}
 		if (SystemTools.jvmIsOracle() || (SystemTools.jvmIsIBM() && SystemTools.javaSpecificationVersionIsLessThanOrEqualTo("1.5"))) {
 			sb.append(CR);
 		}

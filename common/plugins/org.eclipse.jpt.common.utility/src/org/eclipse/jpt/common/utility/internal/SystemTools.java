@@ -23,6 +23,13 @@ public final class SystemTools {
 	// ********** JVM **********
 
 	/**
+	 * Return whether the current JVM is Apple's.
+	 */
+	public static boolean jvmIsApple() {
+		return jvmIs("Apple");
+	}
+
+	/**
 	 * Return whether the current JVM is IBM's.
 	 */
 	public static boolean jvmIsIBM() {
