@@ -46,6 +46,19 @@ public final class MapTools {
 	}
 
 	/**
+	 * <em>Assume</em> the map does not contain any <code>null</code> values.
+	 * @see #get(Map, Object, Object)
+	 */
+	public static <K, V> V get_(Map<K, V> map, K key, V defaultValue) {
+		V value = map.get(key);
+		if (value != null) {
+			return value;
+		}
+		map.put(key, defaultValue);
+		return defaultValue;
+	}
+
+	/**
 	 * Return the value mapped by the specified map to the specified key.
 	 * If the specified key is not mapped, map the key to the value returned by
 	 * the specified factory and return it.
@@ -55,6 +68,20 @@ public final class MapTools {
 	public static <K, V> V get(Map<K, V> map, K key, Factory<? extends V> factory) {
 		V value = map.get(key);
 		if ((value != null) || map.containsKey(key)) {
+			return value;
+		}
+		V defaultValue = factory.create();
+		map.put(key, defaultValue);
+		return defaultValue;
+	}
+
+	/**
+	 * <em>Assume</em> the map does not contain any <code>null</code> values.
+	 * @see #get(Map, Object, Factory)
+	 */
+	public static <K, V> V get_(Map<K, V> map, K key, Factory<? extends V> factory) {
+		V value = map.get(key);
+		if (value != null) {
 			return value;
 		}
 		V defaultValue = factory.create();
@@ -75,6 +102,14 @@ public final class MapTools {
 	}
 
 	/**
+	 * <em>Assume</em> the map does not contain any <code>null</code> values.
+	 * @see #get(Map, Object, Class)
+	 */
+	public static <K, V, C extends V> V get_(Map<K, V> map, K key, Class<C> clazz) {
+		return get_(map, key, clazz, ClassTools.EMPTY_ARRAY, ObjectTools.EMPTY_OBJECT_ARRAY);
+	}
+
+	/**
 	 * Return the value mapped by the specified map to the specified key.
 	 * If the specified key is not mapped, map the key to a new instance of the
 	 * specified class, using the class's specified single-argument constructor,
@@ -83,6 +118,14 @@ public final class MapTools {
 	 * @see Map#containsKey(Object)
 	 */
 	public static <K, V> V get(Map<K, V> map, K key, Class<? extends V> clazz, Class<?> parameterType, Object argument) {
+		return get(map, key, clazz, new Class[] {parameterType}, new Object[] {argument});
+	}
+
+	/**
+	 * <em>Assume</em> the map does not contain any <code>null</code> values.
+	 * @see #get(Map, Object, Class, Class, Object)
+	 */
+	public static <K, V> V get_(Map<K, V> map, K key, Class<? extends V> clazz, Class<?> parameterType, Object argument) {
 		return get(map, key, clazz, new Class[] {parameterType}, new Object[] {argument});
 	}
 
@@ -96,6 +139,20 @@ public final class MapTools {
 	public static <K, V> V get(Map<K, V> map, K key, Class<? extends V> clazz, Class<?>[] parameterTypes, Object[] arguments) {
 		V value = map.get(key);
 		if ((value != null) || map.containsKey(key)) {
+			return value;
+		}
+		V defaultValue = ClassTools.newInstance(clazz, parameterTypes, arguments);
+		map.put(key, defaultValue);
+		return defaultValue;
+	}
+
+	/**
+	 * <em>Assume</em> the map does not contain any <code>null</code> values.
+	 * @see #get(Map, Object, Class, Class[], Object[])
+	 */
+	public static <K, V> V get_(Map<K, V> map, K key, Class<? extends V> clazz, Class<?>[] parameterTypes, Object[] arguments) {
+		V value = map.get(key);
+		if (value != null) {
 			return value;
 		}
 		V defaultValue = ClassTools.newInstance(clazz, parameterTypes, arguments);
@@ -593,7 +650,7 @@ public final class MapTools {
 	 * will remain in the new map.
 	 */
 	public static <K, V> HashMap<K, V> invert(Map<? extends V, ? extends K> map) {
-		HashMap<K, V> result = new HashMap<K, V>(map.size());
+		HashMap<K, V> result = new HashMap<K, V>((int) (map.size() / 0.75));
 		for (Map.Entry<? extends V, ? extends K> entry : map.entrySet()) {
 			result.put(entry.getValue(), entry.getKey());
 		}
@@ -608,7 +665,7 @@ public final class MapTools {
 	 * values of the specified map.
 	 */
 	public static <K, V> HashMap<K, V> filter(Map<? extends K, ? extends V> map, Predicate<? super V> filter) {
-		HashMap<K, V> result = new HashMap<K, V>(map.size());
+		HashMap<K, V> result = new HashMap<K, V>((int) (map.size() / 0.75));
 		for (Map.Entry<? extends K, ? extends V> entry : map.entrySet()) {
 			V value = entry.getValue();
 			if (filter.evaluate(value)) {
@@ -626,7 +683,7 @@ public final class MapTools {
 	 * values of the specified map.
 	 */
 	public static <K, V1, V2> HashMap<K, V2> transform(Map<? extends K, V1> map, Transformer<? super V1, ? extends V2> transformer) {
-		HashMap<K, V2> result = new HashMap<K, V2>(map.size());
+		HashMap<K, V2> result = new HashMap<K, V2>((int) (map.size() / 0.75));
 		for (Map.Entry<? extends K, ? extends V1> entry : map.entrySet()) {
 			result.put(entry.getKey(), transformer.transform(entry.getValue()));
 		}
