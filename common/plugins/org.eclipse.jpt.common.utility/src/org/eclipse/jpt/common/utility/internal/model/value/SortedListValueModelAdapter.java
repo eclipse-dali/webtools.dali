@@ -117,7 +117,7 @@ public class SortedListValueModelAdapter<E>
 		ArrayList<E> unsortedList = (ArrayList<E>) this.list.clone();
 		Collections.sort(this.list, this.comparator);
 		Range diffRange = ListTools.identityDifferenceRange(unsortedList, this.list);
-		if (diffRange.length > 0) {
+		if (diffRange != null) {
 			List<E> unsortedItems = unsortedList.subList(diffRange.start, diffRange.end + 1);
 			List<E> sortedItems = this.list.subList(diffRange.start, diffRange.end + 1);
 			this.fireItemsReplaced(LIST_VALUES, diffRange.start, sortedItems, unsortedItems);

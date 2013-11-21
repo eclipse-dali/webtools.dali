@@ -204,7 +204,7 @@ public class ListToolsTests
 		list2.add(new String("a"));
 		list2.add(new String("b"));
 		list2.add(new String("c"));
-		assertEquals(new Range(3, -1), ListTools.differenceRange(list1, list2));
+		assertNull(ListTools.differenceRange(list1, list2));
 	}
 
 
@@ -261,7 +261,7 @@ public class ListToolsTests
 		list2.add("a");
 		list2.add("b");
 		list2.add("c");
-		assertEquals(new Range(3, -1), ListTools.identityDifferenceRange(list1, list2));
+		assertNull(ListTools.identityDifferenceRange(list1, list2));
 	}
 
 

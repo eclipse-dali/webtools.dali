@@ -131,7 +131,7 @@ public final class ListTools {
 	/**
 	 * Return the range of elements in the specified
 	 * arrays that are different.
-	 * If the arrays are identical, return <code>[size, -1]</code>.
+	 * Return <code>null</code> if the arrays are identical.
 	 * Use the elements' {@link Object#equals(Object)} method to compare the
 	 * elements.
 	 * @see #indexOfDifference(List, List)
@@ -139,12 +139,7 @@ public final class ListTools {
 	 */
 	public static Range differenceRange(List<?> list1, List<?> list2) {
 		int end = lastIndexOfDifference(list1, list2);
-		if (end == -1) {
-			// the lists are identical, the start is the size of the two lists
-			return new Range(list1.size(), end);
-		}
-		// the lists are different, calculate the start of the range
-		return new Range(indexOfDifference(list1, list2), end);
+		return (end == -1) ? null : new Range(indexOfDifference(list1, list2), end);
 	}
 
 	/**
@@ -228,19 +223,14 @@ public final class ListTools {
 	/**
 	 * Return the range of elements in the specified
 	 * arrays that are different.
-	 * If the arrays are identical, return <code>[size, -1]</code>.
+	 * Return <code>null</code> if the arrays are identical.
 	 * Use object identity to compare the elements.
 	 * @see #indexOfIdentityDifference(List, List)
 	 * @see #lastIndexOfIdentityDifference(List, List)
 	 */
 	public static Range identityDifferenceRange(List<?> list1, List<?> list2) {
 		int end = lastIndexOfIdentityDifference(list1, list2);
-		if (end == -1) {
-			// the lists are identical, the start is the size of the two lists
-			return new Range(list1.size(), end);
-		}
-		// the lists are different, calculate the start of the range
-		return new Range(indexOfIdentityDifference(list1, list2), end);
+		return (end == -1) ? null : new Range(indexOfIdentityDifference(list1, list2), end);
 	}
 
 	/**

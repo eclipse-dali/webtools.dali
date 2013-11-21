@@ -234,7 +234,7 @@ public class SortedListValueModelWrapper<E>
 		ArrayList<E> unsortedList = (ArrayList<E>) this.sortedList.clone();
 		Collections.sort(this.sortedList, this.comparator);
 		Range diffRange = ListTools.identityDifferenceRange(unsortedList, this.sortedList);
-		if (diffRange.length > 0) {
+		if (diffRange != null) {
 			List<E> unsortedItems = unsortedList.subList(diffRange.start, diffRange.end + 1);
 			List<E> sortedItems = this.sortedList.subList(diffRange.start, diffRange.end + 1);
 			this.fireItemsReplaced(LIST_VALUES, diffRange.start, sortedItems, unsortedItems);
