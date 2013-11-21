@@ -90,18 +90,7 @@ public final class CollectionTools {
 	 * Return whether the collection changed as a result.
 	 */
 	public static <E> boolean addAll(Collection<? super E> collection, E... array) {
-		return (array.length != 0) && addAll_(collection, array);
-	}
-
-	/**
-	 * assume the array is not empty
-	 */
-	private static <E> boolean addAll_(Collection<? super E> collection, E... array) {
-		boolean modified = false;
-		for (E element : array) {
-			modified |= collection.add(element);
-		}
-		return modified;
+		return (array.length != 0) && collection.addAll(Arrays.asList(array));
 	}
 
 	/**
