@@ -22,9 +22,7 @@ import org.eclipse.jpt.common.utility.closure.InterruptibleClosure;
 import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -1423,7 +1421,7 @@ public final class ArrayTools {
 	/**
 	 * Return an iterable corresponding to the specified array.
 	 */
-	public static <E> ArrayIterable<E> iterable(E[] array) {
+	public static <E> Iterable<E> iterable(E[] array) {
 		return IterableTools.iterable(array);
 	}
 
@@ -1432,7 +1430,7 @@ public final class ArrayTools {
 	 * starting at the specified start index and continuing for
 	 * the rest of the array.
 	 */
-	public static <E> ArrayIterable<E> iterable(E[] array, int start) {
+	public static <E> Iterable<E> iterable(E[] array, int start) {
 		return IterableTools.iterable(array, start);
 	}
 
@@ -1441,7 +1439,7 @@ public final class ArrayTools {
 	 * starting at the specified start index, inclusive, and continuing to
 	 * the specified end index, exclusive.
 	 */
-	public static <E> ArrayIterable<E> iterable(E[] array, int start, int end) {
+	public static <E> Iterable<E> iterable(E[] array, int start, int end) {
 		return IterableTools.iterable(array, start, end);
 	}
 
@@ -1451,7 +1449,7 @@ public final class ArrayTools {
 	/**
 	 * Return an iterator corresponding to the specified array.
 	 */
-	public static <E> ArrayIterator<E> iterator(E[] array) {
+	public static <E> Iterator<E> iterator(E[] array) {
 		return IteratorTools.iterator(array);
 	}
 
@@ -1460,7 +1458,7 @@ public final class ArrayTools {
 	 * starting at the specified start index and continuing for
 	 * the rest of the array.
 	 */
-	public static <E> ArrayIterator<E> iterator(E[] array, int start) {
+	public static <E> Iterator<E> iterator(E[] array, int start) {
 		return IteratorTools.iterator(array, start);
 	}
 
@@ -1469,7 +1467,7 @@ public final class ArrayTools {
 	 * starting at the specified start index, inclusive, and continuing to
 	 * the specified end index, exclusive.
 	 */
-	public static <E> ArrayIterator<E> iterator(E[] array, int start, int end) {
+	public static <E> Iterator<E> iterator(E[] array, int start, int end) {
 		return IteratorTools.iterator(array, start, end);
 	}
 
@@ -2308,7 +2306,7 @@ public final class ArrayTools {
 	 * specified array with the specified element removed.
 	 */
 	public static <E> E[] removeElementAtIndex(E[] array, int index) {
-		return removeElementsAtIndex(array, index, 1);
+		return removeElementsAtIndex_(array, index, 1);
 	}
 
 	/**
@@ -2316,7 +2314,7 @@ public final class ArrayTools {
 	 * specified array with the specified element removed.
 	 */
 	public static char[] removeElementAtIndex(char[] array, int index) {
-		return removeElementsAtIndex(array, index, 1);
+		return removeElementsAtIndex_(array, index, 1);
 	}
 
 	/**
@@ -2324,7 +2322,7 @@ public final class ArrayTools {
 	 * specified array with the specified element removed.
 	 */
 	public static int[] removeElementAtIndex(int[] array, int index) {
-		return removeElementsAtIndex(array, index, 1);
+		return removeElementsAtIndex_(array, index, 1);
 	}
 
 
@@ -2335,9 +2333,13 @@ public final class ArrayTools {
 	 * specified array with the specified elements removed.
 	 */
 	public static <E> E[] removeElementsAtIndex(E[] array, int index, int length) {
-		if (length == 0) {
-			return array;
-		}
+		return (length == 0) ? array : removeElementsAtIndex_(array, index, length);
+	}
+
+	/**
+	 * assume length != 0
+	 */
+	private static <E> E[] removeElementsAtIndex_(E[] array, int index, int length) {
 		int arrayLength = array.length;
 		int newLength = arrayLength - length;
 		E[] result = newInstance(array, newLength);
@@ -2359,9 +2361,13 @@ public final class ArrayTools {
 	 * specified array with the specified elements removed.
 	 */
 	public static char[] removeElementsAtIndex(char[] array, int index, int length) {
-		if (length == 0) {
-			return array;
-		}
+		return (length == 0) ? array : removeElementsAtIndex_(array, index, length);
+	}
+
+	/**
+	 * assume length != 0
+	 */
+	private static char[] removeElementsAtIndex_(char[] array, int index, int length) {
 		int arrayLength = array.length;
 		int newLength = arrayLength - length;
 		if ((newLength == 0) && (index == 0)) {
@@ -2383,9 +2389,13 @@ public final class ArrayTools {
 	 * specified array with the specified elements removed.
 	 */
 	public static int[] removeElementsAtIndex(int[] array, int index, int length) {
-		if (length == 0) {
-			return array;
-		}
+		return (length == 0) ? array : removeElementsAtIndex_(array, index, length);
+	}
+
+	/**
+	 * assume length != 0
+	 */
+	private static int[] removeElementsAtIndex_(int[] array, int index, int length) {
 		int arrayLength = array.length;
 		int newLength = arrayLength - length;
 		if ((newLength == 0) && (index == 0)) {
